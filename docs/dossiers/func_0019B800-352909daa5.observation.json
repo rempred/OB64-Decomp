@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "352909DAA51A6E4700ACC82EF03D5503118BB517DBD23DD47CC18251B509C332",
+  "observationId": "BF2BBA09D4450335006D13588DDBE479FF7F5D272790CA2BBDBD720BA8AD9CDA",
+  "symbol": "func_0019B800",
+  "authored": {
+    "context": "SourceDCED2CCDEF25C143C0EBCBAA7152988E0F80AA568135072FF541735DC37AB42B, candidate352909DAA51A6E4700ACC82EF03D5503118BB517DBD23DD47CC18251B509C332, run45D4F9549256CD72C1295B548E649DC2AB55BE555EDC8F7228CBDF474E5C91EA; targetE7E2C881/model7B25631C/r3083 complete original owner. Protected code inputs stable after f46436db.",
+    "effects": [
+      "source-context",
+      "cursor-lifetime",
+      "loop-shape",
+      "table-coverage"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 143,
+          "path": "include/game/shop_price_interface.h",
+          "sha256": "CDBB85D59650BF5EA20DCA338669762385903C5A83DA2A0B1D268DB251C11AAD"
+        }
+      ],
+      "expandedSha256": "2AA7A0DCA23818A4ACA28A3C0EA6F0481AD4F46DF86B1CC9E4AA957754C37A7E",
+      "sourceSha256": "DCED2CCDEF25C143C0EBCBAA7152988E0F80AA568135072FF541735DC37AB42B"
+    },
+    "label": "shop-b800-complete-loop-phase-baseline",
+    "observedEffect": "PURE_C692B/frame72/173-word full owner; both25-slot switches and both BD14 calls retained. Full actual-R-masked census has63 differing words. Native rodata208B/align8/50 table relocations. Real price-phase repeated count reads retained.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-0019b800-loop-phases-watch.json",
+        "sha256": "2D5BC6DE30E55AE6516E2AB414B11DB9BB82D167DEEF88CDC50D9C3EA44571E0"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b800-loop-phases-full-field-census.json",
+        "sha256": "CC4E8B48F97D01F2BEAE64D29E696686D95FF4DC6AE4097A70D1DE53D5E54119"
+      },
+      {
+        "path": "build/matching/shopworker/runs/45D4F9549256CD72C1295B548E649DC2AB55BE555EDC8F7228CBDF474E5C91EA/candidate.compiler.s",
+        "sha256": "D32CB9F76D9F62A760667A7A67CD3F2ADA0B12578DCC0E6A15A396124D61A2A8"
+      },
+      {
+        "path": "build/matching/shopworker/runs/45D4F9549256CD72C1295B548E649DC2AB55BE555EDC8F7228CBDF474E5C91EA/candidate.o",
+        "sha256": "24D23B3BB631056DB6C1C59AD41B7599C39497D3E19BA0CE934687783E6F4424"
+      },
+      {
+        "path": "build/matching/shopworker/runs/45D4F9549256CD72C1295B548E649DC2AB55BE555EDC8F7228CBDF474E5C91EA/workbench-report.json",
+        "sha256": "D5CAB857E800C9313A0C9004EE2DA56193FAFC65F15AF558FF80058558481413"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "First sort current-slot addressing, early second-category init and price ordinal/absolute-index lifetime differ. No linked/table-owner/whole-wave acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Separate first-phase outer index from the index reused in the price phase, initialize prefix after category ordering, express original six-category do-loop, and restore original swap store order."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 143,
+        "path": "include/game/shop_price_interface.h",
+        "sha256": "CDBB85D59650BF5EA20DCA338669762385903C5A83DA2A0B1D268DB251C11AAD"
+      }
+    ],
+    "expanded": {
+      "bytes": 3849,
+      "sha256": "2AA7A0DCA23818A4ACA28A3C0EA6F0481AD4F46DF86B1CC9E4AA957754C37A7E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DCED2CCDEF25C143C0EBCBAA7152988E0F80AA568135072FF541735DC37AB42B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0019B800-352909daa5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

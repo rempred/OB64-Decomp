@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F158ACD7071AA3EF157D3A64EF4CCD37F0BF99EF8C6BDF3CC3867B12FC289517",
+  "observationId": "BE7270FC5298A984152399B30D728C0DAB20A6916D2FFAEE032EB28869C027A3",
+  "symbol": "func_0019B800",
+  "authored": {
+    "context": "SourceCC4406C209DA7310DD2E78741025F1B883C901B706ECBB6645E55378AB6F96BA, candidateF158ACD7071AA3EF157D3A64EF4CCD37F0BF99EF8C6BDF3CC3867B12FC289517, run2F01BC72693AAE53C13A51DD294D86F523511EDE5A32172FF0916006728A0102; targetE7E2C881/model7B25631C/r3083 complete original owner.",
+    "effects": [
+      "source-context",
+      "loop-strength-reduction",
+      "value-lifetime",
+      "table-coverage"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 143,
+          "path": "include/game/shop_price_interface.h",
+          "sha256": "CDBB85D59650BF5EA20DCA338669762385903C5A83DA2A0B1D268DB251C11AAD"
+        }
+      ],
+      "expandedSha256": "AC5D31A980D4C0FDBC06BD3FA21E678228FD4E56F0B4966EB91B4CF81A3ADF77",
+      "sourceSha256": "CC4406C209DA7310DD2E78741025F1B883C901B706ECBB6645E55378AB6F96BA"
+    },
+    "label": "shop-b800-complete-source-native-closed",
+    "observedEffect": "Mechanical PURE_C692B/173words/frame72; all instruction fields outside34actualR closed. All internalJ addends agree with original. Source-specific HI/LO implicit addends produce original-required external bases; existing named bindings and accepted local BD14 entry agree, D_8018C410 binding stillmissing explicitly. Whole208B/align8 rodata with50 R_MIPS_32, all50 destinations equal original; original r3098 zero and native terminalzero against r3100 retained naturally. Full two sorting phases, both BD14 calls, repeated count/item reads, signed price comparisons, category/default/case coverage, swaps and advances retained.",
+    "parentCandidateId": "38A2F59EE0394ABC5A4DEBA33D97CE3F3DC7B79EEDAC1A665E07D7DFBA03171B",
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-0019b800-final-watch.json",
+        "sha256": "0E257E1D74177EFA9DF3A33DC3A6430A81DCD9E9AD0F9417DA2618A150B603FA"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b800-final-full-field-census.json",
+        "sha256": "19675779B3A983461683CEF2215AEA49FFC9BF88C458FA671EF3B0C568E87BCD"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b800-final-native-evidence.json",
+        "sha256": "5B82DD16DB9D3754BF1E146B76DF114B519637B48755B8DCB93F9781BEF777F7"
+      },
+      {
+        "path": "build/matching/shopworker/shop-b800-indexed-slot-lesson.md",
+        "sha256": "E8C493721C0967CF4EF1398B54B1C40EF801CB2BC4CC3B99B3E0E0B1A4F859BA"
+      },
+      {
+        "path": "build/matching/shopworker/shop-b800-indexed-loop-discriminator.json",
+        "sha256": "4C225E13082ACD5DB2B038CAE47BFF897CF7DABA01DA3C96C1260CA7A299D434"
+      }
+    ],
+    "relatedCandidateIds": [
+      "32D362C9C338F4951BED0AB0A0705D69C0F1756C958A0B8DC87F8C7DCE24DD53"
+    ],
+    "remainingFailure": "No canonical linked acceptance: add missing original-derived D_8018C410 binding; separate generic whole-row padded table representation/ownership/audit-review; soleC ownership, placement, exact linked text/table and one complete4-member PURE_C/full-ROM verifier remain open. Protected1977E0 word-width caller declaration requires same final state check. Diagnostic closure does not count as matching acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep direct indexed slot reads/swaps in both original sorting phases. First loaded item word follows real item-id→consumed price-offset phase. Initialize actual equipment-base, special ID250 and count-pointer producers in original price-phase order. Readable formatting/comments only at final source. No pressure variables, invented uses/padding/qualifiers, compiler exceptions or assembler."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 143,
+        "path": "include/game/shop_price_interface.h",
+        "sha256": "CDBB85D59650BF5EA20DCA338669762385903C5A83DA2A0B1D268DB251C11AAD"
+      }
+    ],
+    "expanded": {
+      "bytes": 4534,
+      "sha256": "AC5D31A980D4C0FDBC06BD3FA21E678228FD4E56F0B4966EB91B4CF81A3ADF77"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CC4406C209DA7310DD2E78741025F1B883C901B706ECBB6645E55378AB6F96BA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0019B800-f158acd707.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

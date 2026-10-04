@@ -909,6 +909,22 @@
     {
       "symbol": "func_001977E0",
       "source": "src/lib/func_001977E0.c"
+    },
+    {
+      "symbol": "func_0019B1B0",
+      "source": "src/lib/func_0019B1B0.c"
+    },
+    {
+      "symbol": "func_0019B800",
+      "source": "src/lib/func_0019B800.c"
+    },
+    {
+      "symbol": "func_0019BB34",
+      "source": "src/lib/func_0019BB34.c"
+    },
+    {
+      "symbol": "func_0019BCA0",
+      "source": "src/lib/func_0019BCA0.c"
     }
   ]
 }

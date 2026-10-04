@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3C0B9ABB616AF4C3D4C63D9253C47732903098E95D9B0131034B06613B5E966E",
+  "observationId": "D09A85D557DC0DD28D8DABFA45B25847A1989ED60602D1E043A4620FE31801AE",
+  "symbol": "func_00123458",
+  "authored": {
+    "context": "MagentaTiger sole canonical writer, main. Complete ten-member Squad W3 remains open: 120CF0/121724/121DA8/121F38/123458/1237F0/12DA10/12DB2C/12A828/12F8C0. Eight protected PURE_C siblings unchanged; evaluator and resolver still ASM. Current logical evaluator body920 bytes/frame24 is fully represented; all nine named event kinds, default/event-clear path, sole edge-only801DD2B0 call and reload preserved. Private native evidence is diagnostic only. Corrects observation3E245C7E00EBE640EB112AED7DE1EC5DDD2D427961A394CFB3F58E3A90223737: omit the mutable live cursor reference; source and all measured watch/probe bytes remain unchanged. Prior authored history remains in the research store and ignored repair evidence.",
+    "effects": [
+      "float-lifetimes",
+      "late-sharing",
+      "compiler-counterexample",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FFC8CDA1CD58BF47E7C686C7679F7030DF31792ADD467BFDEDDFED4F50BF43D7",
+      "sourceSha256": "B9BC551C669AD31BAA86D9383E6E7D1768C8AAF794FBB2841C7794BF9A4E3B9F"
+    },
+    "label": "local-x-expression-allocation-stable-evidence",
+    "observedEffect": "Current watch3C0B9ABB616AF4C3D4C63D9253C47732903098E95D9B0131034B06613B5E966E is PURE_C872/frame24/56 relocations. Both Z and X chains now allocate retail F4/F0, scaleF8, Xspan/cast scratchF2. ProbeBBD0FFAD57FCBAF80A6EFD7AF7C45BD1B1C12AC8C254D0BF836C35AD2D524B39 authenticated all9 artifacts/6 dumps. RTL/FLOW/sched1/lreg/greg retain four FP multiplies/four divides/four casts; the next captured late-jump dump has three/three/two. This brackets premature arithmetic suffix sharing between GLOBAL and late-jump; SCHED2 was not captured for this source. Pinned toplev.c3105..3142 runs post-reload SCHED2 before late jump_optimize, so no measured first-changing-pass claim is made. Control26D82B29 showed X F2 and scratchF0 already in LOCAL, not GLOBAL; its Zden is dead before X loads, whereas Xmax/Xden ownF0 across X. Pinned alloc_qty_for_scratch uses n_refs1, hence zero numeric priority; no actual quantity/suggestion trace is claimed. The intermediate03C03917 at936/frame24/62R corrects only the second X chain. Initializing an actual rectangle result in the paired source regresses X toF2 and emits876. Temporary regressions are nonselected controls; this source shape is an effect example, not an exact replacement.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123458.s",
+        "sha256": "B012FF2E6C61BD7209D10510A7F3D915BA93F1D02CA0F6CB39DCA53DA310C351"
+      },
+      {
+        "path": "build/matching/solsquad/squad-123458-two-x-span-expressions-watch.json",
+        "sha256": "DE4B573A44B0BE96F43E29C43B261060A8EBA119A5B0D93770A39FB4C2468A1D"
+      },
+      {
+        "path": "build/matching/solsquad/squad-123458-two-x-span-expressions-probe.json",
+        "sha256": "97925B73ACF453750F0EA755C2DC8C4A26D6F887C99F55A8DA55928281FA5FE9"
+      },
+      {
+        "path": "build/matching/solsquad/squad-123458-scoped-floats-allocation-stages-probe.json",
+        "sha256": "3DE8C988200FFEDF280344CF01DBCD3A57C2DA1633B6E93F4D4C36A00E5BF082"
+      },
+      {
+        "path": "build/matching/solsquad/squad-123458-x-span-across-z-watch.json",
+        "sha256": "CB4BA5B5186A742ACA24EDB7AB4A317A8A03E2B62C32C28458C77618E81A1312"
+      },
+      {
+        "path": "build/matching/solsquad/squad-123458-pinned-pass-order-evidence.json",
+        "sha256": "0A19C78CF9FDBD55F09477CDE33016DC18534C5C5AE534E143CAE2D5C1CAC667"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Retail requires two separate coordinate arithmetic producers joining only at the casts, correct integer allocation/scheduling and920 total bytes. This872-byte body covers all source paths but shares X arithmetic too early; symbolic private diff is nonexact and no final wave verifier/acceptance is claimed. Continue from this measured allocation effect and retain exact-extent1CC04E58 and scoped-floats10BC64CB controls. No supported tooling defect or HYBRID exception.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Relative to the freshly authenticated scoped-floats control, both producer blocks calculate the actual X span before Z and form X with one complete arithmetic expression. No new arithmetic, consumers, calls, stores, narrowed ABI or compiler changes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4563,
+      "sha256": "FFC8CDA1CD58BF47E7C686C7679F7030DF31792ADD467BFDEDDFED4F50BF43D7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B9BC551C669AD31BAA86D9383E6E7D1768C8AAF794FBB2841C7794BF9A4E3B9F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_00123458-3c0b9abb61.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

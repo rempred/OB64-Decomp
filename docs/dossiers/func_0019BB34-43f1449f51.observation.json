@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "43F1449F517194E5134B288FD9AEFDAD6E4EB6E314990066415C4668E0A7B9BB",
+  "observationId": "14C65643222A44BAC299088788849C3B268D7075603CC4417F1F075C714C42ED",
+  "symbol": "func_0019BB34",
+  "authored": {
+    "context": "Complete r3086/364B/91words, source244A3A77296F9F1B622D35250D33523956963C5315FA2E14F3042F4E70187F41/candidate43F1449F517194E5134B288FD9AEFDAD6E4EB6E314990066415C4668E0A7B9BB/runB57631DEDE730D46CDFD8B427C60CFD59ADB29F86A54ED95E71C1233F741D259.",
+    "effects": [
+      "source-context",
+      "value-lifetime",
+      "argument-evaluation-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "466FCAECAAF2305775B9E6C6597FF252D0C581FDE364B4E847C12709FAD04DF0",
+      "sourceSha256": "244A3A77296F9F1B622D35250D33523956963C5315FA2E14F3042F4E70187F41"
+    },
+    "label": "shop-bb34-complete-source-native-closed",
+    "observedEffect": "PURE_C364B/frame40 and zero fields outside28 actual text relocations. All clear50, empty path, bounded50 allocation/two-copy/resource-publication loop, bank free and three global producers retained. Baseline ten fields becomes four after initializer phases, then zero by keeping copy argument load free of postincrement side effect. Actual symbol/addend requirements checked against original and CURRENT; allocator/free canonical interfaces resolve correctly.",
+    "parentCandidateId": "53BA7E75029141F0869E9F75C3310703C17BD0C77C0141A1DBE98314420F3325",
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-0019bb34-copy-before-advance-watch.json",
+        "sha256": "45B51C7A72A850ED150E7A7912D19F804E3C3BB87FB6B21D61E27E4316426844"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019bb34-copy-before-advance-full-field-census.json",
+        "sha256": "FCBE91BE58CA8C2E63DDD0B2371C72B4E9D920384C12ECD94845AD6BB2BFEE8E"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019bb34-copy-before-advance-native-evidence.json",
+        "sha256": "36C8FB671F8FD36AF07EEA6B913B2EA9163ED469D31BCB01665C459D1D0176C5"
+      },
+      {
+        "path": "build/matching/shopworker/shop-bb34-current-binding-note.json",
+        "sha256": "76B01E4783B49FAA8CBB34012BF3D029B7F9A1701D15399899035F268ED386BA"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019bb34-initializer-phases-full-field-census.json",
+        "sha256": "223D8A6A84D65DE0F0DBE92B10D9116434A9A538C6D457F97B7E1EDC82B51173"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "No canonical linked acceptance. Add original-derived D80219F48/D8021A128/D8021A12C/D8021A130/D8021A134/func8016FBE0 bindings under existing rules. Sole C contribution/placement/exact linked bytes and full4-member PURE_C/full-ROM gates remain pending; paired cleanup next.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Initialize real clear index before clear pointer, and item index before output/cursor. Keep fresh ID load within second copy arguments; advance equipment cursor after that call in source (compiler schedules its real increment earlier). Original first copy precedes fresh ID load; source resources/cursors are real consumed values, no pressure or fake uses."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1748,
+      "sha256": "466FCAECAAF2305775B9E6C6597FF252D0C581FDE364B4E847C12709FAD04DF0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "244A3A77296F9F1B622D35250D33523956963C5315FA2E14F3042F4E70187F41"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0019BB34-43f1449f51.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

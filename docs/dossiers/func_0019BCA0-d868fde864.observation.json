@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D868FDE8649F42137D56D389BFC6B5455BC809395AE44564DD93F884F192A1E6",
+  "observationId": "A72E7E729198F473AEA6582CD4C02508D6027780202872BE42CBE422CB05274C",
+  "symbol": "func_0019BCA0",
+  "authored": {
+    "context": "Fresh supported intake0 records; complete r3087/116B/29words/runtime80219440, sourceDB705D35D5A8BE53A5D86BA52320F2E44E9B69C5576546FE8E203D939D8EC098/candidateD868FDE8649F42137D56D389BFC6B5455BC809395AE44564DD93F884F192A1E6/run91FAA315C89E2B45C5496CBEC3AD228285EE9A868FFC02F9D3E9FE673A6F9AF3.",
+    "effects": [
+      "source-context",
+      "value-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "0176917550D28EC68FBE94A16E88AD13CF1EF6EB4E8763B722E9BBA8A9E8E57B",
+      "sourceSha256": "DB705D35D5A8BE53A5D86BA52320F2E44E9B69C5576546FE8E203D939D8EC098"
+    },
+    "label": "shop-bca0-complete-source-native-closed",
+    "observedEffect": "First comparison mechanically PURE_C116B/frame32 with zero fields outside12 actual text relocations. All50 pointer slots and three tail globals covered; all four free call sites resolve to original800712C4 through existing CURRENT canonical symbol. Same BB34 pointer/global representation retained.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-0019bca0-resource-pair-watch.json",
+        "sha256": "118A0A124D22DA43E88BD05863700B567F2656BCD247C6FC2909CA9F825D1D3B"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019bca0-resource-pair-full-field-census.json",
+        "sha256": "071070BFB9D12B7953A5355D12D1B6176E9ECB816F3BC26E37DC8F7E0E9DBD9C"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019bca0-resource-pair-native-evidence.json",
+        "sha256": "91BA1ECBC3AE5023581A244F3847A04F3361355DD42A56AB27AF51BF5C5C6F46"
+      },
+      {
+        "path": "build/matching/shopworker/shop-bca0-current-binding-note.json",
+        "sha256": "822057B0738ED666B62E42166CBEAE29B6209CE01B12E57CAEB6C180C121C626"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Four original-derived data-symbol bindings, sole C ownership/placement, exact linked bytes and combined4-member PURE_C/full-ROM acceptance remain open. No per-target acceptance claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently derive one complete cleanup body: index initializes before pointer, signed fixed50 loop conditionally frees each loaded pointer, then unconditionally frees all three globals. No pointer clears or added null guards."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 655,
+      "sha256": "0176917550D28EC68FBE94A16E88AD13CF1EF6EB4E8763B722E9BBA8A9E8E57B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DB705D35D5A8BE53A5D86BA52320F2E44E9B69C5576546FE8E203D939D8EC098"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0019BCA0-d868fde864.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

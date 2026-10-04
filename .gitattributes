@@ -92,3 +92,9 @@ docs/archive/matching-c-candidates/2026-09-26-func_001F0F90-true-entry-label.pat
 src/lib/func_001977E0.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-10-04-func_001977E0-70a68c829e.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-10-04-func_001977E0-0fbeca6ab5.c -text whitespace=cr-at-eol
+
+# These source-native Shop inputs retain their authenticated mixed final newline.
+src/lib/func_0019B1B0.c -text whitespace=cr-at-eol
+src/lib/func_0019BCA0.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-04-func_0019B1B0-2b3757a99e.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-04-func_0019BCA0-d868fde864.c -text whitespace=cr-at-eol

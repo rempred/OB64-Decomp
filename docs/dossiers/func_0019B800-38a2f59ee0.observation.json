@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "38A2F59EE0394ABC5A4DEBA33D97CE3F3DC7B79EEDAC1A665E07D7DFBA03171B",
+  "observationId": "B1C31602F3AA4CDBF5D7F72EACD2B91F77D4CF69360B6EA9C02AF587B1CAA227",
+  "symbol": "func_0019B800",
+  "authored": {
+    "context": "SourceDE6AB26EA86E20B01D8F26D238D0FB247EA117A8110FC1270F0D13F87EB9CC6D, candidate38A2F59EE0394ABC5A4DEBA33D97CE3F3DC7B79EEDAC1A665E07D7DFBA03171B, runC3DBA6B7053A82065E7583D94264F5ABEFF422F521A4BBA60D337C9762728020; current targetE7E2C881/model7B25631C/r3083. Native diagnostic only.",
+    "effects": [
+      "source-context",
+      "loop-strength-reduction",
+      "cursor-lifetime",
+      "table-coverage"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 143,
+          "path": "include/game/shop_price_interface.h",
+          "sha256": "CDBB85D59650BF5EA20DCA338669762385903C5A83DA2A0B1D268DB251C11AAD"
+        }
+      ],
+      "expandedSha256": "61DB6E7A8D978AF3395919712F80BB1247F9DF094FE9D2733131B839A473E584",
+      "sourceSha256": "DE6AB26EA86E20B01D8F26D238D0FB247EA117A8110FC1270F0D13F87EB9CC6D"
+    },
+    "label": "shop-b800-direct-indexed-slots-first-phase-closed",
+    "observedEffect": "PURE_C692B/173words/frame72. Full-field census18 differences, all in price phase; every first-phase field through offset174 closed, including original base/outercursor/inner-snapshot roles, both actual per-iteration item/type loads, two25-slot dispatches, swaps and advances. D21 parent had48 fields. NamedDCED exact probe67AC supplies distinct baseline mechanism evidence: outer address GIV user-variable83 hoistedUID48→572 not replaceable/uneliminableBIV76, rejected -26964vs75; inner second slot reduced181. The net-benefit/copy-penalty explanation is baseline/source-rule inference, not projected DE6 pass identities.",
+    "parentCandidateId": "32D362C9C338F4951BED0AB0A0705D69C0F1756C958A0B8DC87F8C7DCE24DD53",
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-0019b800-direct-indexed-slots-watch.json",
+        "sha256": "F779A1E380B1AE53522375F4335495E52FD4DA11289EA8EEB5A34569DFDA80B9"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b800-direct-indexed-slots-full-field-census.json",
+        "sha256": "09981A6DCDD1F52E70E9E088B768AC6619FCA0B7CC187B146E72ECECCA974E92"
+      },
+      {
+        "path": "build/matching/shopworker/runs/C3DBA6B7053A82065E7583D94264F5ABEFF422F521A4BBA60D337C9762728020/candidate.compiler.s",
+        "sha256": "C065744534D8A6FDF93801B493C83296F6CA042B60C8217B45156D18B1B1D42A"
+      },
+      {
+        "path": "build/matching/shopworker/runs/C3DBA6B7053A82065E7583D94264F5ABEFF422F521A4BBA60D337C9762728020/candidate.o",
+        "sha256": "7B718E4B26B6DF317139F706B87E7DA9FBC1721718AA7C40C373730C621C3D94"
+      },
+      {
+        "path": "build/matching/shopworker/runs/C3DBA6B7053A82065E7583D94264F5ABEFF422F521A4BBA60D337C9762728020/workbench-report.json",
+        "sha256": "CBBFC8F68C21E5CF46DB0D9823EDB070F5B16D7CE502BF813EF93423B16CCF14"
+      },
+      {
+        "path": "build/matching/shopworker/shop-b800-indexed-loop-discriminator.json",
+        "sha256": "4C225E13082ACD5DB2B038CAE47BFF897CF7DABA01DA3C96C1260CA7A299D434"
+      },
+      {
+        "path": "build/matching/shopworker/shop-b800-indexed-slot-lesson.md",
+        "sha256": "E8C493721C0967CF4EF1398B54B1C40EF801CB2BC4CC3B99B3E0E0B1A4F859BA"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b800-loop-phases-probe.json",
+        "sha256": "0ECEDBFB3B8EE0A0A4D0CABD21F9750DFD5B01BEE9D9A602725B0E58BBBF6200"
+      }
+    ],
+    "relatedCandidateIds": [
+      "352909DAA51A6E4700ACC82EF03D5503118BB517DBD23DD47CC18251B509C332"
+    ],
+    "remainingFailure": "Price-phase const setup-order/ordinal versus absolute-index/first offset lifetime still differs. Actual symbol/addend/linked bytes, separate whole table representation/ownership/audit-review and completed four-member full-ROM gates remain open. Native closure of one phase is not acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace explicit first-phase outer cursor/current snapshot/other pointer locals with direct array indexing in original guarded index loops. Preserve each real load/store and both category-result initialization phases; price phase unchanged from D21."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 143,
+        "path": "include/game/shop_price_interface.h",
+        "sha256": "CDBB85D59650BF5EA20DCA338669762385903C5A83DA2A0B1D268DB251C11AAD"
+      }
+    ],
+    "expanded": {
+      "bytes": 3884,
+      "sha256": "61DB6E7A8D978AF3395919712F80BB1247F9DF094FE9D2733131B839A473E584"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DE6AB26EA86E20B01D8F26D238D0FB247EA117A8110FC1270F0D13F87EB9CC6D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0019B800-38a2f59ee0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

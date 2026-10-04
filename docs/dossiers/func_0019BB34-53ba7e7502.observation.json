@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "53BA7E75029141F0869E9F75C3310703C17BD0C77C0141A1DBE98314420F3325",
+  "observationId": "A932A9283DE85EC73625CC5601D3EF2260D65BCAE0EB7CD6ECF51DD6742C2003",
+  "symbol": "func_0019BB34",
+  "authored": {
+    "context": "Accepted r3086 complete364B/91-word owner, runtime802192D4; intake0 records, sourceFABD5827/watch82C91DCE.",
+    "effects": [
+      "source-context",
+      "value-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "1604055FEEC935A72CE108B1419DA0D15F5342D7C49EFD64596E9091128D8381",
+      "sourceSha256": "FABD58276A611E59FCC4F4DEBA88E65A22ECBD751CCE1D5A7250600FB6EBB987"
+    },
+    "label": "shop-bb34-complete-resource-pair-baseline",
+    "observedEffect": "PURE_C364B/frame40, all paths and calls retained; ten fields outside28 actual relocations differ, initializer/copy evaluation order only. No missing body.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-0019bb34-resource-pair-watch.json",
+        "sha256": "55AB0B8BC82481AAF2401EDDC1F52A887056B8E0A4377344D0CE87E1285504C0"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019bb34-resource-pair-full-field-census.json",
+        "sha256": "1143384B76D655C7300BCB7F57D4F2D420D9E4A57A1FFC991984BD66FEFF4569"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Instruction scheduling and source-specific external addresses unresolved; canonical linked ownership/placement and complete-wave gates pending.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive clear50, guarded bank and bounded50-item allocation/copy/reload/publish/free loop, and all three resource-global producers from full original owner."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1733,
+      "sha256": "1604055FEEC935A72CE108B1419DA0D15F5342D7C49EFD64596E9091128D8381"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FABD58276A611E59FCC4F4DEBA88E65A22ECBD751CCE1D5A7250600FB6EBB987"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0019BB34-53ba7e7502.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
