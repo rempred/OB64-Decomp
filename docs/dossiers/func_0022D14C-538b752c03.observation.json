@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "538B752C03741D5A39D39F5492BF1D0F67EA69F5F48CE8BB409C2B2D64B6A2AB",
+  "observationId": "C24BE1E28575E7290B87AFBA88899997EB2F9C03CA1151A15ABC4E9DEA631BD7",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Clean indexed7CAB lineage; actual control/lifetime experiments within approved root source scope; canonical inputs unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "74DA98C8EBEE26A8716DABD03E79885AB74A8448AF13F2B1537C40DB5312D07E",
+      "sourceSha256": "27CE045339950380FF16897E4C98D2C9B67B6053B8FBFE28A917A2F4AB8A9759"
+    },
+    "label": "Real random and signed threshold in clean indexed control",
+    "observedEffect": "6844/frame616. Destructive R2 SLLs1 and early signed threshold/Hs1 recover, but P is s7/time s8 and half MFHI t3. BF121FF6: P18310/live92/order99,T13643/live705/order102,helper9318/live252/order104. PURE_C,177 text relocations,131 calls in original order/eight D334 events,64-byte align8 auxiliary table/15 relocations/zero4-byte padding at20.",
+    "parentCandidateId": "438668A5A49F4E6A1827281527D9AF1114C1E4F1E336759999642DABFA145FA9",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-half-separate-rand-watch.json",
+        "sha256": "E0D4FA69779014ADF8A2107B6DD884E032832B49008C02E650E05D4DA3E48617"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-half-separate-rand-probe.json",
+        "sha256": "AFA558CD348D18138D1739C71B7CB95F6576C90BA8F1E46F8F0C6BB0ABAE3827"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-half-separate-rand-allocation.json",
+        "sha256": "6977F777861FDC74EEE06E12D8F3BC7CD0ACD809A9611592D1C34CDF13795ECE"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-half-separate-rand-call-regions.json",
+        "sha256": "0D120E5192C7E58FD91F78BE9A103518E7184A93BFE23D379E8E9BAC71351B2A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "First filter, projection, compaction and later arithmetic residuals remain. Private symbolic nonexact output only. Sole linked ownership/placement/exact relocation/target/full owner/full ROM/full17 W6 gates open; original ASM and table remain canonical.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Separate actual second rand result from signed half threshold, retaining calls/masks/shifts/division/modulo/unsigned comparison."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 39899,
+      "sha256": "74DA98C8EBEE26A8716DABD03E79885AB74A8448AF13F2B1537C40DB5312D07E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "27CE045339950380FF16897E4C98D2C9B67B6053B8FBFE28A917A2F4AB8A9759"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-538b752c03.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

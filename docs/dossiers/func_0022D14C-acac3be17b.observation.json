@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "ACAC3BE17BBA5DB0517FC8EC5B5755B64B2DE22D6CC8781E6B1AD7ED0E232AF9",
+  "observationId": "6552CECB770EA261AE1EE78A6D7246CB16E77A171DB37C30254A3B2BE8BB183B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Clean indexed7CAB lineage; actual control/lifetime experiments within approved root source scope; canonical inputs unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3613287E3E55FFAF2649CDEEE8119C5EDF4CD1D1399FB65B3AD57A06A2144932",
+      "sourceSha256": "EE43E1231241D96B2BFF91469541A36BAB0ED8D7A853EF7062507C0596351988"
+    },
+    "label": "Actual actor loop labels change natural weighting",
+    "observedEffect": "6748/frame616,96B short. FE82D541 confirms T13622/708/order108 before P1835/92/order111 before helper939/252/order113. Outside base7837/1152/order105 and amount8838/1231/order106 still precede them; P spills524. Native census shows net24 words mainly allocation/reload differences, not24 identified missing retail instructions. Gold912 original-syntax inference retracted by913; Astra914 confirms selection differs from hypothesis elimination. PURE_C,177 text relocations,131 calls in original order/eight D334 events,64-byte align8 auxiliary table/15 relocations/zero4-byte padding at20.",
+    "parentCandidateId": "538B752C03741D5A39D39F5492BF1D0F67EA69F5F48CE8BB409C2B2D64B6A2AB",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-actual-loop-joins-watch.json",
+        "sha256": "225326201E6024230797EDCB50293260FCC755564997D17ABDE5A78BB86226C2"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-actual-loop-joins-probe.json",
+        "sha256": "C7BFB4BD9B58AFAE4BE505B5A66E15FDFED2D32AF379EB9815F688A76487D5DC"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-actual-loop-joins-allocation.json",
+        "sha256": "4CD4B2268698BC9B5260C51688B1B3772D944AE070D996086BA59530AE3A96A2"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-actual-loop-joins-call-regions.json",
+        "sha256": "25050328852ECC970CED3B48B7BE26DBFD161E78527713683F470C5BBFFA5CAB"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-actual-loop-joins-proposal.json",
+        "sha256": "D927763B614C1050D2ED1531139DB97B66198C79E26227DF7849B896352F4092"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-form-native-delta.json",
+        "sha256": "870C5C22054C34196F045C9C28D71F41D35FD4E2D6F7028E833CE2464BCFEAE6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "First filter, projection, compaction and later arithmetic residuals remain. Private symbolic nonexact output only. Sole linked ownership/placement/exact relocation/target/full owner/full ROM/full17 W6 gates open; original ASM and table remain canonical.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Astra909-approved real actor loop: initial exit, unchanged braced body/increment, conditional backedge; same conditions and zero-iteration behavior. No dummy iteration or manual weights."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40033,
+      "sha256": "3613287E3E55FFAF2649CDEEE8119C5EDF4CD1D1399FB65B3AD57A06A2144932"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EE43E1231241D96B2BFF91469541A36BAB0ED8D7A853EF7062507C0596351988"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-acac3be17b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

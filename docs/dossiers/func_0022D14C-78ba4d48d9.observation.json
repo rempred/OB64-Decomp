@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "78BA4D48D9776F38679AE8A7A52AE5948CFD7BD4D53B954224ED7EA8C6DD7B61",
+  "observationId": "B6B3ADF985DF1D3189726A31A55500AF2907AD2CEB58C46297839711104D47ED",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Clean indexed7CAB lineage; actual control/lifetime experiments within approved root source scope; canonical inputs unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "03D20F78B0DFBE95F52733B9720604B1A3FE4180FBF6820CE8C8A344937BA834",
+      "sourceSha256": "C1B32C15315440644298D6B37FADE2C8847BBBD1B720730172014505E820D010"
+    },
+    "label": "Real unconditional base reload phases restore homes",
+    "observedEffect": "6800/frame616,44B short. Actual native event arguments restore T s7/P fp/helper484/amount444/metadata500. B7D0944F: actual P1855/92/order112,helper959/252/order114,T13822/708/order109; middle base7922/1070/order116 replaces37/1152/order105. Actor remains s6 versus s3, half MFHI t3 versus t4. PURE_C,177 text relocations,131 calls in original order/eight D334 events,64-byte align8 auxiliary table/15 relocations/zero4-byte padding at20.",
+    "parentCandidateId": "ACAC3BE17BBA5DB0517FC8EC5B5755B64B2DE22D6CC8781E6B1AD7ED0E232AF9",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-base-value-phases-watch.json",
+        "sha256": "D536E3B960CA8C58419460B28C5018B992BA111CDC7A433A6407C32951F7421F"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-base-value-phases-probe.json",
+        "sha256": "267880939E292A9013C0AD6F1F5731645A18B400F67A31D82D7F6D796260D09D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-base-value-phases-allocation.json",
+        "sha256": "3B861B9C0E21F56D5A9CD552321C8664891DEEC4079862CAC51D8868D0544AD3"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-base-value-phases-call-regions.json",
+        "sha256": "2FE5226ECDC03AAED06DD9B739EDFC9F944EE588FDC6EB78B6E61F394A1736FE"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-base-value-phases-prep.json",
+        "sha256": "3C6726D5E334C0FD260DAA18DC2E31A5AABD5D5CC2A866BEDDF096DD1AA09AB1"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "First filter, projection, compaction and later arithmetic residuals remain. Private symbolic nonexact output only. Sole linked ownership/placement/exact relocation/target/full owner/full ROM/full17 W6 gates open; original ASM and table remain canonical.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Split scalar only at its two unconditional reloads into prelude/middle/output values. All actual producers/consumers/calls/conditions/order preserved; no extra reads/copies or address escape. Middle value still genuinely spans actor loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40182,
+      "sha256": "03D20F78B0DFBE95F52733B9720604B1A3FE4180FBF6820CE8C8A344937BA834"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C1B32C15315440644298D6B37FADE2C8847BBBD1B720730172014505E820D010"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-78ba4d48d9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

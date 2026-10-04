@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "74E71A423E288A75314673149ABEC6074B64B2256625E7A509E2D6B9061ABB66",
+  "observationId": "F33B1FE0AC33DA68E03869B89760FF48F1F1894EE20A3FA51D75683F17BB2F98",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Clean indexed7CAB lineage; actual control/lifetime experiments within approved root source scope; canonical inputs unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "56354FC8106A14285ECB52664A6A7C6E1BA7747F492FC1908ADC891D93B8025A",
+      "sourceSha256": "F37EF8898640B4EBB225DA40B16EC465353587E954AAF8D500C353B11650A91E"
+    },
+    "label": "Real target pointer phase restores actor and half arithmetic",
+    "observedEffect": "6804/frame616,40B short. Actor now s3, P fp/T s7/helper484/amount444/metadata500 retained. Half region65 first22 instruction forms correspond to retail, including MFHIt4 and early signed scaling; branch/jump destinations remain symbolic. Fresh8F128499 binds actual P1855/92/order112,helper959/252/order114,T13822/708/order109. Main probability region59 forms correspond except symbolic branch/call fields; quarter region68 still differs. PURE_C,177 text relocations,131 calls in original order/eight D334 events,64-byte align8 auxiliary table/15 relocations/zero4-byte padding at20.",
+    "parentCandidateId": "78BA4D48D9776F38679AE8A7A52AE5948CFD7BD4D53B954224ED7EA8C6DD7B61",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-target-value-phases-watch.json",
+        "sha256": "AB67BA028592F55CF1C9DAD04933F98DE8A0AC1712719BD2B7FD7E1073345E47"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-target-value-phases-probe.json",
+        "sha256": "6753B243AA4DBE6C46F595485657778B287CE538B902E6B103316E33857FCF5E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-target-value-phases-allocation.json",
+        "sha256": "708299081901B4A20A9F6ACF3DD909928D70A59894921699BE3468DBAC694D35"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-target-value-phases-call-regions.json",
+        "sha256": "3661648FEDF1D30C9A8E38B8C6356B0497A0818FEB57CB1C1C86D89331941EB8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-loop-target-value-phases-prep.json",
+        "sha256": "BCE1776D7D79A3D1CD70420A75509135E175552A589ED1767D2ED621F1BD5665"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "First filter, projection, compaction and later arithmetic residuals remain. Private symbolic nonexact output only. Sole linked ownership/placement/exact relocation/target/full owner/full ROM/full17 W6 gates open; original ASM and table remain canonical.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Split target pointer into prelude and actor-loop phases, including a real pre-loop handoff preserving last prelude/null value on zero iterations. Each actual actor lookup still overwrites it. All later target consumers preserved. No extra field reads, calls, fake references or projection/filter expression changes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40260,
+      "sha256": "56354FC8106A14285ECB52664A6A7C6E1BA7747F492FC1908ADC891D93B8025A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F37EF8898640B4EBB225DA40B16EC465353587E954AAF8D500C353B11650A91E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-74e71a423e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

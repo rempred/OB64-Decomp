@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "438668A5A49F4E6A1827281527D9AF1114C1E4F1E336759999642DABFA145FA9",
+  "observationId": "C69D827EA52B35EC92C5B20111E4AC4FF0C415E8A62D8DD0DE42860CA92268E3",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Immutableclean2A70 plus genuinely indexed first-filter source word/half/byte fields. No artificial references, compiler hints, source-class exception or arithmetic/helper changes.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8BCEB689A59E79DEFB13A3090EB8791A3403590180637A04A5FE993165D7DE26",
+      "sourceSha256": "7CAB1F191BC79E9115D2D74BF42820D756DDC4391F066877754182860E00700D"
+    },
+    "label": "d14c-clean-real-indexed-source-fields-retail-size-frame",
+    "observedEffect": "PURE_C6844/frame616/177textR+64B15R/131ordered/eightD334. Whole emitted text size/frame independently recover retail dimensions. Actual source word now loads+16 from packetbase rather than LOOP-biased cursor+0, with generated native source increments4/2/1. Actor s6, main probabilitys8/time s7 and main41/quarter27 lengths recover. First counter still spills20C; word destination spills204; excluded cursor s4 and byte/half source/destination roles differ. Projection412 reloadt3 and quotientt4 recover but productv1/field-before-store/true420 reuse remain. MFHI main t4/quartert3 still swapped. Correct dimensions do not select this as exact or erase other mismatches. Root independently authenticated immutable7CAB and fresh probe6FAA28AB: actual365BC return18310/live99/order102 mapsfp in GREG; actual37AF8 result9318/live252/order104 starts stack484; time136 is actual plus78/81 producer43/live705/order101. These identities bind this source, not old scaffolded numbers.",
+    "parentCandidateId": "01BF8FD742CF0D0396ECB0189B947743AFFA7F911C3F1538CE9988E9ABD1AC34",
+    "references": [
+      {
+        "path": "build/matching/actorhelper/d14c-clean-filter-source-indexed-prep.json",
+        "sha256": "045DF59595EB42AF1FEA8C1AE0849A181B5DD91FBDE095C696DE7350F46B08D1"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-filter-source-indexed-watch.json",
+        "sha256": "7EDF39BDAF9934CE7D9C22AAFBB5A96C40752C4B3B7E959E976D92F42996DFB8"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-filter-source-indexed-result.json",
+        "sha256": "2620D8FE2CDE547B6CE94438C4678893F6ED11D13DB11686AD4C970272B3812B"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-filter-source-indexed-evidence.json",
+        "sha256": "A89C82516FEE742032E72AA5493E2111F38388B26BBA0E8460034BA1579F2ACF"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-filter-source-indexed-word-proof.txt",
+        "sha256": "1CB1A08DA0EDA097DB78AC44A5F62D0ED45DE723F37D76758DEBBFA081602E86"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-filter-source-indexed-sp-census.json",
+        "sha256": "5B4E36979E708117A892D8FC515B07D353AEA32C1C49F6B262CE5CAFAC50FE8B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed7cab-base-probe.json",
+        "sha256": "CCC2F74627256682741D6A4D2B2141E2601E6240D91E8904BCF08CF62226646A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed7cab-base-allocation.json",
+        "sha256": "4D64F695211E11C08670C0927C49761BE3B53547F73F76B552870C5A4144108C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Wrong first-filter setup guard/register homes and real branches; projection, compaction saved/base load order and scratch residuals remain. Private symbolic-only/all whole-target exactness flags false. Expected relocation contract, sole C linked owner, placement/full-owner/full-ROM/full17/separate table gates unavailable/open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace three first-filter source cursors with direct accesses to actual packet word4+i,half28+i,byte86+i. The index starts0 and increments1 on every iteration; old cursors started packetbase/byte86 and advanced4/2/1 unconditionally. Preserve destination cursor initialization/steps, excluded cursor, all calls, source read widths and access order, count increments/publication. Remove obsolete source cursors and updates; no artificial refs or consumers."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 39720,
+      "sha256": "8BCEB689A59E79DEFB13A3090EB8791A3403590180637A04A5FE993165D7DE26"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7CAB1F191BC79E9115D2D74BF42820D756DDC4391F066877754182860E00700D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-438668a5a4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
