@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6E4AB2222578F8588C8EDAE05B07235691D038D37BDC151D6FDD244FEF5B3E76",
+  "observationId": "004D35A664DF4F4A79DABC32AA4302A7818F299B96D1F2B7C7E458C8E1794B52",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "F37 clean real-phase control; ordinary arithmetic simplification, original ASM and table remain canonical.",
+    "effects": [
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "87A0068B98429123186B58B715840387C0B51ABB1E444FC2975F9515D6F58D70",
+      "sourceSha256": "D02AA9A2F3F0AD1128D04DB4D9C533D88BE279B881C8E52CAFD34753FF6EACDC"
+    },
+    "label": "Clean quarter signed division preserves native output",
+    "observedEffect": "6804/frame616/177R/131 ordered calls. Direct signed /4 produces identical whole native text SHA DD6818C4 and actual relocations to F37; preserves half/time/target homes while simplifying real source. Remaining quarter raw register mismatches unchanged.",
+    "parentCandidateId": "74E71A423E288A75314673149ABEC6074B64B2256625E7A509E2D6B9061ABB66",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-quarter-direct-signed-division-prep.json",
+        "sha256": "BCD96AD3E8CA53CE21B85F39E7009FA8C6E26B7063B6EC58CB4C88ABA973D788"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-quarter-direct-signed-division-watch.json",
+        "sha256": "35ED14052BBD45F7639AF3993822AD298D314B77B2AFC4BE6FC05D089AC7DAE5"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-quarter-direct-signed-division-call-regions.json",
+        "sha256": "734FCF85DBDCE3EDA0A3D79FDEB26146087749E09CC8EA68AC011579801E1650"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-quarter-direct-signed-division-result.json",
+        "sha256": "5707896BADAD0CDAF469681FF292E2D98ED237F081F6FB11C20CF7F9B94FE6EB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Useful readable arithmetic equivalent, not exact or wave acceptance. No unchanged native probe; do not transfer pseudo IDs between source forms.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use signed probability/4 instead of manual unsigned carrier, negative+3 bias and arithmetic shift. Truncating signed32 division is equivalent, with no overflow in the negative adjustment. Retain all rand calls and mixed-word unsigned remainder/comparison; remove unused carrier declaration."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40016,
+      "sha256": "87A0068B98429123186B58B715840387C0B51ABB1E444FC2975F9515D6F58D70"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D02AA9A2F3F0AD1128D04DB4D9C533D88BE279B881C8E52CAFD34753FF6EACDC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-6e4ab22225.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
