@@ -22,7 +22,7 @@ function requestStore(request, options = {}) {
   const result = childProcess.spawnSync(python, [BRIDGE, '--database', database, '--schema', SCHEMA, ...(options.readOnly ? ['--read-only'] : [])], {
     cwd: ROOT,
     encoding: 'utf8',
-    input: JSON.stringify(request),
+    input: Buffer.from(JSON.stringify(request), 'utf8'),
     windowsHide: true,
     maxBuffer: 128 * 1024 * 1024,
   });

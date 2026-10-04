@@ -1,6 +1,6 @@
 """Transactional SQLite store for the matching workbench.
 
-The Node front end sends one JSON request on stdin and receives one JSON result
+The Node front end sends one UTF-8 JSON request on stdin and receives one ASCII-escaped JSON result
 on stdout. Keeping SQLite here avoids adding a production Node dependency and
 uses only Python's standard library.
 """
@@ -18,6 +18,20 @@ from typing import Any
 
 def _json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+
+
+def _validate_unicode(value: Any) -> None:
+    # JSON escapes can contain lone surrogates even when the wire bytes are valid
+    # UTF-8. Reject them before SQLite can store only part of a request.
+    if isinstance(value, str):
+        value.encode("utf-8", errors="strict")
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            _validate_unicode(key)
+            _validate_unicode(item)
+    elif isinstance(value, list):
+        for item in value:
+            _validate_unicode(item)
 
 
 def _decode_blob(value: str | None) -> bytes | None:
@@ -796,9 +810,12 @@ def main() -> None:
     args = parser.parse_args()
     database = Path(args.database).resolve()
     schema = Path(args.schema).resolve()
+    # Node sends UTF-8 bytes; Windows' redirected stdin may default to cp1252.
+    # Do not let the ambient text-wrapper encoding alter content-addressed data.
+    request = json.loads(sys.stdin.buffer.read().decode("utf-8", errors="strict"))
+    _validate_unicode(request)
     if not args.read_only:
         database.parent.mkdir(parents=True, exist_ok=True)
-    request = json.load(sys.stdin)
     if args.read_only and request.get("action") != "query":
         raise ValueError("read-only store only permits queries")
     if args.read_only:
