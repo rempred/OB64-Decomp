@@ -87,3 +87,8 @@ src/lib/func_002B4D58.c text eol=crlf
 
 # Blank context lines are part of this preserved unified patch.
 docs/archive/matching-c-candidates/2026-09-26-func_001F0F90-true-entry-label.patch whitespace=-blank-at-eol
+
+# Shop's verified source and research pair retain their authenticated raw CRLF bytes.
+src/lib/func_001977E0.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-04-func_001977E0-70a68c829e.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-04-func_001977E0-0fbeca6ab5.c -text whitespace=cr-at-eol

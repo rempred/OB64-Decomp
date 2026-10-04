@@ -27,21 +27,21 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   scheduling blockers do not establish a tooling defect or a final HYBRID exception.
   B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
 - **Shop inventory decomp worker:** top-level chat `01a0ffcd-6210-7a03-a178-d7d2af7f1c3b`,
-  coordinated and monitored by Astra. Own the complete inventory producer/splitter wave:
-  `func_0019BE40` (432-byte accepted PURE_C producer, protected control) and
-  `func_001977E0` (full 4,580-byte state machine/splitter, active target).
+  coordinated and monitored by Astra. Own the complete four-member classification,
+  ordering and resource-lifecycle wave defined below. The complete producer/splitter wave,
+  `func_0019BE40` and `func_001977E0`, passed its changed-input audit and independent
+  structural review on October 4; preserve both as accepted PURE_C prerequisites.
   Use `build/matching/shopworker/` and its single live `cursor.md`; preserve the closed D14C
   handback in `build/matching/actorhelper/cursor.md` as read-only evidence for Sol.
 
 For Shop, consult parent `docs/shops-items.md`, current research intake and full disassembly.
 Preserve the splitter's read-before-write preamble, all sixteen state destinations, full tick tail
-and separate switch-table ownership gate. Its saved full-body candidates are research leads, not
-linked acceptance. Preserve accepted producer and `func_0019BD14` price-helper interfaces.
-Astra handles the separate table-ownership task when its concrete current/native requirements are
-ready; the worker may continue supported private diagnostics without inventing missing linked evidence.
-After this wave, bound the complete downstream consumer waves before implementation; retain
-`001989C4`, `0019A294`, `001994B4`, `0019AF78`, `0019B800` and `0019BB34` in the family map,
-without treating these anchors as an exhaustive roster or evidence for increased capacities.
+and accepted whole-r3095 table ownership. Reuse the corrected accepted source; the earlier
+relocation-masked candidate is retained as an address-binding counterexample. Preserve accepted
+producer and `func_0019BD14` price-helper interfaces. New auxiliary ownership requires its own
+actual native evidence and applicable structural approval, audit and review. The downstream
+assignment below retains the full supported family, without treating the original six anchors
+as an exhaustive roster or evidence for increased capacities.
 
 October 4 downstream assignment: after the producer/splitter integration, the Shop worker owns
 the complete four-member classification, ordering and resource-lifecycle wave:
@@ -65,9 +65,9 @@ The worker's private `shop-downstream-complete-wave-proposal.md` and `.json` und
 `build/matching/shopworker/` retain the complete 23-owner inventory and direct evidence;
 this queue adds BDD4 to the later group rather than leaving it unassigned.
 
-During the current producer/splitter audit, only read-only preparation and private source/notes
-are released for the new wave. Native/store/shared-input checks remain drained until Astra's
-explicit post-integration release and refreshed intake. Sol's next candidate wave remains Squad.
+After the producer/splitter integration is recorded, Astra releases refreshed intake and independent
+private checks for this Shop wave and Sol's complete Squad wave. Their new table/source candidates
+do not alter accepted canonical inputs during iteration; integrate only complete ready waves.
 
 Both workers run private checks concurrently and report material results/blockers to Astra.
 Claude/GoldOx advises only on specific genuine blockers. Sol remains the sole production writer

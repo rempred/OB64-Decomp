@@ -2,6 +2,17 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "minimum-operand-order-and-relocated-loads",
+      "symptoms": ["register-allocation", "branch-polarity"],
+      "applicability": "Equivalent minimum conditionals can preserve every relocation-masked instruction field while exchanging the external objects loaded. In this source pair, reversing the comparison and matching result arms restored actual address bindings without changing text extent or table bytes. Check real symbols and implicit addends; field agreement alone is insufficient. The earlier source remains a counterexample. This is bounded source evidence, not a general operand-order rule.",
+      "note": "docs/dossiers/func_001977E0-0fbeca6ab5.md#source-context",
+      "references": ["docs/dossiers/func_001977E0-70a68c829e.md"],
+      "observations": [
+        {"symbol": "func_001977E0", "path": "docs/dossiers/func_001977E0-70a68c829e.observation.json"},
+        {"symbol": "func_001977E0", "path": "docs/dossiers/func_001977E0-0fbeca6ab5.observation.json"}
+      ]
+    },
+    {
       "id": "real-argument-definitions-and-loop-hoisting",
       "symptoms": ["constant-or-immediate-construction", "scheduling-or-block-order"],
       "applicability": "Separate genuine definitions of one argument in existing paths can prevent loop hoisting. In this clean nonmatching example, RTL/LOOP/FLOW retain four definitions; allocation then selects the wrong register and delay filling duplicates the constants into unwanted slots. The overall candidate regresses despite resolving hoisting. Preserve actual calls, producers and path behavior; do not invent assignments or consumers. Stage progress alone does not select a best candidate or establish transfer.",
