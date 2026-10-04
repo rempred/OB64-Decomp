@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1C7A41B1276AFD00B8BB6455158C38CB82A13873C300C6EC20A634F37FD0B36F",
+  "observationId": "773AA65578021753C1B1CEA58C5C93876EFA260B2DEC40B8A3D77F67E527F3B6",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C regions now Sol scope under Astra931/933. Actorhelper closed/read-only; authenticated A88 block assessed in current EA/239F context independently of its B12 composition.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A327393E1D92F0EF5575C880610F319BE40B20BF5D50B85B9B94E4F6C68394BF",
+      "sourceSha256": "EF0A79D31137332F0E100DB82B630E69854C977A143BE252B53F30A03347C709"
+    },
+    "label": "Closed worker real projection component in clean shared-emitter context",
+    "observedEffect": "PURE_C6820/frame616/177R/131 ordered calls/eight events,24B short. Projection region21 is45 words versus retail44: product/dividendv0, helper412 reload, true/false/join420 reload roles restore; quotient remainsa0 versusretailt4, prelude20C target reload adds a word and actor/main field read order differs before scalar store. Native source-control body remains complete; useful component, not a selected whole exact candidate or transfer of donor pseudo identities.",
+    "parentCandidateId": "EA33787CFC7224F7A2DC5CE7A0C728842E232379B4F711BFEC7322369EE91C79",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-store-copies-projection-y-prep.json",
+        "sha256": "961BD09A2FA01CF9EA14E8A3139C2A262B48808DD94D2460B4C5416B75187100"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-store-copies-projection-y-watch.json",
+        "sha256": "934C631CD6B2DF810E9E979BBBC645DF1B9A2E996B0893B8165AC0EF2084654E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-store-copies-projection-y-call-regions.json",
+        "sha256": "53A1A419E7D0A9014C6742B652A4C505E03F01E3743E05B42536C4E0A2C44C18"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-sol916-projection-y-prep.json",
+        "sha256": "B971C44E44ABBE91750A52F4BFE1918E57EC615FF197F16F072B53426E066BB8"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-sol927-projection-y-control-reconciliation.json",
+        "sha256": "FA3F39F28AA486D30B562EE0E061647571E0AE7526DC396CE47DE9D03F680A7A"
+      },
+      {
+        "path": "build/matching/actorhelper/cursor.md",
+        "sha256": "D35500D1AFA5706001CBF4032AF020A2A6813B041F8039BC5CBB89605B8A427C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "CCAB0BA4F68B565E4B87AA6EA9D2928A0F6D067C661CD76E8E9F9A5F5047C32A"
+    ],
+    "remainingFailure": "Prelude target/quotient and first-filter/compaction/terminal residuals remain. Nonexact private symbolic output. Sole linked ownership/placement/exact relocation/target/full-owner/full-ROM/complete17/table gates open; original ASM/table canonical.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Transfer only two actual absolute-delta product/division arms into the real quotient/Y value carrier, retain scalar420, then original Y field reload overwrites that carrier. All source outside the isolated block identical to parent EA; no first-index reuse, fake refs or tail/arithmetic change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40596,
+      "sha256": "A327393E1D92F0EF5575C880610F319BE40B20BF5D50B85B9B94E4F6C68394BF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EF0A79D31137332F0E100DB82B630E69854C977A143BE252B53F30A03347C709"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-1c7a41b127.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

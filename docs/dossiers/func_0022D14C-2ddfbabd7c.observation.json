@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2DDFBABD7CC65903F5F5232674184B21668480DD5250B251209E25CDBAFE9F13",
+  "observationId": "F97451A998B0171E12E106CFEAF4167F9B64D8B70E3F6AEE6ED83776874D5166",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C regions assigned Sol under Astra931/933; actorhelper closed/read-only. Clean structured real-tail source lineage, canonical source/build unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FAD4581254360A5D19F1998184D67AA205E1DFBD6A65DFA30E84304FB2941565",
+      "sourceSha256": "213B24524DC8A02717FBF127F6476BB6EAE25D1DBF13A35250578CBDB5DC3DDD"
+    },
+    "label": "Real shared first/main index in changed clean context",
+    "observedEffect": "6824/frame616/177R/131ordered. First counter s5 restores and main arg0s6/indexs5/Pfp/Ts7/actors3/helper484/amount444/meta500 homes survive. First-half/byte/word/excluded cursor roles still differ. Bounded region59/65/68 check finds only recorded scratch t3/t4 differences in those regions, not a full instruction match.",
+    "parentCandidateId": "89DA9C1984326B24F0E6A4268D181F1E2BDA9DD4ADF9CBE16C7A80CCACBDD083",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-target-first-main-index-prep.json",
+        "sha256": "C982E6B69114D20B9042B23EC871F0559530BD1922B8E92D4A4138DA8DA6B4F5"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-target-first-main-index-watch.json",
+        "sha256": "0E37177EBB1B8FA2146783B16726DEE4A6CEAE2FFB3B45FC502469032165434B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-target-first-main-index-call-regions.json",
+        "sha256": "376F94631BCA81CBD78739F43B78BFC0278A9AD2B82C17C79B2AF14E8651E8C9"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-target-first-main-index-arithmetic-differences.json",
+        "sha256": "354F202BA76D91244EA9678B41DFC3A72A0ED9150E3C197CC29E13EB499EDCB3"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-sol916-projection-y-index-control-reconciliation.json",
+        "sha256": "65FECB2018274B7333E9488D493F6CD69DAB5B61D4950B7C25365702AEBB5CBE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Worker C15 failed in A88/F37; this useful context-specific recovery does not select a whole best or establish universal index reuse. Native20B short; first-filter/projection/compaction/terminal and all wave gates remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse one actual signed index across independently zero-reinitialized first-filter and later loops, with same original source accesses/updates and no address escape/artificial reference."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40505,
+      "sha256": "FAD4581254360A5D19F1998184D67AA205E1DFBD6A65DFA30E84304FB2941565"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "213B24524DC8A02717FBF127F6476BB6EAE25D1DBF13A35250578CBDB5DC3DDD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-2ddfbabd7c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

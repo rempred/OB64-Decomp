@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E427C91EAFC17CA8849275F190B8660540783B7173A4BA2EB504382DEF48722C",
+  "observationId": "F282F0A072C31016CB52F430FFA06167AC9A03CD2CE49F71D265EA51207F7CD1",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C regions assigned Sol under Astra931/933; actorhelper closed/read-only. Clean structured real-tail source lineage, canonical source/build unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B3A956D057D49EE807B7D055BE604357E2BA43CA3A0B1B8A15CFA4F4AF86C8AB",
+      "sourceSha256": "88556B295EB60782164F0EA7C723F39E4E7412A3BE16472EC466113B5064EA7B"
+    },
+    "label": "Real half source cursor restores filter predicate branch",
+    "observedEffect": "6820/frame616/177R/131ordered. Ordinary beq after validator returns, avoiding prior beql/excluded-store delay slot. Source-half remains s2 versus retail234 stack, word destination20C versusretails4, other source/destination roles differ; desired main P/time/actor/input/index and helper/amount/meta homes retain.",
+    "parentCandidateId": "2DDFBABD7CC65903F5F5232674184B21668480DD5250B251209E25CDBAFE9F13",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-index-half-source-cursor-prep.json",
+        "sha256": "CE5993E35E9C183FCFA126F32661CEE0A46CB97C35AC1079DD9BCBD6A2477BA1"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-index-half-source-cursor-watch.json",
+        "sha256": "0AFF53DA74ACFBC5D813F43B0D57900818FE5F667F7C871557651D6E1B3B85D9"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-index-half-source-cursor-call-regions.json",
+        "sha256": "49F041BD3D2A85EB8C5293B97632CB9AF3C30BFB0B59EF071AE68EB062518270"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-filter-half-cursor-prep.json",
+        "sha256": "C794B4DF37D243186B33CD4798FAB7D3E44C37D75CEF22632E1316895003A1A4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Prepared FCFF was untested in earlier context; this actual induction representation was measured independently. Native24B short, nonexact; no capacity/runtime or universal hypothesis claim. All complete-wave/table/link/ROM gates remain open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Express first half source as actual packetbase byte cursor, u16 read at+38 and unconditional+2 per real iteration; retain shared index, indexed word/byte, other destination/excluded progression, dynamic bound/read/store/call order. Address equals halves28+i at body entry."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40625,
+      "sha256": "B3A956D057D49EE807B7D055BE604357E2BA43CA3A0B1B8A15CFA4F4AF86C8AB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "88556B295EB60782164F0EA7C723F39E4E7412A3BE16472EC466113B5064EA7B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-e427c91eaf.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "89DA9C1984326B24F0E6A4268D181F1E2BDA9DD4ADF9CBE16C7A80CCACBDD083",
+  "observationId": "672E14D941C406E47A0626EE9FA2D6EBB847AC3D5E60C898405EC24DE0DFE53F",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C regions assigned Sol under Astra931/933; actorhelper closed/read-only. Clean structured real-tail source lineage, canonical source/build unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "657F3422FB060795E5FE7AE7FF10EC5165943D604E2E4AE86A2E409A116E2234",
+      "sourceSha256": "B5393E82D41D7BC65248373727FE68A844D7690B7408B2B9E9E7922227127F11"
+    },
+    "label": "Shared target variable in genuine store-copy context",
+    "observedEffect": "6816/frame616/177R/131ordered. Prelude and actor target s3 now retained; extra20C projection reload removed, projection21 extent44 words equals retail. Quotienta0, field-before-store ordering and t3/t4 reload parity remain different. Desired main input/index/P/time/actor/helper/amount/meta homes survive, not every scratch field.",
+    "parentCandidateId": "1C7A41B1276AFD00B8BB6455158C38CB82A13873C300C6EC20A634F37FD0B36F",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-store-projection-shared-target-prep.json",
+        "sha256": "04E5359B4ACF196A6BB06991D8015E46A29B2E4FC70C9B908E62386557475B53"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-store-projection-shared-target-watch.json",
+        "sha256": "44EF7DA303679F58C36EB23D3017EE3672DEA62D69ADC6B8A753B6B132D9D55B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-store-projection-shared-target-call-regions.json",
+        "sha256": "35A9E9B6942415C5B312682534AE458960185D6ABB8FCC29DC1473A37E7E3AA0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Target phase2D equivalent carrier was helpful in earlier context; genuine store copies permit shared pointer now. Whole28B short/nonexact; no old allocation outcome or exact acceptance transfer.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use original single actual target pointer for prelude and actor loop; remove only independent prelude declaration and now-unneeded boundary handoff. Preserve all real zero/lookup definitions, field reads/calls and retained zero-iteration consumers."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40518,
+      "sha256": "657F3422FB060795E5FE7AE7FF10EC5165943D604E2E4AE86A2E409A116E2234"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B5393E82D41D7BC65248373727FE68A844D7690B7408B2B9E9E7922227127F11"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-89da9c1984.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
