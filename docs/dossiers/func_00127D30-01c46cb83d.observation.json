@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "01C46CB83D741ACC2DF6A9553EE8A18B786AB93D67B98758AD1D02EA05CCB4BD",
+  "observationId": "60DE2F221D7F109A23B7A83E01EEE0C13F38598BBCCBCDF84033B9EFCD1C5154",
+  "symbol": "func_00127D30",
+  "authored": {
+    "context": "Astra assigns the complete existing thirteen-member Squad W4 pursuit wave on October4. Ten accepted PURE_C siblings have unchanged source hashes and reusable source-specific proof. D30/284C4/10766C remain ASM. Current metadata resolves the complete360-byte D30 owner r2385, live801D35F0..801D3758, with90 original words and no continuation. Current intake contains eight historical target-mismatch observations. No historical native score is inherited. Preserve the full thirteen-member gate, scheduler/terrain/shared interfaces and uncertain bank/column domains.",
+    "effects": [
+      "body-coverage",
+      "fresh-context",
+      "bank-address",
+      "register-allocation",
+      "input-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8F4A4991AE6D27024F3BEDAF8B21A5FA024F92E6E1D88487CB621A1C0E38B826",
+      "sourceSha256": "96200BFAE10361CB8B84F6D14BD4BAC4B27C0A2FE455979BE4E82B8C10474F49"
+    },
+    "label": "pursuit-current-complete-loop-control",
+    "observedEffect": "Fresh01C46CB8 is PURE_C360/frame0/10 actual relocations, no calls. Symbolic comparison reports14 differing words/37 bytes; actual-relocation-masked component census has eight ordinary differences, all offsets0..32, and EVERY later word agrees. Incoming unit remains A0 and the full frameless loop remains covered. Addresses/addends and linked ownership are unproved. Old source model identity is historical only; this fresh control is the recoverable useful best, not matching acceptance.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-127d30-reopened-control-watch.json",
+        "sha256": "5EF3A24C6AD220BF0EFAEF9B3991861CF7D31AF5582ABED535520EB2237DAEA7"
+      },
+      {
+        "path": "build/matching/solsquad/squad-127d30-reopened-control-component.json",
+        "sha256": "22EC27919723DEB96131771F97D0A4590D76314F382B6B4F328CF7009D100F62"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00127D30.s",
+        "sha256": "FAFDC1E597AE11D455A03A84B1C65FAB603BE5A3C4628CEF7B7147117C3BAB2C"
+      },
+      {
+        "path": "build/sol-five-family/squad-pursuit-current-owners-20261004.json",
+        "sha256": "46453DE43183916DD5051632D66A0843AF7F8D94B1195A28FBA84BE34D2786AC"
+      },
+      {
+        "path": "build/sol-five-family/squad-pursuit-ten-preserved-20261004.json",
+        "sha256": "C8DE85DCB5B7C033EE596D30227D4BE8CC605C744E6A9C4DEA86BC38DDAEC3A6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Eight initial address/register/scheduling differences remain. The related shared bank transfer grows to364 and adds an input-pointer copy; it is not selected. D30 remains production ASM and all13 require one combined final verifier after readiness. No supported compiler/tooling defect, capacity claim or structural change.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse unchanged98D609D5 complete independent C as the fresh control under current accepted inputs. Keep the separate selector-byte/word-bank address, full initial squared distance, all candidate/filter paths, actual list-position result, single list load and four-byte backedge increment."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2215,
+      "sha256": "8F4A4991AE6D27024F3BEDAF8B21A5FA024F92E6E1D88487CB621A1C0E38B826"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "96200BFAE10361CB8B84F6D14BD4BAC4B27C0A2FE455979BE4E82B8C10474F49"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_00127D30-01c46cb83d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
