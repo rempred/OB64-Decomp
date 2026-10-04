@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "40C20971A1D5B57C2CE5747ACACB9CDEF2B4B10CDC161F1E7ADEB3C69DD6B141",
+  "observationId": "C6A5E5C9905533CB614B0183B4C69FD9C319835BA6BE9D87D607D39DC7155243",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol owns all D14C/private solmode. Canonical ASM/table/accepted inputs unchanged. Every continuing source retains mandatory output119 single stride and original capacities. All named artifact/dump hashes and PURE_C/source identities authenticated before compiler-stage claims.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C0BCE5488F7DED7ABCC36011280EDA019DDA0EA933E01BCCCCE7BB22F197C561",
+      "sourceSha256": "3C22FA217AADAFA7AB578E2975E3E954F95893722875C4435DB189404EC24D52"
+    },
+    "label": "Late merging of real arithmetic tails restores all44 projection forms",
+    "observedEffect": "Source3C22FA21/candidate40C20971/probeFC68D13E:6848/frame616/177R/131 ordered calls. All44 projection forms correspond symbolically; prior201 forms remain,245 total. Authenticated sched1/GREG/sched2 projection window has two divides and join label778 between stores and predicate loads. GREG shows both quotient outputs inT4 stored at1A4, with label778 then predicate loads and first-arm reload4716 intoT3. Late-jump removes one identical tail and label778: projection window has one divide; delay dump retains one. This directly measures the late merge and retained reload. Label blocking of earlier scheduling/inheritance is supported by these dumps and pinned compiler behavior, not a separate runtime claim.",
+    "parentCandidateId": "817DCD4281772A403F149663C9CB70E6D89FCE75FF474A608E37C2048D5F26C2",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-positive-first-tails.c",
+        "sha256": "3C22FA217AADAFA7AB578E2975E3E954F95893722875C4435DB189404EC24D52"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-positive-first-tails-watch.json",
+        "sha256": "5550A986EE4BFB7F99F60C661581569532EDBAED08E4A16513FB516F3948ABCF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-positive-first-tails-probe.json",
+        "sha256": "8789783EBE62DB56A0631FB5AD4062B924E9CE308B1BED7E4B539D8A4B4EDA01"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-positive-first-tails-call-regions.json",
+        "sha256": "6446E7B09836EF33DE9AECA3BF6E28E78D655645C6BD5E25B50D6B03DFE4E1DA"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-positive-first-tails-closed-forms.txt",
+        "sha256": "7723111E33F72C8D35E17539484AECC7DE7458B3E641EC99006E25223BA3C270"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Whole owner remains4 bytes longer and nonexact. Mode100/111 emission setup, output119 byte mask/scratch, entry store timing and terminal pointer/register differences remain. Terminal8D9 duplicate true advances still yield+0 loads, unselected. Predicate-join086 is native/all177R identical to27D; common-timeCAEF regresses6888/178R and is unselected. No linked/ROM/whole-best/complete17-wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Duplicate the actual multiply/divide/store into sp1A4 in positive-first arms using the same genuine difference variable. The negative arm first corrects that difference from saved X. No identity pairs, extra reads or fabricated conditions."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40476,
+      "sha256": "C0BCE5488F7DED7ABCC36011280EDA019DDA0EA933E01BCCCCE7BB22F197C561"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3C22FA217AADAFA7AB578E2975E3E954F95893722875C4435DB189404EC24D52"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-40c20971a1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

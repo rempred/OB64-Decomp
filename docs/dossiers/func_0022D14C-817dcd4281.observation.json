@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "817DCD4281772A403F149663C9CB70E6D89FCE75FF474A608E37C2048D5F26C2",
+  "observationId": "AD0430DBB8C2CE6AD6A4E6D81B63D9F3D420325211858FEE42CFA696FBFE1DA7",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol owns all D14C/private solmode. Canonical ASM/table/accepted inputs unchanged. Every continuing source retains mandatory output119 single stride and original capacities. All named artifact/dump hashes and PURE_C/source identities authenticated before compiler-stage claims.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EA0027C7DB4E08D0EB7495ADCD00EEDDFBABF019D10C31B0366066EB72657A0F",
+      "sourceSha256": "364F4EBA4243A017984CEAC1F9994BF54685D646D0F3DDE4DEA72C294F75F4E8"
+    },
+    "label": "Shared quotient hoists loads and inherits the spill register",
+    "observedEffect": "Source364F4EBA/candidate817DCD42/probe8E412929:6840/frame616/177R/131 ordered calls, projection42 versus retail44 words. FLOW765 quotient329 copies to85; LREG767 merges divide into85, whose first Y arm782 also reads/writes85. Product328 has3 refs/live4, allocatedV1. LREG predicate loads773/775 precede the divide. GREG stores quotientT3 at1A4 and first arm inheritsT3, while the other arm label786 causes reloadT4. Pseudo85 has8 refs/live1327/crosses131 calls; no hard mapping remains in post-GREG dispositions. The precise allocation rejection phase was not established.",
+    "parentCandidateId": "27D858E280B7700274F6789D4CF27F30E5B7A5AD6C472B2309B842C11AB5349E",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-direct-call-result.c",
+        "sha256": "364F4EBA4243A017984CEAC1F9994BF54685D646D0F3DDE4DEA72C294F75F4E8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-direct-call-result-watch.json",
+        "sha256": "13C781394AE309158B730B2CEA50DC55AC66B11C7AC3F546019B0B6210003927"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-direct-call-result-probe.json",
+        "sha256": "FC670F4A157ECE9F4D6DA15197A751ECA6270F95CC2B080EAE7F4A504466EDB5"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-direct-call-result-call-regions.json",
+        "sha256": "F6FC8566DEF2604349229E974EAA3426505C54912F7EC3806482579905663341"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Local dividend/store/reload form differs; whole owner is nonexact and this control is unselected. No linked/ROM/whole-best/complete17-wave acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Save the actual BF50 result directly and express one common multiply/divide into sp1A4 after the sign correction."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40373,
+      "sha256": "EA0027C7DB4E08D0EB7495ADCD00EEDDFBABF019D10C31B0366066EB72657A0F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "364F4EBA4243A017984CEAC1F9994BF54685D646D0F3DDE4DEA72C294F75F4E8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-817dcd4281.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
