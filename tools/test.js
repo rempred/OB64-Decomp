@@ -36,6 +36,8 @@ const ROUTINE_TESTS = [
   ['compiler-curriculum', 'tests/compiler_curriculum.js'],
   ['template-reuse', 'tests/template_reuse.js'],
   ['allocator-scheduler-trace', 'tests/allocator_scheduler_trace.js'],
+  ['late-jump-provenance', 'tests/late_jump_provenance.js'],
+  ['late-jump-trace', 'tests/late_jump_trace.js'],
   ['matching-workbench', 'tests/matching_workbench.js'],
 ];
 
