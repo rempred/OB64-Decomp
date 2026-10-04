@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5E4A4C018956EF618258FE9BE652AFA03BF5F72A7C2994A57418F5284AE4C99F",
+  "observationId": "6D09D6FC76862E60229EDD413297F69C644639F1A415C6D64B1F7EE103BF3234",
+  "symbol": "func_001237F0",
+  "authored": {
+    "context": "MagentaTiger sole canonical writer on main. Complete ten-member Squad W3 stays open; eight PURE_C siblings protected, both evaluator123458 and resolver1237F0 remain ASM. Accepted resolver body1608/frame48 is complete in source, including seven retail evaluator/40 total call sites and three error/self-loop paths. Fresh private measurements supersede applicability of target-mismatch September30 records; no old acceptance is inherited. The s32 evaluator interface, read-before-call values and all error paths are unchanged.",
+    "effects": [
+      "register-priority",
+      "result-lifetimes",
+      "late-sharing",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AC783528348A643AAE73A34CFBBF481718C6B558ACA2D7B4CBDF79B8BE074B0A",
+      "sourceSha256": "A99ED6880834F24AAAB12CCE002FBEA92915CAD49959165199B60E543EB9F32B"
+    },
+    "label": "uniform-gate-fresh-stage-control",
+    "observedEffect": "Fresh candidate5E4A4C01 is PURE_C1536/frame48/95 relocations, seven evaluator/40 total final calls. Authenticated probe8D2FC6E3 has13 evaluator/55 total calls through RTL/FLOW/LREG/GREG/SCHED2, then7/40 at JUMP2. Whole source coverage is present; physical sharing does not imply skipped source paths. LREG mode75 refs12/life174 and ready76 refs13/life188; GREG orders ready76 first and assigns modeS5/readyS4. Under pinned global.c allocno_compare and size1, derived priorities2068/2074 agree with that measured order. Later terminal operator comparisons share too much.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001237F0.s",
+        "sha256": "2AF2AE9A346C4E4118368FB30BE56D688EB79FFF8189C0106D8981D0D24F82C2"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1237f0-uniform-gate-control-watch.json",
+        "sha256": "306F5AE73CC16B98D76065940DCE504FD6377F1FD9F194A96187B6996865AE54"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_001237F0/probes/8D2FC6E33B02D0BB733810B3AFD103AC3C0AC0B9BAD2EEE46E269ADF0A80EB87/probe-report.json",
+        "sha256": "F417F63723689A513E4FCCA5BADF7145B35368765867EBCB3C15F2C81BD93134"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1237f0-global-priority-evidence.json",
+        "sha256": "C76F879DDDC19E217F121900FB09DFB92F3D845DE54C2EE20F524A2B0BD79400"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Retail needs1608 bytes, the original readiness initialization slot and separate terminal operator checks, while preserving seven evaluator/40 total calls. Both controls remain nonexact symbolic-object research. Preserve the original uniform source and earlier-ready effect through temporary regressions; find a genuine lifetime/CFG form that retains the necessary controls. No tool defect, ABI narrowing, hybrid exception, linked acceptance or full ten-member verifier is established.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Freshly replay the complete recorded uniform positive terminal-gate source, without expression changes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7318,
+      "sha256": "AC783528348A643AAE73A34CFBBF481718C6B558ACA2D7B4CBDF79B8BE074B0A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A99ED6880834F24AAAB12CCE002FBEA92915CAD49959165199B60E543EB9F32B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_001237F0-5e4a4c0189.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

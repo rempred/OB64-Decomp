@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6186FDCE4CF501678798A401E3F7E0F40D8F1FC5EB6B79442DC583CAAC6F913A",
+  "observationId": "948E9A3B284A2CAD0A0D26A93B80DDB2E6A0216FFFFDADC15D178F5F304FCAE7",
+  "symbol": "func_00123458",
+  "authored": {
+    "context": "MagentaTiger sole canonical writer on main; full ten-member Squad W3 remains open. Eight accepted/provisional PURE_C siblings are protected; evaluator123458 and resolver1237F0 retain ASM production. Logical evaluator920 bytes/frame24 is fully reconciled. Preserved872-byte F0 expression effect is the starting source. Ordinary compiler contract unchanged; private symbolic-object evidence is diagnostic only.",
+    "effects": [
+      "result-lifetimes",
+      "register-allocation",
+      "late-sharing",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "545446730279D89932988E543B363B570C53A780707EEF6C9DD272103DDB6D2F",
+      "sourceSha256": "83D9E3751B0BA5C16F9855DCFFDAEB9B4857D22326433C2B9F20E4F844116195"
+    },
+    "label": "producer-local-result-global-allocation-counter",
+    "observedEffect": "Watch6186FDCE is PURE_C876/frame24/56 actual relocations, raw229words/814bytes different; X regressesF2 and SFcast scratchF0. Probe90043DC7 authenticates all9 artifacts/six dumps. Four divisions/four casts remain in RTL,FLOW,LREG,GREG and SCHED2; late-JUMP2 first captured loss yields3divisions/2casts. FLOW retains real result177/221 zeros388/506 beforecasts. Despite arm-local C declarations, result177/221 are GLOBAL allocnos across conditional basic blocks; both have hard2/V0 conflict and GREG hard8/T0. First cast SI scratch is LOCAL hard2/V0, secondhard5/A1. Final zero is delayed to X-test branch slot; an explicit copy returns T0 throughV0. This rejects the predicted block-local-result allocation for this source. No quantity/suggestion trace or general impossibility is established.",
+    "parentCandidateId": "3C0B9ABB616AF4C3D4C63D9253C47732903098E95D9B0131034B06613B5E966E",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123458.s",
+        "sha256": "B012FF2E6C61BD7209D10510A7F3D915BA93F1D02CA0F6CB39DCA53DA310C351"
+      },
+      {
+        "path": "build/matching/solsquad/squad-123458-producer-local-default-result-watch.json",
+        "sha256": "3C3808B6DDA74C6694BAFC0DFF8CB06819FAA9CA8FB78601CBD8C804CB43B3C1"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00123458/probes/90043DC730E920F15A5346C020AA274015B3CFA9B51B9F2F6C2993AB2F2D85C6/probe-report.json",
+        "sha256": "690B1D098029FC754853ECE966841DF41A886234E86433AA873247138E9E3650"
+      },
+      {
+        "path": "docs/dossiers/func_00123458-3c0b9abb61.observation.json",
+        "sha256": "1A979D98E0F31B5AC127188D0A47388C05FE81E7A8085E0EDE9140CF29A5ED2D"
+      },
+      {
+        "path": "build/matching/solsquad/squad-123458-pinned-pass-order-evidence.json",
+        "sha256": "0A19C78CF9FDBD55F09477CDE33016DC18534C5C5AE534E143CAE2D5C1CAC667"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Both arithmetic producers must remain separate through the retail join at casts; full920bytes, integer and float allocation/scheduling, actual linked relocations and full-ROM gates remain unmet. Keep872 F0 effect and920extent control; reopen genuine result/CFG lifetime while inspecting SI and SF scratch separately. No supported tool defect, hybrid exception or ten-member acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Duplicate each complete rectangle producer with arm-local floats, cells, bounds and result. Set the genuine result=0 after E1C/E1D beforecasts, conditionally assign the existing Z-bound conjunction when X-bounds pass, then return that result. No added arithmetic, consumers, calls, storage, aliases or narrowed interfaces."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4947,
+      "sha256": "545446730279D89932988E543B363B570C53A780707EEF6C9DD272103DDB6D2F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "83D9E3751B0BA5C16F9855DCFFDAEB9B4857D22326433C2B9F20E4F844116195"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_00123458-6186fdce4c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

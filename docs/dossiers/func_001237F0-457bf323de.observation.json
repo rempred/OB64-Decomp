@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "457BF323DED70C18F6AB7BD87786F2B2F52E72AD31304D95AC52BD4D2C9EB533",
+  "observationId": "B846BF85470CDFBB99C60BD06FDF701A965CBFB6441BFE8CE286806F9AA4110E",
+  "symbol": "func_001237F0",
+  "authored": {
+    "context": "MagentaTiger sole canonical writer on main; complete ten-member Squad W3 remains open, eight PURE_C siblings protected. Evaluator123458 and resolver1237F0 remain ASM. Full resolver body1608/frame48 and all condition, reload, error/self-loop paths are reconciled. The fresh uniform control5E4A4C01 emits1536 with seven evaluator/40 total physical calls, but swaps modeS5/readinessS4. No old target-mismatch acceptance is inherited.",
+    "effects": [
+      "real-producer-phases",
+      "register-priority",
+      "body-coverage",
+      "late-sharing"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CD9B2E8710FE680DF7499A2E2DC6A39552CCA92E403954C0049367EDAA770A10",
+      "sourceSha256": "F86BCA751AE5E5E85312E049EF410BFA9A542797788A380E3CE29AE0F19C7A2C"
+    },
+    "label": "real-mode-byte-normalization-priority-effect",
+    "observedEffect": "Fresh candidate457BF323 remains PURE_C1536/frame48/95 actual relocations, seven evaluator/40 total final calls; raw161words/455bytes differ. Authenticated probeCE6908E8 covers all9 artifacts/six dumps:13 evaluator/55 total sites remain through SCHED2,7/40 at JUMP2. LREG mode75 references rise12to14 while life stays174; readiness76 stays13refs/life188. GREG orders mode before readiness and assigns retail S4/S5, keeping readiness0 in the original mode-branch slot. Derived size1 priorities2413/2074 under pinned allocno_compare agree with that measured order (no instrumented suggestion trace). Component-only actual-relocation-masked comparison through0x4B0/1200bytes leaves12 differing conditional-branch words: all opcode/register fields agree; displacements are18words earlier because the complete body is72Bshort. Relocation masks do not establish correct address bindings or linked equality.",
+    "parentCandidateId": "5E4A4C018956EF618258FE9BE652AFA03BF5F72A7C2994A57418F5284AE4C99F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001237F0.s",
+        "sha256": "2AF2AE9A346C4E4118368FB30BE56D688EB79FFF8189C0106D8981D0D24F82C2"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1237f0-mode-byte-producer-phase-watch.json",
+        "sha256": "5196AB963FF262B232BC4B111A76EAFFC050CB0CC66AA4787473A71FDA6B5315"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_001237F0/probes/CE6908E84804BA9B5FF7B72718955CC3B22632C570558A83E968B29DAE335019/probe-report.json",
+        "sha256": "AD4DEC08FC893744F5889D02654E55D31E5B77BA346ED4CC90129E9A29E68AA7"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1237f0-mode-phase-prefix-evidence.json",
+        "sha256": "5E057A3D02BDD08AB992D6DC8B8976699D51678EA0762E39DA1BB703FAA77364"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1237f0-global-priority-evidence.json",
+        "sha256": "C76F879DDDC19E217F121900FB09DFB92F3D845DE54C2EE20F524A2B0BD79400"
+      }
+    ],
+    "relatedCandidateIds": [
+      "B8345856C9B1A1B4BE3AA85AF366141A55494F27BA1EDD7C225F2EEAF7EE67F3"
+    ],
+    "remainingFailure": "Later terminal op2/op3 and their zero/post-evaluator exits still merge too much at JUMP2. The complete1608-byte body, actual relocation/linked target contract and full ten-member ROM gate remain unmet. Continue from this genuine mode phase, preserving5E4A4C01 and earlier-initializationB834 counter through related temporary regressions. No tool defect, hybrid exception or matching acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "At the existing descriptor load, let the real u8 work byte hold the raw mode, then assign its existing comparison-to2 normalization. This names two genuine value phases without an extra read, arithmetic operation, consumer, call, store, alias or interface change; readiness initialization stays in its original position."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7344,
+      "sha256": "CD9B2E8710FE680DF7499A2E2DC6A39552CCA92E403954C0049367EDAA770A10"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F86BCA751AE5E5E85312E049EF410BFA9A542797788A380E3CE29AE0F19C7A2C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_001237F0-457bf323de.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
