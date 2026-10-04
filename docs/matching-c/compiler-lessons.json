@@ -2,6 +2,17 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "member-indexing-and-shared-cursor-copies",
+      "symptoms": ["register-allocation", "constant-or-immediate-construction"],
+      "applicability": "Compare genuine array-member indexing or a local indexed address with assignment to a shared cursor. In this clean nonmatching context, the shared cursor retained an extra saved-register copy; direct member indexing equaled the local form and restored the aggregate base plus member displacement. Source-bound loop dumps explain the terminal induction reduction. Preserve actual layout, bounds and operation order; the counterexample does not isolate an allocation stage or prove general transfer.",
+      "note": "docs/dossiers/func_0022D14C-8ea0dea85a.md#source-context",
+      "references": ["docs/dossiers/func_0022D14C-31a3b1c0ac.md"],
+      "observations": [
+        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-31a3b1c0ac.observation.json"},
+        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-8ea0dea85a.observation.json"}
+      ]
+    },
+    {
       "id": "comparison-spill-from-real-index-guard",
       "symptoms": ["register-allocation", "branch-polarity"],
       "applicability": "Equivalent real loop guards can retain different compiler comparison pseudos. In this clean nonmatching pair, index<count survives FLOW, becomes a USE in COMBINE and receives an eight-byte slot during allocation; count>0 loses it and shrinks the frame. Inspect source-bound stages before inferring a missing field. Preserve real index/bound producers, widths and zero-iteration behavior; never manufacture references or padding. Transfer and whole-function acceptance remain unproved.",
