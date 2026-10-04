@@ -2,6 +2,16 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "real-argument-definitions-and-loop-hoisting",
+      "symptoms": ["constant-or-immediate-construction", "scheduling-or-block-order"],
+      "applicability": "Separate genuine definitions of one argument in existing paths can prevent loop hoisting. In this clean nonmatching example, RTL/LOOP/FLOW retain four definitions; allocation then selects the wrong register and delay filling duplicates the constants into unwanted slots. The overall candidate regresses despite resolving hoisting. Preserve actual calls, producers and path behavior; do not invent assignments or consumers. Stage progress alone does not select a best candidate or establish transfer.",
+      "note": "docs/dossiers/func_0022D14C-24dd5fe250.md#source-context",
+      "references": [],
+      "observations": [
+        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-24dd5fe250.observation.json"}
+      ]
+    },
+    {
       "id": "member-indexing-and-shared-cursor-copies",
       "symptoms": ["register-allocation", "constant-or-immediate-construction"],
       "applicability": "Compare genuine array-member indexing or a local indexed address with assignment to a shared cursor. In this clean nonmatching context, the shared cursor retained an extra saved-register copy; direct member indexing equaled the local form and restored the aggregate base plus member displacement. Source-bound loop dumps explain the terminal induction reduction. Preserve actual layout, bounds and operation order; the counterexample does not isolate an allocation stage or prove general transfer.",
