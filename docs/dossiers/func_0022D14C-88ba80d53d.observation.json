@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "88BA80D53DB593220601D19586FFDA95EF8517D56C00BE9B4BECCAC9C0F707A1",
+  "observationId": "BEBEDFDE6C2226DB4A9F87CC97E9F6AE795A94610EF2CFCC0B82926902E96261",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Protected9BA/source2937755C root arithmetic/helper region. Pinned jump.c conditional-increment optimization supports a real captured signed-input rounding experiment; no worker-pocket edits.",
+    "effects": [
+      "register-allocation",
+      "instruction-selection",
+      "real-local-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "71554DAE24486E882482147C372C4C4A0A7DF54CF838C7CD5F47720860D60728",
+      "sourceSha256": "99B696C41C86569BEF84D61B1AD4B8E638F5A31C47533AEA78319C0D79FFD117"
+    },
+    "label": "d14c-captured-half-conditional-rounding-folds-to-branchless-but-spills-probability",
+    "observedEffect": "Source99B696C4/candidate88BA80D5 is PURE_C6872/frame616/177 text relocations with131 direct calls in retail order, nativeE8213807. Conditional increment becomes branchless sign extraction/add/shift in the final half region, but probability spills524/0x20C and helper becomes register-resident. Main/quarter get extra probability loads; helper484 drops to two word/zero byte487 accesses and metadata500 to four accesses. Authenticated probe40800B44: probability186 falls from10/live99/cross12/order103 to8/live92/cross12/order106. Time139 remains43/live706/order102; helper9418/live252/order103 now outranks probability. Result180 is58/live221/six deaths/cross13/order42. Pinned global.c comparator gives priority2608 for8/92, below helper2857 for18/252 and time3045 for43/706. Testing original unmodified input in the negative guard (source16A694AD/candidate74CC6484) yields entire identical native text and actual relocation list; no repeated probe. Captured-value form overcorrects allocation priority rather than resolving the earlier10/92 versus time tradeoff.",
+    "parentCandidateId": "9BA106B829DFEB29292A9C3B4D2D52EA642D8AB25D5E65A9E6A9B8D75BDD4716",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-half-captured-conditional-rounding-watch.json",
+        "sha256": "EB8E4C677E305F7DD2FF42D371A59A37419FF9A7D6A6AAF46B1B4E6EFCEB7199"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-captured-conditional-rounding-probe.json",
+        "sha256": "17A25D63EC8F5684FC53777C5DA784F5E8FD99E9180D9C4373A8D620ECA9F86A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-captured-conditional-rounding-call-regions.json",
+        "sha256": "ED35B489BA12D51AB95CCA78DC63A3925245775FA016CAC296C386B2C35D9212"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-original-input-rounding-guard-watch.json",
+        "sha256": "FE10FD62A000B3BDFE0E7E286D7BD148C79FEFCF8554728E75FA4C5C8855DF5E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Probability spill, main/quarter/helper regressions and6872 versus retail6844 remain.9BA protected; no whole-source selection, native contract activation, sole linked ownership/placement, fresh final compilation or full17 full-ROM acceptance. The mathematical capture/lowering evidence does not establish original retail source or a tooling defect.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture the already mixed three-random word before replacing the second-random/result variable with the signed probability input. Increment the captured input only when negative, arithmetic-shift by1, then test the actual unsigned remainder against that half value and assign1/0. This is the same truncation-toward-zero half division for target arithmetic right shift; no extra random calls, fabricated refs/weights or artificial addressability."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41700,
+      "sha256": "71554DAE24486E882482147C372C4C4A0A7DF54CF838C7CD5F47720860D60728"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "99B696C41C86569BEF84D61B1AD4B8E638F5A31C47533AEA78319C0D79FFD117"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-88ba80d53d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
