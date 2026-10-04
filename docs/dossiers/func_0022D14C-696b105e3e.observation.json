@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "696B105E3E5ED38D687644B46829E42E77E7742295D90168315F987C77B32F80",
+  "observationId": "965D85D78DD78D978C103CD1CCB3A5F2E6D1B7F557CFE470E341CA1DA1FDDE4C",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Eligible clean2A/01BF working context, no artificial operand references. Replay genuine separate second-random/named signed threshold, then move actual retained amount zero to first-use actor-loop phase. Old scaffolded outcomes remain diagnostic.",
+    "effects": [
+      "real-value-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4BB928C8D3704E8DCA8D40563E950643E6F0A0E9F6AE45867239C20102638CF2",
+      "sourceSha256": "3B1C92934BD5E6667FE4D4D0990BC0FA105B81B6093C325DDF9BE91ED28ABF2B"
+    },
+    "label": "d14c-clean-real-amount-phase-initialization-recovers-frame-and-probability-home",
+    "observedEffect": "Clean1CEA5383/candidate5DB727E8 first replay is6876/frame624: genuine half shift/scale/quotient/remainder/result forms restore but probability becomes s7 and time actually spills524; amount uses s8. Fresh CE968C51 binds probability18510/live92/order97, time13843/live705/order101, helper9318/live252/order103. Then phase-initialized source3B1C9293/candidate696B105E emits PURE_C6864/frame616/177textR/131 retail-ordered calls/eight events/64B align8 table15R/pad4, nativeD46D9CFE. Half now has probabilitys8 plus retail sll s1,s1,15, early srl/addu/sra into s1, quotientv1/remainders0/results1; MFHI remains t3 versusretailt4. Fresh probe5A2E3C6E: probability18510/live92/order98; time13843/live705/order101; helper9318/live252/order103. Actual retained amount88:65/live743/cross67/order83 versusprior65/live1209/cross121/order98, now s5. Probability physical home is observed from native half; native event timestamp preparation loads time from516, so no claim of restored time s7. This is a real first-use lifetime change, showing that the old parked swap is not an invariant of eligible C.",
+    "parentCandidateId": "01BF8FD742CF0D0396ECB0189B947743AFFA7F911C3F1538CE9988E9ABD1AC34",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-amount-init-lifetime.json",
+        "sha256": "F3E7264A0BADA812D6C2633B2CB399D4872AA6298623929D34041656F287FF01"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-amount-init-at-actor-loop-watch.json",
+        "sha256": "5347084919B27990C41244DEFB330A0E9D5971146B69F6890C5150C4186D9FC0"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-amount-init-at-actor-loop-probe.json",
+        "sha256": "28747051B058DD2B39C3B9D918D3445C85129BBDF64F10F58F2DE7B50F5EE5CB"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-amount-init-at-actor-loop-allocation.json",
+        "sha256": "E27CEB5F99818A94CC70B3342007F2D72792C22864C43FDA492747FBB8B4ADB3"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-amount-init-at-actor-loop-call-regions.json",
+        "sha256": "056FA4A6D040BE174EABBEA8BCA70779484F43ED1ECDA187F6F06C503B5D7767"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-amount-init-at-actor-loop-measurements.json",
+        "sha256": "DF43B5470B3A8D828BA105B2C8944A1BDCF9803808EE56C605F38B8AA81E94C0"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-half-separate-rand-division-watch.json",
+        "sha256": "C3088E7142C76928D1A5BA3AD5F34253B4B8ABD3613B6C240F867B5108DBF5B7"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-half-separate-rand-division-probe.json",
+        "sha256": "5BC2C2F04FBBA18A7A0BC3C4FC58ECD32F89CC2096220F0BCC71386C70432E39"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-half-separate-rand-division-allocation.json",
+        "sha256": "245F91D10ADAC675B442043DDA81AC12851D656FC9D271C5DBA62F2C882B4C8E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-half-separate-rand-division-measurements.json",
+        "sha256": "40FC90D46C904631E88C667EC61B2F44BBDE929C8C7B42D5B58AF8AE5C6C01C9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Owner6864 versusretail6844 remains20B over and raw whole diff worsens; unselected as whole best. Retained amount is register-resident rather than original stack444; time still spills516. Helper/metadata/layout/filter/projection/compaction/control residuals and half MFHI remain. Eligible source and useful frame/probability component only: no native table activation/sole linked ownership/placement/final compilation/full17 full-ROM proof or tool-defect claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Half: single-use u32 second rand, actual mixed-word capture and eventual s32 result holding signed probability/2 then1/0. Amount: move only existing sp1BC=0 from function entry to immediately before actor-loop setup. Prior code does not read it or escape its address; keep zero fallback when no actor assigns it and preserve every post-loop retained-value consumer. No manufactured reads, weights, forced addressability, changed calls/guards or worker-pocket edits."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40117,
+      "sha256": "4BB928C8D3704E8DCA8D40563E950643E6F0A0E9F6AE45867239C20102638CF2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3B1C92934BD5E6667FE4D4D0990BC0FA105B81B6093C325DDF9BE91ED28ABF2B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-696b105e3e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

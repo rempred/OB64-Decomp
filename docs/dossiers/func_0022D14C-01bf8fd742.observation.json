@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "01BF8FD742CF0D0396ECB0189B947743AFFA7F911C3F1538CE9988E9ABD1AC34",
+  "observationId": "457F7DFA82758037F6FDBAF42902250966A26920E43A86425835456A919A6E83",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Astra905 supplied immutable eligible source2A709112; root authenticated/copied it, worker measured native watch independently in own root, root measured fresh allocation in solmode. No old scaffolded outcomes transferred.",
+    "effects": [
+      "source-eligibility-correction",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EBBE77499C5DF307EFCD552351DD969BD972004A3F4EDD32EF1925AEFAE8631F",
+      "sourceSha256": "2A709112BBE182C92B17CF275756BA733B1DDA02E0F4997EF86D55B1FD6996DD"
+    },
+    "label": "d14c-clean-baseline-two-route-source-and-fresh-allocation",
+    "observedEffect": "PURE_C source2A709112/candidate01BF8FD7 emits6796/frame624/177textR/131 physical direct calls/eight events/64B aligned8 table15R/pad4. Fresh root probe10D95CC0 binds probability from actual365BC return to18510/live99/cross12/order101 and actual37AF8 returns to helper9318/live252/order103. Actual time producer138 is plus78/81 and43/live705/cross70/order100. Probability return-copy1850 is stack524 in GREG, unlike old scaffolded correct-home source. Helper init1641 is stack476; actual native operands/table/body are measured in captured watch/measurements. Root stages authenticate their artifact hashes and do not transplant pseudo identities. Source cleanup is established; worse native result does not disprove readable structure.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/actorhelper/d14c-clean-half897-prep.json",
+        "sha256": "DF36D2B7AE5CCE264CD7927F47735020CED5F7A3076B70B0AC8A4AF8DB258C45"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-clean-half897-watch.json",
+        "sha256": "26E3A31C40271614602B7DDB33A1F323E1BA1BE00A5915542F741A588F3C1091"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-half897-base-probe.json",
+        "sha256": "B68E936D773EC85C4C4CD7EFA79B2EE6AF771E216015C3FAFC6B5C12E8B9FD22"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-half897-base-allocation.json",
+        "sha256": "D6FB31116A79E6C7F472A1163FF3A67437226EEFE2B76F34D1B20A71BAE1E642"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-half897-base-measurements.json",
+        "sha256": "635199964256C1B58E032AF9D259E9255AD0A5F21B78DA1BB28C5B2A2ADB60CB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Frame624 versusretail616 and owner6796 versus6844 plus native main/quarter/filter/projection/allocation residuals remain. This is an eligible working context, not matching acceptance or selected whole best. Original ASM/table fallback remains; no linked ownership/placement/full17 ROM proof or tooling change.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Readable prior54F plus genuine897 case4 second-random/result component; independently equals priorCA7 after removing all eleven artificial value-preserving pairs and two constant-offset carriers. Genuine main/quarter/entry/projection/compaction retained. Complete logical6844-byte target and separate64-byte table ownership remain unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 39938,
+      "sha256": "EBBE77499C5DF307EFCD552351DD969BD972004A3F4EDD32EF1925AEFAE8631F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2A709112BBE182C92B17CF275756BA733B1DDA02E0F4997EF86D55B1FD6996DD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-01bf8fd742.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
