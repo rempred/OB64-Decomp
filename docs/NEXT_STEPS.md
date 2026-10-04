@@ -43,6 +43,32 @@ After this wave, bound the complete downstream consumer waves before implementat
 `001989C4`, `0019A294`, `001994B4`, `0019AF78`, `0019B800` and `0019BB34` in the family map,
 without treating these anchors as an exhaustive roster or evidence for increased capacities.
 
+October 4 downstream assignment: after the producer/splitter integration, the Shop worker owns
+the complete four-member classification, ordering and resource-lifecycle wave:
+`func_0019B1B0` (108 bytes), `func_0019B800` (692), `func_0019BB34` (364) and
+`func_0019BCA0` (116). Work on B1B0 first, then B800, BB34 and its paired cleanup BCA0.
+Protect accepted B21C/B26C/BD14 and the complete BE40/1977E0 prerequisite. Keep all four
+members in one final wave verification. B1B0's table r3097 and B800's tables r3098/r3099
+have separate ownership gates; derive actual native sections/relocations before proposing
+activation. Preserve the original zero words at ROM `0x0019C684` and `0x0019C6EC` without
+assuming their provenance or transferring r3095's approval. No tooling or boundary change is authorized.
+
+The later complete menu/state/entry wave retains `001989C4`, `001994B4`, `0019A1AC`,
+`0019A294`, `0019AA04`, `0019AB44`, `0019ADF0`, `0019AF78`, `0019B4C4`, `0019B63C`,
+`0019B710`, `0019BAB4`, `0019BAE4` and `0019BDD4`. BDD4's original 108-byte entry adapter
+remains required by the full-family assignment; it is protected ASM until this later wave,
+not a completed or silently excluded target. Preserve the external `0010BB2C` caller's
+interface without adding its implementation to this bounded Shop assignment. Keep all six
+code-address transports from 1977E0, full preambles and the overlapping seven-word indirect
+call traversals in unchanged data row r3094. Static pointers alone do not prove runtime behavior.
+The worker's private `shop-downstream-complete-wave-proposal.md` and `.json` under
+`build/matching/shopworker/` retain the complete 23-owner inventory and direct evidence;
+this queue adds BDD4 to the later group rather than leaving it unassigned.
+
+During the current producer/splitter audit, only read-only preparation and private source/notes
+are released for the new wave. Native/store/shared-input checks remain drained until Astra's
+explicit post-integration release and refreshed intake. Sol's next candidate wave remains Squad.
+
 Both workers run private checks concurrently and report material results/blockers to Astra.
 Claude/GoldOx advises only on specific genuine blockers. Sol remains the sole production writer
 and shared-research publisher. Integrate whichever complete wave is dependency-ready in a coordinated
