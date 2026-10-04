@@ -1,8 +1,11 @@
 # Sequential matching program
 
 Scheduling update, 2026-10-03 local: Joe explicitly directs separate, less-related worker waves.
-Sol owns the complete Combat action-mode wave and all remaining D14C source work; the existing
-top-level private worker owns Shop, beginning with the complete producer/splitter wave.
+October 4 continuation: after its in-flight bounded D14C experiment, Sol parks the complete
+Combat action-mode wave with its source-level blockers and moves to the complete ten-member
+Squad W3 wake/lifecycle wave, evaluator `func_00123458` before resolver `func_001237F0`.
+The eight proven siblings remain protected members of that combined wave. Sol retains all
+parked D14C ownership; the existing top-level private worker continues the Shop producer/splitter wave.
 The [active queue](../NEXT_STEPS.md#current-independent-waves-joes-direction-2026-10-03-local)
 and [private workflow](../WORKFLOW.md#private-candidate-workers) control current execution.
 This supersedes older one-family/same-wave scheduling and the family order below, while retaining

@@ -8,10 +8,24 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / MagentaTiger:** complete Combat action-mode W6, all seventeen original members.
-  Sol owns all remaining D14C regions; B1F4's candidate remains parked for combined integration.
-  Reuse the [current Sol cursor](Plans/cursors/sol.md) and complete
-  [wave membership](Plans/prompts/combat-shared-mode-wave-r1.md).
+- **Sol / MagentaTiger (October 4 continuation):** complete Squad W3 wake/conditions and
+  lifecycle, retaining both original five-member groups together. Work first on
+  `func_00123458` (920-byte evaluator), then its consumer `func_001237F0` (1,608 bytes).
+  Preserve `func_00120CF0`, `func_00121724`, `func_00121DA8`, `func_00121F38`,
+  `func_0012DA10`, `func_0012DB2C`, `func_0012A828` and `func_0012F8C0` with their
+  current PURE_C proof. Use one final verifier for the complete ten-member result.
+  Reconcile current intake and full bodies; retained September 30 sources are research controls.
+  Keep the evaluator's s32 interface, mandatory reloads, all activation/error paths,
+  literal `0x00020000`, sentinel `0xFF`, and existing edge-only `func_801DD2B0` binding.
+  The [parent family map](../../docs/Plans/squad-construction-family-map.md#wave-3-wake-conditions-and-lifecycle)
+  defines the membership. Use private `build/matching/solsquad/` and the
+  [current Sol cursor](Plans/cursors/sol.md); preserve `solmode` as parked evidence.
+- **Parked under Sol:** complete Combat action-mode W6 remains open with all seventeen
+  [original members](Plans/prompts/combat-shared-mode-wave-r1.md). After the current bounded
+  D14C experiment completes, preserve its useful result, best source and precise reopening
+  question in the existing cursor before switching to Squad. Source-level allocation and
+  scheduling blockers do not establish a tooling defect or a final HYBRID exception.
+  B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
 - **Shop inventory decomp worker:** top-level chat `01a0ffcd-6210-7a03-a178-d7d2af7f1c3b`,
   coordinated and monitored by Astra. Own the complete inventory producer/splitter wave:
   `func_0019BE40` (432-byte accepted PURE_C producer, protected control) and
@@ -51,7 +65,7 @@ complete six-member Squad construction wave and three-member Combat context wave
 at `75990627` and `5accc882`; do not repeat their unchanged verification. The complete
 [five-member Combat Actor wave](Plans/task-logs/sol-combat-actor-pure-wave-20261003.md)
 passed the normal combined verifier on October3 at13:21:11.919Z. Sol continues the complete
-seventeen-member action-mode W6 while the second worker handles Shop as assigned above.
+Squad wake/lifecycle wave while action-mode W6 is parked and the second worker handles Shop as assigned above.
 Preserve D14C's separate table activation gate. Use the
 [current cursor](Plans/cursors/sol.md) for the best source, next experiment and all open gates.
 After ten ordinary target intakes, assess actual example use through existing handbacks;
