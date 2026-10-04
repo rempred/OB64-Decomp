@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7F468A52D4257DB7F12A6E5248523871FA32FE55B7CCB4FB1BCE314055D75C5D",
+  "observationId": "1D28FC2B78D8013F7A5D4E7312A6F27C109CF698FA770BC84D3DA01F1804A0A7",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Measured5CC165C0 scoped-base/indexed-half composition. Two actual word pointer expressions tested using unchanged authenticated32-bit contract. Direct private parent 006C247E7D91AF5D4B1CC2852CE9ACFFD2663D7431AB12146C41EF86EA617549 is documented in captured evidence but is not yet in the shared store; no shared graph relationship is asserted for that private intermediate. This root copy retains the original observation facts and reference identities.",
+    "effects": [
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "91BDAD44E902EF6965EAA55E9207942DA38CF734661A4CE02DFD331DBFAFBBA4",
+      "sourceSha256": "822BE38003013710D1C7EC9DDEA41C356F57D55292F9E4F60EA058DF41579A8C"
+    },
+    "label": "d14c-compaction-word-addresses-scale-first-addu",
+    "observedEffect": "Exactly two word-address ADDU operand orders change to scale-first; destination producer9F8 and compaction source producerA68. Saved scale/destination registers remain s1/s0 versus retails0/s1; base-read order remains source1EC before destination1FC. Every other object word and actual relocation is identical to5CC165C0. Nine-word fixed source setup,20-word compaction copy body, main41/quarter27 and helper/metadata/table/calls/frame retained. PURE_C6860/frame616,16B over.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/actorhelper/d14c-compaction-word-addresses-prep.json",
+        "sha256": "91352943F00263EB59F01001603920C81D9239FBC03A0722580878498055DFFE"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-compaction-word-addresses-watch.json",
+        "sha256": "BB5248D1E30A740EA4E6BE3BBC335109E16301E5F509C84667396AFC49B207FB"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-compaction-word-addresses-evidence.json",
+        "sha256": "14914917ED4805CBFB77BD3C349A84478C22A1C7B3C52CA98C884F278AD3F717"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-compaction-word-addresses-result.json",
+        "sha256": "125FAAA5FFBD8DD4A59D501B5D54761D379F2C32A64D1343FACEEB4737AEE603"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-compaction-word-addresses-word-proof.txt",
+        "sha256": "27B1102B8DB8DEC641EF9C769999E1ACA667195E4E76FB939317255CB0E025F9"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-compaction-word-addresses-sp-census.json",
+        "sha256": "E9DD98BAB0316F48DCAFE7663C8561D1595C5339EB48FA74AE3A5DE418656B7E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual saved register assignments and preheader load/order still differ; first-filter/projection/other whole-target residuals remain. Symbolic-only/all exactness flags false; full17/separate-table/link/full-ROM gates unchanged.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Construct the two actual word destination/source pointers as offset-first32-bit address additions under the unchanged MIPS32 contract. Same index*4, bases, consumers and cursor updates; no new scalar or memory use. All scoped field sources/indexed half destinations and supplied arithmetic retained."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41380,
+      "sha256": "91BDAD44E902EF6965EAA55E9207942DA38CF734661A4CE02DFD331DBFAFBBA4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "822BE38003013710D1C7EC9DDEA41C356F57D55292F9E4F60EA058DF41579A8C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-7f468a52d4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AD424F65D70286EFA501427915886A9F2218F587694751E416F797D7AD2A36D1",
+  "observationId": "FAEB8410FF0BAB92473B011FB0EF78E3824A1102D169FFC7A6DD53815A3DC859",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Root-only half-arm experiment on authenticated stabilized8CB6AF28/sourceCA7FB796 supplied by Astra; all worker-owned filters/projection/compaction/address/publication remain verbatim. Original9BA/8CB context retained, not replaced as whole best.",
+    "effects": [
+      "real-local-reuse",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6C8B9ACEDA7D8AEE97CF5D1A16ECD7D7C7CFAEB76DD88609A7387D442DBDBE0D",
+      "sourceSha256": "EF023862FEC41705FD37211C8CD9709A6D906C449A46C94498ECC41D03B791F1"
+    },
+    "label": "d14c-stabilized-half-separate-rand-named-signed-threshold",
+    "observedEffect": "EF023862/AD424F65 is PURE_C6860/frame616/177textR/131 ordered calls/eight events/native186C5F7E. Half region65 restores destructive second-rand sll s1,s1,15; early signed scale srl v0,prob,31/addu v0,prob,v0/sra s1,v0,1 during multiply; quotientv1/remainders0/hit s1/MFHIt4. Remaining half arithmetic operands use probabilitys7 rather than retails8, and time moves s8 rather than s7. Main41/quarter27 keep arithmetic forms but probability inputs likewise swap. Helper484six/487two/metadata500nineteen/420seven accesses and64B aligned8 table with15 relocations/padding4 remain; raw tableSHA274CBF1B identical to stabilized8CB. Authenticated source55FC6A46/probe355EAEAADB has real R0reg131 local16, R2reg136 local17 and shifted515 local17; single-use R2 dies at shift and ties its output. That explicit-source allocation has probability18610/live92/cross12/order100, time13943/live705/cross70/order102, helper9418/live252/order103, result18044/live212/cross12/order49. These stage stats belong only to measured explicit source; division equivalence does not claim transferred intermediate stages. Earlier old-context explicitCB6D6ACC/probe31FB62B7 and stabilized explicitF7417D25/probe4530532C both restore scale while retaining freshSLLv1 and probability/time flip; separate real R2 restores the shift.",
+    "parentCandidateId": "8CB6AF28E3315B2C75220AC6BA9BCB2C10BF2F8316571704B10BF3F64591AD6B",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-separate-rand-division-watch.json",
+        "sha256": "0A7B7F26E3EC248C960928ECE29C112E36C358101D0B398A1C9BF58AE281DAD4"
+      },
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-separate-rand-division-result.json",
+        "sha256": "913E3863FF9BBDDDE4BA4BC1EDB49784DD36A63F98D6D27848AA25E97CCDC925"
+      },
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-separate-rand-rounding-watch.json",
+        "sha256": "3352255397AFEAF958067510D163F6A50C97E9ECF4A8502A204026CA9A6087CC"
+      },
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-separate-rand-rounding-probe.json",
+        "sha256": "190D0C78F14314F39262EECE2597A4C05038C79C3DB38ABDCEF4558E3E3C81C3"
+      },
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-separate-rand-rounding-call-regions.json",
+        "sha256": "A4AF0DEBF84EA596A44336C87CFE426FC5021B8CC473566DFA693BE417B9FD67"
+      },
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-explicit-signed-rounding-watch.json",
+        "sha256": "4FC1D501CAB6CC5134E3F74D30EC792CFD879C2CA30524CDFAF3709DD2DC88A3"
+      },
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-explicit-signed-rounding-probe.json",
+        "sha256": "F2074F03CA9B2FCD0E18648C48F8E5963A03D9C8E94FB5A5F3D21FFC1AF3D435"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-explicit-signed-rounding-result.json",
+        "sha256": "85F967A60D7A02E5581BAE4DB3B49537891B2E63061859AF8D3BB7BD88FE8301"
+      }
+    ],
+    "relatedCandidateIds": [
+      "9BA106B829DFEB29292A9C3B4D2D52EA642D8AB25D5E65A9E6A9B8D75BDD4716"
+    ],
+    "remainingFailure": "Probability/time allocation tradeoff persists; whole source16B over retail and worker-owned residuals remain. This component is unselected as whole best and not linked-exact; no canonical ownership/placement/native-table activation/full17 full-ROM acceptance or tool-defect claim. Protected stabilized8CB retains correct probability/time homes but late half scale and v1 shift.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture the actual mixed random word once, keep second rand in its single-use u32 temporary, store the actual signed probability/2 threshold in the eventual s32 result variable, then assign1/0 on both unsigned comparison paths. Explicit unsigned bias/signed shift intermediate was measured first; ordinary signed division emits entire identical native text and actual relocations and is the readable preserved source. Random call order, u32 shifts and signed scaling semantics retained."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41739,
+      "sha256": "6C8B9ACEDA7D8AEE97CF5D1A16ECD7D7C7CFAEB76DD88609A7387D442DBDBE0D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EF023862FEC41705FD37211C8CD9709A6D906C449A46C94498ECC41D03B791F1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-ad424f65d7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

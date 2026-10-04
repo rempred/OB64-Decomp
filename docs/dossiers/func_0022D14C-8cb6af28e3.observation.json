@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8CB6AF28E3315B2C75220AC6BA9BCB2C10BF2F8316571704B10BF3F64591AD6B",
+  "observationId": "893AFF741DC7B71CAD46A7A1D2E262F16EAD87FB77817F720B4FD1C28D5564EE",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Astra897 supplied Sol component. Applied only exact coherent case4 source delta to latest stabilized822; no independent half/main arithmetic search.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BB52AA5912CFACA26BB34937EF5AD134A796157D1FF7CEC6D7B57B4045AEA497",
+      "sourceSha256": "CA7FB7964090B7410CCC08C17B7A16A29BAB8136B944D86E61C35AB7AAB648E7"
+    },
+    "label": "d14c-half897-combined-authenticated-case4-composition",
+    "observedEffect": "Exact minimal archivedSol897/2937755C half arm reproduced from authenticated7CB parent, then only that delta applied to current822BE380 source. Unsigned cast before second-random shift and both Boolean output arms retained. PURE_C6860/frame616/177textR+64B15R/131ordered/eight events. Main41/quarter27 are byte-identical to measured74 parent; compaction nine setup/twenty-copy words and word-address operand forms retained. SP484=6/487=2/500=19/420=7. Actual half region65 has quotientv1/numerator-remainders0/result s1, MFHIt4; probability/time stay s8/s7. Shift still usesv1 rather than destructive s1; signed scale occurs late into localv0 rather than retail earlier s1. This is compatible partial arithmetic, not half closure.",
+    "parentCandidateId": "7F468A52D4257DB7F12A6E5248523871FA32FE55B7CCB4FB1BCE314055D75C5D",
+    "references": [
+      {
+        "path": "build/matching/actorhelper/d14c-half897-combined-prep.json",
+        "sha256": "7813645E368CABBE4B7DFECAEDAFD39C69E9775711972878869D23A84140EA45"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-half897-combined-watch.json",
+        "sha256": "7E7DF6D5B25DF2A4214C6493AEBFB6FBA987372BEC4A0F143DEE5AA4894AB2AD"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-half897-combined-evidence.json",
+        "sha256": "7F21120A85F29D150DFEC840D7AC362406EC88F5BB887392CF226401B90726C6"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-half897-combined-result.json",
+        "sha256": "D6274F9413837A43C24987BA6BAB04642B7387433462BC86185FBB2C701B042A"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-half897-combined-word-proof.txt",
+        "sha256": "5F5316F9CAD9E6DA5410BEA66E2BE3F74BB1999A5245332F646BC0F892E2FC41"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-half897-combined-sp-census.json",
+        "sha256": "695E52235E34FD7922F7F84873E99F66E820DB321299D0D52E5A2CCA07632900"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Whole source remains16B over retail/nonexact; half shift/scaling order, compaction saved pair/base-load order, early-filter pointer homes/guard, projection product/true420 reload, and other control/register residuals remain. Private symbolic-only/all exactness flags false/full17/table/linked/full-ROM gates unchanged.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Only authenticated case4 half delta: second random writes eventual result844; existing mix shifts that value only after explicitu32 cast; original unsigned remainder/signed-scaled probability comparison assigns result1/0 on BOTH paths. All calls/scaling/source widths, current compaction/scoped-base/projection/publication/entry/filter modifications preserved. No whole-file replacement; old868 declaration retained as in authenticated archive."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41560,
+      "sha256": "BB52AA5912CFACA26BB34937EF5AD134A796157D1FF7CEC6D7B57B4045AEA497"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CA7FB7964090B7410CCC08C17B7A16A29BAB8136B944D86E61C35AB7AAB648E7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-8cb6af28e3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
