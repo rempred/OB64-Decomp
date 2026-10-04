@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B3423B07174617DED06C12C32C46F5D6E068DCB799261448A59B33C5520F6B8E",
+  "observationId": "C333267698B5E6F01C923531C04F2DD7F6298EB68AA94840CABA81A8B4D1D536",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol allD14C scope, clean real-mode-tail lineage; current mainc1a2d38d, accepted inputs unchanged. Complete17 remainsopen.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "52F271756BD5A2DE52EBCDADAD348F3FF3804A2F7B4E8C4041D3BB93BA103DC4",
+      "sourceSha256": "9D0EB5527FCC11934A241AA3A9626ABD6D6167E71AEC1559E2AB7B30DC205FFA"
+    },
+    "label": "Three actual base phases restore prelude and final16C storage",
+    "observedEffect": "9D0EB552/B342 native6848/frame616/177actualR/all131ordered. Prelude region30 restores28word extent, actual16C stackloads/updates andscanS0; final131 keeps30word real16C stackupdate/output. Region56 confirms365BC return movesS8 (architecturalaliasFP);101 confirms real helper484/meta500 andtimeS7;113 all21 actualinstruction forms correspond apart symboliccalltarget. Fresh4CF2BF03 authenticatesRTL/loop/FLOW/LREG/GREG/allartifactSHA, PURE_C/current source; newallocation fact binds actualreturns independently. Initialfilter/pointer and projection/compaction remainwrong; first/main byteoffsetS1/wordcursorS0 are opposite retailS0/S1. Prefixcursor2D3F produces sameextent/177actualR but native still loads+0 for all three terminalreads; reductionpass unmeasured for this source; a few nativeinstructions differ, NOTwhole-nativeidentical.",
+    "parentCandidateId": "08858EA70711C5D58344C050CF18A8A14A83C8C5BE1297C5356B104D1B644221",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-all-base-phases-prep.json",
+        "sha256": "1FC2E86A5E8F2E960E4DFDF3B77CF3259E1966C38B8429A7ABCB3E410D573142"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-all-base-phases-watch.json",
+        "sha256": "183F84A64B8EFEC9CC5AC03508482C77A6FDEF1B2A547165541F4473257F2B56"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-all-base-phases-call-regions.json",
+        "sha256": "7D4FB0E04CAB0C619144B1E267BBFD8878770E3BB6937D08A0C52E869C097259"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-all-base-phases-probe.json",
+        "sha256": "B610FE9379DD01E94DDA34B4AB426E0582D5ED4CC91797E8FDB3E8404D45EA01"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-all-base-phases-allocation.json",
+        "sha256": "08DB15AEAA18E258F84475367DCF9B9EAB7F8D100D0F23681C1E577B2CBA7B74"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-terminal-excluded-prefix-cursor-prep.json",
+        "sha256": "EC6579927EB99F8AF02CA2804997CDAC7CCCAF9C7B2EF1FBB337F829A4072B22"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-terminal-excluded-prefix-cursor-watch.json",
+        "sha256": "CCA6971107431E8AF2078D45AD27BD59367C6E8FE4F8C030881A642655B3A187"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-terminal-excluded-prefix-cursor-call-regions.json",
+        "sha256": "34DB8ED502CAF6391A0350FD1BC846D7D8234661D84DE6075F3F6CC258E01D8A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Fourbyte longer thanretail; no identifiedextra instruction inference, linked/ROM/wholebest claims or proof repeat. Currentreal-mode-tail context differs from older base-split controls. Both observations and source pairs remain recoverable; body arithmetic/scratch/tablecontracts/completewavegates open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse actualsp16C in firstpacket boundscan as well as laterfieldreload/eventphase/finalreload, all genuine overwrites/callbacks retained. Remove disjointbaseBeforeReload variable, no artificialrefs/extra runtime work."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40476,
+      "sha256": "52F271756BD5A2DE52EBCDADAD348F3FF3804A2F7B4E8C4041D3BB93BA103DC4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9D0EB5527FCC11934A241AA3A9626ABD6D6167E71AEC1559E2AB7B30DC205FFA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-b3423b0717.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
