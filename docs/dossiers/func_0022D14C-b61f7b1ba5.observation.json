@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B61F7B1BA5C0EAD1AE70371BB686C4B483B61B1B78CBC096413A0542CC0E1F8C",
+  "observationId": "A92839930D92F201A444DB184C6CA7BC835B0ABADD8399AE0C4B14AF4FCCC26D",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Clean actual actor-loop and value phases; bounded source-native check, canonical inputs unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BD39C947415F72CF86F08F470A319F1CDC7C93E0B5BF059A68616736503E49CD",
+      "sourceSha256": "F751EC4D6D298719BD3437607437557A9FD52B2333B17986247837E010170593"
+    },
+    "label": "Clean structured-loop quarter local priority mechanism",
+    "observedEffect": "6848/frame624/177R/131 ordered calls. Structured while with clean base/target phases yields retail arg0s6/indexs5/actors3, but P s7, amountfp/time516/helper476; frame8B over and half scaling uses wrong homes. Fresh source-bound probe88AD17A0 confirms actual rand10/11/12 local block125: mix5506/live10; quotient5518/live5; magic5534/live9. Tied mixed chain545/546/549/550/560 usesa0; magic553/quotient551v1, mask/100tempsv0. All27 quarter region68 instruction forms correspond, including R2s4 and MFHIt4; symbolic branch/call destinations differ. Relative to F37 block124 weight1, genuine structured-loop notes double refs and flip local quantity priority as Gold921 predicted. This measured source mechanism is independent of later global allocation; original retail syntax remains inference. Actual global P18510/92/order100 precedes T13843/705/order103; helper9518/252/order105; amount9065/1229/order101. PURE_C/177R/table64/align8/15R/zero4pad/131 ordered calls/eight events; no selected whole exact candidate.",
+    "parentCandidateId": "74E71A423E288A75314673149ABEC6074B64B2256625E7A509E2D6B9061ABB66",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-value-phases-structured-loop-prep.json",
+        "sha256": "C8CA545272622A841B1DF310AD809A2BAC4409A8348E355E7F0AFBF3D7367359"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-value-phases-structured-loop-watch.json",
+        "sha256": "7DAB2C28009F144351B564AB9E7DB05AD86EC1DDA6582077D6E5CF491B2BA1FC"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-value-phases-structured-loop-call-regions.json",
+        "sha256": "4A62CD243201EEC7E96694F64DEBE927E91F9C397937D52C80D0A854CA6BD0C9"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-value-phases-structured-loop-result.json",
+        "sha256": "A57565FDEA1D953AE53BFBAB5C9ADA22B6EF72BC97E4D940E8EBB1FE5C28BF74"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-value-phases-structured-loop-probe.json",
+        "sha256": "C8164249BCF326E3129CDE3A9A0D5492370471A614FE2CBCADF39984B3383D23"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-value-phases-structured-loop-allocation.json",
+        "sha256": "27AFCADF7C665D4CA0110C5B7696736BBCB44C0EE33F2F75F315D6C2575EE092"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-value-phases-structured-loop-quarter-stage-facts.json",
+        "sha256": "5B4E2075035E55312EA350924F187C8935EC021EDD3755595DFF274EBC3A7F56"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-value-phases-structured-loop-quarter-lreg-region.txt",
+        "sha256": "3605122517AE7CC274820178E56CCC89ABE1CE6572B4AD041159C283AC355946"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-quarter-f37-stage-facts.json",
+        "sha256": "95904FBD5393ABB156DB2ADD0B95AB564C874098A12CAC604D83914B1A00648E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-quarter-f37-lreg-region.txt",
+        "sha256": "604E451582CE28E2923A6D539468A4568298A8D5C598ED89A0E622EE0006C3D0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "F37 remains the control for useful half/time allocation. This bounded source disproves selection of this combined structured arrangement; does not establish original source syntax or impossibility of later genuine phase composition. Nonexact symbolic output; original ASM/table and complete17/table/linked/full-ROM gates remain. Quarter-local closure does not resolve global T/P/amount/frame or first-filter/projection/compaction. F37 label form parked as mechanism/control, structured forms reopened; no fabricated refs/weights, tool defect or weakened gates.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Restore structured while for the unchanged actual actor-loop guard/body/increments/backedge, retaining real base/target phases. Same conditions, zero-iteration path, call/order and memory expressions; natural compiler loop metadata only."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40126,
+      "sha256": "BD39C947415F72CF86F08F470A319F1CDC7C93E0B5BF059A68616736503E49CD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F751EC4D6D298719BD3437607437557A9FD52B2333B17986247837E010170593"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-b61f7b1ba5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "202D2538BC8B7B46B43E9EFE11C8AF51D1A2904427A8739E8CAFA80C26DA57C8",
+  "observationId": "DED71520C6490A86D884A58FC4E7C9CC981210AD9BFACD9AC3055F35ABA4775E",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Approved root tail/arithmetic source scope under Astra925. Immutable B12 full-tail-copy parent and F751/F37 controls preserved; worker regions remain separate.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "23060E7F4041EB7BB43FE2B03109B125E613838315F0E304769526028FA64F10",
+      "sourceSha256": "239F82BA490DF51DE20D507023161951BAC0C6F462A2D02378A003F9CD839B27"
+    },
+    "label": "Real per-mode stores with shared coords emitter restore complete main homes",
+    "observedEffect": "PURE_C6812/frame616/177textR/table64/align8/15R/pad4.131 native calls in original address order/eight D334 sites. B12 extra .text j removed:42 internal jump relocations and jump opcode counts correspond in every call-aligned region, without claiming target/addend/dataflow equality. Main arg0s6/indexs5 now match alongside Pfp/Ts7/actors3/helper484/amount444/metadata500. Fresh D80E01AC independently binds first-D334 time138=plus79/83:53/live720/order97 before actual365BC P18510/live92/order101; actual37AF8 helper9518/live252/order105; amount9065/live1244/order102; metadata9737/live719/order107; arg072114/live1420/order89; index17368/live845/order88.18 D334 sites through GREG become8 final output sites. Natural real store copies keep increased T priority while sharing the emitter shortens the preallocation context versus B12; no original retail source claim or whole-best selection.",
+    "parentCandidateId": "CCAB0BA4F68B565E4B87AA6EA9D2928A0F6D067C661CD76E8E9F9A5F5047C32A",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-store-copies-shared-emit-prep.json",
+        "sha256": "5AD14ECA813F9D92F1E632AF3B2B824362382A959C743E8A197B8C1C5C98CEC8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-store-copies-shared-emit-watch.json",
+        "sha256": "C1E336EF09D5FAEA82E0676446A39121390F46E8B64CBE864D651A26F1BF1936"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-store-copies-shared-emit-probe.json",
+        "sha256": "D8AF76D591216F61981C7791C68D6DBFC17EA68E22C0FA8CF6C3102E2EF5893D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-store-copies-shared-emit-allocation.json",
+        "sha256": "4260DAEEBF8A8F6C5C133C0BEE40F707F9AF3057FB5D7EBFCF9BFC3B9337D19D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-store-copies-shared-emit-call-regions.json",
+        "sha256": "178921C43696D285614BFF229C0098BB6E9588A8136C4191C6F0BE0C2D5D6402"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-store-copies-shared-emit-stage-mechanism.json",
+        "sha256": "55827B566C6DEB590B48D7E78F7D1EC144E836FCAFA3AFF9ACF49D5A42E18D90"
+      }
+    ],
+    "relatedCandidateIds": [
+      "B61F7B1BA5C0EAD1AE70371BB686C4B483B61B1B78CBC096413A0542CC0E1F8C"
+    ],
+    "remainingFailure": "Native32B short; first-filter setup/roles, projection/compaction load/store/branch allocation and terminal residuals remain. Net32B is not proof of8 identified missing instructions. Private symbolic nonexact; linked sole ownership/placement/exact relocation/target/full-owner/full-ROM/complete17/table gates open. Original ASM/table remain canonical.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Restore shared coords6 call-then94-store tail for its two real alternative paths, retaining other per-mode store copies. Emit gotos bypass enclosing inline stores. Each runtime path retains one same call/store/field reads/order/arguments; no fake references, extra iterations, forced homes or manual weights. Source tests only factoring of actual operations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40548,
+      "sha256": "23060E7F4041EB7BB43FE2B03109B125E613838315F0E304769526028FA64F10"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "239F82BA490DF51DE20D507023161951BAC0C6F462A2D02378A003F9CD839B27"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-202d2538bc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

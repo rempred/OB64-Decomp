@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CCAB0BA4F68B565E4B87AA6EA9D2928A0F6D067C661CD76E8E9F9A5F5047C32A",
+  "observationId": "CA455A906393046135882686A60D247EEDD4313BD0571ED66DDE6AFFEE68BEE2",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Clean F751 structured-loop parent. Root owns this bounded source pocket under Astra925/direct confirmation; worker filter/projection/compaction continues independently. Old proposal-only scope text describes preparation, now superseded. Canonical inputs and original ASM/table unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8BC45415D3E501EC8DD81016F29EA2AACCF93663D4E79F47A335C359F610C3F5",
+      "sourceSha256": "B12A3CD13046C5AB00838C724E3A24770CB50AEC2D962A0C4B1655D74D1B8D6D"
+    },
+    "label": "Genuine per-mode tails restore structured T probability helper homes",
+    "observedEffect": "PURE_C6844/frame616/178 textR.131 native calls retain original addresses/order and eight D334 sites;64-byte align8 table15R/pad4 intact. Main,half and quarter regions59/65/68 all instruction forms correspond apart from symbolic branch/jump/call fields. Actual native P fp/T s7/actor s3/helper484/amount444/metadata500 restored. Fresh8980D2FA independently binds actual first-D334 a1 to T138=plus79/83:53/live732/order97; actual365BC P18510/live92/order101; actual37AF8 helper9518/live252/order105; amount9065/live1256/order103;metadata9739/live731/order106;arg072114/live1432/order91;actual-loop index17368/live857/order92. Real duplicated tails raise T from43 to53 weighted refs while P92/helper252 stay fixed.19 D334 sites remain through GREG, eight in final output: late merging observed without attributing a uniquely isolated pass. Correct dimensions and arithmetic components do not establish exact whole output.",
+    "parentCandidateId": "B61F7B1BA5C0EAD1AE70371BB686C4B483B61B1B78CBC096413A0542CC0E1F8C",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-mode-tail-copies-proposal.json",
+        "sha256": "C24D3CD0F722AEEAC17B3B54D3CBDCD4C509919EF5AD3FADB27F04701A93B450"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-mode-tail-copies-watch.json",
+        "sha256": "5B3AA0650659209B5463E2B3C25DB40AC083BAA0DA851EFB5B18BB23CFB66814"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-mode-tail-copies-probe.json",
+        "sha256": "11E5DD6FEA3B32D0CAE92C98DB15F561A96BF291D2BEE6ADA460217A8646D297"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-mode-tail-copies-allocation.json",
+        "sha256": "B5733D0421808D405C16CC1C9CF815450D65698B7CBC934AC45A74562A692E07"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-mode-tail-copies-call-regions.json",
+        "sha256": "E10DBA8BDD376B34312AA5F24C7558E8E2E45F0D18B79A25E786E6F36E68ED17"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-structured-mode-tail-copies-stage-mechanism.json",
+        "sha256": "0C4AB8FC9A9683644542D860576DE1AE42D4AD0A4D3B632B55A4733B6FC53457"
+      }
+    ],
+    "relatedCandidateIds": [
+      "74E71A423E288A75314673149ABEC6074B64B2256625E7A509E2D6B9061ABB66"
+    ],
+    "remainingFailure": "Main arg0s5/indexs6 differ from retailarg0s6/indexs5. Extra178th relocation is a43rd .text R_MIPS_26 jump versus parent42, localized to region100 partial copied event prefix; raw bytes, first-filter/projection/compaction and later residuals remain. Not a contract update or selected whole best. Linked sole ownership/placement/exact relocation/target/full owner/full ROM/complete17 W6/table gates open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Expand five actual store-tail gotos into the identical store plus mode_done exit, and two emit-tail gotos into the identical coords6 call followed by the enclosing store/exit. Remove unreferenced shared tails. Each executed alternative path retains one same call/store/order/arguments/field reads; no dummy references, synthetic iterations, forced homes or manual weights."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40532,
+      "sha256": "8BC45415D3E501EC8DD81016F29EA2AACCF93663D4E79F47A335C359F610C3F5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B12A3CD13046C5AB00838C724E3A24770CB50AEC2D962A0C4B1655D74D1B8D6D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-ccab0ba4f6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
