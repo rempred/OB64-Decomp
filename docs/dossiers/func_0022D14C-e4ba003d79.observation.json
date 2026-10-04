@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E4BA003D794B24294FD15C3DA3F4134209568600ED5D588A5BD64A79A8D70988",
+  "observationId": "733DCCA3E9123125BDB1070961976AD0D5DA294929CB3933879CC2622BE00849",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol/private solmode; canonical source/header/config/build and original ASM/table remain unchanged. Corrected output stride and original capacities retained. No dummy references, identities, manual padding or flags changes. Private evidence is not linked or whole-wave acceptance.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "source-readability"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "37C88741BDFF603447A349936EC7159FAD4BC1A1BEA5AF14E846E2E39624BC0A",
+      "sourceSha256": "F28199FCDE4D6A058CC676DB1D5647AF024A22FC1A13C7650292C5C4832778B4"
+    },
+    "label": "Genuine branch-free store-tail expansion938 still hoists13",
+    "observedEffect": "SourceF28199FC/candidateE4BA003D emits mechanicallyPURE_C7092/frame616/178textR/132 actual calls/nineD334 sites. Probe513B728C authenticates14 named artifacts/eleven dumps. LOOP actor1651..4102 has938 real input insns; constant729 has combined life4/savings4 and definition3063 moved to4910. GREG rematerializes13 inT3/T4 rather than retailV0. Thus sharing max/index/latch preserves the necessary branch-free tail structure but this bounded real expansion remains below the measured no-hoist point. Source980 achieved the separate threshold/allocation result but its copied maxima/latches had labels that prevent full tail merging.",
+    "parentCandidateId": "E709AB21E2CA49BFB7AE3E9162C9295010C22C178B1A7B09B5F5F4F8D480A04B",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-branch-free-emission-store-tails.c",
+        "sha256": "F28199FCDE4D6A058CC676DB1D5647AF024A22FC1A13C7650292C5C4832778B4"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-branch-free-emission-store-tails-watch.json",
+        "sha256": "51635C0C5EC40472A1ACB2E4EE71BF8234156F5809211B30A5696DF9195376DE"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-branch-free-emission-store-tails-probe.json",
+        "sha256": "710375C61699C0CE72F7D1D6F304D364CA267FD319C82F4C9A2C01BDE3FD5F05"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D8A89FDE3BD7788D0E57C6C850ED3D0EDF2B4543C22BE67BF08AE2777B06220A"
+    ],
+    "remainingFailure": "Unselected:248 excess bytes and one extra physical emission/relocation; no131-aligned report is fabricated. Need legitimate pre-combine/dataflow differences that later disappear while preserving call sharing, rather than dummy consumers or copy-padding. No linked/ROM/table activation/complete17 acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Copy the existing target94 store and jump to common post code into twelve existing mode8/10/4 and mode3 fallback emission paths. Keep maximum update, record advance and loop latch shared. Preserve intervening mode1/3 helper calls and source path order; unreachable old shared stores cannot contribute executed work."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 44002,
+      "sha256": "37C88741BDFF603447A349936EC7159FAD4BC1A1BEA5AF14E846E2E39624BC0A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F28199FCDE4D6A058CC676DB1D5647AF024A22FC1A13C7650292C5C4832778B4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-e4ba003d79.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

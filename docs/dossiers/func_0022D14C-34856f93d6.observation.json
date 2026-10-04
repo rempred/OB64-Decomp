@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "34856F93D662A3BCC6DA1992FD7BD0A09A69272BD92BE9FE6D223B587780DD78",
+  "observationId": "46F45E9F911DFB59668C4D6D2BA2AA8427C29FE42B9F1C4417FAFBC5F52B2799",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol/private solmode; canonical source/header/config/build and original ASM/table remain unchanged. Corrected output stride and original capacities retained. No dummy references, identities, manual padding or flags changes. Private evidence is not linked or whole-wave acceptance.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "source-readability"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "78604A308D300848DC9C074CDC18924A0E7CF8D65BDCB53ACF5932F5DDC5D36A",
+      "sourceSha256": "405EF56875BBBAFC0048D78038DEF0F4049784D667FC145CECABDDE964334DEF"
+    },
+    "label": "Accepted table-leaf declarations retain identical whole native control",
+    "observedEffect": "Source405EF568/candidate34856F93 is mechanicallyPURE_C6844/frame616/177 actual relocations/131 ordered calls. Its complete objectText and every actual relocation equal612BC017/control8EA0DEA8, retaining332 symbolic forms and raw317/842 differences including relocations. Accepted source files independently establish the two interfaces; no new ABI/compiler contract or canonical header/source change is made. No unchanged probe is repeated, and earlier612 pseudo/stage identities are not transplanted onto405.",
+    "parentCandidateId": "8EA0DEA85AE0D71B9FD88C81160A6DCA776B81DDB3BE0536978029FECA0C327B",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-evidence-backed-table-leaf-declarations.c",
+        "sha256": "405EF56875BBBAFC0048D78038DEF0F4049784D667FC145CECABDDE964334DEF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-evidence-backed-table-leaf-declarations-watch.json",
+        "sha256": "5285EEFFBC3D9EE2BBC0CB54554B11FA196BEE8F7D089F032191338733391CEB"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-evidence-backed-table-leaf-declarations-call-regions.json",
+        "sha256": "07F2870B10A4C094C02DAF3F647D1D6A690877550E84E8A767C51749C1FE4DE5"
+      },
+      {
+        "path": "src/lib/func_00044130.c",
+        "sha256": "67CD6EDBC0B4D93E36DD2130801E255BE2B789304CE0AE8C1B2AC83286A7AD74"
+      },
+      {
+        "path": "src/lib/func_0020D434.c",
+        "sha256": "DC9DA3CFBA6284A375931A24F3BA4BBE5DC00F6E01088B1F786676A7165492E4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Native nonexactness is unchanged. This is a better declaration context for continuation, not selected whole-native best or linked/ROM/complete17 acceptance. Table activation and other family interfaces remain gated.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reconcile only two private declarations with existing accepted producer definitions:44130(s32,s32,s32) returning s32, D434(s32) returning u8. Keep every caller value, mask, call order and body statement."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40768,
+      "sha256": "78604A308D300848DC9C074CDC18924A0E7CF8D65BDCB53ACF5932F5DDC5D36A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "405EF56875BBBAFC0048D78038DEF0F4049784D667FC145CECABDDE964334DEF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-34856f93d6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
