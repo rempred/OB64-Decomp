@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "384D22B0D6D18E3C8A71E5DD56C9D7B383051E931A40DEE5A0862123B5944E8E",
+  "observationId": "642CBA575C5D263B4B39E160B2F00C420D4209B9C944E3EA1D824B6F3196613E",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Authenticated explicit source55FC6A46/probe355EAEAADB underlying the readable AD component. Pinned clean-d flow.c inspected read-only, SHA4EB4B4B2; no compiler/tool/source-policy change.",
+    "effects": [
+      "compiler-contract-observation",
+      "real-value-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D0196D138B3938C54158082FAC0580A1470A7381A22C50109F3CEDDAA0B2CAFF",
+      "sourceSha256": "55FC6A46E2A9232FA1E58CB83A1C6D9D96629E4C39B38C70AEA1ADA286CB38C1"
+    },
+    "label": "d14c-probability-references-weighted-by-real-actor-loop",
+    "observedEffect": "Five actual LREG PATTERN operands for probability186 are UID1906 producer,1952 main comparison,2115 sign extraction,2117 biased addition and2208 quarter input copy. All sit at real actor-loop weight2. Their weighted sum is10, agreeing with recorded10/live92 allocation; captured input removes one actual use and therefore reduces10 to8, matching88BA. Flow counts loop-depth weighted stores/reads, not textual debug-note occurrences. Fresh artifact hashes authenticated. R2reg136 and shift515 both local17 give destructive second-rand shift; whole native text/actual relocations are identical to readable division AD424F65/sourceEF023862, while intermediate statistics remain bound to55FC only.",
+    "parentCandidateId": "8CB6AF28E3315B2C75220AC6BA9BCB2C10BF2F8316571704B10BF3F64591AD6B",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-stabilized-probability-weighted-refs.json",
+        "sha256": "E5EFFE738F9B39FDDE7B2CD67DBC027D8D84C3F7FFF2138BF694BC7D72212C86"
+      },
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-separate-rand-rounding-watch.json",
+        "sha256": "3352255397AFEAF958067510D163F6A50C97E9ECF4A8502A204026CA9A6087CC"
+      },
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-separate-rand-rounding-probe.json",
+        "sha256": "190D0C78F14314F39262EECE2597A4C05038C79C3DB38ABDCEF4558E3E3C81C3"
+      },
+      {
+        "path": "build/matching/solmode/d14c-stabilized-half-separate-rand-division-result.json",
+        "sha256": "913E3863FF9BBDDDE4BA4BC1EDB49784DD36A63F98D6D27848AA25E97CCDC925"
+      }
+    ],
+    "relatedCandidateIds": [
+      "AD424F65D70286EFA501427915886A9F2218F587694751E416F797D7AD2A36D1"
+    ],
+    "remainingFailure": "Current topology cannot obtain an odd9 count merely by removing one same-loop real use; this is a bounded limitation, not proof that every valid source must share its topology. Probability/time swap remains. No fabricated references/weights, compiler bug, original-retail-stage inference or linked/full17 acceptance. Inherited filter identities separately await source eligibility reconciliation; component remains unselected.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Actual second-random/result separation and explicit signed threshold rounding measured on stabilized8CB. This observation reconciles its live weighted reference count, excluding REG_DEAD/REG_EQUAL annotations, rather than inventing extra references or changing source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41764,
+      "sha256": "D0196D138B3938C54158082FAC0580A1470A7381A22C50109F3CEDDAA0B2CAFF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "55FC6A46E2A9232FA1E58CB83A1C6D9D96629E4C39B38C70AEA1ADA286CB38C1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-384d22b0d6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
