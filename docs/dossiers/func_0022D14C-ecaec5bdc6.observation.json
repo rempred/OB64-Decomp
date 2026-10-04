@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "ECAEC5BDC67163195AEA28A38F072C0D0F82934B3B57D1F1003F66154A5C4F4E",
+  "observationId": "FEA8BDE12D8A1AE93DDCF10D8299A43A6E542B3FECAE7D55AB073B6F31EABD77",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol private solmode; canonical ASM/table/source/config/build untouched. No flags/prototype change, fabricated bytes, artificial consumer/reference/identity or manual storage. Gold1012 suggested byte-before-extra order; the compiler stage counterexample was independently measured before publication.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "01C7A5DB20B16206B03AC3C2707DC1053A6BCB53221F546E81D668D66E1FF2B5",
+      "sourceSha256": "6643794DF25DC2BC3A3D8F28CF9AC6FDC839CF227E02454F5DD61B4B1AAECE92"
+    },
+    "label": "Real byte-before-extra source order is reversed by first scheduling",
+    "observedEffect": "Source6643794D/candidateECAEC5BD is PURE_C6844/frame616/177 actual relocations/131 ordered calls, raw333/892 including symbolic relocations. Authenticated probe0276EB36 has14 named artifacts/eleven dumps. RTL/COMBINE preserve base→byte77→extra76 order at2954/2956/2959,3158/3160/3163,3357/3359/3362,3662/3664/3667. First scheduling moves each extra13 assignment before its base/load. LREG keeps that order; GREG assigns base/byteV0 and extraV1 at all four sites. Thus merely reversing independent C statements does not obtain retail byteV1/extraV0. Promoting byte u8→s32 source3F90C3CC produces identical whole native text/every177R; narrowing extra to u8 source4E60F0C9 instead produces native/everyR identical to original612BC017, so no unchanged probes are repeated.",
+    "parentCandidateId": "24DD5FE2504A4BFE08CB4157E8C6EFFAF6DA9612A7CE36425B9CEE826BA33BD4",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-byte-before-real-extra.c",
+        "sha256": "6643794DF25DC2BC3A3D8F28CF9AC6FDC839CF227E02454F5DD61B4B1AAECE92"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-byte-before-real-extra-watch.json",
+        "sha256": "6540A90403E9AD19AF4F440ED192C70922EC8D1FC285CE472EE5C05E6D610DEC"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-byte-before-real-extra-probe.json",
+        "sha256": "3982D46226C7B43596947BD04D285667BFF60ACA7DE8A94A953C002C7DAAEA20"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-promoted-byte-before-extra.c",
+        "sha256": "3F90C3CCF6702942C357988DE812D20724B69D6323C6372D7BF06B6280D58EBF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-promoted-byte-before-extra-watch.json",
+        "sha256": "16FE48C547E37FA7DF8E45B99AFFB9997B10F3FC6291EB97C2DAB7891E0E4447"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-byte-sized-extra.c",
+        "sha256": "4E60F0C9C9F42F47CCF6DEF60797713F42262B628CB06AD03E557AB43FB0DE3B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-byte-sized-extra-watch.json",
+        "sha256": "6E66A15310C02B78FB427073583F801544C61254DA129B9FFD49EEF540707030"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Neither control is selected. F-path context/extra allocation and branch delay scheduling remain nonexact, along with entry/type5/terminal issues. No linked bytes/ROM/complete17 wave acceptance. Retain current612 and shared-real-extra DF139 effect through this informative regression; it does not disprove every byte-before-extra control shape.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use one genuine shared context-byte local for the eighth F-path argument and assign its real byte read before emissionExtra=13 in all four existing paths. Keep separate mode selection and ninth-argument assignments."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41182,
+      "sha256": "01C7A5DB20B16206B03AC3C2707DC1053A6BCB53221F546E81D668D66E1FF2B5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6643794DF25DC2BC3A3D8F28CF9AC6FDC839CF227E02454F5DD61B4B1AAECE92"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-ecaec5bdc6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

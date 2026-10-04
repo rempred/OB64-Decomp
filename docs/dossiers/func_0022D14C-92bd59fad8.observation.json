@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "92BD59FAD85E81E9D05D40FE00E838C23717037F666976E496F2E311E1379D87",
+  "observationId": "7E9363393349D02895BC5411C8A69DC1E16BA8556E09727E77E76949F6B732EF",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol/private solmode, canonical ASM/table/source/config/build unchanged. Original output stride and twelve/six capacities preserved. Each actual path increments its record index once and reads the same signed bound. No dummy references, identities, storage padding, flags/prototypes or tooling change. Strict131 call census is not weakened and no131-aligned comparison is manufactured.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C2EE36DAE06AF28BDFB86436E33F550DBA9A7B6BDF3AC43FA99FD8042D6C0C1E",
+      "sourceSha256": "CC75280F06931D86534DF88AB90AF2B85123415E0325A4BBC941BB5B11985A9A"
+    },
+    "label": "Per-case real post-update alone leaves13 hoisted at884 loop instructions",
+    "observedEffect": "SourceCC75280F/candidate92BD59FA emits PURE_C6976/frame616/182textR/134 actual JAL calls/elevenD334 sites, versus retail6844/177/131/eight. Removing D334 from each static call sequence retains identical ordered123 other calls. Authenticated probeBA5D8EE2 binds14 named artifacts/eleven dumps. LOOP reports actor1651..3933 containing884 real input insns; constant715 combined life4/savings4, definition3003 moved to4741. Thus the standalone actual post-update expansion adds42 loop instructions but still hoists13. Three extra physical emission calls remain after late passes; source per-path call count is unchanged, but no runtime/linked equivalence is claimed.",
+    "parentCandidateId": "8EA0DEA85AE0D71B9FD88C81160A6DCA776B81DDB3BE0536978029FECA0C327B",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-per-case-post-emission-update.c",
+        "sha256": "CC75280F06931D86534DF88AB90AF2B85123415E0325A4BBC941BB5B11985A9A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-per-case-post-emission-update-watch.json",
+        "sha256": "C8387E15B38E925556FF2E7B18A0BE2D0EB506B01ACE3EE88B95BAA241789918"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-per-case-post-emission-update-probe.json",
+        "sha256": "F40B2B065E750AFB6962985C83B069ACBCA2AD6F72C124250D99F1719712A43B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Unselected:132 excess bytes, three extra physical calls and five extra text relocations. This does not eliminate a larger genuine expansion. No linked bytes/ROM/whole-best/complete17 acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace eight actual mode_done jumps with their real target94 maximum update, record-index increment and continue to the existing main do-loop latch."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 42583,
+      "sha256": "C2EE36DAE06AF28BDFB86436E33F550DBA9A7B6BDF3AC43FA99FD8042D6C0C1E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CC75280F06931D86534DF88AB90AF2B85123415E0325A4BBC941BB5B11985A9A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-92bd59fad8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

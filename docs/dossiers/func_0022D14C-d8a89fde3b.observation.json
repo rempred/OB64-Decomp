@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D8A89FDE3BD7788D0E57C6C850ED3D0EDF2B4543C22BE67BF08AE2777B06220A",
+  "observationId": "F12C6B2C496589D0D9DA7C14E14F4B44F579329F1BF361D9FD8D5B79D95D4F2B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol/private solmode, canonical ASM/table/source/config/build unchanged. Original output stride and twelve/six capacities preserved. Each actual path increments its record index once and reads the same signed bound. No dummy references, identities, storage padding, flags/prototypes or tooling change. Strict131 call census is not weakened and no131-aligned comparison is manufactured.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "ECFE2A5B510B31E7DBA81FEC4BD755C887E79F58A87912F30EED9AF597266A55",
+      "sourceSha256": "F0A8C1B88C1D34CC134467CC2320F66439EA96AAD17C8D530C03F2D5BA5CBA32"
+    },
+    "label": "Genuine980-instruction loop keeps per-site13 and restores byteV1/extraV0",
+    "observedEffect": "SourceF0A8C1B8/candidateD8A89FDE is mechanicallyPURE_C7288/frame616/185textR/137 actual JAL calls/fourteenD334 sites. Removing D334 retains identical ordered123 other calls. Authenticated probe71B45F91 binds14 named artifacts/eleven dumps: LOOP actor1651..4217 reports980 real input insns and constant731 life4/savings4 not desirable. Four RTL definitions3104/3369/3630/3998 remain at those sites through LOOP/FLOW. GREG allocates all four13 values toV0; corresponding actual context-byte loads3100/3365/3614/3982 useV1 with baseV0 dead. The LOOP threshold and per-site allocation requirements are therefore jointly achieved by genuine control/dataflow expansion. DBR first two F paths share a call tail and move the V1 outgoing store into jump delay slots; other tails still contain separate calls. This measures a compatible compiler pattern, not unique original source.",
+    "parentCandidateId": "E709AB21E2CA49BFB7AE3E9162C9295010C22C178B1A7B09B5F5F4F8D480A04B",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-extra-tails-per-path-latches.c",
+        "sha256": "F0A8C1B88C1D34CC134467CC2320F66439EA96AAD17C8D530C03F2D5BA5CBA32"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-extra-tails-per-path-latches-watch.json",
+        "sha256": "D90964C700E9B4F7574EAA6FCE6A51AD042544B1B9CD02A6F6629D13D2901C96"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-extra-tails-per-path-latches-probe.json",
+        "sha256": "FD6CA5FCA695652D5992AECD083538F5CA3D28E6F9337EF5F48E417864D7C4BF"
+      }
+    ],
+    "relatedCandidateIds": [
+      "92BD59FAD85E81E9D05D40FE00E838C23717037F666976E496F2E311E1379D87"
+    ],
+    "remainingFailure": "The whole owner remains444 bytes over retail and six physical emission calls/eight text relocations over the control, so unselected. Late sharing is incomplete; entry initializer/type5/other scratch issues remain. No linked/ROM/table activation/whole-best or complete17 acceptance. Preserve612BC017 as current readable control while refining this informative regression.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Combine five genuine coordinate/zero emission alternatives with eight per-case actual target94 maximum updates, index increments and signed exit tests. Use a structured while loop with one real advance/bound test on each path; preserve the default path and ordered nonemission calls. Literal13 remains a fresh per-site argument."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 45064,
+      "sha256": "ECFE2A5B510B31E7DBA81FEC4BD755C887E79F58A87912F30EED9AF597266A55"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F0A8C1B88C1D34CC134467CC2320F66439EA96AAD17C8D530C03F2D5BA5CBA32"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-d8a89fde3b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
