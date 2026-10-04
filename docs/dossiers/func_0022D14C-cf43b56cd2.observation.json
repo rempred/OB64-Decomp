@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CF43B56CD2196E3C61FEBAEB5D9880DF11F319F703AAA44CB20C815BA44BD197",
+  "observationId": "2697EDD950A5D665CB9A8915405E3C841B6E24A5CDCF370EEA2B80AEA18F872F",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Private source representation experiment only. Static return/range facts are recorded in the cited parent dossiers; no callee/shared interface, compiler flag, ownership, artificial lifetime, padding or forced addressability changes. The register keyword trial is closed as native-identical diagnostic evidence, not a selected candidate.",
+    "effects": [
+      "instruction-selection",
+      "register-allocation",
+      "real-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "44DE8B0DA23821EE7741B8F7ADA7C08492004CAA022BFC4ED5A64B546D34318A",
+      "sourceSha256": "5F452C3648DEA7DABACA040CA3F4FD96AF994385E7A2F671F3A847193566FE0B"
+    },
+    "label": "Combined proven widths increase LOOP input but retain conversions",
+    "observedEffect": "Source5F452C36 / candidateCF43B56C emits PURE_C: 7,056 bytes/frame608/177 relocations/131 ordered calls; raw1,216 words/4,047 bytes differ. Authenticated probe EBF70F9E has11 artifacts/eight dumps. Actor LOOP input is927 instructions; literal749 still has life4/savings4 and moves to4693. Between exact source-bound notes1652..3882, complete post-stage counts including inline slash flags/modes are RTL995/LOOP882/CSE2 879/FLOW866/COMBINE773, with70 calls at each stage. Conversions remain and the body grows212 bytes, so it is unselected. A separate single byte-cache trial85D24FF2/55DC99A5 preserves6,844/frame616/177R/131calls but moves the selector spill1F4 to214 and regresses raw differences to297 words/742 bytes. Ordinary register hint706EE126/A2C8C790 is whole-native and every-relocation identical to current6715; no new probe or selection.",
+    "parentCandidateId": "B07A6EA41047C2688A497E232EC6FCCBF375ADC4139D2DE2029EC7451B693781",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-combined-proven-widths.c",
+        "sha256": "5F452C3648DEA7DABACA040CA3F4FD96AF994385E7A2F671F3A847193566FE0B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-combined-proven-widths-watch.json",
+        "sha256": "BD4C4E73FDB6D544F31EA928A144F9654B5B27AAFA9860087CEC4CBCF7A505A2"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-combined-proven-widths-call-regions.json",
+        "sha256": "E3C198F9E36FA57472CA99CB62DDC5C3639B3F51567D4CE6CC1C32E840F164F8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-combined-proven-widths-probe.json",
+        "sha256": "59F12A9C05B615C475F2617C6A6838A660445044A020FB479292FE4E70D8BF30"
+      },
+      {
+        "path": "build/sol-five-family/d14c-combined-widths-stage-census.json",
+        "sha256": "9292D9F9722CF6FA6D6CF0B5C156607A2A0AEBA1B82EF5724D276DD96E075BB1"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-two-extra-byte-selector-cache.c",
+        "sha256": "85D24FF2F730C619A8384577592DBB3021986AD06A449D542125BB8492051FC0"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-two-extra-byte-selector-cache-watch.json",
+        "sha256": "B9E7909B042DC391B1A753E7E32B4D2BFD058379795AC14A5B41D9BF354D1ADF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-two-extra-register-saved-time.c",
+        "sha256": "706EE1267E2F7E9ECCF2D557D56A63698CBAC968C9E11D35CD91632AEE1349BF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-two-extra-register-saved-time-watch.json",
+        "sha256": "0B148ECE7637E65E7E917F811CF644EE80A4028545920DB402386E6F409160AB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Retail extent/frame, selector spill, constant placement, type-5 sum and other registers remain nonexact. The increased pre-LOOP count alone does not show retail original C or establish matching. Current recoverable source remains6715F5D1. No linked/full-ROM/table or complete17 W6 acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "From the proven byte-flags/wide-threshold source, declare the actual predicate helper result as u8, the sole byte-derived selector cache as u8, the -1..2 mode selector as s8 and the bounded 0..19 inner actor index as u8. Preserve full-width probability thresholds and every operation/call. Combine these independently evidence-backed widths in one genuine source form."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40959,
+      "sha256": "44DE8B0DA23821EE7741B8F7ADA7C08492004CAA022BFC4ED5A64B546D34318A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5F452C3648DEA7DABACA040CA3F4FD96AF994385E7A2F671F3A847193566FE0B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-cf43b56cd2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8D803D03DD04C266889F0AE4607236E86D7581BACC0430ADF3CF02BD1C562D3A",
+  "observationId": "A9DC15AD7F4FF6D762735ED5771A055511591AD1C1F19AE8581E0099711C222A",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Readable event factoring hypothesis only. No new call, operation, storage, lifetime carrier, qualifier, compiler flag, shared prototype or ownership change. Private helper formal parameters do not establish original declarations.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6EB3A1823EF71BB62260BF1637288702D563A8DA7F0C3D2019F0B6FED48B899A",
+      "sourceSha256": "8D314F5E0A022259787171DDA0D4DD69EDCA595C7E174C05EFADA0664CC05648"
+    },
+    "label": "Genuine common event helper preserves calls but changes constant lifetime and sharing",
+    "observedEffect": "Source 8D314F5E / candidate 8D803D03 is PURE_C: 6,832 bytes, frame 616, 172 relocations and 131 ordered calls. It is 12 bytes short and loses five internal-jump relocations through changed sharing. Authenticated probe E4571CA3 has 11 artifacts/eight dumps. Actor LOOP input is 854; notes 1651..3853 contain post-stage RTL 1008 / LOOP 826 / CSE2 823 / FLOW 814 / COMBINE 709 i-class instructions, all 70 calls. The literal-13 group at 2989/747 has life 20/savings 4 and moves to 4671; later matches are 3200/800, 3407/853 and 3721/917. Longer lifetime follows actual argument forwarding, not a fabricated consumer.",
+    "parentCandidateId": "0BAEC83D930C73FDAF36F2D2AECA620291A2DD3D8F90F98741745079883D5191",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-common-event-helper.c",
+        "sha256": "8D314F5E0A022259787171DDA0D4DD69EDCA595C7E174C05EFADA0664CC05648"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-common-event-helper-watch.json",
+        "sha256": "B9DF84A5E40E2E64378903015DCE3403566710C5B8C344C795F941BAD16D8C84"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-common-event-helper-call-regions.json",
+        "sha256": "E3B797F0200CF677E56194C5397FEA31B32969F1ABF928E453124CB885999A12"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-common-event-helper-probe.json",
+        "sha256": "4D0A58492E54CDD7580809341D81DE7DE4539ECBBE32C655FADE1C590E480AAC"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Native extent, internal sharing, mode-F scheduling and other instructions remain nonexact. This is the baseline of a useful byte-parameter pair, not selected best or linked/full-ROM/W6 acceptance. Canonical ASM and table gate remain unchanged.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Factor the 18 existing opcode 1F calls into one private ordinary inline helper forwarding all eight real fields, with opcode 1F fixed in its body. Preserve every original argument expression, preload, external callee and call order. Keep all fields full-width."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41033,
+      "sha256": "6EB3A1823EF71BB62260BF1637288702D563A8DA7F0C3D2019F0B6FED48B899A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8D314F5E0A022259787171DDA0D4DD69EDCA595C7E174C05EFADA0664CC05648"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-8d803d03dd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

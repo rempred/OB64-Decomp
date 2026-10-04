@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1088D63A1DE2EFD309074C4C39845A0F76CC75E1CF05CD6D9437B3FF17990537",
+  "observationId": "29AB24DC15926C375E996BCC10D6CB54F5639B5F3949D1F2E30E9FDBF738FE93",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Actual wire-field narrowing and faithful call factoring, grounded in accepted CBC4 source. No arbitrary operation, dummy consumer, forced storage, flag, shared declaration or structural change. The minimum-count and doubling hypotheses remain source-specific; check exact current dumps before extending them. Sol parks the complete W6 unfinished under Astra direction and retains all ownership/reopening gates.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CCB4607DF483CF41DA70F285AF22EF9318215B36F54EBDDE6064506D254678EC",
+      "sourceSha256": "00CF9AFD5F2221047246AD442F871B966EE883F6B042B1C2B50A1377B108EFB1"
+    },
+    "label": "Real byte event fields keep four literal constants in the loop at 895 input instructions",
+    "observedEffect": "Source 00CF9AFD / candidate 1088D63A is PURE_C: 6,812 bytes, frame 632, 172 relocations and 131 ordered calls. Authenticated probe 0360EF6A has 11 artifacts/eight dumps. Actor LOOP input is 895; exact notes 1651..3968 have complete post-stage RTL 1099 / LOOP 839 / CSE2 836 / FLOW 827 / COMBINE 713 instructions, all 70 calls and all inline flags counted. Constant 13 at 3043/783 is adjacent to argument store 3044. Its four-definition group has life 4/savings 4 and is explicitly not desirable to move; matches are 3274/853, 3501/923 and 3836/1004. Three earlier grouped movables 2515/641, 2565/649 and 2601/665 do move. Primary loop.c lines 1719 and 1904 decrease threshold by three after each move, so the earlier fixed 977 minimum cannot be generalized to this graph; threshold reduction is a supported causal lead, not a recovered retail compiler state. The complete four compared .loop dumps contain no \"halved since already moved\" diagnostic, so the proposed prior-inner-loop doubling mechanism is not supported for this pair. An isolating extra-only byte parameter source 1512ECDE / candidate 5B9B60F0 remains 6,832/frame 616/172R/131 calls; authenticated 5FA18308 has eight artifacts/five dumps, actor input 851 and literal 2995/749 life 4/savings 4 still moves to 4685. Extra width alone is insufficient.",
+    "parentCandidateId": "8D803D03DD04C266889F0AE4607236E86D7581BACC0430ADF3CF02BD1C562D3A",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-event-helper.c",
+        "sha256": "00CF9AFD5F2221047246AD442F871B966EE883F6B042B1C2B50A1377B108EFB1"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-event-helper-watch.json",
+        "sha256": "8DF80A60E4FC10D97E3BA806DE6015ABC788935C6650E05D4E0452B92E61BA9C"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-event-helper-call-regions.json",
+        "sha256": "44B760DFA629EEF79F6A826B072A60D8B23049E66A6EB7F07FCF7908DC7FA158"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-event-helper-probe.json",
+        "sha256": "ED510C8F755B6851E4F19558763C27FFC8DC1C281E4A6A99D212926A6B75C191"
+      },
+      {
+        "path": "build/sol-five-family/d14c-byte-event-helper-stage-census.json",
+        "sha256": "7B863A7910E6E3F85C50DDAE9D19C4217E1F92CD4530195A34EDD5584615EBC5"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-extra-event-helper.c",
+        "sha256": "1512ECDEAD1439DAF941376B357EB77C5E82FF776C55E2D99652C910B7DF4F3F"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-extra-event-helper-watch.json",
+        "sha256": "C8057126708E6655D03EF0B86DD3BE72B7078EEB7E3B07B85571F53F8BE149A4"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-extra-event-helper-probe.json",
+        "sha256": "A4801885F9687F48CBDCF86BD88CCECF70F29D6591B79D458B75A4F0FA450EF6"
+      },
+      {
+        "path": "src/battle/func_0021CBC4.c",
+        "sha256": "BD0D135630EE7B37F7C29BE3B74CA26F1C99BD3AD8A0DAE3CDAD21A6DF1F59A4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Byte helper is 32 bytes short, frame is 16 bytes too large, selector spill moves to 21C, argument stores share differently and type-5 sum/scratch remain nonexact. It is useful parked evidence, not a new emitted best or linked/full-ROM/table/complete seventeen-member W6 acceptance. Current recoverable source remains 6715F5D1.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change only the common event helper mode, field0, field1, selector, contextByte and extra formal parameters to u8. The accepted CBC4 case 1F serializes those six fields as bytes. Preserve time/actor widths, actual input expressions, preloads, calls and external declarations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41027,
+      "sha256": "CCB4607DF483CF41DA70F285AF22EF9318215B36F54EBDDE6064506D254678EC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "00CF9AFD5F2221047246AD442F871B966EE883F6B042B1C2B50A1377B108EFB1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-1088d63a1d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
