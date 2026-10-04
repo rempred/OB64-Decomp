@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DA2BFC9ED5B0BA414F3EDAAB252963E3FBF80A4085624EB452AC864EE42CFA25",
+  "observationId": "AE0AAF25F2C560110A1AC0BCF0D5C16EE182FE0205AF6679A62B40BA05A2B29E",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete Combat W6 / all D14C regions owned by Sol, private solmode; canonical sources/build stable. Gold953/958 source-blocker compiler explanation independently checked against actual pinned source and source-bound dumps.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8DF2D6F32B9257B99790E79B7FAA4CD9750A6E0EA36404B3C2D86A581450F721",
+      "sourceSha256": "6BD152E79004D7E2109341BE77DB9DAD781F3AD68C740F93AE72FF71E7C91663"
+    },
+    "label": "Genuine indexed arrays restore first pointer homes and both retail spill offsets",
+    "observedEffect": "Source6BD152E7/native6852/frame616/177actualR/all131orderedcalls. Fresh119E83CB authenticates allRTL/loop/cse2/FLOW/combine/LREG/GREG/PURE/sourceSHA/artifactSHA. First loop creates byte-source1118,half-source1119,excluded1120,byte-destination1121,half-destination1122,word-destination1123. ActualLREG refs/live are8/45,7/44,7/43,7/42,7/41,7/40. CSE2 makes the genuine source byte pointer canonical for destination byte init, giving it eighthreference; destinations are later-born givs. Native homes nowretail S1word,S2byte,S4worddest,S7halfdest,S8bytedest; halfsource234/excluded23C stackslots exact. Six comparison pseudos introduced at rotation become USE-only in combine and occupy their natural preceding spill slots. Direct byte array accesses enable giv/address combinations; an explicitbytepointer spelling8640 stillleaves retainedcount inS2 andfails.",
+    "parentCandidateId": "11C8DAAD036117151B07F5D210855F6410077C377D97FBF680ABAC37552D0606",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-filter-byte-arrays.c",
+        "sha256": "6BD152E79004D7E2109341BE77DB9DAD781F3AD68C740F93AE72FF71E7C91663"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-filter-byte-arrays-watch.json",
+        "sha256": "E02620CBD9A122AD920CFF0AFE11B8C7330E61C1A3680913E43CBBB54BAA40FB"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-filter-byte-arrays-probe.json",
+        "sha256": "23292544E1D55299EC566262AD82F0070342DB99F1AFA545D1BCED1B955B77B8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-filter-byte-arrays-call-regions.json",
+        "sha256": "F4EEEC89FF183D25F3B84D651B364AE0EEBF88CF30A3C499AB7F00B427E7AAFE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact+8B. Entry wordbase assignment precedes count guard and two wordincrements/beql tail remain; projection/main scratch/terminalpointer differences remain. Symbolic-object only, no wholebest/linked/ROM acceptance. Wholebody andall131calls maintained; originalASM/table unchanged.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Derive word/half retained destinations from the real retained count before actual stores, derive actual half-source and excluded pointer from their real indexes, and express both byte accesses directly in the packet array. Update retained count after all three stores; no callback intervenes. Preserve actual two-arm word advancement and first/main word cursor reuse."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40541,
+      "sha256": "8DF2D6F32B9257B99790E79B7FAA4CD9750A6E0EA36404B3C2D86A581450F721"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6BD152E79004D7E2109341BE77DB9DAD781F3AD68C740F93AE72FF71E7C91663"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-da2bfc9ed5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

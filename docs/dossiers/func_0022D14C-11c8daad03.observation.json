@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "11C8DAAD036117151B07F5D210855F6410077C377D97FBF680ABAC37552D0606",
+  "observationId": "242951E355E6BBA7032A7A7AD4704F5A3E103B4940F992FA9280267A8DF4264A",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete Combat W6 / all D14C regions owned by Sol, private solmode; canonical sources/build stable. Gold953/958 source-blocker compiler explanation independently checked against actual pinned source and source-bound dumps.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FFB8A284C64AD78D32CF4457832C613505D47B27579F3F6B7F473B1E13404958",
+      "sourceSha256": "64E4720A201693E824347FFC08D82E973D99A6720F02A683D772638F346FE746"
+    },
+    "label": "Real indexed givs become late pseudos but steal destination registers",
+    "observedEffect": "Source64E4720A, native6848/frame616/177actualR/131orderedcalls. Fresh38A61975 authenticates allRTL/loop/cse2/FLOW/combine/LREG/GREG artifacts/PURE_C. First half address291 becomes reducedgiv1106, excluded328 becomes1107, both numbered after six rotated-loop comparison pseudos that combine turns into USE-only. Givs sevenrefs/live41/40 versus manual destinations110/111/187 sevenrefs/live47/48/49, so givs takeS7/S4 and manualhalf/byte destinations spill204/20C. Ascending reload1 pseudo spill allocation explains the earlier offset issue, but late numbering alone does not produce correct dispositions. D037 moves the real computations before the callbacks: whole-native FCEE1EF8 and every177actualrelocation identical; no unchangedprobe.",
+    "parentCandidateId": "6E6FF9CBE4763932A21B9FB15D00BD9754749ED748033CC256B24092652A1551",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-word-reuse-early-real-index-givs.c",
+        "sha256": "64E4720A201693E824347FFC08D82E973D99A6720F02A683D772638F346FE746"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-word-reuse-early-real-index-givs-watch.json",
+        "sha256": "466A186ED70271624627E4503EF8D127C8593BBEFE9DD9AE7EA799DD62F37693"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-word-reuse-early-real-index-givs-probe.json",
+        "sha256": "E5088EAF86CCFCB5BC6928D3AC961103CA6186F628D493E4801E49FC0B636252"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-word-reuse-early-real-index-givs-call-regions.json",
+        "sha256": "2FFC692E958F3B124818BF13F6661CE261D9261B3D219A39F4CF3057FC76D321"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Unselected nonexact. Source-level destinations predate loop-created givs; later giv births shorten live spans and increase priority. No linked/ROM acceptance or tooling defect; parent6E6F disposition result remains recoverable.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace actually advanced half-source and excluded pointers by local pointers computed from the genuine first index and excluded count. Retain all actual callback order, stores and word/byte advancement; no fabricated uses or padding."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40736,
+      "sha256": "FFB8A284C64AD78D32CF4457832C613505D47B27579F3F6B7F473B1E13404958"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "64E4720A201693E824347FFC08D82E973D99A6720F02A683D772638F346FE746"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-11c8daad03.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
