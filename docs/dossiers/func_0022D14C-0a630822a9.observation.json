@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0A630822A9D659979ECE2994B861314073C356DBC1C0E1608C2E4022D2630F5F",
+  "observationId": "A9C39ADB22C459EA8858A2359E63A1789C22B1C9A47CB47D0EDBE0525A1E9984",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C owned by Sol/private solmode, canonicalASM/table/inputs unchanged. Body reconstruction correction tied to complete retail disassembly rather than relying on call census.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0C2D39BF47B82EB13C17A4B860321A4EAB172C29EE84DEDF1F3F1426C96FFFCF",
+      "sourceSha256": "FF2FB6FBD94BC71CF4C139CCB0EFCC20B08842DD3964947DBB3F5BDCA89CB689"
+    },
+    "label": "Post-call count and real guard branches restore output register/control form",
+    "observedEffect": "SourceFF2FB6FB/0A630822 native6848/frame616/177R/131ordered. Fresh3F572027 authenticatesallRTL/loop/cse2/FLOW/combine/LREG/GREG/artifactSHA/source/PURE. Count no longer crossesD72C and nativezero/one/advancement becomeA2 versus priorS0. Three real guards emitrangecheck, byte-equalitybranch andflagload/branch, avoidingpriorcheapxor/sltu/and combination. Nativecopybody usesone outputpointerincrement4; first96/filter and48compaction forms retained. Typedactualbytekind0FD1E803 yields whole-nativeAFC0FE6F/every177actualR identical, no unchangedprobe.",
+    "parentCandidateId": "4667B5267B02D993F473DAE0D249A5B1E4D00C3A328532891473FF409A9BC9C1",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-compaction-output-postcall-guards.c",
+        "sha256": "FF2FB6FBD94BC71CF4C139CCB0EFCC20B08842DD3964947DBB3F5BDCA89CB689"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-compaction-output-postcall-guards-watch.json",
+        "sha256": "542F08FE0AD34A1929B10FD3B6664A9851E0B370871444B5CF5129D11EC7B904"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-compaction-output-postcall-guards-probe.json",
+        "sha256": "76049F682B314BF2552765097453B4BCAE1799F62E9A1546A9093EC568EEE7F6"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-compaction-output-postcall-guards-call-regions.json",
+        "sha256": "AE42C8C0D536E0BA180767E9E00B921B52320EEB1F999B26C4007A9F0C7CA01E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-correct-output-byte-kind-watch.json",
+        "sha256": "4B1C705726DE168195FDB81CC1FD464D8013A3F1069C0493B81F60072D4ACE99"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact+4B, no linked/ROM/wholebest acceptance. Originalandi bytecompare is absent, scratch/order also differ. Projection75FE/9180/F904 regress unselected; terminaloffset+0 andseveralmode/sourceallocations remain. CompleteD14/all17 scopeopen; earlierwhole-source outputerror correction mandatory.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move unused outputcount initialization after the actual D72C call and express the same three skipping conditions as explicit branches to the real output-copy loop. Retain corrected single destination advancement, original capacities and every callback."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40605,
+      "sha256": "0C2D39BF47B82EB13C17A4B860321A4EAB172C29EE84DEDF1F3F1426C96FFFCF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FF2FB6FBD94BC71CF4C139CCB0EFCC20B08842DD3964947DBB3F5BDCA89CB689"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-0a630822a9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

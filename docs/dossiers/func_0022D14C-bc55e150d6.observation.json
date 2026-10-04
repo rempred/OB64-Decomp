@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BC55E150D689F83419FC64C8F908C2751349E8DAB3D1BB517411153745217B86",
+  "observationId": "F187389F91EC6AB08296C70926B48669F83E9D64E7206BE89402831BA0985475",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "CompleteCombat17/allD14C soleSolscope, private solmode; originalASM/table/canonicalinputs unchanged. Boundedfullbodycheck includes reconstructed semantics as well as all131callcensus.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FADE8FD969629E8F34EA7F76DEAB8E049A68B6BD88B075354E9E6A2FD8094338",
+      "sourceSha256": "A662DBC1C95DA2EAD70A2E080047F15BB38B7A989BABEF3E23E0D45E407B8C16"
+    },
+    "label": "Genuine indexed word pair closes compaction forms",
+    "observedEffect": "SourceA662DBC1/BC55 native6852/frame616/177R/131ordered. FreshA8A455EB authenticatesRTL/loop/cse2/FLOW/combine/LREG/GREG/source/PURE/allSHA. Loop22realinsns reduces halfgiv1766→1119, input1755/address1758→1122, worddest1749→1125 in that init order. Actualmainoffset443 andword444 bothsixrefs/live26; savedS0/S1 preserved. Nativecompaction54 all48 instructionforms correspond apart symbolic jump/call fields, including1FCt4/1ECt3 reloads andA0worddest/A1input. EarlierAC5 input-onlygiv fixes reloads butreverseswordhomes (11/21 input versus11/23 manualdest andmain6/27 vs6/24); B817 entire-native/every177actualR-identicalAC5.",
+    "parentCandidateId": "3857E880FFB326E9D9B26F3264A202C09E2DDAA3A0783EEC798F95CC12943FF9",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-first-givs-compaction-indexed-word-pair.c",
+        "sha256": "A662DBC1C95DA2EAD70A2E080047F15BB38B7A989BABEF3E23E0D45E407B8C16"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-first-givs-compaction-indexed-word-pair-watch.json",
+        "sha256": "64FB8BAA08E14FCC65180E5C15396C853AB24EAD81D510524D227B0AD3600259"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-first-givs-compaction-indexed-word-pair-probe.json",
+        "sha256": "62F240AD7FA9B81F289C79D04F4F3125A275009AF11DF6212FFDAA4D40EC067C"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-first-givs-compaction-indexed-word-pair-call-regions.json",
+        "sha256": "329384809F7841EDFA7683B672015BFDDA86B5D9455078256B23F17BB2777307"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Overallnonexact+8B; no linked/ROM/wholebest acceptance. Subsequentfullbodyregion119 check discovers inherited doubled output-index expression; this fullsource mustinclude correctedoutput119 before finalC. Frozenlocalfirst/compactioneffects remain scopeddiagnostics, productionASM/table retained.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace actually advanced input-word and destination-word cursors with two pointers computed from the real compaction index and preserved base fields. Both word read/store and all other real field accesses remain."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40524,
+      "sha256": "FADE8FD969629E8F34EA7F76DEAB8E049A68B6BD88B075354E9E6A2FD8094338"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A662DBC1C95DA2EAD70A2E080047F15BB38B7A989BABEF3E23E0D45E407B8C16"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-bc55e150d6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4667B5267B02D993F473DAE0D249A5B1E4D00C3A328532891473FF409A9BC9C1",
+  "observationId": "1C33F7F456A3C8843505C21879B9217738765BBBF3B260450215286524D205E1",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "CompleteCombat17/allD14C soleSolscope, private solmode; originalASM/table/canonicalinputs unchanged. Boundedfullbodycheck includes reconstructed semantics as well as all131callcensus.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F412953F9C2BA8F485F36787FD66E51459C9E5B27B7FF90F1867DC55F3F936B2",
+      "sourceSha256": "28F3585B2E9D5F9F14FA0A2C4233150C8870E28741AA512C92D532CD2E373C81"
+    },
+    "label": "Correct inherited double output-index advance from full retail body",
+    "observedEffect": "Source28F3585B/4667 native6848/frame616/177R/all131ordered, currentfreshprobeauthenticated. Retail119 beginsoutputpointerfromA2, increments4 once/body; S5 advances source only. PriorC usedcount+sourceindex andincrementedboth, nativeadduS0+S5 beforetimes4 confirmed wrongdoubleadvance. CorrectedC eliminatesaddition andgives one4-byte outputpointerincrement. First96/filter forms and48compactionforms retained. This is an ordinary reconstruction correction; no matchingD14C acceptance reliedonbadsource (ASM production).",
+    "parentCandidateId": "BC55E150D689F83419FC64C8F908C2751349E8DAB3D1BB517411153745217B86",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-compaction-output-single-advance.c",
+        "sha256": "28F3585B2E9D5F9F14FA0A2C4233150C8870E28741AA512C92D532CD2E373C81"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-compaction-output-single-advance-watch.json",
+        "sha256": "ADDE3AED12E81FB50835270A7E71F61BAF5F5CFAF0631E7883A55FC15DAD20BF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-compaction-output-single-advance-probe.json",
+        "sha256": "F880151F8079EE70C7D1ECEF4739FDF4B0565A1758C04514F40272B5967A9FBD"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-compaction-output-single-advance-call-regions.json",
+        "sha256": "B1C4C9AE822144C1BBAAE10A0902043F9C0B76CCF939D6808AA574116A4D372F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Stillnonexact+4B; outputcount initbeforeD72C keepsS0 versus retailA2 and&&cheapflagcombination differs. FF2FB6FB postcallcountinit/explicit guards active. No linked/fullROM/wholebest claim, structural/tooling defect or capacity increase; other projection/mode/terminal differences persist.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use outputcount alone for ids/effects stores instead of outputcount plus sourceindex, retaining each sourceindex increment and oneoutputcount increment. Capacities12 andinterfaces unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40498,
+      "sha256": "F412953F9C2BA8F485F36787FD66E51459C9E5B27B7FF90F1867DC55F3F936B2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "28F3585B2E9D5F9F14FA0A2C4233150C8870E28741AA512C92D532CD2E373C81"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-4667b5267b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
