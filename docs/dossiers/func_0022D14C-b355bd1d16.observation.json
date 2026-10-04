@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B355BD1D16CBD3F4BD6222BD369D63B7C3B34E139F0F6F2BB5F6379AECB95D2A",
+  "observationId": "0CAF7413AB0E736A05CB9F83974D616F8326939B3C1DAA2FA1CCDC914B5058FA",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol owns all D14C regions/private solmode. Corrected single output stride and original capacities/interfaces retained. Canonical ASM/table and accepted inputs unchanged; no full-ROM verifier or audit run.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6D7A86D7B2A9BD1BFFFD444F5EE1CF6F786D76C9922A098A65AD28082A323ADE",
+      "sourceSha256": "17FC82CA71343989261A3922DF11AA2FAD382E857D30502B0BDBAD47A64FFD13"
+    },
+    "label": "Compose original main guard with real excluded cursor reuse",
+    "observedEffect": "Source17FC82CA/candidateB355BD1D retains6844/frame616/177 relocations/131 ordered calls and268 earlier symbolic forms. Terminal standalone8326BC61/candidateAE05D1D8 independently improves actual guard/setup ordering; combined region127 places the count branch/index-zero before the two real modulus constants and cursor initialization. Whole symbolic raw differences decrease334 words/897 bytes to330 words/878 bytes; relocation fields remain included, so this is not a linked score. The compiler still initializes cursor atsp+192 and loads+0 rather than retailsp+40/+152. No stage cause for the terminal ordering is claimed.",
+    "parentCandidateId": "2F23666082C5922E83A3842D19C5003A64D9855E383A926E75307FFFE9D5EDFE",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-main-guard-terminal-prefix-reuse.c",
+        "sha256": "17FC82CA71343989261A3922DF11AA2FAD382E857D30502B0BDBAD47A64FFD13"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-main-guard-terminal-prefix-reuse-watch.json",
+        "sha256": "C42AA5BCF2AF4D1F293E521EA21ED9F6EB029A1B3ACEEB512C0AF81EF6565273"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-main-guard-terminal-prefix-reuse-call-regions.json",
+        "sha256": "578D37CC4851DA8396CBCB3C923C663288E9D657252FD45A97AB72269C19CCDB"
+      },
+      {
+        "path": "build/sol-five-family/d14c-main-terminal-combined-retained-forms.txt",
+        "sha256": "6EEA27810D0DF0170FB9E714813E1D229A2412ACE2F953A88217728E88A064F2"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-terminal-reuse-real-prefix-cursor-call-regions.json",
+        "sha256": "CB69BE8D55DD5DB11C8F7A7E75AE295EF4242671B8041589677F78E96036493C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Terminal count/decrement/mfhi/reload scratch fields and base/displacement remain; entry and mode setup scheduling/register residuals also persist. No selected whole best, linked target/ROM, table activation or complete17-wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain the original guarded main setup and reuse the actual prefix byte cursor for both excluded-entry loops, accessing the same field at+152 and advancing four bytes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40734,
+      "sha256": "6D7A86D7B2A9BD1BFFFD444F5EE1CF6F786D76C9922A098A65AD28082A323ADE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "17FC82CA71343989261A3922DF11AA2FAD382E857D30502B0BDBAD47A64FFD13"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-b355bd1d16.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

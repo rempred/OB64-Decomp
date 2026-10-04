@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EBAF8896CFD2E021090FC8D625032532692B0CDC435193FD239899F73B34555A",
+  "observationId": "5879586B5266B0BDC4AD43A2F8CC3EBB0D4317ED32B2C2AB6B6FC95809A7AD8B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol owns all D14C regions/private solmode. Corrected single output stride and original capacities/interfaces retained. Canonical ASM/table and accepted inputs unchanged; no full-ROM verifier or audit run.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "79D3902A681570C119C440806EA1DBEBF3EBE2158632AE2B6ADA09E69818AFEE",
+      "sourceSha256": "DD5CAF1F6886029498A71EFA4981F37F2722D1C2DF9394525762F9E97493B2DB"
+    },
+    "label": "Direct count guard loses a compiler comparison spill slot",
+    "observedEffect": "SourceDD5CAF1F/candidateEBAF8896 restores all23 main setup forms and6844-byte extent/177 relocations/131 ordered calls, but frame is608 versusretail616. Fresh authenticated probeB3A3BF41 compared with21823F67: original entry comparison993 becomes USE4632 and stack540 in GREG; direct count guard lacks this USE. All original real spilled variables76..96 remain, so this is not loss of a required body field. Five versus six USE-only comparison pseudos remain. Guarded-whileC82AAC2F keeps the608 frame and adds two redundant predicate instructions, so is unselected.",
+    "parentCandidateId": "8887D8CFF7B944ADCDDA850CE47F68C38899C3697B524A8FB0CB98693CDD6EA2",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-main-setup-inside-count-guard.c",
+        "sha256": "DD5CAF1F6886029498A71EFA4981F37F2722D1C2DF9394525762F9E97493B2DB"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-main-setup-inside-count-guard-watch.json",
+        "sha256": "1AAA97F619399CC0499FACE837EFFD7E9053BDC3198B5C7CF11BB3EB2295E1D0"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-main-setup-inside-count-guard-call-regions.json",
+        "sha256": "D6CB40A4C67EAFA3CB24A66967DE9202B9C139D4182C1032923B1C7ABEBE33E3"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-main-setup-inside-count-guard-probe.json",
+        "sha256": "C4B59FAE54D34414969B1C8534306D748D7B8B397051115CFCF745C1AAFF6D38"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Frame608 and shifted compiler spill offsets remain nonexact. Source comparison lifetime, not a missing required body or tooling defect. No linked/ROM/whole-best/wave acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Place actual main setup inside count>0 and use a do/while for the original body; retain source reads, calls and loop updates."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40700,
+      "sha256": "79D3902A681570C119C440806EA1DBEBF3EBE2158632AE2B6ADA09E69818AFEE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DD5CAF1F6886029498A71EFA4981F37F2722D1C2DF9394525762F9E97493B2DB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-ebaf8896cf.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

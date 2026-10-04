@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2F23666082C5922E83A3842D19C5003A64D9855E383A926E75307FFFE9D5EDFE",
+  "observationId": "ACA42FC1A53A77AA8E5C12DF6E0286E55E0274902C53826EFA1BEC2A6D4239FA",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol owns all D14C regions/private solmode. Corrected single output stride and original capacities/interfaces retained. Canonical ASM/table and accepted inputs unchanged; no full-ROM verifier or audit run.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0CC71F9B165579A5C3D82D94D4B1D619E4AF8FB84AE3E4F35BF3D8DB15F22E9B",
+      "sourceSha256": "A40048FFAEF5992089B041AC465900B50895C9C457A3E73577C1261F8685B3D9"
+    },
+    "label": "Original index guard restores main setup and comparison spill",
+    "observedEffect": "SourceA40048FF/candidate2F236660 has6844/frame616/177 relocations/131 ordered calls. All268 forms correspond symbolically: previous245 plus23 main setup. Probe192471D6 is fully authenticated. FLOW1620 produces440=lt(index169,bound439), branch1621 tests it. COMBINE replaces the comparison with index-zero setup and a direct bound branch, while inserting USE4633 of440. LREG retains that USE/dead reference; GREG assigns its memory516, with six comparison USE-only slots versus five in direct-count source. No manual slot or padding is added.",
+    "parentCandidateId": "8887D8CFF7B944ADCDDA850CE47F68C38899C3697B524A8FB0CB98693CDD6EA2",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-main-original-index-guard.c",
+        "sha256": "A40048FFAEF5992089B041AC465900B50895C9C457A3E73577C1261F8685B3D9"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-main-original-index-guard-watch.json",
+        "sha256": "8E695DF49E34C09B7A802A00B8C2B3208F65FAE812EC7C696C41DB2A38B46742"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-main-original-index-guard-call-regions.json",
+        "sha256": "4AEFEF5523818E5E24AD2F3F5FA9BEF139E55309EFEB90D719203F1AFEFC157B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-main-original-index-guard-probe.json",
+        "sha256": "43D2763F7D2BFD1B99B3A56A7610F0118890867B4E4798EBDC83C4DA7B5A7879"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Other entry/mode/output/final-cursor register or scheduling fields remain. Exact source class/extent/frame and local forms are diagnostic; no linked or full-ROM/wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Guard the actual setup with original index<count instead of direct count>0, then run the original actor body as do/while with the same repeated bound test."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40709,
+      "sha256": "0CC71F9B165579A5C3D82D94D4B1D619E4AF8FB84AE3E4F35BF3D8DB15F22E9B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A40048FFAEF5992089B041AC465900B50895C9C457A3E73577C1261F8685B3D9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-2f23666082.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
