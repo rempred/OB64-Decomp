@@ -9,8 +9,10 @@ and strictly sequential family scheduling language; complete membership, real de
 all acceptance gates remain. No new tooling or worktrees are needed.
 
 - **Sol / MagentaTiger (October 4 continuation):** complete Squad W3 wake/conditions and
-  lifecycle, retaining both original five-member groups together. Work first on
-  `func_00123458` (920-byte evaluator), then its consumer `func_001237F0` (1,608 bytes).
+  lifecycle, retaining both original five-member groups together. The 920-byte evaluator
+  `func_00123458` remains source-blocked with its best controls preserved. Continue its
+  1,608-byte consumer `func_001237F0` against the existing ASM interface, then revisit the
+  evaluator with any recovered evidence. Both remain required for complete-wave acceptance.
   Preserve `func_00120CF0`, `func_00121724`, `func_00121DA8`, `func_00121F38`,
   `func_0012DA10`, `func_0012DB2C`, `func_0012A828` and `func_0012F8C0` with their
   current PURE_C proof. Use one final verifier for the complete ten-member result.
