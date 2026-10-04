@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8EA0DEA85AE0D71B9FD88C81160A6DCA776B81DDB3BE0536978029FECA0C327B",
+  "observationId": "7D679C7B4A04BB48D232797BC5FC3DF4E3D70A629014FAF71B3B369900907810",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C owned by Sol/private solmode. Corrected single output advance, original twelve/six capacities, call arguments and protected interfaces retained. Canonical sources/config/build unchanged. No dummy references, artificial identities, manual slot/padding, flags/prototype changes or tooling defect.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection",
+      "source-readability"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B8493431F2F2E56A685DE84A1470E0CFC75FEE7097AE1B8F3C9FFC4C085E718E",
+      "sourceSha256": "612BC017D1D737360CE5DF52A3FD3EA64BD2D77F96FE0A0D1760B4C93810608C"
+    },
+    "label": "Original guards and direct excluded member indexing close real loop forms",
+    "observedEffect": "Source612BC017/candidate8EA0DEA8 retains6844/frame616/177 relocations/131 ordered calls. Its native text and every actual relocation exactly equal the explicit local-address composition39A9015D/candidate77017016. All332 measured instruction forms correspond symbolically: prior268 plus28 prefix-bound region27 and14+22 first-excluded regions48/51. Direct terminal member indexing restores nativeS2=sp+40 and all three entry reads at+152, with existing setup ordering retained. Raw symbolic differences decrease330 words/878 bytes in parent to317 words/842 bytes; relocation fields are included. Authenticated DF52FFCB probe has13 named artifacts/10 dumps and PURE_C/source binding. Terminal loop is40 real insns: actual scaled-index4410 and prefix-address4412 form DEST_REG giv970 mult4/add995;4412 is reduced to1125. Real address load/store facts are inspected separately; no donor pseudo identity is transferred.",
+    "parentCandidateId": "B355BD1D16CBD3F4BD6222BD369D63B7C3B34E139F0F6F2BB5F6379AECB95D2A",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-three-guards-direct-excluded-members.c",
+        "sha256": "612BC017D1D737360CE5DF52A3FD3EA64BD2D77F96FE0A0D1760B4C93810608C"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-three-guards-direct-excluded-members-watch.json",
+        "sha256": "4EDE12AFC493141E6B1A1AB43FAE33542F9437D0DBD7EC73278A97D7DB568DFA"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-three-guards-direct-excluded-members-probe.json",
+        "sha256": "989994C3E6824F3AFDA191AEF5757015A52552B41E4C56F908992C57B02347FD"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-three-guards-direct-excluded-members-call-regions.json",
+        "sha256": "C4999D4B96324099A05D9B62539EA9EE437D8CB977D99B230A332AF805FDFB53"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-three-guards-two-indexed-excluded-loops-call-regions.json",
+        "sha256": "0B3E6B72772D2AD5E4D34277415381188E113C2D846DA817B477634FF4F6F0D7"
+      },
+      {
+        "path": "build/sol-five-family/d14c-two-indexed-loop-retained-forms.txt",
+        "sha256": "2E8B4C8F337E0EF3CC3ECFE9E27EDBDA4C82C8ABEB9D2B20EEFEB1DBF98A9ACD"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-guarded-terminal-indexed-member-call-regions.json",
+        "sha256": "5805AFD73CC7D22F5145D1853B0E358779D35A8D0A491D09E81BA3400C82CDE9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Entry initializer timing, type5 sum result scratch, several mode argument setups and output/terminal reload scratch remain nonexact. The 64-byte compiler table stays separate from production ASM pending approved structural activation. No linked target/ROM, selected whole best or complete seventeen-member wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Place the earlier prefix-bound and first excluded-loop setup inside their original index/count guards. Name the real excluded time base before loop body use. Use a local indexed prefix for the first entry load and actual array member indexing for the three terminal loads; then simplify both loops to direct excluded member indexing after demonstrating native/relocation equivalence."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40767,
+      "sha256": "B8493431F2F2E56A685DE84A1470E0CFC75FEE7097AE1B8F3C9FFC4C085E718E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "612BC017D1D737360CE5DF52A3FD3EA64BD2D77F96FE0A0D1760B4C93810608C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-8ea0dea85a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

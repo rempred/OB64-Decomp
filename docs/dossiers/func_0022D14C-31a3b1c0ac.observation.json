@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "31A3B1C0AC1EC64EB4FE13A51EDBECA34FD798082C65861C0D023957F2748395",
+  "observationId": "ECEAC69B9AF2444C87EA260EC94811BD10BBE0D7A633BE7AAD877BB8AFB4B5CD",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Ordinary Sol private solmode research; canonical ASM and table owner retained. Corrected single output stride and original capacities preserved. No extra references, manual slot/padding or tooling change.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1C0CC6C24C72B4ED49ABE577C0C9381A222FA9883C144172A146C2F985804ABF",
+      "sourceSha256": "E5B60DF9F86F408CA2CD7C90299B492B97546A030B04EEABA10FDD2B8A6B80DE"
+    },
+    "label": "Global indexed cursor retains an extra saved-register copy",
+    "observedEffect": "SourceE5B60DF9/candidate31A3B1C0 has6848/frame616/177 relocations/131 ordered calls. Region48 restores all14 setup forms. Region51 retains one extra move S1,S2 before its actual field load at0x98(S1), and region52 advances S2 fromS1 instead ofS2. A local indexed prefix instead of assignment to the shared cursor removes the actual copy, restoring6844 and all14+22 setup/emission forms in sourceD48EB137. This native controlled result does not isolate its allocation stage.",
+    "parentCandidateId": "B355BD1D16CBD3F4BD6222BD369D63B7C3B34E139F0F6F2BB5F6379AECB95D2A",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-guarded-first-excluded-indexed-prefix.c",
+        "sha256": "E5B60DF9F86F408CA2CD7C90299B492B97546A030B04EEABA10FDD2B8A6B80DE"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-guarded-first-excluded-indexed-prefix-watch.json",
+        "sha256": "8DA70FBCDDD5F01C0C7F8B9969F6FA90BA02CFD8097D3A2E7F1D6661D0B6C1DA"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-guarded-first-excluded-indexed-prefix-call-regions.json",
+        "sha256": "903B83B1D962AD9AE8002C5A3423B49FD984365502D029CFD868D3030EBB32F3"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-first-excluded-local-indexed-prefix-call-regions.json",
+        "sha256": "4B20494E4D7BAE684F3EF770050CC09781B32E048EAFA7B3CB70DDCDFE4980FC"
+      },
+      {
+        "path": "build/sol-five-family/d14c-first-local-indexed-retained-forms.txt",
+        "sha256": "2E8B4C8F337E0EF3CC3ECFE9E27EDBDA4C82C8ABEB9D2B20EEFEB1DBF98A9ACD"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Global cursor source is four bytes over retail, so is unselected. No linked target/ROM/whole-best or complete17-wave/table acceptance. Terminal representation in this control also still uses the earlier adjusted-base cursor form.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain original index guards and real excluded time base; derive the prefix pointer from index for each excluded-entry iteration and assign it to the existing shared cursor before its actual field load."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40929,
+      "sha256": "1C0CC6C24C72B4ED49ABE577C0C9381A222FA9883C144172A146C2F985804ABF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E5B60DF9F86F408CA2CD7C90299B492B97546A030B04EEABA10FDD2B8A6B80DE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-31a3b1c0ac.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
