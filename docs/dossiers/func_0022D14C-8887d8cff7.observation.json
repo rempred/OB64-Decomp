@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8887D8CFF7B944ADCDDA850CE47F68C38899C3697B524A8FB0CB98693CDD6EA2",
+  "observationId": "1181E7589DD76D770DA53451A43F6B1CCAA006ED78C5B6120342D02838251C68",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol owns all D14C regions in private solmode; canonical ASM and separate table stay production. Accepted canonical inputs unchanged; no full-ROM build or verifier run. This is an informative ordinary source-lifetime experiment.",
+    "effects": [
+      "instruction-selection",
+      "real-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2661925C973A67CDACBE7810BE505DC356AB1077A812D1A1E691D0A64A8B7F75",
+      "sourceSha256": "9E1E6BEB3DFDC0258C26E18A73E095AE007EF608AB36B0CC6340DE595300CC52"
+    },
+    "label": "Actual initial output ID read restores publication store order",
+    "observedEffect": "Source9E1E6BEB/candidate8887D8CF retains retail6844-byte extent/frame616,177 actual relocations and131 external calls in retail order. Native output region119 words16-19 now correspond to actor-word load, count-one setup, effect-zero store and ID-word store. Raw symbolic comparison changes350 words/946 bytes to347 words/935 bytes; this includes relocation fields and is not a linked score. All245 previously closed instruction forms remain after symbolic branch-target normalization. Address-arithmetic signed-byte control8307E245 is identical in whole native text and every actual relocation. No compiler-stage cause is claimed.",
+    "parentCandidateId": "E0B511529763EC64B00F1CC15185AF292FD24184E9E1FAE43BFDEB318DD5B180",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-output-id-before-effect.c",
+        "sha256": "9E1E6BEB3DFDC0258C26E18A73E095AE007EF608AB36B0CC6340DE595300CC52"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-output-id-before-effect-watch.json",
+        "sha256": "7F0427A8B156C95C707B1C5B6E522852E51573F661ECBD7A9166E86B43FA5585"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-output-id-before-effect-call-regions.json",
+        "sha256": "BFCDC73EA2645E65AD4D8C9102184995C3B8BD4CC926131D169696E3B7FE0492"
+      },
+      {
+        "path": "build/sol-five-family/d14c-output-context-preserved-forms.txt",
+        "sha256": "7443F3FCF0E3DA1F6685FA6B8D05DC83533DF52BECA570BEF8F0B91B07F95D7B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-retail-extent-context-read-at-call-call-regions.json",
+        "sha256": "FD5E7D5F259FF22C5796FB871C0FCD38B3559F7C2011041D785D0BEC7F1B73E0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact: output119 initial16C decrement scratch and later16C/184 reload homes/addition fields remain; mode100/111 setup scheduling/registers, entry timing and terminal cursor/register differences remain. Call-argument context-read control8F980CB6 loses both opcode31 delay fills and grows to6852 bytes, so is unselected. No linked target/ROM/whole-best or complete seventeen-member wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Read and assign the real initial actor ID before setting outputCount to one and clearing effects[0]. Preserve the corrected single destination advance, original capacities and separate skip guards."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40626,
+      "sha256": "2661925C973A67CDACBE7810BE505DC356AB1077A812D1A1E691D0A64A8B7F75"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9E1E6BEB3DFDC0258C26E18A73E095AE007EF608AB36B0CC6340DE595300CC52"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-8887d8cff7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
