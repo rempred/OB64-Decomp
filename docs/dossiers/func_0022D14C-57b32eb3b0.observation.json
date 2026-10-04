@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "57B32EB3B093C7EF77C9FE57A41A525DAE45D910E2C54D64FCF0584915BDB61E",
+  "observationId": "34F5CE8AE72276184963BBF741A5E0E7142BF335B55982430B1FB23F927C0160",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C regions remain assigned to Sol. Canonical ASM, table and accepted inputs unchanged. Output region 119 correction remains mandatory in every whole-source continuation. Authenticated source-bound compiler dumps; instruction-form observations are symbolic only.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "62BCE78DB8A43CE36617125CB61DADA417139296F7D54A187E82FC2E05845F89",
+      "sourceSha256": "93C51F7B6018197EE3715B1502A333E5E6144277CACA6D34C9FBEFE8B874608A"
+    },
+    "label": "Real match-count initialization changes the duplicate-scan allocation",
+    "observedEffect": "Source 93C51F7B, candidate 57B32EB3, probe 46AFA8E8: 6852 bytes, frame 616, 177 actual relocations, 131 calls in retail order. Index 157 now has 11 refs/live 20; count 161 has 10 refs/live 22. Their allocation becomes retail index A0 and count A1. Initialization moves before the selector branch, unlike retail. Moving it just after the actual index (F54321A3) retains the register homes but differs in entry instructions; neither is selected.",
+    "parentCandidateId": "195D3D7C15D68A81BE8EB394D6A179C2D5B2132FADAFB4F765B45EFE461A7901",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-correct-output-scan-early-count.c",
+        "sha256": "93C51F7B6018197EE3715B1502A333E5E6144277CACA6D34C9FBEFE8B874608A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-correct-output-scan-early-count-watch.json",
+        "sha256": "9A2C4A1ECBC764DF8B9584FF99DDE137AF5D7E9A0AD946EA8EE40E0C198B56EA"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-correct-output-scan-early-count-probe.json",
+        "sha256": "92BE398EBE76D4FDB955CDA4175121D5835927356B1C542160253A67A0C6936A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-correct-output-scan-early-count-call-regions.json",
+        "sha256": "C3A9ABAC3CAAAE4B549A8AC659742955F98211A24B52025D953C2EC5D8E1AB2F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Register allocation improves locally while entry placement and base/shift order remain wrong. This is a useful temporary regression, not a selected whole-owner best. No linked, full-ROM or complete-wave acceptance. Other projection, mode, output and terminal failures remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the actual zero match-count initialization before the selector guard and scan-index initialization. It is unused on the skipped path; no added identity expressions or references."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40667,
+      "sha256": "62BCE78DB8A43CE36617125CB61DADA417139296F7D54A187E82FC2E05845F89"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "93C51F7B6018197EE3715B1502A333E5E6144277CACA6D34C9FBEFE8B874608A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-57b32eb3b0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
