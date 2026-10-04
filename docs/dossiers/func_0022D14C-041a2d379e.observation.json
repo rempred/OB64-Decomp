@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "041A2D379E08AC04489E2F4BCB5F25407A51E41DE34EEF259F342F34AEB2BF7E",
+  "observationId": "960B7037522AE57AD1FFBB33708290AACE2861E30DB6502F8A50C54F0C6E863A",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Protected7CB/source04A48A99; root arithmetic/helper scope. Complementary measured form to7ED6A79F; no worker-owned source changes.",
+    "effects": [
+      "register-allocation",
+      "instruction-selection",
+      "real-local-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FC0482193C41E6497CA4BFAC61BEA75CA2120C35BD04F04A3672641F16646ED9",
+      "sourceSha256": "253D78DFF31F7A8C9CA57CCD871F3C5F509CF7813AC6EEE8BFE530D9D5CBECC1"
+    },
+    "label": "d14c-half-branch-both-results-keeps-probability-time-order-but-wrong-result-home",
+    "observedEffect": "Source253D78DF/candidate041A2D37 is PURE_C6864/frame616/177 text relocations with131 direct calls in retail order. Native94C499EA. Main arithmetic retains retail instruction/register/order forms apart from branch/JAL immediates; helper484 retains six word accesses/two byte487 accesses and metadata500 has19 word accesses. Authenticated probeF98611A5: initial RTL has fresh quotient509 and remainder518, conditional branch2115 and1/0 result writes. By flow/lreg, result is ltu4490; the sampled dumps do not identify a unique intervening transforming pass. Probability186 is10 refs/live99/cross12/order103; time139 is43/live706/cross70/order102, retaining final probability s8/time s7. Global result180 changes to40 refs/live204/five deaths/cross12/order59 and final s0 rather than retail s1; half scaling uses fresh local519/v0 and stays after remainder. Quarter threshold/result also uses s0, so quarter is nonexact. One-sided if source05D7BC64/candidate785CE743 carries the initial zero through false paths and adds a conditional branch, producing6880/frame616 and moving main hit/quarter roles. Both-results clears that carry and returns to6864, without repairing result home or half timing. No whole-source best is selected.",
+    "parentCandidateId": "7CB96BE950552FFF0D1D3135A56D2BF8F76221FFB01763FAED4E8C0BBB1A3D9D",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-half-branch-both-results-watch.json",
+        "sha256": "636ADC387E035D514B3822A89FEB3CA1A5996EBD62F51939CCB463813B94B12D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-branch-both-results-probe.json",
+        "sha256": "74B9C1A8B7920CDBD3247A3862EE662FF4746ABA94D90D611033683D92B99689"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-branch-both-results-call-regions.json",
+        "sha256": "9DA97BEA88CD2A2B13322AA3A0ABA7ECE74A8A88D1127AFFEDA57C6AE1636FDF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-branch-result-watch.json",
+        "sha256": "4DAA1DE531E1E72EA3434FFC8477B2528C01DF695683EA1283F2D5EDB6654743"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-second-operand-probe.json",
+        "sha256": "CCDED1738BCC4DC6DE4766DFFC5C590DD7F49EF92EB6D1061441CDC5C4EEB468"
+      }
+    ],
+    "relatedCandidateIds": [
+      "7ED6A79FB87870D3A8279356ED1064E38E9B4DA4796582D260F739EA795088F7"
+    ],
+    "remainingFailure": "Correct probability/time ordering still competes with half arithmetic timing and result-home requirements. Full owner is20 bytes over retail6844; C owner activation, exact linked bytes/relocations/table, fresh final compilation and full17 full-ROM acceptance remain open. No artificial refs/weights, forced register/addressability or ABI/compiler/tooling changes.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Express the same unsigned half comparison as an if/else assigning actual result1 or0. Both paths overwrite the old initialized result, so the old zero need not survive the random calls. Signed half scaling and all random calls/reads are retained."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41322,
+      "sha256": "FC0482193C41E6497CA4BFAC61BEA75CA2120C35BD04F04A3672641F16646ED9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "253D78DFF31F7A8C9CA57CCD871F3C5F509CF7813AC6EEE8BFE530D9D5CBECC1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-041a2d379e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

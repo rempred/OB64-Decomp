@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7ED6A79FB87870D3A8279356ED1064E38E9B4DA4796582D260F739EA795088F7",
+  "observationId": "B799044730BC0475A9C26B67F96D7497E5EAFD443FC3CB0D3B46A3995284CA33",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Protected7CB/source04A48A99. New causal ARG0/subtarget evidence reopens the parked half path per Astra continuation for893. Earlier62AFA neutral reversal used an already materialized remainder/threshold form; this experiment reverses the actual remainder expression before lowering.",
+    "effects": [
+      "register-allocation",
+      "instruction-selection",
+      "real-local-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "382218DB4394EDDA069CEB9D8AAB50D9F31A8DD21CDCB78C32F9DF451ED9EDAF",
+      "sourceSha256": "69C8E859D75DC38FB099332697BC76626D3A83500803C2B896CF9B5B16FA54D8"
+    },
+    "label": "d14c-half-second-operand-remainder-local-tie-restores-arithmetic-but-flips-probability-time-priority",
+    "observedEffect": "Source69C8E85/candidate7ED6A79F is PURE_C6864/frame616/177 text relocations with131 calls in retail order. Native154A8DB5. Half region65 now has retail arithmetic/register/order forms except probability s7 versus retail s8 and control immediates. Main arithmetic and quarter core remain intact; helper484 has six word/two byte487 accesses and metadata500 has19 word accesses. Authenticated probeB3951216 shows probability186 keeps10 refs and12 crossed calls, but live length99 becomes92 and allocation order103 becomes101. Time139 remains43 refs/live706/70 calls, order102 becomes103, exchanging probability/time final s8/s7 homes. Pinned global.c595 comparator gives single-word priorities3030 at10/99,3260 at10/92 and3045 at43/706, agreeing with this order change. The final quarter probability copy remains UID2173 at ordinal702 in both probes; half bias read moves from ordinal684 to677. Live length is a flow/path sum, not the full linear def-to-last-use span. A named single-set half mixed word, source6AB92431/candidate50A8D418, has entire identical native text and relocation list; no repeated probe. Wide actual remainder source9A2C1A39/candidate193DCEFE adds pair moves, regresses frame608 and quarter/helper homes. Branch both-results source253D78DF/candidate041A2D37 preserves probability10/99 and time43/706 but uses global result180 in s0 with late half scaling; measured separately in F98611A5. The local-tie mechanism works; none of these outputs is a whole-function best.",
+    "parentCandidateId": "7CB96BE950552FFF0D1D3135A56D2BF8F76221FFB01763FAED4E8C0BBB1A3D9D",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-half-second-operand-watch.json",
+        "sha256": "F3781A2EB6993436A11277A8277A106473BA4CA0D74F31055ED94703F9B4FAB8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-second-operand-probe.json",
+        "sha256": "CCDED1738BCC4DC6DE4766DFFC5C590DD7F49EF92EB6D1061441CDC5C4EEB468"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-second-operand-call-regions.json",
+        "sha256": "E3E74F0BA9E2207ECFF72954B1EF7B2A812075C98FA1F3492B848FC487D3AD97"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-second-operand-allocation-intervals.json",
+        "sha256": "A1E702FA48E954F6CB08E54B2B57E651C8E17B96A78C88151121291574AEE2EB"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-single-mix-second-operand-watch.json",
+        "sha256": "DAC72FAFE72156BCCE34018E52760B4502C5BBAE9ACA945B2590FE3745AFE8D8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-wide-remainder-watch.json",
+        "sha256": "7D9629FBEF41B354CB2F1A7B97CD3C147209DF567052AA38D254783EEBC97F06"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-branch-both-results-watch.json",
+        "sha256": "636ADC387E035D514B3822A89FEB3CA1A5996EBD62F51939CCB463813B94B12D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-branch-both-results-probe.json",
+        "sha256": "74B9C1A8B7920CDBD3247A3862EE662FF4746ABA94D90D611033683D92B99689"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Probability/time priority remains coupled to half lowering. Full owner remains20 bytes over retail6844. Main/table/linked sole ownership, fresh final compilation and complete17 full-ROM gates remain open. No fabricated refs/weights, forced register/addressability, ABI/compiler changes, worker-pocket edits or supported tooling defect.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Only express the existing unsigned half test as (u32)((s32)probability/2) > (u32)(mixed three-random-word expression %100). Signed division, unsigned widths, all three random calls, loads and branch/result meanings are unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41146,
+      "sha256": "382218DB4394EDDA069CEB9D8AAB50D9F31A8DD21CDCB78C32F9DF451ED9EDAF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "69C8E859D75DC38FB099332697BC76626D3A83500803C2B896CF9B5B16FA54D8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-7ed6a79fb8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

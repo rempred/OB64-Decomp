@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9BA106B829DFEB29292A9C3B4D2D52EA642D8AB25D5E65A9E6A9B8D75BDD4716",
+  "observationId": "7643F2C2084EF7E2F666317CA4979DEA54ECAC347678C525700D031BD4EB02DA",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Root arithmetic/helper scope on protected7CB and branch both-results041A. Gold895 retail-chain lead and896 scheduling caution; current source bound to authenticated probeA0482C49.",
+    "effects": [
+      "register-allocation",
+      "real-local-reuse",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "21A021A826F99BF4740C480CED847DC783AFD556AB6FC064FBE55E093EB38EE5",
+      "sourceSha256": "2937755CFD85DB6A359C45FFCDCB203E5EA5BA9D2810F213CD6152E69F1E8384"
+    },
+    "label": "d14c-real-second-random-value-reuse-restores-result-s1-with-probability-time-order",
+    "observedEffect": "Corrected source2937755C/candidate9BA106B8 is PURE_C6864/frame616/177 text relocations with131 direct calls in retail address order; nativeB6ABA585. Table remains64 bytes/align8/15 relocations with4-byte padding; raw table SHA DEA34DA5 is identical to7CB,7ED and041A. Main region59 and quarter region68 retain retail register/order forms apart from control immediates/relocations. Helper484 remains six word/two byte487 accesses; metadata500 has19 word accesses. Fresh authenticated probeA0482C49: global result180 becomes44 refs/live212/six deaths/cross13/order50 and is assigned s1. Probability186 stays10/live99/cross12/order103; time139 stays43/live706/cross70/order102; helper94 stays18/live252/cross23/order104 and spilled. Sched1 preserves second rand2078, actual return-copy2080, third rand2083 in order; final native puts move s1,v0 in third JAL delay slot, satisfying896 caution in this context. Half still uses a fresh v1 destination for the second-random shift and late local v0 scaling. A destructive real shifted-value update source4E137A9F/candidate6141DA30 emits sll s1,s1,15 too early before the reciprocal; expression-local form7CF043E3/candidate42F09638 emits entire identical native9ABABB4F and relocation list, with no repeated stage probe. Uncorrected initial D177 source has a signed shift and was explicitly rejected; no verdict selected from it.",
+    "parentCandidateId": "041A2D379E08AC04489E2F4BCB5F25407A51E41DE34EEF259F342F34AEB2BF7E",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-half-second-rand-result-reuse-u32-watch.json",
+        "sha256": "3B17AD71FE4E9B93F6D7C72BCF20D01C2584058EF1787028F14C8B783565AA41"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-second-rand-result-reuse-u32-probe.json",
+        "sha256": "F505B9571029AEED8119275E37A6EFB4814C952148FAEB0EABF2689B458826F4"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-second-rand-result-reuse-u32-call-regions.json",
+        "sha256": "53D0DADF7B31FCF0F276B2DF69FBB331672AC0894BD59AF41F87E8AC7ACA9AEA"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-second-rand-result-reuse-u32-table.json",
+        "sha256": "3C9CDBEEBB577C06BC256298D4B4F9AB5AF2E700E068CDE5BE4C63EC6476974A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-destructive-second-rand-watch.json",
+        "sha256": "8E0BA9E2E87AD2F765433A8833B9427AEFD0F96F03FD226A79469BA1C75488C1"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-shift-expression-reuse-watch.json",
+        "sha256": "4DB85AD520C70C9B73A259F8422ABD4049ED8E03C536A8CDFA4698EA09D244E0"
+      },
+      {
+        "path": "build/matching/solmode/d14c-half-second-rand-result-reuse-rejection.json",
+        "sha256": "FD4C90227F530B3D6B4EAEC1909433352EC3A21A1B9B2702CAFC371E426D5370"
+      }
+    ],
+    "relatedCandidateIds": [
+      "7CB96BE950552FFF0D1D3135A56D2BF8F76221FFB01763FAED4E8C0BBB1A3D9D",
+      "7ED6A79FB87870D3A8279356ED1064E38E9B4DA4796582D260F739EA795088F7"
+    ],
+    "remainingFailure": "Half shifted destination/order and scaling placement remain nonexact, and whole owner remains20 bytes over retail6844. Component only, no whole best selection, original-source provenance claim, canonical source activation, native contract approval, sole linked ownership, fresh final compilation or complete17 full-ROM acceptance. No fake references/weights, forced register/addressability, ABI/compiler/tooling change.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Store the actual second random return in the eventual result variable and read it with an explicit u32 cast before the15-bit shift. Existing if/else overwrites that real random value with1 or0 on both paths. Three random calls, signed half scaling, loads and resulting branch meanings stay unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41326,
+      "sha256": "21A021A826F99BF4740C480CED847DC783AFD556AB6FC064FBE55E093EB38EE5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2937755CFD85DB6A359C45FFCDCB203E5EA5BA9D2810F213CD6152E69F1E8384"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-9ba106b829.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
