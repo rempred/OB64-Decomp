@@ -35,13 +35,17 @@
         "register-allocation",
         "scheduling-or-block-order"
       ],
-      "applicability": "Moving the real X-span producer before Z and keeping X arithmetic in one expression restored local F0/F2 allocation in this nonmatching candidate. Source-bound dumps retain four FP chains through allocation and show premature sharing by the next captured late-jump dump; same-source SCHED2 is absent, so the first changing pass is unproved. Preserve real operations and paths. The control already allocated X locally; better register choices do not establish correct extent or matching acceptance.",
+      "applicability": "Real X-before-Z expression phases restore local F0/F2 in nonmatching 3C0; its missing SCHED2 capture leaves the first changing pass unproved. Separate counterexample 6186 retains four divisions/casts through SCHED2, then shares at JUMP2. Its arm-local result declarations still become GLOBAL allocnos with a V0 conflict. Keep pass claims source-bound: block scope does not guarantee local allocation. Preserve real paths and operations; improved registers do not establish a match.",
       "note": "docs/dossiers/func_00123458-3c0b9abb61.md#recorded-observation",
-      "references": [],
+      "references": ["docs/dossiers/func_00123458-6186fdce4c.md"],
       "observations": [
         {
           "symbol": "func_00123458",
           "path": "docs/dossiers/func_00123458-3c0b9abb61.observation.json"
+        },
+        {
+          "symbol": "func_00123458",
+          "path": "docs/dossiers/func_00123458-6186fdce4c.observation.json"
         }
       ]
     },
@@ -141,6 +145,18 @@
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-acac3be17b.observation.json"},
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-78ba4d48d9.observation.json"},
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-74e71a423e.observation.json"}
+      ]
+    },
+    {
+      "id": "real-byte-phases-and-initialization-placement",
+      "symptoms": ["register-allocation", "scheduling-or-block-order"],
+      "applicability": "Real raw-mode-byte and normalized-flag phases restore mode/readiness S4/S5 without moving initialization (457). Earlier-zero control B834 restores those homes but puts the zero at the wrong site; 5E is the unchanged control. Counts, ordering and homes are measured; priority ratios are explanatory, not traced allocation decisions. Preserve genuine reads and consumers, inspect full allocation/placement, and retain unresolved terminal sharing. All examples remain nonmatching.",
+      "note": "docs/dossiers/func_001237F0-457bf323de.md#recorded-observation",
+      "references": ["docs/dossiers/func_001237F0-b8345856c9.md", "docs/dossiers/func_001237F0-5e4a4c0189.md"],
+      "observations": [
+        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-5e4a4c0189.observation.json"},
+        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-b8345856c9.observation.json"},
+        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-457bf323de.observation.json"}
       ]
     },
     {
