@@ -2,6 +2,50 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "direct-indexing-and-native-induction-copies",
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
+      "applicability": "Replacing named slot pointers with direct array reads and writes in guarded nested loops restored the outer cursor and inner snapshot, reducing this source pair from 48 to 18 differing words. A separate named-pointer dump rejects a hoisted address's induction reduction; its user-variable copy cost supports a bounded explanation. This is source-bound evidence, not the winning source's internal pass trace. Preserve genuine accesses; never add dummy consumers.",
+      "note": "docs/dossiers/func_0019B800-38a2f59ee0.md#recorded-observation",
+      "references": [
+        "docs/dossiers/func_0019B800-32d362c9c3.md",
+        "docs/dossiers/func_0019B800-352909daa5.md",
+        "docs/dossiers/func_0019B800-f158acd707.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_0019B800",
+          "path": "docs/dossiers/func_0019B800-32d362c9c3.observation.json"
+        },
+        {
+          "symbol": "func_0019B800",
+          "path": "docs/dossiers/func_0019B800-38a2f59ee0.observation.json"
+        },
+        {
+          "symbol": "func_0019B800",
+          "path": "docs/dossiers/func_0019B800-352909daa5.observation.json"
+        }
+      ]
+    },
+    {
+      "id": "float-producer-lifetimes-and-late-tail-merging",
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
+      "applicability": "Moving the real X-span producer before Z and keeping X arithmetic in one expression restored local F0/F2 allocation in this nonmatching candidate. Source-bound dumps retain four FP chains through allocation and show premature sharing by the next captured late-jump dump; same-source SCHED2 is absent, so the first changing pass is unproved. Preserve real operations and paths. The control already allocated X locally; better register choices do not establish correct extent or matching acceptance.",
+      "note": "docs/dossiers/func_00123458-3c0b9abb61.md#recorded-observation",
+      "references": [],
+      "observations": [
+        {
+          "symbol": "func_00123458",
+          "path": "docs/dossiers/func_00123458-3c0b9abb61.observation.json"
+        }
+      ]
+    },
+    {
       "id": "real-workword-phases-and-register-preferences",
       "symptoms": ["register-allocation"],
       "applicability": "At real read/value/reload boundaries, a typed local work word can carry successive cursor and numeric values without extra operations. In the documented 681A precursor, genuine helper-load and increment producers gave the work value A0/V1 preferences, leaving the tag in A1 and removing four instruction-field differences. Preserve every load/store and phase lifetime; never add fake uses. The trace belongs to this precursor, which still had an unrelated address bug, not the later accepted source.",

@@ -21,14 +21,14 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   defines the membership. Use private `build/matching/solsquad/` and the
   [current Sol cursor](Plans/cursors/sol.md); preserve `solmode` as parked evidence.
 - **Parked under Sol:** complete Combat action-mode W6 remains open with all seventeen
-  [original members](Plans/prompts/combat-shared-mode-wave-r1.md). After the current bounded
-  D14C experiment completes, preserve its useful result, best source and precise reopening
-  question in the existing cursor before switching to Squad. Source-level allocation and
+  [original members](Plans/prompts/combat-shared-mode-wave-r1.md). Its useful experiments,
+  best source and precise reopening questions are preserved in Sol's current cursor.
+  Source-level allocation and
   scheduling blockers do not establish a tooling defect or a final HYBRID exception.
   B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
 - **Shop inventory decomp worker:** top-level chat `01a0ffcd-6210-7a03-a178-d7d2af7f1c3b`,
-  coordinated and monitored by Astra. Own the complete four-member classification,
-  ordering and resource-lifecycle wave defined below. The complete producer/splitter wave,
+  coordinated and monitored by Astra. Own the complete fourteen-member menu/state/entry
+  wave defined below. The complete producer/splitter wave,
   `func_0019BE40` and `func_001977E0`, passed its changed-input audit and independent
   structural review on October 4; preserve both as accepted PURE_C prerequisites.
   Use `build/matching/shopworker/` and its single live `cursor.md`; preserve the closed D14C
@@ -43,38 +43,18 @@ actual native evidence and applicable structural approval, audit and review. The
 assignment below retains the full supported family, without treating the original six anchors
 as an exhaustive roster or evidence for increased capacities.
 
-October 4 downstream assignment: after the producer/splitter integration, the Shop worker owns
-the complete four-member classification, ordering and resource-lifecycle wave:
-`func_0019B1B0` (108 bytes), `func_0019B800` (692), `func_0019BB34` (364) and
-`func_0019BCA0` (116). Work on B1B0 first, then B800, BB34 and its paired cleanup BCA0.
-Protect accepted B21C/B26C/BD14 and the complete BE40/1977E0 prerequisite. Keep all four
-members in one final wave verification. B1B0's table r3097 and B800's tables r3098/r3099
-have separate ownership gates; derive actual native sections/relocations before proposing
-activation. Preserve the original zero words at ROM `0x0019C684` and `0x0019C6EC` without
-assuming their provenance or transferring r3095's approval. The source assignment authorizes no
-boundary change; the separate tooling decision below controls the bounded projection work.
+The complete classification, ordering and resource-lifecycle wave is accepted:
+`func_0019B1B0`, `func_0019B800`, `func_0019BB34` and `func_0019BCA0` passed one combined
+October 4 changed-input audit and final independent structural review. Preserve their
+PURE_C sources, original-derived bindings, whole r3097/r3098/r3099 C ownership, all twelve
+r3100 bytes in original ASM, and the exact protected 1977E0 caller with its word-width
+B1B0 declaration. The [audit record](audit/2026-10-04-shop-padded-row-projection.md)
+contains the source-specific evidence and accepted bounded projection version 2.
+That capability does not authorize new owner activations, owned terminal padding or
+version-2 compilation-group composition. Do not repeat this unchanged acceptance.
+Protect accepted B21C/B26C/BD14 and the complete BE40/1977E0 prerequisite as well.
 
-October 4 tooling decision for this wave: Astra approved a bounded, explicitly versioned
-fixed-row auxiliary-projection extension after independent agreement from GoldOx and
-MagentaTiger (Agent Mail 1047/1051, thread `ASTRA-SHOP-AUX-PROJECTION-20261004`).
-Current B800 native evidence has two 100-byte pointer tables at offsets 0 and 104 in a
-208-byte section. Existing r3098 owns 104 bytes, r3099 owns 100, and all 12 bytes of r3100
-must remain original ASM; only its first four bytes correspond to terminal native alignment.
-The extension must allow authenticated native alignment inside a complete payload row,
-distinguish pointer-entry intervals from whole ownership intervals, preserve the original
-section anchor/addends, reject every padding symbol/relocation/reference, and retain legacy
-version-1 semantics. Version the object evidence and reject the new mode through every
-unsupported composed/group path. Hashes bind native bytes; they do not alone establish
-copy provenance. Require native grammar, independent slice reconstruction, adversarial
-tests, accounting checks, applicable routine tests, independent review and changed-input audit.
-Implement in a coordinated interval when the complete four-member source wave is ready,
-then use its one combined wave/audit verifier. Both workers continue existing private checks
-until that interval; there is no current hold, boundary change or target activation approval.
-Read-only evidence is in `build/sol-five-family/b800-padded-row-readonly-assessment-20261004.md`
-and the Shop worker's current native artifacts. Final contracts require the selected source's
-actual labels, entries, padding, hashes and relocations, not trial identities.
-
-The later complete menu/state/entry wave retains `001989C4`, `001994B4`, `0019A1AC`,
+The current complete menu/state/entry wave retains `001989C4`, `001994B4`, `0019A1AC`,
 `0019A294`, `0019AA04`, `0019AB44`, `0019ADF0`, `0019AF78`, `0019B4C4`, `0019B63C`,
 `0019B710`, `0019BAB4`, `0019BAE4` and `0019BDD4`. BDD4's original 108-byte entry adapter
 remains required by the full-family assignment; it is protected ASM until this later wave,
@@ -86,9 +66,10 @@ The worker's private `shop-downstream-complete-wave-proposal.md` and `.json` und
 `build/matching/shopworker/` retain the complete 23-owner inventory and direct evidence;
 this queue adds BDD4 to the later group rather than leaving it unassigned.
 
-After the producer/splitter integration is recorded, Astra releases refreshed intake and independent
-private checks for this Shop wave and Sol's complete Squad wave. Their new table/source candidates
-do not alter accepted canonical inputs during iteration; integrate only complete ready waves.
+Resume refreshed intake and independent private checks for this complete Shop wave and Sol's
+complete Squad wave. Preserve every member and all parked Combat obligations; no per-function
+integration pause or acceptance repeat is introduced. Establish dependency order from the full
+inventory and current evidence, then handle one target at a time.
 
 Both workers run private checks concurrently and report material results/blockers to Astra.
 Claude/GoldOx advises only on specific genuine blockers. Sol remains the sole production writer
