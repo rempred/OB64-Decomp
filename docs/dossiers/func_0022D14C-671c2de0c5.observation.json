@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "671C2DE0C5D85280ED6498AAE49C7CD4F4C4EACA27D9749F179296DB049BB5EF",
+  "observationId": "5307D5521255CFCBF01533CDFAB548B555E1FA29445DBC4106A37ED4D363DBB7",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Private C representation hypothesis under the pinned compiler, not a compiler-contract or structural-owner change. Byte positions/ranges are static, original declarations and runtime meaning are unresolved. No extra data, consumer, identity, padding, forced storage, flags or tooling defect. Canonical inputs remain unchanged.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D573DA48B756EC2AB3100253CEFCFE6604ED97CBE042862D757A07A976B866EA",
+      "sourceSha256": "77018CCABCFF21E1A9ACF44A983682A239472988A9A3FB0557A5CDBC3E3BCC9C"
+    },
+    "label": "Fixed serialized metadata bit-fields add four loop-time instructions and one final mask",
+    "observedEffect": "Source 77018CCA / candidate 671C2DE0 is PURE_C: 6,848 bytes, frame 616, 177 relocations and 131 ordered calls. Region62 gains one final ANDI; raw differences are 1,016 words/3,466 bytes. Authenticated probe9812FCD4 has six artifacts/three dumps. Actor LOOP input is858, post-LOOP830 and COMBINE715, with70 calls in both dumped stages; inline/mode annotations are included. Literal726 has life4/savings4 and still moves to4629. The prior word-bit control is whole-native/every-relocation identical to the integer helper and has854/826/714 counts. Thus this fixed-byte view gains four input instructions but retains one native mask; it is unselected. Physical offsets/widths are compared diagnostically, not accepted as a new shared schema.",
+    "parentCandidateId": "0BAEC83D930C73FDAF36F2D2AECA620291A2DD3D8F90F98741745079883D5191",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-fixed-metadata-bit-fields.c",
+        "sha256": "77018CCABCFF21E1A9ACF44A983682A239472988A9A3FB0557A5CDBC3E3BCC9C"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-fixed-metadata-bit-fields-watch.json",
+        "sha256": "3E3B1B6C43BD06B36DCFBFD9FA9F59DD97C2E906E108C3AF7C2DACC370D1C599"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-fixed-metadata-bit-fields-call-regions.json",
+        "sha256": "9D1886BCF64EBE7DE25DD653B2BBA04B95147009C3126254F2D007D91DA91759"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-fixed-metadata-bit-fields-probe.json",
+        "sha256": "57F3D290268E66C212556A1AA4659D945AAAAB3A6F3F5A4D505B636D6B83DF90"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-existing-word-bit-fields.c",
+        "sha256": "3733BE7A642BFA4FFEF3BF165077998B3A136094790E81E2DEEAB8A2BC540639"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-existing-word-bit-fields-watch.json",
+        "sha256": "1188E67F7A9DFF10F22FDEC99A2D7C1A1A780697A9B195F3C6096AFB12A318A2"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-existing-word-bit-fields-probe.json",
+        "sha256": "309D89F1F0A1F6478CCD21B799BF7FED790CB3DC67CE49CA5426455A3B17F5DC"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Final extent and mask differ; the four literals still hoist. Current continuation remains6715F5D1. No linked/ROM, table or complete seventeen-member W6 acceptance. Original production function/table ASM remain unchanged.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Add an ordinary local union view of the twelve existing fixed metadata bytes as unsigned-int eight-bit fields in big-endian order, followed by the existing count word. Replace only literal accesses below byte12; preserve every array, dynamic access, total packet storage and the separately measured neutral +0x40 bit stores. Field names describe positions only."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41308,
+      "sha256": "D573DA48B756EC2AB3100253CEFCFE6604ED97CBE042862D757A07A976B866EA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "77018CCABCFF21E1A9ACF44A983682A239472988A9A3FB0557A5CDBC3E3BCC9C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-671c2de0c5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
