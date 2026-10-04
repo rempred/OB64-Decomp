@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "45DDCE6D903894656A445974BC9EB76142A6122D6FDD3EA25C9DFEBFD560DB17",
+  "observationId": "E81D6487949C49CFF09DAB0AC8BA3E5AAE1C7A97B0F18D0E79D45663CDE20D09",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Actual9D/B342 three-base control plus measuredE1F realtwo-pathwordadvance and CB7 actualwordcursor reuse; allD14C Solscope, canonical unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F2BDAB97C86F8AC85D36638132A3E9350209E91126D1F23FFF699922F01F903B",
+      "sourceSha256": "3EB4BF3DA7A2E7FE91BFFF5B31B5805FEEC183A605EE4B1E7134BC7D36109391"
+    },
+    "label": "Two real mechanisms keep word base canonical and avoid offset giv",
+    "observedEffect": "Source3EB4BF3D/candidate45DDCE6D native6852/frame616/177actualR/all131ordered. Fresh6116D3A3 authenticatesRTL/loop/cse2/FLOW/LREG/GREG, PURE_C/exactsource/allartifactSHA. Actualword103=fp40 andfourword-addresscopies113/112/98/99 from103; byte97=fp126,189=97. Word10323refs/live75/order41; first198,last1746; two+16givs combine but notworthwhile0vs48. WordS1/read+16 andmainwordS1/indexoffsetS0 restored. Fivecopyrefs7 with spans excluded45,halfSource46,wordDst47,halfDst48,byteDst49 yield wrong firstdestinationhomes. Reloadordering/scratch/two wordupdates/slots stillwrong.",
+    "parentCandidateId": "B3423B07174617DED06C12C32C46F5D6E068DCB799261448A59B33C5520F6B8E",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-tail-main-reuse-prep.json",
+        "sha256": "069DD28D8389A7B41FC6F9BDA07CC2BAC0544AA431AE0D3AE8B66A9D8EFFD3D4"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-tail-main-reuse-watch.json",
+        "sha256": "23A1DAA636339B455F7FDCFDF9EA70278D85E9A7A341BB90318C044814560832"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-tail-main-reuse-call-regions.json",
+        "sha256": "28BFDF7DEFC4BBB5AC55E5287B9F16E1EFF82459E20489F05251490C23EC30BB"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-tail-main-reuse-probe.json",
+        "sha256": "86669E48C6B1E18B29CD6CDAAA74572814DFEA758B506FEC8327218C2E947A76"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-tail-main-reuse-first-filter-init.txt",
+        "sha256": "3ED96BC729D7814DA9CF532049247B17B58F73145C5AB3E15A67219649ED330D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-tail-main-reuse-loop-first-decision.txt",
+        "sha256": "6DE2B08D3563002CBF96BC1F9F02BDC61471D170F5A8289B44F2529B4503C876"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Source-specific CSE/loop mechanism combination measured; pinnedcse.c longestUID explanation fromGold949 is authoredmechanism, not proof oforiginalsyntax or generaltransfer. Nonexact+8B, no wholebest/linked/ROM acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compose actualE1F firstfilter word++ in bothretained/excluded paths with same actualcursor later mainpacket wordreads/copyinput, retaining originalmainreset. Other scalarphases stay9D; every runtime path increments once, no extra operation/syntheticreference."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40657,
+      "sha256": "F2BDAB97C86F8AC85D36638132A3E9350209E91126D1F23FFF699922F01F903B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3EB4BF3DA7A2E7FE91BFFF5B31B5805FEEC183A605EE4B1E7134BC7D36109391"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-45ddce6d90.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

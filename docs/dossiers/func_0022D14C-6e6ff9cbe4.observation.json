@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6E6FF9CBE4763932A21B9FB15D00BD9754749ED748033CC256B24092652A1551",
+  "observationId": "EEB0910F4A37F1F2E4C949C88636ACC40DC9E4F4D37B5D9A2E90C21E7BF61FD5",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Actual9D/B342 three-base control plus measuredE1F realtwo-pathwordadvance and CB7 actualwordcursor reuse; allD14C Solscope, canonical unchanged.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3802448C5CEA168462180ED5F56F10E6D726E2DE6F238328B589AFAEFD0A35C8",
+      "sourceSha256": "83CECA92C331AA1A0EFFE499246C2574D36ED30BA907151AACABDFF5AED175AC"
+    },
+    "label": "Real source births before destinations restore all first pointer dispositions",
+    "observedEffect": "83CECA92/6E6FF9CB native6856/frame616/177actualR/all131ordered. Fresh0876E23D authenticatesRTL/loop/cse2/FLOW/LREG/GREG/currentPURE/source/allSHA. Actualword103 remains23refs/live75/order41; allcopies fromit. Copyrefs all7: wordDst112live45/order97,halfDst113live46/order98,byteDst189live47/order99 becomeS4/S7/S8; halfSource98live48/order100 andexcluded99live49/order102 spill204/20C. SourcewordS1/byteS2 correct. Thus allfive first pointer register-versus-stack dispositions restored. Retail actualstackslots234/23C NOTrestored. Word++ still duplicated andbeql appears; initializers beforecountgate/scheduling wrong.",
+    "parentCandidateId": "45DDCE6D903894656A445974BC9EB76142A6122D6FDD3EA25C9DFEBFD560DB17",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-reuse-early-source-cursors-prep.json",
+        "sha256": "06EF922733AE34E30E94768B5BC93511A9891A08541B688FDDC755B739C2F82D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-reuse-early-source-cursors-watch.json",
+        "sha256": "DA5A2B9A3746C46F799B6D047A49CB0A5709A03039C75E2458E7656228D9008E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-reuse-early-source-cursors-call-regions.json",
+        "sha256": "774EB9196AF9E60DBA8B5AF18186A0A9268E4DB99F213A524927849EC218C25A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-reuse-early-source-cursors-probe.json",
+        "sha256": "09360FDFB120E738A619F6D721CCE993AA2246962F872D4F8057EFD7B2FEAE35"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-reuse-early-source-cursors-first-filter-init.txt",
+        "sha256": "0F02B9D29FD2E1F6A0D1BF0942EE4555BECC3204030950A825BC6E8C5802F589"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-all-base-word-reuse-early-source-cursors-first-filter-facts.json",
+        "sha256": "EC5EDDEDCD8EDE2174D07B71138D91CFAC35039DCE1758DABBEFB6D6B4B80DE0"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-late-prefix-cursor-declarations-watch.json",
+        "sha256": "8D4ABC26C533A30B7FCA2BC72391276B8302E019A8DC4C21531F823FCFC8915D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact+12B, no wholebest/linked/ROM acceptance. ActualLREG source/destination spans allshifted by2 fromparent, not prediction sourcesonlybirthshift. GOLD951 predictions remain predictions where contradicted: actualslots204/20C differ. Declarationgrouping74D277 is whole-native/177actualR-identical83CE; no unchangedprobe or selectedresult.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Same actualexcluded/half-source definitions beforethree retaineddestinations, all savedwordstart/byteStart; assignments/reads/progression/callbacks unchanged. Longestactualmainwordcursor stillcanonical; no fake refs/extra operation."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40661,
+      "sha256": "3802448C5CEA168462180ED5F56F10E6D726E2DE6F238328B589AFAEFD0A35C8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "83CECA92C331AA1A0EFFE499246C2574D36ED30BA907151AACABDFF5AED175AC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-6e6ff9cbe4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
