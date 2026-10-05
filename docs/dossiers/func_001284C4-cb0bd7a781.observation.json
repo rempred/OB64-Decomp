@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CB0BD7A7815F6F952E4DDAB928BE2DA89EA8A90C83A95C29B72A6B8F76682C8F",
+  "observationId": "267D13024D27E3F2FF6215D44A91AEEBBCBF78189790572FB5850C7A75A6229F",
+  "symbol": "func_001284C4",
+  "authored": {
+    "context": "Complete Squad pursuit21 remains open, comprising original13 and eight newly authorized complete producer prerequisites. This diagnostic touches only private284C4 source; canonical inputs are unchanged.",
+    "effects": [
+      "first-comparison-scope",
+      "coordinate-lifetime",
+      "register-allocation",
+      "temporary-regression"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6E0292E29D80BECE82B774EBEDBB8C3B47B97EF103CC89E684B26312A2634EC4",
+      "sourceSha256": "160C70F04B933059831DE7A5AC03B040B9C7B21FA1587114AB26AAFB4D9E9CC0"
+    },
+    "label": "scoped-second-candidate-keeps-extent-changes-first-fpr-roles",
+    "observedEffect": "CB0BD7A7 remains PURE_C1192/frame56/54 actual relocations, with119 symbolic words/324 bytes and83 ordinary masked word differences. Prefix288 differs22 words/20 opcode-register fields. Native first candidate08 becomesF4, minimumF2; genuine raw unit+10 usesF2 after the first comparison, and cosine product moves to the first branch delay slot. This source changes the first real lifetimes but does not obtain retail minimumF4/candidate08F2 or original scheduling. It is not selected.",
+    "parentCandidateId": "37A3D3A2D993254EF7588F4218CE35E5887AF6286A36EFB8ADDBC02628BE32AF",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-1284c4-first-comparison-scoped-second-candidate-watch.json",
+        "sha256": "17D5EE3946CC13BF84BB22B8F4F721F14362466B960B8DCBFE9DD2A494AB2E01"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1284c4-first-comparison-scoped-second-candidate-component.json",
+        "sha256": "86397447C3D57BD662FCD6CEC3D110349C4CA8FB016109053330E5EA1BD624A5"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001284C4.s",
+        "sha256": "9C3465B0088F694048265A3F1154BC61C87BAE779787E2C1D34CFC533B92AB04"
+      },
+      {
+        "path": "docs/NEXT_STEPS.md",
+        "sha256": "B8616A7502A6D5B63DA1F91BE8D39D943D23B067678613634E854E8C6365670E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Preserve3C1BD85C as current readable best and37A3D3A2 stage evidence. First-bound and later allocations remain nonexact; no linked address/addend proof, owner activation, compiler/tool change, hybrid exception or complete-wave acceptance. Source work now continues106E48 under Astra1148.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Relative to37A3D3A2, capture the genuine unit+10 float and scope its candidate subtraction inside the first lower-bound success arm. Retain actual coordinate/cosine/minimum reads, every comparison and all three candidate/grid/output paths. No extra consumer, volatile barrier, forced register or capacity assumption."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4937,
+      "sha256": "6E0292E29D80BECE82B774EBEDBB8C3B47B97EF103CC89E684B26312A2634EC4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "160C70F04B933059831DE7A5AC03B040B9C7B21FA1587114AB26AAFB4D9E9CC0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_001284C4-cb0bd7a781.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

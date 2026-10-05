@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3C1BD85C2E13D0564ACD1641977FD83A3E06C620F66403308FFB579E446CB83F",
+  "observationId": "D886A3CC9B40573C7FADF3DA945EB81E34A13024BF8948B65D0E74A995BF428C",
+  "symbol": "func_001284C4",
+  "authored": {
+    "context": "Complete Squad W4 pursuit THIRTEEN remains open. Ten accepted sibling inputs are unchanged; D30,284C4,10766C remain production ASM. Full298 original words and three candidate/cell/output paths are covered. Flat table strides do not establish capacities or column domains. Current native diagnostics do not prove linked addresses, ownership or full-ROM acceptance.",
+    "effects": [
+      "body-coverage",
+      "current-target-replay",
+      "flat-interface",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C6D1BB4C7F6F9A3E2299C52D325E3EC95E10F9CC2FC1FFBEB1FD102262454AE1",
+      "sourceSha256": "E637BF539AD9DC54ADE0374CF9EACB5D557CA6912F0AE427B239D35DB9BE66A4"
+    },
+    "label": "current-flat-row-full-body-control",
+    "observedEffect": "Fresh3C1BD85C is PURE_C1192/frame56/54 actual relocations. Normal symbolic watch115 words/308 bytes differs; actual-relocation masking leaves78 ordinary word differences. First288 bytes contain17 differing words,15 changing opcode/register fields. Extent and frame match; output remains nonexact.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-1284c4-reopened-flat-control-watch.json",
+        "sha256": "54C7B8AE62421B7F1B4B5C5598E073D40426376E99FDCF9A7B5FBB408E18E244"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1284c4-reopened-flat-control-component.json",
+        "sha256": "C8CCD8BDC7788B13A58646A44BFDCF315D42E13241A9464C3A0EF2936DE59290"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001284C4.s",
+        "sha256": "9C3465B0088F694048265A3F1154BC61C87BAE779787E2C1D34CFC533B92AB04"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "First-bound ordering/FPR allocation and later coordinate/grid/base/column register choices remain unresolved. Original ASM retained; no source activation, linked/addend proof, compiler/tool change, hybrid exception or completed-wave acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replay the preserved readable flat-row candidate unchanged against the current accepted target. Retain all floating comparisons, reloads, three actual calls and complete candidate/grid/output paths without asserting bounded table layouts."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4763,
+      "sha256": "C6D1BB4C7F6F9A3E2299C52D325E3EC95E10F9CC2FC1FFBEB1FD102262454AE1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E637BF539AD9DC54ADE0374CF9EACB5D557CA6912F0AE427B239D35DB9BE66A4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_001284C4-3c1bd85c2e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

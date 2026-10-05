@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "37A3D3A2D993254EF7588F4218CE35E5887AF6286A36EFB8ADDBC02628BE32AF",
+  "observationId": "D3C15D44C9798F4F20A5875A14C03FCDD7A8F653CEA3C84CAAA699D089EBFD57",
+  "symbol": "func_001284C4",
+  "authored": {
+    "context": "Complete Squad W4 pursuit THIRTEEN remains open. Ten accepted sibling inputs are unchanged; D30,284C4,10766C remain production ASM. Full298 original words and three candidate/cell/output paths are covered. Flat table strides do not establish capacities or column domains. Current native diagnostics do not prove linked addresses, ownership or full-ROM acceptance.",
+    "effects": [
+      "first-bound-lifetime",
+      "scheduling",
+      "register-allocation",
+      "native-neutral-source-change"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4D318570A7C2E413090FAE74D61BCC44910A4A2E7B94252073041ADE532874EC",
+      "sourceSha256": "A466BB0DD52A0F57B9EA9EC85106150D976761932466E0724992353B2ECC0FC5"
+    },
+    "label": "real-point-trig-bound-capture-scheduled-before-bound",
+    "observedEffect": "37A3D3A2 remains1192/frame56/54R and native-neutral to fresh flat control:115 symbolic words/308 bytes and78 ordinary masked words. Seven0CFAE791 artifacts rehashed. RTL has cosine call73/copy75, raw point load78/pseudo104, minimum load81/pseudo105, product83, candidate-add88. SCHED1 removes copy75 and orders call73, raw load78, product83 using hardSF32, candidate-add88 with REG_DEAD104, minimum load81. GREG maps raw104 toF2, product83 toF10, kills F0 cosine; minimum105 uses now-freeF0. Thus authored captures do not preserve these intended lifetimes into the actual allocation. Native neutrality alone does not eliminate the underlying readable source structure.",
+    "parentCandidateId": "3C1BD85C2E13D0564ACD1641977FD83A3E06C620F66403308FFB579E446CB83F",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-1284c4-first-bound-with-raw-point-watch.json",
+        "sha256": "561062F45AEB58934871CE436C3C3B4CD8323877B5ACB70B950C264DC109B457"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1284c4-first-bound-with-raw-point-component.json",
+        "sha256": "6432B0ACC75E99E19261902711EFC05FFC8BE76B0A6FEDFD646805AB3A8074E9"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1284c4-first-bound-with-raw-point-probe.json",
+        "sha256": "EBEF518289F95426115BA45077821F417CFFE4B8191E51F3E51E1DE81BDCFBB6"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1284c4-first-bound-with-raw-point-stages.json",
+        "sha256": "6257D994D9B55CFBAD2C794902C81DF0FBECE8C7555BDAFE0B13096E02BAD23F"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001284C4.s",
+        "sha256": "9C3465B0088F694048265A3F1154BC61C87BAE779787E2C1D34CFC533B92AB04"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This exact capture is not selected. First-bound retail minimumF4 and earlier cosineF0/rawpointF2 coexistence remain unexplained. Preserve current3C flat control and historical bounded-layout3A only as diagnostic evidence; no fabricated operations, assumed capacities, compiler-defect claim, hybrid exception or wave acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture genuine cosine result, raw unit+08 float and first minimum in source before the actual products and candidate updates. Preserve every actual read/call/arithmetic operation; no volatile barrier, extra consumer or forced register."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4895,
+      "sha256": "4D318570A7C2E413090FAE74D61BCC44910A4A2E7B94252073041ADE532874EC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A466BB0DD52A0F57B9EA9EC85106150D976761932466E0724992353B2ECC0FC5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_001284C4-37a3d3a2d9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

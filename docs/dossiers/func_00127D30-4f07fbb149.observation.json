@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4F07FBB1495C3546DA5F66DFD2671BA9BB8E38F2C36C4410F4B2228525546E35",
+  "observationId": "4B1B45CD365BB898FC4452061BF80586857B0B10B80096A92B2C5DFE970C360B",
+  "symbol": "func_00127D30",
+  "authored": {
+    "context": "Complete assigned Squad W4 pursuit THIRTEEN remains open. Ten active exact siblings are protected with unchanged source-specific proof; D30,284C4,10766C remain production ASM. D30 full360-byte/90-word frameless owner and every candidate/filter/distance/selection path are covered. Array strides and addressing do not infer capacities. Current native diagnostics are separate from actual linked/ownership/full-ROM acceptance.",
+    "effects": [
+      "real-value-phases",
+      "input-lifetime",
+      "register-allocation",
+      "bank-address",
+      "temporary-regression",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "14375A99E967167A8C56A9D7FAE3E129C3444D47EEA3D7146DDA80E8B6D81438",
+      "sourceSha256": "2160BBCFFDF2238D0DE408D6BFE2CD2153812FAD32A1C50B99F21DC7463A97D7"
+    },
+    "label": "genuine-selector-and-byte-phases-remove-input-copy",
+    "observedEffect": "Plain bank transfer B711 grows364/frame0 and copies unit A0 toA1. The phase source4F07FBB1 restores360/frame0/8 relocations, no calls and incoming unitA0. First shared LA instructions agree after actual relocation masks; eight ordinary differences remain in the setup through offset40 and every later word agrees. Symbolic watch16 words/35 bytes is not actual linked proof. All9 D509ED4F probe artifacts were authenticated: work pseudo73 has4 refs/life8/two deaths, GREG classifies it globally with hard2/3 conflicts and assignsA1; selector shift79 usesV1. Word24 pseudo81 assignsA2. Unit72 remainsA0; later loop allocations agree. Updating the real scale in place (AF6C2FD0) stays360 but loses the shared address, has10 relocations/nine masked differences, and is not selected. These observations preserve the useful phase path without eliminating its structure from a temporary regression.",
+    "parentCandidateId": "01C46CB83D741ACC2DF6A9553EE8A18B786AB93D67B98758AD1D02EA05CCB4BD",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-127d30-bank-and-byte-phases-watch.json",
+        "sha256": "E5C3A55DF42D28819EAFB252DEEDE4A7D2B57206FDDF4C7A594B74A3E1E99E33"
+      },
+      {
+        "path": "build/matching/solsquad/squad-127d30-bank-and-byte-phases-component.json",
+        "sha256": "FBB3C2BF5B8E7D4DC6D0A56DDD48E9BC78EACB3C5CD280E251770A04C4356E46"
+      },
+      {
+        "path": "build/matching/solsquad/squad-127d30-bank-and-byte-phases-probe.json",
+        "sha256": "C79AD5002F1AE7AB1EE26326CDFBB076EA656246BC6D3409A0A1A5185019AAF3"
+      },
+      {
+        "path": "build/matching/solsquad/squad-127d30-flat-bank-multiply-transfer-watch.json",
+        "sha256": "50B4F0DE671368A570BB7372C4F4BE1FCC21386C1715A5495D3DB149A9EA01E4"
+      },
+      {
+        "path": "build/matching/solsquad/squad-127d30-scaled-bank-and-byte-phases-watch.json",
+        "sha256": "A454753963E530E64BCCFFD2A7B60932D3330B09DFB55FD905B219E686B13388"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00127D30.s",
+        "sha256": "FAFDC1E597AE11D455A03A84B1C65FAB603BE5A3C4628CEF7B7147117C3BAB2C"
+      },
+      {
+        "path": "src/lib/func_0012D6FC.c",
+        "sha256": "E961C5B38E460DEDE4B3334C75BDB7198DC02DF6436934551B08776917085B31"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Retail requires selector/byte20 inV1, word24 inA1 and original initial scheduling. Eight masked setup differences and actual address/addend bindings remain unproved. Preserve01C46CB8 as useful current best and this phase effect for future source work. No fabricated operations, ABI narrowing, compiler/tool change, capacity claim, hybrid exception or wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Relative to fresh01C control, transfer the accepted12D6FC flat D_800E7A90 bank view and real4*selector expression. Reuse one genuine u32 work value first for the selector byte, then for the initial unit byte20 comparison after the selector is dead. Keep the same reads, four-byte bank scale, full-width unit word24 and all subsequent scalar/float paths."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2197,
+      "sha256": "14375A99E967167A8C56A9D7FAE3E129C3444D47EEA3D7146DDA80E8B6D81438"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2160BBCFFDF2238D0DE408D6BFE2CD2153812FAD32A1C50B99F21DC7463A97D7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_00127D30-4f07fbb149.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
