@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F9A62567000ED424D1ABE5BB96D777AC778874C8CA0B0F094CAF89BF45A87271",
+  "observationId": "566C5FCCDDEA06FD811BD028D4FCA5D72690832BADF6B999472E58B237E4B115",
+  "symbol": "func_0019B710",
+  "authored": {
+    "context": "D2DF509D preserves full240B B710 with only three decrement-byte temporary register differences. Both increment arms are explicit, and the quantity is a word accumulator. Shared publication requested by Astra; source-bound frozen private evidence reused without native or ROM rerun. Entire14-member wave remains unaccepted.",
+    "effects": [
+      "register-allocation",
+      "control-flow",
+      "native-closure"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "FDE03F0A276995772411278BC21C71E03BACD8C4CCB7BCB0F948D78F20ECC1F1",
+      "sourceSha256": "197BEEB457078ED776CA134B0F0B5DE4EFE6C43C1A38BCB96C68E33377C5B562"
+    },
+    "label": "shared-explicit-byte-consumers-native-closure",
+    "observedEffect": "Saved private evidence: PURE_C240/frame32/seven actual relocations; zero differing instruction fields outside actual relocation immediates. Full pointer-load preamble, six control regions, one LHU/five LBU/one SB/one call remain. D_800C4C4C binding agrees; all internal jump addends agree with original targets. func_8020CDA0 requires an integration alias at8020CDA0.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-0019b710-explicit-byte-consumers-full-field-census.json",
+        "sha256": "D4CDE514C0FB0CB2DA7E7A93D1FD95CF85BC0D8815CE75F02C91C96D8A37B432"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b710-explicit-byte-consumers-coverage.json",
+        "sha256": "EEDD4CC587A1C7C2CEB5E0941C9634C6175524BF8955DCBBC107B3449CCE9E24"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b710-explicit-byte-consumers-native-evidence.json",
+        "sha256": "D60B5C0BD8830AB8FE7DD2D0B6D0BEBC8E219907A906BB4D9F978A4148C1FF71"
+      },
+      {
+        "path": "build/matching/shopworker/shop-b710-current-binding-note.json",
+        "sha256": "546F1551BC5BEE39F3904E3F00D1DA1649707DCF6A64215C447622FC369E6FD0"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b710-explicit-byte-consumers-observation.json",
+        "sha256": "6DDA7C481C78CDF68F7E066E042F71EB50357820D5E9A63F2E57FEEE54E864AE"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b710-explicit-byte-consumers-import.json",
+        "sha256": "D4EBCA217E3698F900D5AA7BFD991970074BDF2AD780C77E692A91A57F9F5D24"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b710-explicit-byte-consumers.c",
+        "sha256": "197BEEB457078ED776CA134B0F0B5DE4EFE6C43C1A38BCB96C68E33377C5B562"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b710-explicit-byte-consumers-watch.json",
+        "sha256": "36035D74CAB7DF5F3D93613C3072F9A05188B2BA0B98DC5CC83B810AF77A51ED"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Native closure only. Inactive ASM owner has no authenticated private linked comparison; canonical sole ownership, symbol binding, linked bytes and complete fourteen-member full-ROM acceptance remain. No table activation or new structural contract. This publication establishes no new matching acceptance or production activation.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Place each decrement u8 conversion in its corresponding branch instead of capturing a shared low-byte temporary. Preserve all real reads, writes, call width, input priority and clamps. Comment the source-level compiler constraint."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1505,
+      "sha256": "FDE03F0A276995772411278BC21C71E03BACD8C4CCB7BCB0F948D78F20ECC1F1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "197BEEB457078ED776CA134B0F0B5DE4EFE6C43C1A38BCB96C68E33377C5B562"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0019B710-f9a6256700.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

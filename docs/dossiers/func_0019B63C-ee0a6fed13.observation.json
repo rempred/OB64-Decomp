@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EE0A6FED1333D2E31FC2AAFF389C9B7C191BC4E2C76B18322FD5F3066064767C",
+  "observationId": "FB8FD716AA694357CB79926516DCE88BCCA8C9D74EF2A567E6E5CD254146048D",
+  "symbol": "func_0019B63C",
+  "authored": {
+    "context": "Complete14 Shop wave; fresh exactr3081 intake and full53word body. Relevant accepted lookup prototype reused; byte02 distinguished from price byte03. Shared publication requested by Astra; source-bound frozen private evidence reused without native or ROM rerun. Entire14-member wave remains unaccepted.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E4173B33C58683CA4291C977C71E7717A0384992246BA6BA9222B8FA3B282C44",
+      "sourceSha256": "C4CECED96B596C3647357D24DCC87F2754E041F670D6783E69A82A1DF5D6806C"
+    },
+    "label": "shared-shop-b63c-retained-new-slot-value-best",
+    "observedEffect": "Saved private evidence: PURE_C212/frame32/15 actualR/zero differing words outside actual relocations. One lookup, one LHU, two LBU, one SH and two SB; both internal tail targets and existing bindings agree. Byte-offset192 and record-index200 controls retain coverage; branch-local accumulator204 does not preserve original lifetime.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-retained-new-slot-value-native-evidence.json",
+        "sha256": "F3D27D659BA7AFCDA371C4CC8EE843FC8B4F825A35E95CEFA8A57BA510949426"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-retained-new-slot-value-full-field-census.json",
+        "sha256": "E8ADB33527D370F410E68A3A8DD418E36A979442B996300F405A73973DEFE1FB"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-retained-new-slot-value-coverage.json",
+        "sha256": "4A56A6840544E3946717E6E45C0C7130A8176EF5AB207A77036C0F12BB963C9D"
+      },
+      {
+        "path": "build/matching/shopworker/shop-b63c-current-binding-note.json",
+        "sha256": "2447FF8717B71929FFFACA0AED23BC2A87803A3EA61E4CEE4A73523B7A6CED27"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-current-intake.json",
+        "sha256": "8177100CB17BAA9D1B9B8E626B0EE49647592B1EC031A969BB5C5BFFFA75836E"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-full-disassembly.txt",
+        "sha256": "515AA35CE1FB02937CA49FDFC15340503143910EEA8F63AF5349306E2BE4BD9F"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-record-index-scan.c",
+        "sha256": "4769A15E0FCB5EEA8536F81F9EC08F69669A3CBF4183356315745272F8821530"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-record-index-scan-coverage.json",
+        "sha256": "251C64B25E523F59A0C69944D12E6EF6AD1ED4B3DAE6112AD0A4B309BC57534F"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-new-slot-value-update.c",
+        "sha256": "AA5C516E621B12D4EF62488C0101E9D0D260A2AE4041054948253002A160BD81"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-new-slot-value-update-coverage.json",
+        "sha256": "2CF3F1C5F390FF699BB37D1EA1F84D3CACD48BBACBC63EB7F577F6957ACBA8EF"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-retained-new-slot-value-observation.json",
+        "sha256": "D790863A9F9B45BFDAD630EFF6CF05CE7F1401CE3FA61D0216389C75D99297E8"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-retained-new-slot-value-import.json",
+        "sha256": "6ED3D38EB872B575A4429E3BA932C1B43C8F01432938DBB686373E355CB285A7"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-retained-new-slot-value.c",
+        "sha256": "C4CECED96B596C3647357D24DCC87F2754E041F670D6783E69A82A1DF5D6806C"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019b63c-retained-new-slot-value-watch.json",
+        "sha256": "BFF1929EE74450B17808C10AA71ED41885E13E14723B0AFE712453788225D3DB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Sole canonical C ownership, placement/actual linked bytes and complete14 PURE_C/full-ROM verifier remain. No new binding or table requirement. This publication establishes no new matching acceptance or production activation.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the proven four-byte record layout and forty-record index scan; retain the incoming word contribution for the new-slot update across lookup. Both updates use unsigned word addition then original byte truncation. Nearby comment explains pinned lifetime."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 852,
+      "sha256": "E4173B33C58683CA4291C977C71E7717A0384992246BA6BA9222B8FA3B282C44"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C4CECED96B596C3647357D24DCC87F2754E041F670D6783E69A82A1DF5D6806C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0019B63C-ee0a6fed13.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
