@@ -8,30 +8,43 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol (October 5 fresh free-tree worker):** top-level chat
-  `01a10dea-ea68-7661-bb54-081e3d97f644`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete five-owner resource reallocation / free-tree wave:
-  `resource_realloc` (932 bytes = primary780 + required `func_00001D50`152),
-  `resource_tree_insert_find` (140 = primary84 + required `func_00001E3C`56),
-  `resource_rebuild_free_trees` (296), `resource_find_arena_index` (104), and
-  `resource_alloc_tree_scan` (684 = primary624 + required `func_00002274`60).
-  Preserve every logical body and read-before-prologue prefix. All five physical
-  owners share one final verifier. Reconcile current intake, original assembly and
-  accepted logical coverage with the [backend dossier](dossiers/boot-resource-validation-realloc-trees.md)
-  and accepted arena interfaces. Old dossier EDxx addresses are not authoritative:
-  resolve signed offsets against the actual LUI. Preserve actual recursion, scan order,
-  allocation/copy/free paths, widths and original operations without stronger runtime claims.
-  The neighboring `resource_ptr_validate` owner remains external ASM; its historical
-  `1A34`/`1A3C` tiny entries need separate bounded coverage reconciliation against
-  current metadata before any conversion. This wave does not close that obligation
-  or claim whole-allocator/family completion. Other services and callers remain external.
-  Use `build/matching/sol-trees-20261005/`, one target at a time. The fresh worker takes
+- **Sol (October 5 fresh node-context worker):** top-level chat
+  `01a10e47-204a-77c1-a4b0-e222fdd223b0`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete five-owner resource node production / context materialization wave:
+  `boot_resource_node_payload_materialize` (ROM `9C50..9CAC`, 92 bytes),
+  `boot_resource_node_insert_find` (`9CAC..9D50`, 164),
+  `boot_resource_node_context_materialize` (`9D50..9EFC`, 428),
+  `boot_resource_node_overlay_context_materialize` (`9FD8..A0B4`, 220), and
+  `boot_resource_node_recursive_insert_slot_search` (`A0B4..A198`, 228 = primary172
+  plus required `func_0000A160`56 at offset `0xAC`). All five physical owners and six
+  logical bodies share one final verifier. Read their matching `boot-resource-node-*`
+  dossiers, current intake and complete original assembly; begin with both insertion/search
+  owners, then payload, general context and overlay context. Preserve observed 28-byte node
+  and 24-byte context views, actual secondary search accesses and all existing aliases.
+  The accepted LZSS context sibling `func_00009EFC` remains protected PURE_C. Its existing
+  `func_00009CB4` binding targets actual RAM `80079CB4` / ROM `A0B4`; an old signature-map
+  alias to `9CAC` is not a placement change. External overlay calls need their existing
+  accepted binding, not a guessed ROM delta. Reuse the accepted loading/arena/tree interfaces.
+  This closes no broader lifecycle, command-stream, runtime-ownership or capacity claim.
+  The external `resource_ptr_validate` owner and its historical `1A34`/`1A3C` coverage
+  reconciliation remain separate obligations before conversion.
+  Use `build/matching/sol-node-context-20261005/`, one target at a time. The fresh worker takes
   the released production-writer role and live Sol cursor, but uses private checks until
   complete-wave readiness. Before the first canonical source,
   header, configuration or build mutation or canonical linked diff, obtain Astra's
   explicit integration release confirming Shop's native/store drain. Private checks
   remain independent; no per-check permission. Ready Shop14 integration retains priority.
   No fresh worker reuses the predecessor's private store, mail identity or watcher state.
+
+  **Accepted free-tree predecessor:** PlumBear's complete five-owner/eight-body wave
+  passed one final verifier, including independent fresh compilation and exact full ROM,
+  on October 5 at 22:51:32 UTC; source/evidence commit `82399721`. Preserve all 2,156 bytes,
+  required LOCAL unlink/search/traversal bodies, load prefixes and original aliases under
+  the existing contracts. The [accepted wave record](Plans/task-logs/sol-resource-trees-wave-20261005.md)
+  links complete membership, proof and thirteen useful source observations/counterexamples.
+  PlumBear released all ownership and retired its watcher. Shop was released under
+  Astra1346 on CURRENT `B70D8175` before closing documentation/commit work.
+  No unchanged acceptance repeat is required for the successor.
 
   **Accepted arena predecessor:** BlackEagle's complete seven-owner/eight-body wave
   passed one final verifier, including independent fresh compilation and exact full ROM,
@@ -62,7 +75,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   [Accepted wave and reusable source pairs](Plans/task-logs/sol-resource-header-loading-wave-20261005.md)
   retain the ordinary secondary-entry contract and proof. No unchanged verification repeat.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
-  now watches the fresh free-tree worker. The original Scenario pair `0023A5EC`/`00249A14` remains
+  now watches the fresh node-context worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
 - **Parked under Sol (October 5):** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),

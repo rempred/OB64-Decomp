@@ -324,11 +324,22 @@
     },
     {
       "id": "independent-store-schedule",
-      "symptoms": ["scheduling-or-block-order"],
-      "applicability": "When the straight-line tail and dependencies already agree, inspect the bounded independent-store ordering experiment.",
+      "symptoms": ["scheduling-or-block-order", "register-allocation"],
+      "applicability": "Compare real initialization and expression placement. Realloc's earlier header pointer plus folded endpoints restores mask/load order; rebuild's record stride before its root cursor restores initialization order. Scan's miss-path increment and size-parameter reuse restore scheduling/registers. Preserve actual operations. Private source pairs are diagnostic; the full wave record supplies production acceptance. These effects are context-specific.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#loops-indexing-and-store-scheduling",
-      "references": [],
-      "observations": []
+      "references": [
+        "docs/dossiers/resource_realloc-5e478aee2d.md",
+        "docs/dossiers/resource_realloc-8a91d4bc38.md",
+        "docs/dossiers/resource_rebuild_free_trees-39c06f7860.md",
+        "docs/dossiers/resource_rebuild_free_trees-264fc2c72f.md",
+        "docs/dossiers/resource_alloc_tree_scan-57777047a9.md",
+        "docs/Plans/task-logs/sol-resource-trees-wave-20261005.md"
+      ],
+      "observations": [
+        {"symbol": "resource_realloc", "path": "docs/dossiers/resource_realloc-8a91d4bc38.observation.json"},
+        {"symbol": "resource_rebuild_free_trees", "path": "docs/dossiers/resource_rebuild_free_trees-264fc2c72f.observation.json"},
+        {"symbol": "resource_alloc_tree_scan", "path": "docs/dossiers/resource_alloc_tree_scan-57777047a9.observation.json"}
+      ]
     },
     {
       "id": "symbol-address-construction",
