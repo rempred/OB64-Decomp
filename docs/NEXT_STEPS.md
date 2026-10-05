@@ -8,7 +8,7 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol (October 5 fresh node-context worker):** top-level chat
+- **Sol / IndigoFalcon (October 5 fresh node-context worker):** top-level chat
   `01a10e47-204a-77c1-a4b0-e222fdd223b0`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
   Own the complete five-owner resource node production / context materialization wave:
   `boot_resource_node_payload_materialize` (ROM `9C50..9CAC`, 92 bytes),
@@ -28,7 +28,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   This closes no broader lifecycle, command-stream, runtime-ownership or capacity claim.
   The external `resource_ptr_validate` owner and its historical `1A34`/`1A3C` coverage
   reconciliation remain separate obligations before conversion.
-  Use `build/matching/sol-node-context-20261005/`, one target at a time. The fresh worker takes
+  Use `build/matching/sol-node-20261005/`, one target at a time. The fresh worker takes
   the released production-writer role and live Sol cursor, but uses private checks until
   complete-wave readiness. Before the first canonical source,
   header, configuration or build mutation or canonical linked diff, obtain Astra's
