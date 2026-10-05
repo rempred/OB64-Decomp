@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B9CD5F1734D6124ED004F5C89F429D9EF35D4134F76695CABC4D4083B55ADD37",
+  "observationId": "9D4EA6C4C993EBCA6FA771D3AA7DA2E8D6EB5D63450EF053F8ECBABCBD36EC5B",
+  "symbol": "func_001094BC",
+  "authored": {
+    "context": "Active complete scheduler FIVE1094BC/10ADB8/10A718/10A128/109C3C, Astra confirmed full source authority and static terrain prerequisite. Descriptor7 r2247 owner1420 bytes/355 words/frame136 uniquely reconciled; originalASM retained.",
+    "effects": [
+      "real-value-phase",
+      "native-register-allocation",
+      "pure-c-source"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E071628A5B72F1124945D0A8F7F2F79680C924D984522F55240CA49258C9F82E",
+      "sourceSha256": "61ADDDCE377B3FAFC394F80D6F94BD234DC81935EB012E5CEA630B068E8A94BB"
+    },
+    "label": "scheduler-named-clear-mask-native-allocation",
+    "observedEffect": "B9CD5F17 emits PURE_C1412/frame136/nine GPR and five FP saves/202 masked words. Original prologue save layout restored and third address is S7; masks0x11/0x3F/0x01001000/0x01000000 return original S6/S5/S2/S3, clear mask becomes original T0. Common-store branch retained. First nonbranch difference600 and fixed pointer/index plus unit/flags registers still differ. Nonselected informative path; selected ADB9 preserved. Probe2D137B9F: all8 artifacts rehashed. Fixed scan1 counter163 refs11/life33, pointer164 refs11/life32; scan2 counter218 refs11/life41, pointer219 refs11/life40; shorter pointers precede counters in GREG allocation. Loaded flags78 refs30/life54 precedes pointer77 refs30/life59, explaining third flag/unit reversal. These are native candidate facts, not inferred retail RTL.",
+    "parentCandidateId": "ADB9C74224B20DF8857C212A58A321444BD36AF619E44A6A10E37852486F01C3",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-named-final-clear-mask-watch.json",
+        "sha256": "4E644333881AB908CA1A6D4254DDAB1E132E81ADEBB92793E71973A251D43FEA"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-named-final-clear-mask-component.json",
+        "sha256": "59846AA5D254E4DDD06374C34385F7459EE30DD2A77FF708FCBFB799D20BBAF9"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001094BC.s",
+        "sha256": "05B51E86CA23D865CE0A67FA6B551A9D26C806157E5FA3F2F6E4C40DB552C197"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-named-final-clear-mask-probe.json",
+        "sha256": "EE17D7F508B9E2513EDE93C7B5456F9D36380B9C7E94FDF12AFC44CFF82FDE4C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "ADB9C74224B20DF8857C212A58A321444BD36AF619E44A6A10E37852486F01C3"
+    ],
+    "remainingFailure": "Still nonexact. Native scheduling, first fixed-scan pointer/index and final-scan allocation remain different; all five wave targets need linked ownership/placement/relocations/full-ROM acceptance. Protected tables and ADB8 complete648 owner remain gated. No semantic/runtime or tool-defect claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Name the genuine final clear-mask value in its outer-record phase, immediately after loading stage, and use it in the common flag store."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7823,
+      "sha256": "E071628A5B72F1124945D0A8F7F2F79680C924D984522F55240CA49258C9F82E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "61ADDDCE377B3FAFC394F80D6F94BD234DC81935EB012E5CEA630B068E8A94BB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_001094BC-b9cd5f1734.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
