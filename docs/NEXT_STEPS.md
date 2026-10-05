@@ -21,6 +21,35 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   auxiliary/producer activation proposal under the applicable structural process.
   The separate proven `10766C` group layout does not close this owner's coverage gate.
   All five share one final-wave verifier after readiness; no per-function ROM build.
+
+  **Director producer study (October 5):** preserve the FIVE and their current source
+  blockers; authorize Sol to inventory and derive private PURE_C candidates for the four
+  real neighboring prerequisites `00108AA0` (380 bytes), `00108C1C` (2,208),
+  `00109A48` (444) and `00109C04` (56), one target at a time. Begin with complete-body,
+  incoming-reference and source/interface inventory, then `109C04`, `108AA0`, `109A48`
+  and `108C1C`. The scoped release of `109C04` covers this producer prerequisite only;
+  it does not release the remaining deferred site/scripted family or its semantic claims.
+  The nearest aligned contiguous candidate is rows r2245 through r2253, in physical order:
+  `108AA0`, `108C1C`, `1094BC`, `109A48`, `109C04`, `109C3C`, `10A128`, `10A718`, `10ADB8`.
+  Independent read-only census authenticated the nine original bodies and table destinations:
+  ROM `0x00108AA0..0x0010B040`, VMA `0x801B4360..0x801B6900`, 9,624 executable bytes
+  and only the final eight original zero bytes. No internal owner tails are available;
+  `109C04`'s final zero is its return delay slot. This is a plausible native-producer
+  experiment, not historical translation-unit proof or group admission. The selected FIVE
+  concatenation remains rejected: it skips genuine owners and begins misaligned.
+
+  Keep p2551's original `0.25` double reference, both 76-byte tables p2552/p2554 and separate
+  original zero rows p2553/p2555 explicit. Preserve the real source bodies and best controls;
+  no fabricated functions, altered assembly or explicit padding. Inspect complete actual
+  native text/functions/data/relocations before proposing activation. Current group projection
+  supports one table-attribution member and cannot admit both dispatchers. Sol and GoldOx must
+  explicitly agree on any demonstrated missing generic capability and proposed remedy before
+  requesting tooling implementation; no tooling change is approved by this study. Use existing
+  private per-target checks concurrently; any unsupported combined native study needs the
+  existing supported path and actual shared-resource coordination, not a new workaround.
+  No canonical activation or full-ROM run is authorized at the study stage. If this producer
+  route is selected, all NINE become one coupled final acceptance set; the original FIVE and
+  their source blockers remain required, and the worker has not completed its wave.
 - **Parked under Sol:** complete thirteen-member Squad W4
   pursuit group: `func_00128AD0`, `func_00128BF4`, `func_00127D30`, `func_00127EAC`,
   `func_00128050`, `func_001284C4`, `func_00128980`, `func_001289BC`, `func_00128D50`,

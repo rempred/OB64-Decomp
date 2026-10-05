@@ -134,6 +134,11 @@ These recommendations reconcile the accepted ledger; they do not authorize a new
 - [ ] Preserve the unnamed finalizer return stored at source-record `+0x18` and literal route flag `0x00020000`.
 - [ ] Resolve all nine deferred scripted/site owners' complete scope and benefit before release.
 - [ ] Keep core site owners `func_00109C04` and `func_0013A3D8` with that deferred decision.
+  October 5 Director exception: `func_00109C04` alone is released for private source work as
+  a physical prerequisite of the scheduler's contiguous nine-owner producer study in
+  [NEXT_STEPS](../NEXT_STEPS.md). Its complete 56-byte body must remain intact. This bounded
+  dependency study does not release `0013A3D8`, the other deferred owners, site behavior claims
+  or canonical group activation; it does not establish matching acceptance.
 - [ ] Keep broad hybrid `func_0010DDB4` outside ordinary waves until its complete owner scope is justified.
 - [ ] Review shared interfaces, including broad terminal/supply teardown `func_0012A958`; do not omit them or assume conversion authority.
 - [ ] Preserve all 97 external direct-call dispositions, direct-data exclusions, and indirect-call limits.
