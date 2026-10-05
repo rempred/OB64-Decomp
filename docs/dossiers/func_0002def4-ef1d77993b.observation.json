@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EF1D77993BD7853C4ED5740E31EF10080B913A23191C507511747D250C57A9FE",
+  "observationId": "B50D88AA1E6A719CED8AA5FA911B0C1B7980833E211A4E966E2BAF0C2FCF0F10",
+  "symbol": "func_0002def4",
+  "authored": {
+    "context": "Astra1274/1275 complete resource-header/cache/loading wave: five physical owners and six logical bodies. Canonical cache800ABD74/70, scratch800C47E0 and ROM archive base00594280 reconciled from complete retail disassembly; lower DMA and allocator/decompressor interfaces protected. DEF4196; DFB8 full384 includes required executable E12816 after primary368; wrappers264 each. Static evidence establishes neither runtime residency nor behavior coverage.",
+    "effects": [
+      "source-lifetime",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "142BBDD9EB2A90802A8C148FBB3CB7347B240365DD751C0C6B89B1B4222A87F5",
+      "sourceSha256": "90973E0DF783AD0FE3135E424A202AF9F62F600B8DD03F0A39A16E0795C684BF"
+    },
+    "label": "resource-def4-rom-symbol",
+    "observedEffect": "Complete196/frame64 PURE_C; zero differences outside actual object relocation fields. Genuine ROM-address relocation produces retail AND/LUI/ADDIU ordering.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/resource-def4-rom-symbol.c",
+        "sha256": "90973E0DF783AD0FE3135E424A202AF9F62F600B8DD03F0A39A16E0795C684BF"
+      },
+      {
+        "path": "build/matching/solsquad/resource-def4-rom-symbol-watch.json",
+        "sha256": "12E7BE5DD4F8B9094894629082C7B4F415B32985E7DA48CF9EE50F2F38177A30"
+      },
+      {
+        "path": "build/matching/solsquad/runs/0750A0BDCE6D976501192584F31A2822F8A91514805676DC69BD3F89E5EE10A7/workbench-report.json",
+        "sha256": "F7F6A5392C17F9718CBEB318FB909D87838E20D931AC6300CE5C8D0B3DA0249D"
+      },
+      {
+        "path": "build/matching/solsquad/runs/0750A0BDCE6D976501192584F31A2822F8A91514805676DC69BD3F89E5EE10A7/candidate.o",
+        "sha256": "77609B8DFB01B78F32931FBC5C522308D856FBC5CEA2AC2BC674FA70CA6B35C2"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0002def4.s",
+        "sha256": "7885EEA7FD6A51409407DE8E57CEFA8FE397BE09F9E40A815DF16F86E718C1BC"
+      },
+      {
+        "path": "build/sol-five-family/resource-def4-intake-20261005.json",
+        "sha256": "037FF1728933B25A8C48EC4132AEF1B31E2B7775888DE2F46C6EB46B03747951"
+      },
+      {
+        "path": "build/matching/solsquad/resource-def4-rom-symbol-component.json",
+        "sha256": "2E05B8A9961941267DC02C456569EB14AB78358F630697F20FD0CE733F7E981C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "These native private observations do not prove linked addresses/addends, C sole ownership or exact full-ROM acceptance. All six bodies share one final verifier after full readiness. Production uses existing local secondary-function contract; private workbench census expects global logical bodies, so local-binding private validation fails despite completed native compilation. No tooling-defect or bypass claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "View the real ROM archive base00594280 as an external byte-array address instead of a pointer-cast literal. No RAM dereference or added transfer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 910,
+      "sha256": "142BBDD9EB2A90802A8C148FBB3CB7347B240365DD751C0C6B89B1B4222A87F5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "90973E0DF783AD0FE3135E424A202AF9F62F600B8DD03F0A39A16E0795C684BF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0002def4-ef1d77993b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

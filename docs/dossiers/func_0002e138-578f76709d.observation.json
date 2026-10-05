@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "578F76709D7431D1CC70A3E71CB79B3300CA28AB5D293402AC042AE3D35DC884",
+  "observationId": "2B8526464085C6566678051593B6437A0C8721A932BF799318AD1F59C06A583C",
+  "symbol": "func_0002e138",
+  "authored": {
+    "context": "Astra1274/1275 complete resource-header/cache/loading wave: five physical owners and six logical bodies. Canonical cache800ABD74/70, scratch800C47E0 and ROM archive base00594280 reconciled from complete retail disassembly; lower DMA and allocator/decompressor interfaces protected. DEF4196; DFB8 full384 includes required executable E12816 after primary368; wrappers264 each. Static evidence establishes neither runtime residency nor behavior coverage.",
+    "effects": [
+      "source-lifetime",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CFDFBA7CAEF3F9E191347D267B614B1E85DB38707FA52FE49EC326DAD17C735D",
+      "sourceSha256": "7F9009A029B5989396FC9D2E8D62370B0B67A23687AB120C54E275B1930A6A58"
+    },
+    "label": "resource-e138-initial",
+    "observedEffect": "First independently derived candidate: complete264/frame64 PURE_C and zero differences outside actual relocations, including cache branch-likely. E348 stale548 comment is excluded from extent evidence.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/resource-e138-initial.c",
+        "sha256": "7F9009A029B5989396FC9D2E8D62370B0B67A23687AB120C54E275B1930A6A58"
+      },
+      {
+        "path": "build/matching/solsquad/resource-e138-initial-watch.json",
+        "sha256": "8DDF646F8267A00A73EC692EA79966488DF933D7BBFEE786E9BDF096348A1BCC"
+      },
+      {
+        "path": "build/matching/solsquad/runs/F404A261271D36F289D6C2B9D056B2A506004AB7464B1A4F8A4D0D4EF298A7A6/workbench-report.json",
+        "sha256": "A8FE722B18945D2E367B7ED7D2CA3F55C861F6FB6166CF309172210E02A5079F"
+      },
+      {
+        "path": "build/matching/solsquad/runs/F404A261271D36F289D6C2B9D056B2A506004AB7464B1A4F8A4D0D4EF298A7A6/candidate.o",
+        "sha256": "43286E984520F9229C1FA2FD147E9D658B38C9CB7C82EC591BF8B3177005562A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0002e138.s",
+        "sha256": "9ADC6910C58231604B24B4B9B3EB624A2F7C6E946E7FD3E5CA1E7D51910A1A63"
+      },
+      {
+        "path": "build/sol-five-family/resource-e138-intake-20261005.json",
+        "sha256": "1ABAF49F94C0F6FBE0A2CA69E0730112ECC68E2FDB48E07566959605E9BC3627"
+      },
+      {
+        "path": "build/matching/solsquad/resource-e138-initial-owner.json",
+        "sha256": "6F6A15E9C0385DC3EDDD8CB5034BF523E8CF936739315E9A5CD9A82DCF7AA3AF"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "These native private observations do not prove linked addresses/addends, C sole ownership or exact full-ROM acceptance. All six bodies share one final verifier after full readiness. Production uses existing local secondary-function contract; private workbench census expects global logical bodies, so local-binding private validation fails despite completed native compilation. No tooling-defect or bypass claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Derive the complete wrapper using the same real static-inline header routine, compressed-buffer allocation71C04 and decoded-buffer allocator80070F30. Preserve materialization, decoded-size/decompressor/free interfaces."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1535,
+      "sha256": "CFDFBA7CAEF3F9E191347D267B614B1E85DB38707FA52FE49EC326DAD17C735D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7F9009A029B5989396FC9D2E8D62370B0B67A23687AB120C54E275B1930A6A58"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0002e138-578f76709d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

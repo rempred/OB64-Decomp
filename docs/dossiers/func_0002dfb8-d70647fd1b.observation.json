@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D70647FD1B8C26D618136956270FB95D70B5E221B31DAAD6DE91586E333CC6F6",
+  "observationId": "2458DA78E667A39DD38DBDED7B8989BC83313A95B13FCBF9785618641C65F296",
+  "symbol": "func_0002dfb8",
+  "authored": {
+    "context": "Astra1274/1275 complete resource-header/cache/loading wave: five physical owners and six logical bodies. Canonical cache800ABD74/70, scratch800C47E0 and ROM archive base00594280 reconciled from complete retail disassembly; lower DMA and allocator/decompressor interfaces protected. DEF4196; DFB8 full384 includes required executable E12816 after primary368; wrappers264 each. Static evidence establishes neither runtime residency nor behavior coverage.",
+    "effects": [
+      "source-lifetime",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5168BDEB75486C401FEFE75BE9089AED43D56C6F751C7938BB7F869AE9B71970",
+      "sourceSha256": "95CB6C200884FF34C935BF964F5749D97E29AAE43E3D4204B147A485A0F6938D"
+    },
+    "label": "resource-dfb8-owner-buffer",
+    "observedEffect": "Complete384 owner =368+16; PURE_C/frame80. Seven remaining differences all use s2 for cached length where retail uses s1; transfer/copy loops and entry helper agree outside relocations.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/resource-dfb8-owner-buffer.c",
+        "sha256": "95CB6C200884FF34C935BF964F5749D97E29AAE43E3D4204B147A485A0F6938D"
+      },
+      {
+        "path": "build/matching/solsquad/resource-dfb8-owner-buffer-watch.json",
+        "sha256": "CF0292FF13FB265C06E24B8885231C4CDC4A83835069729018ECC48DC6D6E236"
+      },
+      {
+        "path": "build/matching/solsquad/runs/0BB4304A0F4C02047B1CA5D05DC9BF482A1FCC6542FBDDB9ECB9F16BE124A407/workbench-report.json",
+        "sha256": "E80E0B7773A1F121E7C75FF145352D336BC779E7F449FDE3B886A52CA534AAB9"
+      },
+      {
+        "path": "build/matching/solsquad/runs/0BB4304A0F4C02047B1CA5D05DC9BF482A1FCC6542FBDDB9ECB9F16BE124A407/candidate.o",
+        "sha256": "9E3DCA384A2B7E88AD571751223E485C0F69D30DC9657C891BBE3345869E552F"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0002dfb8.s",
+        "sha256": "6357DE49A57BBAFC8D26D130C01EE938A27BA7018607876E0F6938A187EA8CFD"
+      },
+      {
+        "path": "build/sol-five-family/resource-dfb8-intake-20261005.json",
+        "sha256": "C6431ED94D5534C9724C7D96E9D45B671D8EF4BA0E857B0180B6BD73B33EBD52"
+      },
+      {
+        "path": "build/matching/solsquad/resource-dfb8-owner-buffer-owner.json",
+        "sha256": "0C9C2DBCCF368E683FE06679436430973D000EAB05263C775CE5A85A21F20E67"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "These native private observations do not prove linked addresses/addends, C sole ownership or exact full-ROM acceptance. All six bodies share one final verifier after full readiness. Production uses existing local secondary-function contract; private workbench census expects global logical bodies, so local-binding private validation fails despite completed native compilation. No tooling-defect or bypass claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve observed40-byte local DMA region and assign payload counter before zero test. Keep independent header and payload counters and shared ROM address setup."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2026,
+      "sha256": "5168BDEB75486C401FEFE75BE9089AED43D56C6F751C7938BB7F869AE9B71970"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "95CB6C200884FF34C935BF964F5749D97E29AAE43E3D4204B147A485A0F6938D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0002dfb8-d70647fd1b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

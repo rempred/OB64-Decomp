@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "09F4A3500580DED984E30DC18D2F31A9DDB1515CCE93BD7BC01CE32FE56E9BDE",
+  "observationId": "850A6C65C11DBF908E3A7A652C663BFF043082A88ADA681A58052A7C6678DEDC",
+  "symbol": "func_0002dfb8",
+  "authored": {
+    "context": "Astra1274/1275 complete resource-header/cache/loading wave: five physical owners and six logical bodies. Canonical cache800ABD74/70, scratch800C47E0 and ROM archive base00594280 reconciled from complete retail disassembly; lower DMA and allocator/decompressor interfaces protected. DEF4196; DFB8 full384 includes required executable E12816 after primary368; wrappers264 each. Static evidence establishes neither runtime residency nor behavior coverage.",
+    "effects": [
+      "source-lifetime",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "75C217D1C4291C7EE137AE084EE09474A5F3DE438FD36B0DA658591CFCC13610",
+      "sourceSha256": "55CB37EE2DB0DCF1E41C060B5B4930BD5BE94912A568887F788E49463C9D40DE"
+    },
+    "label": "resource-dfb8-phase-union",
+    "observedEffect": "Complete384/frame80 PURE_C; ordered368/16 bodies and zero differences outside actual relocations. Local production binding is required by existing compiler census contract; separately compiled static leaf retains identical native section bytes. No omitted leaf or fabricated padding.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/resource-dfb8-phase-union.c",
+        "sha256": "55CB37EE2DB0DCF1E41C060B5B4930BD5BE94912A568887F788E49463C9D40DE"
+      },
+      {
+        "path": "build/matching/solsquad/resource-dfb8-phase-union-watch.json",
+        "sha256": "EBD4697F7897CECB7FF7BC8732AD5F342511472C1C1709FFC57785AE1F3FDEA4"
+      },
+      {
+        "path": "build/matching/solsquad/runs/FFBC480A9B29E755B7518DDF13C6EF4CB1AF73A9ACC28A1E62F82A1373281223/workbench-report.json",
+        "sha256": "18958794360DB27E1A4769C90D5F9EFDDE83AD56498DC153FB59D4CD9991A482"
+      },
+      {
+        "path": "build/matching/solsquad/runs/FFBC480A9B29E755B7518DDF13C6EF4CB1AF73A9ACC28A1E62F82A1373281223/candidate.o",
+        "sha256": "BD0C4042F77D56707B7A17B3179891DA6B327B85790A23211F05960AD86CB53E"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0002dfb8.s",
+        "sha256": "6357DE49A57BBAFC8D26D130C01EE938A27BA7018607876E0F6938A187EA8CFD"
+      },
+      {
+        "path": "build/sol-five-family/resource-dfb8-intake-20261005.json",
+        "sha256": "C6431ED94D5534C9724C7D96E9D45B671D8EF4BA0E857B0180B6BD73B33EBD52"
+      },
+      {
+        "path": "build/matching/solsquad/resource-dfb8-phase-union-owner.json",
+        "sha256": "1D72A20B7DED890047951379117C409835242C5162D24F82B34EFE3A9B1BFC80"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "These native private observations do not prove linked addresses/addends, C sole ownership or exact full-ROM acceptance. All six bodies share one final verifier after full readiness. Production uses existing local secondary-function contract; private workbench census expects global logical bodies, so local-binding private validation fails despite completed native compilation. No tooling-defect or bypass claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use one ordinary local union for successive header-copy cursor, cached length and destination cursor phases. Preserve all actual operations and independent required entry."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2062,
+      "sha256": "75C217D1C4291C7EE137AE084EE09474A5F3DE438FD36B0DA658591CFCC13610"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "55CB37EE2DB0DCF1E41C060B5B4930BD5BE94912A568887F788E49463C9D40DE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0002dfb8-09f4a35005.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
