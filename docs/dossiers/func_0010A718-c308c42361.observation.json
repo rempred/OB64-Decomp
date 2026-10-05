@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C308C42361AFCE48C54B735062F9FCAC96966A6997CF959482AC6AA393BEC71E",
+  "observationId": "EA0B4469B506941D51B953E1B56F26982AE52633F52F9557703AABE66F82CE65",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252 and all19 states/18 callsites reconciled; genuine10-byte record,12-byte callback buffer, native low-five-bit publication and original shared comparison tail retained.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "91F3CA7DE335B158F7B33CDFC04613F760966C24F9C79E3F499D8B07AFCE51B8",
+      "sourceSha256": "17206CA4B6EE3E4171E52B24D63931F2529CCF60607C690F0CF611D459F0FADD"
+    },
+    "label": "scheduler-documented-record-end-word",
+    "observedEffect": "Commentary successor is checked against the exact authenticated expanded-input SHA of native56818BDE. Reuse native1696/frame88/44R/zero masked instruction differences without a repeat native check. Mechanical PURE_C and all complete-FIVE canonical linked/placement/owner/ROM/table gates remain as before.",
+    "parentCandidateId": "56818BDEE2938076E24226DE61031024A68D8E32FE47F6FBBCD07B780A51286B",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-documented-record-end-word.c",
+        "sha256": "17206CA4B6EE3E4171E52B24D63931F2529CCF60607C690F0CF611D459F0FADD"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-z-record-end-word-native11-watch.json",
+        "sha256": "3EC9ED912A7100605AADF70496F7723FFD1E1046BA2784028957B2FEF669E489"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-z-record-end-word-native11-component.json",
+        "sha256": "25005998DC9337D2D9ECDEC74E2C34DEBB37FDC6431273089606B7A98AD5FAB3"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-z-record-end-word-native11-probe.json",
+        "sha256": "AA6FC1D844BE4AA3D7E3C9EB3B1231CBBEBD32AA7B6B003E1F1028496DB025E5"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-z-record-end-word-import.json",
+        "sha256": "829553A62A71B8DA8CE48C82C99DD38BB94A062BFAB0B37F061E168D52B5835B"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1230.json",
+        "sha256": "07D22AA517EDA45C312FC9E2E0F09B125A4364E7FAE3E1911BF73486252049CC"
+      }
+    ],
+    "relatedCandidateIds": [
+      "56818BDEE2938076E24226DE61031024A68D8E32FE47F6FBBCD07B780A51286B"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Add concise comments explaining the genuine register-compatible signed-word reuse, selector reuse, single-assignment X stages and two named predicate values; all C operations/names are unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8651,
+      "sha256": "91F3CA7DE335B158F7B33CDFC04613F760966C24F9C79E3F499D8B07AFCE51B8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "17206CA4B6EE3E4171E52B24D63931F2529CCF60607C690F0CF611D459F0FADD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-c308c42361.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

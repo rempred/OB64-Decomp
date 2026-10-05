@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CA5251554D5F8213278DE1E0B773C4EEAD019BC1ACAD9606FE05CC7E224940D3",
+  "observationId": "551868E5C68014BB62131F50ECDFA0077142557BEB90C54C31B1DF52D7E2F257",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252 and all19 states/18 callsites reconciled; genuine10-byte record,12-byte callback buffer, native low-five-bit publication and original shared comparison tail retained.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F0B6E705E1781A0345DDEC32FDBBAA0E6B83BB3E26656E79CDE542556AA649EC",
+      "sourceSha256": "07E653293F295A44020CD8FDF17D44AE4707247560456C45F1EF13F963CDC417"
+    },
+    "label": "scheduler-rectangle-value-z-sharing",
+    "observedEffect": "Native1696/frame88/4 masked words; all rectangle code matches, but24C/524/52C/53C use A1 instead of original V1 for current_value loads/tests. Probe8BF87C99 all9 assets authenticated. Gold1230 identifies current_value88 hard V0/V1 conflicts through the rectangle; sharing makes its other states register-incompatible. Temp249 belongs to case14 and is unrelated. This corrects earlier private messages incorrectly labeling retail field74 V0. Declaration-order022E and local-first-indexCC74 are neutral; opposite index0166 gives16; case14 value2174 gives4 at its A0-versus-A1 words. No fake store/use/read or new edge.",
+    "parentCandidateId": "40C5CED0BBF7CAEACE0ACAAABB16F6AA9EC71539F5F90F88315014B338BFECB8",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-rectangle-value-z-sharing.c",
+        "sha256": "07E653293F295A44020CD8FDF17D44AE4707247560456C45F1EF13F963CDC417"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-rectangle-value-z-sharing-native11-watch.json",
+        "sha256": "518E37045B33490FFE57FAACC44D53FC61AF8E2B568C4026DD189BA6D8BD416E"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-rectangle-value-z-sharing-native11-component.json",
+        "sha256": "C4CE30314978E4C1AB9A06A93C88D2D3E19D1ED039DFE35AA8251BF3C11B9CDE"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-rectangle-value-z-sharing-native11-probe.json",
+        "sha256": "4DA9D785ED252F1A332C230C3B55DE80E2C06B9D4AB3C06EE88F29CD9C887993"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1230.json",
+        "sha256": "07D22AA517EDA45C312FC9E2E0F09B125A4364E7FAE3E1911BF73486252049CC"
+      }
+    ],
+    "relatedCandidateIds": [
+      "40C5CED0BBF7CAEACE0ACAAABB16F6AA9EC71539F5F90F88315014B338BFECB8"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the existing case4/13 current_value as the Z cast word and keep the Z conjunction local; retain actual rectangle kind sharing and the two-variable compound X conjunction."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8569,
+      "sha256": "F0B6E705E1781A0345DDEC32FDBBAA0E6B83BB3E26656E79CDE542556AA649EC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "07E653293F295A44020CD8FDF17D44AE4707247560456C45F1EF13F963CDC417"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-ca5251554d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

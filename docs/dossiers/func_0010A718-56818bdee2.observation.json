@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "56818BDEE2938076E24226DE61031024A68D8E32FE47F6FBBCD07B780A51286B",
+  "observationId": "77014DE3DFF121C4E7DD962A5F482D88090CF32B476C50FA2CEA4259B17D5633",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252 and all19 states/18 callsites reconciled; genuine10-byte record,12-byte callback buffer, native low-five-bit publication and original shared comparison tail retained.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "91F3CA7DE335B158F7B33CDFC04613F760966C24F9C79E3F499D8B07AFCE51B8",
+      "sourceSha256": "A6B62BE5FF17B4FB51C0C7555B34515C7E3622C7175EF42992E56A7947A2B2DE"
+    },
+    "label": "scheduler-z-record-end-word",
+    "observedEffect": "Mechanically PURE_C native1696/frame88/44 actual relocations, zero differing instruction words outside actual relocation fields, complete424-word extent/all19 states/18 callsites. ProbeA566B902 all9 assets authenticated: MFC1 A1 for Z and ADDIU A1,record,10 for the existing loop end use the same multi-set word; Z conjunction/branch return to V1. All later states and existing signed pointer test remain exact diagnostically. Gold1230 supplies the actual register-compatible other assignment, instead of field74 quantities that must stay V0/V1/A0. Provisional object evidence only; canonical relocation/sole-owner/placement/linked/full-FIVE ROM and p2552/p2554 table gates remain open.",
+    "parentCandidateId": "40C5CED0BBF7CAEACE0ACAAABB16F6AA9EC71539F5F90F88315014B338BFECB8",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-z-record-end-word.c",
+        "sha256": "A6B62BE5FF17B4FB51C0C7555B34515C7E3622C7175EF42992E56A7947A2B2DE"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-z-record-end-word-native11-watch.json",
+        "sha256": "3EC9ED912A7100605AADF70496F7723FFD1E1046BA2784028957B2FEF669E489"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-z-record-end-word-native11-component.json",
+        "sha256": "25005998DC9337D2D9ECDEC74E2C34DEBB37FDC6431273089606B7A98AD5FAB3"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-z-record-end-word-native11-probe.json",
+        "sha256": "AA6FC1D844BE4AA3D7E3C9EB3B1231CBBEBD32AA7B6B003E1F1028496DB025E5"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1230.json",
+        "sha256": "07D22AA517EDA45C312FC9E2E0F09B125A4364E7FAE3E1911BF73486252049CC"
+      }
+    ],
+    "relatedCandidateIds": [
+      "40C5CED0BBF7CAEACE0ACAAABB16F6AA9EC71539F5F90F88315014B338BFECB8"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the Z predicate as a local result and reuse a signed comparison word for the existing Z cast and case15 record+10 bound. The pointer comparison retains its original explicit signed32 interpretation."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8651,
+      "sha256": "91F3CA7DE335B158F7B33CDFC04613F760966C24F9C79E3F499D8B07AFCE51B8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A6B62BE5FF17B4FB51C0C7555B34515C7E3622C7175EF42992E56A7947A2B2DE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-56818bdee2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
