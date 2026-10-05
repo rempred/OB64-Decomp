@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "94389894F0318C0006D8C8E58B4A58EF25F3E1E445EF4CB5EF8DCC01C3C11D43",
+  "observationId": "751D96FB1D73A6FBE43A90698CE7C835487BA26631D9C0015088FE8615D87B42",
+  "symbol": "func_001094BC",
+  "authored": {
+    "context": "Active complete scheduler FIVE1094BC/10ADB8/10A718/10A128/109C3C, Astra confirmed full source authority and static terrain prerequisite. Descriptor7 r2247 owner1420 bytes/355 words/frame136 uniquely reconciled; originalASM retained.",
+    "effects": [
+      "real-member-terminator",
+      "float-lifetime",
+      "compiler-frame",
+      "pure-c-source"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "175D2BC09EA62A97EF1DE6E8252C21F073F6117C02664ED68B9C66B8E1390320",
+      "sourceSha256": "256B9C2B5F4AD0553D842D380EB8B5817C9740C2DEA5338765256240854DDFF1"
+    },
+    "label": "scheduler-named-member-terminator",
+    "observedEffect": "94389894 emits PURE_C1400/frame136/202 masked words. The long-lived hoisted second-scan -1 disappears; actual loopA2=-1 and first-checkV0=-1 and original second-scan baseS3/literalS5 now agree. The first ordinary nonbranch difference moves to600; overall branch distances remain because body is20 bytes short. Later float/record phases stay nonexact.",
+    "parentCandidateId": "F1D9804C32CBB759B8E8A0F506E069F48EC052121FC8F2C703AFA20C7D5A9EF6",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-named-member-terminator-watch.json",
+        "sha256": "69A65EA4C7577509C91B2D2409F74F0E8F8BC518A6E6C9403AB36574A879864A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-named-member-terminator-component.json",
+        "sha256": "C67062BA723893FA5AFEA2315661E057EDAE9132443CCBCACA046F337D09B7A5"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001094BC.s",
+        "sha256": "05B51E86CA23D865CE0A67FA6B551A9D26C806157E5FA3F2F6E4C40DB552C197"
+      }
+    ],
+    "relatedCandidateIds": [
+      "F1D9804C32CBB759B8E8A0F506E069F48EC052121FC8F2C703AFA20C7D5A9EF6"
+    ],
+    "remainingFailure": "Selector clear/state ordering and later loop/float/control allocation remain nonexact. Linked/ownership/full-five ROM gates and protectedADB8 complete-owner/table gates stay open. No runtime or semantic closure.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Name the actual inner member-list terminator at its real initialization after the first header check, retaining indexed member accesses and fresh header reloads."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7541,
+      "sha256": "175D2BC09EA62A97EF1DE6E8252C21F073F6117C02664ED68B9C66B8E1390320"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "256B9C2B5F4AD0553D842D380EB8B5817C9740C2DEA5338765256240854DDFF1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_001094BC-94389894f0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

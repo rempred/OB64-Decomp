@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EB933AB7643CCFC1B6934095FDF0CE8067C66EDD26C521F4C9F51FCC65DCF032",
+  "observationId": "61E494EAC5654FFFA848EAD501AC0E0CF8DE708D56383357763A8B47DD73D895",
+  "symbol": "func_001094BC",
+  "authored": {
+    "context": "Active complete scheduler FIVE1094BC/10ADB8/10A718/10A128/109C3C, Astra confirmed full source authority and static terrain prerequisite. Descriptor7 r2247 owner1420 bytes/355 words/frame136 uniquely reconciled; originalASM retained.",
+    "effects": [
+      "body-coverage",
+      "real-loop-phases",
+      "compiler-frame",
+      "pure-c-source"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B39D8A4B01D3549FC74271AE7173DC46A3171BE6A885F34032449B911255C529",
+      "sourceSha256": "91DC54DC6F13EE23C1D1E574587881E772F53415C0F6A5771DBC5E8D34325439"
+    },
+    "label": "scheduler-full-body-reopened-control",
+    "observedEffect": "EB933AB7 PURE_C1388/frame112/57 relocations,328 masked common-prefix words. Actual read-before-prologue retained, native assembly succeeds with current authenticated contract. Missing32 bytes and24 frame bytes remain; prior historical assembler failures are not current defects.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-reopened-control-watch.json",
+        "sha256": "A6CF3DB7C51EBA3C03EDB1D6FF8AD3B47BD0D260037103784CE729F5276E01C2"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-reopened-control-component.json",
+        "sha256": "424BACB46658C5C0BEFC9EEF4EF0429A1F3BD2AF641B04B03FF3624AD365C55D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001094BC.s",
+        "sha256": "05B51E86CA23D865CE0A67FA6B551A9D26C806157E5FA3F2F6E4C40DB552C197"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012EA80.s",
+        "sha256": "9798E004BB5532421EBF4CC86DF6F32F09FEA6BEF4EC6E1EB0B66F45DADF3847"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Primary instruction extent, branch/flag/float allocation, actual linked relocations, ownership/placement and combined-five full-ROM gates remain open. ADB8 full-owner/table gates remain protected. No stronger runtime/terrain/capacity claim or tool defect.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Refresh complete earlier independent source against current pinned tools and accepted full r2247 owner; all three scans, ten ordered float predicates, six calls, actual3-float output and member terminator covered."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7534,
+      "sha256": "B39D8A4B01D3549FC74271AE7173DC46A3171BE6A885F34032449B911255C529"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "91DC54DC6F13EE23C1D1E574587881E772F53415C0F6A5771DBC5E8D34325439"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_001094BC-eb933ab764.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
