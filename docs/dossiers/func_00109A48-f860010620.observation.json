@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F860010620124C95027DFA49ABF8150198E35646DBBEF7FA6D2D62738F280B34",
+  "observationId": "87A3544C93CE9521EC31B4593A264D64DA426E36E6D1B2E4398B110E786A9A76",
+  "symbol": "func_00109A48",
+  "authored": {
+    "context": "Complete r2248 original owner444 bytes/111 words/frame48 at ROM109A48..109C04/VMA801B5308..801B54C4; all original instructions and current incoming/interface inventory reconciled. Native discrepancies arise in emission/layout, not an omitted callable body. Unit flags at0 and signed-sentinel list pointer atA8, source-row stride11 and helper interface preserved. Default Kuna/m2c hypotheses checked against full original body.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E085416D97762E38DBD1AC94B8E77F9A9BAA53E321D38DAE731D9F1D30496471",
+      "sourceSha256": "7C7C72284CDACC68CB8C14DEAA4FEC9AE398DE781E9E7120D8C9A7B1CAF939F6"
+    },
+    "label": "scheduler-prerequisite-109a48-source-member-lifetime",
+    "observedEffect": "PURE_C432/frame48/90 same-offset masked differences; exact same native object as D890. Original uses v1 for the byte index and member; source-variable reuse in this shape does not reproduce that allocation, because compiler dataflow still separates the actual quantities. This neutral result does not disprove every compatible nonlocal scope.4982 best retained; original NOP/mask/sentinel and extent blockers remain.",
+    "parentCandidateId": "D890D58729BA1BF7498498C99D79950A729FC15FEFE07689E61E292064230719",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-source-member-lifetime.c",
+        "sha256": "7C7C72284CDACC68CB8C14DEAA4FEC9AE398DE781E9E7120D8C9A7B1CAF939F6"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-source-member-lifetime-watch.json",
+        "sha256": "97596F3EF8B06F58AC7E1C2134FDEF0575728AF22AB524D603BD40F7C25D789B"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-source-member-lifetime-component.json",
+        "sha256": "E69C6496158343D1FB2F4562FAA1AA558A05C5FC27F808F9EDB65E58CA2D8CD3"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00109A48.s",
+        "sha256": "9353511F64EE65E4493545830B5E642E14CD3E0383B8F8C08D9B1CD31E713FF6"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00109A48-intake-20261005.json",
+        "sha256": "A236995DB4D1A8F53A6930AEFF00F06D6763ED81D781D34BE1D01F7D2E817CE0"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-analysis.json",
+        "sha256": "AFB3A1B7247CD4CB5AA4DF8340682DEB98A260E471FC77CC17A706BEB8AD3156"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D890D58729BA1BF7498498C99D79950A729FC15FEFE07689E61E292064230719"
+    ],
+    "remainingFailure": "ASM remains sole production owner. No source is linked exact, and incomplete emitted extent remains a required rejection. Actual object relocation masks do not establish addresses/addends, placement, ownership or full-ROM equality. Complete scheduler FIVE/NINE and other prerequisites remain open; no structural or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse the actual outer source-byte index variable for the later signed member-list value in its nonoverlapping phase, testing the retail shared-register observation without adding a consumer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2061,
+      "sha256": "E085416D97762E38DBD1AC94B8E77F9A9BAA53E321D38DAE731D9F1D30496471"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7C7C72284CDACC68CB8C14DEAA4FEC9AE398DE781E9E7120D8C9A7B1CAF939F6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109A48-f860010620.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

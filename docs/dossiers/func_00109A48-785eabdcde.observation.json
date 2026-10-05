@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "785EABDCDEF32B104C23DD64764EA36019687F991156232A4FC6F910AF262DFF",
+  "observationId": "2277D97142751F5E3EAF49ACFB8D30C7ABEE235E20BC72A42CAC0E99035EF590",
+  "symbol": "func_00109A48",
+  "authored": {
+    "context": "Complete original r2248 owner444/111 words/frame48 reconciled. Comment-only successor reuses exactly4982 compiler input: no native repeat or source/owner activation.",
+    "effects": [
+      "instruction-scheduling",
+      "register-allocation",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F6B0406D90092B2CDF9A7735A96871FCB6EBCA34EAFB070676A97A99FE69D958",
+      "sourceSha256": "3366A488D0A9D550A29EB0928F7FBEAF9FF9DCB5ECB0DA76886F0D5D5A18955F"
+    },
+    "label": "scheduler-prerequisite-109a48-documented-source-frontier",
+    "observedEffect": "PURE_C expanded bytes equal4982 native432/frame48/87 same-offset masked differences. First64 bytes match outside relocation fields; plain null/head guard initialization restored. D890 named real bank before mask restores plain banka3/maska2/sentinela1. Shared mark/advance labels are object-neutral. Genuine duplicated tails8663 create post-flow label363 but no preceding BARRIER and still fill ORI; source/member lifetimeF860 is D890 object-neutral. Gold1271 withdraws the earlier unidentified-block hypothesis because forward target scan kills v0 after fallback. Authentic8ABE/B0E3 final dumps agree; no supported C CFG recipe is known for the retail empty slot in this layout. This is source information missing, not a global proof that C is impossible or a compiler defect.",
+    "parentCandidateId": "4982F575EFE5974BCE3A84F71B36E4E7A312381B3997A6BAD2FD634FEFD5AE4B",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-documented-source-frontier.c",
+        "sha256": "3366A488D0A9D550A29EB0928F7FBEAF9FF9DCB5ECB0DA76886F0D5D5A18955F"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-plain-guarded-counter-mask-watch.json",
+        "sha256": "6F813D9236F435E9FED277D2416447368EB4C4724CB432C0C819325E84FC6993"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-plain-guarded-counter-mask-component.json",
+        "sha256": "2D3F1EB3567A71D995B6EE2D414A0B4A7A0C32C70AA41A2C50B6E3B6EC2C7453"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-bank-before-mask-delay-probe.json",
+        "sha256": "0C295A63F75A359A376D0FAF0571A5C19570FB36A7D2B87D1027C51AC1B559EE"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-duplicated-scan-tail-probe.json",
+        "sha256": "5B617F20AE4534DD87095E491E160ECA8158532C99F06A68501C298B6057EB5C"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-cross-jump-discriminator-20261005.json",
+        "sha256": "BC1FAFBD47CF0218832FE21887A9F0A4158536A3775B1F3F1EDFF8500D62AA35"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-source-member-lifetime-watch.json",
+        "sha256": "97596F3EF8B06F58AC7E1C2134FDEF0575728AF22AB524D603BD40F7C25D789B"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00109A48.s",
+        "sha256": "9353511F64EE65E4493545830B5E642E14CD3E0383B8F8C08D9B1CD31E713FF6"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1271.json",
+        "sha256": "F7C3A8E701D633DE3F1AB55E1111F54454EF6C2265C7BC6D465F8E9B11BA35F7"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-context-r3-diagnostic.json",
+        "sha256": "114D953CEF28CE03FFDAB951B9C6CC06E438231B9616899ED0DE2F4711E805B5"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D890D58729BA1BF7498498C99D79950A729FC15FEFE07689E61E292064230719",
+      "8663E8CDA691C83F8F0EB30FEC8B8ADE4D826344EF361851183745B51BFEADAF"
+    ],
+    "remainingFailure": "Executable12 short, second-guard NOP and outer mask/bank/sentinel allocation remain nonexact. Original ASM sole production owner; no linked address/addend/placement/owner/ROM acceptance. Preserve4982 and intermediate proofs; reopen this discriminator only with new supported source/context information. All original FIVE/NINE and structural activation gates remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Document the retail second-guard NOP versus pinned ORI scheduling and the rejected genuine label/cross-jump source hypotheses beside the actual scan."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1983,
+      "sha256": "F6B0406D90092B2CDF9A7735A96871FCB6EBCA34EAFB070676A97A99FE69D958"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3366A488D0A9D550A29EB0928F7FBEAF9FF9DCB5ECB0DA76886F0D5D5A18955F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109A48-785eabdcde.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
