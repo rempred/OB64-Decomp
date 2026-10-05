@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A0612ACBBB6D754D58E6DEBB48672AB706AE11561ED5305D8610997CAA8CC85B",
+  "observationId": "72C28E225B9A91DCF79899118CCDFAE331F59334B8EC2246B27907EBA06919B7",
+  "symbol": "func_00106CE0",
+  "authored": {
+    "context": "Full21-target pursuit result under Astra1148; original13 plus complete nine-function producer with eight extra prerequisites.106CE0 has a complete360-byte/90-word owner; void float-pointer/step interface and original double row remain protected. No canonical source/group/config/build change or acceptance.",
+    "effects": [
+      "real-comparison-uses",
+      "global-allocation",
+      "exact-executable-extent",
+      "pure-c-source"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5653AE1CDB6E7FF073C4FA71DDEA930ADC5E2117550E10DA1AEA3A297DDF02B3",
+      "sourceSha256": "777AD165B1CE8E279C66ED054F601D2099B27F857A062D65A7557B143F469C68"
+    },
+    "label": "distinct-real-forward-comparisons-exact-extent-effect",
+    "observedEffect": "A0612ACB emits PURE_C360/frame0/6 relocations,18 ordinary relocation-masked words instead of73 for356-byte5D control. All original path/branch/store shapes now agree. Step reaches retailF10; center/current remainF8/F6 versus retailF6/F8, and converted-center/bound doubles areF2/F0 versusF0/F2. Authenticated probe0D6CEF5E has7 rehashed artifacts; center75 refs8/life48, current85 refs7/life17; GREG puts85 before75, step74hard42, center75hard40 and current85hard38. This proves the actual center-use change, not retail RTL lifespans.",
+    "parentCandidateId": "5D6CB37303FF9BF180AC8D65A29359430A965755FCE4481327CDA9BEBA90A5B4",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-distinct-forward-comparisons-watch.json",
+        "sha256": "29BFD56196324C914E4BA41E39862C5BEBE40EE76C1809AC253AD25353283972"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-distinct-forward-comparisons-component.json",
+        "sha256": "E5352CCD25C8A6E1C9E7A54A0BF9FC7DB644340CDA292B92FEEF9E3C51C79B93"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-distinct-forward-comparisons-probe.json",
+        "sha256": "7CCE13A93D95EDD45D7E83D8252809B3A92DEB751A375D7DDD60CC4846B5918E"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00106CE0.s",
+        "sha256": "13890C7CD0AC8CC212EA78D39DB53576FE858FCFDFA3B48728006E44F4CD8790"
+      }
+    ],
+    "relatedCandidateIds": [
+      "5D6CB37303FF9BF180AC8D65A29359430A965755FCE4481327CDA9BEBA90A5B4"
+    ],
+    "remainingFailure": "Remaining FPR roles and actual linked relocation addresses/addends still differ or are unproved. Whole native-nine offsets/terminal8 zeros, source ownership and one complete21 verifier remain open; production ASM retained.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Restore separate genuine center<=next comparisons on the lower-window increase and wrapped upper-window increase paths, sharing only the actual stores/fresh desired reload."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1661,
+      "sha256": "5653AE1CDB6E7FF073C4FA71DDEA930ADC5E2117550E10DA1AEA3A297DDF02B3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "777AD165B1CE8E279C66ED054F601D2099B27F857A062D65A7557B143F469C68"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00106CE0-a0612acbbb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

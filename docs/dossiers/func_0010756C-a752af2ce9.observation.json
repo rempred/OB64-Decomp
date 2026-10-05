@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A752AF2CE90D77B07D3DBEBAFC118A94608777478D60576333CF76BA4D1C2E6B",
+  "observationId": "56311CA6BDF0E2EA35DFE3AE6456A2B39A404B3117BF8A510ABC5C782975CBD0",
+  "symbol": "func_0010756C",
+  "authored": {
+    "context": "All64 original words/256-byte owner reconciled; source-only nine-member producer prerequisite in full21-target pursuit wave. Production remains ASM.",
+    "effects": [
+      "evidence-backed-fields",
+      "opaque-bank-word-view",
+      "loop-invariants",
+      "complete-native-producer",
+      "pure-c-source"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E0A3EBA78E315C647A943FB3800ACAA0AEFE519CFAD2CAA72B922DA01573F022",
+      "sourceSha256": "818D644E1D158F8727C4954E694491A4A8B4CAFD61EAF6252F40658D54F667BE"
+    },
+    "label": "complete-typed-loop-opaque-state-word-object-exact-provisional",
+    "observedEffect": "A752AF2C emits PURE_C256/frame8/8R, all64 actual object words equal under real relocation masks. Original V0 pre-prologue count, single guard/index delay, maskT1/stateT0, captureT3, boundT2, arrayA3 and conditional state reloads now agree. Probe7EE47E96 has8 rehashed artifacts. Complete unchanged-authenticated native-nine r2 emits nine public functions at all required offsets, text2928/alignment16, executable2920/eight genuine zero bytes, only expected text/MIPS.reginfo allocated sections. Seven control members havezero masked words; mathCE0/E48 each18. This is provisional object/layout evidence, not linked or ROM acceptance.",
+    "parentCandidateId": "697AFBD631BC3B7B14CEF8D06B0F3F6880A93C4AE2A0503279C4B1358BDE4E8B",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-producer-10756c-opaque-state-word-view-watch.json",
+        "sha256": "2236C1ECCD645650B5647F1DAC1A0139274487D763B4CC286B67140D187717E5"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-10756c-opaque-state-word-view-component.json",
+        "sha256": "EE967433BA8D208AEBDEA7B2759AE1436E560D4C91D1619FC9E2E58862510C7F"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-10756c-opaque-state-word-view-probe.json",
+        "sha256": "D2A1064AF15CB87E41ABD85B22DABB65B6451AA2A9C6FC4F2750E0431DB9491B"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-nine-native-control-r2-diagnostic.json",
+        "sha256": "BDC69A06A3205CEAE99AF584266220742971E297C2114790584927426FFBB019"
+      },
+      {
+        "path": "build/sol-five-family/squad-producer-nine-native-control-r2-inputs.json",
+        "sha256": "AD307D8C6B71A8F9828D922CC9E742D334780E7207B04C917AAD524875C8239E"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010756C.s",
+        "sha256": "8D3B6F1DAEA940E5B08960E7C64BC92B798F5B1CF09FC68A0282A9A337D8DB5A"
+      },
+      {
+        "path": "src/lib/func_001390f0.c",
+        "sha256": "A9F682DFD50B052C98AED9362EAC3F0EB2E6D9551F0E54314DF3B0FFE726B320"
+      }
+    ],
+    "relatedCandidateIds": [
+      "697AFBD631BC3B7B14CEF8D06B0F3F6880A93C4AE2A0503279C4B1358BDE4E8B"
+    ],
+    "remainingFailure": "Actual group-linked addresses/addends, canonical sole ownership and full21 verifier remain open; math2 and pursuitD30/284C4 still nonexact. Production ASM retained,1072B8 remainshybrid until entire source admission. No historical-TU membership or complete-family/runtime claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain genuine unit fields0/4/70/plain counted for. Use the existing opaque byte-bank D_801F0DE0 anchor (neighbor1390F0 declaration), indexed as its first s32 word; no capacity claim, data-owner change, volatile or fake frame/register operation. This preserves actual alias-sensitive state reads while address invariance moves at the real load phase."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1354,
+      "sha256": "E0A3EBA78E315C647A943FB3800ACAA0AEFE519CFAD2CAA72B922DA01573F022"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "818D644E1D158F8727C4954E694491A4A8B4CAFD61EAF6252F40658D54F667BE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010756C-a752af2ce9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
