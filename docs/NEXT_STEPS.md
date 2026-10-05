@@ -13,7 +13,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   (384 bytes, containing the 368-byte logical `func_0002DFB8` and required 16-byte
   `func_0002E128`), `func_0002e138` (264), `func_0002e240` (264), and
   `func_0002e348` (264). These five owners share the resource-key/length cache at
-  `0x800BBD74`/`0x800BBD70` and header scratch at `0x800C47E0`; the already accepted
+  `0x800ABD74`/`0x800ABD70` and header scratch at `0x800C47E0`; the already accepted
   Scenario consumers call this resource interface. The current logical registry already
   recognizes both bodies in r0739. Preserve their entries and complete owner coverage;
   the 16-byte address helper is executable code, not padding. The stale 548-byte
