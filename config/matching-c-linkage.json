@@ -924,6 +924,10 @@
     {
       "name": "func_0001A380",
       "address": "0x80089F80"
+    },
+    {
+      "name": "D_800E7A20",
+      "address": "0x800E7A20"
     }
   ],
   "targets": [
@@ -48038,6 +48042,86 @@
           "type": "R_MIPS_26",
           "symbol": "func_800712C4",
           "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0001a380",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000030",
+          "type": "R_MIPS_26",
+          "symbol": "func_00023970",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000044",
+          "type": "R_MIPS_26",
+          "symbol": "os_inval_dcache",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000060",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800E7A20",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000064",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800E7A20",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000084",
+          "type": "R_MIPS_26",
+          "symbol": "func_0001c040",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000094",
+          "type": "R_MIPS_26",
+          "symbol": "func_00023AE0",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0002de50",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000003C",
+          "section": ".rel.text",
+          "symbol": "func_0001A380",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000006C",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000007C",
+          "section": ".rel.text",
+          "symbol": "func_0001A380",
+          "type": "R_MIPS_26"
+        }
+      ],
+      "compilerTextFunctions": [
+        {
+          "symbol": "func_0002de50",
+          "offset": "0x00000000",
+          "bytes": 156,
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        },
+        {
+          "symbol": "func_0002DEEC",
+          "offset": "0x0000009C",
+          "bytes": 8,
+          "binding": "LOCAL",
+          "entryEvidence": "fixed-address-call"
         }
       ]
     }

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9352E8B29C937B0DAE8B71506CEAEBE5D69FE5003397AAA88DE3BF8040BB7061",
+  "observationId": "A221F6630980B3D6EB986C28E106EED8D2D8A91C5B2168831262D1847ECDFE53",
+  "symbol": "func_0001a380",
+  "authored": {
+    "context": "Complete resource DMA wave: 1A380 physical192 and DE50 physical164 containing primary156 plus independent DEEC8. Accepted early-boot placement and full logical/physical coverage reconciled against current intake, full ROM-derived assembly and qualified callers. Canonical header/resource callers and OS/cache/device dependencies remain external and unchanged. Private symbolic-object diagnostics are not linked-byte or matching acceptance.",
+    "effects": [
+      "source-lifetime",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "338FA607B489AD8CFA41E7666F6B80D125B1C8543B2EED4BD19E0CD799BEAED5",
+      "sourceSha256": "3D0BD842642EC39E3D1EF8ACA3769137C4AFF80E2B3ABDB57E5414CF340D6B45"
+    },
+    "label": "dma-1a380-post-call-chunk-lifetime",
+    "observedEffect": "PURE_C; full192-byte body, no tail, frame96. Chunk becomes s0 and the compiler schedules updates before DMA-start; all nonrelocation fields agree with ROM. Six actual relocations, rawRelocationMaskedExact=true. r1/r4 form an exact source pair for the lifetime effect.",
+    "parentCandidateId": "62B10F6D6D315949D7238450BB1FD3290EE60AC693825AA6FB31992BD226BE4D",
+    "references": [
+      {
+        "path": "build/matching/sol-dma-20261005/func_0001a380.c",
+        "sha256": "3D0BD842642EC39E3D1EF8ACA3769137C4AFF80E2B3ABDB57E5414CF340D6B45"
+      },
+      {
+        "path": "build/matching/sol-dma-20261005/1a380-watch-r4.json",
+        "sha256": "AD0C01F4F38546638E6485D6943F6AB6930337EC373790B778AA04DA8DD63B4B"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0001a380.s",
+        "sha256": "74BF40505B29712F0B33C763BCFA8F4A3583F665948B22FAF2C7857D02B54648"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "rawExactBytes and diagnosticExactBytes=false; expected relocation provenance and private linked bytes unavailable (nonactive-asm-owner). Production source uses existing lowercase baseline DMA-start symbol; canonical diff/full-ROM gates remain required.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move source/destination/remaining updates after DMA-start but before queue wait in C; keep real storage and all operations. A separate ordinary-register control was unnecessary."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1469,
+      "sha256": "338FA607B489AD8CFA41E7666F6B80D125B1C8543B2EED4BD19E0CD799BEAED5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3D0BD842642EC39E3D1EF8ACA3769137C4AFF80E2B3ABDB57E5414CF340D6B45"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0001a380-9352e8b29c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
