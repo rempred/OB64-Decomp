@@ -1,12 +1,14 @@
 # Sequential matching program
 
 Scheduling update, 2026-10-03 local: Joe explicitly directs separate, less-related worker waves.
-October 4 continuation: Sol retains the complete thirteen-member Squad W4 pursuit group;
-`func_00127D30`, `func_001284C4` and `func_0010766C` remain unfinished. The approved
+October 4 continuation: Sol works on the complete five-member Squad W4 scheduler group:
+`001094BC`, `0010ADB8`, `0010A718`, `0010A128` and `00109C3C`. The complete thirteen-member
+Squad W4 pursuit group is parked with its source blockers and preserved controls. Its approved
 nine-owner producer prerequisite from `00106CE0` through `0010766C` uses the existing
 compilation-group contract to investigate genuine native alignment context. It adds eight
 targets; all twenty-one share the final combined wave gate. Preserve the ten proven pursuit
-members and accepted producer prerequisites. The complete ten-member Squad W3
+members and accepted producer prerequisites; the actual native nine-member r2 layout is proven
+diagnostically, while instruction differences and final-wave gates remain. The complete ten-member Squad W3
 and seventeen-member Combat action-mode wave remain parked with documented source blockers.
 Sol retains their ownership; the existing top-level private worker continues the complete
 fourteen-member Shop menu/state/entry wave after the accepted earlier Shop waves.

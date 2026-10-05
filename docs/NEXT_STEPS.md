@@ -8,12 +8,25 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / MagentaTiger (October 4 continuation):** complete thirteen-member Squad W4
+- **Sol / MagentaTiger (October 4 continuation):** complete five-member Squad W4
+  scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),
+  `func_0010A718` (1,696), `func_0010A128` (1,520) and `func_00109C3C` (1,260).
+  Begin `1094BC`, one target at a time in `build/matching/solsquad/`, with refreshed
+  intake, complete bodies and early native comparisons. All five remain ASM in production.
+  Reuse the existing full static terrain-three research and preserve its ASM interfaces;
+  reopen the research gate only for concrete changed or contradictory evidence.
+  Preserve whole 76-byte tables p2552/p2554 and adjacent zero owners. `10ADB8` still
+  requires its entire 648-byte producer, including eight owned zero bytes, and its
+  genuine ten-byte source-record stride. Actual native evidence must precede any
+  auxiliary/producer activation proposal under the applicable structural process.
+  The separate proven `10766C` group layout does not close this owner's coverage gate.
+  All five share one final-wave verifier after readiness; no per-function ROM build.
+- **Parked under Sol:** complete thirteen-member Squad W4
   pursuit group: `func_00128AD0`, `func_00128BF4`, `func_00127D30`, `func_00127EAC`,
   `func_00128050`, `func_001284C4`, `func_00128980`, `func_001289BC`, `func_00128D50`,
   `func_00128DDC`, `func_0010766C`, `func_0012A050` and `func_0012FB64`.
-  Preserve the fresh `00127D30` and `001284C4` source controls while working through the
-  complete producer prerequisite below, one target at a time. Both remain required.
+  Preserve the fresh `00127D30` and `001284C4` source controls and the complete producer
+  prerequisite below. Both remain required; `106CE0` and `106E48` retain source blockers.
   The other ten retain accepted PURE_C sources and existing proof. Preserve real byte loads,
   input/candidate lifetimes and unresolved bank/row domains; layout strides do not establish capacities.
   Use refreshed intake in `build/matching/solsquad/`, the saved full source pairs and
@@ -33,10 +46,10 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   **Approved producer prerequisite (October 4):** use the existing native compilation-group
   contract for all nine contiguous descriptor-7 owners, rows r2228 through r2236:
   `00106CE0`, `00106E48`, `00106F34`, `001070F4`, `001072B8`, `0010738C`,
-  `0010746C`, `0010756C` and `0010766C`. Begin `00106E48` after the in-flight pursuit
-  check unless a concrete dependency favors `00106CE0`. Independently derive each full
-  body; preserve accepted `106F34`/`1070F4`, and convert the protected `1072B8` hybrid
-  to real PURE_C before group admission. Keep `10756C`'s read-before-prologue entry,
+  `0010746C`, `0010756C` and `0010766C`. Preserve all full-body controls and the useful
+  source pairs; accepted `106F34`/`1070F4` remain protected. `1072B8` has a provisional
+  PURE_C candidate, while production retains its hybrid until complete group admission.
+  Keep `10756C`'s read-before-prologue entry,
   cleanup reloads/calls, float ordering and ABIs. The shared geometry routines are
   producer prerequisites, not a new semantic family claim.
 
