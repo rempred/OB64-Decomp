@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EDBC2CBF2DD12135D6383C0E3D9FC71444C16E80AA7D0A7244F10EFD0232A103",
+  "observationId": "675CD1E405B9844B2B78E04E5F3390244C4E94048EE0D8E9DB740D17FB931B38",
+  "symbol": "func_00109C3C",
+  "authored": {
+    "context": "Original315-word/1260-byte sole r2250 fully reconciled; all FIVE scheduler members and original ASM remain. GoldOx mails1207/1210 are specific read-only advisory evidence, cross-checked against authentic source/probes and retail words.",
+    "effects": [
+      "quantity-lifetime",
+      "register-allocation",
+      "conversion-scheduling",
+      "source-information-blocker"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FAC47721A9B011303FA745266B6CEABBC9E8F124B5B71771E53A5918F0C49A51",
+      "sourceSha256": "709C6BA1CA561E71BAE130FFAFD23AE71FB50AC1728BEDD43DC34BA03B59F605"
+    },
+    "label": "scheduler-9c3c-supported-loop-local-lesson-and-radius-blocker",
+    "observedEffect": "Saved55FE native1260/frame72/107 restores cx/maxX_d F2, minX/maxX/compare/minZ/maxZ conversion order and maxZ F0 slot. Function-shared75 forces loop1 F10 from loop2 preference42;104 remains recoverable nonexact intermediate. Gold corrects global-priority formula: it multiplies allocno_size; radius14 refs/28*size2 outweighs pointX6/23. Retail globals correspond to pointX,radius,x,pointZ order F8/F10/F12/F14; saved55 order radius,x,pointZ,pointX. PointX-first would require block-local allocation, but its actual distance use lies beyond four branches and cse merges the second genuine read. This source/information gap is concrete; no omitted original quantity identified. Proposed Z casts after X guards are refuted by original in-block slot placement. New commentary source has no new native run; mechanical input identities are captured independently.",
+    "parentCandidateId": "55FE0DA883889F9DE59C4CC7415BF08E346078A19FD90FCB063D06BFEC50B8E5",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-loop-local-compiler-lesson.c",
+        "sha256": "709C6BA1CA561E71BAE130FFAFD23AE71FB50AC1728BEDD43DC34BA03B59F605"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-record-bound-scalars.c",
+        "sha256": "37AD606B788AFC61949D546611C945A4348BA143903D327EF8E6AB32FA3BDF95"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-record-bound-scalars-native11-probe.json",
+        "sha256": "FA4CBDA9986EB258E59BC80A7F631072B9BFA924F611C4CC21ED04C7BE38AB98"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-record-bound-scalars-native11-component.json",
+        "sha256": "320A07D3F9F16F54DE778D61A510249F612C75E111703184E07DEDEA04D40329"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-109c3c-gold-quantity-blocker-mails.json",
+        "sha256": "032E2AF55CC3303ECADFDCD919721BA0AFB62161AD075B713608F0C7C340ABCD"
+      }
+    ],
+    "relatedCandidateIds": [
+      "FB58A3680E17B8A9F3259580CE9495B38EAD7D79A34E6D8B3CEFF17974864C8C"
+    ],
+    "remainingFailure": "Radius/pointX and downstream allocation remain nonexact; Gold1210 explicitly agrees source/information blocker, not inherent assembly or supported tooling defect. All linked symbol/addend/relocation/placement/sole-owner/PURE_C/full-ROM FIVE gates remain. No hybrid-final claim or runtime/capacity assertion.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Add two-line explanatory commentary to the exact55FE loop-local-bound source. No expression, type, control edge or interface changes. This is a compiler-lesson successor, not a new native experiment."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6490,
+      "sha256": "FAC47721A9B011303FA745266B6CEABBC9E8F124B5B71771E53A5918F0C49A51"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "709C6BA1CA561E71BAE130FFAFD23AE71FB50AC1728BEDD43DC34BA03B59F605"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109C3C-edbc2cbf2d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

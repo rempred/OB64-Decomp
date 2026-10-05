@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3FDDD00E3B85E00C6E0F5B1340D88AE5DFB82C19FC1D7A19A77CC64CC9EB835A",
+  "observationId": "D1C12CE84505E42420F208DAA4BA17A1A4A9C093FB0ACA61EAAE1DEE68327383",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252, genuine10-byte source record stride, actual12-byte callback buffer and all19 states/18 call sites reconciled. Original76-byte switch owner/adjacent originals remain; all FIVE gates open. Source-bound native evidence is diagnostic only.",
+    "effects": [
+      "record-representation",
+      "loop-induction",
+      "control-flow",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "154377641C5AA738D7C4B0C9A345BF975CEBC048578C2E7B484E8DB2F2CA139F",
+      "sourceSha256": "1251C86F6F167BF1A22D452309F2B5BBDA01CC0400F942CD205A619CD77317FE"
+    },
+    "label": "scheduler-a718-last-selector-signed",
+    "observedEffect": "PURE_C native1696/frame88/17. Removes all three case8 branch/slot differences and unsigned pointer comparison. Two setup-word order differences and15 rectangle arithmetic/truncation/register fields remain. At-use bounds view24D9 regresses1704/366 and is nonselected; scalar coordinate/selector reuse1BE restores GPR coordinate but reverses FP computation order and is nonselected.",
+    "parentCandidateId": "6CC7A17AD36906DF5CA446362AD1E6895701CCCB5D72436EB9C4016CA84BDA14",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-last-selector-signed-address.c",
+        "sha256": "1251C86F6F167BF1A22D452309F2B5BBDA01CC0400F942CD205A619CD77317FE"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-last-selector-signed-address-native11-watch.json",
+        "sha256": "9F5CDCAC3A6D0BA5F5301A74AFDADE21F81748C547E2B6AC870B6B702F00634F"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-last-selector-signed-address-native11-component.json",
+        "sha256": "AEA7C83CB77F35AF5B4E01317BAE404BF72265D34AB55A788246FB858469C7A8"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-last-selector-signed-address-native11-probe.json",
+        "sha256": "B6A303E8B64F58A8DAFEC75B3CF67B3269943B36C8AB8C72593F1AFFF87C688E"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-bounds-view-at-use-native11-component.json",
+        "sha256": "7C6DAE823CE226FAAA487722DC12213EC65AD1465117C7EDF5CE81ACC5CF6D79"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-coordinate-selector-word-native11-component.json",
+        "sha256": "9D40C8C939B02DC85EF018ECE25FDCD28E6478B471FDA76DBC08C4095BC2AB65"
+      }
+    ],
+    "relatedCandidateIds": [
+      "6CC7A17AD36906DF5CA446362AD1E6895701CCCB5D72436EB9C4016CA84BDA14"
+    ],
+    "remainingFailure": "Original ASM stays production. Exact source class/relocation symbols and addends/placement/sole ownership/linked target bytes and complete FIVE full-ROM proof remain; table activation needs applicable structural process. No tooling defect or runtime capacity assertion.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the last case8 selector as assignment and compare genuine entry/end addresses as original signed32-bit words."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8295,
+      "sha256": "154377641C5AA738D7C4B0C9A345BF975CEBC048578C2E7B484E8DB2F2CA139F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1251C86F6F167BF1A22D452309F2B5BBDA01CC0400F942CD205A619CD77317FE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-3fddd00e3b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D2D03DC17A5B48BD47CAF4445F4791E337E4ABB379607B48C8B7D22D1980C9BC",
+  "observationId": "554FD5DE01385E11A91B1500C129B7F8BF4185F927B8628EA38B0CD2B0A58CDA",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252, genuine10-byte source record stride, actual12-byte callback buffer and all19 states/18 call sites reconciled. Original76-byte switch owner/adjacent originals remain; all FIVE gates open. Source-bound native evidence is diagnostic only.",
+    "effects": [
+      "record-representation",
+      "loop-induction",
+      "control-flow",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4CBAA5DDB079C2F4D9A6AA5784FC057E1A72C1F0DBB120181D753E9A26B7FE8D",
+      "sourceSha256": "6A0CA05E450F48762A3D53013DF1810DA63B5D8D324D94C4B5B1E10D2E431B97"
+    },
+    "label": "scheduler-a718-width-phase-control",
+    "observedEffect": "PURE_C native1700/frame88/235. Original first Z load restored; named X width is instruction-neutral in this pair. One extra explicit shift-mask word remains at publication.",
+    "parentCandidateId": "5646127461A243221AEA9B926AC2BC3C5BAB72C3FAC649F33B84A440FB9E23C8",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-coordinate-width-phases.c",
+        "sha256": "6A0CA05E450F48762A3D53013DF1810DA63B5D8D324D94C4B5B1E10D2E431B97"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-coordinate-width-phases-native11-watch.json",
+        "sha256": "2A4FF23AFEB88D5E0B8B23B99F32651BF031B18A70B89265A894FAC3801B6056"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-coordinate-width-phases-native11-component.json",
+        "sha256": "E6AE51A6D932A98BC0CB3096CB9B169BF891772A9AE764836F4B85266BDE9823"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      }
+    ],
+    "relatedCandidateIds": [
+      "5646127461A243221AEA9B926AC2BC3C5BAB72C3FAC649F33B84A440FB9E23C8"
+    ],
+    "remainingFailure": "Original ASM stays production. Exact source class/relocation symbols and addends/placement/sole ownership/linked target bytes and complete FIVE full-ROM proof remain; table activation needs applicable structural process. No tooling defect or runtime capacity assertion.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Load original unit Z first and name the actual X width before multiplying, without new arithmetic."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7904,
+      "sha256": "4CBAA5DDB079C2F4D9A6AA5784FC057E1A72C1F0DBB120181D753E9A26B7FE8D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6A0CA05E450F48762A3D53013DF1810DA63B5D8D324D94C4B5B1E10D2E431B97"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-d2d03dc17a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

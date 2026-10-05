@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6B10BB9D95D477F88A47880B6BBF19F5910A0226B7AB0591E277403E9BF99301",
+  "observationId": "49074806B3989F22B59E0ECE5377C80F95C93A76622C88B2FA99336BC72612E7",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252, genuine10-byte source record stride, actual12-byte callback buffer and all19 states/18 call sites reconciled. Original76-byte switch owner/adjacent originals remain; all FIVE gates open. Source-bound native evidence is diagnostic only.",
+    "effects": [
+      "record-representation",
+      "loop-induction",
+      "control-flow",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "49C8186A8A0F1EA23D09DB3988C92EB264AD79FEDEEA90723FCB0FAD97BC9926",
+      "sourceSha256": "15F81C105A4EBC623E7718C1CBA1E9A37EC53A8240A8E8BABDAED5806B5773EF"
+    },
+    "label": "scheduler-a718-separate-record-alias",
+    "observedEffect": "PURE_C native1704/frame88/345. Nine GPR/one FPR and most original entry recovered. Existing linkage already defines both aliases; no ownership/config change. Remaining entry differences include setup order and extent-dependent branches.",
+    "parentCandidateId": "7E5C69B59250E0103C6322B0A46FE25DA3706745AD8230881AA0A96CAB8F50FE",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-separate-header-record-alias.c",
+        "sha256": "15F81C105A4EBC623E7718C1CBA1E9A37EC53A8240A8E8BABDAED5806B5773EF"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-separate-header-record-alias-native11-watch.json",
+        "sha256": "C0AF1D12727CD6CBF0B110FE253A092655A7EAA03FB1D312FBDADA2C601F2DBD"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-separate-header-record-alias-native11-component.json",
+        "sha256": "FA45612112215035AFDD5306FE05E0C777674E87961189EBD967BFD53042AAEC"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      }
+    ],
+    "relatedCandidateIds": [
+      "7E5C69B59250E0103C6322B0A46FE25DA3706745AD8230881AA0A96CAB8F50FE"
+    ],
+    "remainingFailure": "Original ASM stays production. Exact source class/relocation symbols and addends/placement/sole ownership/linked target bytes and complete FIVE full-ROM proof remain; table activation needs applicable structural process. No tooling defect or runtime capacity assertion.",
+    "role": "transfer-result",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use existing D_801F0E19 Record10 alias separately from D_801F0E18 byte header, as accepted loader001960A8 does."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7822,
+      "sha256": "49C8186A8A0F1EA23D09DB3988C92EB264AD79FEDEEA90723FCB0FAD97BC9926"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "15F81C105A4EBC623E7718C1CBA1E9A37EC53A8240A8E8BABDAED5806B5773EF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-6b10bb9d95.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
