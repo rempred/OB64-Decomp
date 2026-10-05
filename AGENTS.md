@@ -52,15 +52,16 @@ program history, lane history, promotion history, or archived research chronolog
 
 ### 1. Normal matching work
 
-Choose worker models by the actual assignment, including future continuations.
-Use Sol High (`gpt-5.6-sol`, reasoning `high`) for retrieval/data-seeking or parsing-only work.
-Use Astra Medium (`gpt-6-astra`, reasoning `medium`) for implementation or research requiring reasoning.
-A mixed assignment containing implementation or substantive research reasoning uses Astra Medium.
-This supersedes earlier worker model rules unless Joe gives a later explicit instruction.
-Director and reviewer model assignments remain separate. Prefer a fresh implementation agent at
-wave boundaries and when accumulated context obscures the current assignment. Reuse eligible
-agents within a coherent assignment; preserve useful results and release source/build ownership
-before transferring work to a fresh agent.
+New matching-source workers use Sol 6.1 Extra High (`gpt-6.1-sol`, reasoning `xhigh`).
+After a worker's complete assigned wave passes normal acceptance, the Director starts its next
+wave with a fresh worker and fresh conversation, preserving useful knowledge and releasing the
+outgoing worker's ownership first. Existing workers finish their current wave before this
+replacement. Partial matches, parked blockers, tooling repairs and integration of another
+worker's wave do not complete the worker's own assignment. This is Joe's October 5 direction
+and supersedes older matching-worker model and continuation rules.
+Director and reviewer assignments remain separate. Retrieval/data-seeking or parsing-only
+helpers use Sol High (`gpt-5.6-sol`, reasoning `high`); separately assigned tooling or substantive
+research helpers use Astra Medium (`gpt-6-astra`, reasoning `medium`) unless Joe directs otherwise.
 
 Use internal agents unless Joe assigns a top-level worker. Top-level candidate workers report to
 and are monitored by the Director; do not place them under the production writer or send that
@@ -69,6 +70,16 @@ The Director assigns workers separate complete waves, preferably from less-relat
 whose accepted inputs are stable. Each worker handles one target at a time; a function or
 coupled producer belongs to one source worker. Parent top-level task transport requirements do not apply.
 Independent read-only research/review and explicitly disjoint documentation work may run alongside that writer.
+
+Inter-agent communication is exception-based. Contact the Director for a complete-wave handoff,
+a blocker needing director action, a shared-input/build coordination need, or an explicitly
+requested answer. Do not send per-experiment, per-function, provisional-match, target-transition,
+or routine status messages; keep those in the existing cursor and research records. Routine
+instructions need no acknowledgement unless ownership or a requested drain must be confirmed.
+When genuinely stuck, consult Claude/GoldOx with a specific question and source-bound evidence,
+using the worker's own verified Agent Mail identity. No routine per-function review is required.
+Tooling escalation retains explicit Sol/Claude agreement and Astra's approval before changes.
+Fresh-worker instructions must include this communication policy and working mail routing.
 
 The Director may run independent candidate waves concurrently across families. Preserve each
 wave's full membership, coupled producers and real dependency gates; an unfinished unrelated wave

@@ -511,6 +511,38 @@ Commit only the source and smallest necessary configuration or evidence change. 
 the integration record; ordinary matches do not need promotion manifests,
 checkpoint receipts, frozen accepted trees, or separate review packages.
 
+### 8. Start the next wave with a fresh worker
+
+After normal acceptance of the complete assigned wave, the Director starts a fresh matching
+worker using `gpt-6.1-sol` with reasoning `xhigh`. Retain the current top-level/private-worker
+arrangement and single production writer. Do not fork the outgoing conversation's full history.
+Release its source/private-root ownership before reuse, stop its retired watchers, and attach
+the replacement's own mail and stop monitoring without copying delivery state. A private
+candidate packet alone is not wave acceptance; coordinate its normal production integration
+before treating that wave as completed. Integrating another worker's wave does not complete
+the production writer's own unfinished assignment.
+
+The new worker's initial prompt must start work immediately and include:
+
+- required parent/repository reading, role, sole writable root and protected shared inputs;
+- the next complete wave's membership/dependencies, links to all parked obligations, and the
+  current accepted input/proof identity without repeating unchanged verification;
+- recoverable best sources, a small useful set of source pairs/counterexamples and current
+  research-intake commands; publish reusable private observations through the existing shared
+  research commands and maintain the lesson index without creating another archive;
+- the concrete first target/experiment and the existing concise continuation note;
+- Agent Mail connection/project key, registration under its own identity, verified Claude
+  recipient `GoldOx`, and Astra's director route. Save credentials privately. A specific stuck
+  question goes directly to Claude; ordinary matching does not wait for routine review;
+- the normal one-target loop, concurrent private checks, complete-wave verifier, and the
+  exception-only reporting policy in `AGENTS.md`.
+
+The Director owns this handoff and monitor transfer; workers do not create successors or send
+routine progress messages to each other. Preserve knowledge through the existing records and
+compact cursor, not a growing conversation replay or a new handoff protocol. If useful private
+research is ready before the wave, the production writer may publish it in a small batch without
+claiming acceptance or pausing unrelated checks for documentation alone.
+
 Ordinary matchers must not edit shared tooling. Route independently justified representation defects
 to a separate structural/tooling assignment with its applicable audit and independent review.
 The remedy must preserve generic invariants and adversarial rejection. A single target's success
