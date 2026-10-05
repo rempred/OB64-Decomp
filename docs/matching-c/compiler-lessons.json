@@ -283,10 +283,20 @@
     {
       "id": "allocator-lifetimes",
       "symptoms": ["register-allocation"],
-      "applicability": "Check CFG, widths and ABI prerequisites, then compare scoped local lifetimes and load order. No global register preference is established.",
+      "applicability": "Check CFG, widths and ABI before real lifetimes. In 1A380, C updates after DMA-start kept the chunk live across the call although assembly scheduled updates before it; register was unnecessary. In DE50, a branch-local copy cursor removed an extra move while the direct path retained its argument. Read both source pairs. Private observations retain their limits; the DMA wave records production acceptance. No universal register preference is established.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#register-allocation-observations",
-      "references": ["docs/dossiers/func-000135a0.md"],
-      "observations": []
+      "references": [
+        "docs/dossiers/func-000135a0.md",
+        "docs/dossiers/func_0001a380-9352e8b29c.md",
+        "docs/dossiers/func_0001a380-62b10f6d6d.md",
+        "docs/dossiers/func_0002de50-0f22f20863.md",
+        "docs/dossiers/func_0002de50-94f0cc2a84.md",
+        "docs/Plans/task-logs/sol-resource-dma-transfer-wave-20261005.md"
+      ],
+      "observations": [
+        {"symbol": "func_0001a380", "path": "docs/dossiers/func_0001a380-9352e8b29c.observation.json"},
+        {"symbol": "func_0002de50", "path": "docs/dossiers/func_0002de50-0f22f20863.observation.json"}
+      ]
     },
     {
       "id": "retained-early-load",

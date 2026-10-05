@@ -8,24 +8,38 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / RosePanther (October 5 fresh worker):** top-level chat
-  `01a10d10-eabc-7412-badc-3a445708cd76`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete resource DMA-transfer wave: `func_0001a380` (192 bytes) and
-  the full `func_0002de50` physical owner (164 bytes, containing its 156-byte primary
-  body and required executable eight-byte `func_0002DEEC`). Both physical owners and
-  all three logical bodies share one final-wave verifier. Work on 1A380, then the
-  complete DE50/DEEC producer, one target at a time in `build/matching/sol-dma-20261005/`.
-  Preserve original entries, full body coverage, zero-length behavior, actual queue/I/O
-  storage, 0x200 chunking, aligned scratch, byte rounding and short-copy/direct paths.
-  OS primitives and other transport, allocator/decompressor and accepted caller owners
-  remain external interfaces. Consult the parent resource-loading/overlay evidence,
-  current intake and complete original disassembly; no runtime or capacity claim follows.
-  RosePanther takes the released production-writer role and live Sol cursor, but uses
-  private checks until complete-wave readiness. Before the first canonical source,
+- **Sol / BlackEagle (October 5 fresh arena worker):** top-level chat
+  `01a10d55-b53b-7243-82a7-a89bafb9b01d`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete resource arena / allocation-front-end wave: `resource_arena_init`
+  (192 bytes), full `resource_arena_register` (528, including required 28-byte
+  `func_00001314`), `resource_alloc` (428), `resource_alloc_alt_scan` (428),
+  `resource_alloc_mode1_wrapper` (60), `resource_free` (296), and full
+  `resource_largest_free_block` (232). All seven physical owners share one final verifier.
+  Preserve read-before-prologue words at ROM 1120/1124 and 17EC/17F0, every logical
+  body, actual arena widths/strides, scan order, alignment/header arithmetic and error paths.
+  Reconcile current intake, original assembly and accepted logical coverage with
+  [arena evidence](dossiers/boot-resource-arena-and-alloc.md) and
+  [allocation/free evidence](dossiers/boot-resource-alloc-free.md). Old dossier EDxx
+  addresses are not authoritative: resolve signed offsets against the actual LUI.
+  Low-level tree/list/validation/realloc helpers and service/caller owners remain external
+  under existing contracts. No runtime safety, capacity or final API claim follows.
+  Use `build/matching/sol-arena-20261005/`, one target at a time. The fresh worker takes
+  the released production-writer role and live Sol cursor, but uses private checks until
+  complete-wave readiness. Before the first canonical source,
   header, configuration or build mutation or canonical linked diff, obtain Astra's
   explicit integration release confirming Shop's native/store drain. Private checks
   remain independent; no per-check permission. Ready Shop14 integration retains priority.
   No fresh worker reuses the predecessor's private store, mail identity or watcher state.
+
+  **Accepted DMA predecessor:** RosePanther's complete wave passed the single final
+  verifier, including independent fresh compilation and exact full ROM, on October 5
+  at 18:14:25 UTC; source/evidence commit `95d8d0c5`. Preserve `func_0001a380` (192)
+  and full `func_0002de50` (164 = primary 156 + executable DEEC 8) as PURE_C under
+  their existing entry/binding contracts. The [accepted wave record](Plans/task-logs/sol-resource-dma-transfer-wave-20261005.md)
+  links proof and four useful source observations. No unchanged verification repeat.
+  RosePanther released all ownership and retired its own watcher; Shop is released on
+  CURRENT `2B85BC80`. Release stable inputs after required verification/publication,
+  before optional reporting or documentation-only commit work.
 
   **Accepted predecessor:** MagentaTiger's resource header/cache/loading wave passed
   its single final verifier, including fresh compilation and exact full ROM, on October 5
@@ -36,7 +50,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   [Accepted wave and reusable source pairs](Plans/task-logs/sol-resource-header-loading-wave-20261005.md)
   retain the ordinary secondary-entry contract and proof. No unchanged verification repeat.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
-  now watches RosePanther. The original Scenario pair `0023A5EC`/`00249A14` remains
+  now watches the fresh arena worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
 - **Parked under Sol (October 5):** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),
