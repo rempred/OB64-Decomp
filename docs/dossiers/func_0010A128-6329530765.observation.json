@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6329530765B5E53F742122F2C6161A75BE46583A3A7BD11A16CEC18B31732D97",
+  "observationId": "0A69988E1EC11A65536E19E77712873F2AB259347FABB050F770800CD45F3389",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "The full-body native control retains all semantics but reuses one radius for cosine offset and later wide radius. Actual1094BC evidence identifies separate real first-offset local as a transferable allocation constraint; declaration order is checked against original eight bound homes.",
+    "effects": [
+      "register-allocation",
+      "stack-layout",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D764032A61CE615DC5AA347784EFFD0AE28141D58F133A6770F3B6C6B1A64094",
+      "sourceSha256": "4B6628F4AF24C50067DE4A7143541017A76677CC3B174C7C5611349684B6487B"
+    },
+    "label": "scheduler-a128-branch-local-byte-stage-consumers",
+    "observedEffect": "PURE_C1516/frame392/36R/268 masked words, compared with parent1512/270. The branch-local byte consumers restore original ANDI a0,v1,0xFF before the first stage comparison while preserving the raw stage for the2F/3C range tests. A u8 variable declaration alone is instruction-neutral. Probe24179264 artifacts all7 rehashed: original control RTL has normal bound branch/index50, but optimized loop emits branchless gtu/neg/AND30 plus index49 and hoists2097152 constant before the loop. Moving index initialization across the bound test is neutral. Named divisor reverses F0/F2 roles but loads the constant before scalar and remains nonselected. A fixed C89 loop with a live predecrement body emits1504/261 and is nonselected for worse extent. No supported shared-tool defect follows.",
+    "parentCandidateId": "64DE27B62DEEEE9FF498E1DCB89F6D7028F0163803E133011AC7264511F01622",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-branch-byte-stage-casts.c",
+        "sha256": "4B6628F4AF24C50067DE4A7143541017A76677CC3B174C7C5611349684B6487B"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-branch-byte-stage-casts-native11-watch.json",
+        "sha256": "B638ED1893B7C6007A7AC82F880CA03922929E342044D9BFB11BC3A845020B45"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-branch-byte-stage-casts-native11-component.json",
+        "sha256": "6202EFAE67AC73B444A0935291084D9AEA300A417A12B0D7CD75FA7F181EFC23"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-bound-home-order-native11-probe.json",
+        "sha256": "CA056D3730F4B0F27C4E2923BCA05C9AAF8EFBF1173FDBC888D30B21B14B7A1A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-live-countdown-top-fixed-native11-component.json",
+        "sha256": "8324466178BA0E89914CB66AD154A9C0E45D2D323074056D275377A65C1FFEF6"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-body-reconciliation.json",
+        "sha256": "BEE762C50F278932774683B7ACCFB5F4344B04349F409AC8CDD3325BABD511C4"
+      },
+      {
+        "path": "docs/dossiers/func_0010A128-64de27b62d.md",
+        "sha256": "8C5724403738675DA29F3C80EA3AEAEEBFA8ED2400D15616D16AFDDD59E68B40"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Four-byte extent shortfall and remaining268 masked words, including half-divisor register order, bound-entry CFG, hoisted flag constant/global allocation and later fields. Original1520 sole owner/complete body coverage remain reconciled. Native symbolic diagnostics do not establish exact linked bytes, relocations or complete FIVE acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the full-width loaded stage for unsigned range arithmetic, and apply explicit u8 consumers to the two equality tests. Preserve every terrain call and all floating/body paths."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7328,
+      "sha256": "D764032A61CE615DC5AA347784EFFD0AE28141D58F133A6770F3B6C6B1A64094"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4B6628F4AF24C50067DE4A7143541017A76677CC3B174C7C5611349684B6487B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A128-6329530765.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

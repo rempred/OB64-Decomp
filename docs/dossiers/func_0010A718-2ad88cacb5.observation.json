@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2AD88CACB5529719FA39237243288CFCCAF04386C43C37EF8BE0B6070983926F",
+  "observationId": "382ECAA8D85DAB66024BE362EF74A712AAC43E1A169292C7EBB70690A41FC872",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete full-source control1732/frame80. Transfer the genuine counted-loop form from current producer/scheduler evidence; no artificial padding or extra consumers.",
+    "effects": [
+      "loop-shape",
+      "stack-layout",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "661619FDEB6F8E64ECEEF4F0086AB64C6AF163CC88B3D0B4B15532EAC554C4EA",
+      "sourceSha256": "34A2500E2F76E800F71E020E77F6F91DB79AD58592E7E463D5D09BEB8D4DCF5A"
+    },
+    "label": "scheduler-a718-real-counted-record-frame",
+    "observedEffect": "Mechanical PURE_C native1732/frame88/377 masked words. Vars24 versus control16; nine GPR/one FPR save set unchanged. The compiler now emits the original88-byte frame. This alone does not establish the exact cause of its unaccessed eight-byte home; prior ghost-slot lesson is a lead, not current pass proof.",
+    "parentCandidateId": "E5D5927A57551A56A7FB186887E6F4E590839006F704184AF3CCA3F5490A030A",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-counted-record-scan.c",
+        "sha256": "34A2500E2F76E800F71E020E77F6F91DB79AD58592E7E463D5D09BEB8D4DCF5A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-counted-record-scan-native11-watch.json",
+        "sha256": "E3ABE7BF176D06723FA608D264BA24304B52706468DE25388E462C87F4F83FF5"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-counted-record-scan-native11-component.json",
+        "sha256": "93B327A51C59B0D53F649B72B4CF10DCCD0C571B070CEFCC2B6735BDABB01847"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact scheduler source research. Original1696-byte sole r2252 and separate original76-byte switch table remain ASM. Canonical table ownership, symbol/addend/relocation binding, linked target bytes and complete FIVE-member full-ROM gates remain open. All19 cases and18 calls retained; no runtime semantics or capacity inference.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use a real for(index0,offset0;index<live_count;index++,offset+=10) with no redundant outer count guard. Preserve19 states and all body/call paths."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7466,
+      "sha256": "661619FDEB6F8E64ECEEF4F0086AB64C6AF163CC88B3D0B4B15532EAC554C4EA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "34A2500E2F76E800F71E020E77F6F91DB79AD58592E7E463D5D09BEB8D4DCF5A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-2ad88cacb5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
