@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EDFEE4AD741EED525AB7BD1567195EC9C6E098AD8ADEFB49FE4E54D7E38784B7",
+  "observationId": "8B4257E0130E44AAD4CAF596195939E7569D2333F828FDF089A5CAA45E067EA6",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "Complete380-word/1520-byte r2251 and all required-body paths reconciled; original numeric masks, bound snapshots and callback/memory interfaces retained.",
+    "effects": [
+      "register-allocation",
+      "loop-induction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CBD5E10F78106D52256EDDD7FFC923540C224B64142F2FFA0511D5D2510469F7",
+      "sourceSha256": "81F895007B11A3878CC2BFD859ABE24D2D66A1E234E51D2F5FD6270171C73BA9"
+    },
+    "label": "scheduler-documented-conditional-mask",
+    "observedEffect": "Commentary successor must have exactly the authenticated expanded-input SHA of native BD209858, verified during import. Reuse that source-bound native1520/frame392/34R/zero masked instruction-difference proof without another native check. Canonical linked proof and full FIVE acceptance remain pending.",
+    "parentCandidateId": "BD209858A6ED9D2706A82AEAC8E5448C02FE53EFAA1818221F524FF2CFFA6EE4",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-documented-conditional-mask.c",
+        "sha256": "81F895007B11A3878CC2BFD859ABE24D2D66A1E234E51D2F5FD6270171C73BA9"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-named-conditional-mask-native11-watch.json",
+        "sha256": "4F874745F7423A0B4B203183FBD186E3983F3FA7C5B829AD4D0D1167A3673DA6"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-named-conditional-mask-native11-component.json",
+        "sha256": "0095C6690378BADE066F98C3E9143E420DE04E16B6B97C942E592E0A8AF20133"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-named-conditional-mask-native11-probe.json",
+        "sha256": "B77C46D0D196B4F614DAAACF30ED7BB9A7F88E1F88FF1B553B13156EFB833AE5"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-named-conditional-mask-import.json",
+        "sha256": "C8F7547152C842373B01950A967DFA06DE5A8EF3036D4BBC634E71260FC668C7"
+      }
+    ],
+    "relatedCandidateIds": [
+      "BD209858A6ED9D2706A82AEAC8E5448C02FE53EFAA1818221F524FF2CFFA6EE4"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Add two concise comments explaining the paired scan initialization and genuine guarded mask scalar; all C expressions, names and operations are unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7526,
+      "sha256": "CBD5E10F78106D52256EDDD7FFC923540C224B64142F2FFA0511D5D2510469F7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "81F895007B11A3878CC2BFD859ABE24D2D66A1E234E51D2F5FD6270171C73BA9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A128-edfee4ad74.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BD209858A6ED9D2706A82AEAC8E5448C02FE53EFAA1818221F524FF2CFFA6EE4",
+  "observationId": "EBD555673BE7C1B0691C105FD1A52B5EBA2112A466AFE78B0EE5CC1C984B2710",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "Complete380-word/1520-byte r2251 and all required-body paths reconciled; original numeric masks, bound snapshots and callback/memory interfaces retained.",
+    "effects": [
+      "register-allocation",
+      "loop-induction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CBD5E10F78106D52256EDDD7FFC923540C224B64142F2FFA0511D5D2510469F7",
+      "sourceSha256": "7953B5B51B90A5725A790A85FF3FE87852FC570FFDAF6AD99FBC7C6594B8FF42"
+    },
+    "label": "scheduler-named-conditional-mask",
+    "observedEffect": "Mechanically PURE_C native1520/frame392/34 actual relocations; zero differing instruction words outside actual relocation fields, complete380-word extent. Authenticated probe80CA91F2 all9 assets shows the guarded named mask absent from outer-loop movables and retained as V1; both AND results and first branch use original V0. Original array base and all other fields retain exact native layout. All four register differences disappear. This is provisional symbolic-object evidence, not linked equality/sole ownership or matching-C acceptance. Old6321516/268, FAA1524/219 and mask-values1520/4 sources remain recoverable.",
+    "parentCandidateId": "80C919299D2E4A92C3468FA0B51D30C347CF8E74CD858FF93BDC54CB69AB2E30",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-named-conditional-mask.c",
+        "sha256": "7953B5B51B90A5725A790A85FF3FE87852FC570FFDAF6AD99FBC7C6594B8FF42"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-named-conditional-mask-native11-watch.json",
+        "sha256": "4F874745F7423A0B4B203183FBD186E3983F3FA7C5B829AD4D0D1167A3673DA6"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-named-conditional-mask-native11-component.json",
+        "sha256": "0095C6690378BADE066F98C3E9143E420DE04E16B6B97C942E592E0A8AF20133"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-body-reconciliation.json",
+        "sha256": "BEE762C50F278932774683B7ACCFB5F4344B04349F409AC8CDD3325BABD511C4"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-named-conditional-mask-native11-probe.json",
+        "sha256": "B77C46D0D196B4F614DAAACF30ED7BB9A7F88E1F88FF1B553B13156EFB833AE5"
+      }
+    ],
+    "relatedCandidateIds": [
+      "80C919299D2E4A92C3468FA0B51D30C347CF8E74CD858FF93BDC54CB69AB2E30"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace the precomputed mask results with one genuine user scalar mask_00200000 inside the existing other_flags0x10 guard, then use it in the original two short-circuit mask tests."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7526,
+      "sha256": "CBD5E10F78106D52256EDDD7FFC923540C224B64142F2FFA0511D5D2510469F7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7953B5B51B90A5725A790A85FF3FE87852FC570FFDAF6AD99FBC7C6594B8FF42"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A128-bd209858a6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

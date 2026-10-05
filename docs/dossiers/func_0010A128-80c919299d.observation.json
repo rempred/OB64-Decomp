@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "80C919299D2E4A92C3468FA0B51D30C347CF8E74CD858FF93BDC54CB69AB2E30",
+  "observationId": "B614CD9C113CC9800F8BEC6339274CE234C3710ECD60CF0FD6EB98B5EA2E00A5",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "Complete380-word/1520-byte r2251 and all required-body paths reconciled; original numeric masks, bound snapshots and callback/memory interfaces retained.",
+    "effects": [
+      "register-allocation",
+      "loop-induction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DDE4B8585577B6DCA92573B03E1971C769114754B97A2F651B35DCA4C5EAF58C",
+      "sourceSha256": "39389025B04C8ADB73203EEDEF28F2BC69FCF245F080C23537E5272A7144A227"
+    },
+    "label": "scheduler-mask-values-before-branches",
+    "observedEffect": "Native1520/frame392/4 masked words versus parent1524/219. Authenticated probe271812DC all9 assets shows outer-loop201 real insns unchanged; synthesized mask214 life2 is not desirable to move, while parent life4 moved to867. Removing hoisted mask restores original S8 array base, exact extent and every other instruction field. Remaining four words only swap V0/V1 roles among mask constant, first AND/test and second AND. No fabricated use, extra read, flag value change or producer change.",
+    "parentCandidateId": "FAA00F5496651715C2D1F308F9632D2E876A962619446BCBA7EBEEA9AB1B2ECF",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-mask-values-before-branches.c",
+        "sha256": "39389025B04C8ADB73203EEDEF28F2BC69FCF245F080C23537E5272A7144A227"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-mask-values-before-branches-native11-watch.json",
+        "sha256": "DB9A40A9FFCE9B40D1800D57AC105A4602447C719FF10CD8072070825C2AA2EA"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-mask-values-before-branches-native11-component.json",
+        "sha256": "BB6E84E66FF5F7786C00B60B109793B7BE3A32E41FCD10499C7C76731CC6C0EB"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-body-reconciliation.json",
+        "sha256": "BEE762C50F278932774683B7ACCFB5F4344B04349F409AC8CDD3325BABD511C4"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-mask-values-before-branches-native11-probe.json",
+        "sha256": "EE6F01EB28CE86037702A6EA5AAA3E1AB4CD9EA5FB04E16C4C3D4BCC07026BD7"
+      }
+    ],
+    "relatedCandidateIds": [
+      "FAA00F5496651715C2D1F308F9632D2E876A962619446BCBA7EBEEA9AB1B2ECF"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compute the same two 0x00200000 masked values before their original nested tests, preserving all already-loaded flag snapshots and downstream paths."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7569,
+      "sha256": "DDE4B8585577B6DCA92573B03E1971C769114754B97A2F651B35DCA4C5EAF58C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "39389025B04C8ADB73203EEDEF28F2BC69FCF245F080C23537E5272A7144A227"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A128-80c919299d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "40C5CED0BBF7CAEACE0ACAAABB16F6AA9EC71539F5F90F88315014B338BFECB8",
+  "observationId": "C56990B04625EBC5AB936F8E73E26976394B778FEFE89C4603E6A0AB680D14CD",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252 and all19 states/18 callsites reconciled; genuine10-byte record,12-byte callback buffer, native low-five-bit publication and original shared comparison tail retained.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "00B179382DCB547D70395AE9104D052DCE0ED601D05A8EED868AF11751F5A4C9",
+      "sourceSha256": "377EA09E061CCD78141FB85D88534A2CC927EFBD35477781309133BB2B12E9D8"
+    },
+    "label": "scheduler-rectangle-compound-x-conjunction",
+    "observedEffect": "Mechanically PURE_C native1696/frame88/2 masked words, exact complete424-word extent. Resolves all five X comparison/load-order fields without changing any later state. Only offsets1BC/1C0 differ: final Z conjunction destination and branch register A1 rather than originalV1. All other instruction fields match outside actual object relocation fields. Stronger source-bound diagnostic best, not linked/owner/ROM acceptance. Named upper-only70EF emits short-circuit branches/ANDI with no register AND; requested probe53C9EB07 all9 assets authenticated, preserving that useful counterexample rather than assuming its operand order.",
+    "parentCandidateId": "EE4E2075276226D5410510D9A84B0AE667C05A053873C499F82BBE9333A37404",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-rectangle-compound-x-conjunction.c",
+        "sha256": "377EA09E061CCD78141FB85D88534A2CC927EFBD35477781309133BB2B12E9D8"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-rectangle-compound-x-conjunction-native11-watch.json",
+        "sha256": "A080981A2CFBC9A2A90507DB93C479427E53C3255D4726221C726CA51A4F3C86"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-rectangle-compound-x-conjunction-native11-component.json",
+        "sha256": "6F3E22B82E5E188397E3AE63E531985EB5DCCEAAC4475BCB0F00DD94B98ABAF7"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EE4E2075276226D5410510D9A84B0AE667C05A053873C499F82BBE9333A37404"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Compute the existing upper-X and lower-X booleans in their original order, then apply lower_x &= upper_x before the same guard; no added operation, read, use or branch."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8631,
+      "sha256": "00B179382DCB547D70395AE9104D052DCE0ED601D05A8EED868AF11751F5A4C9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "377EA09E061CCD78141FB85D88534A2CC927EFBD35477781309133BB2B12E9D8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-40c5ced0bb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
