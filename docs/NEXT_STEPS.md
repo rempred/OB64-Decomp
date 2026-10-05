@@ -88,7 +88,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   Source-level allocation and
   scheduling blockers do not establish a tooling defect or a final HYBRID exception.
   B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
-- **Shop inventory decomp worker:** top-level chat `01a0ffcd-6210-7a03-a178-d7d2af7f1c3b`,
+- **Shop inventory decomp worker:** top-level chat `01a10a01-9946-7233-9240-e084e0fff710`,
   coordinated and monitored by Astra. Own the complete fourteen-member menu/state/entry
   wave defined below. The complete producer/splitter wave,
   `func_0019BE40` and `func_001977E0`, passed its changed-input audit and independent
