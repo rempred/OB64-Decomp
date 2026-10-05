@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "ED70B565C0C455CA987811BD5F3123688458DE1E76FB77163D43AA03FF5D4DC1",
+  "observationId": "8E842837376D2541F5FA8E0788BD9D291BB9934DD8147621EE1B48E6E45B2D16",
+  "symbol": "resource_find_arena_index",
+  "authored": {
+    "context": "Arena lookup using observed record12 and u16 count.",
+    "effects": [
+      "complete-owner-coverage",
+      "source-shape"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1210,
+          "path": "include/game/resource_arena.h",
+          "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+        }
+      ],
+      "expandedSha256": "DD291931CCC62019F787985C552AEEDE4CE16C2561B7AC5E5AA7CB46FE391F19",
+      "sourceSha256": "3E51A71BDA66DC3C0CF890CAA15A3C4FF6F44AAB3A2DFD59FD8569BD18BEECFE"
+    },
+    "label": "index-count-local",
+    "observedEffect": "Native text is144 bytes: first iteration is peeled; the entry uses a count-zero guard.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_find_arena_index.s",
+        "sha256": "980EC51029DE347CBB63FCE4E590094EEC8969AF5B3330B2490B43A74E2E1E36"
+      },
+      {
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Extent and control flow remain nonmatching.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture count in a local, then guard a do-loop explicitly."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1210,
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "expanded": {
+      "bytes": 1258,
+      "sha256": "DD291931CCC62019F787985C552AEEDE4CE16C2561B7AC5E5AA7CB46FE391F19"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3E51A71BDA66DC3C0CF890CAA15A3C4FF6F44AAB3A2DFD59FD8569BD18BEECFE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_find_arena_index-ed70b565c0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

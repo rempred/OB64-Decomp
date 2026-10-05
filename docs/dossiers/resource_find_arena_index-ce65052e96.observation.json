@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CE65052E96757AE0A5B889C20823B67162E8DD4F1DB44804FCE2586B9AD1712E",
+  "observationId": "D75D2091C713C3BBAAB14CB9B651D5A41F3092B3124475BB4C28B7609E68E603",
+  "symbol": "resource_find_arena_index",
+  "authored": {
+    "context": "Same lookup and header context as the count-local control.",
+    "effects": [
+      "complete-owner-coverage",
+      "source-shape"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1210,
+          "path": "include/game/resource_arena.h",
+          "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+        }
+      ],
+      "expandedSha256": "2DF9ACFDD10A3E1CB3B56F2A53E3A96E72A5A887AC3D469312C0EB462041771D",
+      "sourceSha256": "FD2D5FBDDA68B496607423BB52F4770899F7DF8A38382F4F9A5FC9DAC0CC09C1"
+    },
+    "label": "index-real-for-guard",
+    "observedEffect": "Restores104 bytes, count-load prefix and BLEZ guard; complete relocation-masked raw agreement.",
+    "parentCandidateId": "ED70B565C0C455CA987811BD5F3123688458DE1E76FB77163D43AA03FF5D4DC1",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_find_arena_index.s",
+        "sha256": "980EC51029DE347CBB63FCE4E590094EEC8969AF5B3330B2490B43A74E2E1E36"
+      },
+      {
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Canonical linked/ownership/relocation/fresh/full-ROM gates remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the actual global count in the real for-loop guard."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1210,
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "expanded": {
+      "bytes": 1165,
+      "sha256": "2DF9ACFDD10A3E1CB3B56F2A53E3A96E72A5A887AC3D469312C0EB462041771D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FD2D5FBDDA68B496607423BB52F4770899F7DF8A38382F4F9A5FC9DAC0CC09C1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_find_arena_index-ce65052e96.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

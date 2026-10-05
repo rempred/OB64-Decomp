@@ -981,6 +981,26 @@
     {
       "symbol": "resource_largest_free_block",
       "source": "src/lib/resource_largest_free_block.c"
+    },
+    {
+      "symbol": "resource_realloc",
+      "source": "src/lib/resource_realloc.c"
+    },
+    {
+      "symbol": "resource_tree_insert_find",
+      "source": "src/lib/resource_tree_insert_find.c"
+    },
+    {
+      "symbol": "resource_rebuild_free_trees",
+      "source": "src/lib/resource_rebuild_free_trees.c"
+    },
+    {
+      "symbol": "resource_find_arena_index",
+      "source": "src/lib/resource_find_arena_index.c"
+    },
+    {
+      "symbol": "resource_alloc_tree_scan",
+      "source": "src/lib/resource_alloc_tree_scan.c"
     }
   ]
 }

@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "264FC2C72F00931881312579515D910923008B19F9670A379204BDDDBACA0B91",
+  "observationId": "EAAD08DEF1633AE4C9D506B4EFAF3C0FCABB093EC6B6C404F765B43D4D2C9726",
+  "symbol": "resource_rebuild_free_trees",
+  "authored": {
+    "context": "296-byte rebuild with named first-root pointer.",
+    "effects": [
+      "complete-owner-coverage",
+      "source-shape"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1210,
+          "path": "include/game/resource_arena.h",
+          "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+        }
+      ],
+      "expandedSha256": "7DA4B09AF2F8E5E9781D69A680B1859E0E08641CE20FAD49683B5DD8A0C9249F",
+      "sourceSha256": "EB0E69D3D9D13FC9BEB770EF2EA10BA086A934AE654F2AABF558BA63128E07AE"
+    },
+    "label": "rebuild-explicit-record-stride",
+    "observedEffect": "Complete296-byte relocation-masked raw agreement, with exact prefix and all nonrelocation words.",
+    "parentCandidateId": "39C06F78600AFD2AD3484556A75F7103A69E12494CF14EFAAFF7519F03103FAE",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_rebuild_free_trees.s",
+        "sha256": "9CB6E40E653394CA66A9B4C5BCC9EC0C94DE859B4866C1CE3909C4F698D15EF5"
+      },
+      {
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Canonical gates remain; this source shape is target-scoped compiler evidence.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Initialize an explicit record-byte stride before the root cursor; retain typed ArenaRecord accesses."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1210,
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "expanded": {
+      "bytes": 2606,
+      "sha256": "7DA4B09AF2F8E5E9781D69A680B1859E0E08641CE20FAD49683B5DD8A0C9249F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EB0E69D3D9D13FC9BEB770EF2EA10BA086A934AE654F2AABF558BA63128E07AE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_rebuild_free_trees-264fc2c72f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

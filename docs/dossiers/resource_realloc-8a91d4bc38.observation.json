@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8A91D4BC3841957AAA6AAFDBBFE8C97CD4D3AA510451A8F33C147BF90D4C5597",
+  "observationId": "C827D13C47CB6C44EC0ECE033F7974AFBA5E97191CFF3B06E92C1A0347748A42",
+  "symbol": "resource_realloc",
+  "authored": {
+    "context": "Same folded-endpoint context.",
+    "effects": [
+      "complete-owner-coverage",
+      "source-shape"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1210,
+          "path": "include/game/resource_arena.h",
+          "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+        }
+      ],
+      "expandedSha256": "CDF5DC3176628C681D4187D47988A84D5991CCD5E58B9DC561373B853C117759",
+      "sourceSha256": "4C9DCA0203BAD679796313CA1DA9E1F2EEDC3974FB40A384051386CAC28A2C63"
+    },
+    "label": "realloc-header-lifetime",
+    "observedEffect": "Complete932-byte relocation-masked raw agreement, required780+152 census and original accesses/branches retained; no added operation.",
+    "parentCandidateId": "D7CEC3971C08ECDA74D42AF4EBBC8E1C648BF6AD8DBC4D2D1D23773331784F54",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_realloc.s",
+        "sha256": "3CC279F2D305908237A797B96A5346B9A24F6B2DCD4958ADF2BF997D01DC6ACF"
+      },
+      {
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Production LOCAL helper, existing copy alias and canonical gates remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Initialize the actual header pointer before rounding instead of after delta calculation."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1210,
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "expanded": {
+      "bytes": 4380,
+      "sha256": "CDF5DC3176628C681D4187D47988A84D5991CCD5E58B9DC561373B853C117759"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4C9DCA0203BAD679796313CA1DA9E1F2EEDC3974FB40A384051386CAC28A2C63"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_realloc-8a91d4bc38.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
