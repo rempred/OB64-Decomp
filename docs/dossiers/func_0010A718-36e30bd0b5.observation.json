@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "36E30BD0B503B0A03631B1E0F7C9A9DA37DFECBB379E7210CCC72E8CE8737EFD",
+  "observationId": "DE1DE4D5E19AFA2E2D07D27F6B7763C03A987C2D16469B2AC220388FEBF91B72",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete physical NINE r2245..2253 study approved by Astra1269, using all real source bodies, pinned compiler/assembler closure, source-policy/dependency/scratch guards and unchanged native assembly. Current original FIVE and all nine bodies remain required; no actual source, structural ownership or group registration is activated.",
+    "effects": [
+      "field-layout",
+      "register-allocation",
+      "instruction-scheduling",
+      "expression-lowering"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DD3EF40FB38681AE87825A0D61941D2671FBF84DA1F1B6CC16048B55A1AEDC03",
+      "sourceSha256": "3EDDA2558F0EEA14D747F6EC7EB2FA6DC02ECFFB78A3CF8F80769C733463D5AA"
+    },
+    "label": "scheduler-nine-common-a718",
+    "observedEffect": "PURE_C1696/frame88/44 actual text relocations/zero instruction differences outside actual relocation fields. The shared RecordTable view preserves A718 while fixing the previous incompatible THREE context for ADB8. The complete r3 native producer retains identical standalone code, table0/76 bytes in a160-byte alignment8 rodata section, authentic HI/LO reference, and all19 normalized member case offsets equal the original table. All source/offset/table observations remain private diagnostics, not linked acceptance.",
+    "parentCandidateId": "C308C42361AFCE48C54B735062F9FCAC96966A6997CF959482AC6AA393BEC71E",
+    "references": [
+      {
+        "path": "build/matching/solsquad/func_0010A718-nine-context.c",
+        "sha256": "3EDDA2558F0EEA14D747F6EC7EB2FA6DC02ECFFB78A3CF8F80769C733463D5AA"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-context-0a718-watch.json",
+        "sha256": "2F0FF309F25D0B78784C32A55C0B6C30B2DE9E14570EDCCD736AE0F08039606E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-context-0a718-component.json",
+        "sha256": "04EBAA72DC57EA187E605A2B4C8D34EA433AA12E4C9A40BAB8407124B350203D"
+      },
+      {
+        "path": "docs/dossiers/func_0010A718-c308c42361.observation.json",
+        "sha256": "92A1710577AC1EE306BBC7334597DCFB10D26D2D9967D58277044077B362CCBC"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-context-reconciliation-20261005.json",
+        "sha256": "520717322048D1A633D0EE9C9D66B3E46F3A237DF82182363644ACD27EA81F71"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-context-individual-comparison-20261005.json",
+        "sha256": "044C5BEF45DF105AB6DAA2304BCCBAEAB08A6F8FC18A7B8EABB10AC08C34FF70"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-context-best-extent-reconciliation-20261005.json",
+        "sha256": "6730E6A22C4D408274340DDA2F73C54E31B00D9514B7A81F4FC3D666E55D033D"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-context-r2-diagnostic.json",
+        "sha256": "FAA9F474476508E6E1F17B676D38EADDAAF6A9E968937F37E714BA37AEB134BA"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-context-r3-diagnostic.json",
+        "sha256": "114D953CEF28CE03FFDAB951B9C6CC06E438231B9616899ED0DE2F4711E805B5"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-context-r3-census.json",
+        "sha256": "FA3033C1897491327B99E7AA4C46D914A831D9679DA81579AA28C8FBDEB03157"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-context.cjs",
+        "sha256": "EA6B87C581889FC7A5018D85698A7235B64FE504B622DC928F74877451C5167D"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-best-extent.cjs",
+        "sha256": "4F5C58D331689135B6DD52177D32AC031D4170AEE77186A5C26511D0462499D0"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010A718.s",
+        "sha256": "FE8AD3AAE4546EBCA4B589AF43230D61F5FC54BA31582F1D5B2AD1CDFECFD93A"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1269.json",
+        "sha256": "08152859D58A399B1446781A766B53A1FD929946B827A1E4D6134B9979BEA961"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-context-r3.input.c",
+        "sha256": "F75A255457F76617A6D8795CCC00DF77C251EB3379E5E16A8624BA4CE45BC473"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-context-r3.s",
+        "sha256": "F00C8F03D5CFB268E5E3CCB64B34E4257F3535392586B19520A09CE7C3388894"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-context-r3.o",
+        "sha256": "873C998DEC63C78B28A24504261F41CA08E38BB335271C88FFDA5A1D2EB3BE1A"
+      }
+    ],
+    "relatedCandidateIds": [
+      "C308C42361AFCE48C54B735062F9FCAC96966A6997CF959482AC6AA393BEC71E"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Combined r3 retains nonexact AA0/C1C/BC/A48/9C and missing exact extents before the table producers. No bytes were relocated, object linked, owner projected, compilation group admitted, verifier run or runtime claim made. Exact linked relocations/addends/placement/ownership and complete NINE full-ROM acceptance remain open; original p2553/p2555 stay ASM.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the reconciled nine-function RuntimeUnit/prototype corpus and authentic RecordTable count, retaining the genuine byte-relative bounds alias as a byte cast. Keep the standalone best body and all nineteen switch states."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11346,
+      "sha256": "DD3EF40FB38681AE87825A0D61941D2671FBF84DA1F1B6CC16048B55A1AEDC03"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3EDDA2558F0EEA14D747F6EC7EB2FA6DC02ECFFB78A3CF8F80769C733463D5AA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-36e30bd0b5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

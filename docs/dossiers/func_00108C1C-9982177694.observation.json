@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "99821776942B7B41C187B6825B9B1479DFFC6E601A247E359D472C27F93484BC",
+  "observationId": "2AD9D2ECD30183CD0B16460A535B0E2C9406E00CCBDC11451E7758FBDCE12FC7",
+  "symbol": "func_00108C1C",
+  "authored": {
+    "context": "Full r2246 owner2208 bytes/552 words/frame160, all19 actual original JALs and complete logical paths reconciled. Comment-only successor reuses exactly E32E authenticated compiler input; no new native compiler invocation.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "field-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "783DF01BB6B60FA105F97D4233F8AC30BCC5C077B2E35C97B241B8587EFFC1CB",
+      "sourceSha256": "8D64C5BA775EFB67B2B6BBB7984CAA3A76E56DC38A17B132ED120E8622BCCB29"
+    },
+    "label": "scheduler-prerequisite-108c1c-documented-reload-frontier",
+    "observedEffect": "PURE_C expanded bytes equal E32E:2224/frame152/526 same-offset masked differences. B400 authenticated loop dump moves genuine bank/selector/table constants with life13/58/60, restoring bank fp, selector s6/table s7 and x/z/mode retail spills3C/44/4C. Gold1262 explains that an unaccessed object above spill slots is a reload-allocation consequence, not an expand-time local or outgoing argument. Actual final greg has no integer pseudo in FP registers, secondary notes or now-on-stack notes; SF81/82/83/84 use hard56/58/54/52. Complete reconciled NINE r2 context preserves all member instructions, frames and sizes, so the measured shared declarations do not resolve this gap. Compiler-source mechanism is advice, not proof of original source or inherent assembly.",
+    "parentCandidateId": "E32E9302538951B7FBEC1548E146F2DE6F703B36916B4771B2369CE1CC2A98D4",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-documented-reload-frontier.c",
+        "sha256": "8D64C5BA775EFB67B2B6BBB7984CAA3A76E56DC38A17B132ED120E8622BCCB29"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-loop-base-lifetimes-watch.json",
+        "sha256": "019BB8219BB7BED0135F158C0CE9C6C032395B461D0049159730790E1C75DF8B"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-loop-base-lifetimes-component.json",
+        "sha256": "2EE3DA13CF4A1B2D7276C74983B4DD34566913759FCF8296A4E7E5717F5F30D1"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-loop-base-lifetimes-probe.json",
+        "sha256": "81347D4102EF4663FBADF3BD590D333BD04B408FCED2DFC3A7F5704C469AF1BA"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-reload-frontier-20261005.json",
+        "sha256": "934A65A8DCA286DCFC7EE797A161D7826BBF270E0A0FE3D1A56276FBCC3C49B0"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-context-reconciliation-20261005.json",
+        "sha256": "520717322048D1A633D0EE9C9D66B3E46F3A237DF82182363644ACD27EA81F71"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-context-individual-comparison-20261005.json",
+        "sha256": "044C5BEF45DF105AB6DAA2304BCCBAEAB08A6F8FC18A7B8EABB10AC08C34FF70"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-native-context-r2-diagnostic.json",
+        "sha256": "FAA9F474476508E6E1F17B676D38EADDAAF6A9E968937F37E714BA37AEB134BA"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00108C1C.s",
+        "sha256": "71F35EF8B665F6595563DC2CDCF821A0BC001E8BE644E712EA24D36860FE25F7"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1262.json",
+        "sha256": "9389D832A40602DF8EA8CE57504E76A097DB87FAC7C942C9FEBA0DB1B16DABFA"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1269.json",
+        "sha256": "08152859D58A399B1446781A766B53A1FD929946B827A1E4D6134B9979BEA961"
+      }
+    ],
+    "relatedCandidateIds": [
+      "AB8775E5BE250BD8D6B3E52BB283B571E1278022DBEDB7FFD01FE63C83B940BA"
+    ],
+    "remainingFailure": "Frame8 short, function16 long, broad allocation/scheduling nonexact. No new supported source quantity for the reload gap is known. Original ASM remains sole production owner; all actual linked relocation/addend/placement/owner/full-ROM and complete scheduler FIVE/NINE gates remain. Closest-extent AB877 is recoverable best; no missing local, padding or weakened verification is introduced.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Document the validated real loop-base lifetime discriminator and the remaining unused eight-byte frame gap without adding source locals or padding."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8151,
+      "sha256": "783DF01BB6B60FA105F97D4233F8AC30BCC5C077B2E35C97B241B8587EFFC1CB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8D64C5BA775EFB67B2B6BBB7984CAA3A76E56DC38A17B132ED120E8622BCCB29"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00108C1C-9982177694.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4FE4103CED2EDFBA2CCDE7B8B2DD0AB7C878530E5DA6C257CDCB9F9921C75A9C",
+  "observationId": "F51B27A4285047EFC3557CA986526DDE167D209A04CBA3180DB682C9C5DD950A",
+  "symbol": "func_00109A48",
+  "authored": {
+    "context": "Complete r2248 original owner444 bytes/111 words/frame48 at ROM109A48..109C04/VMA801B5308..801B54C4; all original instructions and current incoming/interface inventory reconciled. Native discrepancies arise in emission/layout, not an omitted callable body. Unit flags at0 and signed-sentinel list pointer atA8, source-row stride11 and helper interface preserved. Default Kuna/m2c hypotheses checked against full original body.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F3ECAC0646D8C13B4121FDAA988BE7AE65D9A230FE4D3EAD6C7CF1CF2EB00449",
+      "sourceSha256": "B88F263C1EB7E57F94BD1C7A10A4026EC7B4E3E688226E7267C4FD1A99E6E012"
+    },
+    "label": "scheduler-prerequisite-109a48-shared-scan-advance",
+    "observedEffect": "PURE_C432/frame48/90, exact same native object as D890 bank-before-mask. The shared advance join does not protect the ORI from second-guard delay-slot scheduling; its useful input counterexample does not establish an inherent assembly or tooling defect.",
+    "parentCandidateId": "D890D58729BA1BF7498498C99D79950A729FC15FEFE07689E61E292064230719",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-shared-scan-advance.c",
+        "sha256": "B88F263C1EB7E57F94BD1C7A10A4026EC7B4E3E688226E7267C4FD1A99E6E012"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-shared-scan-advance-watch.json",
+        "sha256": "2F9A3AFA9705526FB4705E208FB4D37C45E345DDE1B12B21615F4883F0B736CB"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-shared-scan-advance-component.json",
+        "sha256": "BDA75214293189D78BFDE9369CDD39DB69F5E5AB810B7AB85423B6CCA4DEF13F"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00109A48.s",
+        "sha256": "9353511F64EE65E4493545830B5E642E14CD3E0383B8F8C08D9B1CD31E713FF6"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00109A48-intake-20261005.json",
+        "sha256": "A236995DB4D1A8F53A6930AEFF00F06D6763ED81D781D34BE1D01F7D2E817CE0"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-analysis.json",
+        "sha256": "AFB3A1B7247CD4CB5AA4DF8340682DEB98A260E471FC77CC17A706BEB8AD3156"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D890D58729BA1BF7498498C99D79950A729FC15FEFE07689E61E292064230719"
+    ],
+    "remainingFailure": "ASM remains sole production owner. No source is linked exact, and incomplete emitted extent remains a required rejection. Actual object relocation masks do not establish addresses/addends, placement, ownership or full-ROM equality. Complete scheduler FIVE/NINE and other prerequisites remain open; no structural or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Expose the actual shared scan-advance join with both flag guards going to one named label before slot increment, preserving the real control-flow paths."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2105,
+      "sha256": "F3ECAC0646D8C13B4121FDAA988BE7AE65D9A230FE4D3EAD6C7CF1CF2EB00449"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B88F263C1EB7E57F94BD1C7A10A4026EC7B4E3E688226E7267C4FD1A99E6E012"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109A48-4fe4103ced.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8663E8CDA691C83F8F0EB30FEC8B8ADE4D826344EF361851183745B51BFEADAF",
+  "observationId": "AF496E10AE4E0932713CCBC5474C031BDC9D8B9718293D3EE403772124E512F0",
+  "symbol": "func_00109A48",
+  "authored": {
+    "context": "Complete r2248 original owner444 bytes/111 words/frame48 at ROM109A48..109C04/VMA801B5308..801B54C4; all original instructions and current incoming/interface inventory reconciled. Native discrepancies arise in emission/layout, not an omitted callable body. Unit flags at0 and signed-sentinel list pointer atA8, source-row stride11 and helper interface preserved. Default Kuna/m2c hypotheses checked against full original body.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CE1EA5383DCF39D6160E633C890B500462D4E19191A69DD05FEC25EA6329D890",
+      "sourceSha256": "7D16EDDF74407EF4A5533DB2D8B9901C0243AC06F6A8D3C8C01031C4E65587AF"
+    },
+    "label": "scheduler-prerequisite-109a48-duplicated-scan-tail",
+    "observedEffect": "PURE_C432/frame48/99 same-offset masked differences. Authenticated7-asset8ABE probe shows late jump creates label363 absent from flow; both initial guards target it, but no BARRIER precedes it and ORI still fills the second BEQ delay. A new post-flow label alone is insufficient to reproduce the retail empty slot. Initial register allocation also regresses.4982 best retained; no inherent-assembly or tooling-defect claim.",
+    "parentCandidateId": "D890D58729BA1BF7498498C99D79950A729FC15FEFE07689E61E292064230719",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-duplicated-scan-tail.c",
+        "sha256": "7D16EDDF74407EF4A5533DB2D8B9901C0243AC06F6A8D3C8C01031C4E65587AF"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-duplicated-scan-tail-watch.json",
+        "sha256": "FD151DFF414F4B6F43A518095E18800421377953016D48A67E04FA98645DF068"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-duplicated-scan-tail-component.json",
+        "sha256": "52B4689A3F5AFA094BFBA2C3C478F4D66FF1843C8C3D70FF68C90B0B69A29E60"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00109A48.s",
+        "sha256": "9353511F64EE65E4493545830B5E642E14CD3E0383B8F8C08D9B1CD31E713FF6"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00109A48-intake-20261005.json",
+        "sha256": "A236995DB4D1A8F53A6930AEFF00F06D6763ED81D781D34BE1D01F7D2E817CE0"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-analysis.json",
+        "sha256": "AFB3A1B7247CD4CB5AA4DF8340682DEB98A260E471FC77CC17A706BEB8AD3156"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/8ABE9471CDC10E8563C1CE3AAF32DD97F919704DB3AA409277A8023721B22DDA/authored.c",
+        "sha256": "7D16EDDF74407EF4A5533DB2D8B9901C0243AC06F6A8D3C8C01031C4E65587AF"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/8ABE9471CDC10E8563C1CE3AAF32DD97F919704DB3AA409277A8023721B22DDA/input.c",
+        "sha256": "CE1EA5383DCF39D6160E633C890B500462D4E19191A69DD05FEC25EA6329D890"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/8ABE9471CDC10E8563C1CE3AAF32DD97F919704DB3AA409277A8023721B22DDA/output.s",
+        "sha256": "6FD3137DDA891AAE2E56BF57A677C982B4C6DB123CD03D1E2DAA8AA62B36D3DB"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/8ABE9471CDC10E8563C1CE3AAF32DD97F919704DB3AA409277A8023721B22DDA/input.c.rtl",
+        "sha256": "0D37C55E0604922E73C12BBF8A509D5F8CF81E94F4B4FED6CD876E1B8883A576"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/8ABE9471CDC10E8563C1CE3AAF32DD97F919704DB3AA409277A8023721B22DDA/input.c.flow",
+        "sha256": "A962962F391F350E5D495B207693E9884C69FC10C5A1299E582E4651DFF85495"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/8ABE9471CDC10E8563C1CE3AAF32DD97F919704DB3AA409277A8023721B22DDA/input.c.jump2",
+        "sha256": "B1AC31A4B838BF12014D0B11061EFE347FBCC8C87CBB885B00151A5BB002AF7A"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/8ABE9471CDC10E8563C1CE3AAF32DD97F919704DB3AA409277A8023721B22DDA/input.c.dbr",
+        "sha256": "4F6E72894AA3BE2D534820DAB7C573AFF7F3859EB9E44C1FDE5CA114E8700B05"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-duplicated-scan-tail-probe.json",
+        "sha256": "5B617F20AE4534DD87095E491E160ECA8158532C99F06A68501C298B6057EB5C"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/B0E3DE784EE204645BCF17AE2FC74EEFBDD87C9DD2F20F98801EA7079FD2DAB0/authored.c",
+        "sha256": "738E145C61D7808B624CDDDFBB35AC6C337B754D6B0867B767364689770C8765"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/B0E3DE784EE204645BCF17AE2FC74EEFBDD87C9DD2F20F98801EA7079FD2DAB0/input.c",
+        "sha256": "BD2C2017E2B5EFE00EF2FCB698227FB360F0044D437C7DEFA3FDD4054D19041D"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/B0E3DE784EE204645BCF17AE2FC74EEFBDD87C9DD2F20F98801EA7079FD2DAB0/output.s",
+        "sha256": "4C133DCC540E33D3C68A0FE1CA9B5559D12705A0FBFE1F54E25C0DABCEDECC30"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/B0E3DE784EE204645BCF17AE2FC74EEFBDD87C9DD2F20F98801EA7079FD2DAB0/input.c.rtl",
+        "sha256": "50EA459249BE60745BEA9C1DD4325D4FB2DA9B6803CD1C79D5C6DEA38ACD0810"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/B0E3DE784EE204645BCF17AE2FC74EEFBDD87C9DD2F20F98801EA7079FD2DAB0/input.c.flow",
+        "sha256": "CED0D7494C4E699CF9A1DCCA6A02275928F48580EADDD13F4BD1E89866DCF9C4"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/B0E3DE784EE204645BCF17AE2FC74EEFBDD87C9DD2F20F98801EA7079FD2DAB0/input.c.jump2",
+        "sha256": "C0EB55CC67EBFCB7DDD7422FB8129FEB102956BAD47A64597F7770AEF9C2F5BE"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/B0E3DE784EE204645BCF17AE2FC74EEFBDD87C9DD2F20F98801EA7079FD2DAB0/input.c.dbr",
+        "sha256": "36C0CE561B9B9D78D259E652D53E74F844310EB8AB84B085D5D686630C36DB81"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-bank-before-mask-delay-probe.json",
+        "sha256": "0C295A63F75A359A376D0FAF0571A5C19570FB36A7D2B87D1027C51AC1B559EE"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-cross-jump-discriminator-20261005.json",
+        "sha256": "BC1FAFBD47CF0218832FE21887A9F0A4158536A3775B1F3F1EDFF8500D62AA35"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1263.json",
+        "sha256": "219A3423E71FEE08DA4FD6C5A1198EE25928F854422160A24DC1BBD1B626684E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D890D58729BA1BF7498498C99D79950A729FC15FEFE07689E61E292064230719"
+    ],
+    "remainingFailure": "ASM remains sole production owner. No source is linked exact, and incomplete emitted extent remains a required rejection. Actual object relocation masks do not establish addresses/addends, placement, ownership or full-ROM equality. Complete scheduler FIVE/NINE and other prerequisites remain open; no structural or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Write separate genuine advancement/termination tails for the flags8 skip, flags20 skip and actual mark store, testing Gold1263 late cross-jump mechanism without a barrier or dummy quantity."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2285,
+      "sha256": "CE1EA5383DCF39D6160E633C890B500462D4E19191A69DD05FEC25EA6329D890"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7D16EDDF74407EF4A5533DB2D8B9901C0243AC06F6A8D3C8C01031C4E65587AF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109A48-8663e8cda6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
