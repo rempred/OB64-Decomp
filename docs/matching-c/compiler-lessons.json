@@ -2,6 +2,17 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "union-for-successive-resource-phases",
+      "symptoms": ["register-allocation", "stack-layout-or-offset-family"],
+      "applicability": "In DFB8, an ordinary union for successive header cursor, cached length and destination cursor phases changes the cached-length register while preserving real operations and complete owner coverage. Compare the independent-local counterexample. This is one compiler/source context, not a general union recipe; require nonoverlapping lifetimes. Private entry binding differs from production; the completed resource wave supplies production acceptance.",
+      "note": "docs/dossiers/func_0002dfb8-09f4a35005.md#recorded-observation",
+      "references": ["docs/dossiers/func_0002dfb8-d70647fd1b.md", "docs/Plans/task-logs/sol-resource-header-loading-wave-20261005.md"],
+      "observations": [
+        {"symbol": "func_0002dfb8", "path": "docs/dossiers/func_0002dfb8-09f4a35005.observation.json"},
+        {"symbol": "func_0002dfb8", "path": "docs/dossiers/func_0002dfb8-d70647fd1b.observation.json"}
+      ]
+    },
+    {
       "id": "early-normalized-word-call-lifetime",
       "symptoms": ["register-allocation", "scheduling-or-block-order"],
       "applicability": "In ADF0, assigning the masked item to an SI word before setup calls creates a measured call-crossing lifetime and saved-register allocation, while final assembly places the mask later. Preserve the separately stored full word and real consumers. A narrow local or normalization after the calls is a different hypothesis. The preserved source still has prologue/loop differences; this does not identify original C or a universal allocation rule.",
@@ -314,8 +325,11 @@
       "symptoms": ["constant-or-immediate-construction"],
       "applicability": "An independently supported symbol can change address materialization. Do not invent symbols or infer relocation intent from similarity.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#evidence-backed-symbols-instead-of-numeric-pointers",
-      "references": [],
-      "observations": []
+      "references": ["docs/dossiers/func_0002def4-ef1d77993b.md", "docs/dossiers/func_0002def4-d0e15208f4.md", "docs/Plans/task-logs/sol-resource-header-loading-wave-20261005.md"],
+      "observations": [
+        {"symbol": "func_0002def4", "path": "docs/dossiers/func_0002def4-ef1d77993b.observation.json"},
+        {"symbol": "func_0002def4", "path": "docs/dossiers/func_0002def4-d0e15208f4.observation.json"}
+      ]
     },
     {
       "id": "large-cfg-lifetime-and-regression",

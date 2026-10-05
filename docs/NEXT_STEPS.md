@@ -8,29 +8,36 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / MagentaTiger (October 5 continuation):** Scenario resource header/cache and
-  loading wave: `func_0002def4` (196 bytes), full `func_0002dfb8` physical owner
-  (384 bytes, containing the 368-byte logical `func_0002DFB8` and required 16-byte
-  `func_0002E128`), `func_0002e138` (264), `func_0002e240` (264), and
-  `func_0002e348` (264). These five owners share the resource-key/length cache at
-  `0x800ABD74`/`0x800ABD70` and header scratch at `0x800C47E0`; the already accepted
-  Scenario consumers call this resource interface. The current logical registry already
-  recognizes both bodies in r0739. Preserve their entries and complete owner coverage;
-  the 16-byte address helper is executable code, not padding. The stale 548-byte
-  comment in the E348 split is not its extent: the accepted owner is 264 bytes.
-  All six logical bodies remain required in this complete wave.
-  Reconcile full disassembly/intake and incoming interfaces, then work on DEF4,
-  the coupled DFB8/E128 producer, and E138/E240/E348, one target at a time in
-  `build/matching/solsquad/`. Reuse the supported private checks and existing compiler
-  contracts. Preserve cache hits/misses, destination/allocation variants, aligned DMA
-  buffers and actual call interfaces. Keep lower DMA, allocation, decompression and
-  caller owners unchanged; no capacity or runtime claim follows from byte matching.
-  Consult parent `docs/enemy-squad-templates.md` and `docs/overlay-system.md` as
-  read-only evidence. Source or owner conflicts require the existing bounded coverage
-  check, not guessed boundaries. Coordinate production integration only after the whole
-  wave is ready and run one final verifier; ready Shop14 integration retains priority.
-  The original Scenario pair `0023A5EC`/`00249A14` is already accepted at `249454cb`
-  and remains protected. This wave does not close the broader Scenario family.
+- **Sol / RosePanther (October 5 fresh worker):** top-level chat
+  `01a10d10-eabc-7412-badc-3a445708cd76`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete resource DMA-transfer wave: `func_0001a380` (192 bytes) and
+  the full `func_0002de50` physical owner (164 bytes, containing its 156-byte primary
+  body and required executable eight-byte `func_0002DEEC`). Both physical owners and
+  all three logical bodies share one final-wave verifier. Work on 1A380, then the
+  complete DE50/DEEC producer, one target at a time in `build/matching/sol-dma-20261005/`.
+  Preserve original entries, full body coverage, zero-length behavior, actual queue/I/O
+  storage, 0x200 chunking, aligned scratch, byte rounding and short-copy/direct paths.
+  OS primitives and other transport, allocator/decompressor and accepted caller owners
+  remain external interfaces. Consult the parent resource-loading/overlay evidence,
+  current intake and complete original disassembly; no runtime or capacity claim follows.
+  RosePanther takes the released production-writer role and live Sol cursor, but uses
+  private checks until complete-wave readiness. Before the first canonical source,
+  header, configuration or build mutation or canonical linked diff, obtain Astra's
+  explicit integration release confirming Shop's native/store drain. Private checks
+  remain independent; no per-check permission. Ready Shop14 integration retains priority.
+  No fresh worker reuses the predecessor's private store, mail identity or watcher state.
+
+  **Accepted predecessor:** MagentaTiger's resource header/cache/loading wave passed
+  its single final verifier, including fresh compilation and exact full ROM, on October 5
+  at 17:08:12 UTC; source/evidence commit `fd5688cb`, closing cursor `71f10b77`.
+  Preserve `func_0002def4` (196), full `func_0002dfb8` (384 = 368 + executable E128 16),
+  `func_0002e138` (264), `func_0002e240` (264) and `func_0002e348` (264) as PURE_C.
+  Cache words are `0x800ABD74`/`0x800ABD70`; header scratch is `0x800C47E0`.
+  [Accepted wave and reusable source pairs](Plans/task-logs/sol-resource-header-loading-wave-20261005.md)
+  retain the ordinary secondary-entry contract and proof. No unchanged verification repeat.
+  MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
+  now watches RosePanther. The original Scenario pair `0023A5EC`/`00249A14` remains
+  accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
 - **Parked under Sol (October 5):** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),
   `func_0010A718` (1,696), `func_0010A128` (1,520) and `func_00109C3C` (1,260).
