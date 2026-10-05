@@ -12,22 +12,47 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   pursuit group: `func_00128AD0`, `func_00128BF4`, `func_00127D30`, `func_00127EAC`,
   `func_00128050`, `func_001284C4`, `func_00128980`, `func_001289BC`, `func_00128D50`,
   `func_00128DDC`, `func_0010766C`, `func_0012A050` and `func_0012FB64`.
-  Resume `00127D30`, then `001284C4`, then `0010766C`, one target at a time unless
-  concrete dependencies require another order. The other ten retain accepted PURE_C
-  sources and existing proof. Preserve real byte loads, input/candidate lifetimes and
-  unresolved bank/row domains; layout strides do not establish capacities.
+  Preserve the fresh `00127D30` and `001284C4` source controls while working through the
+  complete producer prerequisite below, one target at a time. Both remain required.
+  The other ten retain accepted PURE_C sources and existing proof. Preserve real byte loads,
+  input/candidate lifetimes and unresolved bank/row domains; layout strides do not establish capacities.
   Use refreshed intake in `build/matching/solsquad/`, the saved full source pairs and
   complete original assembly. Old transformed scratch scores are historical evidence.
-  `0010766C` must cover its complete 484-byte owner: the old 476-byte assigned text
-  and 480-byte raw aligned object did not produce its eight owned zero bytes. Reconcile
-  native coverage using existing mechanisms; route any supported structural/tooling
-  issue separately. The readonly-table projection does not authorize text padding.
+  `0010766C` must cover its complete 484-byte owner. Fresh native evidence reproduces
+  476 executable bytes with zero non-relocation differences, but assigned text has no
+  tail and the untouched 480-byte object supplies only four of eight required zero bytes.
+  Linked addresses and complete-owner acceptance remain open. The readonly-table
+  projection does not authorize text padding.
   Preserve the separate five-member scheduler group, three terrain-policy helpers and
-  shared `0010746C`/`00129948` interfaces. Reuse the existing static terrain research in
+  shared `0010746C`/`00129948` interface behavior. Reuse the existing static terrain research in
   the [resumption evidence](Plans/task-logs/sol-five-family-resumption-20260929.md).
-  All thirteen pursuit members share one final verifier after readiness; this does not
-  close the whole W4 or Squad family. The already accepted nine-member records/formation
+  Retain all thirteen with the eight additional producer prerequisites in one final
+  twenty-one-target verifier after readiness; this does not close the whole W4 or Squad
+  family. The already accepted nine-member records/formation
   group remains protected and needs no rematch or unchanged verification.
+
+  **Approved producer prerequisite (October 4):** use the existing native compilation-group
+  contract for all nine contiguous descriptor-7 owners, rows r2228 through r2236:
+  `00106CE0`, `00106E48`, `00106F34`, `001070F4`, `001072B8`, `0010738C`,
+  `0010746C`, `0010756C` and `0010766C`. Begin `00106E48` after the in-flight pursuit
+  check unless a concrete dependency favors `00106CE0`. Independently derive each full
+  body; preserve accepted `106F34`/`1070F4`, and convert the protected `1072B8` hybrid
+  to real PURE_C before group admission. Keep `10756C`'s read-before-prologue entry,
+  cleanup reloads/calls, float ordering and ABIs. The shared geometry routines are
+  producer prerequisites, not a new semantic family claim.
+
+  Actual untouched native output must prove all nine public functions, the 2,928-byte
+  aligned text envelope and eight genuine terminal zero bytes after executable end 2,920.
+  Preserve all existing entries and boundaries; no fabricated prefix, member or padding.
+  This is a viable context to test, not proof of historical translation-unit membership
+  or a demonstrated match. Retain the full original data row r2547 at ROM
+  `0x001427D0..0x001427E0`, live `0x801EE090..0x801EE0A0`, as ASM; use original-derived
+  external double references, as the current `10766C` source already does. It emits no
+  native literal pool. Any unexpected allocated data needs its actual contract resolved.
+  Use private native checks until the complete twenty-one-target result is ready, then
+  coordinate one integration interval and normal verifier. Existing group admission adds
+  no routine independent source review; a change outside accepted contracts needs the
+  separate structural/tooling process. No shared tooling change is approved.
 - **Parked under Sol:** complete Squad W3 wake/conditions and lifecycle, retaining both
   original five-member groups together. The 920-byte evaluator `func_00123458` and
   1,608-byte consumer `func_001237F0` remain source-blocked with recoverable best controls
