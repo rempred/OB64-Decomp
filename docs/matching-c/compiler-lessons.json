@@ -2,6 +2,28 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "early-normalized-word-call-lifetime",
+      "symptoms": ["register-allocation", "scheduling-or-block-order"],
+      "applicability": "In ADF0, assigning the masked item to an SI word before setup calls creates a measured call-crossing lifetime and saved-register allocation, while final assembly places the mask later. Preserve the separately stored full word and real consumers. A narrow local or normalization after the calls is a different hypothesis. The preserved source still has prologue/loop differences; this does not identify original C or a universal allocation rule.",
+      "note": "docs/dossiers/func_0019ADF0-7003015ec7.md#recorded-observation",
+      "references": ["docs/dossiers/func_0019ADF0-b852c88c57.md"],
+      "observations": [
+        {"symbol": "func_0019ADF0", "path": "docs/dossiers/func_0019ADF0-7003015ec7.observation.json"},
+        {"symbol": "func_0019ADF0", "path": "docs/dossiers/func_0019ADF0-b852c88c57.observation.json"}
+      ]
+    },
+    {
+      "id": "real-delimiter-arms-merge-after-allocation",
+      "symptoms": ["register-allocation", "scheduling-or-block-order"],
+      "applicability": "ADF0's genuine delimiter body in each real branch preserves two indexed stores/limit tests through allocation, changes address/count priorities, and produces the required registers. Late jump optimization then merges the tails. Compare the retained baseline and final source/pass evidence; preserve actual operations and index-derived pointers, without dummy work. Native field equality is provisional: caller/binding, linked-owner and full-wave gates remain.",
+      "note": "docs/dossiers/func_0019ADF0-b4c93762c6.md#recorded-observation",
+      "references": ["docs/dossiers/func_0019ADF0-b852c88c57.md"],
+      "observations": [
+        {"symbol": "func_0019ADF0", "path": "docs/dossiers/func_0019ADF0-b852c88c57.observation.json"},
+        {"symbol": "func_0019ADF0", "path": "docs/dossiers/func_0019ADF0-b4c93762c6.observation.json"}
+      ]
+    },
+    {
       "id": "retained-insertion-amount-transfer",
       "symptoms": ["register-allocation", "scheduling-or-block-order"],
       "applicability": "Retaining the real incoming word amount across a lookup for a new-slot update transferred from B63C to B4C4. The first B4C4 candidate preserved both record scans and matched instruction fields outside actual relocations. Inspect both source contexts, retain the original truncation and memory operations, and reconcile caller widths separately. These are provisional native observations, not canonical linked or whole-wave acceptance.",
