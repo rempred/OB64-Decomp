@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "127A621FF476EC7FD7859F5F0214F74768971C1CB3BB14FCA124844DEB9C769D",
+  "observationId": "4815A9E9447EBF07AD9FA26A7742FB22DEA82A29EB01BCD75B758E00BEFE583D",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252 and all19 states/18 callsites reconciled; genuine10-byte record,12-byte callback buffer, native low-five-bit publication and original shared comparison tail retained.",
+    "effects": [
+      "register-allocation",
+      "control-flow",
+      "loop-induction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "736090935CD66503412F6399FE6F892061C38164BBBF796EEE66BF67FFDBB075",
+      "sourceSha256": "B34785D157897BAD3F6FFB1A6B15B1FC6BAB2378BCD6F2E1F30EA5B280E10E50"
+    },
+    "label": "scheduler-conversion-load-lifetime-control",
+    "observedEffect": "Native1696/frame88/17; nonselected against DC15. Authentic probe A7331FC78078482C3A07A86B6C39DC69FD21E1E0A385FB8FAF48866E6C8A02F4 rehashes all8 artifacts. LREG header X120 is16 refs/across9, width119 is4/across2, load130 is4/across4. Actual X remains F2, width and conversion scratch F0; x integer becomes V1. This changes displayed liveness but does not establish the exact post-schedule quantity span/priority. Gold follow-up requests that distinction before eliminating the lifetime hypothesis.",
+    "parentCandidateId": "DC75207155B68FCA252C1010FD6F7F961E89D46F4712C64AC3CC296417887EC0",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-conversions-before-record-loads.c",
+        "sha256": "B34785D157897BAD3F6FFB1A6B15B1FC6BAB2378BCD6F2E1F30EA5B280E10E50"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-conversions-before-record-loads-native11-watch.json",
+        "sha256": "75F1E129356D5426B5F5162E031788B67E106368DEC5B49EC4483CBAB24549FF"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-conversions-before-record-loads-native11-component.json",
+        "sha256": "8F42642C806C7877832802FB72856AB4F2D7FE4A4407C5D5BF47D73A8075C4C7"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-conversions-before-record-loads-native11-probe.json",
+        "sha256": "51C1A07083C8A1D87DDD3B1712B33AFF717A5B9A6CEF4CE0599B6D4342FEB19D"
+      },
+      {
+        "path": "build/sol-five-family/gold-magenta-10a718-conversion-span-result.json",
+        "sha256": "F72722EC9E97925CF05E47F909CDEB80F5904B8A5BBCC8D56A6C037682177689"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-10a718-gold-quantity-mails-20261005.json",
+        "sha256": "477255E6092484DD68520C770C88CE84E699DC89CEE1A240B29C83EE0B3F6E18"
+      }
+    ],
+    "relatedCandidateIds": [
+      "DC75207155B68FCA252C1010FD6F7F961E89D46F4712C64AC3CC296417887EC0"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the same three descriptor byte reads after the two existing float-to-word conversions, without adding reads, operations or artificial uses."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8358,
+      "sha256": "736090935CD66503412F6399FE6F892061C38164BBBF796EEE66BF67FFDBB075"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B34785D157897BAD3F6FFB1A6B15B1FC6BAB2378BCD6F2E1F30EA5B280E10E50"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-127a621ff4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

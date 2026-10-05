@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DC75207155B68FCA252C1010FD6F7F961E89D46F4712C64AC3CC296417887EC0",
+  "observationId": "3380E897EA50AA47CEF9C3BDED5290051E288B95759203B955B376C8926155E6",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252 and all19 states/18 callsites reconciled; genuine10-byte record,12-byte callback buffer, native low-five-bit publication and original shared comparison tail retained.",
+    "effects": [
+      "register-allocation",
+      "control-flow",
+      "loop-induction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B27524D57D152F3B57940874B9A572F14380A503F0458A769164A3FFC76CA92F",
+      "sourceSha256": "B3CA5A9B802476DE54497F3158ED317B151CD38B8093637DF32AAB11D4A1CED5"
+    },
+    "label": "scheduler-literal-mask-named-comparand",
+    "observedEffect": "Native1696/frame88/15 masked words, first300 bytes exact outside actual object relocation fields. Literal ANDI instructions return without losing the restored setup order. All15 differences lie in rectangle arithmetic, conversion and integer-comparison register fields. Single-expression X is neutral; reversed X/Z conversion order regresses. Preserve this best, not those controls.",
+    "parentCandidateId": "D585048BBEABFF59D4FE9CA4020307100109587E6B25413E9D7557AECB2D9213",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-named-comparand-literal-mask.c",
+        "sha256": "B3CA5A9B802476DE54497F3158ED317B151CD38B8093637DF32AAB11D4A1CED5"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-named-comparand-literal-mask-native11-watch.json",
+        "sha256": "2048DC3228A005E82DAB307A2ECF3B99E30AAF561A60C82E5C47C98C4BD6D48F"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-named-comparand-literal-mask-native11-component.json",
+        "sha256": "8D70257F2A01839EA3FCF366BBEBADE668FE00E966BE35B7C9C3CD568AFD3524"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D585048BBEABFF59D4FE9CA4020307100109587E6B25413E9D7557AECB2D9213"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain the actual named equality comparand while expressing each mask operand as the original literal 0x11."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8358,
+      "sha256": "B27524D57D152F3B57940874B9A572F14380A503F0458A769164A3FFC76CA92F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B3CA5A9B802476DE54497F3158ED317B151CD38B8093637DF32AAB11D4A1CED5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-dc75207155.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

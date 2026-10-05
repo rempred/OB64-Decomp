@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E3011C53FD531C84E7C04931B5159EC702EC6AEBBD0FED051591FCB44D8CB9A8",
+  "observationId": "7C6A8ECA66CFC9FECE9D7918A768996DB21D301C981AFA6895D64971E6185A01",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "Complete380-word/1520-byte r2251 and all required-body paths reconciled; original numeric masks, bound snapshots and callback/memory interfaces retained.",
+    "effects": [
+      "register-allocation",
+      "control-flow",
+      "loop-induction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8EC5116483191A552864582055F39999C890A70A13FC313499F18A886AB28B80",
+      "sourceSha256": "2C561AC0E64F67664B2D688A0BF6D83A9627BADE94F1E84A46E61CFC7F3898AD"
+    },
+    "label": "scheduler-range-pair-initialization",
+    "observedEffect": "Native1524/frame392/221 masked words versus parent1516/268. Restores original flag-controlled bound branch and geometry prefix through464 bytes, replacing branchless gtu/neg/AND30 and folded49. Initial50 still lives in S2 rather than original V0; loop flag2097152 is hoisted into S8 rather than preserving original array-base S8. Four-byte excess remains. Shared unit-array-base alias148933 is instruction-neutral and nonselected; no new dependency or owner.",
+    "parentCandidateId": "6329530765B5E53F742122F2C6161A75BE46583A3A7BD11A16CEC18B31732D97",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-range-pair-initialization.c",
+        "sha256": "2C561AC0E64F67664B2D688A0BF6D83A9627BADE94F1E84A46E61CFC7F3898AD"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-range-pair-initialization-native11-watch.json",
+        "sha256": "C971038B5B89E33A6F80A113BC5D86FC8CE929572BDCA83A1C722DB362AB888B"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-range-pair-initialization-native11-component.json",
+        "sha256": "462C0911B522A333D3385ECC1802A40411D7283E96343ABDA085178F1DA1431B"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-body-reconciliation.json",
+        "sha256": "BEE762C50F278932774683B7ACCFB5F4344B04349F409AC8CDD3325BABD511C4"
+      }
+    ],
+    "relatedCandidateIds": [
+      "6329530765B5E53F742122F2C6161A75BE46583A3A7BD11A16CEC18B31732D97"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initialize the real scan lower bound and initial50 count together in both flag branches, preserving the lower-bound snapshot and full countdown scan."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7396,
+      "sha256": "8EC5116483191A552864582055F39999C890A70A13FC313499F18A886AB28B80"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2C561AC0E64F67664B2D688A0BF6D83A9627BADE94F1E84A46E61CFC7F3898AD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A128-e3011c53fd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

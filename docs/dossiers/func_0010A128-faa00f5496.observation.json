@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FAA00F5496651715C2D1F308F9632D2E876A962619446BCBA7EBEEA9AB1B2ECF",
+  "observationId": "90D93E5383C79C8D5A5BE9DBDAB36093DC11A1558B7816F35104DF60D8F67557",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "Complete380-word/1520-byte r2251 and all required-body paths reconciled; original numeric masks, bound snapshots and callback/memory interfaces retained.",
+    "effects": [
+      "register-allocation",
+      "control-flow",
+      "loop-induction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3155DC0F38D557ACB199625AB937E7719A41EA025145167997E7701B1B22458D",
+      "sourceSha256": "9DD69471F90A334542A87708DF9E9028967CCAEB697068CDA7E2CA42A38994E9"
+    },
+    "label": "scheduler-distinct-initial-count",
+    "observedEffect": "Native1524/frame392/219 masked words, first difference476. Restores original LI V0,50 and ADDIU S2,V0,-1, improving the range-pair predecessor by two words. Full380-word logical body,51-word member/sentinel buffer, ten float predicates, all terrain calls,50-owner scan and source/destination memcpy remain. Native probe A4C3351E780FCDD7FCDCB709B8156D21BE0978E5B897644145ADF79C2CC4ADA2 rehashes all9 artifacts. Hoisted flag constant, array-base allocation and four-byte excess remain; retain both this effect and the old1516-byte candidate.",
+    "parentCandidateId": "E3011C53FD531C84E7C04931B5159EC702EC6AEBBD0FED051591FCB44D8CB9A8",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-distinct-initial-count.c",
+        "sha256": "9DD69471F90A334542A87708DF9E9028967CCAEB697068CDA7E2CA42A38994E9"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-distinct-initial-count-native11-watch.json",
+        "sha256": "B101F6DE0A55447FE8E81770D20DA5F2F5CFC735AC2CB4BDE79E846C449B51A5"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-distinct-initial-count-native11-component.json",
+        "sha256": "CFA8A1153E4A2972DCDA5A74268FF7B5C6A9ECD77F7478AC206F3FF8D53B7ACA"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-body-reconciliation.json",
+        "sha256": "BEE762C50F278932774683B7ACCFB5F4344B04349F409AC8CDD3325BABD511C4"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-distinct-initial-count-native11-probe.json",
+        "sha256": "4B57BF3500C7978EE7CD664060A2149287C2685C5A28BC6D8C976261120751EC"
+      }
+    ],
+    "relatedCandidateIds": [
+      "E3011C53FD531C84E7C04931B5159EC702EC6AEBBD0FED051591FCB44D8CB9A8"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Assign a distinct genuine initial_index50 in both bound branches and initialize the scan index from initial_index minus1 before the countdown loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7467,
+      "sha256": "3155DC0F38D557ACB199625AB937E7719A41EA025145167997E7701B1B22458D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9DD69471F90A334542A87708DF9E9028967CCAEB697068CDA7E2CA42A38994E9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A128-faa00f5496.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
