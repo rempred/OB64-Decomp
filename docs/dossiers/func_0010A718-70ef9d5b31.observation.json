@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "70EF9D5B31DD996CF4358BCE8E213E41AF7F85474515CD65C91932FEF88003E0",
+  "observationId": "0CAF49A2C45A8C2F3151402084295421C1383E9D0F36FD457CE9DE668714776A",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252 and all19 states/18 callsites reconciled; genuine10-byte record,12-byte callback buffer, native low-five-bit publication and original shared comparison tail retained.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CA2ED04F727DBBDC07529B89EC76B4FC3CB21734978AFF445E074809AA23366B",
+      "sourceSha256": "EB50BFA058F4EE634A7945B234A1C983C802D7E20111F3CB830D65ADAB19A16E"
+    },
+    "label": "scheduler-shared-comparands-upper-second",
+    "observedEffect": "Native1696/frame88/18 masked words. The intended operand constraint alone regresses scheduling and integer allocation instead of restoring the retail block; later-state global-web differences remain. All genuine comparisons and bitwise evaluation are retained. Nonselected; this does not eliminate different source quantity scopes or the operand-order constraint generally.",
+    "parentCandidateId": "6948DB634E78E37F56E1DB8305B6B0C0B50CA88A9EC1E8325625B62126E21FE3",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-shared-comparands-upper-second.c",
+        "sha256": "EB50BFA058F4EE634A7945B234A1C983C802D7E20111F3CB830D65ADAB19A16E"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-shared-comparands-upper-second-native11-watch.json",
+        "sha256": "DE88A6485F957F911FC0A71DCFE8BA7EFE5694ABE90BDAB146FDA706FD6D4C75"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-shared-comparands-upper-second-native11-component.json",
+        "sha256": "AA56A2917A556CC0B6AFCFA3BD00B57E30BF7F1F9A39EAD12B055862F3DB1573"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      }
+    ],
+    "relatedCandidateIds": [
+      "6948DB634E78E37F56E1DB8305B6B0C0B50CA88A9EC1E8325625B62126E21FE3"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compute the existing upper-X comparison first into a named boolean, then list that result second in the bitwise conjunction. Restore descriptive bound variable names after the previous trial."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8519,
+      "sha256": "CA2ED04F727DBBDC07529B89EC76B4FC3CB21734978AFF445E074809AA23366B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EB50BFA058F4EE634A7945B234A1C983C802D7E20111F3CB830D65ADAB19A16E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-70ef9d5b31.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

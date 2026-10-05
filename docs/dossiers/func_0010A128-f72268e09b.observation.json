@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F72268E09B1AAC0B89620B691A6B7ACD0669C53719809ACB01B68215ED501D30",
+  "observationId": "41ABB6C46BFC797BFF853B106634FEAD94D4D24EC3A3B2940838DDD7B7CA85DB",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "Complete380-word/1520-byte r2251 and all required-body paths reconciled; original numeric masks, bound snapshots and callback/memory interfaces retained.",
+    "effects": [
+      "register-allocation",
+      "control-flow",
+      "loop-induction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D66533C34D723958B0B9E5278049042B9C9B71E12FE5F17051AEA673655FC610",
+      "sourceSha256": "B37DA625461198DC66AF6DD2584B9AF3453DF7F2830577E156D8E454262E3852"
+    },
+    "label": "scheduler-explicit-countdown-edges",
+    "observedEffect": "Native1528/frame368/284 masked words, nonselected against1524/frame392/219. The complete scan and inner owner loop remain, but frame, bound homes and later allocation regress. This explicit-edge form fails to reproduce the original producer; it does not disprove explicit induction generally or establish a tool defect. Preserve the original for-loop range-pair and separate-count effects.",
+    "parentCandidateId": "FAA00F5496651715C2D1F308F9632D2E876A962619446BCBA7EBEEA9AB1B2ECF",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-explicit-countdown-edges.c",
+        "sha256": "B37DA625461198DC66AF6DD2584B9AF3453DF7F2830577E156D8E454262E3852"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-explicit-countdown-edges-native11-watch.json",
+        "sha256": "4E6024901D342C4D59A4573D6585FF4711EBD65788AF2214FC5896217796CEC0"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-explicit-countdown-edges-native11-component.json",
+        "sha256": "0AAD90D6BD6F74BBDEC685A2FF9FCDAA0FE3870A6C88A9B6F2793F9068619512"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-body-reconciliation.json",
+        "sha256": "BEE762C50F278932774683B7ACCFB5F4344B04349F409AC8CDD3325BABD511C4"
+      }
+    ],
+    "relatedCandidateIds": [
+      "FAA00F5496651715C2D1F308F9632D2E876A962619446BCBA7EBEEA9AB1B2ECF"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Spell out the actual initial-bound guard, scan back edge and countdown update with labels; redirect exactly ten existing outer-loop continues to the same update point."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7671,
+      "sha256": "D66533C34D723958B0B9E5278049042B9C9B71E12FE5F17051AEA673655FC610"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B37DA625461198DC66AF6DD2584B9AF3453DF7F2830577E156D8E454262E3852"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A128-f72268e09b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

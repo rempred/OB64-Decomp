@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6948DB634E78E37F56E1DB8305B6B0C0B50CA88A9EC1E8325625B62126E21FE3",
+  "observationId": "9DF6F1315C8521391A87C1469C20EEAED0C81DF2A6C59B2B792F0FBE2BE4547B",
+  "symbol": "func_0010A718",
+  "authored": {
+    "context": "Complete424-word/1696-byte r2252 and all19 states/18 callsites reconciled; genuine10-byte record,12-byte callback buffer, native low-five-bit publication and original shared comparison tail retained.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "56AF5EC7612CDCCA093A5106FF0592F5AB6475E9C2FFF75F033012A05905CDDC",
+      "sourceSha256": "EDD68AA412CE81E9374174C054D14394B80857AF279B596E6B786114FACC2EF5"
+    },
+    "label": "scheduler-shared-coordinate-comparands",
+    "observedEffect": "Native1696/frame88/12 masked words; nonselected against parent11. Authenticated probe9398D2ED all9 artifacts show byteX MFC1 A0 and byteZ A1 restored, with original FP fields retained. The different global register web also changes later state field74/descriptor comparisons, and record4 still loads late while record2 hoists. This source shape establishes that cross-block locality changes coordinate roles but does not reproduce the complete retail web. No new store, operation or control edge was added.",
+    "parentCandidateId": "3ED240345DD9AA4017862A59F773E688AEE3B143784867D1BD7ADE88313CC534",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-shared-coordinate-comparands.c",
+        "sha256": "EDD68AA412CE81E9374174C054D14394B80857AF279B596E6B786114FACC2EF5"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-shared-coordinate-comparands-native11-watch.json",
+        "sha256": "EBA6799DFDBB2586707824E3C344B44676471F9E70760F05CF187A0052414772"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-shared-coordinate-comparands-native11-component.json",
+        "sha256": "0567D1716007E8068E09DC3D5CDD48328EBEF671328E179F7CCBC557F7AC0DC6"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-body-reconciliation.json",
+        "sha256": "B734A452E74BD12344009CC0F77227622EA0C534BF42C13A9AA6A7FBC85D9637"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a718-shared-coordinate-comparands-native11-probe.json",
+        "sha256": "A85BCF3A3A0E70A3394EC95424E39A35DCB1C3F02FB92F6C9889ACA914E07B53"
+      },
+      {
+        "path": "build/sol-five-family/gold-magenta-a718-mail-1223.json",
+        "sha256": "C1AFD0AC6512FD9BAC8373FC2293485885265510E34425ABC4D0D06B361A5A42"
+      }
+    ],
+    "relatedCandidateIds": [
+      "3ED240345DD9AA4017862A59F773E688AEE3B143784867D1BD7ADE88313CC534"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Object relocation-field masks are diagnostic only; exact symbol/addend relocations, placement, ownership, linked target bytes and complete scheduler FIVE full-ROM gates remain open. A718/ADB8 p2552/p2554 switch tables and adjacent original zeros stay protected. No source-group activation, tooling defect or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse the two genuine numeric comparison variables across the rectangle casts and existing case4/case13 comparison tail; retain all original reads and comparisons."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8511,
+      "sha256": "56AF5EC7612CDCCA093A5106FF0592F5AB6475E9C2FFF75F033012A05905CDDC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EDD68AA412CE81E9374174C054D14394B80857AF279B596E6B786114FACC2EF5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A718-6948db634e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
