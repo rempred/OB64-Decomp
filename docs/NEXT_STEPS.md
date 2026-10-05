@@ -8,11 +8,35 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / MagentaTiger (October 4 continuation):** complete five-member Squad W4
+- **Sol / MagentaTiger (October 5 continuation):** Scenario resource header/cache and
+  loading wave: `func_0002def4` (196 bytes), full `func_0002dfb8` physical owner
+  (384 bytes, containing the 368-byte logical `func_0002DFB8` and required 16-byte
+  `func_0002E128`), `func_0002e138` (264), `func_0002e240` (264), and
+  `func_0002e348` (264). These five owners share the resource-key/length cache at
+  `0x800BBD74`/`0x800BBD70` and header scratch at `0x800C47E0`; the already accepted
+  Scenario consumers call this resource interface. The current logical registry already
+  recognizes both bodies in r0739. Preserve their entries and complete owner coverage;
+  the 16-byte address helper is executable code, not padding. The stale 548-byte
+  comment in the E348 split is not its extent: the accepted owner is 264 bytes.
+  All six logical bodies remain required in this complete wave.
+  Reconcile full disassembly/intake and incoming interfaces, then work on DEF4,
+  the coupled DFB8/E128 producer, and E138/E240/E348, one target at a time in
+  `build/matching/solsquad/`. Reuse the supported private checks and existing compiler
+  contracts. Preserve cache hits/misses, destination/allocation variants, aligned DMA
+  buffers and actual call interfaces. Keep lower DMA, allocation, decompression and
+  caller owners unchanged; no capacity or runtime claim follows from byte matching.
+  Consult parent `docs/enemy-squad-templates.md` and `docs/overlay-system.md` as
+  read-only evidence. Source or owner conflicts require the existing bounded coverage
+  check, not guessed boundaries. Coordinate production integration only after the whole
+  wave is ready and run one final verifier; ready Shop14 integration retains priority.
+  The original Scenario pair `0023A5EC`/`00249A14` is already accepted at `249454cb`
+  and remains protected. This wave does not close the broader Scenario family.
+- **Parked under Sol (October 5):** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),
   `func_0010A718` (1,696), `func_0010A128` (1,520) and `func_00109C3C` (1,260).
-  Begin `1094BC`, one target at a time in `build/matching/solsquad/`, with refreshed
-  intake, complete bodies and early native comparisons. All five remain ASM in production.
+  Preserve the source bests and complete NINE prerequisite scope below. All five remain
+  ASM in production. Reopen on a concrete new source/context lead; parking is not
+  acceptance, proof of pure-C impossibility, or a tooling-defect claim.
   Reuse the existing full static terrain-three research and preserve its ASM interfaces;
   reopen the research gate only for concrete changed or contradictory evidence.
   Preserve whole 76-byte tables p2552/p2554 and adjacent zero owners. `10ADB8` still
@@ -48,11 +72,16 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   measured 160 native read-only bytes, alignment eight, two 76-byte tables at offsets 0/80,
   and four zero bytes after each. It retains external p2551 and original ASM zero ownership;
   no constant-payload or padding-ownership extension was needed. Its common declarations
-  regressed ADB8's code and 109C3C remains nonexact, so it is neither an admissible text
-  group nor source acceptance. Preserve isolated best sources while reconciling real shared
-  declarations for the complete NINE. Use existing
-  private per-target checks concurrently; any unsupported combined native study needs the
-  existing supported path and actual shared-resource coordination, not a new workaround.
+  regressed ADB8's code and was neither an admissible text group nor source acceptance.
+  The subsequent guarded NINE r3 study at `09f1cbbe`/`e5b24195` preserves reconciled
+  declarations and yields 9,624 executable bytes plus eight genuine native zero bytes,
+  covering the 9,632-byte envelope. ADB8 has its 640-byte body at the required offset
+  followed by its eight zero bytes; both tables' 38 normalized case offsets agree with
+  original ASM. This resolves the demonstrated native layout route only. Five source
+  frontiers remain: `108AA0` address registers, `108C1C` frame/allocation, `1094BC`
+  delay-slot scheduling, `109A48` NOP/mask/sentinel/extent and `109C3C` point allocation.
+  Their recoverable sources, counterexamples and reopening questions are preserved in
+  the existing dossiers and [Sol cursor](Plans/cursors/sol.md).
   No canonical activation or full-ROM run is authorized at the study stage. If this producer
   route is selected, all NINE become one coupled final acceptance set; the original FIVE and
   their source blockers remain required, and the worker has not completed its wave.
