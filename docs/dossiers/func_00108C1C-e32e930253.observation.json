@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E32E9302538951B7FBEC1548E146F2DE6F703B36916B4771B2369CE1CC2A98D4",
+  "observationId": "4EE0FBD1E6328F21EF11338F18D7BB08880DDCE391ECEF520884F7F25D8CDEC8",
+  "symbol": "func_00108C1C",
+  "authored": {
+    "context": "Full r2246 body552 words/2208 bytes/frame160 at ROM108C1C..1094BC/VMA801B44DC..801B4D7C reconciled before tuning. Original allocator-failure report continues, both unused distance calls in each scan are retained, signed sentinel lists and unsigned state ranges preserved. Default m2c/Kuna outputs are hypotheses; raw LE opcodes, third AA0 argument and duplicate head reads checked directly. Projection/height residency remains unresolved.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "instruction-scheduling",
+      "field-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "783DF01BB6B60FA105F97D4233F8AC30BCC5C077B2E35C97B241B8587EFFC1CB",
+      "sourceSha256": "EA2C0DBA603B8315AE5C431F61412AAC88642BD08DB68EA6A6B7ED794F34A8BF"
+    },
+    "label": "scheduler-prerequisite-108c1c-loop-base-lifetimes",
+    "observedEffect": "PURE_C2224/frame152/526 same-offset masked differences; all19 actual JALs retained. Authenticated9-asset B400443A probe confirms loop movables324/325/326 have life13/58/60 and move to the preheader. Emitted bank is fp/hard30, selector s6/hard22, table s7/hard23, and x/z/mode now spill to retail offsets SP3C/44/4C. This validates the source-level hoisting hypothesis and resolves the x-spill discriminator. Frame remains8 short, function16 long, broad allocation/scheduling nonexact. AB877 remains recoverable closest-extent best; this informative regression supplies the next source experiment.",
+    "parentCandidateId": "AB8775E5BE250BD8D6B3E52BB283B571E1278022DBEDB7FFD01FE63C83B940BA",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-loop-base-lifetimes.c",
+        "sha256": "EA2C0DBA603B8315AE5C431F61412AAC88642BD08DB68EA6A6B7ED794F34A8BF"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-loop-base-lifetimes-watch.json",
+        "sha256": "019BB8219BB7BED0135F158C0CE9C6C032395B461D0049159730790E1C75DF8B"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-loop-base-lifetimes-component.json",
+        "sha256": "2EE3DA13CF4A1B2D7276C74983B4DD34566913759FCF8296A4E7E5717F5F30D1"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00108C1C.s",
+        "sha256": "71F35EF8B665F6595563DC2CDCF821A0BC001E8BE644E712EA24D36860FE25F7"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-body-coverage.json",
+        "sha256": "BDBBEA5EF651EDF1349D95BAE05629E49386DD71D0E0A22FBAFFA1AD3DE8BCEC"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00108C1C-intake-20261005.json",
+        "sha256": "6C15DD35FC2C12E34DE44ABBF41C547BAE80DDA80E1BB5F7CA52258133630B83"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-analysis.json",
+        "sha256": "098A3C98B85C012C4B03F0054197D28CBED4830F532C95E0865B8097B2C59B49"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1256.json",
+        "sha256": "2CA48B5081266267395ED15BFAEFD4C881A4039DA5755ACF45BFAC5DB4B27523"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/B400443AEEF08072A0F1B221163371D9D9A524C7455812F283C26398BBC88646/authored.c",
+        "sha256": "EA2C0DBA603B8315AE5C431F61412AAC88642BD08DB68EA6A6B7ED794F34A8BF"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/B400443AEEF08072A0F1B221163371D9D9A524C7455812F283C26398BBC88646/input.c",
+        "sha256": "783DF01BB6B60FA105F97D4233F8AC30BCC5C077B2E35C97B241B8587EFFC1CB"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/B400443AEEF08072A0F1B221163371D9D9A524C7455812F283C26398BBC88646/output.s",
+        "sha256": "3A329601375102EF37402A00D6BCF0E5D9D25855DA4B3986F561ACB5632FB3FD"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/B400443AEEF08072A0F1B221163371D9D9A524C7455812F283C26398BBC88646/input.c.rtl",
+        "sha256": "4B10BEB86B2FCAC9F6834CE324E2C8B069D22C8B5192BCA9A2E7D415C5C523D3"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/B400443AEEF08072A0F1B221163371D9D9A524C7455812F283C26398BBC88646/input.c.loop",
+        "sha256": "B27216F63BF4C4930BE87BF959547D6AB348A5096381ACE57C7ABD6DD16344BD"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/B400443AEEF08072A0F1B221163371D9D9A524C7455812F283C26398BBC88646/input.c.flow",
+        "sha256": "E2C76EEBAD18C72047B00F628B3EE64156767A4ED56C14E133B870C337DF4BB8"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/B400443AEEF08072A0F1B221163371D9D9A524C7455812F283C26398BBC88646/input.c.sched",
+        "sha256": "DBDBC874EB079C9CDD090C4FD41BC1B1E212BABA74DC8CDCAFB00B6E66852AA1"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/B400443AEEF08072A0F1B221163371D9D9A524C7455812F283C26398BBC88646/input.c.lreg",
+        "sha256": "110119DB075AA1C4B79A4B30736EE690571E544474B66E6643CC3CDE3524801B"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/B400443AEEF08072A0F1B221163371D9D9A524C7455812F283C26398BBC88646/input.c.greg",
+        "sha256": "5BBB5EA52B94D956F54085F20D5A6956026498A4312C3C2217420890A258BF34"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-loop-base-lifetimes-probe.json",
+        "sha256": "81347D4102EF4663FBADF3BD590D333BD04B408FCED2DFC3A7F5704C469AF1BA"
+      }
+    ],
+    "relatedCandidateIds": [
+      "AB8775E5BE250BD8D6B3E52BB283B571E1278022DBEDB7FFD01FE63C83B940BA"
+    ],
+    "remainingFailure": "ASM remains sole production owner. All native candidates are nonexact in frame, extent, allocation and scheduling. Actual object relocation masks hide address/addend fields and prove neither correct linked data references nor ownership/placement/full-ROM equality. Complete scheduler FIVE/NINE, other source-information blockers and table/zero/shared-declaration gates remain. No runtime or structural closure claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Assign the genuine unit-bank base, selector address and selector-minus-88 table at the start of the sentinel member loop before the current-unit/field105E tests; consume them at the original bank and projection sites. This tests the Gold1256 measured loop-hoisting discriminator."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8151,
+      "sha256": "783DF01BB6B60FA105F97D4233F8AC30BCC5C077B2E35C97B241B8587EFFC1CB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EA2C0DBA603B8315AE5C431F61412AAC88642BD08DB68EA6A6B7ED794F34A8BF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00108C1C-e32e930253.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

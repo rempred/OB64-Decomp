@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A039A6C361DB44C06B48D943A8465D0A684D299CC969022CB4F28F906870B49D",
+  "observationId": "4A21E7435DE197BC914FCC7F564DD353099299AC7652E70B24E6B0289A4AAA76",
+  "symbol": "func_00108AA0",
+  "authored": {
+    "context": "Complete r2245 owner380 bytes/95 words/frame72, genuine shared threshold-success join and point/table/selector accesses reconciled. Comment-only successor reuses exactly the authenticated1496-byte compiler input of64949; no new native compile or accepted source activation.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "expression-lowering"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4A31C05D0D2515BAE419C092F90F8C2B699C0312246F0B1CCEB5C062B8F321FB",
+      "sourceSha256": "B50AA772ADC742DDC1B35FAAB0D1AFF01049A68D4C29A7D950B05303C1866AA4"
+    },
+    "label": "scheduler-prerequisite-108aa0-documented-blocker",
+    "observedEffect": "Current PURE_C classification and expanded bytes exactly equal64949 native input:380/frame72/17 actual relocations/two masked differences CC/D4. Gold1254 corrects the refuted1251 deduction: pointer-address expansion puts multiplication first; integer expression may start base-first, then CSE recognizes the symbol-equivalent base and swaps it. Native D031/C52 prove index-first lowering; DAFE proves pointer reassignment loses symbol equivalence and gains the point-Y store dependence. Gold knows no genuine extra index consumer/nonlocal quantity supported by the full owner; source-information blocker retained. This compiler-source explanation is advisory inference supported by the named probes, not a proof that all possible C is impossible.",
+    "parentCandidateId": "64949FB4614A37DA02E80E53C83402074B5ED5169DABEAD4B66F033AE29B2FE9",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-documented-blocker.c",
+        "sha256": "B50AA772ADC742DDC1B35FAAB0D1AFF01049A68D4C29A7D950B05303C1866AA4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-embedded-return-join-watch.json",
+        "sha256": "F9272EB5951635A84A65F311B03EC36341111474BAD4C8C81ECE56D5A87BC445"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-embedded-return-join-component.json",
+        "sha256": "ED7695C98E6781B668FD389218A3B16B36D0A495634308D5872AB005CFA96382"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-embedded-return-join-probe.json",
+        "sha256": "4D7A962196F3ACB1382884E7AF2B653B1A9743A7E9E00FF97EAAB937B6E196FB"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-scene-pointer-update-probe.json",
+        "sha256": "DD948987A77C403663224F4EF8EF4898F590345CDCBB42994ED00E12F186FBB2"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-outer-pointer-offset-probe.json",
+        "sha256": "7CFDDD31689EC7FC55CBB22AC5756E8F6F00A20A7413C2E3CD05B274DA1AE0E6"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00108AA0.s",
+        "sha256": "5F2F3E2A01FF073C1396281C5C0B66B2716A47EC0CCF853BFB75522507960ED9"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1254.json",
+        "sha256": "0540632AE05AEEA397C93DF967B020789B84013F13EE0D3E7D4D20A3A9A0217D"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      }
+    ],
+    "relatedCandidateIds": [
+      "7264C6E51276F4FDF1E7C871B95E4F9D53A7147AEF57DEC3F4D011C91AC3D578",
+      "832592AE2DAE83D773FD1352DE49D4655C5A6177D207D9892CB7C0A6FC74ACE2"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Actual relocation masks establish no linked symbol/addend/byte/ownership/full-ROM acceptance. No assembly-inherent or tooling-defect conclusion; reopen only with a genuine new source/consumer/context hypothesis. Complete scheduler FIVE/NINE, all table/zero/shared-declaration gates remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Document the measured two-word address-register frontier and the pointer-update/store-order counterexample beside the actual C expression."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1496,
+      "sha256": "4A31C05D0D2515BAE419C092F90F8C2B699C0312246F0B1CCEB5C062B8F321FB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B50AA772ADC742DDC1B35FAAB0D1AFF01049A68D4C29A7D950B05303C1866AA4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00108AA0-a039a6c361.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

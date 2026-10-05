@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AB8775E5BE250BD8D6B3E52BB283B571E1278022DBEDB7FFD01FE63C83B940BA",
+  "observationId": "B55BB3DEB2B618D10CCAAE4DC318F579D7084AF265AE2EA7945FC77A77566264",
+  "symbol": "func_00108C1C",
+  "authored": {
+    "context": "Full r2246 body552 words/2208 bytes/frame160 at ROM108C1C..1094BC/VMA801B44DC..801B4D7C reconciled before tuning. Original allocator-failure report continues, both unused distance calls in each scan are retained, signed sentinel lists and unsigned state ranges preserved. Default m2c/Kuna outputs are hypotheses; raw LE opcodes, third AA0 argument and duplicate head reads checked directly. Projection/height residency remains unresolved.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "instruction-scheduling",
+      "field-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3BE2F26CEC89A3D9E32A09A8E6C5165348DD2710A694D2CC77BB8F8DBFADBE5D",
+      "sourceSha256": "D647FEB15ABFDF045FCE90CF62FA91143258AAB7C876D9EAC203BF2AAC5EABC2"
+    },
+    "label": "scheduler-prerequisite-108c1c-scalar-state-fields",
+    "observedEffect": "PURE_C2216/frame144/527 same-offset masked-word differences; all19 actual JALs and complete logical paths retained. Emitted accumulator references are BB0+4/+8/+12, with no extra member between list pointer and floats. Invalid8CE/CC intermediates had an unintended write_cursor field in ListPointState and are excluded as layout evidence; the offset error was an editing mistake, not compiler array alignment. This valid closest-extent source remains the recoverable best; x still occupies fp instead of retail SP3C, and extent exceeds retail by8.",
+    "parentCandidateId": "C180EE4F0B1AA8345D7738A07942F26D537151075654530B9CD6763A27049AE1",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-scalar-state-fields.c",
+        "sha256": "D647FEB15ABFDF045FCE90CF62FA91143258AAB7C876D9EAC203BF2AAC5EABC2"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-scalar-state-fields-watch.json",
+        "sha256": "CCE57FB1F1C93165563AA43C3023D93002AD1ED75EC6CE7C9B11A90230D15A51"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-scalar-state-fields-component.json",
+        "sha256": "7D43D970F131675E5EBFC539557B1D00B2AD311D9730CC2B4AB2D0CDB7E4346E"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00108C1C.s",
+        "sha256": "71F35EF8B665F6595563DC2CDCF821A0BC001E8BE644E712EA24D36860FE25F7"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-body-coverage.json",
+        "sha256": "BDBBEA5EF651EDF1349D95BAE05629E49386DD71D0E0A22FBAFFA1AD3DE8BCEC"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00108C1C-intake-20261005.json",
+        "sha256": "6C15DD35FC2C12E34DE44ABBF41C547BAE80DDA80E1BB5F7CA52258133630B83"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-analysis.json",
+        "sha256": "098A3C98B85C012C4B03F0054197D28CBED4830F532C95E0865B8097B2C59B49"
+      }
+    ],
+    "relatedCandidateIds": [
+      "C180EE4F0B1AA8345D7738A07942F26D537151075654530B9CD6763A27049AE1"
+    ],
+    "remainingFailure": "ASM remains sole production owner. All native candidates are nonexact in frame, extent, allocation and scheduling. Actual object relocation masks hide address/addend fields and prove neither correct linked data references nor ownership/placement/full-ROM equality. Complete scheduler FIVE/NINE, other source-information blockers and table/zero/shared-declaration gates remain. No runtime or structural closure claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Represent the actual list write cursor explicitly, name the observed scalar accumulators at BB0+4/+8/+12, and place delta divisions inside the real mode-zero branch. Remove an accidentally duplicated struct member introduced in two private intermediates."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8008,
+      "sha256": "3BE2F26CEC89A3D9E32A09A8E6C5165348DD2710A694D2CC77BB8F8DBFADBE5D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D647FEB15ABFDF045FCE90CF62FA91143258AAB7C876D9EAC203BF2AAC5EABC2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00108C1C-ab8775e5be.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

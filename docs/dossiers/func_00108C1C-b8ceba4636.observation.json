@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B8CEBA4636F9F2E7B81926D4FE341D59631C2DFAA4F92FB3AE2979196B792C8E",
+  "observationId": "650447FB729B9A9F7EE14221A0A22255BF59E821E429C49E5D3C033EBB2F7716",
+  "symbol": "func_00108C1C",
+  "authored": {
+    "context": "Full r2246 body552 words/2208 bytes/frame160 at ROM108C1C..1094BC/VMA801B44DC..801B4D7C reconciled before tuning. Original allocator-failure report continues, both unused distance calls in each scan are retained, signed sentinel lists and unsigned state ranges preserved. Default m2c/Kuna outputs are hypotheses; raw LE opcodes, third AA0 argument and duplicate head reads checked directly. Projection/height residency remains unresolved.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "instruction-scheduling",
+      "field-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "02125FD5CD1EBACF17AB8BACEA7C298B405FDFA352672B83DACA62265259C779",
+      "sourceSha256": "3332537DFED1AD4362004CEA3BF03048A33F2D4CA63733DCB18BDE8F4D85CD1F"
+    },
+    "label": "scheduler-prerequisite-108c1c-explicit-list-state",
+    "observedEffect": "PURE_C2148/frame144/504 same-offset masked-word differences, all19 actual JALs. The explicit base saves68 emitted bytes but is60 short of retail and still keeps x72 in fp. Authenticated8-asset probeD0FA55C1 records x72 four references across377 insns/19 calls; z73 and mode74 still spill. Useful real-base/alias intermediate, not selected over2216-byte source and not a missing-body or padding remedy.",
+    "parentCandidateId": "AB8775E5BE250BD8D6B3E52BB283B571E1278022DBEDB7FFD01FE63C83B940BA",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-explicit-list-state.c",
+        "sha256": "3332537DFED1AD4362004CEA3BF03048A33F2D4CA63733DCB18BDE8F4D85CD1F"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-explicit-list-state-watch.json",
+        "sha256": "F4E5BC033B8D666E27F1A726F4A4DEEBF383A4930017138ADC548523CAC78AAE"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-explicit-list-state-component.json",
+        "sha256": "D46F58A03634A3EA3F5DB82E2C5BF0D8A4BC7C02E0D91451A193CDFA23157662"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00108C1C.s",
+        "sha256": "71F35EF8B665F6595563DC2CDCF821A0BC001E8BE644E712EA24D36860FE25F7"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-body-coverage.json",
+        "sha256": "BDBBEA5EF651EDF1349D95BAE05629E49386DD71D0E0A22FBAFFA1AD3DE8BCEC"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00108C1C-intake-20261005.json",
+        "sha256": "6C15DD35FC2C12E34DE44ABBF41C547BAE80DDA80E1BB5F7CA52258133630B83"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-analysis.json",
+        "sha256": "098A3C98B85C012C4B03F0054197D28CBED4830F532C95E0865B8097B2C59B49"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/D0FA55C19233ED2734DE90A907A50527CD7FEB6DDF7410CB3DF7DA0041BFEDC6/authored.c",
+        "sha256": "3332537DFED1AD4362004CEA3BF03048A33F2D4CA63733DCB18BDE8F4D85CD1F"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/D0FA55C19233ED2734DE90A907A50527CD7FEB6DDF7410CB3DF7DA0041BFEDC6/input.c",
+        "sha256": "02125FD5CD1EBACF17AB8BACEA7C298B405FDFA352672B83DACA62265259C779"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/D0FA55C19233ED2734DE90A907A50527CD7FEB6DDF7410CB3DF7DA0041BFEDC6/output.s",
+        "sha256": "7174207D4159AF1AD952C548FC2C8656EFE9DC1FAA75641E42A5F59FA2CA772A"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/D0FA55C19233ED2734DE90A907A50527CD7FEB6DDF7410CB3DF7DA0041BFEDC6/input.c.rtl",
+        "sha256": "31CD2D6ABD4CC9FA4FF3B7B3BB21D77F9AD461DEF671C6943AF6FEDEF65729A5"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/D0FA55C19233ED2734DE90A907A50527CD7FEB6DDF7410CB3DF7DA0041BFEDC6/input.c.flow",
+        "sha256": "87322E988CE7F9F4F66267BFEBCAFA7A91A1E31756A2999F61FE28BAC60E0764"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/D0FA55C19233ED2734DE90A907A50527CD7FEB6DDF7410CB3DF7DA0041BFEDC6/input.c.sched",
+        "sha256": "F96D30B6E7660E41074EBEFDC2B2860FA1FF068AFCAB88F6AC36759A21EF6634"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/D0FA55C19233ED2734DE90A907A50527CD7FEB6DDF7410CB3DF7DA0041BFEDC6/input.c.lreg",
+        "sha256": "B09DAFDF51C25771D2E5E9D7403B6D68C83DC3F204763D72C9AF6EF1C730379C"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108C1C/probes/D0FA55C19233ED2734DE90A907A50527CD7FEB6DDF7410CB3DF7DA0041BFEDC6/input.c.greg",
+        "sha256": "157782FFBD6139161670011EEEBB3683D1D1F26399D18620F7D90EF9D9F972DD"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-explicit-list-state-probe.json",
+        "sha256": "EC29D738D2420F6C52387DDA27D9DA70591A913BB70EDA497E6F946EC66B14A2"
+      }
+    ],
+    "relatedCandidateIds": [
+      "AB8775E5BE250BD8D6B3E52BB283B571E1278022DBEDB7FFD01FE63C83B940BA"
+    ],
+    "remainingFailure": "ASM remains sole production owner. All native candidates are nonexact in frame, extent, allocation and scheduling. Actual object relocation masks hide address/addend fields and prove neither correct linked data references nor ownership/placement/full-ROM equality. Complete scheduler FIVE/NINE, other source-information blockers and table/zero/shared-declaration gates remain. No runtime or structural closure claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the real list-state pointer for the initial free/null operation and the later publication/accumulation paths, resetting it at publication as retail does."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8124,
+      "sha256": "02125FD5CD1EBACF17AB8BACEA7C298B405FDFA352672B83DACA62265259C779"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3332537DFED1AD4362004CEA3BF03048A33F2D4CA63733DCB18BDE8F4D85CD1F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00108C1C-b8ceba4636.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

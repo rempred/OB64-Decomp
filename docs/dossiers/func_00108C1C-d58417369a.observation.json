@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D58417369AC5357B86D9946B8D8C78EF1B5C15471D174DD5DA443CF2660126F4",
+  "observationId": "094B9CBD8709C5081480249BB266DD783F0765C38609F48A4145F21E00F7C96A",
+  "symbol": "func_00108C1C",
+  "authored": {
+    "context": "Full r2246 body552 words/2208 bytes/frame160 at ROM108C1C..1094BC/VMA801B44DC..801B4D7C reconciled before tuning. Original allocator-failure report continues, both unused distance calls in each scan are retained, signed sentinel lists and unsigned state ranges preserved. Default m2c/Kuna outputs are hypotheses; raw LE opcodes, third AA0 argument and duplicate head reads checked directly. Projection/height residency remains unresolved.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "instruction-scheduling",
+      "field-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "51F56D3939B34DE3CFD759EDDE0B9AE7DA4102FD4614EA6EDA4047411B6CE369",
+      "sourceSha256": "C0C4899F9EAAEE1E9FD489EF2A047D6E04D1F96F8E53882E2E265148F6476240"
+    },
+    "label": "scheduler-prerequisite-108c1c-list-point-state",
+    "observedEffect": "PURE_C2216/frame144/539 same-offset masked-word differences versus retail2208/frame160. All19 original JAL sites are present with the expected symbolic callee census. The frontend merges the initial two state checks into materialized booleans; x remains in fp while z/mode spill. Complete body coverage is represented, not exact emitted placement or semantic acceptance.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-list-point-state.c",
+        "sha256": "C0C4899F9EAAEE1E9FD489EF2A047D6E04D1F96F8E53882E2E265148F6476240"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-list-point-state-watch.json",
+        "sha256": "10A162D4D3BA869324675D9839C949AA3D1DB14AC27D7F3E653949CECBF2BC09"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-list-point-state-component.json",
+        "sha256": "0A21B6D049EDB1A7416B9D13E34B26CF72172980BC884525E8BA669AC798C06D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00108C1C.s",
+        "sha256": "71F35EF8B665F6595563DC2CDCF821A0BC001E8BE644E712EA24D36860FE25F7"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-body-coverage.json",
+        "sha256": "BDBBEA5EF651EDF1349D95BAE05629E49386DD71D0E0A22FBAFFA1AD3DE8BCEC"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00108C1C-intake-20261005.json",
+        "sha256": "6C15DD35FC2C12E34DE44ABBF41C547BAE80DDA80E1BB5F7CA52258133630B83"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108c1c-analysis.json",
+        "sha256": "098A3C98B85C012C4B03F0054197D28CBED4830F532C95E0865B8097B2C59B49"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "ASM remains sole production owner. All native candidates are nonexact in frame, extent, allocation and scheduling. Actual object relocation masks hide address/addend fields and prove neither correct linked data references nor ownership/placement/full-ROM equality. Complete scheduler FIVE/NINE, other source-information blockers and table/zero/shared-declaration gates remain. No runtime or structural closure claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive the full entry-state guards, mask override, allocation and two unit scans, sentinel traversal, projection/height calls and XYZ average updates."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7846,
+      "sha256": "51F56D3939B34DE3CFD759EDDE0B9AE7DA4102FD4614EA6EDA4047411B6CE369"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C0C4899F9EAAEE1E9FD489EF2A047D6E04D1F96F8E53882E2E265148F6476240"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00108C1C-d58417369a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
