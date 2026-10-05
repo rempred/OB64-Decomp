@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4FC67890FDE2D6D20F4C6C39FBD0493E9E2211B8A183B973FDC15F21CD08B59C",
+  "observationId": "213CEB9FA65D1EFB97B3A368E9489084D138E3D64539EAE3344B1E5EE5D07086",
+  "symbol": "resource_largest_free_block",
+  "authored": {
+    "context": "Complete resource_largest_free_block physical owner compiled under the pinned native toolchain. Evidence from largest-watch-3.json is symbolic-object diagnostic evidence because the original ASM owner remains active.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "38A09D29C421B25EBDE2A89465AECC2D9B74664768E91B8DB9F9D3D79CD4B4B0",
+      "sourceSha256": "3AE014EEC5386DAAEAE47BF3114D691AAE39BABEE4409AE98D941524A98EB8B9"
+    },
+    "label": "largest-split-count",
+    "observedEffect": "Separates the selection lifetime from the scan divisor. Mode/count/maximum registers now agree with retail; all232 bytes agree outside unresolved relocations.",
+    "parentCandidateId": "2BD7614CF65D83BE1E8DF5F07F58A595E268FA86E76487B6896E4EBE2EFF3DDD",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_largest_free_block.s",
+        "sha256": "C84A403723096A26F93997AB50ECAF4954DC45A1D9C4B76FB34404184B83ADE9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual external bindings, sole C ownership, placement, exact linked target bytes and one complete seven-owner full-ROM verifier remain required.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a separate n for the first count read and reserve count for the divisor captured before the scan loop."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1481,
+      "sha256": "38A09D29C421B25EBDE2A89465AECC2D9B74664768E91B8DB9F9D3D79CD4B4B0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3AE014EEC5386DAAEAE47BF3114D691AAE39BABEE4409AE98D941524A98EB8B9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_largest_free_block-4fc67890fd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

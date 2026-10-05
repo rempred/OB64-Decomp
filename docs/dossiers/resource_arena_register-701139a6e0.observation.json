@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "701139A6E04006B49F03391A31F1B320B3F269A499F63FBE8EDE0D07CA8ABFCF",
+  "observationId": "67184A5BC1DBDCCC7ED148E17FB359A52A24F5CD9AEA14D20CA3FC5AD9D652CB",
+  "symbol": "resource_arena_register",
+  "authored": {
+    "context": "Complete resource_arena_register physical owner compiled under the pinned native toolchain. Evidence from register-watch-19.json is symbolic-object diagnostic evidence because the original ASM owner remains active.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "FAB6771E9B16D87C986BB767C07F084420D3781CB33BAB26FC4132B808C1A041",
+      "sourceSha256": "8C991E36D2BACB6C35D86D79C3E7EDAEFCDD9029F0744996FEAB3935A1EBCD6E"
+    },
+    "label": "register-live-guard",
+    "observedEffect": "Preserves full528 bytes, frame48, initial BLEZ, read-before-prologue prefix and all required bodies. Tail count/index/offset/end registers remain permuted. The best source is recoverable; this is not an accepted match.",
+    "parentCandidateId": "29AB48E5357A57B91D3B12484F2E90914207E93B0DD522551E50B84E9906A897",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_arena_register.s",
+        "sha256": "CE01811BE28559AEA3A0DAC897E91603E20DEEA6FA759056370068090FB77141"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual external bindings, sole C ownership, placement, exact linked target bytes and one complete seven-owner full-ROM verifier remain required.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Compare the zero-initialized scan index directly with D_800AEDE0 at loop entry; use SI n and explicit (u16)n slot capture before n++."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2324,
+      "sha256": "FAB6771E9B16D87C986BB767C07F084420D3781CB33BAB26FC4132B808C1A041"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8C991E36D2BACB6C35D86D79C3E7EDAEFCDD9029F0744996FEAB3935A1EBCD6E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_arena_register-701139a6e0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

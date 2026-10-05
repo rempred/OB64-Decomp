@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DA237D10D8DCBAA462B6A1C8134F0F60195FD78BCD63A53AB52FC5E5FE2F8D25",
+  "observationId": "24E6FDD3F81EA555FE5B595B1FE889CF35C9CEA2280A2C6C7110645F511D681B",
+  "symbol": "resource_arena_init",
+  "authored": {
+    "context": "Complete resource_arena_init owner, with retained root-address local. Private watch13 and readable watch14 both compile PURE_C and192 bytes under the pinned toolchain; inactive ASM implies symbolic-object diagnostics only.",
+    "effects": [
+      "instruction-scheduling",
+      "address-materialization"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "EDD4F93786BFE8652637172252BDC7F4FD7D03A890BC7E646706C652AD8A056A",
+      "sourceSha256": "14F867AB4E6C26BF65E3A101BA45C5A8D5E96EF1B70232F9B6CCFA438C165529"
+    },
+    "label": "separate-endpoint-and-root",
+    "observedEffect": "The endpoint AND moves to034 after argument/table-address setup with all retail saved registers and root-clear delay slot retained. Watch14 reports rawRelocationMaskedExact=true for all192 bytes, matching watch13; plain member-address spelling changes no emitted bytes.",
+    "parentCandidateId": "809AFD5B29D11FB377F640ACA6425F7238EC913FB0B7DF09515F4B276038C552",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_arena_init.s",
+        "sha256": "2037C31959F8CED7DAEE5C15A452487295B811E94D4FE79504B00B102A65F991"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object/masked agreement is diagnostic only. Actual external bindings, sole C ownership, placement, exact linked bytes and the single complete seven-owner full-ROM verifier remain required.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Separate raw_end=start+size from end=raw_end&mask, keeping the start alignment in its original parameter; use root=&arena->root instead of the equivalent byte-offset spelling."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1322,
+      "sha256": "EDD4F93786BFE8652637172252BDC7F4FD7D03A890BC7E646706C652AD8A056A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "14F867AB4E6C26BF65E3A101BA45C5A8D5E96EF1B70232F9B6CCFA438C165529"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_arena_init-da237d10d8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -953,6 +953,34 @@
     {
       "symbol": "func_0002de50",
       "source": "src/lib/func_0002de50.c"
+    },
+    {
+      "symbol": "resource_arena_init",
+      "source": "src/lib/resource_arena_init.c"
+    },
+    {
+      "symbol": "resource_arena_register",
+      "source": "src/lib/resource_arena_register.c"
+    },
+    {
+      "symbol": "resource_alloc",
+      "source": "src/lib/resource_alloc.c"
+    },
+    {
+      "symbol": "resource_alloc_alt_scan",
+      "source": "src/lib/resource_alloc_alt_scan.c"
+    },
+    {
+      "symbol": "resource_alloc_mode1_wrapper",
+      "source": "src/lib/resource_alloc_mode1_wrapper.c"
+    },
+    {
+      "symbol": "resource_free",
+      "source": "src/lib/resource_free.c"
+    },
+    {
+      "symbol": "resource_largest_free_block",
+      "source": "src/lib/resource_largest_free_block.c"
     }
   ]
 }

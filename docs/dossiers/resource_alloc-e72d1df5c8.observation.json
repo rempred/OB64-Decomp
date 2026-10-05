@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E72D1DF5C82AC83A1016224C182E6C9516BE9BD8F777DC4F017B9007B1A972BF",
+  "observationId": "6197D42BA8E5D8C7F958B6A6026AD9057EC94F721B462F326F52BF4AAB4F32C9",
+  "symbol": "resource_alloc",
+  "authored": {
+    "context": "Complete resource_alloc physical owner compiled under the pinned native toolchain. Evidence from alloc-watch-4.json is symbolic-object diagnostic evidence because the original ASM owner remains active.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "642786AE1D8606552B171A3A5BEC600411589E91230B3582C5F3A8DF07BE6E79",
+      "sourceSha256": "D9C9915EB495972A03EC58CD507B631CCAF40CCFA83E78B80666E4ECE15EA327"
+    },
+    "label": "alloc-best",
+    "observedEffect": "The needed-size argument fills the find-call delay slot and ++scanned fills the node-null branch delay slot. All428 bytes agree outside unresolved relocations.",
+    "parentCandidateId": "407E58AF91F51AEF1E2E615B3C882B1BB021410E1662ADAC87CB710DFA186583",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_alloc.s",
+        "sha256": "0A864A475FDE83BBEFC80E9E1C145DADBC154E2812A70CAF76219A90A20BB467"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual external bindings, sole C ownership, placement, exact linked target bytes and one complete seven-owner full-ROM verifier remain required.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move ++scanned to the unsuccessful-search path after the successful allocation return."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2344,
+      "sha256": "642786AE1D8606552B171A3A5BEC600411589E91230B3582C5F3A8DF07BE6E79"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D9C9915EB495972A03EC58CD507B631CCAF40CCFA83E78B80666E4ECE15EA327"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_alloc-e72d1df5c8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

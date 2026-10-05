@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2BD7614CF65D83BE1E8DF5F07F58A595E268FA86E76487B6896E4EBE2EFF3DDD",
+  "observationId": "CA9646D6B4A29A0B05EE96034ADC0DDEF5A8709F81A460B8C2D0D6368377A268",
+  "symbol": "resource_largest_free_block",
+  "authored": {
+    "context": "Complete resource_largest_free_block physical owner compiled under the pinned native toolchain. Evidence from largest-watch-2.json is symbolic-object diagnostic evidence because the original ASM owner remains active.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "B8EB1A9661FF35251BFC3EA5055201F30AD7887CBB36FD7C57019994B5B54064",
+      "sourceSha256": "E74D3BAF2A5A017044D142F797E447CB981B8EEDC198E00AD2DC9ED23E1CB32C"
+    },
+    "label": "largest-late-scan",
+    "observedEffect": "Restores the eight-byte frame, entry load-before-stack prefix, BLEZ and loop scheduling at232 bytes. Reused count still occupies a3 and largest occupies t0, opposite retail.",
+    "parentCandidateId": "796BB4EF7CB0A173305BAD86BAB04B79834EE939896A80BE2DE7053CE9861CE4",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_largest_free_block.s",
+        "sha256": "C84A403723096A26F93997AB50ECAF4954DC45A1D9C4B76FB34404184B83ADE9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual external bindings, sole C ownership, placement, exact linked target bytes and one complete seven-owner full-ROM verifier remain required.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move scanned=0 immediately before if(scanned<iterations)."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1481,
+      "sha256": "B8EB1A9661FF35251BFC3EA5055201F30AD7887CBB36FD7C57019994B5B54064"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E74D3BAF2A5A017044D142F797E447CB981B8EEDC198E00AD2DC9ED23E1CB32C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_largest_free_block-2bd7614cf6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

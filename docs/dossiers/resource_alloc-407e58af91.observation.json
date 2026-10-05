@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "407E58AF91F51AEF1E2E615B3C882B1BB021410E1662ADAC87CB710DFA186583",
+  "observationId": "8B0237F0E4EE4E3831B722D5FB9EFAEFF1457774E85592D8CA2ADF40D3F3DB48",
+  "symbol": "resource_alloc",
+  "authored": {
+    "context": "Complete resource_alloc physical owner compiled under the pinned native toolchain. Evidence from alloc-watch-3.json is symbolic-object diagnostic evidence because the original ASM owner remains active.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "1D672A2E86B51C074C006B5EE336C8D7680D2F47B8DAAF89A17BC4444C9573E6",
+      "sourceSha256": "E441E2C5EBB7BC94572546BC879FF82EBD8F54950D87486F6A4BFE1B669B5D6A"
+    },
+    "label": "alloc-array",
+    "observedEffect": "Emits428 bytes with the retail saved-register census; removes the duplicate offset lifetime. The scan increment is still in the find-call delay slot, and the needed argument is outside that slot.",
+    "parentCandidateId": "F21104DFB0730FB36416E3199304D992D3AAA79F5CC72A6B9F0C97366FCFA7D8",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/resource_alloc.s",
+        "sha256": "0A864A475FDE83BBEFC80E9E1C145DADBC154E2812A70CAF76219A90A20BB467"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual external bindings, sole C ownership, placement, exact linked target bytes and one complete seven-owner full-ROM verifier remain required.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use direct ArenaRecord array indexing throughout instead of the explicit byte-offset local."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2344,
+      "sha256": "1D672A2E86B51C074C006B5EE336C8D7680D2F47B8DAAF89A17BC4444C9573E6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E441E2C5EBB7BC94572546BC879FF82EBD8F54950D87486F6A4BFE1B669B5D6A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-resource_alloc-407e58af91.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
