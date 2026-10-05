@@ -44,7 +44,13 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   native text/functions/data/relocations before proposing activation. Current group projection
   supports one table-attribution member and cannot admit both dispatchers. Sol and GoldOx must
   explicitly agree on any demonstrated missing generic capability and proposed remedy before
-  requesting tooling implementation; no tooling change is approved by this study. Use existing
+  requesting tooling implementation; no tooling change is approved by this study. A bounded
+  THREE-function raw-object capability probe (`109C3C`, `10A718`, `10ADB8`) may precede full
+  NINE source readiness, using the existing authenticated native-fixture APIs and private-root
+  guard. Start with the original p2551 external-reference control. The accepted
+  `squad_supply_end` contract already permits an 8-aligned read-only anchor and a short native
+  zero tail backed by a larger retained ASM row; a new constant-payload mode is not presumed
+  necessary. This probe is not an admissible text group or acceptance result. Use existing
   private per-target checks concurrently; any unsupported combined native study needs the
   existing supported path and actual shared-resource coordination, not a new workaround.
   No canonical activation or full-ROM run is authorized at the study stage. If this producer
