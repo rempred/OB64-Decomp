@@ -12,6 +12,7 @@ const phase8 = active.loadActiveTargetModel();
 const local = JSON.parse(fs.readFileSync(path.join(ROOT, 'config/local-tools.json')));
 const verifiedCompiler = p8.verifyCompiler(phase8, local.compiler);
 const tools = assertToolchainAvailable(loadToolchainConfig());
+function runFixture(multipleMembers) {
 fs.mkdirSync(path.join(ROOT, 'build/tests'), { recursive: true });
 const root = fs.mkdtempSync(path.join(ROOT, 'build/tests/group-auxiliary-'));
 const sourceFile = path.join(root, 'producer.c');
@@ -19,7 +20,8 @@ const source = 'extern int external_call(int);\nint group_prefix(int x) { return
   + 'int group_tables(int x, int y) { int a;\n'
   + 'switch(x) { case 0:a=external_call(11);break; case 1:a=external_call(23);break; case 2:a=external_call(37);break; case 3:a=external_call(41);break; case 4:a=external_call(59);break; default:a=3; }\n'
   + 'switch(y) { case 0:a+=external_call(61);break; case 1:a+=external_call(73);break; case 2:a+=external_call(89);break; case 3:a+=external_call(97);break; case 4:a+=external_call(101);break; case 5:a+=external_call(113);break; case 6:a+=external_call(127);break; default:a+=5; } return a; }\n'
-  + 'int group_suffix(int x) { return group_tables(x,1)+7; }\n';
+  + (multipleMembers ? 'int group_suffix(int x) { switch(x) { case 0:return external_call(131); case 1:return external_call(137); case 2:return external_call(139); case 3:return external_call(149); case 4:return external_call(151); default:return group_tables(x,1)+7; } }\n'
+    : 'int group_suffix(int x) { return group_tables(x,1)+7; }\n');
 fs.writeFileSync(sourceFile, source);
 const relative = path.relative(ROOT, sourceFile).replace(/\\/g, '/');
 const preliminary = policy.classifyTargetSources([{ symbol: 'group_prefix', source: relative, bytes: 4 }]);
@@ -35,22 +37,22 @@ const functions = raw.symbols.filter(value => value.symbolType === 2).map(value 
   bytes: value.size, binding: value.binding, symbolType: value.symbolType, visibility: value.visibility })).sort((a,b) => a.offset-b.offset);
 assert.equal(functions.length, 3); assert(functions[1].offset > 0);
 const end = functions.at(-1).offset + functions.at(-1).bytes;
-assert(text.size > end, 'real native terminal alignment required');
+if (!multipleMembers) assert(text.size > end, 'real native terminal alignment required');
 const compiler = fs.readFileSync(path.join(root, 'compiler.s'));
 const blocks = [...compiler.toString().matchAll(/\.section\s+\.rodata([^]*?)\s\.text/g)];
-assert.equal(blocks.length, 2);
+assert.equal(blocks.length, multipleMembers ? 3 : 2);
 let cursor = 0;
 const segments = [];
 for (const [index, block] of blocks.entries()) {
   const offset = Math.ceil(cursor / ro.alignment) * ro.alignment;
-  if (offset > cursor) segments.push({ kind: 'zero', offset: cursor, bytes: offset-cursor, ownerSection: '.ob64.r0011',
+  if (offset > cursor) segments.push({ kind: 'zero', offset: cursor, bytes: offset-cursor, ownerSection: '.ob64.r'+String(9+index*2).padStart(4,'0'),
     ownerOffset: 0, ownerBytes: offset-cursor, expectedOwnerSha256: hash(Buffer.alloc(offset-cursor)) });
   const bytes = [...block[1].matchAll(/\.word\s+\.L\d+/g)].length * 4;
-  segments.push({ kind: 'payload', offset, bytes, outputSection: index ? '.ob64.r0012' : '.ob64.r0010',
+  segments.push({ kind: 'payload', offset, bytes, outputSection: '.ob64.r'+String(10+index*2).padStart(4,'0'),
     label: /(?:^|\n)(\.L\d+):/.exec(block[1])[1], alignmentDirectives: [...block[1].matchAll(/\.align\s+(\d+)/g)].map(value => Number(value[1])) });
   cursor = offset + bytes;
 }
-segments.push({ kind: 'zero', offset: cursor, bytes: ro.size-cursor, ownerSection: '.ob64.r0013', ownerOffset: 0,
+segments.push({ kind: 'zero', offset: cursor, bytes: ro.size-cursor, ownerSection: '.ob64.r'+String(9+blocks.length*2).padStart(4,'0'), ownerOffset: 0,
   ownerBytes: ro.size-cursor+8, expectedOwnerSha256: hash(Buffer.alloc(ro.size-cursor+8)) });
 const projection = { schemaVersion: 1, mode: 'fixed-row-readonly-projection', compilerSection: '.rodata', bytes: ro.size,
   alignment: ro.alignment, expectedObjectSha256: hash(rawRo), segments };
@@ -66,7 +68,7 @@ const original = path.join(root,'original.s');
 fs.writeFileSync(original,segments.filter(value=>value.kind==='zero').map(value=>'.section '+value.ownerSection+',"a",@progbits\n'
   +Array(value.ownerBytes/4).fill('.word 0').join('\n')).join('\n')+'\n');
 const originalRelative=path.relative(ROOT,original).replace(/\\/g,'/');
-const sections=segments.filter(value=>value.kind==='payload').map(value=>({kind:'switch-table',compilerSection:'.rodata',outputSection:value.outputSection,
+const sections=segments.filter(value=>value.kind==='payload').map((value,index)=>({memberSymbol:index<2?'group_tables':'group_suffix',kind:'switch-table',compilerSection:'.rodata',outputSection:value.outputSection,
   sectionType:'SHT_PROGBITS',sectionFlags:['SHF_ALLOC'],alignment:ro.alignment,romStart:hex(tableRom+value.offset),
   romEndExclusive:hex(tableRom+value.offset+value.bytes),vramStart:hex(tableBase+value.offset),vramEndExclusive:hex(tableBase+value.offset+value.bytes),
   bytes:value.bytes,entries:value.bytes/4,expectedObjectSha256:hash(rawRo.subarray(value.offset,value.offset+value.bytes)),
@@ -80,7 +82,7 @@ const group={id:'composed_fixture',source:relative,mode:'native-text-readonly-ow
   relocations:groups.relocations(raw).filter(value=>value.owner.name==='.text').map(value=>({offset:value.place,type:value.type,
     symbol:value.symbol.symbolType===3?raw.sections[value.symbol.sectionIndex].name:value.symbol.name,symbolValue:value.symbol.value,
     symbolSection:value.symbol.sectionIndex===0?'UND':raw.sections[value.symbol.sectionIndex].name,word:raw.buffer.readUInt32BE(text.offset+value.place)})),
-  auxiliary:{memberSymbol:'group_tables',sections,projection}};
+  auxiliary:{sections,projection}};
 groups.registry({schemaVersion:1,profile:'fixture',groups:[group]},'fixture');
 function row(index, start, bytes, vram, executable) {return {index,primaryId:'fixture:'+index,primaryClass:executable?'code':'data',ambiguous:false,
   inputKind:'tracked-assembly',romStart:start,romEndExclusive:start+bytes,bytes,
@@ -109,7 +111,10 @@ function rawReject(name,mutate,pattern){const bytes=Buffer.from(raw.buffer),cont
 function registryReject(name,mutate){const copy=structuredClone(group);mutate(copy);reject(name,()=>groups.registry({schemaVersion:1,profile:'fixture',groups:[copy]},'fixture'));}
 registryReject('missing auxiliary bundle',value=>delete value.auxiliary);
 registryReject('ordinary mode with auxiliary bundle',value=>value.mode='native-text-owner-projection');
-registryReject('unknown attribution member',value=>value.auxiliary.memberSymbol='unknown');
+registryReject('unknown attribution member',value=>value.auxiliary.sections[0].memberSymbol='unknown');
+registryReject('missing attribution member',value=>delete value.auxiliary.sections[0].memberSymbol);
+registryReject('stale singular attribution',value=>value.auxiliary.memberSymbol='group_tables');
+rawReject('swapped table attribution',(bytes,value)=>{value.auxiliary.sections[0].memberSymbol='group_suffix';},/attributed function/);
 registryReject('missing table payload',value=>value.auxiliary.sections.pop());
 registryReject('reordered table payloads',value=>value.auxiliary.sections.reverse());
 registryReject('unexpected composed capability',value=>value.auxiliary.extra=true);
@@ -120,6 +125,24 @@ const badRom=Buffer.from(rom);badRom[badRom.length-1]=1;
 reject('retained final eight original bytes',()=>auxiliary.retainedBindings(attribution,model,badRom));
 const duplicateClaim=structuredClone(targets);duplicateClaim[0].auxiliarySections=duplicateClaim[1].auxiliarySections;
 reject('duplicate member auxiliary attribution',()=>auxiliary.validateCensus(duplicateClaim));
+reject('incomplete member bundle',()=>auxiliary.validateCensus(targets.slice(1)));
+if(multipleMembers){
+  const discontiguous=structuredClone(bound);
+  discontiguous.auxiliary.sections.forEach((section,index)=>section.memberSymbol=index===1?'group_suffix':'group_tables');
+  assert.deepEqual(auxiliary.memberSections(discontiguous,'group_tables').map(s=>s.outputSection),[sections[0].outputSection,sections[2].outputSection]);
+  assert.deepEqual(auxiliary.memberSections(discontiguous,'group_prefix'),[]);
+  const claim={...targets[1],compilationGroup:discontiguous,auxiliarySections:discontiguous.auxiliary.sections};
+  reject('A/B/A broad subset conservation',()=>auxiliary.assertMemberSections(claim));
+  rawReject('A/B/A intervening other-member reference',(bytes,contract)=>{
+    const tables=contract.auxiliary.projection.segments.filter(s=>s.kind==='payload');
+    contract.auxiliary.sections.forEach((section,index)=>{
+      section.memberSymbol=index===1?'group_suffix':'group_tables';
+      const member=contract.functions.find(f=>f.symbol===section.memberSymbol);
+      section.expectedRelocations.forEach((rel,i)=>{rel.addend=hex(member.offset);bytes.writeUInt32BE(member.offset,ro.offset+tables[index].offset+i*4);});
+    });
+    contract.auxiliary.projection.expectedObjectSha256=hash(bytes.subarray(ro.offset,ro.offset+ro.size));
+  },/reference attribution/);
+}
 reject('check-only row claimed by another C owner',()=>auxiliary.validateCensus([...targets,{auxiliarySections:[{outputSection:'.ob64.r0011'}]}]));
 const relText=raw.sections.find(value=>value.name==='.rel.text'), relRo=raw.sections.find(value=>value.name==='.rel.rodata');
 const symbolTable=raw.sections.find(value=>value.type===2), marker=raw.symbols.find(value=>value.name==='gcc2_compiled.');
@@ -176,12 +199,12 @@ runTool(tools.objcopyAbs,['--remove-section=.reginfo',path.join(output,'objects/
 const script='OUTPUT_ARCH(mips)\nSECTIONS {\n'+model.rows.map(value=>value.slices[0].sectionName+' '+hex(value.slices[0].vramStart)
   +' : AT('+hex(value.romStart)+') { *('+value.slices[0].sectionName+') }').join('\n')
   +'\n.bss 0 (NOLOAD) : { objects/c/groups/composed_fixture.o(.bss) }\n/DISCARD/ : { *(.reginfo) *(.pdr) *(.comment) *(.note) } }\nexternal_call = 0x80001234;\n'
-  +attribution.auxiliarySections.map(value=>value.ownerSymbol+' = '+hex(value.ownerSymbolVram)+';').join('\n');
+  +bound.auxiliary.sections.map(value=>value.ownerSymbol+' = '+hex(value.ownerSymbolVram)+';').join('\n');
 fs.writeFileSync(path.join(output,'fixture.ld'),script);
 runTool(tools.toolsAbs.linker,['-T','fixture.ld','-Map','phase8.map','-o','phase8.elf',groups.objectPath(targets[0]),'objects/assembly/chunk_000.o'],{cwd:output});
 const linked=p7.parseElfFile(path.join(output,'phase8.elf'));
 for(const target of targets)assert(p7.elfSectionBytes(linked,linked.sections.find(value=>value.name===target.sectionName)).equals(rom.subarray(target.romStartNumber,target.romEndNumber)));
-for(const section of attribution.auxiliarySections)assert(p8.compareLinkedAuxiliaryBytes(attribution,section,linked,rom).rawBytesExact);
+for(const target of targets)for(const section of target.auxiliarySections)assert(p8.compareLinkedAuxiliaryBytes(target,section,linked,rom).rawBytesExact);
 const proofs=targets.map((target,index)=>p8.deriveSourceObjectProof(phase8,target,output,classifications.targets[index],linked,rom));
 const sharedLink=require('../tools/lib/text_contract').linkContext(output,rom,linked);
 for(const [index,target] of targets.entries()){
@@ -221,6 +244,98 @@ for(const stage of ['raw','textProjected','projected','stripped']){
 const extraProof=structuredClone(proofs[1].proof);extraProof.objectEvidence.composition.extra=true;
 const proofReject=(name,mutate)=>{const copy=structuredClone(proofs[1].proof);mutate(copy);const bytes=Buffer.from(JSON.stringify(copy));
   reject('self-compared '+name,()=>p8.validateSourceObjectProofBytes(bytes,bytes));};
+for(const [name,mutate] of [
+  ['stale text schema',p=>{p.textContract.schemaVersion=3;}],
+  ['stale object schema',p=>{p.objectEvidence.schemaVersion=5;}],
+  ['stale composition schema',p=>{p.objectEvidence.composition.schemaVersion=1;}],
+  ['stale singular contract',p=>{p.textContract.producer.auxiliary.memberSymbol='group_tables';}],
+  ['missing per-table member',p=>{delete p.textContract.producer.auxiliary.sections[0].memberSymbol;}],
+  ['linked subset omitted',p=>{p.finalTarget.auxiliarySections.pop();}],
+  ['object subset omitted',p=>{p.finalObject.auxiliarySections.pop();}],
+  ['member table bytes',p=>{p.finalObject.auxiliarySections[0].objectBytes++;}],
+  ['member table relocation',p=>{p.finalObject.auxiliarySections[0].loadRelevantRelocationsNormalized[0].addend='0x00000000';}],
+  ['member auxiliary count',p=>{p.assemblyContract.auxiliarySectionCount++;}],
+])proofReject(name,mutate);
+function rebindProof(copy){
+  const producer=copy.textContract.producer,identity=tc.hash(producer);
+  copy.objectEvidence.composition.groupSha256=identity;
+  copy.objectEvidence.composition.auxiliaryContract=structuredClone(producer.auxiliary);
+  for(const stage of Object.values(copy.objectEvidence.producerStages))stage.groupSha256=identity;
+  copy.objectEvidence.textContractSha256=tc.hash(copy.textContract);
+  copy.linkEvidence.textContractSha256=tc.hash(copy.textContract);
+}
+for(const [name,mutate] of [
+  ['swapped member',p=>{p.auxiliary.sections[0].memberSymbol='group_suffix';}],
+  ['unknown member',p=>{p.auxiliary.sections[0].memberSymbol='unknown';}],
+  ['missing member',p=>{delete p.auxiliary.sections[0].memberSymbol;}],
+  ['old singular',p=>{p.auxiliary.memberSymbol='group_tables';p.auxiliary.sections.forEach(s=>delete s.memberSymbol);}],
+]){
+  const copy=structuredClone(proofs[0].proof);mutate(copy.textContract.producer);rebindProof(copy);
+  const bytes=Buffer.from(JSON.stringify(copy));
+  reject('rehashed proof '+name,()=>p8.validateSourceObjectProofBytes(bytes,bytes));
+}
+{
+  // Move a real HI16 record across the function cut in every reported stage,
+  // then rehash its relocation sections and conservation records. The proof
+  // must reject ownership itself, not merely a stale census or digest.
+  const copy=structuredClone(proofs[0].proof),producer=copy.textContract.producer;
+  const high=producer.relocations.find(r=>r.type===5&&r.symbolSection==='.rodata'),old=high.offset;
+  high.offset=0;producer.relocations.sort((a,b)=>a.offset-b.offset);
+  for(const stage of Object.values(copy.objectEvidence.producerStages)){
+    const census=stage.completeCensus,isRaw=stage.stage==='raw';
+    const ownerOffset=name=>isRaw?(name==='.text'?0:undefined):producer.owners.find(o=>o.sectionName===name)?.groupOffset;
+    const moved=census.relocations.find(r=>ownerOffset(r.owner)!==undefined&&ownerOffset(r.owner)+r.place===old);
+    moved.owner=isRaw?'.text':producer.owners[0].sectionName;moved.place=0;
+    const relIndex=r=>census.sections.findIndex(s=>s.type===9&&census.sections[s.info]?.name===r.owner);
+    census.relocations.sort((a,b)=>relIndex(a)-relIndex(b)||a.place-b.place);
+    for(const s of census.sections.filter(s=>s.type===9)){
+      const records=census.relocations.filter(r=>r.owner===census.sections[s.info]?.name),bytes=Buffer.alloc(records.length*8);
+      records.forEach((r,i)=>{bytes.writeUInt32BE(r.place,i*8);bytes.writeUInt32BE(r.symbol.symbolIndex*256+r.type,i*8+4);});
+      s.size=bytes.length;s.sha256=hash(bytes);
+    }
+    stage.relocations=structuredClone(producer.relocations);
+  }
+  for(const [key,field] of [['textProjected','conservedTextProjection'],['projected','conservedFinalProjection']]){
+    const stage=copy.objectEvidence.producerStages[key],census=stage.completeCensus;
+    const names=index=>index>0&&index<0xff00?census.sections[index]?.name:index;
+    const omitted=new Set(['.rodata','.rel.rodata','.shstrtab',...producer.auxiliary.sections.flatMap(s=>[s.outputSection,'.rel'+s.outputSection])]);
+    copy.objectEvidence.composition[field]={flags:stage.objectFlags,sections:census.sections.filter(s=>!omitted.has(s.name)).map(s=>({
+      name:s.name,type:s.type,flags:s.flags,address:s.address,bytes:s.size,alignment:s.alignment,entrySize:s.entrySize,
+      link:names(s.link),info:s.type===9?names(s.info):s.info,sha256:s.type===2?null:s.sha256})),
+      symbols:census.symbols.map(s=>({...s,symbolTableIndex:names(s.symbolTableIndex),sectionIndex:names(s.sectionIndex)===producer.auxiliary.sections[0].outputSection?'.rodata':names(s.sectionIndex)}))};
+  }
+  rebindProof(copy);const bytes=Buffer.from(JSON.stringify(copy));
+  reject('rehashed cross-owner HI16 LO16 proof',()=>p8.validateSourceObjectProofBytes(bytes,bytes),/cross-owner HI16\/LO16/);
+}
+if(multipleMembers){
+  const copy=structuredClone(proofs[0].proof);
+  copy.textContract.producer.auxiliary.sections.forEach((s,i)=>s.memberSymbol=i===1?'group_suffix':'group_tables');
+  rebindProof(copy);const bytes=Buffer.from(JSON.stringify(copy));
+  reject('rehashed A/B/A table attribution',()=>p8.validateSourceObjectProofBytes(bytes,bytes),/table target attribution/);
+  const referenceProof=structuredClone(proofs[0].proof),producer=referenceProof.textContract.producer;
+  const tables=producer.auxiliary.projection.segments.filter(s=>s.kind==='payload'),roBytes=Buffer.from(rawRo);
+  producer.auxiliary.sections.forEach((section,index)=>{
+    section.memberSymbol=index===1?'group_suffix':'group_tables';
+    const member=producer.functions.find(f=>f.symbol===section.memberSymbol);
+    section.expectedRelocations.forEach((r,i)=>{r.addend=hex(member.offset);roBytes.writeUInt32BE(member.offset,tables[index].offset+i*4);});
+    section.expectedObjectSha256=hash(roBytes.subarray(tables[index].offset,tables[index].offset+tables[index].bytes));
+  });
+  producer.auxiliary.projection.expectedObjectSha256=hash(roBytes);
+  for(const stage of Object.values(referenceProof.objectEvidence.producerStages)){
+    stage.auxiliary.nativeSha256=hash(roBytes);
+    for(const r of stage.auxiliary.tableRelocations)r.word=roBytes.readUInt32BE(r.offset);
+    for(const s of stage.completeCensus.sections){
+      if(s.name==='.rodata')s.sha256=hash(roBytes);
+      const table=tables.find(t=>t.outputSection===s.name);if(table)s.sha256=hash(roBytes.subarray(table.offset,table.offset+table.bytes));
+    }
+    for(const r of stage.completeCensus.relocations){
+      const offset=r.owner==='.rodata'?0:tables.find(t=>t.outputSection===r.owner)?.offset;
+      if(offset!==undefined)r.word=roBytes.readUInt32BE(offset+r.place);
+    }
+  }
+  rebindProof(referenceProof);const referenceBytes=Buffer.from(JSON.stringify(referenceProof));
+  reject('rehashed A/B/A intervening reference',()=>p8.validateSourceObjectProofBytes(referenceBytes,referenceBytes),/reference attribution/);
+}
 for(const name of ['raw','textProjected','projected','stripped']){
   for(const field of Object.keys(proofs[1].proof.objectEvidence.producerStages[name]))
     proofReject(name+' omitted '+field,p=>{delete p.objectEvidence.producerStages[name][field];});
@@ -253,7 +368,8 @@ for(const [field,value] of [['ownerBytes',1],['objectPath','wrong.o'],['objectSh
   proofReject('retained inconsistent '+field,p=>{p.linkEvidence.auxiliaryProjectionRetained[0][field]=value;});
 const extraBytes=Buffer.from(JSON.stringify(extraProof));reject('unknown composed proof field',()=>p8.validateSourceObjectProofBytes(extraBytes,extraBytes));
 const accounting=require('../tools/lib/status_accounting').summarizeAcceptedOwnership(model,targets);
-assert.equal(accounting.replacements.bytes,text.size+48);assert.equal(accounting.assembly.bytes,16);
+const payloadBytes=sections.reduce((sum,section)=>sum+section.bytes,0),retainedBytes=segments.filter(s=>s.kind==='zero').reduce((sum,s)=>sum+s.ownerBytes,0);
+assert.equal(accounting.replacements.bytes,text.size+payloadBytes);assert.equal(accounting.assembly.bytes,retainedBytes);
 const options={phase8:{...phase8,targets},compiler:local.compiler,verifiedCompiler,
   assembler:{bytes:fs.statSync(tools.assemblerAbs).size,sha256:p7.sha256File(tools.assemblerAbs)},
   objcopy:{bytes:fs.statSync(tools.objcopyAbs).size,sha256:p7.sha256File(tools.objcopyAbs)},assemblerPath:tools.assemblerAbs,objcopyPath:tools.objcopyAbs,
@@ -269,6 +385,23 @@ for(const key of ['nativeObjectSha256','textProjectedObjectSha256','auxiliaryCon
 }
 fs.writeFileSync(metadataFile,JSON.stringify(metadata));
 const files=cache.outputArtifactFiles(output,targets[0]);
+for(const [name,mutate] of [
+  ['swapped table member',g=>{g.auxiliary.sections[0].memberSymbol='group_suffix';}],
+  ['missing table member',g=>{delete g.auxiliary.sections[0].memberSymbol;}],
+  ['legacy singular',g=>{g.auxiliary.memberSymbol='group_tables';}],
+]){
+  const changed=structuredClone(targets[0]);mutate(changed.compilationGroup);
+  reject('fresh cache inspection '+name,()=>cache.inspectCompiledTargetArtifacts({phase8,target:changed,classification:classifications.targets[0],files}));
+  reject('fresh source proof '+name,()=>p8.deriveSourceObjectProof(phase8,changed,output,classifications.targets[0],linked,rom));
+}
+for(const field of ['textContract','objectEvidence']){
+  const changed=structuredClone(metadata);
+  if(field==='textContract')changed.compiled.textContract.schemaVersion=3;
+  else changed.compiled.objectEvidence.schemaVersion=5;
+  fs.writeFileSync(metadataFile,JSON.stringify(changed));
+  reject('stale cache '+field,()=>cache.validateCacheEntry({...options,target:targets[0],classification:classifications.targets[0],keyMaterial:metadata.keyMaterial}));
+}
+fs.writeFileSync(metadataFile,JSON.stringify(metadata));
 const missingIntermediate={...files};delete missingIntermediate['text-projected.o'];
 reject('cache missing intermediate artifact',()=>cache.inspectCompiledTargetArtifacts({phase8,target:targets[0],classification:classifications.targets[0],files:missingIntermediate}));
 const savedProjected=fs.readFileSync(files['source-object.o']);
@@ -280,6 +413,16 @@ const objectFile=path.join(output,groups.objectPath(targets[0]));
 const records=targets.map(target=>({ownerKind:'matching-c-target',targetSymbol:target.symbol,path:groups.objectPath(target),bytes:fs.statSync(objectFile).size,sha256:p7.sha256File(objectFile)}));
 assert.equal(groups.collapseManifest(records,{targets}).length,1);
 reject('incomplete producer manifest',()=>groups.collapseManifest(records.slice(1),{targets}));
-const report={status:'pass',scope:'isolated composed producer fixture',sourceClass:classifications.targets[0].class,
-  textBytes:text.size,functions,tail:group.tail,payloadBytes:48,nativeReadOnlyBytes:ro.size,retainedASMBytes:16,rejections:rejected,output:root};
+try{
+  fs.writeFileSync(sourceFile,source.replace('external_call(11)','external_call(12)'));
+  const changed=targets.map(target=>({...target,sourceSha256:p7.sha256File(sourceFile)}));
+  const classified=policy.classifyTargetSources(changed);assert(classified.targets.every(target=>target.class==='PURE_C'));
+  reject('authentic changed PURE_C source nonmatch',()=>p8.compileTarget({...phase8,targets:changed},changed[0],path.join(root,'nonmatch'),
+    local.compiler,tools.assemblerAbs,tools.objcopyAbs,{classification:classified.targets[0]}),/raw text hash/);
+}finally{fs.writeFileSync(sourceFile,source);}
+const report={status:'pass',scope:'isolated composed producer fixture',multipleMembers,sourceClass:classifications.targets[0].class,
+  textBytes:text.size,functions,tail:group.tail,payloadBytes,nativeReadOnlyBytes:ro.size,retainedASMBytes:retainedBytes,rejections:rejected,output:root};
 fs.writeFileSync(path.join(root,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));
+}
+runFixture(false);
+runFixture(true);

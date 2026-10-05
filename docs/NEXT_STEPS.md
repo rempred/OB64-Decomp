@@ -41,16 +41,16 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   Keep p2551's original `0.25` double reference, both 76-byte tables p2552/p2554 and separate
   original zero rows p2553/p2555 explicit. Preserve the real source bodies and best controls;
   no fabricated functions, altered assembly or explicit padding. Inspect complete actual
-  native text/functions/data/relocations before proposing activation. Current group projection
-  supports one table-attribution member and cannot admit both dispatchers. Sol and GoldOx must
-  explicitly agree on any demonstrated missing generic capability and proposed remedy before
-  requesting tooling implementation; no tooling change is approved by this study. A bounded
-  THREE-function raw-object capability probe (`109C3C`, `10A718`, `10ADB8`) may precede full
-  NINE source readiness, using the existing authenticated native-fixture APIs and private-root
-  guard. Start with the original p2551 external-reference control. The accepted
-  `squad_supply_end` contract already permits an 8-aligned read-only anchor and a short native
-  zero tail backed by a larger retained ASM row; a new constant-payload mode is not presumed
-  necessary. This probe is not an admissible text group or acceptance result. Use existing
+  native text/functions/data/relocations before proposing activation. The
+  [per-table attribution extension](audit/2026-10-05-group-table-attribution.md) is accepted:
+  each group payload explicitly names its member, with exact destination/reference and
+  per-member conservation checks. The bounded THREE control (`109C3C`, `10A718`, `10ADB8`)
+  measured 160 native read-only bytes, alignment eight, two 76-byte tables at offsets 0/80,
+  and four zero bytes after each. It retains external p2551 and original ASM zero ownership;
+  no constant-payload or padding-ownership extension was needed. Its common declarations
+  regressed ADB8's code and 109C3C remains nonexact, so it is neither an admissible text
+  group nor source acceptance. Preserve isolated best sources while reconciling real shared
+  declarations for the complete NINE. Use existing
   private per-target checks concurrently; any unsupported combined native study needs the
   existing supported path and actual shared-resource coordination, not a new workaround.
   No canonical activation or full-ROM run is authorized at the study stage. If this producer

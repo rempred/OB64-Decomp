@@ -981,8 +981,8 @@ function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map(), sou
 function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
   const group = auxiliaryProjection.composed(target.compilationGroup) ? target.compilationGroup : null;
-  const attribution = group && group.functions.find(value => value.symbol === group.auxiliary.memberSymbol);
-  if (group && target.symbol !== attribution?.symbol) fail('group auxiliary attribution mismatch');
+  const attribution = group && group.functions.find(value => value.symbol === target.symbol);
+  if (group && (!attribution || contracts.some(contract => contract.memberSymbol !== target.symbol))) fail('group auxiliary attribution mismatch');
   const referenceStart = group ? attribution.offset : 0;
   const referenceEnd = group ? attribution.offset + attribution.bytes : target.bytes;
   const referenceBase = group ? group.vramStart : target.vramStartNumber;

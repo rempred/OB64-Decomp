@@ -22,7 +22,23 @@ function entryBytes(segment, auxiliaries) {
 }
 function groupContract(group) {
   if (!composed(group) || group.auxiliary?.projection?.schemaVersion !== 1) fail('group projection requires version 1');
+  const bundle = group.auxiliary;
+  if (!keys(bundle, ['sections', 'projection', ...(Object.hasOwn(bundle, 'retained') ? ['retained'] : [])])
+      || !Array.isArray(bundle.sections) || !Array.isArray(group.members) || !Array.isArray(group.functions)) fail('group auxiliary attribution schema');
+  for (const section of bundle.sections) {
+    if (!section || typeof section.memberSymbol !== 'string'
+        || group.members.filter(member => member.symbol === section.memberSymbol).length !== 1
+        || group.functions.filter(member => member.symbol === section.memberSymbol).length !== 1) fail('group auxiliary attribution');
+  }
   return normalize(group.auxiliary.projection, group.auxiliary.sections);
+}
+function memberSections(group, symbol) {
+  groupContract(group);
+  if (!group.members.some(member => member.symbol === symbol)) fail('unknown auxiliary member');
+  return group.auxiliary.sections.filter(section => section.memberSymbol === symbol);
+}
+function assertMemberSections(target) {
+  if (composed(target.compilationGroup) && !same(target.auxiliarySections, memberSections(target.compilationGroup, target.symbol))) fail('group auxiliary attribution census');
 }
 function normalize(contract, auxiliaries) {
   if (contract === undefined) return null;
@@ -147,8 +163,13 @@ function validateCensus(targets) {
   for (const target of targets) if (target.compilationGroup?.auxiliary) groupContract(target.compilationGroup);
   for (const target of targets.filter(value => value.auxiliaryProjection || composed(value.compilationGroup))) {
     const contract = composed(target.compilationGroup) ? groupContract(target.compilationGroup) : checkTarget(target);
-    if (composed(target.compilationGroup) && !same(target.auxiliarySections,
-      target.symbol === target.compilationGroup.auxiliary.memberSymbol ? target.compilationGroup.auxiliary.sections : [])) fail('group auxiliary attribution census');
+    if (composed(target.compilationGroup)) {
+      assertMemberSections(target);
+      for (const member of target.compilationGroup.members) {
+        const matches = targets.filter(value => value.symbol === member.symbol);
+        if (matches.length !== 1 || !same(matches[0].compilationGroup, target.compilationGroup)) fail('incomplete auxiliary member bundle');
+      }
+    }
     for (const zero of contract.segments.filter(segment => segment.kind === 'zero')) {
       if (targets.some(value => (value.auxiliarySections || []).some(auxiliary => auxiliary.outputSection === zero.ownerSection)
           || (value.textOwners || []).some(owner => owner.sectionName === zero.ownerSection))) fail('check-only row also has a C owner');
@@ -406,8 +427,6 @@ function groupCensus(elf, group, stage) {
         || sha256File(path.join(ROOT, record.originalAssembly)) !== record.originalAssemblySha256) fail('group retained source binding');
   }
   const tables = payloads(contract), native = ['raw', 'text-projected'].includes(stage);
-  const attributed = group.functions.find(value => value.symbol === group.auxiliary.memberSymbol);
-  if (!attributed) fail('group auxiliary attribution');
   const textNames = stage === 'raw' ? ['.text'] : group.owners.map(owner => owner.sectionName);
   const textOffset = section => stage === 'raw' ? (section?.name === '.text' ? 0 : null)
     : (group.owners.find(owner => owner.sectionName === section?.name)?.groupOffset ?? null);
@@ -449,8 +468,9 @@ function groupCensus(elf, group, stage) {
         || symbol.symbolType !== 3 || symbol.name !== '' || symbol.value || symbol.size || symbol.binding || symbol.visibility) fail('group table relocation place/anchor');
     places.add(offset);
     const word = rawBytes.readUInt32BE(offset);
-    if (word < attributed.offset || word + 4 > attributed.offset + attributed.bytes) fail('group table target outside attributed function');
     const auxiliary = group.auxiliary.sections.find(value => value.outputSection === table.outputSection);
+    const attributed = group.functions.find(value => value.symbol === auxiliary.memberSymbol);
+    if (word < attributed.offset || word + 4 > attributed.offset + attributed.bytes) fail('group table target outside attributed function');
     const expected = auxiliary.expectedRelocations.find(value => Number(value.offset) === offset - table.offset);
     if (!expected || Number(expected.addend) !== word) fail('group table relocation addend');
     tableRelocations.push({ offset, type: 2, symbol: '.text', symbolValue: 0, word });
@@ -468,8 +488,9 @@ function groupCensus(elf, group, stage) {
   const inspectReference = (relocation, addend) => {
     const destination = elf.sections[relocation.symbol.sectionIndex], destinationOffset = textOffset(destination);
     if (destination?.index === roAnchor.index) {
-      if (relocation.symbol !== anchorSymbol || sourceMember(relocation) !== group.functions.indexOf(attributed)
-          || !tables.some(table => addend >= table.offset && addend + 4 <= table.offset + table.bytes)) fail('group auxiliary reference attribution/padding');
+      const table = tables.find(table => addend >= table.offset && addend + 4 <= table.offset + table.bytes);
+      const attributed = table && group.auxiliary.sections.find(section => section.outputSection === table.outputSection).memberSymbol;
+      if (relocation.symbol !== anchorSymbol || !table || group.functions[sourceMember(relocation)]?.symbol !== attributed) fail('group auxiliary reference attribution/padding');
       references.push({ ownerOffset: textOffset(relocation.owner), place: relocation.place, type: relocation.type, addend });
     } else if (destinationOffset !== null) {
       const targetOffset = destinationOffset + relocation.symbol.value + addend;
@@ -554,4 +575,4 @@ function completeObjectCensus(elf) {
       place: relocation.place, type: relocation.type, symbol: relocation.symbol,
       word: elf.buffer.readUInt32BE(relocation.owner.offset + relocation.place) })) };
 }
-Object.assign(module.exports, { composed, groupContract, assertCompleteGroupRows, groupGrammar, groupReadonlyNames, groupCensus, projectGroupReadonly, conservedOutsideReadonly, completeObjectCensus });
+Object.assign(module.exports, { composed, groupContract, memberSections, assertMemberSections, assertCompleteGroupRows, groupGrammar, groupReadonlyNames, groupCensus, projectGroupReadonly, conservedOutsideReadonly, completeObjectCensus });

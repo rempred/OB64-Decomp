@@ -900,9 +900,9 @@
         }
       ],
       "auxiliary": {
-        "memberSymbol": "func_0012469C",
         "sections": [
           {
+            "memberSymbol": "func_0012469C",
             "kind": "switch-table",
             "compilerSection": ".rodata",
             "outputSection": ".ob64.r2572",
@@ -1085,6 +1085,7 @@
             ]
           },
           {
+            "memberSymbol": "func_0012469C",
             "kind": "switch-table",
             "compilerSection": ".rodata",
             "outputSection": ".ob64.r2574",

@@ -166,8 +166,9 @@ if (version === 2) {
   grammarReject('missing native pointer entry', compiler.toString().replace(/\.word\s+\.L\d+/, ''));
   grammarReject('changed native alignment', compiler.toString().replace(/\.align\s+3/, '.align 2'));
   grammarReject('literal padding directive', compiler.toString().replace(firstLabel, '.space 4\n' + firstLabel));
-  const composed = { mode: 'native-text-readonly-owner-projection', auxiliary: { projection: contract, sections: target.auxiliarySections,
-    memberSymbol: target.symbol }, members: [{ symbol: target.symbol }], functions: [] };
+  const composed = { mode: 'native-text-readonly-owner-projection', auxiliary: { projection: contract,
+    sections: target.auxiliarySections.map(section => ({ ...section, memberSymbol: target.symbol })) },
+    members: [{ symbol: target.symbol }], functions: [{ symbol: target.symbol }] };
   const groupTarget = { ...target, compilationGroup: composed };
   const cg = require('../tools/lib/compilation_groups');
   for (const [name, callback] of [
