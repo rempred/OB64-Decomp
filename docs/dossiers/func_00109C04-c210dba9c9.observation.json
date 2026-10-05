@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C210DBA9C914CA98B3C472F3E5DC5178B60A0486811FED9C4D4924F52D41CFD8",
+  "observationId": "D8303290ECDB79F029C0D31E45D0531E51F36A5682F67B6B224312CD944B7BE5",
+  "symbol": "func_00109C04",
+  "authored": {
+    "context": "Complete r2249 logical/physical56-byte body at ROM109C04..109C3C/VMA801B54C4..801B54FC reconciled. Final zero is JR delay slot, not padding. Existing pointer-bank entry30 alias used; three known same-overlay callers ignore/overwrite return. Scoped Director release covers physical prerequisite only; other scripted/site owners remain deferred.",
+    "effects": [
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F7E6079888EFC86DEA72B87ACA1D6BC20655266D40A714FF1ED8EB077746FA59",
+      "sourceSha256": "FCD60A688F06E3D02C08D8852D08F3787BD751FCF97040AA659514FC34FDBE72"
+    },
+    "label": "scheduler-prerequisite-109c04-named-mask",
+    "observedEffect": "Mechanically PURE_C56/frame0/two actual relocations at8/12 to D_801F0D28; zero native instruction differences outside their actual relocation fields. The named source quantity emits LI A2,-2049 before LUI/ADDIU A0. No extra operation/read/store/edge, assembly escape, boundary change or padding.",
+    "parentCandidateId": "73D44E1B7898410E297B7AEA5054613681DC037688EAE7F7EE60B5C3DB6F8E83",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109c04-named-mask.c",
+        "sha256": "FCD60A688F06E3D02C08D8852D08F3787BD751FCF97040AA659514FC34FDBE72"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109c04-named-mask-watch.json",
+        "sha256": "AE767121830EC9B480B67B6E5971E52F6D27EFF5A7C35D43EB59FC9E996968B2"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109c04-named-mask-component.json",
+        "sha256": "E6EF1525F803FB463E12A7EF6D19A9EBBA5E114A4CD91FA1B811635992E44B73"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00109C04.s",
+        "sha256": "D4F3BF74372FAA8C1E3ED50BA63FB4CDCEE211976020DF860E9AB46CB29BF3EA"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00109C04-intake-20261005.json",
+        "sha256": "ED36304DDEDCB59A0AF45ADD4903A5044D09FDA7625EC4370DBE57A80C7170C4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      }
+    ],
+    "relatedCandidateIds": [
+      "73D44E1B7898410E297B7AEA5054613681DC037688EAE7F7EE60B5C3DB6F8E83"
+    ],
+    "remainingFailure": "Original ASM remains production owner. Relocation-field masks prove neither linked symbol/addend equality nor ownership/placement/full-ROM matching-C acceptance. Complete scheduler FIVE/NINE gates, other prerequisites and both source-information blockers remain open. Generic table attribution repair32c17c3b accepts no scheduler source. No runtime claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Give the literal clear mask a named initializer before the genuine pointer initializer; retain identical reads/stores, counter30..49 and complete return delay slot."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 367,
+      "sha256": "F7E6079888EFC86DEA72B87ACA1D6BC20655266D40A714FF1ED8EB077746FA59"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FCD60A688F06E3D02C08D8852D08F3787BD751FCF97040AA659514FC34FDBE72"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109C04-c210dba9c9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
