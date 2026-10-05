@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B4C93762C62B4E793A63546A31F0BBD1BC4F490257783931104BECFE9BEDD6D7",
+  "observationId": "17C5F4297AFADD36626B50DF6209225BA987D2F334D5538D8E53A0BCD1893456",
+  "symbol": "func_0019ADF0",
+  "authored": {
+    "context": "Frozen source-bound ADF0 evidence requested by Astra for shared knowledge preservation. B8F2AC7A byte-mode baseline retains392/frame1320/10R and seven count/address register differences. Gold1188 predicts duplicated real delimiter bodies survive allocation and merge late. Shared publication reuses saved checks without native/ROM rerun or owner activation.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "late-tail-merging",
+      "native-closure"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "B653968CE2B9420F8060BFA5BB275EBB63630822910A8B190257D9828E20A6DC",
+      "sourceSha256": "262A55308B0813F831F9AF611884F49D359812D7D3B464D40E260BCE594A0F2D"
+    },
+    "label": "shared-real-delimiter-lifetimes-native-closure",
+    "observedEffect": "Contract11 PURE_C392/frame1320/10actual relocations/zero differing fields outside actual relocation immediates; full5calls2LBU9SB. Flow count78 has14uses66insns/address13813uses57insns. Greg allocates address first to t0/count to t1 and retains two indexed stores/two48 tests. Late-jump merges to one of each; final tail agrees with retail.",
+    "parentCandidateId": "B852C88C57516F4EAF92785EA93EADAB1F1604F5BCF8C29F9F74E6CCCB1F3CA1",
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-adf0-gold1188-pass-result.json",
+        "sha256": "8EDD859838B6AB5692B1CFB3516ED9D3A98EE8CE3C9E5290D69B87A67E997763"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-explicit-delimiter-lifetimes-probe.json",
+        "sha256": "FCABB6890A6053537B44A4432B5601459EC5020EBBC66BBC28730C893E798484"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-explicit-delimiter-lifetimes-full-field-census.json",
+        "sha256": "31E8D2836EE8A5428872F09FE0ADEA64B4EC727DE3BBF538C7B33F3F17E62B2B"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-explicit-delimiter-lifetimes-coverage.json",
+        "sha256": "C204441BBCEC7E631FB897FB9F2DED9192B76BD6703978BC6A95E3783169785A"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-explicit-delimiter-lifetimes-native-evidence.json",
+        "sha256": "8D4F5D5A11A2EB3D3A78B2767707B2DFCDD1F795A16D0FF9C3B684CAFA07FF8B"
+      },
+      {
+        "path": "build/matching/shopworker/shop-adf0-current-binding-note.json",
+        "sha256": "86C1EE685654AB61F2653E589E16641366C97CC5D18D46D42540011B978F09AC"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-explicit-delimiter-lifetimes.c",
+        "sha256": "262A55308B0813F831F9AF611884F49D359812D7D3B464D40E260BCE594A0F2D"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-explicit-delimiter-lifetimes-import.json",
+        "sha256": "5902FA06269539BE95FD3DD06040CFEA8680C7FC75E0C2F1F40299D1AC4EA334"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-explicit-delimiter-lifetimes-observation.json",
+        "sha256": "3B33BAB0BFEC487C67057779EFBFC1CC3A04A4D8E47E7AE78CBD7B65321AB95A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Missing aliases func_801805B4/D_80219C20/func_80093060 and caller declaration reconciliation remain for Sol. Native closure only; canonical linked sole ownership/bytes and full14-wave ROM gates remain. No original-C or universal allocator claim. All fourteen members remain required; this publication alone establishes no matching acceptance or current ownership change.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Write the genuine delimiter body separately in both real arms, retaining index-derived pointers, input lookahead/ranges, masked call item, full-word publication and all actual operations. Comment source lifetime constraints."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2561,
+      "sha256": "B653968CE2B9420F8060BFA5BB275EBB63630822910A8B190257D9828E20A6DC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "262A55308B0813F831F9AF611884F49D359812D7D3B464D40E260BCE594A0F2D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0019ADF0-b4c93762c6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

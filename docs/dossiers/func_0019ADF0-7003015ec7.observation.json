@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7003015EC767340A1A284658658FAE51E6957F9AEAA28C81F309D34EE76E2540",
+  "observationId": "E36D24423EA7195C1014CE279DDA7CE5531C6C6ACA1C3A6706151CE606867B0F",
+  "symbol": "func_0019ADF0",
+  "authored": {
+    "context": "Frozen source-bound ADF0 evidence requested by Astra for shared knowledge preservation. Gold1182 bounded discriminator from natural-range95BCDA53 control; preserve full-word item store at600 and all prototypes/actual operations. Shared publication reuses saved checks without native/ROM rerun or owner activation.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "call-crossing-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "AE00B947646283B4CE42F609C8665ABEF6CB81CE269CE4127E101F613652013B",
+      "sourceSha256": "0D507B3DFA23901C4797A11F0AF4D6ED8F27960F34600D3CD63FB4FFC161B2BA"
+    },
+    "label": "shared-pre-call-si-masked-item-lifetime",
+    "observedEffect": "Initial RTL UID14 defines SI79 with AND65535 before calls19/30. Flow79 crosses2calls; greg allocates79 tos0, window/item/mode s2/s3/s1; final AND appears afterclear. Native PURE_C392/frame1320/10R/full5calls2LBU9SB. Ten fields differ:3prologue ordering and7counter/pointer t0/t1 fields. Count77:8uses55insns; address129:7uses46insns; greg count beforeaddress.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-adf0-gold1182-pass-result.json",
+        "sha256": "6EE949E36E54B25FA63E4014D887C91D678A18A5C0E6B7BBB551C430886F7CAC"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-si-mask-before-allocation-full-field-census.json",
+        "sha256": "066A1BDE058A648E4F9D557C5C61A0BEBDD2ACD5412DF1482BD187EAE9E01D67"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-si-mask-before-allocation-coverage.json",
+        "sha256": "5AB96188F734453A7F630B7957674C797742F19569C60F46ABB4FD419B8D47D5"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-si-mask-before-allocation-probe.json",
+        "sha256": "E724FC0FDCC2E1762B1C08FB97048FA3619FF52742DFD7DA07B05A9AF879A059"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-si-mask-before-allocation.c",
+        "sha256": "0D507B3DFA23901C4797A11F0AF4D6ED8F27960F34600D3CD63FB4FFC161B2BA"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-si-mask-before-allocation-import.json",
+        "sha256": "61DD165B7D497B50462973CFC8A48600B897E6743D6624D18C33CA3B89E6AD47"
+      },
+      {
+        "path": "build/matching/shopworker/shop-0019adf0-si-mask-before-allocation-observation.json",
+        "sha256": "DE8D1BD05F6701DCB5D43B7AA247DD1C7257A9251CC57BB717CB7A792525E714"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Ten actual fields still differ; no linked/full-wave acceptance. Does not prove original source or exclusive allocator explanation. Keep index-derived pointer form; investigate remaining prologue and count/address priority independently. All fourteen members remain required; this publication alone establishes no matching acceptance or current ownership change.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initialize a real SImode local with item &65535 before the first allocation call; test and fill call consume it later."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2344,
+      "sha256": "AE00B947646283B4CE42F609C8665ABEF6CB81CE269CE4127E101F613652013B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0D507B3DFA23901C4797A11F0AF4D6ED8F27960F34600D3CD63FB4FFC161B2BA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0019ADF0-7003015ec7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
