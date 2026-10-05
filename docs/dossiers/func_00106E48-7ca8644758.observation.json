@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7CA8644758FB5BE2F744D4FD636B3834700E0D3E7DBE0592C70CEE8AE9730CFC",
+  "observationId": "CE6E874D7D5F17E9FDB641DEC22830874F64D6DEE0B4ADD7CD968A886002BE58",
+  "symbol": "func_00106E48",
+  "authored": {
+    "context": "Complete21-target pursuit/source-producer result remains open under Astra1148. Original pursuit13 is preserved and nine-owner106CE0..10766C producer adds eight real prerequisites.106E48 current accepted owner is236 bytes, live801B2708, descriptor7,row2229; no current C owner or earlier intake candidate. Canonical source and shared contracts are unchanged.",
+    "effects": [
+      "real-byte-stride",
+      "native-extent",
+      "register-allocation",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A53F48B5645617E022D14338CF08DB5FE8022A6DEAF7D1BBB199EF048617E2A7",
+      "sourceSha256": "9973E5E98A749F67905634AB24E712E7E47BD812A0C872AEFDE092BA830E40E1"
+    },
+    "label": "explicit-byte-row-address-restores236",
+    "observedEffect": "7CA86447 isPURE_C236/frame0/15 relocations and restores all59-word extent. Eighteen ordinary masked words differ beginning offset100;17 change opcode/register fields. Initialfloat calculations and final guard/float-double return agree; bank/address, cast/cell and row registers remain nonexact. Genuine selector-address updateD369 and lookup-cursor update34F remain236 and eighteen ordinary differences; neither improves native scheduling. All actualdata row bindings remain to originalASM; currentD_801E862C address is unique fordescriptor7 at r2518+0x81C, originalfloat values0..15. Accepted-neighbor bank byte viewBD0543F2 is also236/eighteen ordinary differences. Authenticated A7411D16 seven-artifact probe: SCHED1 order40LA,44selector load,45shift,47ADDU,51lookup load,53column cast,55row cast,62unit70 load,57row shift,59cell sum,63unit70 shift,70cell pointer,73cell byte,65table base,67row pointer. GREG assigns lookup92 toV1, column98 toA1, unit70 quantity103 toA0, table base105 toV1. Native unit70 load appears before selector shift, although it follows both casts inSCHED1/GREG; late-stage movement remains to measure. Global-looking variable names do not force a global allocation. Five-artifact DFD65340 late probe authenticates SCHED2/DBR order40LA,44selector,62unit70,45shift,47ADDU,51lookup,63unit70shift,53/55casts. This proves the early unit70 native movement occurs in the second scheduler.",
+    "parentCandidateId": "A04891C9A3CBC3337C754478924D7E5456A548891D7E2F1544A52369AE7CE135",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00106E48.s",
+        "sha256": "E6035A7AE27F9C514B8C2FE8B5972C4AD359ED090AF04F4AC6D183544680D020"
+      },
+      {
+        "path": "build/sol-five-family/squad-producer-106e48-intake-20261005.json",
+        "sha256": "456F78DDFBFE94A5CFC30FC41A27204E01A5A647F1E8D5D49E1BA1EAF73CEAD9"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-float-table-binding.json",
+        "sha256": "3BBC0546ADA8E400D6BF57EAE297C04CDB39E19AB914AE56961519F17CA2AB91"
+      },
+      {
+        "path": "src/lib/func_00106F34.c",
+        "sha256": "D9916E6FBBE6C913672C6703DE35E46241057CAD30C73856DBAA369376AA3553"
+      },
+      {
+        "path": "src/lib/func_001070F4.c",
+        "sha256": "6A5179C1601024D8F5F5D36D6191CB126D55478DAF9D9B85F4A0AFA9C2B6B45C"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-byte-row-address-watch.json",
+        "sha256": "0BD7CEE7A48FDBFD9A9B693AEE5735FF2519EA0A79A6320F132B1033EDE940E1"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-byte-row-address-component.json",
+        "sha256": "BD785E901618D610656F84B9961C3E2BCFAD50D7C5DF1CC395AA039A77043957"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-updated-selector-address-watch.json",
+        "sha256": "E3A944C3001A514BC519B701A69685473C4EB39FE5166AD6790D3E62EDA02749"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-updated-lookup-cursor-watch.json",
+        "sha256": "E66229127C7E60CE40E5B35990A90BCE5C6664439149601AA3982ADBDC4EF58C"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-bank-byte-view-watch.json",
+        "sha256": "AE5D6518226E2725EC1FCC97AD4BC108462F08866BCC82F1ED3E4E3555F89990"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-byte-row-address-probe.json",
+        "sha256": "5F82A4552534A61B505041512EECD4D8AF2AC9087CD1726FF3BEC7F4FE4E0B4B"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-byte-row-address-late-probe.json",
+        "sha256": "457D1ADA64EAFE2D04B1D2FAF4B572835CBD3C8E7CB045268139223BA460492A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-byte-row-address-late-stages.json",
+        "sha256": "588FB2A6468C8DD2A28BC57B825D024706B69E301DD256A39D74051093DFDDDF"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact diagnostic; originalASM remains production. Bank/cursor/row ordering and allocation, actual symbol/addend links and complete21-target source/group/ROM gates remain open. No table capacity, runtime behavior, owner change, new tooling, literal emitter or hybrid exception.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express the genuine unit70 row address as u16 pointer atD_801F36D8 +64-byte-scaled record index, then dereference the actual bank-selected column. Preserve every originalfloat calculation, cast, lookup and both returns; this is observed address arithmetic, not a bounded row declaration."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1155,
+      "sha256": "A53F48B5645617E022D14338CF08DB5FE8022A6DEAF7D1BBB199EF048617E2A7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9973E5E98A749F67905634AB24E712E7E47BD812A0C872AEFDE092BA830E40E1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00106E48-7ca8644758.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

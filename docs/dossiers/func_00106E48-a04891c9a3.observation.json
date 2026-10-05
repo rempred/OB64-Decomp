@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A04891C9A3CBC3337C754478924D7E5456A548891D7E2F1544A52369AE7CE135",
+  "observationId": "BBFB220EEF4BF4FE3843BA1E9EAE81FC727B0C93CFD89D1CC8847CC114D92109",
+  "symbol": "func_00106E48",
+  "authored": {
+    "context": "Complete21-target pursuit/source-producer result remains open under Astra1148. Original pursuit13 is preserved and nine-owner106CE0..10766C producer adds eight real prerequisites.106E48 current accepted owner is236 bytes, live801B2708, descriptor7,row2229; no current C owner or earlier intake candidate. Canonical source and shared contracts are unchanged.",
+    "effects": [
+      "body-coverage",
+      "float-abi",
+      "flat-interface",
+      "source-control"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1A91065653A26CEF330DAA484CFCB5A21D5099709D862762D88AB06C4C28C08F",
+      "sourceSha256": "C648E5BC2B0DC52271298AA25D93858A04E7B4014480E17FAB66382A0A60B9DF"
+    },
+    "label": "independent-full-grid-lookup-return-control",
+    "observedEffect": "A04891C9 isPURE_C232/frame0/15 actual relocations. All96 initial bytes agree after relocation masks;29 ordinary differences remain, primarily bank/cast/row address allocation. The typed scalar index compiler folds the row scale from64 bytes to32 halfwords and removes one instruction; full236 extent is not reproduced. Both actual return paths and real delay-slot doubling are represented.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00106E48.s",
+        "sha256": "E6035A7AE27F9C514B8C2FE8B5972C4AD359ED090AF04F4AC6D183544680D020"
+      },
+      {
+        "path": "build/sol-five-family/squad-producer-106e48-intake-20261005.json",
+        "sha256": "456F78DDFBFE94A5CFC30FC41A27204E01A5A647F1E8D5D49E1BA1EAF73CEAD9"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-float-table-binding.json",
+        "sha256": "3BBC0546ADA8E400D6BF57EAE297C04CDB39E19AB914AE56961519F17CA2AB91"
+      },
+      {
+        "path": "src/lib/func_00106F34.c",
+        "sha256": "D9916E6FBBE6C913672C6703DE35E46241057CAD30C73856DBAA369376AA3553"
+      },
+      {
+        "path": "src/lib/func_001070F4.c",
+        "sha256": "6A5179C1601024D8F5F5D36D6191CB126D55478DAF9D9B85F4A0AFA9C2B6B45C"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-control-watch.json",
+        "sha256": "30F8FED7CF56BF8DCB4AFB9C85548A69BA6C26E18AD3BAC06021759AAA12812E"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106e48-control-component.json",
+        "sha256": "740D66ECA0DBD9C5D1C6DC161A102B838E35491B6B496430322C0A6F726B4D72"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact diagnostic; originalASM remains production. Bank/cursor/row ordering and allocation, actual symbol/addend links and complete21-target source/group/ROM gates remain open. No table capacity, runtime behavior, owner change, new tooling, literal emitter or hybrid exception.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive all59 original words: orderedfloat bound normalization, signed truncation/grid flat index, byte-bank lookup, unit70 row lookup, 0<value<16 data load or2.0f fallback, then actualfloat doubling. Use unbounded arrays and original-derived external addresses."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1110,
+      "sha256": "1A91065653A26CEF330DAA484CFCB5A21D5099709D862762D88AB06C4C28C08F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C648E5BC2B0DC52271298AA25D93858A04E7B4014480E17FAB66382A0A60B9DF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00106E48-a04891c9a3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
