@@ -78,6 +78,13 @@ identity, caching, relocation-aware diagnostic limits, m2c variants, sweeps,
 families, context, case-CFG analysis, probes, and deliberate candidate
 preservation.
 
+Scratch compilation preserves native COP1 instructions and requires the pinned
+assembler's VR4300 multiply workaround. A disabling `VR4300MUL=OFF...` environment
+override rejects before scratch writes or cache reuse; the command does not change
+the caller's environment. Historical rewritten scratch results remain research only.
+`node tests/scratch_cop1.js` exercises native encoding, multiply adjacency, cache
+provenance and environment rejection in a unique ignored `build/tests/cop1-*` root.
+
 ## Common research and export tools
 
 | Tool | Purpose |

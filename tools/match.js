@@ -591,6 +591,10 @@ async function main(argv = process.argv.slice(2)) {
   const command = argv[0];
   const parsed = parseArgs(argv.slice(1));
   validatePrivateOptions(command, parsed.options);
+  if (command === 'watch' || (command === 'probe' && parsed.positional[0] !== 'compare')
+      || command === 'doctor' || (['prepare', 'sweep'].includes(command) && !parsed.options['no-compile'])) {
+    require('./lib/matching/scratch_assembly').assertScratchEnvironment();
+  }
   comparisonQueryProvenanceCache = null;
   if (!parsed.options['scratch-root']) return executeCommand(command, parsed);
   const { resolvePrivateWorkspace, withPrivateWorkspace, assertPrivateWorkspace } = require('./lib/matching/private_workspace');

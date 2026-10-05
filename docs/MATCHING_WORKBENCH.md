@@ -212,6 +212,22 @@ and every repository-local header dependency. The scratch compiler consumes the
 retained `candidate.input.c` bytes that source policy scanned; it does not
 preprocess a second time. A header change invalidates reuse even when candidate
 source text is unchanged.
+
+Scratch compiler contract 11 feeds native COP1 mnemonics to the authenticated
+assembler. The only assembly changes are the existing text-section assignments;
+the scratch read-only auxiliary allowance and stricter native-tail contract remain
+unchanged. Reports bind the native instruction policy and both assembly hashes.
+Cache reuse reconstructs the allowed section assignment from retained compiler
+output and rejects rewritten instructions. Earlier transformed compilations remain
+historical research and cannot be reused as current native diagnostics.
+
+The pinned assembler's VR4300 multiply workaround must remain enabled. Scratch
+compilation and live probes reject `VR4300MUL` values beginning with `OFF`
+(case-insensitive, after leading ASCII whitespace, including `OFFsuffix`) before
+creating snapshots, touching the store, or reusing a cache. The command leaves the
+environment unchanged; remove the disabling override before retrying. Help and
+historical read-only queries remain available. This guard does not alter the
+canonical compiler, assembler flags, or verification path.
 Failed attempts remain visible and can be retried after an environmental repair.
 A change to the accepted target model creates a new model identity and makes old
 experiments stale rather than silently applying them to new structure.
@@ -479,7 +495,10 @@ a cache hit skips the compiler only. Reuse and comparison check the retained aut
 source, expanded source, assembly, and every requested nonempty dump, including the
 artifact census and report digest. Missing/tampered/failed/incomplete caches reject;
 preserve the affected ignored cache directory outside its keyed location before retrying.
-Old probe reports must be regenerated, not relabeled. A failed new compilation returns
+Historical schema-3 probes with the original four implementation identities remain
+readable. New probes additionally bind the scratch environment guard; their cache
+identity differs, so a historical report cannot satisfy a new run. Older unsupported
+schemas must be regenerated, not relabeled. A failed new compilation returns
 a failed report and CLI exit 2; it cannot become a complete cache hit.
 
 Report identities also validate required record shapes and cross-field bindings,
@@ -578,7 +597,7 @@ node tools/match.js --help
 
 ## Native text diagnostics
 
-Compiler contract 9, scratch/report schema 3, candidate cache schema 4, and comparison contract 2 invalidate earlier diagnostic evidence. Native mode resolves only from an authenticated active descriptor. It retains the full owner and tail separately from function bytes and prohibits scratch auxiliary or instruction-legalization allowances. The production func_00204A70 is active PURE_C at accepted canonical 497181d. Other targets cannot claim its target-specific native contract. Isolated diagnostic links remain ineligible for production acceptance.
+Compiler contract 11, scratch/report schema 3, candidate cache schema 4, and comparison contract 2 invalidate earlier diagnostic evidence. Native mode resolves only from an authenticated active descriptor. It retains the full owner and tail separately from function bytes and prohibits scratch auxiliary or instruction-legalization allowances. The production func_00204A70 is active PURE_C at accepted canonical 497181d. Other targets cannot claim its target-specific native contract. Isolated diagnostic links remain ineligible for production acceptance.
 
 Native fresh, cached, and diagnostic objects share the rejection of nonzero COMMON storage and nonempty writable sections.
 Native diagnostic links require exactly the intended text load, with no extra load segment.

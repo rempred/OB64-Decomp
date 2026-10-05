@@ -54,6 +54,7 @@ function runUnitTests() {
     '../current_workflow': { writeJson: (file, value) => fs.writeFileSync(file, JSON.stringify(value)), prepareContext() { throw new Error('context was not supplied'); } },
     './target_model': { ...realModel, assertScratchCapability(_w, target) { if (target.group) throw new Error('complete group candidate'); } },
     './compiler': { MATCHING_ROOT: path.join(root, 'cache') },
+    './scratch_assembly': require('../tools/lib/matching/scratch_assembly'),
     '../source_policy': mockedPolicy,
     child_process: { spawnSync(_exe, args, options) {
       executions++;

@@ -8,6 +8,7 @@ const { verifyCompiler } = require('../phase8_matching_c');
 const { prepareContext, writeJson } = require('../current_workflow');
 const { canonicalJson, digest, assertScratchCapability } = require('./target_model');
 const { MATCHING_ROOT } = require('./compiler');
+const { assertScratchEnvironment } = require('./scratch_assembly');
 const { classifySource, compilationInputBytes, verifyClassificationInputs, resolvePreprocessor, preprocessorIdentity } = require('../source_policy');
 
 const PASSES = Object.freeze([
@@ -19,7 +20,8 @@ const PASSES = Object.freeze([
 ]);
 const SCHEMA = 3;
 const IMPLEMENTATIONS = [__filename, path.join(ROOT, 'tools/match.js'),
-  path.join(ROOT, 'tools/lib/source_policy.js'), path.join(ROOT, 'tools/lib/matching/target_model.js')];
+  path.join(ROOT, 'tools/lib/source_policy.js'), path.join(ROOT, 'tools/lib/matching/target_model.js'),
+  path.join(ROOT, 'tools/lib/matching/scratch_assembly.js')];
 const portable = file => path.relative(ROOT, file).replace(/\\/g, '/');
 const same = (a, b) => canonicalJson(a) === canonicalJson(b);
 
@@ -157,7 +159,10 @@ function validIdentity(id) {
     || !strings(id.passes, true) || !validSourcePolicy(id.sourcePolicy) || !validPreprocessor(id.runtimePreprocessor)
     || !keys(id.compiler, ['path', 'sha256', 'acceptanceCompiler']) || !absolutePath(id.compiler.path)
     || !isHash(id.compiler.sha256) || typeof id.compiler.acceptanceCompiler !== 'boolean'
-    || !Array.isArray(id.implementation) || id.implementation.length !== IMPLEMENTATIONS.length) return false;
+    // Retained probes contain compiler dumps, never assembler output. Preserve
+    // their original four-file identities for historical comparisons; new runs
+    // bind the scratch environment guard as well and receive a different ID.
+    || !Array.isArray(id.implementation) || ![4, IMPLEMENTATIONS.length].includes(id.implementation.length)) return false;
   if (id.implementation.some((record, i) => !keys(record, ['path', 'sha256'])
     || record.path !== portable(IMPLEMENTATIONS[i]) || !isHash(record.sha256))) return false;
   const expectedPreprocessor = id.sourceOrigin !== null && id.sourceOrigin !== id.sourcePolicy.source
@@ -208,6 +213,7 @@ function readProbe(reportFile) {
 }
 
 function runProbe(workbench, target, sourceText, options = {}) {
+  assertScratchEnvironment();
   assertScratchCapability(workbench, target, options.context?.phase8?.targets);
   if (typeof sourceText !== 'string' || !sourceText.length || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(target.symbol)
       || !isHash(target.targetId)) throw new Error('compiler probe source or target is malformed');

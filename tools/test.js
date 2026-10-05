@@ -39,6 +39,7 @@ const ROUTINE_TESTS = [
   ['late-jump-provenance', 'tests/late_jump_provenance.js'],
   ['late-jump-trace', 'tests/late_jump_trace.js'],
   ['matching-workbench', 'tests/matching_workbench.js'],
+  ['scratch-cop1', 'tests/scratch_cop1.js'],
 ];
 
 function usage() {

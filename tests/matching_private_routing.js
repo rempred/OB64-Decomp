@@ -27,6 +27,7 @@ function fixture({ drift = false, guardDrift = false, entryArgs = null } = {}) {
       requestStore: log('store', request => request.name === 'candidate' ? record.candidate : request.name === 'candidate_runs' ? record.runs : []),
     },
     './lib/matching/compiler': { syncTargets: log('sync', {}), prepareCompilerSession: log('session', { context: { currentFingerprint: 'current' } }), compileCandidate: log('compile', { candidate: { candidateId: 'candidate' }, compile: run, comparison }) },
+    './lib/matching/scratch_assembly': require('../tools/lib/matching/scratch_assembly'),
     './lib/matching/diagnostic_link': { comparisonAlgorithmIdentity: () => 'algorithm', loadDiagnosticEnvironment: () => ({ identity: 'environment' }) },
     './lib/matching/mips_analysis': { targetMetrics: () => ({}), compareMips: log('compare', comparison) },
     './lib/matching/research': { importResearch: log('import', {}), observations: log('observations', []), preserveResearch: log('preserve', {}), captureIdentities: log('capture', {}) },

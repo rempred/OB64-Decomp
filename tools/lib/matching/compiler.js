@@ -13,7 +13,6 @@ const {
   sha256File,
 } = require('../phase7_conventional');
 const {
-  adjustSectionAssembly,
   relocationRecords,
   verifyCompiler,
   verifyRuntimeTools,
@@ -34,6 +33,7 @@ const {
 const { canonicalJson, digest, targetRecord } = require('./target_model');
 const { requestStore } = require('./store');
 const { assertScratchCapability } = require('./target_model');
+const { SCRATCH_ASSEMBLY_POLICY, assertScratchEnvironment, scratchAssemblerInput } = require('./scratch_assembly');
 
 const MATCHING_ROOT = path.join(ROOT, 'build', 'matching');
 const SCRATCH_TEXT_TAIL_ALIGNMENT_LIMIT = 12;
@@ -144,7 +144,8 @@ function prepareCompilerSession(options = {}) {
     compilerFlags: context.phase8.config.compiler.compileFlags,
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessor: preprocessorIdentity(preprocessor),
-    workbenchCompilerContract: 10,
+    workbenchCompilerContract: 11,
+    scratchAssembly: SCRATCH_ASSEMBLY_POLICY,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
 }
@@ -237,6 +238,7 @@ function validateLogicalFunctionCensus(functions, expected, textSize) {
 }
 
 function compileScratchCandidate({ session, target, sourceFile, artifactDir, classification = null }) {
+  assertScratchEnvironment();
   if (target?.placementKind === 'rom-only') throw new Error('scratch compilation requires qualified runtime placement');
   if (target?.logicalFunctions && !target.logicalCoverageComplete) throw new Error('complete candidate blocked by unresolved logical coverage');
   if (!session || !session.context || !session.runtime || !target
@@ -283,9 +285,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
   const compilerResult = run(session.context.localTools.compiler, compilerArgs, { cwd: artifactDir });
   verifyClassificationInputs(candidateClassification);
   const compilerBytes = fs.readFileSync(compilerAssembly);
-  const adjustedBytes = textContract.assemblerInput(compilerBytes, target, adjustSectionAssembly, target.nativeTextTail ? {} : {
-    allowAuxiliaryReadOnlySections: true, legalizeCop1BinaryInstructions: true,
-  });
+  const adjustedBytes = scratchAssemblerInput(compilerBytes, target);
   fs.writeFileSync(adjustedAssembly, adjustedBytes);
   const assembler = session.runtime.tools['mips-kmc-elf-as.exe'].path;
   const assemblerArgs = [
@@ -442,6 +442,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
     },
     assemblyProvenance: {
       schemaVersion: 1, mode: nativeContract ? 'untouched-native-text' : 'section-assigned',
+      instructionPolicy: SCRATCH_ASSEMBLY_POLICY,
       compilerAssembly: { path: relative(compilerAssembly), bytes: compilerBytes.length, sha256: sha256Buffer(compilerBytes) },
       assemblerInput: { path: relative(adjustedAssembly), bytes: adjustedBytes.length, sha256: sha256Buffer(adjustedBytes) },
     },
@@ -692,6 +693,7 @@ function verifyNativeScratchProvenance(scratch, target, directory) {
       || !textContract.same(relocations, scratch.textRelocations)) throw new Error('cached native object census drift');
 }
 function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING_ROOT) {
+  assertScratchEnvironment();
   const directory = resolveRunArtifactDirectory(run, matchingRoot);
   const reportFile = path.join(directory, 'workbench-report.json');
   if (!fs.existsSync(reportFile)) throw new Error('cached compilation report is missing');
@@ -761,7 +763,27 @@ function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING
     throw new Error('cached compilation input identity drift');
   }
   if (target.nativeTextTail) verifyNativeScratchProvenance(report.scratchContract, target, directory);
+  verifyScratchAssemblyProvenance(report.scratchContract, target, directory);
   return { objectFile, objectSha256: record.objectSha256 };
+}
+
+function verifyScratchAssemblyProvenance(scratch, target, directory) {
+  const provenance = scratch?.assemblyProvenance;
+  if (scratch?.schemaVersion !== 3 || provenance?.schemaVersion !== 1
+      || provenance.mode !== (target.nativeTextTail ? 'untouched-native-text' : 'section-assigned')
+      || !textContract.same(provenance.instructionPolicy, SCRATCH_ASSEMBLY_POLICY)) {
+    throw new Error('cached scratch assembly policy is stale or malformed');
+  }
+  for (const [role, name] of [['compilerAssembly', 'candidate.compiler.s'], ['assemblerInput', 'candidate.s']]) {
+    const identity = textContract.artifact(directory, name);
+    if (!textContract.same(provenance[role], { ...identity, path: relative(path.join(directory, name)) })) {
+      throw new Error('cached scratch assembly identity drift');
+    }
+  }
+  const expected = scratchAssemblerInput(fs.readFileSync(path.join(directory, 'candidate.compiler.s')), target);
+  if (!expected.equals(fs.readFileSync(path.join(directory, 'candidate.s')))) {
+    throw new Error('cached scratch compiler instructions were rewritten');
+  }
 }
 
 function diagnosticPreparedForCandidate(prepared, artifact) {
@@ -798,6 +820,7 @@ function candidateCompileCacheKey(session, target, candidate, sourcePolicy, expe
 }
 
 function compileCandidate(workbench, target, sourceText, options = {}) {
+  assertScratchEnvironment();
   assertScratchCapability(workbench, target, options.session?.context?.phase8?.targets);
   const storeOptions = options.storeOptions || {};
   const storeRequest = options.storeRequest || requestStore;
@@ -1027,6 +1050,7 @@ module.exports = {
   compileScratchCandidate,
   cachedCandidateArtifact,
   verifyNativeScratchProvenance,
+  verifyScratchAssemblyProvenance,
   candidateArtifactFromScratch,
   compileAttemptIdentity,
   authenticateFreshRunArtifactDirectory,
