@@ -18,11 +18,10 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   input/candidate lifetimes and unresolved bank/row domains; layout strides do not establish capacities.
   Use refreshed intake in `build/matching/solsquad/`, the saved full source pairs and
   complete original assembly. Old transformed scratch scores are historical evidence.
-  `0010766C` must cover its complete 484-byte owner. Fresh native evidence reproduces
-  476 executable bytes with zero non-relocation differences, but assigned text has no
-  tail and the untouched 480-byte object supplies only four of eight required zero bytes.
-  Linked addresses and complete-owner acceptance remain open. The readonly-table
-  projection does not authorize text padding.
+  `0010766C` must cover its complete 484-byte owner. Its standalone 476-byte function
+  produces only four native tail bytes; the complete nine-member r2 diagnostic below now
+  produces all eight required bytes at the correct offsets. Linked addresses and
+  complete-owner acceptance remain open. The readonly-table projection does not authorize text padding.
   Preserve the separate five-member scheduler group, three terrain-policy helpers and
   shared `0010746C`/`00129948` interface behavior. Reuse the existing static terrain research in
   the [resumption evidence](Plans/task-logs/sol-five-family-resumption-20260929.md).
@@ -41,11 +40,15 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   cleanup reloads/calls, float ordering and ABIs. The shared geometry routines are
   producer prerequisites, not a new semantic family claim.
 
-  Actual untouched native output must prove all nine public functions, the 2,928-byte
-  aligned text envelope and eight genuine terminal zero bytes after executable end 2,920.
+  The [native r2 diagnostic](../build/matching/solsquad/squad-producer-nine-native-control-r2-diagnostic.json)
+  binds thirteen authenticated input/artifact files. Its actual object has all nine required
+  public function offsets, the 2,928-byte aligned text envelope and eight genuine zero tail
+  bytes after executable end 2,920, with no unexpected allocated data. `106CE0` and
+  `106E48` still have instruction differences; this establishes the native layout route,
+  not group admission, historical translation-unit membership or matching acceptance.
+  Final source must retain this complete footprint and pass all twenty-one target gates.
   Preserve all existing entries and boundaries; no fabricated prefix, member or padding.
-  This is a viable context to test, not proof of historical translation-unit membership
-  or a demonstrated match. Retain the full original data row r2547 at ROM
+  Retain the full original data row r2547 at ROM
   `0x001427D0..0x001427E0`, live `0x801EE090..0x801EE0A0`, as ASM; use original-derived
   external double references, as the current `10766C` source already does. It emits no
   native literal pool. Any unexpected allocated data needs its actual contract resolved.
