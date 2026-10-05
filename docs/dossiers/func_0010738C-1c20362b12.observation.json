@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1C20362B12A81C259AB72B38C113DBDC84A784DE14E5B97E15954CD9D328B2C5",
+  "observationId": "15470C0722919F4ACE0326C93870BF92BC09C6E83F60C05C4CE108867CE3769B",
+  "symbol": "func_0010738C",
+  "authored": {
+    "context": "Approved complete nine-function producer prerequisite inside full21-target pursuit set.10738C production remainsASM, current intake has no earlier source; all56 original words/224 bytes, unique descriptor7 row2233 and its A4 skip path are reconciled. No per-function canonical integration.",
+    "effects": [
+      "body-coverage",
+      "pure-c-source",
+      "guarded-cleanup",
+      "call-reload-contract",
+      "actual-relocations"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A1DE238B9144823D4AF6F2838042FD49F9AF813E9B1FA244B6998DE6DC4462EC",
+      "sourceSha256": "7218CDCE64A8D9659FACC25CFC1026C63A2AAF3B08FD7BD8CF74B2E8F99776C6"
+    },
+    "label": "complete-guarded-cleanup-pure-object-exact-provisional",
+    "observedEffect": "1C20362B isPURE_C224/frame24/8 actualR_MIPS_26. All56 raw object words agree after actual relocation masks. Normal symbolic-object report has only8 relocation words; no ordinary instruction differences and no unmatched body words. CALL targets/places match the same cleanup interfaces established by1072B8 isolated linked proof. This target has no linked acceptance yet; full group and final21 gates remain open.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-producer-10738c-pure-control-watch.json",
+        "sha256": "2F3FDBE1FA30B75E818C7F3FBE644CD59C97C0B4435510901581430C6DA416F9"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-10738c-pure-control-component.json",
+        "sha256": "797FFAF911B957D5BD33A219CE7B7FE6E4590A23E420303DAB6DF30AA21D1242"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010738C.s",
+        "sha256": "03CF58057CAD6574D6E60D4ABC87B64567F3FE8BBA7BCD4DEEB197D73D8FA2A0"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001072B8.s",
+        "sha256": "B83D25946DA913495993A3842E333E84589F5325EA8EB34BD8CF7E815D4A653A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-1072b8-pure-control-watch.json",
+        "sha256": "C8AF19C386F869ED07E3CB57D98B36179F5418847F206E0571CE5D2E94FC3EB3"
+      },
+      {
+        "path": "include/game/combat_pose_pool.h",
+        "sha256": "A7F8F0A2D927F54EB1E49A9BBD771E43CA9A58435BACA9D6C6F5530C0FCE35A1"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional exact object only; actual linked addresses/addends, sole group ownership, whole-nine native offsets/extent/tail and combined21 full-ROM verifier remain required. OriginalASM retained; no accepted matching-C or family claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently reconstruct the original A4==0 cleanup guard around the full resource/object cleanup sequence using the actual212-byte1072B8 pure control fields and canonical void allocation-release interface. Preserve all resource-pointer post-call reloads, eight calls, both skip/cleanup returns, final88 store and original24-byte frame."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1747,
+      "sha256": "A1DE238B9144823D4AF6F2838042FD49F9AF813E9B1FA244B6998DE6DC4462EC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7218CDCE64A8D9659FACC25CFC1026C63A2AAF3B08FD7BD8CF74B2E8F99776C6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010738C-1c20362b12.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

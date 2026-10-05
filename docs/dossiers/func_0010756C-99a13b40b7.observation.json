@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "99A13B40B76EB1C2B253E2F69BDD2EF597FBA87E269B7B3B45617365D26673B8",
+  "observationId": "9A73261866535459D5E15F02166E8EE4B31AEB610570A91EFA794BC5FF876208",
+  "symbol": "func_0010756C",
+  "authored": {
+    "context": "All64 original words/256-byte owner reconciled; source-only nine-member producer prerequisite in full21-target pursuit wave. Production remains ASM.",
+    "effects": [
+      "body-coverage",
+      "loop-shape",
+      "state-address-lifetime",
+      "pure-c-source"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "94A9C359DC83A10EDFF2E2350FB46492209201F16C709C363C4B820EA1C00BB1",
+      "sourceSha256": "D9E5F9A9DFE21FB375D87855BD6FE370DAF966A4A87F9819F29C712155DC24E2"
+    },
+    "label": "full-flag-loop-original-for-held-state",
+    "observedEffect": "99A13B40 is PURE_C256/frame8/8 relocations with21 actual relocation-masked differences. All loop-body words agree except three uses of the state address register; initial setup retains an extra bounds guard and differs in ordering/count allocation. Whole native-nine control keeps six control members exact, text2928/alignment16 but executable2916/twelve terminal zeros due106CE0 four-byte shortage.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-producer-10756c-for-held-state-watch.json",
+        "sha256": "B873B1936CFD0AA0E335C44297EFDC5936988C8312823743DB8831C1A642EC44"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-10756c-for-held-state-component.json",
+        "sha256": "9540D2EECCA5D455680585CD56AAFA93BA998F522815CFA7F3E2D8DBCA484351"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010756C.s",
+        "sha256": "8D3B6F1DAEA940E5B08960E7C64BC92B798F5B1CF09FC68A0282A9A337D8DB5A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-nine-native-control-diagnostic.json",
+        "sha256": "AAD5D4744B4ACFCE06A85EC1029B92F6B4617097F2B892D3B095C377BF46EB5F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Read-before-prologue order, setup and state register remain nonexact; complete native-nine offsets/eight-byte tail, actual linked relocation addresses/addends, sole ownership and combined21 full-ROM verifier remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Derive complete guarded flag update loop. Capture byte global as a word, retain signed counted for-loop, and hold the real state address across both conditional flag clears. Preserve all fresh field/state reloads and literal masks; no barriers, register forcing or invented frame operation."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1673,
+      "sha256": "94A9C359DC83A10EDFF2E2350FB46492209201F16C709C363C4B820EA1C00BB1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D9E5F9A9DFE21FB375D87855BD6FE370DAF966A4A87F9819F29C712155DC24E2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010756C-99a13b40b7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4BDDE19D3AA6E09346F1687D44809974D92E483618FF70C1843463E984737E39",
+  "observationId": "7D176B7F4F1360B5B2D0867F26461729014F26A70AAABF289D41ED38052D6912",
+  "symbol": "func_00106CE0",
+  "authored": {
+    "context": "Astra1148 source-only complete producer prerequisite inside full21-target pursuit wave.106CE0 owner is360/frame0,row2228,descriptor7/live801B25A0. Current intake is empty; full90 original words and mapped branch targets are reconciled. Accepted void(float*,float*,float) callers are protected, as is the entire original ASM double rowr2547. Source experiments are private; no canonical activation or linked/full-ROM acceptance.",
+    "effects": [
+      "body-coverage",
+      "float-abi",
+      "ordered-comparisons",
+      "external-double-owner",
+      "source-control"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "50F1C60AF9C353A801959472B42CF25BB005296537764739776C1AE96AD942F2",
+      "sourceSha256": "7666A8114C469B2CD522F19631118BC61076A9D928F50F96AF3CA40C3765B535"
+    },
+    "label": "independent-complete-four-path-float-control",
+    "observedEffect": "4BDDE19D isPURE_C408/frame0/5 actual relocations. Normal95 symbolic words differ;82 ordinary masked words in the common360-byte prefix. Compiler materializes the opening float conjunction as two integer Boolean values andAND rather than original two immediate float branch guards. No body path is missing; full extent is nonexact.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00106CE0.s",
+        "sha256": "13890C7CD0AC8CC212EA78D39DB53576FE858FCFDFA3B48728006E44F4CD8790"
+      },
+      {
+        "path": "build/sol-five-family/squad-producer-106ce0-intake-20261005.json",
+        "sha256": "CCD39EED1A87CCEBC879837DA64D780194CAF4BD5D901241E3938B5B279C3D0D"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-original-double-bindings.json",
+        "sha256": "FF28866DB55A43DE19E3112EDF909468C8A81AEF92BE6D43F33ACB976CA214CD"
+      },
+      {
+        "path": "src/lib/func_001289BC.c",
+        "sha256": "E8BB2DDB8C067955D6B987C150C459A6DF4A2D4B18A95AAB5D79F026E9534BE5"
+      },
+      {
+        "path": "src/lib/func_0012B1C4.c",
+        "sha256": "57A61346BD7C849F3E75D4D2181FE2480A9C0A6E19FFC795DE1B8482850CF700"
+      },
+      {
+        "path": "src/lib/func_0012D170.c",
+        "sha256": "4F48F13074ABFCE35531D2806EEBBF1086DB8C6E86F9BB0DB691A8E53591B40A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-control-watch.json",
+        "sha256": "1E5F6DE1A93EC5BAB8CC453D9985DF08622AFF807A1158F67835CF3A8FDA0DE5"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-control-component.json",
+        "sha256": "4F1275FCCD7504FFCD15533AF9E479F833A03CF3A57B79EAB609D4DFFB71000E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact source; originalASM retained. Required360-byte extent, FPR allocation, early ordered float branches, shared store/clamp shape and actual relocation/addend links remain open. All21 assigned targets and complete producer are required; no new tool, boundary, literal owner, capacity claim, hybrid exception or acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive initial external-double bounds, all four original0x3D088889 coefficient paths, both ordered wraps/clamps, raw/final stores and actual final desired-pointer reload. Preserve alias store/read ordering and void(float*,float*,float) ABI."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1385,
+      "sha256": "50F1C60AF9C353A801959472B42CF25BB005296537764739776C1AE96AD942F2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7666A8114C469B2CD522F19631118BC61076A9D928F50F96AF3CA40C3765B535"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00106CE0-4bdde19d3a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

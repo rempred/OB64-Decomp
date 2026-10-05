@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2FA2B259A978457C1D83FF68E20CD497317202BD0FED4BEAD47F2F83177E13D5",
+  "observationId": "5340355A7A374BA4378C2895F5727F6C8C257C9FD54CB5686F61D2D60AAF36B6",
+  "symbol": "func_00106CE0",
+  "authored": {
+    "context": "Astra1148 source-only complete producer prerequisite inside full21-target pursuit wave.106CE0 owner is360/frame0,row2228,descriptor7/live801B25A0. Current intake is empty; full90 original words and mapped branch targets are reconciled. Accepted void(float*,float*,float) callers are protected, as is the entire original ASM double rowr2547. Source experiments are private; no canonical activation or linked/full-ROM acceptance.",
+    "effects": [
+      "short-circuit-control",
+      "real-value-scope",
+      "required-reload",
+      "float-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9B0A85966A19495C5A172499A7F507DD37144C341A959846D6CA961BDF49E865",
+      "sourceSha256": "65BE8552F8DB351FD90E304951D21462B422983BC685F4DA79F21DC957CAE027"
+    },
+    "label": "nested-entry-path-scoped-current-restores-fallback-read",
+    "observedEffect": "Nested7DD0 reduces408 to388/frame0/5R but initially reuses the current float. Path-scoped2FA2B259 stays388/frame0/5R and restores original fallbackLWC1 intoF4. Masked prefix differences reduce80 to72; normal80 symbolic words differ. Actual centerF8/currentF6 and double-bound temporaries remain swapped versus retailcenterF6/currentF8. Named genuine double intermediateC762 is native-neutral. None is exact.",
+    "parentCandidateId": "4BDDE19D3AA6E09346F1687D44809974D92E483618FF70C1843463E984737E39",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00106CE0.s",
+        "sha256": "13890C7CD0AC8CC212EA78D39DB53576FE858FCFDFA3B48728006E44F4CD8790"
+      },
+      {
+        "path": "build/sol-five-family/squad-producer-106ce0-intake-20261005.json",
+        "sha256": "CCD39EED1A87CCEBC879837DA64D780194CAF4BD5D901241E3938B5B279C3D0D"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-original-double-bindings.json",
+        "sha256": "FF28866DB55A43DE19E3112EDF909468C8A81AEF92BE6D43F33ACB976CA214CD"
+      },
+      {
+        "path": "src/lib/func_001289BC.c",
+        "sha256": "E8BB2DDB8C067955D6B987C150C459A6DF4A2D4B18A95AAB5D79F026E9534BE5"
+      },
+      {
+        "path": "src/lib/func_0012B1C4.c",
+        "sha256": "57A61346BD7C849F3E75D4D2181FE2480A9C0A6E19FFC795DE1B8482850CF700"
+      },
+      {
+        "path": "src/lib/func_0012D170.c",
+        "sha256": "4F48F13074ABFCE35531D2806EEBBF1086DB8C6E86F9BB0DB691A8E53591B40A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-nested-entry-guards-watch.json",
+        "sha256": "508E12E5637A76A618361AF280EAAA8A879771232466B5B9BBE2FD33DB174B61"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-scoped-current-reads-watch.json",
+        "sha256": "DEDC68BBEAE658CAAEE9F8CFDD8A1D4567B78188228B6DDD7C8BCAE2F8E820E1"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-scoped-current-reads-component.json",
+        "sha256": "1BFB7DDC1D5B7112825B4CF1D9ACAB64F92952A4DCD588D09AF6ED1D4832879E"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-named-wide-center-watch.json",
+        "sha256": "11D44BD4088848B7D83DFB3813680D28DC995B0DF193491D44A9D15F289F4F10"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact source; originalASM retained. Required360-byte extent, FPR allocation, early ordered float branches, shared store/clamp shape and actual relocation/addend links remain open. All21 assigned targets and complete producer are required; no new tool, boundary, literal owner, capacity claim, hybrid exception or acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use nested entry guards and early return for the lower path; scope genuine current-pointer reads to the lower and fallback paths. Do not materialize a source Boolean or add a fake memory barrier. All four arithmetic/store/clamp paths remain."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1448,
+      "sha256": "9B0A85966A19495C5A172499A7F507DD37144C341A959846D6CA961BDF49E865"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "65BE8552F8DB351FD90E304951D21462B422983BC685F4DA79F21DC957CAE027"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00106CE0-2fa2b259a9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

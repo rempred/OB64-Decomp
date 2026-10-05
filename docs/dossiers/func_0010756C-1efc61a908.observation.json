@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1EFC61A908B4AD66CBDFE7A8387E0B8D3C4064937A5216E520FC3F23D9F4D996",
+  "observationId": "EC5D22FD78BDBC06FC0B5A83CD6F6CF0903DC9CD4C7DE0728D2CE856FAE97D96",
+  "symbol": "func_0010756C",
+  "authored": {
+    "context": "All64 original words/256-byte owner reconciled; source-only nine-member producer prerequisite in full21-target pursuit wave. Production remains ASM.",
+    "effects": [
+      "loop-shape",
+      "count-lifetime",
+      "state-address-lifetime",
+      "frame-change"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FBCCE85570BAC6B422DBF8B6FF19F1FC87743510EAA75F36208B09BD6B1F3775",
+      "sourceSha256": "388CD4AB43D74FA044352876E3A5B6DA5D754EA64F6C588F2614AE68A0C5A810"
+    },
+    "label": "guarded-real-count-phases-do-loop-effect",
+    "observedEffect": "1EFC61A9 emits PURE_C252/frame0/8 relocations and28 masked common-prefix word differences. It removes the second initial bounds guard and introduces the count-to-bound copy, but drops the genuine8-byte frame and changes setup allocation. No invented padding or operation is added.",
+    "parentCandidateId": "99A13B40B76EB1C2B253E2F69BDD2EF597FBA87E269B7B3B45617365D26673B8",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-producer-10756c-count-phases-do-loop-watch.json",
+        "sha256": "C04E223D743A48FC9028AAAE74153CDFFB8A69B7176004ED529F5F522D2E65FC"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-10756c-count-phases-do-loop-component.json",
+        "sha256": "BC5FF9172B17434EAAD8534174E581166D7945F2B5FB51E69E1A98AA77EE5051"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010756C.s",
+        "sha256": "8D3B6F1DAEA940E5B08960E7C64BC92B798F5B1CF09FC68A0282A9A337D8DB5A"
+      }
+    ],
+    "relatedCandidateIds": [
+      "99A13B40B76EB1C2B253E2F69BDD2EF597FBA87E269B7B3B45617365D26673B8"
+    ],
+    "remainingFailure": "Frame/prologue, setup/allocation and complete native-nine offsets remain nonexact. This source is an informative effect example, not selected best or matching acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Separate actual initial count capture from loop bound and use a guarded do-loop with held state address; keep full original body and fresh reloads."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1713,
+      "sha256": "FBCCE85570BAC6B422DBF8B6FF19F1FC87743510EAA75F36208B09BD6B1F3775"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "388CD4AB43D74FA044352876E3A5B6DA5D754EA64F6C588F2614AE68A0C5A810"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010756C-1efc61a908.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

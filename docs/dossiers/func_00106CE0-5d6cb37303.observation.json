@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5D6CB37303FF9BF180AC8D65A29359430A965755FCE4481327CDA9BEBA90A5B4",
+  "observationId": "332C24AF1E231CF11D96F082BEF5BC5EB95608A41785F5488C1354FC9C80F110",
+  "symbol": "func_00106CE0",
+  "authored": {
+    "context": "Full21-target pursuit result under Astra1148; original13 plus complete nine-function producer with eight extra prerequisites.106CE0 has a complete360-byte/90-word owner; void float-pointer/step interface and original double row remain protected. No canonical source/group/config/build change or acceptance.",
+    "effects": [
+      "shared-exit-shape",
+      "alias-order",
+      "native-extent",
+      "float-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1495335D1F8FC695EAEDC945809D8263D760FE058246FEB062345C8175E60F56",
+      "sourceSha256": "0B2B2DF0E20783171F335E36EC54322FE5BC2FB651EB3A37BA8AFCF186852808"
+    },
+    "label": "common-store-exits-reach356-original-reload-preserved",
+    "observedEffect": "5D6CB373 is PURE_C356/frame0/6 relocations; four bytes short of360. Normal75 symbolic words/209bytes differ, with73 ordinary masked commonprefix words. Last native branch now stores next in its delay slot and reloads desired only on the copy path, matching that original tail structure. Initial centerF10/stepF8/doubleconstantF0/convertedcenterF2 roles and earlier ordering remain nonexact. Explicit ordered-false fallback4053 and real named external-boundFDB9478F are native-neutral. All original arithmetic/guard/store paths remain; shorter extent is not omitted logical-body coverage. All7 FE2755DF artifacts authenticated: step74 refs5/life29/four deaths, center75 refs7/life49/two deaths, current85 refs7/life17/two deaths. GREG globals order85 before74 before75: currentF6,stepF8,centerF10. Local converted-center77 DFrefs3/span3 takesF2; bound78 DFrefs3/span8 takesF0. Actual retail roles differ. Global next84 usesF0. These are actual snapshot facts, not inferred quantity-priority scores.",
+    "parentCandidateId": "2FA2B259A978457C1D83FF68E20CD497317202BD0FED4BEAD47F2F83177E13D5",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00106CE0.s",
+        "sha256": "13890C7CD0AC8CC212EA78D39DB53576FE858FCFDFA3B48728006E44F4CD8790"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-original-double-bindings.json",
+        "sha256": "FF28866DB55A43DE19E3112EDF909468C8A81AEF92BE6D43F33ACB976CA214CD"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-shared-store-exits-watch.json",
+        "sha256": "7B08DBCDAFC505280E2837F6A855733ABD6EC7C0EEC3A7D511C20B562F01949A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-shared-store-exits-component.json",
+        "sha256": "CB3669D27FB15A4BB3BDA1441EE92C0626021A4E67006EED60A681C3AA810EFB"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-fallback-ordered-false-exit-watch.json",
+        "sha256": "D7AFB5BEC655063DAE2F40D0F3B83FF0FD44779912C0E3F884CA4EC7F8E09448"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-named-external-bound-watch.json",
+        "sha256": "3EEF2EBAF20549161EE4361B0B03358B1E18E187F20BAB1478D09BD3B72D4A00"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-106ce0-shared-store-exits-probe.json",
+        "sha256": "7EFEA5DB0A3848DC96BA83EAF743734893958E5129F64D04D679338F47ADE5B3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Current best is still nonexact: required360 owner not reproduced, FPR source allocation/control ordering and actual relocated/sole/group/ROM gates remain open. Preserve structured388 intermediate2FA and all required body paths. GoldOx has the specific authenticated allocation blocker; remaining genuine producer members may proceed sequentially. No fabricated padding, compiler defect, impossible-C claim or hybrid exception.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move the store into two genuine final exits, store-only and store-before-desired-reload, while retaining the real increasing/decreasing ordered comparisons. This expresses the same alias-sensitive store/reload sequence without an extra operation or a source Boolean result."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1589,
+      "sha256": "1495335D1F8FC695EAEDC945809D8263D760FE058246FEB062345C8175E60F56"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0B2B2DF0E20783171F335E36EC54322FE5BC2FB651EB3A37BA8AFCF186852808"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00106CE0-5d6cb37303.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

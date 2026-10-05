@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "06415C04E033AB8C55F3B0E48649A5F5411C1B955D7279605AF1B6C2EFBDA5A4",
+  "observationId": "CAE8B7866A6C1F562CE05C2408F4327A49B1EA01FE7DBCE631F49E1FB36115DD",
+  "symbol": "func_0010746C",
+  "authored": {
+    "context": "Complete nine-function producer prerequisite inside full21-target pursuit set.10746C remains originalASM; all64 words/256 bytes and protected cleanup interface are reconciled from descriptor7 row2234. No canonical source/config/build activation.",
+    "effects": [
+      "body-coverage",
+      "real-flag-loads",
+      "original-mask-order",
+      "call-reload-contract",
+      "pure-c-source"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AD8051B889287C5E09D44CF13D71815CFC2A3591D34505936AC196DAE7EC809B",
+      "sourceSha256": "39102AEAEB6EF0C7A919C5B3B777524125722072F277E61E7167AED2F12037E8"
+    },
+    "label": "complete-flag-clear-cleanup-pure-object-exact-provisional",
+    "observedEffect": "06415C04 isPURE_C256/frame24/8 R_MIPS_26. All64 object words agree after actual object relocation masks; normal symbolic differences are exactly the8 call words. Native ordinary C retains the original second flagword load, separateAND -5/-513, initialA0 resource load before stores, and all cleanup reloads, without invented operations. This is provisional object exactness only.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-producer-10746c-pure-control-watch.json",
+        "sha256": "A79A2FB13573A351A9CD19F3A80B6BEB9E1A2F55A12D88F77B4B554085685EF8"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-10746c-pure-control-component.json",
+        "sha256": "3E1BF3949F91FC5DCA4571C56813C754CDC5D2875FCE358EA3A1C9BCE7C722CB"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010746C.s",
+        "sha256": "AC6F95B1851F60EC964FBCAD1B0B05852957BD6718DC672301C0C786D1F09BB8"
+      },
+      {
+        "path": "build/matching/solsquad/squad-producer-1072b8-pure-control.c",
+        "sha256": "17C0BAD8FD842F26C26DF31705E89C40C4453172765816D43D73ACA7C17DE176"
+      },
+      {
+        "path": "include/game/combat_pose_pool.h",
+        "sha256": "A7F8F0A2D927F54EB1E49A9BBD771E43CA9A58435BACA9D6C6F5530C0FCE35A1"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual linked addresses/addends, sole canonical group ownership, complete native-nine offsets/extent/eight-byte tail and one combined21-target full-ROM verifier remain open. OriginalASM retained; no matching-C acceptance or whole-family claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Derive original flagword masks2/4/0x200, field6C word clear and field20 byte clear before the complete resource/object cleanup sequence. Use typed evidence-backed fields, ordinary statements and canonical void allocation-release declarations; preserve all resource reloads/calls and final88 store. No volatile barrier or forced register."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1803,
+      "sha256": "AD8051B889287C5E09D44CF13D71815CFC2A3591D34505936AC196DAE7EC809B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "39102AEAEB6EF0C7A919C5B3B777524125722072F277E61E7167AED2F12037E8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010746C-06415c04e0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
