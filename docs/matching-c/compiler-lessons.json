@@ -2,6 +2,27 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "retained-insertion-amount-transfer",
+      "symptoms": ["register-allocation", "scheduling-or-block-order"],
+      "applicability": "Retaining the real incoming word amount across a lookup for a new-slot update transferred from B63C to B4C4. The first B4C4 candidate preserved both record scans and matched instruction fields outside actual relocations. Inspect both source contexts, retain the original truncation and memory operations, and reconcile caller widths separately. These are provisional native observations, not canonical linked or whole-wave acceptance.",
+      "note": "docs/dossiers/func_0019B4C4-25d753235b.md#recorded-observation",
+      "references": ["docs/dossiers/func_0019B63C-ee0a6fed13.md"],
+      "observations": [
+        {"symbol": "func_0019B63C", "path": "docs/dossiers/func_0019B63C-ee0a6fed13.observation.json"},
+        {"symbol": "func_0019B4C4", "path": "docs/dossiers/func_0019B4C4-25d753235b.observation.json"}
+      ]
+    },
+    {
+      "id": "branch-local-byte-consumers",
+      "symptoms": ["register-allocation"],
+      "applicability": "In B710's word accumulator, explicit increment alternatives and branch-local decrement byte conversions produced the required temporary registers. Preserve input priority, clamps, fresh reads and call width; branch-local spelling is a hypothesis to test in another source context, not a universal allocation rule. The retained source has provisional native field equality; external binding, linked bytes and complete-wave gates remain.",
+      "note": "docs/dossiers/func_0019B710-f9a6256700.md#source-context",
+      "references": [],
+      "observations": [
+        {"symbol": "func_0019B710", "path": "docs/dossiers/func_0019B710-f9a6256700.observation.json"}
+      ]
+    },
+    {
       "id": "direct-indexing-and-native-induction-copies",
       "symptoms": [
         "register-allocation",
