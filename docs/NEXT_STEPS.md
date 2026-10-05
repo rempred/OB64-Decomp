@@ -8,28 +8,40 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / BlackEagle (October 5 fresh arena worker):** top-level chat
-  `01a10d55-b53b-7243-82a7-a89bafb9b01d`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete resource arena / allocation-front-end wave: `resource_arena_init`
-  (192 bytes), full `resource_arena_register` (528, including required 28-byte
-  `func_00001314`), `resource_alloc` (428), `resource_alloc_alt_scan` (428),
-  `resource_alloc_mode1_wrapper` (60), `resource_free` (296), and full
-  `resource_largest_free_block` (232). All seven physical owners share one final verifier.
-  Preserve read-before-prologue words at ROM 1120/1124 and 17EC/17F0, every logical
-  body, actual arena widths/strides, scan order, alignment/header arithmetic and error paths.
-  Reconcile current intake, original assembly and accepted logical coverage with
-  [arena evidence](dossiers/boot-resource-arena-and-alloc.md) and
-  [allocation/free evidence](dossiers/boot-resource-alloc-free.md). Old dossier EDxx
-  addresses are not authoritative: resolve signed offsets against the actual LUI.
-  Low-level tree/list/validation/realloc helpers and service/caller owners remain external
-  under existing contracts. No runtime safety, capacity or final API claim follows.
-  Use `build/matching/sol-arena-20261005/`, one target at a time. The fresh worker takes
+- **Sol (October 5 fresh free-tree worker):** top-level chat
+  `01a10dea-ea68-7661-bb54-081e3d97f644`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete five-owner resource reallocation / free-tree wave:
+  `resource_realloc` (932 bytes = primary780 + required `func_00001D50`152),
+  `resource_tree_insert_find` (140 = primary84 + required `func_00001E3C`56),
+  `resource_rebuild_free_trees` (296), `resource_find_arena_index` (104), and
+  `resource_alloc_tree_scan` (684 = primary624 + required `func_00002274`60).
+  Preserve every logical body and read-before-prologue prefix. All five physical
+  owners share one final verifier. Reconcile current intake, original assembly and
+  accepted logical coverage with the [backend dossier](dossiers/boot-resource-validation-realloc-trees.md)
+  and accepted arena interfaces. Old dossier EDxx addresses are not authoritative:
+  resolve signed offsets against the actual LUI. Preserve actual recursion, scan order,
+  allocation/copy/free paths, widths and original operations without stronger runtime claims.
+  The neighboring `resource_ptr_validate` owner remains external ASM; its historical
+  `1A34`/`1A3C` tiny entries need separate bounded coverage reconciliation against
+  current metadata before any conversion. This wave does not close that obligation
+  or claim whole-allocator/family completion. Other services and callers remain external.
+  Use `build/matching/sol-trees-20261005/`, one target at a time. The fresh worker takes
   the released production-writer role and live Sol cursor, but uses private checks until
   complete-wave readiness. Before the first canonical source,
   header, configuration or build mutation or canonical linked diff, obtain Astra's
   explicit integration release confirming Shop's native/store drain. Private checks
   remain independent; no per-check permission. Ready Shop14 integration retains priority.
   No fresh worker reuses the predecessor's private store, mail identity or watcher state.
+
+  **Accepted arena predecessor:** BlackEagle's complete seven-owner/eight-body wave
+  passed one final verifier, including independent fresh compilation and exact full ROM,
+  on October 5 at 21:01:02 UTC; source/evidence commit `915814c0`. Preserve the complete
+  arena/init/register/allocate/alternate/wrapper/free/largest-free sources, required LOCAL
+  `func_00001314` body, prefixes and guarded observed-layout header. The
+  [accepted wave record](Plans/task-logs/sol-resource-arena-wave-20261005.md) links all
+  membership, proof and fifteen source observations. BlackEagle released all ownership
+  and retired its watcher. Shop was released under Astra1330 on CURRENT `E2D836B7`.
+  Do not repeat unchanged acceptance for the successor or handoff.
 
   **Accepted DMA predecessor:** RosePanther's complete wave passed the single final
   verifier, including independent fresh compilation and exact full ROM, on October 5
@@ -50,7 +62,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   [Accepted wave and reusable source pairs](Plans/task-logs/sol-resource-header-loading-wave-20261005.md)
   retain the ordinary secondary-entry contract and proof. No unchanged verification repeat.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
-  now watches the fresh arena worker. The original Scenario pair `0023A5EC`/`00249A14` remains
+  now watches the fresh free-tree worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
 - **Parked under Sol (October 5):** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),
