@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C8F0CE77EA0E185EC634CB3C17BA002357A7926858560E8839E2FA5DA5205B96",
+  "observationId": "5217473D8E62D14C9A14B975F807544FB68249E24B895A8A74894B9B6C683258",
+  "symbol": "func_001094BC",
+  "authored": {
+    "context": "Measured structured4F40 advanced before sixth filter and produced fourth-predicate step. Gold1197/1200 correct that earlier motion hypothesis: pinned reorg performs a two-pass stealing cascade. Every logical body, flag path, coordinate read, record stride and final call stays represented.",
+    "effects": [
+      "delay-slot-merging",
+      "control-flow",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1B261A78BD3A80D10799943763449AC082BBC733A2D3F77C07E8EF0E90B92E62",
+      "sourceSha256": "8060F6B67BB53A88276475DB4EB5FBAF32D1798EAA4A42A6D0F892503B02247D"
+    },
+    "label": "scheduler-after-six-two-pass-steal-effect",
+    "observedEffect": "Contract11 PURE_C1412/frame136/231 masked. Probe7E40B4A7 all7 artifacts rehashed: jump2 compare511 then increment499 then distance branch512; rejection574 contains increment578. Final first4 branches annulled increment, fifth nonannulled increment, sixth unfilled, seventh ORI. Compared with4F40, the last absorption moves from predicate4 to5; it still occurs a pass too early. Gold1200 explains target-thread copy/steal/refill ordering. Best1424/165 retained.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-six-filter-success-counter.c",
+        "sha256": "8060F6B67BB53A88276475DB4EB5FBAF32D1798EAA4A42A6D0F892503B02247D"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-six-filter-success-counter-native11-watch.json",
+        "sha256": "9CFF2A0F600B8EB2A5C6DF6DA8841FC6FDB5981689BCAB1444EDB0FB074181A5"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-six-filter-success-counter-native11-component.json",
+        "sha256": "6BEAE886B93BAC3F27F0BBD3E1BB1A3FF53119C2AECDA777FD3859E84D26EEFD"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-six-filter-success-counter-native11-probe.json",
+        "sha256": "CCAE4B51631BD157AE7055BEE27EC9B20E896351A23482AF677667E423C7AD19"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-1094bc-gold-delay-slot-blocker-mails.json",
+        "sha256": "3CFA7EEDD43148DA1487FFB391844944C6B1E3656271EF73410195244D84F4BB"
+      },
+      {
+        "path": "docs/dossiers/func_001094BC-adb9c74224.md",
+        "sha256": "D8827EB82BCC8D37C7C52193E38A95B20FC130886C1D77038C124A6B9132CC7B"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-1094bc-distinct-offset-shared-range-native11-component.json",
+        "sha256": "43A62DE461A35E8C1F8F3438F20200A8CB13428C6FEE6ED067123851E4BFED4A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonselected PURE_C source research. Original1420-byte sole owner and all complete FIVE gates remain. Best ADB9 is native1424/frame136/58R/165 masked, with register fields still nonexact. Gold1202 confirms a concrete source/information blocker in the retail last-range/distance slot ordering; no natural source topology was identified for the required pass1 miss. This is not an inherent-assembly proof, a supported tooling defect or an accepted HYBRID fallback.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the real success counter increment after the sixth range check and before the distance calculation; retain real rejection increments in each else path. Add no dummy use, barrier, narrowing or compiler change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9056,
+      "sha256": "1B261A78BD3A80D10799943763449AC082BBC733A2D3F77C07E8EF0E90B92E62"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8060F6B67BB53A88276475DB4EB5FBAF32D1798EAA4A42A6D0F892503B02247D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_001094BC-c8f0ce77ea.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

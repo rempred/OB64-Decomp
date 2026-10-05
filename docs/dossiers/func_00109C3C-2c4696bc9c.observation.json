@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2C4696BC9CBDC78D7CEA4215DB820EF06A4FC5816FF0578B07FDAD1F9703F7C4",
+  "observationId": "ACE61C7DFC6836132EE6018197EE0010D55363F8635A24909C68165B55A8D2E3",
+  "symbol": "func_00109C3C",
+  "authored": {
+    "context": "Current target754CA3BC/r2250 complete body and scalar/double data ownership reconciled. All five scheduler members remain required; fresh private source-bound native evidence is diagnostic only.",
+    "effects": [
+      "loop-shape",
+      "record-indexing",
+      "register-allocation",
+      "stack-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F87AD03952E40BA7660486ABEF6492169B5E072402994F91B2EFC97DA32F8E58",
+      "sourceSha256": "F0065CC640DEBCE238205E890812870300221DA8A11FC9375E4C32ACE466DB06"
+    },
+    "label": "scheduler-9c3c-shared-all-bounds-effect",
+    "observedEffect": "PURE_C native1260/frame72/106 masked. Prefix148 stays identical outside relocation fields. Separate point snapshots816F3DEA and typed12-byte point view63C05D4C emit instruction-identical results and are not selected. ProbeB265C534 all9 artifacts rehashed; radiusDF94 allocatedF8, pointX104/F18, pointZ106/F16, minX74/F12 and maxX75/F10 explain current roles. First retail difference148 is radiusDF F8 versusF10; later float and point-bank fields remain. Sharing only the two genuine Z bounds is the later selected104-word result; this source remains an intermediate, not current best.",
+    "parentCandidateId": "55FE0DA883889F9DE59C4CC7415BF08E346078A19FD90FCB063D06BFEC50B8E5",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-shared-bounds.c",
+        "sha256": "F0065CC640DEBCE238205E890812870300221DA8A11FC9375E4C32ACE466DB06"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-shared-bounds-native11-watch.json",
+        "sha256": "DB534267A937AA701385047C960E15BC5AC96DAB2915A98CFC6D8228B85E3906"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-shared-bounds-native11-component.json",
+        "sha256": "A6FC52B7E48597B8E293024605E968CC4107E78F85C32705E4B16E53E253378A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-body-reconciliation.json",
+        "sha256": "8CEAB94195303F6F04F093B2DD1F9F8ACBD512FEF3CEF6D0417004DA02ACD3DF"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-109c3c-native11-intake-20261005.json",
+        "sha256": "DACA312242CA9A311B5EAD3152F027295B3538FBB1BD96D325447BF01A1A59B0"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-shared-bounds-native11-probe.json",
+        "sha256": "91F2036FAC8D5FEED453F3CE3E625BA138D52553BB8EFAFA873E70595C06662B"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-point-snapshots-native11-component.json",
+        "sha256": "0C84D79EB007B2FFA6061BB91F8B13D218FA1EADFAB00607C0D82BCE0C8C12D6"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-typed-point-view-native11-component.json",
+        "sha256": "CC8704D7B77B017B49FF2E0055DD455C0F72B6EC144F0781A93548C5B2FCDE67"
+      }
+    ],
+    "relatedCandidateIds": [
+      "55FE0DA883889F9DE59C4CC7415BF08E346078A19FD90FCB063D06BFEC50B8E5"
+    ],
+    "remainingFailure": "Nonexact complete315-word consumer source; original1260-byte sole r2250 owner remains ASM. Canonical relocation/symbol/addend/placement/sole ownership/linked bytes and complete FIVE-member full-ROM gates remain. D_801EE110, SDK call interfaces, three-float callback and unresolved DD244/DD2B0 edges stay unchanged; no runtime semantic or capacity claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse the real four rounded bounds across the two scans at function scope; preserve the indexed36-byte record view and exact callback buffer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6429,
+      "sha256": "F87AD03952E40BA7660486ABEF6492169B5E072402994F91B2EFC97DA32F8E58"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F0065CC640DEBCE238205E890812870300221DA8A11FC9375E4C32ACE466DB06"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109C3C-2c4696bc9c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

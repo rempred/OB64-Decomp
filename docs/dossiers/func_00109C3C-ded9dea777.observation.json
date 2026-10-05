@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DED9DEA7778C98930FE90C5F71E98816E114A40489E7C6ED25F61566D7959A1B",
+  "observationId": "4E91EF57ECAF5DC11C556A8FC0DCDAC16AB8BEEA354BCCB394310DCD935F6E2D",
+  "symbol": "func_00109C3C",
+  "authored": {
+    "context": "Current target754CA3BC/r2250 complete body and scalar/double data ownership reconciled. All five scheduler members remain required; fresh private source-bound native evidence is diagnostic only.",
+    "effects": [
+      "loop-shape",
+      "record-indexing",
+      "register-allocation",
+      "stack-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8138CFA8A1EEFB5B7922F0F08E3641E5202DB0ADFD5A3E6CB05ED67286D80EDE",
+      "sourceSha256": "F4F16ADBB3E6B15B9950FBA409E4C60A6FBD1F541DAED866EF77112095E28715"
+    },
+    "label": "scheduler-9c3c-two-counted-frame",
+    "observedEffect": "PURE_C native1260/frame72/133 masked. Vars32 versus old16; six GPR/no FPR saves unchanged. Correct72 frame arises without padding. Offset initialization now speculates into the initial guard slot; typed record indexing is the next grounded discriminator.",
+    "parentCandidateId": "7996D9D2AB71955394BA79AF80861A19E9E01268A4E0FD1B2304D413994DFFE4",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-two-counted-scans.c",
+        "sha256": "F4F16ADBB3E6B15B9950FBA409E4C60A6FBD1F541DAED866EF77112095E28715"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-two-counted-scans-native11-watch.json",
+        "sha256": "C8ACF81F95612B30BE5C3FFD98EBBC1B5AEE267D4B8D7B31A0EFC908F02672DF"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-two-counted-scans-native11-component.json",
+        "sha256": "EFD0658B861A4FBB9E303585AB9C9D359BAB455B9E963F30ED15016478DF32AC"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-body-reconciliation.json",
+        "sha256": "8CEAB94195303F6F04F093B2DD1F9F8ACBD512FEF3CEF6D0417004DA02ACD3DF"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-109c3c-native11-intake-20261005.json",
+        "sha256": "DACA312242CA9A311B5EAD3152F027295B3538FBB1BD96D325447BF01A1A59B0"
+      }
+    ],
+    "relatedCandidateIds": [
+      "7996D9D2AB71955394BA79AF80861A19E9E01268A4E0FD1B2304D413994DFFE4"
+    ],
+    "remainingFailure": "Nonexact complete315-word consumer source; original1260-byte sole r2250 owner remains ASM. Canonical relocation/symbol/addend/placement/sole ownership/linked bytes and complete FIVE-member full-ROM gates remain. D_801EE110, SDK call interfaces, three-float callback and unresolved DD244/DD2B0 edges stay unchanged; no runtime semantic or capacity claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the actual counted resource and point scans without redundant outer guards; preserve explicit36-byte source offset and every actual read/call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6444,
+      "sha256": "8138CFA8A1EEFB5B7922F0F08E3641E5202DB0ADFD5A3E6CB05ED67286D80EDE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F4F16ADBB3E6B15B9950FBA409E4C60A6FBD1F541DAED866EF77112095E28715"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109C3C-ded9dea777.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

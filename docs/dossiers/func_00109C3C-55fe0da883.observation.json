@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "55FE0DA883889F9DE59C4CC7415BF08E346078A19FD90FCB063D06BFEC50B8E5",
+  "observationId": "DECA56B190264ABB609DF485355593354DE56DA2B2F2F5E650BC9353F7022741",
+  "symbol": "func_00109C3C",
+  "authored": {
+    "context": "Current target754CA3BC/r2250 complete body and scalar/double data ownership reconciled. All five scheduler members remain required; fresh private source-bound native evidence is diagnostic only.",
+    "effects": [
+      "loop-shape",
+      "record-indexing",
+      "register-allocation",
+      "stack-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FAC47721A9B011303FA745266B6CEABBC9E8F124B5B71771E53A5918F0C49A51",
+      "sourceSha256": "37AD606B788AFC61949D546611C945A4348BA143903D327EF8E6AB32FA3BDF95"
+    },
+    "label": "scheduler-9c3c-indexed-record-transfer",
+    "observedEffect": "PURE_C native1260/frame72/107 masked. First148 bytes agree outside actual relocation fields, recovering original prologue, copied loop entry, derived offset timing and callback setup. Record layout is24-byte prefix +word18 +halfword1C +six original tail bytes =36. ProbeC808E42E all8 artifacts rehashed; this is an ordinary source/induction result, not an ownership change.",
+    "parentCandidateId": "C3CE09A5212FF99A8F502CB0939B2D895589788E5142C3944AC9FAF929C4C4CD",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-record-bound-scalars.c",
+        "sha256": "37AD606B788AFC61949D546611C945A4348BA143903D327EF8E6AB32FA3BDF95"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-record-bound-scalars-native11-watch.json",
+        "sha256": "F5901DEC331DF28F45BFE3362879AED9852C99BED80B0F6A503BD551BF6D2D90"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-record-bound-scalars-native11-component.json",
+        "sha256": "320A07D3F9F16F54DE778D61A510249F612C75E111703184E07DEDEA04D40329"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-body-reconciliation.json",
+        "sha256": "8CEAB94195303F6F04F093B2DD1F9F8ACBD512FEF3CEF6D0417004DA02ACD3DF"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-109c3c-native11-intake-20261005.json",
+        "sha256": "DACA312242CA9A311B5EAD3152F027295B3538FBB1BD96D325447BF01A1A59B0"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-record-bound-scalars-native11-probe.json",
+        "sha256": "FA4CBDA9986EB258E59BC80A7F631072B9BFA924F611C4CC21ED04C7BE38AB98"
+      }
+    ],
+    "relatedCandidateIds": [
+      "C3CE09A5212FF99A8F502CB0939B2D895589788E5142C3944AC9FAF929C4C4CD"
+    ],
+    "remainingFailure": "Nonexact complete315-word consumer source; original1260-byte sole r2250 owner remains ASM. Canonical relocation/symbol/addend/placement/sole ownership/linked bytes and complete FIVE-member full-ROM gates remain. D_801EE110, SDK call interfaces, three-float callback and unresolved DD244/DD2B0 edges stay unchanged; no runtime semantic or capacity claim.",
+    "role": "transfer-result",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the explicit source offset with the genuine36-byte ResourceRecord array index; let the compiler derive its induction offset. Retain both counted loops and all rounded bound operations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6490,
+      "sha256": "FAC47721A9B011303FA745266B6CEABBC9E8F124B5B71771E53A5918F0C49A51"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "37AD606B788AFC61949D546611C945A4348BA143903D327EF8E6AB32FA3BDF95"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109C3C-55fe0da883.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

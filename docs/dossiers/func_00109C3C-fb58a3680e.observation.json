@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FB58A3680E17B8A9F3259580CE9495B38EAD7D79A34E6D8B3CEFF17974864C8C",
+  "observationId": "7CC06EF6616660F8DC67A678E3A6C03416CED7B99A802724034B83A079EC63A4",
+  "symbol": "func_00109C3C",
+  "authored": {
+    "context": "Current target754CA3BC/r2250 complete body and scalar/double data ownership reconciled. All five scheduler members remain required; fresh private source-bound native evidence is diagnostic only.",
+    "effects": [
+      "loop-shape",
+      "record-indexing",
+      "register-allocation",
+      "stack-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D5EAA6A39B7B7B9510D8C4E20DF4BBF27D5B98656CB4D8117475618D0E01C753",
+      "sourceSha256": "43A2937E3C703BA0E5EC941B781D84F1C8B101E351242D9C5E46B9F5FD4399B9"
+    },
+    "label": "scheduler-9c3c-shared-z-bounds-best",
+    "observedEffect": "PURE_C native1260/frame72/104 masked instruction differences. First148 bytes agree outside actual relocation bits. ProbeB656EDF3 all8 byte/SHA identities rehashed: actual radiusDF92 allocatedF8 versus retailF10; pointX104/F16 versusF8; pointZ106/F14 is correct; lowerZ74/F4 is correct; upperZ75/F10 versusF0. Global order182,92(2),98,186,201,96,199,151,200,72,97,74,75,73 precedes point values106/104. Actual greg preference74=F4,75=F10; LREG header precedes scheduler changes. Plain C register-radius hint is instruction-neutral; real double-compute-then-round1260/105 and indexed inline bounds1264/218 are not selected. Shared double bounds1284/237 regress. Specific genuine FP source blocker sent GoldOx, no tooling defect inferred.",
+    "parentCandidateId": "2C4696BC9CBDC78D7CEA4215DB820EF06A4FC5816FF0578B07FDAD1F9703F7C4",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-shared-z-bounds.c",
+        "sha256": "43A2937E3C703BA0E5EC941B781D84F1C8B101E351242D9C5E46B9F5FD4399B9"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-shared-z-bounds-native11-watch.json",
+        "sha256": "DD2845759A1CDF608FDE392D46B2827E6E89B6569BEF29926B613223CF6B7B5E"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-shared-z-bounds-native11-component.json",
+        "sha256": "C47B92E3ABC558B568B05A554D9F366589DBB59949B9EE785CE7A60934108A53"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-shared-z-bounds-native11-probe.json",
+        "sha256": "20898696ABD4BD4CAF14F9A926D22A84CA5A238439596E00F8A6981D73717117"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-body-reconciliation.json",
+        "sha256": "8CEAB94195303F6F04F093B2DD1F9F8ACBD512FEF3CEF6D0417004DA02ACD3DF"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-109c3c-native11-intake-20261005.json",
+        "sha256": "DACA312242CA9A311B5EAD3152F027295B3538FBB1BD96D325447BF01A1A59B0"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-register-radius-hint-native11-component.json",
+        "sha256": "3C5D312B9A68DF1A19323D93E37C178040E53191A0F553E55FAE2F6BDE064658"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-double-compute-then-round-native11-component.json",
+        "sha256": "A0CD14E52BF438C3EFEC76E85030F26D4301F983A12802D1C0503943571E2C1A"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-indexed-inline-bounds-native11-component.json",
+        "sha256": "DF6CEC8CA0C75A99D87D72456EA51B170A528A4B55343049360C91B555301CCE"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-shared-double-bounds-native11-component.json",
+        "sha256": "0B69715F23F1A376D0B06B9F724962DC55A10B233A1E6FDF792FF6025F294CA6"
+      }
+    ],
+    "relatedCandidateIds": [
+      "2C4696BC9CBDC78D7CEA4215DB820EF06A4FC5816FF0578B07FDAD1F9703F7C4"
+    ],
+    "remainingFailure": "Nonexact complete315-word consumer source; original1260-byte sole r2250 owner remains ASM. Canonical relocation/symbol/addend/placement/sole ownership/linked bytes and complete FIVE-member full-ROM gates remain. D_801EE110, SDK call interfaces, three-float callback and unresolved DD244/DD2B0 edges stay unchanged; no runtime semantic or capacity claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse only the two actual rounded Z bounds across both real scans; keep X bounds local, indexed36-byte record ownership and exact12-byte callback buffer. No extra arithmetic uses or stack padding."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6485,
+      "sha256": "D5EAA6A39B7B7B9510D8C4E20DF4BBF27D5B98656CB4D8117475618D0E01C753"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "43A2937E3C703BA0E5EC941B781D84F1C8B101E351242D9C5E46B9F5FD4399B9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109C3C-fb58a3680e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

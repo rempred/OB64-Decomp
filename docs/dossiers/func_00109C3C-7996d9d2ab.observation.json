@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7996D9D2AB71955394BA79AF80861A19E9E01268A4E0FD1B2304D413994DFFE4",
+  "observationId": "873BF88288C1D6DB4FCBC4AB7A5A005C34789AB73C1FA44915A71D85DAC4C00A",
+  "symbol": "func_00109C3C",
+  "authored": {
+    "context": "Current target754CA3BC/r2250 complete body and scalar/double data ownership reconciled. All five scheduler members remain required; fresh private source-bound native evidence is diagnostic only.",
+    "effects": [
+      "loop-shape",
+      "record-indexing",
+      "register-allocation",
+      "stack-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4294FD3F0984C34A379288C00A9A38004F2EFB3F6E1C08F60B5943027540F4E6",
+      "sourceSha256": "C52C36F3540C693F9A831F86E7626466BF81195EA3A1B743808CFD11EEFD81AD"
+    },
+    "label": "scheduler-9c3c-native11-control",
+    "observedEffect": "PURE_C native1260/frame56/148 masked. Full body and callback/record/error/point publication paths retained; old target-mismatch archive is a reference only.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-reopened-control.c",
+        "sha256": "C52C36F3540C693F9A831F86E7626466BF81195EA3A1B743808CFD11EEFD81AD"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-reopened-control-native11-watch.json",
+        "sha256": "70F512D8915555799F74B759C588E48AF2F756E2A95431307F16236681041CC3"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-reopened-control-native11-component.json",
+        "sha256": "D288E55E5C2BC647B182CC3F4F7BFA25DAFCF5A4909427E82D96D2D6FBC1250F"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-body-reconciliation.json",
+        "sha256": "8CEAB94195303F6F04F093B2DD1F9F8ACBD512FEF3CEF6D0417004DA02ACD3DF"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-109c3c-native11-intake-20261005.json",
+        "sha256": "DACA312242CA9A311B5EAD3152F027295B3538FBB1BD96D325447BF01A1A59B0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact complete315-word consumer source; original1260-byte sole r2250 owner remains ASM. Canonical relocation/symbol/addend/placement/sole ownership/linked bytes and complete FIVE-member full-ROM gates remain. D_801EE110, SDK call interfaces, three-float callback and unresolved DD244/DD2B0 edges stay unchanged; no runtime semantic or capacity claim.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Copy the full prior consumer unchanged and refresh present-target native output after contract11 release."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6590,
+      "sha256": "4294FD3F0984C34A379288C00A9A38004F2EFB3F6E1C08F60B5943027540F4E6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C52C36F3540C693F9A831F86E7626466BF81195EA3A1B743808CFD11EEFD81AD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109C3C-7996d9d2ab.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

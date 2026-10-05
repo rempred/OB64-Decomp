@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C3CE09A5212FF99A8F502CB0939B2D895589788E5142C3944AC9FAF929C4C4CD",
+  "observationId": "F83B946FC5341A020CD841D8945DAAE68B14B169A0B394DF968A72C78F8CE4B7",
+  "symbol": "func_00109C3C",
+  "authored": {
+    "context": "Current target754CA3BC/r2250 complete body and scalar/double data ownership reconciled. All five scheduler members remain required; fresh private source-bound native evidence is diagnostic only.",
+    "effects": [
+      "loop-shape",
+      "record-indexing",
+      "register-allocation",
+      "stack-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F3C9D567DE5748EDD809B11339924378E44D9D6E87E8CCAC33E1C36DCF9F9E3A",
+      "sourceSha256": "9F57600F6340E7A5D7BA36D7740BF311C4374490E14B813EA74862EC1518EC31"
+    },
+    "label": "scheduler-9c3c-rounded-bound-pair",
+    "observedEffect": "PURE_C native1256/frame72/292 masked. Real double-bound names alone are1260/133 (neutral); explicit scalar float bounds improve representation of the original conversion schedule but this byte-offset control is nonselected for worse extent. This is the exact baseline for the typed-index transfer.",
+    "parentCandidateId": "DED9DEA7778C98930FE90C5F71E98816E114A40489E7C6ED25F61566D7959A1B",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-rounded-bound-scalars.c",
+        "sha256": "9F57600F6340E7A5D7BA36D7740BF311C4374490E14B813EA74862EC1518EC31"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-rounded-bound-scalars-native11-watch.json",
+        "sha256": "6B03A7D5EAF7041E29BC7DAE3BBA22CEEAD7E4B9F500613E734DE6E7EC72EF43"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-rounded-bound-scalars-native11-component.json",
+        "sha256": "BE43176E4981C2BA5C8BD2EC3ABA84E7903A9FA9241A696034140B17EFDD426C"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-109c3c-body-reconciliation.json",
+        "sha256": "8CEAB94195303F6F04F093B2DD1F9F8ACBD512FEF3CEF6D0417004DA02ACD3DF"
+      },
+      {
+        "path": "build/sol-five-family/squad-scheduler-109c3c-native11-intake-20261005.json",
+        "sha256": "DACA312242CA9A311B5EAD3152F027295B3538FBB1BD96D325447BF01A1A59B0"
+      }
+    ],
+    "relatedCandidateIds": [
+      "DED9DEA7778C98930FE90C5F71E98816E114A40489E7C6ED25F61566D7959A1B"
+    ],
+    "remainingFailure": "Nonexact complete315-word consumer source; original1260-byte sole r2250 owner remains ASM. Canonical relocation/symbol/addend/placement/sole ownership/linked bytes and complete FIVE-member full-ROM gates remain. D_801EE110, SDK call interfaces, three-float callback and unresolved DD244/DD2B0 edges stay unchanged; no runtime semantic or capacity claim.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compute the four actual double bounds and round each to its consumed float value; keep the point callback buffer12 bytes and all precision/call contracts."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6570,
+      "sha256": "F3C9D567DE5748EDD809B11339924378E44D9D6E87E8CCAC33E1C36DCF9F9E3A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9F57600F6340E7A5D7BA36D7740BF311C4374490E14B813EA74862EC1518EC31"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109C3C-c3ce09a521.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
