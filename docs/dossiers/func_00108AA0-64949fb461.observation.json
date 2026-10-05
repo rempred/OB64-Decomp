@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "64949FB4614A37DA02E80E53C83402074B5ED5169DABEAD4B66F033AE29B2FE9",
+  "observationId": "EDE3662C2C8AEF495A7ACAEF67F90E1A8827BCB65EA96BAF4F4090D48C6B79AC",
+  "symbol": "func_00108AA0",
+  "authored": {
+    "context": "Full r2245 logical/physical body ROM108AA0..108C1C/VMA801B4360..801B44DC:380 bytes/95 words/frame72, including the genuine read-before-prologue preamble. Independently derived C uses existing point/bank/selector interfaces and real threshold joins; cross-overlay projection residency remains unresolved. Default ROM analysis hypotheses were checked against raw LE comparisons and branch polarity.",
+    "effects": [
+      "instruction-scheduling",
+      "register-allocation",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4A31C05D0D2515BAE419C092F90F8C2B699C0312246F0B1CCEB5C062B8F321FB",
+      "sourceSha256": "4722EE5C336A35971DEA4D798F955C6ADFDD315012351ED2727B82D97EBE595C"
+    },
+    "label": "scheduler-prerequisite-108aa0-embedded-return-join",
+    "observedEffect": "PURE_C380/frame72/17 actual relocations; complete95-word owner restored with only2 masked instruction differences at+0xCC/+0xD4. All float comparisons,99 test, return paths and delay slots agree. Actual ADDU/LW use v0 for the indexed address; retail uses v1. Authenticated D0311477 probe shows selector-base pseudo83 allocated v1 and byte/shift/result pseudos116/118/119 allocated v0; result PLUS has dying shifted-index first and base second. This is native diagnostic evidence, not linked exactness.",
+    "parentCandidateId": "4A8466B157A9CD2E7DD6E09E2ECAF2C64CD409FC0CF95D3FE293498545EEF362",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-embedded-return-join.c",
+        "sha256": "4722EE5C336A35971DEA4D798F955C6ADFDD315012351ED2727B82D97EBE595C"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-embedded-return-join-watch.json",
+        "sha256": "F9272EB5951635A84A65F311B03EC36341111474BAD4C8C81ECE56D5A87BC445"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-embedded-return-join-component.json",
+        "sha256": "ED7695C98E6781B668FD389218A3B16B36D0A495634308D5872AB005CFA96382"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00108AA0.s",
+        "sha256": "5F2F3E2A01FF073C1396281C5C0B66B2716A47EC0CCF853BFB75522507960ED9"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00108AA0-intake-20261005.json",
+        "sha256": "1BE329655438236429DDC909FEEBE2AB812038F99614FAC050B1015C8EE6EB7D"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-embedded-return-join-probe.json",
+        "sha256": "4D7A962196F3ACB1382884E7AF2B653B1A9743A7E9E00FF97EAAB937B6E196FB"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/D0311477D21A436C112BF12B574C38CBE257082881205346F6927A01FC85EE2F/authored.c",
+        "sha256": "4722EE5C336A35971DEA4D798F955C6ADFDD315012351ED2727B82D97EBE595C"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/D0311477D21A436C112BF12B574C38CBE257082881205346F6927A01FC85EE2F/input.c",
+        "sha256": "4A31C05D0D2515BAE419C092F90F8C2B699C0312246F0B1CCEB5C062B8F321FB"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/D0311477D21A436C112BF12B574C38CBE257082881205346F6927A01FC85EE2F/output.s",
+        "sha256": "047B482173956449A51CCA9182B0AB8E65765C0F7D90AAB0091E46DF73A13200"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/D0311477D21A436C112BF12B574C38CBE257082881205346F6927A01FC85EE2F/input.c.rtl",
+        "sha256": "A4478DA165AA2CF64DD6CF90C0BC0F29FCC71456D32AE72464832A1028D99C3F"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/D0311477D21A436C112BF12B574C38CBE257082881205346F6927A01FC85EE2F/input.c.loop",
+        "sha256": "618CFB4223D577B70B02EF198E09061AEB134891CD6D7733DC677F1C08B060B8"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/D0311477D21A436C112BF12B574C38CBE257082881205346F6927A01FC85EE2F/input.c.flow",
+        "sha256": "89D747978559FF27D63908D7AC4C8D299FF4915A5CE31610CE69B20E05F8271E"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/D0311477D21A436C112BF12B574C38CBE257082881205346F6927A01FC85EE2F/input.c.sched",
+        "sha256": "D36AC0DB95A40A0B4FC415A6B9A458D1E96E2901938450321353E21C25E81430"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/D0311477D21A436C112BF12B574C38CBE257082881205346F6927A01FC85EE2F/input.c.lreg",
+        "sha256": "3F5E9E49BF173A98195E42A128A9C4496F23A2159425CEFDB7BC9796850A30B1"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/D0311477D21A436C112BF12B574C38CBE257082881205346F6927A01FC85EE2F/input.c.greg",
+        "sha256": "F8A613F804C0311E003D0CE6B42AC06F5FE8062630046449AB8EEED721728BE2"
+      }
+    ],
+    "relatedCandidateIds": [
+      "4A8466B157A9CD2E7DD6E09E2ECAF2C64CD409FC0CF95D3FE293498545EEF362"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. Actual object relocation masks establish neither target symbol/addend equality nor linked bytes, placement, ownership or full-ROM acceptance. Scheduler FIVE/NINE remain open; tables/zeros/shared declarations and two source-information blockers remain required. No runtime reachability or semantic closure claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the real success label inside the mode-zero threshold branch, with its genuine incoming edge from the mode-nonzero successful threshold. Preserve all existing reads, stores and calls."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1496,
+      "sha256": "4A31C05D0D2515BAE419C092F90F8C2B699C0312246F0B1CCEB5C062B8F321FB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4722EE5C336A35971DEA4D798F955C6ADFDD315012351ED2727B82D97EBE595C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00108AA0-64949fb461.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

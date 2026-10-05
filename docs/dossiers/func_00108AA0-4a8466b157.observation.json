@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4A8466B157A9CD2E7DD6E09E2ECAF2C64CD409FC0CF95D3FE293498545EEF362",
+  "observationId": "4FEBD9FF01146423103B71F07E7D6388F5A2A8EFFD490C074ABDF583546608E2",
+  "symbol": "func_00108AA0",
+  "authored": {
+    "context": "Full r2245 logical/physical body ROM108AA0..108C1C/VMA801B4360..801B44DC:380 bytes/95 words/frame72, including the genuine read-before-prologue preamble. Independently derived C uses existing point/bank/selector interfaces and real threshold joins; cross-overlay projection residency remains unresolved. Default ROM analysis hypotheses were checked against raw LE comparisons and branch polarity.",
+    "effects": [
+      "instruction-scheduling",
+      "register-allocation",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7D811801F6364E72C4CD7FF6FF173D9C5A123FC952605B362B5C10ACD6FCCB85",
+      "sourceSha256": "4A7A4CDD3BACA0401814A214B1C265AFB2AAD98E528D2BDCA91C3586E7EAA250"
+    },
+    "label": "scheduler-prerequisite-108aa0-point-selection",
+    "observedEffect": "PURE_C332/frame72; comparison of complete95-word retail owner finds21 aligned masked-word differences and48 missing bytes. Source represents the sentinel99 path, but the old frontend folds it after the early selected==-1 return and merges the two float thresholds. Full source coverage does not establish exact emitted coverage.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-point-selection.c",
+        "sha256": "4A7A4CDD3BACA0401814A214B1C265AFB2AAD98E528D2BDCA91C3586E7EAA250"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-point-selection-watch.json",
+        "sha256": "93D9AF763A68744FE151F50BE8FE3B6E3AE2E2660585E1E5039C38853D136E77"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-point-selection-component.json",
+        "sha256": "A753AC4A8BE7E89FF2F2996DB15B9AC894F7260156598B6E73E443DADE22892D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00108AA0.s",
+        "sha256": "5F2F3E2A01FF073C1396281C5C0B66B2716A47EC0CCF853BFB75522507960ED9"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00108AA0-intake-20261005.json",
+        "sha256": "1BE329655438236429DDC909FEEBE2AB812038F99614FAC050B1015C8EE6EB7D"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Original ASM remains sole production owner. Actual object relocation masks establish neither target symbol/addend equality nor linked bytes, placement, ownership or full-ROM acceptance. Scheduler FIVE/NINE remain open; tables/zeros/shared declarations and two source-information blockers remain required. No runtime reachability or semantic closure claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Derive the full point-selection, projection and mode-dependent distance tests with structured nested returns."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1301,
+      "sha256": "7D811801F6364E72C4CD7FF6FF173D9C5A123FC952605B362B5C10ACD6FCCB85"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4A7A4CDD3BACA0401814A214B1C265AFB2AAD98E528D2BDCA91C3586E7EAA250"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00108AA0-4a8466b157.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
