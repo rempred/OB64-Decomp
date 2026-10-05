@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B935003C968190E30C301ED644EA57E6E66AC94474FCF2DAE579F3D0270F5F3C",
+  "observationId": "6DDC171985417A88954C817B689B79F35CF7FF67B4AB6BE3AC12C45B03EE678D",
+  "symbol": "func_00109A48",
+  "authored": {
+    "context": "Complete r2248 original owner444 bytes/111 words/frame48 at ROM109A48..109C04/VMA801B5308..801B54C4; all original instructions and current incoming/interface inventory reconciled. Native discrepancies arise in emission/layout, not an omitted callable body. Unit flags at0 and signed-sentinel list pointer atA8, source-row stride11 and helper interface preserved. Default Kuna/m2c hypotheses checked against full original body.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C99FBE59D5F38552CEDAA09D413D719DF6817DA17C9678643FCB9010E0765BFF",
+      "sourceSha256": "366A143C7DABA093266C81AB4AA51EA28C2F8181974A540D7A7F5934E61ED3E6"
+    },
+    "label": "scheduler-prerequisite-109a48-source-index-lifetimes",
+    "observedEffect": "PURE_C428/frame48/95 aligned masked-word differences. Initial guard becomes the retail ordinary BNE with unconditional counter increment in its delay slot, and outer index-zero moves into the mode-branch delay slot. Other allocation and missing-NOP/extent mismatches remain. Authenticated native probe3D964D06 records eight exact assets and the scalar lifetimes; not selected over436-byte source.",
+    "parentCandidateId": "A4FAF8969C01E10442917011C18613D4269650D37DD4B36A7729F2E910326F23",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-source-index-lifetimes.c",
+        "sha256": "366A143C7DABA093266C81AB4AA51EA28C2F8181974A540D7A7F5934E61ED3E6"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-source-index-lifetimes-watch.json",
+        "sha256": "E1A56C7BE80FBD655C310AD542A79DE59285D2C61728D7286CD37E4A65B08158"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-source-index-lifetimes-component.json",
+        "sha256": "76BDEDAE3702A0F7A34D05BA3D59B73A2D8765BC753E474EA71B23A28DD1D676"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00109A48.s",
+        "sha256": "9353511F64EE65E4493545830B5E642E14CD3E0383B8F8C08D9B1CD31E713FF6"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-func_00109A48-intake-20261005.json",
+        "sha256": "A236995DB4D1A8F53A6930AEFF00F06D6763ED81D781D34BE1D01F7D2E817CE0"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-analysis.json",
+        "sha256": "AFB3A1B7247CD4CB5AA4DF8340682DEB98A260E471FC77CC17A706BEB8AD3156"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/3D964D06209FA7C422789FA31201DF0B6E62223708D83C4451208593D50ECFFD/authored.c",
+        "sha256": "366A143C7DABA093266C81AB4AA51EA28C2F8181974A540D7A7F5934E61ED3E6"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/3D964D06209FA7C422789FA31201DF0B6E62223708D83C4451208593D50ECFFD/input.c",
+        "sha256": "C99FBE59D5F38552CEDAA09D413D719DF6817DA17C9678643FCB9010E0765BFF"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/3D964D06209FA7C422789FA31201DF0B6E62223708D83C4451208593D50ECFFD/output.s",
+        "sha256": "260D1E924640C1A304AC3CE1985537F2CB38C031A1ACBBC0F3C446D912AC2240"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/3D964D06209FA7C422789FA31201DF0B6E62223708D83C4451208593D50ECFFD/input.c.rtl",
+        "sha256": "B8AEFA85FB9CA5FEF0CEDAC1E82F3EE55660EDB561778B37EF82E2E5042775E0"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/3D964D06209FA7C422789FA31201DF0B6E62223708D83C4451208593D50ECFFD/input.c.flow",
+        "sha256": "AF26FD5325145FE2452381FD2B1AFA89CAF23D18051FF28EF222ECED620946D1"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/3D964D06209FA7C422789FA31201DF0B6E62223708D83C4451208593D50ECFFD/input.c.sched",
+        "sha256": "08AC39A5122FCE853D9A6AA5F8B441759DE08A2D9998AABEC320A43633BB7AF4"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/3D964D06209FA7C422789FA31201DF0B6E62223708D83C4451208593D50ECFFD/input.c.lreg",
+        "sha256": "EBFB506FF1AF2857AD7A3AF49D80ACCA15B7F0E9AFC6C655EC7A3467CBA390FE"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00109A48/probes/3D964D06209FA7C422789FA31201DF0B6E62223708D83C4451208593D50ECFFD/input.c.greg",
+        "sha256": "7ED73AEE85D75C645B47CB090390CC141A309E568E2AD12336960084A93F5481"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-source-index-lifetimes-probe.json",
+        "sha256": "34E4586599C8B803EDE77E81626BFDE5B20A9393C137743A210511A2AFE936DA"
+      }
+    ],
+    "relatedCandidateIds": [
+      "A4FAF8969C01E10442917011C18613D4269650D37DD4B36A7729F2E910326F23"
+    ],
+    "remainingFailure": "ASM remains sole production owner. No source is linked exact, and incomplete emitted extent remains a required rejection. Actual object relocation masks do not establish addresses/addends, placement, ownership or full-ROM equality. Complete scheduler FIVE/NINE and other prerequisites remain open; no structural or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Increment the initial scan counter before its two flag guards and initialize the distinct outer index before the mode branch; use a promoted signed source-byte value and genuine do-while outer loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1966,
+      "sha256": "C99FBE59D5F38552CEDAA09D413D719DF6817DA17C9678643FCB9010E0765BFF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "366A143C7DABA093266C81AB4AA51EA28C2F8181974A540D7A7F5934E61ED3E6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109A48-b935003c96.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

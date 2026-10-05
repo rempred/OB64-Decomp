@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CAF6534FA6A481391143F54C500701A83D0E335FECF155D0811AF378AA03196D",
+  "observationId": "D0736B971E8689C0AF4633B5D6577A1C65C59CA0CE5FE46AE0871DE1661FF54B",
+  "symbol": "func_00109A48",
+  "authored": {
+    "context": "Exact same full r2248 physical/logical body and interfaces as4982; this is a source-flow counterexample, not an assembly-inherent conclusion.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1E8701FBC003F1F36D08C8C439FF7F8D1FB273AB8C817E1A5F2E20302ED3E6BB",
+      "sourceSha256": "35736D48BDFDBA8EAE97CFA4DA9B936A92FBF0E4F2347C9777339909ED4892C9"
+    },
+    "label": "scheduler-prerequisite-109a48-genuine-mark-join",
+    "observedEffect": "PURE_C432/frame48/87 aligned masked-word differences; raw object exactly equals the4982 parent. A real named mark label does not preserve an extra emitted guard/ORI boundary in this source context. It does not supply the missing retail NOP; no fake edge or unused operation was introduced.",
+    "parentCandidateId": "4982F575EFE5974BCE3A84F71B36E4E7A312381B3997A6BAD2FD634FEFD5AE4B",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-genuine-mark-join.c",
+        "sha256": "35736D48BDFDBA8EAE97CFA4DA9B936A92FBF0E4F2347C9777339909ED4892C9"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-genuine-mark-join-watch.json",
+        "sha256": "05D8FA997EA99D59FE1A72585704321DF5978F9E071C1507BC840B3C38DB467A"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-genuine-mark-join-component.json",
+        "sha256": "E36D0A64DF2C77040848D2C28DE6EC7737EFAA27036E8265CC25143AB80D8820"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00109A48.s",
+        "sha256": "9353511F64EE65E4493545830B5E642E14CD3E0383B8F8C08D9B1CD31E713FF6"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      }
+    ],
+    "relatedCandidateIds": [
+      "4982F575EFE5974BCE3A84F71B36E4E7A312381B3997A6BAD2FD634FEFD5AE4B"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. No linked byte/address/addend/ownership/full-ROM acceptance is established by actual object relocation masks. Complete scheduler FIVE/NINE, source-information blockers, shared declarations, table and zero ownership remain open. No source/tooling exception or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Express the initial mark/store block with a genuine incoming edge from the bit20 test and a shared actual next-slot continuation; retain the bit8 skip."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2063,
+      "sha256": "1E8701FBC003F1F36D08C8C439FF7F8D1FB273AB8C817E1A5F2E20302ED3E6BB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "35736D48BDFDBA8EAE97CFA4DA9B936A92FBF0E4F2347C9777339909ED4892C9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109A48-caf6534fa6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

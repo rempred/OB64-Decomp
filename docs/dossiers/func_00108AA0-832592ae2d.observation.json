@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "832592AE2DAE83D773FD1352DE49D4655C5A6177D207D9892CB7C0A6FC74ACE2",
+  "observationId": "68F7AD91217A18D5B5939536EF5142EB7D2E5C176AB8C61C3536C653FA613F83",
+  "symbol": "func_00108AA0",
+  "authored": {
+    "context": "Full r2245 owner380 bytes/95 words, genuine success join and actual point/table/selector reads preserved. Gold source deduction is advisory; authenticated native output determines the observation.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "432722F2D78723B7CFA5452781767EC07DCBB9A646DDF054C69F150C41FA3FF6",
+      "sourceSha256": "93157D918088FE9C9DD4AAC61784BD9903FE1344D9DD68288B62EB55A37A9E5D"
+    },
+    "label": "scheduler-prerequisite-108aa0-outer-pointer-offset",
+    "observedEffect": "PURE_C380/frame72/two masked register differences; raw object exactly equals64949 parent. Six authenticated assets in C52F83D4 probe show expand still emits PLUS(118,83), then adds-88, despite the proposed grouping. This contradicts the predicted base-first expand result for this exact expression; it does not disprove every base-first source hypothesis. Integer and named selector-offset forms also produced the same two native differences, retained privately.",
+    "parentCandidateId": "64949FB4614A37DA02E80E53C83402074B5ED5169DABEAD4B66F033AE29B2FE9",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-outer-pointer-offset.c",
+        "sha256": "93157D918088FE9C9DD4AAC61784BD9903FE1344D9DD68288B62EB55A37A9E5D"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-outer-pointer-offset-watch.json",
+        "sha256": "1B53AEE50623733308A5978C17E8BD2FBF6FFA59A89724D97288CD82674493D9"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-outer-pointer-offset-component.json",
+        "sha256": "1D2AC91B126CBAA16BC069C67C7024699D9F5B61A7880659F2F5817DE072271B"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00108AA0.s",
+        "sha256": "5F2F3E2A01FF073C1396281C5C0B66B2716A47EC0CCF853BFB75522507960ED9"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/C52F83D41BCBFB9DC9A74B7C9EA3A97E37439CAC066E85ED9B9906C9E030E17C/authored.c",
+        "sha256": "93157D918088FE9C9DD4AAC61784BD9903FE1344D9DD68288B62EB55A37A9E5D"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/C52F83D41BCBFB9DC9A74B7C9EA3A97E37439CAC066E85ED9B9906C9E030E17C/input.c",
+        "sha256": "432722F2D78723B7CFA5452781767EC07DCBB9A646DDF054C69F150C41FA3FF6"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/C52F83D41BCBFB9DC9A74B7C9EA3A97E37439CAC066E85ED9B9906C9E030E17C/output.s",
+        "sha256": "4C0BC373D663FF479275ABECD11431FD5CA8C259F8768C53FF94A06EA88D6245"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/C52F83D41BCBFB9DC9A74B7C9EA3A97E37439CAC066E85ED9B9906C9E030E17C/input.c.rtl",
+        "sha256": "453767BB690EB1FD21CE75FD2BD90FAC1CBC03446F73DFFF8817DC3C11EF7BA6"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/C52F83D41BCBFB9DC9A74B7C9EA3A97E37439CAC066E85ED9B9906C9E030E17C/input.c.sched",
+        "sha256": "6AAFD0A03EB9A8629F1CF2EAC31C71B1A865F0C54DDFB6E9C56369307A5C69CA"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00108AA0/probes/C52F83D41BCBFB9DC9A74B7C9EA3A97E37439CAC066E85ED9B9906C9E030E17C/input.c.lreg",
+        "sha256": "89710DDC26AA0108B65913F0848877761349B86F809A90FBAD3F3DEABADD9C44"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-108aa0-outer-pointer-offset-probe.json",
+        "sha256": "7CFDDD31689EC7FC55CBB22AC5756E8F6F00A20A7413C2E3CD05B274DA1AE0E6"
+      },
+      {
+        "path": "build/sol-five-family/magenta-scheduler-mail-1251.json",
+        "sha256": "67A67B32FF735DE8E11F1D74D58333D7A7402500E538BE74DD40229D842F907B"
+      }
+    ],
+    "relatedCandidateIds": [
+      "64949FB4614A37DA02E80E53C83402074B5ED5169DABEAD4B66F033AE29B2FE9"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. No linked byte/address/addend/ownership/full-ROM acceptance is established by actual object relocation masks. Complete scheduler FIVE/NINE, source-information blockers, shared declarations, table and zero ownership remain open. No source/tooling exception or runtime claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Apply the existing minus88 pointer-slot offset outside the array-index address expression, keeping selector-base single-set. Test Gold1251 source-level prediction against actual pinned compiler output."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1513,
+      "sha256": "432722F2D78723B7CFA5452781767EC07DCBB9A646DDF054C69F150C41FA3FF6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "93157D918088FE9C9DD4AAC61784BD9903FE1344D9DD68288B62EB55A37A9E5D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00108AA0-832592ae2d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

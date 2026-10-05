@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4982F575EFE5974BCE3A84F71B36E4E7A312381B3997A6BAD2FD634FEFD5AE4B",
+  "observationId": "1A75AD39F79E158F62E2D57EAED57B316AFFE44CDCBCB8095CFFB9B652542046",
+  "symbol": "func_00109A48",
+  "authored": {
+    "context": "Full r2248 owner444 bytes/111 words and both list paths reconciled against original ASM and default analysis hypotheses; original helper-call, source-row stride11 and fieldA8 interfaces unchanged.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F6B0406D90092B2CDF9A7735A96871FCB6EBCA34EAFB070676A97A99FE69D958",
+      "sourceSha256": "9E3A10B55AF5CC4DFD1D114B1EB6F3A519C0FA3C4DD1B741BEF9F7F8C865A809"
+    },
+    "label": "scheduler-prerequisite-109a48-plain-guarded-counter-mask",
+    "observedEffect": "PURE_C432/frame48/87 aligned masked-word differences; first64 bytes agree outside actual relocations. Null-head guard now has the retail NOP delay slot, and the first-member guard has the retail counter-zero delay slot. Clear-mask/bank/sentinel registers and initial second-guard NOP remain different; full owner remains12 bytes short. This is the current recoverable source frontier; A4FA436-byte closer-extent alternative is also preserved.",
+    "parentCandidateId": "51616FB01D3B3D03297A55D4FD15F0BB69DF87308A8A6774CCD8DBFC9F604EDE",
+    "references": [
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-plain-guarded-counter-mask.c",
+        "sha256": "9E3A10B55AF5CC4DFD1D114B1EB6F3A519C0FA3C4DD1B741BEF9F7F8C865A809"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-plain-guarded-counter-mask-watch.json",
+        "sha256": "6F813D9236F435E9FED277D2416447368EB4C4724CB432C0C819325E84FC6993"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-prerequisite-109a48-plain-guarded-counter-mask-component.json",
+        "sha256": "2D3F1EB3567A71D995B6EE2D414A0B4A7A0C32C70AA41A2C50B6E3B6EC2C7453"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00109A48.s",
+        "sha256": "9353511F64EE65E4493545830B5E642E14CD3E0383B8F8C08D9B1CD31E713FF6"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-inventory-20261005.json",
+        "sha256": "988419E8CE025F38567FE930628C3967B06A62B15D85FECDFFCF01849FECE50E"
+      },
+      {
+        "path": "build/matching/solsquad/scheduler-nine-interfaces-20261005.md",
+        "sha256": "C92D5387ADB9A03F39DB7FD198FB3FB3777C3970DAE47B7682DCA00F37E3ECE4"
+      }
+    ],
+    "relatedCandidateIds": [
+      "51616FB01D3B3D03297A55D4FD15F0BB69DF87308A8A6774CCD8DBFC9F604EDE"
+    ],
+    "remainingFailure": "Original ASM remains sole production owner. No linked byte/address/addend/ownership/full-ROM acceptance is established by actual object relocation masks. Complete scheduler FIVE/NINE, source-information blockers, shared declarations, table and zero ownership remain open. No source/tooling exception or runtime claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the two initial flag guards nested. Initialize the real unflagged list counter and clear mask inside its nonempty-sentinel guard, with the mask assignment after the counter reset."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1983,
+      "sha256": "F6B0406D90092B2CDF9A7735A96871FCB6EBCA34EAFB070676A97A99FE69D958"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9E3A10B55AF5CC4DFD1D114B1EB6F3A519C0FA3C4DD1B741BEF9F7F8C865A809"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_00109A48-4982f575ef.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
