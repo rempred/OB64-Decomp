@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3E027F5284A3A3D16D16D0CE5DA555FE0356F870465B16FEE94837CB2F7718A4",
+  "observationId": "E43372E4BB1F50F87E2D3B67A16B6B25F9EAC4583F7A11E225FF117CEDFF4272",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "Current sole r2251 body reconciliation covers1520 original bytes, all10 float predicates, all terrain dispatches,51 member words including sentinel, owner search and memory publication. Reopened September30 source checked after scratch-native contract11 release. Original assembly/proof unchanged.",
+    "effects": [
+      "register-allocation",
+      "stack-layout",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "552D2510D23907DCB90099DBB5D890ADE95FC8FCE49EE1F25C46A59AE5F6F4B6",
+      "sourceSha256": "628EFE3C015BDC1B3CCAE8D7122F77BB7A2C63917411B4221BC1277569FD234D"
+    },
+    "label": "scheduler-a128-reopened-native11-control",
+    "observedEffect": "Mechanical PURE_C; native1512/frame392/36 actual relocations/293 masked differing words. First ordinary register difference192: two-pi F20 versus retailF22. Shared radius occupies F24; shift_z F20; resulting center_z F22. This is the comparison baseline for a real distinct first-offset local.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-reopened-control.c",
+        "sha256": "628EFE3C015BDC1B3CCAE8D7122F77BB7A2C63917411B4221BC1277569FD234D"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-reopened-control-native11-watch.json",
+        "sha256": "2074C3551916F03F109646BD52EB7D7803285970E437E6F1A7BF0BB9D2C2B364"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-reopened-control-native11-component.json",
+        "sha256": "7B5D4897465A70F3290631BA071D7CB0BCEF64F0D302C5C8D27DBCA3C182112B"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-body-reconciliation.json",
+        "sha256": "BEE762C50F278932774683B7ACCFB5F4344B04349F409AC8CDD3325BABD511C4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "A128 remains nonexact and inactive ASM. Full380-word logical body is represented, but native1512 differs from original1520. Lower-bound branch/countdown scheduling, later registers and remaining body bytes are unresolved. Source-bound relocation-field-masked diagnostics do not establish symbol/addend binding, canonical sole ownership, linked exact bytes or complete FIVE-member full-ROM acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Copy the recoverable full source unchanged into the assigned private root and refresh the actual native compiler/assembler comparison."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7308,
+      "sha256": "552D2510D23907DCB90099DBB5D890ADE95FC8FCE49EE1F25C46A59AE5F6F4B6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "628EFE3C015BDC1B3CCAE8D7122F77BB7A2C63917411B4221BC1277569FD234D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A128-3e027f5284.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

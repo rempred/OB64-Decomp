@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "64DE27B62DEEEE9FF498E1DCB89F6D7028F0163803E133011AC7264511F01622",
+  "observationId": "2659B67B33466E6D6763B24692A861FAB8093DF89107F1C5EE4AF3F5EA5D8B2B",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "The full-body native control retains all semantics but reuses one radius for cosine offset and later wide radius. Actual1094BC evidence identifies separate real first-offset local as a transferable allocation constraint; declaration order is checked against original eight bound homes.",
+    "effects": [
+      "register-allocation",
+      "stack-layout",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7BDF513BB8EE56069001BEF3A1394AA095656CED86F6DD1BED1970E7F28C92DC",
+      "sourceSha256": "C3BFBA549F06B311C223C378FB92B65B08FC6589C6880EE6F88E75E962338C31"
+    },
+    "label": "scheduler-a128-distinct-offset-original-home-order",
+    "observedEffect": "Mechanical PURE_C1512/frame392/36R. Distinct-offset0599BFD7 reduces293 to272 masked words and restores the F20/F22/F24 geometry through356. Declaration-order64DE27B6 further reduces270, preserving same extent/frame/relocations; min_z/max_x homes becomeFC/104, small min_z/max_x become11C/124 as original. A real separate half-scale local BDAE305D emits identical instructions and is not selected. All required body coverage retained.",
+    "parentCandidateId": "3E027F5284A3A3D16D16D0CE5DA555FE0356F870465B16FEE94837CB2F7718A4",
+    "references": [
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-original-bound-home-order.c",
+        "sha256": "C3BFBA549F06B311C223C378FB92B65B08FC6589C6880EE6F88E75E962338C31"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-original-bound-home-order-native11-watch.json",
+        "sha256": "A8AEC239545CDE3A67BD4DC40248647593B345489B779F9A3F2D682532A862E2"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-original-bound-home-order-native11-component.json",
+        "sha256": "061D86FE66534A79FA5448A912EDB9D7E1F5E4F9CDC6FA37900F066554B7167E"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-distinct-offset-shared-radius-native11-component.json",
+        "sha256": "964F9A050DECA52AB51B247A8A71C200E896BBAC81C9095F2596400B1310975E"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-distinct-half-scale-native11-component.json",
+        "sha256": "C506C676480DB72EE2C3E3F3F0C9AA76D0C9E24BE3BE4FA18AE92E01A163B810"
+      },
+      {
+        "path": "build/matching/solsquad/squad-scheduler-10a128-body-reconciliation.json",
+        "sha256": "BEE762C50F278932774683B7ACCFB5F4344B04349F409AC8CDD3325BABD511C4"
+      },
+      {
+        "path": "docs/dossiers/func_001094BC-adb9c74224.md",
+        "sha256": "D8827EB82BCC8D37C7C52193E38A95B20FC130886C1D77038C124A6B9132CC7B"
+      },
+      {
+        "path": "docs/audit/2026-10-05-scratch-cop1-native-input.md",
+        "sha256": "CA4A5217FD16DF77D0405EBFE327FBD04B2E81949D1B14C5A10679830A14C554"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "A128 remains nonexact and inactive ASM. Full380-word logical body is represented, but native1512 differs from original1520. Lower-bound branch/countdown scheduling, later registers and remaining body bytes are unresolved. Source-bound relocation-field-masked diagnostics do not establish symbol/addend binding, canonical sole ownership, linked exact bytes or complete FIVE-member full-ROM acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a separate shift_x local only for the first cosine offset. Keep radius for the later/wide radii. Declare wide/small bounds in min_x,min_z,max_x,max_z order so their actual spill homes follow the original layout. No artificial consumer, assembler injection or stack padding."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7320,
+      "sha256": "7BDF513BB8EE56069001BEF3A1394AA095656CED86F6DD1BED1970E7F28C92DC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C3BFBA549F06B311C223C378FB92B65B08FC6589C6880EE6F88E75E962338C31"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-05-func_0010A128-64de27b62d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
