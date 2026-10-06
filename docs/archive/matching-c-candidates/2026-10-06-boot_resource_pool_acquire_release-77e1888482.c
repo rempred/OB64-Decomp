@@ -8,7 +8,7 @@ extern void *func_00001330(unsigned int size);
 extern void func_000016C4(void *ptr);
 extern void *resource_pool;
 
-void func_0000B33C(unsigned int acquire)
+void boot_resource_pool_acquire_release(unsigned int acquire)
 {
     if (acquire != 0) {
         unsigned int offset;

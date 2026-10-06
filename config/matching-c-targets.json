@@ -1041,6 +1041,18 @@
     {
       "symbol": "boot_command_stream_resource_node_dispatch",
       "source": "src/boot/boot_command_stream_resource_node_dispatch.c"
+    },
+    {
+      "symbol": "boot_resource_record_mark_ready",
+      "source": "src/boot/boot_resource_record_mark_ready.c"
+    },
+    {
+      "symbol": "boot_resource_loader_callback_register",
+      "source": "src/boot/boot_resource_loader_callback_register.c"
+    },
+    {
+      "symbol": "boot_resource_archive_load_many",
+      "source": "src/boot/boot_resource_archive_load_many.c"
     }
   ]
 }

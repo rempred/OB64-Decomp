@@ -19,7 +19,7 @@ extern const u8 g_resource_missing_entry[];
 extern const u8 g_resource_other_type[];
 extern void *g_resource_directory_table[];
 
-void func_0000BC8C(void *context, u8 *record)
+void boot_resource_record_resolve_load(void *context, u8 *record)
 {
     /* This function observes only the offsets used below; the record's complete
        layout and the reporting fields' meanings remain unresolved. */

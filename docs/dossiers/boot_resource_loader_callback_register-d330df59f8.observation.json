@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D330DF59F80D436161FCBD447BC833500C97A1F7760977F962EACCE48C456470",
+  "observationId": "BA222233014C53AC1EF815C485023B0FB79FBE5C88EF1844FA92600ED6341F29",
+  "symbol": "boot_resource_loader_callback_register",
+  "authored": {
+    "context": "Compare complete AFAC PURE_C source with same storage symbol used twice: it carries address across first call, frame48 and body144 versus retail40/132.",
+    "effects": [
+      "register-allocation",
+      "stack-frame",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4837589564A3C396661B75FD2D54ED9C054E07E186E1F8D150835903783415E0",
+      "sourceSha256": "2419298891B9D307785B634F8866BAC503A718CAD24C469835532FAA9C76BB49"
+    },
+    "label": "separate-storage-address-view",
+    "observedEffect": "Private r3 emits full132-byte body with frame40, original s0context/s1arg0/s2arg1 lifetimes and13 actual relocations. Raw relocation-masked bytes agree exactly, including first-call argument formation.",
+    "parentCandidateId": "1D126FC4430E86E517D9449E11F31749289BB999D878C3969FB458D0A31BD0C8",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_loader_callback_register.s",
+        "sha256": "3CF312C7B3FCFD25122D91E45628F2570B805EA4343B12B5B949C1A44F7CCD82"
+      },
+      {
+        "path": "build/matching/sol-archive-20261005/watch-AFAC-r3.json",
+        "sha256": "3D012C997840589C61925E34115EDD89D1C323EC9E2E2316453A82C040AC96BE"
+      },
+      {
+        "path": "build/matching/sol-archive-20261005/census-AFAC.json",
+        "sha256": "81146E153C7E0435F0E4C566F56AB937B979B8166BF37E0F3C5B440AEB281C98"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner lacks authenticated isolated private link. Expected provenance unavailable; raw relocation fields differ until link. Canonical focused diff and final complete-SIX verifier remain required.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use existing800B0000 link anchor minus0D00 for first initialization storage argument; keep direct800AF300 storage view in callback registration. No shared header or tool change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 959,
+      "sha256": "4837589564A3C396661B75FD2D54ED9C054E07E186E1F8D150835903783415E0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2419298891B9D307785B634F8866BAC503A718CAD24C469835532FAA9C76BB49"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_loader_callback_register-d330df59f8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

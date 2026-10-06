@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "77E18884826271813F396826D47DAB88BDD1E7C4EFF673957E57C34C8E7C1F67",
+  "observationId": "4F169696F38219F87D8D44907320BC8842B4C364643740610FA2169501493F35",
+  "symbol": "boot_resource_pool_acquire_release",
+  "authored": {
+    "context": "Original B33C168 and current canonical func_0000B33C HYBRID reference. Separate slot cursor and byte-offset size stream, pool binding800A884C, null-slot termination.",
+    "effects": [
+      "complete-body",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E3CBFC05C1410DA3E32DE6AA8410ACA5B3182AAE3A876AF97533C5AF83C85035",
+      "sourceSha256": "5F84EAB9A2471A6B7D400DFEA1B8FDB9D588A536CF13E4616F1CFDD5A6FDDD1C"
+    },
+    "label": "ordinary-zero-init-pool-bracket",
+    "observedEffect": "First private check compiles PURE_C and emits complete168-byte function; raw relocation-masked bytes exactly agree. Compiler naturally schedules zero initialization in the original branch delay slot and preserves both acquire and release loops.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_pool_acquire_release.s",
+        "sha256": "52E6438AB303533F47BF54079AD3F95822B9904EC356CA4B31E156C85B84108C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Descriptive private alias reports inactive ASM despite canonical HYBRID ownership; authenticated isolated link unavailable. Canonical spelling/context focused diff and complete-SIX verifier still required; no alias activation or duplicate owner.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Remove noreorder and assembler zero-init mechanisms; express offset=0 and both loops through ordinary C. Private entry uses descriptive selection; canonical key/source must remain func_0000B33C/src/boot/boot_resource_pool_acquire_release.c."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1034,
+      "sha256": "E3CBFC05C1410DA3E32DE6AA8410ACA5B3182AAE3A876AF97533C5AF83C85035"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5F84EAB9A2471A6B7D400DFEA1B8FDB9D588A536CF13E4616F1CFDD5A6FDDD1C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_pool_acquire_release-77e1888482.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

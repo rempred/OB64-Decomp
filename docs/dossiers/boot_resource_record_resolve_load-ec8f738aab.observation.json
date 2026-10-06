@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EC8F738AAB056E9084E1D5B35780E4B383A45F9C87BE52283806C771BD516F94",
+  "observationId": "25AC028220806A2A934AB8D9FD097AFE88D6BAE78491AE2326A474F4E4C8B547",
+  "symbol": "boot_resource_record_resolve_load",
+  "authored": {
+    "context": "Complete exact Boolean-first-guard BC8C source is recoverable. GoldOx1394 proposed a simpler guarded dispatch followed by the repeated null test at the join; its compiler-stage expectation was untested in this source context.",
+    "effects": [
+      "complete-body",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DBA531BBB8DF2318A823A79FA57000F2937092DD75F478888A8D70FC0605D096",
+      "sourceSha256": "96C1D27E29E5C5F243EB81E9E67E0578C32A7816058327A0278FE0CF0A4A9E40"
+    },
+    "label": "guarded-call-join-first-cse-counterexample",
+    "observedEffect": "PURE_C EC8F738A emits516/frame312 with the same35 masked differences as the direct guard control. Authenticated D457E126F54 probe retains first guard262 -> join282 and second guard285 in RTL/JUMP. First CSE redirects262 to epilogue358 and deletes285, so the proposed join does not preserve the repeated branch in this complete source context. The measured exact Boolean E5FF78A696 context instead retains both guard270 and301 in first CSE. No universal rejection of guarded-call forms follows.",
+    "parentCandidateId": "9CEA8DDC48589E5FEBC8C87180A60B4685C50B210B7356D3AF36EB00B7D9905C",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_record_resolve_load.s",
+        "sha256": "B77775732A4D474596FCEB6369CF286A784ED86AC2A1442B1D60B94BCC9DB04E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "CC491DBA27C8C31E0C230B1DDDAC06CFAB6CE1EFA4934E8712D67AB337D1355F"
+    ],
+    "remainingFailure": "Nonselected readable control lacks eight retail bytes. Private linking remains unavailable; full-SIX acceptance belongs to canonical exact source after integration. No tooling defect or contract change is indicated.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the Boolean-result first guard with if(buffer!=0){status=dispatch(...);} and then if(buffer==0)return before the real byte clear. All actual calls, accesses, widths and paths remain."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3440,
+      "sha256": "DBA531BBB8DF2318A823A79FA57000F2937092DD75F478888A8D70FC0605D096"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "96C1D27E29E5C5F243EB81E9E67E0578C32A7816058327A0278FE0CF0A4A9E40"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_record_resolve_load-ec8f738aab.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

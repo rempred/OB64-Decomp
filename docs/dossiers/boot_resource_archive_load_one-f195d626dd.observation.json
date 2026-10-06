@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F195D626DD60443B79CCE0427465D28118152CF5919E18E4B99B30DDB77728CF",
+  "observationId": "FAA2642A8A01102D62336994470FF49C3DB7D4C53C6435028D2F176CF987C2A4",
+  "symbol": "boot_resource_archive_load_one",
+  "authored": {
+    "context": "Canonical func_0000B29C HYBRID control uses input/count union, scratch130 and assembler macros to shape absolute archive-table800AE0A8 address.",
+    "effects": [
+      "complete-body",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "81958A56B1FC51CA93B501F09CEDA3C580A85C6CCE0DAD712BB857474AEF160A",
+      "sourceSha256": "B8276F809CA0652D73063115D1A46400C6CA64DC16B4F04C753B11546E08F52C"
+    },
+    "label": "archive-table-symbolic-address-and-input-count-phases",
+    "observedEffect": "First PURE_C private check emits complete160-byte function and original frame336, input/count in the same saved register, byte-clear close path and record10 increments. Raw relocation-masked bytes agree exactly.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_archive_load_one.s",
+        "sha256": "A118AA162446DDE6330A2ED466B7500FB590BE9CC627A625B5597B76BD96D2FF"
+      },
+      {
+        "path": "build/matching/sol-archive-20261005/watch-B29C.json",
+        "sha256": "5ADDBAF2E8C053336485C31B24A29A0283431FF4839E7F1A94391C1989EC6FDB"
+      },
+      {
+        "path": "build/matching/sol-archive-20261005/census-B29C.json",
+        "sha256": "42FA7604C42955C0E02DCF83A4EB253B51E047A3F210A5B5E0811E5738E72C7C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Descriptive private alias lacks authenticated isolated link and canonical source classification remains HYBRID until integration. Preserve canonical func_0000B29C/source path, run focused production diff and final complete-SIX verifier; no duplicate activation.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently preserve complete loop/null-close/count behavior and replace assembler macros/absolute pointer with ordinary existing800B0000 anchor minus1F58. Private descriptive name remains diagnostic only."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1565,
+      "sha256": "81958A56B1FC51CA93B501F09CEDA3C580A85C6CCE0DAD712BB857474AEF160A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B8276F809CA0652D73063115D1A46400C6CA64DC16B4F04C753B11546E08F52C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_archive_load_one-f195d626dd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

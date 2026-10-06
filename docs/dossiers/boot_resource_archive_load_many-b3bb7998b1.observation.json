@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B3BB7998B108C74A9F0A4CAE537132F077C8A9A38C3047D9D1033DE1F48D4F48",
+  "observationId": "9CC02FEF99A001EF5977B3FCE14E26EB56A97BDBBA1D5E7AF3379EBA2B27FD84",
+  "symbol": "boot_resource_archive_load_many",
+  "authored": {
+    "context": "Direct indexed request members and positive name/index match, source r8 duplicated-close control. All full-owner paths retained.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order",
+      "complete-body"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D9E810B1AF1D4FEB79825DC33FAE5A90A335719224AA4AC448D9A5CF7B3A7F1F",
+      "sourceSha256": "7499B9C4A224C8B004BCEC01623AE90B334300C4BCA9267799551EFC362CB030"
+    },
+    "label": "common-close-expression-three-word-frontier-clean-archival-successor",
+    "observedEffect": "PURE_C492/frame392 restores all original register roles, both real close stores in exit delay slots and final base reload placement. Three actual-relocation-masked words differ at110/114/118: ordinal store comes before field08 store and second-result load. Common-store intermediate r9 independently measured the restored register cycle/extent but retained11 scheduling differences. Raw parent compiler measurements above remain source-bound; the clean successor independently reproduces byte-identical complete object text, the same frame and all actual relocations. Raw-parent stage probes remain bound to those raw sources only.",
+    "parentCandidateId": "4EF093FBD07E707BE5C2A383357E1DE9D1841FC03317A8C8E19F080DBFF912D4",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_archive_load_many.s",
+        "sha256": "5FA98B5E29974C6EC0713E9D28853E985067C3242C8C0F46DDCF5CF04F3F8530"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Three-word load/store ordering frontier remains; private inactive-ASM link unavailable, so no linked or final acceptance. Combined source change establishes this context's output, not isolated universal expression/indexing effects.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use one common post-loop close assignment as the B33C release argument and direct member indexing in the final missing-result loop. Normalize line endings and EOF whitespace through a new authenticated candidate; preserve raw parent bytes privately."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3203,
+      "sha256": "D9E810B1AF1D4FEB79825DC33FAE5A90A335719224AA4AC448D9A5CF7B3A7F1F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7499B9C4A224C8B004BCEC01623AE90B334300C4BCA9267799551EFC362CB030"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_archive_load_many-b3bb7998b1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

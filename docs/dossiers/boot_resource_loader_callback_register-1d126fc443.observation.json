@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1D126FC4430E86E517D9449E11F31749289BB999D878C3969FB458D0A31BD0C8",
+  "observationId": "822CACFF56EDF4C4C69E8496EA12055E643285519EB74B74F3463720427CBC94",
+  "symbol": "boot_resource_loader_callback_register",
+  "authored": {
+    "context": "Original AFAC..B030 owner is one132-byte body, frame40, three saved variables s0context/s1arg0/s2arg1.",
+    "effects": [
+      "register-allocation",
+      "stack-frame"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A08DE9B9F2EB72EF86157C64C0B98A29076E17DDD3A0EFCD6F6383C299065F72",
+      "sourceSha256": "A47298A75F26856E4842B70DE9CE83213259290E962D74848D49AC5A1138C59C"
+    },
+    "label": "storage-address-live-across-first-call",
+    "observedEffect": "PURE_C compiled144bytes with frame48 and saved storage address in s0 plus context in s1; incoming arguments shift to s2/s3. Full code coverage exists but nonexact extent and live ranges.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_loader_callback_register.s",
+        "sha256": "3CF312C7B3FCFD25122D91E45628F2570B805EA4343B12B5B949C1A44F7CCD82"
+      },
+      {
+        "path": "build/matching/sol-archive-20261005/watch-AFAC.json",
+        "sha256": "9DDC94F2FD0B354569A012823CB204017256FD943B8A8682A2A90907ACCD4B9B"
+      },
+      {
+        "path": "build/matching/sol-archive-20261005/census-AFAC-control.json",
+        "sha256": "E40BB2ADCB5B6BE41ADFA36E8C9710AAE82E262C3E8AB3DF19DDC022A44E725D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Extra saved address, code extent144 versus132, nonexact instructions. Inactive ASM private link unavailable. A worse measured source does not eliminate ordinary symbolic-address or callback lifetime hypotheses.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the same symbolic storage address800AF300 in both queue initialization and later callback registration."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 852,
+      "sha256": "A08DE9B9F2EB72EF86157C64C0B98A29076E17DDD3A0EFCD6F6383C299065F72"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A47298A75F26856E4842B70DE9CE83213259290E962D74848D49AC5A1138C59C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_loader_callback_register-1d126fc443.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

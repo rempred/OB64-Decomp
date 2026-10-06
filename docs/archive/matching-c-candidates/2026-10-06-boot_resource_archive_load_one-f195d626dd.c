@@ -28,7 +28,7 @@ extern void func_0000BBC0(u32 key); /* Existing binding is RAM8007BBC0. */
 extern int func_0000B3E4(ResourceArchiveRecord *record, u8 *scratch);
 extern const u8 g_boot_resource_lzss_error_anchor[];
 
-u32 func_0000B29C(ResourceArchiveInput *input)
+u32 boot_resource_archive_load_one(ResourceArchiveInput *input)
 {
     u8 scratch[0x130];
     ResourceArchiveRecord *record;

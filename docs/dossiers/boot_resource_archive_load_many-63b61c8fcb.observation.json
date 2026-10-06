@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "63B61C8FCB32D12EF39D7BDB50499DCC708580A4A0C251FB52F42FF46F15E571",
+  "observationId": "0C9AD391F15A4C2EC1195C92A4ED7F1BFB2B36A3C6E19342B1E6E0891719283C",
+  "symbol": "boot_resource_archive_load_many",
+  "authored": {
+    "context": "Full B0B0492/frame392 three-word near control r10, all original register roles and both exit stores already recovered. Direct member indexing avoids named-pointer field-biased induction; prior all-field qualifiers created unwanted name reloads.",
+    "effects": [
+      "scheduling-or-block-order",
+      "relocation-mask-compatible",
+      "complete-body"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8347BBF212155188B8A3D2F413B32F3B2C9CB591AE02BA240ACB1B00FACDB64C",
+      "sourceSha256": "8DF44B2E2803505606E997E102D362065275DF9D99B3E6DC38AD0C6D6E4F4F00"
+    },
+    "label": "complete-indexed-archive-loader-ordered-result-accesses-clean-archival-successor",
+    "observedEffect": "PURE_C r13 candidate73326163C7/run1E20406FF2 emits sole GLOBAL function492/section492, original frame392 and raw relocation-masked agreement for every word. Nearest control r10 differs only at110/114/118; field08 qualifier alone r11 is native-identical, while combined real-access qualifiers restore result0 load/store08/result1 load/storeindex/j-store0C order. Cleanup retains exact native output. Raw parent compiler measurements above remain source-bound; the clean successor independently reproduces byte-identical complete object text, the same frame and all actual relocations. Raw-parent stage probes remain bound to those raw sources only.",
+    "parentCandidateId": "B3BB7998B108C74A9F0A4CAE537132F077C8A9A38C3047D9D1033DE1F48D4F48",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_archive_load_many.s",
+        "sha256": "5FA98B5E29974C6EC0713E9D28853E985067C3242C8C0F46DDCF5CF04F3F8530"
+      },
+      {
+        "path": "docs/dossiers/func_0019B800-38a2f59ee0.md",
+        "sha256": "49E8EE74447F43D26E39EE4E9973D1D9FC102979A2A8D8E778BB71C9AD5F8668"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-28d08a87ca.md",
+        "sha256": "D7F2A54AD00D8CF1A16AFC5A932136CB22DA773560380CE7D932CBCA5510D1B6"
+      }
+    ],
+    "relatedCandidateIds": [
+      "4EF093FBD07E707BE5C2A383357E1DE9D1841FC03317A8C8E19F080DBFF912D4"
+    ],
+    "remainingFailure": "Inactive ASM selection has no authenticated isolated private link and no expected relocation provenance. Actual relocations are retained; canonical production spelling/context focused diff and final complete-SIX verifier remain required. No original-TU, runtime capacity or hardware-volatile claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Qualify the real request index/field08 accesses and second-result read, staging that second word before the index store. Remove unused pointer declaration and explain workarounds. Every real load/store/call and complete loop/null/early/missing path remains. Normalize line endings and EOF whitespace through a new authenticated candidate; preserve raw parent bytes privately."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3295,
+      "sha256": "8347BBF212155188B8A3D2F413B32F3B2C9CB591AE02BA240ACB1B00FACDB64C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8DF44B2E2803505606E997E102D362065275DF9D99B3E6DC38AD0C6D6E4F4F00"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_archive_load_many-63b61c8fcb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

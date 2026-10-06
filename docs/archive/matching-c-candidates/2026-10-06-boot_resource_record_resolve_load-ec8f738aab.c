@@ -19,7 +19,7 @@ extern const u8 g_resource_missing_entry[];
 extern const u8 g_resource_other_type[];
 extern void *g_resource_directory_table[];
 
-void func_0000BC8C(void *context, u8 *record)
+void boot_resource_record_resolve_load(void *context, u8 *record)
 {
     /* This function observes only the offsets used below; the record's complete
        layout and the reporting fields' meanings remain unresolved. */
@@ -77,22 +77,14 @@ void func_0000BC8C(void *context, u8 *record)
         buffer = func_0000F4E4(scratch, g_resource_template,
                              func_00001330(*(u32 *)(record + 0x0C)),
                              *(u32 *)(record + 0x0C));
-        {
-            /* Keeping the first guard as a Boolean-result phase prevents KMC's
-               first CSE pass from deleting the later retail null check. */
-            u32 available = buffer != 0;
-            if (available != 1) {
-                return;
-            }
+        if (buffer != 0) {
+            status = func_0000BE98(context, buffer, *(u32 *)(record + 0x0C),
+                                  *(u32 *)(record + 0x08), scratch, match_count);
         }
-        status = func_0000BE98(context, buffer, *(u32 *)(record + 0x0C),
-                              *(u32 *)(record + 0x08), scratch, match_count);
-        /* Clear before the repeated guard so KMC places this real store in the
-           branch delay slot, after the dispatch-result copy. */
-        *(u8 *)buffer = 0;
-        if ((u32)buffer == 0) {
+        if (buffer == 0) {
             return;
         }
+        *(u8 *)buffer = 0;
         if (*(u32 *)(record + 0x118) == 0 ||
             status == *(u16 *)(record + 0x116)) {
             return;

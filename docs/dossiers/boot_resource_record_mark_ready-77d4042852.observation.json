@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "77D4042852ECD535E60FFB303C7FDCC4D8C2E9F09562F147DE216753FF455371",
+  "observationId": "1920469EBAB0533437B91DC24882EA36E0ECF01D0C3DC31537D30DA8A18882C1",
+  "symbol": "boot_resource_record_mark_ready",
+  "authored": {
+    "context": "Original AF7C..AFAC owner is one48-byte body; approved existing queue800AF320 and send80093810 bindings, local request prefix byte08.",
+    "effects": [
+      "complete-body",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5D56A4046A5AF614717E4B9E847BDA93EA3FEE5E1C34465485942FFF46AD3A0A",
+      "sourceSha256": "932EED6BAF7784F5085A2417D68E05E8BC02D20101FFC4B0E266D7F57505CE65"
+    },
+    "label": "complete-request-ready-helper",
+    "observedEffect": "Private watch r2 compiled PURE_C, full emitted section48, sole GLOBAL function48 at offset0 and three actual relocations at0C/10/1C. Raw relocation-masked bytes exactly agree.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_record_mark_ready.s",
+        "sha256": "B1B2CCAEA9E422F5E1C56A754DA9111C86D0D1C6430F61F3492BAD33A9810804"
+      },
+      {
+        "path": "build/matching/sol-archive-20261005/watch-AF7C-r2.json",
+        "sha256": "065A756B566CF26A33873372DBCDD429BAE4EF5EF87A560382123F736CF97DFB"
+      },
+      {
+        "path": "build/matching/sol-archive-20261005/census-AF7C.json",
+        "sha256": "390DDED1F96903EF88EAA95D7E034F62BD2FE81EE1533D9948038943F94FD411"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner has no authenticated isolated private link; raw bytes differ in unresolved relocation fields. Canonical production context, linked bytes and complete-SIX final verifier remain required.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently reconstruct byte08=1 and ordinary three-argument call in PURE_C. Private census uses supported descriptive entry name."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 424,
+      "sha256": "5D56A4046A5AF614717E4B9E847BDA93EA3FEE5E1C34465485942FFF46AD3A0A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "932EED6BAF7784F5085A2417D68E05E8BC02D20101FFC4B0E266D7F57505CE65"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_record_mark_ready-77d4042852.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

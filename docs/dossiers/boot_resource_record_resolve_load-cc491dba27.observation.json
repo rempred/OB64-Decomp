@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CC491DBA27C8C31E0C230B1DDDAC06CFAB6CE1EFA4934E8712D67AB337D1355F",
+  "observationId": "BEDE41EC46EAD1785D5B13340F39AC98F517B5325E489698BB44AE20542A68E2",
+  "symbol": "boot_resource_record_resolve_load",
+  "authored": {
+    "context": "Complete BC8C524 owner with original hybrid control and full retail disassembly reconciled; scratch264/frame312 and all three paths derived independently.",
+    "effects": [
+      "complete-body",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "65F0DE075364D6AD6A3964B0E7AC39327BD50A0C36C87F9252E29A139C45240F",
+      "sourceSha256": "4C23720FB8F3AE5AD25A8EE0F04B5826FD89C59BC24A2C3A51216C24D62DCDBC"
+    },
+    "label": "direct-buffer-guard-first-cse-counterexample",
+    "observedEffect": "PURE_C CC491DBA emits516/frame312 with original saved roles and all paths; all words before offset104 agree. Authenticated A4D3F3F870 probe retains second guard288 on buffer pseudo74 in RTL/JUMP and deletes it in first CSE. Pointer/integer cast, separate opened phase and widened or qualified value conversions do not solve the missing guard. Volatile local spills; shared-cleanup discriminator grows the body. Neither regression is selected, and neither disproves a general shared-flow hypothesis.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_record_resolve_load.s",
+        "sha256": "B77775732A4D474596FCEB6369CF286A784ED86AC2A1442B1D60B94BCC9DB04E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private inactive descriptive selection has no authenticated isolated link or expected relocation provenance. Canonical func_0000BC8C source spelling, linked relocation review and complete-SIX full-ROM verifier remain required. No original-TU or behavioral field meaning is established.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use an ordinary first null guard and repeat it after dispatch. Recover original path-byte conversion using u8 character and directory increment placement after the comparison call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3458,
+      "sha256": "65F0DE075364D6AD6A3964B0E7AC39327BD50A0C36C87F9252E29A139C45240F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4C23720FB8F3AE5AD25A8EE0F04B5826FD89C59BC24A2C3A51216C24D62DCDBC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_record_resolve_load-cc491dba27.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

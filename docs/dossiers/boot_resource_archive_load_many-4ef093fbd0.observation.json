@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4EF093FBD07E707BE5C2A383357E1DE9D1841FC03317A8C8E19F080DBFF912D4",
+  "observationId": "CC5819233CB320042758396825D579CBC1F730E91380AA9519029ADD2987AB73",
+  "symbol": "boot_resource_archive_load_many",
+  "authored": {
+    "context": "Complete B0B0492 owner, direct indexed request members and positive name/index match. Two separately authored close stores occur in the decode-false and remaining-zero paths.",
+    "effects": [
+      "register-allocation",
+      "control-flow",
+      "stack-frame"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7474D56D44C8A7F984A649B150C5E6518F5237366D8512D033DF4F8924CDC494",
+      "sourceSha256": "9F6BDF96DD84832A15E5A2CF6ED3CD7DD36894CE61D7CD1A1EE23E7244149C26"
+    },
+    "label": "separate-close-stores-lifetime-control-clean-archival-successor",
+    "observedEffect": "PURE_C native500/frame392; request/index/total/position/result/input roles agree, but handle s2,count s3,ordinal s4 differ from retail count s2,ordinal s3,handle s4. Native probeD2F88098A2 binds exact source; handle75 flow15uses/52insns allocated before count74 and ordinal79. Close tail has extra jump and two-store source context. Raw parent compiler measurements above remain source-bound; the clean successor independently reproduces byte-identical complete object text, the same frame and all actual relocations. Raw-parent stage probes remain bound to those raw sources only.",
+    "parentCandidateId": "BC514BF3A52586EF21ABCE87EB39383F00F0B112F66A52EA0171C5A62E40CFD5",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_archive_load_many.s",
+        "sha256": "5FA98B5E29974C6EC0713E9D28853E985067C3242C8C0F46DDCF5CF04F3F8530"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact500 versus492, three-role allocation cycle, exit and store scheduling. Probe facts belong to this source; original source syntax and general allocation explanation remain hypotheses. No private linked/ROM acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep both genuine exit stores inside the outer loop instead of one common post-loop store. Normalize line endings and EOF whitespace through a new authenticated candidate; preserve raw parent bytes privately."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3317,
+      "sha256": "7474D56D44C8A7F984A649B150C5E6518F5237366D8512D033DF4F8924CDC494"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9F6BDF96DD84832A15E5A2CF6ED3CD7DD36894CE61D7CD1A1EE23E7244149C26"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_archive_load_many-4ef093fbd0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
