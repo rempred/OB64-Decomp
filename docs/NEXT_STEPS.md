@@ -8,33 +8,47 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / IndigoFalcon (October 5 fresh node-context worker):** top-level chat
-  `01a10e47-204a-77c1-a4b0-e222fdd223b0`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete five-owner resource node production / context materialization wave:
-  `boot_resource_node_payload_materialize` (ROM `9C50..9CAC`, 92 bytes),
-  `boot_resource_node_insert_find` (`9CAC..9D50`, 164),
-  `boot_resource_node_context_materialize` (`9D50..9EFC`, 428),
-  `boot_resource_node_overlay_context_materialize` (`9FD8..A0B4`, 220), and
-  `boot_resource_node_recursive_insert_slot_search` (`A0B4..A198`, 228 = primary172
-  plus required `func_0000A160`56 at offset `0xAC`). All five physical owners and six
-  logical bodies share one final verifier. Read their matching `boot-resource-node-*`
-  dossiers, current intake and complete original assembly; begin with both insertion/search
-  owners, then payload, general context and overlay context. Preserve observed 28-byte node
-  and 24-byte context views, actual secondary search accesses and all existing aliases.
-  The accepted LZSS context sibling `func_00009EFC` remains protected PURE_C. Its existing
-  `func_00009CB4` binding targets actual RAM `80079CB4` / ROM `A0B4`; an old signature-map
-  alias to `9CAC` is not a placement change. External overlay calls need their existing
-  accepted binding, not a guessed ROM delta. Reuse the accepted loading/arena/tree interfaces.
-  This closes no broader lifecycle, command-stream, runtime-ownership or capacity claim.
+- **Sol / DustyCanyon (October 5 fresh cleanup/dispatch worker):** top-level chat
+  `01a10e97-cfe8-7022-89d2-f8d248020319`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete five-owner resource cleanup / command dispatch wave:
+  `boot_resource_node_recursive_key_field_clear` (ROM `A2F4..A370`, 124 bytes =
+  executable116 plus eight required original zero tail bytes),
+  `boot_resource_node_recursive_child_free` (`A29C..A2F4`, 88),
+  `boot_resource_node_recursive_cleanup_free` (`A198..A1F8`, 96),
+  `boot_resource_node_recursive_field0c_rewrite` (`A250..A29C`, 76), and
+  `boot_command_stream_resource_node_dispatch` (`9A18..9C50`, 568 including the
+  16-byte argument-store prefix before `9A28`). All five complete physical owners
+  share one final verifier. Read their corresponding dossiers, current intake and full
+  original assembly. Begin with key-clear's complete native extent/tail evidence, then
+  child-free, cleanup, field rewrite and their dispatcher. Never truncate the 124-byte
+  owner to 116 or manufacture padding. A demonstrated producer/representation issue
+  needs source-bound evidence, Claude agreement and Director approval under existing rules;
+  it does not release a partial wave or silently remove the padded target.
+  Preserve accepted `func_0000A1F8` payload clear, the node/context FIVE and original
+  allocation/free interfaces. Any genuine coupling requiring an accepted neighbor's
+  source or ownership change must be reconciled before integration. Preserve the actual
+  recursive views, null paths, returns, field accesses, frees and dispatcher preamble.
+  Accepted LOCAL `A160` remains in the `A0B4` owner with its existing fixed-address call
+  contract. This assignment does not prove whole-family/runtime ownership or capacities.
   The external `resource_ptr_validate` owner and its historical `1A34`/`1A3C` coverage
   reconciliation remain separate obligations before conversion.
-  Use `build/matching/sol-node-20261005/`, one target at a time. The fresh worker takes
+  Use `build/matching/sol-cleanup-20261005/`, one target at a time. The fresh worker takes
   the released production-writer role and live Sol cursor, but uses private checks until
   complete-wave readiness. Before the first canonical source,
   header, configuration or build mutation or canonical linked diff, obtain Astra's
   explicit integration release confirming Shop's native/store drain. Private checks
   remain independent; no per-check permission. Ready Shop14 integration retains priority.
   No fresh worker reuses the predecessor's private store, mail identity or watcher state.
+
+  **Accepted node/context predecessor:** IndigoFalcon's complete five-owner/six-body
+  wave passed one final verifier, independent fresh compilation and exact full ROM at
+  20:05:06 EDT on October 5 (`2026-10-06T00:05:06.090Z`); commit `acc0623f`.
+  Preserve all 1,132 bytes, production LOCAL `A160`56 at `0xAC`, distinct node/context
+  views and observed address bindings. The [accepted wave record](Plans/task-logs/sol-resource-node-context-wave-20261005.md)
+  links all members, proof and six source observations including the branch-local-index
+  best and early-index control. IndigoFalcon released all ownership and retired its watcher.
+  Shop was released under Astra1360 on CURRENT `574AA6B1` before closing commit work.
+  No unchanged acceptance repeat is required.
 
   **Accepted free-tree predecessor:** PlumBear's complete five-owner/eight-body wave
   passed one final verifier, including independent fresh compilation and exact full ROM,
@@ -75,7 +89,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   [Accepted wave and reusable source pairs](Plans/task-logs/sol-resource-header-loading-wave-20261005.md)
   retain the ordinary secondary-entry contract and proof. No unchanged verification repeat.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
-  now watches the fresh node-context worker. The original Scenario pair `0023A5EC`/`00249A14` remains
+  now watches the fresh cleanup/dispatch worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
 - **Parked under Sol (October 5):** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),
