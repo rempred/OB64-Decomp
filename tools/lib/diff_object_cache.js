@@ -56,6 +56,8 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/lib/elf_text_split.js',
   'tools/lib/compilation_groups.js',
   'tools/lib/phase7_conventional.js',
+  'tools/lib/boot_initialized_data.js',
+  'tools/lib/word_asm.js',
   'tools/lib/phase8_matching_c.js',
   'tools/lib/source_policy.js',
   'tools/lib/text_contract.js',
@@ -63,6 +65,7 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/lib/verification_profile.js',
 ]);
 const ACTIVE_CONFIGURATION_FILES = Object.freeze([
+  'config/phase7/conventional-build.json',
   'config/matching-c-targets.json',
   'config/logical-functions.json',
   'config/matching-c-linkage.json',

@@ -2,6 +2,7 @@
 'use strict';
 
 const assert = require('assert');
+const { runTests: testBootInitializedData } = require('./boot_initialized_data');
 const fs = require('fs');
 const path = require('path');
 const { verifyCompletedMappings, runMutations: runMappingMutations } = require('./manual_load_mappings');
@@ -114,6 +115,7 @@ function main() {
   verifyMap(model, mapText);
 
   testTrackedAssemblySlices(model);
+  testBootInitializedData(model);
   // A preserved interior entry at a load boundary must name the incoming slice,
   // even when the preceding word loads to a completely different runtime area.
   const crossingEntry = baselineElf.symbols.filter(symbol => symbol.name === 'func_001C9050' && symbol.sectionIndex !== 0);
@@ -241,7 +243,7 @@ function main() {
     changed.writeUInt32BE(value, baselineElf.header.phoff + fc7cTailHeaders[0].index * baselineElf.header.phentsize + offset);
     results.push(expectRejection(`FC7C ${label}`, pattern, () => verifyElfAgainstModel(model, parseElf32BigEndian(changed))));
   }
-  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 29, 'accepted load-slab count drift');
+  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 30, 'accepted load-slab count drift');
   assert.strictEqual(model.counts.fixedOverlayNonExecutableRanges, 2, 'accepted fixed-overlay non-executable-range count drift');
   assert.strictEqual(model.slices.length, 7257, 'accepted link-slice count drift');
   assert.strictEqual(model.counts.splitOwners, 15, 'accepted split-owner count drift');

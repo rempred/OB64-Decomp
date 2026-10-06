@@ -1,17 +1,29 @@
 # Boot-initialized data mapping for resource decoder tables
 
-Status: implementation approved, not accepted. CloudyMoose1440 and GoldOx1438 identify
-the placement/admission gap; both explicitly agree to Astra1444's bounded remedy in
-mail1446 and1445. Independent original-byte/design review supports the mapping with
-the validation limits below. A separate Astra helper prepares the patch only under
-ignored `build/boot-data-admission-20261006/implementation/`; canonical application
-awaits actual native/store drains. Workers continue private source experiments;
-no shared-input hold is in effect. Final review/tests/audit remain outstanding.
+Status: **accepted**, including independent review of the completed native proof,
+ELF/map placement, baseline and CURRENT ROMs. The single combined audit passed at
+`2026-10-06T18:24:55.181Z` in1351.287 seconds; its embedded normal verification passed
+at `18:24:55.008Z`. Complete decoder source integration is committed as `6fda08ef`.
+Current input identity: `2BC89C7B15D5FA68752B52F5329B2A999604B51A1E7CD2083974ABFD08EF525B`.
+Both baseline and CURRENT reproduce the canonical ROM SHA256
+`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+See [the complete wave record](../Plans/task-logs/sol-resource-decode-wave-20261006.md)
+for all source bodies, proof identities and auxiliary contributions.
 
-The mapping-only staged package passed independent review:71 negative controls,
-all existing target contracts, and unchanged-row comparisons. This is not final
-structural acceptance. Source-bound padding rejections subsequently established
-the adjacent composition gap below; the same package is being extended for one audit.
+CloudyMoose1440 and GoldOx1438 identified the gap and explicitly agreed to the bounded
+remedy in1446/1445. Actual native/store drains1468/1469 preceded canonical application.
+All33 routine suites are covered:31 passed in the initial143.6-second run; the two
+independently reviewed test-only corrections passed targeted reruns. Native jobs actually
+exited before Shop was released in1474. CloudyMoose released production ownership in1475.
+
+The final mapping/padding package passed141 negative controls, preserved all773 prior
+active contracts and changed only row789 placement. All other row placements and overlays
+also remain unchanged in the completed native evidence.
+Reviewed patch SHA256: `44BF88FA0E6990FA13A853EEED5D3B68CA0BA192C37E4AF76B411743887048EC`.
+Fresh and recorded proofs independently preserve native344→340 and40→36 table selections,
+exactly four terminal zero bytes, unchanged payloads, and no discarded named content.
+The linked row conserves1896+340+108+36+2724 with no fill or duplicate ownership.
+No additional audit/build/verifier was run merely for review or the unchanged commit.
 
 ## Original evidence
 
@@ -103,4 +115,22 @@ objects, projection, fresh and recorded proof, and cache identity/validation. Pr
 the legacy B894 control and exercise both complete shared-row fragments. Saved
 rejections/contracts are under `build/matching/sol-decode-20261006/padding-*`; the
 reproducer writes worker-owned artifacts and must not be rerun by another agent.
-The tag source remains nonexact; these fixtures establish tooling behavior only.
+The saved negative tag fixture remains nonexact; these fixtures establish tooling behavior only.
+Later ready source evidence in mail1466 does not replace canonical linked and full-ROM gates.
+
+## Routine regression follow-up
+
+The new independently authenticated boot-clear read adds one classified assembly read;
+the existing per-owner read census must remain unchanged. Its test needs to distinguish
+that proof read from owner enumeration and the final source sweep, including tamper checks.
+
+The accepted-model identity changes with the conventional configuration and authenticated
+header input. All60 curated compiler-lesson sources retain their exact hashes and their
+candidate IDs reproduce against the pre-change model. They do not bind to CURRENT.
+Existing intake correctly reports `target-mismatch`; historical IDs must not be rewritten
+or relabeled current-valid. Curated-reference tests must separately require intact source,
+header, preprocessing and reference closure, and preserve visible current binding failures.
+Neither an old-model nor an altered candidate ID proves current matching acceptance.
+Both test-only corrections passed independent review and canonical reruns:132 symbol
+equivalences/eight mutations with exactly one boot-proof read, and26 knowledge checks
+with no KMC invocation. Production intake, cache checks and historical IDs are unchanged.

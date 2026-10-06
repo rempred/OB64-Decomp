@@ -195,6 +195,8 @@ function baselineFingerprint(phase8, baserom) {
       'tools/build_phase7_conventional.js',
       'tools/verify_phase7_conventional.js',
       'tools/lib/phase7_conventional.js',
+      'tools/lib/boot_initialized_data.js',
+      'tools/lib/word_asm.js',
     ]),
   });
 }

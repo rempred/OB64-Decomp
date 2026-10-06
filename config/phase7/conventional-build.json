@@ -8,7 +8,8 @@
     "codeRegionEndExclusive": 6514540,
     "codeRegionSha256": "40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409",
     "earlyBootLinearEndExclusive": 192512,
-    "earlyBootLinearBase": 2147941376
+    "earlyBootLinearBase": 2147941376,
+    "bootInitializedDataRomEndExclusive": 258480
   },
   "expected": {
     "primaryRows": 7242,
@@ -18,7 +19,7 @@
     "splitOwners": 15,
     "overlayReservations": 19,
     "fixedOverlayNonExecutableRanges": 2,
-    "nonDescriptorLoadSlabs": 29,
+    "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
   },
   "fixedOverlayNonExecutableRanges": [
@@ -283,6 +284,14 @@
       "romEndExclusive": 2853792,
       "vramStart": 2149815744,
       "vramEndExclusive": 2149858720
+    },
+    {
+      "id": "boot-initialized-data-0003ddc0",
+      "kind": "boot-initialized-data",
+      "romStart": 253376,
+      "romEndExclusive": 258480,
+      "vramStart": 2148194752,
+      "vramEndExclusive": 2148199856
     }
   ],
   "acceptedInputSha256": {
@@ -301,7 +310,8 @@
     "tools/toolchain/gnu-binutils-2.6-ob64-load-segments.patch": "CB1B310B38F6B45A44E690BA1B7A00A7528E7886BC4BAC7E74CAC69E2A84D997",
     "tools/toolchain/gnu-binutils-2.6-ob64-binary-lma.patch": "3CFB1E09F41E3335BDE2BE1CDC38ACF06DF6D49E8F81D103CC1F0D70DDC277CF",
     "tools/toolchain/gnu-binutils-2.6-ob64-hi16-pairing.patch": "3C1F6F51AAC2268ADDF4E2B6B2BD3AC5BD39313F2ACE5D0A623A7CC995A9E480",
-    "docs/external-intake/phase6-kmc-reproduction-20260801/reproduction-manifest.json": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26"
+    "docs/external-intake/phase6-kmc-reproduction-20260801/reproduction-manifest.json": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+    "data/source-owners/rev0/raw_header/0000_raw_header_00000000_00001000.srcbin": "AC11C6D6A7A4EFAB4817612268A7EA9CE418677418B299B15CD908B09B621A84"
   },
   "splat": {
     "version": "0.34.0",

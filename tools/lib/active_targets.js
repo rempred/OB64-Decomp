@@ -1,5 +1,6 @@
 'use strict';
 const auxiliaryProjection = require('./auxiliary_projection');
+const bootData = require('./boot_initialized_data');
 
 const fs = require('fs');
 const path = require('path');
@@ -314,6 +315,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, proj
         fail(`${contractLabel} source-object prefix compiler grammar is missing`);
       }
       const selection = contract.sourceObjectPrefix;
+      const hasDiscardedAlignment = selection && Object.prototype.hasOwnProperty.call(selection, 'discardedTerminalAlignment');
       if (!exactKeys(selection, [
         'sectionType',
         'sectionFlags',
@@ -326,7 +328,9 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, proj
         'trailingPaddingOffset',
         'trailingPaddingBytes',
         'expectedTrailingPaddingSha256',
+        ...(hasDiscardedAlignment ? ['discardedTerminalAlignment'] : []),
       ])
+          || (hasDiscardedAlignment && selection.discardedTerminalAlignment !== true)
           || selection.sectionType !== contract.sectionType
           || !sameJson(selection.sectionFlags, contract.sectionFlags)
           || selection.alignment !== contract.alignment
@@ -348,6 +352,9 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, proj
         `${contractLabel} source-object trailing-padding offset`,
       );
       const requiredSourcePadding = (contract.alignment - (contract.bytes % contract.alignment)) % contract.alignment;
+      // Legacy selection authenticates the same terminal zeros as retained ASM.
+      // Explicit discard instead authenticates native alignment only; independent
+      // retail prefix/interior/tail contracts still conserve the complete row.
       if (prefixOffsetNumber !== 0
           || selection.prefixBytes !== contract.bytes
           || selection.expectedPrefixSha256 !== contract.expectedObjectSha256
@@ -356,9 +363,9 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, proj
           || selection.bytes !== selection.prefixBytes + selection.trailingPaddingBytes
           || selection.bytes % selection.alignment !== 0
           || trailingPaddingBytes !== 0
-          || tail === null
-          || tail.bytes !== selection.trailingPaddingBytes
-          || tail.expectedSha256 !== selection.expectedTrailingPaddingSha256
+          || (!hasDiscardedAlignment && (tail === null
+            || tail.bytes !== selection.trailingPaddingBytes
+            || tail.expectedSha256 !== selection.expectedTrailingPaddingSha256))
           || sha256Buffer(Buffer.alloc(selection.trailingPaddingBytes))
             !== selection.expectedTrailingPaddingSha256) {
         fail(`${contractLabel} source-object prefix does not describe exact terminal alignment padding`);
@@ -1020,13 +1027,16 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
       && targetSlice.placementKind === 'non-descriptor-load-slab'
       && auxiliarySlice.placementKind === 'non-descriptor-load-slab'
       && auxiliarySlice.loadSlabId !== null
-      && auxiliarySlice.loadSlabId === targetSlice.loadSlabId;
+      && auxiliarySlice.loadSlabId === targetSlice.loadSlabId
+      && !(model.nonDescriptorLoadSlabs || []).some(slab => slab.id === auxiliarySlice.loadSlabId
+        && slab.kind === 'boot-initialized-data');
+    const sameBootImage = bootData.isAuxiliaryPair(model, targetSlice, auxiliarySlice);
     if (row.inputKind !== 'tracked-assembly'
         || row.primaryClass !== 'data'
         || !row.part
         || slices.length !== 1
         || slices[0].executable
-        || (!sameFixedOverlay && !sameLoadSlab)) {
+        || (!sameFixedOverlay && !sameLoadSlab && !sameBootImage)) {
       fail(`auxiliary output section is not one accepted read-only data owner: ${target.symbol} ${contract.outputSection}`);
     }
     const slice = slices[0];
@@ -1125,7 +1135,8 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
           || !sourceObjectTrailingPadding.equals(Buffer.alloc(contract.sourceObjectPrefix.trailingPaddingBytes))
           || sha256Buffer(sourceObjectTrailingPadding)
             !== contract.sourceObjectPrefix.expectedTrailingPaddingSha256
-          || !sourceObjectTrailingPadding.equals(retailTailBytes)
+          || (contract.sourceObjectPrefix.discardedTerminalAlignment !== true
+            && !sourceObjectTrailingPadding.equals(retailTailBytes))
         ))
         || sha256Buffer(relocatedBytes) !== contract.expectedLinkedSha256
         || sha256Buffer(retailBytes) !== contract.expectedLinkedSha256

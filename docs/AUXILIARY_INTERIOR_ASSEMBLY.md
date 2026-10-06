@@ -19,7 +19,7 @@ Multiple gaps use separate contracts on their respective following fragments.
 The complete row remains ordered and gap-free: optional assembly prefix, C fragments with explicit assembly interiors, and optional assembly tail.
 Every interval has one owner. A noninitial fragment cannot also own an exterior prefix.
 Only the final fragment may own the exterior tail.
-Existing same-chunk, accepted-row, alignment, compiler-occurrence, and source-object-prefix restrictions still apply.
+Accepted placement pairing, same-chunk, alignment and compiler-occurrence restrictions still apply.
 
 The interval object requires exactly these fields:
 
@@ -55,6 +55,22 @@ C table relocations remain independently checked against their normal contracts.
 Retained original assembly is not compiler padding.
 `compilerOccurrences[].paddingBefore` continues to describe only necessary compiler-emitted zero alignment bytes inside one C auxiliary contribution.
 An assembly interior may contain nonzero data and must never increase the C replacement-byte census.
+
+### Terminal compiler alignment
+
+The optional, true-only `sourceObjectPrefix.discardedTerminalAlignment` mode separates
+native terminal alignment from the original bytes that follow a table in ROM. It admits
+only the exact zero bytes required by the native section alignment, authenticated by
+full-section, payload and padding hashes and the unchanged compiler grammar. Symbols
+touching those bytes, relocations outside the selected payload, extra relocation carriers,
+and nonzero padding reject. Explicit linked retail padding cannot be combined with this mode.
+
+The selected C section excludes that padding. Original prefix/interior/tail contributions
+still cover the whole accepted row exactly once, even when the original tail is four nonzero
+bytes. Without this explicit mode, the legacy equality between source padding and retained
+tail remains required. Fresh proof, recorded-build evidence and cache identities retain the
+mode; omitted or downgraded evidence cannot reuse acceptance. The
+[boot-data repair note](audit/2026-10-06-boot-initialized-data.md) records validation status.
 
 ## Generation and verification
 

@@ -522,6 +522,7 @@ function projectAuxiliarySourceObjectPrefix(auxiliary) {
   const selection = auxiliary && auxiliary.sourceObjectPrefix;
   if (!selection) return null;
   return {
+    ...(selection.discardedTerminalAlignment === true ? { discardedTerminalAlignment: true } : {}),
     sectionType: selection.sectionType,
     sectionFlags: selection.sectionFlags,
     alignment: selection.alignment,
@@ -540,6 +541,7 @@ function expectedAuxiliarySourceObjectPrefixEvidence(auxiliary) {
   const selection = projectAuxiliarySourceObjectPrefix(auxiliary);
   if (!selection) return undefined;
   return {
+    ...(selection.discardedTerminalAlignment === true ? { discardedTerminalAlignment: true } : {}),
     sectionType: selection.sectionType,
     sectionFlags: selection.sectionFlags,
     alignment: selection.alignment,
@@ -613,7 +615,10 @@ function verifyAuxiliarySourceObjectSection(elf, target, auxiliary, label) {
       sourceObjectPrefix: null,
     };
   }
-  if (selection.sectionType !== auxiliary.sectionType
+  const hasDiscardedAlignment = Object.prototype.hasOwnProperty.call(selection, 'discardedTerminalAlignment');
+  const requiredSourcePadding = (selection.alignment - (auxiliary.bytes % selection.alignment)) % selection.alignment;
+  if ((hasDiscardedAlignment && selection.discardedTerminalAlignment !== true)
+      || selection.sectionType !== auxiliary.sectionType
       || !sameJson(selection.sectionFlags, auxiliary.sectionFlags)
       || selection.alignment !== auxiliary.alignment
       || selection.prefixOffsetNumber !== 0
@@ -621,6 +626,8 @@ function verifyAuxiliarySourceObjectSection(elf, target, auxiliary, label) {
       || selection.trailingPaddingOffsetNumber !== selection.prefixBytes
       || selection.bytes !== selection.prefixBytes + selection.trailingPaddingBytes
       || selection.trailingPaddingBytes <= 0
+      || selection.trailingPaddingBytes !== requiredSourcePadding
+      || auxiliary.trailingPaddingBytes !== 0
       || selection.bytes % selection.alignment !== 0) {
     fail('auxiliary source-object prefix contract drift: ' + label);
   }
@@ -629,6 +636,21 @@ function verifyAuxiliarySourceObjectSection(elf, target, auxiliary, label) {
     selection.prefixOffsetNumber + selection.prefixBytes,
   ));
   const trailingPadding = Buffer.from(sourceBytes.subarray(selection.trailingPaddingOffsetNumber));
+  if (hasDiscardedAlignment) {
+    // Terminal assembler alignment has no linked owner. Reject every symbol
+    // touching the discarded interval and every additional REL/RELA carrier;
+    // the accepted table relocation census already confines all stores to the
+    // prefix. The unchanged compiler grammar separately forbids explicit data,
+    // labels or directives after the final contracted table word.
+    if (section.link !== 0 || section.info !== 0 || section.entrySize !== 0
+        || elf.symbols.some(symbol => symbol.sectionIndex === section.index
+        && (symbol.value >= selection.prefixBytes
+          || symbol.value + symbol.size > selection.prefixBytes))
+        || elf.sections.some(candidate => [4, 9].includes(candidate.type)
+          && candidate.info === section.index && candidate !== relocationSection)) {
+      fail('discarded auxiliary alignment owns a symbol or relocation: ' + label);
+    }
+  }
   const padding = verifyAuxiliaryPaddingBytes(selectedBytes, auxiliary, label + ' linked prefix');
   if (sourceBytes.length !== selection.bytes
       || sha256Buffer(sourceBytes) !== selection.expectedSha256
@@ -638,8 +660,8 @@ function verifyAuxiliarySourceObjectSection(elf, target, auxiliary, label) {
       || trailingPadding.length !== selection.trailingPaddingBytes
       || !trailingPadding.equals(Buffer.alloc(selection.trailingPaddingBytes))
       || sha256Buffer(trailingPadding) !== selection.expectedTrailingPaddingSha256
-      || auxiliary.ownerTailBytes !== selection.trailingPaddingBytes
-      || auxiliary.ownerTailSha256 !== selection.expectedTrailingPaddingSha256) {
+      || (!hasDiscardedAlignment && (auxiliary.ownerTailBytes !== selection.trailingPaddingBytes
+        || auxiliary.ownerTailSha256 !== selection.expectedTrailingPaddingSha256))) {
     fail('auxiliary source-object prefix bytes drift: ' + label);
   }
   return {
@@ -650,6 +672,7 @@ function verifyAuxiliarySourceObjectSection(elf, target, auxiliary, label) {
     relocationSection,
     padding,
     sourceObjectPrefix: {
+      ...(hasDiscardedAlignment ? { discardedTerminalAlignment: true } : {}),
       sectionType: selection.sectionType,
       sectionFlags: selection.sectionFlags,
       alignment: selection.alignment,
@@ -2434,6 +2457,8 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
         || actual.assemblyContract.sourceObjectPrefixSelections !== selectedAuxiliary.length
         || selectedAuxiliary.some((record) => (
           !record.sourceObjectPrefix
+          || (Object.prototype.hasOwnProperty.call(record.sourceObjectPrefix, 'discardedTerminalAlignment')
+            && record.sourceObjectPrefix.discardedTerminalAlignment !== true)
           || record.sourceObjectPrefix.prefixOffset !== '0x00000000'
           || record.sourceObjectPrefix.prefixBytes !== record.objectBytes
           || record.sourceObjectPrefix.trailingPaddingOffset

@@ -1,7 +1,7 @@
 'use strict';
 const assert = require('assert'), fs = require('fs'), path = require('path'), cp = require('child_process');
 const { ROOT } = require('../tools/lib/phase7_conventional');
-const { loadWorkbenchModel, resolveTarget } = require('../tools/lib/matching/target_model');
+const { loadWorkbenchModel, resolveTarget, targetRecord, digest } = require('../tools/lib/matching/target_model');
 const { candidateRecord } = require('../tools/lib/matching/compiler');
 const { captureIdentities } = require('../tools/lib/matching/research');
 const policy = require('../tools/lib/source_policy');
@@ -65,17 +65,50 @@ function run() {
       assert.deepEqual(bounded.lessons.map(row=>row.id),['fixture-stack-1','fixture-stack-2','fixture-stack-3']);
       assert.equal(bounded.lessonsOmitted,1);
     });
-    function assertCuratedReferences(index,withoutRom=false){
+    function assertCuratedReferences(index){
       assert.equal(index.status,'available');let count=0;
       for(const lesson of index.lessons)for(const ref of lesson.observations){
         const target=resolveTarget(real,ref.symbol),record={origin:'archive',metadataPath:ref.path,envelope:JSON.parse(fs.readFileSync(path.join(ROOT,ref.path),'utf8'))};
-        const result=assess(withoutRom?{...target,expectedBytes:null,expectedBytesSha256:null}:target,record);
-        assert.equal(result.validity,withoutRom?'reference-only':'valid',`${lesson.id}: ${result.reason||result.validity}`);count++;
+        // Historical IDs bind the model at observation time. Authenticate the
+        // entire source/header/preprocessor/reference closure independently,
+        // then preserve the CURRENT binding result rather than rewriting history.
+        const closure=assess({...target,expectedBytes:null,expectedBytesSha256:null},record);
+        assert.equal(closure.validity,'reference-only',`${lesson.id}: ${closure.reason||closure.validity}`);
+        const current=assess(target,record);
+        assert(['valid','target-mismatch'].includes(current.validity),`${lesson.id}: ${current.reason||current.validity}`);
+        assert.equal(current.targetBinding,'exact');
+        if(current.validity==='target-mismatch')assert.equal(current.reason,'candidate identity does not bind to current accepted target and exact source');
+        count++;
       }
       return count;
     }
-    check('curated observation links authenticate currently; absent ROM remains reference-only',()=>{const index=k.loadLessons(),count=assertCuratedReferences(index);assert(count>=1);assert.equal(assertCuratedReferences(index,true),count);});
+    check('curated closure authenticates; historical candidate IDs retain explicit CURRENT binding status',()=>{assert(assertCuratedReferences(k.loadLessons())>=1);});
     check('current curated-reference check rejects a wrong-target index entry',()=>{const index=structuredClone(k.loadLessons()),lesson=index.lessons.find(x=>x.observations.length);lesson.observations[0].symbol=own.symbol;assert.throws(()=>assertCuratedReferences(index),/malformed research envelope identity/);});
+    check('genuine model drift stays target-mismatch in knowledge JSON and human output',()=>{
+      const {expectedBytesSha256,...targetMetadata}=targetRecord(donor).metadata;
+      const original={...donor,targetId:digest({modelId:donor.modelId,metadata:targetMetadata,expectedBytesSha256})};
+      const historical={...envelope,candidateId:candidateRecord(original,fs.readFileSync(source,'utf8')).candidateId};
+      const modelId=digest({previousModel:donor.modelId,fixture:'changed accepted model'});
+      const drifted={...donor,modelId,targetId:digest({modelId,metadata:targetMetadata,expectedBytesSha256})};
+      assert.notEqual(drifted.targetId,original.targetId);
+      assert.equal(assess(original,{envelope:historical}).validity,'valid');
+      assert.equal(assess(drifted,{envelope:historical}).validity,'target-mismatch');
+      const historicalPath=path.join(root,'fixture_donor-model-drift.observation.json');fs.writeFileSync(historicalPath,JSON.stringify(historical));
+      const indexPath=path.join(root,'model-drift-lessons.json');
+      fs.writeFileSync(indexPath,JSON.stringify({schemaVersion:1,lessons:[{...k.loadLessons().lessons[0],id:'model-drift-fixture',
+        symptoms:['register-allocation'],observations:[{symbol:donor.symbol,path:rel(historicalPath)}]}]}));
+      const driftedWorkbench={...w,targets:[own,drifted],bySymbol:new Map([[own.symbol.toLowerCase(),own],[drifted.symbol.toLowerCase(),drifted]])};
+      const knowledge=k.selectKnowledge(driftedWorkbench,own,{crossLimit:0,symptom:'register-allocation',indexPath},assess);
+      assert.equal(JSON.parse(JSON.stringify(knowledge)).lessons[0].observations[0].validity,'target-mismatch');
+      const human=formatHuman({symbol:own.symbol,status:'found',observations:[],knowledge});
+      assert.match(human,/target-mismatch:.*fixture_donor-model-drift\.observation\.json/);
+      assert.match(human,/candidate identity does not bind/);
+    });
+    check('changed candidate ID cannot become a current-valid historical observation',()=>{
+      const altered=structuredClone(envelope);altered.candidateId='F'.repeat(64);
+      assert.notEqual(altered.candidateId,envelope.candidateId);
+      assert.equal(assess(donor,{envelope:altered}).validity,'target-mismatch');
+    });
     check('compact selection assessed before explicit JSON limit',()=>{const rows=Array.from({length:9},(_,i)=>({source:`source${i}.c`,candidateId:String(i),label:String(i),validity:i===8?'stale':'valid',matchesCurrentSource:i===7,relatedCandidateIds:i===7?['8']:[],selectedBest:i===0}));const summary=compactSummary({symbol:'test',total:9},rows);assert.equal(summary.displayed,5);assert.equal(summary.omitted,4);assert.equal(summary.observations[0].label,'7');assert(summary.observations.some(r=>r.label==='8'));assert.match(formatHuman({symbol:'test',status:'found',total:9,counts:{valid:8,stale:1},presentation:summary,observations:rows.slice(0,1),truncated:true}),/stale=1/);});
     check('packet flags and full API rendering',()=>{const {parse,formatResult}=require('../tools/analysis_packet/cli');assert.equal(parse(['prepare','fixture','--cross-limit','0','--json']).options.intakeOptions.crossLimit,0);assert.throws(()=>parse(['prepare','fixture','--symptom','unknown']));const r={status:'partial',researchIntake:{symbol:'fixture',status:'found',observations:[{label:'complete'}]}};assert.deepEqual(JSON.parse(formatResult(r,{json:true})),r);assert.deepEqual(JSON.parse(formatResult(r,{'include-details':true})),r);assert.match(formatResult(r),/Research intake/);});
     assert.equal(codegen,0);

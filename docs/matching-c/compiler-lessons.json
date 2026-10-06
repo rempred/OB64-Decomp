@@ -376,13 +376,16 @@
     },
     {
       "id": "large-cfg-lifetime-and-regression",
-      "symptoms": ["register-allocation", "scheduling-or-block-order"],
-      "applicability": "For larger functions, reconcile prototypes, joins and lifetimes. The W8 dossier links are historical source-pair references with obsolete target binding, not currently authenticated observations or transfer proof.",
+      "symptoms": ["register-allocation", "scheduling-or-block-order", "branch-polarity"],
+      "applicability": "Reconcile prototypes, joins and real lifetimes. In the accepted boot decoder, a shared failure/report path changes return merging; two evidenced address forms preserve message setup stubs, while retaining the real U marker restores allocation/frame shape. Compare controls before transfer. W8 and decoder dossiers retain historical model/config bindings: source-pair references, not current-valid observations. The decoder wave record supplies final acceptance.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#advanced-exact-case-func_00047a94",
       "references": [
         "docs/dossiers/func_001F3C00-7e434ec440.md",
         "docs/dossiers/func_001F3C00-cd8cffb3cd.md",
-        "docs/dossiers/func_001F3C00-7fa66212d4.md"
+        "docs/dossiers/func_001F3C00-7fa66212d4.md",
+        "docs/dossiers/boot_resource_tag_record_decode-3930fd48bc.md",
+        "docs/dossiers/boot_resource_tag_record_decode-853eca2a57.md",
+        "docs/Plans/task-logs/sol-resource-decode-wave-20261006.md"
       ],
       "observations": []
     }

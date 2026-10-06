@@ -21,12 +21,16 @@ for (const text of texts) {
   }
 }
 const read = fs.readFileSync, readSites = {}, assemblyPrefix = path.join(p7.ROOT, 'asm/original/rev0') + path.sep;
+const bootClearSource = path.join(p7.ROOT, 'asm/original/rev0/boot/boot_entry_clear_bss.s');
 let prepared;
 try {
   fs.readFileSync = function (file, ...args) {
     if (typeof file === 'string' && path.resolve(file).startsWith(assemblyPrefix) && file.endsWith('.s')) {
       const stack = new Error().stack;
-      const site = stack.includes('at loadAcceptedModel ') ? 'initialAcceptedModel'
+      const bootProof = stack.includes('at Object.loadProof ') && stack.includes('boot_initialized_data.js');
+      if (bootProof) assert.equal(path.resolve(file), bootClearSource, 'unexpected boot proof assembly source');
+      const site = bootProof ? 'bootInitializedDataProof'
+        : stack.includes('at loadAcceptedModel ') ? 'initialAcceptedModel'
         : stack.includes('at verifyRowSymbolSourceCache ') ? 'finalSourceSweep'
           : stack.includes('at cachedAssemblyText ') ? 'cachedAssemblyText'
           : stack.includes('at Object.assertActivationCompatible ') ? 'logicalActivation'
@@ -45,6 +49,7 @@ try {
     { path: row.part.file, sha256: row.part.sha256 }])).values()].sort((a, b) => a.path.localeCompare(b.path));
   assert.deepEqual(identities, expected);
   assert.equal(readSites.initialAcceptedModel, prepared.model.parts.length);
+  assert.equal(readSites.bootInitializedDataProof, 1, 'independent boot-clear source authentication');
   assert.equal(readSites.finalSourceSweep, identities.length);
   assert.equal(readSites.cachedAssemblyText || 0, 0); assert.equal(readSites.logicalActivation || 0, 0);
   assert.equal(readSites.other || 0, 0, 'unclassified assembly source reread');
@@ -85,10 +90,13 @@ try {
 let reads = 0;
 try {
   fs.readFileSync = function (file, ...args) { const bytes = read.call(this, file, ...args);
-    if (path.resolve(String(file)) !== path.resolve(sourceFile) || ++reads === 1) return bytes;
+    if (path.resolve(String(file)) !== path.resolve(sourceFile)
+        || !new Error().stack.includes('at verifyRowSymbolSourceCache ')) return bytes;
+    reads++;
     const copy = Buffer.from(bytes); copy[0] ^= 1; return copy;
   };
   assert.throws(() => active.loadActiveTargetModel(), /source changed/); mutations.push('default loader performs final sweep');
+  assert.equal(reads, 1, 'default loader must perform its final authenticated source sweep');
 } finally { fs.readFileSync = read; }
 const root = fs.mkdtempSync(path.join(p7.ROOT, 'build/tests/active-model-sources-'));
 const report = { status: 'pass', symbolEquivalences, assemblyParts: prepared.model.parts.length, readSites, mutations };

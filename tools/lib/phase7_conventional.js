@@ -1,5 +1,6 @@
 'use strict';
 
+const bootData = require('./boot_initialized_data');
 const childProcess = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');
@@ -387,6 +388,7 @@ function loadAcceptedModel(options = {}) {
   if (semantic.schemaVersion !== 1 || semantic.rows.length !== config.expected.primaryRows) fail('accepted semantic row count drift');
   if (linkerInputs.schemaVersion !== 1 || linkerInputs.splatPrimaryRows.length !== semantic.rows.length) fail('accepted linker input schema drift');
   if (overlays.length !== config.expected.overlayReservations) fail('accepted overlay reservation count drift');
+  const bootInitializedDataProof = bootData.loadProof(ROOT, config, assemblyManifest);
   const nonDescriptorLoadSlabs = validateNonDescriptorLoadSlabs(config, overlays);
   const loadSlabRangeIds = nonDescriptorLoadSlabs.flatMap((slab) => [
     ...slab.executableRanges.map((range) => range.id),
@@ -619,6 +621,8 @@ function loadAcceptedModel(options = {}) {
     rows.push({ ...row, inputKind: insideAssembly ? 'tracked-assembly' : 'splat-data', part, slices: rowSlices });
   }
 
+  bootData.validateSlabs(config, nonDescriptorLoadSlabs, overlays, rows, bootInitializedDataProof);
+
   if (cursor !== config.rom.bytes) fail('accepted owners do not cover the complete ROM');
   if (assemblyOwners !== config.expected.assemblyOwners || dataOwners !== config.expected.dataOwners) fail('accepted assembly/data owner census drift');
   if (slices.length !== config.expected.linkSlices || splitOwners !== config.expected.splitOwners) fail('accepted link-slice census drift');
@@ -627,6 +631,7 @@ function loadAcceptedModel(options = {}) {
   return {
     config,
     inputFiles,
+    bootInitializedDataProof,
     semantic,
     linkerInputs,
     assemblyManifest,

@@ -93,8 +93,17 @@ original-ASM contributions must cover the complete row in linker order without g
 Only the first fragment may retain an exterior prefix; only the final fragment may retain the single exact assembly tail.
 A noninitial fragment may declare its immediately preceding original-ASM interval through `preservedInteriorBefore`.
 Multiple interiors require separate contracts, with exact original-source identity, bytes, ROM/RAM placement, and explicit empty relocation evidence.
-The existing same-chunk, accepted-row, alignment, compiler-occurrence, and source-object-prefix restrictions remain unchanged.
+Accepted placement pairing, same-chunk, alignment and compiler-occurrence restrictions still apply.
 This representation neither changes the accepted data boundary nor creates independent structural owners.
+
+An explicit `sourceObjectPrefix.discardedTerminalAlignment: true` may select the compiler's
+read-only table payload while discarding only its necessary terminal zero alignment bytes.
+Full native section, payload and padding hashes, actual relocations and symbol coverage remain
+authenticated; named, nonzero or relocated content cannot be discarded. The original row's
+prefix, interiors and tail remain independently conserved assembly and need not equal compiler
+padding. Without the explicit mode, the legacy source-padding/retail-tail equality rule remains.
+Discarded compiler padding is never linked and contributes no matching-C bytes. See
+[the boot-data repair](audit/2026-10-06-boot-initialized-data.md) for its acceptance status.
 
 Retained interiors support literal original data only.
 The whole original row must have no nonempty REL/RELA sections targeting it, including relocations outside the retained interval.

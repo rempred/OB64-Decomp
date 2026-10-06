@@ -29,7 +29,19 @@ function verifyCompletedMappings(model, rom) {
     vramEndExclusive: Number(record.vramStart) + Number(record.romEndExclusive) - Number(record.romStart),
     executableRanges: [], nonExecutableRanges: [],
   }));
-  assert.deepStrictEqual(model.nonDescriptorLoadSlabs.slice(6), expected, 'completed manual-load slab geometry drift');
+  assert.strictEqual(model.nonDescriptorLoadSlabs.length, 30, 'complete slab census drift');
+  assert.deepStrictEqual(model.nonDescriptorLoadSlabs.map(slab => slab.id), [
+    'scenario-loader-00195410', 'cold-boot-loader-00040e80', 'loader-dma-00087200',
+    'loader-dma-0029a4c0', 'resource-loader-00213b10', 'resource-loader-0022a280',
+    ...fixtures.map(record => record.id), 'boot-initialized-data-0003ddc0',
+  ], 'ordered original loader identity census drift');
+  assert.deepStrictEqual(model.nonDescriptorLoadSlabs.slice(6, 29), expected, 'completed manual-load slab geometry drift');
+  assert.deepStrictEqual(model.nonDescriptorLoadSlabs[29], {
+    id: 'boot-initialized-data-0003ddc0', kind: 'boot-initialized-data',
+    romStart: 0x3DDC0, romEndExclusive: 0x3F1B0,
+    vramStart: 0x800AD9C0, vramEndExclusive: 0x800AEDB0,
+    executableRanges: [], nonExecutableRanges: [],
+  }, 'boot initialized data slab drift');
 
   // The table base is in accepted descriptor18. The loader uses byte index*40,
   // reads destination+0 and ROM endpoints+8/+12, and subtracts in the call slot.
@@ -102,6 +114,8 @@ function runMutations(model, rom) {
   badModel(m => { m.nonDescriptorLoadSlabs[6].vramStart += 4; m.nonDescriptorLoadSlabs[6].vramEndExclusive += 4; });
   badModel(m => { m.nonDescriptorLoadSlabs[6].romEndExclusive -= 4; m.nonDescriptorLoadSlabs[6].vramEndExclusive -= 4; });
   badModel(m => m.nonDescriptorLoadSlabs.pop());
+  badModel(m => m.nonDescriptorLoadSlabs.splice(6, 1));
+  badModel(m => m.nonDescriptorLoadSlabs.push(m.nonDescriptorLoadSlabs[6]));
   badModel(m => { m.rows[3413].slices[0].executable = false; });
   badModel(m => { m.slices.find(s => s.loadSlabId === fixtures[0].id).vramStart += 4; });
   for (const address of [Number(fixtures[0].callRom) - 20, 0x1C2EFC, 0x1BAF30]) {

@@ -42,6 +42,9 @@ function sameJson(left, right) {
 
 function main() {
   const active = loadActiveTargetModel();
+  require('./boot_initialized_data').runTests(active.model);
+  require('./boot_initialized_data').runAuxiliaryTests(active.model);
+  require('./auxiliary_terminal_alignment').runTests(active.model);
   const resolverScratchRoot = path.join(ROOT, 'build', 'tests');
   fs.mkdirSync(resolverScratchRoot, { recursive: true });
   const resolverScratch = fs.mkdtempSync(path.join(resolverScratchRoot, 'active-target-row-resolver-'));
