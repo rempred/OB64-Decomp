@@ -194,9 +194,9 @@
     {
       "id": "real-value-phases-and-loop-weighting",
       "symptoms": ["register-allocation", "scheduling-or-block-order"],
-      "applicability": "When a scalar or pointer spans distinct real producers, compare phases at existing reloads or lifetime boundaries, preserving zero-iteration and retained-value consumers. In this clean nonmatching loop context, phase separation restored several register and stack assignments; the loop-form-only control worsened allocation despite the intended relative order. Inspect the full allocation, not a two-variable ratio. No invented uses or runtime work; no original-source or whole-match claim.",
+      "applicability": "Preserve real producers and uses while testing lifetime phases. D14C's phase controls remain nonmatching; loop form alone can worsen allocation. In accepted Shop994B4, Y first receives the real X load, copies to X, then receives Y. Flow retains the transport; combine folds it into the original load, closing 26 coordinate/item register fields without extra native reads or arithmetic. Transfer only with equivalent consumers and pass evidence; final acceptance belongs to the full wave.",
       "note": "docs/dossiers/func_0022D14C-74e71a423e.md#source-context",
-      "references": ["docs/dossiers/func_0022D14C-78ba4d48d9.md", "docs/dossiers/func_0022D14C-acac3be17b.md"],
+      "references": ["docs/dossiers/func_0022D14C-78ba4d48d9.md", "docs/dossiers/func_0022D14C-acac3be17b.md", "docs/dossiers/func_001994B4-e6e5d67846.md", "docs/dossiers/func_001994B4-e07b12638a.md", "docs/Plans/task-logs/sol-shop14-integration-20261006.md"],
       "observations": [
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-acac3be17b.observation.json"},
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-78ba4d48d9.observation.json"},
