@@ -8,36 +8,47 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / GreenGoose (October 6 fresh boot LZSS worker):** top-level chat
-  `01a112cb-b305-7a51-8b15-ce0144979169`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete `boot_lzss_decompress` physical owner:
-  ROM `A510..AF7C`, RAM `8007A110..8007AB7C`, 2,668 bytes.
-  Preserve all FOUR logical bodies together: A510..ABE0 (1744), ABE0..AC0C (44),
-  AC0C..AF30 (804), AF30..AF7C (76). The accepted owner remains ASM; historical isolated
-  ABE0/AF30 exact candidates do not accept it. Main A510 and AC0C still need source work.
-  Preserve caller aliases `func_0000A510`/`boot_lzss_decompress` and
-  `func_0000ABE0`/`func_8007A7E0`, complete body coverage and original fallback.
+- **Sol (October 6 fresh resource-probe dispatch worker):** top-level chat
+  `01a11344-8fd0-72c1-a7b5-457e99bef44f`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete THREE-member dispatch API wave, 916 bytes:
+  `func_00004C5C` / `boot_resource_probe_dispatch_prepare` (356, ROM4C5C..4DC0),
+  `func_00004DC0` / `boot_resource_probe_dispatch_apply` (276, ROM4DC0..4ED4),
+  `func_00004ED4` / `boot_resource_probe_dispatch_result_build` (284, ROM4ED4..4FF0).
+  Preserve the three independent physical owners and their existing entry aliases;
+  no combined compilation group or per-function acceptance wave is assigned.
+  All three are currently ASM. Reconcile full disassembly and current intake first.
 
-  Read [LZSS dossier](dossiers/boot-lzss-decompress.md),
-  [decompression trial](audit/2026-09-23-boot-decompression-trial.md),
-  [logical-body census](audit/2026-09-23-boot-decode-body-census.md), full original ASM
-  and current intake. Locate preserved primary cursor/copy-argument experiments and
-  AC0C H10/mode0/3 bits-variable controls before repeating work; historical ignored paths
-  may need recovery under the frozen-family guide. Work in `build/matching/sol-lzss-20261006/`.
-  Full ASM shows leaf code except A510's internal call to ABE0. Do not invent fixed-global
-  or table relocations for this owner. Protect accepted B030 and9EFC callers and all
-  accepted resource interfaces. The C024/C310/C778/C990 LHa/stream foundation and its
-  local bodies are already accepted; do not redecompile them. BF90/BFC0/BFF4 is a separate
-  future diagnostic-wrapper trio; structurally blocked descriptor encoder4894..4AC8 is excluded.
+  Read the [prepare](dossiers/boot-resource-probe-dispatch-prepare.md),
+  [apply](dossiers/boot-resource-probe-dispatch-apply.md) and
+  [result-build](dossiers/boot-resource-probe-dispatch-result-build.md) dossiers and
+  full original ASM. Old default preparation packets are scaffolds, not accepted candidates.
+  Work in `build/matching/sol-probe-dispatch-20261006/`. Preserve callback fields
+  RAM800A8250/54/58 in original `data_00037480.s`, the indirect-call ABI and observed
+  13-entry/0x1C-stride behavior. Bind actual direct calls and constant relocations.
+  Accepted allocation/free and retained record helpers, materializers and cleanup4FF0
+  are stable dependencies; converting them is not required for this trio.
+  Unresolved resource-validator1A34/1A3C and checksum5EC4/5F60 coverage remain separate
+  structural leads. Descriptor encoder4894..4AC8 remains blocked; BF90/BFC0/BFF4 is a
+  separate diagnostic-wrapper follow-up. Preserve all original five-family obligations.
 
-  BlueOsprey explicitly released ownership in **mail1489**, after source commit `7fda04f9`. The fresh worker receives production
-  ownership and Sol cursor; own identity/watcher and exception-only SilentCrane/GoldOx
-  routing apply. Shop owns its complete14 independently. After any explicit short repair
-  hold is released, private roots run checks concurrently. Canonical integration requires
-  complete-wave readiness and actual native/store drains; ready Shop14 retains priority.
-  ONE final normal verifier covers the whole four-body producer, with no per-body full-ROM
-  builds, preliminary build or unchanged acceptance repeat. Tooling changes retain the
-  existing Sol/Claude agreement and Astra approval process.
+  GreenGoose explicitly released production ownership and retired its watcher in mail1515.
+  The fresh worker receives the sole production role and Sol cursor; own identity/watcher
+  and exception-only SilentCrane/GoldOx routing apply. Shop owns its complete14 independently
+  and was released in1514. Private roots run checks concurrently; canonical integration
+  requires complete-wave readiness and actual native/store drains. Ready Shop14 retains
+  priority. ONE normal verifier covers the complete trio, without preliminary build,
+  per-function full-ROM checks or unchanged acceptance repeats. Tooling changes retain
+  explicit Sol/Claude agreement, Astra approval and their applicable audit/review.
+
+  **Accepted LZSS predecessor:** full `boot_lzss_decompress`, ROMA510..AF7C,
+  2,668 bytes in FOUR bodies1744/44/804/76, GLOBAL/LOCAL/LOCAL/LOCAL at0/1744/1788/2592.
+  Source commit `0c97fd0c`; ONE normal verifier plus independent fresh compilation
+  passed `2026-10-06T22:00:16.645Z`, CURRENT `EB7955E6`, baseline `F1D9FEF4`.
+  Sole PURE_C owner, all21 actual internal relocations and complete ROM are exact.
+  Original aliases, ASM fallback and accepted callers remain protected.
+  [Complete wave and reusable source pairs](Plans/task-logs/sol-boot-lzss-wave-20261006.md)
+  record branch-local promoted-byte/lifetime controls, final-mode offset controls and
+  the direct FF-store source pair. Reuse proof; do not redecompile accepted LZSS or LHa.
 
   **Accepted command-stream predecessor:** `boot_command_stream_dispatch`, row84,
   ROM978C..9A18, complete652-byte varargs producer and THREE switch-table occurrences,
