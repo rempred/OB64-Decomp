@@ -1083,6 +1083,9 @@
     {"symbol":"func_0019B710","source":"src/lib/func_0019B710.c"},
     {"symbol":"func_0019BAB4","source":"src/lib/func_0019BAB4.c"},
     {"symbol":"func_0019BAE4","source":"src/lib/func_0019BAE4.c"},
-    {"symbol":"func_0019BDD4","source":"src/lib/func_0019BDD4.c"}
+    {"symbol":"func_0019BDD4","source":"src/lib/func_0019BDD4.c"},
+    {"symbol":"boot_resource_probe_dispatch_prepare","source":"src/boot/boot_resource_probe_dispatch_prepare.c"},
+    {"symbol":"boot_resource_probe_dispatch_apply","source":"src/boot/boot_resource_probe_dispatch_apply.c"},
+    {"symbol":"boot_resource_probe_dispatch_result_build","source":"src/boot/boot_resource_probe_dispatch_result_build.c"}
   ]
 }
