@@ -40,6 +40,17 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   remain independent; no per-check permission. Ready Shop14 integration retains priority.
   No fresh worker reuses the predecessor's private store, mail identity or watcher state.
 
+  **Approved private producer study (October 5):** DustyCanyon and GoldOx identified
+  a standalone extent limitation for key-clear: exact executable116, but original
+  owner124 versus native standalone text128/tail12. Astra authorizes a source-only
+  experiment under existing compilation-group rules for the already assigned contiguous
+  field0c76 + child-free88 + key-clear116 bodies, ROM `A250..A370`. Verify actual function
+  offsets `0/76/164`, executable280 and native aligned text288/tail8, full sections,
+  bindings and newly counted relocations. This is a candidate producer, not a proven
+  original translation unit. Preserve the full FIVE, original owners and accepted `A1F8`.
+  Canonical group admission/integration remains withheld until actual native evidence,
+  complete-wave readiness and the normal Director release after Shop's checks drain.
+
   **Accepted node/context predecessor:** IndigoFalcon's complete five-owner/six-body
   wave passed one final verifier, independent fresh compilation and exact full ROM at
   20:05:06 EDT on October 5 (`2026-10-06T00:05:06.090Z`); commit `acc0623f`.
