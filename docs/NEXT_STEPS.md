@@ -8,63 +8,50 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / HazyForest (October 5 fresh resource archive worker):** top-level chat
-  `01a10f02-1555-7ce1-82da-c8d93cd50bec`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete resource archive front-end SIX (1,524 physical bytes):
-  `boot_resource_record_mark_ready` (ROM `AF7C..AFAC`, 48),
-  `boot_resource_loader_callback_register` (`AFAC..B030`, 132),
-  `boot_resource_archive_load_many` (`B0B0..B29C`, 492), and explicit PURE_C conversions
-  of the existing hybrid owners `func_0000B29C` (`B29C..B33C`, 160),
-  `func_0000B33C` (`B33C..B3E4`, 168), and `func_0000BC8C` (`BC8C..BE98`, 524).
-  Preserve those three canonical keys and existing source paths. The private workbench
-  resolves their descriptive selections `boot_resource_archive_load_one`,
-  `boot_resource_pool_acquire_release` and `boot_resource_record_resolve_load`;
-  `activeMatchingSource:null` for a descriptive alias does not make its physical owner ASM.
-  Reconcile private spelling and production context explicitly, without duplicate activation.
-  All SIX share one final verifier after complete readiness.
+- **Sol / CloudyMoose (October 6 fresh resource record/op decoder worker):** top-level chat
+  `01a110f3-fb73-76a3-9c3e-a0353df621af`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete TWO-owner / SEVEN-body decoding wave (2,464 code bytes):
+  `boot_resource_tag_record_decode`, ROM `B3E4..BC8C`, row106, 2,216 bytes;
+  and `boot_resource_op_dispatch`, ROM `BE98..BF90`, row108, 248 bytes.
+  The decoder includes primary1,836 and required `BB10`52, `BB44`100,
+  `BBA8`148 and `BC3C`80. The dispatcher includes primary176 and required
+  `BF48`72. Preserve every body, original entry/alias and accepted physical owner.
+  The static 85-entry table at ROM `3E528` / RAM `800AE128` and nine-entry table
+  at ROM `3E6E8` / RAM `800AE2E8` are required data dependencies. Establish their
+  complete accepted ownership and caller/consumer map before tuning; route any
+  supported structural representation issue through Astra. Existing aliases
+  `func_0000B3E4` and `func_0000BE98` remain required by accepted callers.
 
-  Establish the full call/interface/owner map and begin AF7C, then AFAC, the pool bracket
-  and loaders/resolver in dependency order, one target at a time. Read the mark-ready and
-  callback-register dossiers, relevant sections of
-  [the decode subsystem](dossiers/boot-resource-decode-subsystem-B030-F22C.md), current
-  research intake and full original assembly. Independently derive readable PURE_C;
-  preserve prefix/tail coverage and actual relocation evidence. Historical dossier addresses
-  require checking against original signed low halves and current linkage: resource_pool is
-  `800A884C`, and the accepted archive-table binding is `800AE0A8`.
-  Legacy symbol text is not sufficient to infer its actual callee address.
+  Read the corrected current sections of [the decode subsystem](dossiers/boot-resource-decode-subsystem-B030-F22C.md),
+  [codec/table evidence](dossiers/boot-codec-libc-vec3-F22C-11000.md), full original
+  assembly, logical coverage and research intake. Begin with the smaller dispatcher
+  after the dependency map, one owner at a time. Historical runtime-table wording and
+  unsigned-low-half address interpretations are superseded by original/current evidence.
+  Use fresh `build/matching/sol-decode-20261006/`; receive the released production
+  writer role and Sol cursor. Shop continues independent private checks concurrently.
+  No shared-input changes during private iteration. Contact Astra for actual native/store
+  drains only at complete-wave integration or a genuine shared-input requirement.
+  Ready complete Shop14 integration retains priority. One final verifier covers the
+  complete decoder wave; no per-function full ROM builds or unchanged acceptance repeats.
+  Exception-only communication, own mail identity/watcher, and Astra's independent stop monitor apply.
 
-  Protect already PURE_C `func_0000B030` (128-byte LZSS load entry), accepted node/context,
-  cleanup/dispatch, allocation/free and other resource prerequisites. Later command-stream
-  `978C..9A18`, five-body tag decoder `B3E4..BC8C`, two-body operation dispatcher
-  `BE98..BF90`, their tables and later codec/resource consumers remain required follow-up
-  scope. Preserve their current interfaces; a real dependency needing a changed owner
-  requires Director resolution. This wave does not close the whole Scenario family or
-  establish runtime capacities. The external validator's `1A34`/`1A3C` coverage remains
-  separate, as do every parked Combat, Squad and Shop obligation below.
+  Protect accepted archive, B030, node/context, cleanup, allocation/free, header and DMA
+  prerequisites. Command-stream `978C..9A18`, later codec/resource consumers and external
+  validator `18D4..1A44` coverage at `1A34`/`1A3C` remain follow-up scope. All parked
+  Combat, Squad and Shop membership below remains required; this wave does not close
+  the whole Scenario family or establish runtime capacities.
 
-  Use fresh `build/matching/sol-archive-20261005/`. The worker receives the released
-  production-writer role and Sol cursor. The complete SIX is now privately ready; current
-  sources and compiled inputs agree with all six mechanical PURE_C/full-extent masked checks.
-  These symbolic-object comparisons have no authenticated isolated link and remain provisional.
-  After HazyForest's actual drain1395 and Shop's actual native/store drain1397, Astra1398
-  releases complete-SIX canonical integration, batched focused links, useful research publication
-  and one normal final verifier under existing contracts. Shop14 remains open; its native checks
-  stay held until Astra's stable-input release. Release required native/verifier/store work before
-  optional closing docs/commit. Ready complete Shop14 integration retains priority. Use a fresh mail
-  identity and delivery state; Astra owns the independent stop monitor and lesson index.
-  Report only complete-wave handoff, actionable blockers and shared-input coordination.
-
-  **October 6 relocation-contract repair:** an exact B29C PURE_C link adds two genuine
-  address relocations compared with its frozen hybrid record. The model incorrectly required
-  both current and historical relocation lists to match. Explicit Sol1405/Claude1406 agreement,
-  focused/actual-object rejection tests and independent review support the bounded
-  [current-contract precedence fix](audit/2026-10-06-canonical-relocation-precedence.md)
-  at `9415b407`. Astra1407 releases resumed complete-SIX integration after all tooling tests
-  actually exited. Frozen compatibility inputs stay unchanged. Shop remains drained. Use ONE
-  `node tools/audit.js --profile` for the changed-input structural checks and embedded normal
-  CURRENT verification; do not add a separate full-ROM verifier or prior build. Tooling and
-  complete-wave acceptance remain pending until that combined audit passes. Release required
-  native/store work promptly afterward so Shop can refresh and resume.
+  **Accepted archive front-end predecessor:** HazyForest's complete SIX / 1,524 bytes
+  passed ONE structural audit with embedded normal CURRENT and independent fresh
+  compilation: verification `2026-10-06T05:10:48.601Z`, audit `05:10:48.697Z`.
+  All six are PURE_C, sole C owners, exact target/relocation/placement and full ROM.
+  Source commit `71b12b97`; CURRENT `FB99681E`; [complete membership, source pairs and proof](Plans/task-logs/sol-resource-archive-wave-20261005.md).
+  Preserve the canonical B29C/B33C/BC8C keys and source paths, plus AF7C/AFAC/B0B0.
+  The [current-contract precedence repair](audit/2026-10-06-canonical-relocation-precedence.md)
+  at `9415b407` passed that audit and independent review; frozen legacy evidence is unchanged.
+  Mail1409 released native/shared-input work, Astra1410 resumed Shop, and mail1411
+  released all remaining ownership after the scoped source commit and own watcher retirement.
+  The October 6 replacement receives that released role. No acceptance rerun is needed.
 
   **Accepted cleanup/dispatch predecessor:** DustyCanyon's complete FIVE, all 952 bytes,
   passed one final verifier, independent fresh compilation and exact full ROM at
@@ -127,7 +114,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   [Accepted wave and reusable source pairs](Plans/task-logs/sol-resource-header-loading-wave-20261005.md)
   retain the ordinary secondary-entry contract and proof. No unchanged verification repeat.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
-  now watches the fresh resource archive worker. The original Scenario pair `0023A5EC`/`00249A14` remains
+  now watches the fresh resource decoder worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
 - **Parked under Sol (October 5):** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),

@@ -320,11 +320,29 @@
     },
     {
       "id": "conditional-expression-shape",
-      "symptoms": ["branch-polarity", "load-store-width-or-signedness", "opcode-or-expression"],
-      "applicability": "Use instruction-supported widths, branch targets and grouping before changing allocator choices; the note distinguishes exact and nonmatching cases.",
+      "symptoms": [
+        "branch-polarity",
+        "load-store-width-or-signedness",
+        "opcode-or-expression"
+      ],
+      "applicability": "Use instruction-supported widths, branch targets and grouping before allocator tuning. In BC8C, a Boolean-result first guard preserves a repeated null guard through first CSE; moving the genuine byte clear before the repeat restores the delay-slot shape. Compare the simpler guarded-call control, which loses the repeat. This is source-context evidence, not a universal recipe; check exact source pairs and production binding separately.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#conditionals-and-control-flow-shape",
-      "references": ["docs/dossiers/func-000135a0.md"],
-      "observations": []
+      "references": [
+        "docs/dossiers/func-000135a0.md",
+        "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.md",
+        "docs/dossiers/boot_resource_record_resolve_load-ec8f738aab.md",
+        "docs/Plans/task-logs/sol-resource-archive-wave-20261005.md"
+      ],
+      "observations": [
+        {
+          "symbol": "boot_resource_record_resolve_load",
+          "path": "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.observation.json"
+        },
+        {
+          "symbol": "boot_resource_record_resolve_load",
+          "path": "docs/dossiers/boot_resource_record_resolve_load-ec8f738aab.observation.json"
+        }
+      ]
     },
     {
       "id": "independent-store-schedule",

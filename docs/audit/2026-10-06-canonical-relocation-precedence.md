@@ -1,9 +1,10 @@
 # Current relocation contracts and historical hybrid evidence
 
-Status: bounded implementation approved by Astra after explicit Sol/HazyForest
-agreement (mail1405) and Claude/GoldOx agreement (1406). Focused selection and
-actual-object tests pass; independent review finds no blocking issue. Complete changed-input
-audit and final six-target acceptance remain pending; this note does not accept them.
+Status: accepted. Astra approved the bounded implementation after explicit
+Sol/HazyForest agreement (mail1405) and Claude/GoldOx agreement (1406).
+Focused selection and actual-object rejection tests passed. The complete changed-input
+audit and six-target acceptance passed on October 6; independent review of both the
+implementation and final evidence found no blocking issue.
 
 The exact PURE_C replacement for `func_0000B29C` emits nine load-relevant relocations.
 Its frozen hybrid predecessor emitted seven because inline assembly encoded the
@@ -11,7 +12,8 @@ archive-table address directly. The additional HI16 at `+0x30` and LO16 at `+0x3
 refer to the existing `g_boot_resource_lzss_error_anchor` binding. The discovery link
 matches all 160 original bytes and all nine relocated words, but correctly reports
 the old seven-record contract as a mismatch. The complete archive SIX also contains
-the analogous `func_0000BC8C` conversion; it still needs canonical confirmation.
+the analogous `func_0000BC8C` conversion, now canonically confirmed with 31 actual
+relocations versus its historical hybrid contract's 21.
 
 The model previously rejected an explicit canonical contract whenever it differed
 from the frozen legacy list, before comparing it with the new object. No supported
@@ -46,14 +48,31 @@ with zero code generation. The other 32 passing suites were not needlessly repea
 The independent reviewer also confirmed that compilation-group placeholder lists are
 subsequently bound to actual member relocation contracts; group checking is not bypassed.
 
-HazyForest retains production source/config ownership; Astra owns this tooling delta.
+HazyForest performed production integration; Astra owns this tooling delta.
 Both source workers confirmed their native/store commands had exited before the edit.
-After tooling tests and review, the complete SIX will be integrated and checked through
-one structural audit containing normal CURRENT verification, without a redundant separate
-full-ROM verifier. Shop resumes when required native/verifier/publication work actually
-finishes. No boundary, compiler flag, frozen compatibility record or source-policy change
-is authorized by this repair.
+After tooling tests and review, ONE `node tools/audit.js --profile` passed with normal
+CURRENT verification and independent fresh compilation embedded, without a redundant
+separate full-ROM verifier. Verification completed `2026-10-06T05:10:48.601Z`;
+audit completed `2026-10-06T05:10:48.697Z`. CURRENT is
+`FB99681EF5D625931E6CBACA92D0D56A7386595930C94224136889D17AD54A7A`.
+All six targets are PURE_C, sole owners, exact in placement, full extent, actual
+relocations and fresh-source proof. The 41,943,040-byte ROM exactly matches retail
+SHA256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+Final independent review authenticated report/state identities and the six source proofs;
+it did not repeat native compilation or add a routine function-review gate.
+
+Mail1409 confirmed actual native/store completion and stable inputs; Astra1410
+released Shop. Source commit `71b12b97` and final ownership release1411 changed no
+accepted source/config bytes after verification. No unchanged rerun is required.
+No boundary, compiler flag, frozen compatibility record or source-policy change was made.
 
 Evidence: `build/matching/sol-archive-20261005/canonical-B29C-discovery.json`,
 `build/canonical-relocation-precedence-20261006/`, and the final audit/verification
-reports when completed. Generated evidence remains untracked.
+reports retained as `build/matching/sol-archive-20261005/accepted-*.json` and
+`accepted-six-summary.json`. The verification report SHA256 is
+`3606DB89D7CA9D8C4BBD066943B9CC9FA86697D824134BF5475C4497EC88E56B`;
+fresh-compilation report SHA256 is
+`B14587839842D017A8782A75FC3E79BDDFB9730E3DF9D0B8B4BF7D30D30C4CE0`.
+Generated evidence remains untracked. The [source-wave record](../Plans/task-logs/sol-resource-archive-wave-20261005.md)
+preserves complete membership and reusable observations; matching does not establish
+stronger semantic claims.
