@@ -49,7 +49,22 @@ function run() {
     check('current source failure stays visible in compact human view',()=>assert.match(formatHuman({symbol:'fixture',status:'unavailable',currentSource:{path:'missing.c',status:'unavailable',reason:'missing source fixture'},observations:[]}),/Current-source issue: missing source fixture/));
     check('no ROM has explicit reference limits and no family inference',()=>{const t={...own,expectedBytes:null,expectedBytesSha256:null};const r=k.selectKnowledge(w,t,opts,assess);assert.equal(r.siblings.length,0);assert(r.diagnostics.some(d=>d.validity==='reference-only'));assert.equal(assess({...donor,expectedBytesSha256:null},{envelope}).validity,'reference-only');});
     check('unknown symptoms and duplicate authored evidence rejected in index',()=>{const index=path.join(root,'index.json'),valid=JSON.parse(fs.readFileSync(k.INDEX,'utf8'));for(const mutate of [x=>x.lessons[0].symptoms=['bad'],x=>x.lessons[0].observedEffect='invented measurement',x=>x.lessons[0].evidenceLabel='REPRODUCED',x=>x.lessons.push(x.lessons[0]),x=>x.lessons[0].note+='-missing']){const value=structuredClone(valid);mutate(value);fs.writeFileSync(index,JSON.stringify(value));assert.equal(k.loadLessons(index).status,'unavailable');}});
-    check('tracked index valid; symptom selection bounded',()=>{assert.equal(k.loadLessons().status,'available');const r=k.selectKnowledge(w,own,{symptom:'stack-layout-or-offset-family'},assess);assert.equal(r.lessons[0].id,'aggregate-stack-counterexample');assert.equal(r.lessons.length,1);});
+    check('tracked index valid; symptom selection bounded',()=>{
+      const index=k.loadLessons();assert.equal(index.status,'available');
+      const r=k.selectKnowledge(w,own,{symptom:'stack-layout-or-offset-family'},assess);
+      assert(r.lessons.length>0&&r.lessons.length<=3);
+      assert(r.lessons.every(row=>row.symptoms.includes('stack-layout-or-offset-family')));
+      // Catalog additions can legitimately change the first lesson and result count.
+      // A fixed fixture checks filtering, ordering and the three-lesson budget.
+      const fixture={schemaVersion:1,lessons:Array.from({length:5},(_,i)=>({
+        ...structuredClone(index.lessons[0]),id:`fixture-stack-${i}`,observations:[],
+        symptoms:[i===0?'register-allocation':'stack-layout-or-offset-family'],
+      }))};
+      const indexPath=path.join(root,'bounded-lessons.json');fs.writeFileSync(indexPath,JSON.stringify(fixture));
+      const bounded=k.selectKnowledge(w,own,{symptom:'stack-layout-or-offset-family',indexPath},assess);
+      assert.deepEqual(bounded.lessons.map(row=>row.id),['fixture-stack-1','fixture-stack-2','fixture-stack-3']);
+      assert.equal(bounded.lessonsOmitted,1);
+    });
     function assertCuratedReferences(index,withoutRom=false){
       assert.equal(index.status,'available');let count=0;
       for(const lesson of index.lessons)for(const ref of lesson.observations){

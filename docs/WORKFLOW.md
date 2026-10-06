@@ -433,6 +433,15 @@ relocation contract are not an accepted mod-ready pure-C replacement.
 Rerun `diff.js` after adding the reviewed contract. Strict verification fails if
 the entry is absent or if the compiled object later changes.
 
+An explicit canonical entry governs the current source even when its relocations
+differ from the frozen `config/phase8/matching-c.json` record. For example, replacing
+an inline-assembly address with a C symbol reference can add real HI16/LO16 records
+while preserving every linked byte. Keep the frozen record unchanged; it is the
+fallback only when no canonical entry exists. Compatibility reports retain the
+actual historical equality as `canonicalLegacyEquivalent`. This does not relax
+current-contract versus emitted-object equality, shared absolute-symbol bindings,
+source-object reproduction, ownership, placement, or retail-byte gates.
+
 ### 5. Record a provisional target and continue the wave
 
 When the linked diff is exact, run:

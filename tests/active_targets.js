@@ -1030,13 +1030,54 @@ function main() {
   if (missingContract.source !== 'missing-diff-only' || missingContract.expectedRelocations.length !== 0) {
     throw new Error('diff-only missing relocation contract state drift');
   }
+  // A hybrid's literal address has no relocation. Its PURE_C replacement can add
+  // HI16/LO16 without changing any linked instruction or structural owner.
+  const historicalCall = { offset: '0x00000000', type: 'R_MIPS_26', symbol: 'fixture_callee', section: '.rel.text' };
+  const currentRelocations = [
+    historicalCall,
+    { offset: '0x00000004', type: 'R_MIPS_HI16', symbol: 'fixture_data', section: '.rel.text' },
+    { offset: '0x00000008', type: 'R_MIPS_LO16', symbol: 'fixture_data', section: '.rel.text' },
+  ];
+  const canonicalFixture = (records) => validateLinkageConfig({
+    schemaVersion: 4, profile: active.minimalConfig.profile, symbols: [],
+    targets: [{ symbol: 'fixture_target', expectedRelocations: records }],
+  }, active.minimalConfig.profile).targets.get('fixture_target');
+  const legacyFixture = { expectedRelocations: [historicalCall,
+    { offset: '0x00000000', type: 'R_MIPS_32', symbol: 'fixture_target', section: '.rel.pdr' }] };
+  const changedCanonical = selectRelocationContract('fixture_target', canonicalFixture(currentRelocations), legacyFixture);
+  assert.strictEqual(changedCanonical.source, 'canonical');
+  assert.strictEqual(changedCanonical.canonicalLegacyEquivalent, false);
+  assert.deepStrictEqual(changedCanonical.expectedRelocations, currentRelocations);
+  const equalCanonical = selectRelocationContract('fixture_target', canonicalFixture([historicalCall]), legacyFixture);
+  assert.strictEqual(equalCanonical.canonicalLegacyEquivalent, true);
+  const noLegacyCanonical = selectRelocationContract('fixture_target', canonicalFixture(currentRelocations), null);
+  assert.strictEqual(noLegacyCanonical.canonicalLegacyEquivalent, null);
+  assert.deepStrictEqual(noLegacyCanonical.expectedRelocations, currentRelocations);
+  const emptyCanonical = selectRelocationContract('fixture_target', canonicalFixture([]), legacyFixture);
+  assert.strictEqual(emptyCanonical.source, 'canonical');
+  assert.strictEqual(emptyCanonical.canonicalLegacyEquivalent, false);
+  assert.deepStrictEqual(emptyCanonical.expectedRelocations, []);
+  const legacyOnly = selectRelocationContract('fixture_target', null, legacyFixture);
+  assert.strictEqual(legacyOnly.source, 'legacy-compatibility');
+  assert.strictEqual(legacyOnly.canonicalLegacyEquivalent, null);
+  assert.deepStrictEqual(legacyOnly.expectedRelocations, [historicalCall]);
+  const relocationPrecedence = { changedCanonical: true, equalCanonical: true,
+    noLegacyCanonical: true, emptyCanonical: true, legacyOnly: true };
   const rejectedContractMutations = [
     expectRejection('missing strict contract', () => selectRelocationContract('fixture_target', null, null, false)),
-    expectRejection('canonical/legacy mismatch', () => selectRelocationContract(
-      'fixture_target',
-      { symbol: 'fixture_target', expectedRelocations: [] },
-      { expectedRelocations: [{ offset: '0x00000000', type: 'R_MIPS_26', symbol: 'fixture_target', section: '.rel.text' }] },
+    expectRejection('malformed legacy with explicit canonical', () => selectRelocationContract(
+      'fixture_target', canonicalFixture(currentRelocations),
+      { expectedRelocations: [{ ...historicalCall, offset: '0x00000001' }] },
     )),
+    ...[
+      ['duplicate', [historicalCall, historicalCall]],
+      ['unaligned offset', [{ ...historicalCall, offset: '0x00000001' }]],
+      ['unsupported type', [{ ...historicalCall, type: 'R_MIPS_32' }]],
+      ['malformed symbol', [{ ...historicalCall, symbol: 'not a symbol' }]],
+      ['ancillary section', [{ ...historicalCall, section: '.rel.pdr' }]],
+      ['unordered', [...currentRelocations].reverse()],
+      ['absent relocation array', undefined],
+    ].map(([label, records]) => expectRejection(`canonical ${label}`, () => canonicalFixture(records))),
   ];
 
   let retiredPdrRelocations = 0;
@@ -1129,6 +1170,7 @@ function main() {
     rejectedSourceObjectPrefixMutations,
     rejectedActiveLinkSymbolShadows,
     rejectedContractMutations,
+    relocationPrecedence,
     rowSymbolSourceReuse,
     structuralFieldsEquivalent: true,
     sharedLinkSymbols: Object.keys(active.linkSymbols).length,

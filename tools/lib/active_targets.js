@@ -603,9 +603,9 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
     `legacy relocation contract ${symbol}`,
   ) : null;
   if (canonicalTarget) {
-    if (legacyRelocations && !sameJson(canonicalTarget.expectedRelocations, legacyRelocations)) {
-      fail(`canonical/legacy relocation contract mismatch: ${symbol}`);
-    }
+    // Current source may replace hand-encoded hybrid addresses with real relocations.
+    // The explicit canonical contract is checked against freshly emitted objects;
+    // the frozen legacy list remains fallback evidence, not a second current contract.
     return {
       expectedRelocations: canonicalTarget.expectedRelocations,
       compilerTextFunctions: canonicalTarget.compilerTextFunctions,
@@ -613,7 +613,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
       auxiliarySections: canonicalTarget.auxiliarySections,
       ...(canonicalTarget.auxiliaryProjection ? { auxiliaryProjection: canonicalTarget.auxiliaryProjection } : {}),
       source: 'canonical',
-      canonicalLegacyEquivalent: legacyRelocations ? true : null,
+      canonicalLegacyEquivalent: legacyRelocations ? sameJson(canonicalTarget.expectedRelocations, legacyRelocations) : null,
     };
   }
   if (legacyRelocations) {
