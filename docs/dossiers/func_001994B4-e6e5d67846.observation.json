@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E6E5D6784618357DEDC6852F96973A683E348BB8FE3609BEEE8AE6513E83F34F",
+  "observationId": "5CBEB751A7D9F30ABC1CD1FAF544FD19B52F73AEB199FE85C5A0B5F731B5AFD7",
+  "symbol": "func_001994B4",
+  "authored": {
+    "context": "PeachTrout's D76EC354 structured final loop already restores flags, sync, vertical words and all operation coverage, while retaining 26 Y/item/X register-field differences.",
+    "effects": [
+      "register-allocation",
+      "source-lifetime",
+      "full-body-coverage"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "C4C8BD44EE916AE22FF4A0E0EE0A9B26B8EC6C858A3C247C79BE6CAC687518F5",
+      "sourceSha256": "D76EC35427D34C54A73890C3A166B7836E14001DACCF9DAB435E78AC2D4A4913"
+    },
+    "label": "shop-coordinate-pair-before-real-load-transport",
+    "observedEffect": "PURE_C; full 3320-byte native producer, frame128, 210 actual relocations, full call/store/read census. All 26 remaining differences are coordinate/item register reuse; no extent, operation or flag/sync fields remain.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-001994b4-structured-local-tail-four-phase-flag-word-on-3-watch.json",
+        "sha256": "FA695528307288127C039BDA9059CC29F54D8AC8DEC4434E5BC4DC95811BBED0"
+      },
+      {
+        "path": "build/matching/shopworker/shop-001994b4-structured-local-tail-four-phase-flag-word-on-3-full-field-census.json",
+        "sha256": "FC3CCAE3388FF1146EE453E0347F0BC3FD7D186E2B4B4CFEB3870BAA12065182"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This exact source is a nonmatching counterexample: 26 native register fields differ. The related final source introduces a genuine coordinate load/COPY lifetime and closes those fields. Neither an observation nor preservation establishes acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use real flags-to-callback-to-grid-to-vertical phases and structured seven-row traversal; keep the original direct X/Y coordinate initialization."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 21033,
+      "sha256": "C4C8BD44EE916AE22FF4A0E0EE0A9B26B8EC6C858A3C247C79BE6CAC687518F5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D76EC35427D34C54A73890C3A166B7836E14001DACCF9DAB435E78AC2D4A4913"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-func_001994B4-e6e5d67846.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

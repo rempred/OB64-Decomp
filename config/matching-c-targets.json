@@ -1069,6 +1069,20 @@
     {
       "symbol": "boot_lzss_decompress",
       "source": "src/boot/boot_lzss_decompress.c"
-    }
+    },
+    {"symbol":"func_001989C4","source":"src/lib/func_001989C4.c"},
+    {"symbol":"func_001994B4","source":"src/lib/func_001994B4.c"},
+    {"symbol":"func_0019A1AC","source":"src/lib/func_0019A1AC.c"},
+    {"symbol":"func_0019A294","source":"src/lib/func_0019A294.c"},
+    {"symbol":"func_0019AA04","source":"src/lib/func_0019AA04.c"},
+    {"symbol":"func_0019AB44","source":"src/lib/func_0019AB44.c"},
+    {"symbol":"func_0019ADF0","source":"src/lib/func_0019ADF0.c"},
+    {"symbol":"func_0019AF78","source":"src/lib/func_0019AF78.c"},
+    {"symbol":"func_0019B4C4","source":"src/lib/func_0019B4C4.c"},
+    {"symbol":"func_0019B63C","source":"src/lib/func_0019B63C.c"},
+    {"symbol":"func_0019B710","source":"src/lib/func_0019B710.c"},
+    {"symbol":"func_0019BAB4","source":"src/lib/func_0019BAB4.c"},
+    {"symbol":"func_0019BAE4","source":"src/lib/func_0019BAE4.c"},
+    {"symbol":"func_0019BDD4","source":"src/lib/func_0019BDD4.c"}
   ]
 }

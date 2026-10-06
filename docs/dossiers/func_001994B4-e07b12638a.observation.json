@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E07B12638A341B8158B7CD43AC77C6B2132838C42655AED8C5FA52445BE61C9C",
+  "observationId": "C275904517EC7BEA2C44B8D1564B55F942A9D623257931307982899AC87DDFD1",
+  "symbol": "func_001994B4",
+  "authored": {
+    "context": "Compare PeachTrout's D76EC354 26-field counterexample with source06453B85/candidateE07B1263; same complete producer, existing flag/item phases, structured final loop and required operations.",
+    "effects": [
+      "register-allocation",
+      "source-lifetime",
+      "full-body-coverage"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "5BED11D7AC18841A4E88CA135868A06218FA51AC39C17BCD67EE548D5CE5AD3E",
+      "sourceSha256": "06453B85EBE2D464C8991D0C4C5FC5BC3659BB1920330CE650E223EA60DBF287"
+    },
+    "label": "shop-real-coordinate-load-transport-linked-exact",
+    "observedEffect": "Private native differences close from26 to0 at complete3320B/frame128/210 relocations. Canonical focused diff is PURE_C and exact decoded/raw linked bytes with matching actual relocation contract. Compiler/linker census and complete14 final verifier remain separate gates.",
+    "parentCandidateId": "E6E5D6784618357DEDC6852F96973A683E348BB8FE3609BEEE8AE6513E83F34F",
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-001994b4-structured-local-tail-four-phase-coordinate-load-transport-on-3-full-field-census.json",
+        "sha256": "35BE4640B556154ED02B3DA06D8378C07593B783D788FBDB65B1DBDA9F87B611"
+      },
+      {
+        "path": "build/diff/func_001994B4.json",
+        "sha256": "0A5F53AEF18C65D7D74961B23EFBFF8F14AB2109474B143BA42C74CA68FA2E52"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The complete original14-member Shop wave still requires its ONE normal final verifier. This source observation records the bounded load/COPY lifetime effect and canonical focused result; it does not independently accept the wave.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "The Y scratch first receives the original X field word, copies it to X, then receives the original Y field read. Flow retains that required transport and combine folds it into the original X read; no extra native read, arithmetic, qualifier or call is introduced."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 21045,
+      "sha256": "5BED11D7AC18841A4E88CA135868A06218FA51AC39C17BCD67EE548D5CE5AD3E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "06453B85EBE2D464C8991D0C4C5FC5BC3659BB1920330CE650E223EA60DBF287"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-func_001994B4-e07b12638a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
