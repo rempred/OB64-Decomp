@@ -16,7 +16,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   `func_00004ED4` / `boot_resource_probe_dispatch_result_build` (284, ROM4ED4..4FF0).
   Preserve the three independent physical owners and their existing entry aliases;
   no combined compilation group or per-function acceptance wave is assigned.
-  All three are currently ASM. Reconcile full disassembly and current intake first.
+  Reconcile full disassembly and current intake; private readiness is not acceptance.
 
   Read the [prepare](dossiers/boot-resource-probe-dispatch-prepare.md),
   [apply](dossiers/boot-resource-probe-dispatch-apply.md) and
@@ -33,10 +33,10 @@ all acceptance gates remain. No new tooling or worktrees are needed.
 
   GreenGoose explicitly released production ownership and retired its watcher in mail1515.
   The fresh worker receives the sole production role and Sol cursor; own identity/watcher
-  and exception-only SilentCrane/GoldOx routing apply. Shop owns its complete14 independently
-  and was released in1514. Private roots run checks concurrently; canonical integration
-  requires complete-wave readiness and actual native/store drains. Ready Shop14 retains
-  priority. ONE normal verifier covers the complete trio, without preliminary build,
+  and exception-only SilentCrane/GoldOx routing apply. The independent Shop14 assignment
+  passed canonical acceptance in1528. After closing Shop commit
+  `46525af8`, mail1530 releases the original probe trio for canonical integration using
+  the confirmed native/store drains. ONE normal verifier covers the complete trio, without preliminary build,
   per-function full-ROM checks or unchanged acceptance repeats. Tooling changes retain
   explicit Sol/Claude agreement, Astra approval and their applicable audit/review.
 
@@ -269,12 +269,50 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   Source-level allocation and
   scheduling blockers do not establish a tooling defect or a final HYBRID exception.
   B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
-- **Shop inventory decomp worker:** top-level chat `01a10a01-9946-7233-9240-e084e0fff710`,
-  coordinated and monitored by Astra. Own the complete fourteen-member menu/state/entry
-  wave defined below. The complete producer/splitter wave,
+- **Animation candidate worker (fresh Sol6.1/xhigh):** top-level chat
+  `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
+  Own the complete `func_001F6098` PURE_C conversion: one GLOBAL body, one physical
+  owner/producer, 4,148 bytes, ROM1F6098..1F70CC / RAM801B2C08..801B3C3C.
+  This is retained W8 matching-C cleanup, not reopening or reclassifying the earlier
+  completed W8 assignment. Keep its current exact HYBRID_C and all13 siblings intact
+  until a complete PURE_C candidate passes canonical integration. Protect its162
+  relocations, original ASM, W5-W7 callees and shared combat draw/pose headers.
+  Candidate-only edits belong in `build/matching/anim6098-20261006/`.
+
+  Read the [W8 record](Plans/task-logs/combat-draw-wave8-r12.md),
+  [minimal hybrid](Plans/task-logs/combat-6098-minimal-hybrid-r12.md),
+  [PURE_C control](dossiers/func_001F6098-3151062665.md),
+  [neighbor-expression study](Plans/task-logs/combat-6098-neighbor-expression-r1.md),
+  full original ASM/current C, and the accepted Shop coordinate pair
+  [before](dossiers/func_001994B4-e6e5d67846.md) /
+  [after](dossiers/func_001994B4-e07b12638a.md). The new concrete lead is real X-load
+  transport through existing Y scratch before the original Y read: it changes allocation
+  metadata while combining back into the original load. Test its applicability to6098's
+  real decoded coordinates; it does not explain the separate48-byte frame deficit.
+  The PURE_C control has4168 bytes/frame408 versus retail4148/frame456. Six unexplained
+  eight-byte intervals do not prove six real variables; do not fabricate frame padding,
+  consumers or assembler constraints. Preserve best source and source-bound counterexamples.
+
+  Begin read-only intake and private source preparation immediately. Native/CPP/intake/store
+  commands remain held while MagentaBarn integrates/verifies the probe trio under1530;
+  Astra releases that hold after actual writer exits. Then private checks run independently
+  without per-check permission. Only MagentaBarn changes canonical inputs. One complete-owner
+  verifier follows real PURE_C readiness and serialized integration; a partial removal of
+  hybrid constraints does not complete this assignment. Own identity/mail watcher and
+  exception-only Director/Claude routing apply; no routine messages to the production writer.
+
+- **Accepted Shop menu/state/entry wave:** PeachTrout's original complete FOURTEEN,
+  11,284 bytes, passed one normal verifier and independent fresh compilation at
+  `2026-10-06T23:05:14.841Z`, CURRENT `5E764754`, unchanged baseline `F1D9FEF4`.
+  All14 are PURE_C, sole C owners, exact at accepted placement with798 actual relocations
+  and exact full ROM. Source/integration commit `46525af8`; see the
+  [complete wave record](Plans/task-logs/sol-shop14-integration-20261006.md).
+  Mail1530 releases PeachTrout's completed assignment for retirement and a fresh candidate
+  successor. MagentaBarn retains sole production ownership and its separate original
+  probe trio assignment. The complete Shop producer/splitter wave,
   `func_0019BE40` and `func_001977E0`, passed its changed-input audit and independent
   structural review on October 4; preserve both as accepted PURE_C prerequisites.
-  Use `build/matching/shopworker/` and its single live `cursor.md`; preserve the closed D14C
+  Retain `build/matching/shopworker/` and its cursor/evidence; preserve the closed D14C
   handback in `build/matching/actorhelper/cursor.md` as read-only evidence for Sol.
 
 For Shop, consult parent `docs/shops-items.md`, current research intake and full disassembly.
@@ -297,22 +335,21 @@ That capability does not authorize new owner activations, owned terminal padding
 version-2 compilation-group composition. Do not repeat this unchanged acceptance.
 Protect accepted B21C/B26C/BD14 and the complete BE40/1977E0 prerequisite as well.
 
-The current complete menu/state/entry wave retains `001989C4`, `001994B4`, `0019A1AC`,
+The accepted complete menu/state/entry wave covers `001989C4`, `001994B4`, `0019A1AC`,
 `0019A294`, `0019AA04`, `0019AB44`, `0019ADF0`, `0019AF78`, `0019B4C4`, `0019B63C`,
-`0019B710`, `0019BAB4`, `0019BAE4` and `0019BDD4`. BDD4's original 108-byte entry adapter
-remains required by the full-family assignment; it is protected ASM until this later wave,
-not a completed or silently excluded target. Preserve the external `0010BB2C` caller's
+`0019B710`, `0019BAB4`, `0019BAE4` and `0019BDD4`, including BDD4's full108-byte adapter.
+Preserve every accepted source and its original ASM reference. Preserve the external `0010BB2C` caller's
 interface without adding its implementation to this bounded Shop assignment. Keep all six
 code-address transports from 1977E0, full preambles and the overlapping seven-word indirect
 call traversals in unchanged data row r3094. Static pointers alone do not prove runtime behavior.
 The worker's private `shop-downstream-complete-wave-proposal.md` and `.json` under
 `build/matching/shopworker/` retain the complete 23-owner inventory and direct evidence;
-this queue adds BDD4 to the later group rather than leaving it unassigned.
+the accepted wave includes BDD4 and leaves no member of that fourteen-target assignment out.
 
-Resume refreshed intake and independent private checks for this complete Shop wave and Sol's
-complete Squad wave. Preserve every member and all parked Combat obligations; no per-function
-integration pause or acceptance repeat is introduced. Establish dependency order from the full
-inventory and current evidence, then handle one target at a time.
+Do not rematch or repeat unchanged acceptance of the completed Shop waves. Reuse their source
+pairs and recorded compiler constraints. Preserve every parked Squad/Combat obligation and
+all remaining Scenario/animation scope. A fresh candidate receives a complete dependency-ready
+wave from Astra, with current intake and one target at a time.
 
 Both workers run private checks concurrently and report material results/blockers to Astra.
 Claude/GoldOx advises only on specific genuine blockers. Sol remains the sole production writer
