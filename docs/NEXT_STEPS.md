@@ -8,53 +8,59 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / DustyCanyon (October 5 fresh cleanup/dispatch worker):** top-level chat
-  `01a10e97-cfe8-7022-89d2-f8d248020319`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete five-owner resource cleanup / command dispatch wave:
-  `boot_resource_node_recursive_key_field_clear` (ROM `A2F4..A370`, 124 bytes =
-  executable116 plus eight required original zero tail bytes),
-  `boot_resource_node_recursive_child_free` (`A29C..A2F4`, 88),
-  `boot_resource_node_recursive_cleanup_free` (`A198..A1F8`, 96),
-  `boot_resource_node_recursive_field0c_rewrite` (`A250..A29C`, 76), and
-  `boot_command_stream_resource_node_dispatch` (`9A18..9C50`, 568 including the
-  16-byte argument-store prefix before `9A28`). All five complete physical owners
-  share one final verifier. Read their corresponding dossiers, current intake and full
-  original assembly. Begin with key-clear's complete native extent/tail evidence, then
-  child-free, cleanup, field rewrite and their dispatcher. Never truncate the 124-byte
-  owner to 116 or manufacture padding. A demonstrated producer/representation issue
-  needs source-bound evidence, Claude agreement and Director approval under existing rules;
-  it does not release a partial wave or silently remove the padded target.
-  Preserve accepted `func_0000A1F8` payload clear, the node/context FIVE and original
-  allocation/free interfaces. Any genuine coupling requiring an accepted neighbor's
-  source or ownership change must be reconciled before integration. Preserve the actual
-  recursive views, null paths, returns, field accesses, frees and dispatcher preamble.
-  Accepted LOCAL `A160` remains in the `A0B4` owner with its existing fixed-address call
-  contract. This assignment does not prove whole-family/runtime ownership or capacities.
-  The external `resource_ptr_validate` owner and its historical `1A34`/`1A3C` coverage
-  reconciliation remain separate obligations before conversion.
-  Use `build/matching/sol-cleanup-20261005/`, one target at a time. The fresh worker takes
-  the released production-writer role and live Sol cursor, but uses private checks until
-  complete-wave readiness. Before the first canonical source,
-  header, configuration or build mutation or canonical linked diff, obtain Astra's
-  explicit integration release confirming Shop's native/store drain. Private checks
-  remain independent; no per-check permission. Ready Shop14 integration retains priority.
-  No fresh worker reuses the predecessor's private store, mail identity or watcher state.
+- **Sol (October 5 fresh resource archive worker):** top-level chat
+  `01a10f02-1555-7ce1-82da-c8d93cd50bec`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete resource archive front-end SIX (1,524 physical bytes):
+  `boot_resource_record_mark_ready` (ROM `AF7C..AFAC`, 48),
+  `boot_resource_loader_callback_register` (`AFAC..B030`, 132),
+  `boot_resource_archive_load_many` (`B0B0..B29C`, 492), and explicit PURE_C conversions
+  of the existing hybrid owners `func_0000B29C` (`B29C..B33C`, 160),
+  `func_0000B33C` (`B33C..B3E4`, 168), and `func_0000BC8C` (`BC8C..BE98`, 524).
+  Preserve those three canonical keys and existing source paths. The private workbench
+  resolves their descriptive selections `boot_resource_archive_load_one`,
+  `boot_resource_pool_acquire_release` and `boot_resource_record_resolve_load`;
+  `activeMatchingSource:null` for a descriptive alias does not make its physical owner ASM.
+  Reconcile private spelling and production context explicitly, without duplicate activation.
+  All SIX share one final verifier after complete readiness.
 
-  **Approved private producer study (October 5):** DustyCanyon and GoldOx identified
-  a standalone extent limitation for key-clear: exact executable116, but original
-  owner124 versus native standalone text128/tail12. Astra authorizes a source-only
-  experiment under existing compilation-group rules for the already assigned contiguous
-  field0c76 + child-free88 + key-clear116 bodies, ROM `A250..A370`. Verify actual function
-  offsets `0/76/164`, executable280 and native aligned text288/tail8, full sections,
-  bindings and newly counted relocations. This is a candidate producer, not a proven
-  original translation unit. Preserve the full FIVE, original owners and accepted `A1F8`.
-  The actual private object now satisfies that census, has thirteen group relocations
-  and matches all 288 owner bytes in an authenticated isolated link. After complete FIVE
-  readiness and Shop's actual drain in mail1373, Astra1374 releases ordinary admission
-  and integration under the existing contract. Publish the six eligible standalone research
-  controls before group activation; preserve the key-clear full-owner failure honestly.
-  All three members activate together with the other two wave owners, then receive one
-  complete-FIVE verifier. This release is not final matching acceptance or a tooling change.
+  Establish the full call/interface/owner map and begin AF7C, then AFAC, the pool bracket
+  and loaders/resolver in dependency order, one target at a time. Read the mark-ready and
+  callback-register dossiers, relevant sections of
+  [the decode subsystem](dossiers/boot-resource-decode-subsystem-B030-F22C.md), current
+  research intake and full original assembly. Independently derive readable PURE_C;
+  preserve prefix/tail coverage and actual relocation evidence. Historical dossier addresses
+  require checking against original signed low halves and current linkage: resource_pool is
+  `800A884C`, and the accepted archive-table binding is `800AE0A8`.
+  Legacy symbol text is not sufficient to infer its actual callee address.
+
+  Protect already PURE_C `func_0000B030` (128-byte LZSS load entry), accepted node/context,
+  cleanup/dispatch, allocation/free and other resource prerequisites. Later command-stream
+  `978C..9A18`, five-body tag decoder `B3E4..BC8C`, two-body operation dispatcher
+  `BE98..BF90`, their tables and later codec/resource consumers remain required follow-up
+  scope. Preserve their current interfaces; a real dependency needing a changed owner
+  requires Director resolution. This wave does not close the whole Scenario family or
+  establish runtime capacities. The external validator's `1A34`/`1A3C` coverage remains
+  separate, as do every parked Combat, Squad and Shop obligation below.
+
+  Use fresh `build/matching/sol-archive-20261005/`. The worker receives the released
+  production-writer role and Sol cursor, but uses private checks until complete-wave readiness.
+  Shop private checks remain concurrent. Before any canonical source/header/config/build
+  mutation or canonical diff, obtain Astra's integration release confirming Shop's actual
+  native/store drain. Ready complete Shop14 integration retains priority. Use a fresh mail
+  identity and delivery state; Astra owns the independent stop monitor and lesson index.
+  Report only complete-wave handoff, actionable blockers and shared-input coordination.
+
+  **Accepted cleanup/dispatch predecessor:** DustyCanyon's complete FIVE, all 952 bytes,
+  passed one final verifier, independent fresh compilation and exact full ROM at
+  `2026-10-06T02:01:27.729Z` (October 5 local); commit `89a8ec00`.
+  [Accepted wave record](Plans/task-logs/sol-resource-cleanup-dispatch-wave-20261005.md)
+  preserves full membership, dispatcher prefix16, key-clear native tail8, six useful source
+  observations and the admitted existing-contract THREE producer (field76, child88, key116;
+  native text288). Its genuine alignment context is not proof of an original translation unit.
+  Protected A1F8 and LOCAL A160 remain unchanged. Standalone key-clear's exact116-byte body
+  remains a useful failed full-owner control. DustyCanyon released all ownership in mail1383,
+  stopped its own watcher and is idle. Shop resumed under mail1382 on CURRENT `E64F78B3`.
+  Reuse that accepted input; no unchanged acceptance repeat is needed.
 
   **Accepted node/context predecessor:** IndigoFalcon's complete five-owner/six-body
   wave passed one final verifier, independent fresh compilation and exact full ROM at
@@ -105,7 +111,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   [Accepted wave and reusable source pairs](Plans/task-logs/sol-resource-header-loading-wave-20261005.md)
   retain the ordinary secondary-entry contract and proof. No unchanged verification repeat.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
-  now watches the fresh cleanup/dispatch worker. The original Scenario pair `0023A5EC`/`00249A14` remains
+  now watches the fresh resource archive worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
 - **Parked under Sol (October 5):** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),

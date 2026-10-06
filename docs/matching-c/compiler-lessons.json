@@ -310,10 +310,13 @@
     {
       "id": "aggregate-stack-counterexample",
       "symptoms": ["stack-layout-or-offset-family"],
-      "applicability": "Multiple related stack offsets may justify one local aggregate experiment. The cited experiment remained nonmatching.",
+      "applicability": "Check ABI entry stores before inferring locals. In the accepted resource dispatcher, KMC legacy ellipsis plus __builtin_next_arg produces four pre-frame argument stores; an extra cursor word skips an argument despite the same 568-byte extent. Keep genuine aligned word consumption and the full prefix. The separate aggregate experiment remains nonmatching: related stack offsets justify a bounded hypothesis, not an original-layout claim. Read source controls and final wave proof separately.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#stack-layout-and-aggregate-locals",
-      "references": ["docs/dossiers/func-0006d7d8.md"],
-      "observations": []
+      "references": ["docs/dossiers/func-0006d7d8.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-b09cfeade4.md", "docs/Plans/task-logs/sol-resource-cleanup-dispatch-wave-20261005.md"],
+      "observations": [
+        {"symbol": "boot_command_stream_resource_node_dispatch", "path": "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.observation.json"},
+        {"symbol": "boot_command_stream_resource_node_dispatch", "path": "docs/dossiers/boot_command_stream_resource_node_dispatch-b09cfeade4.observation.json"}
+      ]
     },
     {
       "id": "conditional-expression-shape",
