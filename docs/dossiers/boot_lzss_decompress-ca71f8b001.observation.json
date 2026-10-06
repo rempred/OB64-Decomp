@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CA71F8B001BDA5CC7B3EFECD279CF143D45A5B7E9747DBE07C762E871614EF65",
+  "observationId": "66481E77DDA3A91E546F17BBF2AC4693223B36128ADA6CA6358AB06BF34855AA",
+  "symbol": "boot_lzss_decompress",
+  "authored": {
+    "context": "Complete four-body global-function research producer. A510 unsigned FF-store baseline paired with its clean successor effect source; accepted physical owner and all four bodies remain unchanged.",
+    "effects": [
+      "control-flow",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FDC6E85092BBDA67331B156E4E40A359A90A3123C384361D68796399B1A15A35",
+      "sourceSha256": "6E22F81913684ADC098CF47B5603E46351969BA009843FD785C569B725E2EF0C"
+    },
+    "label": "portable-ff-baseline",
+    "observedEffect": "Primary 1748 bytes with separate FF/FFFF constant loads; AC0C retains its 804-byte, 16-difference control. Unsigned -1 assignment alone did not distinguish the emitted object from unsigned FF/FFFF assignments. Authenticated native output is compared with the original private source before publication.",
+    "parentCandidateId": "82D090D1BDC86849B4E1CB5998FCB1A98DBA6050EEAF1516F593A3CE7828BB72",
+    "references": [
+      {
+        "path": "build/matching/sol-lzss-20261006/archive-ff-baseline-result.json",
+        "sha256": "709BEA2F7350BF2745493CB25AC1707162B2515AEC078EC700C6B5EF0D0EBD18"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Primary is four bytes long, AC0C remains nonexact, and the private global-function producer is not canonical acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Normalize CRLF to LF and remove extra blank lines at EOF from the original private source. Preserve the authored code expression and record a new candidate identity; do not edit an immutable preserved source in place."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 15628,
+      "sha256": "FDC6E85092BBDA67331B156E4E40A359A90A3123C384361D68796399B1A15A35"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6E22F81913684ADC098CF47B5603E46351969BA009843FD785C569B725E2EF0C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_lzss_decompress-ca71f8b001.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

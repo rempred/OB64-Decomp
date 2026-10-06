@@ -1065,6 +1065,10 @@
     {
       "symbol": "boot_resource_op_dispatch",
       "source": "src/boot/boot_resource_op_dispatch.c"
+    },
+    {
+      "symbol": "boot_lzss_decompress",
+      "source": "src/boot/boot_lzss_decompress.c"
     }
   ]
 }

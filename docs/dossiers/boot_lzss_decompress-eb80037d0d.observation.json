@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EB80037D0DEC8ADBCB32D8F5D34A36ECB5B2B2BFAF938F4F145918069D46AFA6",
+  "observationId": "4C49A2F0F235C7FB36906B41733335EFE761B8C00B952BC0046D09FA232D25B9",
+  "symbol": "boot_lzss_decompress",
+  "authored": {
+    "context": "Complete four-body global-function research producer paired with clean baseline CA71F8B001BDA5CC7B3EFECD279CF143D45A5B7E9747DBE07C762E871614EF65. Normalize LF/EOF whitespace under a new identity; native output is checked against the original private source. AC0C remains its earlier 804-byte, 16-difference control.",
+    "effects": [
+      "control-flow",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DBAB3003A4D52A4EB47B255A023D75503692C03A2CE9D79C2916CA80175D1FC1",
+      "sourceSha256": "C59DC8F3B7397CAAACE829DA26404EC485DFD23938B84E7F5BF9F767DBFD5151"
+    },
+    "label": "portable-a510-signed-leading-fill-stores",
+    "observedEffect": "The pinned compiler reuses the full-width -1 sentinel instead of separate FF/FFFF constants and restores the shared-tail jump. Primary extent falls from 1748 to 1744 bytes; all 423 compared nonrelocated primary words agree with retail, excluding 13 actual R_MIPS_26 words. Complete owner is 2668 bytes. Unsigned -1 alone leaves the original object unchanged.",
+    "parentCandidateId": "CA71F8B001BDA5CC7B3EFECD279CF143D45A5B7E9747DBE07C762E871614EF65",
+    "references": [
+      {
+        "path": "build/matching/sol-lzss-20261006/archive-ff-baseline-result.json",
+        "sha256": "709BEA2F7350BF2745493CB25AC1707162B2515AEC078EC700C6B5EF0D0EBD18"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/archive-ff-best-result.json",
+        "sha256": "BF7FB675FB092443DD456675E1A33B9296F999504EB4CC86926D30D96BEDB056"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/main-ff-signed-stores-bodies.json",
+        "sha256": "480F3207F27968F0E0CD4B4572D6AB0A414185BE72ED4FC1ACA65F7AD59F13BA"
+      }
+    ],
+    "relatedCandidateIds": [
+      "893CFD3C567FA5368109A8513EEF0F1C29EB42B25AF763CA0727819AB90CB1E9"
+    ],
+    "remainingFailure": "At this snapshot AC0C still has 16 nonrelocated differences, and internal relocations are unlinked. Private global-function evidence does not establish canonical LOCAL secondary ownership/placement, full-owner bytes or full-ROM acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use signed char and signed short destinations only for the leading FF alignment stores, assigning -1. All other C expression remains the same as the unsigned-minus-one control."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 15645,
+      "sha256": "DBAB3003A4D52A4EB47B255A023D75503692C03A2CE9D79C2916CA80175D1FC1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C59DC8F3B7397CAAACE829DA26404EC485DFD23938B84E7F5BF9F767DBFD5151"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_lzss_decompress-eb80037d0d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

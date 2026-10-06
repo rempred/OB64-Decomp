@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F78FD5B3025E6B1D4E332E9132734E723CE3E7E7D86532D2707E04061FF8C9AD",
+  "observationId": "E92B55BC2B8B589A107B3028CCFC0CD28282E0A7BF62C8877BBF5DF4F899A192",
+  "symbol": "boot_lzss_decompress",
+  "authored": {
+    "context": "Complete four-body source for unchanged physical owner A510..AF7C. Original ASM remains canonical while the private candidate is checked; no body-only activation, compiler exception or shared tooling edit.",
+    "effects": [
+      "control-flow",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7B50070E2E8B7C2CDF3CA82CB50756D511FB10C3284640F7529078B4B8F92320",
+      "sourceSha256": "7FB9AA17C258FCE6E019D90C8BC835AA50015B0021A5DD1B477EB4CC75459EBB"
+    },
+    "label": "boot-lzss-complete-owner-cursor-and-pattern-lifetimes",
+    "observedEffect": "Authenticated complete source is PURE_C and all2668 emitted owner bytes agree after masking only the21 actual R_MIPS_26 relocation words. Compiler bodies are1744/44/804/76 at0/1744/1788/2592; every compared nonrelocated word agrees. Retained medium-local source1728 improved its block but whole extent regressed; restoring generic medium helper or sharing length globals changed global allocation. Explicit literal and long cursors plus consistent fill tails restored retail allocation/control flow. Unsigned -1 stores were identical to unsigned FF constants; signed stores removed separate narrow constant loads and restored the missing shared-tail jump, giving A5101744 with zero nonrelocated differences. Final cleanup preserves the same owner result.",
+    "parentCandidateId": "01BBDBC98FAD1FFB4FB3EE65EC823320EEBE69E14F1299A9A36DE4BF8DB58FD4",
+    "references": [
+      {
+        "path": "build/matching/sol-lzss-20261006/final-clean-result.json",
+        "sha256": "D955024D0FE5A30372E55D7A3FE0E1029A8B498EDB7D032C15D89BBC9B6A37FF"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/final-clean-bodies.json",
+        "sha256": "FE0B64D2C48FB8C5998C8A8AF35186DD1AEBB097B5D2887CF36D47DB647ACBD2"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/main-ff-signed-stores-bodies.json",
+        "sha256": "480F3207F27968F0E0CD4B4572D6AB0A414185BE72ED4FC1ACA65F7AD59F13BA"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/main-ff-signed-stores-diff.txt",
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/main-inline-literal-bodies.json",
+        "sha256": "6561611F18F69E7D1CC41D302E32FCEBE68EE5ECF08772CAE97DBC4660F8D7DB"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/main-inline-fills-bodies.json",
+        "sha256": "933E074D03A1C7AB15548379CB2D3BE53AD4924EA96EE695D0B446F01895ED32"
+      }
+    ],
+    "relatedCandidateIds": [
+      "893CFD3C567FA5368109A8513EEF0F1C29EB42B25AF763CA0727819AB90CB1E9",
+      "82D090D1BDC86849B4E1CB5998FCB1A98DBA6050EEAF1516F593A3CE7828BB72",
+      "4FF317898655734717C82CAFDAEE59B215464610F451AC1FA094E9094DD0799D"
+    ],
+    "remainingFailure": "Private evidence is symbolic-object for an inactive ASM owner and acceptanceEligible=false. Canonical static secondary compiler census, actual relocation contract, sole C ownership, linked bytes/placement and complete-ROM gates must pass together before this wave is accepted.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "A510 uses explicit per-case working cursors and separates decoded lengths from working counts. Short cursor binding follows length and input-byte read; literal source binding precedes length; medium high/low bytes are local and source distance precedes length; long cursor precedes input reads. Position advances before input pointer at the literal exit. Explicit fill cases preserve late cursor/pattern lifetimes and shared zero halfword tails. Signed leading FF stores retain a full -1 constant. Combine with the AC0C branch-local promotion/count/offset source, remove unused helpers and declarations, and document the pinned-compiler reasons."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 13684,
+      "sha256": "7B50070E2E8B7C2CDF3CA82CB50756D511FB10C3284640F7529078B4B8F92320"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7FB9AA17C258FCE6E019D90C8BC835AA50015B0021A5DD1B477EB4CC75459EBB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_lzss_decompress-f78fd5b302.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "289C12CB5A56E6B0963F8E2244187F9AEF686B2B413F400997EBA1194FCE91CA",
+  "observationId": "0203D57C7A2B4FEC91F8062B4BD052448C9A7FD908B7C760679401535277787B",
+  "symbol": "boot_lzss_decompress",
+  "authored": {
+    "context": "Complete four-body global-function producer paired with the clean baseline DE9F9F4972E2F539F61A6500812009CC9F4E094F4BABFD1A683645B52A2FF8DB. Primary 1732 bytes and both readers are unchanged between the pair. Canonical ownership and full-ROM acceptance are separate.",
+    "effects": [
+      "control-flow",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D02BF6337EF9EA6EBEF6EE53BF8C2EBBE75A0DE6727BCFCE5C1BFDB7012D2E09",
+      "sourceSha256": "5257C04D316D35F6FB1879B55952F9087270D43C55A0A3DE49C7B33439D56478"
+    },
+    "label": "portable-ac0c-local-promotion-count-and-offset-lifetimes",
+    "observedEffect": "The changes remove all 16 differing nonrelocated AC0C words at its correct 804-byte length. All 194 compared nonrelocated words agree; seven actual relocation words are excluded. Earlier branch-local promotion alone reached nine differences, and decoded-word/working-byte separation reached two. The complete producer remains 2656 bytes because A510 is 12 bytes short. Native clean source output is checked against original candidate 01BBDBC98F.",
+    "parentCandidateId": "DE9F9F4972E2F539F61A6500812009CC9F4E094F4BABFD1A683645B52A2FF8DB",
+    "references": [
+      {
+        "path": "build/matching/sol-lzss-20261006/archive-ac-baseline-result.json",
+        "sha256": "E21DD3FD8467AD8CBDCC0136AEE8269B61A700D62F235AAD084AE7DA8DB31103"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/archive-ac-best-result.json",
+        "sha256": "90CACA3AA21475C000D0AF9276EF14106796349F222277B294011CA6A4A3359F"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/ac-branch-word-probe.json",
+        "sha256": "237713440EE1B8C0E5FCBDBA183B1F5E2336A679A525F9352040B5A6B9C25A5A"
+      },
+      {
+        "path": "build/matching/sol-lzss-20261006/ac-local-offset-bodies.json",
+        "sha256": "3413DBE469E4A7A49AB3B5BCE80D9072DA1D69FDCC51D1E70FFA02AC6001C869"
+      }
+    ],
+    "relatedCandidateIds": [
+      "01BBDBC98FAD1FFB4FB3EE65EC823320EEBE69E14F1299A9A36DE4BF8DB58FD4"
+    ],
+    "remainingFailure": "Primary A510 remains nonexact. The global-function research representation has no canonical ownership, placement or full-ROM acceptance. The integrated canonical source uses LOCAL secondary functions under its complete compiler/relocation contract.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Normalize LF and EOF whitespace as a new source identity. In AC0C mode 0, promote code to a branch-local word, shift through the existing len variable, and use a separate branch-local offset. In the final mode, guard a promoted decoded literal count before shifting, then copy it to the byte-sized working counter."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8044,
+      "sha256": "D02BF6337EF9EA6EBEF6EE53BF8C2EBBE75A0DE6727BCFCE5C1BFDB7012D2E09"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5257C04D316D35F6FB1879B55952F9087270D43C55A0A3DE49C7B33439D56478"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_lzss_decompress-289c12cb5a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
