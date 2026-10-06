@@ -8,37 +8,44 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / MagentaBarn (October 6 fresh resource-probe dispatch worker):** top-level chat
-  `01a11344-8fd0-72c1-a7b5-457e99bef44f`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete THREE-member dispatch API wave, 916 bytes:
-  `func_00004C5C` / `boot_resource_probe_dispatch_prepare` (356, ROM4C5C..4DC0),
-  `func_00004DC0` / `boot_resource_probe_dispatch_apply` (276, ROM4DC0..4ED4),
-  `func_00004ED4` / `boot_resource_probe_dispatch_result_build` (284, ROM4ED4..4FF0).
-  Preserve the three independent physical owners and their existing entry aliases;
-  no combined compilation group or per-function acceptance wave is assigned.
-  Reconcile full disassembly and current intake; private readiness is not acceptance.
+- **Sol (October 6 fresh resource-probe copy/flag worker):** top-level chat
+  `01a113a4-5ca1-78d1-acb9-af4184132170`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete THREE-owner copy/flag wave, 528 bytes and FIVE existing entry labels:
+  `func_00005B8C` / `boot_resource_probe_indexed_record_copy_flag` (204, ROM5B8C..5C58),
+  `func_00005C58` / `boot_resource_probe_large_record_copy_flag` (164, ROM5C58..5CFC),
+  `func_00005CFC` / `boot_resource_probe_small_record_copy_flag` (160, ROM5CFC..5D9C).
+  Preserve both load prefixes and existing prologue aliases5C60/5D04 at+8, three
+  independent producers and complete coverage. No prefix owners or combined group.
+  Recommended order: small, large, indexed; one target at a time in
+  `build/matching/probe-copy-20261006/`. Private readiness is not acceptance.
 
-  Read the [prepare](dossiers/boot-resource-probe-dispatch-prepare.md),
-  [apply](dossiers/boot-resource-probe-dispatch-apply.md) and
-  [result-build](dossiers/boot-resource-probe-dispatch-result-build.md) dossiers and
-  full original ASM. Old default preparation packets are scaffolds, not accepted candidates.
-  Work in `build/matching/sol-probe-20261006/`. Preserve callback fields
-  RAM800A8250/54/58 in original `data_00037480.s`, the indirect-call ABI and observed
-  13-entry/0x1C-stride behavior. Bind actual direct calls and constant relocations.
-  Accepted allocation/free and retained record helpers, materializers and cleanup4FF0
-  are stable dependencies; converting them is not required for this trio.
-  Unresolved resource-validator1A34/1A3C and checksum5EC4/5F60 coverage remain separate
-  structural leads. Descriptor encoder4894..4AC8 remains blocked; BF90/BFC0/BFF4 is a
-  separate diagnostic-wrapper follow-up. Preserve all original five-family obligations.
+  Read the [indexed](dossiers/boot-resource-probe-indexed-record-copy-flag.md),
+  [large](dossiers/boot-resource-probe-large-record-copy-flag.md) and
+  [small](dossiers/boot-resource-probe-small-record-copy-flag.md) dossiers, full ASM,
+  current intake and accepted dispatch/arena/tree source evidence. The June copy-direction
+  wording conflicts with the source-first `func_00023460` ABI: these copy caller records
+  into the shared buffer. Confirm against source/ASM and record the correction in current
+  wave evidence; do not infer persistent-storage behavior. Protect resource_alloc,
+  fill8008A0F0, copy80093060, materializers539C/553C, accepted dispatch calls, existing
+  fixed/entry aliases and BSS words800A83B8/BC in original `zero_fill_000386c0.s`.
+  Resource-validator1A34/1A3C, checksum5EC4/5F60 and descriptor4894..4AC8 gates remain
+  separate; preserve all original five-family obligations.
 
-  GreenGoose explicitly released production ownership and retired its watcher in mail1515.
-  The fresh worker receives the sole production role and Sol cursor; own identity/watcher
-  and exception-only SilentCrane/GoldOx routing apply. The independent Shop14 assignment
-  passed canonical acceptance in1528. After closing Shop commit
-  `46525af8`, mail1530 releases the original probe trio for canonical integration using
-  the confirmed native/store drains. ONE normal verifier covers the complete trio, without preliminary build,
-  per-function full-ROM checks or unchanged acceptance repeats. Tooling changes retain
-  explicit Sol/Claude agreement, Astra approval and their applicable audit/review.
+  MagentaBarn released all production/target ownership and actual jobs and retired only
+  its own watcher in mail1540. The fresh worker inherits the sole production role and
+  Sol cursor. LavenderSpire's independent native checks were released in1539. Private
+  checks run concurrently without per-check permission; contact Astra for actual drains
+  before canonical integration or shared-input changes. ONE final verifier covers the
+  complete trio, without preliminary build, per-function full-ROM checks or unchanged
+  acceptance repeats. Exception-only SilentCrane/GoldOx routing and tooling approval apply.
+
+  **Accepted probe-dispatch predecessor:** complete THREE owners, 916 bytes,
+  `func_00004C5C`356 / `func_00004DC0`276 / `func_00004ED4`284; source commit `5a05f902`.
+  ONE normal verifier plus fresh compilation passed `2026-10-06T23:44:07.439Z`,
+  CURRENT `79E66A89`, baseline `F1D9FEF4`, exact canonical41943040-byte ROM.
+  All three are PURE_C, sole/exact, with24/14/13 actual relocations and no filler/fallback.
+  [Complete membership, source evidence and proof](Plans/task-logs/sol-probe-dispatch-wave-20261006.md).
+  Reuse accepted proof; do not rerun merely for the successor.
 
   **Accepted LZSS predecessor:** full `boot_lzss_decompress`, ROMA510..AF7C,
   2,668 bytes in FOUR bodies1744/44/804/76, GLOBAL/LOCAL/LOCAL/LOCAL at0/1744/1788/2592.
@@ -289,14 +296,16 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   transport through existing Y scratch before the original Y read: it changes allocation
   metadata while combining back into the original load. Test its applicability to6098's
   real decoded coordinates; it does not explain the separate48-byte frame deficit.
-  The PURE_C control has4168 bytes/frame408 versus retail4148/frame456. Six unexplained
+  The historical PURE_C control had4168 bytes/frame408 versus retail4148/frame456;
+  LavenderSpire's fresh contract11 control emits4148 bytes/frame408 with46 differing words.
+  Six unexplained
   eight-byte intervals do not prove six real variables; do not fabricate frame padding,
   consumers or assembler constraints. Preserve best source and source-bound counterexamples.
 
-  Begin read-only intake and private source preparation immediately. Native/CPP/intake/store
-  commands remain held while MagentaBarn integrates/verifies the probe trio under1530;
-  Astra releases that hold after actual writer exits. Then private checks run independently
-  without per-check permission. Only MagentaBarn changes canonical inputs. One complete-owner
+  LavenderSpire's native/CPP/intake/store hold was released in mail1539 after the probe
+  trio passed and production jobs exited. Private checks now run independently without
+  per-check permission on CURRENT `79E66A89`. Only the Director-assigned production
+  successor changes canonical inputs after coordinated drains. One complete-owner
   verifier follows real PURE_C readiness and serialized integration; a partial removal of
   hybrid constraints does not complete this assignment. Own identity/mail watcher and
   exception-only Director/Claude routing apply; no routine messages to the production writer.
