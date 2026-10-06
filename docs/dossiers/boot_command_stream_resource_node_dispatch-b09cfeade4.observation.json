@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B09CFEADE4632252523A55C57939EDC162A36B513D0D6E9306325DBEAC8CD97A",
+  "observationId": "E17FCF340761C0AD40DE33D512C4E2FBCE4471753AAF251D650D1728CE0A47D9",
+  "symbol": "boot_command_stream_resource_node_dispatch",
+  "authored": {
+    "context": "Legacy GNU varargs ellipsis and next-arg accessor with a separate loop pointer lifetime, but one extra4-byte cursor advance.",
+    "effects": [
+      "complete-owner-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "182EAB823AA10CFE18399BB4916F34E871358FACD0B42827D2DFA03F7A01CE48",
+      "sourceSha256": "E1662E3431D4D9513383EF709DA564EA650BDC29BFB2A423F7A5916DDB2857AA"
+    },
+    "label": "extra-variable-argument-skip",
+    "observedEffect": "PURE_C/568 bytes with full16-byte prefix. One nonrelocation difference: sp+0x2B at ROM9AC4 instead of sp+0x27, so this source skips an incoming word.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_command_stream_resource_node_dispatch.s",
+        "sha256": "5675B381BAB510C76A880F740DC687354E8648AF985ACC125FF3A46B4E651A8E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "One wrong cursor word plus unresolved symbolic relocation fields; not selected.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Add4 to __builtin_next_arg before the aligned word read."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3642,
+      "sha256": "182EAB823AA10CFE18399BB4916F34E871358FACD0B42827D2DFA03F7A01CE48"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E1662E3431D4D9513383EF709DA564EA650BDC29BFB2A423F7A5916DDB2857AA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_command_stream_resource_node_dispatch-b09cfeade4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

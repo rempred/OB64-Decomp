@@ -1000,6 +1000,14 @@
     {
       "name": "func_801AB74C",
       "address": "0x801AB74C"
+    },
+    {
+      "name": "g_command_resource_root",
+      "address": "0x800A8740"
+    },
+    {
+      "name": "func_0000A160",
+      "address": "0x80079D60"
     }
   ],
   "targets": [
@@ -50039,6 +50047,250 @@
           "type": "R_MIPS_LO16",
           "symbol": "g_resource_context_output",
           "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "boot_resource_node_recursive_cleanup_free",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000018",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000020",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000028",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000030",
+          "section": ".rel.text",
+          "symbol": "boot_resource_node_recursive_child_free",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000038",
+          "section": ".rel.text",
+          "symbol": "func_000016C4",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000040",
+          "section": ".rel.text",
+          "symbol": "func_000016C4",
+          "type": "R_MIPS_26"
+        }
+      ]
+    },
+    {
+      "symbol": "boot_command_stream_resource_node_dispatch",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000040",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000054",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000058",
+          "section": ".rel.text",
+          "symbol": "boot_resource_node_recursive_cleanup_free",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000005C",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000060",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000064",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000068",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000006C",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000070",
+          "section": ".rel.text",
+          "symbol": "func_0000A1F8",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000074",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000078",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000080",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000084",
+          "section": ".rel.text",
+          "symbol": "boot_resource_node_recursive_field0c_rewrite",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000088",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000008C",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000094",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000098",
+          "section": ".rel.text",
+          "symbol": "func_0000A160",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000009C",
+          "section": ".rel.text",
+          "symbol": "g_command_resource_root",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000000E0",
+          "section": ".rel.text",
+          "symbol": "func_0000A160",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000130",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000015C",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001B0",
+          "section": ".rel.text",
+          "symbol": "boot_resource_node_recursive_cleanup_free",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001B8",
+          "section": ".rel.text",
+          "symbol": "boot_resource_node_recursive_child_free",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001C0",
+          "section": ".rel.text",
+          "symbol": "func_000016C4",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001C8",
+          "section": ".rel.text",
+          "symbol": "func_000016C4",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001D0",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001D8",
+          "section": ".rel.text",
+          "symbol": "func_0000A1F8",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001EC",
+          "section": ".rel.text",
+          "symbol": "func_000016C4",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001F4",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000200",
+          "section": ".rel.text",
+          "symbol": "boot_resource_node_recursive_field0c_rewrite",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000208",
+          "section": ".rel.text",
+          "symbol": "boot_resource_node_recursive_child_free",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000210",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000021C",
+          "section": ".rel.text",
+          "symbol": "boot_resource_node_recursive_key_field_clear",
+          "type": "R_MIPS_26"
         }
       ]
     }

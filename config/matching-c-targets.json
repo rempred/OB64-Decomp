@@ -1021,6 +1021,26 @@
     {
       "symbol": "boot_resource_node_overlay_context_materialize",
       "source": "src/boot/boot_resource_node_overlay_context_materialize.c"
+    },
+    {
+      "symbol": "boot_resource_node_recursive_field0c_rewrite",
+      "compilationGroup": "boot_resource_cleanup"
+    },
+    {
+      "symbol": "boot_resource_node_recursive_child_free",
+      "compilationGroup": "boot_resource_cleanup"
+    },
+    {
+      "symbol": "boot_resource_node_recursive_key_field_clear",
+      "compilationGroup": "boot_resource_cleanup"
+    },
+    {
+      "symbol": "boot_resource_node_recursive_cleanup_free",
+      "source": "src/boot/boot_resource_node_recursive_cleanup_free.c"
+    },
+    {
+      "symbol": "boot_command_stream_resource_node_dispatch",
+      "source": "src/boot/boot_command_stream_resource_node_dispatch.c"
     }
   ]
 }

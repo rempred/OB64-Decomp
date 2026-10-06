@@ -1319,6 +1319,171 @@
           ]
         }
       }
+    },
+    {
+      "id": "boot_resource_cleanup",
+      "source": "src/boot/boot_resource_node_cleanup_group.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "boot_resource_node_recursive_field0c_rewrite",
+          "ownerRowIndex": 94
+        },
+        {
+          "symbol": "boot_resource_node_recursive_child_free",
+          "ownerRowIndex": 95
+        },
+        {
+          "symbol": "boot_resource_node_recursive_key_field_clear",
+          "ownerRowIndex": 96
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 288,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "6412A2C456D37E7D4FA353FE3419FE91D55D1DD7738EA8A498BC85030AD9ED0F"
+      },
+      "functions": [
+        {
+          "symbol": "boot_resource_node_recursive_field0c_rewrite",
+          "offset": 0,
+          "bytes": 76,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "boot_resource_node_recursive_child_free",
+          "offset": 76,
+          "bytes": 88,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "boot_resource_node_recursive_key_field_clear",
+          "offset": 164,
+          "bytes": 116,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 280,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 24,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326592
+        },
+        {
+          "offset": 32,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326592
+        },
+        {
+          "offset": 40,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326592
+        },
+        {
+          "offset": 48,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326611
+        },
+        {
+          "offset": 100,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326611
+        },
+        {
+          "offset": 112,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326611
+        },
+        {
+          "offset": 124,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 132,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 204,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326633
+        },
+        {
+          "offset": 212,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217794
+        },
+        {
+          "offset": 228,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326633
+        },
+        {
+          "offset": 236,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217794
+        },
+        {
+          "offset": 244,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0AC5B8603556C4B09BD03B27DE8B0B9947DC6E0723D233C19C5059A6D587514E",
+  "observationId": "295C2D579338353B9D99F10930EB8B84CF6E7FCDAB8ED5E8F733EFD63D23740E",
+  "symbol": "boot_resource_node_recursive_field0c_rewrite",
+  "authored": {
+    "context": "Complete76 owner visits child10/14/18 and stores the child-free result into field0C.",
+    "effects": [
+      "complete-owner-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "020A56880CB7C91E950CD421BF2DF29191C2AF12205A8DAFA4425DEF14654A3B",
+      "sourceSha256": "6D22F225F103E56B0D34670311F69C1A6D92B183D9827D65CD887ECBCACFD46B"
+    },
+    "label": "complete-field0c-rewrite",
+    "observedEffect": "PURE_C/complete76 owner agrees outside four relocation fields on first private check.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_node_recursive_field0c_rewrite.s",
+        "sha256": "7B822B9A393F9CFB2246FBA55BE5184B5D1225A22B5203740BC784649D78D826"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Proposed THREE native producer independently reproduces full owner diagnostically; canonical gates remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Readable null-safe void recursion and final field rewrite."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 797,
+      "sha256": "020A56880CB7C91E950CD421BF2DF29191C2AF12205A8DAFA4425DEF14654A3B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6D22F225F103E56B0D34670311F69C1A6D92B183D9827D65CD887ECBCACFD46B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_node_recursive_field0c_rewrite-0ac5b86035.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
