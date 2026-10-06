@@ -8,7 +8,7 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol (October 5 fresh resource archive worker):** top-level chat
+- **Sol / HazyForest (October 5 fresh resource archive worker):** top-level chat
   `01a10f02-1555-7ce1-82da-c8d93cd50bec`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
   Own the complete resource archive front-end SIX (1,524 physical bytes):
   `boot_resource_record_mark_ready` (ROM `AF7C..AFAC`, 48),
@@ -43,10 +43,14 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   separate, as do every parked Combat, Squad and Shop obligation below.
 
   Use fresh `build/matching/sol-archive-20261005/`. The worker receives the released
-  production-writer role and Sol cursor, but uses private checks until complete-wave readiness.
-  Shop private checks remain concurrent. Before any canonical source/header/config/build
-  mutation or canonical diff, obtain Astra's integration release confirming Shop's actual
-  native/store drain. Ready complete Shop14 integration retains priority. Use a fresh mail
+  production-writer role and Sol cursor. The complete SIX is now privately ready; current
+  sources and compiled inputs agree with all six mechanical PURE_C/full-extent masked checks.
+  These symbolic-object comparisons have no authenticated isolated link and remain provisional.
+  After HazyForest's actual drain1395 and Shop's actual native/store drain1397, Astra1398
+  releases complete-SIX canonical integration, batched focused links, useful research publication
+  and one normal final verifier under existing contracts. Shop14 remains open; its native checks
+  stay held until Astra's stable-input release. Release required native/verifier/store work before
+  optional closing docs/commit. Ready complete Shop14 integration retains priority. Use a fresh mail
   identity and delivery state; Astra owns the independent stop monitor and lesson index.
   Report only complete-wave handoff, actionable blockers and shared-input coordination.
 
