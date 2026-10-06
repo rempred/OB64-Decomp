@@ -134,3 +134,22 @@ Neither an old-model nor an altered candidate ID proves current matching accepta
 Both test-only corrections passed independent review and canonical reruns:132 symbol
 equivalences/eight mutations with exactly one boot-proof read, and26 knowledge checks
 with no KMC invocation. Production intake, cache checks and historical IDs are unchanged.
+
+## Status reporting correction
+
+BlueOsprey1487 found a missed consumer after the command-dispatch wave passed normal
+verification: `status_accounting.js` still equated source padding with retained ROM tail
+for the explicit discarded mode. This was a reporting omission in the accepted repair,
+not a source or full-ROM failure. The correction only changes status accounting and its
+tests; absent-mode tail coupling and independent retained-row conservation remain intact.
+Discarded native padding contributes neither replacement nor assembly bytes.
+
+Independent review reproduced21 legacy and63 new-mode rejection controls and current
+776-target accounting that conserves all41,943,040 bytes. The module is excluded from
+compiler, CURRENT and diagnostic-cache implementation identities, but private commands
+snapshot all of `tools/lib`, so actual drain1491 preceded application. All33 routine
+suites passed in190.6 seconds. The real status CLI exited0 and reports EXACT against
+existing verified CURRENT `0B9FFC3A`; verification/fresh-compilation report identities
+remain unchanged. Results are under `build/status-terminal-alignment-20261006/`.
+No compiler/linker/source/configuration contract changed, and no unchanged full-ROM
+verifier or audit was repeated for this reporting correction. The correction is accepted.

@@ -8,41 +8,48 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / BlueOsprey (October 6 fresh command-stream worker):** top-level chat
-  `01a1128e-cf8e-7d71-bac1-15659be4ef4b`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete `boot_command_stream_dispatch` physical owner, row84:
-  ROM `978C..9A18`, RAM `8007938C..80079618`, 652 bytes. Preserve the full
-  public28-byte varargs prefix at978C and624-byte framed fallthrough at97A8.
-  The latter is not a separately selected logical function; do not invent a new boundary.
-  The already accepted9A18 successor and its complete varargs producer remain protected.
+- **Sol / GreenGoose (October 6 fresh boot LZSS worker):** top-level chat
+  `01a112cb-b305-7a51-8b15-ce0144979169`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete `boot_lzss_decompress` physical owner:
+  ROM `A510..AF7C`, RAM `8007A110..8007AB7C`, 2,668 bytes.
+  Preserve all FOUR logical bodies together: A510..ABE0 (1744), ABE0..AC0C (44),
+  AC0C..AF30 (804), AF30..AF7C (76). The accepted owner remains ASM; historical isolated
+  ABE0/AF30 exact candidates do not accept it. Main A510 and AC0C still need source work.
+  Preserve caller aliases `func_0000A510`/`boot_lzss_decompress` and
+  `func_0000ABE0`/`func_8007A7E0`, complete body coverage and original fallback.
 
-  Required data: three compiler switch-table occurrences in existing read-only row789:
-  ROM `3E3A8..3E3E0` (14/56), `3E3E0..3E408` (10/40),
-  `3E408..3E438` (12/48); 36 entries/144 bytes, all destinations inside this owner.
-  Use the accepted boot-data/auxiliary machinery at `4cc8cb85`. Complete row conservation
-  retains original `3DDC0..3E3A8`, new tables, original interior `3E438..3E528`,
-  then unchanged accepted decoder/op fragments and remainders. The former decoder
-  exterior prefix becomes an explicit interior; this is existing-contract composition,
-  not permission to alter boundaries or manufacture compiler tables.
+  Read [LZSS dossier](dossiers/boot-lzss-decompress.md),
+  [decompression trial](audit/2026-09-23-boot-decompression-trial.md),
+  [logical-body census](audit/2026-09-23-boot-decode-body-census.md), full original ASM
+  and current intake. Locate preserved primary cursor/copy-argument experiments and
+  AC0C H10/mode0/3 bits-variable controls before repeating work; historical ignored paths
+  may need recovery under the frozen-family guide. Work in `build/matching/sol-lzss-20261006/`.
+  Full ASM shows leaf code except A510's internal call to ABE0. Do not invent fixed-global
+  or table relocations for this owner. Protect accepted B030 and9EFC callers and all
+  accepted resource interfaces. The C024/C310/C778/C990 LHa/stream foundation and its
+  local bodies are already accepted; do not redecompile them. BF90/BFC0/BFF4 is a separate
+  future diagnostic-wrapper trio; structurally blocked descriptor encoder4894..4AC8 is excluded.
 
-  Read [command dispatch](dossiers/boot-command-stream-dispatch.md), full original ASM,
-  [accepted mapping](audit/2026-10-06-boot-initialized-data.md),
-  [retained interiors](AUXILIARY_INTERIOR_ASSEMBLY.md) and the decode/cleanup/node-context
-  completion records for interfaces. Begin with complete varargs coverage and an early
-  private native comparison using `build/matching/sol-command-20261006/`.
-  Consult current research intake and compiler lessons; do not rerun unchanged acceptance.
-  Protect accepted payload9C50, insert/find9CAC, context9D50,9EFC, overlay9FD8,
-  resource_free and their existing globals/aliases. The historical caller census is a lead;
-  current static evidence finds124 JAL sites across47 owners to the public entry.
+  BlueOsprey explicitly released ownership in **mail1489**, after source commit `7fda04f9`. The fresh worker receives production
+  ownership and Sol cursor; own identity/watcher and exception-only SilentCrane/GoldOx
+  routing apply. Shop owns its complete14 independently. After any explicit short repair
+  hold is released, private roots run checks concurrently. Canonical integration requires
+  complete-wave readiness and actual native/store drains; ready Shop14 retains priority.
+  ONE final normal verifier covers the whole four-body producer, with no per-body full-ROM
+  builds, preliminary build or unchanged acceptance repeat. Tooling changes retain the
+  existing Sol/Claude agreement and Astra approval process.
 
-  CloudyMoose1475 released production ownership after source commit `6fda08ef`.
-  The fresh worker receives that role and Sol cursor; own verified mail identity/watcher
-  and exception-only routing to SilentCrane/GoldOx are required. Shop remains independent
-  and was released in1474. Both private roots may run checks concurrently; canonical
-  source/config/build changes require actual drains at complete-wave integration.
-  Ready complete Shop14 retains integration priority. ONE final normal verifier covers
-  the complete command-owner/table wave; no per-function full-ROM or unchanged proof repeats.
-  A supported structural/tooling issue retains Sol/Claude agreement and Astra approval.
+  **Accepted command-stream predecessor:** `boot_command_stream_dispatch`, row84,
+  ROM978C..9A18, complete652-byte varargs producer and THREE switch-table occurrences,
+  36 entries/144 bytes. Source commit `7fda04f9`; ONE normal verifier/fresh compilation
+  passed `2026-10-06T19:41:27.699Z`, CURRENT `0B9FFC3A`, baseline `F1D9FEF4`,
+  exact canonical41943040-byte ROM. Row789 conserves1512+144+240+340+108+36+2724.
+  All protected decoder/op payloads remain exact. [Full wave and source pairs](Plans/task-logs/sol-resource-command-wave-20261006.md).
+  Shop was released in1488; BlueOsprey retired its own watcher/released production in1489.
+  The [status-accounting correction](audit/2026-10-06-boot-initialized-data.md#status-reporting-correction)
+  is accepted after independent review, all33 routine suites and the real status CLI.
+  It reports the already accepted discarded-alignment mode; canonical verification
+  remains valid without an unchanged ROM repeat. Mail1498 released both private workers.
 
   **Accepted record/op decoder predecessor:** complete TWO physical owners/SEVEN bodies,
   2216+248 code bytes, source commit `6fda08ef`, repair `4cc8cb85`.

@@ -1,6 +1,7 @@
 'use strict';
 
 const { targetTextOwners } = require('./phase8_matching_c');
+const { sha256Buffer } = require('./phase7_conventional');
 const { projectInterior } = require('./auxiliary_interior');
 const auxiliaryProjection = require('./auxiliary_projection');
 
@@ -203,16 +204,36 @@ function summarizeAcceptedOwnership(model, targets) {
       }
       if (auxiliary.sourceObjectPrefix) {
         const selection = auxiliary.sourceObjectPrefix;
+        const hasDiscardedAlignment = Object.prototype.hasOwnProperty.call(selection, 'discardedTerminalAlignment');
         if (selection.prefixOffsetNumber !== 0
             || selection.prefixBytes !== auxiliary.bytes
             || selection.trailingPaddingOffsetNumber !== auxiliary.bytes
             || selection.bytes !== selection.prefixBytes + selection.trailingPaddingBytes
-            || selection.trailingPaddingBytes !== auxiliary.ownerTailBytes
             || selection.expectedPrefixSha256 !== auxiliary.expectedObjectSha256
-            || selection.expectedTrailingPaddingSha256 !== auxiliary.ownerTailSha256) {
+            || (hasDiscardedAlignment && selection.discardedTerminalAlignment !== true)
+            || (!hasDiscardedAlignment && (selection.trailingPaddingBytes !== auxiliary.ownerTailBytes
+              || selection.expectedTrailingPaddingSha256 !== auxiliary.ownerTailSha256))
+            || (hasDiscardedAlignment && (
+              selection.sectionType !== 'SHT_PROGBITS'
+              || JSON.stringify(selection.sectionFlags) !== JSON.stringify(['SHF_ALLOC'])
+              || selection.alignment !== auxiliary.alignment
+              || !Number.isInteger(selection.alignment) || selection.alignment < 4 || selection.alignment > 16
+              || (selection.alignment & (selection.alignment - 1)) !== 0
+              || !Number.isSafeInteger(selection.bytes)
+              || selection.bytes % selection.alignment !== 0
+              || auxiliary.trailingPaddingBytes !== 0
+              || !Number.isInteger(selection.trailingPaddingBytes) || selection.trailingPaddingBytes <= 0
+              || selection.trailingPaddingBytes !== (selection.alignment - auxiliary.bytes % selection.alignment) % selection.alignment
+              || !/^[0-9A-F]{64}$/.test(selection.expectedSha256)
+              || !/^[0-9A-F]{64}$/.test(selection.expectedPrefixSha256)
+              || selection.expectedTrailingPaddingSha256 !== sha256Buffer(Buffer.alloc(selection.trailingPaddingBytes))
+            ))) {
           fail(`target auxiliary source-object prefix accounting drift: ${target.symbol} ${auxiliary.outputSection}`);
         }
       }
+      // Native discarded alignment has no ROM interval and contributes to
+      // neither replacement bytes nor retained ASM. Retail intervals below
+      // remain independently conserved against the complete accepted row.
       addRetainedAuxiliary(row, slice, auxiliary, 'prefix', target.symbol);
       addRetainedAuxiliary(row, slice, auxiliary, 'tail', target.symbol);
       const interior = projectInterior(auxiliary);

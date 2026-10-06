@@ -310,9 +310,9 @@
     {
       "id": "aggregate-stack-counterexample",
       "symptoms": ["stack-layout-or-offset-family"],
-      "applicability": "Check ABI entry stores before inferring locals. In the accepted resource dispatcher, KMC legacy ellipsis plus __builtin_next_arg produces four pre-frame argument stores; an extra cursor word skips an argument despite the same 568-byte extent. Keep genuine aligned word consumption and the full prefix. The separate aggregate experiment remains nonmatching: related stack offsets justify a bounded hypothesis, not an original-layout claim. Read source controls and final wave proof separately.",
+      "applicability": "Check ABI entry stores before inferring locals. KMC legacy ellipsis/next-argument traversal preserves pre-frame stores; an extra cursor word skips an argument despite unchanged extent. In the command dispatcher, an early first-word local moves the root load behind frame setup and adds four bytes; direct lookup restores its 28-byte prefix and 652-byte owner. Preserve real consumption. These source-context pairs and the nonmatching aggregate example are leads; final wave proof remains separate.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#stack-layout-and-aggregate-locals",
-      "references": ["docs/dossiers/func-0006d7d8.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-b09cfeade4.md", "docs/Plans/task-logs/sol-resource-cleanup-dispatch-wave-20261005.md"],
+      "references": ["docs/dossiers/func-0006d7d8.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-b09cfeade4.md", "docs/Plans/task-logs/sol-resource-cleanup-dispatch-wave-20261005.md", "docs/dossiers/boot_command_stream_dispatch-3b698b0d4a.md", "docs/dossiers/boot_command_stream_dispatch-f396a978e7.md"],
       "observations": [
         {"symbol": "boot_command_stream_resource_node_dispatch", "path": "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.observation.json"},
         {"symbol": "boot_command_stream_resource_node_dispatch", "path": "docs/dossiers/boot_command_stream_resource_node_dispatch-b09cfeade4.observation.json"}

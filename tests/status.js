@@ -2,6 +2,8 @@
 'use strict';
 
 const { summarizeAcceptedOwnership } = require('../tools/lib/status_accounting');
+const { createHash } = require('crypto');
+const hash = bytes => createHash('sha256').update(bytes).digest('hex').toUpperCase();
 
 function fail(message) {
   throw new Error(`status test failure: ${message}`);
@@ -128,6 +130,95 @@ function makeTarget(symbol, owners, auxiliarySections = []) {
     textOwners: owners,
     auxiliarySections,
   };
+}
+
+function discardedAlignment(auxiliary) {
+  const payload = Buffer.alloc(auxiliary.bytes, 0x12);
+  auxiliary.alignment = 8;
+  auxiliary.trailingPaddingBytes = 0;
+  auxiliary.expectedObjectSha256 = hash(payload);
+  auxiliary.sourceObjectPrefix = {
+    discardedTerminalAlignment: true, sectionType: 'SHT_PROGBITS', sectionFlags: ['SHF_ALLOC'],
+    alignment: 8, bytes: payload.length + 4, expectedSha256: hash(Buffer.concat([payload, Buffer.alloc(4)])),
+    prefixOffsetNumber: 0, prefixBytes: payload.length, expectedPrefixSha256: hash(payload),
+    trailingPaddingOffsetNumber: payload.length, trailingPaddingBytes: 4,
+    expectedTrailingPaddingSha256: hash(Buffer.alloc(4)),
+  };
+  return auxiliary;
+}
+
+function testDiscardedAlignment() {
+  const results = [], rejected = [];
+  for (const tailBytes of [0, 4, 2724]) {
+    const text = makeRow(11, 0x2000, [{ bytes: 16, executable: true }]);
+    const data = makeRow(12, 0x2010, [{ bytes: 44 + tailBytes, executable: false }]);
+    const auxiliary = discardedAlignment(auxiliaryFragment(data, 0, 44, 0, 1, tailBytes));
+    if (tailBytes) auxiliary.ownerTailSha256 = hash(Buffer.alloc(tailBytes, 0x57));
+    const targets = [makeTarget('discarded_fixture', [textOwner(text, 0, 0, 0)], [auxiliary])];
+    const model = { rows: [text, data] }, summarize = () => summarizeAcceptedOwnership(model, targets);
+    const accepted = summarize();
+    assert(accepted.replacements.bytes === 60 && accepted.assembly.bytes === tailBytes
+      && accepted.retainedAuxiliary.bytes === tailBytes, 'discarded zeros entered ROM accounting');
+    results.push({ tailBytes, replacementBytes: accepted.replacements.bytes, retainedAssemblyBytes: accepted.assembly.bytes });
+    // The same accepted objects reject each mutation and pass after restoration.
+    const change = (object, key, value) => {
+      summarize(); const old = object[key], had = Object.prototype.hasOwnProperty.call(object, key); object[key] = value;
+      try { rejected.push(expectRejection(`discarded ${tailBytes} ${key}`, /accounting drift|coverage drift|extent drift/, summarize)); }
+      finally { if (had) object[key] = old; else delete object[key]; }
+      summarize();
+    };
+    for (const mode of [false, null, 1, 'true', undefined]) change(auxiliary.sourceObjectPrefix, 'discardedTerminalAlignment', mode);
+    for (const [key, value] of [
+      ['prefixOffsetNumber', 4], ['prefixBytes', 40], ['trailingPaddingOffsetNumber', 40], ['bytes', 52],
+      ['alignment', 4], ['trailingPaddingBytes', 8], ['expectedPrefixSha256', 'A'.repeat(64)],
+      ['expectedTrailingPaddingSha256', hash(Buffer.from([1, 0, 0, 0]))], ['expectedSha256', 'missing'],
+      ['sectionType', 'SHT_NOBITS'], ['sectionFlags', ['SHF_ALLOC', 'SHF_WRITE']],
+    ]) change(auxiliary.sourceObjectPrefix, key, value);
+    change(auxiliary, 'alignment', 16);
+    change(auxiliary, 'trailingPaddingBytes', 4);
+    if (tailBytes) change(auxiliary, 'ownerTailBytes', 0);
+    const selection = auxiliary.sourceObjectPrefix;
+    const original = { ...selection };
+    Object.assign(selection, { bytes: 56, trailingPaddingBytes: 12, expectedTrailingPaddingSha256: hash(Buffer.alloc(12)) });
+    try { rejected.push(expectRejection('coherent excessive zero tail', /source-object prefix accounting drift/, summarize)); }
+    finally { Object.assign(selection, original); }
+    summarize();
+  }
+  const texts = [20, 21, 22].map((index, i) => makeRow(index, 0x3000 + 8 * i, [{ bytes: 8, executable: true }]));
+  const data = makeRow(23, 0x3018, [{ bytes: 3456, executable: false }]);
+  const first = auxiliaryFragment(data, 0, 8, 0, 3, 0);
+  const middle = discardedAlignment(auxiliaryFragment(data, 248, 340, 1, 3, 0));
+  const last = discardedAlignment(auxiliaryFragment(data, 696, 36, 2, 3, 2724));
+  const interior = (auxiliary, startOffset, bytes) => ({
+    inputSection: `${auxiliary.outputSection}.interior_${(data.romStart + startOffset).toString(16).toUpperCase().padStart(8, '0')}`,
+    sectionType: 'SHT_PROGBITS', sectionFlags: ['SHF_ALLOC'], alignment: 1, bytes,
+    romStartNumber: data.romStart + startOffset, romEndNumber: data.romStart + startOffset + bytes,
+    vramStartNumber: 0x80000000 + data.romStart + startOffset, vramEndNumber: auxiliary.vramStartNumber,
+    expectedSha256: hash(Buffer.alloc(bytes, 0x57)), ownerOriginalAssembly: data.part.file,
+    ownerOriginalAssemblySha256: data.part.sha256, expectedRelocations: [],
+  });
+  middle.preservedInteriorBefore = interior(middle, 8, 240);
+  last.preservedInteriorBefore = interior(last, 588, 108);
+  last.ownerTailSha256 = hash(Buffer.alloc(2724, 0x57));
+  const targets = [first, middle, last].map((auxiliary, index) => makeTarget(`composed_${index}`, [textOwner(texts[index], 0, 0, 0)], [auxiliary]));
+  const model = { rows: [...texts, data] }, summarize = () => summarizeAcceptedOwnership(model, targets);
+  const composition = summarize();
+  assert(composition.replacements.bytes === 408 && composition.assembly.bytes === 3072
+    && composition.retainedAuxiliary.bytes === 3072 && composition.retainedAuxiliary.fragments === 3,
+  'discarded padding changed independent complete-row composition');
+  for (const mutate of [
+    value => { delete value.preservedInteriorBefore; },
+    value => { value.preservedInteriorBefore.romStartNumber += 4; value.preservedInteriorBefore.vramStartNumber += 4; value.preservedInteriorBefore.bytes -= 4; },
+    value => { value.preservedInteriorBefore.romStartNumber -= 4; value.preservedInteriorBefore.vramStartNumber -= 4; value.preservedInteriorBefore.bytes += 4; },
+    value => { value.preservedInteriorBefore.expectedSha256 = 'invalid'; },
+  ]) {
+    const before = structuredClone(middle); mutate(middle);
+    try { rejected.push(expectRejection('discarded retained interior', /coverage drift|identity or extent drift/, summarize)); }
+    finally { Object.keys(middle).forEach(key => delete middle[key]); Object.assign(middle, before); }
+    summarize();
+  }
+  return { standalone: results, composition: { replacementBytes: composition.replacements.bytes,
+    retainedAssemblyBytes: composition.assembly.bytes, retainedFragments: composition.retainedAuxiliary.fragments }, negativeControls: rejected.length };
 }
 
 function main() {
@@ -333,6 +424,7 @@ function main() {
 
   console.log(JSON.stringify({
     status: 'pass',
+    discardedTerminalAlignment: testDiscardedAlignment(),
     legacyPrimaryRowAccounting: { owners: legacyAssembly.length, bytes: legacyBytes },
     acceptedOwnershipAccounting: {
       owners: result.assembly.owners,
