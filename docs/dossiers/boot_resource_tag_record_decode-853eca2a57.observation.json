@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "853ECA2A57AC05619780F67FD6DDBC190FC21690C72465A8D91D649F7FE5B6CC",
+  "observationId": "311F84109D57A77078079D2730D35637CC1A8EE9CCBAEF70BDAE4C3FB13A1C6E",
+  "symbol": "boot_resource_tag_record_decode",
+  "authored": {
+    "context": "Complete five-body decoder with typed record view, frame5200, explicit prefix payload length, left-associated default cursor step and all four helpers already mask-exact. Candidate285CA723 emits sequential second-word byte reads followed by one left-associated OR expression; only compact+164 OR16/+168 SLL24 are swapped against retail in that compact path.",
+    "effects": [
+      "scheduling",
+      "complete-body",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A8EA259D49AD6F05AC84949ACF409464549CA3BF026BB906507FB0D0EE4F02F7",
+      "sourceSha256": "57E6276F80BF26782BD98A48AA815A92C702E6D1F44DE174ACD481EFBB3548CD"
+    },
+    "label": "compact-second-word-post-read-shift-order",
+    "observedEffect": "Candidate853ECA2A preserves exact compact-word registers, reads, stores, word extent and return-constant placement; its+164 is SLL v1,24 and+168 OR a1,a1,a2 as retail. Bounded body inspection reports zero differences in all four helper bodies. Both control and changed source are PURE_C and emit1832/52/100/148/80; after accounting for the short-record missing instruction, all other primary instruction regions now align.",
+    "parentCandidateId": "285CA72393842A4E2B1001B41722307CB1A9498BADBF611B35C4878D65DFE0BF",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+        "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-second-byte-locals-control.c",
+        "sha256": "DEA67724979826C90FC5C2AD755E8388D72DC46C67A7626454C96D46FFFEF54D"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-second-byte-locals-watch.json",
+        "sha256": "B99FFD85717D8D1618A31A69F29EF0C764A0DB633CFE248C27C5E95442515485"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-second-post-shifts-watch.json",
+        "sha256": "F4A6E314558F895D54BD1C3606F33952E96CBCECC0F4D5941BB0DBC6365788B9"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-negated-short-probe.json",
+        "sha256": "9BCC3A89E100ACE18D8CA5311D4D99C559A70033C8D61558A0A9CD5FDA2BCAD7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Short-record guard still becomes far BNE/zero-return delay instead of BEQL/conditional byte store followed by inline J/zero. Whole owner is2212 versus2216, helper placements4 early, no accepted link or full-ROM proof. Source-bound staging observation only; not a universal scheduling recipe or original-source claim. Probe88A95F5B of the later negated guard demonstrates return merging/inversion by late-jump; GoldOx1458 is consulting on that separate blocker.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "After the same four sequential input_byte calls, stage byte1<<=8, byte2<<=16, byte3<<=24 as ordinary post-read statements, then combine byte0|byte1|byte2|byte3. Do not shift during each byte read; separate high-shift initialization controls disturbed registers and load scheduling."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11601,
+      "sha256": "A8EA259D49AD6F05AC84949ACF409464549CA3BF026BB906507FB0D0EE4F02F7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "57E6276F80BF26782BD98A48AA815A92C702E6D1F44DE174ACD481EFBB3548CD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_tag_record_decode-853eca2a57.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

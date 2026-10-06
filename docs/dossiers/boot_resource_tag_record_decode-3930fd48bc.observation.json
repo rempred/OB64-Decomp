@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3930FD48BC26EA67A4936DB1781585D8D8B79226720CB84BEE7E1DC92206E6F3",
+  "observationId": "BC91E61B52DD3A95E32B24F3874D15623CE5020825791286551B089676D11A2C",
+  "symbol": "boot_resource_tag_record_decode",
+  "authored": {
+    "context": "Complete five-body decoder. Parent04336E68 has the correct1836/52/100/148/80 extent and frame5200, but six instruction differences around short-record failure. The source-bound late-jump trace proves the cascade from independent zero returns. Explicit shared failure and reporting labels preserve the short branch, but an identical-message assignment merge removes the first setup stub and an inward reporting edge prevents the implicit U-marker cache.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "complete-body",
+      "return-tail",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "52253D32A5A6882381908DECD8C7809D1C79F579FDE815D36CA50AB87A35FCD3",
+      "sourceSha256": "ACE3FAC10E11B0F01BC5767B0638E2ADD9D5F692B152D31109AEC31B7564B5F7"
+    },
+    "label": "shared-failure-report-with-retained-u-marker",
+    "observedEffect": "Global controls1F772380/3560D09D emit all five bodies at exact offsets, frame5200, whole2216, zero word differences outside actual relocation fields. Address-only control restores1836 bytes but retains frame5192; adding the marker restores the full retail allocation and instruction sequence. The production source's object has primaryGLOBAL and four secondaryLOCAL functions with exact1836/52/100/148/80 census. Its raw text and normalized actual129 text relocations exactly equal the proper-prototype global control. The native344-byte readonly section contains85 actualR_MIPS32 entries whose relative text targets equal every original table entry, followed by four zero alignment bytes.",
+    "parentCandidateId": "04336E68BB8CDEF5D766FEAB02C2C397730A0E9AD23E468AB87A677AECDE4CDA",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+        "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+      },
+      {
+        "path": "asm/original/rev0/lib/rsp_ucode_s2dexd.s",
+        "sha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E"
+      },
+      {
+        "path": "config/matching-c-linkage.json",
+        "sha256": "F0E1A18998A6CD003F837BE3CA273275A0AAEFB5C492AE27C2A8B6F23D296AD9"
+      },
+      {
+        "path": "third_party/lha/ob64/crcio.c",
+        "sha256": "B227E75711B98C93A679EAF3174A554E1721EC055484C2E720C64F98E0EE4C18"
+      },
+      {
+        "path": "src/lib/strcat.c",
+        "sha256": "499B140A1CF923DD0DAB7D29A64B41E39BDF1CED6F7732281702F75FA2838A6D"
+      },
+      {
+        "path": "asm/original/rev0/boot/strcpy.s",
+        "sha256": "A58696E93267494CE6D3F46D8C782D9198DBEB08C1668E78BA795EB87BC6A85B"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-return-causal-extract.json",
+        "sha256": "B4C224E3AD7F085A2EFF1D7F62F9C58560172F7359D410ED901036A13500BE5C"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-explicit-shared-report-watch.json",
+        "sha256": "2A66ABA9585C263CF590CC622086BC40E237D68FFEC9B2D591B00CFEE76AC024"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-shared-report-address-watch.json",
+        "sha256": "3048C8D9C2E26D99C67FC85A6715DADF93EBFDC77646D70E6D5A8486AD3CED33"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-shared-report-marker-watch.json",
+        "sha256": "19F1FFFBC9DD40351D3A9E626C5042D171500F2D4FB4C0F26E32B74B09F5B0A5"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-call-contract-watch.json",
+        "sha256": "F3BCEBEC996BA03991218E1E73916C1B43E8FDAD406034ED4988EA9D8487181B"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-ready-production-watch.json",
+        "sha256": "5B9105ED6887065E948AA2B4FD2FA51E328D19FACB8EF6D22D225C427CF87508"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/whole-wave-ready-inspection.json",
+        "sha256": "6B83B458A2F764B97466C2DDDEEA51AB3808BB5EDA766545A3BCC9A6F50D9055"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive-ASM private watch reportsfailed because its scratch census expects GLOBAL secondaries; this is an expected research limitation, not a tooling-defect claim. Mechanical source class isPURE_C, and separately inspected emitted bytes/census are diagnostic only. Canonical sources are unchanged. Boot-data pairing, real retained-prefix/interior/tail ownership and discarded native alignment remain Director-owned structural dependencies. Sole linked C ownership, actual linked relocations/placement/bytes, original fallback preservation and one complete-wave full-ROM verification remain outstanding. No original-source or semantic-name claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Route all five failures to the short-arm zero return and all three read reports to one reporting call. Use the existing800B0000 link anchor minus1F18 for the second read-message address, keeping the first addressD_800AE0E8; both resolve to the same observed message. Explicitly retain the real U marker across extension dispatch calls. Reconcile ignored return values with accepted convdelim/strcat and original strcpy evidence. Production secondary bodies are static; explanatory comments document the measured KMC workarounds."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11988,
+      "sha256": "52253D32A5A6882381908DECD8C7809D1C79F579FDE815D36CA50AB87A35FCD3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "ACE3FAC10E11B0F01BC5767B0638E2ADD9D5F692B152D31109AEC31B7564B5F7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_tag_record_decode-3930fd48bc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

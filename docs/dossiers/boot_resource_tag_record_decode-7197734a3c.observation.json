@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7197734A3C8A3464B9CAA080C80CAD2C4F7D238B8D6D45575311CEA0AF9DB207",
+  "observationId": "49FEE93387DFD16DB6ADD5412E7E3AD1266771CE9B7BF3FB381A7C1F59E7BB0D",
+  "symbol": "boot_resource_tag_record_decode",
+  "authored": {
+    "context": "Full five-body row106 source, real85-entry switch domain, frame5200. Boolean/goto BBA8 control emits correct148 bytes/frame0 but seven fields swap a2/a3, including the scan end, lowercase flag and slash constant. BB10/BB44/BC3C already reproduce their52/100/80-byte bodies outside relocations.",
+    "effects": [
+      "register-allocation",
+      "complete-body",
+      "relocation-mask-compatible",
+      "repeated-guard"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9B870A06145E61E3D82C73F5A8DF2545EAFF2A0404289974A1419BFABCA0D959",
+      "sourceSha256": "15DD1C9AE63BA800F7550C79E684D0576B0BDF5789FE7AEEE2389A79AD5851F0"
+    },
+    "label": "complete-five-body-decoder-four-helper-shapes",
+    "observedEffect": "Candidate7197734A private watch is PURE_C, emits all five bodies with sizes1824/52/100/148/80 and primaryframe5200. Source-bound body-local inspection shows zero relocation-masked word differences in all four helper bodies. The union restores end/slash a2 and flag a3; Boolean-result first guard preserves the retail branch to the repeated length check. The C goto loop avoids the observed do-loop peel/for-loop stack/control growth.",
+    "parentCandidateId": "BC717C9E3AE0C0890699BC7B2CC7F3695631B064BC84BA77A2C0B6009885FBC8",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+        "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-lowercase-union-watch.json",
+        "sha256": "D21F6D6560A750F3C538150CFE391E54ACA211C3C0614C5DE8E84255F0AFB57C"
+      },
+      {
+        "path": "docs/dossiers/func_0002dfb8-09f4a35005.md",
+        "sha256": "007E0C70C3BEA1EBD281B6AC1E44CC3C93A58962D6121DDE5B5DDDE359FA1720"
+      },
+      {
+        "path": "docs/dossiers/func_0002dfb8-d70647fd1b.md",
+        "sha256": "7F22BE202340019F0AEBBB4A91063B0172287401CE6FF4B64EFCAEB51F33555E"
+      },
+      {
+        "path": "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.md",
+        "sha256": "4D5FDC426C833B852B4909D7A01CB6E927323C928C1E24119B172FB48E796A5D"
+      },
+      {
+        "path": "docs/dossiers/boot_resource_record_resolve_load-cc491dba27.md",
+        "sha256": "B79385FA2A83803F623A2E09868BD5A2A75DA11A79AAAF34D540EA1F02E0C810"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Primary1824 versus1836 and its actual words remain nonexact, so helper offsets shift12 bytes early and the complete owner is not matching. Symbolic-object only; current table placement/admission and final sole-owner/linked-relocation/full-ROM gates outstanding. No general allocator recipe, original source expression or original API claim. Earlier repeated-postincrement expression control was not selected because multiple macro increments in one unsequenced expression are unsuitable source.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse one ordinary local union for mutually exclusive BBA8 scan-end and slash-constant phases, after the bounded lowercase scan; keep the Boolean first guard and C goto scan loop. Consulted exact DFB8 union/independent-local pair09F4A350/D70647FD and BC8C Boolean/direct-guard pair9CEA8DDC/CC491DBA before transfer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11044,
+      "sha256": "9B870A06145E61E3D82C73F5A8DF2545EAFF2A0404289974A1419BFABCA0D959"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "15DD1C9AE63BA800F7550C79E684D0576B0BDF5789FE7AEEE2389A79AD5851F0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_tag_record_decode-7197734a3c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "04336E68BB8CDEF5D766FEAB02C2C397730A0E9AD23E468AB87A677AECDE4CDA",
+  "observationId": "7DFD94B18DEC6E91F88575411CB0341CB4A854A414420197F2F657B2DBD69013",
+  "symbol": "boot_resource_tag_record_decode",
+  "authored": {
+    "context": "Complete five-body decoder after typed record views, prefix/cursor phase corrections and post-read compact-word shifts. Parent853ECA2A has primary1832 instead of1836, all four helpers mask-exact and frame5200. A direct zero return for an invalid short record is merged into a later reporting return; source-bound probe88A95F5B and the authorized fresh late-jump trace identify that cascade.",
+    "effects": [
+      "control-flow",
+      "complete-body",
+      "return-tail",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C872EE8D14174CDE7BD7378E2235D7116A4FB04134D4D4DBA1B20D42974A513A",
+      "sourceSha256": "D93CE7C8A3D5AAA78F6FFDD787E7C0BDB1A2244982989A9F3AFCAB6233119840"
+    },
+    "label": "captured-short-validity-restores-owner-extent",
+    "observedEffect": "Candidate04336E68 is mechanically PURE_C and emits1836/52/100/148/80 bytes, whole2216, all required body offsets and frame5200. Body-local inspection has six differences outside actual relocation fields: the tag-zero branch destination and five short-predicate/return instructions. Every other primary word and all four helper bodies compare equal under that diagnostic mask. Capturing the returned predicate keeps a distinct value-producing path and restores the missing word, but introduces XORI/SLTIU instead of retail's constant20 and inline zero-return branch.",
+    "parentCandidateId": "853ECA2A57AC05619780F67FD6DDBC190FC21690C72465A8D91D649F7FE5B6CC",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+        "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-second-post-shifts-watch.json",
+        "sha256": "F4A6E314558F895D54BD1C3606F33952E96CBCECC0F4D5941BB0DBC6365788B9"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-captured-short-return-watch.json",
+        "sha256": "1AC373499789F89816B3574EEA039F0CFAEB062F56DDE5E10A77487D38729057"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-negated-short-probe.json",
+        "sha256": "9BCC3A89E100ACE18D8CA5311D4D99C559A70033C8D61558A0A9CD5FDA2BCAD7"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/tag-return-causal-extract.json",
+        "sha256": "B4C224E3AD7F085A2EFF1D7F62F9C58560172F7359D410ED901036A13500BE5C"
+      },
+      {
+        "path": "build/late-jump-trace/run-muwuzfob-3fccd3/report.json",
+        "sha256": "208FD0DD7B88508E69F49F08574AE958973CBC544B455EC0C86514F21B2B7759"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Six instruction differences remain. This is a selected private diagnostic candidate, not linked-byte equality or matching acceptance. Genuine85-entry native table/padding, boot-data pairing, conserved original row pieces, actual relocations, production bindings and the complete wave's full-ROM gates are still required. Explicit shared-failure and shared-report alternatives preserve useful control-flow evidence but regress extent, frame or reporting placement; they are not selected.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "In the final short-record arm, capture extension_length==20 as valid_short, test valid_short==0, and return that captured false value on rejection. Preserve the valid arm's two actual record stores and the rest of the complete producer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11634,
+      "sha256": "C872EE8D14174CDE7BD7378E2235D7116A4FB04134D4D4DBA1B20D42974A513A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D93CE7C8A3D5AAA78F6FFDD787E7C0BDB1A2244982989A9F3AFCAB6233119840"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_tag_record_decode-04336e68bb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

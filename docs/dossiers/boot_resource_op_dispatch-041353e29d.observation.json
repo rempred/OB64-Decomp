@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "041353E29D2954402B582D880BE2BA4E41D3DD736120A75BE082A795192D670D",
+  "observationId": "4BB92E23A15ADFE11E22B3F98B44C98448A7F1A2FCEC481B2861F0E1260148F1",
+  "symbol": "boot_resource_op_dispatch",
+  "authored": {
+    "context": "Complete dispatcher/BF48 owner, parent0B7E1AC7, genuine9-entry operation table and actual arg0-to-mode-pointer phase. Parent has176/72 bytes and frame24 with zero differences outside actual relocations. Accepted copyfile returnslong, while decode takes the existing structinterfacing pointer.",
+    "effects": [
+      "complete-body",
+      "declaration-contract",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E1241B4558A92C6412A5AE9D755C7C80522513E2E36EA477207241D160B2ACCB",
+      "sourceSha256": "E9570B9125D8A4EE7256B037A088E796B7E3B22C30502B8211CF0CC81C2FA1CA"
+    },
+    "label": "production-local-helper-and-accepted-callee-contracts",
+    "observedEffect": "Corrected global control7E03711B remains mechanicallyPURE_C and symbolic-object relocation-mask exact, whole248, bodies176/72 and frame24. Production source041353E2 has GLOBAL primary and LOCAL BF48 at176. Raw text and normalized actual27 text relocations exactly equal the proper-prototype global control. Native40-byte readonly table has9 actualR_MIPS32 entries whose relative targets equal all original entries, followed by4 zero alignment bytes.",
+    "parentCandidateId": "0B7E1AC7E9B887EB6285CAB5D510990D2E2C44B37FD064E4C5DB3C98D5FE790F",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_op_dispatch.s",
+        "sha256": "34F4050DDE0AB4EE36036DD944E81522BBE11FBD50D3009AB97FC9BF127339DC"
+      },
+      {
+        "path": "asm/original/rev0/lib/rsp_ucode_s2dexd.s",
+        "sha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E"
+      },
+      {
+        "path": "third_party/lha/ob64/copyfile.c",
+        "sha256": "C61CBA0605E4FFFCCAB54819E1B93C2652E4DD7E8ECACB81BCAED49B869D6273"
+      },
+      {
+        "path": "third_party/lha/ob64/decode.c",
+        "sha256": "C6EABDE21358D8CC1BDFAB6E4281990D780A58775C83050BCC5DF37E5ED58FDF"
+      },
+      {
+        "path": "third_party/lha/ob64/lha.h",
+        "sha256": "31F3D1E384E9A6A8C47EC02FA7696AB010E2F5248BB596FA20C3A202EBADEB5F"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/op-call-contract-watch.json",
+        "sha256": "EF5767E5AF87BE42CBE7F91BD53B52BD2A6E9875EB7A333A6FA9A0AFA8E0E506"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/op-ready-production-watch.json",
+        "sha256": "C2BC7D065370DA612296441DF20CCEF624B87D93ADEFE047B74EBE8A25365379"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/whole-wave-ready-inspection.json",
+        "sha256": "6B83B458A2F764B97466C2DDDEEA51AB3808BB5EDA766545A3BCC9A6F50D9055"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private inactive-ASM census expects GLOBAL secondaries and reportsfailed for productionLOCAL BF48; emitted-object inspection is diagnostic, not a defect claim or accepted match. Original fallback, canonical sole C ownership, actual linked relocations/placement/bytes, table admission/conserved row ownership and one complete seven-body wave/full-ROM verifier remain outstanding. No function boundary, source-policy/compiler exception or reduced assignment.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reconcile copyfile's long return/size and decode's forward interface-pointer declaration; retain the actual incoming32-bit size conversion and interface-base address. Make BF48 static for its productionLOCAL binding and annotate the real pointer phase."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1626,
+      "sha256": "E1241B4558A92C6412A5AE9D755C7C80522513E2E36EA477207241D160B2ACCB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E9570B9125D8A4EE7256B037A088E796B7E3B22C30502B8211CF0CC81C2FA1CA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_op_dispatch-041353e29d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0B7E1AC7E9B887EB6285CAB5D510990D2E2C44B37FD064E4C5DB3C98D5FE790F",
+  "observationId": "71214A304E4531AD137238594968ECF9903681B2B72AF37E6E3587A79CC245EF",
+  "symbol": "boot_resource_op_dispatch",
+  "authored": {
+    "context": "Complete row108 producer: primary dispatcher176 and path helper72, with a genuine nine-entry compiler switch table. The separate shared-mode pointer control uses v1 instead of retail a0.",
+    "effects": [
+      "register-allocation",
+      "full-owner-coverage",
+      "switch-table"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "03060829331FB84A123AEBB166CDE62B076E5C5A9F590808C411C4CD6A9824E4",
+      "sourceSha256": "D0D54DFA810A5E6E5937F641D89CEE3A07100E2F70675B011C7039B73EDFD02F"
+    },
+    "label": "full-dispatcher-argument-mode-phase",
+    "observedEffect": "Authenticated private watch emits PURE_C text248, function census176/72 at offsets0/176, and raw relocation-masked exact complete text. Mode pointer now uses a0. Object rodata is40 bytes: nine real relocated table words plus four zero bytes from native terminal alignment. All nine emitted table destinations follow the retail case map.",
+    "parentCandidateId": "EFBE1538F98FDE0FEE87656EF00C2AE91442382DE29E83FC93B219859B8749BC",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_op_dispatch.s",
+        "sha256": "34F4050DDE0AB4EE36036DD944E81522BBE11FBD50D3009AB97FC9BF127339DC"
+      },
+      {
+        "path": "asm/original/rev0/lib/rsp_ucode_s2dexd.s",
+        "sha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E"
+      },
+      {
+        "path": "build/matching/sol-decode-20261006/op-mode-arg0-watch.json",
+        "sha256": "8D1F3FEBBA8164C605AB81D2AB9B0F29F90C6E6BDC44C50AF7A2610F7CE551FC"
+      }
+    ],
+    "relatedCandidateIds": [
+      "4645555DB34D5007BDD5486F65BD06D4AE1C625E0CF94B90D024DF88CCD0F468"
+    ],
+    "remainingFailure": "Symbolic-object diagnostic only: inactive ASM owner has no authenticated isolated link. No acceptance/placement/relocation-contract claim. Actual row789 table dependencies are ROM-only and current auxiliary resolution lacks early-boot admission. Production requires local secondary binding; the static source control emits both bodies but scratch rejects its local binding.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse arg0 for the real mode-address phase in cases6 and1/4/7, share the mode store, and initialize the helper's colon/slash constants before adding path to its integer end argument."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1555,
+      "sha256": "03060829331FB84A123AEBB166CDE62B076E5C5A9F590808C411C4CD6A9824E4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D0D54DFA810A5E6E5937F641D89CEE3A07100E2F70675B011C7039B73EDFD02F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_op_dispatch-0b7e1ac7e9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
