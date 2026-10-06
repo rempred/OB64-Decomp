@@ -8,7 +8,7 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol (October 6 fresh resource-probe dispatch worker):** top-level chat
+- **Sol / MagentaBarn (October 6 fresh resource-probe dispatch worker):** top-level chat
   `01a11344-8fd0-72c1-a7b5-457e99bef44f`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
   Own the complete THREE-member dispatch API wave, 916 bytes:
   `func_00004C5C` / `boot_resource_probe_dispatch_prepare` (356, ROM4C5C..4DC0),
@@ -22,7 +22,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   [apply](dossiers/boot-resource-probe-dispatch-apply.md) and
   [result-build](dossiers/boot-resource-probe-dispatch-result-build.md) dossiers and
   full original ASM. Old default preparation packets are scaffolds, not accepted candidates.
-  Work in `build/matching/sol-probe-dispatch-20261006/`. Preserve callback fields
+  Work in `build/matching/sol-probe-20261006/`. Preserve callback fields
   RAM800A8250/54/58 in original `data_00037480.s`, the indirect-call ABI and observed
   13-entry/0x1C-stride behavior. Bind actual direct calls and constant relocations.
   Accepted allocation/free and retained record helpers, materializers and cleanup4FF0
