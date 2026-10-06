@@ -48,9 +48,9 @@
     {
       "id": "branch-local-byte-consumers",
       "symptoms": ["register-allocation"],
-      "applicability": "In B710's word accumulator, explicit increment alternatives and branch-local decrement byte conversions produced the required temporary registers. Preserve input priority, clamps, fresh reads and call width; branch-local spelling is a hypothesis to test in another source context, not a universal allocation rule. The retained source has provisional native field equality; external binding, linked bytes and complete-wave gates remain.",
+      "applicability": "B710's explicit increment alternatives and branch-local byte conversions change temporary registers; preserve clamps, reads and call width. In LZSS A510, signed char/short leading fill stores assigned -1 reuse the full-width sentinel and restore the shared-tail jump (1748 to 1744 bytes). Unsigned -1 alone is object-identical to the unsigned FF/FFFF control. These source pairs are context-bound diagnostics; complete-owner acceptance is separate.",
       "note": "docs/dossiers/func_0019B710-f9a6256700.md#source-context",
-      "references": ["docs/dossiers/func_0019B710-e6e2da95b1.md"],
+      "references": ["docs/dossiers/func_0019B710-e6e2da95b1.md", "docs/dossiers/boot_lzss_decompress-ca71f8b001.md", "docs/dossiers/boot_lzss_decompress-eb80037d0d.md"],
       "observations": [
         {"symbol": "func_0019B710", "path": "docs/dossiers/func_0019B710-e6e2da95b1.observation.json"},
         {"symbol": "func_0019B710", "path": "docs/dossiers/func_0019B710-f9a6256700.observation.json"}
@@ -171,9 +171,9 @@
     {
       "id": "guard-local-allocation-before-delay-fill",
       "symptoms": ["register-allocation", "scheduling-or-block-order"],
-      "applicability": "Final delay-slot placement can hide earlier allocation lifetimes. D14C's guard-local index and packet initialization change registers/slots but remain nonmatching. Separately, resource-context branch-local index initialization restores its 428-byte schedule; the early-index control emits 424 bytes. Preserve real uses, sentinel paths and zero-iteration behavior. Read each source pair and its own proof; the accepted resource wave does not accept D14C or prove a universal recipe.",
+      "applicability": "Allocation starts before delay filling. D14C's guard-local controls remain nonmatching; the resource-context branch-local index restores 428 bytes versus early-index 424. In LZSS AC0C, branch-local promoted byte/offset, shifts through existing len and decoded-word/working-byte separation remove 16 nonrelocated differences at 804 bytes. Preserve real consumers, widths and guards. These context-bound research pairs are not complete-owner acceptance or universal register recipes.",
       "note": "docs/dossiers/func_0022D14C-cf36d3de05.md#source-context",
-      "references": ["docs/dossiers/func_0022D14C-5fa0215a89.md", "docs/dossiers/boot_resource_node_context_materialize-f424609055.md", "docs/dossiers/boot_resource_node_context_materialize-8f262b64ca.md", "docs/Plans/task-logs/sol-resource-node-context-wave-20261005.md"],
+      "references": ["docs/dossiers/func_0022D14C-5fa0215a89.md", "docs/dossiers/boot_resource_node_context_materialize-f424609055.md", "docs/dossiers/boot_resource_node_context_materialize-8f262b64ca.md", "docs/Plans/task-logs/sol-resource-node-context-wave-20261005.md", "docs/dossiers/boot_lzss_decompress-de9f9f4972.md", "docs/dossiers/boot_lzss_decompress-289c12cb5a.md"],
       "observations": [
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-5fa0215a89.observation.json"},
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-cf36d3de05.observation.json"},
