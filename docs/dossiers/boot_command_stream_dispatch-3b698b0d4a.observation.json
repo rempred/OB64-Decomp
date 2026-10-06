@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3B698B0D4AC66DB7ED7A1B0BE55226327A7807593DBEB254658E7CCD759B3F36",
+  "observationId": "4176689DB3C6D5A9470327C51F82663D8C63EE955444F0B8F5CB8F9DDB9C6CB2",
+  "symbol": "boot_command_stream_dispatch",
+  "authored": {
+    "context": "Complete 652-byte command dispatcher derived from original ASM and all three original tables; legacy ellipsis and aligned NEXT_WORD cursor are already present.",
+    "effects": [
+      "register-allocation",
+      "varargs-prefix"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FB2C63077611B0A8019E75E70B3143980C908102C2C7C85403C7C85F78590E94",
+      "sourceSha256": "8848C50B8DB5E7303A41A6E4A0992136F159CA56E0B596C86798CE603D9D3E32"
+    },
+    "label": "first-argument-local-prologue-control",
+    "observedEffect": "Private watch001 compiles PURE_C but preserves the first word in s2 and places the initial root load after frame setup. It produces a length mismatch against the complete 652-byte owner. The remaining three structured switches produce all 36 table entries.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_command_stream_dispatch.s",
+        "sha256": "6C652CF126ACDB6991288764890D1EE7739D8AC6BAD1959BCE95612F34183CDA"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-resource-cleanup-dispatch-wave-20261005.md",
+        "sha256": "44177F69D9D7C4320E6EF114EFFD8FF3BA36D705F09AA4C872C4C796F7A5A361"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact complete text; private linked diagnostics unavailable for inactive ASM owner. This candidate is retained only as the source-bound early-lifetime control.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initialize the opcode local from __builtin_va_alist and use that local for the initial root lookup."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3872,
+      "sha256": "FB2C63077611B0A8019E75E70B3143980C908102C2C7C85403C7C85F78590E94"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8848C50B8DB5E7303A41A6E4A0992136F159CA56E0B596C86798CE603D9D3E32"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_command_stream_dispatch-3b698b0d4a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

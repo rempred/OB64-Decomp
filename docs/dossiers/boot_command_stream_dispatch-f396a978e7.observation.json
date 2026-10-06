@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F396A978E754E2156CEC34B4340147F77DA0010500624C4F995ED98D7784B6FD",
+  "observationId": "0F088D0A42C90DCCB057267B7436D45FD4CB52277AFB1A8CE420B19FE71EC8C5",
+  "symbol": "boot_command_stream_dispatch",
+  "authored": {
+    "context": "Complete 652-byte command dispatcher with legacy ellipsis, aligned cursor, original-derived outer and nested switches, all 36 original table destinations.",
+    "effects": [
+      "register-allocation",
+      "varargs-prefix",
+      "switch-table"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4F82AF6D606776A8E4025D4D321D96763C908874B7B36BB71A81124EDA42F85F",
+      "sourceSha256": "8838C6E48CDD691831B8B226CDBA3B863809CB16B5D0D5A6043167F2F1BE581D"
+    },
+    "label": "direct-first-word-full-owner-three-tables",
+    "observedEffect": "Private watch003 compiles PURE_C with exactly 652 bytes, the full 28-byte prefix/624-byte framed body, frame56 and exact nonrelocation text bits. Native readonly data contains .L36(14), .L32(10), .L46(12), 144 bytes without padding. All 36 measured R_MIPS_32 addends resolve to the exact original in-owner table destinations; actual text relocation census44.",
+    "parentCandidateId": "3B698B0D4AC66DB7ED7A1B0BE55226327A7807593DBEB254658E7CCD759B3F36",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_command_stream_dispatch.s",
+        "sha256": "6C652CF126ACDB6991288764890D1EE7739D8AC6BAD1959BCE95612F34183CDA"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-resource-cleanup-dispatch-wave-20261005.md",
+        "sha256": "44177F69D9D7C4320E6EF114EFFD8FF3BA36D705F09AA4C872C4C796F7A5A361"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private evidence is symbolic-object because the target is an inactive ASM owner. Canonical sole ownership, placement, linked text/table bytes, relocation contracts and complete-ROM verification remain required.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Pass __builtin_va_alist directly to initial root lookup and initialize the opcode local only when reading the next argument; retain the source-bound initial-local control."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3866,
+      "sha256": "4F82AF6D606776A8E4025D4D321D96763C908874B7B36BB71A81124EDA42F85F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8838C6E48CDD691831B8B226CDBA3B863809CB16B5D0D5A6043167F2F1BE581D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_command_stream_dispatch-f396a978e7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

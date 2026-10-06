@@ -1055,6 +1055,10 @@
       "source": "src/boot/boot_resource_archive_load_many.c"
     },
     {
+      "symbol": "boot_command_stream_dispatch",
+      "source": "src/boot/boot_command_stream_dispatch.c"
+    },
+    {
       "symbol": "boot_resource_tag_record_decode",
       "source": "src/boot/boot_resource_tag_record_decode.c"
     },
