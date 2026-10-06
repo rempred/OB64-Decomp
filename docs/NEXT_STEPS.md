@@ -48,8 +48,13 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   offsets `0/76/164`, executable280 and native aligned text288/tail8, full sections,
   bindings and newly counted relocations. This is a candidate producer, not a proven
   original translation unit. Preserve the full FIVE, original owners and accepted `A1F8`.
-  Canonical group admission/integration remains withheld until actual native evidence,
-  complete-wave readiness and the normal Director release after Shop's checks drain.
+  The actual private object now satisfies that census, has thirteen group relocations
+  and matches all 288 owner bytes in an authenticated isolated link. After complete FIVE
+  readiness and Shop's actual drain in mail1373, Astra1374 releases ordinary admission
+  and integration under the existing contract. Publish the six eligible standalone research
+  controls before group activation; preserve the key-clear full-owner failure honestly.
+  All three members activate together with the other two wave owners, then receive one
+  complete-FIVE verifier. This release is not final matching acceptance or a tooling change.
 
   **Accepted node/context predecessor:** IndigoFalcon's complete five-owner/six-body
   wave passed one final verifier, independent fresh compilation and exact full ROM at
