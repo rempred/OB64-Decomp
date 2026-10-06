@@ -54,6 +54,18 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   identity and delivery state; Astra owns the independent stop monitor and lesson index.
   Report only complete-wave handoff, actionable blockers and shared-input coordination.
 
+  **October 6 relocation-contract repair:** an exact B29C PURE_C link adds two genuine
+  address relocations compared with its frozen hybrid record. The model incorrectly required
+  both current and historical relocation lists to match. Explicit Sol1405/Claude1406 agreement,
+  focused/actual-object rejection tests and independent review support the bounded
+  [current-contract precedence fix](audit/2026-10-06-canonical-relocation-precedence.md)
+  at `9415b407`. Astra1407 releases resumed complete-SIX integration after all tooling tests
+  actually exited. Frozen compatibility inputs stay unchanged. Shop remains drained. Use ONE
+  `node tools/audit.js --profile` for the changed-input structural checks and embedded normal
+  CURRENT verification; do not add a separate full-ROM verifier or prior build. Tooling and
+  complete-wave acceptance remain pending until that combined audit passes. Release required
+  native/store work promptly afterward so Shop can refresh and resume.
+
   **Accepted cleanup/dispatch predecessor:** DustyCanyon's complete FIVE, all 952 bytes,
   passed one final verifier, independent fresh compilation and exact full ROM at
   `2026-10-06T02:01:27.729Z` (October 5 local); commit `89a8ec00`.
