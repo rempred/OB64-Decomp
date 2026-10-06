@@ -8,7 +8,7 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol (October 6 fresh resource-probe copy/flag worker):** top-level chat
+- **Sol / VioletMouse (October 6 fresh resource-probe copy/flag worker):** top-level chat
   `01a113a4-5ca1-78d1-acb9-af4184132170`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
   Own the complete THREE-owner copy/flag wave, 528 bytes and FIVE existing entry labels:
   `func_00005B8C` / `boot_resource_probe_indexed_record_copy_flag` (204, ROM5B8C..5C58),
