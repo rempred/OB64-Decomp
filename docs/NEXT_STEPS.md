@@ -8,38 +8,52 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / CloudyMoose (October 6 fresh resource record/op decoder worker):** top-level chat
-  `01a110f3-fb73-76a3-9c3e-a0353df621af`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete TWO-owner / SEVEN-body decoding wave (2,464 code bytes):
-  `boot_resource_tag_record_decode`, ROM `B3E4..BC8C`, row106, 2,216 bytes;
-  and `boot_resource_op_dispatch`, ROM `BE98..BF90`, row108, 248 bytes.
-  The decoder includes primary1,836 and required `BB10`52, `BB44`100,
-  `BBA8`148 and `BC3C`80. The dispatcher includes primary176 and required
-  `BF48`72. Preserve every body, original entry/alias and accepted physical owner.
-  The static 85-entry table at ROM `3E528` / RAM `800AE128` and nine-entry table
-  at ROM `3E6E8` / RAM `800AE2E8` are required data dependencies. Establish their
-  complete accepted ownership and caller/consumer map before tuning; route any
-  supported structural representation issue through Astra. Existing aliases
-  `func_0000B3E4` and `func_0000BE98` remain required by accepted callers.
+- **Sol / BlueOsprey (October 6 fresh command-stream worker):** top-level chat
+  `01a1128e-cf8e-7d71-bac1-15659be4ef4b`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete `boot_command_stream_dispatch` physical owner, row84:
+  ROM `978C..9A18`, RAM `8007938C..80079618`, 652 bytes. Preserve the full
+  public28-byte varargs prefix at978C and624-byte framed fallthrough at97A8.
+  The latter is not a separately selected logical function; do not invent a new boundary.
+  The already accepted9A18 successor and its complete varargs producer remain protected.
 
-  Read the corrected current sections of [the decode subsystem](dossiers/boot-resource-decode-subsystem-B030-F22C.md),
-  [codec/table evidence](dossiers/boot-codec-libc-vec3-F22C-11000.md), full original
-  assembly, logical coverage and research intake. Begin with the smaller dispatcher
-  after the dependency map, one owner at a time. Historical runtime-table wording and
-  unsigned-low-half address interpretations are superseded by original/current evidence.
-  Use fresh `build/matching/sol-decode-20261006/`; receive the released production
-  writer role and Sol cursor. Shop continues independent private checks concurrently.
-  No shared-input changes during private iteration. Contact Astra for actual native/store
-  drains only at complete-wave integration or a genuine shared-input requirement.
-  Ready complete Shop14 integration retains priority. One final verifier covers the
-  complete decoder wave; no per-function full ROM builds or unchanged acceptance repeats.
-  Exception-only communication, own mail identity/watcher, and Astra's independent stop monitor apply.
+  Required data: three compiler switch-table occurrences in existing read-only row789:
+  ROM `3E3A8..3E3E0` (14/56), `3E3E0..3E408` (10/40),
+  `3E408..3E438` (12/48); 36 entries/144 bytes, all destinations inside this owner.
+  Use the accepted boot-data/auxiliary machinery at `4cc8cb85`. Complete row conservation
+  retains original `3DDC0..3E3A8`, new tables, original interior `3E438..3E528`,
+  then unchanged accepted decoder/op fragments and remainders. The former decoder
+  exterior prefix becomes an explicit interior; this is existing-contract composition,
+  not permission to alter boundaries or manufacture compiler tables.
 
-  Protect accepted archive, B030, node/context, cleanup, allocation/free, header and DMA
-  prerequisites. Command-stream `978C..9A18`, later codec/resource consumers and external
-  validator `18D4..1A44` coverage at `1A34`/`1A3C` remain follow-up scope. All parked
-  Combat, Squad and Shop membership below remains required; this wave does not close
-  the whole Scenario family or establish runtime capacities.
+  Read [command dispatch](dossiers/boot-command-stream-dispatch.md), full original ASM,
+  [accepted mapping](audit/2026-10-06-boot-initialized-data.md),
+  [retained interiors](AUXILIARY_INTERIOR_ASSEMBLY.md) and the decode/cleanup/node-context
+  completion records for interfaces. Begin with complete varargs coverage and an early
+  private native comparison using `build/matching/sol-command-20261006/`.
+  Consult current research intake and compiler lessons; do not rerun unchanged acceptance.
+  Protect accepted payload9C50, insert/find9CAC, context9D50,9EFC, overlay9FD8,
+  resource_free and their existing globals/aliases. The historical caller census is a lead;
+  current static evidence finds124 JAL sites across47 owners to the public entry.
+
+  CloudyMoose1475 released production ownership after source commit `6fda08ef`.
+  The fresh worker receives that role and Sol cursor; own verified mail identity/watcher
+  and exception-only routing to SilentCrane/GoldOx are required. Shop remains independent
+  and was released in1474. Both private roots may run checks concurrently; canonical
+  source/config/build changes require actual drains at complete-wave integration.
+  Ready complete Shop14 retains integration priority. ONE final normal verifier covers
+  the complete command-owner/table wave; no per-function full-ROM or unchanged proof repeats.
+  A supported structural/tooling issue retains Sol/Claude agreement and Astra approval.
+
+  **Accepted record/op decoder predecessor:** complete TWO physical owners/SEVEN bodies,
+  2216+248 code bytes, source commit `6fda08ef`, repair `4cc8cb85`.
+  ONE combined audit/internal normal verifier passed `2026-10-06T18:24:55.181Z`;
+  CURRENT `2BC89C7B`, baseline `F1D9FEF4`, exact canonical41943040-byte ROM.
+  Both owners are PURE_C, sole/exact, with340/36-byte C tables and independent original
+  row789 remainders. [Full membership, proof and reusable discoveries](Plans/task-logs/sol-resource-decode-wave-20261006.md).
+  Independent structural review closed; all33 routine suites are covered. Shop's hold
+  ended in1474. CloudyMoose's own watcher is retired; identity/state are preserved.
+  Reuse accepted proof; no rerun merely for commit/handoff. Codec/resource consumers,
+  external validator1A34/1A3C and all parked original Combat/Squad/Shop/animation scope remain.
 
   **Accepted archive front-end predecessor:** HazyForest's complete SIX / 1,524 bytes
   passed ONE structural audit with embedded normal CURRENT and independent fresh
