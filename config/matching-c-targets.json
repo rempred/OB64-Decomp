@@ -1001,6 +1001,26 @@
     {
       "symbol": "resource_alloc_tree_scan",
       "source": "src/lib/resource_alloc_tree_scan.c"
+    },
+    {
+      "symbol": "boot_resource_node_insert_find",
+      "source": "src/boot/boot_resource_node_insert_find.c"
+    },
+    {
+      "symbol": "boot_resource_node_recursive_insert_slot_search",
+      "source": "src/boot/boot_resource_node_recursive_insert_slot_search.c"
+    },
+    {
+      "symbol": "boot_resource_node_payload_materialize",
+      "source": "src/boot/boot_resource_node_payload_materialize.c"
+    },
+    {
+      "symbol": "boot_resource_node_context_materialize",
+      "source": "src/boot/boot_resource_node_context_materialize.c"
+    },
+    {
+      "symbol": "boot_resource_node_overlay_context_materialize",
+      "source": "src/boot/boot_resource_node_overlay_context_materialize.c"
     }
   ]
 }

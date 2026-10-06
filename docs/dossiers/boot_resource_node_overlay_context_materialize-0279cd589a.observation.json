@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0279CD589A40B99C3AF6122234EDB48CE1371E1F0AA91CA0D837A4AC81B183CC",
+  "observationId": "2A839014EDDD942DF47E5989778C4F5E887326B8821360B3951AA41D7C6C1075",
+  "symbol": "boot_resource_node_overlay_context_materialize",
+  "authored": {
+    "context": "Independently derived complete owner from original assembly, current target metadata and relevant dossiers; unchanged accepted source context.",
+    "effects": [
+      "complete-owner-coverage",
+      "source-shape"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5B913DC85E510C3D884C1B9A45524AE8536B08C218687BF85D6061089EEF1803",
+      "sourceSha256": "7CCF235D42A85F634B22C720C867C23B78DA4D3AFC9EAC0D7D67C1ADE997A9E6"
+    },
+    "label": "overlay-complete",
+    "observedEffect": "Private native PURE_C covers 220 bytes with required functions boot_resource_node_overlay_context_materialize:220@0; all nonrelocation bits agree. Actual load-relevant relocation count 19.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_node_overlay_context_materialize.s",
+        "sha256": "10A490C00F044BD2CA34674A877C0934FF7FAB6D09A373063EF68E29FC023813"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner: authenticated private linked evidence and expected relocation provenance are unavailable. Canonical LOCAL secondary binding, addresses, sole ownership, exact complete bytes and full ROM remain unverified.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Adapt the accepted LZSS sibling to the observed RAM helper calls and status3."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1815,
+      "sha256": "5B913DC85E510C3D884C1B9A45524AE8536B08C218687BF85D6061089EEF1803"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7CCF235D42A85F634B22C720C867C23B78DA4D3AFC9EAC0D7D67C1ADE997A9E6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_node_overlay_context_materialize-0279cd589a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

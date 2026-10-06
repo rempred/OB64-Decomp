@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F4246090554FD1AA46F42A552135BEB5840F22DA01C90E25FCA5BF887A629F93",
+  "observationId": "C4FE0A274DE28EE05B1F2DF90E88596C922C898A1B915DE2A6D83876FE9F1C42",
+  "symbol": "boot_resource_node_context_materialize",
+  "authored": {
+    "context": "Complete independently authored general-context helper with two actual 16-byte stack descriptors and the accepted sibling output-lifetime spelling.",
+    "effects": [
+      "scheduling-or-block-order",
+      "complete-owner-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8D926C8401A5EB25EC2BBF6CC72D7177F483E56BAEED7C0C7C5A320E8696CEC1",
+      "sourceSha256": "E8C8955FBE29FFB828EC30B8CC8D9FCF92182CF69F392934320CE0696330E0F3"
+    },
+    "label": "context-early-index-control",
+    "observedEffect": "Native PURE_C emits424 bytes rather than428. The mode copy is early; the sentinel branch tests s1 and hoists limit=index+1 into its delay slot. The special-path jump is absent. Frame80 and all actual operations remain.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_node_context_materialize.s",
+        "sha256": "72EE6F68C72F74958D6E2A08B605A61587806586A66819F3B78D13CF95C5550C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "One-word extent and control-flow/scheduling mismatch; candidate is not selected. This does not disprove the real range-loop/descriptor structure.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initialize index from mode before the sentinel branch, then derive the nonrange limit from index."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2948,
+      "sha256": "8D926C8401A5EB25EC2BBF6CC72D7177F483E56BAEED7C0C7C5A320E8696CEC1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E8C8955FBE29FFB828EC30B8CC8D9FCF92182CF69F392934320CE0696330E0F3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_node_context_materialize-f424609055.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

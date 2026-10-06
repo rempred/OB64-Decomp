@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D8289AD9C66DF30C0ADF180F2B6289E29A2BD577556BA98590099FB155C256E5",
+  "observationId": "40C8436EAA9F6C4F7B80E0B3160520613A2021673905B02497EB3FB9AB1BC13C",
+  "symbol": "boot_resource_node_recursive_insert_slot_search",
+  "authored": {
+    "context": "Independently derived complete owner from original assembly, current target metadata and relevant dossiers; unchanged accepted source context.",
+    "effects": [
+      "complete-owner-coverage",
+      "source-shape"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "759B74A1A00911851AAEB2009D86078F1CD8C4CC426E763DA6471B079C8BC3EC",
+      "sourceSha256": "C57F3EF7084EB8715E045400556B1C49B9B850F7B0AECCEB5FEDA509B7900954"
+    },
+    "label": "recursive-complete",
+    "observedEffect": "Private native PURE_C covers 228 bytes with required functions boot_resource_node_recursive_insert_slot_search:172@0, func_0000A160:56@172; all nonrelocation bits agree. Actual load-relevant relocation count 11.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_node_recursive_insert_slot_search.s",
+        "sha256": "09ACE02838324F413DB8E787324DF11F8EDEF6191B5707A61DC34A906F3E1F2B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner: authenticated private linked evidence and expected relocation provenance are unavailable. Canonical LOCAL secondary binding, addresses, sole ownership, exact complete bytes and full ROM remain unverified.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express the original operations with structured C and the distinct observed storage views."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1710,
+      "sha256": "759B74A1A00911851AAEB2009D86078F1CD8C4CC426E763DA6471B079C8BC3EC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C57F3EF7084EB8715E045400556B1C49B9B850F7B0AECCEB5FEDA509B7900954"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_node_recursive_insert_slot_search-d8289ad9c6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

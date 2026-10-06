@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8F262B64CA1554B6A3822B7FFFE26A08C325469B817AB1304DF37ED4EC29DAD6",
+  "observationId": "F76116A25FE63C7CA51BFC512F6BE0C9AE942ADB443F58B513ABEA56D86BA2C4",
+  "symbol": "boot_resource_node_context_materialize",
+  "authored": {
+    "context": "Independently derived complete owner from original assembly, current target metadata and relevant dossiers; unchanged accepted source context.",
+    "effects": [
+      "complete-owner-coverage",
+      "source-shape"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DDCB5DF6B27ADFC5172EC9CBD824A5A8F36F1E532563488D78E39219D7A20642",
+      "sourceSha256": "E6B56ACD3F127F5B79D9F357F773EEBAF42634647047166D271B26E1B21AEAE7"
+    },
+    "label": "context-complete",
+    "observedEffect": "Private native PURE_C covers 428 bytes with required functions boot_resource_node_context_materialize:428@0; all nonrelocation bits agree. Actual load-relevant relocation count 18.",
+    "parentCandidateId": "F4246090554FD1AA46F42A552135BEB5840F22DA01C90E25FCA5BF887A629F93",
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_node_context_materialize.s",
+        "sha256": "72EE6F68C72F74958D6E2A08B605A61587806586A66819F3B78D13CF95C5550C"
+      },
+      {
+        "path": "src/boot/boot_resource_node_lzss_context_materialize.c",
+        "sha256": "E11968569AE0AFBD6F9465282BAB5595F258F0C64BAE3B1A113C43A5BF2BB25B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner: authenticated private linked evidence and expected relocation provenance are unavailable. Canonical LOCAL secondary binding, addresses, sole ownership, exact complete bytes and full ROM remain unverified.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Initialize the real iteration index in each range branch instead of before the sentinel test."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2952,
+      "sha256": "DDCB5DF6B27ADFC5172EC9CBD824A5A8F36F1E532563488D78E39219D7A20642"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E6B56ACD3F127F5B79D9F357F773EEBAF42634647047166D271B26E1B21AEAE7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-06-boot_resource_node_context_materialize-8f262b64ca.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
