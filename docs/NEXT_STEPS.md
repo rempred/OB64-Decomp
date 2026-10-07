@@ -289,9 +289,33 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   Source-level allocation and
   scheduling blockers do not establish a tooling defect or a final HYBRID exception.
   B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
-- **Parked animation conversion / LavenderSpire (Sol6.1/xhigh):** top-level chat
+- **Active animation conversion / LavenderSpire (Sol6.1/xhigh):** top-level chat
   `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
-  Own the complete `func_001F6098` PURE_C conversion: one GLOBAL body, one physical
+  Director1600 assigns the complete `func_001F3C00` PURE_C conversion: one GLOBAL
+  body/physical producer,6,740 bytes, ROM1F3C00..1F5654, currently exact HYBRID_C,
+  frame504 and302 relocations. Private root `build/matching/anim3c00-20261006/`.
+  Preserve the accepted exact hybrid, all13 W8 siblings, original ASM, boundaries,
+  W5-W7 callees/data and shared combat draw/pose headers. This new conversion does
+  not reopen the accepted W8 hybrid assignment. RedPeak remains sole production writer.
+
+  Begin with current intake/full coverage and four bounded freshness checks: current
+  source/dependency hashes, whether later trials already tested the precise endpoint
+  split, pure-source context versus accepted hybrid, and full-owner/302-relocation proof.
+  The [D037 control](dossiers/func_001F3C00-519474319f.md) records6740/frame504/261
+  differing words. The [competing-values study](Plans/task-logs/combat-3c00-competing-values-r1.md)
+  grounds its remaining trial in distinct authenticated7F823 context: separate the real
+  primary packed endpoint while companion endField dies after its actual payload use;
+  retain original null initialization, packet row, optional path/shared tail/cursors/tile.
+  Do not conflate these source contexts or repeat an already exhausted trial. A failed
+  freshness/coverage check calls for the precise gap, not an unsupported source sweep.
+  Independent private checks have no initial hold. Consult GoldOx directly when stuck;
+  only complete readiness, Director blockers and actual shared-input/ownership needs
+  go to SilentCrane. One final canonical verifier follows complete PURE_C readiness
+  and serialized production integration. The existing identity/watchers remain active.
+
+- **Parked animation conversion / Director-held obligation:** prior LavenderSpire chat
+  `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
+  Preserve the complete unfinished `func_001F6098` PURE_C conversion: one GLOBAL body, one physical
   owner/producer, 4,148 bytes, ROM1F6098..1F70CC / RAM801B2C08..801B3C3C.
   This is retained W8 matching-C cleanup, not reopening or reclassifying the earlier
   completed W8 assignment. Keep its current exact HYBRID_C and all13 siblings intact
@@ -307,7 +331,8 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   producer/lifetime or source-context discriminator, not fabricated padding or another
   unsupported COPY sweep. This remains unfinished PURE_C work, not inherent ASM,
   accepted fallback, completed wave or worker retirement. Preserve both best sources,
-  original exact hybrid and all13 siblings; reassignment is a separate Director decision.
+  original exact hybrid and all13 siblings. Director1600 transfers the same worker's
+  active ownership to3C00 above;6098 remains parked, not completed or retired.
 
   Read the [W8 record](Plans/task-logs/combat-draw-wave8-r12.md),
   [minimal hybrid](Plans/task-logs/combat-6098-minimal-hybrid-r12.md),
@@ -315,10 +340,10 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   [neighbor-expression study](Plans/task-logs/combat-6098-neighbor-expression-r1.md),
   full original ASM/current C, and the accepted Shop coordinate pair
   [before](dossiers/func_001994B4-e6e5d67846.md) /
-  [after](dossiers/func_001994B4-e07b12638a.md). The new concrete lead is real X-load
-  transport through existing Y scratch before the original Y read: it changes allocation
-  metadata while combining back into the original load. Test its applicability to6098's
-  real decoded coordinates; it does not explain the separate48-byte frame deficit.
+  [after](dossiers/func_001994B4-e07b12638a.md). The real X-load transport through Y
+  scratch was investigated in6098. Its private controls retain the allocation and
+  scheduling counterexamples; it does not explain the separate48-byte frame deficit.
+  Repeating that source class unchanged is not an active lead.
   The historical PURE_C control had4168 bytes/frame408 versus retail4148/frame456;
   LavenderSpire's fresh contract11 control emits4148 bytes/frame408 with46 differing words.
   Six unexplained
