@@ -289,7 +289,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   Source-level allocation and
   scheduling blockers do not establish a tooling defect or a final HYBRID exception.
   B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
-- **Animation candidate worker (fresh Sol6.1/xhigh):** top-level chat
+- **Parked animation conversion / LavenderSpire (Sol6.1/xhigh):** top-level chat
   `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
   Own the complete `func_001F6098` PURE_C conversion: one GLOBAL body, one physical
   owner/producer, 4,148 bytes, ROM1F6098..1F70CC / RAM801B2C08..801B3C3C.
@@ -298,6 +298,16 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   until a complete PURE_C candidate passes canonical integration. Protect its162
   relocations, original ASM, W5-W7 callees and shared combat draw/pose headers.
   Candidate-only edits belong in `build/matching/anim6098-20261006/`.
+  Director1596 parks unsupported native iteration after worker1594 and the independent
+  read-only compiler-source assessment agree on the evidence limit. D764's five fixed
+  objects and23 accessed initial-reload homes explain its frame408; no source producer
+  accounts for retail's two24-byte interior gaps or frame456. The existing complete
+  [allocation trace](Plans/task-logs/combat-draw-6098-allocation-trace-r1.md) and private
+  experiment notes retain provenance and counterexamples. Reopen on a real supported
+  producer/lifetime or source-context discriminator, not fabricated padding or another
+  unsupported COPY sweep. This remains unfinished PURE_C work, not inherent ASM,
+  accepted fallback, completed wave or worker retirement. Preserve both best sources,
+  original exact hybrid and all13 siblings; reassignment is a separate Director decision.
 
   Read the [W8 record](Plans/task-logs/combat-draw-wave8-r12.md),
   [minimal hybrid](Plans/task-logs/combat-6098-minimal-hybrid-r12.md),
