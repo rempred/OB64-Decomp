@@ -32,10 +32,12 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   separate; preserve all original five-family obligations.
 
   MagentaBarn released all production/target ownership and actual jobs and retired only
-  its own watcher in mail1540. The fresh worker inherits the sole production role and
-  Sol cursor. LavenderSpire's independent native checks were released in1539. Private
-  checks run concurrently without per-check permission; contact Astra for actual drains
-  before canonical integration or shared-input changes. ONE final verifier covers the
+  its own watcher in mail1540. VioletMouse inherits the sole production role and Sol
+  cursor. The complete trio is privately ready in1549: PURE_C, exact object extents,
+  all nonrelocation words equal,13 actual relocations each; inactive ASM owners still
+  require canonical linking. Actual writer/candidate drains1549/1551 permit the canonical
+  integration window released in1552. LavenderSpire holds new native/store checks until
+  explicit release. ONE final verifier covers the
   complete trio, without preliminary build, per-function full-ROM checks or unchanged
   acceptance repeats. Exception-only SilentCrane/GoldOx routing and tooling approval apply.
 
@@ -302,9 +304,11 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   eight-byte intervals do not prove six real variables; do not fabricate frame padding,
   consumers or assembler constraints. Preserve best source and source-bound counterexamples.
 
-  LavenderSpire's native/CPP/intake/store hold was released in mail1539 after the probe
-  trio passed and production jobs exited. Private checks now run independently without
-  per-check permission on CURRENT `79E66A89`. Only the Director-assigned production
+  LavenderSpire's native/CPP/intake/store checks ran independently after1539 on CURRENT
+  `79E66A89`. Mail1551 confirms actual exits and a new hold for VioletMouse's complete
+  copy/flag integration under1552. Private source edits and analysis may continue;
+  native/store checks resume after Astra's explicit release and input refresh.
+  Only the Director-assigned production
   successor changes canonical inputs after coordinated drains. One complete-owner
   verifier follows real PURE_C readiness and serialized integration; a partial removal of
   hybrid constraints does not complete this assignment. Own identity/mail watcher and
