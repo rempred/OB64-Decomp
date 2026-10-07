@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2DF9F23B593C29CDF6FFC9F2EB1BFB6FAE5308808AC9170FBB5732B3709E3713",
+  "observationId": "B5B99DB6DED5B92CB4C34F8F1320D766D4833798AAE1B5341AA78ED87FCC2196",
+  "symbol": "boot_resource_probe_global_cleanup",
+  "authored": {
+    "context": "Independently derived complete single-body owner from full original ASM and current manifest/intake. Accepted allocation/fill/copy and dispatch source supply actual ABI and source context. Original+8 prologue alias stays inside the real104-byte flag-load function. State byte clear remains only inside state==1; buffer free/clear remains conditional on nonnull buffer.",
+    "effects": [
+      "complete-owner-coverage"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "0D5D2EF6EE80672135EBB8E870EB69F2A4D0E15B51747FB2DA03A8482FF6E7EC",
+      "sourceSha256": "A372F77C737192F02E741F8D036A861C82ADB7AE52156A83309841AF0ADA6248"
+    },
+    "label": "cleanup-complete-private-best",
+    "observedEffect": "Mechanical PURE_C; one complete GLOBAL native function 104 bytes; 12 actual relocations; all nonrelocation words equal retail. Raw exact bytes=false; private isolated linking unavailable for inactive ASM owner.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/boot/boot_resource_probe_global_cleanup.s",
+        "sha256": "B2BE538227320F73879227C2F6824A9657185E0FC57BA22501462D993851270F"
+      },
+      {
+        "path": "docs/dossiers/boot-resource-probe-global-cleanup.md",
+        "sha256": "560BE4A94469A616D0DF7FAA9C271F3A32F3EA2C15B56DCFB1725EE1AD379A67"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-probe-copy-flag-wave-20261006.md",
+        "sha256": "1E4581C1028F591F694DEA5E7BFCC752F94EC9A59C0E9F74972722B86DB7EA62"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-probe-dispatch-wave-20261006.md",
+        "sha256": "81A3D3700F0D7296B544D069DBBD0FA0B62A999ABC22437143AC8521E0999BAD"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Canonical linked bytes, relocation binding, sole ownership, placement and final complete-wave ROM verification remain necessary. Private result is diagnostic only.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Straight structured C with direct observed global accesses; no compiler workaround required."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 638,
+      "sha256": "0D5D2EF6EE80672135EBB8E870EB69F2A4D0E15B51747FB2DA03A8482FF6E7EC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A372F77C737192F02E741F8D036A861C82ADB7AE52156A83309841AF0ADA6248"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-07-boot_resource_probe_global_cleanup-2df9f23b59.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

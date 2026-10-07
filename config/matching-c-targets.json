@@ -1089,6 +1089,10 @@
     {"symbol":"boot_resource_probe_dispatch_result_build","source":"src/boot/boot_resource_probe_dispatch_result_build.c"},
     {"symbol":"boot_resource_probe_small_record_copy_flag","source":"src/boot/boot_resource_probe_small_record_copy_flag.c"},
     {"symbol":"boot_resource_probe_large_record_copy_flag","source":"src/boot/boot_resource_probe_large_record_copy_flag.c"},
-    {"symbol":"boot_resource_probe_indexed_record_copy_flag","source":"src/boot/boot_resource_probe_indexed_record_copy_flag.c"}
+    {"symbol":"boot_resource_probe_indexed_record_copy_flag","source":"src/boot/boot_resource_probe_indexed_record_copy_flag.c"},
+    {"symbol":"boot_resource_probe_global_buffer_copy","source":"src/boot/boot_resource_probe_global_buffer_copy.c"},
+    {"symbol":"boot_resource_probe_chunk_callback_walk","source":"src/boot/boot_resource_probe_chunk_callback_walk.c"},
+    {"symbol":"boot_resource_probe_global_cleanup","source":"src/boot/boot_resource_probe_global_cleanup.c"},
+    {"symbol":"boot_resource_probe_global_buffer_dual_callback_apply","source":"src/boot/boot_resource_probe_global_buffer_dual_callback_apply.c"}
   ]
 }

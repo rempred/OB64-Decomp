@@ -1,56 +1,54 @@
-# Sol cursor — complete copy/flag trio accepted; release approved
+# Sol cursor — complete global-buffer service wave accepted
 
-VioletMouse, Sol6.1/xhigh, chat01a113a4-5ca1-78d1-acb9-af4184132170;
+EmeraldDuck, Sol6.1/xhigh, chat01a113e0-d6fa-7490-955d-42a7de29b288;
 Director SilentCrane. Main, sole production source/build writer.
-[Queue](../../NEXT_STEPS.md), [program](../sequential-main-program.md),
-[all original family obligations](../sequential-family-scope.md),
-[complete current membership/evidence](../task-logs/sol-probe-copy-flag-wave-20261006.md).
-No branch/worktree, push, shared tooling/structural change, combined group or live work.
+[Complete membership/proof/source pairs](../task-logs/sol-probe-buffer-wave-20261006.md),
+[queue](../../NEXT_STEPS.md), [program](../sequential-main-program.md),
+[all original family obligations](../sequential-family-scope.md).
 
-Original THREE-owner/FIVE-entry/528-byte assignment remains whole: small
-boot_resource_probe_small_record_copy_flag, ROM5CFC..5D9C,160,+8 entry5D04;
-large boot_resource_probe_large_record_copy_flag, ROM5C58..5CFC,164,+8 entry5C60;
-indexed boot_resource_probe_indexed_record_copy_flag, ROM5B8C..5C58,204.
-All three canonical focused diffs pass PURE_C, exact decoded/raw linked bytes and
-MATCH contracts,13 actual relocations each. One complete GLOBAL compiler function
-per independent owner, including both real load prefixes. Native frames32/32/40.
-No source workaround was needed. Useful sources/observations are preserved through
-supported import/preserve and linked by the current wave log.
+Original complete FOUR separate owners/producers, SIX entries,748 bytes:
+copy50F0..51A0176(+8alias50F8); walk5058..50F0152;
+cleanup4FF0..5058104(+8alias4FF8); dual5624..5760316.
+Canonical keys boot_resource_probe_global_buffer_copy/chunk_callback_walk/
+global_cleanup/global_buffer_dual_callback_apply remain independent.
 
-Recoverable bests: build/matching/probe-copy-20261006/{small,large,indexed}-best.c;
-candidate IDs0EB44ABA30/63B9CEA682/E14115F07B. Canonical source bytes agree.
-Private watches were only raw relocation-masked exact, with unavailable inactive-ASM
-linked diagnostics; canonical focused checks supply linked exactness. Current task
-log corrects June dossiers' reversed copy direction using source-first memcpy.s and
-accepted dispatch evidence. No persistent-storage/save/dirty-valid semantics follow.
+Recoverable bests build/matching/probe-buffer-20261006/
+{copy,walk,cleanup,dual}-best.c; candidate IDs0F81985A2C/71559BC2EB/
+2DF9F23B59/D75DCEBB48. Canonical source hashes agree. Supported import/preserve
+publishes all four bests and plain148-byte walk controlAA947432F6, with exact
+parent relation. Both real callback-field and fixed-byte accesses qualified
+volatile preserve retail store/read order and restore152 bytes. Individual
+qualifiers/numeric-byte controls remain nonexact148. No MMIO/original-declaration
+claim. Copy/cleanup/dual need no workaround. Task log corrects June50F0 copy
+direction and conditional cleanup byte-clear facts from full ASM/source-first ABI.
 
-Accepted predecessors remain protected: [dispatch](../task-logs/sol-probe-dispatch-wave-20261006.md)
-at5a05f902, [Shop14](../task-logs/sol-shop14-integration-20261006.md) at46525af8,
-[LZSS](../task-logs/sol-boot-lzss-wave-20261006.md). Prior CURRENT79E66A89;
-baselineF1D9FEF4 and canonical41943040-byte ROM SHA571E8339 remain comparison inputs.
-Allocation/fill/copy, dispatch/materializers and original BSS/fallbacks are unchanged.
-Excluded descriptor4894..4AC8, validator18D4..1A44 and checksum5D9C..5FC0
-structural leads and every parked family obligation remain under linked queue/scope.
+All four canonical focused diffs pass PURE_C, decoded/raw linked EXACT and
+MATCH actual11/6/12/21 relocations. ONE normal final verifier passed
+2026-10-07T01:58:15.756Z (October6 local),1975.242s. Authoritative policy,
+source-object and independent fresh compilation confirm all FOUR PURE_C,
+sole ownership, placement,50 real relocations, complete bytes and exact full ROM.
+One complete GLOBAL compiler function and sole C map contribution per owner,
+zero filler/fallback. All SIX original entries, including both+8 aliases, are exact
+GLOBAL ABS symbols. Saved best/canonical/policy/fresh hashes agree;15 protected
+source/data/ASM inputs unchanged. No preliminary build, per-function verifier,
+ordinary independent reviewer or unchanged proof repeat.
 
-Own watcher PID34664 remains active. Startup1543, actual delivery1544/1546,
-complete private readiness/drain1549 and actual shared integration release1552 apply.
-LavenderSpire's native/store commands are held through the final verifier; Astra
-coordinates it. GoldOx guidance is available again under1554. Exception-only mail.
+CURRENT74EA9082979449054AEBA5CC1470B8221F4730945662D5EC3655317F0823FA51;
+baselineF1D9FEF4 unchanged; canonical41943040-byte ROM SHA571E8339.
+Actual reports/census: build/matching/probe-buffer-20261006/buffer-final-*.json;
+CLI buffer-verify.log. Original ASM/fallbacks/aliases, accepted dispatch/copy-flag,
+allocation/free, retained fill/copy, original BSS/table storage and fixed external
+byte800C4800 remain protected. Excluded checksum/validator/descriptor/materializer
+owners and every parked five-family obligation remain under linked queue/scope.
 
-ONE normal node tools/verify.js --profile passed at2026-10-07T00:51:08.944Z,
-2152.887 seconds. Complete trio PURE_C, sole ownership, placement,39 actual
-relocations, complete bytes, independent fresh compilation and exact full ROM
-passed. One full GLOBAL native function and one C map contribution per owner,
-zero fill/fallback. All FIVE entries resolve exactly, including both+8 aliases.
-Saved best/canonical/policy/fresh source hashes agree; protected inputs unchanged.
-CURRENT AB95BA2DEA2CB4EAB0268CED12903C5869E3435065ABD954721C647FC597A90D;
-baselineF1D9FEF4 unchanged. Actual reports/census: build/matching/probe-copy-20261006/
-copy-final-*.json; CLI copy-verify.log. No preliminary build, per-function verifier,
-ordinary independent review or unchanged proof repeat.
+Startup1562; real watcher delivery1563/1564 confirmed1565. Own watcher40632 active.
+Private readiness/drain1567; animation actual drain1569; Director integration release
+1570. All own native/build/CPP/diff/verify/import/preserve/store/guard jobs exited
+before complete proof handoff1574; private guard absent. Director1575 confirms
+actual acceptance, releases animation checks and approves retirement after the
+scoped commit. Exception-only mail to SilentCrane; GoldOx read-only guidance.
 
-All own native/build/CPP/diff/verify/import/preserve/store/guard jobs exited before
-proof handoff1557. Director1558 accepted the actual proof, released LavenderSpire's
-checks, and approved completed-wave ownership release/retirement after the scoped
-local source/evidence commit. Next: close that commit, release all ownership, stop
-ONLY verified own watcher PID34664 and confirm actual retirement. Preserve identity,
-state and proofs. Astra creates the next fresh worker; no self-assigned next wave.
+Next: finish only scoped local source/evidence commit under Director release1575,
+relinquish ALL ownership and stop ONLY verified own watcher40632. Preserve its
+identity/state and proofs. Fresh worker handles the next wave; no self-assignment,
+branch/worktree, shared tooling change, live work, push or acceptance repeat.
