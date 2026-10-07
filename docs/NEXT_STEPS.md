@@ -21,17 +21,47 @@ GoldOx's actual CLI request returned401 expired OAuth and needs sign-in. Old
 startup PIDs below are historical evidence, not current process state; consult
 each watcher's `status.json` and actual process.
 
-- **Sol / QuietPond, active Squad W4 pursuit and producer:** top-level chat
-  `01a114ed-449d-73f0-81d3-47c8b67dbea6`, `gpt-6.1-sol`/`xhigh`, monitored by Astra.
-  Own the complete twenty-one-target pursuit/producer assignment below,7,424 unique
-  owner bytes: original thirteen/4,980 plus the nine-owner producer/2,928, counting
-  shared10766C/484 once. Work in `build/matching/pursuit-w4-20261007/`, first127D30,
-  then1284C4,106CE0 and106E48, one target at a time. Preserve the seventeen stable
-  sources/candidates without conflating provisional native matches with acceptance.
-  RedPeak1628 released the sole production role; animation3C00 remains independently active.
+- **Sol / QuietPond, active movement/routes W5 candidate wave:** same top-level
+  chat `01a114ed-449d-73f0-81d3-47c8b67dbea6`, Sol6.1/xhigh, sole production writer.
+  Director1668 assigns the complete original20 members/23,560 text-owner bytes:12B1C4(636),
+  12D6FC(788),107D60(216),107E38(1736),11AB74(96),11AECC(1144),106F34(448),
+  1070F4(452),125298(456),125460(2852),125F84(2028),126770(1460),126D24(1072),
+  12B440(2084),12BC64(2852),12C788(2536),12D170(1420),1305B4(480),131828(492),
+  118D0C(312). Private root `build/matching/movement-w5-20261007/`. Start11AECC,
+  then125460,12B440,12BC64,12C788 one at a time, using current intake and preserved
+  sources in the [movement interface study](Plans/task-logs/sol-movement-interface-research-20260930.md),
+  its [review](Plans/task-logs/astra-movement-interface-review-20260930.md) and
+  the W5 section of the [source frontier](Plans/task-logs/sol-five-family-resumption-20260929.md).
+  These five inactive standalone owners permit ordinary private source work, with
+  symbolic-object evidence until activation; current classifications/bytes must be
+  measured rather than inherited from historical reports.
 
-  Reopen source work with the new W3 real-result/consumer allocation evidence as a
-  testable analogy, not a register recipe. Refresh current intake and exact source
+  This is a candidate assignment, not a dependency-ready integration handoff.
+  Preserve all12 currently accepted PURE_C members. Shared106F34/1070F4 remain
+  immutable accepted dependencies of both this wave and the same worker's parkedW4;
+  there is no concurrent source ownership transfer or W4 producer activation.
+  Three structural gates remain explicit:107E38 has1728 body+8 owned tail and a
+  separate32-byte table;125F84 has2024 body+4 owned tail;131828 has five bodies
+  totaling492 plus328 bytes of generated tables. No corresponding target/producer
+  activation is admitted. Astra owns their separate
+  [read-only structural intake](audit/2026-10-07-movement-owner-intake.md);
+  no contract/tooling implementation or shared-input mutation is authorized yet.
+  Do not work around these gates or split the20 into smaller acceptance waves.
+  The full original membership, all structural prerequisites and one final normal
+  verifier remain required at eventual complete readiness. Native checks in this
+  root may run independently of LavenderSpire's DB10 work. Existing mail/stop
+  monitors remain attached to the same thread, with exception-only communication.
+
+- **Parked Squad W4 pursuit and producer / QuietPond, unfinished:** top-level chat
+  `01a114ed-449d-73f0-81d3-47c8b67dbea6`, `gpt-6.1-sol`/`xhigh`, monitored by Astra.
+  Preserve the complete twenty-one-target pursuit/producer assignment below,7,424 unique
+  owner bytes: original thirteen/4,980 plus the nine-owner producer/2,928, counting
+  shared10766C/484 once. Preserve `build/matching/pursuit-w4-20261007/` and every
+  source/counterexample; no partial integration or acceptance occurred. RedPeak1628
+  released the production role to this same worker; DB10 is independently active.
+
+  Reopen only on a new source-bound definition/use or control mechanism that changes
+  the surviving first-block graph after copy propagation. Refresh current intake and exact source
   contexts:127D30 controls01C46CB83D/40321EE890/4F07FBB149;1284C4 controls
   3A6FE90D21/C1EEECD686 and laterCB0BD7A781/3C1BD85C2E/37A3D3A2D9;
   106CE0 controls4BDDE19D3A/2FA2B259A9/5D6CB37303/A0612ACBBB;
@@ -45,9 +75,20 @@ each watcher's `status.json` and actual process.
   is unsupported: standalone diagnostics do not establish the group. Batch complete
   producer/canonical checks at readiness under existing mechanisms and actual drains,
   then ONE final verifier for all twenty-one. No new tooling or fabricated padding.
-  Startup1632 verifies own identityQuietPond and mail watcher27644. Actual incoming
+  Worker1665 closes CE0/E48 and refreshes the other private candidates; the intact
+  nine-owner producerFB31FCAB remains uncompiled/unclassified. In1667, raw-to-upper
+  phase278BA77E preserves the real anti-dependence and removes the old competitor,
+  but SCHED1 raw-before-product leaves a justified F0 return conflict. Product-order
+  control8EDCB9B4 changes no native bytes. Independent review finds no further
+  supported edit: one real cosine consumer exists, and a manufactured dependency
+  would not be justified. Preserve best95511F4E/7A9AC116 and both useful controls.
+  The full21 remains unfinished, not a tooling defect, ASM exception or retired wave.
+  GoldOx1650 remains queued; new advice must supply a concrete surviving dependency.
+
+  Historical startup1632 verifies own identityQuietPond and mail watcher27644. Actual incoming
   test1634 was delivered to this thread with desktop acknowledgement; Director stop
-  monitor25480 is active on its fresh UUID/cursor. Source advice goes directly to verified GoldOx; coordination is
+  monitor25480 was its initial process; current status files record the recovered monitors.
+  Source advice goes directly to verified GoldOx when available; coordination is
   exception-only. Other original family obligations remain unchanged.
 
 - **Accepted Squad W3 / RedPeak (October 7):** complete original TEN owners/bodies,
