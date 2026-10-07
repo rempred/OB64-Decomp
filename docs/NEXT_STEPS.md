@@ -8,38 +8,45 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / VioletMouse (October 6 fresh resource-probe copy/flag worker):** top-level chat
-  `01a113a4-5ca1-78d1-acb9-af4184132170`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete THREE-owner copy/flag wave, 528 bytes and FIVE existing entry labels:
-  `func_00005B8C` / `boot_resource_probe_indexed_record_copy_flag` (204, ROM5B8C..5C58),
-  `func_00005C58` / `boot_resource_probe_large_record_copy_flag` (164, ROM5C58..5CFC),
-  `func_00005CFC` / `boot_resource_probe_small_record_copy_flag` (160, ROM5CFC..5D9C).
-  Preserve both load prefixes and existing prologue aliases5C60/5D04 at+8, three
-  independent producers and complete coverage. No prefix owners or combined group.
-  Recommended order: small, large, indexed; one target at a time in
-  `build/matching/probe-copy-20261006/`. Private readiness is not acceptance.
+- **Sol (October 6 fresh resource-probe buffer-services worker):** top-level chat
+  `01a113e0-d6fa-7490-955d-42a7de29b288`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own the complete FOUR-owner service closure, 748 bytes and SIX existing entry labels:
+  `func_000050F0` / `boot_resource_probe_global_buffer_copy` (176, ROM50F0..51A0),
+  `func_00005058` / `boot_resource_probe_chunk_callback_walk` (152, ROM5058..50F0),
+  `func_00004FF0` / `boot_resource_probe_global_cleanup` (104, ROM4FF0..5058),
+  `func_00005624` / `boot_resource_probe_global_buffer_dual_callback_apply` (316, ROM5624..5760).
+  Preserve load prefixes and existing prologue aliases50F8/4FF8 at+8, four separate
+  producers and complete coverage. No prefix owners or combined group. Work in that
+  order, one target at a time, in `build/matching/probe-buffer-20261006/`.
 
-  Read the [indexed](dossiers/boot-resource-probe-indexed-record-copy-flag.md),
-  [large](dossiers/boot-resource-probe-large-record-copy-flag.md) and
-  [small](dossiers/boot-resource-probe-small-record-copy-flag.md) dossiers, full ASM,
-  current intake and accepted dispatch/arena/tree source evidence. The June copy-direction
-  wording conflicts with the source-first `func_00023460` ABI: these copy caller records
-  into the shared buffer. Confirm against source/ASM and record the correction in current
-  wave evidence; do not infer persistent-storage behavior. Protect resource_alloc,
-  fill8008A0F0, copy80093060, materializers539C/553C, accepted dispatch calls, existing
-  fixed/entry aliases and BSS words800A83B8/BC in original `zero_fill_000386c0.s`.
-  Resource-validator1A34/1A3C, checksum5EC4/5F60 and descriptor4894..4AC8 gates remain
-  separate; preserve all original five-family obligations.
+  This is the dependency closure of accepted dispatch calls to50F0/4FF0/5624 and
+  cleanup's call to5058. Read their four dossiers, full original ASM, current intake,
+  accepted dispatch/copy-flag sources and arena/tree load-prefix evidence. Protect BSS
+  words800A83B8/BC, data callback fields800A8250/58/5C/64, fixed byte800C4800, alloc/free,
+  retained fill1A4F0/source-first copy23460,13 callback entries with stride0x1C and
+  cleanup key0x37081383. 50F0 copies shared-buffer data into caller destination; confirm
+  the stale June dossier's argument-direction correction without storage-behavior claims.
+  Keep checksum-dependent539C/553C/581C/5978/5A88/5760 and separate signature51A0 outside
+  this closure. Validator1A34/1A3C, checksum5EC4/5F60 and descriptor4894..4AC8 gates
+  remain separate; preserve all original five-family obligations.
 
-  MagentaBarn released all production/target ownership and actual jobs and retired only
-  its own watcher in mail1540. VioletMouse inherits the sole production role and Sol
-  cursor. The complete trio is privately ready in1549: PURE_C, exact object extents,
-  all nonrelocation words equal,13 actual relocations each; inactive ASM owners still
-  require canonical linking. Actual writer/candidate drains1549/1551 permit the canonical
-  integration window released in1552. LavenderSpire holds new native/store checks until
-  explicit release. ONE final verifier covers the
-  complete trio, without preliminary build, per-function full-ROM checks or unchanged
-  acceptance repeats. Exception-only SilentCrane/GoldOx routing and tooling approval apply.
+  VioletMouse explicitly released all production/target ownership and actual jobs and
+  retired only its own watcher in mail1559. The fresh worker inherits the sole production
+  role and Sol cursor. LavenderSpire's independent native/store checks were released in1558.
+  No initial hold applies; private checks run concurrently without per-check permission.
+  Contact Astra for actual drains before shared-input changes/canonical integration.
+  ONE final verifier covers the complete FOUR, without preliminary build, per-function
+  full-ROM checks or unchanged acceptance repeats. GoldOx is available again under1553/1554;
+  exception-only guidance and explicit Sol/Claude agreement for tooling escalation apply.
+
+  **Accepted copy/flag predecessor:** complete THREE owners,528 bytes, FIVE entry labels,
+  `func_00005CFC`160 / `func_00005C58`164 / `func_00005B8C`204; source commit `7b0adfcd`.
+  ONE normal verifier plus fresh compilation passed `2026-10-07T00:51:08.944Z`
+  (October6 local), CURRENT `AB95BA2D`, baseline `F1D9FEF4`, exact41943040-byte ROM.
+  All three are PURE_C, sole full C owners with13 actual relocations each, zero filler
+  and fallback; real ELF resolves all FIVE entries including5C60/5D04 at+8.
+  [Complete membership, copy-direction correction, source observations and proof](Plans/task-logs/sol-probe-copy-flag-wave-20261006.md).
+  Reuse accepted proof; no unchanged successor/handoff verification repeat.
 
   **Accepted probe-dispatch predecessor:** complete THREE owners, 916 bytes,
   `func_00004C5C`356 / `func_00004DC0`276 / `func_00004ED4`284; source commit `5a05f902`.
@@ -304,10 +311,9 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   eight-byte intervals do not prove six real variables; do not fabricate frame padding,
   consumers or assembler constraints. Preserve best source and source-bound counterexamples.
 
-  LavenderSpire's native/CPP/intake/store checks ran independently after1539 on CURRENT
-  `79E66A89`. Mail1551 confirms actual exits and a new hold for VioletMouse's complete
-  copy/flag integration under1552. Private source edits and analysis may continue;
-  native/store checks resume after Astra's explicit release and input refresh.
+  Mail1558 explicitly released LavenderSpire's native/CPP/intake/store hold after the
+  copy/flag wave passed and actual production jobs exited. The worker resumed against
+  CURRENT `AB95BA2D`; independent private checks need no per-check permission.
   Only the Director-assigned production
   successor changes canonical inputs after coordinated drains. One complete-owner
   verifier follows real PURE_C readiness and serialized integration; a partial removal of
