@@ -8,7 +8,7 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol (October 6 fresh resource-probe buffer-services worker):** top-level chat
+- **Sol / EmeraldDuck (October 6 fresh resource-probe buffer-services worker):** top-level chat
   `01a113e0-d6fa-7490-955d-42a7de29b288`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
   Own the complete FOUR-owner service closure, 748 bytes and SIX existing entry labels:
   `func_000050F0` / `boot_resource_probe_global_buffer_copy` (176, ROM50F0..51A0),
