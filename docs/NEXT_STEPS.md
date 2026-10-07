@@ -19,6 +19,12 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   Solve evaluator123458 first, then consumer1237F0, one target at a time in
   `build/matching/squad-w3-20261006/`. Preserve the eight active exact PURE_C siblings
   and reuse their current proof. The complete ten-member wave remains unaccepted.
+  Complete candidate readiness1617 retains all TEN: evaluator123458 is PURE_C920/frame24
+  with62 actual relocations; lifecycle1237F0 is PURE_C1608/frame48 with97. Both have
+  zero ordinary relocation-masked differences; linked/ownership/complete-ROM gates
+  remain open. After LavenderSpire's actual drain1620, Director1621 releases RedPeak's
+  sole canonical integration window and ONE final verifier for all TEN. Report actual
+  producer exits promptly after verification/publication so independent checks can resume.
   Old ASM comments DB2C224/F8C0760 are stale; current full owners are136/676 bytes,
   with34/169 words respectively. No boundary change is assigned.
 
@@ -311,7 +317,11 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   sequencing against remaining companion/strip and sync/size-cursor allocation.
   Existing null/cursor controls are context-bound counterexamples. Do not repeat the
   exhausted endpoint split or infer an untested discriminator without source evidence.
-  Independent private checks have no initial hold. Consult GoldOx directly when stuck;
+  Native/shared-input checks are temporarily held by1619 for complete Squad W3
+  integration;1620 confirms actual command/child exits and guard release. Private
+  edits/reasoning may continue. Own mail watcher23988 stays active; Director stop
+  monitor46300 was gracefully paused with state preserved and must be restored on
+  explicit release. Consult GoldOx directly when stuck;
   only complete readiness, Director blockers and actual shared-input/ownership needs
   go to SilentCrane. One final canonical verifier follows complete PURE_C readiness
   and serialized production integration. The existing identity/watchers remain active.
