@@ -317,6 +317,9 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   buffer-services integration under1570. Private source edits, saved-artifact analysis
   and the current specific GoldOx advisory exchange may continue. Refresh affected inputs
   and resume native checks after Astra's explicit release.
+  Astra temporarily paused the Director's candidate stop-alert monitor during this known
+  hold; the worker's own mail watcher remains running. Restore the same monitor/state
+  together with release, without restarting a retired worker or creating a new watcher.
   Only the Director-assigned production
   successor changes canonical inputs after coordinated drains. One complete-owner
   verifier follows real PURE_C readiness and serialized integration; a partial removal of
