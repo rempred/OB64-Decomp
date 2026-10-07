@@ -271,7 +271,30 @@ each watcher's `status.json` and actual process.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
   now watches the fresh resource decoder worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
-- **Scheduler NINE / LavenderSpire, source-blocked after October 7 controls:** same top-level
+- **Active resource-validator producer study / LavenderSpire:** Director1690 assigns
+  the same Sol6.1/xhigh chat `01a11381-0741-7a00-9337-967a16f41e41` a disjoint
+  probe-only study in `build/matching/resource-validator-20261007/`. Preserve the
+  complete physical owner `resource_ptr_validate`, row9, ROM18D4..1A44,368 bytes:
+  the352-byte validator and both trailing eight-byte instruction pairs at1A34/1A3C.
+  Those pairs are nonzero executable-shaped code, not padding. Their entry status,
+  names and bindings still require structural evidence; only the main model name
+  is admitted. Any neutral private source names are diagnostic placeholders.
+
+  Existing intake/probe can classify complete source and expose compiler assembly
+  and passes. Watch expects one STT_FUNC and rejects a real three-function producer;
+  a main-only source cannot establish full coverage. Do not use watch/compare/best
+  as full-owner evidence or invent an alternate compile/link pipeline. The old
+  generated seeds failed pointer typing before any native comparison, so the next
+  useful work is full disassembly/interface reconciliation and readable typed C,
+  followed by an early supported probe and complete emitted-body inspection.
+  Preserve accepted `resource_find_arena_index`, `resource_arena.h`, allocator
+  globals, diagnostic interfaces/strings, original ASM and all other worker inputs.
+  No canonical activation, entry admission, tooling change, full-ROM verification
+  or source acceptance follows from this study. Astra retains the separate
+  structural census/admission process. The complete scheduler NINE and three
+  animation conversions remain parked and unfinished; the worker is not retired.
+
+- **Parked scheduler NINE / LavenderSpire, unfinished after October 7 controls:** same top-level
   chat `01a11381-0741-7a00-9337-967a16f41e41`, Sol6.1/xhigh, monitored by Astra.
   Director1675 transfers the complete nine-member private candidate scope below to
   `build/matching/scheduler-nine-20261007/`; QuietPond retains production ownership
@@ -297,8 +320,8 @@ each watcher's `status.json` and actual process.
   complete candidate; AA0/C1C/94BC/9A48 remain nonexact with useful preserved controls.
   The actual compiler graphs distinguish object contraction, missing stack storage,
   allocation and legal delay-slot speculation; no general impossibility or tooling
-  defect follows. Preserve all nine and the private cursor while Astra arranges the
-  next executable source study. No partial integration or wave completion occurred.
+  defect follows. Preserve all nine and the private cursor while the same worker
+  undertakes the validator study above. No partial integration or wave completion occurred.
 
   **Preserved scheduler prerequisite scope:** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),
