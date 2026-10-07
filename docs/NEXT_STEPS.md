@@ -298,16 +298,19 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   W5-W7 callees/data and shared combat draw/pose headers. This new conversion does
   not reopen the accepted W8 hybrid assignment. RedPeak remains sole production writer.
 
-  Begin with current intake/full coverage and four bounded freshness checks: current
-  source/dependency hashes, whether later trials already tested the precise endpoint
-  split, pure-source context versus accepted hybrid, and full-owner/302-relocation proof.
-  The [D037 control](dossiers/func_001F3C00-519474319f.md) records6740/frame504/261
-  differing words. The [competing-values study](Plans/task-logs/combat-3c00-competing-values-r1.md)
-  grounds its remaining trial in distinct authenticated7F823 context: separate the real
-  primary packed endpoint while companion endField dies after its actual payload use;
-  retain original null initialization, packet row, optional path/shared tail/cursors/tile.
-  Do not conflate these source contexts or repeat an already exhausted trial. A failed
-  freshness/coverage check calls for the precise gap, not an unsupported source sweep.
+  Freshness result1603 confirms the proposed endpoint split was already tested: the
+  [R2 experiment](Plans/task-logs/combat-draw-wave8-r2.md#3c00-distinct-primary-packed-endpoint)
+  takes authenticated7F823 to D03797FD and retains distinct primary/companion endpoint
+  lifetimes. The [archived control](dossiers/func_001F3C00-519474319f.md) is that child;
+  there is no unresolved endpoint reunification. Current dependencies/owner remain
+  intact. The worker's fresh contract11 comparison on CURRENT74EA9082 is PURE_C,
+  6740/frame504,302 actual relocations,770 differing linked bytes/261 words; it does
+  not establish exact relocation identities or acceptance. Preserve fresh private
+  candidateD4DF46A8 without relabeling historical intake identities.
+  Next reconcile the accepted hybrid's independent ordinary-C corrections and retail
+  sequencing against remaining companion/strip and sync/size-cursor allocation.
+  Existing null/cursor controls are context-bound counterexamples. Do not repeat the
+  exhausted endpoint split or infer an untested discriminator without source evidence.
   Independent private checks have no initial hold. Consult GoldOx directly when stuck;
   only complete readiness, Director blockers and actual shared-input/ownership needs
   go to SilentCrane. One final canonical verifier follows complete PURE_C readiness
