@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "120C606310770677E78DFBAE9286639F2E4D21F1E2602AEE8EE8525DCDDDD4DA",
+  "observationId": "67A4BCE82F0A419BA77E3BE6420B71F1E05C2497672D2E97948C053AA1FE702C",
+  "symbol": "func_001237F0",
+  "authored": {
+    "context": "Original complete Squad W3 has ten owners and 10,188 bytes. Eight exact siblings are unchanged. These observations distinguish authored explanations from mechanical source and matching evidence. Canonical integration uses the existing structural owners and pinned compiler; the complete-wave verifier has not yet run.",
+    "effects": [
+      "allocation",
+      "late-sharing",
+      "body-coverage",
+      "argument-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "64D15CC08C2725527F0724460829B021FA0168994CCC8E196521290307299836",
+      "sourceSha256": "4DCD246991B6CA12FE065343224FEDC66D9F54281A9F8A28BE2D820D5EA59276"
+    },
+    "label": "argument-preference-alone-is-insufficient",
+    "observedEffect": "120C6063/probe7CD7EB2B emits 1,620/frame48/97R. The first condition acquires A0 preference as predicted, but pointer captures still take A0 and conditions take A1/A2. Unit references 18/158 restore S2/codeS3. Preference propagation happened; the no-shuffle prediction failed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/squad-w3-20261006/lifecycle-unit-condition-fanin.json",
+        "sha256": "95CC4AD42D95555B6D441826BC520D4F4C452BED786BEA177755AE2FE932E027"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonselected counterexample. Direct actual callee consumption in the final source creates the missing hard-A0 conflict. No general coalescing impossibility follows.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Bind first and middle condition/pointer inputs directly to the final inputs, with a genuine jump over the other phase binding. Every path supplies the actual call arguments."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8533,
+      "sha256": "64D15CC08C2725527F0724460829B021FA0168994CCC8E196521290307299836"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4DCD246991B6CA12FE065343224FEDC66D9F54281A9F8A28BE2D820D5EA59276"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-07-func_001237F0-120c606310.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

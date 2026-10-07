@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "475085843C4514E1C7AD53CAD714DDFAE4EB14764CE21115064B4A5DE470726F",
+  "observationId": "0AEDEF1E9B59B5CB2DCF45F6A2BCEFC146AD9029C315650577FF027F820E7855",
+  "symbol": "func_00123458",
+  "authored": {
+    "context": "Original complete Squad W3 has ten owners and 10,188 bytes. Eight exact siblings are unchanged. These observations distinguish authored explanations from mechanical source and matching evidence. Canonical integration uses the existing structural owners and pinned compiler; the complete-wave verifier has not yet run.",
+    "effects": [
+      "allocation",
+      "late-sharing",
+      "body-coverage",
+      "argument-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EB196F748E40F735A6D55EC4B1DA7C3228BEFAF3D067565D8E8A336C89C87856",
+      "sourceSha256": "8DF4D66AB11C1DB93F3F08EEED6A6B3027885FB819BF012123392EC53D4B2B96"
+    },
+    "label": "complete-evaluator-linked-instruction-agreement",
+    "observedEffect": "47508584 emits PURE_C, 920 bytes, frame 24, 62 relocations, four divisions and two casts. The complete owner has zero ordinary masked differences. Canonical focused diff is raw linked EXACT with one C owner, no filler/fallback and all 62 relocated words exact, including the row-view addends. All nine named kind values/default and the sole edge-only 801DD2B0 call remain.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/squad-w3-20261006/evaluator-ready.json",
+        "sha256": "46034C73B1748B7F0F99F79702FD6D591BCE7C4B2B87D0E6755650F263F6B07A"
+      },
+      {
+        "path": "build/diff/func_00123458.json",
+        "sha256": "CB3CB37711523C72798C82DCE7D2D9F309EE6E2ECDB83E0EE4EF7FEBFCBEF29C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The complete ten-member full-ROM and fresh compilation gates remain pending. Exact source does not establish unused field meanings or runtime behavior.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain shared real integer cells, guarded literal returns, compare-first state handling and the existing E1A+2/+3 row view; comment the necessary compiler workarounds."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4993,
+      "sha256": "EB196F748E40F735A6D55EC4B1DA7C3228BEFAF3D067565D8E8A336C89C87856"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8DF4D66AB11C1DB93F3F08EEED6A6B3027885FB819BF012123392EC53D4B2B96"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-07-func_00123458-475085843c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

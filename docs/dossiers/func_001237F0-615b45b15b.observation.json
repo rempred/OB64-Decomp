@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "615B45B15B772266FFE6D71C30CDB41ABAACB7CE1DD7A90310C077BA12279FD4",
+  "observationId": "0B3130418EDF7B0DA1DAF89C823BF26DDC4F794E4B5D5E478A676EE6F83AAD95",
+  "symbol": "func_001237F0",
+  "authored": {
+    "context": "Original complete Squad W3 has ten owners and 10,188 bytes. Eight exact siblings are unchanged. These observations distinguish authored explanations from mechanical source and matching evidence. Canonical integration uses the existing structural owners and pinned compiler; the complete-wave verifier has not yet run.",
+    "effects": [
+      "allocation",
+      "late-sharing",
+      "body-coverage",
+      "argument-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "80F0F6D25F09F96C61E90A326B4B26DE31F1DD95DA4BA6A4236819B4B048F28D",
+      "sourceSha256": "E1A887A910F063AA167B5F4957F1FC69EC1441B76AD0CC8633A2079E8A7F118D"
+    },
+    "label": "complete-lifecycle-linked-instruction-agreement",
+    "observedEffect": "615B45B1 emits PURE_C, 1,608/frame48/97R, with zero ordinary masked differences. Probe E2A8683B of the code-equivalent 55BF source shows pointer captures conflict with hard A0 and choose A1, all condition inputs choose A0, and unit/code choose S2/S3. Calls remain 9/51 through SCHED2 and become 7/40 at jump2 while required comparisons survive. Canonical focused diff is raw linked EXACT, with one complete C owner, no filler/fallback and all 97 relocated words exact.",
+    "parentCandidateId": "120C606310770677E78DFBAE9286639F2E4D21F1E2602AEE8EE8525DCDDDD4DA",
+    "references": [
+      {
+        "path": "build/matching/squad-w3-20261006/lifecycle-ready.json",
+        "sha256": "B4D4F8E67BDE4B2E2239CE39DD415357F671460BBF1CDA947EEC121AAFB5E6F3"
+      },
+      {
+        "path": "build/diff/func_001237F0.json",
+        "sha256": "3BA264E29D55A15410F2624DBFD181366A060AFC393B92DF2BEE4A83A5B719BA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The complete ten-member full-ROM and fresh compilation gates remain pending. No original-source or general no-temporaries/coalescing claim is made.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Let each phase capture feed its actual evaluator call directly; keep direct condition bindings, shared kind20 result assignment, disjoint storage, and real mode promotion. Comment the compiler workarounds."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8646,
+      "sha256": "80F0F6D25F09F96C61E90A326B4B26DE31F1DD95DA4BA6A4236819B4B048F28D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E1A887A910F063AA167B5F4957F1FC69EC1441B76AD0CC8633A2079E8A7F118D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-07-func_001237F0-615b45b15b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

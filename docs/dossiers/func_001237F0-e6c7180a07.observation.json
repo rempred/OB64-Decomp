@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E6C7180A07F2EBACA6790E2D347688BDC05BDA9835A72D07380DAE280AFC79B9",
+  "observationId": "19A5835FFFBD793A6F39E8A2DD63CA569FA2CD0AE64F3BFEC7A8484D87BB5ECC",
+  "symbol": "func_001237F0",
+  "authored": {
+    "context": "Original complete Squad W3 has ten owners and 10,188 bytes. Eight exact siblings are unchanged. These observations distinguish authored explanations from mechanical source and matching evidence. Canonical integration uses the existing structural owners and pinned compiler; the complete-wave verifier has not yet run.",
+    "effects": [
+      "allocation",
+      "late-sharing",
+      "body-coverage",
+      "argument-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F51E7E4FF74A05CBED9195287FF3517D97882F07AB7F7D47C9E979A49875342B",
+      "sourceSha256": "8E46792F573160266E0F2C41898A8BA5DE1F01A0411746D14534B6E0F5905C6E"
+    },
+    "label": "three-real-condition-entries",
+    "observedEffect": "E6C7180A emits PURE_C, 1,608 bytes, frame 48 and 97 relocations. All three terminal comparison bodies survive. Forty-two ordinary masked differences are the unit/code and ready/fallback saved-register pairs. Probe A5B75211 records unit references 11/160, code 15/119, ready 7/155 and fallback 9/273. Allocation priority explains the pair inversions.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/squad-w3-20261006/lifecycle-promote-before-branch.json",
+        "sha256": "2D196EF41A7F89AEAD86B124D817AA2026B83DF4058A633880F26B6EF24A8248"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This intermediate remains nonexact. It establishes a source-bound body-survival and allocation example, not original-source identity or a generic rule.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use three actual condition producers and before/after binding entries. Promote the middle qualification mode before its accumulated-result branch."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7242,
+      "sha256": "F51E7E4FF74A05CBED9195287FF3517D97882F07AB7F7D47C9E979A49875342B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8E46792F573160266E0F2C41898A8BA5DE1F01A0411746D14534B6E0F5905C6E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-07-func_001237F0-e6c7180a07.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

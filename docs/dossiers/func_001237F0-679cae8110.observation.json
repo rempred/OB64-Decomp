@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "679CAE81107D8A0F6BAD837EC1640832FF980E39361B9B97FEF1926ECEC1788C",
+  "observationId": "DBA94A51039D3CCFC204BE3438C9DD38D40540A14105638FF16071FDBD25AFC6",
+  "symbol": "func_001237F0",
+  "authored": {
+    "context": "Original complete Squad W3 has ten owners and 10,188 bytes. Eight exact siblings are unchanged. These observations distinguish authored explanations from mechanical source and matching evidence. Canonical integration uses the existing structural owners and pinned compiler; the complete-wave verifier has not yet run.",
+    "effects": [
+      "allocation",
+      "late-sharing",
+      "body-coverage",
+      "argument-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EFA3772F29B1E0B149FB1FC9AFF022277D4063EC895C4DA8F817A9E3AA1631A4",
+      "sourceSha256": "19A8670638C8ABBB3879E1BE8E6BFA0A4E7B22CFB1E3127A535D8BE1BFDF1ACA"
+    },
+    "label": "shared-kind20-result-assignment",
+    "observedEffect": "679CAE81 remains 1,608/frame48/97R. Ready/fallback restore S5/S6 without additional moves. Probe DD8ACB7F shows fallback references decrease from nine to six while ready remains 7/155. Result storage changes to S0 and its first branch becomes bne. Unit/code remain swapped.",
+    "parentCandidateId": "E6C7180A07F2EBACA6790E2D347688BDC05BDA9835A72D07380DAE280AFC79B9",
+    "references": [
+      {
+        "path": "build/matching/squad-w3-20261006/lifecycle-code-result-join.json",
+        "sha256": "DE79736FD38A2ECE2A49A9871BB46CA7440B4215D217A2CBCB9B3032C86F4563"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The expected priority effect occurred, separately from the altered result lifetime. Result storage and unit/code remain unresolved in this control.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Route the four genuine successful kind20 flag paths to one actual fallback/result assignment and a shared result return."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7378,
+      "sha256": "EFA3772F29B1E0B149FB1FC9AFF022277D4063EC895C4DA8F817A9E3AA1631A4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "19A8670638C8ABBB3879E1BE8E6BFA0A4E7B22CFB1E3127A535D8BE1BFDF1ACA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-07-func_001237F0-679cae8110.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

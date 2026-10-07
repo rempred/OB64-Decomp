@@ -1,54 +1,11 @@
-# Sol cursor — complete global-buffer service wave accepted
+# Sol cursor - complete Squad W3 accepted
 
-EmeraldDuck, Sol6.1/xhigh, chat01a113e0-d6fa-7490-955d-42a7de29b288;
-Director SilentCrane. Main, sole production source/build writer.
-[Complete membership/proof/source pairs](../task-logs/sol-probe-buffer-wave-20261006.md),
-[queue](../../NEXT_STEPS.md), [program](../sequential-main-program.md),
-[all original family obligations](../sequential-family-scope.md).
+RedPeak, Sol 6.1/xhigh, chat 01a1141e-83eb-7860-b0eb-8c5f10f55f14, owns the sole production source/build writer role on main pending Director handoff. Director: SilentCrane; advisor: GoldOx. Original complete membership: 120CF0, 121724, 121DA8, 121F38, 123458, 1237F0, 12DA10, 12DB2C, 12A828, 12F8C0; ten owners, 10,188 bytes. [Full obligations](../sequential-family-scope.md), [program](../sequential-main-program.md), [queue](../../NEXT_STEPS.md). Other original family waves remain separate.
 
-Original complete FOUR separate owners/producers, SIX entries,748 bytes:
-copy50F0..51A0176(+8alias50F8); walk5058..50F0152;
-cleanup4FF0..5058104(+8alias4FF8); dual5624..5760316.
-Canonical keys boot_resource_probe_global_buffer_copy/chunk_callback_walk/
-global_cleanup/global_buffer_dual_callback_apply remain independent.
+The remaining evaluator/lifecycle owners are now canonical PURE_C in src/lib/func_00123458.c and src/lib/func_001237F0.c. Focused diffs prove decoded/raw linked EXACT, one complete C owner each, zero filler/fallback and matching actual 62/97 relocation records, including addends. Six required data bindings were reconciled to retail HI/LO pairs. Existing rules, compiler identity, boundaries and original ASM references remain intact. Eight exact sibling sources and all ten original ASMs are unchanged.
 
-Recoverable bests build/matching/probe-buffer-20261006/
-{copy,walk,cleanup,dual}-best.c; candidate IDs0F81985A2C/71559BC2EB/
-2DF9F23B59/D75DCEBB48. Canonical source hashes agree. Supported import/preserve
-publishes all four bests and plain148-byte walk controlAA947432F6, with exact
-parent relation. Both real callback-field and fixed-byte accesses qualified
-volatile preserve retail store/read order and restore152 bytes. Individual
-qualifiers/numeric-byte controls remain nonexact148. No MMIO/original-declaration
-claim. Copy/cleanup/dual need no workaround. Task log corrects June50F0 copy
-direction and conditional cleanup byte-clear facts from full ASM/source-first ABI.
+ONE normal final verifier passed 2026-10-07T05:27:29.867Z. Its authoritative source policy and independent fresh compilation confirm all TEN PURE_C; source/object, ownership, placement, relocation, complete target-byte and full-ROM gates pass. No preliminary build, per-function verifier, global require-pure, independent ordinary review or unchanged-input acceptance repeat. Canonical ROM is 41,943,040 bytes, SHA 571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A. CURRENT C081A1736382448F2CAEF1909696B41DD86E61CB7191DAC32B11D0A86CE44F8C; baseline F1D9FEF4 unchanged. Report SHA 28CF4A93E5AC7D2EE3AEE023ADFDAD85C0B17EE5A6B2819BEACE8EA2E852D06D. Actual reports: build/current/{verification,fresh-compilation}.json and build/source-policy/report.json; filtered intake/CLI in build/matching/squad-w3-20261006/w3-{complete-wave-proof.json,verify.log}.
 
-All four canonical focused diffs pass PURE_C, decoded/raw linked EXACT and
-MATCH actual11/6/12/21 relocations. ONE normal final verifier passed
-2026-10-07T01:58:15.756Z (October6 local),1975.242s. Authoritative policy,
-source-object and independent fresh compilation confirm all FOUR PURE_C,
-sole ownership, placement,50 real relocations, complete bytes and exact full ROM.
-One complete GLOBAL compiler function and sole C map contribution per owner,
-zero filler/fallback. All SIX original entries, including both+8 aliases, are exact
-GLOBAL ABS symbols. Saved best/canonical/policy/fresh hashes agree;15 protected
-source/data/ASM inputs unchanged. No preliminary build, per-function verifier,
-ordinary independent reviewer or unchanged proof repeat.
+[Evaluator best](../../dossiers/func_00123458-475085843c.md), [lifecycle best](../../dossiers/func_001237F0-615b45b15b.md), [capture counterexample](../../dossiers/func_001237F0-120c606310.md). Supported publication also preserves E6C7180A, 679CAE81 and 36F9F9D5: real condition entries retain comparisons; shared result assignment changes fallback priority; disjoint descriptor/result storage restores S1/annulled zero. Direct callee consumption creates hard-A0 conflicts for pointer captures, preserving A1 pointers/A0 conditions and late 9/51 to 7/40 sharing. Evaluator shared cells, guarded literals, compare-first state and E1A+2/+3 view preserve both producers. Probe/source pairs support bounded explanations, not original-source or runtime claims. All coupled ABI, edge-call, reload, activation, error/self-loop, 00020000, FF and finalizer +18 obligations remain.
 
-CURRENT74EA9082979449054AEBA5CC1470B8221F4730945662D5EC3655317F0823FA51;
-baselineF1D9FEF4 unchanged; canonical41943040-byte ROM SHA571E8339.
-Actual reports/census: build/matching/probe-buffer-20261006/buffer-final-*.json;
-CLI buffer-verify.log. Original ASM/fallbacks/aliases, accepted dispatch/copy-flag,
-allocation/free, retained fill/copy, original BSS/table storage and fixed external
-byte800C4800 remain protected. Excluded checksum/validator/descriptor/materializer
-owners and every parked five-family obligation remain under linked queue/scope.
-
-Startup1562; real watcher delivery1563/1564 confirmed1565. Own watcher40632 active.
-Private readiness/drain1567; animation actual drain1569; Director integration release
-1570. All own native/build/CPP/diff/verify/import/preserve/store/guard jobs exited
-before complete proof handoff1574; private guard absent. Director1575 confirms
-actual acceptance, releases animation checks and approves retirement after the
-scoped commit. Exception-only mail to SilentCrane; GoldOx read-only guidance.
-
-Next: finish only scoped local source/evidence commit under Director release1575,
-relinquish ALL ownership and stop ONLY verified own watcher40632. Preserve its
-identity/state and proofs. Fresh worker handles the next wave; no self-assignment,
-branch/worktree, shared tooling change, live work, push or acceptance repeat.
+Director 1621 supplied actual drain/integration release; 1625 approved eight exact-path Git byte-preservation entries. Staged attributes and checkout filters preserve all eight authenticated source/capture hashes. All own verify, diff, CPP, import/preserve and guard jobs exited. Own watcher 32048 remains active until release. Next: report exact proof/CURRENT promptly, finish scoped local commit/handoff, release ownership and stop only the verified own watcher. Fresh worker receives the next wave. No self-assignment, branch/worktree, tooling edit, push or live work.

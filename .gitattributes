@@ -98,3 +98,13 @@ src/lib/func_0019B1B0.c -text whitespace=cr-at-eol
 src/lib/func_0019BCA0.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-10-04-func_0019B1B0-2b3757a99e.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-10-04-func_0019BCA0-d868fde864.c -text whitespace=cr-at-eol
+
+# Squad W3 accepted inputs and research captures retain their authenticated bytes.
+src/lib/func_00123458.c text eol=crlf
+src/lib/func_001237F0.c text eol=crlf
+docs/archive/matching-c-candidates/2026-10-07-func_001237F0-e6c7180a07.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-07-func_001237F0-679cae8110.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-07-func_001237F0-36f9f9d597.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-07-func_001237F0-120c606310.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-07-func_001237F0-615b45b15b.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-07-func_00123458-475085843c.c -text whitespace=cr-at-eol
