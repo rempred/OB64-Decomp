@@ -36,6 +36,17 @@ each watcher's `status.json` and actual process.
   symbolic-object evidence until activation; current classifications/bytes must be
   measured rather than inherited from historical reports.
 
+  Director1689 releases the remaining source diagnostics after the five initial
+  targets' bounded controls:107E38,125F84,then131828, one at a time in the same root.
+  The earlier blanket source hold was broader than the actual private capability.
+  E38/F84 support ordinary private watch/probe, including diagnostic generated rodata;
+  incomplete tail coverage remains explicit.131828 supports probe on its complete
+  one-GLOBAL/four-static-helper source. Its private watch object census requires all
+  logical functions GLOBAL and rejects that source; do not drop/globalize helpers or
+  use an alternate pipeline to conceal the limit. Inspect every emitted body/table.
+  Preserve all earlier bests and original20 membership; this is no activation or
+  tooling approval. All three retain the structural gates below.
+
   This is a candidate assignment, not a dependency-ready integration handoff.
   Preserve all12 currently accepted PURE_C members. Shared106F34/1070F4 remain
   immutable accepted dependencies of both this wave and the same worker's parkedW4;
@@ -260,7 +271,7 @@ each watcher's `status.json` and actual process.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
   now watches the fresh resource decoder worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
-- **Active scheduler NINE candidate wave / LavenderSpire (October 7):** same top-level
+- **Scheduler NINE / LavenderSpire, source-blocked after October 7 controls:** same top-level
   chat `01a11381-0741-7a00-9337-967a16f41e41`, Sol6.1/xhigh, monitored by Astra.
   Director1675 transfers the complete nine-member private candidate scope below to
   `build/matching/scheduler-nine-20261007/`; QuietPond retains production ownership
@@ -281,6 +292,13 @@ each watcher's `status.json` and actual process.
   by QuietPond with one normal final verifier after readiness and actual private drains.
   This candidate wave does not complete or retire the same worker's parked
   DB10/3C00/6098 conversions. Existing identity/watchers and exception-only mail remain.
+
+  Worker1687 reports all private native jobs drained.9C3C has an instruction-ready
+  complete candidate; AA0/C1C/94BC/9A48 remain nonexact with useful preserved controls.
+  The actual compiler graphs distinguish object contraction, missing stack storage,
+  allocation and legal delay-slot speculation; no general impossibility or tooling
+  defect follows. Preserve all nine and the private cursor while Astra arranges the
+  next executable source study. No partial integration or wave completion occurred.
 
   **Preserved scheduler prerequisite scope:** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),

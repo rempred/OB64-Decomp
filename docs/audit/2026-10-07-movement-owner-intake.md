@@ -1,15 +1,30 @@
 # Movement W5 owner admission — read-only intake
 
 Status: prerequisite plan only. No implementation, activation or changed-input
-audit has run. QuietPond may work the five ordinary standalone candidates under
+audit has run. Director1689 additionally releases existing private diagnostics for
+all three gated owners below, correcting the initial overbroad source hold under
 Director1668 while preserving the full20-member W5 assignment. The same worker's
 W4 remains parked and unfinished;106F34/1070F4 are immutable accepted dependencies
-of both assignments. LavenderSpire independently owns DB10.
+of both assignments. LavenderSpire's independent assignments remain separate.
 
 This intake was independently examined by `host_runtime_migration_review` using
 actual original rows, retained C/native objects and current validators. Missing
 activation entries alone are not defects. Current inputs are accepted CURRENT
 `31978A79`; no physical boundary, overlay, source class or compiler rule changes.
+
+## Existing private diagnostic capability
+
+Read-only `loadWorkbenchModel()`/`scratchCapability()` and frontend review confirm
+all three targets are supported inactive ASM owners. E38 andF84 may use normal
+private watch/probe before production admission. Generated rodata is permitted
+diagnostically; short executable bodies do not supply their owned tail bytes.
+The five-body131828 source may use probe with its authentic one-GLOBAL/four-LOCAL
+bindings. Its watch object census (`compiler.js:225-233`) requires every logical
+function GLOBAL and therefore rejects the preserved static helpers. Preserve all
+five bodies and bindings; do not drop/globalize helpers to conceal that limitation.
+Probe success alone proves no coverage: inspect the full emitted function/table
+census. No authenticated isolated link is available for these inactive ASM owners.
+This source-work release changes no contract or structural gate below.
 
 ## Three gates
 
