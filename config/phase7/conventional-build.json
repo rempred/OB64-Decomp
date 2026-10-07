@@ -346,7 +346,7 @@
   },
   "host": {
     "platform": "win32",
-    "release": "10.0.26200",
+    "release": "10.0.26300",
     "architecture": "x64",
     "nodeVersion": "v24.13.1",
     "nodeExeSha256": "E3BE0545990C90995D7BF3A7AF5D64AF1F2E0FC1BBD9B79C27F7ABC1E9676E50",

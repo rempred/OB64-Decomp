@@ -8,6 +8,19 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
+**October 7 host recovery accepted:** the reboot changed Windows from
+`10.0.26200` to `10.0.26300`; the old authenticated host pin correctly rejected.
+The one-field migration passed the [runtime audit](audit/2026-10-07-windows-host-release.md),
+fresh compilation, exact/nonmatching private controls and independent review.
+CURRENT `31978A79` / baseline `D6553DED` retain the exact retail ROM. Director1654
+released mail1649 after actual audit/control exits and restored both stop monitors
+with their preserved state; QuietPond retains the production role.
+Both workers refresh affected context and resume their existing complete
+assignments; no unchanged full-verification repeat. Mail watchers are recovered.
+GoldOx's actual CLI request returned401 expired OAuth and needs sign-in. Old
+startup PIDs below are historical evidence, not current process state; consult
+each watcher's `status.json` and actual process.
+
 - **Sol / QuietPond, active Squad W4 pursuit and producer:** top-level chat
   `01a114ed-449d-73f0-81d3-47c8b67dbea6`, `gpt-6.1-sol`/`xhigh`, monitored by Astra.
   Own the complete twenty-one-target pursuit/producer assignment below,7,424 unique
