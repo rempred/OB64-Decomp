@@ -8,6 +8,31 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
+- **Sol / QuietPond, active Squad W4 pursuit and producer:** top-level chat
+  `01a114ed-449d-73f0-81d3-47c8b67dbea6`, `gpt-6.1-sol`/`xhigh`, monitored by Astra.
+  Own the complete twenty-one-target pursuit/producer assignment below,7,444 unique
+  owner bytes: original thirteen/5,000 plus the nine-owner producer/2,928, counting
+  shared10766C/484 once. Work in `build/matching/pursuit-w4-20261007/`, first127D30,
+  then1284C4,106CE0 and106E48, one target at a time. Preserve the seventeen stable
+  sources/candidates without conflating provisional native matches with acceptance.
+  RedPeak1628 released the sole production role; animation3C00 remains independently active.
+
+  Reopen source work with the new W3 real-result/consumer allocation evidence as a
+  testable analogy, not a register recipe. Refresh current intake and exact source
+  contexts:127D30 controls01C46CB83D/40321EE890/4F07FBB149;1284C4 controls
+  3A6FE90D21/C1EEECD686 and laterCB0BD7A781/3C1BD85C2E/37A3D3A2D9;
+  106CE0 controls4BDDE19D3A/2FA2B259A9/5D6CB37303/A0612ACBBB;
+  106E48 controlsA04891C9A3/216B48134B/7CA8644758. Preserve dirty historical files.
+  Existing native r2 evidence resolves the demonstrated producer envelope/tail route;
+  actual final text/relocations/group admission remain. Whole-group scratch watch/probe
+  is unsupported: standalone diagnostics do not establish the group. Batch complete
+  producer/canonical checks at readiness under existing mechanisms and actual drains,
+  then ONE final verifier for all twenty-one. No new tooling or fabricated padding.
+  Startup1632 verifies own identityQuietPond and mail watcher27644. Actual incoming
+  test1634 was delivered to this thread with desktop acknowledgement; Director stop
+  monitor25480 is active on its fresh UUID/cursor. Source advice goes directly to verified GoldOx; coordination is
+  exception-only. Other original family obligations remain unchanged.
+
 - **Accepted Squad W3 / RedPeak (October 7):** complete original TEN owners/bodies,
   10,188 bytes:120CF0(288),121724(308),121DA8(400),121F38(5408),123458(920),
   1237F0(1608),12DA10(140),12DB2C(136),12A828(304),12F8C0(676).
@@ -31,9 +56,13 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   Director1627 accepted the complete wave and released animation checks after all
   actual producer jobs exited. RedPeak1628 relinquished ALL production/build/wave
   ownership and stopped its verified own watcher32048; identity/state are preserved.
-  The next main wave requires a fresh Sol6.1/xhigh worker. Director is resolving
-  broad hybrid0010DDB4's documented complete-owner scope before assigning conversion;
-  other parked family gates remain intact. The current family inventory is historical
+  The fresh Sol6.1/xhigh worker above inherits the production role for complete W4.
+  Broad hybrid0010DDB4 remains a separate producer-study gate: current owner9132
+  contains a9128-byte compiler body plus a four-byte assembler tail, coupled to a52-entry
+  table. A read-only census identifies genuine precedingD450/52 andD484/2352 as the
+  minimum aligned three-owner envelope11536, but no native producer proof or group
+  admission exists. Do not infer its readiness or start that conversion from alignment
+  arithmetic alone. Other parked family gates remain intact. The family inventory is historical
   where contradicted by this accepted proof. Preserve its complete remaining obligations.
 
 
@@ -227,7 +256,7 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   No canonical activation or full-ROM run is authorized at the study stage. If this producer
   route is selected, all NINE become one coupled final acceptance set; the original FIVE and
   their source blockers remain required, and the worker has not completed its wave.
-- **Parked under Sol:** complete thirteen-member Squad W4
+- **Active under fresh Sol above:** complete thirteen-member Squad W4
   pursuit group: `func_00128AD0`, `func_00128BF4`, `func_00127D30`, `func_00127EAC`,
   `func_00128050`, `func_001284C4`, `func_00128980`, `func_001289BC`, `func_00128D50`,
   `func_00128DDC`, `func_0010766C`, `func_0012A050` and `func_0012FB64`.
