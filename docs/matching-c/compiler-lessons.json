@@ -4,12 +4,13 @@
     {
       "id": "union-for-successive-resource-phases",
       "symptoms": ["register-allocation", "stack-layout-or-offset-family"],
-      "applicability": "In DFB8, an ordinary union for successive header cursor, cached length and destination cursor phases changes the cached-length register while preserving real operations and complete owner coverage. Compare the independent-local counterexample. This is one compiler/source context, not a general union recipe; require nonoverlapping lifetimes. Private entry binding differs from production; the completed resource wave supplies production acceptance.",
+      "applicability": "Use a union only for real, nonoverlapping phases. DFB8's header/length/destination phases change allocation; its independent-local control differs. Squad1237F0's shared result assignment changes fallback priority; a descriptor/result union then restores S1 and the annulled zero write but leaves unit/code swapped. Read both controls before transferring either effect. These are pinned source contexts, not original-field meanings or a universal union recipe.",
       "note": "docs/dossiers/func_0002dfb8-09f4a35005.md#recorded-observation",
-      "references": ["docs/dossiers/func_0002dfb8-d70647fd1b.md", "docs/Plans/task-logs/sol-resource-header-loading-wave-20261005.md"],
+      "references": ["docs/dossiers/func_0002dfb8-d70647fd1b.md", "docs/Plans/task-logs/sol-resource-header-loading-wave-20261005.md", "docs/dossiers/func_001237F0-679cae8110.md", "docs/dossiers/func_001237F0-36f9f9d597.md"],
       "observations": [
         {"symbol": "func_0002dfb8", "path": "docs/dossiers/func_0002dfb8-09f4a35005.observation.json"},
-        {"symbol": "func_0002dfb8", "path": "docs/dossiers/func_0002dfb8-d70647fd1b.observation.json"}
+        {"symbol": "func_0002dfb8", "path": "docs/dossiers/func_0002dfb8-d70647fd1b.observation.json"},
+        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-36f9f9d597.observation.json"}
       ]
     },
     {
@@ -107,11 +108,13 @@
     {
       "id": "real-workword-phases-and-register-preferences",
       "symptoms": ["register-allocation"],
-      "applicability": "At real read/value/reload boundaries, a typed local work word can carry successive cursor and numeric values without extra operations. In the documented 681A precursor, genuine helper-load and increment producers gave the work value A0/V1 preferences, leaving the tag in A1 and removing four instruction-field differences. Preserve every load/store and phase lifetime; never add fake uses. The trace belongs to this precursor, which still had an unrelated address bug, not the later accepted source.",
+      "applicability": "Preserve actual producers and call arguments. Shop977E0's cursor/value precursor changes A0/V1 preferences but retains an address bug. In Squad1237F0, A0 preference alone still leaves pointer captures in A0 and adds shuffles; direct consumption by actual evaluator calls adds hard-A0 conflicts, placing pointers in A1 and conditions in A0. The final source also depends on prior result/storage corrections. Compare the exact source/probe pair; no general coalescing or original-C claim follows.",
       "note": "docs/dossiers/func_001977E0-70a68c829e.md#measured-precursor-cursorvalue-phases",
-      "references": ["docs/dossiers/func_001977E0-0fbeca6ab5.md"],
+      "references": ["docs/dossiers/func_001977E0-0fbeca6ab5.md", "docs/dossiers/func_001237F0-120c606310.md", "docs/dossiers/func_001237F0-615b45b15b.md"],
       "observations": [
-        {"symbol": "func_001977E0", "path": "docs/dossiers/func_001977E0-70a68c829e.observation.json"}
+        {"symbol": "func_001977E0", "path": "docs/dossiers/func_001977E0-70a68c829e.observation.json"},
+        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-120c606310.observation.json"},
+        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-615b45b15b.observation.json"}
       ]
     },
     {

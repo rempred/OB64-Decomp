@@ -8,48 +8,34 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / RedPeak (October 6 fresh Squad W3 worker):** top-level chat
-  `01a1141e-83eb-7860-b0eb-8c5f10f55f14`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own complete W3 wake/conditions and lifecycle: TEN physical owners/TEN logical bodies,
-  10,188 bytes, retaining both original five-member groups together:
-  wake/conditions `func_00120CF0`288, `func_00121724`308, `func_00121DA8`400,
-  `func_00121F38`5408, `func_00123458`920;
-  lifecycle `func_001237F0`1608, `func_0012DA10`140, `func_0012DB2C`136,
-  `func_0012A828`304, `func_0012F8C0`676.
-  Solve evaluator123458 first, then consumer1237F0, one target at a time in
-  `build/matching/squad-w3-20261006/`. Preserve the eight active exact PURE_C siblings
-  and reuse their current proof. The complete ten-member wave remains unaccepted.
-  Complete candidate readiness1617 retains all TEN: evaluator123458 is PURE_C920/frame24
-  with62 actual relocations; lifecycle1237F0 is PURE_C1608/frame48 with97. Both have
-  zero ordinary relocation-masked differences; linked/ownership/complete-ROM gates
-  remain open. After LavenderSpire's actual drain1620, Director1621 releases RedPeak's
-  sole canonical integration window and ONE final verifier for all TEN. Report actual
-  producer exits promptly after verification/publication so independent checks can resume.
-  Old ASM comments DB2C224/F8C0760 are stale; current full owners are136/676 bytes,
-  with34/169 words respectively. No boundary change is assigned.
+- **Accepted Squad W3 / RedPeak (October 7):** complete original TEN owners/bodies,
+  10,188 bytes:120CF0(288),121724(308),121DA8(400),121F38(5408),123458(920),
+  1237F0(1608),12DA10(140),12DB2C(136),12A828(304),12F8C0(676).
+  Source/research commit `5490bb78`. ONE normal verifier and independent fresh
+  compilation passed `2026-10-07T05:27:29.867Z`; CURRENT `C081A173`,
+  baseline `F1D9FEF4`, exact41,943,040-byte ROM. Every member is PURE_C, sole/exact,
+  with complete relocation/placement/target-byte gates. Eight sibling sources and ten
+  original ASMs are unchanged. The new920/1608-byte owners have62/97 actual relocations.
+  Actual verification SHA `28CF4A93E5AC7D2EE3AEE023ADFDAD85C0B17EE5A6B2819BEACE8EA2E852D06D`;
+  filtered membership/proof and CLI remain under `build/matching/squad-w3-20261006/`.
+  Reuse acceptance; no unchanged commit/handoff verifier repeat.
 
-  Recover [evaluator best](dossiers/func_00123458-d3efa316f8.md) (recorded876/frame24,
-  versus retail920/frame24) and [consumer best](dossiers/func_001237F0-69a987da95.md)
-  (1608/frame48,7 evaluator/40 total calls, first1200 bytes mask-equal,8 terminal words
-  plus actual jump/linked proof still open). Read/hash the corresponding current archive
-  source files before recovery: they have unrelated working-tree changes, and historical
-  candidate identities do not authenticate changed bytes. Preserve useful consumer
-  controls01e949dc76/1e5935e7ee/e5b1688215/167cea4c5e through current research intake.
-  These are source-shaping blockers, not established structural/tooling defects.
-  [Current family scope](Plans/sequential-family-scope.md) and the
-  [original resumption membership](Plans/task-logs/sol-five-family-resumption-20260929.md)
-  retain complete obligations. Reconcile full ASM and existing C interfaces; protect
-  evaluator s32 ABI, mandatory reloads, activation/error/self-loop paths,0x00020000,
-  sentinel0xFF, edge-onlyfunc_801DD2B0,21DA8->21F38 and finalizer return at record+0x18.
-  Preserve original ASM/data owners, parked `solsquad`/`solmode` evidence and other families.
+  [Evaluator source](dossiers/func_00123458-475085843c.md),
+  [lifecycle source](dossiers/func_001237F0-615b45b15b.md) and
+  [argument-preference counterexample](dossiers/func_001237F0-120c606310.md)
+  preserve current exact source pairs;679CAE81/36F9F9D5 retain result-assignment and
+  disjoint-storage effects. The compiler-lesson index links these context-bound
+  observations without treating them as original-source or general allocation rules.
+  Eight exact-path Git attributes preserve authenticated checkout/capture bytes.
 
-  EmeraldDuck explicitly released ALL production/target ownership and actual jobs and
-  retired its own watcher in1576. The fresh worker inherits the sole production role
-  and [Sol cursor](Plans/cursors/sol.md). LavenderSpire's independent checks were released
-  in1575; no initial hold applies. Coordinate actual drains only at complete-wave
-  integration/shared-input changes. ONE final verifier covers all TEN, without preliminary
-  build, per-function full-ROM checks or unchanged acceptance repeats. GoldOx is available
-  for exception-only guidance; explicit Sol/Claude agreement precedes tooling escalation.
+  Director1627 accepted the complete wave and released animation checks after all
+  actual producer jobs exited. RedPeak1628 relinquished ALL production/build/wave
+  ownership and stopped its verified own watcher32048; identity/state are preserved.
+  The next main wave requires a fresh Sol6.1/xhigh worker. Director is resolving
+  broad hybrid0010DDB4's documented complete-owner scope before assigning conversion;
+  other parked family gates remain intact. The current family inventory is historical
+  where contradicted by this accepted proof. Preserve its complete remaining obligations.
+
 
   **Accepted buffer-services predecessor:** FOUR owners/SIX entries,748 bytes,
   copy50F0176 / walk5058152 / cleanup4FF0104 / dual5624316; source commit `d2854d91`.
@@ -317,11 +303,10 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   sequencing against remaining companion/strip and sync/size-cursor allocation.
   Existing null/cursor controls are context-bound counterexamples. Do not repeat the
   exhausted endpoint split or infer an untested discriminator without source evidence.
-  Native/shared-input checks are temporarily held by1619 for complete Squad W3
-  integration;1620 confirms actual command/child exits and guard release. Private
-  edits/reasoning may continue. Own mail watcher23988 stays active; Director stop
-  monitor46300 was gracefully paused with state preserved and must be restored on
-  explicit release. Consult GoldOx directly when stuck;
+  Director1627 released native/shared-input checks after accepted Squad W3 and all
+  actual producer exits. Refresh affected inputs to CURRENTC081A173 and continue.
+  Own mail watcher23988 stays active; Director stop monitor34300 is restored with
+  its prior state/cursor. Consult GoldOx directly when stuck;
   only complete readiness, Director blockers and actual shared-input/ownership needs
   go to SilentCrane. One final canonical verifier follows complete PURE_C readiness
   and serialized production integration. The existing identity/watchers remain active.
