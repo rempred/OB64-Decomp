@@ -182,6 +182,90 @@
       ]
     },
     {
+      "romStart": 6356,
+      "romEndExclusive": 6708,
+      "evidence": {
+        "caseId": "supplemental:resource-validator:000018D4",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Complete executable body in the unchanged368-byte resource_ptr_validate physical owner. The main returns through its completed frame-restore delay slot; the two terminal JR/delay-slot bodies use only their own argument or constant and have no noncall flow across the cuts. Neutral address names identify reviewed body coverage only. Bounded incoming-reference searches found no hits and establish neither deadness nor absence of indirect callers. See docs/audit/2026-10-07-resource-validator-logical-bodies.md; no linker exports, production bindings or partial-owner activation are granted."
+      },
+      "symbol": "func_000018D4",
+      "aliases": [],
+      "expectedBytesSha256": "E91BCEF48D54C26C82E01D5EA998CA8B2FAF5359E409862777C9B977EFA734C9",
+      "fragments": [
+        {
+          "rowIndex": 9,
+          "romStart": 6356,
+          "romEndExclusive": 6708,
+          "ownerOffset": 0,
+          "bytes": 352,
+          "vramStart": 2147947732,
+          "sectionName": ".ob64.r0009",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_ptr_validate.s",
+          "sha256": "685AB9FA8FBE96C5F5732C20A14199E4E4C53CFD7295D066F282BF74ACEE81CC"
+        }
+      ]
+    },
+    {
+      "romStart": 6708,
+      "romEndExclusive": 6716,
+      "evidence": {
+        "caseId": "supplemental:resource-validator:00001A34",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Complete executable body in the unchanged368-byte resource_ptr_validate physical owner. The main returns through its completed frame-restore delay slot; the two terminal JR/delay-slot bodies use only their own argument or constant and have no noncall flow across the cuts. Neutral address names identify reviewed body coverage only. Bounded incoming-reference searches found no hits and establish neither deadness nor absence of indirect callers. See docs/audit/2026-10-07-resource-validator-logical-bodies.md; no linker exports, production bindings or partial-owner activation are granted."
+      },
+      "symbol": "func_00001A34",
+      "aliases": [],
+      "expectedBytesSha256": "13D278A82C57269D4F5A34A2ACE2BB1F08227DA62A48F056A215836EAC8B9BFE",
+      "fragments": [
+        {
+          "rowIndex": 9,
+          "romStart": 6708,
+          "romEndExclusive": 6716,
+          "ownerOffset": 352,
+          "bytes": 8,
+          "vramStart": 2147948084,
+          "sectionName": ".ob64.r0009",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_ptr_validate.s",
+          "sha256": "685AB9FA8FBE96C5F5732C20A14199E4E4C53CFD7295D066F282BF74ACEE81CC"
+        }
+      ]
+    },
+    {
+      "romStart": 6716,
+      "romEndExclusive": 6724,
+      "evidence": {
+        "caseId": "supplemental:resource-validator:00001A3C",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Complete executable body in the unchanged368-byte resource_ptr_validate physical owner. The main returns through its completed frame-restore delay slot; the two terminal JR/delay-slot bodies use only their own argument or constant and have no noncall flow across the cuts. Neutral address names identify reviewed body coverage only. Bounded incoming-reference searches found no hits and establish neither deadness nor absence of indirect callers. See docs/audit/2026-10-07-resource-validator-logical-bodies.md; no linker exports, production bindings or partial-owner activation are granted."
+      },
+      "symbol": "func_00001A3C",
+      "aliases": [],
+      "expectedBytesSha256": "648CBC77D024F6D08BC8FF4E3BDF1CEBF2A933937EE1CEBEF4690D015808BD9C",
+      "fragments": [
+        {
+          "rowIndex": 9,
+          "romStart": 6716,
+          "romEndExclusive": 6724,
+          "ownerOffset": 360,
+          "bytes": 8,
+          "vramStart": 2147948092,
+          "sectionName": ".ob64.r0009",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_ptr_validate.s",
+          "sha256": "685AB9FA8FBE96C5F5732C20A14199E4E4C53CFD7295D066F282BF74ACEE81CC"
+        }
+      ]
+    },
+    {
       "romStart": 6724,
       "romEndExclusive": 7504,
       "evidence": {

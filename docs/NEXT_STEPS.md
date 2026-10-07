@@ -271,30 +271,32 @@ each watcher's `status.json` and actual process.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
   now watches the fresh resource decoder worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
-- **Active resource-validator producer study / LavenderSpire:** Director1690 assigns
-  the same Sol6.1/xhigh chat `01a11381-0741-7a00-9337-967a16f41e41` a disjoint
-  probe-only study in `build/matching/resval-20261007/`. Director1693 corrects the
-  initial directory name, which exceeded the existing 24-character limit; the old
-  root remains read-only evidence and no tool or study contract changes. Preserve the
-  complete physical owner `resource_ptr_validate`, row9, ROM18D4..1A44,368 bytes:
-  the352-byte validator and both trailing eight-byte instruction pairs at1A34/1A3C.
-  Those pairs are nonzero executable-shaped code, not padding. Their entry status,
-  names and bindings still require structural evidence; only the main model name
-  is admitted. Any neutral private source names are diagnostic placeholders.
+- **Active resource-validator candidate / LavenderSpire:** same Sol6.1/xhigh chat
+  `01a11381-0741-7a00-9337-967a16f41e41`, private root
+  `build/matching/resval-20261007/`. The original probe-only study1690/1694 is
+  preserved. Director1700 releases the1696 native hold after actual drains1697/1698,
+  the [logical-body admission](audit/2026-10-07-resource-validator-logical-bodies.md),
+  focused/native regressions, one full audit and independent final review.
+  CURRENT `BF5BA958` retains the exact retail ROM and unchanged production sources.
 
-  Existing intake/probe can classify complete source and expose compiler assembly
-  and passes. Watch expects one STT_FUNC and rejects a real three-function producer;
-  a main-only source cannot establish full coverage. Do not use watch/compare/best
-  as full-owner evidence or invent an alternate compile/link pipeline. The old
-  generated seeds failed pointer typing before any native comparison, so the next
-  useful work is full disassembly/interface reconciliation and readable typed C,
-  followed by an early supported probe and complete emitted-body inspection.
-  Preserve accepted `resource_find_arena_index`, `resource_arena.h`, allocator
-  globals, diagnostic interfaces/strings, original ASM and all other worker inputs.
-  No canonical activation, entry admission, tooling change, full-ROM verification
-  or source acceptance follows from this study. Astra retains the separate
-  structural census/admission process. The complete scheduler NINE and three
-  animation conversions remain parked and unfinished; the worker is not retired.
+  Preserve the complete physical owner `resource_ptr_validate`, row9,
+  ROM18D4..1A44,368 bytes: the352-byte validator plus the independent eight-byte
+  bodies `func_00001A34` and `func_00001A3C`. Empty aliases retain the whole-owner
+  selection. Rename the two private placeholders to these neutral names; the main
+  candidate name remains `resource_ptr_validate`. Refresh affected context/intake
+  before checking the complete three-GLOBAL diagnostic source with ordinary private
+  watch/probe/compare. Verify all bodies in the first comparison; preserve earlier
+  source/pass observations without treating stale target identities as current proof.
+  Continue source iteration on the measured compiler/object differences.
+
+  Scratch GLOBAL bindings grant no production exports. The two secondary production
+  entry-evidence/binding contracts remain a separate Director gate; missing caller
+  evidence does not justify invented calls or prevent supported private diagnostics.
+  No canonical activation, source acceptance, partial-owner replacement or new tooling
+  is authorized. Preserve accepted `resource_find_arena_index`, `resource_arena.h`,
+  allocator globals, diagnostic interfaces/strings, original ASM and other workers'
+  inputs. The complete scheduler NINE and three animation conversions remain parked
+  and unfinished; this metadata repair does not complete or retire the worker.
 
 - **Parked scheduler NINE / LavenderSpire, unfinished after October 7 controls:** same top-level
   chat `01a11381-0741-7a00-9337-967a16f41e41`, Sol6.1/xhigh, monitored by Astra.
