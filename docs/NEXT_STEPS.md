@@ -327,35 +327,58 @@ each watcher's `status.json` and actual process.
   Source-level allocation and
   scheduling blockers do not establish a tooling defect or a final HYBRID exception.
   B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
-- **Active animation conversion / LavenderSpire (Sol6.1/xhigh):** top-level chat
-  `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
-  Director1600 assigns the complete `func_001F3C00` PURE_C conversion: one GLOBAL
-  body/physical producer,6,740 bytes, ROM1F3C00..1F5654, currently exact HYBRID_C,
-  frame504 and302 relocations. Private root `build/matching/anim3c00-20261006/`.
-  Preserve the accepted exact hybrid, all13 W8 siblings, original ASM, boundaries,
-  W5-W7 callees/data and shared combat draw/pose headers. This new conversion does
-  not reopen the accepted W8 hybrid assignment. RedPeak remains sole production writer.
+- **Active DB10 animation conversion / LavenderSpire (Sol6.1/xhigh):** same top-level
+  chat `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
+  Director1663 assigns the complete one-owner `func_0020DB10` PURE_C conversion,5,548 bytes,
+  ROM20DB10..20F0BC / RAM801CA680..801CBC2C, section `.ob64.r3922`.
+  CURRENT31978A79 accepts the exact HYBRID_C fallback as sole C owner with209
+  relocations. Its two-instruction preamble belongs to this body; historical
+  `func_0020DB18` is not a second function. No compilation group, multi-owner or
+  auxiliary contract is needed. Private root `build/matching/animdb10-20261007/`;
+  current intake/watch/probe are supported. QuietPond remains sole production writer.
 
-  Freshness result1603 confirms the proposed endpoint split was already tested: the
-  [R2 experiment](Plans/task-logs/combat-draw-wave8-r2.md#3c00-distinct-primary-packed-endpoint)
-  takes authenticated7F823 to D03797FD and retains distinct primary/companion endpoint
-  lifetimes. The [archived control](dossiers/func_001F3C00-519474319f.md) is that child;
-  there is no unresolved endpoint reunification. Current dependencies/owner remain
-  intact. The worker's fresh contract11 comparison on CURRENT74EA9082 is PURE_C,
-  6740/frame504,302 actual relocations,770 differing linked bytes/261 words; it does
-  not establish exact relocation identities or acceptance. Preserve fresh private
-  candidateD4DF46A8 without relabeling historical intake identities.
-  Next reconcile the accepted hybrid's independent ordinary-C corrections and retail
-  sequencing against remaining companion/strip and sync/size-cursor allocation.
-  Existing null/cursor controls are context-bound counterexamples. Do not repeat the
-  exhausted endpoint split or infer an untested discriminator without source evidence.
-  Director1627 released native/shared-input checks after accepted Squad W3 and all
-  actual producer exits. Refresh affected inputs to CURRENTC081A173 and continue.
-  Own mail watcher23988 stays active; Director stop monitor34300 is restored with
-  its prior state/cursor. Consult GoldOx directly when stuck;
-  only complete readiness, Director blockers and actual shared-input/ownership needs
-  go to SilentCrane. One final canonical verifier follows complete PURE_C readiness
-  and serialized production integration. The existing identity/watchers remain active.
+  Reconcile the full disassembly, current source/includes and exact source pairs before
+  tuning. Best preserved PURE_C is
+  [92917](archive/matching-c-candidates/2026-09-08-func_0020DB10-92917d08c4.c),
+  5548/frame560/209 relocations,68 bytes/23 words;51a6102b90 has69 bytes/23 words.
+  The closer R12 four-word control retains assembler mechanisms and is HYBRID_C.
+  Read [R9](Plans/task-logs/combat-draw-wave8-r9.md),
+  [R10](Plans/task-logs/combat-draw-wave8-r10.md),
+  [R12](Plans/task-logs/combat-draw-wave8-r12.md),
+  [initialization](Plans/task-logs/combat-db10-initialization-residual-r1.md),
+  [retained bases](Plans/task-logs/combat-db10-retained-base-control-r1.md) and
+  [allocation survey](Plans/task-logs/combat-db10-preserved-allocation-survey-r1.md).
+  Seek genuine source/context/resource setup before actor-index clear and the real
+  masked-variant lifetime across002015C8; preserve the total-run recurrence and
+  evidence-backed homes. No fabricated storage, consumers, guards or pointer domains.
+  Preserve the untracked September23 DB10 archives/dossiers203599/3f581d/453321/907b137.
+
+  Protect all13 accepted W8 siblings:001F3C00,001F5654,001F6098,001F7ADC,
+  001F89B4,001FCB28,001FD56C,0020BFF8,0020C014,0020C034,0020C448,
+  0020C4B8,002103EC; original ASM, shared combat/pose headers, target/linkage
+  configuration and W5-W7/data interfaces stay intact. This post-acceptance full-body
+  conversion does not reopen W8. One canonical verifier follows complete PURE_C
+  readiness and serialized production integration; private checks run independently.
+  Existing identity/watchers stay active. GoldOx remains the adviser after OAuth
+  recovery; use exception-only communication and preserve current queued questions.
+
+- **Parked3C00 / same worker, unfinished:** preserve the complete6740-byte
+  `func_001F3C00` assignment, frame504/302 relocations, original exact HYBRID_C and
+  `build/matching/anim3c00-20261006/`. Best is `d037-best-first-tile-early-cursor.c`,
+  source1D18705A/candidateD44DB1AE,490 bytes/185 words; corrected observation6BA62493.
+  Worker1662 and independent read-only review close the supported minimum/tile
+  experiments without identifying another defensible edit. Reversed minimumEF6E
+  preserves allocation but fills the ordinary branch delay and loses one word.
+  Six-site analysis explains100->102 through genuine packing inside retail lifetime
+  boundaries. Real E600 cursor captureB8CFFA50/probe6731A608 gives101 but wrong
+  allocation/early pointers,575 bytes/201 words; observation565FA822 remains unselected.
+  Full source/pass/counterexample evidence and the live cursor remain in that root.
+  Reopen on a distinct source-bound dependency/definition history or specific compiler
+  advice with a falsifiable prediction. OAuth restoration alone is not new source
+  evidence. No further blind minimum, cursor, wrapper or lifetime-count sweeps.
+  Parking accepts no fallback, does not prove ASM necessity or a tooling defect,
+  and does not complete the assignment or retire this worker. DB10 is its next active
+  complete conversion;3C00 and6098 remain retained obligations.
 
 - **Parked animation conversion / Director-held obligation:** prior LavenderSpire chat
   `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
@@ -375,8 +398,9 @@ each watcher's `status.json` and actual process.
   producer/lifetime or source-context discriminator, not fabricated padding or another
   unsupported COPY sweep. This remains unfinished PURE_C work, not inherent ASM,
   accepted fallback, completed wave or worker retirement. Preserve both best sources,
-  original exact hybrid and all13 siblings. Director1600 transfers the same worker's
-  active ownership to3C00 above;6098 remains parked, not completed or retired.
+  original exact hybrid and all13 siblings. Director1600 previously transferred this
+  worker to3C00; the same worker now owns DB10 above. Both6098 and3C00 remain
+  parked, not completed or retired.
 
   Read the [W8 record](Plans/task-logs/combat-draw-wave8-r12.md),
   [minimal hybrid](Plans/task-logs/combat-6098-minimal-hybrid-r12.md),
@@ -398,7 +422,8 @@ each watcher's `status.json` and actual process.
   services and actual producer exits. The worker resumed against CURRENT `74EA9082`.
   Astra restored the Director stop-alert monitor with its preserved state; the worker's
   own mail watcher remained running throughout. Independent private checks need no
-  per-check permission, and GoldOx is available for specific source questions.
+  per-check permission. GoldOx's current OAuth recovery is recorded above; preserve
+  the queued questions until advisory access returns.
   Only the Director-assigned production
   successor changes canonical inputs after coordinated drains. One complete-owner
   verifier follows real PURE_C readiness and serialized integration; a partial removal of
