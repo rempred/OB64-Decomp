@@ -1,11 +1,56 @@
-# Sol cursor — complete probe trio accepted; closing handoff
+# Sol cursor — complete copy/flag trio accepted; release approved
 
-MagentaBarn, Sol6.1/xhigh, chat 01a11344-8fd0-72c1-a7b5-457e99bef44f; Director SilentCrane. Main, sole production source/build writer until explicit complete-wave release. [Queue](../../NEXT_STEPS.md), [program](../sequential-main-program.md), [all parked family obligations](../sequential-family-scope.md), [accepted LZSS predecessor](../task-logs/sol-boot-lzss-wave-20261006.md). No branch/worktree, push, shared tooling/structural change, grouping, new exports or live capture.
+VioletMouse, Sol6.1/xhigh, chat01a113a4-5ca1-78d1-acb9-af4184132170;
+Director SilentCrane. Main, sole production source/build writer.
+[Queue](../../NEXT_STEPS.md), [program](../sequential-main-program.md),
+[all original family obligations](../sequential-family-scope.md),
+[complete current membership/evidence](../task-logs/sol-probe-copy-flag-wave-20261006.md).
+No branch/worktree, push, shared tooling/structural change, combined group or live work.
 
-The COMPLETE original Shop14 priority integration is accepted and committed 46525af8: all 14/11284 bytes PURE_C, 798 actual relocations, sole full C ownership, zero fill/fallback, exact full ROM and fresh compilation. [Complete membership, dependencies, source pair and proof](../task-logs/sol-shop14-integration-20261006.md). Frozen packet/source/protected-table identities remain unchanged. ONE normal verifier passed 2026-10-06T23:05:14.841Z, 1273.251 seconds. Proof/state/log copies remain under build/matching/sol-probe-20261006/shop-final-* and shop-verify.log. Astra1530 released the original probe trio after Shop closure and actual drains. Shop did not replace this assignment.
+Original THREE-owner/FIVE-entry/528-byte assignment remains whole: small
+boot_resource_probe_small_record_copy_flag, ROM5CFC..5D9C,160,+8 entry5D04;
+large boot_resource_probe_large_record_copy_flag, ROM5C58..5CFC,164,+8 entry5C60;
+indexed boot_resource_probe_indexed_record_copy_flag, ROM5B8C..5C58,204.
+All three canonical focused diffs pass PURE_C, exact decoded/raw linked bytes and
+MATCH contracts,13 actual relocations each. One complete GLOBAL compiler function
+per independent owner, including both real load prefixes. Native frames32/32/40.
+No source workaround was needed. Useful sources/observations are preserved through
+supported import/preserve and linked by the current wave log.
 
-The COMPLETE original own trio is now accepted: boot_resource_probe_dispatch_prepare (func_00004C5C, ROM4C5C..4DC0, 356 bytes/24 relocations), apply (func_00004DC0, ROM4DC0..4ED4, 276/14), result_build (func_00004ED4, ROM4ED4..4FF0, 284/13). Three separate full owners and C producers, 916 bytes; every focused diff and ONE final normal verifier/fresh compilation passed PURE_C, ownership, placement, actual relocations, exact target bytes and exact full ROM. One full GLOBAL compiler body and sole C map contribution per owner, zero fill/fallback. Verified 2026-10-06T23:44:07.439Z, 1627.343 seconds. CURRENT79E66A89F5B81698F52D7CA374B37E152424A011609E4430547CA4C46D9A323A; baselineF1D9FEF4 unchanged; canonical41943040-byte ROM SHA571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A. [Full membership, conservative ABI/source evidence and proof hashes](../task-logs/sol-probe-dispatch-wave-20261006.md).
+Recoverable bests: build/matching/probe-copy-20261006/{small,large,indexed}-best.c;
+candidate IDs0EB44ABA30/63B9CEA682/E14115F07B. Canonical source bytes agree.
+Private watches were only raw relocation-masked exact, with unavailable inactive-ASM
+linked diagnostics; canonical focused checks supply linked exactness. Current task
+log corrects June dossiers' reversed copy direction using source-first memcpy.s and
+accepted dispatch evidence. No persistent-storage/save/dirty-valid semantics follow.
 
-Recoverable best sources/reports: build/matching/sol-probe-20261006/{prepare,apply,result}-best.c; candidate IDs F6FAF414BC/525F61E16A/9D97F22874. Four bounded source observations were published through supported import/preserve. Original data_00037480.s SHA913E56AA unchanged. Final actual reports/state/policy/census are probe-final-*.json; CLI probe-verify.log. Private diagnostic results never established acceptance. Final saved-best/canonical/policy/fresh source hashes agree.
+Accepted predecessors remain protected: [dispatch](../task-logs/sol-probe-dispatch-wave-20261006.md)
+at5a05f902, [Shop14](../task-logs/sol-shop14-integration-20261006.md) at46525af8,
+[LZSS](../task-logs/sol-boot-lzss-wave-20261006.md). Prior CURRENT79E66A89;
+baselineF1D9FEF4 and canonical41943040-byte ROM SHA571E8339 remain comparison inputs.
+Allocation/fill/copy, dispatch/materializers and original BSS/fallbacks are unchanged.
+Excluded descriptor4894..4AC8, validator18D4..1A44 and checksum5D9C..5FC0
+structural leads and every parked family obligation remain under linked queue/scope.
 
-All own native/CPP/diff/verify/import/preserve/store jobs actually exited before complete-wave proof mail1537. No build inputs changed after proof; no unchanged verifier repeat. Next: scoped accepted-wave local commit, Director ownership/retirement release, then stop only own verified watcher PID46984. No self-assigned successor. Private cursor is superseded by this one. Identity/token/config/state remain private; actual watcher delivery was confirmed1520/1521. Exception-only mail to SilentCrane; GoldOx fallback awaits login. Preserve all parked obligations through the linked queue/program/family scope.
+Own watcher PID34664 remains active. Startup1543, actual delivery1544/1546,
+complete private readiness/drain1549 and actual shared integration release1552 apply.
+LavenderSpire's native/store commands are held through the final verifier; Astra
+coordinates it. GoldOx guidance is available again under1554. Exception-only mail.
+
+ONE normal node tools/verify.js --profile passed at2026-10-07T00:51:08.944Z,
+2152.887 seconds. Complete trio PURE_C, sole ownership, placement,39 actual
+relocations, complete bytes, independent fresh compilation and exact full ROM
+passed. One full GLOBAL native function and one C map contribution per owner,
+zero fill/fallback. All FIVE entries resolve exactly, including both+8 aliases.
+Saved best/canonical/policy/fresh source hashes agree; protected inputs unchanged.
+CURRENT AB95BA2DEA2CB4EAB0268CED12903C5869E3435065ABD954721C647FC597A90D;
+baselineF1D9FEF4 unchanged. Actual reports/census: build/matching/probe-copy-20261006/
+copy-final-*.json; CLI copy-verify.log. No preliminary build, per-function verifier,
+ordinary independent review or unchanged proof repeat.
+
+All own native/build/CPP/diff/verify/import/preserve/store/guard jobs exited before
+proof handoff1557. Director1558 accepted the actual proof, released LavenderSpire's
+checks, and approved completed-wave ownership release/retirement after the scoped
+local source/evidence commit. Next: close that commit, release all ownership, stop
+ONLY verified own watcher PID34664 and confirm actual retirement. Preserve identity,
+state and proofs. Astra creates the next fresh worker; no self-assigned next wave.

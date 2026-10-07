@@ -1086,6 +1086,9 @@
     {"symbol":"func_0019BDD4","source":"src/lib/func_0019BDD4.c"},
     {"symbol":"boot_resource_probe_dispatch_prepare","source":"src/boot/boot_resource_probe_dispatch_prepare.c"},
     {"symbol":"boot_resource_probe_dispatch_apply","source":"src/boot/boot_resource_probe_dispatch_apply.c"},
-    {"symbol":"boot_resource_probe_dispatch_result_build","source":"src/boot/boot_resource_probe_dispatch_result_build.c"}
+    {"symbol":"boot_resource_probe_dispatch_result_build","source":"src/boot/boot_resource_probe_dispatch_result_build.c"},
+    {"symbol":"boot_resource_probe_small_record_copy_flag","source":"src/boot/boot_resource_probe_small_record_copy_flag.c"},
+    {"symbol":"boot_resource_probe_large_record_copy_flag","source":"src/boot/boot_resource_probe_large_record_copy_flag.c"},
+    {"symbol":"boot_resource_probe_indexed_record_copy_flag","source":"src/boot/boot_resource_probe_indexed_record_copy_flag.c"}
   ]
 }
