@@ -302,10 +302,23 @@
     {
       "id": "retained-early-load",
       "symptoms": ["scheduling-or-block-order", "store-flag"],
-      "applicability": "For a cursor load displaced by an independent store, inspect the retained-load examples and their limits.",
-      "note": "docs/KMC_GCC_MATCHING_NOTES.md#a-retained-early-load-can-explain-store-order",
-      "references": [],
-      "observations": []
+      "applicability": "In accepted callback walk 5058, qualifying both the genuine scratch callback field and fixed external byte access as volatile preserves callback-store-before-byte-read order; either qualifier alone and the unqualified control do not. This pinned-KMC result concerns two real accesses. It does not establish MMIO, original volatile declarations, a general alias rule, or permission to reorder accesses. Compare the legacy retained-early-load note for the opposite load-before-store shape.",
+      "note": "docs/dossiers/boot_resource_probe_chunk_callback_walk-71559bc2eb.md#recorded-observation",
+      "references": [
+        "docs/KMC_GCC_MATCHING_NOTES.md",
+        "docs/dossiers/boot_resource_probe_chunk_callback_walk-aa947432f6.md",
+        "docs/Plans/task-logs/sol-probe-buffer-wave-20261006.md"
+      ],
+      "observations": [
+        {
+          "symbol": "boot_resource_probe_chunk_callback_walk",
+          "path": "docs/dossiers/boot_resource_probe_chunk_callback_walk-aa947432f6.observation.json"
+        },
+        {
+          "symbol": "boot_resource_probe_chunk_callback_walk",
+          "path": "docs/dossiers/boot_resource_probe_chunk_callback_walk-71559bc2eb.observation.json"
+        }
+      ]
     },
     {
       "id": "aggregate-stack-counterexample",

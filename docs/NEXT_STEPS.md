@@ -8,37 +8,53 @@ Workers now own separate, less-related waves. This supersedes older same-wave, o
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
 
-- **Sol / EmeraldDuck (October 6 fresh resource-probe buffer-services worker):** top-level chat
-  `01a113e0-d6fa-7490-955d-42a7de29b288`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
-  Own the complete FOUR-owner service closure, 748 bytes and SIX existing entry labels:
-  `func_000050F0` / `boot_resource_probe_global_buffer_copy` (176, ROM50F0..51A0),
-  `func_00005058` / `boot_resource_probe_chunk_callback_walk` (152, ROM5058..50F0),
-  `func_00004FF0` / `boot_resource_probe_global_cleanup` (104, ROM4FF0..5058),
-  `func_00005624` / `boot_resource_probe_global_buffer_dual_callback_apply` (316, ROM5624..5760).
-  Preserve load prefixes and existing prologue aliases50F8/4FF8 at+8, four separate
-  producers and complete coverage. No prefix owners or combined group. Work in that
-  order, one target at a time, in `build/matching/probe-buffer-20261006/`.
+- **Sol / RedPeak (October 6 fresh Squad W3 worker):** top-level chat
+  `01a1141e-83eb-7860-b0eb-8c5f10f55f14`, `gpt-6.1-sol` / `xhigh`, monitored by Astra.
+  Own complete W3 wake/conditions and lifecycle: TEN physical owners/TEN logical bodies,
+  10,188 bytes, retaining both original five-member groups together:
+  wake/conditions `func_00120CF0`288, `func_00121724`308, `func_00121DA8`400,
+  `func_00121F38`5408, `func_00123458`920;
+  lifecycle `func_001237F0`1608, `func_0012DA10`140, `func_0012DB2C`136,
+  `func_0012A828`304, `func_0012F8C0`676.
+  Solve evaluator123458 first, then consumer1237F0, one target at a time in
+  `build/matching/squad-w3-20261006/`. Preserve the eight active exact PURE_C siblings
+  and reuse their current proof. The complete ten-member wave remains unaccepted.
+  Old ASM comments DB2C224/F8C0760 are stale; current full owners are136/676 bytes,
+  with34/169 words respectively. No boundary change is assigned.
 
-  This is the dependency closure of accepted dispatch calls to50F0/4FF0/5624 and
-  cleanup's call to5058. Read their four dossiers, full original ASM, current intake,
-  accepted dispatch/copy-flag sources and arena/tree load-prefix evidence. Protect BSS
-  words800A83B8/BC, data callback fields800A8250/58/5C/64, fixed byte800C4800, alloc/free,
-  retained fill1A4F0/source-first copy23460,13 callback entries with stride0x1C and
-  cleanup key0x37081383. 50F0 copies shared-buffer data into caller destination; confirm
-  the stale June dossier's argument-direction correction without storage-behavior claims.
-  Keep checksum-dependent539C/553C/581C/5978/5A88/5760 and separate signature51A0 outside
-  this closure. Validator1A34/1A3C, checksum5EC4/5F60 and descriptor4894..4AC8 gates
-  remain separate; preserve all original five-family obligations.
+  Recover [evaluator best](dossiers/func_00123458-d3efa316f8.md) (recorded876/frame24,
+  versus retail920/frame24) and [consumer best](dossiers/func_001237F0-69a987da95.md)
+  (1608/frame48,7 evaluator/40 total calls, first1200 bytes mask-equal,8 terminal words
+  plus actual jump/linked proof still open). Read/hash the corresponding current archive
+  source files before recovery: they have unrelated working-tree changes, and historical
+  candidate identities do not authenticate changed bytes. Preserve useful consumer
+  controls01e949dc76/1e5935e7ee/e5b1688215/167cea4c5e through current research intake.
+  These are source-shaping blockers, not established structural/tooling defects.
+  [Current family scope](Plans/sequential-family-scope.md) and the
+  [original resumption membership](Plans/task-logs/sol-five-family-resumption-20260929.md)
+  retain complete obligations. Reconcile full ASM and existing C interfaces; protect
+  evaluator s32 ABI, mandatory reloads, activation/error/self-loop paths,0x00020000,
+  sentinel0xFF, edge-onlyfunc_801DD2B0,21DA8->21F38 and finalizer return at record+0x18.
+  Preserve original ASM/data owners, parked `solsquad`/`solmode` evidence and other families.
 
-  VioletMouse explicitly released all production/target ownership and actual jobs and
-  retired only its own watcher in mail1559. The fresh worker inherits the sole production
-  role and Sol cursor. Complete FOUR-owner readiness1567 records PURE_C, exact object
-  extents and nonrelocation words,11/6/12/21 actual relocations; canonical linking is
-  still required. Actual writer/candidate drains1567/1569 permit the integration window
-  released in1570. LavenderSpire holds new native/store jobs until explicit release.
-  ONE final verifier covers the complete FOUR, without preliminary build, per-function
-  full-ROM checks or unchanged acceptance repeats. GoldOx is available again under1553/1554;
-  exception-only guidance and explicit Sol/Claude agreement for tooling escalation apply.
+  EmeraldDuck explicitly released ALL production/target ownership and actual jobs and
+  retired its own watcher in1576. The fresh worker inherits the sole production role
+  and [Sol cursor](Plans/cursors/sol.md). LavenderSpire's independent checks were released
+  in1575; no initial hold applies. Coordinate actual drains only at complete-wave
+  integration/shared-input changes. ONE final verifier covers all TEN, without preliminary
+  build, per-function full-ROM checks or unchanged acceptance repeats. GoldOx is available
+  for exception-only guidance; explicit Sol/Claude agreement precedes tooling escalation.
+
+  **Accepted buffer-services predecessor:** FOUR owners/SIX entries,748 bytes,
+  copy50F0176 / walk5058152 / cleanup4FF0104 / dual5624316; source commit `d2854d91`.
+  ONE normal verifier/fresh compilation passed `2026-10-07T01:58:15.756Z`
+  (October6 local), CURRENT `74EA9082`, baseline `F1D9FEF4`, exact41943040-byte ROM.
+  All four are PURE_C, sole full C owners with11/6/12/21 actual relocations; all SIX
+  entries resolve exactly, including50F8/4FF8 at+8. Protected inputs are unchanged.
+  [Complete proof and useful source/control pairs](Plans/task-logs/sol-probe-buffer-wave-20261006.md)
+  retain actual callback-store/byte-read ordering, without MMIO/original-declaration claims.
+  Validator1A34/1A3C, checksum5EC4/5F60 and descriptor4894..4AC8 gates remain separate.
+  No unchanged successor/handoff verification repeat is required.
 
   **Accepted copy/flag predecessor:** complete THREE owners,528 bytes, FIVE entry labels,
   `func_00005CFC`160 / `func_00005C58`164 / `func_00005B8C`204; source commit `7b0adfcd`.
@@ -267,19 +283,6 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   coordinate one integration interval and normal verifier. Existing group admission adds
   no routine independent source review; a change outside accepted contracts needs the
   separate structural/tooling process. No shared tooling change is approved.
-- **Parked under Sol:** complete Squad W3 wake/conditions and lifecycle, retaining both
-  original five-member groups together. The 920-byte evaluator `func_00123458` and
-  1,608-byte consumer `func_001237F0` remain source-blocked with recoverable best controls
-  and source-bound compiler evidence. Both remain required for complete-wave acceptance.
-  Preserve `func_00120CF0`, `func_00121724`, `func_00121DA8`, `func_00121F38`,
-  `func_0012DA10`, `func_0012DB2C`, `func_0012A828` and `func_0012F8C0` with their
-  current PURE_C proof. Use one final verifier for the complete ten-member result.
-  Reconcile current intake and full bodies; retained September 30 sources are research controls.
-  Keep the evaluator's s32 interface, mandatory reloads, all activation/error paths,
-  literal `0x00020000`, sentinel `0xFF`, and existing edge-only `func_801DD2B0` binding.
-  The [parent family map](../../docs/Plans/squad-construction-family-map.md#wave-3-wake-conditions-and-lifecycle)
-  defines the membership. Use private `build/matching/solsquad/` and the
-  [current Sol cursor](Plans/cursors/sol.md); preserve `solmode` as parked evidence.
 - **Parked under Sol:** complete Combat action-mode W6 remains open with all seventeen
   [original members](Plans/prompts/combat-shared-mode-wave-r1.md). Its useful experiments,
   best source and precise reopening questions are preserved in Sol's current cursor.
@@ -312,14 +315,11 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   eight-byte intervals do not prove six real variables; do not fabricate frame padding,
   consumers or assembler constraints. Preserve best source and source-bound counterexamples.
 
-  After1558 release, LavenderSpire resumed against CURRENT `AB95BA2D`. Mail1569 now
-  confirms actual native/CPP/intake/store exits and a hold for EmeraldDuck's complete
-  buffer-services integration under1570. Private source edits, saved-artifact analysis
-  and the current specific GoldOx advisory exchange may continue. Refresh affected inputs
-  and resume native checks after Astra's explicit release.
-  Astra temporarily paused the Director's candidate stop-alert monitor during this known
-  hold; the worker's own mail watcher remains running. Restore the same monitor/state
-  together with release, without restarting a retired worker or creating a new watcher.
+  Mail1575 released LavenderSpire's native/CPP/intake/store hold after accepted buffer
+  services and actual producer exits. The worker resumed against CURRENT `74EA9082`.
+  Astra restored the Director stop-alert monitor with its preserved state; the worker's
+  own mail watcher remained running throughout. Independent private checks need no
+  per-check permission, and GoldOx is available for specific source questions.
   Only the Director-assigned production
   successor changes canonical inputs after coordinated drains. One complete-owner
   verifier follows real PURE_C readiness and serialized integration; a partial removal of
