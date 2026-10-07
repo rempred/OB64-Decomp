@@ -49,7 +49,7 @@ each watcher's `status.json` and actual process.
   Do not work around these gates or split the20 into smaller acceptance waves.
   The full original membership, all structural prerequisites and one final normal
   verifier remain required at eventual complete readiness. Native checks in this
-  root may run independently of LavenderSpire's DB10 work. Existing mail/stop
+  root may run independently of LavenderSpire's scheduler candidates. Existing mail/stop
   monitors remain attached to the same thread, with exception-only communication.
 
 - **Parked Squad W4 pursuit and producer / QuietPond, unfinished:** top-level chat
@@ -58,7 +58,7 @@ each watcher's `status.json` and actual process.
   owner bytes: original thirteen/4,980 plus the nine-owner producer/2,928, counting
   shared10766C/484 once. Preserve `build/matching/pursuit-w4-20261007/` and every
   source/counterexample; no partial integration or acceptance occurred. RedPeak1628
-  released the production role to this same worker; DB10 is independently active.
+  released the production role to this same worker; scheduler candidates run independently.
 
   Reopen only on a new source-bound definition/use or control mechanism that changes
   the surviving first-block graph after copy propagation. Refresh current intake and exact source
@@ -260,7 +260,29 @@ each watcher's `status.json` and actual process.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
   now watches the fresh resource decoder worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
-- **Parked under Sol (October 5):** complete five-member Squad W4
+- **Active scheduler NINE candidate wave / LavenderSpire (October 7):** same top-level
+  chat `01a11381-0741-7a00-9337-967a16f41e41`, Sol6.1/xhigh, monitored by Astra.
+  Director1675 transfers the complete nine-member private candidate scope below to
+  `build/matching/scheduler-nine-20261007/`; QuietPond retains production ownership
+  and the separate movement/pursuit assignments. All nine remain inactive ASM.
+  Start108C1C, then108AA0,1094BC,109A48,109C3C one at a time; preserve the four
+  instruction-ready controls and full9,632-byte/table/tail/group completion scope.
+  Individual private intake/watch/probe supports symbolic-object diagnostics;
+  no whole-group private command or scheduler registry admission is established.
+  Historical `build/matching/solsquad/` and dirty archives remain read-only.
+
+  New C1C lead: its same two-output projection helper serves disjoint scan and
+  aggregation phases, while preserved sources use separate result pairs. Test a real
+  shared result object only after checking aliases/lifetimes, informed by the accepted
+  W3 storage/source pairs. Preserveab877 and judge the observed pass change separately
+  from frame/extent/byte improvement. This is a source hypothesis, not a general rule.
+  Existing native r3 evidence below resolves a diagnostic layout route, not activation.
+  All nine plus structural prerequisites remain one eventual acceptance set, integrated
+  by QuietPond with one normal final verifier after readiness and actual private drains.
+  This candidate wave does not complete or retire the same worker's parked
+  DB10/3C00/6098 conversions. Existing identity/watchers and exception-only mail remain.
+
+  **Preserved scheduler prerequisite scope:** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),
   `func_0010A718` (1,696), `func_0010A128` (1,520) and `func_00109C3C` (1,260).
   Preserve the source bests and complete NINE prerequisite scope below. All five remain
@@ -310,7 +332,8 @@ each watcher's `status.json` and actual process.
   frontiers remain: `108AA0` address registers, `108C1C` frame/allocation, `1094BC`
   delay-slot scheduling, `109A48` NOP/mask/sentinel/extent and `109C3C` point allocation.
   Their recoverable sources, counterexamples and reopening questions are preserved in
-  the existing dossiers and [Sol cursor](Plans/cursors/sol.md).
+  the existing dossiers and retained `build/matching/solsquad/` study; current continuation
+  belongs in LavenderSpire's scheduler private cursor above.
   No canonical activation or full-ROM run is authorized at the study stage. If this producer
   route is selected, all NINE become one coupled final acceptance set; the original FIVE and
   their source blockers remain required, and the worker has not completed its wave.
@@ -368,15 +391,27 @@ each watcher's `status.json` and actual process.
   Source-level allocation and
   scheduling blockers do not establish a tooling defect or a final HYBRID exception.
   B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
-- **Active DB10 animation conversion / LavenderSpire (Sol6.1/xhigh):** same top-level
+- **Parked DB10 animation conversion / LavenderSpire, unfinished:** same top-level
   chat `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
-  Director1663 assigns the complete one-owner `func_0020DB10` PURE_C conversion,5,548 bytes,
+  Director1663 assigned the complete one-owner `func_0020DB10` PURE_C conversion,5,548 bytes,
   ROM20DB10..20F0BC / RAM801CA680..801CBC2C, section `.ob64.r3922`.
   CURRENT31978A79 accepts the exact HYBRID_C fallback as sole C owner with209
   relocations. Its two-instruction preamble belongs to this body; historical
   `func_0020DB18` is not a second function. No compilation group, multi-owner or
   auxiliary contract is needed. Private root `build/matching/animdb10-20261007/`;
   current intake/watch/probe are supported. QuietPond remains sole production writer.
+
+  Director1675 parks this conversion after1670/1673 and read-only source advice.
+  Current938CD2A0 reproduces PURE_C5548/frame560/209 actual relocations with23
+  differing words. Seven controls and the exact first-pass investigation remain in
+  its private root. Virtual-frame address materialization precedes the JUMP dump;
+  LOOP moves the three anonymous addresses immediately before loop_start, after the
+  actor-index clear. An authenticated older top/bottom-loop pair has the same insertion
+  anchor, so no redundant native trial ran. Reopen on a distinct genuine source/control
+  or scheduling mechanism, keeping the separate one-based batching/home question open.
+  No impossibility, tooling defect, final hybrid substitution or acceptance follows.
+  The same worker now starts the complete scheduler NINE above; all animation bests,
+  controls and original exact sources remain protected.
 
   Reconcile the full disassembly, current source/includes and exact source pairs before
   tuning. Best preserved PURE_C is
@@ -418,8 +453,8 @@ each watcher's `status.json` and actual process.
   advice with a falsifiable prediction. OAuth restoration alone is not new source
   evidence. No further blind minimum, cursor, wrapper or lifetime-count sweeps.
   Parking accepts no fallback, does not prove ASM necessity or a tooling defect,
-  and does not complete the assignment or retire this worker. DB10 is its next active
-  complete conversion;3C00 and6098 remain retained obligations.
+  and does not complete the assignment or retire this worker. DB10 is also parked;
+  the same worker's active candidate assignment is scheduler NINE above.
 
 - **Parked animation conversion / Director-held obligation:** prior LavenderSpire chat
   `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
@@ -440,7 +475,7 @@ each watcher's `status.json` and actual process.
   unsupported COPY sweep. This remains unfinished PURE_C work, not inherent ASM,
   accepted fallback, completed wave or worker retirement. Preserve both best sources,
   original exact hybrid and all13 siblings. Director1600 previously transferred this
-  worker to3C00; the same worker now owns DB10 above. Both6098 and3C00 remain
+  worker to3C00; the same worker retains DB10 above. All three conversions remain
   parked, not completed or retired.
 
   Read the [W8 record](Plans/task-logs/combat-draw-wave8-r12.md),
