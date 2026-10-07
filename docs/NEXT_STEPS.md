@@ -10,8 +10,8 @@ all acceptance gates remain. No new tooling or worktrees are needed.
 
 - **Sol / QuietPond, active Squad W4 pursuit and producer:** top-level chat
   `01a114ed-449d-73f0-81d3-47c8b67dbea6`, `gpt-6.1-sol`/`xhigh`, monitored by Astra.
-  Own the complete twenty-one-target pursuit/producer assignment below,7,444 unique
-  owner bytes: original thirteen/5,000 plus the nine-owner producer/2,928, counting
+  Own the complete twenty-one-target pursuit/producer assignment below,7,424 unique
+  owner bytes: original thirteen/4,980 plus the nine-owner producer/2,928, counting
   shared10766C/484 once. Work in `build/matching/pursuit-w4-20261007/`, first127D30,
   then1284C4,106CE0 and106E48, one target at a time. Preserve the seventeen stable
   sources/candidates without conflating provisional native matches with acceptance.
@@ -23,6 +23,10 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   3A6FE90D21/C1EEECD686 and laterCB0BD7A781/3C1BD85C2E/37A3D3A2D9;
   106CE0 controls4BDDE19D3A/2FA2B259A9/5D6CB37303/A0612ACBBB;
   106E48 controlsA04891C9A3/216B48134B/7CA8644758. Preserve dirty historical files.
+  Coverage reconciliation1638 corrects the assignment's stale284C4 prose size: accepted
+  row2390 is ROM1284C4..12896C,1192 bytes/298 words. The adjacent20-byte2896C ASM
+  owner remains separate and outside this21. Its1192-byte source control is full extent;
+  source differences remain. All21 original split ranges/word counts confirm7424 total.
   Existing native r2 evidence resolves the demonstrated producer envelope/tail route;
   actual final text/relocations/group admission remain. Whole-group scratch watch/probe
   is unsupported: standalone diagnostics do not establish the group. Batch complete
