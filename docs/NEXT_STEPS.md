@@ -32,9 +32,10 @@ all acceptance gates remain. No new tooling or worktrees are needed.
 
   VioletMouse explicitly released all production/target ownership and actual jobs and
   retired only its own watcher in mail1559. The fresh worker inherits the sole production
-  role and Sol cursor. LavenderSpire's independent native/store checks were released in1558.
-  No initial hold applies; private checks run concurrently without per-check permission.
-  Contact Astra for actual drains before shared-input changes/canonical integration.
+  role and Sol cursor. Complete FOUR-owner readiness1567 records PURE_C, exact object
+  extents and nonrelocation words,11/6/12/21 actual relocations; canonical linking is
+  still required. Actual writer/candidate drains1567/1569 permit the integration window
+  released in1570. LavenderSpire holds new native/store jobs until explicit release.
   ONE final verifier covers the complete FOUR, without preliminary build, per-function
   full-ROM checks or unchanged acceptance repeats. GoldOx is available again under1553/1554;
   exception-only guidance and explicit Sol/Claude agreement for tooling escalation apply.
@@ -311,9 +312,11 @@ all acceptance gates remain. No new tooling or worktrees are needed.
   eight-byte intervals do not prove six real variables; do not fabricate frame padding,
   consumers or assembler constraints. Preserve best source and source-bound counterexamples.
 
-  Mail1558 explicitly released LavenderSpire's native/CPP/intake/store hold after the
-  copy/flag wave passed and actual production jobs exited. The worker resumed against
-  CURRENT `AB95BA2D`; independent private checks need no per-check permission.
+  After1558 release, LavenderSpire resumed against CURRENT `AB95BA2D`. Mail1569 now
+  confirms actual native/CPP/intake/store exits and a hold for EmeraldDuck's complete
+  buffer-services integration under1570. Private source edits, saved-artifact analysis
+  and the current specific GoldOx advisory exchange may continue. Refresh affected inputs
+  and resume native checks after Astra's explicit release.
   Only the Director-assigned production
   successor changes canonical inputs after coordinated drains. One complete-owner
   verifier follows real PURE_C readiness and serialized integration; a partial removal of
