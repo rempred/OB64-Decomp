@@ -273,7 +273,9 @@ each watcher's `status.json` and actual process.
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
 - **Active resource-validator producer study / LavenderSpire:** Director1690 assigns
   the same Sol6.1/xhigh chat `01a11381-0741-7a00-9337-967a16f41e41` a disjoint
-  probe-only study in `build/matching/resource-validator-20261007/`. Preserve the
+  probe-only study in `build/matching/resval-20261007/`. Director1693 corrects the
+  initial directory name, which exceeded the existing 24-character limit; the old
+  root remains read-only evidence and no tool or study contract changes. Preserve the
   complete physical owner `resource_ptr_validate`, row9, ROM18D4..1A44,368 bytes:
   the352-byte validator and both trailing eight-byte instruction pairs at1A34/1A3C.
   Those pairs are nonzero executable-shaped code, not padding. Their entry status,
