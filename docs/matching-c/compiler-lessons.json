@@ -393,7 +393,7 @@
     {
       "id": "large-cfg-lifetime-and-regression",
       "symptoms": ["register-allocation", "scheduling-or-block-order", "branch-polarity"],
-      "applicability": "Reconcile prototypes, joins and real lifetimes. In the accepted boot decoder, a shared failure/report path changes return merging; two evidenced address forms preserve message setup stubs, while retaining the real U marker restores allocation/frame shape. Compare controls before transfer. W8 and decoder dossiers retain historical model/config bindings: source-pair references, not current-valid observations. The decoder wave record supplies final acceptance.",
+      "applicability": "Reconcile joins and real lifetimes. Decoder failure-path layout changes return merging; evidenced address forms and the real U marker affect allocation/frame shape. Validator's actual failure-block placement changes first-CSE read availability in the same ordinary-static source context; compare both observations before transfer. W8/decoder references retain historical bindings; their wave records supply acceptance. Neither example establishes original C or a universal layout rule.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#advanced-exact-case-func_00047a94",
       "references": [
         "docs/dossiers/func_001F3C00-7e434ec440.md",
@@ -403,7 +403,10 @@
         "docs/dossiers/boot_resource_tag_record_decode-853eca2a57.md",
         "docs/Plans/task-logs/sol-resource-decode-wave-20261006.md"
       ],
-      "observations": []
+      "observations": [
+        {"symbol": "resource_ptr_validate", "path": "docs/dossiers/resource_ptr_validate-f187f330ba.observation.json"},
+        {"symbol": "resource_ptr_validate", "path": "docs/dossiers/resource_ptr_validate-10fb1fcbac.observation.json"}
+      ]
     }
   ]
 }

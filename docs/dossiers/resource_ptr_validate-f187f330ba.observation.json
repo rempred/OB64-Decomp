@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F187F330BA61936F2AA4559C492E9C974E76237703ED12EF85F5B1D04D2E2D68",
+  "observationId": "2352A5CC9B3D4F39A45AFD10EA9AF56987F751A7A064C6272CA125C407803AAF",
+  "symbol": "resource_ptr_validate",
+  "authored": {
+    "context": "Current target69C42837 under accepted CURRENT EFC0B6A9. Complete368-byte physical owner and352/8/8 body census; primaryGLOBAL, two ordinary staticLOCAL helpers, no qualifiers or fabricated uses. Both current source probes preserve the exact accepted header/ABI context. Historical GLOBAL/native measurements underB16603E1 remain explicitly historical; current source identities are regenerated. Import/preserve authenticates source/reference closure, not compiler claims or acceptance.",
+    "effects": [
+      "source-block-order",
+      "observed-reloads",
+      "complete-body-source-coverage"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1210,
+          "path": "include/game/resource_arena.h",
+          "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+        }
+      ],
+      "expandedSha256": "F4ABCBEF34F892B2036C968B4FD3E544D4CFEF2D0AB338C4A6D05AA38C96E51F",
+      "sourceSha256": "E1B961A781053421EEAEFAC81F98DD7473A62268EA97A1093DCD805F16FE2F9A"
+    },
+    "label": "validator-accepted-static-layout-context",
+    "observedEffect": "Fresh current probeDB7C02B1 retains11 ordinary main loads/zero volatile through all13 stages and emits all three bodies. Independent combined audit1723 separately establishes PURE_C, frame24,352GLOBAL+8LOCAL+8LOCAL,368 exact linked bytes,16 text relocations, no actual PDR, sole C ownership and canonical full-ROM equality. SourceE1B961A7/expandedF4ABCBEF matches the accepted source exactly.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/movement-w5-20261007/validator-curation-pair-1725.json",
+        "sha256": "CF2477E74100407F24C52001669EDC3B5B45716A243A2921FA180EE2751766C0"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/validator-combined-audit-outcome-1723.json",
+        "sha256": "B467E98949B28289353B4F9FA6D502C4AFE762CFA029E9D65480940B0504FA3C"
+      },
+      {
+        "path": "build/matching/resval-20261007/matching-imports.json",
+        "sha256": "E8F5BA58F97F3F366550638EA4FEB5C817E831911309BC231A8D066B074971C7"
+      },
+      {
+        "path": "build/matching/resval-20261007/matching-final.claims.json",
+        "sha256": "082AD05B14AFC9E276CF3209AB04ECB959E1F7F940E76215193597E77FB60DC3"
+      },
+      {
+        "path": "build/matching/resval-20261007/matching-tail-layout-control.claims.json",
+        "sha256": "A9B3B44FB10AD14EEBA827E57E131CFBE995251FDE874F038BE5173E1E338A19"
+      },
+      {
+        "path": "build/matching/resval-20261007/current-pass-audit.json",
+        "sha256": "12B1437E05A1D45E1D6769DECDD2F0BCE658670ED2C71202579BBF7F52DE0734"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/validator-curation-static-best-probe-1725.json",
+        "sha256": "0A3CEB0E8C02B3D46BF7CDBBB33607AF11F181DA53301C0BEE8DE502EA835220"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/authored.c",
+        "sha256": "E1B961A781053421EEAEFAC81F98DD7473A62268EA97A1093DCD805F16FE2F9A"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c",
+        "sha256": "F4ABCBEF34F892B2036C968B4FD3E544D4CFEF2D0AB338C4A6D05AA38C96E51F"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/output.s",
+        "sha256": "56C52BBAA0F99D1E72BDC5FB0DA94087513188F4D44882DF5393169B24E3447B"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.rtl",
+        "sha256": "B768D5E7CB5CE0FF1F6EF2F5B0856B7EB1379671166B94B3E00EE388BEA06946"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.jump",
+        "sha256": "3BAB01FB8C633D47EE69C2B38E0311FF1103A7CB719C16C37E90D69EBB5E43BC"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.cse",
+        "sha256": "7CA03D14E7835F04BC3EBDC6A02B67324ABAF89A08F1F79DD754756A6708A68D"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.loop",
+        "sha256": "1DC5E9C68C8DBDA3B8E92577B752A7FC5B15FC6F6EC0A5097FC7C2B29A08C53B"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.cse2",
+        "sha256": "0D766C5AD99048E32F372A967DD1BF26C7E2A436AF44D4D119E51DB54D000310"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.flow",
+        "sha256": "C93D37E495CFAC8CCD4C2ADB41DB51BB3AD736891911C5D6B821F6F0C3A94F1C"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.combine",
+        "sha256": "236C2D29B59D26CD2BFA835D57FCB7611C07D6A3ACA934D2A782329B0F8A1F2C"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.sched",
+        "sha256": "5B6049C701B68385942A8AE7191824DF08C090E977511B78B96DE1C7BCC03027"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.lreg",
+        "sha256": "83129B88E8DD11704DEF70DBD409C069593078412C98AAA737B0A4B51181D9FF"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.greg",
+        "sha256": "2B39BC8DBC17412D36B5A23D2CA91DCA7F956129E52D7D22F862EFF8B11D75EF"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.sched2",
+        "sha256": "A8F37EF6D296303B998CCEBCAF08A7AA82372086FA92D073E1089ECEE9604D05"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.jump2",
+        "sha256": "9696AC3C02DF2D91D40F4E9C6CABA9F4312A27414FDA8177E30373B3CC677604"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/DB7C02B168788E3DDBF6D349B3E64255DFB650317BD881D13D697D2D62E40877/input.c.dbr",
+        "sha256": "EAB7F1FDACE5449DC2C9180EC677CCF132311279BDC367E99368D95F8E999AE6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "No canonical matching residual after audit1723. Imported authored claims are not acceptance evidence; use the independent canonical proof for acceptance. Original helper visibility/reachability and diagnostic behavior remain unspecified.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Accepted complete ordinary static source, with the actual header-failure block between alignment guards and link checks; real pointer carrier and every authored read retained."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1210,
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "expanded": {
+      "bytes": 2950,
+      "sha256": "F4ABCBEF34F892B2036C968B4FD3E544D4CFEF2D0AB338C4A6D05AA38C96E51F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E1B961A781053421EEAEFAC81F98DD7473A62268EA97A1093DCD805F16FE2F9A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-08-resource_ptr_validate-f187f330ba.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

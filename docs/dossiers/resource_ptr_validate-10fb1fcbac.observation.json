@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "10FB1FCBACF4B751C1C65ECE8D7CA942C1C168C65E16065AE313BD6AF9E4EC2E",
+  "observationId": "CE9430E3EE8AA8B978DE2569B22828BC59A7C62FA6E317E17B18727B6D858B7C",
+  "symbol": "resource_ptr_validate",
+  "authored": {
+    "context": "Current target69C42837 under accepted CURRENT EFC0B6A9. Complete368-byte physical owner and352/8/8 body census; primaryGLOBAL, two ordinary staticLOCAL helpers, no qualifiers or fabricated uses. Both current source probes preserve the exact accepted header/ABI context. Historical GLOBAL/native measurements underB16603E1 remain explicitly historical; current source identities are regenerated. Import/preserve authenticates source/reference closure, not compiler claims or acceptance.",
+    "effects": [
+      "source-block-order",
+      "observed-reloads",
+      "complete-body-source-coverage"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1210,
+          "path": "include/game/resource_arena.h",
+          "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+        }
+      ],
+      "expandedSha256": "869B27AF52EE7F851E1FF21B3CEAE15B2D2BEF52B8CB8183DACC2896D8697C4E",
+      "sourceSha256": "7ED506A36366446A5F1FAB9162D69CA73E9625497FE977F2996F6086170686E6"
+    },
+    "label": "validator-static-layout-cse-counterexample",
+    "observedEffect": "Fresh current static probe86A0A10B starts with11 main memory-load forms atRTL/JUMP; firstCSE removes the two header link rereads and fresh arena.end read, leaving8 through every later stage, with zero volatile forms and all three bodies retained. This transfers the observed failure-block/CSE effect into the actual static declaration context. Historical GLOBAL control57A568F3 had328 native bytes/frame24/15R/52 masked words; those native figures belong to that old exact source/context, not this fresh unassembled control. This pair supports a context-specific availability explanation, not a universal label or original-volatile rule.",
+    "parentCandidateId": "F187F330BA61936F2AA4559C492E9C974E76237703ED12EF85F5B1D04D2E2D68",
+    "references": [
+      {
+        "path": "build/matching/movement-w5-20261007/validator-curation-pair-1725.json",
+        "sha256": "CF2477E74100407F24C52001669EDC3B5B45716A243A2921FA180EE2751766C0"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/validator-combined-audit-outcome-1723.json",
+        "sha256": "B467E98949B28289353B4F9FA6D502C4AFE762CFA029E9D65480940B0504FA3C"
+      },
+      {
+        "path": "build/matching/resval-20261007/matching-imports.json",
+        "sha256": "E8F5BA58F97F3F366550638EA4FEB5C817E831911309BC231A8D066B074971C7"
+      },
+      {
+        "path": "build/matching/resval-20261007/matching-final.claims.json",
+        "sha256": "082AD05B14AFC9E276CF3209AB04ECB959E1F7F940E76215193597E77FB60DC3"
+      },
+      {
+        "path": "build/matching/resval-20261007/matching-tail-layout-control.claims.json",
+        "sha256": "A9B3B44FB10AD14EEBA827E57E131CFBE995251FDE874F038BE5173E1E338A19"
+      },
+      {
+        "path": "build/matching/resval-20261007/current-pass-audit.json",
+        "sha256": "12B1437E05A1D45E1D6769DECDD2F0BCE658670ED2C71202579BBF7F52DE0734"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/validator-curation-static-control-probe-1725.json",
+        "sha256": "6E6606E845AD2BC9060ADD132E6639263B94E47A7DD0CA9403D2671602159A84"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/authored.c",
+        "sha256": "7ED506A36366446A5F1FAB9162D69CA73E9625497FE977F2996F6086170686E6"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c",
+        "sha256": "869B27AF52EE7F851E1FF21B3CEAE15B2D2BEF52B8CB8183DACC2896D8697C4E"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/output.s",
+        "sha256": "CC92428B846C894A3D2FDA2A1AC020064F4AA2328A2ECBC766DFC846DBA6A8FC"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.rtl",
+        "sha256": "39EE369D59A2EBC01B639A59FA07FF4D5C0486856D428DB36985A6656F15E97F"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.jump",
+        "sha256": "E60D95A460AD101E8637B7628C38F614F21E6E087B1A056884D061CFC1D79ED1"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.cse",
+        "sha256": "A2F1E280C6A79DD48E1A88CCE5F785237CFA0EC783D6A52581060D13DAFBAE34"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.loop",
+        "sha256": "B48F68A6CCCD20258EDBE940868B67FD4F79096687A3D2B7EF514201526432D2"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.cse2",
+        "sha256": "E6C4D8E5B9C0822EC39E063B13498E7EB3DA8786DB1BE4E0F5DEB9548D09F51C"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.flow",
+        "sha256": "6375646D92675067F2A5925430BC2D48F16DD2C52591840BD09033C929993AE8"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.combine",
+        "sha256": "CC5DC592431BEB4AB2B49A8B4E573C5499CFBD869A0CC490461D962CF89527F1"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.sched",
+        "sha256": "AA052358C5ADBC5347406AFF4A726A25CD978AF5B321F6C1CEE39958D1A74F0B"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.lreg",
+        "sha256": "3CA5C360171A857C6583BE2DDDACD1374672638C1B540B5E24D7842454E1E8A2"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.greg",
+        "sha256": "6AD637637E1655A794BCAC9E838CEA5DDFFAC1D01765A161ED0690B0E935F7C2"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.sched2",
+        "sha256": "830EF1B1FBCB409F8541656B928C63EC8084341B7AAD809447E7B3D6756668BA"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.jump2",
+        "sha256": "447402A87B723CF80BD31CFDAEA197F91B83BC4B999199A49860D5CCF4BA735C"
+      },
+      {
+        "path": "build/matching/movement-w5-20261007/targets/resource_ptr_validate/probes/86A0A10B4634533AA1D07FBEF4E1272E89055DBD7E4D37FD76D8837F66A4005B/input.c.dbr",
+        "sha256": "CA608574DEAE9504F80D3A07E809BB407D263DB4F746AD16F75EDDE0B50F7D99"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Unselected compiler-level counterexample. No current STATIC control object extent, relocations, placement, linked bytes or matching acceptance was measured. The emitted read elimination conflicts with retail instructions; preserve accepted source. Historical GLOBAL bytes do not become current proof.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move only the actual header-failure block to the common tail and remove the jump around it; keep both static helper declarations, pointer phases, all guards/reads/calls and numeric domains unchanged. Correct only the explanatory control comment."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1210,
+        "path": "include/game/resource_arena.h",
+        "sha256": "F179DC8723BA05C8D0164C1EEA74D356F7436AC84A791A92E9C134D69242798E"
+      }
+    ],
+    "expanded": {
+      "bytes": 2913,
+      "sha256": "869B27AF52EE7F851E1FF21B3CEAE15B2D2BEF52B8CB8183DACC2896D8697C4E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7ED506A36366446A5F1FAB9162D69CA73E9625497FE977F2996F6086170686E6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-08-resource_ptr_validate-10fb1fcbac.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
