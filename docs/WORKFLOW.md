@@ -339,6 +339,11 @@ linked-byte equality or a matching relocation contract.
 
 #### Record useful experiments
 
+Routine trials need no separate plan file, journal entry or prose recap of tool output.
+A short prediction in working context is enough; a competing explanation is useful when
+it changes the next test, not a required template for every edit. If a trial teaches
+nothing new, its existing source/tool artifacts suffice.
+
 When an experiment changes the next useful source question, record its exact source and a
 short observation through the [shared research commands](MATCHING_WORKBENCH.md). State the
 starting context, source change, observed effect and remaining failure; link the relevant
@@ -348,6 +353,14 @@ The effect and interpretation remain authored claims, separate from those comput
 Archive discovery is read-only. When using an archived parent/comparison ID that is absent
 from the local store, import its needed records first using the reference's reimport recipe;
 do not migrate unrelated history merely to record a new experiment.
+
+Keep the authored observation to a few sentences by default. Add detail only to preserve
+a reproducible, decision-relevant mechanism or important uncertainty. Write it once in
+the existing observation fields; link it from the cursor or handback instead of copying
+it into a plan, journal, claims file and narrative summary. Generated dossiers and proof
+metadata remain tool output. Do not repeat unchanged constraints, hash lists, body census
+or acceptance disclaimers in every trial; link their authoritative record and describe
+only a relevant change. Worse bytes can still justify a useful mechanism observation.
 
 Preserve a small useful set: the best emitted match, a source pair demonstrating a useful
 effect, and the nearest counterexample when one exists. A worse candidate can be worth keeping
@@ -375,6 +388,12 @@ state: active and parked targets, best source, next discriminating experiment, a
 or provisional status, and unresolved gates. Link the full roster, source observations and wave
 plan. Generated status owns counts. A historical note referenced by hash remains byte-for-byte
 unchanged; designate the new cursor from the active plan instead of adding a freeze header.
+Write readable sentences; meet the budget by removing repetition and linking evidence,
+not by joining words or packing measurements into dense shorthand. Stop extending oversized
+chronological journals and do not create replacement journals. Preserve their existing bytes;
+at the next normal cursor update, point to the current best and useful research records.
+Old chronology is reference material, not required reading at each resumption. This is
+not a separate cleanup assignment or a reason to pause matching.
 `node tests/cursor_budget.js` checks the live notes without truncating them or modifying history.
 
 #### Reuse shared declarations
