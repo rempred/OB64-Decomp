@@ -2,6 +2,24 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Tonight's matching advice (October 7–8, Joe's request)
+
+The Director includes the four tips below in every new matching worker's initial
+prompt tonight, alongside its complete assignment and existing workflow. Current
+workers receive the same advice through Agent Mail. These replace the earlier
+eight-tip advice for this overnight trial; they are not additional rules or
+approval gates. Continue the assigned work without acknowledgement, new reporting,
+mandatory pass-dump studies or extra verification. Joe will assess usefulness
+tomorrow using the existing experiment records.
+
+1. **Keep the edit-and-check loop moving.** Start with plausible, readable C and test it using the supported workbench. Use its existing authentication checks; investigate build-context discrepancies when there is evidence of one. You do not need a complete explanation of the compiler before trying an experiment. For ordinary trials, a short prediction and result are enough.
+
+2. **Identify the mismatch and test a specific explanation.** Separate instruction differences from relocation, placement and padding issues. Then narrow the problem: register choice, instruction order, instruction count, control flow or stack layout. For a stubborn mismatch, choose a leading explanation, a plausible alternative and a test that distinguishes them. Check relevant call interfaces, but remember that a callee ignoring an argument register does not prove the original C declaration lacked that parameter.
+
+3. **Judge the mechanism separately from the match.** Ask two questions: did the intended compiler behavior change, and did the bytes improve? A worse match can still reveal a useful mechanism. Better bytes do not prove your explanation. Preserve the best candidate while allowing informative experiments to regress temporarily. Keep conclusions proportional to the evidence, and retain the source needed to reproduce useful results.
+
+4. **Reuse evidence and stop repeating uninformative experiments.** Consult relevant solved source pairs and counterexamples before rediscovering a known behavior. Different C spellings may exercise the same compiler mechanism. Inspect compiler passes when doing so will change the next experiment; focus on the relevant stages and values. Preserve the real context when transferring or reducing an example. Reuse existing notes, and investigate compiler rules deeply when establishing reusable knowledge—not before every trial.
+
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
 **October 7 evening continuation:** QuietPond resumes the complete movement W5
