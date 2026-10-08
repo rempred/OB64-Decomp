@@ -33,6 +33,13 @@ watchers; on explicit Director release of hold1781, refresh affected private int
 and resume concurrent checks.131828's complete492-byte candidate remains provisional:
 no production activation or original20-wave acceptance occurred.107E38/125F84
 structural gates and all parked obligations remain. Do not repeat unchanged acceptance.
+Private `watch` still requires GLOBAL logical-function symbols and rejects131828's
+four static helpers; the production extension did not change that diagnostic path.
+Use the existing authenticated `probe` and already-approved public-module raw capture
+for a genuinely new source question, preserving their diagnostic-only limits. The
+selected D760 source and accepted regression already supply the current evidence;
+do not rerun the unchanged failing watch or globalize helpers. A generic intake
+`scratchCompilation.supported` flag does not establish admission of this source shape.
 
 **October 7 evening continuation:** QuietPond resumes the complete movement W5
 assignment below, starting with the remaining source mismatches in `func_00125460`.
