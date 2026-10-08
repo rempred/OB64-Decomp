@@ -17,12 +17,12 @@ let negatives = 0;
 function reject(label, run, pattern = /reviewed local body|compiler text|compiler function|malformed|owner entry/) {
   assert.throws(run, pattern, label); negatives++;
 }
-function fixture(index) {
+function fixture(index, requireComplete = true) {
   const row = model.rows.find(row => row.index === index);
   const bodies = registry.bodies.filter(body => body.romStart < row.romEndExclusive && body.romEndExclusive > row.romStart);
   let cursor = row.romStart;
-  for (const body of bodies) { assert.equal(body.romStart, cursor); cursor = body.romEndExclusive; }
-  assert.equal(cursor, row.romEndExclusive, 'real fixture must cover full physical owner');
+  for (const body of bodies) { if (requireComplete) assert.equal(body.romStart, cursor); cursor = body.romEndExclusive; }
+  if (requireComplete) assert.equal(cursor, row.romEndExclusive, 'real fixture must cover full physical owner');
   const symbol = `func_${row.romStart.toString(16).padStart(8, '0').toUpperCase()}`;
   const functions = bodies.map((body, i) => ({ symbol: i ? body.symbol : symbol,
     offset: hex(body.romStart - row.romStart), offsetNumber: body.romStart - row.romStart,
@@ -39,6 +39,12 @@ for (const [index, sizes] of [[9,[352,8,8]], [132,[88,32]], [133,[28,224,32]]]) 
   check(f);
   const raw = f.functions.map(({ offsetNumber, ...fn }) => fn);
   assert.deepEqual(normalizeCompilerTextFunctions(raw, f.symbol, 'compiler text fixture'), f.functions);
+}
+// Unrelated complete independent-entry bodies; no tracked status mutation.
+for (const index of [573, 739]) {
+  const independent = fixture(index);
+  assert(independent.bodies.slice(1).every(body => body.evidence.status === 'independent-entry-supported'));
+  check(independent);
 }
 const f = fixture(9);
 function mutate(label, change) { const functions = clone(f.functions); change(functions); reject(label, () => check(f, functions)); }
@@ -64,11 +70,19 @@ const wrongRow = clone(f.row); wrongRow.slices[0].vramStart += 4;
 reject('selected owner runtime mapping changed', () => check(f, f.functions, registry, [wrongRow]));
 reject('wrong selected physical owner', () => check(f, f.functions, registry, [fixture(132).row]));
 reject('multi-owner activation unsupported', () => check(f, f.functions, registry, [f.row, fixture(132).row]));
-for (const index of [68,99]) {
+for (const index of [3,10,68,99]) {
   const other = fixture(index);
-  assert(other.bodies.slice(1).some(body => body.evidence.status !== 'supplemental-reviewed-body'));
-  reject('real non-supplemental secondary row ' + index, () => check(other));
+  assert(other.bodies.slice(1).some(body => !['supplemental-reviewed-body', 'independent-entry-supported'].includes(body.evidence.status)));
+  reject('real ineligible secondary row ' + index, () => check(other));
 }
+for (const index of [64,581]) {
+  const partial = fixture(index, false);
+  reject('actual unknown gap or uncovered tail row ' + index, () => check(partial));
+}
+const weaker = clone(config);
+weaker.bodies.find(body => body.symbol === f.bodies[1].symbol).evidence.status = 'accepted-primary-before-reviewed-secondary';
+const weakerRegistry = logical.loadRegistry(model, baserom, weaker);
+reject('primary-only status cannot admit secondary', () => check(f, f.functions, weakerRegistry));
 const aliased = clone(config);
 aliased.bodies.find(body => body.symbol === f.bodies[1].symbol).aliases.push('validator_load_return');
 const aliasRegistry = logical.loadRegistry(model, baserom, aliased);
@@ -93,4 +107,4 @@ for (const change of [a => { a[1].binding = 1; }, a => { a[1].size += 4; }, a =>
   const bad = clone(symbols); change(bad);
   reject('actual ELF census mismatch', () => verifyCompilerTextFunctions({ symbols: bad }, target, section), /compiler|function/);
 }
-console.log(`reviewed local body checks passed: three complete owners, ${negatives} negative controls`);
+console.log(`reviewed local body checks passed: five complete owners, ${negatives} negative controls`);

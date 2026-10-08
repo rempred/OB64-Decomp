@@ -442,6 +442,11 @@ function main() {
     reviewedInputs.target.reviewedLocalBodyRegistryIdentity = { path: 'config/logical-functions.json', bytes: 200, sha256: HASH.a };
     mutateKey(reviewedInputs, value => { value.target.compilerTextFunctions[1].entryEvidence = 'fixed-address-call'; }, 'reviewed evidence drift');
     mutateKey(reviewedInputs, value => { value.target.reviewedLocalBodyRegistryIdentity.sha256 = HASH.d; }, 'reviewed registry drift');
+    const attributedInputs = clone(reviewedInputs);
+    attributedInputs.target.auxiliaryProjection = { schemaVersion: 3, nativeText: { terminal: { offset: 16, bytes: 0, sha256: HASH.zero } },
+      segments: [{ kind: 'payload', dispatchSymbol: 'fixture_reviewed' }] };
+    mutateKey(attributedInputs, value => { value.target.auxiliaryProjection.segments[0].dispatchSymbol = 'wrong_body'; }, 'dispatch attribution drift');
+    mutateKey(attributedInputs, value => { value.target.auxiliaryProjection.nativeText.terminal.sha256 = HASH.d; }, 'native terminal identity drift');
     for (const file of ['active_targets.js', 'logical_functions.js', 'elf_text_split.js']) {
       const input = clone(reviewedInputs);
       input.implementationIdentities.push({ path: 'tools/lib/' + file, bytes: 100, sha256: HASH.a });
@@ -778,6 +783,16 @@ function main() {
       assert(run.invocations.some((entry) => entry.symbol === sibling.symbol), `${label} did not invoke the compiler`);
     }
 
+    for (const [name, mutate] of [
+      ['warm attribution mutation', value => { value.target.auxiliaryProjection = { schemaVersion: 3, segments: [{ dispatchSymbol: 'wrong_body' }] }; }],
+      ['warm eligibility mutation', value => { value.target.reviewedLocalBodyRegistryIdentity = { sha256: HASH.d }; }],
+      ['warm native terminal mutation', value => { value.target.auxiliaryProjection = { schemaVersion: 3, nativeText: { terminal: { bytes: 4, sha256: HASH.d } } }; }],
+    ]) expectRebuild(name, () => {
+      const file = path.join(siblingEntry, 'metadata.json');
+      const metadata = JSON.parse(fs.readFileSync(file, 'utf8'));
+      mutate(metadata.keyMaterial);
+      fs.writeFileSync(file, JSON.stringify(metadata));
+    }, /key.*drift/);
     expectRebuild('corrupt artifact', () => {
       fs.appendFileSync(path.join(siblingEntry, 'artifacts', 'final.o'), 'corrupt');
     }, /identity drift/);
@@ -987,7 +1002,7 @@ function main() {
         compilerInvocations: warm.result.cache.compilerInvocations,
         hits: warm.result.cache.hits,
       },
-      invalidEntriesRebuilt: 14,
+      invalidEntriesRebuilt: 17,
       siblingIsolation: true,
       requestedTargetAlwaysFresh: true,
       profileHookBehaviorPreserved: true,

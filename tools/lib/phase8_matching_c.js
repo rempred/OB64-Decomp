@@ -2260,7 +2260,8 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     },
     assemblyContract: {
       compilerAssemblyRewritten: false,
-      permittedAdjustment: target.auxiliaryProjection ? 'assign native compiler occurrences to the first auxiliary anchor; project complete payload rows while retaining original ASM padding'
+      permittedAdjustment: target.auxiliaryProjection?.schemaVersion === 3 ? 'none in compiler assembly; project fixed read-only rows and omit authenticated unowned native terminal text alignment'
+        : target.auxiliaryProjection ? 'assign native compiler occurrences to the first auxiliary anchor; project complete payload rows while retaining original ASM padding'
         : target.nativeTextTail || target.compilationGroup ? 'none; untouched native compiler assembly'
         : sourceObjectPrefixSelections > 0
           ? basePermittedAdjustment + '; authenticate the complete aligned auxiliary source-object section and select only its declared zero-offset prefix for linkage'
@@ -2394,15 +2395,16 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
   compilationGroups.validateComposedProof(actual);
   const projected = actual.target.auxiliaryProjection;
   const projectionEvidence = actual.objectEvidence.auxiliaryProjection;
-  if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || [4, 6].includes(actual.objectEvidence.schemaVersion)) {
+  if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || [4, 6, 8].includes(actual.objectEvidence.schemaVersion)) {
     const paddedProjection = projected?.schemaVersion === 2;
+    const nativeFunctionsProjection = projected?.schemaVersion === 3;
     const projectionKeys = ['schemaVersion', 'contract', 'retained', 'implementationSha256',
       'nativeSections', 'nativeSymbols', 'nativeRelocationSections', 'nativeObjectSha256',
       'projectedObjectSha256', 'nativeSectionSha256', 'nativeRelocations', 'references',
-      'payloadBytes', 'checkOnlyBytes', ...(paddedProjection ? ['payloadSlices'] : [])];
+      'payloadBytes', 'checkOnlyBytes', ...(paddedProjection ? ['payloadSlices'] : []), ...(nativeFunctionsProjection ? ['nativeText'] : [])];
     const projectionHashes = ['implementationSha256', 'nativeObjectSha256', 'projectedObjectSha256', 'nativeSectionSha256'];
-    if (!projected || ![1, 2].includes(projected.schemaVersion) || actual.assemblyContract.auxiliaryProjection !== true
-        || actual.objectEvidence.schemaVersion !== (paddedProjection ? 6 : 4)
+    if (!projected || ![1, 2, 3].includes(projected.schemaVersion) || actual.assemblyContract.auxiliaryProjection !== true
+        || actual.objectEvidence.schemaVersion !== (nativeFunctionsProjection ? 8 : paddedProjection ? 6 : 4)
         || !textContract.exactKeys(projectionEvidence, projectionKeys) || projectionEvidence.schemaVersion !== projected.schemaVersion
         || projectionHashes.some(key => typeof projectionEvidence[key] !== 'string' || !/^[0-9A-F]{64}$/.test(projectionEvidence[key]))
         || !isDeepStrictEqual(projected, projectionEvidence.contract)
@@ -2420,6 +2422,16 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
         || projectionEvidence.payloadBytes !== actual.finalObject.auxiliarySections.reduce((sum, row) => sum + row.objectBytes, 0)
         || projectionEvidence.payloadBytes + projectionEvidence.checkOnlyBytes !== projected.bytes) {
       fail('source-to-object auxiliary projection evidence schema drift');
+    }
+    if (nativeFunctionsProjection) {
+      const native = projectionEvidence.nativeText;
+      if (!textContract.exactKeys(native, ['bytes', 'alignment', 'outputAlignment', 'terminal', 'nativeSha256', 'projectedSha256', 'functions', 'tableAttribution'])
+          || !isDeepStrictEqual({ bytes: native.bytes, alignment: native.alignment, outputAlignment: native.outputAlignment, terminal: native.terminal }, projected.nativeText)
+          || !/^[A-F0-9]{64}$/.test(native.nativeSha256) || !/^[A-F0-9]{64}$/.test(native.projectedSha256)
+          || native.projectedSha256 !== actual.finalObject.textSha256
+          || !Array.isArray(native.functions)
+          || !isDeepStrictEqual(native.functions.map(({ offsetNumber, ...fn }) => ({ ...fn, value: fn.offset })), actual.finalObject.compilerTextFunctions)
+          || !isDeepStrictEqual(native.tableAttribution, projected.segments.filter(s => s.kind === 'payload').map(s => ({ outputSection: s.outputSection, dispatchSymbol: s.dispatchSymbol })))) fail('native text projection proof drift');
     }
     if (paddedProjection) {
       const rows = actual.finalObject.auxiliarySections;

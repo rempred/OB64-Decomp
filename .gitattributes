@@ -154,3 +154,6 @@ docs/archive/matching-c-candidates/2026-10-05-func_0019ADF0-7003015ec7.c -text w
 docs/archive/matching-c-candidates/2026-10-05-func_0019ADF0-b4c93762c6.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-10-05-func_0019ADF0-b852c88c57.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-10-05-func_0019B710-f9a6256700.c -text whitespace=cr-at-eol
+
+# Frozen native-projection fixture preserves its independently captured source identity.
+tests/fixtures/native_function_projection_131828.c -text whitespace=cr-at-eol

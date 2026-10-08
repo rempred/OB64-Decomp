@@ -22,6 +22,18 @@ tomorrow using the existing experiment records.
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
+**October 8 native projection tooling accepted:** the generic single-owner,
+multiple-function readonly projection passed routine35/35, focused exact/nonmatching
+and adversarial controls, one structural audit and independent final review.
+CURRENT `25AC6122` / baseline `D6553DED` retains the exact retail ROM; the
+[audit note](audit/2026-10-08-native-function-readonly-projection.md) records the
+implemented contract and limits. This supersedes the earlier unimplemented-tooling
+status below. QuietPond and LavenderSpire retain W5 and DB10, their identities and
+watchers; on explicit Director release of hold1781, refresh affected private intake
+and resume concurrent checks.131828's complete492-byte candidate remains provisional:
+no production activation or original20-wave acceptance occurred.107E38/125F84
+structural gates and all parked obligations remain. Do not repeat unchanged acceptance.
+
 **October 7 evening continuation:** QuietPond resumes the complete movement W5
 assignment below, starting with the remaining source mismatches in `func_00125460`.
 LavenderSpire resumes the previously assigned complete `func_0020DB10` PURE_C

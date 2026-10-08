@@ -167,7 +167,7 @@ function assertReviewedLocalBodies(registry, symbol, rows, functions) {
         || (index === 0 ? fn.symbol !== symbol || fn.binding !== 'GLOBAL' || fn.entryEvidence !== 'owner'
           : fn.symbol !== body.symbol || fn.binding !== 'LOCAL'
             || !['reviewed-local-body', 'internal-call-only', 'fixed-address-call'].includes(fn.entryEvidence))
-        || fn.entryEvidence === 'reviewed-local-body' && body.evidence.status !== 'supplemental-reviewed-body') {
+        || fn.entryEvidence === 'reviewed-local-body' && !['supplemental-reviewed-body', 'independent-entry-supported'].includes(body.evidence.status)) {
       fail('reviewed local body entry does not exactly match registry');
     }
     const fragments = intersections({ rows }, body.romStart, body.romEndExclusive);

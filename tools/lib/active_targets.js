@@ -574,7 +574,8 @@ function validateLinkageConfig(linkage, expectedProfile) {
     const projectedAuxiliaries = normalizeAuxiliarySectionContracts(entry.auxiliarySections, entry.symbol,
       `matching-C linkage target ${entry.symbol} auxiliary sections`, entry.auxiliaryProjection);
     const projection = auxiliaryProjection.normalize(entry.auxiliaryProjection, projectedAuxiliaries);
-    if (projection && (nativeTextTail || entry.compilerTextFunctions !== undefined)) fail("auxiliary projection incompatible text contract");
+    if (projection && (nativeTextTail || (projection.schemaVersion !== 3 && entry.compilerTextFunctions !== undefined)
+        || (projection.schemaVersion === 3 && !Array.isArray(entry.compilerTextFunctions)))) fail('auxiliary projection incompatible text contract');
     targets.set(key, {
       ...(projection ? { auxiliaryProjection: projection } : {}),
       symbol: entry.symbol,

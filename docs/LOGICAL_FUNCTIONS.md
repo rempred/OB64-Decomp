@@ -71,10 +71,14 @@ reachability. It does not establish a caller, deadness or original C linkage.
 Using this tag binds the entire compiler census, including older-tag entries,
 to exact authenticated registry bodies and placements. Secondary symbols must
 equal the registry's canonical names exactly; aliases and case variants reject.
-Newly tagged bodies require `supplemental-reviewed-body` evidence. The primary
+Newly tagged bodies require `supplemental-reviewed-body` or
+`independent-entry-supported` evidence. Primary-only, continuation, unknown and
+`known-entry-or-ownership` statuses do not admit a new LOCAL secondary. The primary
 remains GLOBAL/owner, and existing call-evidence tags keep their meaning.
 
-This category currently supports one complete physical owner only. New-tag
+This category supports one complete physical owner only. The version-3
+[fixed-row projection](AUXILIARY_PROJECTION.md) can preserve that owner alongside
+body-attributed compiler tables; it requires the same complete registry binding. New-tag
 multi-owner compositions reject both at activation and in shared split/cache
 validation; existing composed contracts retain their previous rules. See the
 [local-body structural audit](audit/2026-10-07-reviewed-local-body.md) for its

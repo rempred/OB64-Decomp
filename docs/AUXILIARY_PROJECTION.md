@@ -9,14 +9,15 @@ matching-C acceptance.
 The target retains its ordinary `auxiliarySections` records, one per complete
 payload row. Each has the existing object/linked hashes and exact local
 `R_MIPS_32` relocation contract. No exterior prefix/tail, retained interior,
-source-object prefix, multi-text producer, native-text-tail, or compilation
-group may be combined with the standalone mode. The separately documented
+source-object prefix, native-text-tail, or compilation group may be combined
+with the standalone mode. Versions 1/2 require one compiler function; version 3
+allows a complete registry-bound function census inside one physical text owner. The separately documented
 [compilation-group composition](GROUP_AUXILIARY_PROJECTION.md) supports version 1 only.
 
 The target-level contract has exactly these fields:
 
 ```text
-schemaVersion: 1 or 2
+schemaVersion: 1, 2, or 3
 mode: "fixed-row-readonly-projection"
 compilerSection: ".rodata"
 bytes: complete native section size
@@ -105,3 +106,45 @@ ownership, composed-path leakage, stale versions and proof records. A real chang
 PURE_C source remains a rejected nonmatch. It writes only ignored fixtures under `build/tests`.
 Existing single-occurrence, prefix, interior, B438/B894, and compilation-group
 tests retain their original contracts.
+
+## Version 3: one native multiple-function text owner
+
+Version 3 adds exact field `nativeText`: `bytes`, `alignment`,
+`outputAlignment`, and `terminal` with `offset`, `bytes`, `sha256` and
+`origin: "native-assembler-section-alignment"`. Each payload segment adds
+`dispatchSymbol`, the exact compiler function name; zero segments are unchanged.
+Payloads contain pointers only, as in version 1. The full ordered text census
+must match ROM-authenticated registry bodies, with at least one
+`reviewed-local-body` secondary so an all-legacy census cannot bypass validation.
+Mixed older tags retain their meaning, and every secondary name/boundary is checked.
+New-tag eligibility is exactly supplemental-reviewed-body or independent-entry-supported.
+
+The existing grammar validates compiler assembly; the assembler receives the
+untouched bytes. Native .text must contain the complete function census plus
+only its exact terminal alignment zeros. The projector excludes that unowned
+terminal span, authenticates no symbols or relocation places/targets enter it,
+and copies every function byte unchanged into the original owner's section.
+This does not extend any retail owner. Native .rodata is projected into its
+existing complete data rows, with gaps still owned by authenticated original ASM.
+
+Both directions of table attribution are mandatory: each aligned section-relative
+pointer destination stays within its dispatch body's half-open interval, and all
+actual HI16/LO16 references to the payload originate in that same body. Next-body
+boundaries, swapped attribution, gap references and nonzero/unknown section
+anchors reject. Effective named-function R_MIPS_26/R_MIPS_32 targets are also
+checked against the retained text extent; unsupported text references reject.
+
+Object evidence schema 8 and nested projection schema 3 include the nativeText
+contract, native/projected text hashes, function census and table attribution.
+Existing composed-group schema 7 is unchanged. Proof and cache reconstruction
+repeat projection from authenticated unsplit objects; status counts only the
+original text owner and complete payload rows, never the native terminal bytes
+or retained ASM gaps. No compilation-group, multi-owner, private CLI or
+diagnostic-link capability is added.
+
+The routine manifest includes `tests/native_function_projection.js` and
+`tests/reviewed_local_bodies.js`. The native test uses a tracked independently
+derived C fixture, creates a real source control, compiles with pinned tools,
+and writes generated evidence only below build/tests. It needs no ignored
+matching candidate or historical object. Structural acceptance remains gated by
+independent review and one changed-input audit.

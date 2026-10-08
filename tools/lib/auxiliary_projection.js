@@ -42,22 +42,34 @@ function assertMemberSections(target) {
 }
 function normalize(contract, auxiliaries) {
   if (contract === undefined) return null;
-  if (!keys(contract, ['schemaVersion', 'mode', 'compilerSection', 'bytes', 'alignment', 'expectedObjectSha256', 'segments'])
-      || ![1, 2].includes(contract.schemaVersion) || contract.mode !== 'fixed-row-readonly-projection'
+  if (!keys(contract, ['schemaVersion', 'mode', 'compilerSection', 'bytes', 'alignment', 'expectedObjectSha256', 'segments', ...(contract?.schemaVersion === 3 ? ['nativeText'] : [])])
+      || ![1, 2, 3].includes(contract.schemaVersion) || contract.mode !== 'fixed-row-readonly-projection'
       || contract.compilerSection !== '.rodata' || !integer(contract.bytes, 4)
       || !alignment(contract.alignment) || contract.bytes % contract.alignment
       || !SHA.test(contract.expectedObjectSha256) || !Array.isArray(contract.segments)
       || !Array.isArray(auxiliaries)) fail('contract schema');
+  if (contract.schemaVersion === 3) {
+    const text = contract.nativeText, tail = text?.terminal;
+    if (!keys(text, ['bytes', 'alignment', 'outputAlignment', 'terminal'])
+        || !integer(text.bytes, 4) || !alignment(text.alignment) || !alignment(text.outputAlignment)
+        || text.outputAlignment > text.alignment || text.bytes % text.alignment
+        || !keys(tail, ['offset', 'bytes', 'sha256', 'origin']) || !integer(tail.offset, 4) || tail.offset % 4
+        || !integer(tail.bytes) || tail.bytes % 4 || tail.bytes >= text.alignment
+        || text.bytes !== tail.offset + tail.bytes || text.bytes !== Math.ceil(tail.offset / text.alignment) * text.alignment
+        || tail.sha256 !== hash(Buffer.alloc(tail.bytes)) || tail.origin !== 'native-assembler-section-alignment') fail('native text terminal contract');
+  }
   let cursor = 0, count = 0;
   const sections = new Set(), labels = new Set();
   for (const segment of contract.segments) {
     const payload = segment && segment.kind === 'payload';
-    const fields = payload ? ['kind', 'offset', 'bytes', 'outputSection', 'label', 'alignmentDirectives']
+    const fields = payload ? ['kind', 'offset', 'bytes', 'outputSection', 'label', 'alignmentDirectives', ...(contract.schemaVersion === 3 ? ['dispatchSymbol'] : [])]
       : ['kind', 'offset', 'bytes', 'ownerSection', 'ownerOffset', 'ownerBytes', 'expectedOwnerSha256'];
     if (!keys(segment, fields) || !integer(segment.offset) || segment.offset !== cursor
         || !integer(segment.bytes, 4) || segment.bytes % 4 || cursor + segment.bytes > contract.bytes) fail('segment tiling');
     if (payload) {
       const auxiliary = auxiliaries[count++];
+      if (contract.schemaVersion === 3 && (typeof segment.dispatchSymbol !== 'string'
+          || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(segment.dispatchSymbol))) fail('payload dispatch symbol');
       if (!SECTION.test(segment.outputSection) || sections.has(segment.outputSection)
           || !/^\.L[0-9]+$/.test(segment.label) || labels.has(segment.label)
           || !Array.isArray(segment.alignmentDirectives) || !segment.alignmentDirectives.length
@@ -66,7 +78,7 @@ function normalize(contract, auxiliaries) {
           || auxiliary.compilerSection !== contract.compilerSection || !integer(auxiliary.entries, 1)
           || auxiliary.entries * 4 + (contract.schemaVersion === 2 ? (auxiliary.trailingPaddingBytes || 0) : 0) !== segment.bytes
           || auxiliary.preservedTail !== null || auxiliary.preservedPrefix || auxiliary.preservedInteriorBefore
-          || auxiliary.compilerOccurrences || auxiliary.sourceObjectPrefix || (contract.schemaVersion === 1 && auxiliary.trailingPaddingBytes)
+          || auxiliary.compilerOccurrences || auxiliary.sourceObjectPrefix || (contract.schemaVersion !== 2 && auxiliary.trailingPaddingBytes)
           || (count === 1 && segment.offset !== 0)) fail('payload occurrence or complete-row contract');
       const occurrenceAlignment = Math.max(...segment.alignmentDirectives.map(value => 2 ** value));
       if (occurrenceAlignment !== contract.alignment || segment.offset % occurrenceAlignment
@@ -101,7 +113,31 @@ function checkTarget(target) {
   const contract = normalize(target.auxiliaryProjection, target.auxiliarySections);
   if (!contract) return null;
   if (target.compilationGroup || target.compilationGroupId || target.nativeTextTail
-      || (target.textOwners || []).length !== 1 || (target.compilerTextFunctions || []).length !== 1) fail('incompatible text producer');
+      || (target.textOwners || []).length !== 1
+      || (contract.schemaVersion === 3 ? (target.compilerTextFunctions || []).length < 2 : (target.compilerTextFunctions || []).length !== 1)) fail('incompatible text producer');
+  if (contract.schemaVersion === 3) {
+    if (!target.model || !target.rows || target.rows.length !== 1
+        || contract.nativeText.terminal.offset !== target.bytes || target.bytes % contract.nativeText.outputAlignment
+        || target.vramStartNumber % contract.nativeText.outputAlignment
+        || !target.compilerTextFunctions.slice(1).some(fn => fn.entryEvidence === 'reviewed-local-body')) fail('native multi-function owner contract');
+    const row = target.rows[0], slice = row.slices?.[0], owner = target.textOwners[0];
+    if (!slice || row.slices.length !== 1 || !slice.executable || target.bytes !== row.bytes
+        || target.rowIndex !== row.index || target.sectionName !== slice.sectionName
+        || target.romStartNumber !== row.romStart || target.romEndNumber !== row.romEndExclusive
+        || target.vramStartNumber !== slice.vramStart || owner.rowIndex !== row.index
+        || owner.sectionName !== slice.sectionName || owner.bytes !== row.bytes || owner.logicalOffset !== 0
+        || owner.romStartNumber !== row.romStart || owner.romEndNumber !== row.romEndExclusive
+        || owner.vramStartNumber !== slice.vramStart || owner.vramEndNumber !== slice.vramEndExclusive) fail('native text selected-owner placement');
+    const logical = require('./logical_functions');
+    const rom = fs.readFileSync(path.join(ROOT, 'build/baserom.us_rev0.z64'));
+    const registry = logical.loadRegistry(target.model, rom);
+    logical.assertActivationCompatible(registry, target.symbol, target.rows, target.compilerTextFunctions);
+    if (!same(target.reviewedLocalBodyRegistryIdentity, registry.identity)) fail('native multi-function registry identity drift');
+    for (const table of payloads(contract)) {
+      const matches = target.compilerTextFunctions.filter(fn => fn.symbol === table.dispatchSymbol);
+      if (matches.length !== 1) fail('payload dispatch function census');
+    }
+  }
   const first = target.auxiliarySections[0];
   for (const [index, segment] of payloads(contract).entries()) {
     const auxiliary = target.auxiliarySections[index];
@@ -191,8 +227,10 @@ function assembly(compiler, target, adjust) {
     end = segment.offset + bytes;
     return record;
   });
-  return adjust(compiler, target.sectionName, { auxiliarySections: [{ compilerSection: contract.compilerSection,
+  const adjusted = adjust(compiler, target.sectionName, { auxiliarySections: [{ compilerSection: contract.compilerSection,
     outputSection: tables[0].outputSection, bytes: end, compilerOccurrences: occurrences }] });
+  // Validate the same strict grammar, but assemble the unmodified native source.
+  return contract.schemaVersion === 3 ? Buffer.from(compiler) : adjusted;
 }
 function hex(value) { return '0x' + value.toString(16).toUpperCase().padStart(8, '0'); }
 function project(input, target) {
@@ -211,14 +249,19 @@ function project(input, target) {
         || sha256File(path.join(ROOT, record.originalAssembly)) !== record.originalAssemblySha256) fail('retained source/model authentication');
   }
   const parsed = elfTools.parseRelocatable(input), elf = parseElf32BigEndian(input);
-  const sourceMatches = parsed.sections.filter(section => section.name === tables[0].outputSection);
+  const sourceMatches = parsed.sections.filter(section => section.name === (contract.schemaVersion === 3 ? '.rodata' : tables[0].outputSection));
   if (sourceMatches.length !== 1) fail('raw read-only section census');
   const source = sourceMatches[0], raw = elfTools.sectionBytes(input, source);
   if (source.type !== 1 || source.flags !== 2 || source.address !== 0 || source.size !== contract.bytes
       || source.alignment !== contract.alignment || hash(raw) !== contract.expectedObjectSha256) fail('raw read-only section identity');
-  const text = parsed.sections.filter(section => section.name === target.sectionName);
-  if (text.length !== 1 || text[0].type !== 1 || text[0].flags !== 6 || text[0].size !== target.bytes) fail('raw text owner');
-  const allowed = new Set([target.sectionName, source.name, '.reginfo']);
+  const native = contract.schemaVersion === 3;
+  const text = parsed.sections.filter(section => section.name === (native ? '.text' : target.sectionName));
+  if (text.length !== 1 || text[0].type !== 1 || text[0].flags !== 6 || text[0].address !== 0
+      || text[0].size !== (native ? contract.nativeText.bytes : target.bytes)) fail('raw text owner');
+  const nativeTextBytes = elfTools.sectionBytes(input, text[0]);
+  if (native && (text[0].alignment !== contract.nativeText.alignment
+      || hash(nativeTextBytes.subarray(target.bytes)) !== contract.nativeText.terminal.sha256)) fail('native text terminal bytes');
+  const allowed = new Set([text[0].name, source.name, '.reginfo']);
   for (const section of parsed.sections) {
     if (section.size && ((section.flags & 1) || ((section.flags & 2) && !allowed.has(section.name)))) fail('unexpected raw allocation');
     if (section.name === '.reginfo' && (section.type !== 0x70000006 || section.flags !== 2 || section.size !== 24)) fail('reginfo shape');
@@ -238,10 +281,25 @@ function project(input, target) {
   if (markers.length !== 1 || marker.symbolType !== 1 || marker.binding !== 0
       || marker.value !== 0 || marker.size !== 0 || marker.visibility !== 0
       || parsed.sections[marker.sectionIndex]?.name !== '.text'
-      || parsed.sections[marker.sectionIndex].size !== 0) fail('compiler marker metadata');
+      || parsed.sections[marker.sectionIndex].size !== (native ? contract.nativeText.bytes : 0)) fail('compiler marker metadata');
+  if (native) {
+    const actual = symbols.filter(symbol => symbol.symbolType === 2);
+    if (actual.length !== target.compilerTextFunctions.length) fail('native compiler function census');
+    for (const fn of target.compilerTextFunctions) {
+      const matches = actual.filter(symbol => symbol.name === fn.symbol);
+      if (matches.length !== 1 || matches[0].sectionIndex !== text[0].index || matches[0].value !== fn.offsetNumber
+          || matches[0].size !== fn.bytes || matches[0].binding !== (fn.binding === 'GLOBAL' ? 1 : 0)
+          || matches[0].visibility !== 0) fail('native compiler function binding or placement');
+    }
+  }
   for (const symbol of symbols) {
+    if (native && symbol.symbolType === 3 && (symbol.binding !== 0 || symbol.value !== 0 || symbol.size !== 0
+        || symbol.visibility !== 0 || !parsed.sections[symbol.sectionIndex])) fail('native section symbol shape');
     if (symbol.sectionIndex > 0 && symbol.sectionIndex < 0xff00 && symbol.symbolType !== 3
-        && !(symbol.name === target.symbol && symbol.sectionIndex === text[0].index
+        && !(native ? target.compilerTextFunctions.some(fn => symbol.name === fn.symbol && symbol.sectionIndex === text[0].index
+          && symbol.symbolType === 2 && symbol.binding === (fn.binding === 'GLOBAL' ? 1 : 0) && symbol.value === fn.offsetNumber
+          && symbol.size === fn.bytes && symbol.visibility === 0)
+          : symbol.name === target.symbol && symbol.sectionIndex === text[0].index
           && symbol.symbolType === 2 && symbol.binding === 1 && symbol.value === 0 && symbol.size === target.bytes)
         && symbol !== marker) fail('unexpected allocated symbol');
     if (symbol.sectionIndex === 0xfff1 && symbol.symbolType !== 4) fail('unexpected absolute symbol');
@@ -272,6 +330,11 @@ function project(input, target) {
     const auxiliary = target.auxiliarySections.find(value => value.outputSection === segment.outputSection);
     const expected = auxiliary.expectedRelocations.find(value => parseInt(value.offset, 16) === place - segment.offset);
     if (!expected || parseInt(expected.addend, 16) !== raw.readUInt32BE(place) || raw.readUInt32BE(place) >= target.bytes) fail('native table addend');
+    if (native) {
+      const fn = target.compilerTextFunctions.find(fn => fn.symbol === segment.dispatchSymbol);
+      if (raw.readUInt32BE(place) % 4 || raw.readUInt32BE(place) < fn.offsetNumber
+          || raw.readUInt32BE(place) + 4 > fn.offsetNumber + fn.bytes) fail('table target outside attributed body');
+    }
     nativeRelocations.push({ place, info, addend: raw.readUInt32BE(place) });
     entry.writeUInt32BE(place - segment.offset, 0);
     groups.get(segment.outputSection).push(entry);
@@ -290,6 +353,14 @@ function project(input, target) {
       const symbol = symbols[info >>> 8], type = info & 255;
       if (!symbol || place % 4 || place + 4 > owner.size) fail('relocation place or symbol');
       if (symbol === marker) fail('reference to compiler marker');
+      if (native && owner.index === text[0].index && place + 4 > target.bytes) fail('relocation in native terminal text');
+      if (native && symbol.sectionIndex === text[0].index) {
+        const word = input.readUInt32BE(owner.offset + place);
+        if (![2, 3].includes(symbol.symbolType) || ![2, 4].includes(type)) fail('unsupported native text reference');
+        const addend = type === 2 ? word : (word & 0x03ffffff) * 4;
+        const destination = symbol.value + addend;
+        if (!Number.isSafeInteger(destination) || destination % 4 || destination + 4 > target.bytes) fail('reference into native terminal text');
+      }
       if (parsed.sections[symbol.sectionIndex]?.name === '.reginfo') fail('reference to discarded reginfo');
       if (symbol.sectionIndex !== source.index) continue;
       if (owner.index !== text[0].index || symbol !== anchors[0] || ![5, 6].includes(type)) fail('unsupported reference to auxiliary anchor');
@@ -300,6 +371,12 @@ function project(input, target) {
       for (const high of pending) {
         const addend = ((high.immediate << 16) + low) >>> 0;
         if (!tables.some(segment => addend >= segment.offset && addend + 4 <= segment.offset + entryBytes(segment, target.auxiliarySections))) fail('reference into padding or outside native payloads');
+        if (native) {
+          const table = tables.find(segment => addend >= segment.offset && addend + 4 <= segment.offset + entryBytes(segment, target.auxiliarySections));
+          const fn = target.compilerTextFunctions.find(fn => fn.symbol === table.dispatchSymbol);
+          if (high.place < fn.offsetNumber || high.place + 4 > fn.offsetNumber + fn.bytes
+              || place < fn.offsetNumber || place + 4 > fn.offsetNumber + fn.bytes) fail('table anchor reference outside dispatch body');
+        }
         references.push({ highPlace: high.place, highInfo: high.info, lowPlace: place, lowInfo: info, addend });
       }
       pending = [];
@@ -313,6 +390,15 @@ function project(input, target) {
   const list = elfTools.buildSectionList(parsed, input, source, relocation, owners, grouped);
   elfTools.rewriteSymbolTables(list, source, owners);
   elfTools.rewriteSectionReferences(list, relocation);
+  if (native) {
+    const projectedText = list.sections.find(section => section.oldIndex === text[0].index);
+    projectedText.name = target.sectionName;
+    projectedText.data = projectedText.data.subarray(0, target.bytes);
+    projectedText.size = target.bytes;
+    projectedText.alignment = contract.nativeText.outputAlignment;
+    const textRel = list.sections.find(section => section.name === '.rel.text');
+    if (textRel) textRel.name = '.rel' + target.sectionName;
+  }
   const shstr = elfTools.rebuildSectionNames(list, parsed.shstrIndex);
   const buffer = elfTools.serialize(input, parsed, list, shstr);
   const projected = parseElf32BigEndian(buffer);
@@ -320,7 +406,15 @@ function project(input, target) {
     const section = projected.sections.find(value => value.name === segment.outputSection);
     if (!section || !Buffer.from(elfSectionBytes(projected, section)).equals(raw.subarray(segment.offset, segment.offset + segment.bytes))) fail('projection changed payload');
   }
+  if (native) {
+    const after = projected.sections.find(section => section.name === target.sectionName);
+    if (!after || !Buffer.from(elfSectionBytes(projected, after)).equals(nativeTextBytes.subarray(0, target.bytes))) fail('projection changed native function bytes');
+    require('./phase8_matching_c').verifyCompilerTextFunctions(projected, target, after);
+  }
   return { buffer, evidence: { schemaVersion: contract.schemaVersion, contract, retained: target.auxiliaryProjectionRetained,
+    ...(native ? { nativeText: { ...contract.nativeText, nativeSha256: hash(nativeTextBytes),
+      projectedSha256: hash(nativeTextBytes.subarray(0, target.bytes)), functions: target.compilerTextFunctions,
+      tableAttribution: tables.map(table => ({ outputSection: table.outputSection, dispatchSymbol: table.dispatchSymbol })) } } : {}),
     ...(contract.schemaVersion === 2 ? { payloadSlices: tables.map(segment => ({ outputSection: segment.outputSection,
       offset: segment.offset, bytes: segment.bytes, entryBytes: entryBytes(segment, target.auxiliarySections),
       paddingBytes: segment.bytes - entryBytes(segment, target.auxiliarySections),
