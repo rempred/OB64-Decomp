@@ -1178,7 +1178,10 @@
     {"name":"D_80195214","address":"0x80195214"},
     {"name":"D_80195238","address":"0x80195238"},
     {"name":"D_801952A4","address":"0x801952A4"},
-    {"name":"D_801EE638","address":"0x801EE638"}
+    {"name":"D_801EE638","address":"0x801EE638"},
+    {"name":"D_800ADD98","address":"0x800ADD98"},
+    {"name":"D_800ADDCC","address":"0x800ADDCC"},
+    {"name":"D_800ADE1C","address":"0x800ADE1C"}
   ],
   "targets": [
     {
@@ -54636,6 +54639,130 @@
         {"offset": "0x0000060C", "section": ".rel.text", "symbol": "func_00023940", "type": "R_MIPS_26"},
         {"offset": "0x00000610", "section": ".rel.text", "symbol": "D_801EE638", "type": "R_MIPS_LO16"},
         {"offset": "0x00000614", "section": ".rel.text", "symbol": ".text", "type": "R_MIPS_26"}
+      ]
+    },
+    {
+      "symbol": "resource_ptr_validate",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000000C",
+          "type": "R_MIPS_26",
+          "symbol": "resource_find_arena_index",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000024",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800ADD98",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000028",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000002C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800ADD98",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000003C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800AEDB0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000044",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800AEDB0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000058",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800AEDB0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000060",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800AEDB0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E0",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800ADDCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E8",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800ADDCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000118",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800AEDB0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000120",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800AEDB0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000013C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800ADE1C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000140",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800ADE1C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000144",
+          "type": "R_MIPS_26",
+          "symbol": "func_00023940",
+          "section": ".rel.text"
+        }
+      ],
+      "compilerTextFunctions": [
+        {
+          "symbol": "resource_ptr_validate",
+          "offset": "0x00000000",
+          "bytes": 352,
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        },
+        {
+          "symbol": "func_00001A34",
+          "offset": "0x00000160",
+          "bytes": 8,
+          "binding": "LOCAL",
+          "entryEvidence": "reviewed-local-body"
+        },
+        {
+          "symbol": "func_00001A3C",
+          "offset": "0x00000168",
+          "bytes": 8,
+          "binding": "LOCAL",
+          "entryEvidence": "reviewed-local-body"
+        }
       ]
     }
   ]

@@ -94,6 +94,11 @@ function sectionBytes(buffer, section) {
 function validateCompilerFunctionPartition(functions, bytes, primarySymbol) {
   if (!Array.isArray(functions) || functions.length === 0
       || !Number.isSafeInteger(bytes) || bytes <= 0 || bytes % 4) fail('compiler function partition is malformed');
+  // Shared by native projection and cached-object reconstruction. Without a
+  // registry-bound composed-owner contract, the neutral tag cannot enter here.
+  if (functions.some(fn => fn?.entryEvidence === 'reviewed-local-body')) {
+    fail('reviewed local body composition across physical owners is unsupported');
+  }
   let cursor = 0;
   const names = new Set();
   for (const [index, fn] of functions.entries()) {

@@ -65,6 +65,22 @@ Group members cannot be compiled individually through a logical alias.
 Activation still requires reviewed linkage, sole ownership, source policy,
 exact target bytes, and exact full-ROM verification.
 
+An explicit secondary `reviewed-local-body` entry records an independently
+admitted executable body with reconstructed LOCAL binding and unspecified
+reachability. It does not establish a caller, deadness or original C linkage.
+Using this tag binds the entire compiler census, including older-tag entries,
+to exact authenticated registry bodies and placements. Secondary symbols must
+equal the registry's canonical names exactly; aliases and case variants reject.
+Newly tagged bodies require `supplemental-reviewed-body` evidence. The primary
+remains GLOBAL/owner, and existing call-evidence tags keep their meaning.
+
+This category currently supports one complete physical owner only. New-tag
+multi-owner compositions reject both at activation and in shared split/cache
+validation; existing composed contracts retain their previous rules. See the
+[local-body structural audit](audit/2026-10-07-reviewed-local-body.md) for its
+scope, implementation status and validation. The category supplies no shortcut
+around native census, relocation, linked-byte or full-ROM acceptance.
+
 Registry identity participates in workbench model contract 5, CURRENT fingerprint 8,
 build-report schema 6, audit schema 5, recorded-build validation, and cache inputs.
 The compiler workbench contract is 10; the m2c adapter is 12. Physical layout and
@@ -74,6 +90,7 @@ ELF representation schemas retain their meanings.
 
 ```powershell
 node tests/logical_functions.js
+node tests/reviewed_local_bodies.js
 node tests/logical_functions_integration.js
 node tests/matching_workbench.js
 node tests/matching_workbench_integration.js

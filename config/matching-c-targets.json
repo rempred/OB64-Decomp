@@ -1095,6 +1095,10 @@
     {"symbol":"boot_resource_probe_global_buffer_copy","source":"src/boot/boot_resource_probe_global_buffer_copy.c"},
     {"symbol":"boot_resource_probe_chunk_callback_walk","source":"src/boot/boot_resource_probe_chunk_callback_walk.c"},
     {"symbol":"boot_resource_probe_global_cleanup","source":"src/boot/boot_resource_probe_global_cleanup.c"},
-    {"symbol":"boot_resource_probe_global_buffer_dual_callback_apply","source":"src/boot/boot_resource_probe_global_buffer_dual_callback_apply.c"}
+    {"symbol":"boot_resource_probe_global_buffer_dual_callback_apply","source":"src/boot/boot_resource_probe_global_buffer_dual_callback_apply.c"},
+    {
+      "symbol": "resource_ptr_validate",
+      "source": "src/lib/resource_ptr_validate.c"
+    }
   ]
 }

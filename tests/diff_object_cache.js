@@ -434,6 +434,20 @@ function main() {
     mutateKey(baseInputs, (value) => { value.target.relocationContractSource = 'legacy-compatibility'; }, 'contract source drift');
     mutateKey(baseInputs, (value) => { value.implementationIdentities[0].sha256 = HASH.d; }, 'implementation drift');
 
+    const reviewedInputs = clone(baseInputs);
+    reviewedInputs.target.compilerTextFunctions = [
+      { symbol: sibling.symbol, offset: '0x00000000', offsetNumber: 0, bytes: 8, binding: 'GLOBAL', entryEvidence: 'owner' },
+      { symbol: 'fixture_reviewed', offset: '0x00000008', offsetNumber: 8, bytes: 8, binding: 'LOCAL', entryEvidence: 'reviewed-local-body' },
+    ];
+    reviewedInputs.target.reviewedLocalBodyRegistryIdentity = { path: 'config/logical-functions.json', bytes: 200, sha256: HASH.a };
+    mutateKey(reviewedInputs, value => { value.target.compilerTextFunctions[1].entryEvidence = 'fixed-address-call'; }, 'reviewed evidence drift');
+    mutateKey(reviewedInputs, value => { value.target.reviewedLocalBodyRegistryIdentity.sha256 = HASH.d; }, 'reviewed registry drift');
+    for (const file of ['active_targets.js', 'logical_functions.js', 'elf_text_split.js']) {
+      const input = clone(reviewedInputs);
+      input.implementationIdentities.push({ path: 'tools/lib/' + file, bytes: 100, sha256: HASH.a });
+      mutateKey(input, value => { value.implementationIdentities.at(-1).sha256 = HASH.d; }, file + ' validator drift');
+    }
+
     const withAuxiliary = makeTarget('fixture_auxiliary', HASH.d, {
       auxiliarySections: withAuxiliaryFixture(),
     });

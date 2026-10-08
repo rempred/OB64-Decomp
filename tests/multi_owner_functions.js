@@ -123,6 +123,10 @@ function checkProjection() {
       const bad = clone(functions); change(bad);
       rejects('raw census/partition drift', () => splitRelocatableTextSection(input, target.sectionName, owners, bad));
     }
+    const neutral = clone(functions); neutral[1].entryEvidence = 'reviewed-local-body';
+    assert.throws(() => splitRelocatableTextSection(input, target.sectionName, owners, neutral),
+      /reviewed local body composition across physical owners is unsupported/);
+    // This is the exact split API used by cached-object reconstruction too.
     // A complete but false partition must fail the raw object's authentic st_size.
     const wrong = clone(functions); wrong[0].bytes += 4; wrong[1].bytes -= 4;
     wrong[1].offsetNumber += 4; wrong[1].offset = hex(wrong[1].offsetNumber);

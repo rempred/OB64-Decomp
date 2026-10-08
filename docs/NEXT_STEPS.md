@@ -4,6 +4,25 @@ This file is the active queue only. Changing counts belong in `node tools/status
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
+**October 7 evening continuation:** QuietPond resumes the complete movement W5
+assignment below, starting with the remaining source mismatches in `func_00125460`.
+LavenderSpire resumes the previously assigned complete `func_0020DB10` PURE_C
+conversion in `build/matching/animdb10-20261007/`, starting with a fresh check of the
+one-based reference identified with GoldOx, then its remaining frame work.
+The complete resource validator and its generic local-body tooling are accepted;
+scheduler NINE, 3C00 and 6098 remain parked and unfinished. This supersedes
+the older active/parked labels below and the resval-only write scope. Both retain
+their current identities, threads and watchers; QuietPond remains production writer.
+Workers may investigate and test new source hypotheses without waiting for a
+Director-supplied recipe. Exhausting one experiment does not end the assignment.
+GoldOx is available for specific stuck questions. Director1725 releases native-check
+hold1713 after the combined audit and independent final review passed. CURRENT
+`EFC0B6A9` / baseline `D6553DED` is exact; refresh affected intake and resume private
+checks concurrently, without repeating unchanged acceptance. The
+[structural note](audit/2026-10-07-reviewed-local-body.md) records the bounded
+single-owner contract and actual proof. Preserve complete memberships, source contracts, private-root
+isolation and normal final-wave acceptance; no tooling or activation gate is waived.
+
 Workers now own separate, less-related waves. This supersedes older same-wave, one-active-family
 and strictly sequential family scheduling language; complete membership, real dependencies and
 all acceptance gates remain. No new tooling or worktrees are needed.
@@ -271,32 +290,20 @@ each watcher's `status.json` and actual process.
   MagentaTiger released all work; its mail watcher is retired and Astra's stop monitor
   now watches the fresh resource decoder worker. The original Scenario pair `0023A5EC`/`00249A14` remains
   accepted at `249454cb`. Broader Scenario and parked assignments remain unfinished.
-- **Active resource-validator candidate / LavenderSpire:** same Sol6.1/xhigh chat
-  `01a11381-0741-7a00-9337-967a16f41e41`, private root
-  `build/matching/resval-20261007/`. The original probe-only study1690/1694 is
-  preserved. Director1700 releases the1696 native hold after actual drains1697/1698,
-  the [logical-body admission](audit/2026-10-07-resource-validator-logical-bodies.md),
-  focused/native regressions, one full audit and independent final review.
-  CURRENT `BF5BA958` retains the exact retail ROM and unchanged production sources.
-
-  Preserve the complete physical owner `resource_ptr_validate`, row9,
-  ROM18D4..1A44,368 bytes: the352-byte validator plus the independent eight-byte
-  bodies `func_00001A34` and `func_00001A3C`. Empty aliases retain the whole-owner
-  selection. Rename the two private placeholders to these neutral names; the main
-  candidate name remains `resource_ptr_validate`. Refresh affected context/intake
-  before checking the complete three-GLOBAL diagnostic source with ordinary private
-  watch/probe/compare. Verify all bodies in the first comparison; preserve earlier
-  source/pass observations without treating stale target identities as current proof.
-  Continue source iteration on the measured compiler/object differences.
-
-  Scratch GLOBAL bindings grant no production exports. The two secondary production
-  entry-evidence/binding contracts remain a separate Director gate; missing caller
-  evidence does not justify invented calls or prevent supported private diagnostics.
-  No canonical activation, source acceptance, partial-owner replacement or new tooling
-  is authorized. Preserve accepted `resource_find_arena_index`, `resource_arena.h`,
-  allocator globals, diagnostic interfaces/strings, original ASM and other workers'
-  inputs. The complete scheduler NINE and three animation conversions remain parked
-  and unfinished; this metadata repair does not complete or retire the worker.
+- **Accepted complete resource validator:** `resource_ptr_validate`, row9,
+  ROM `0x18D4..0x1A44`, 368 bytes: one GLOBAL 352-byte main plus LOCAL eight-byte
+  bodies `func_00001A34` and `func_00001A3C`. The
+  [logical-body admission](audit/2026-10-07-resource-validator-logical-bodies.md)
+  and [local-binding audit](audit/2026-10-07-reviewed-local-body.md) retain the
+  structural evidence. One combined audit passed at `2026-10-08T03:17:58.096Z`
+  (October 7 Eastern), CURRENT `EFC0B6A9`, baseline `D6553DED`, exact full ROM.
+  All three bodies are PURE_C with sole C ownership and 16 exact text relocations.
+  Actual raw objects have no PDR; no ancillary relocation claim is inferred.
+  Reuse acceptance without an unchanged verification repeat. LavenderSpire's
+  independent source/control study remains under `build/matching/resval-20261007/`;
+  QuietPond integrated it as production writer. This does not complete or retire
+  either worker's current W5/DB10 assignment. Director1725 resumes both; scheduler
+  NINE and the other animation conversions remain preserved and unfinished.
 
 - **Parked scheduler NINE / LavenderSpire, unfinished after October 7 controls:** same top-level
   chat `01a11381-0741-7a00-9337-967a16f41e41`, Sol6.1/xhigh, monitored by Astra.

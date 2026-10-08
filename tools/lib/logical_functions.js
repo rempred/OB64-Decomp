@@ -7,6 +7,8 @@ const path = require('path');
 const { ROOT, sha256Buffer, sha256File } = require('./phase7_conventional');
 const CONFIG_PATH = path.join(ROOT, 'config', 'logical-functions.json');
 const fail = message => { throw new Error(`logical function registry: ${message}`); };
+// Only a ROM-authenticated registry may bind newly reviewed compiler entries.
+const authenticatedRegistries = new WeakMap();
 const EVIDENCE_STATUSES = new Set(['known-entry-or-ownership', 'independent-entry-supported',
   'supported-logical-continuation', 'accepted-primary-before-reviewed-secondary', 'supplemental-reviewed-body']);
 
@@ -118,8 +120,14 @@ function loadRegistry(model, baserom, config = JSON.parse(fs.readFileSync(CONFIG
     if (!unqualified) fail('unavailable body has qualified placement');
     unavailableEnd = entry.romEndExclusive;
   }
-  return { bodies, aliases, padding, unavailableBodies: config.unavailableBodies, preservedProductionEnvelopes: config.preservedProductionEnvelopes, identity: { path: 'config/logical-functions.json',
+  const registry = { bodies, aliases, padding, unavailableBodies: config.unavailableBodies, preservedProductionEnvelopes: config.preservedProductionEnvelopes, identity: { path: 'config/logical-functions.json',
     bytes: fs.statSync(CONFIG_PATH).size, sha256: sha256File(CONFIG_PATH) } };
+  if (Buffer.isBuffer(baserom) && baserom.length === model.config.rom.bytes
+      && sha256Buffer(baserom) === model.config.rom.sha256) {
+    authenticatedRegistries.set(registry, { bodies: JSON.stringify(bodies),
+      rows: new Map(model.rows.map(row => [row.index, JSON.stringify(row)])) });
+  }
+  return registry;
 }
 
 function coverage(registry, start, end, baserom) {
@@ -137,7 +145,43 @@ function coverage(registry, start, end, baserom) {
     expectedBytesSha256: baserom ? sha256Buffer(baserom.subarray(piece.romStart, piece.romEndExclusive)) : null }));
 }
 
+// This evidence describes reviewed code, not proven callers or original linkage.
+// Composed physical owners remain unsupported for this new category until their
+// full function/zero-size continuation-symbol path has independent coverage.
+function assertReviewedLocalBodies(registry, symbol, rows, functions) {
+  if (!Array.isArray(functions) || !functions.some(fn => fn?.entryEvidence === 'reviewed-local-body')) return;
+  const authenticated = authenticatedRegistries.get(registry);
+  if (!authenticated || authenticated.bodies !== JSON.stringify(registry.bodies)) fail('reviewed local body requires unchanged ROM-authenticated registry');
+  if (!Array.isArray(rows) || rows.length !== 1) fail('reviewed local body composition across physical owners is unsupported');
+  const row = rows[0];
+  if (authenticated.rows.get(row.index) !== JSON.stringify(row)) fail('reviewed local body selected owner drift');
+  const bodies = registry.bodies.filter(body => body.romStart < row.romEndExclusive && body.romEndExclusive > row.romStart);
+  if (functions.length !== bodies.length || functions.length < 2) fail('reviewed local body census differs from registry');
+  let cursor = row.romStart;
+  for (const [index, fn] of functions.entries()) {
+    const body = bodies[index];
+    if (!fn || !Number.isInteger(fn.bytes) || fn.bytes <= 0 || fn.bytes % 4
+        || fn.offsetNumber !== cursor - row.romStart
+        || fn.offset !== '0x' + fn.offsetNumber.toString(16).toUpperCase().padStart(8, '0')
+        || body.romStart !== cursor || body.romEndExclusive !== cursor + fn.bytes
+        || (index === 0 ? fn.symbol !== symbol || fn.binding !== 'GLOBAL' || fn.entryEvidence !== 'owner'
+          : fn.symbol !== body.symbol || fn.binding !== 'LOCAL'
+            || !['reviewed-local-body', 'internal-call-only', 'fixed-address-call'].includes(fn.entryEvidence))
+        || fn.entryEvidence === 'reviewed-local-body' && body.evidence.status !== 'supplemental-reviewed-body') {
+      fail('reviewed local body entry does not exactly match registry');
+    }
+    const fragments = intersections({ rows }, body.romStart, body.romEndExclusive);
+    if (JSON.stringify(fragments) !== JSON.stringify(body.fragments)
+        || fragments.some(fragment => fragment.vramStart !== row.slices[0].vramStart + fragment.romStart - row.romStart)) {
+      fail('reviewed local body fragment or runtime placement drift');
+    }
+    cursor = body.romEndExclusive;
+  }
+  if (cursor !== row.romEndExclusive) fail('reviewed local body census omits owner coverage');
+}
+
 function assertActivationCompatible(registry, symbol, rows, compilerTextFunctions = null, assemblySource = null) {
+  assertReviewedLocalBodies(registry, symbol, rows, compilerTextFunctions);
   const start = rows[0].romStart, end = rows[rows.length - 1].romEndExclusive;
   if (registry.bodies.some(body => body.romStart < start && body.romEndExclusive > start)) fail(`producer starts inside a logical body: ${symbol}`);
   if (registry.bodies.some(body => body.romStart < end && body.romEndExclusive > end)) {
@@ -170,4 +214,4 @@ function assertActivationCompatible(registry, symbol, rows, compilerTextFunction
   if (!entryDefinition && !structuralNames.includes(symbol.toLowerCase())) fail(`assembly alias has no owner-entry definition: ${symbol}`);
 }
 
-module.exports = { CONFIG_PATH, intersections, loadRegistry, coverage, assertActivationCompatible };
+module.exports = { CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };

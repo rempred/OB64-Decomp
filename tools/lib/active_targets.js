@@ -27,7 +27,7 @@ const AUXILIARY_PREFIX_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?\.prefix$/;
 const AUXILIARY_TAIL_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?\.tail$/;
 const SHA256 = /^[0-9A-F]{64}$/;
 const LOCAL_COMPILER_LABEL = /^\.L[0-9]+$/;
-const COMPILER_TEXT_ENTRY_EVIDENCE = new Set(['owner', 'internal-call-only', 'fixed-address-call']);
+const COMPILER_TEXT_ENTRY_EVIDENCE = new Set(['owner', 'internal-call-only', 'fixed-address-call', 'reviewed-local-body']);
 const COMPILER_TEXT_ENTRY_BINDINGS = new Set(['GLOBAL', 'LOCAL']);
 
 function parseNumber(value, label) {
@@ -1535,6 +1535,9 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       relocationContract.compilerTextFunctions,
     );
     logicalSupport.assertActivationCompatible(logicalRegistry, entry.symbol, rows, target.compilerTextFunctions, assemblySource);
+    if (target.compilerTextFunctions.some(fn => fn.entryEvidence === 'reviewed-local-body')) {
+      target.reviewedLocalBodyRegistryIdentity = { ...logicalRegistry.identity };
+    }
     target.auxiliarySections = resolveAuxiliarySectionContracts(
       model,
       baserom,
