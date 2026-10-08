@@ -1,7 +1,7 @@
 # Movement W5 owner admission — read-only intake
 
-Status: prerequisite plan only. No implementation, activation or changed-input
-audit has run. Director1689 additionally releases existing private diagnostics for
+Status: prerequisite plan with fresh native intake on October 8. No implementation,
+activation or changed-input audit has run for these movement gates. Director1689 additionally releases existing private diagnostics for
 all three gated owners below, correcting the initial overbroad source hold under
 Director1668 while preserving the full20-member W5 assignment. The same worker's
 W4 remains parked and unfinished;106F34/1070F4 are immutable accepted dependencies
@@ -13,6 +13,58 @@ activation entries alone are not defects. Current inputs are accepted CURRENT
 `31978A79`; no physical boundary, overlay, source class or compiler rule changes.
 
 ## Existing private diagnostic capability
+
+### October 8 current result and next action
+
+CURRENT `EFC0B6A9` supersedes the historical input snapshot above. QuietPond1766
+and GoldOx1764/1765 explicitly agree on the demonstrated single-owner,
+multi-function/fixed-row production composition gap. Both agree that existing raw
+native fixture modules suffice for immediate diagnostic intake; a new private CLI
+extension is not presently necessary. No native hold or tooling implementation is
+authorized by this note. Workers continue their existing source assignments.
+
+One authenticated native capture of the complete preferred131828 source is at
+`build/audit/movement-native-intake-20261008/capture-EVtrGK/`. Its `README.md`,
+`native-intake.json`, input identities and raw artifacts record the existing
+`tests/compilation_groups.js` / `tests/group_auxiliary_projection.js` fixture path,
+with unchanged pinned tools and no canonical configuration edits.
+Source SHA256 `30BCCC26DA1924291252DF5685463C99606314F8343346E512190B897F3BBEE8`
+produced raw object `692A9AB10DCE8F58E521112D5F182F9C9C95B6F25D15353B106EC0A5F6D7FC2C`.
+The result is PURE_C, GLOBAL288 plus LOCAL60/60/48/36 at offsets0/288/348/408/456.
+Actual text is496/alignment16:492 function bytes and four native alignment zeros,
+which do not belong to the accepted owner. Rodata is328/alignment8. All80 table
+addends agree with the original words and fall inside their respective dispatching
+helper intervals. Both four-byte gap words are zero and unrelocated. Text has23
+relocations; no PDR is emitted. Three ordinary text differences remain at
+offsets456/460/464. This is raw diagnostic evidence, not projection, isolated-link,
+production ownership or matching acceptance.
+
+The accepted `reviewed-local-body` implementation introduces another explicit
+eligibility decision: these four secondaries have registry status
+`independent-entry-supported`, but the new tag currently permits only
+`supplemental-reviewed-body`. Do not rewrite the registry status or invent call
+evidence to pass that guard. Before implementation, the bounded production plan
+must decide whether to admit this already-reviewed status while retaining exact
+authenticated body/fragment/ROM/VRAM mapping and rejecting weaker or continuation
+evidence. Include unrelated registry positives and negative status controls.
+
+The table composition must bind each payload to its specific dispatching body,
+not merely the complete text section. Check section-relative local-label addends
+against that body's interval; reject a table targeting a different body, an addend
+crossing its boundary, or C ownership/nonzero content in a retained gap row.
+Existing native-tail, whole-census, source-policy, relocation, cache and sole-owner
+gates remain. Astra owns the follow-up production proposal and coordinated
+implementation/audit decision before activation; no source worker should alter
+those contracts during matching.
+
+For125460+125F84, the same existing native-owner fixture can inspect a nonmatching
+paired producer and its genuine tail before either source is exact. A nonmatching
+capture cannot establish the required retail2852/2024/4 mapping or activation.
+Source equality is a final matching gate, not a prerequisite to that diagnostic
+investigation.107E38 likewise still needs a genuine complete producer/body/table
+capture before deciding whether a one-payload projection extension is necessary.
+
+### Earlier private-CLI limits, still applicable
 
 Read-only `loadWorkbenchModel()`/`scratchCapability()` and frontend review confirm
 all three targets are supported inactive ASM owners. E38 andF84 may use normal
@@ -32,7 +84,8 @@ This source-work release changes no contract or structural gate below.
 
 p2241 is ROM107E38..108500:1728 executable bytes and eight actual zero bytes at
 1084F8..108500. Table p2549 at142810..142830 contains eight pointers into E38;
-its accepted live address is801EE0D0. There is no complete preserved C candidate.
+its accepted live address is801EE0D0. The current preserved candidate emits a1736-byte
+function rather than the required1728-byte body; it has not resolved this gate.
 
 Adjacent W5 owners107D60(216) and107E38 could form a1952-byte producer beginning
 at aligned live801B3620. This is a proposal requiring authentic paired native
@@ -51,9 +104,11 @@ eight terminal zeros; that cannot directly replace the2028-byte physical owner.
 Existing `native-text-owner-projection` can potentially represent adjacent W5
 owners125460+125F84, envelope125460..126770,4880 bytes, live start801D0D20.
 Required functions are2852/2024 with four authentic natural terminal bytes.
-Actual paired compilation must establish this. Current125460 research emits2836,
-so even a supported contract is not ready for activation. No new tooling is
-established as necessary here, and standalone native-tail rules must not widen.
+Actual paired compilation must establish this. At the original intake,125460
+research emitted2836; a later2852-byte candidate remains nonmatching. Raw paired
+capture is available as described above, but production activation still needs the
+required owner mapping and full matching proof. No new tooling is established as
+necessary here, and standalone native-tail rules must not widen.
 
 ### 131828
 
@@ -87,9 +142,10 @@ complete source; F84 needs a complete paired producer. Preserve useful nonmatche
 and do not confuse representation capability with a successful source match.
 
 The potential composition extensions require the applicable explicit Sol/GoldOx
-agreement, Astra approval and independent structural/tooling review. GoldOx's
-expired OAuth does not supply that agreement. This read-only intake is not an
-implementation approval. Continue ordinary source work and preserve the gates.
+agreement, Astra approval and independent structural/tooling review. GoldOx is
+available again; the October8 agreements and narrowed scope are recorded above.
+This intake is not an implementation approval. Continue ordinary source work and
+preserve the gates.
 
 An approved package would touch matching targets/linkage, grouped declarations
 where justified, and authored sources. Existing boundaries, overlay mapping,
