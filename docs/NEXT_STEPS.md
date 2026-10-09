@@ -42,18 +42,27 @@ GoldOx and independent review corrected the proposed late-deletion constraint;
 no source-bound next trial is yet established. Keep the seven instruction-ready
 candidates and accepted shared pursuit producer; no partial-wave acceptance.
 
-Director1992 assigns this same worker complete shared action-mode/High Attack W6:
-all17 members in [the full wave](Plans/prompts/combat-shared-mode-wave-r1.md), using
-private root `build/matching/combat-w6-261009/`. Protect the15 currently accepted
-PURE_C siblings; B1F4/D14C remain original-ASM owners with no current acceptance.
-Current intake (mail1996/1997) supersedes the older E04 diagnostic assignment:
-B1F4's [Oct3 readable candidate](dossiers/func_0022B1F4-302262db17.md) already records
-complete symbolic instruction-form closure, still without linked or wave acceptance.
-Refresh that candidate's current proof and remaining integration prerequisites;
-do not repeat the obsolete source study. Then consult current D14C intake before
-selecting its next experiment. D14C's separate64-byte table/interior-consumer gate
-remains an integration prerequisite. This is private
-candidate authority, not table activation, reduced scope or worker retirement.
+Complete action-mode/High Attack W6 is parked after YellowTiger's source blocker
+(mail2053). Preserve [all seventeen members](Plans/prompts/combat-shared-mode-wave-r1.md)
+and `build/matching/combat-w6-261009/`: B1F4 remains instruction-ready privately;
+D14C's [readable best](dossiers/func_0022D14C-8ddf71fbdd.md) has 68 masked word
+differences. Its real-call, buffer-phase and mode1 improvements and bounded
+counterexamples are recoverable. No supported next discriminator, tooling defect
+or pure-C impossibility is established. Protect the fifteen accepted siblings
+and the separate 64-byte table/interior-consumer integration gate.
+
+**YellowTiger's next private wave:** the [complete terminal W8](Plans/prompts/combat-shared-terminal-wave-r1.md),
+all fifteen owners / 19,636 bytes, in `build/matching/terminal-w8-261009/`.
+Current intake finds every member inactive ASM; Shop and the Scenario anchor pair
+are already accepted, and independent deferred Squad scope is not reopened.
+Start `00222530`, then `00222190`, `0022222C`, `00222344`, `002223E0`, one target
+at a time, using current intake and the existing three terminal preparation notes.
+Retain bridge `0021EAF0`, the complete 10,272-byte two-part `0021EBBC`, all handlers,
+original table owners and coupled dependencies. Stable canonical C/ASM permits
+private iteration alongside Lavender's W7; W6/W7 acceptance and actual table/body
+contracts remain mandatory before W8 integration. All fifteen share one final
+normal verifier at complete readiness. Yellow retains production ownership and
+both parked W5/W6 scopes; this is no wave completion or worker retirement.
 
 LavenderSpire retains complete DB10/3C00/6098 and scheduler NINE as parked,
 unfinished obligations. Three real 3C00 trials and GoldOx's consultation left its
