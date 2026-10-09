@@ -36,10 +36,16 @@ QuietPond resumes complete pursuit/producer W4 at 1284C4 under Director1895;
 complete movement W5 is parked with its BC64 source blocker and all candidates
 preserved. W4's specific Claude consultation was unanswered during the earlier
 connection outage; GoldOx is now reachable. Neither wave is completed or reduced.
-LavenderSpire resumes its complete scheduler NINE wave at 108AA0 under
-Director1900, with DB10/3C00/6098 preserved unfinished and parked. GoldOx can now
-assess the earlier unanswered two-register address question. The workers' private
-roots and source ownership are disjoint; the resource validator is read-only.
+Director1913 assigns LavenderSpire the bounded static prerequisite for the queued
+Scenario checksum owner, ROM `5D9C..5FC0` (548 bytes), in
+`build/matching/probe-sig-20261009/`. Reconcile the complete owner, candidate entries
+`5EC4`/`5F60`, incoming references and the post-return four bytes at `5FBC` before
+proposing logical admission. No registry edits, compiler runs or matching acceptance
+are released by this study; structural changes need Director approval, review and audit.
+Scheduler NINE remains parked unfinished: `108AA0` now has an instruction-ready
+candidate, while `108C1C`/`1094BC`/`109A48` retain source blockers. Preserve all nine,
+their data/tail/group gates and DB10/3C00/6098. The workers' private roots are disjoint;
+QuietPond continues W4, and the accepted resource validator remains read-only.
 Use each private root's current cursor for the selected source and next question;
 older target-start instructions below do not supersede it. Director1876 released
 hold1871; refresh affected private intake before new concurrent checks. Retain
@@ -338,13 +344,14 @@ each watcher's `status.json` and actual process.
   either worker's current W5/DB10 assignment. Director1725 resumes both; scheduler
   NINE and the other animation conversions remain preserved and unfinished.
 
-- **Active scheduler NINE / LavenderSpire, unfinished:** same top-level
+- **Parked scheduler NINE / LavenderSpire, unfinished:** same top-level
   chat `01a11381-0741-7a00-9337-967a16f41e41`, Sol6.1/xhigh, monitored by Astra.
   Director1675 transfers the complete nine-member private candidate scope below to
   `build/matching/scheduler-nine-20261007/`; QuietPond retains production ownership
   and the separate movement/pursuit assignments. All nine remain inactive ASM.
-  Director1900 resumes108AA0 first with GoldOx consultation, then choose the next
-  distinct source question among108C1C/1094BC/109A48, one at a time; preserve the
+  Director1900's source consultation produced instruction-ready108AA0; mail1911
+  records the remaining108C1C/1094BC/109A48 blockers. Director1913 parks this wave
+  for the bounded Scenario prerequisite above. Preserve the
   instruction-ready controls and full9,632-byte/table/tail/group completion scope.
   Individual private intake/watch/probe supports symbolic-object diagnostics;
   no whole-group private command or scheduler registry admission is established.
