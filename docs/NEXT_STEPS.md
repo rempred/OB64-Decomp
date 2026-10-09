@@ -33,12 +33,25 @@ The [paired-owner](audit/2026-10-09-paired-owner-projection.md) and
 
 W4 completion triggered Joe's fresh-worker rule. QuietPond released production
 source/build and W4/W5 ownership in mail1965 and stopped its own inbox watcher.
-Fresh Sol6.1/xhigh chat `01a12198-58cd-77f2-85c1-faa3648f698f` now owns production
-and the complete20-member movement/routes W5. Its
+Sol6.1/xhigh / YellowTiger, chat `01a12198-58cd-77f2-85c1-faa3648f698f`, owns production.
+Movement/routes W5 remains parked unfinished with its complete20-member scope,
 [full roster](../build/matching/movement-w5-20261007/membership.json) and
-[recoverable sources](../build/matching/movement-w5-20261007/cursor.md) remain intact.
-Start from the current `12BC64` source blocker, reusing the other instruction-ready
-candidates and accepted shared pursuit producer. No partial-wave acceptance.
+[recoverable sources](../build/matching/movement-w5-fresh-261009/cursor.md).
+BC64's preserved best and supported negative controls remain source-blocked.
+GoldOx and independent review corrected the proposed late-deletion constraint;
+no source-bound next trial is yet established. Keep the seven instruction-ready
+candidates and accepted shared pursuit producer; no partial-wave acceptance.
+
+Director1992 assigns this same worker complete shared action-mode/High Attack W6:
+all17 members in [the full wave](Plans/prompts/combat-shared-mode-wave-r1.md), using
+private root `build/matching/combat-w6-261009/`. Protect the15 currently accepted
+PURE_C siblings; B1F4/D14C remain original-ASM owners with no current acceptance.
+Start B1F4's missing E04-authenticated RTL/JUMP/first-CSE discriminator from the
+[preserved diagnostics](Plans/task-logs/combat-b1f4-preserved-diagnostics-r1.md),
+requiring final-assembly correspondence before transferring E16's explanation.
+Then choose a source experiment from the actual result. D14C's separate64-byte
+table/interior-consumer gate remains an integration prerequisite. This is private
+candidate authority, not table activation, reduced scope or worker retirement.
 
 LavenderSpire retains its unfinished Combat work and parked complete scheduler
 NINE; completing the checksum side assignment does not retire that worker.
