@@ -32,11 +32,14 @@ accepted. This closes representation defects, not production activation or wave
 acceptance. Private linked paired fixtures are diagnostic evidence. Complete
 memberships, owner contracts and normal final-wave gates below remain binding.
 
-QuietPond retains complete movement W5 and parked W4; LavenderSpire retains DB10
-and parked NINE/3C00/6098. The resource validator is accepted and read-only.
+QuietPond resumes complete pursuit/producer W4 at 1284C4 under Director1895;
+complete movement W5 is parked with its BC64 source blocker and all candidates
+preserved. W4's specific Claude consultation was unanswered during the earlier
+connection outage; GoldOx is now reachable. Neither wave is completed or reduced.
+LavenderSpire retains DB10 and parked NINE/3C00/6098. The resource validator is read-only.
 Use each private root's current cursor for the selected source and next question;
-older target-start instructions below do not supersede it. On Director release of
-hold1871, refresh affected private intake and resume concurrent checks. Retain
+older target-start instructions below do not supersede it. Director1876 released
+hold1871; refresh affected private intake before new concurrent checks. Retain
 identities, threads and watchers; QuietPond remains the production writer. Consult
 GoldOx for specific stuck questions and continue source experiments without
 waiting for a Director recipe or sending routine status mail.
@@ -65,7 +68,7 @@ GoldOx's actual CLI request returned401 expired OAuth and needs sign-in. Old
 startup PIDs below are historical evidence, not current process state; consult
 each watcher's `status.json` and actual process.
 
-- **Sol / QuietPond, active movement/routes W5 candidate wave:** same top-level
+- **Sol / QuietPond, parked movement/routes W5 candidate wave:** same top-level
   chat `01a114ed-449d-73f0-81d3-47c8b67dbea6`, Sol6.1/xhigh, sole production writer.
   Director1668 assigns the complete original20 members/23,560 text-owner bytes:12B1C4(636),
   12D6FC(788),107D60(216),107E38(1736),11AB74(96),11AECC(1144),106F34(448),
@@ -93,7 +96,7 @@ each watcher's `status.json` and actual process.
 
   This is a candidate assignment, not a dependency-ready integration handoff.
   Preserve all12 currently accepted PURE_C members. Shared106F34/1070F4 remain
-  immutable accepted dependencies of both this wave and the same worker's parkedW4;
+  immutable accepted dependencies of both this wave and the same worker's W4;
   there is no concurrent source ownership transfer or W4 producer activation.
   Three structural gates remain explicit:107E38 has1728 body+8 owned tail and a
   separate32-byte table;125F84 has2024 body+4 owned tail;131828 has five bodies
@@ -107,7 +110,7 @@ each watcher's `status.json` and actual process.
   root may run independently of LavenderSpire's scheduler candidates. Existing mail/stop
   monitors remain attached to the same thread, with exception-only communication.
 
-- **Parked Squad W4 pursuit and producer / QuietPond, unfinished:** top-level chat
+- **Active Squad W4 pursuit and producer / QuietPond, unfinished:** top-level chat
   `01a114ed-449d-73f0-81d3-47c8b67dbea6`, `gpt-6.1-sol`/`xhigh`, monitored by Astra.
   Preserve the complete twenty-one-target pursuit/producer assignment below,7,424 unique
   owner bytes: original thirteen/4,980 plus the nine-owner producer/2,928, counting
@@ -115,8 +118,9 @@ each watcher's `status.json` and actual process.
   source/counterexample; no partial integration or acceptance occurred. RedPeak1628
   released the production role to this same worker; scheduler candidates run independently.
 
-  Reopen only on a new source-bound definition/use or control mechanism that changes
-  the surviving first-block graph after copy propagation. Refresh current intake and exact source
+  Director1895 resumes the unanswered GoldOx consultation. New trials should test a
+  distinct real definition/use or control property; do not repeat closed cosmetic
+  controls or require a complete compiler explanation before testing. Refresh intake and exact source
   contexts:127D30 controls01C46CB83D/40321EE890/4F07FBB149;1284C4 controls
   3A6FE90D21/C1EEECD686 and laterCB0BD7A781/3C1BD85C2E/37A3D3A2D9;
   106CE0 controls4BDDE19D3A/2FA2B259A9/5D6CB37303/A0612ACBBB;
@@ -138,7 +142,8 @@ each watcher's `status.json` and actual process.
   supported edit: one real cosine consumer exists, and a manufactured dependency
   would not be justified. Preserve best95511F4E/7A9AC116 and both useful controls.
   The full21 remains unfinished, not a tooling defect, ASM exception or retired wave.
-  GoldOx1650 remains queued; new advice must supply a concrete surviving dependency.
+  GoldOx has the concrete1667 question again through1895; preserve its measured
+  dependencies and counterexamples while seeking a distinct source experiment.
 
   Historical startup1632 verifies own identityQuietPond and mail watcher27644. Actual incoming
   test1634 was delivered to this thread with desktop acknowledgement; Director stop
