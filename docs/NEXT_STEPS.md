@@ -42,11 +42,17 @@ candidates and accepted shared pursuit producer. No partial-wave acceptance.
 
 LavenderSpire retains its unfinished Combat work and parked complete scheduler
 NINE; completing the checksum side assignment does not retire that worker.
-Director1966 released its drain after local commit `8d2787b5`; private Combat
-DB10 source work has resumed independently of W5. Keep DB10/3C00/6098 and NINE memberships, bests and
-remaining gates recoverable. Native group admission does not clear unrelated
-auxiliary/table gates. Refresh affected private inputs once after shared changes;
-reuse valid evidence and do not repeat unchanged acceptance.
+After Director1966's release, two source-supported DB10 controls and GoldOx's
+consultation left its best20 differences unchanged (mail1978). DB10 is parked
+unfinished. LavenderSpire now owns the complete `func_001F3C00` conversion in
+`build/matching/anim3c00-20261006/`, beginning with the saved six-site tile/strip
+question and a bounded GoldOx consultation. A distinct plausible real source
+relationship with a falsifiable prediction releases private native iteration;
+the worker need not request permission per experiment. No blind minimum/cursor
+sweeps. Keep DB10/3C00/6098 and complete NINE memberships, bests and remaining
+gates recoverable. Native group admission does not clear unrelated auxiliary/table
+gates. Refresh affected private inputs once; reuse valid evidence and do not repeat
+unchanged acceptance.
 
 This current block supersedes older ownership, target-start and tooling holds
 below. The live worker cursors and Director's explicit handoff identify current
