@@ -38,10 +38,13 @@ preserved. W4's specific Claude consultation was unanswered during the earlier
 connection outage; GoldOx is now reachable. Neither wave is completed or reduced.
 Director1913 assigns LavenderSpire the bounded static prerequisite for the queued
 Scenario checksum owner, ROM `5D9C..5FC0` (548 bytes), in
-`build/matching/probe-sig-20261009/`. Reconcile the complete owner, candidate entries
-`5EC4`/`5F60`, incoming references and the post-return four bytes at `5FBC` before
-proposing logical admission. No registry edits, compiler runs or matching acceptance
-are released by this study; structural changes need Director approval, review and audit.
+`build/matching/probe-sig-20261009/`. Independent static review supports five bodies
+totaling 544 bytes, including `5EC4`/`5F60`, plus four retained post-return bytes at
+`5FBC`. Director1915 authorizes a complete five-body PURE_C native diagnostic using
+the existing authenticated fixture pipeline; no canonical edits or watch admission.
+Inspect actual compiler geometry before choosing a production representation. GoldOx
+is consulted on any supported generic contract gap. Metadata implementation remains
+pending the concrete plan and combined structural review/audit; no matching acceptance.
 Scheduler NINE remains parked unfinished: `108AA0` now has an instruction-ready
 candidate, while `108C1C`/`1094BC`/`109A48` retain source blockers. Preserve all nine,
 their data/tail/group gates and DB10/3C00/6098. The workers' private roots are disjoint;
