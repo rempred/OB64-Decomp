@@ -36,16 +36,21 @@ QuietPond resumes complete pursuit/producer W4 at 1284C4 under Director1895;
 complete movement W5 is parked with its BC64 source blocker and all candidates
 preserved. W4's specific Claude consultation was unanswered during the earlier
 connection outage; GoldOx is now reachable. Neither wave is completed or reduced.
-Director1913 assigns LavenderSpire the bounded static prerequisite for the queued
-Scenario checksum owner, ROM `5D9C..5FC0` (548 bytes), in
-`build/matching/probe-sig-20261009/`. Independent static review supports five bodies
-totaling 544 bytes, including `5EC4`/`5F60`, plus four retained post-return bytes at
-`5FBC`. Director1919 releases continued five-body PURE_C candidate iteration using
-the existing authenticated native fixture pipeline, with no per-experiment permission,
-canonical edits or watch admission. The first capture confirms native alignment but
-is nonmatching; the Director investigates the wider producer scope separately. GoldOx
-is consulted on specific source blockers or a supported generic contract gap. Metadata implementation remains
-pending the concrete plan and combined structural review/audit; no matching acceptance.
+Director1929 assigns LavenderSpire the complete Scenario checksum-chain candidate
+experiment in `build/matching/probe-sig-20261009/`: unchanged physical rows48–55,
+ROM `5760..5FC0` (2144 bytes). Retain primary bodies `5760`, `581C`, `5978`, `5A88`,
+the three accepted record-copy sources at `5B8C`, `5C58`, `5CFC`, and all five checksum
+bodies `5D9C`, `5E84`, `5EC4`, `5F00`, `5F60`. Twelve bodies cover2140 executable
+bytes; the four retained post-return bytes at `5FBC` remain separate. The bounded
+CFG/reference study supports full coverage, not historical translation-unit identity.
+Preserve prefix/interior labels and accepted `5C60`/`5D04` aliases. Reuse the accepted
+three sources read-only, derive the other complete bodies one at a time, and test the
+full native producer through the existing authenticated fixture pipeline. Private
+checks need no per-experiment permission; canonical edits and watch admission remain
+unreleased. Native geometry, relocation conservation and a generic representation
+plan must precede metadata/tooling implementation and combined structural review/audit.
+Consult GoldOx for specific source blockers or a supported tooling proposal; no new
+tooling is approved and no candidate result establishes matching acceptance.
 Scheduler NINE remains parked unfinished: `108AA0` now has an instruction-ready
 candidate, while `108C1C`/`1094BC`/`109A48` retain source blockers. Preserve all nine,
 their data/tail/group gates and DB10/3C00/6098. The workers' private roots are disjoint;
