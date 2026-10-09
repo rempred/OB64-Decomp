@@ -32,10 +32,11 @@ accepted. This closes representation defects, not production activation or wave
 acceptance. Private linked paired fixtures are diagnostic evidence. Complete
 memberships, owner contracts and normal final-wave gates below remain binding.
 
-QuietPond resumes complete pursuit/producer W4 at 1284C4 under Director1895;
-complete movement W5 is parked with its BC64 source blocker and all candidates
-preserved. W4's specific Claude consultation was unanswered during the earlier
-connection outage; GoldOx is now reachable. Neither wave is completed or reduced.
+QuietPond retains complete pursuit/producer W4 and parked movement W5 unchanged.
+`1284C4` has a source blocker; preserve its current best in the private cursor.
+Director1932 authorizes intact nine-owner native diagnostics through the existing
+authenticated fixture route, reusing saved raw artifacts when valid. Single-target
+private watch correctly rejects nine functions; no guard change or acceptance follows.
 Director1929 assigns LavenderSpire the complete Scenario checksum-chain candidate
 experiment in `build/matching/probe-sig-20261009/`: unchanged physical rows48–55,
 ROM `5760..5FC0` (2144 bytes). Retain primary bodies `5760`, `581C`, `5978`, `5A88`,
