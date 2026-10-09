@@ -55,19 +55,21 @@ selecting its next experiment. D14C's separate64-byte table/interior-consumer ga
 remains an integration prerequisite. This is private
 candidate authority, not table activation, reduced scope or worker retirement.
 
-LavenderSpire retains its unfinished Combat work and parked complete scheduler
-NINE; completing the checksum side assignment does not retire that worker.
-After Director1966's release, two source-supported DB10 controls and GoldOx's
-consultation left its best20 differences unchanged (mail1978). DB10 is parked
-unfinished. LavenderSpire now owns the complete `func_001F3C00` conversion in
-`build/matching/anim3c00-20261006/`, beginning with the saved six-site tile/strip
-question and a bounded GoldOx consultation. A distinct plausible real source
-relationship with a falsifiable prediction releases private native iteration;
-the worker need not request permission per experiment. No blind minimum/cursor
-sweeps. Keep DB10/3C00/6098 and complete NINE memberships, bests and remaining
-gates recoverable. Native group admission does not clear unrelated auxiliary/table
-gates. Refresh affected private inputs once; reuse valid evidence and do not repeat
-unchanged acceptance.
+LavenderSpire retains complete DB10/3C00/6098 and scheduler NINE as parked,
+unfinished obligations. Three real 3C00 trials and GoldOx's consultation left its
+185-word best unchanged; [the current cursor](../build/matching/anim3c00-20261006/cursor.md)
+preserves the source-bound blocker (mail2002), not an assembly-necessity claim.
+Director2007 releases this same worker's private source work on the complete
+[seven-member resolution W7](Plans/prompts/combat-shared-resolution-wave-r1.md)
+in `build/matching/resolution-w7-261009/`: 15,404 logical-owner bytes, including
+A9C's complete 3,372-byte head and continuation. Current intake found no existing
+C candidates. Start full `func_00232280` using the concrete six-record contract,
+then continue one target at a time. Stable accepted C/ASM inputs permit private
+iteration while W6 remains unfinished; canonical activation still requires the
+real upstream, table and complete-wave gates. Preserve F580/32458's row4248
+reads, A9C's two-part body and all original memberships. No overlapping source
+ownership, reduced acceptance wave or worker retirement. Refresh affected private
+inputs once; reuse valid evidence and do not repeat unchanged acceptance.
 
 This current block supersedes older ownership, target-start and tooling holds
 below. The live worker cursors and Director's explicit handoff identify current
