@@ -161,7 +161,13 @@ function compilerOccurrencePaddingBytes(occurrence, cursor, label) {
   return bytes;
 }
 
-function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, projection = null) {
+function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, projection = null, composedGroup = null) {
+  if (composedGroup !== null) {
+    auxiliaryProjection.groupContract(composedGroup);
+    const declared = composedGroup.auxiliary.sections.map(({ memberSymbol, ...section }) => section);
+    if (targetSymbol !== composedGroup.id || !sameJson(projection, composedGroup.auxiliary.projection)
+        || !sameJson(contracts, declared)) fail('composed auxiliary normalization context drift');
+  }
   if (contracts === undefined) return [];
   if (!Array.isArray(contracts) || contracts.length === 0) fail(`${label} is not a nonempty array`);
   const compilerSections = new Set();
@@ -422,7 +428,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, proj
     }
     let compilerOccurrences;
     if (hasCompilerOccurrences) {
-      const minimumCompilerOccurrences = hasSourceObjectPrefix ? 1 : 2;
+      const minimumCompilerOccurrences = hasSourceObjectPrefix || composedGroup !== null ? 1 : 2;
       if (!Array.isArray(contract.compilerOccurrences)
           || contract.compilerOccurrences.length < minimumCompilerOccurrences
           || trailingPaddingBytes !== 0) {

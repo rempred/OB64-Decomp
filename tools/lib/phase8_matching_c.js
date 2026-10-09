@@ -114,6 +114,24 @@ function adjustSectionAssembly(compilerAssembly, sectionName, options = {}) {
   if (allowAuxiliaryReadOnlySections && auxiliarySections.length > 0) {
     fail('KMC scratch and canonical auxiliary-section policies cannot be combined');
   }
+  const composedGroup = options.composedGroup;
+  if (composedGroup !== undefined) {
+    const projection = auxiliaryProjection.groupContract(composedGroup);
+    const tables = projection.segments.filter(segment => segment.kind === 'payload');
+    let end = 0;
+    const occurrences = tables.map(segment => {
+      const record = { label: segment.label, offset: '0x' + segment.offset.toString(16).toUpperCase().padStart(8, '0'),
+        bytes: segment.bytes, entries: segment.bytes / 4, alignment: projection.alignment,
+        alignmentDirectives: segment.alignmentDirectives,
+        ...(segment.offset > end ? { paddingBefore: { offset: '0x' + end.toString(16).toUpperCase().padStart(8, '0'),
+          bytes: segment.offset - end, expectedSha256: sha256Buffer(Buffer.alloc(segment.offset - end)) } } : {}) };
+      end = segment.offset + segment.bytes; return record;
+    });
+    if (allowAuxiliaryReadOnlySections || options.legalizeCop1BinaryInstructions
+        || composedGroup.owners?.[0]?.sectionName !== sectionName
+        || !sameJson(auxiliarySections, [{ compilerSection: '.rodata', outputSection: tables[0].outputSection,
+          bytes: end, compilerOccurrences: occurrences }])) fail('composed auxiliary grammar context drift');
+  }
   let adjusted = text;
   if (auxiliarySections.length > 0) {
     const auxiliary = auxiliarySections[0];
@@ -126,7 +144,7 @@ function adjustSectionAssembly(compilerAssembly, sectionName, options = {}) {
       fail('KMC target source-object prefix compiler grammar is missing: ' + sectionName);
     }
     const occurrenceCount = compilerOccurrences === undefined ? 1 : compilerOccurrences.length;
-    const minimumCompilerOccurrences = hasSourceObjectPrefix ? 1 : 2;
+    const minimumCompilerOccurrences = hasSourceObjectPrefix || composedGroup !== undefined ? 1 : 2;
     if (auxiliarySections.length !== 1
         || auxiliary.compilerSection !== '.rodata'
         || typeof auxiliary.outputSection !== 'string'

@@ -22,43 +22,31 @@ tomorrow using the existing experiment records.
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
-**October 8 native projection tooling accepted:** the generic single-owner,
-multiple-function readonly projection passed routine35/35, focused exact/nonmatching
-and adversarial controls, one structural audit and independent final review.
-CURRENT `25AC6122` / baseline `D6553DED` retains the exact retail ROM; the
-[audit note](audit/2026-10-08-native-function-readonly-projection.md) records the
-implemented contract and limits. This supersedes the earlier unimplemented-tooling
-status below. QuietPond and LavenderSpire retain W5 and DB10, their identities and
-watchers; on explicit Director release of hold1781, refresh affected private intake
-and resume concurrent checks.131828's complete492-byte candidate remains provisional:
-no production activation or original20-wave acceptance occurred.107E38/125F84
-structural gates and all parked obligations remain. Do not repeat unchanged acceptance.
-Private `watch` still requires GLOBAL logical-function symbols and rejects131828's
-four static helpers; the production extension did not change that diagnostic path.
-Use the existing authenticated `probe` and already-approved public-module raw capture
-for a genuinely new source question, preserving their diagnostic-only limits. The
-selected D760 source and accepted regression already supply the current evidence;
-do not rerun the unchanged failing watch or globalize helpers. A generic intake
-`scratchCompilation.supported` flag does not establish admission of this source shape.
+**Current tooling and continuation, October 9:** native REL order and composed
+groups with one table are accepted after regression tests, one structural audit
+and independent final review. CURRENT `03A66431` / baseline `D6553DED` remains
+retail-exact. The [paired-owner audit](audit/2026-10-09-paired-owner-projection.md)
+records the change; the earlier [native-function projection](audit/2026-10-08-native-function-readonly-projection.md)
+and [reviewed local-body contract](audit/2026-10-07-reviewed-local-body.md) remain
+accepted. This closes representation defects, not production activation or wave
+acceptance. Private linked paired fixtures are diagnostic evidence. Complete
+memberships, owner contracts and normal final-wave gates below remain binding.
 
-**October 7 evening continuation:** QuietPond resumes the complete movement W5
-assignment below, starting with the remaining source mismatches in `func_00125460`.
-LavenderSpire resumes the previously assigned complete `func_0020DB10` PURE_C
-conversion in `build/matching/animdb10-20261007/`, starting with a fresh check of the
-one-based reference identified with GoldOx, then its remaining frame work.
-The complete resource validator and its generic local-body tooling are accepted;
-scheduler NINE, 3C00 and 6098 remain parked and unfinished. This supersedes
-the older active/parked labels below and the resval-only write scope. Both retain
-their current identities, threads and watchers; QuietPond remains production writer.
-Workers may investigate and test new source hypotheses without waiting for a
-Director-supplied recipe. Exhausting one experiment does not end the assignment.
-GoldOx is available for specific stuck questions. Director1725 releases native-check
-hold1713 after the combined audit and independent final review passed. CURRENT
-`EFC0B6A9` / baseline `D6553DED` is exact; refresh affected intake and resume private
-checks concurrently, without repeating unchanged acceptance. The
-[structural note](audit/2026-10-07-reviewed-local-body.md) records the bounded
-single-owner contract and actual proof. Preserve complete memberships, source contracts, private-root
-isolation and normal final-wave acceptance; no tooling or activation gate is waived.
+QuietPond retains complete movement W5 and parked W4; LavenderSpire retains DB10
+and parked NINE/3C00/6098. The resource validator is accepted and read-only.
+Use each private root's current cursor for the selected source and next question;
+older target-start instructions below do not supersede it. On Director release of
+hold1871, refresh affected private intake and resume concurrent checks. Retain
+identities, threads and watchers; QuietPond remains the production writer. Consult
+GoldOx for specific stuck questions and continue source experiments without
+waiting for a Director recipe or sending routine status mail.
+
+Private `watch` still rejects 131828's four static helpers. Use the existing
+authenticated `probe` and approved raw capture for new source questions; do not
+globalize helpers or repeat the unchanged rejection. Its selected D760 source and
+accepted regression already preserve current evidence. An intake
+`scratchCompilation.supported` flag does not establish admission of this shape.
+Do not repeat unchanged acceptance or shrink a wave to bypass its remaining work.
 
 Workers now own separate, less-related waves. This supersedes older same-wave, one-active-family
 and strictly sequential family scheduling language; complete membership, real dependencies and

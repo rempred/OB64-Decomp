@@ -18,6 +18,19 @@ native padding is rejected by registry, binding, grammar, object, projection,
 conservation and proof entry points; standalone support does not extend group
 composition implicitly.
 
+Composed groups may contain one or more complete payload rows. The one-payload
+minimum is available only through the composed group context, with at least two
+members and exact per-table attribution. It does not lower standalone projection
+or compiler-occurrence minima and does not use a source-object prefix.
+
+All compilation groups conserve the serialized native REL sequence. Addresses
+may descend within a member; duplicate places and member-index regressions are
+rejected. Per-symbol pending HI16 records must pair with a LO16 in the same owner.
+No stage sorts relocation records. A projected partition that would interleave
+members is unsupported. The existing text tail remains owned natural assembler
+alignment at the final member, unlike standalone schema 3's removed outside-owner
+padding. Relocations or references into that tail remain forbidden.
+
 The native assembler input equals the compiler output byte-for-byte. Grammar
 validation checks every complete compiler occurrence without using its temporary
 section-assigned return value. One producer is compiled and assembled once.
@@ -81,5 +94,11 @@ producer with three functions and two middle-member switch tables, plus a second
 native producer with a third table emitted by another member. It checks
 native and projected actual links, all member source proofs, retained ASM and
 accounting, cache restoration, and direct adversarial object/schema mutations.
+The registered node tests/paired_owner_projection.js suite additionally uses
+tracked clean-room paired sources with a real native REL address descent and one
+complete eight-entry table, plus an unrelated two-member one-table producer.
+It exercises full private links, owned tails, body-specific table references and
+destinations, native-order/cache/proof mutations, and compiled nonmatching controls.
+These fixtures do not activate production owners or reduce a matching wave.
 Artifacts remain ignored under `build/tests`. Production integration and the
 complete-ROM audit belong to the designated production source/build writer.

@@ -24,13 +24,14 @@ function groupContract(group) {
   if (!composed(group) || group.auxiliary?.projection?.schemaVersion !== 1) fail('group projection requires version 1');
   const bundle = group.auxiliary;
   if (!keys(bundle, ['sections', 'projection', ...(Object.hasOwn(bundle, 'retained') ? ['retained'] : [])])
-      || !Array.isArray(bundle.sections) || !Array.isArray(group.members) || !Array.isArray(group.functions)) fail('group auxiliary attribution schema');
+      || !Array.isArray(bundle.sections) || !Array.isArray(group.members) || group.members.length < 2
+      || !Array.isArray(group.functions) || group.functions.length !== group.members.length) fail('group auxiliary attribution schema');
   for (const section of bundle.sections) {
     if (!section || typeof section.memberSymbol !== 'string'
         || group.members.filter(member => member.symbol === section.memberSymbol).length !== 1
         || group.functions.filter(member => member.symbol === section.memberSymbol).length !== 1) fail('group auxiliary attribution');
   }
-  return normalize(group.auxiliary.projection, group.auxiliary.sections);
+  return normalizeContract(group.auxiliary.projection, group.auxiliary.sections, 1);
 }
 function memberSections(group, symbol) {
   groupContract(group);
@@ -41,6 +42,11 @@ function assertMemberSections(target) {
   if (composed(target.compilationGroup) && !same(target.auxiliarySections, memberSections(target.compilationGroup, target.symbol))) fail('group auxiliary attribution census');
 }
 function normalize(contract, auxiliaries) {
+  return normalizeContract(contract, auxiliaries, 2);
+}
+// Only groupContract can select the one-payload minimum, after composed context
+// and member attribution checks. Standalone schemas retain their old minimum.
+function normalizeContract(contract, auxiliaries, minimumPayloads) {
   if (contract === undefined) return null;
   if (!keys(contract, ['schemaVersion', 'mode', 'compilerSection', 'bytes', 'alignment', 'expectedObjectSha256', 'segments', ...(contract?.schemaVersion === 3 ? ['nativeText'] : [])])
       || ![1, 2, 3].includes(contract.schemaVersion) || contract.mode !== 'fixed-row-readonly-projection'
@@ -95,7 +101,7 @@ function normalize(contract, auxiliaries) {
         || !SHA.test(segment.expectedOwnerSha256)) fail('check-only zero binding');
     cursor += segment.bytes;
   }
-  if (cursor !== contract.bytes || count < 2 || count !== auxiliaries.length
+  if (cursor !== contract.bytes || count < minimumPayloads || count !== auxiliaries.length
       || contract.segments.some(segment => segment.kind === 'zero' && sections.has(segment.ownerSection))) fail('payload/zero census');
   const tables = payloads(contract);
   for (let i = 0; i < tables.length; i++) {
@@ -499,7 +505,7 @@ function groupGrammar(compiler, group, adjust) {
   });
   // Grammar validation only: the returned section-assigned bytes are discarded.
   // The producer's actual assembler input is the untouched compiler buffer.
-  adjust(compiler, group.owners[0].sectionName, { auxiliarySections: [{ compilerSection: '.rodata',
+  adjust(compiler, group.owners[0].sectionName, { composedGroup: group, auxiliarySections: [{ compilerSection: '.rodata',
     outputSection: payloads(contract)[0].outputSection, bytes: end, compilerOccurrences: occurrences }] });
 }
 function groupReadonlyNames(group, stage) {
@@ -564,6 +570,7 @@ function groupCensus(elf, group, stage) {
     const word = rawBytes.readUInt32BE(offset);
     const auxiliary = group.auxiliary.sections.find(value => value.outputSection === table.outputSection);
     const attributed = group.functions.find(value => value.symbol === auxiliary.memberSymbol);
+    if (word % 4) fail('group table instruction destination alignment');
     if (word < attributed.offset || word + 4 > attributed.offset + attributed.bytes) fail('group table target outside attributed function');
     const expected = auxiliary.expectedRelocations.find(value => Number(value.offset) === offset - table.offset);
     if (!expected || Number(expected.addend) !== word) fail('group table relocation addend');

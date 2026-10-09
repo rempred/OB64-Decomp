@@ -27,8 +27,38 @@ function members(phase8, target) { return target.compilationGroup
 function normalizeAuxiliary(group) {
   auxiliary.groupContract(group);
   const contracts = group.auxiliary.sections.map(({ memberSymbol, ...section }) => section);
-  return require('./active_targets').normalizeAuxiliarySectionContracts(contracts, group.id, 'group auxiliary', group.auxiliary.projection)
+  return require('./active_targets').normalizeAuxiliarySectionContracts(contracts, group.id, 'group auxiliary', group.auxiliary.projection, group)
     .map((section, index) => ({ ...section, memberSymbol: group.auxiliary.sections[index].memberSymbol }));
+}
+// Preserve the native REL record sequence. Descending addresses within one
+// member are valid; regrouping interleaved member records is not byte-preserving.
+function validateNativeRelocationOrder(group) {
+  if (!Array.isArray(group.relocations) || !Array.isArray(group.functions) || !group.functions.length) fail('relocation census');
+  const end = group.functions.at(-1).offset + group.functions.at(-1).bytes;
+  const places = new Set(), pending = new Map();
+  let previousOwner = -1;
+  for (const relocation of group.relocations) {
+    requireKeys(relocation, ['offset', 'type', 'symbol', 'symbolValue', 'symbolSection', 'word'], 'relocation');
+    if (!integer(relocation.offset) || relocation.offset % 4 || places.has(relocation.offset) || relocation.offset + 4 > end
+        || ![4, 5, 6].includes(relocation.type) || typeof relocation.symbol !== 'string' || !SAFE_SYMBOL.test(relocation.symbol)
+        || !integer(relocation.symbolValue) || !['.text', 'UND', 'ABS', ...(auxiliary.composed(group) ? ['.rodata'] : [])].includes(relocation.symbolSection)
+        || !integer(relocation.word) || relocation.word > 0xffffffff) fail('relocation contract or duplicate place');
+    places.add(relocation.offset);
+    const owner = group.functions.findIndex(fn => relocation.offset >= fn.offset && relocation.offset + 4 <= fn.offset + fn.bytes);
+    if (owner < 0 || owner < previousOwner) fail('relocation member interleaving changes serialized order');
+    previousOwner = owner;
+    const key = JSON.stringify([relocation.symbolSection, relocation.symbol, relocation.symbolValue]);
+    if (relocation.type === 5) {
+      if (!pending.has(key)) pending.set(key, []);
+      pending.get(key).push(owner);
+    } else if (relocation.type === 6) {
+      const high = pending.get(key);
+      if (!high?.length) fail('native LO16 without pending HI16');
+      if (high.some(value => value !== owner)) fail('native cross-owner HI16/LO16 pair');
+      pending.delete(key);
+    }
+  }
+  if (pending.size) fail('native relocation has unmatched HI16');
 }
 function registry(config, profile) {
   requireKeys(config, ['schemaVersion', 'profile', 'groups'], 'registry');
@@ -67,16 +97,7 @@ function registry(config, profile) {
     if (group.tail.offset !== end || !integer(group.tail.bytes) || group.tail.bytes !== Math.ceil(end / group.text.alignment) * group.text.alignment - end
         || end + group.tail.bytes !== group.text.bytes || group.tail.origin !== 'native-assembler-section-alignment'
         || group.tail.sha256 !== sha256Buffer(Buffer.alloc(group.tail.bytes))) fail('native tail contract');
-    if (!Array.isArray(group.relocations)) fail('relocation census');
-    let previous = -1;
-    for (const relocation of group.relocations) {
-      requireKeys(relocation, ['offset', 'type', 'symbol', 'symbolValue', 'symbolSection', 'word'], 'relocation');
-      if (!integer(relocation.offset) || relocation.offset % 4 || relocation.offset <= previous || relocation.offset + 4 > end
-          || ![4, 5, 6].includes(relocation.type) || typeof relocation.symbol !== 'string'
-          || !integer(relocation.symbolValue) || ![...['.text', 'UND', 'ABS'], ...(auxiliary.composed(group) ? ['.rodata'] : [])].includes(relocation.symbolSection)
-          || !integer(relocation.word) || relocation.word > 0xffffffff) fail('relocation contract');
-      previous = relocation.offset;
-    }
+    validateNativeRelocationOrder(group);
   }
   return config.groups;
 }
@@ -228,6 +249,7 @@ function census(elf, group, stage) {
 }
 function validateObject(elf, group, stage) {
   auxiliaryMode(group);
+  validateNativeRelocationOrder(group);
   if (![...['raw', 'projected', 'stripped'], ...(auxiliary.composed(group) ? ['text-projected'] : [])].includes(stage) || elf.header.type !== 1 || elf.header.machine !== 8
       || elf.header.entry !== 0 || elf.header.phoff !== 0 || elf.header.phnum !== 0) fail('relocatable object header/stage');
   return { schemaVersion: 1, stage, groupSha256: hash(group), objectFlags: elf.header.flags,
@@ -436,6 +458,7 @@ function validateComposedProof(proof) {
   if (text?.producer) auxiliaryMode(text.producer);
   if (!auxiliary.composed(text?.producer) && ![5, 7].includes(object?.schemaVersion) && !object?.composition) return;
   const group = text?.producer, value = object?.composition, artifacts = object?.artifacts;
+  if (group) validateNativeRelocationOrder(group);
   if (auxiliary.composed(group)) auxiliary.groupContract(group);
   const compositionKeys = ['schemaVersion', 'groupSha256', 'nativeObjectSha256', 'textProjectedObjectSha256',
     'projectedObjectSha256', 'strippedObjectSha256', 'implementationSha256', 'auxiliaryContract',
@@ -610,6 +633,7 @@ function validateComposedStage(stage, group, artifact) {
   for (const record of tableRels) {
     const index = tables.findIndex(table => record.offset >= table.offset && record.offset + 4 <= table.offset + table.bytes);
     const member = index < 0 ? null : group.functions.find(member => member.symbol === group.auxiliary.sections[index].memberSymbol);
+    if (record.word % 4) fail('composed table instruction destination alignment');
     if (!member || record.word < member.offset || record.word + 4 > member.offset + member.bytes) fail('composed table target attribution');
   }
   if (!same(tableRels, expectedTables) || !same(stage.auxiliary.tableRelocations, expectedTables)
