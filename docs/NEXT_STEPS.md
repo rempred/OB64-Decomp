@@ -88,6 +88,23 @@ exact with focused checks; include its affected inputs/callers in that combined
 wave's verification. No shared edit or extra full-ROM run is needed during private
 iteration. This is a source-interface correction, not a tooling exception.
 
+**W7 2317C8 local-storage decision (October 9):** messages 2042/2044 and the
+[storage evidence](../build/matching/resolution-w7-261009/2317c8-reload-storage-blocker.json)
+support testing smaller ordinary arrays and scalar locals as a reconstruction
+hypothesis; preserve the arena control. Observed bases, clears and allocation
+rules support candidate extents, not a safe selected-count bound or unique
+original declarations. The producer can add extra actors per first-side slot;
+neither a five/six-actor limit nor sufficient free records is proved. Preserve
+all uncapped loops, indexing, calls and missing checks; document possible excess
+indexing without adding guards or using undefined behavior as a code-generation
+trick. For this target, the preparation's domain-or-arena requirement does not
+block these private trials or ordinary complete-wave acceptance of exact source.
+All existing source/ownership/relocation/target/full-ROM gates remain; exact bytes
+do not establish portable C safety. Gold's message 2044 corrects 2041: a T0 stack load
+alone does not uniquely identify a user-scalar spill home. No tool change or new
+semantic claim is approved. Lavender resumes this target after its current target
+boundary; canonical inputs stay stable.
+
 Private `watch` still rejects 131828's four static helpers. Use the existing
 authenticated `probe` and approved raw capture for new source questions; do not
 globalize helpers or repeat the unchanged rejection. Its selected D760 source and
