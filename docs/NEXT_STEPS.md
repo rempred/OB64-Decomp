@@ -46,11 +46,13 @@ Director1992 assigns this same worker complete shared action-mode/High Attack W6
 all17 members in [the full wave](Plans/prompts/combat-shared-mode-wave-r1.md), using
 private root `build/matching/combat-w6-261009/`. Protect the15 currently accepted
 PURE_C siblings; B1F4/D14C remain original-ASM owners with no current acceptance.
-Start B1F4's missing E04-authenticated RTL/JUMP/first-CSE discriminator from the
-[preserved diagnostics](Plans/task-logs/combat-b1f4-preserved-diagnostics-r1.md),
-requiring final-assembly correspondence before transferring E16's explanation.
-Then choose a source experiment from the actual result. D14C's separate64-byte
-table/interior-consumer gate remains an integration prerequisite. This is private
+Current intake (mail1996/1997) supersedes the older E04 diagnostic assignment:
+B1F4's [Oct3 readable candidate](dossiers/func_0022B1F4-302262db17.md) already records
+complete symbolic instruction-form closure, still without linked or wave acceptance.
+Refresh that candidate's current proof and remaining integration prerequisites;
+do not repeat the obsolete source study. Then consult current D14C intake before
+selecting its next experiment. D14C's separate64-byte table/interior-consumer gate
+remains an integration prerequisite. This is private
 candidate authority, not table activation, reduced scope or worker retirement.
 
 LavenderSpire retains its unfinished Combat work and parked complete scheduler
