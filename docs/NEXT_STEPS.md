@@ -40,10 +40,11 @@ Director1913 assigns LavenderSpire the bounded static prerequisite for the queue
 Scenario checksum owner, ROM `5D9C..5FC0` (548 bytes), in
 `build/matching/probe-sig-20261009/`. Independent static review supports five bodies
 totaling 544 bytes, including `5EC4`/`5F60`, plus four retained post-return bytes at
-`5FBC`. Director1915 authorizes a complete five-body PURE_C native diagnostic using
-the existing authenticated fixture pipeline; no canonical edits or watch admission.
-Inspect actual compiler geometry before choosing a production representation. GoldOx
-is consulted on any supported generic contract gap. Metadata implementation remains
+`5FBC`. Director1919 releases continued five-body PURE_C candidate iteration using
+the existing authenticated native fixture pipeline, with no per-experiment permission,
+canonical edits or watch admission. The first capture confirms native alignment but
+is nonmatching; the Director investigates the wider producer scope separately. GoldOx
+is consulted on specific source blockers or a supported generic contract gap. Metadata implementation remains
 pending the concrete plan and combined structural review/audit; no matching acceptance.
 Scheduler NINE remains parked unfinished: `108AA0` now has an instruction-ready
 candidate, while `108C1C`/`1094BC`/`109A48` retain source blockers. Preserve all nine,
