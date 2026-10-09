@@ -31,9 +31,10 @@ scope and evidence. The new mode admits text/functions/tail, not tables or data.
 The [paired-owner](audit/2026-10-09-paired-owner-projection.md) and
 [local-body](audit/2026-10-07-reviewed-local-body.md) contracts remain accepted.
 
-W4 completion triggers Joe's fresh-worker rule. QuietPond closes its cursor and
-releases production/source ownership; Astra assigns the complete20-member
-movement/routes W5 to a fresh Sol6.1/xhigh worker after that release. Its
+W4 completion triggered Joe's fresh-worker rule. QuietPond released production
+source/build and W4/W5 ownership in mail1965 and stopped its own inbox watcher.
+Fresh Sol6.1/xhigh chat `01a12198-58cd-77f2-85c1-faa3648f698f` now owns production
+and the complete20-member movement/routes W5. Its
 [full roster](../build/matching/movement-w5-20261007/membership.json) and
 [recoverable sources](../build/matching/movement-w5-20261007/cursor.md) remain intact.
 Start from the current `12BC64` source blocker, reusing the other instruction-ready
@@ -41,8 +42,8 @@ candidates and accepted shared pursuit producer. No partial-wave acceptance.
 
 LavenderSpire retains its unfinished Combat work and parked complete scheduler
 NINE; completing the checksum side assignment does not retire that worker.
-Resume private Combat source experiments after the Director's commit/drain
-release, independently of W5. Keep DB10/3C00/6098 and NINE memberships, bests and
+Director1966 released its drain after local commit `8d2787b5`; private Combat
+DB10 source work has resumed independently of W5. Keep DB10/3C00/6098 and NINE memberships, bests and
 remaining gates recoverable. Native group admission does not clear unrelated
 auxiliary/table gates. Refresh affected private inputs once after shared changes;
 reuse valid evidence and do not repeat unchanged acceptance.
