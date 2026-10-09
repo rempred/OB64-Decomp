@@ -36,7 +36,10 @@ QuietPond resumes complete pursuit/producer W4 at 1284C4 under Director1895;
 complete movement W5 is parked with its BC64 source blocker and all candidates
 preserved. W4's specific Claude consultation was unanswered during the earlier
 connection outage; GoldOx is now reachable. Neither wave is completed or reduced.
-LavenderSpire retains DB10 and parked NINE/3C00/6098. The resource validator is read-only.
+LavenderSpire resumes its complete scheduler NINE wave at 108AA0 under
+Director1900, with DB10/3C00/6098 preserved unfinished and parked. GoldOx can now
+assess the earlier unanswered two-register address question. The workers' private
+roots and source ownership are disjoint; the resource validator is read-only.
 Use each private root's current cursor for the selected source and next question;
 older target-start instructions below do not supersede it. Director1876 released
 hold1871; refresh affected private intake before new concurrent checks. Retain
@@ -335,12 +338,13 @@ each watcher's `status.json` and actual process.
   either worker's current W5/DB10 assignment. Director1725 resumes both; scheduler
   NINE and the other animation conversions remain preserved and unfinished.
 
-- **Parked scheduler NINE / LavenderSpire, unfinished after October 7 controls:** same top-level
+- **Active scheduler NINE / LavenderSpire, unfinished:** same top-level
   chat `01a11381-0741-7a00-9337-967a16f41e41`, Sol6.1/xhigh, monitored by Astra.
   Director1675 transfers the complete nine-member private candidate scope below to
   `build/matching/scheduler-nine-20261007/`; QuietPond retains production ownership
   and the separate movement/pursuit assignments. All nine remain inactive ASM.
-  Start108C1C, then108AA0,1094BC,109A48,109C3C one at a time; preserve the four
+  Director1900 resumes108AA0 first with GoldOx consultation, then choose the next
+  distinct source question among108C1C/1094BC/109A48, one at a time; preserve the
   instruction-ready controls and full9,632-byte/table/tail/group completion scope.
   Individual private intake/watch/probe supports symbolic-object diagnostics;
   no whole-group private command or scheduler registry admission is established.
@@ -359,10 +363,12 @@ each watcher's `status.json` and actual process.
 
   Worker1687 reports all private native jobs drained.9C3C has an instruction-ready
   complete candidate; AA0/C1C/94BC/9A48 remain nonexact with useful preserved controls.
+  Director1900 reopens the source consultation now that GoldOx is reachable.
   The actual compiler graphs distinguish object contraction, missing stack storage,
   allocation and legal delay-slot speculation; no general impossibility or tooling
-  defect follows. Preserve all nine and the private cursor while the same worker
-  undertakes the validator study above. No partial integration or wave completion occurred.
+  defect follows. Preserve all nine and refresh private intake before new checks;
+  closed, native-identical spellings are not a fresh experiment. No partial integration
+  or wave completion occurred.
 
   **Preserved scheduler prerequisite scope:** complete five-member Squad W4
   scheduler group: `func_001094BC` (1,420 bytes), `func_0010ADB8` (648),
