@@ -77,6 +77,17 @@ owners. Consult GoldOx through verified own mail when genuinely stuck; report on
 complete-wave handoffs, actionable blockers or shared-input coordination. Keep
 experiments and next steps in the existing concise cursor and research records.
 
+**W7 shared call declaration:** mail2019/2020 and the
+[call-boundary evidence](../build/matching/resolution-w7-261009/bf8c-call-boundary.json)
+identify `0020BF8C`'s unsigned-short definition versus four signed-int caller
+declarations. The native getter zero-extends a halfword; private W7 uses the
+existing word-return caller view. YellowTiger owns the minimal compatible
+signed-int definition correction at the next coordinated integration, retaining
+the unsigned-halfword load. First confirm the complete 12-byte callee remains
+exact with focused checks; include its affected inputs/callers in that combined
+wave's verification. No shared edit or extra full-ROM run is needed during private
+iteration. This is a source-interface correction, not a tooling exception.
+
 Private `watch` still rejects 131828's four static helpers. Use the existing
 authenticated `probe` and approved raw capture for new source questions; do not
 globalize helpers or repeat the unchanged rejection. Its selected D760 source and
