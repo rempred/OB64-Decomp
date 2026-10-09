@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8E0651DD8121AE2C9159EC09860A64136BCA110400652BAB182CB94C7D3496C8",
+  "observationId": "8DB3E613FDF563FE951C1EF0C768B19B9D26842A96ABCF877889A21E81C2DAAB",
+  "symbol": "func_001284C4",
+  "authored": {
+    "context": "Gold1947 confirms one pseudo/one home over all lifetimes. BF2593872-word source pairs lower with first-grid64 scaleF8, so lowerF8. New source-supported partner is actual earlier1/256 multiplier, retailMTC1F4 at0x88 and first lowerF4 at0xC4. Assign constant after actual sine call; its multiplication consumer finishes before cosine call. Prediction: two real SETs survive, global root excludesF0/F2 but notF4 and preserves lower-beforeRAW scheduling. Alternative: constant is propagated into another pseudo and root becomes single-set, or scheduling creates a call-crossing/hardF4 conflict. First sine result copy may be removed normally without changing this constant/field pair.",
+    "effects": [
+      "first-bound-lifetime",
+      "register-allocation",
+      "constant-propagation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "370EB7031C5EBF632E1A7A3801A64F61CBB8178747F4A994D702094B658E7F07",
+      "sourceSha256": "3DC047D9A7AFF2A1892DA1515E77C9A4C252FA41F9D075584DE87F72A8ED9DA5"
+    },
+    "label": "actual-earlier-one-over-256-scale-and-first-lower-phases",
+    "observedEffect": "WatchA2DDDB4C PURE_C1192/frame56/55 actual relocations. Authenticated read-only comparison covers all298 words with0 ordinary differences/no extra or missing words; symbolic55/raw unresolved fields remain distinct. TextSHA27691565. Probe8AB54A84 confirms actual global85 retains constant SET59 and D98 SET89, FLOW4 uses/8-insn span/two deaths, LREG6; GREG conflicts hard32/34/52 but not36 and selects36/F4. Constant phase is finished before cosine call; sine copy removed normally. First lowerF4/RAWF0/candidate08F2, first-delay SUBF4 and later boundsF0 all retail. Read-only native R26/HI/LO arithmetic checks all55 relocation words with0 disagreements/binding conflicts under accepted owner base801D3D84. Four bindings remain explicitly proposed, requiring canonical recording: D_801EE820=801EE820, private labelD_801FB520 actually801EB520 (original LUI801F plus signedLO B520), func_801B2708=801B2708 (accepted106E48 entry), func_8009CE20=8009CE20 (accepted0002d220 entry). No addresses inferred from label spelling, no projected ELF or linked/full-ROM acceptance.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-real-earlier-scale-and-first-lower-phases.c",
+        "sha256": "3DC047D9A7AFF2A1892DA1515E77C9A4C252FA41F9D075584DE87F72A8ED9DA5"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-first-lower-first-grid-scale-phase-native-diff.json",
+        "sha256": "1D26017AC177266A0A0CFCA72514BD5805F9A06908EF5B0CBD7F6BED02F02D52"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/gold-1947-input-phase-advice.json",
+        "sha256": "BC4ECE044630364CD7FD1DD545BB62A3E1C79EBD13C99091FC1451EA96076771"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-earlier-scale-and-first-lower-phases-watch.json",
+        "sha256": "E43AC25333ACF7DEE55348F8E7AD6F3BF13D3CD3067527C05ED8281F258239EE"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-earlier-scale-and-first-lower-phases-native-diff.json",
+        "sha256": "61ACE9BDC7314CF9E58E8F5C0E765EF4FFE2A84DE02B7A552056EDED78923F16"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-earlier-scale-and-first-lower-phases-relocations.json",
+        "sha256": "25B85550883BFD2CA2902E32C2EC5C04E1364D26EA714F5F1B7A314B00813051"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/reconcile-284c4-relocations.cjs",
+        "sha256": "A3CB1935E99A2405A2383EBF90E995B505024DABC9D94465B78A5B203F4E7E8D"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/targets/func_001284C4/probes/8AB54A84541996830B1D6ED85164150288788BD772A1D49594B93D9321C22D17/probe-report.json",
+        "sha256": "6CEA9551945D09AD290CFA96098BBD9DCBC0770427A5165CB7F5FB59DF977DE4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "SelectA2DDDB4C as full-body private candidate; BF2593872-word and9A2271D07-word remain recoverable. Complete21 W4 source candidates are ready: two singletons, intact9 producer and ten unchanged accepted singles. Producer needs3 proposed data bindings, full9/group/member/natural-tail contract and10746C/129948 whole-ASM fallback preservation. All canonical sole-C ownership, actual linkage/placement/relocations and complete-ROM gates remain. All owned commands drained before1951 confirmation. Director1952 releases only the sole production writer for complete W4+checksum integration and focused checks after reviewed tooling/cheap guards. This curated observation does not establish acceptance. Parked20 W5 remains unfinished; no retirement/partial acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Capture existing sine result, set actual0.00390625 scalar after that call and use it in unchanged original ratio association. Reuse completed numeric temporary for actual first lowerD98, with separate/direct later bounds. Restore original inline64 first-grid expressions. Same three calls, argument signatures, external reads, float/double widths, arithmetic and guards/body coverage; no fake consumer, extra operation, qualifier, aggregate copy, forced register or ABI change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5237,
+      "sha256": "370EB7031C5EBF632E1A7A3801A64F61CBB8178747F4A994D702094B658E7F07"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3DC047D9A7AFF2A1892DA1515E77C9A4C252FA41F9D075584DE87F72A8ED9DA5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_001284C4-8e0651dd81.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "047F8A31BE0D19470072CA60C778CC73741709F6810583D2F80B6DA4AA31658E",
+  "observationId": "5A34470E235B2788015B60E8F429048339BE2733C3DEF8F834F4383F005932BB",
+  "symbol": "func_001284C4",
+  "authored": {
+    "context": "New bounded source hypothesis after global record and local coordinate pair controls. Leading explanation: reusing the completed first-bound numeric value for the actual first-grid64 scale preserves a second meaningful SET across blocks, changing its allocation/scheduling. Alternative: CSE propagates the constant and leaves first lower single-set/local, or global root conflicts with grid locals and chooses another home. This real scale consumer has not been covered by the bounded earlier bound/grid accumulator controls. No claimed historical variable or surviving-mechanism prerequisite. Historical private diagnostic context is retained by the referenced authenticated reports; this new import does not rerun or accept those bytes under the changed production model.",
+    "effects": [
+      "first-bound-lifetime",
+      "register-allocation",
+      "constant-propagation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8647F4FEF5CE6381072F1E2885F490892776D58D765945F30CCE2098CDC8029B",
+      "sourceSha256": "8AF1A4462C7EE79EE57DF9BDDE6F000C477890CEF76D96C1A335D9DA89909D4A"
+    },
+    "label": "284c4-first-lower-first-grid-scale-phase-integration-source-pair",
+    "observedEffect": "After correcting declaration placement for the pinned C90 dialect (initial failed source supplies no compiled verdict), watchBF259387 compiles PURE_C1192/frame56/55 actual relocations. Read-only native comparison authenticates actual ELF/expected298 words and uses only actual relocation masks:2 ordinary/56 symbolic differences, no extra/missing words; textSHA5CEC87FE. Only0C4 first lower load and0CC comparison useF8 instead of retailF4; every other ordinary word agrees. ProbeE66CBCA4 confirms genuine root85 survives COMBINE with memory SET87 and actual64 scale SET124; FLOW5 uses/18-insn span, LREG15, two deaths/global. GREG conflicts hard32/34/36/38 and chooses40/F8; raw106 isF0 and coordinate107F4. Intended multi-SET lifetime survives and first-delay SUB/later-bound homes become retail; remaining first-bound home differs. Improvement judged separately from explanation. No linked relocation or full-ROM acceptance from masking.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-real-first-lower-first-grid-scale-phase.c",
+        "sha256": "8AF1A4462C7EE79EE57DF9BDDE6F000C477890CEF76D96C1A335D9DA89909D4A"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-first-lower-first-grid-scale-phase-c90-watch.json",
+        "sha256": "B8E7B706AE8572799CE5627F4FD2B11657D64715007E1D05D4CA1A7E34A99DFE"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-first-lower-first-grid-scale-phase-native-diff.json",
+        "sha256": "1D26017AC177266A0A0CFCA72514BD5805F9A06908EF5B0CBD7F6BED02F02D52"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/compare-284c4-native.cjs",
+        "sha256": "AFFD583AAD55FF6694EC9C6372BD827F6B4A9BCD310F429095054DF0DE787C9D"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/targets/func_001284C4/probes/E66CBCA498C1F9B0FE254748717E09FABF0CEF1C96392C9545AAD204D5536704/probe-report.json",
+        "sha256": "396536F0824CA11EB9DAB013108241AC803EFF750194BAED331F2A348B75F281"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-first-lower-first-grid-scale-phase-watch.json",
+        "sha256": "E77509961735A803E8D5A0F78CB321EF4BDD1AEC046D6C9AB1243A13E572F779"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Retained source-pair evidence beside the zero-ordinary-word earlier-scale candidate. Two real definitions alone do not guarantee the retail hard register: the union of hard conflicts over both phases matters. Canonical source/ownership/relocation/full-ROM gates are separate and remain pending for the complete wave.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Separate first lower from later direct bounds. Reuse its numeric float temporary for actual64.0f scale shared by the first grid08/grid10 calculations only. Preserve exact arithmetic association, actual external loads, ordered guards, all three full paths and fallback. No fake consumer, added arithmetic, extra read, aggregate copy, volatile, forced register, width or ABI change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5244,
+      "sha256": "8647F4FEF5CE6381072F1E2885F490892776D58D765945F30CCE2098CDC8029B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8AF1A4462C7EE79EE57DF9BDDE6F000C477890CEF76D96C1A335D9DA89909D4A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_001284C4-047f8a31be.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

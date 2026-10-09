@@ -102,3 +102,45 @@ destinations, native-order/cache/proof mutations, and compiled nonmatching contr
 These fixtures do not activate production owners or reduce a matching wave.
 Artifacts remain ignored under `build/tests`. Production integration and the
 complete-ROM audit belong to the designated production source/build writer.
+
+
+## Ordered owners with multiple native functions
+
+The separate `native-text-owner-functions-projection` mode admits a contiguous,
+complete text producer with two or more physical owners and one or more native
+GLOBAL functions per owner. Each member has exactly `symbol`, `ownerRowIndex`
+and ordered `functionSymbols`. The first function is the member's entry; every
+function occurs once, without gaps or crossings. Only the last owner may contain
+the authenticated natural terminal alignment tail. No auxiliary/table/data
+extension is supported by this mode; the older modes retain their contracts.
+
+Multi-function owners require the complete ROM-authenticated logical-body census:
+exact canonical names, intervals, fragments, original-source hashes and placement.
+Each secondary GLOBAL body requires `independent-entry-supported`; LOCAL-only
+reviewed-body admission and weaker statuses do not grant this eligibility. Ordinary
+single-body owners retain their existing physical-owner authentication. Logical
+padding coverage and actual native zero-tail evidence are checked separately.
+Derived group records use that same status as entry evidence, without asserting
+original visibility, historical translation-unit membership or a particular call
+mechanism. Standalone compiler-function admission remains unchanged.
+
+REL records retain their serialized native order. Both physical-owner and function
+indices must be nondecreasing; a descending place within the same function is
+allowed. Duplicate places, unresolved HI16s and HI16/LO16 pairs crossing a function
+or owner reject. Internal references cannot target the owned terminal zeros.
+
+A fixed linker assignment is omitted only for an exact admitted GLOBAL function
+name at its authenticated owner/VMA. The linked symbol must actually be GLOBAL,
+section-defined and have the contracted size. Duplicate, undefined, LOCAL, wrong
+address and wrong-owner definitions reject. Other fixed aliases, including interior
+aliases, retain their assignments and addresses.
+
+This mode uses member text-contract schema 5 and object-evidence schema 9. Complete
+raw/projected/stripped function, section and ordered-relocation censuses, current
+registry/linkage identities, member-local tail evidence and linked fixed-binding
+records are validated on proof reconstruction and cache reuse. Old group schemas
+remain unchanged. The registered `owner-function-groups` suite supplies a tracked
+clean-room twelve-function producer, an unrelated multi-function final-owner
+fixture, native old-alias callers, compiled nonmatching sources and malformed
+census/order/tail/alias/proof/cache controls. Generated objects and reports remain
+ignored. These fixtures do not activate production sources.

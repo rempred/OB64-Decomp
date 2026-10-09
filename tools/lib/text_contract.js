@@ -144,8 +144,62 @@ function resolveTextContract(target) {
     tail: native ? native.tail : null,
   };
 }
+// Pure lookup over the caller's authenticated active model; no model loading here.
+// Only group members gain physical-owner/function aliases. Exact standalone and
+// multi-owner lookup keeps its existing meaning.
+function resolveWorkbenchActiveTarget(entries, target) {
+  const key = String(target?.symbol || '').toLowerCase();
+  const identity = entry => {
+    const { model, row, rows, ...record } = entry;
+    return { ...record, textOwners: entry.textOwners?.map(({row, ...owner}) => owner),
+      modelAuthority: model ? { config: model.config, inputFiles: model.inputFiles } : null };
+  };
+  const unique = (values, label) => {
+    if (!values.length) return null;
+    const first = identity(values[0]);
+    if (values.slice(1).some(value => !same(identity(value), first))) fail(label + ' is ambiguous');
+    return values[0];
+  };
+  const exact = entries.filter(entry => typeof entry.symbol === 'string' && entry.symbol.toLowerCase() === key);
+  const exactEntry = unique(exact, 'workbench active entry');
+  if (exactEntry && !exactEntry.compilationGroup) return exactEntry;
+  const candidates = [];
+  for (const entry of exact.length ? exact : entries) {
+    if (!entry.compilationGroup || entry.textOwners?.length !== 1) continue;
+    const group = entry.compilationGroup, index = entry.groupMemberIndex;
+    const owner = entry.textOwners[0], admitted = group.owners?.[index];
+    const member = group.members?.[index];
+    const fields = ['rowIndex','sectionName','romStartNumber','romEndNumber','vramStartNumber','vramEndNumber','bytes','originalAssembly','originalAssemblySha256'];
+    const fns = entry.compilerTextFunctions || [];
+    const fn = fns.find(value => value.symbol.toLowerCase() === key);
+    const physical = owner.symbol.toLowerCase() === key || entry.symbol.toLowerCase() === key;
+    if (!physical && !fn) continue;
+    if (!member || member.symbol !== entry.symbol || member.ownerRowIndex !== owner.rowIndex || !admitted
+        || fields.some(field => admitted[field] !== owner[field])
+        || entry.rowIndex !== owner.rowIndex || entry.romStartNumber !== owner.romStartNumber
+        || entry.romEndNumber !== owner.romEndNumber || entry.vramStartNumber !== owner.vramStartNumber
+        || entry.vramEndNumber !== owner.vramEndNumber) fail('workbench group owner identity drift');
+    if (fn) {
+      const native = group.functions.filter(value => value.symbol === fn.symbol);
+      if (native.length !== 1 || native[0].offset !== admitted.groupOffset + fn.offsetNumber
+          || native[0].bytes !== fn.bytes || fn.offsetNumber < 0 || fn.offsetNumber + fn.bytes > owner.bytes
+          || member.functionSymbols && !member.functionSymbols.includes(fn.symbol)) fail('workbench group function identity drift');
+    }
+    const delta = physical ? 0 : fn.offsetNumber, bytes = physical ? owner.bytes : fn.bytes;
+    const identity = { rowIndex: owner.rowIndex, primaryId: owner.primaryId, sectionName: owner.sectionName,
+      romStart: owner.romStartNumber + delta, romEndExclusive: owner.romStartNumber + delta + bytes,
+      vramStart: owner.vramStartNumber + delta, vramEndExclusive: owner.vramStartNumber + delta + bytes,
+      bytes, originalAssembly: owner.originalAssembly, originalAssemblySha256: owner.originalAssemblySha256 };
+    const canonicalFields = { romStartNumber:'romStart',romEndNumber:'romEndExclusive',vramStartNumber:'vramStart',vramEndNumber:'vramEndExclusive' };
+    for (const [field, expected] of Object.entries(identity)) if (Object.hasOwn(target,field) && target[field] !== expected) fail('workbench supplied group identity drift: ' + field);
+    for (const [field, normal] of Object.entries(canonicalFields)) if (Object.hasOwn(target,field) && target[field] !== identity[normal]) fail('workbench supplied group identity drift: ' + field);
+    candidates.push(entry);
+  }
+  return unique(candidates, 'workbench group alias') || exactEntry || null;
+}
 function bindWorkbenchTarget(session, target) {
-  if (target.compilationGroup || (session?.context?.phase8?.targets || []).some(entry => entry.symbol === target.symbol && entry.compilationGroup)) {
+  const active = resolveWorkbenchActiveTarget(session?.context?.phase8?.targets || [], target);
+  if (target.compilationGroup || active?.compilationGroup) {
     fail('group workbench requires a complete group candidate; use canonical diff with the group source');
   }
   const matches = (session?.context?.phase8?.targets || []).filter((entry) => entry.symbol === target.symbol && entry.nativeTextTail);
@@ -410,7 +464,9 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
     return { ...record, rawWord: rawBytes.readUInt32BE(offset), linkedWord: linkedBytes.readUInt32BE(offset),
       expectedWord: retailBytes.readUInt32BE(offset), linkedWordExact: linkedBytes.readUInt32BE(offset) === retailBytes.readUInt32BE(offset) };
   });
-  const result = { schemaVersion: target.nativeTextTail ? 2 : 1, ...(allocation ? { allocation } : {}),
+  const result = { schemaVersion: target.nativeTextTail ? 2 : 1,
+    ...(require('./compilation_groups').functionMode(target.compilationGroup)
+      ? { fixedBindings: require('./compilation_groups').verifyFixedBindings(target, elf) } : {}), ...(allocation ? { allocation } : {}),
     ...(target.auxiliaryProjection || auxiliaryProjection.composed(target.compilationGroup) ? { auxiliaryProjectionRetained: auxiliaryProjection.linkedEvidence(target, root, context) } : {}), textContractSha256: hash(contract), owners, mapContributions, functions,
     relocations, nonRelocationWordsUnchanged: unchangedWords, tail, fullOwnerExact: owners.every((owner) => owner.rawBytesExact) };
   for (const record of Object.values(objectEvidence.artifacts).filter(Boolean)) {
@@ -434,6 +490,6 @@ function validateRecords(record, expected, label) {
 module.exports = { NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SHA256, exactKeys, same, hash, nativeDescriptor,
   withObjectEvidenceMemo, objectInputs,
   withObjectArtifactSnapshot, objectArtifactBytes, deriveObjectEvidenceFromSnapshot,
-  normalizeNativeTextTail, resolveTextContract, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,
+  normalizeNativeTextTail, resolveTextContract, resolveWorkbenchActiveTarget, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,
   linkContext, finishLinkContext: preparedLink.finishLinkContext, ownerEvidence, functionCensus, tailEvidence, nativeObjectAllocationEvidence, nativeLinkedAllocationEvidence,
   deriveObjectEvidence, deriveLinkEvidence, recordsForTarget, validateRecords };

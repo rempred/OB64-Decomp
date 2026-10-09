@@ -11,6 +11,7 @@ const { selectSweepTargets, runSweep } = require('../tools/lib/matching/sweep');
 const { compileCandidate, recordCandidate } = require('../tools/lib/matching/compiler');
 const { runM2c, prepareAndCompile } = require('../tools/lib/matching/m2c');
 const { runProbe } = require('../tools/lib/matching/probe');
+const { resolveWorkbenchActiveTarget, bindWorkbenchTarget } = require('../tools/lib/text_contract');
 
 async function run(workbench) {
   const members = workbench.targets.filter(t => t.activeMatchingProducer?.kind === 'compilation-group');
@@ -19,7 +20,7 @@ async function run(workbench) {
   assert.deepEqual(producerView(null), null);
   assert.deepEqual(producerView({ source: 'src/fixture.c' }), { kind: 'standalone', source: 'src/fixture.c' });
   for (const member of members) {
-    const active = workbench.activeTargetsBySymbol.get(member.symbol.toLowerCase());
+    const active = resolveWorkbenchActiveTarget(groupedActive, member);
     assert.equal(member.activeMatchingSource, active.source);
     assert.deepEqual(member.activeMatchingProducer.members, active.compilationGroup.members);
     assert.equal(member.activeMatchingProducer.memberIndex, active.groupMemberIndex);
@@ -32,6 +33,24 @@ async function run(workbench) {
     for (const selector of [{}, { includeSolved: true }, { set: 'smallest-leaves-200' }]) {
       assert(!selectSweepTargets(workbench, selector).some(t => t.targetId === member.targetId));
     }
+  }
+  const separatelyLoaded = require('../tools/lib/active_targets').loadActiveTargetModel().targets;
+  const aliases = members.filter(member => resolveWorkbenchActiveTarget(groupedActive,member).symbol !== member.symbol);
+  assert.equal(aliases.length,5,'numeric canonical primaries retain five physical aliases');
+  for(const target of aliases){const active=resolveWorkbenchActiveTarget(groupedActive,target);
+    assert.equal(resolveWorkbenchActiveTarget(groupedActive,{symbol:target.symbol}),active);
+    assert.equal(resolveWorkbenchActiveTarget([], {symbol:target.symbol}),null);
+    assert.equal(resolveWorkbenchActiveTarget([...groupedActive,...separatelyLoaded],{symbol:target.symbol}),active);
+    assert.equal(scratchCapability(workbench,target,separatelyLoaded).supported,false);
+    const conflicting={...active,sourceSha256:'0'.repeat(64)};
+    assert.throws(()=>resolveWorkbenchActiveTarget([...groupedActive,conflicting],{symbol:target.symbol}),/ambiguous/);
+    assert.throws(()=>scratchCapability(workbench,target,[conflicting]),/ambiguous/);
+    for(const [field,value]of [['rowIndex',target.rowIndex+1],['romStart',target.romStart+4],['romEndExclusive',target.romEndExclusive-4],
+      ['vramStart',target.vramStart+4],['vramEndExclusive',target.vramEndExclusive-4],['sectionName','.wrong'],
+      ['originalAssembly','wrong.s'],['originalAssemblySha256','0'.repeat(64)]])
+      assert.throws(()=>resolveWorkbenchActiveTarget(groupedActive,{symbol:target.symbol,[field]:value}),/supplied group identity drift/);
+    const wrong={...active,rowIndex:active.rowIndex+1};
+    assert.throws(()=>resolveWorkbenchActiveTarget(groupedActive.map(a=>a===active?wrong:a),{symbol:target.symbol}),/group owner identity drift/);
   }
   const standalone = workbench.targets.find(t => t.activeMatchingProducer?.kind === 'standalone' && t.symbolByteOffset === 0);
   assert(standalone && scratchCapability(workbench, standalone).supported);
@@ -55,6 +74,24 @@ async function run(workbench) {
       await assert.rejects(runSweep(workbench, { symbols: [target.symbol] }), /complete group candidate/);
     }
     const context = { phase8: { targets: groupedActive } };
+    const interiors=workbench.logicalTargets.filter(t=>['func_00005E84','func_00005EC4','func_00005F00','func_00005F60'].includes(t.symbol));
+    assert.equal(interiors.length,4);
+    const copies=members.filter(t=>[52,53,54].includes(t.rowIndex));assert.equal(copies.length,3);
+    for(const copy of copies)assert.equal(resolveWorkbenchActiveTarget(groupedActive,copy).symbol,copy.symbol);
+    for(const selected of [...aliases,...interiors,...copies]){
+      for(const request of [selected,{symbol:selected.symbol}]){
+        assert.throws(()=>bindWorkbenchTarget({context},request),/complete group candidate/);
+        assert.throws(()=>compileCandidate({},request,'',{session:{context}}),/complete group candidate/);
+        assert.throws(()=>runProbe({},request,'',{context}),/complete group candidate/);
+        assert.throws(()=>prepareAndCompile({},request,{compilerSession:{context}}),/complete group candidate/);
+        assert.equal(scratchCapability(workbench,request).supported,false);
+        assert.equal(scratchCapability({},request,groupedActive).supported,false);
+      }
+      if(!interiors.includes(selected))assert.throws(()=>selectSweepTargets(workbench,{includeSolved:true,symbols:[selected.symbol]}),/complete group candidate/);
+      else assert.deepEqual(selectSweepTargets(workbench,{includeSolved:true,symbols:[selected.symbol]}),[], 'logical interior cannot enter physical sweep');
+    }
+    for(const selected of aliases)assert.throws(()=>bindWorkbenchTarget({context},{symbol:selected.symbol,romStart:selected.romStart+4}),/supplied group identity drift/);
+
     const bare = { symbol: target.symbol };
     assert.throws(() => compileCandidate({}, bare, '', { session: { context } }), /complete group candidate/);
     assert.throws(() => runProbe({}, bare, '', { context }), /complete group candidate/);
@@ -64,8 +101,8 @@ async function run(workbench) {
   assert.equal(sideEffects, 0);
   const database = path.join(ROOT, 'build/matching/workbench.sqlite');
   const before = fs.existsSync(database) ? sha256File(database) : null;
-  for (const command of ['prepare', 'watch', 'probe']) {
-    const result = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools/match.js'), command, target.symbol,
+  for (const selected of [target,aliases[0],workbench.logicalTargets.find(t=>t.symbol==='func_00005EC4')]) for (const command of ['prepare', 'watch', 'probe']) {
+    const result = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools/match.js'), command, selected.symbol,
       '--source', 'must-not-be-read.c'], { cwd: ROOT, encoding: 'utf8', windowsHide: true });
     assert.equal(result.status, 1);
     assert.match(result.stderr, /complete group candidate/);

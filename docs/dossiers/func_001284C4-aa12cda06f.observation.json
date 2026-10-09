@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AA12CDA06F9774E8F489B48D0E0F44FC0E691C53608511ED8B0E1720A0506BDE",
+  "observationId": "762ED529AA24265D0760DFE47CA64CBD019B445BF1E5A7A9F91AD64384742705",
+  "symbol": "func_001284C4",
+  "authored": {
+    "context": "BF259387 two-word best preserved. Gold1926 distinguishes single-set RAW boost from a real same-block second SET that survives COMBINE. C1 product/copy phases collapsed. Here both SETs are actual memory inputs with genuine arithmetic consumers: unit08 then unit10. Prediction: two real SF memory definitions may survive and change RAW priority/deaths, allowing its second input before the separate first lower. Alternative: CSE/COMBINE separates pseudos or local allocation keeps both phases in one home and changes candidate08. No prior proof of surviving property or register guarantee required. Historical private diagnostic context is retained by the referenced authenticated reports; this new import does not rerun or accept those bytes under the changed production model.",
+    "effects": [
+      "first-bound-lifetime",
+      "register-allocation",
+      "scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "78E9B0989D6B2EB4C1DFC36D07248016BB9FA4BFFDD975CDE6A87FA467298463",
+      "sourceSha256": "DC228A7A3C9C5B8CD751A3B4932AEE3792D9E2F6311BECB74DE6DFBFD456B497"
+    },
+    "label": "284c4-two-unit-input-value-phases-integration-source-pair",
+    "observedEffect": "Watch5589DFCD PURE_C1192/frame56/55 actual relocations,8 ordinary/62 symbolic differences, complete owner/no extra or missing words. ProbeB3CF8194: genuine numeric input104 memory SET83(unit08) and91(unit10) survive COMBINE. FLOW4 uses/4-insn block0 span and two REG_DEADs atADD85/SUB93; LREG4 uses/7-insn span/two deaths. SCHED1 raw91 has ordinary priority36hex versus first-lower88 boost7f000001; two-set mechanism did occur. Yet GREG allocates104 (conflicts hard32/F0) to34/F2 for both phases; candidate08 movesF4, lowerlocalF0, coordinate10F2. Final ordinary instruction order matches retail, but8 register-field words differ. Presence of block0 stats/two deaths does not establish separate allocation quantities; reason LREG left104 to GREG is open pending specific Gold question. SelectedBF remains2-word best.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-real-two-unit-input-value-phases.c",
+        "sha256": "DC228A7A3C9C5B8CD751A3B4932AEE3792D9E2F6311BECB74DE6DFBFD456B497"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-first-lower-first-grid-scale-phase-native-diff.json",
+        "sha256": "1D26017AC177266A0A0CFCA72514BD5805F9A06908EF5B0CBD7F6BED02F02D52"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-two-unit-input-value-phases-watch.json",
+        "sha256": "B8418AFE0D162A0FC36FB56F264DE40A8C6D8B0976E04D11B13D87A053731168"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/284c4-two-unit-input-value-phases-native-diff.json",
+        "sha256": "0B848B6F42229DC2137D2971100674F38B982DC7DF4BE469FEF197CCC9F16418"
+      },
+      {
+        "path": "build/matching/pursuit-w4-20261007/targets/func_001284C4/probes/B3CF81942FE9C6FC180FAD35EF696E929DEB996B3F81E1EA2F695A10939F1816/probe-report.json",
+        "sha256": "61F28EE7EB59D0007C5D8CEE4E0502D72438928B7A9C4403FA0E712ADA7E3477"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Retained source-pair evidence beside the zero-ordinary-word earlier-scale candidate. Two real definitions alone do not guarantee the retail hard register: the union of hard conflicts over both phases matters. Canonical source/ownership/relocation/full-ROM gates are separate and remain pending for the complete wave.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse one block-local numeric input for actual unit08 load/first addition and unit10 load/first subtraction. First lower is separate, later bounds direct. Existing reads/operations/order of short-circuit guards, all three complete grid/cell/output paths and fallback remain. No new operation, extra consumer, aggregate copy, width, volatile, forced register or ABI change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5198,
+      "sha256": "78E9B0989D6B2EB4C1DFC36D07248016BB9FA4BFFDD975CDE6A87FA467298463"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DC228A7A3C9C5B8CD751A3B4932AEE3792D9E2F6311BECB74DE6DFBFD456B497"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_001284C4-aa12cda06f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

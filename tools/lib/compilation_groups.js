@@ -11,6 +11,69 @@ const CONFIG_PATH = path.join(ROOT, 'config/matching-c-compilation-groups.json')
 const SAFE_ID = /^[a-z][a-z0-9_-]{0,63}$/;
 const SAFE_SYMBOL = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
 const SHA = /^[0-9A-F]{64}$/;
+const FUNCTIONS_MODE = 'native-text-owner-functions-projection';
+const functionMode = group => group?.mode === FUNCTIONS_MODE;
+const functionContexts = new Map();
+function memberFunctions(group, index) { return functionMode(group)
+  ? group.members[index].functionSymbols.map(name => group.functions.find(fn => fn.symbol === name)) : [group.functions[index]]; }
+function memberIndexAt(group, offset) {
+  return group.members.findIndex((member, index) => { const fns = memberFunctions(group, index);
+    return offset >= fns[0].offset && offset < fns.at(-1).offset + fns.at(-1).bytes; });
+}
+function authenticateFunctions(group, assemblySource = null) {
+  if (!functionMode(group)) return;
+  const key = hash(group);
+  let context = functionContexts.get(key);
+  if (!context) {
+    // Fresh proof/cache readers recover canonical authenticated context. They do
+    // not trust a preserved envelope, report-supplied registry, or arbitrary IDs.
+    const active = require('./active_targets').loadActiveTargetModel();
+    const match = active.targets.find(t => t.compilationGroup && hash(t.compilationGroup) === key);
+    if (!match) fail('unbound native function group');
+    context = functionContexts.get(key);
+  }
+  if (!context || context.groupIdentity !== key) fail('native function group context');
+  const logical = require('./logical_functions'), p7 = require('./phase7_conventional');
+  if (p7.sha256File(logical.CONFIG_PATH) !== group.logicalBinding.registryIdentity.sha256
+      || p7.sha256File(require('./active_targets').LINKAGE_CONFIG_PATH) !== group.fixedBindingIdentity.sha256) fail('native group registry/linkage inputs changed');
+  const actual = logical.assertNativeGroupBodies(context.registry, context.rows, group);
+  if (!same(actual, group.logicalBinding)) fail('native group logical binding drift');
+  for (const row of context.rows) {
+    if (assemblySource) assemblySource(row.part.file, row.part.sha256);
+    else if (p7.sha256File(path.join(ROOT, row.part.file)) !== row.part.sha256) fail('native group original source drift');
+  }
+}
+function fixedBindingRecords(group, symbols) {
+  const result = [];
+  for (const [symbol, addressText] of Object.entries(symbols)) {
+    const address = Number(addressText), defined = group.functions.find(fn => fn.symbol === symbol);
+    const owner = group.owners.find(o => address >= o.vramStartNumber && address < o.vramEndNumber);
+    if (defined && address !== group.vramStart + defined.offset) fail('fixed/native definition address collision');
+    if (!owner && !defined) continue;
+    if (!owner || defined && (defined.binding !== 1 || defined.offset < owner.groupOffset
+        || defined.offset + defined.bytes > owner.groupOffset + owner.bytes)) fail('fixed/native definition owner collision');
+    result.push({ symbol, address, kind: defined ? 'native-global' : 'fixed-address',
+      ownerRowIndex: owner.rowIndex, sectionName: owner.sectionName, ownerOffset: address - owner.vramStartNumber });
+  }
+  return result.sort((a,b) => a.symbol.localeCompare(b.symbol));
+}
+function verifyFixedBindings(target, elf) {
+  const group = target.compilationGroup;
+  if (!functionMode(group)) return null;
+  authenticateFunctions(group);
+  const evidence = [];
+  for (const record of group.fixedBindings) {
+    const matches = elf.symbols.filter(s => s.name === record.symbol);
+    if (matches.length !== 1 || matches[0].value !== record.address) fail('linked fixed binding identity');
+    const symbol = matches[0], section = elf.sections[symbol.sectionIndex];
+    if (record.kind === 'native-global' && (symbol.binding !== 1 || symbol.symbolType !== 2
+        || symbol.visibility || section?.name !== record.sectionName
+        || symbol.size !== group.functions.find(f => f.symbol === record.symbol).bytes)) fail('linked native fixed binding must be section-defined GLOBAL');
+    if (record.kind === 'fixed-address' && symbol.sectionIndex !== 0xfff1) fail('fixed address unexpectedly redefined');
+    evidence.push({ ...record, binding: symbol.binding, symbolType: symbol.symbolType, size: symbol.size, visibility: symbol.visibility, definedSection: section?.name || 'ABS' });
+  }
+  return evidence;
+}
 function fail(message) { throw new Error('compilation group: ' + message); }
 function requireKeys(value, keys, label) { if (!exactKeys(value, keys)) fail(label + ' schema'); }
 function integer(value, min = 0) { return Number.isSafeInteger(value) && value >= min; }
@@ -36,7 +99,7 @@ function validateNativeRelocationOrder(group) {
   if (!Array.isArray(group.relocations) || !Array.isArray(group.functions) || !group.functions.length) fail('relocation census');
   const end = group.functions.at(-1).offset + group.functions.at(-1).bytes;
   const places = new Set(), pending = new Map();
-  let previousOwner = -1;
+  let previousOwner = -1, previousFunction = -1;
   for (const relocation of group.relocations) {
     requireKeys(relocation, ['offset', 'type', 'symbol', 'symbolValue', 'symbolSection', 'word'], 'relocation');
     if (!integer(relocation.offset) || relocation.offset % 4 || places.has(relocation.offset) || relocation.offset + 4 > end
@@ -44,17 +107,30 @@ function validateNativeRelocationOrder(group) {
         || !integer(relocation.symbolValue) || !['.text', 'UND', 'ABS', ...(auxiliary.composed(group) ? ['.rodata'] : [])].includes(relocation.symbolSection)
         || !integer(relocation.word) || relocation.word > 0xffffffff) fail('relocation contract or duplicate place');
     places.add(relocation.offset);
-    const owner = group.functions.findIndex(fn => relocation.offset >= fn.offset && relocation.offset + 4 <= fn.offset + fn.bytes);
+    const fnIndex = group.functions.findIndex(fn => relocation.offset >= fn.offset && relocation.offset + 4 <= fn.offset + fn.bytes);
+    const owner = functionMode(group) ? memberIndexAt(group, relocation.offset) : fnIndex;
+    if (functionMode(group) && (fnIndex < 0 || fnIndex < previousFunction)) fail('native relocation function interleaving');
+    previousFunction = fnIndex;
+    if (functionMode(group) && relocation.symbolSection === '.text' && relocation.type === 4) {
+      const destination = relocation.symbolValue + (relocation.word & 0x03ffffff) * 4;
+      if (destination % 4 || !group.functions.some(fn => destination >= fn.offset && destination + 4 <= fn.offset + fn.bytes)) fail('native function reference into tail/outside body');
+    }
     if (owner < 0 || owner < previousOwner) fail('relocation member interleaving changes serialized order');
     previousOwner = owner;
     const key = JSON.stringify([relocation.symbolSection, relocation.symbol, relocation.symbolValue]);
     if (relocation.type === 5) {
       if (!pending.has(key)) pending.set(key, []);
-      pending.get(key).push(owner);
+      pending.get(key).push({ owner, fnIndex, word: relocation.word });
     } else if (relocation.type === 6) {
       const high = pending.get(key);
       if (!high?.length) fail('native LO16 without pending HI16');
-      if (high.some(value => value !== owner)) fail('native cross-owner HI16/LO16 pair');
+      if (high.some(value => value.owner !== owner)) fail('native cross-owner HI16/LO16 pair');
+      if (functionMode(group) && high.some(value => value.fnIndex !== fnIndex)) fail('native cross-function HI16/LO16 pair');
+      if (functionMode(group) && relocation.symbolSection === '.text') for (const entry of high) {
+        const low = relocation.word & 65535, addend = (((entry.word & 65535) << 16) + (low & 32768 ? low - 65536 : low)) >>> 0;
+        const destination = relocation.symbolValue + addend;
+        if (destination % 4 || !group.functions.some(fn => destination >= fn.offset && destination + 4 <= fn.offset + fn.bytes)) fail('native function HI/LO reference into tail/outside body');
+      }
       pending.delete(key);
     }
   }
@@ -72,27 +148,32 @@ function registry(config, profile) {
       const sections = normalizeAuxiliary(group);
       auxiliary.groupContract({ ...group, auxiliary: { ...group.auxiliary, sections } });
     }
-    if (!SAFE_ID.test(group.id) || ids.has(group.id) || (!auxiliary.composed(group) && group.mode !== 'native-text-owner-projection')
+    if (!SAFE_ID.test(group.id) || ids.has(group.id) || (!auxiliary.composed(group) && !functionMode(group) && group.mode !== 'native-text-owner-projection')
         || typeof group.source !== 'string' || !group.source.endsWith('.c') || sources.has(group.source)
         || path.isAbsolute(group.source) || group.source.includes('\\') || group.source.split('/').some(part => !part || part === '.' || part === '..')) fail('producer identity');
     ids.add(group.id); sources.add(group.source);
     if (!Array.isArray(group.members) || group.members.length < 2 || !Array.isArray(group.functions)
-        || group.functions.length !== group.members.length) fail('member/function census');
+        || (functionMode(group) ? group.functions.length < group.members.length : group.functions.length !== group.members.length)) fail('member/function census');
     requireKeys(group.text, ['section', 'bytes', 'alignment', 'type', 'flags', 'sha256'], 'native text');
     if (group.text.section !== '.text' || group.text.type !== 1 || group.text.flags !== 6
         || !integer(group.text.bytes, 4) || !power(group.text.alignment)
         || group.text.bytes % group.text.alignment || !SHA.test(group.text.sha256)) fail('native text shape');
-    let end = 0;
+    let end = 0, functionIndex = 0;
     for (const [index, member] of group.members.entries()) {
-      requireKeys(member, ['symbol', 'ownerRowIndex'], 'member');
+      requireKeys(member, ['symbol', 'ownerRowIndex', ...(functionMode(group) ? ['functionSymbols'] : [])], 'member');
       if (!SAFE_SYMBOL.test(member.symbol) || symbols.has(member.symbol.toLowerCase()) || !integer(member.ownerRowIndex)) fail('member identity');
       symbols.add(member.symbol.toLowerCase());
-      const fun = group.functions[index];
-      requireKeys(fun, ['symbol', 'offset', 'bytes', 'binding', 'symbolType', 'visibility'], 'function');
-      if (fun.symbol !== member.symbol || fun.offset !== end || !integer(fun.bytes, 4) || fun.bytes % 4
-          || fun.binding !== 1 || fun.symbolType !== 2 || fun.visibility !== 0) fail('function partition');
-      end += fun.bytes;
+      const names = functionMode(group) ? member.functionSymbols : [member.symbol];
+      if (!Array.isArray(names) || !names.length || names[0] !== member.symbol) fail('member function names');
+      for (const name of names) {
+        const fun = group.functions[functionIndex++];
+        requireKeys(fun, ['symbol', 'offset', 'bytes', 'binding', 'symbolType', 'visibility'], 'function');
+        if (fun.symbol !== name || !SAFE_SYMBOL.test(name) || group.functions.filter(f => f.symbol === name).length !== 1
+            || fun.offset !== end || !integer(fun.bytes, 4) || fun.bytes % 4 || fun.binding !== 1 || fun.symbolType !== 2 || fun.visibility !== 0) fail('function partition');
+        end += fun.bytes;
+      }
     }
+    if (functionIndex !== group.functions.length || new Set(group.members.map(m => m.ownerRowIndex)).size !== group.members.length) fail('member/function coverage');
     requireKeys(group.tail, ['offset', 'bytes', 'sha256', 'origin'], 'tail');
     if (group.tail.offset !== end || !integer(group.tail.bytes) || group.tail.bytes !== Math.ceil(end / group.text.alignment) * group.text.alignment - end
         || end + group.tail.bytes !== group.text.bytes || group.tail.origin !== 'native-assembler-section-alignment'
@@ -125,8 +206,8 @@ function bind(groups, targets, context = {}) {
       if (target.romStartNumber !== first.romStartNumber + offset || target.vramStartNumber !== first.vramStartNumber + offset
           || !same(placement(target), placement(first))
           || target.overlayDescriptorId !== first.overlayDescriptorId || target.descriptorRawSha256 !== first.descriptorRawSha256
-          || group.functions[index].offset !== offset
-          || target.bytes !== group.functions[index].bytes + (index === selected.length - 1 ? group.tail.bytes : 0)) fail('member placement/extent');
+          || memberFunctions(group, index)[0].offset !== offset
+          || target.bytes !== memberFunctions(group, index).reduce((n, f) => n + f.bytes, 0) + (index === selected.length - 1 ? group.tail.bytes : 0)) fail('member placement/extent');
       assigned.add(target.symbol);
       const owner = { ...target.textOwners[0], groupOffset: offset, alignment: alignment(group, offset) };
       delete owner.row;
@@ -138,9 +219,19 @@ function bind(groups, targets, context = {}) {
     for (const [index, target] of selected.entries()) {
       target.compilationGroup = normalized;
       target.groupMemberIndex = index;
-      target.compilerTextFunctions = [{ symbol: target.symbol, offset: '0x00000000', offsetNumber: 0,
-        bytes: group.functions[index].bytes, binding: 'GLOBAL', entryEvidence: 'owner' }];
+      target.compilerTextFunctions = memberFunctions(group, index).map((fn, n) => ({ symbol: fn.symbol,
+        offset: '0x' + (fn.offset - owners[index].groupOffset).toString(16).toUpperCase().padStart(8, '0'),
+        offsetNumber: fn.offset - owners[index].groupOffset, bytes: fn.bytes, binding: 'GLOBAL', entryEvidence: n ? 'independent-entry-supported' : 'owner' }));
+      if (functionMode(group)) target.compilerTextFunctionsExplicit = true;
       target.expectedRelocations = expectedMemberRelocations(target);
+    }
+    if (functionMode(group)) {
+      const p7 = require('./phase7_conventional'), logical = require('./logical_functions'), active = require('./active_targets');
+      const logicalRegistry = context.logicalRegistry || logical.loadRegistry(context.model, context.baserom);
+      normalized.logicalBinding = logical.assertNativeGroupBodies(logicalRegistry, selected.map(t => t.row), normalized);
+      normalized.fixedBindingIdentity = { path: 'config/matching-c-linkage.json', sha256: p7.sha256File(active.LINKAGE_CONFIG_PATH) };
+      normalized.fixedBindings = fixedBindingRecords(normalized, context.linkSymbols || {});
+      functionContexts.set(hash(normalized), { groupIdentity: hash(normalized), registry: logicalRegistry, rows: selected.map(t => t.row) });
     }
     if (auxiliary.composed(group)) {
       const active = require('./active_targets');
@@ -249,12 +340,13 @@ function census(elf, group, stage) {
 }
 function validateObject(elf, group, stage) {
   auxiliaryMode(group);
+  authenticateFunctions(group);
   validateNativeRelocationOrder(group);
   if (![...['raw', 'projected', 'stripped'], ...(auxiliary.composed(group) ? ['text-projected'] : [])].includes(stage) || elf.header.type !== 1 || elf.header.machine !== 8
       || elf.header.entry !== 0 || elf.header.phoff !== 0 || elf.header.phnum !== 0) fail('relocatable object header/stage');
   return { schemaVersion: 1, stage, groupSha256: hash(group), objectFlags: elf.header.flags,
     metadata: allocation(elf, group, stage), ...census(elf, group, stage),
-    ...(auxiliary.composed(group) ? { auxiliary: auxiliary.groupCensus(elf, group, stage), completeCensus: auxiliary.completeObjectCensus(elf) } : {}) };
+    ...(auxiliary.composed(group) ? { auxiliary: auxiliary.groupCensus(elf, group, stage), completeCensus: auxiliary.completeObjectCensus(elf) } : functionMode(group) ? { completeCensus: auxiliary.completeObjectCensus(elf) } : {}) };
 }
 function project(input, group) {
   const raw = parseBuffer(input), rawEvidence = validateObject(raw, group, 'raw');
@@ -296,7 +388,8 @@ function contract(target) {
   auxiliary.assertMemberSections(target);
   const tc = require('./text_contract'), group = target.compilationGroup, owner = group.owners[target.groupMemberIndex];
   const ordinary = tc.resolveTextContract({ ...target, compilationGroup: null });
-  return { ...ordinary, schemaVersion: auxiliary.composed(group) ? 4 : 2, mode: group.mode, producer: group,
+  return { ...ordinary, schemaVersion: functionMode(group) ? 5 : auxiliary.composed(group) ? 4 : 2,
+    ...(functionMode(group) ? { tail: target.groupMemberIndex === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null } : {}), mode: group.mode, producer: group,
     memberIndex: target.groupMemberIndex,
     owners: ordinary.owners.map(value => ({ ...value,
       expectedInputShape: { ...value.expectedInputShape, alignment: owner.alignment },
@@ -337,7 +430,7 @@ function evidence(target, root, files = null) {
   const strippedFunctions = tc.functionCensus(stripped, strippedOwners.map(value => value.section));
   if (!same(rawFunctions, strippedFunctions)) fail('strip changed member functions');
   const rawRelocations = require('./phase8_matching_c').rawRelocationRecords(projected);
-  return { schemaVersion: auxiliary.composed(group) ? 7 : 3,
+  return { schemaVersion: functionMode(group) ? 9 : auxiliary.composed(group) ? 7 : 3,
     ...(auxiliary.composed(group) ? { composition: { schemaVersion: 2, groupSha256: hash(group),
       nativeObjectSha256: sha256Buffer(native.buffer), textProjectedObjectSha256: sha256Buffer(reproduction.intermediate),
       projectedObjectSha256: sha256Buffer(projected.buffer), strippedObjectSha256: sha256Buffer(stripped.buffer),
@@ -351,7 +444,7 @@ function evidence(target, root, files = null) {
     discardedAncillaryRelocations: rawRelocations.filter(value => !group.owners.some(owner => value.section === '.rel' + owner.sectionName)
       && !(auxiliary.composed(group) && group.auxiliary.sections.some(section => value.section === '.rel' + section.outputSection))),
     tail: target.groupMemberIndex === group.members.length - 1 ? group.tail : null,
-    assemblyMode: auxiliary.composed(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
+    assemblyMode: functionMode(group) ? 'untouched-native-text-owner-functions-projection' : auxiliary.composed(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
 }
 const compiledProducers = new Map();
 function compile(phase8, target, output, compiler, assembler, objcopy, options) {
@@ -668,3 +761,114 @@ function validateComposedStage(stage, group, artifact) {
   if (pending.size || !same(stage.auxiliary.references, references)) fail('composed reference census binding');
 }
 Object.assign(module.exports, { validateComposedProof });
+
+Object.assign(module.exports, { functionMode, memberFunctions, authenticateFunctions, fixedBindingRecords, verifyFixedBindings });
+
+// Distinct v5/v9 evidence for the owner/function mode. A self-compared report
+// still needs current authenticated group context and complete stage censuses.
+function validateFunctionGroupProof(proof) {
+  const group = proof.textContract?.producer, object = proof.objectEvidence;
+  if (!functionMode(group) && object?.schemaVersion !== 9 && proof.textContract?.schemaVersion !== 5) return;
+  if (!functionMode(group) || proof.textContract.schemaVersion !== 5 || object?.schemaVersion !== 9
+      || object.composition || proof.textContract.mode !== FUNCTIONS_MODE) fail('native functions proof schema');
+  authenticateFunctions(group); validateNativeRelocationOrder(group);
+  const member = proof.textContract.memberIndex, owner = group.owners[member];
+  if (!owner || group.members[member].symbol !== proof.target.symbol
+      || object.textContractSha256 !== hash(proof.textContract)
+      || proof.linkEvidence.textContractSha256 !== hash(proof.textContract)
+      || !exactKeys(object.producerStages, ['raw', 'projected', 'stripped'])) fail('native functions proof member binding');
+  const expectedFunctions = memberFunctions(group, member).map(f => ({ ...f, offset: f.offset - owner.groupOffset }));
+  if (!same(proof.textContract.compilerTextFunctions, expectedFunctions)
+      || !same(object.rawFunctions, expectedFunctions) || !same(object.strippedFunctions, expectedFunctions)
+      || !same(proof.linkEvidence.functions, expectedFunctions)) fail('native functions member proof census');
+  const localTail = member === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null;
+  if (!same(proof.textContract.tail, localTail) || !same(proof.linkEvidence.tail, localTail)) fail('native functions member tail proof');
+  if (!same(proof.artifacts.assemblerObject, object.artifacts?.unsplitAssemblerObject)
+      || !same(proof.artifacts.object, object.artifacts?.rawObject)
+      || !same(proof.artifacts.linkedObjectAfterAncillaryRemoval, object.artifacts?.strippedObject)
+      || !same(object.tail, member === group.members.length - 1 ? group.tail : null)
+      || object.assemblyMode !== 'untouched-native-text-owner-functions-projection'
+      || object.compilerAssemblyRewritten !== false || object.discardedAncillaryRelocations.length) fail('native functions artifact/tail binding');
+  const artifactRoles = { raw: 'unsplitAssemblerObject', projected: 'rawObject', stripped: 'strippedObject' };
+  for (const [name, stage] of Object.entries(object.producerStages)) {
+    if (!exactKeys(stage, ['schemaVersion','stage','groupSha256','objectFlags','metadata','bytes','sha256','functions','relocations','completeCensus'])
+        || stage.schemaVersion !== 1 || stage.stage !== name || stage.groupSha256 !== hash(group)
+        || stage.bytes !== group.text.bytes || stage.sha256 !== group.text.sha256
+        || !same(stage.functions, group.functions) || !same(stage.relocations, group.relocations)) fail('native functions stage binding');
+    const c = stage.completeCensus, artifact = object.artifacts?.[artifactRoles[name]];
+    if (!c || !exactKeys(c, ['header','sections','symbols','relocations']) || !Array.isArray(c.sections)
+        || !Array.isArray(c.symbols) || !Array.isArray(c.relocations) || !artifact || !SHA.test(artifact.sha256)
+        || !integer(artifact.bytes,52) || c.header.type !== 1 || c.header.machine !== 8 || c.header.phnum
+        || c.header.shnum !== c.sections.length || c.header.shoff + c.header.shnum*40 > artifact.bytes) fail('native functions complete census');
+    const h=c.header, uint=value=>integer(value)&&value<=0xffffffff;
+    if(!exactKeys(h,['type','machine','entry','phoff','shoff','flags','ehsize','phentsize','phnum','shentsize','shnum','shstrndx'])
+        ||Object.values(h).some(v=>!uint(v))||h.entry||h.phoff||h.flags!==stage.objectFlags||h.ehsize!==52||h.shentsize!==40
+        ||c.sections[h.shstrndx]?.name!=='.shstrtab'||!exactKeys(artifact,['path','bytes','sha256']))fail('native functions header binding');
+    const raw = name === 'raw', names = raw ? ['.text'] : group.owners.map(o => o.sectionName);
+    const offset = section => raw ? (section === '.text' ? 0 : undefined) : group.owners.find(o => o.sectionName === section)?.groupOffset;
+    const sections = new Map();
+    for (const sec of c.sections) {
+      if (!exactKeys(sec,['name','type','flags','address','size','alignment','entrySize','link','info','sha256'])
+          ||typeof sec.name!=='string'||['type','flags','address','size','alignment','entrySize','link','info'].some(k=>!uint(sec[k]))
+          ||sec.link>=c.sections.length||sections.has(sec.name) || !SHA.test(sec.sha256) || !integer(sec.size) || sec.size > artifact.bytes) fail('native functions section census');
+      sections.set(sec.name, sec);
+      if (sec.flags & 3 && !names.includes(sec.name)) {
+        if (sec.name === '.reginfo' && name !== 'stripped') continue;
+        if (['.data','.bss'].includes(sec.name) && sec.size === 0 && sec.address === 0 && sec.flags === 3 && sec.alignment === 16
+            && sec.type === (sec.name === '.bss' ? 8 : 1)) continue;
+        if (!raw && sec.name === '.text' && !sec.size && sec.type === 1 && sec.flags === 6) continue;
+        fail('native functions uncontracted allocated section');
+      }
+    }
+    names.forEach((sectionName,i) => {
+      const sec=sections.get(sectionName), expected=raw?group.text:{bytes:group.owners[i].bytes,alignment:group.owners[i].alignment};
+      if (!sec || sec.type!==1 || sec.flags!==6 || sec.address || sec.size!==expected.bytes || sec.alignment!==expected.alignment
+          || raw && sec.sha256!==group.text.sha256) fail('native functions text ownership census');
+    });
+    const metadata = sections.get('.reginfo');
+    if (name==='stripped' ? metadata || stage.metadata!==null : !metadata
+        || !same(stage.metadata,Object.fromEntries(Object.entries(metadata).filter(([k])=>k!=='name')))
+        || !same(Object.fromEntries(Object.entries(stage.metadata).filter(([k])=>k!=='sha256')),REGINFO)) fail('native functions metadata census');
+    const symbolKeys=['symbolTableIndex','symbolIndex','name','value','size','binding','symbolType','visibility','sectionIndex'];
+    for(const [index,sec] of c.sections.entries())if(sec.type===2){const symbols=c.symbols.filter(s=>s.symbolTableIndex===index);
+      if(sec.entrySize!==16||symbols.length*16!==sec.size||!symbols.length||symbols.some((s,i)=>s.symbolIndex!==i))fail('native functions symbol extent');}
+    for(const sym of c.symbols) if(!exactKeys(sym,symbolKeys)||typeof sym.name!=='string'
+        || symbolKeys.filter(k=>k!=='name').some(k=>!uint(sym[k]))||c.sections[sym.symbolTableIndex]?.type!==2
+        || sym.sectionIndex<0xff00&&!c.sections[sym.sectionIndex]) fail('native functions symbol schema');
+    const funcs=c.symbols.filter(sym=>sym.symbolType===2).map(sym=>({symbol:sym.name,offset:offset(c.sections[sym.sectionIndex]?.name)+sym.value,bytes:sym.size,binding:sym.binding,symbolType:2,visibility:sym.visibility})).sort((a,b)=>a.offset-b.offset);
+    if(!same(funcs,group.functions))fail('native functions complete symbol binding');
+    const marker=c.symbols.filter(sym=>sym.name==='gcc2_compiled.');
+    if(marker.length!==1||marker[0].value||marker[0].size||marker[0].binding||marker[0].symbolType!==1||marker[0].visibility||c.sections[marker[0].sectionIndex]?.name!==names[0])fail('native functions marker');
+    for(const sym of c.symbols)if(names.includes(c.sections[sym.sectionIndex]?.name)&&sym.symbolType!==2&&sym!==marker[0]
+        &&(sym.symbolType!==3||sym.name||sym.value||sym.size||sym.binding||sym.visibility))fail('native functions uncontracted text symbol');
+    for(const rel of c.relocations)if(!exactKeys(rel,['owner','place','type','symbol','word'])||!sections.has(rel.owner)
+        ||!integer(rel.place)||rel.place%4||rel.place+4>sections.get(rel.owner).size||!integer(rel.word)||rel.word>0xffffffff
+        ||![4,5,6].includes(rel.type)||!c.symbols.some(sym=>same(sym,rel.symbol)))fail('native functions relocation schema');
+    const textRels=c.relocations.filter(r=>offset(r.owner)!==undefined).map(r=>{
+      const destination=c.sections[r.symbol.sectionIndex]?.name,base=offset(destination);
+      const symbolSection=base!==undefined?'.text':r.symbol.sectionIndex===0?'UND':r.symbol.sectionIndex===0xfff1?'ABS':null;
+      if(r.symbol.symbolType===3&&(base!==0||r.symbol.value!==0))fail('native functions section anchor');
+      return {offset:offset(r.owner)+r.place,type:r.type,symbol:r.symbol.symbolType===3?symbolSection:r.symbol.name,symbolValue:r.symbol.value+(base||0),symbolSection,word:r.word};
+    });
+    if(c.relocations.some(r=>c.sections.filter(s=>s.type===9&&c.sections[s.info]?.name===r.owner).length!==1))fail('native functions REL ownership');
+    if(!same(textRels,group.relocations)||c.relocations.length!==textRels.length)fail('native functions ordered relocation census');
+    for(const sec of c.sections.filter(sec=>sec.type===9)){
+      const records=c.relocations.filter(r=>r.owner===c.sections[sec.info]?.name),bytes=Buffer.alloc(records.length*8);
+      if(sec.entrySize!==8||sec.size!==bytes.length||c.sections[sec.link]?.type!==2)fail('native functions REL section');
+      records.forEach((r,i)=>{bytes.writeUInt32BE(r.place,i*8);bytes.writeUInt32BE((r.symbol.symbolIndex*256+r.type)>>>0,i*8+4);});
+      if(sha256Buffer(bytes)!==sec.sha256)fail('native functions serialized REL identity');
+    }
+  }
+  const linked=proof.linkEvidence.fixedBindings;
+  if(!Array.isArray(linked)||linked.length!==group.fixedBindings.length)fail('native functions fixed binding census');
+  for(const [i,record]of group.fixedBindings.entries()){
+    const actual=linked[i],fn=group.functions.find(f=>f.symbol===record.symbol);
+    if(!exactKeys(actual,[...Object.keys(record),'binding','symbolType','size','visibility','definedSection'])
+        ||Object.entries(record).some(([key,value])=>!same(actual[key],value))
+        ||record.kind==='native-global'&&(actual.binding!==1||actual.symbolType!==2||actual.size!==fn.bytes||actual.visibility||actual.definedSection!==record.sectionName)
+        ||record.kind==='fixed-address'&&actual.definedSection!=='ABS')fail('native functions linked fixed binding proof');
+  }
+  if(!same(object.producerStages.raw.metadata,object.producerStages.projected.metadata))fail('native functions projected metadata drift');
+  for(const o of group.owners){const a=object.producerStages.projected.completeCensus.sections.find(s=>s.name===o.sectionName),b=object.producerStages.stripped.completeCensus.sections.find(s=>s.name===o.sectionName);if(!same(a,b))fail('native functions stripped text drift');}
+}
+Object.assign(module.exports, { validateFunctionGroupProof });

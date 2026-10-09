@@ -33,6 +33,12 @@
   ],
   "padding": [
     {
+      "romStart": 24508,
+      "romEndExclusive": 24512,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Reviewed retained terminal zero tail. The preceding JR ra at 0x5FB4 executes its ANDI delay slot at 0x5FB8 before returning. The bounded static incoming census has no resolved entry at 0x5FBC; native assembler alignment emits the same four zero bytes. This does not establish runtime absence of indirect or computed edges."
+    },
+    {
       "romStart": 26840,
       "romEndExclusive": 26848,
       "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
@@ -972,8 +978,8 @@
       "romEndExclusive": 24260,
       "evidence": {
         "caseId": "entry:00005E84",
-        "status": "known-entry-or-ownership",
-        "rationale": "Initializes its own accumulator and 16-bit index; all loop paths reach seed addition and return mask. Separate predecessor epilogue and six direct calls support an independent leaf within a larger multi-body checksum owner. Raw re-decoding verifies 6 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+        "status": "independent-entry-supported",
+        "rationale": "Initializes its own accumulator and 16-bit index; all loop paths reach seed addition and return mask. Separate predecessor epilogue and six direct calls support an independent leaf within a larger multi-body checksum owner. Raw re-decoding verifies 6 mapping-qualified incoming direct calls. No qualified non-call edge crosses the reviewed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
       },
       "symbol": "func_00005E84",
       "aliases": [],
@@ -996,12 +1002,40 @@
       ]
     },
     {
+      "romStart": 24260,
+      "romEndExclusive": 24320,
+      "evidence": {
+        "caseId": "entry:00005EC4",
+        "status": "independent-entry-supported",
+        "rationale": "Director1952 admits the independently reviewed static body census. Separate predecessor return/delay slot, self-initialized index/accumulator, distinct internal loops and own return/delay slot; mapping-qualified direct calls and no contradictory resolved cut edges support independent entry. Static evidence does not establish runtime execution or historical translation-unit membership."
+      },
+      "symbol": "func_00005EC4",
+      "aliases": [],
+      "expectedBytesSha256": "4F3CCE9839638839221C5DE3FE38CFA71B128A10307C2C2A31414F192CA3C79D",
+      "fragments": [
+        {
+          "rowIndex": 55,
+          "romStart": 24260,
+          "romEndExclusive": 24320,
+          "ownerOffset": 296,
+          "bytes": 60,
+          "vramStart": 2147965636,
+          "sectionName": ".ob64.r0055",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s",
+          "sha256": "39CD887BCB9B83EFA43F923C981F02C060F19CDDBB660C72CA3170F9A7125157"
+        }
+      ]
+    },
+    {
       "romStart": 24320,
       "romEndExclusive": 24416,
       "evidence": {
         "caseId": "entry:00005F00",
-        "status": "known-entry-or-ownership",
-        "rationale": "Independent byte and bit loops initialize t0/t1/v1. The preceding unseeded checksum leaf has returned at 0x5EF8/0x5EFC. Its own final seed-add and mask do not share a tail with that leaf. Raw re-decoding verifies 4 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+        "status": "independent-entry-supported",
+        "rationale": "Independent byte and bit loops initialize t0/t1/v1. The preceding unseeded checksum leaf has returned at 0x5EF8/0x5EFC. Its own final seed-add and mask do not share a tail with that leaf. Raw re-decoding verifies 4 mapping-qualified incoming direct calls. No qualified non-call edge crosses the reviewed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
       },
       "symbol": "func_00005F00",
       "aliases": [],
@@ -1014,6 +1048,34 @@
           "ownerOffset": 356,
           "bytes": 96,
           "vramStart": 2147965696,
+          "sectionName": ".ob64.r0055",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s",
+          "sha256": "39CD887BCB9B83EFA43F923C981F02C060F19CDDBB660C72CA3170F9A7125157"
+        }
+      ]
+    },
+    {
+      "romStart": 24416,
+      "romEndExclusive": 24508,
+      "evidence": {
+        "caseId": "entry:00005F60",
+        "status": "independent-entry-supported",
+        "rationale": "Director1952 admits the independently reviewed static body census. Separate predecessor return/delay slot, self-initialized index/accumulator, distinct internal loops and own return/delay slot; mapping-qualified direct calls and no contradictory resolved cut edges support independent entry. Static evidence does not establish runtime execution or historical translation-unit membership."
+      },
+      "symbol": "func_00005F60",
+      "aliases": [],
+      "expectedBytesSha256": "C6626E8B3EDB4B2084589ADA999372289AAE31239DD575511E47B964220A67FA",
+      "fragments": [
+        {
+          "rowIndex": 55,
+          "romStart": 24416,
+          "romEndExclusive": 24508,
+          "ownerOffset": 452,
+          "bytes": 92,
+          "vramStart": 2147965792,
           "sectionName": ".ob64.r0055",
           "placementKind": "early-boot-linear",
           "overlayDescriptorId": null,

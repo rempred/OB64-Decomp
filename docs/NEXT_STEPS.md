@@ -22,46 +22,36 @@ tomorrow using the existing experiment records.
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
-**Current tooling and continuation, October 9:** native REL order and composed
-groups with one table are accepted after regression tests, one structural audit
-and independent final review. CURRENT `03A66431` / baseline `D6553DED` remains
-retail-exact. The [paired-owner audit](audit/2026-10-09-paired-owner-projection.md)
-records the change; the earlier [native-function projection](audit/2026-10-08-native-function-readonly-projection.md)
-and [reviewed local-body contract](audit/2026-10-07-reviewed-local-body.md) remain
-accepted. This closes representation defects, not production activation or wave
-acceptance. Private linked paired fixtures are diagnostic evidence. Complete
-memberships, owner contracts and normal final-wave gates below remain binding.
+**Current tooling and continuation, October 9:** complete Squad W4 (all21 owners)
+and the complete Scenario checksum chain (all8 owners/12 native functions) are
+accepted at CURRENT `B98A0C71` / baseline `D6553DED`. The combined structural audit,
+normal verifier, copy-migration comparison and independent final review passed.
+The [owner/function-group audit](audit/2026-10-09-owner-function-groups.md) records
+scope and evidence. The new mode admits text/functions/tail, not tables or data.
+The [paired-owner](audit/2026-10-09-paired-owner-projection.md) and
+[local-body](audit/2026-10-07-reviewed-local-body.md) contracts remain accepted.
 
-QuietPond retains complete pursuit/producer W4 and parked movement W5 unchanged.
-`1284C4` has a source blocker; preserve its current best in the private cursor.
-Director1932 authorizes intact nine-owner native diagnostics through the existing
-authenticated fixture route, reusing saved raw artifacts when valid. Single-target
-private watch correctly rejects nine functions; no guard change or acceptance follows.
-Director1929 assigns LavenderSpire the complete Scenario checksum-chain candidate
-experiment in `build/matching/probe-sig-20261009/`: unchanged physical rows48–55,
-ROM `5760..5FC0` (2144 bytes). Retain primary bodies `5760`, `581C`, `5978`, `5A88`,
-the three accepted record-copy sources at `5B8C`, `5C58`, `5CFC`, and all five checksum
-bodies `5D9C`, `5E84`, `5EC4`, `5F00`, `5F60`. Twelve bodies cover2140 executable
-bytes; the four retained post-return bytes at `5FBC` remain separate. The bounded
-CFG/reference study supports full coverage, not historical translation-unit identity.
-Preserve prefix/interior labels and accepted `5C60`/`5D04` aliases. Reuse the accepted
-three sources read-only, derive the other complete bodies one at a time, and test the
-full native producer through the existing authenticated fixture pipeline. Private
-checks need no per-experiment permission; canonical edits and watch admission remain
-unreleased. Native geometry, relocation conservation and a generic representation
-plan must precede metadata/tooling implementation and combined structural review/audit.
-Consult GoldOx for specific source blockers or a supported tooling proposal; no new
-tooling is approved and no candidate result establishes matching acceptance.
-Scheduler NINE remains parked unfinished: `108AA0` now has an instruction-ready
-candidate, while `108C1C`/`1094BC`/`109A48` retain source blockers. Preserve all nine,
-their data/tail/group gates and DB10/3C00/6098. The workers' private roots are disjoint;
-QuietPond continues W4, and the accepted resource validator remains read-only.
-Use each private root's current cursor for the selected source and next question;
-older target-start instructions below do not supersede it. Director1876 released
-hold1871; refresh affected private intake before new concurrent checks. Retain
-identities, threads and watchers; QuietPond remains the production writer. Consult
-GoldOx for specific stuck questions and continue source experiments without
-waiting for a Director recipe or sending routine status mail.
+W4 completion triggers Joe's fresh-worker rule. QuietPond closes its cursor and
+releases production/source ownership; Astra assigns the complete20-member
+movement/routes W5 to a fresh Sol6.1/xhigh worker after that release. Its
+[full roster](../build/matching/movement-w5-20261007/membership.json) and
+[recoverable sources](../build/matching/movement-w5-20261007/cursor.md) remain intact.
+Start from the current `12BC64` source blocker, reusing the other instruction-ready
+candidates and accepted shared pursuit producer. No partial-wave acceptance.
+
+LavenderSpire retains its unfinished Combat work and parked complete scheduler
+NINE; completing the checksum side assignment does not retire that worker.
+Resume private Combat source experiments after the Director's commit/drain
+release, independently of W5. Keep DB10/3C00/6098 and NINE memberships, bests and
+remaining gates recoverable. Native group admission does not clear unrelated
+auxiliary/table gates. Refresh affected private inputs once after shared changes;
+reuse valid evidence and do not repeat unchanged acceptance.
+
+This current block supersedes older ownership, target-start and tooling holds
+below. The live worker cursors and Director's explicit handoff identify current
+owners. Consult GoldOx through verified own mail when genuinely stuck; report only
+complete-wave handoffs, actionable blockers or shared-input coordination. Keep
+experiments and next steps in the existing concise cursor and research records.
 
 Private `watch` still rejects 131828's four static helpers. Use the existing
 authenticated `probe` and approved raw capture for new source questions; do not

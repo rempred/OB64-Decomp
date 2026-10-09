@@ -2410,6 +2410,7 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
       || Object.prototype.hasOwnProperty.call(actual.assemblyContract, 'adapterApplied')) {
     fail('source-to-object proof schema drift');
   }
+  compilationGroups.validateFunctionGroupProof(actual);
   compilationGroups.validateComposedProof(actual);
   const projected = actual.target.auxiliaryProjection;
   const projectionEvidence = actual.objectEvidence.auxiliaryProjection;
@@ -3040,6 +3041,16 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
     if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(symbol)) fail('unsafe Phase 8 link alias: ' + symbol);
     const numericValue = parseNumber(value, 'link alias ' + symbol);
     if (aliases.has(symbol) && aliases.get(symbol) !== numericValue) fail('Phase 8 link alias value drift: ' + symbol);
+    const providers = phase8.targets.filter(target => compilationGroups.functionMode(target.compilationGroup)
+      && target.compilerTextFunctions.some(fn => fn.symbol === symbol && fn.binding === 'GLOBAL'));
+    if (providers.length) {
+      if (providers.length !== 1) fail('duplicate native fixed alias provider');
+      const target = providers[0]; compilationGroups.authenticateFunctions(target.compilationGroup);
+      const binding = target.compilationGroup.fixedBindings.find(record => record.symbol === symbol);
+      if (!binding || binding.kind !== 'native-global' || binding.address !== numericValue
+          || binding.ownerRowIndex !== target.rowIndex) fail('native fixed alias does not bind its provider');
+      continue;
+    }
     aliases.set(symbol, numericValue);
   }
   for (const target of phase8.targets) {

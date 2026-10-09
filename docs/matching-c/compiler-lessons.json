@@ -91,9 +91,14 @@
         "register-allocation",
         "scheduling-or-block-order"
       ],
-      "applicability": "Real X-before-Z expression phases restore local F0/F2 in nonmatching 3C0; its missing SCHED2 capture leaves the first changing pass unproved. Separate counterexample 6186 retains four divisions/casts through SCHED2, then shares at JUMP2. Its arm-local result declarations still become GLOBAL allocnos with a V0 conflict. Keep pass claims source-bound: block scope does not guarantee local allocation. Preserve real paths and operations; improved registers do not establish a match.",
+      "applicability": "123458's real X/Z phases change F0/F2; its four-division counterexample shares only at JUMP2, and block scope does not force local allocation. In 1284C4, the completed 1/256 scale then first lower bound retain two SETs and select F4; first-grid-scale and two-unit controls retain SETs but choose F8/F2. Preserve actual operations and widths; check surviving definitions and interference. These source-bound pairs establish no general allocation rule or original C.",
       "note": "docs/dossiers/func_00123458-3c0b9abb61.md#recorded-observation",
-      "references": ["docs/dossiers/func_00123458-6186fdce4c.md"],
+      "references": [
+        "docs/dossiers/func_00123458-6186fdce4c.md",
+        "docs/dossiers/func_001284C4-8e0651dd81.md",
+        "docs/dossiers/func_001284C4-047f8a31be.md",
+        "docs/dossiers/func_001284C4-aa12cda06f.md"
+      ],
       "observations": [
         {
           "symbol": "func_00123458",
@@ -102,6 +107,10 @@
         {
           "symbol": "func_00123458",
           "path": "docs/dossiers/func_00123458-6186fdce4c.observation.json"
+        },
+        {
+          "symbol": "func_001284C4",
+          "path": "docs/dossiers/func_001284C4-8e0651dd81.observation.json"
         }
       ]
     },

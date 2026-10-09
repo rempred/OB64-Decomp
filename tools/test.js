@@ -20,6 +20,7 @@ const ROUTINE_TESTS = [
   ['active-targets', 'tests/active_targets.js'],
   ['active-model-sources', 'tests/active_model_sources.js'],
   ['compilation-groups', 'tests/compilation_groups.js'],
+  ['owner-function-groups', 'tests/owner_function_groups.js'],
   ['auxiliary-interior', 'tests/auxiliary_interior.js'],
   ['auxiliary-projection', 'tests/auxiliary_projection.js'],
   ['group-auxiliary-projection', 'tests/group_auxiliary_projection.js'],

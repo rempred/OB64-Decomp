@@ -124,7 +124,7 @@ function loadRegistry(model, baserom, config = JSON.parse(fs.readFileSync(CONFIG
     bytes: fs.statSync(CONFIG_PATH).size, sha256: sha256File(CONFIG_PATH) } };
   if (Buffer.isBuffer(baserom) && baserom.length === model.config.rom.bytes
       && sha256Buffer(baserom) === model.config.rom.sha256) {
-    authenticatedRegistries.set(registry, { bodies: JSON.stringify(bodies),
+    authenticatedRegistries.set(registry, { bodies: JSON.stringify(bodies), padding: JSON.stringify(padding), unavailableBodies: JSON.stringify(registry.unavailableBodies),
       rows: new Map(model.rows.map(row => [row.index, JSON.stringify(row)])) });
   }
   return registry;
@@ -214,4 +214,48 @@ function assertActivationCompatible(registry, symbol, rows, compilerTextFunction
   if (!entryDefinition && !structuralNames.includes(symbol.toLowerCase())) fail(`assembly alias has no owner-entry definition: ${symbol}`);
 }
 
-module.exports = { CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };
+
+// New group mode only: GLOBAL compiler entries are independent reviewed bodies,
+// not the LOCAL-only reconstructed-body contract. No caller/visibility inference.
+function assertNativeGroupBodies(registry, rows, group) {
+  const accepted = authenticatedRegistries.get(registry);
+  if (!accepted || accepted.bodies !== JSON.stringify(registry.bodies)
+      || accepted.padding !== JSON.stringify(registry.padding)
+      || accepted.unavailableBodies !== JSON.stringify(registry.unavailableBodies)) fail('native group needs unchanged authenticated logical registry');
+  const result = [];
+  for (const [index, row] of rows.entries()) {
+    if (accepted.rows.get(row.index) !== JSON.stringify(row)) fail('native group owner identity drift');
+    const member = group.members[index], functions = member.functionSymbols.map(name => group.functions.find(fn => fn.symbol === name));
+    const start = row.romStart, ownerOffset = start - rows[0].romStart;
+    const tailBytes = index === rows.length - 1 ? group.tail.bytes : 0;
+    let cursor = start;
+    const bodies = registry.bodies.filter(body => body.romStart < row.romEndExclusive && body.romEndExclusive > start);
+    // Any registered cut takes precedence over the physical-owner fallback, even
+    // when a candidate claims only one function for that owner.
+    const reviewed = bodies.length > 0 || functions.length > 1;
+    if (reviewed && bodies.length !== functions.length) fail('native group complete logical body census');
+    for (const [i, fn] of functions.entries()) {
+      if (!fn || fn.offset !== cursor - rows[0].romStart || fn.binding !== 1 || fn.symbolType !== 2 || fn.visibility
+          || fn.bytes <= 0 || cursor + fn.bytes > row.romEndExclusive - tailBytes) fail('native group function placement');
+      if (reviewed) {
+        const body = bodies[i];
+        if (!body || body.romStart !== cursor || body.romEndExclusive !== cursor + fn.bytes
+            || fn.symbol !== body.symbol || i > 0 && body.evidence.status !== 'independent-entry-supported'
+            || JSON.stringify(intersections({ rows: [row] }, cursor, cursor + fn.bytes)) !== JSON.stringify(body.fragments)) fail('native GLOBAL body differs from reviewed registry');
+      } else if (fn.symbol !== member.symbol || fn.offset !== ownerOffset
+          || fn.bytes + tailBytes !== row.bytes) fail('native group ordinary owner body drift');
+      cursor += fn.bytes;
+    }
+    if (cursor !== row.romEndExclusive - tailBytes) fail('native group unclassified function gap');
+    const padding = registry.padding.filter(p => p.romStart < row.romEndExclusive && p.romEndExclusive > start);
+    if (padding.length !== (tailBytes ? 1 : 0) || tailBytes && (padding[0].romStart !== cursor
+        || padding[0].romEndExclusive !== row.romEndExclusive || padding[0].expectedBytesSha256 !== group.tail.sha256)) fail('native group logical terminal padding coverage');
+    if (registry.unavailableBodies.some(body => body.romStart < row.romEndExclusive && body.romEndExclusive > start)) fail('native group unresolved body');
+    result.push({ rowIndex: row.index, romStart: start, romEndExclusive: row.romEndExclusive,
+      source: row.part.file, sourceSha256: row.part.sha256, functions: functions.map(fn => ({ ...fn })),
+      bodies, padding });
+  }
+  return { registryIdentity: { ...registry.identity }, members: result };
+}
+
+module.exports = { assertNativeGroupBodies, CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };

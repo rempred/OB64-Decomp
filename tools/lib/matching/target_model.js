@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadActiveTargetModel } = require('../active_targets');
 const logical = require('../logical_functions');
+const { resolveWorkbenchActiveTarget } = require('../text_contract');
 // Keep scratch admission in this sealed comparison-algorithm input.
 const GROUP_REASON = 'group workbench requires a complete group candidate; use canonical diff with the group source';
 const LIVE_TARGET_FIELDS = ['activeMatchingSource', 'activeMatchingProducer', 'scratchCompilation', 'requestedSymbol'];
@@ -16,12 +17,14 @@ function isActiveTarget(target) {
 function scratchCapability(workbench, target, sessionTargets = []) {
   // Stored target records deliberately omit live producer state.
   const key = String(target.symbol || '').toLowerCase();
-  const active = workbench?.activeTargetsBySymbol?.get(key);
+  const activeEntries = [...new Set([...(workbench?.activeTargetsBySymbol?.values() || []), ...sessionTargets])];
+  const active = resolveWorkbenchActiveTarget(activeEntries, target);
+  const exactKeyRecord = workbench?.activeTargetsBySymbol?.get(key);
   const live = workbench?.bySymbol?.get(key);
   const sessionTarget = sessionTargets.find(value => value.symbol.toLowerCase() === key);
   const overlapping = target.selectionKind === 'logical-body'
     ? [...(workbench?.activeTargetsBySymbol?.values() || [])].filter(value => value.romStartNumber < target.romEndExclusive && value.romEndNumber > target.romStart) : [];
-  if ([target, live, active, sessionTarget, ...overlapping].some(value => value?.compilationGroup
+  if ([target, live, active, exactKeyRecord, sessionTarget, ...overlapping].some(value => value?.compilationGroup
       || value?.activeMatchingProducer?.kind === 'compilation-group')) {
     return { supported: false, code: 'complete-group-candidate-required', reason: GROUP_REASON };
   }
@@ -159,7 +162,7 @@ function loadWorkbenchModel(options = {}) {
     schemaVersion: 1,
     targetModelContract: 5,
     logicalFunctionRegistry: logicalRegistry.identity,
-    logicalFunctionSemantics: [__filename, require.resolve('../logical_functions')].map(file => ({
+    logicalFunctionSemantics: [__filename, require.resolve('../logical_functions'), require.resolve('../text_contract')].map(file => ({
       path: path.relative(ROOT, file).replace(/\\/g, '/'), sha256: sha256File(file),
     })),
     profile: config.profile,
@@ -220,11 +223,12 @@ function loadWorkbenchModel(options = {}) {
         } : {}),
       };
       const targetId = digest({ modelId, metadata, expectedBytesSha256: expected ? sha256Buffer(expected) : null });
+      const active = resolveWorkbenchActiveTarget([...activeBySymbol.values()], metadata);
       return {
         ...metadata,
-        activeMatchingSource: activeBySymbol.get(symbol.toLowerCase())?.source || null,
-        activeMatchingProducer: producerView(activeBySymbol.get(symbol.toLowerCase())),
-        scratchCompilation: scratchCapability({ activeTargetsBySymbol: activeBySymbol }, { symbol }),
+        activeMatchingSource: active?.source || null,
+        activeMatchingProducer: producerView(active),
+        scratchCompilation: scratchCapability({ activeTargetsBySymbol: activeBySymbol }, metadata),
         targetId,
         modelId,
         expectedBytes: expected,
@@ -252,7 +256,7 @@ function loadWorkbenchModel(options = {}) {
   }
   targets = targets.filter(target => !consumed.has(target));
   for (const target of targets) {
-    if (target.selectionKind || activeBySymbol.has(target.symbol.toLowerCase())) continue;
+    if (target.selectionKind || target.activeMatchingProducer) continue;
     const covered = logical.coverage(logicalRegistry, target.romStart, target.romEndExclusive, baserom);
     const full = logicalRegistry.bodies.filter(body => body.romStart >= target.romStart && body.romEndExclusive <= target.romEndExclusive);
     const entryBody = logicalRegistry.bodies.find(body => body.romStart <= target.entryVram - target.vramStart + target.romStart

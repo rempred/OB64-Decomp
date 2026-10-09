@@ -54,7 +54,6 @@
     { "symbol": "func_0025CB60", "source": "src/lib/func_0025CB60.c" },
     { "symbol": "func_0025EFC8", "source": "src/lib/func_0025EFC8.c" },
     { "symbol": "func_0002DE10", "source": "src/lib/mod_s64_tail.c" },
-    { "symbol": "func_001072B8", "source": "src/lib/func_001072B8.c" },
     { "symbol": "func_0000B030", "source": "src/boot/boot_resource_lzss_load_entry.c" },
     { "symbol": "func_0011B344", "source": "src/lib/func_0011B344.c" },
     { "symbol": "func_00007600", "source": "src/boot/boot_state_slot_target_peer_record_dispatch.c" },
@@ -860,9 +859,7 @@
     { "symbol": "func_00128050", "source": "src/lib/func_00128050.c" },
     { "symbol": "func_0012B1C4", "source": "src/lib/func_0012B1C4.c" },
     { "symbol": "func_0012D6FC", "source": "src/lib/func_0012D6FC.c" },
-    { "symbol": "func_00106F34", "source": "src/lib/func_00106F34.c" },
     { "symbol": "func_00107D60", "source": "src/lib/func_00107D60.c" },
-    { "symbol": "func_001070F4", "source": "src/lib/func_001070F4.c" },
     { "symbol": "func_0011AB74", "source": "src/lib/func_0011AB74.c" },
     { "symbol": "func_00125298", "source": "src/lib/func_00125298.c" },
     { "symbol": "func_00126D24", "source": "src/lib/func_00126D24.c" },
@@ -1089,9 +1086,6 @@
     {"symbol":"boot_resource_probe_dispatch_prepare","source":"src/boot/boot_resource_probe_dispatch_prepare.c"},
     {"symbol":"boot_resource_probe_dispatch_apply","source":"src/boot/boot_resource_probe_dispatch_apply.c"},
     {"symbol":"boot_resource_probe_dispatch_result_build","source":"src/boot/boot_resource_probe_dispatch_result_build.c"},
-    {"symbol":"boot_resource_probe_small_record_copy_flag","source":"src/boot/boot_resource_probe_small_record_copy_flag.c"},
-    {"symbol":"boot_resource_probe_large_record_copy_flag","source":"src/boot/boot_resource_probe_large_record_copy_flag.c"},
-    {"symbol":"boot_resource_probe_indexed_record_copy_flag","source":"src/boot/boot_resource_probe_indexed_record_copy_flag.c"},
     {"symbol":"boot_resource_probe_global_buffer_copy","source":"src/boot/boot_resource_probe_global_buffer_copy.c"},
     {"symbol":"boot_resource_probe_chunk_callback_walk","source":"src/boot/boot_resource_probe_chunk_callback_walk.c"},
     {"symbol":"boot_resource_probe_global_cleanup","source":"src/boot/boot_resource_probe_global_cleanup.c"},
@@ -1099,6 +1093,82 @@
     {
       "symbol": "resource_ptr_validate",
       "source": "src/lib/resource_ptr_validate.c"
+    },
+    {
+      "symbol": "func_00106CE0",
+      "compilationGroup": "squad_pursuit_producer"
+    },
+    {
+      "symbol": "func_00106E48",
+      "compilationGroup": "squad_pursuit_producer"
+    },
+    {
+      "symbol": "func_00106F34",
+      "compilationGroup": "squad_pursuit_producer"
+    },
+    {
+      "symbol": "func_001070F4",
+      "compilationGroup": "squad_pursuit_producer"
+    },
+    {
+      "symbol": "func_001072B8",
+      "compilationGroup": "squad_pursuit_producer"
+    },
+    {
+      "symbol": "func_0010738C",
+      "compilationGroup": "squad_pursuit_producer"
+    },
+    {
+      "symbol": "func_0010746C",
+      "compilationGroup": "squad_pursuit_producer"
+    },
+    {
+      "symbol": "func_0010756C",
+      "compilationGroup": "squad_pursuit_producer"
+    },
+    {
+      "symbol": "func_0010766C",
+      "compilationGroup": "squad_pursuit_producer"
+    },
+    {
+      "symbol": "func_00005760",
+      "compilationGroup": "boot_resource_checksum_chain"
+    },
+    {
+      "symbol": "func_0000581C",
+      "compilationGroup": "boot_resource_checksum_chain"
+    },
+    {
+      "symbol": "func_00005978",
+      "compilationGroup": "boot_resource_checksum_chain"
+    },
+    {
+      "symbol": "func_00005A88",
+      "compilationGroup": "boot_resource_checksum_chain"
+    },
+    {
+      "symbol": "boot_resource_probe_indexed_record_copy_flag",
+      "compilationGroup": "boot_resource_checksum_chain"
+    },
+    {
+      "symbol": "boot_resource_probe_large_record_copy_flag",
+      "compilationGroup": "boot_resource_checksum_chain"
+    },
+    {
+      "symbol": "boot_resource_probe_small_record_copy_flag",
+      "compilationGroup": "boot_resource_checksum_chain"
+    },
+    {
+      "symbol": "func_00005D9C",
+      "compilationGroup": "boot_resource_checksum_chain"
+    },
+    {
+      "symbol": "func_00127D30",
+      "source": "src/lib/func_00127D30.c"
+    },
+    {
+      "symbol": "func_001284C4",
+      "source": "src/lib/func_001284C4.c"
     }
   ]
 }

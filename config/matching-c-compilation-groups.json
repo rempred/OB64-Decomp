@@ -1484,6 +1484,1816 @@
           "word": 201326592
         }
       ]
+    },
+    {
+      "id": "squad_pursuit_producer",
+      "source": "src/lib/squad_pursuit_producer.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00106CE0",
+          "ownerRowIndex": 2228
+        },
+        {
+          "symbol": "func_00106E48",
+          "ownerRowIndex": 2229
+        },
+        {
+          "symbol": "func_00106F34",
+          "ownerRowIndex": 2230
+        },
+        {
+          "symbol": "func_001070F4",
+          "ownerRowIndex": 2231
+        },
+        {
+          "symbol": "func_001072B8",
+          "ownerRowIndex": 2232
+        },
+        {
+          "symbol": "func_0010738C",
+          "ownerRowIndex": 2233
+        },
+        {
+          "symbol": "func_0010746C",
+          "ownerRowIndex": 2234
+        },
+        {
+          "symbol": "func_0010756C",
+          "ownerRowIndex": 2235
+        },
+        {
+          "symbol": "func_0010766C",
+          "ownerRowIndex": 2236
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 2928,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "857F7FA06BDA934C486072C02524A1EBA3D33147DA1BF325380D68D27726441A"
+      },
+      "functions": [
+        {
+          "symbol": "func_00106CE0",
+          "offset": 0,
+          "bytes": 360,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00106E48",
+          "offset": 360,
+          "bytes": 236,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00106F34",
+          "offset": 596,
+          "bytes": 448,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_001070F4",
+          "offset": 1044,
+          "bytes": 452,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_001072B8",
+          "offset": 1496,
+          "bytes": 212,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0010738C",
+          "offset": 1708,
+          "bytes": 224,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0010746C",
+          "offset": 1932,
+          "bytes": 256,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0010756C",
+          "offset": 2188,
+          "bytes": 256,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0010766C",
+          "offset": 2444,
+          "bytes": 476,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 2920,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 4,
+          "type": 5,
+          "symbol": "D_801EE090",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 8,
+          "type": 6,
+          "symbol": "D_801EE090",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3558998016
+        },
+        {
+          "offset": 120,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217812
+        },
+        {
+          "offset": 192,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217809
+        },
+        {
+          "offset": 292,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217812
+        },
+        {
+          "offset": 360,
+          "type": 5,
+          "symbol": "D_801F0D98",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 364,
+          "type": 6,
+          "symbol": "D_801F0D98",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290562560
+        },
+        {
+          "offset": 388,
+          "type": 5,
+          "symbol": "D_801F0DA0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 392,
+          "type": 6,
+          "symbol": "D_801F0DA0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 408,
+          "type": 5,
+          "symbol": "D_801F0D9C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 412,
+          "type": 6,
+          "symbol": "D_801F0D9C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290693632
+        },
+        {
+          "offset": 432,
+          "type": 5,
+          "symbol": "D_801F0DA4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 436,
+          "type": 6,
+          "symbol": "D_801F0DA4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 448,
+          "type": 5,
+          "symbol": "D_800E7AC3",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006829568
+        },
+        {
+          "offset": 452,
+          "type": 6,
+          "symbol": "D_800E7AC3",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 610467840
+        },
+        {
+          "offset": 508,
+          "type": 5,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 512,
+          "type": 6,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 560,
+          "type": 5,
+          "symbol": "D_801E862C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 572,
+          "type": 6,
+          "symbol": "D_801E862C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 568,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217875
+        },
+        {
+          "offset": 600,
+          "type": 5,
+          "symbol": "D_800E7A90",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 604,
+          "type": 6,
+          "symbol": "D_800E7A90",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793267
+        },
+        {
+          "offset": 636,
+          "type": 5,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 640,
+          "type": 6,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 608305152
+        },
+        {
+          "offset": 716,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217982
+        },
+        {
+          "offset": 760,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217982
+        },
+        {
+          "offset": 800,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217982
+        },
+        {
+          "offset": 840,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217982
+        },
+        {
+          "offset": 884,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217982
+        },
+        {
+          "offset": 928,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217982
+        },
+        {
+          "offset": 972,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217982
+        },
+        {
+          "offset": 1048,
+          "type": 5,
+          "symbol": "D_800E7A90",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1052,
+          "type": 6,
+          "symbol": "D_800E7A90",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793267
+        },
+        {
+          "offset": 1088,
+          "type": 5,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 1092,
+          "type": 6,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 608305152
+        },
+        {
+          "offset": 1168,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218095
+        },
+        {
+          "offset": 1212,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218095
+        },
+        {
+          "offset": 1252,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218095
+        },
+        {
+          "offset": 1292,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218095
+        },
+        {
+          "offset": 1336,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218095
+        },
+        {
+          "offset": 1380,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218095
+        },
+        {
+          "offset": 1424,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218095
+        },
+        {
+          "offset": 1536,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1556,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1576,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1596,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1628,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1644,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1668,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1680,
+          "type": 4,
+          "symbol": "func_001C6C04",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1760,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1780,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1800,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1820,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1852,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1868,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1892,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1904,
+          "type": 4,
+          "symbol": "func_001C6C04",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2016,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2036,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2056,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2076,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2108,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2124,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2148,
+          "type": 4,
+          "symbol": "func_000016C4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2160,
+          "type": 4,
+          "symbol": "func_001C6C04",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2188,
+          "type": 5,
+          "symbol": "D_801F367C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 2192,
+          "type": 6,
+          "symbol": "D_801F367C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 2224,
+          "type": 5,
+          "symbol": "D_8018F481",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007353856
+        },
+        {
+          "offset": 2228,
+          "type": 6,
+          "symbol": "D_8018F481",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2439708672
+        },
+        {
+          "offset": 2240,
+          "type": 5,
+          "symbol": "D_801F0DE0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007157248
+        },
+        {
+          "offset": 2244,
+          "type": 6,
+          "symbol": "D_801F0DE0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 621281280
+        },
+        {
+          "offset": 2260,
+          "type": 5,
+          "symbol": "D_801F0CB0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007091712
+        },
+        {
+          "offset": 2264,
+          "type": 6,
+          "symbol": "D_801F0CB0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 619118592
+        },
+        {
+          "offset": 2500,
+          "type": 5,
+          "symbol": "D_801F0CB0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007222784
+        },
+        {
+          "offset": 2504,
+          "type": 6,
+          "symbol": "D_801F0CB0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 623443968
+        },
+        {
+          "offset": 2652,
+          "type": 5,
+          "symbol": "D_801F0CB0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006829568
+        },
+        {
+          "offset": 2660,
+          "type": 6,
+          "symbol": "D_801F0CB0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2355298304
+        },
+        {
+          "offset": 2684,
+          "type": 4,
+          "symbol": "func_8009CFE0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2692,
+          "type": 5,
+          "symbol": "D_801EE098",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 2696,
+          "type": 6,
+          "symbol": "D_801EE098",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3558998016
+        }
+      ]
+    },
+    {
+      "id": "boot_resource_checksum_chain",
+      "source": "src/boot/boot_resource_checksum_chain.c",
+      "mode": "native-text-owner-functions-projection",
+      "members": [
+        {
+          "symbol": "func_00005760",
+          "ownerRowIndex": 48,
+          "functionSymbols": [
+            "func_00005760"
+          ]
+        },
+        {
+          "symbol": "func_0000581C",
+          "ownerRowIndex": 49,
+          "functionSymbols": [
+            "func_0000581C"
+          ]
+        },
+        {
+          "symbol": "func_00005978",
+          "ownerRowIndex": 50,
+          "functionSymbols": [
+            "func_00005978"
+          ]
+        },
+        {
+          "symbol": "func_00005A88",
+          "ownerRowIndex": 51,
+          "functionSymbols": [
+            "func_00005A88"
+          ]
+        },
+        {
+          "symbol": "boot_resource_probe_indexed_record_copy_flag",
+          "ownerRowIndex": 52,
+          "functionSymbols": [
+            "boot_resource_probe_indexed_record_copy_flag"
+          ]
+        },
+        {
+          "symbol": "boot_resource_probe_large_record_copy_flag",
+          "ownerRowIndex": 53,
+          "functionSymbols": [
+            "boot_resource_probe_large_record_copy_flag"
+          ]
+        },
+        {
+          "symbol": "boot_resource_probe_small_record_copy_flag",
+          "ownerRowIndex": 54,
+          "functionSymbols": [
+            "boot_resource_probe_small_record_copy_flag"
+          ]
+        },
+        {
+          "symbol": "func_00005D9C",
+          "ownerRowIndex": 55,
+          "functionSymbols": [
+            "func_00005D9C",
+            "func_00005E84",
+            "func_00005EC4",
+            "func_00005F00",
+            "func_00005F60"
+          ]
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 2144,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "EED5CF845ECF018AC62FE5CC14C41AF5B6FCB5310CDEE0DA7AC81E6AF1E48DA1"
+      },
+      "functions": [
+        {
+          "symbol": "func_00005760",
+          "offset": 0,
+          "bytes": 188,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0000581C",
+          "offset": 188,
+          "bytes": 348,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00005978",
+          "offset": 536,
+          "bytes": 272,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00005A88",
+          "offset": 808,
+          "bytes": 260,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "boot_resource_probe_indexed_record_copy_flag",
+          "offset": 1068,
+          "bytes": 204,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "boot_resource_probe_large_record_copy_flag",
+          "offset": 1272,
+          "bytes": 164,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "boot_resource_probe_small_record_copy_flag",
+          "offset": 1436,
+          "bytes": 160,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00005D9C",
+          "offset": 1596,
+          "bytes": 232,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00005E84",
+          "offset": 1828,
+          "bytes": 64,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00005EC4",
+          "offset": 1892,
+          "bytes": 60,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00005F00",
+          "offset": 1952,
+          "bytes": 96,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00005F60",
+          "offset": 2048,
+          "bytes": 92,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 2140,
+        "bytes": 4,
+        "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 36,
+          "type": 4,
+          "symbol": "resource_alloc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 48,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326794
+        },
+        {
+          "offset": 56,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217762
+        },
+        {
+          "offset": 76,
+          "type": 4,
+          "symbol": "resource_alloc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 88,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326726
+        },
+        {
+          "offset": 96,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217760
+        },
+        {
+          "offset": 104,
+          "type": 4,
+          "symbol": "resource_alloc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 120,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326639
+        },
+        {
+          "offset": 136,
+          "type": 4,
+          "symbol": "resource_free",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 152,
+          "type": 4,
+          "symbol": "func_0000539C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 236,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006829568
+        },
+        {
+          "offset": 240,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2355298304
+        },
+        {
+          "offset": 276,
+          "type": 4,
+          "symbol": "resource_alloc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 284,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 288,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 300,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 304,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2359623680
+        },
+        {
+          "offset": 320,
+          "type": 4,
+          "symbol": "func_0001A4F0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 344,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 348,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357460992
+        },
+        {
+          "offset": 360,
+          "type": 4,
+          "symbol": "func_00023460",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 368,
+          "type": 5,
+          "symbol": "D_800A8240",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 372,
+          "type": 6,
+          "symbol": "D_800A8240",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 380,
+          "type": 4,
+          "symbol": "func_00023350",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 440,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327049
+        },
+        {
+          "offset": 472,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327080
+        },
+        {
+          "offset": 536,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 540,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 580,
+          "type": 4,
+          "symbol": "resource_alloc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 588,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 592,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 604,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 608,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2359623680
+        },
+        {
+          "offset": 624,
+          "type": 4,
+          "symbol": "func_0001A4F0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 648,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 652,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357460992
+        },
+        {
+          "offset": 664,
+          "type": 4,
+          "symbol": "func_00023460",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 672,
+          "type": 5,
+          "symbol": "D_800A8240",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 676,
+          "type": 6,
+          "symbol": "D_800A8240",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 684,
+          "type": 4,
+          "symbol": "func_00023350",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 720,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327049
+        },
+        {
+          "offset": 752,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327080
+        },
+        {
+          "offset": 808,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 812,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 852,
+          "type": 4,
+          "symbol": "resource_alloc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 860,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 864,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 876,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 880,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2359623680
+        },
+        {
+          "offset": 896,
+          "type": 4,
+          "symbol": "func_0001A4F0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 920,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 924,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357460992
+        },
+        {
+          "offset": 932,
+          "type": 4,
+          "symbol": "func_00023460",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 940,
+          "type": 5,
+          "symbol": "D_800A8240",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 944,
+          "type": 6,
+          "symbol": "D_800A8240",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 952,
+          "type": 4,
+          "symbol": "func_00023350",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 980,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327049
+        },
+        {
+          "offset": 1012,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327080
+        },
+        {
+          "offset": 1100,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006829568
+        },
+        {
+          "offset": 1104,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2355298304
+        },
+        {
+          "offset": 1140,
+          "type": 4,
+          "symbol": "resource_alloc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1148,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 1152,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 1164,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1168,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2359623680
+        },
+        {
+          "offset": 1184,
+          "type": 4,
+          "symbol": "func_0001A4F0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1208,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1212,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2359623680
+        },
+        {
+          "offset": 1224,
+          "type": 4,
+          "symbol": "func_00023460",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1236,
+          "type": 5,
+          "symbol": "D_800A83BC",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 1240,
+          "type": 6,
+          "symbol": "D_800A83BC",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686582784
+        },
+        {
+          "offset": 1272,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 1276,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 1308,
+          "type": 4,
+          "symbol": "resource_alloc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1316,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 1320,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 1332,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1336,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2359623680
+        },
+        {
+          "offset": 1352,
+          "type": 4,
+          "symbol": "func_0001A4F0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1376,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1380,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2359623680
+        },
+        {
+          "offset": 1392,
+          "type": 4,
+          "symbol": "func_00023460",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1404,
+          "type": 5,
+          "symbol": "D_800A83BC",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 1408,
+          "type": 6,
+          "symbol": "D_800A83BC",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686582784
+        },
+        {
+          "offset": 1436,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 1440,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 1472,
+          "type": 4,
+          "symbol": "resource_alloc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1480,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 1484,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 1496,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1500,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2359623680
+        },
+        {
+          "offset": 1516,
+          "type": 4,
+          "symbol": "func_0001A4F0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1540,
+          "type": 5,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1544,
+          "type": 6,
+          "symbol": "D_800A83B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2359623680
+        },
+        {
+          "offset": 1552,
+          "type": 4,
+          "symbol": "func_00023460",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1564,
+          "type": 5,
+          "symbol": "D_800A83BC",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 1568,
+          "type": 6,
+          "symbol": "D_800A83BC",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686582784
+        },
+        {
+          "offset": 1644,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327049
+        },
+        {
+          "offset": 1660,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218171
+        },
+        {
+          "offset": 1688,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327049
+        },
+        {
+          "offset": 1704,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218171
+        },
+        {
+          "offset": 1752,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327049
+        },
+        {
+          "offset": 1772,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201327080
+        },
+        {
+          "offset": 1780,
+          "type": 5,
+          "symbol": "D_800A8240",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 1784,
+          "type": 6,
+          "symbol": "D_800A8240",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 1796,
+          "type": 4,
+          "symbol": "func_00023460",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
     }
   ]
 }

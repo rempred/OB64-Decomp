@@ -602,10 +602,20 @@ function validateLinkageConfig(linkage, expectedProfile) {
   return { config: linkage, linkSymbols, targets };
 }
 
-function validateNoActiveLinkSymbolShadows(targets, linkSymbols) {
+function validateNoActiveLinkSymbolShadows(targets, linkSymbols, assemblySource = null) {
+  const groups = require('./compilation_groups'), defined = new Map();
   for (const target of targets) {
-    if (Object.prototype.hasOwnProperty.call(linkSymbols, target.symbol)) {
-      fail(`shared absolute link symbol shadows active target: ${target.symbol}`);
+    const functions = groups.functionMode(target.compilationGroup) ? target.compilerTextFunctions : [{ symbol: target.symbol, binding: 'GLOBAL', offsetNumber: 0 }];
+    for (const fn of functions.filter(fn => fn.binding === 'GLOBAL')) {
+      if (defined.has(fn.symbol)) fail('duplicate active GLOBAL function definition: ' + fn.symbol);
+      defined.set(fn.symbol, target);
+      if (!Object.prototype.hasOwnProperty.call(linkSymbols, fn.symbol)) continue;
+      if (!groups.functionMode(target.compilationGroup)) fail('shared absolute link symbol shadows active target: ' + fn.symbol);
+      groups.authenticateFunctions(target.compilationGroup, assemblySource);
+      const record = target.compilationGroup.fixedBindings.find(r => r.symbol === fn.symbol);
+      if (!record || record.kind !== 'native-global' || record.ownerRowIndex !== target.rowIndex
+          || record.address !== target.vramStartNumber + fn.offsetNumber
+          || record.address !== parseNumber(linkSymbols[fn.symbol], 'fixed native binding')) fail('fixed GLOBAL definition mapping drift');
     }
   }
 }
@@ -1588,13 +1598,13 @@ function loadActiveTargetModelInternal(options, deferFinish) {
     return target;
   });
 
-  groupSupport.bind(compilationGroups, targets, { model, baserom });
+  groupSupport.bind(compilationGroups, targets, { model, baserom, logicalRegistry, linkSymbols: reviewedLinkage.linkSymbols });
   if (compilationGroups.length) {
     const paths = [...new Set(targets.filter(target => target.nativeTextTail || target.compilationGroup).map(target => groupSupport.objectPath(target)))];
     for (const target of targets) target.nativeEmptyBssObjects = paths;
   }
 
-  validateNoActiveLinkSymbolShadows(targets, reviewedLinkage.linkSymbols);
+  validateNoActiveLinkSymbolShadows(targets, reviewedLinkage.linkSymbols, assemblySource);
 
   for (const key of reviewedLinkage.targets.keys()) {
     if (!usedCanonicalContracts.has(key)) fail(`matching-C linkage contract has no active target: ${reviewedLinkage.targets.get(key).symbol}`);
