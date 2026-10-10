@@ -166,3 +166,5 @@ tests/fixtures/paired_owner_107d60_107e38.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-f75ebea2fe.c -text whitespace=cr-at-eol,-blank-at-eof
 docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-da2a8e50ea.c -text whitespace=cr-at-eol,-blank-at-eof
 docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-b30d1b5dd4.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-b4ba17e5da.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-8cd61aa37d.c -text whitespace=cr-at-eol,-blank-at-eof
