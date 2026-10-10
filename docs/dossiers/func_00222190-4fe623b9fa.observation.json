@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4FE623B9FACB269AEEDFA7D7D638715571FBD2A1C2693DB849FDA1247F075441",
+  "observationId": "99FE3D8D5C0115A671857DE4C584B5B130D2980D6EC40D271D3DCF591572A6A4",
+  "symbol": "func_00222190",
+  "authored": {
+    "context": "Director2054 complete15 terminal W8. Full39 original words and current intake/calculation are reconciled. Plain220CB013 emits148 because COMBINE folds the incoming fifth int directly into FLOAT(MEM), later loaded by COP1. Accepted project C78C source pair supplies a documented ordinary word-identity workaround, tested independently in this target.",
+    "effects": [
+      "integer-stack-argument",
+      "combine-memory-fold",
+      "general-register-allocation",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "61759C573F66B328261743D4A8B8C6AC1C22F10033517650C90A8B621794A79E",
+      "sourceSha256": "403D060F15093678EEBCB3933D9735AB256F45FABF3B58A32FCEF949636AF706"
+    },
+    "label": "integer-argument-word-identity-retains-gpr-load-and-recovers-full-retail-body",
+    "observedEffect": "Readable4FE623B9 and initial identity1173 both mechanically PURE_C156/frame64/twoR/two calls, zero actual-relocation-field-masked words; nativeEB57ACE5. Unique existing GLOBALs vec3_distance8007FE70 and00201670/801BE1E0 match original call destinations; no emitted auxiliary data. Own3EA5FC9E six-pass and baseline47BFF588 four-pass probes authenticate authored/expanded sources, pinned compiler, native assembly and all dump hashes. Best FLOW load12 plusOR18/AND20 gives incoming76 five references; COMBINE folds to load20 with noREG_EQUIV, removing both operators. LREG retains76/GR preference and assignsV0; GREG usesLW V0,80(sp) and conversion40. Baseline COMBINE instead has36 FLOAT(MEM incoming16), and no76 remains inLREG. No bitwise instruction or extra self-spill survives. The coincident reference/equivalence/allocation changes are candidate evidence, not unique original-source causation.",
+    "parentCandidateId": "220CB01330A91FEAD6513B1F038321B57A713AF2F62394F9FBB77AA9DD92D815",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/222190-readable-best-watch.json",
+        "sha256": "639DCFFC428D09389FC333F9C8F769B210D932B7648E2DF7EBCCBE8845A6D16C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/222190-readable-best-measurement.json",
+        "sha256": "3B47C43E874EE8CED5A705D02EE46F82E3921EAFC679DA99EBA93DBCABEC5BB8"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/222190-readable-best-evidence.json",
+        "sha256": "7A11672618F1F9CD8254B184CA315B293BA7E613B9676E1BA35AAA8AD80ACE43"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/targets/func_00222190/probes/3EA5FC9EFC09DC7FE46DF7C9AAD72F4703FDBFB0D3746429336210927E7D9A09/probe-report.json",
+        "sha256": "2D02DF7C537078870A499B46736C0FDAF3184543A8281301FD3755716B151490"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/222190-readable-evidence.json",
+        "sha256": "F07EFDC4214483D03D166C4A805D9457DB066B26AFAD325E519CDD51487E3E9F"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/targets/func_00222190/probes/47BFF588A23D067B68F632A71F45B0D66750C1AC6487887496B8049910019C89/probe-report.json",
+        "sha256": "2EA3655E7E8AADA739544CC3117A31BF04AFA9EBEF463EBD9E7F96755FC2C01E"
+      },
+      {
+        "path": "docs/dossiers/func_00222190-220cb01330.md",
+        "sha256": "489293576C4D5778B7794F6D9C38120024452A480CE08D0DB2381CDAD4FD86E8"
+      },
+      {
+        "path": "docs/dossiers/func_0022C78C-29625f932e.md",
+        "sha256": "5F38B58589A066FDB5C73284F7C898B4D0F37E8984DF303D23CD46ED824E3032"
+      },
+      {
+        "path": "src/lib/func_00201670.c",
+        "sha256": "0C49DB010FBD4629A52BE2A386551CF1CECA290BB3363B6E589339B72B6F93A1"
+      },
+      {
+        "path": "asm/original/rev0/boot/vec3_distance.s",
+        "sha256": "AFE27A37F4B1E114F9FB1C481771A69EBE250629D0BCA5A7AC4300B46F11C05D"
+      }
+    ],
+    "relatedCandidateIds": [
+      "1173C3557944CEB500F17912D6FB8DF7976516A26A9F6C703DA3C7128A4E720C"
+    ],
+    "remainingFailure": "Private symbolic-object instruction readiness only. Actual linked addends/placement/sole-C ownership and complete-ROM acceptance remain open until complete dependency-ready15-owner integration. W6/W7/table/completeEBBC requirements are unchanged. Zero-component phase9559 emits152 with wrong FP-zero operations and later-divisor-argument944F is plain-native-neutral; these do not establish a universal phase recipe.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Apply the equivalent word identity (z1|x1)&z1 to the incoming fifth integer before constructing the same two twelve-byte float triples. Preserve every actual conversion, positive zero, distance/divisor call order and int truncation. Explain the concrete shorter plain-source mismatch beside the identity."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 786,
+      "sha256": "61759C573F66B328261743D4A8B8C6AC1C22F10033517650C90A8B621794A79E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "403D060F15093678EEBCB3933D9735AB256F45FABF3B58A32FCEF949636AF706"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_00222190-4fe623b9fa.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

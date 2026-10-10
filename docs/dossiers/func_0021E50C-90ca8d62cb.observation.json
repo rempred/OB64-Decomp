@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "90CA8D62CBC9D846D64A8F35D9B7C0819E6D242F9F677E1826CA7FC0ECC38F2E",
+  "observationId": "B28AD9424EB249A4C399B02CAE61BBD7A753E089E3E7E8F8444FE709B952400F",
+  "symbol": "func_0021E50C",
+  "authored": {
+    "context": "Complete terminal W8. Current intake and full292-word E50C original agree. D7F0 source lessons are transfer leads; this complete owner's native output is independently checked.",
+    "effects": [
+      "signed-halfword-coordinates",
+      "profile-source-transfer",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AE338B77AE166A5A2245E05F85A1A75986CE5ED18A85B9A0970F31D3C92D5A84",
+      "sourceSha256": "0B4DC6FAE50066C0482FD1F09D137A672ACB920D77FFC05C191FE8CC491D7EC5"
+    },
+    "label": "signed-coordinate-profile-motion-native-ready",
+    "observedEffect": "90CA8D62 is mechanically PURE_C1168/frame104/49relocations/19 original ordered calls; all292 words agree after relocation masking with no missing/extra words; native17FAD723. First candidate succeeds. All eight bounded profile ranges authenticate against retained complete ASM data owner4139. No new profile data is defined. D7F0 probe IDs and causal register identities are not transferred to this target; its own frame and native body are measured.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21e50c-readable-watch.json",
+        "sha256": "70C4EEBB07397DC232B0578E13B7473FF7DF635BF4A1B58FF07B33ED751AE324"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21e50c-readable-measurement.json",
+        "sha256": "00505BA30D627FC25CC068D54A2FBFA9AA6AD2926DFC64B1EFF643A9E3D74E6C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21e50c-readable-profile-alias-requirements.json",
+        "sha256": "1C95260FE5C76B17197E60B3A5C332C6C55AEA1D39B679A5842699160953BDA3"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021E50C.s",
+        "sha256": "82DFE4F4277830671AF4C52C1C9EED3BAFD33317FC76744AB0CE96D694EF10AB"
+      },
+      {
+        "path": "docs/dossiers/func_0021D7F0-640fe01c8b.md",
+        "sha256": "4A731894FF83678D0E30A6D2FE8618936292BF599EADBD9612491D8B1A746ECB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private native readiness only. Eight actual profile-view aliases require explicit ordinary linking at the authenticated ranges, retaining the complete existing data owner. Actual linked addends/placement/sole-C/target/full-ROM gates and every complete dependency-ready fifteen-owner obligation remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use only the state argument and signed coordinate halfwords28/2C for integer deltas; retain alternate2016F4 and22344 helpers, original gate and ring allocation order. Do not write98/9C. Preserve profile counts5/4/7/4 and all source-first copies without the D7F0 duration decrement. Keep original predicate groups and real index-based loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5782,
+      "sha256": "AE338B77AE166A5A2245E05F85A1A75986CE5ED18A85B9A0970F31D3C92D5A84"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0B4DC6FAE50066C0482FD1F09D137A672ACB920D77FFC05C191FE8CC491D7EC5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0021E50C-90ca8d62cb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

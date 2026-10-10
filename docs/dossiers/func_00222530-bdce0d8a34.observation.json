@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BDCE0D8A34F4B8C5C2C67CBBF5A9400653997E18506F45EB045BE3DA738F56E8",
+  "observationId": "3364E427941E9C4FEEB3FDE804A29E9F600BC15FA80CBF853B07436675503771",
+  "symbol": "func_00222530",
+  "authored": {
+    "context": "Director2054 complete15 terminal W8 private release under CURRENT B98A0C71. Current intake has no candidate/history. Full19 original words and authenticated remaining-terminal preparation agree on complete76-byte owner, signed halfword inputs, float truncation and ordered stores. No canonical source/header/config/build changes.",
+    "effects": [
+      "readable-typed-prefix",
+      "complete-body-coverage",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CC6880A4C3731D29FD83BB3E69B4775D6284240FD3F5AF0C5EB861B6665ECC91",
+      "sourceSha256": "EA1C83573B9FF6EF9C8E8DA25A59415CEC601895AF493B5D58B5D84935B56A95"
+    },
+    "label": "full-two-object-halfword-result-helper-native-instruction-ready",
+    "observedEffect": "BDCE0D8A mechanically PURE_C76/frame32/one actualR_MIPS_26/one original ordered call. Complete19-word source/native coverage, rawRelocationMaskedExact=true and independently checked zero actual-relocation-field-masked differences. Allocated-section census is only reginfo/text; no emitted table. External func_001FF7EC has one existing GLOBAL at801BC35C, matching the originalJAL destination. Native455BF0B6. Original ASM remains active.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/222530-readable-watch.json",
+        "sha256": "562243ADD6197A76860C4563E098E0AEBC549BE54DA94C48DBC7068A85A4C774"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/222530-readable-measurement.json",
+        "sha256": "809934B42930667DF075735D8238442467F8B3D33C970CB7B0F91AAF976120A7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00222530.s",
+        "sha256": "60AA75C75B3A83BF624AA965B08BA7CD65068F9F508236EAF8A83BD9BF6265AB"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001FF7EC.s",
+        "sha256": "9568A768AD4D31425333E9E04ECF63D1845343AABD08B503B88CA7C125D0C47B"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-terminal-remaining-preparation-r1.md",
+        "sha256": "0EA743F8A7A734FD8344E4ED7AA97D48621CDB95FDAF4571CC18EA198D7EECD6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object readiness only, not linked/sole-owner/placement/relocation-addend/full-ROM acceptance. Preserve complete15/W6/W7/table/dependency gates and one final verifier at dependency-ready complete integration.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently express the two object coordinate prefixes with short fields, call existing001FF7EC with first signed X/Z, truncate its float to int, store low halfword Y to second then first, and return the full int. No compiler workaround or new guard is used."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 384,
+      "sha256": "CC6880A4C3731D29FD83BB3E69B4775D6284240FD3F5AF0C5EB861B6665ECC91"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EA1C83573B9FF6EF9C8E8DA25A59415CEC601895AF493B5D58B5D84935B56A95"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_00222530-bdce0d8a34.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

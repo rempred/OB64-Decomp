@@ -42,27 +42,37 @@ GoldOx and independent review corrected the proposed late-deletion constraint;
 no source-bound next trial is yet established. Keep the seven instruction-ready
 candidates and accepted shared pursuit producer; no partial-wave acceptance.
 
-Complete action-mode/High Attack W6 is parked after YellowTiger's source blocker
-(mail2053). Preserve [all seventeen members](Plans/prompts/combat-shared-mode-wave-r1.md)
+Complete action-mode/High Attack W6 resumes under Director2093 after W8's
+candidate handoff. Preserve [all seventeen members](Plans/prompts/combat-shared-mode-wave-r1.md)
 and `build/matching/combat-w6-261009/`: B1F4 remains instruction-ready privately;
 D14C's [readable best](dossiers/func_0022D14C-8ddf71fbdd.md) has 68 masked word
 differences. Its real-call, buffer-phase and mode1 improvements and bounded
-counterexamples are recoverable. No supported next discriminator, tooling defect
-or pure-C impossibility is established. Protect the fifteen accepted siblings
+counterexamples are recoverable. Consult the new EBBC loop-note and 2215D0
+phase/address lessons for a distinct source-bound D14C experiment; transfer is
+not presumed and closed controls must not be repeated. Protect the fifteen accepted siblings
 and the separate 64-byte table/interior-consumer integration gate.
 
-**YellowTiger's next private wave:** the [complete terminal W8](Plans/prompts/combat-shared-terminal-wave-r1.md),
-all fifteen owners / 19,636 bytes, in `build/matching/terminal-w8-261009/`.
-Current intake finds every member inactive ASM; Shop and the Scenario anchor pair
-are already accepted, and independent deferred Squad scope is not reopened.
-Start `00222530`, then `00222190`, `0022222C`, `00222344`, `002223E0`, one target
-at a time, using current intake and the existing three terminal preparation notes.
-Retain bridge `0021EAF0`, the complete 10,272-byte two-part `0021EBBC`, all handlers,
-original table owners and coupled dependencies. Stable canonical C/ASM permits
-private iteration alongside Lavender's W7; W6/W7 acceptance and actual table/body
-contracts remain mandatory before W8 integration. All fifteen share one final
-normal verifier at complete readiness. Yellow retains production ownership and
-both parked W5/W6 scopes; this is no wave completion or worker retirement.
+**Terminal W8 candidate handoff, October 10:** all fifteen owners / 19,636 bytes
+have preserved PURE_C candidates with zero differences outside actual native
+relocation fields. The [handoff](../build/matching/terminal-w8-261009/candidate-handoff.json)
+binds the complete membership, sources and saved evidence; its 80 file identities
+were checked without recompiling unchanged candidates. This includes the complete
+10,272-byte two-part EBBC and 2215D0's real native alignment tail.
+All remain inactive ASM in production. Actual linked operands, sole ownership,
+placement, table contracts, BF8C/4813C interface corrections and W6/W7 integration
+dependencies remain. The Director is reconciling those concrete dependencies;
+no activation, acceptance repeat or native hold is authorized by the handoff.
+The complete wave still requires one final normal verifier. Yellow retains
+production ownership, ready W8 and unfinished W5/W6; no worker retirement yet.
+
+W8 intake identifies a specific remaining EBBC admission: one function across
+rows 4062/4063, with three native table occurrences in data rows 4160/4161.
+Existing single-owner auxiliary support covers 2215D0 but not this combination.
+A separate generic implementation plan is being prepared for Sol/GoldOx agreement
+and Director approval; no tooling edits or native drain are authorized yet.
+The current W6/W7 ordering gate is retained pending that decision. W8's actual
+relocations call accepted EF50, not the unfinished W6/W7 functions; this narrower
+fact does not by itself resolve table, interface or placement obligations.
 
 **Single-owner native text/table repair, accepted October 9:** the explicit
 single-owner native/read-only mode preserves a complete compiler function, its

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "42B3DA8EE3C3349ED8B15C74DFFD53FE5436A02377FDEE964CD58DC7B0A447B2",
+  "observationId": "A3A11D8246437B1DE11346997694E465127348F850ED373CD520A823C95134AC",
+  "symbol": "func_00222344",
+  "authored": {
+    "context": "Complete15 terminal W8. Plain8E4013C6 establishes this target-specific direct-COP1 conversion/148-byte mismatch; prior222190 source pair is a transfer lead, not acceptance of this owner.",
+    "effects": [
+      "integer-stack-argument",
+      "word-identity-transfer",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C4E19784411E487EC50BBB8011520E1707F2CB515AD7795F622755A1C3545D78",
+      "sourceSha256": "65F2BDC1AC2CC9A19E99F673B5D4B0083C8EFF7F7A5598BC610C6D9A3EA67B18"
+    },
+    "label": "reversed-distance-integer-argument-identity-native-instruction-ready",
+    "observedEffect": "42B3DA8E mechanically PURE_C156/frame64/twoR26/two ordered calls/zero masked differences over all39 words; native7B99EBC5. Existing vec3_distance8007FE70 and002016F4/801BE264 GLOBALs are unique and match originalJAL destinations. No allocated auxiliary data or retained identity operators. This native transfer succeeds;222190 source-specific probe IDs are not used as this target pass evidence.",
+    "parentCandidateId": "8E4013C66FCBB4807F4501883B7809B98415CAB1FD4C870F2E3252877C4CDA83",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/222344-readable-best-watch.json",
+        "sha256": "DB2A925AD6823019D8F10263ECA7E0DA72A03E8DA0CEC45700B89BCA25DBAD9C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/222344-readable-best-measurement.json",
+        "sha256": "FB172F64ED75B6DDDE9B486A2118EE08DA9C8958E3E765C644F0CDFAE3DF9649"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00222344.s",
+        "sha256": "D3498235533BF3B15C0BBBA23B0BE58781C31A601A04A6A3579C6EAB2C6D4BA7"
+      },
+      {
+        "path": "src/lib/func_002016F4.c",
+        "sha256": "D6BC4B94CC6F5A9CE0E2027CC0E75E20D5C922EAE3FF59A9460001780F000476"
+      },
+      {
+        "path": "docs/dossiers/func_00222190-4fe623b9fa.md",
+        "sha256": "C2D846D3FC282CCC15AD18138269BA5DD491626DE9BF3978AB5D3F4226F9AFF8"
+      },
+      {
+        "path": "docs/dossiers/func_00222344-8e4013c66f.md",
+        "sha256": "74FA6BA9AF20BB0B445BF9F8AA852B796F89AB83B380E85F32F6B621D1339BDA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object readiness only. Linked actual addends/placement/sole-C/target bytes and exact fullROM remain open for complete dependency-ready15-owner verification, with W6/W7/table/completeEBBC prerequisites. No original-source uniqueness or new gameplay claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Apply equivalent (z1|x1)&z1 to the existing fifth int before the unchanged two three-float arrays. Preserve reversed point order, alternate002016F4 divisor and int result. Document the observed plain-source failure beside the workaround."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 786,
+      "sha256": "C4E19784411E487EC50BBB8011520E1707F2CB515AD7795F622755A1C3545D78"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "65F2BDC1AC2CC9A19E99F673B5D4B0083C8EFF7F7A5598BC610C6D9A3EA67B18"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_00222344-42b3da8ee3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

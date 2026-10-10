@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "640FE01C8B5124BB8DA78E20087363440B02ABBAEA66EA33390E0CB73BC75508",
+  "observationId": "A09BC4CDFD1A3A7E391B463750D4D7803CBB67C133185C18FCA76C48F2C2CEA9",
+  "symbol": "func_0021D7F0",
+  "authored": {
+    "context": "Complete terminal W8. Own B2CC199E establishes only24 frame-word differences. GoldOx2058 supplied the loop-entry orphan hypothesis as a transfer lead; this target's own paired probes establish the observed effect below.",
+    "effects": [
+      "loop-entry-source-form",
+      "unused-comparison-home",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3FD8FB67A5765B4C7D20B60C42FB2755CCD1DDA07842EEDBAD0E59B53C8DEA9A",
+      "sourceSha256": "B5005FE6A488A748AB6EA11D4CC7D869B93041A924C16B7B4B4B1B05B31B87D6"
+    },
+    "label": "real-profile-for-entry-retains-unused-compiler-home",
+    "observedEffect": "A33DA8EC for-loop source yields PURE_C1204/frame104/49relocations/19calls/zero masked differences. Commented successor640FE01C independently emits identical native02C6E226 and all301 words. Own1ABE0A2F six-pass proof authenticates sourceB5005FE6, expanded3FD8FB67, pinned compiler, normalized native assembly and all artifacts/dumps. FLOW583 sets real index85=0;678 compares85<count83 into271. COMBINE folds679 into count83==0 and retains USE271/REG_DEAD685. LREG271 has two refs/ST_REGS or none; GREG gives it no hard register and changes USE685 to MEM(sp+28). That non-emitting USE persists through JUMP2/DBR; vars8 and frame104 result with no native stack traffic to the home. The source pair demonstrates this mechanism here, not unique original-source reconstruction. Delta aggregateBE289 and explicit word transport1B955 fail to recover this body and remain unselected.",
+    "parentCandidateId": "B2CC199E0E3EB931258B1D61A1EB53E20DD774C2BC74BCF195B78D8F550CA626",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-readable-best-watch.json",
+        "sha256": "217FC7DC081D37E4C97D274A5C084BD5AF936CECA64FF198C1C79FBC80A4C0A7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-readable-best-measurement.json",
+        "sha256": "B45B15C007C12F01563F8CBA62F891E3553D5A56B29D5C1C21CB13FC41DE071C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-readable-best-probe.json",
+        "sha256": "6625C6887EDDE2F8B7068AFAB3317C9DC840508330BA54F82B4B85A72EB66D5D"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-readable-best-probe-auth.json",
+        "sha256": "DF026B7AE6FCC8CDD40343375AA67E335B35BEDFECC002CBCF7F7EEBF9D12366"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-readable-best-profile-alias-requirements.json",
+        "sha256": "802EB8CCC146B1818EA2CB4B924E6DD59D634696BB7ACD67FA1DC781B6295118"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-profile-for-loop.c",
+        "sha256": "457A7057DE0A8A2C23469CFFDB6D86442604CFBC43B75963E1266167CA0EB8F7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-profile-for-loop-measurement.json",
+        "sha256": "D52B67FE218470E594B26814D179947B34EEEF50AA45F59A282B6E8C57B3DA50"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-delta-pair.c",
+        "sha256": "AF5CD47A21518D55FBF2D18998358783C4BDF49C89E98A0334AF250C7CE7BE04"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-delta-pair-measurement.json",
+        "sha256": "5C3A4FAE37BAA66D2241C00650EA27D1E3F3CA0D644B9E90F85D44105528B450"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-delta-word-transport.c",
+        "sha256": "CC036E42BD2F4B3141831C7D60C5AA6AA8CA075184B44ED778A5318A35A115CC"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21d7f0-delta-word-transport-measurement.json",
+        "sha256": "4FF8A5C64A391948ED1D764FFB203FBD5B016ADD18D8405DC22D6BD9C27C4C88"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021D7F0.s",
+        "sha256": "A55A39A718C6AF4B273203767603910BB8694277C70D0F86F9FC0E6C0F6F5BD9"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/reload1.c",
+        "sha256": "A522E3B3DCC1CFF21610A2C9342634C30BEDDA490B4E56A903D480E101549122"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private native readiness only. Eight actual profile aliases require ordinary explicit linking at the authenticated ranges; the first crosses existing ASM data rows4138/4139. Both full owner streams remain retained. Six.text,19call and24HI/LO relocations, all actual addends/placement/sole-C/target/full-ROM gates and all complete dependency-ready fifteen-owner requirements remain open. No structural/tooling defect or semantic promotion.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace the existing guarded do-while with a plain for(i=0;i<count;i++) over the same real profile entries. No padding, synthetic side effect, changed call arguments or invented storage. Keep scalar deltas, repeated trig calls, real duration phases, original predicate groups and bounded profile views. Explain necessary source forms beside the C."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5759,
+      "sha256": "3FD8FB67A5765B4C7D20B60C42FB2755CCD1DDA07842EEDBAD0E59B53C8DEA9A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B5005FE6A488A748AB6EA11D4CC7D869B93041A924C16B7B4B4B1B05B31B87D6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0021D7F0-640fe01c8b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

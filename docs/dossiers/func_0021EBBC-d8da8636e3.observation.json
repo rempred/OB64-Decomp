@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D8DA8636E3357236C286B0988D8D2D9C394915F9285A84DEA601B1DD3833F917",
+  "observationId": "CA6C0AB5088D24E75D5C992F67A47D51B3E5118B934DC061CD576B2A8C9C5CFB",
+  "symbol": "func_0021EBBC",
+  "authored": {
+    "context": "Director2054 complete fifteen-target W8; current intake03D1204B; complete original10272=9284+988. CURRENT E9E49D47, pinned KMC GCC2.7.2 F3F1C99A. Canonical files unchanged.",
+    "effects": [
+      "complete-body-coverage",
+      "retained-loop-notes",
+      "scheduled-dependencies",
+      "weighted-reference-priority",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5D932FA19BA50382C530898348BBDF21CBB3C51A3556494BF70DB23008A5DB4B",
+      "sourceSha256": "ECB647EA7B9AB95107F77C9AE672C2BBDC479CFAA49D4C944370EF6079712DE5"
+    },
+    "label": "complete-ebbc-native-masked-exact-with-source-specific-loop-note-proof",
+    "observedEffect": "D8DA8636, source ECB647EA/expanded5D932FA1/native2B992875, is mechanically PURE_C, complete10272/frame744,456 actual text relocations,205 calls, one GLOBAL owner,72 helper families and all7/55/5 dispatch groups,456 read-only bytes/112 actualR_MIPS_32. Zero actual-relocation-field-masked word differences, zero missing or extra words, and every dispatch-aligned window exact. Own470DA43E authenticates fourteen artifacts/eleven passes and normalized native assembly equality. Its FLOW quotient is bracketed by loop notes1747/1764; own SCHED2 following load1769 depends on multiply1752/divide1755 after relocated loop-end8656. Exact-source priorities bind child450/S5,target451/S2,deltaX452/S0,deltaZ453/S1. Nearest source3A728608 removes only the loop and leaves33 case4 word differences at identical complete extent/frame/call census. No stage census is asserted for that control. The mechanism evidence records primary compiler excerpts and all source-specific identities. Correct C0CC nonzero and command12/50 alternate-only phase-zero writes remain; older unconditional intermediates must not be activated unchanged.",
+    "parentCandidateId": "949FDFD74750DDC846BE636BA93773956FD777DD6487F12C80CBD19AA150DD39",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-scaled-step.c",
+        "sha256": "ECB647EA7B9AB95107F77C9AE672C2BBDC479CFAA49D4C944370EF6079712DE5"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-scaled-step-watch.json",
+        "sha256": "ADB2CCB9B72F4B78E3776203F1BC20F7FC76158E0B4C20818C96F882EE573C30"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-scaled-step-measurement.json",
+        "sha256": "D62099B69E6C7F3E42F0185684BD17562E96F1904F861C2967DFD4755F9B5DD2"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-scaled-step-emission.json",
+        "sha256": "0194599E6CE9B5F176CB7C5EB787E5E126E10E22D1B64893C4F6E0240B44071E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-no-step-loop.c",
+        "sha256": "3A72860842E68DA5C06186C267F9226E4884B58D8F780F55906763A95EBAE395"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-no-step-loop-watch.json",
+        "sha256": "98F2DC602201533BA83F1EA176B4295B48A693182762A8B266E586606783AC76"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-no-step-loop-measurement.json",
+        "sha256": "2126DC68ADBA8C07B835AD583F970727D8C9D6DD097ECF5FFE955A062D6CB670"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-no-step-loop-emission.json",
+        "sha256": "763A634F980CA0D1414B4624EA51D521859DC2AB3DC7A12F22226BCD19537676"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-scaled-step-probe.json",
+        "sha256": "9E1C4D77510158ADDED08282F9CAA9FA196FF9DC4973BF45D034AABAE18887BE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-scaled-step-probe-auth.json",
+        "sha256": "6F25415ABB99089C74D228853F1D366133F64158D2DA9B4350B78745F1998958"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-scaled-step-case4-priorities.json",
+        "sha256": "E1C5AF6C8B8558697B952BCC57DEA1B157387184B1EDF0683B1A72334C6D5C9D"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-scaled-step-mechanism.json",
+        "sha256": "61EBC49EED77AF91AC104DE7486D458C0F31A955DDF3D28730489BCFF12A5976"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-extra-pointer-phase-case4-priorities.json",
+        "sha256": "26ACD6083638E3A8E6C1406F172181C0B16458E450EB73162A7FBCB6DDED86C7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "docs/dossiers/func_0021EBBC-949fdfd747.md",
+        "sha256": "769AAED31ADB4E18C153AB3BC0227EC0F628F4BC39500796E8FBE395E4BB8B82"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/sched.c",
+        "sha256": "01F112458F9C539D77F317490137D4AF5BFB9418B195B6A8798F8DB2B1D981C9"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/flow.c",
+        "sha256": "4EB4B4B2388FDFC557ED93681CBB48C3B4B44667F6DA863EEA8ECF7AB8637679"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/global.c",
+        "sha256": "BFDC24FF2ED62F59C515D39A14079FDD8C0097325F81E3AC66350DEE5E27314E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "85B7563A2896A219E0EFA10D16ED3A9997439DAF530C572B9F6CA3CC2B70E670"
+    ],
+    "remainingFailure": "Candidate-ready private evidence only. Five future data aliases D_8021FEE0,D_800EB290,D_801CEF14,D_801CEF16,D_80196A70; coordinated4813C/BF8C interface preparations; completeW6/W7 dependencies; actual linked addends, table/physical ownership and placement; and the single complete-wave canonical verifier/full-ROM gates remain. The public group scratch CLI still rejects; this native diagnostic is not a bypass or acceptance. No inherent-assembly, semantic subsystem, original-macro or compiler-exception claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "From selected949FDFD7/03332634, express the real travel branches with if/else, retain a single-pass do/while(0) around the signed scaled-distance quotient, and snapshot ownerZ before the branch-likely add/subtract selection. The local source comment explains the necessary compiler workaround. All earlier reconstructed setup, inline-update, local phase-arm, coordinate-pair, index and pointer phases remain."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 47494,
+      "sha256": "5D932FA19BA50382C530898348BBDF21CBB3C51A3556494BF70DB23008A5DB4B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "ECB647EA7B9AB95107F77C9AE672C2BBDC479CFAA49D4C944370EF6079712DE5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0021EBBC-d8da8636e3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

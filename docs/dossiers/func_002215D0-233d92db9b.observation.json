@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "233D92DB9B7465BC0857504669949108B72FA7F59BCA0A86E828AD35530BDC90",
+  "observationId": "68870A9296EB85D8C28D58E56DA8623DC2235F00A50F85A3EE81144E06AAC1B7",
+  "symbol": "func_002215D0",
+  "authored": {
+    "context": "Complete original 3008-byte physical owner, one 3000-byte logical body, native read-only240-byte table. Private diagnostic under CURRENT E9E49D47 after accepted generic tooling92a8ceac; no activation. The final source adds an adjacent explanation to the successful direct expression.",
+    "effects": [
+      "direct-word-identity",
+      "allocation-reference-priority",
+      "native-full-owner-masked-exact",
+      "original-table-partitions"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "81D8E54AB8ADC41E77BE3E91E85B60B0041B48336FE5A39A3695DFC339F3D63F",
+      "sourceSha256": "D66A0E12FFFA1BADFBBBE7E9097CCA835B00FA380C35ED5B024D9A49E45CF6A5"
+    },
+    "label": "direct-phase-address-identity-recovers-native-body-and-alignment",
+    "observedEffect": "233D92DB is mechanically PURE_C3000/frame128/vars72/55 text relocations/22 calls; all750 body words compare with zero differences after masking actual relocation operands. Own CA40008A probe is bound to pre-comment4904F2CD (source7E5E51EF/expanded333F1EF4), not final233D sourceD66A0E12/expanded81D8E54A. Final and base candidate.compiler.s are independently byte-identical (3F9F9F89). In CA400 FLOW2806 loads non-user symbolic pseudo390 once before the outer loop;1326 IOR(phasev372,address390),1329 AND(...,390),1331 store fold in COMBINE to1331 storing390. LREG389 HI3 has seven allocation refs/live1290,390 SI symbolic address ten/live1288; primary global.c scaled integer priorities108/232 allocate390 then389, restoring pointerS7/constant3S8 and ADDIU. Untouched pinned GNUas output has exactly one GLOBAL function0+3000, .text3008/align16 with eight actual zero tail bytes, .rodata240/align8 and60 real R_MIPS_32 entries. Full native3008 text is masked-exact with no missing/extra words; all60 states/15 table groups and actual group offsets equal original. Native full text925318A0, objectFCBCD27D. This supports the source-bound compiler mechanism, not uniqueness of original source.",
+    "parentCandidateId": "D685D8DB29C8B0A1DCA7F0014B074FAEC5CF39B327E0E95772148B663586202F",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-readable-best-watch.json",
+        "sha256": "261ECBC324171B347DFF4376381E32C31F857CB9CB98BF7C81B710A1D54E35FC"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-readable-best-measurement.json",
+        "sha256": "B272BF3D304C01C0F31DB1A7965B05289EE3D7678A24B60877085BD97ACFA6AC"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-readable-best-group-comparison.json",
+        "sha256": "E33405153138FBE09E5C17E07B30CFACA22DE98BF81265B1218BAE4BADD3D2D6"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-clear-phase-direct-identity-probe-auth.json",
+        "sha256": "05036B5F11A1A21467BAB946A1FADFC3F02F2D46A8FEA75F4AE730CE775232A3"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-final-source-assembly-identity.json",
+        "sha256": "F523660F4DFFB872585B5B64256FAE3BF75827563538FC7A347BAD382254AE02"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-readable-best-untouched-command.json",
+        "sha256": "558A49F1707B156EAEC14702BFA6A1497486AA1970934E3AFC033043EDE08214"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-readable-best-untouched-evidence.json",
+        "sha256": "D7658F14F4D2BEC3621704ED027E86A1210FF43E7AE7B1D4DE9834E12DDE5C57"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-readable-best-untouched-comparison.json",
+        "sha256": "DEB5EF3E69E818794199BEFA83D7DD62D29F7D25863A5B5FC1818C4CC9829DD5"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-pointer-phases-untouched-comparison.json",
+        "sha256": "E14B908A8F8A678607A37D652731D26D02D41B61664632F05706DD12B0602E97"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-clear-phase-address-identity-probe-auth.json",
+        "sha256": "ABA37862BDA4ED0D22D858ACF77D364A81638DF3B2F3688F54C368BF675BDA1A"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-code-pointer-view-probe-auth.json",
+        "sha256": "822F4657641169DDC718E0E93027C20ED3C36FF795278FB411BB7849D1906F60"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-pointer-phases-probe-auth.json",
+        "sha256": "42CD2E8B44927A1BA3B61BC1C2B0C3D8FD846CC7F07552711F76B43EC02FE6D5"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/global.c",
+        "sha256": "BFDC24FF2ED62F59C515D39A14079FDD8C0097325F81E3AC66350DEE5E27314E"
+      },
+      {
+        "path": "docs/audit/2026-10-09-single-owner-native-auxiliary.md",
+        "sha256": "36BE902254DD60D424B5E75D2E2A6BF2A3F1739D6139D84A1331B41436D18B62"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002215D0.s",
+        "sha256": "E638D1D82D65D9F7461D1C7097B2D99CE9AF3D6D2D47572363206F2D60CC71C4"
+      }
+    ],
+    "relatedCandidateIds": [
+      "4904F2CD4D221516E0B7D508F6D6A7788CAFD5DFA6461E7313A969B439E437A1",
+      "D5DC384C83854074509D310283298747380670F22673D2B4FF6B1E7764D1D571",
+      "8B751BD0FDB9096011239D846C6EADC6FBAFE7641E98D9DE4E4539E420FBAB62"
+    ],
+    "remainingFailure": "Public standalone scratch assigns the 3000-byte body and reports the two native alignment words missing. Actual linked operands and relocated table, sole C ownership, placement, source/relocation contracts, missing future aliases D_801CE8C8/D_801E5E0F, whole15-member W8 and W6/W7 dependencies remain for one combined canonical verifier. Neither masked diagnostic nor the accepted generic representation establishes matching C.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "In case35 clear path, store ((unsigned int)func_001F7148 | (unsigned int)phase) & (unsigned int)func_001F7148 directly through opaque void* word00; keep case36 plain-symbol store and existing real phases. The unsigned32-bit identity equals the address for every phase. No separately named address local, callback ABI claim, filler or assembler escape."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 18957,
+      "sha256": "81D8E54AB8ADC41E77BE3E91E85B60B0041B48336FE5A39A3695DFC339F3D63F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D66A0E12FFFA1BADFBBBE7E9097CCA835B00FA380C35ED5B024D9A49E45CF6A5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_002215D0-233d92db9b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

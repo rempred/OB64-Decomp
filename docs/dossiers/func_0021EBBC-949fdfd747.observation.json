@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "949FDFD74750DDC846BE636BA93773956FD777DD6487F12C80CBD19AA150DD39",
+  "observationId": "F1412D208A270951B02EE852E829E25DD513EA15AB59B49DAF936D633DE16D63",
+  "symbol": "func_0021EBBC",
+  "authored": {
+    "context": "Complete EBBC original03D1204B and CURRENT E9E49D47. This corrects a draft control-flow mismatch before selecting further allocation experiments.",
+    "effects": [
+      "branch-coverage-correction",
+      "real-value-snapshot",
+      "stack-storage",
+      "register-lifetime",
+      "address-association"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "040D331A453F8E29E3524215A9753533C5D44B9023388C7B7C6CAE43B33F18AD",
+      "sourceSha256": "0333263407306C153839DE34EF78FE9135251C34E5EDA33DD1934E7A8F3E3C4D"
+    },
+    "label": "correct-alternate-phase-writes-and-real-output-index-storage-phases",
+    "observedEffect": "949FDFD74750DDC846BE636BA93773956FD777DD6487F12C80CBD19AA150DD39 is PURE_C, complete 10272 bytes, frame744, undefined actual text relocations,205 calls, native 042DFF06B5003D6CCF1469E8A160FB3BF8A7A32906D522A38D2FE2173B44D029, 37 masked word differences. One GLOBAL owner and all tables/helper families remain. Retail12/50 uses BNEL with the phase-zero SW only in its taken delay slot; the fall-through helper-call arm has no extra SW. Earlier unconditional drafts are contradicted by that complete control-flow window. Shared-child FA0A adds eight bytes while still unconditional; corrected shared60F8 restores extent but rotates the short load; corrected local1A07 makes both child loops exact. Scalar declaration order AB6E does not move address-taken scalar slots. Actual coordinate pair9785 allocates before copiedPose, restores its retail250 stack offset and the command50 value/cursor roles. Explicit coordinate snapshots remove five reordered load/store words. Signed index reuse restores the reverse-loop S3 and final consumed return S3; explicit final call arms restore the retail branch instead of a branchless constant expression. The606E address view changes only the four commutative address operands and declares an address range, not a logical table size. Remaining dispatch-aligned windows: [{\"selectors\":[4],\"bytes\":308,\"differences\":37}]. Earlier own ACE82A83 probe establishes the inline-tail mechanism for sourceBFD2 only; no probe UIDs or allocation census transfer to this source. The separate second extra-record pointer restores the four remaining helper-block register words without changing operations or extent. Own current probe BC57D65372F0E2CA9056229BF87DAF9C46A48CD1011C5A4E7DA0044AF7260D97, source 0333263407306C153839DE34EF78FE9135251C34E5EDA33DD1934E7A8F3E3C4D/expanded 040D331A453F8E29E3524215A9753533C5D44B9023388C7B7C6CAE43B33F18AD, authenticates twelve artifacts and nine dumps with normalized assembly equality. Its identities belong to this source only.",
+    "parentCandidateId": "28191C75381676AC3264241A1EA8CBDA5CAB5FEE865CE094FEBC31A0E96B27EE",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-extra-pointer-phase.c",
+        "sha256": "0333263407306C153839DE34EF78FE9135251C34E5EDA33DD1934E7A8F3E3C4D"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-extra-pointer-phase-watch.json",
+        "sha256": "BAE45729B58433214B5A889CF4DD16882CE32D2611A706BCB285F9913889C499"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-extra-pointer-phase-measurement.json",
+        "sha256": "78FE89127921F3492D89EA2BA7731AB88A23864FD52B686E424AF5E389ADDAF2"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-extra-pointer-phase-emission.json",
+        "sha256": "1165382FB3BC4DC77B8B979EB566B517919986C213833FBB39F6C5414E50E8CE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-inline-extra-updates.c",
+        "sha256": "BFD2F6CDDCD09C7B0D3C9B73FD3909EDC2BC1B796E822650A6025261BED85F4C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-inline-extra-updates-watch.json",
+        "sha256": "EA5BE11FA86B110B99FA4D193584E894FEAFAA6592A0F118319395472ED79896"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-inline-extra-updates-measurement.json",
+        "sha256": "9282755B6BCA9FA54AC9A99C39B504BDF19C2A5202E61F3C8957B3FE6DAB04E8"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-inline-extra-updates-emission.json",
+        "sha256": "70DB6CBEAFF7E0991E9AF33B62162CD4C5BF21DC4C54E401478004CDFDF0BB02"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-record-index-phases.c",
+        "sha256": "E1D9D5F9ED24CAD9EF2585373AC0E3617DA392FEDBDC870405DA34B4ABD126B1"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-record-index-phases-watch.json",
+        "sha256": "92B7BE4D5808B2CAD52EE47A6A2353929227245D8071018BD30B548A7429E673"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-record-index-phases-measurement.json",
+        "sha256": "AAD3DDF1E7624F4A3832C4B4896F27E49C33DD9BA724390729300E349E300229"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-record-index-phases-emission.json",
+        "sha256": "B62A8A9C015B66211A1F4A8B5876E551F5E1BF3AF43E44E1AA9A7DE78AFAD63A"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-coordinate-pair.c",
+        "sha256": "6408441A36EBBABCE8DA7F6ACDD84CF36AD5411599A5CDB57BE714EB274158BD"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-coordinate-pair-watch.json",
+        "sha256": "679995A4D8FFCFB913B4585539F1F54817A3DF969320C151A89D0F9D243C9C6E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-coordinate-pair-measurement.json",
+        "sha256": "C97C207C5D32FD8F693C26E5DF439E82ED15F43F1B0EAEA7934CBAD70206E75B"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-coordinate-pair-emission.json",
+        "sha256": "A4CFDF3784910191B98FBAA0094641558D4AF705936E05D7AD5637CEA9FBDCEF"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-shared-effect-child.c",
+        "sha256": "43A6F605B09BF5FC3EA25CF86504141A7BFA2874638770AA3FCE86900A8BC0A7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-shared-effect-child-watch.json",
+        "sha256": "1288E92C781BA36BCEC9D2A4676414E4D5E97562D534A3F2BD6EAE4F1462FAF1"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-shared-effect-child-measurement.json",
+        "sha256": "91CEFDA881B73571B0182758A3F337ABF325700A4B7633878B523555E73F0042"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-shared-effect-child-emission.json",
+        "sha256": "4EEF064A37BD537C9D18313D6BEBD5A72C5F8AE4B6BFA773D814D41E5A313E71"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-effect-phase-arms.c",
+        "sha256": "D792C439184E7452F9FF632CF8C8FF0679AB7715CCFE00084CC4617186E987A7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-effect-phase-arms-watch.json",
+        "sha256": "D8B2BBFF9CB237E8ED2C5B3C86738CEEFCEE4F14803865F3FAF1C2A7133DE803"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-effect-phase-arms-measurement.json",
+        "sha256": "EBB7A1A58CB926E73E846E28A58FA65E1B622A4A71EA8AAEDAA97A3380B3AED4"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-effect-phase-arms-emission.json",
+        "sha256": "F8B4BF00D75E83142567925D8452253F27FBD5C1DF2B49CF91C677E8FA10340F"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-local-effect-arms.c",
+        "sha256": "E89C65D301D772CD8B9C5376AB20A9F7E07BE7DB311EE9C4E919DE4E0415BDA3"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-local-effect-arms-watch.json",
+        "sha256": "ACA59B5C2D83DF09A60830035E37AB5B48253B6ABEA48CBBC424B4AA86AD799F"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-local-effect-arms-measurement.json",
+        "sha256": "09AD5BD7301765FDED85A8A9CAB876D2ABBE0B1AB6DB85C9F20E5BA2A2F86FAB"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-local-effect-arms-emission.json",
+        "sha256": "6087D692FF6E88045740FE061E78C1C395FD3A113D246F6E65F7C48456B459F6"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-output-pair-snapshot.c",
+        "sha256": "1DE4275F6AA5F411A214A763600E9F622FAA6FAC5ED323A7881A334FD5F2D86B"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-output-pair-snapshot-watch.json",
+        "sha256": "6210533055C5ABB2A3E45E3780429CE95D378F5C3B5CD7D0DD9D7FB1E4A54493"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-output-pair-snapshot-measurement.json",
+        "sha256": "82BF799BEC61AE13C8010166549745A97B120FB65D928FC47C9563F85D844DEA"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-output-pair-snapshot-emission.json",
+        "sha256": "C4AB62B74F4C18CA4AD9C27B1F2ED0E66BEE522BFFE6379C0C12983ED432B17B"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-readable-scalar-phases.c",
+        "sha256": "BAF764E3C6E3CF9BA633BECF164613B038CF5CE418F0B71660DA5BF3B6CA6EEE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-readable-scalar-phases-watch.json",
+        "sha256": "58750E4F3E422FF0AB6226F4BED96A856836EF511D0780A8AE38BD7847E2B80C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-readable-scalar-phases-measurement.json",
+        "sha256": "F0D3BEB250BC95C73BDA867DADD7681B1BC097C85714B7683953CFD07D798003"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-readable-scalar-phases-emission.json",
+        "sha256": "6202B8AF39179EFD8A2969A56F834C124B5EAA3108926B2C3B774B9D886251F4"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-exit-byte-view.c",
+        "sha256": "21336ACB547616BFB6AD0E700D76958C7156202A22156D071D8DC7F3FCD51AAF"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-exit-byte-view-watch.json",
+        "sha256": "7C76D71C60127CA599D9ECC4D199E33C0DE19190EFFA8E3A6FE64E91DCEE06EA"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-exit-byte-view-measurement.json",
+        "sha256": "565F70CE1C67448A5944F96DB0B6B3B7145F048E728D7B91143D0103C8653123"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-exit-byte-view-emission.json",
+        "sha256": "E608AA0F84F8AAB811197A0D92EC03E0FA46AE17ADC87A34A845E94902FC0711"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-ordered-owner-values.c",
+        "sha256": "994DD08EDD76B4750F8C55F2625059AC193ED58D7352252119D2C18C83F56045"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-ordered-owner-values-watch.json",
+        "sha256": "CE3DD2207ACB97B3EE05C0CE77226304E3B612C4EB7A63A74CD78A1C3CA184B7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-ordered-owner-values-measurement.json",
+        "sha256": "817431B242421917C8E6F58A81C39C4296728C913AEFC75D52C4603AEF078A01"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-ordered-owner-values-emission.json",
+        "sha256": "4CF401F36EF99B438EB990A14FF3D5CD999EC961BC173FBE79BB430007B11683"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-ordered-distance.c",
+        "sha256": "7B75C84D7F221B19D9112074D96A51B7160CD1B696995BE7EE942836AB8E6AC0"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-ordered-distance-watch.json",
+        "sha256": "D1F5CBB9F9B93D9C9217003D4457B22145D58971F9FB84BCD265D57EA18F0C6B"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-ordered-distance-measurement.json",
+        "sha256": "A6F73D958F3511C4F817E5F58C75FDC7D64BD0FDFF5EF32A9F920E8B1A91C870"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-ordered-distance-emission.json",
+        "sha256": "638D9D28BF024731472CE0B7DD6B3C040171EDEBF5262F0AFB54C547A6A04F77"
+      },
+      {
+        "path": "docs/dossiers/func_0021EBBC-28191c7538.md",
+        "sha256": "628FB447D374BF5AD49E7EFB191F1132DE5C5EC4228B7C2440B47C8A5CE46DCF"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/function.c",
+        "sha256": "25CC1F6448871DFCF42A8FB157D0A5559575AE36DDB0383965BFCBBFC3CAC969"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-extra-pointer-phase-probe.json",
+        "sha256": "397EDCE11D4CCA2E32B147CBAB5BF2377E44A48032BA5745785EE132965B4110"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-extra-pointer-phase-probe-auth.json",
+        "sha256": "25DCEB900C58119473361A8455CC13DC6A566566E3665B9DE87F343F72F569A2"
+      }
+    ],
+    "relatedCandidateIds": [
+      "28191C75381676AC3264241A1EA8CBDA5CAB5FEE865CE094FEBC31A0E96B27EE",
+      "AB6E9D29588D38DC4AE7A91E4DA89021FF50209806A9CBE17B470CCCCA35C369",
+      "97859EB9BA588B3E2DF1CA561496AE8069A895D56995ED948546D6697220451B",
+      "FA0A7FCEE1790F0EBE41CFC5772362BC9E61E9DEF0DF926430421117AA8C0E9E",
+      "60F869FEC2AA2DB8299E80C45D746751CF0E8B9DDA52458DC878471A1E66D7E3",
+      "1A0777CC780728E4CDD4C0813608DBA1AAD5CBA02BAEB7D30AA9D5894502F514",
+      "C008214088E032B01716F1BB63445E55DBCE5278FB642FE106C633F40A42F54F",
+      "89DB70DB6F83A785F4C1AE20E0984C1AA159A40A229F506EF5E0552670CDBE79",
+      "E922CB70B475E9197BF06B15238C75979A513C8016F32087DC6A68E807E238E3",
+      "6724F0E9485027A2A0DCA1CBD3D195A7971FC69C5AA4422CC9F7B2D612E4691D",
+      "FAD5551F25BF6813F7094AB79477603764F56F2C585F54BED28FF64083FB9351"
+    ],
+    "remainingFailure": "Continue only the dispatch-aligned remaining differences. No matching or semantic subsystem acceptance: actual linked data/helper relocations, two-part/table ownership, placement and full-ROM gates remain for the complete dependency-ready W8 wave. Earlier13DA/281/978 sources are recoverable intermediates and must not be activated with their unconditional12/50 phase stores. No compiler exception, tooling defect or inherent-assembly claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep phase-zero writes only in the alternate arm of C32C in commands12 and50; retain each child as a local value. Represent the first coordinate output as a real pair, snapshot its two returned values before storing them, and reuse the signed function index in the reverse loop and final helper-result phase. Use explicit final mode call arms and a bounded byte-address view for every possible u8 index at606E. Give the second extra-record pointer its own actual value scope."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 47263,
+      "sha256": "040D331A453F8E29E3524215A9753533C5D44B9023388C7B7C6CAE43B33F18AD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0333263407306C153839DE34EF78FE9135251C34E5EDA33DD1934E7A8F3E3C4D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0021EBBC-949fdfd747.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

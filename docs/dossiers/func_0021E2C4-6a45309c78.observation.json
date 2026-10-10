@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6A45309C785D1C4716A520919779F7699778DBDC593FE28491DF4077396F2430",
+  "observationId": "DD067EF1377D58880958496D3B0E2720D83DA0301A9C6BFC79640FA5C69DD3B0",
+  "symbol": "func_0021E2C4",
+  "authored": {
+    "context": "Complete terminal W8; intake and full146-word original owner agree. PriorE070 conditional-expression pair is a source lead, independently checked here.",
+    "effects": [
+      "float-argument-register-slots",
+      "unsigned-byte-argument",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B38A2DFD5D589558007276D72748B3E7CC928FC0C453861E6BBDBD24854BE71A",
+      "sourceSha256": "7397CCEAB74D8B4D9378A0316B768D051C65C23B1A1AC233292D66CA92FD342B"
+    },
+    "label": "float-argument-byte-speed-motion-native-ready",
+    "observedEffect": "6A45309C is mechanically PURE_C584/frame80/tenR26/seven original ordered calls; all146 words agree after relocation masking with no missing/extra words; nativeD812D86D. First candidate already reproduces the original GPR float transfers, delayed byte masks, integer-to-double speed conversions and full body. All three external names resolve unique existing GLOBALs. No E070-specific probe or compiler-cause claim is transferred.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21e2c4-readable-watch.json",
+        "sha256": "1CEE37A07DB108F5C7138A89B4D814C99CAE25A29A4ACEFD5129B60E94DF4FBC"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21e2c4-readable-measurement.json",
+        "sha256": "02DCB6AC0885C28455B664E928BA87F606A079DBA7E14DC6D083CD0A18B3B99A"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021E2C4.s",
+        "sha256": "BC3BA7C0A361B76A1E47139C2A0545A366E89C5316B66B1E2967E08A0C88BAB6"
+      },
+      {
+        "path": "docs/dossiers/func_0021E070-e3c62b0147.md",
+        "sha256": "783A0F140BC8A91C82093031F4A8B9489C7E1210AD5FE6E7F82A8AEB185FFA0A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object readiness only. Seven actual call and three.text relocations require final linked addend/placement/sole-C/target/full-ROM gates with the complete dependency-ready fifteen-owner terminal wave. Caller ABI reconciliation remains part of integration.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use state pointer, two single-float parameters and unsigned-byte speed in the original four register slots. Subtract converted actor-minus-current integers from the float arguments, then separately subtract float current coordinates. Preserve repeated trig calls and double conditional before single narrowing, original signed adjustments and state reset."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2102,
+      "sha256": "B38A2DFD5D589558007276D72748B3E7CC928FC0C453861E6BBDBD24854BE71A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7397CCEAB74D8B4D9378A0316B768D051C65C23B1A1AC233292D66CA92FD342B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0021E2C4-6a45309c78.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

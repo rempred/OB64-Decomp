@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3B488834818936EAD76756666942B9A7B919ED059D439078DCE499319635267A",
+  "observationId": "213BD84D170BDBFA6636FCCF005E61008BFBD30C751955393FE8D00C94BEF595",
+  "symbol": "func_0021E99C",
+  "authored": {
+    "context": "Complete terminal W8; B3E1E5B0 establishes five copy-order/register differences with one reused local. Preserve potentially overlapping state-object behavior.",
+    "effects": [
+      "coordinate-copy-lifetime",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "51EA77B76DACCF5443EDE755C7E31A96F41E86C2F05F39B55EEF5C887ECE659A",
+      "sourceSha256": "AB9CB918DA6CE57BBB3DF322482BA3D7EF620CF16E4BF7DCA301E68FCBA357B2"
+    },
+    "label": "coordinate-copy-overlapping-local-lifetimes-native-ready",
+    "observedEffect": "3B488834 is mechanically PURE_C260/frame24/threeR26/two ordered calls; all65 words agree after relocation masking with no missing/extra words; native52705CD6. Calls resolve existing GLOBAL20C104/801C8C74 and20C120/801C8C90. Internal jump atB0 carries actual object word0800003C and.text relocation, representing target+F0, the original shared final store. Allocated sections are text and reginfo only; no auxiliary data.",
+    "parentCandidateId": "B3E1E5B0D060D9520F14D980470E28D6A410E6BA319BD705E6738E577A311406",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21e99c-sequential-copies-watch.json",
+        "sha256": "862788D3EA5E0DC147FFF30ACFA91BA2ACF5E0E4DF259406232F4A67CF266B3E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21e99c-sequential-copies-measurement.json",
+        "sha256": "FFC98B20E31380E13F09973E252AA31E538396FD0C4A74D1DDCB6C4615853BBE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021E99C.s",
+        "sha256": "CDEC7CB5C8B49EEA58B8F2357C13CB293670FE9A10E48A50CC34ACF0745884DF"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0020C104.s",
+        "sha256": "0426292FABC786343D4196E5D6E888444CD554A3621D1883E64BD4B9276F408C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0020C120.s",
+        "sha256": "63E13D9B8DD53481D06EDCFB40279B4567B40C1A3708D0A2C929B92A356D6AE7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object readiness only. Final actual linked relocation/addend, placement, sole-C, target-byte and exact full-ROM gates remain open for the complete dependency-ready fifteen-owner wave. No new semantic field naming or return-value claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use separate unsigned-halfword X/Y/Z locals and express the original sequence: loadX/storeSecondX/loadY/storeFirstX/storeSecondY/loadZ/storeFirstY/storeSecondZ/storeFirstZ. Retain signed destination rereads, short-circuit actor predicates and unsigned word arithmetic."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1630,
+      "sha256": "51EA77B76DACCF5443EDE755C7E31A96F41E86C2F05F39B55EEF5C887ECE659A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "AB9CB918DA6CE57BBB3DF322482BA3D7EF620CF16E4BF7DCA301E68FCBA357B2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0021E99C-3b48883481.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

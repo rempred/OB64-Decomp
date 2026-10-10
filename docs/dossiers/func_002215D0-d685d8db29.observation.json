@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D685D8DB29C8B0A1DCA7F0014B074FAEC5CF39B327E0E95772148B663586202F",
+  "observationId": "7CF0E55EED1CA9FD3DDEF0CA132BDD3FBE70624B523E3BB677B8C05D9AD614F9",
+  "symbol": "func_002215D0",
+  "authored": {
+    "context": "Complete terminal W8. First405B native baseline retains all original groups/calls; native table partition check independently preserves every one of the sixty states and all fifteen distinct internal groups.",
+    "effects": [
+      "real-value-and-pointer-phases",
+      "original-frame-recovered",
+      "single-constant-form-residual",
+      "native-assembler-alignment-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E6411C23516971A69612080EA10DEFA537D41E776DD025655D49D02AFAC6FE1A",
+      "sourceSha256": "50E3BA0EA89EA8967638B07FB17436E9395112D0D27B0D9FDF7BB95143CFF1E4"
+    },
+    "label": "complete-dispatcher-real-pointer-and-halfword-phases-best",
+    "observedEffect": "D685D8DB is mechanically PURE_C3000/frame128/vars72/53 text relocations/22 original calls/nativeE4D5679E. All750 body words agree after masking actual relocation operands except offset64: retailADDIU S7,S7,3CB8 versus candidateORI. Every original table group begins at the correct body offset; actual .rodata240/alignment8 has60 R_MIPS_32 references to the real text section. Untouched pinned compiler assembly assembled with the identical authenticated flags produces native .text3008/alignment16, with identical3000-byte body followed by eight actual zero alignment bytes; native .rodata remains240/alignment8. No fabricated padding or bytes. Stored-value-phase D4C06A6E already recovered original frame but has42 body differences; pointer phases reduce these to one. Shared-clear-pointer FE96 and address-identity EEE controls are worse and unselected.",
+    "parentCandidateId": "405B6680DAAE6C20904070E42805BC83AC007175D4D650A91B53A899D57977A1",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-pointer-phases-watch.json",
+        "sha256": "62FFA829EB1A28480D2BE3CAA5CC94E97FD5501DA81BF7015E12F7CB4435DEA0"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-pointer-phases-measurement.json",
+        "sha256": "CDC9DC5DB385EE178BF2A417A037684409EA66B5D7ACAC16C17229628D1AAEE1"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-pointer-phases-group-comparison.json",
+        "sha256": "288009299F387A21E2E130C98D2A057FCF591F10DA5AC3128F565ECF1C720FEE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-pointer-phases-untouched-evidence.json",
+        "sha256": "F4BE4DF2DF56E5370459B4680C994D40454473EA7C8471B3B85A182246728D4F"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-stored-value-phases.c",
+        "sha256": "2A603EB2E5E1A7C0F4A17D4AE3429E31F242EDCB3BA4393049ABF37F285ED6EF"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-stored-value-phases-measurement.json",
+        "sha256": "93BECCF0AA354CA0C269F1EC2FAE5D3AA17588D1ABDC3309A55173988C004D28"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-shared-clear-pointer-measurement.json",
+        "sha256": "A192D54601401052A8FA47CD749CFB2D2CCA2DE94DDC36748A26D35AC5AB6646"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2215d0-clear-address-identity-measurement.json",
+        "sha256": "EA1F0E8CB01BF813B48637BDBCDD31C5C32664C9D1A833A7A7896DB5525BF726"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002215D0.s",
+        "sha256": "E638D1D82D65D9F7461D1C7097B2D99CE9AF3D6D2D47572363206F2D60CC71C4"
+      },
+      {
+        "path": "build/combat-terminal-remaining-preparation-r1/tables-and-helper-proof.json",
+        "sha256": "0CB03EAA17FD4FEC65BAA7BBC120F1FD27899CEF1C95211F01B47A901D208A82"
+      },
+      {
+        "path": "tools/lib/text_contract.js",
+        "sha256": "465165707E021DF37DC3E24B26D5F986D2028431FF24DCAB71A37D663A63DDD0"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "One ORI/ADDIU body difference, two future aliases and actual final relocated code/table obligations. Current section-assigned scratch reports two missing words; untouched native assembly supplies those actual eight padding bytes, but existing nativeTextTail is bounded to00204A70 and rejects auxiliary sections. This is evidence for a separately assigned representation/tooling question, not authority to change contracts, activate the target or call it matching C. Complete dependency-ready W8/final canonical gates remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Scope case locals; separate the post-null wobble pointer, state50 loop index and each real pointer lifetime, post-half-store phase owner, and state57 payload source. Calculate through the stored signed halfword before division and later alias-sensitive reloads. Keep the verified neutral word0 literal. Do not add storage or repair original asymmetry."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 18808,
+      "sha256": "E6411C23516971A69612080EA10DEFA537D41E776DD025655D49D02AFAC6FE1A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "50E3BA0EA89EA8967638B07FB17436E9395112D0D27B0D9FDF7BB95143CFF1E4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_002215D0-d685d8db29.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

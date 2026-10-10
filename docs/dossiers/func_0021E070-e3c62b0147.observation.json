@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E3C62B0147DA5B62338FCB870375CE12D3FC3DC4429730D001DB725DBBDF3D1E",
+  "observationId": "73013ACB8ABF85534E7183B80A222CABBBD976E0058C02D53D99091542E8E089",
+  "symbol": "func_0021E070",
+  "authored": {
+    "context": "Complete terminal W8. Own57DFB745 baseline identifies separate per-branch float narrowing and an eight-byte excess. Complete original149-word owner is retained.",
+    "effects": [
+      "conditional-conversion",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "77004C117FAEF65D596BAB45ACBA44DA2B2269CDF44E81F873C84E2897E9F2FC",
+      "sourceSha256": "5BD7E6A89A4A68F04B6A485C467DB76DB39B62502331722A869D326918FCD3D5"
+    },
+    "label": "double-conditional-before-single-narrowing-native-ready",
+    "observedEffect": "EED1F949 expression source produces PURE_C596/frame80/elevenR26/eight ordered calls with zero masked differences; explanatory-comment successorE3C62B01 independently reproduces identical native7D149D8E. All149 words covered with no missing/extra words. Single narrowing is shared by the double arms and retailF26/F30/F28 allocation is recovered. All four external names resolve unique existing GLOBALs; no auxiliary allocated table/data. Native effect is observed, without claiming a unique compiler pass cause or original source.",
+    "parentCandidateId": "57DFB7450A8CD92E6B0DF05BD9ADBB564A0702E55231B7D9EB6B99036237A5F0",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21e070-readable-best-watch.json",
+        "sha256": "FFE3FB48F669D258F57518270FE1ED8054071E04BC74590E73BED8C406E606DA"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21e070-readable-best-measurement.json",
+        "sha256": "6784A587FE55D73E94FB3C70B479A020A69482759940D3004F9BA28B03A42C84"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21e070-component-expressions.c",
+        "sha256": "84A03DF882706FAADB16D41C3139759B06D09C90A8A3CCD37322A11B6F387627"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21e070-component-expressions-watch.json",
+        "sha256": "49B46238C917AA83728F475407A41F03AC6696A16CA1429CF05FA23F47DEE327"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21e070-component-expressions-measurement.json",
+        "sha256": "B1020AD88449F4CCDC87C4908D0A1F42F0BC9FFAF73578A7DF2904FFD4035485"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021E070.s",
+        "sha256": "80DDF577068A5622AB93A92D8D41D316452DB65718C7579A332414649D7ECFD5"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object readiness only. Three actual.text relocations and eight call relocations still require normal final linked addend/placement/sole-C/target/full-ROM gates with every member of the dependency-ready fifteen-owner wave.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Place each single conversion outside a double-valued conditional expression while preserving the comparison call and selected-arm trig call. Keep all integer destination arithmetic before conversion, subsequent float subtraction, state writes and negative-delta adjustments. Document the concrete pinned-compiler source pair beside the C."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2294,
+      "sha256": "77004C117FAEF65D596BAB45ACBA44DA2B2269CDF44E81F873C84E2897E9F2FC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5BD7E6A89A4A68F04B6A485C467DB76DB39B62502331722A869D326918FCD3D5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0021E070-e3c62b0147.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

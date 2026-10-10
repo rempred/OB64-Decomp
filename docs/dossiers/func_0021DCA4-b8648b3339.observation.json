@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B8648B333977463E93468A2BD89DDCD78B295B82725E8974E90377EE463166AA",
+  "observationId": "EBC6DD94FB00EDA3A6B8E1F55178962F060571E545FF53234CD86F09248FE951",
+  "symbol": "func_0021DCA4",
+  "authored": {
+    "context": "Complete terminal W8. Own9C3609E4 establishes only eight duration/offset register differences in the complete owner.",
+    "effects": [
+      "derived-value-lifetime",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8C9571B125F7DABF4F84FBE9F0D02EF86C657CBC4CCFC2F5A8017C41D558AEAC",
+      "sourceSha256": "9838045C4A1B3F69713AFE06B2341A212C37B47814615C81CA928E51C4001352"
+    },
+    "label": "separate-query-word-and-derived-duration-native-ready",
+    "observedEffect": "B8648B33 is mechanically PURE_C972/frame120/30relocations/15 original ordered calls; all243 words agree after relocation masking with no missing/extra words; native66B50641. Only the real query/duration source phases changed, recovering retailS2/S1. Both twelve-byte template views are authenticated against all bytes and hashes of retained existing data owner4159. No padded source arrays, allocation guard or new emitted data. Native allocation effect is observed without claiming a unique compiler pass cause or original source.",
+    "parentCandidateId": "9C3609E4566207C570863BF12935059D7BEC04348DBBD6BB2053C636281D4743",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21dca4-query-duration-phases-watch.json",
+        "sha256": "F4B9EB3E495352CD999768EB4270663843F6156FCFB81FAC9FF8B1C7B85ADE2C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21dca4-query-duration-phases-measurement.json",
+        "sha256": "5B49622BD10139D9038161088597C94B392AA54D5F718D2D47BDF55C0791C6C6"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21dca4-query-duration-phases-profile-alias-requirements.json",
+        "sha256": "584E80762DE80F7BEB4041BE9B44F36173BC191934FAC25FC412D7925143E57D"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021DCA4.s",
+        "sha256": "371B10BDF9C67719487F3FD18AC844C9BA4156AE3510BC0396FF7C64C177DF8A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private native readiness only. D_801E6C30 andD_801E6C3C require explicit ordinary aliases at the authenticated existing ranges; existing complete data ownership remains retained. Actual linked relocation/addend, placement, sole-C, target/full-ROM and all dependency-ready fifteen-owner gates remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain the full query word in queryResult, then derive duration=queryResult/2 followed by its increment after the two template initializations. Preserve signed truncation-toward-zero division, single speed doubling, all real buffer copies and original allocation/store order."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4732,
+      "sha256": "8C9571B125F7DABF4F84FBE9F0D02EF86C657CBC4CCFC2F5A8017C41D558AEAC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9838045C4A1B3F69713AFE06B2341A212C37B47814615C81CA928E51C4001352"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0021DCA4-b8648b3339.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

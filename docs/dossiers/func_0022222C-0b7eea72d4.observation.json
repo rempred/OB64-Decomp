@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0B7EEA72D423E35BE59F529F736BBC3548E91613FEEF468E2B10A8F0B1BCFF18",
+  "observationId": "48DBA2C228B33FE89FD035E3AEB5E182837D13F35B04F003874FBC6335BADBF8",
+  "symbol": "func_0022222C",
+  "authored": {
+    "context": "Director2054 complete15 terminal W8. Current intake has no prior candidate. Full70 original words and authenticated preparation/calculation are reconciled; accepted00201838 returns unsigned char, map/speed helpers retain their existing definitions and0018A0 original returns a byte or zero.",
+    "effects": [
+      "byte-result-lifetimes",
+      "readable-typed-prefix",
+      "complete-body-coverage",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1AEB4AF2E1F69691F9E1E52673282CE2371007A6B1D823A2202CDC3098BA3C72",
+      "sourceSha256": "FC1CE32EFA4ADE414EDFB847A14584DDE045AE537759AFD0AD535CD5857EF771"
+    },
+    "label": "full-mapped-coordinate-byte-adjusted-distance-native-instruction-ready",
+    "observedEffect": "0B7EEA72 is mechanically PURE_C280/frame88/six actualR_MIPS_26/six original ordered calls and zero masked words across the full70-instruction owner. Native9F5C51EF. Every referenced external name has one existing CURRENT GLOBAL at the original call destination. No allocated auxiliary data/table. Original ASM stays active; private readiness only.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/22222c-readable-watch.json",
+        "sha256": "B00FCBEEF9BAA89C82CAE4F88928ABC4A9CFEA33D66774E5A2E9F4DFAFE6D460"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/22222c-readable-measurement.json",
+        "sha256": "E165B7348B62E22145B060C83F7CE3EBBEBEE46567BB6375C59271AE1E9B87C1"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022222C.s",
+        "sha256": "592DA2BC2B818557DDDCE980F1955BC2E04A8E4CA95542C6D5CDC803C74035B6"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002018A0.s",
+        "sha256": "83036F5AD02778695D04F2725231CB2C7BB5332F6232EEED0D42F1982C40FCC3"
+      },
+      {
+        "path": "src/lib/func_00201838.c",
+        "sha256": "37C159D28D87E50AF1B11BBE8C424EC8A800529987A352382A44CAB16BD34878"
+      },
+      {
+        "path": "src/lib/func_00201670.c",
+        "sha256": "0C49DB010FBD4629A52BE2A386551CF1CECA290BB3363B6E589339B72B6F93A1"
+      },
+      {
+        "path": "src/lib/func_0020BF50.c",
+        "sha256": "8E672C6B3B0A4E5F2A1F2FD11C244365230A8DFFA35A6F74D8E07B02B6CAA78E"
+      },
+      {
+        "path": "src/lib/func_0020BF34.c",
+        "sha256": "9789B1CCED6E9163AF4782CB47C3CA1C7C713CAB01259D8A68058AE8B710720A"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-terminal-remaining-preparation-r1.md",
+        "sha256": "0EA743F8A7A734FD8344E4ED7AA97D48621CDB95FDAF4571CC18EA198D7EECD6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual linked addends/placement/sole-C ownership/target bytes and complete-ROM acceptance remain open until complete dependency-ready15-member integration with W6/W7 and table/body gates. No semantic or original-source uniqueness claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently build two three-float arrays from signed coordinate words and mapped target fields. Preserve BF50 beforeBF34, byte queries source beforetarget, explicit byte storage until int addition, distance then single-float adjustment subtraction/division and int truncation. No compiler workaround, guard or storage beyond the two actual triples."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1433,
+      "sha256": "1AEB4AF2E1F69691F9E1E52673282CE2371007A6B1D823A2202CDC3098BA3C72"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FC1CE32EFA4ADE414EDFB847A14584DDE045AE537759AFD0AD535CD5857EF771"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0022222C-0b7eea72d4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

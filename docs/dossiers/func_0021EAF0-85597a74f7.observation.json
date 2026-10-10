@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "85597A74F73E45767B5830BA8BBE50AF5DAD5CFD918E7F87609D70645875988C",
+  "observationId": "679E6D4739D43F051EB1A4F5E92A09C5490712A6D97F4A026C9082C1BB72328E",
+  "symbol": "func_0021EAF0",
+  "authored": {
+    "context": "Complete fifteen-owner terminal W8. Current intake has no prior candidate; full original32-word owner agrees with accepted128-byte boundary and preparation.",
+    "effects": [
+      "signed-halfword-predicate",
+      "sequential-pointer-reload",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "88AD3776087D8C2AF7F9C6779ABCFADFE3E9E848FF7DD2712E4B02294AE7724F",
+      "sourceSha256": "028AC22E77388D66C36FD63BA1F66A3C0EA5049CB036046142667699EC3BA905"
+    },
+    "label": "two-object-selector-bridge-native-instruction-ready",
+    "observedEffect": "85597A74 is mechanically PURE_C128/frame24/twoR26/two original ordered calls, with zero masked differences over all32 words and no missing or extra words; native5A336279. Both calls name the unique existing001F0E64 GLOBAL at801AD9D4. No allocated auxiliary table/data or compiler workaround.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21eaf0-readable-watch.json",
+        "sha256": "F52E97DF5B39924E3F88AA60A6BCA93584951EEA1EA737EC8050FF6FD6BFD28A"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21eaf0-readable-measurement.json",
+        "sha256": "7FCE7DF9E5EF9933AA670A5286F8942643D7A35ABF50B82E09B61FCDB94EBDAF"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021EAF0.s",
+        "sha256": "15734BCB06E5BF06B0DE87BDD77026548F27556F32A2F8D9A8137D46D9829980"
+      },
+      {
+        "path": "src/lib/func_001F0E64.c",
+        "sha256": "BF79F7DA363A79941DF1656F2303A3B3637B94681EC9D78026AEC1FDA40FFE07"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object readiness only. Actual linked relocations/addends, placement, sole-C ownership, target bytes and exact full-ROM gates remain open for the complete dependency-ready fifteen-owner wave. No stable retail return-value or new gameplay claim is inferred.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express two sequential pointer/selector guards with typed fields at18/1C and signed halfword48. Preserve the unsigned modulo-four predicate, including negative selector cases, and calls with object+44 and full selector+2. Match the accepted001F0E64 unsigned-int selector interface."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1189,
+      "sha256": "88AD3776087D8C2AF7F9C6779ABCFADFE3E9E848FF7DD2712E4B02294AE7724F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "028AC22E77388D66C36FD63BA1F66A3C0EA5049CB036046142667699EC3BA905"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0021EAF0-85597a74f7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

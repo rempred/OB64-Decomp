@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FFAD8E0B413AF01E428C81B0C484F02CEC5859DB4363FF3652F6F5FCF323234E",
+  "observationId": "8A45AC7ACA719F258AF878D00EC514F23622442DFF94F9073F98637B0DA58556",
+  "symbol": "func_002213DC",
+  "authored": {
+    "context": "Complete terminal W8. C01814FF establishes two final load/shift-order differences;6418AE81 isolates an early-result allocation consequence of reusing the height local.",
+    "effects": [
+      "signed-halfword-reload",
+      "separate-value-lifetimes",
+      "native-instruction-form-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9BE4006CA4D2AE0A19A21018DAAEEBEE9730EA4E58B2684493F8FDBA0BB5A33D",
+      "sourceSha256": "ACDDDF54A412BFDEDBFBA54D98652FFB1275457F676E93BE0EFA6336EEEA9D71"
+    },
+    "label": "separate-query-and-narrowed-height-controller-native-ready",
+    "observedEffect": "FFAD8E0B is mechanically PURE_C500/frame48/sevenR26/six original ordered calls, with zero masked differences over all125 words and no missing/extra words; native2665D2E3. All external names resolve existing unique GLOBALs. Both final reload order and earlyV0 query-result allocation are recovered by separating two real value phases; no unique pass-cause or original-source claim.",
+    "parentCandidateId": "C01814FFC1329DCEBA2A2F930D5128A4C91AC74C93B85880E1963A896EE48D9B",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/2213dc-separated-height-lifetimes-watch.json",
+        "sha256": "07CBB812A4D7D16A2F4DBF18142C3C79B0FC1A07CF997995D41B98D6C2325C80"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/2213dc-separated-height-lifetimes-measurement.json",
+        "sha256": "F5BDCBFF449D6FF9E9EF3F05A34334D9901BF6DC025272FAAD8714A620994F5B"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/membership.json",
+        "sha256": "00CAC01C57FA8059CFCE43FDEE717B83031E6347DF2C7AD9A1E2F54835D5C17C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002213DC.s",
+        "sha256": "A6A55331A9DBB3A53A0F37B99252FD237F67C29A3106F8BAC1495AFD0372D858"
+      },
+      {
+        "path": "src/lib/func_001F10F0.c",
+        "sha256": "6C1D0708DB96DDB1113852FC7455ADC8393FAAF53C08FE380F4CD2A46AE48EE0"
+      },
+      {
+        "path": "docs/dossiers/func_00222530-bdce0d8a34.md",
+        "sha256": "0465B79CA4DB2BD276E16EBAE2B71D1672AFCD232C7E2CE335DA9206BF133186"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private native readiness only. One actual.text and six call relocations still require final linked addend/placement/sole-C/target/full-ROM gates with every complete dependency-ready fifteen-owner terminal member. Shared declaration reconciliation remains part of integration.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Read the stored signed narrowed Y into a distinct narrowedHeight local before the final Z and Y scaling. Preserve the separate full terrain query result, real narrowing/reload, all pointer reads, early return, call order and second object's pre-interpolation Y value."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3542,
+      "sha256": "9BE4006CA4D2AE0A19A21018DAAEEBEE9730EA4E58B2684493F8FDBA0BB5A33D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "ACDDDF54A412BFDEDBFBA54D98652FFB1275457F676E93BE0EFA6336EEEA9D71"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_002213DC-ffad8e0b41.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
