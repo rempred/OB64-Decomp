@@ -61,7 +61,8 @@ function withObjectArtifactSnapshot(target, root, artifactFiles, callback) {
     buffers[role] = value.contents;
   }
   const snapshot = Object.freeze({});
-  artifactSnapshots.set(snapshot, { target, binding: snapshotBinding(target), artifacts, buffers });
+  artifactSnapshots.set(snapshot, { target, binding: snapshotBinding(target), artifacts, buffers,
+    files: Object.fromEntries(Object.entries(paths).map(([role,relative])=>[role,relative===null?null:artifactFiles?artifactFiles[role]:path.join(root,relative)])) });
   try { return callback(snapshot); } finally { artifactSnapshots.delete(snapshot); }
 }
 function capturedArtifacts(snapshot, target = null) {
@@ -111,6 +112,7 @@ function textOwners(target) {
   }];
 }
 function resolveTextContract(target) {
+  if (target.atomicText) return require('./atomic_owner_union').contract(target);
   if (target.compilationGroup) return require('./compilation_groups').contract(target);
   const native = target.nativeTextTail ? normalizeNativeTextTail(target.nativeTextTail, target.symbol) : null;
   const owners = textOwners(target);
@@ -297,7 +299,7 @@ function nativeObjectAllocationEvidence(elf, allowReginfo = true) {
 }
 
 function nativeLinkedAllocationEvidence(target, elf, mapText) {
-  const model = target.model;
+  const model = require('./atomic_owner_union').outputModel(target.model);
   if (!model || !Array.isArray(model.slices) || !Array.isArray(model.overlays)) fail('native linked allocation model missing');
   const expected = new Map(model.slices.map(slice => [slice.sectionName, {
     type: 1, flags: slice.executable ? 6 : 2, address: slice.vramStart, bytes: slice.bytes,
@@ -348,7 +350,7 @@ function deriveObjectEvidence(target, root, artifactFiles = null) {
   return withObjectArtifactSnapshot(target, root, artifactFiles, snapshot => deriveObjectEvidenceFromSnapshot(target, snapshot));
 }
 function deriveObjectEvidenceFromSnapshot(target, snapshot) {
-  const { artifacts, buffers } = capturedArtifacts(snapshot, target);
+  const { artifacts, buffers, files } = capturedArtifacts(snapshot, target);
   const contract = resolveTextContract(target), native = Boolean(target.nativeTextTail);
   // Projection also authenticates retained model bindings; leave that uncommon
   // path fresh rather than memoizing a partial projection/model contract.
@@ -366,7 +368,8 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
       || sha256Buffer(stripped.buffer) !== artifacts.strippedObject.sha256) fail('object inputs changed during derivation');
   let projectionEvidence = null;
   if (target.auxiliaryProjection) {
-    const result = auxiliaryProjection.project(buffers.unsplitAssemblerObject, target);
+    const result = target.atomicText ? require('./atomic_owner_union').project(buffers.unsplitAssemblerObject, target)
+      : auxiliaryProjection.project(buffers.unsplitAssemblerObject, target);
     if (!result.buffer.equals(buffers.rawObject)) fail("auxiliary raw-to-projected reconstruction");
     projectionEvidence = result.evidence;
   }
@@ -383,7 +386,8 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const loadSections = new Set([...contract.owners.map((owner) => '.rel' + owner.inputSection), ...(target.auxiliarySections || []).map((section) => '.rel' + section.outputSection)]);
   const tail = tailEvidence(contract, rawOwners, normalizedRelocations);
   tailEvidence(contract, strippedOwners, normalizedRelocations);
-  const evidence = { schemaVersion: projectionEvidence ? (projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
+  const evidence = { schemaVersion: target.atomicText ? 11 : projectionEvidence ? (projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
+    ...(target.atomicText ? {atomicUnion:require('./atomic_owner_union').evidence(target,buffers,artifacts,files)} : {}),
     ...(projectionEvidence ? { auxiliaryProjection: projectionEvidence } : {}), textContractSha256: hash(contract), artifacts,
     rawOwners: rawOwners.map((r) => r.record), strippedOwners: strippedOwners.map((r) => r.record), rawFunctions, strippedFunctions,
     rawRelocations: rawRelocations.filter((r) => loadSections.has(r.section)), normalizedRelocations,
@@ -465,6 +469,8 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
       expectedWord: retailBytes.readUInt32BE(offset), linkedWordExact: linkedBytes.readUInt32BE(offset) === retailBytes.readUInt32BE(offset) };
   });
   const result = { schemaVersion: target.nativeTextTail ? 2 : 1,
+    ...(target.atomicText ? { atomicPhysicalOwners: require('./atomic_owner_union').physicalEvidence(target,elf,true),
+      atomicLinkedCensus: auxiliaryProjection.completeObjectCensus(elf) } : {}),
     ...(require('./compilation_groups').functionMode(target.compilationGroup)
       ? { fixedBindings: require('./compilation_groups').verifyFixedBindings(target, elf) } : {}), ...(allocation ? { allocation } : {}),
     ...(target.auxiliaryProjection || auxiliaryProjection.composed(target.compilationGroup) ? { auxiliaryProjectionRetained: auxiliaryProjection.linkedEvidence(target, root, context) } : {}), textContractSha256: hash(contract), owners, mapContributions, functions,
@@ -472,6 +478,7 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
   for (const record of Object.values(objectEvidence.artifacts).filter(Boolean)) {
     if (!same(artifact(root, record.path), record)) fail('object artifact changed during linked evidence');
   }
+  if (target.atomicText) require('./atomic_owner_union').registerLinked(target,root,canonicalBaserom,objectEvidence.artifacts);
   if (owned) preparedLink.finishLinkContext(context);
   return result;
 }

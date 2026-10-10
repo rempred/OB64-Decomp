@@ -11,6 +11,7 @@ const preparedLink = require('./prepared_link_view');
 const { targetStage } = require('./verification_profile');
 const auxiliaryProjection = require('./auxiliary_projection');
 const compilationGroups = require('./compilation_groups');
+const atomic = require('./atomic_owner_union');
 const {
   ROOT,
   SHIM_TEXT,
@@ -404,33 +405,34 @@ function compareLinkedTargetBytes(target, linkedElf, canonicalBaserom) {
         ))) {
       fail('raw linked-target owner extent drift: ' + target.symbol + ' ' + owner.sectionName);
     }
-    const sections = linkedElf.sections.filter((section) => section && section.name === owner.sectionName);
+    const storedOwner = target.atomicText ? atomic.storageOwner(target) : owner;
+    const sections = linkedElf.sections.filter((section) => section && section.name === storedOwner.sectionName);
     if (sections.length !== 1) fail('raw linked-target section count drift: ' + target.symbol + ' ' + owner.sectionName);
     const section = sections[0];
     if (section.type !== 1
         || !Number.isInteger(section.flags) || (section.flags & 2) === 0 || (section.flags & 4) === 0
-        || section.address !== owner.vramStartNumber
-        || section.size !== owner.bytes
+        || section.address !== storedOwner.vramStartNumber
+        || section.size !== storedOwner.bytes
         || !Number.isInteger(section.offset) || section.offset < 0) {
       fail('raw linked-target section shape drift: ' + target.symbol + ' ' + owner.sectionName);
     }
     // Overlays may share VRAM; identify the load by ROM or file position, then
     // validate every placement field below. Either identity must remain unique.
     const targetLoads = linkedElf.programHeaders.filter((header) => header && header.type === 1 && (
-      header.paddr === owner.romStartNumber
+      header.paddr === storedOwner.romStartNumber
       || header.offset === section.offset
     ));
     if (targetLoads.length !== 1) fail('raw linked-target load-header count drift: ' + target.symbol + ' ' + owner.sectionName);
     const load = targetLoads[0];
     if (load.offset !== section.offset
-        || load.vaddr !== owner.vramStartNumber
-        || load.paddr !== owner.romStartNumber
-        || load.fileSize !== owner.bytes
-        || load.memorySize !== owner.bytes
+        || load.vaddr !== storedOwner.vramStartNumber
+        || load.paddr !== storedOwner.romStartNumber
+        || load.fileSize !== storedOwner.bytes
+        || load.memorySize !== storedOwner.bytes
         || !Number.isInteger(load.flags) || (load.flags & 1) === 0) {
       fail('raw linked-target load placement drift: ' + target.symbol + ' ' + owner.sectionName);
     }
-    const linkedOwnerBytes = Buffer.from(elfSectionBytes(linkedElf, section));
+    const linkedOwnerBytes = target.atomicText ? atomic.ownerBytes(linkedElf, target, owner, true) : Buffer.from(elfSectionBytes(linkedElf, section));
     const expectedOwnerBytes = Buffer.from(canonicalBaserom.subarray(owner.romStartNumber, owner.romEndNumber));
     const expectedOwnerSha256 = sha256Buffer(expectedOwnerBytes);
     if (linkedOwnerBytes.length !== owner.bytes || expectedOwnerBytes.length !== owner.bytes
@@ -1558,6 +1560,7 @@ function expectedCompilerTextFunctionEvidence(target, linked = false) {
 }
 
 function verifyCompilerTextFunctions(elf, target, section, linked = false) {
+  if (target.atomicText) { atomic.checkFunctions(elf, target, linked); return expectedCompilerTextFunctionEvidence(target, linked); }
   if (!section || !Array.isArray(target.compilerTextFunctions) || target.compilerTextFunctions.length === 0) {
     fail('compiler text-function verification metadata is malformed: ' + target.symbol);
   }
@@ -1619,7 +1622,7 @@ function verifyCompilerTextFunctions(elf, target, section, linked = false) {
 
 function relocationRecords(elf, target) {
   if (target.compilationGroup) return compilationGroups.memberRelocations(target, elf);
-  const owners = targetTextOwners(target);
+  const owners = atomic.objectOwners(target);
   const targetSections = owners.map((owner) => {
     const matches = elf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (matches.length !== 1) fail('target relocation section owner drift: ' + target.symbol + ' ' + owner.sectionName);
@@ -1666,7 +1669,7 @@ function relocationRecords(elf, target) {
 
 function auxiliaryRelocationRecords(elf, target, auxiliary) {
   const auxiliaryTextOwners = auxiliaryProjection.composed(target.compilationGroup)
-    ? target.compilationGroup.owners.map(owner => ({ ...owner, logicalOffset: owner.groupOffset })) : targetTextOwners(target);
+    ? target.compilationGroup.owners.map(owner => ({ ...owner, logicalOffset: owner.groupOffset })) : atomic.objectOwners(target);
   const targetSections = auxiliaryTextOwners.map((owner) => {
     const matches = elf.sections.filter((section) => section.name === owner.sectionName);
     if (matches.length !== 1) return null;
@@ -1810,9 +1813,9 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
 
   let splitResult = null;
   if (target.auxiliaryProjection) {
-    fs.writeFileSync(proofObjectFile, auxiliaryProjection.project(fs.readFileSync(assemblerObjectFile), target).buffer);
+    fs.writeFileSync(proofObjectFile, (target.atomicText ? atomic : auxiliaryProjection).project(fs.readFileSync(assemblerObjectFile), target).buffer);
   }
-  if (targetTextOwners(target).length > 1) {
+  if (!target.atomicText && targetTextOwners(target).length > 1) {
     splitResult = splitRelocatableTextSection(
       fs.readFileSync(assemblerObjectFile),
       target.sectionName,
@@ -1827,7 +1830,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     fs.writeFileSync(proofObjectFile, splitResult.buffer);
   }
   const elf = parseElfFile(proofObjectFile);
-  const ownerSectionRecords = targetTextOwners(target).map((owner) => {
+  const ownerSectionRecords = atomic.objectOwners(target).map((owner) => {
     const sections = elf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (sections.length !== 1 || sections[0].type !== 1 || (sections[0].flags & 6) !== 6
         || sections[0].size !== owner.bytes) {
@@ -1909,7 +1912,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     });
   }
   const acceptedAllocSections = new Set([
-    ...targetTextOwners(target).map((owner) => textContract.inputSection(target, owner.sectionName)),
+    ...atomic.objectOwners(target).map((owner) => textContract.inputSection(target, owner.sectionName)),
     ...acceptedAuxiliarySections.map((auxiliary) => auxiliary.outputSection),
     '.reginfo',
   ]);
@@ -1942,7 +1945,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   }
   const linkedObjectElf = parseElfFile(objectFile);
   if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(linkedObjectElf, false);
-  const linkedTextBytes = Buffer.concat(targetTextOwners(target).map((owner) => {
+  const linkedTextBytes = Buffer.concat(atomic.objectOwners(target).map((owner) => {
     const linkedSections = linkedObjectElf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (linkedSections.length !== 1 || linkedSections[0].size !== owner.bytes) {
       fail('ancillary-section removal changed target owner shape: ' + target.symbol + ' ' + owner.sectionName);
@@ -1959,7 +1962,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   )) {
     fail('ancillary-section removal changed compiler text-function evidence: ' + target.symbol);
   }
-  for (const [ownerIndex, owner] of targetTextOwners(target).entries()) {
+  for (const [ownerIndex, owner] of atomic.objectOwners(target).entries()) {
     const linkedSection = linkedObjectElf.sections.find((section) => section.name === textContract.inputSection(target, owner.sectionName));
     const expectedSymbol = ownerIndex === 0 ? target.symbol : owner.symbol;
     const linkedSymbols = linkedObjectElf.symbols.filter((symbol) => symbol.name === expectedSymbol);
@@ -2045,6 +2048,7 @@ function fileIdentity(output, relative, label) {
 function deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, sharedLinkContext = null) {
   if (sharedLinkContext && (sharedLinkContext.elf !== linkedElf || sharedLinkContext.canonicalBaserom !== canonicalBaserom)) fail('shared source proof link inputs differ');
   validateTargetClassification(target, classification);
+  if (target.atomicText) atomic.registerClassification(target,classification);
   const compilerInputRelative = target.source;
   const compilerRelative = compilationGroups.assemblyPath(target);
   const sectionRelative = compilationGroups.assemblyPath(target, '.s');
@@ -2078,7 +2082,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   }
 
   if (assemblerArtifact) {
-    const reproduced = target.auxiliaryProjection ? auxiliaryProjection.project(
+    const reproduced = target.auxiliaryProjection ? (target.atomicText ? atomic : auxiliaryProjection).project(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'native auxiliary assembler object')), target)
       : target.compilationGroup ? compilationGroups.project(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'native assembler object')), target.compilationGroup)
@@ -2099,7 +2103,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   }
   const objectElf = parseElfFile(resolveRelative(output, objectRelative, 'matching C object'));
   const linkedObjectElf = parseElfFile(resolveRelative(output, linkedObjectRelative, 'linked matching C object'));
-  const objectOwnerSections = targetTextOwners(target).map((owner) => {
+  const objectOwnerSections = atomic.objectOwners(target).map((owner) => {
     const objectSections = objectElf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (objectSections.length !== 1 || objectSections[0].type !== 1 || (objectSections[0].flags & 6) !== 6
         || objectSections[0].size !== owner.bytes) {
@@ -2279,6 +2283,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     assemblyContract: {
       compilerAssemblyRewritten: false,
       permittedAdjustment: target.auxiliaryProjection?.schemaVersion === 3 ? 'none in compiler assembly; project fixed read-only rows and omit authenticated unowned native terminal text alignment'
+        : target.atomicText ? 'assign complete compiler text to one atomic owner union at alignment four; project authentic read-only occurrence bundles and their native alignment zeros to complete original rows; preserve non-function boundary markers'
         : target.auxiliaryProjection ? 'assign native compiler occurrences to the first auxiliary anchor; project complete payload rows while retaining original ASM padding'
         : target.nativeTextTail || target.compilationGroup ? 'none; untouched native compiler assembly'
         : sourceObjectPrefixSelections > 0
@@ -2347,6 +2352,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     },
   };
   const proofBytes = Buffer.from(`${JSON.stringify(proof, null, 2)}\n`, 'utf8');
+  if (target.atomicText) atomic.registerProofContext(phase8,target,output,proof);
   if (!sharedLinkContext) textContract.finishLinkContext(linkContext);
   return { proof, proofBytes, rawComparison };
 }
@@ -2412,18 +2418,20 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
   }
   compilationGroups.validateFunctionGroupProof(actual);
   compilationGroups.validateComposedProof(actual);
+  atomic.validateProof(actual);
   const projected = actual.target.auxiliaryProjection;
   const projectionEvidence = actual.objectEvidence.auxiliaryProjection;
   if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || [4, 6, 8].includes(actual.objectEvidence.schemaVersion)) {
-    const paddedProjection = projected?.schemaVersion === 2;
+    const bundleProjection = projected?.schemaVersion === 4;
+    const paddedProjection = projected?.schemaVersion === 2 || bundleProjection;
     const nativeFunctionsProjection = projected?.schemaVersion === 3;
     const projectionKeys = ['schemaVersion', 'contract', 'retained', 'implementationSha256',
       'nativeSections', 'nativeSymbols', 'nativeRelocationSections', 'nativeObjectSha256',
       'projectedObjectSha256', 'nativeSectionSha256', 'nativeRelocations', 'references',
       'payloadBytes', 'checkOnlyBytes', ...(paddedProjection ? ['payloadSlices'] : []), ...(nativeFunctionsProjection ? ['nativeText'] : [])];
     const projectionHashes = ['implementationSha256', 'nativeObjectSha256', 'projectedObjectSha256', 'nativeSectionSha256'];
-    if (!projected || ![1, 2, 3].includes(projected.schemaVersion) || actual.assemblyContract.auxiliaryProjection !== true
-        || actual.objectEvidence.schemaVersion !== (nativeFunctionsProjection ? 8 : paddedProjection ? 6 : 4)
+    if (!projected || ![1, 2, 3, 4].includes(projected.schemaVersion) || actual.assemblyContract.auxiliaryProjection !== true
+        || actual.objectEvidence.schemaVersion !== (bundleProjection ? 11 : nativeFunctionsProjection ? 8 : paddedProjection ? 6 : 4)
         || !textContract.exactKeys(projectionEvidence, projectionKeys) || projectionEvidence.schemaVersion !== projected.schemaVersion
         || projectionHashes.some(key => typeof projectionEvidence[key] !== 'string' || !/^[0-9A-F]{64}$/.test(projectionEvidence[key]))
         || !isDeepStrictEqual(projected, projectionEvidence.contract)
@@ -2467,7 +2475,7 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
             || slice.bytes !== slice.entryBytes + slice.paddingBytes || !Number.isSafeInteger(slice.paddingBytes) || slice.paddingBytes < 0
             || slice.paddingBytes >= projected.alignment
             || (slice.paddingBytes && slice.paddingBytes !== (projected.alignment - slice.entryBytes % projected.alignment) % projected.alignment)
-            || (index === slices.length - 1 && slice.paddingBytes !== 0)
+            || (!bundleProjection && index === slices.length - 1 && slice.paddingBytes !== 0)
             || slice.nativeSha256 !== row.objectSha256 || slice.nativeSha256 !== row.acceptedObjectSha256
             || !/^[0-9A-F]{64}$/.test(slice.nativeSha256)
             || slice.paddingSha256 !== sha256Buffer(Buffer.alloc(slice.paddingBytes))
@@ -2736,7 +2744,7 @@ function writeLayout(phase8, phase7, output, replacements, options = {}) {
           || owner.slices.length !== retainedForOwner.length + 1) {
         fail('Phase 7 target layout row drift: ' + target.symbol + ' ' + textOwner.sectionName);
       }
-      const ownerIndex = targetTextOwners(target).findIndex(record => record.sectionName === textOwner.sectionName);
+      const ownerIndex = target.atomicText ? 0 : targetTextOwners(target).findIndex(record => record.sectionName === textOwner.sectionName);
       const ownerRepresentation = { textContract: representation.textContract.owners[ownerIndex],
         objectEvidence: { raw: representation.objectEvidence.rawOwners[ownerIndex], stripped: representation.objectEvidence.strippedOwners[ownerIndex] },
         linkEvidence: { owner: representation.linkEvidence.owners[ownerIndex], map: representation.linkEvidence.mapContributions[ownerIndex] } };
@@ -2945,11 +2953,11 @@ function verifyPhase8Layout(phase8, layout, replacements) {
           || layoutTargetOwner.fallbackObject !== replacements.get(textOwner.chunkIndex).fallbackRelative) {
         fail('Phase 8 external layout target drift: ' + target.symbol + ' ' + textOwner.sectionName);
       }
-      const ownerIndex = textOwners.findIndex(owner => owner.sectionName === textOwner.sectionName);
+      const ownerIndex = target.atomicText ? 0 : textOwners.findIndex(owner => owner.sectionName === textOwner.sectionName);
       const expectedRepresentation = { textContract: layoutTarget.textContract?.owners[ownerIndex],
         objectEvidence: { raw: layoutTarget.objectEvidence?.rawOwners[ownerIndex], stripped: layoutTarget.objectEvidence?.strippedOwners[ownerIndex] },
         linkEvidence: { owner: layoutTarget.linkEvidence?.owners[ownerIndex], map: layoutTarget.linkEvidence?.mapContributions[ownerIndex] } };
-      textContract.validateRecords(layoutOwner.textRepresentations?.find(record => record.textContract?.outputSection === textOwner.sectionName), expectedRepresentation, 'layout owner');
+      textContract.validateRecords(layoutOwner.textRepresentations?.find(record => record.textContract?.outputSection === (target.atomicText ? target.sectionName : textOwner.sectionName)), expectedRepresentation, 'layout owner');
       textContract.validateRecords(layoutOwner.slices?.find(record => record.sectionName === textOwner.sectionName), expectedRepresentation, 'layout slice');
       if (retainedForOwner.length > 0) {
         if (!Array.isArray(layoutOwner.slices) || layoutOwner.slices.length !== retainedForOwner.length + 1) {
@@ -3063,7 +3071,12 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
     }
   }
   const aliasText = [...aliases.entries()].sort((left, right) => left[0].localeCompare(right[0])).map(([symbol, value]) => symbol + ' = ' + hex(value) + ';');
-  let linkerText = renderLinkerScript(phase8.model);
+  let linkerText = renderLinkerScript(atomic.outputModel(phase8.model, phase8.targets));
+  for (const target of phase8.targets.filter(t => t.atomicText)) {
+    const selector = '    *(' + target.sectionName + ')';
+    if (linkerText.split(selector).length !== 2) fail('atomic output selector census');
+    linkerText = linkerText.replace(selector, '    ' + compilationGroups.objectPath(target) + '(' + target.sectionName + ')');
+  }
   for (const target of phase8.targets.filter((entry) => entry.nativeTextTail)) {
     textContract.resolveTextContract(target);
     const selector = '    *(' + target.sectionName + ')';
@@ -3149,6 +3162,9 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
 }
 
 function linkPhase8(phase8, output, objectManifest, tools) {
+  for (const target of phase8.targets.filter(t=>t.atomicText)) atomic.verifyInputReferences(target,
+    objectManifest.linkedObjects.map(record=>resolveRelative(output,record.path,'atomic input object')),
+    path.join(output,compilationGroups.objectPath(target)));
   const linkerRoot = path.join(output, 'linker');
   ensureDir(linkerRoot);
   const linkerScript = path.join(linkerRoot, 'phase8.ld');
@@ -3266,14 +3282,21 @@ function runTargetAsmDiffer(phase8, target, options) {
     fs.copyFileSync(shim, path.join(runRoot, 'watchdog.py'));
     fs.writeFileSync(path.join(runRoot, 'sitecustomize.py'), OBJDUMP_SHIM_TEXT);
     const chunkName = String(owner.chunkIndex).padStart(3, '0');
+    // An atomic ELF has no separate continuation output section. Compare exact
+    // owner intervals as binaries; these bytes were just extracted and checked
+    // against the authenticated ROM, without relocation or instruction edits.
+    if (target.atomicText) {
+      fs.writeFileSync(path.join(runRoot,'retail-owner.bin'),rawComparison.owners[ownerIndex].expectedBytes);
+      fs.writeFileSync(path.join(runRoot,'linked-owner.bin'),rawComparison.owners[ownerIndex].linkedBytes);
+    }
     const settings = [
       'def apply(config, args):',
       '    config["objdump_executable"] = ' + JSON.stringify(options.objdump),
       '    config["arch"] = "mips"',
       '    config["map_format"] = "gnu"',
       '    config["show_line_numbers_default"] = False',
-      '    config["baseimg"] = ' + JSON.stringify('../../comparison/original/chunk_' + chunkName + '.o'),
-      '    config["myimg"] = "../../phase8.elf"',
+      '    config["baseimg"] = ' + JSON.stringify(target.atomicText ? 'retail-owner.bin' : '../../comparison/original/chunk_' + chunkName + '.o'),
+      '    config["myimg"] = ' + JSON.stringify(target.atomicText ? 'linked-owner.bin' : '../../phase8.elf'),
       '    config["mapfile"] = "../../phase8.map"',
       '',
     ].join('\n');
@@ -3281,11 +3304,8 @@ function runTargetAsmDiffer(phase8, target, options) {
     const env = { ...process.env, PYTHONPATH: runRoot, PYTHONDONTWRITEBYTECODE: '1' };
     const result = run(options.python, [
       path.join(options.asmDifferRoot, 'diff.py'),
-      hex(owner.row && owner.row.part ? owner.row.part.symbolByteOffset : 0),
-      '-e',
-      ownerIndex === 0 ? target.symbol : owner.symbol,
-      '-j',
-      owner.sectionName,
+      ...(target.atomicText ? [hex(0),hex(owner.bytes)] : [hex(owner.row && owner.row.part ? owner.row.part.symbolByteOffset : 0),
+      '-e', ownerIndex === 0 ? target.symbol : owner.symbol, '-j', owner.sectionName]),
       '--format',
       'json',
       '--algorithm',
@@ -3352,6 +3372,7 @@ function escapeRegex(value) {
 }
 
 function verifyTargetMapOwner(target, mapText) {
+  if (target.atomicText) return atomic.mapEvidence(target, mapText);
   const mapView = typeof mapText === 'string' ? preparedLink.prepareMap(mapText) : mapText;
   const expectedOwner = compilationGroups.objectPath(target);
   const owners = targetTextOwners(target).map((owner, ownerIndex) => {
@@ -3728,10 +3749,11 @@ function verifyPhase8Output(phase8, options) {
   const textLinkContext = measure('verify-prepare-linked-view', () => textContract.linkContext(output, canonicalBaserom));
   const elf = textLinkContext.elf;
   const verificationModel = phase8VerificationModel(phase8);
-  const elfResult = verifyElfAgainstModel(verificationModel, elf);
+  const outputModel = atomic.outputModel(verificationModel, phase8.targets);
+  const elfResult = verifyElfAgainstModel(outputModel, elf);
   const mapText = textLinkContext.mapText;
   verifyInteriorGroupMapOwners(phase8, mapText);
-  const mapResult = verifyMap(phase8.model, mapText);
+  const mapResult = verifyMap(outputModel, mapText);
   const romResult = measure('verify-rom', () => verifyRom(phase8.model, fs.readFileSync(files.rom)));
   const sourceObjectEvidence = measure('verify-source-object-proofs', () => verifySourceObjectProofs(phase8,
     { output, linkedElf: elf, canonicalBaserom, linkContext: textLinkContext, profile: options.profile }));
@@ -3837,7 +3859,7 @@ function verifyPhase8Output(phase8, options) {
         || elf.sections[linkedSymbols[0].sectionIndex].name !== target.sectionName) {
       fail('linked target symbol placement drift: ' + target.symbol);
     }
-    for (const owner of targetTextOwners(target).slice(1)) {
+    for (const owner of (target.atomicText ? [] : targetTextOwners(target).slice(1))) {
       const boundarySymbols = elf.symbols.filter((symbol) => symbol.name === owner.symbol);
       if (boundarySymbols.length !== 1
           || boundarySymbols[0].value !== owner.vramStartNumber
@@ -3856,8 +3878,8 @@ function verifyPhase8Output(phase8, options) {
     verifyCompilerTextFunctions(cElf, target, cSection);
     const ownerResults = ownerFiles.map((record, ownerIndex) => {
       const { owner } = record;
-      const cSections = cElf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
-      if (cSections.length !== 1 || cSections[0].size !== owner.bytes) {
+      const cSections = cElf.sections.filter((section) => section.name === textContract.inputSection(target, target.atomicText ? target.sectionName : owner.sectionName));
+      if (cSections.length !== 1 || cSections[0].size !== (target.atomicText ? target.bytes : owner.bytes)) {
         fail('recorded C object target section shape drift: ' + target.symbol + ' ' + owner.sectionName);
       }
       const fallbackElf = parseElfFile(record.fallbackObject);
@@ -4156,6 +4178,9 @@ function verifyPhase8Output(phase8, options) {
   const layout = readJson(files.layout);
   verifyPhase8Layout(phase8, layout, replacements);
   const objectManifest = verifyObjectManifest(output, phase8);
+  for (const target of phase8.targets.filter(t=>t.atomicText)) atomic.verifyInputReferences(target,
+    readJson(path.join(output,'objects/manifest.json')).linkedObjects.map(record=>resolveRelative(output,record.path,'atomic verified input object')),
+    path.join(output,compilationGroups.objectPath(target)));
   const asmDiffer = phase8.targets.map((target) => measure(targetStage('verify-target', target.symbol), () => runTargetAsmDiffer(phase8, target, {
     output,
     asmDifferRoot: options.asmDifferRoot,
@@ -4170,7 +4195,7 @@ function verifyPhase8Output(phase8, options) {
     status: 'pass',
     counts: {
       primaryRows: phase8.model.rows.length,
-      linkSlices: phase8.model.slices.length,
+      linkSlices: outputModel.slices.length,
       overlayReservations: phase8.model.overlays.length,
       representedBytes: elfResult.representedBytes,
       loadHeaders: elfResult.loadHeaderCount,
@@ -4294,7 +4319,7 @@ function validateRecordedPhase8Build(phase8, options) {
         || !Array.isArray(replacement.owners)
         || replacement.owners.length !== targetTextOwners(target).length
         || !Array.isArray(replacement.objectTextOwners)
-        || replacement.objectTextOwners.length !== targetTextOwners(target).length
+        || replacement.objectTextOwners.length !== atomic.objectOwners(target).length
         || !Array.isArray(verifiedTarget.owners)
         || verifiedTarget.owners.length !== targetTextOwners(target).length
         || !Array.isArray(replacement.auxiliarySections)

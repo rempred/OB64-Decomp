@@ -59,32 +59,48 @@ binds the complete membership, sources and saved evidence; its 80 file identitie
 were checked without recompiling unchanged candidates. This includes the complete
 10,272-byte two-part EBBC and 2215D0's real native alignment tail.
 All remain inactive ASM in production. Actual linked operands, sole ownership,
-placement, table contracts, BF8C/4813C interface corrections and W6/W7 integration
-dependencies remain. The Director is reconciling those concrete dependencies;
-no activation, acceptance repeat or native hold is authorized by the handoff.
+placement, table contracts and compatible callee/caller interfaces remain.
+The private [integration preparation](../build/matching/terminal-w8-261009/integration-preparation/inputs.json)
+binds all 25 data aliases and proposed interface corrections; those changes are
+uncompiled and unaccepted. No source activation is authorized by the handoff.
 The complete wave still requires one final normal verifier. Yellow retains
 production ownership, ready W8 and unfinished W5/W6; no worker retirement yet.
 
-W8 intake identifies a specific remaining EBBC admission: one function across
-rows 4062/4063, with three native table occurrences in data rows 4160/4161.
-Existing single-owner auxiliary support covers 2215D0 but not this combination.
-A separate generic implementation plan is being prepared for Sol/GoldOx agreement
-and Director approval; no tooling edits or native drain are authorized yet.
-The current W6/W7 ordering gate is retained pending that decision. W8's actual
-relocations call accepted EF50, not the unfinished W6/W7 functions; this narrower
-fact does not by itself resolve table, interface or placement obligations.
+**Atomic-owner tooling accepted, October 10:** the
+[audit record](audit/2026-10-10-atomic-owner-union.md) closes EBBC's representation
+gap: one original function across complete rows 4062/4063, with three native table
+occurrences in complete rows 4160/4161. The independent original-body registration,
+generic implementation, regression controls and final evidence review passed.
+Audit2115 reached EOF/exit0 with exact ROM at CURRENT `113EBCB3`, retaining baseline
+`D6553DED`; no source or table was activated. Do not repeat unchanged acceptance.
+
+Both workers resumed under Director2116 after result2117: YellowTiger continues
+private W8 interface/preflight checks and LavenderSpire checks the complete
+3,372-byte A9C candidate in W7. Refresh affected context once and retain watchers.
+Private checks run concurrently in separate roots. The Director coordinates the
+bounded drain for canonical W8 integration and linking; private edits and
+reasoning may continue during it. All normal complete-wave gates remain.
+
+**Director sequencing decision, October 10:** intact W8 may be accepted before
+unfinished W6/W7 once its actual gates close. The read-only dependency census
+finds disjoint producers and no call to an unfinished W6/W7 function; accepted
+EF50 is its shared prerequisite. Require all 25 canonical data bindings, compatible
+interfaces and affected-caller checks, exclusive complete table owners, accepted
+EBBC support, and every normal complete-wave gate. Historical ordering alone no
+longer blocks W8. Preserve full W6/W7 membership and their own dependencies;
+later relevant shared-input changes require normal combined verification.
 
 **Single-owner native text/table repair, accepted October 9:** the explicit
 single-owner native/read-only mode preserves a complete compiler function, its
 actual alignment tail and attributed switch tables. The
 [audit record](audit/2026-10-09-single-owner-native-auxiliary.md) closes the
 representation gap reported in 2063/2062. Regression tests, one structural audit
-and independent final review passed; current accepted tooling is CURRENT
-`E9E49D47` / unchanged baseline `D6553DED`. No source or table was activated;
-`002215D0` still has real instruction differences. The native hold is released
-for both existing workers: refresh affected private inputs once, then resume
-their complete W7/W8 assignments. Existing group-scratch CLI rejection and all
-wave integration gates remain unchanged. Do not repeat unchanged acceptance.
+and independent final review passed; its audit established CURRENT
+`E9E49D47` / unchanged baseline `D6553DED`. No source or table was activated.
+Its nonmatching 2215D0 control remains regression evidence; the later W8 candidate
+is instruction-ready. The newer atomic-owner acceptance above supersedes its
+tooling state. Existing group-scratch CLI rejection and all wave integration gates
+remain unchanged. Do not repeat unchanged acceptance.
 
 LavenderSpire retains complete DB10/3C00/6098 and scheduler NINE as parked,
 unfinished obligations. Three real 3C00 trials and GoldOx's consultation left its

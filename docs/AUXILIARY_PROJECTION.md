@@ -14,6 +14,11 @@ with the standalone mode. Versions 1/2 require one compiler function; version 3
 allows a complete registry-bound function census inside one physical text owner. The separately documented
 [compilation-group composition](GROUP_AUXILIARY_PROJECTION.md) supports version 1 only.
 
+Schema 4 is admitted only with the separately authenticated
+[atomic original-owner union](ATOMIC_OWNER_UNION.md). It adds compiler occurrence
+bundles within complete existing data rows and authentic owned terminal alignment
+zeros. It does not relax versions 1–3 or their text-producer restrictions.
+
 The target-level contract has exactly these fields:
 
 ```text

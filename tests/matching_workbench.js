@@ -1223,7 +1223,26 @@ function storeTests() {
   }
 }
 
+function expectedPhysicalHeadCount(executableCodeRows, bodies) {
+  const consumedRows = new Set(executableCodeRows.filter(row =>
+    /^func_[0-9a-f]{8}_chunk[0-9]+tail$/i.test(row.part.name)).map(row => row.index));
+  for (const body of bodies.filter(body => body.aliases.length && body.fragments[0].ownerOffset === 0)) {
+    for (const fragment of body.fragments.slice(1)) consumedRows.add(fragment.rowIndex);
+  }
+  return executableCodeRows.length - consumedRows.size;
+}
+
 async function acceptedModelTests() {
+  // Six physical rows retain three heads: rows 2 and 5 are archival tails,
+  // and alias evidence additionally consumes row 3. Evidence for row 2 overlaps
+  // the archival-tail evidence and must not remove a fourth head.
+  const censusRows = [1, 2, 3, 4, 5, 6].map(index => ({ index,
+    part: { name: [2, 5].includes(index) ? `func_0000000${index}_chunk1tail` : `owner_${index}` } }));
+  const censusBodies = [{ aliases: ['alias'], fragments: [
+    { rowIndex: 1, ownerOffset: 0 }, { rowIndex: 2, ownerOffset: 0 }, { rowIndex: 3, ownerOffset: 0 },
+  ] }];
+  assert(expectedPhysicalHeadCount(censusRows, censusBodies) === 3,
+    'overlapping continuation and alias evidence double-counted a consumed physical row');
   const workbench = loadWorkbenchModel();
   await require('./matching_group_consumers').run(workbench);
   assert(workbench.modelManifest.targetModelContract === 5, 'target-model contract drift');
@@ -1237,12 +1256,7 @@ async function acceptedModelTests() {
   const executableCodeRows = workbench.model.rows.filter((row) => (
     row.primaryClass === 'code' && row.part && row.slices.length === 1 && row.slices[0].executable
   ));
-  const continuationRows = executableCodeRows.filter((row) => (
-    /^func_[0-9a-f]{8}_chunk[0-9]+tail$/i.test(row.part.name)
-  ));
-  const mergedContinuationRows = workbench.logicalRegistry.bodies.filter(body => body.aliases.length
-    && body.fragments[0].ownerOffset === 0).reduce((count,body)=>count+body.fragments.length-1,0);
-  assert(workbench.targets.length === executableCodeRows.length - continuationRows.length - mergedContinuationRows,
+  assert(workbench.targets.length === expectedPhysicalHeadCount(executableCodeRows, workbench.logicalRegistry.bodies),
     'workbench target census does not equal physical heads minus validated logical continuations');
   const prefixedTargets = workbench.targets.filter((target) => target.symbolByteOffset !== 0);
   assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length
@@ -1279,6 +1293,18 @@ async function acceptedModelTests() {
     'accepted straddler placement is not contiguous');
   assert(straddler.originalAssemblyParts?.length === 2
     && straddler.originalAssemblyParts[1].symbol === 'func_0021EBBC_chunk34tail', 'accepted straddler source-part provenance is missing');
+  for (const alias of ['func_0021EBBC_chunk34tail', 'rev0_code_00221000']) {
+    const resolved = resolveTarget(workbench, alias);
+    assert(resolved.symbol === straddler.symbol && resolved.targetId === straddler.targetId
+      && resolved.requestedSymbol === alias && resolved.selectionKind === 'logical-body'
+      && resolved.romStart === 0x0021EBBC && resolved.romEndExclusive === 0x002213DC
+      && resolved.bytes === 10272 && resolved.entryVram === straddler.entryVram
+      && resolved.logicalFragments.map(fragment => fragment.rowIndex).join(',') === '4062,4063'
+      && resolved.expectedBytes.equals(straddler.expectedBytes),
+    'registered continuation alias must select the complete original body, not an independent callable entry');
+    assert(!workbench.targets.some(target => target.symbol === alias),
+      'registered continuation alias gained an independent target');
+  }
   const straddlerAssembly = emitM2cAssembly(straddler, workbench);
   const guardedLabel = `.L_${(straddler.vramStart + (0x0021F808 - straddler.romStart))
     .toString(16).toUpperCase().padStart(8, '0')}:`;
@@ -1370,7 +1396,7 @@ async function acceptedModelTests() {
     targetInstructions(twoSwitches));
   assert(twoSwitchTables.map((table) => `${table.tableVram.toString(16)}:${table.entryCount}`).join(',')
     === '801f0308:23,801f0368:7', 'multiple overlay jump tables were not recovered independently');
-  expectError(/does not resolve uniquely/, () => resolveTarget(workbench, 'func_0021EBBC_chunk34tail'));
+  expectError(/does not resolve uniquely/, () => resolveTarget(workbench, 'nonexistent_atomic_owner_test_symbol'));
 }
 
 async function main() {

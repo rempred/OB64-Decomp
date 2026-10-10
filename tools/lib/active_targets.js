@@ -566,6 +566,7 @@ function validateLinkageConfig(linkage, expectedProfile) {
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliarySections') ? ['auxiliarySections'] : []),
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'nativeTextTail') ? ['nativeTextTail'] : []),
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliaryProjection') ? ['auxiliaryProjection'] : []),
+      ...(entry && Object.prototype.hasOwnProperty.call(entry, 'atomicText') ? ['atomicText'] : []),
     ];
     if (!exactKeys(entry, expectedKeys)
         || typeof entry.symbol !== 'string' || !SAFE_LINK_SYMBOL.test(entry.symbol)) {
@@ -574,16 +575,19 @@ function validateLinkageConfig(linkage, expectedProfile) {
     const key = entry.symbol.toLowerCase();
     if (targets.has(key)) fail(`matching-C linkage target is duplicated: ${entry.symbol}`);
     const nativeTextTail = normalizeNativeTextTail(entry.nativeTextTail, entry.symbol);
+    const atomicText = require('./atomic_owner_union').normalize(entry.atomicText);
     if (nativeTextTail && (entry.compilerTextFunctions !== undefined || entry.auxiliarySections !== undefined)) {
       fail('native text cannot combine auxiliary or multi-function contracts');
     }
     const projectedAuxiliaries = normalizeAuxiliarySectionContracts(entry.auxiliarySections, entry.symbol,
       `matching-C linkage target ${entry.symbol} auxiliary sections`, entry.auxiliaryProjection);
     const projection = auxiliaryProjection.normalize(entry.auxiliaryProjection, projectedAuxiliaries);
+    if (Boolean(atomicText) !== (projection?.schemaVersion === 4) || atomicText && (nativeTextTail || entry.compilerTextFunctions !== undefined)) fail('atomic projection admission');
     if (projection && (nativeTextTail || (projection.schemaVersion !== 3 && entry.compilerTextFunctions !== undefined)
         || (projection.schemaVersion === 3 && !Array.isArray(entry.compilerTextFunctions)))) fail('auxiliary projection incompatible text contract');
     targets.set(key, {
       ...(projection ? { auxiliaryProjection: projection } : {}),
+      ...(atomicText ? { atomicText } : {}),
       symbol: entry.symbol,
       nativeTextTail,
       expectedRelocations: normalizeRelocationRecords(
@@ -636,6 +640,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
       nativeTextTail: canonicalTarget.nativeTextTail,
       auxiliarySections: canonicalTarget.auxiliarySections,
       ...(canonicalTarget.auxiliaryProjection ? { auxiliaryProjection: canonicalTarget.auxiliaryProjection } : {}),
+      ...(canonicalTarget.atomicText ? { atomicText: canonicalTarget.atomicText } : {}),
       source: 'canonical',
       canonicalLegacyEquivalent: legacyRelocations ? sameJson(canonicalTarget.expectedRelocations, legacyRelocations) : null,
     };
@@ -1539,6 +1544,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       compilerTextFunctions: [],
       auxiliarySections: [],
       ...(relocationContract.auxiliaryProjection ? { auxiliaryProjection: relocationContract.auxiliaryProjection } : {}),
+      ...(relocationContract.atomicText ? { atomicText: relocationContract.atomicText } : {}),
       relocationContractSource: relocationContract.source,
       legacyAncillaryRelocations: legacyTarget ? (legacyTarget.expectedRelocations || []).filter((record) => record.section === '.rel.pdr') : [],
       sourceSha256: sha256File(sourceFile),
@@ -1552,6 +1558,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       relocationContract.compilerTextFunctions,
     );
     logicalSupport.assertActivationCompatible(logicalRegistry, entry.symbol, rows, target.compilerTextFunctions, assemblySource);
+    if (target.atomicText) require('./atomic_owner_union').bind(target, logicalRegistry);
     if (target.compilerTextFunctions.some(fn => fn.entryEvidence === 'reviewed-local-body')) {
       target.reviewedLocalBodyRegistryIdentity = { ...logicalRegistry.identity };
     }
@@ -1599,6 +1606,8 @@ function loadActiveTargetModelInternal(options, deferFinish) {
   });
 
   groupSupport.bind(compilationGroups, targets, { model, baserom, logicalRegistry, linkSymbols: reviewedLinkage.linkSymbols });
+  require('./atomic_owner_union').assertCensus(targets);
+  require('./atomic_owner_union').outputModel(model, targets);
   if (compilationGroups.length) {
     const paths = [...new Set(targets.filter(target => target.nativeTextTail || target.compilationGroup).map(target => groupSupport.objectPath(target)))];
     for (const target of targets) target.nativeEmptyBssObjects = paths;

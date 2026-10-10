@@ -237,6 +237,17 @@ unchanged. Tables cannot target terminal padding. The focused single-owner fixtu
 must preserve a real nonexact source as nonexact; tooling acceptance does not
 activate that source, extend its owner, or admit groups to public scratch commands.
 
+The [atomic original-owner union](ATOMIC_OWNER_UNION.md) uses text/object/nested
+auxiliary schemas 7/11/4. Its independently ROM-authenticated original logical
+body must cover every complete member row exactly, with no text tail. Audit checks
+one exact alignment-four contribution and load mapping, every retained physical
+interval, both directions of subset rejection, exclusion of all original fallback
+inputs, non-function boundary reference closure, and authentic occurrence-derived
+table zeros. Full raw/projected/stripped/linked censuses and independently rebuilt
+proof/cache evidence are mandatory. Legacy cross-owner HI16/LO16 split rejection
+remains. Tooling fixtures and inactive original-body metadata do not activate or
+accept the unfinished source producer.
+
 Audit schema 5 retains complete textContract, objectEvidence, and linkEvidence on every active target and records the logical-function registry identity. Native fixtures exercise untouched compiler input, exact section and function censuses, native alignment, zero tail, sole object contribution, load mapping, and full-owner exactness. Malformed and stale evidence must fail independently of identical reports. The retained nonexact Combat candidate must remain a negative control. Tooling acceptance does not accept the unfinished Combat source wave.
 
 ## Compilation-group audit evidence

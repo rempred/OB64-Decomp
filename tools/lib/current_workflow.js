@@ -265,6 +265,7 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       'tools/lib/text_contract.js',
       'tools/lib/prepared_link_view.js',
       'tools/lib/elf_text_split.js',
+      'tools/lib/atomic_owner_union.js',
       'tools/lib/compilation_groups.js',
       'tools/lib/current_workflow.js',
       'tools/lib/source_policy.js',

@@ -22,6 +22,11 @@ function scratchCapability(workbench, target, sessionTargets = []) {
   const exactKeyRecord = workbench?.activeTargetsBySymbol?.get(key);
   const live = workbench?.bySymbol?.get(key);
   const sessionTarget = sessionTargets.find(value => value.symbol.toLowerCase() === key);
+  const atomicOverlapping = activeEntries.filter(value => value?.atomicText
+    && value.romStartNumber < (target.romEndExclusive ?? target.romEndNumber)
+    && value.romEndNumber > (target.romStart ?? target.romStartNumber));
+  if ([target, active, exactKeyRecord, live, sessionTarget, ...atomicOverlapping].some(value => value?.atomicText))
+    return { supported:false, code:'atomic-owner-candidate-required', reason:'atomic owner union scratch compilation is unsupported; use its complete canonical producer' };
   const overlapping = target.selectionKind === 'logical-body'
     ? [...(workbench?.activeTargetsBySymbol?.values() || [])].filter(value => value.romStartNumber < target.romEndExclusive && value.romEndNumber > target.romStart) : [];
   if ([target, live, active, exactKeyRecord, sessionTarget, ...overlapping].some(value => value?.compilationGroup

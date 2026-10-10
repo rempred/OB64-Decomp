@@ -258,4 +258,26 @@ function assertNativeGroupBodies(registry, rows, group) {
   return { registryIdentity: { ...registry.identity }, members: result };
 }
 
-module.exports = { assertNativeGroupBodies, CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };
+// Atomic storage is permitted only for one independently registered original
+// body. Compiler output and preserved physical-envelope records cannot grant it.
+function assertAtomicOwnerBody(registry, symbol, rows) {
+  const accepted = authenticatedRegistries.get(registry);
+  if (!accepted || accepted.bodies !== JSON.stringify(registry.bodies)
+      || accepted.padding !== JSON.stringify(registry.padding)
+      || accepted.unavailableBodies !== JSON.stringify(registry.unavailableBodies)
+      || !Array.isArray(rows) || rows.length < 2) fail('atomic owner needs unchanged ROM-authenticated registry');
+  for (const row of rows) if (accepted.rows.get(row.index) !== JSON.stringify(row)) fail('atomic original owner identity drift');
+  const start = rows[0].romStart, end = rows.at(-1).romEndExclusive;
+  const bodies = registry.bodies.filter(body => body.romStart < end && body.romEndExclusive > start);
+  const body = bodies[0];
+  if (bodies.length !== 1 || body.symbol !== symbol || body.romStart !== start || body.romEndExclusive !== end
+      || !['known-entry-or-ownership', 'independent-entry-supported', 'supported-logical-continuation'].includes(body.evidence.status)
+      || registry.padding.some(piece => piece.romStart < end && piece.romEndExclusive > start)
+      || registry.unavailableBodies.some(piece => piece.romStart < end && piece.romEndExclusive > start)
+      || JSON.stringify(body.fragments) !== JSON.stringify(intersections({ rows }, start, end))
+      || body.fragments.length !== rows.length || body.fragments.some((fragment, index) => fragment.ownerOffset !== 0 || fragment.bytes !== rows[index].bytes))
+    fail('atomic union is not one complete accepted original body');
+  return { registryIdentity: { ...registry.identity }, body: JSON.parse(JSON.stringify(body)) };
+}
+
+module.exports = { assertAtomicOwnerBody, assertNativeGroupBodies, CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };

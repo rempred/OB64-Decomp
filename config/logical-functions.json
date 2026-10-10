@@ -4301,6 +4301,51 @@
       ]
     },
     {
+      "symbol": "func_0021EBBC",
+      "aliases": [
+        "func_0021EBBC_chunk34tail",
+        "rev0_code_00221000"
+      ],
+      "romStart": 2223036,
+      "romEndExclusive": 2233308,
+      "expectedBytesSha256": "FB00F50A286089C39EFDD6777416CCD2C9E47B974503554059EAF98A1A0D7A87",
+      "fragments": [
+        {
+          "rowIndex": 4062,
+          "romStart": 2223036,
+          "romEndExclusive": 2232320,
+          "ownerOffset": 0,
+          "bytes": 9284,
+          "vramStart": 2149431532,
+          "sectionName": ".ob64.r4062",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "resource-loader-00213b10",
+          "file": "asm/original/rev0/lib/func_0021EBBC.s",
+          "sha256": "012A605E6F9699E7ADE44224828B62A876474B744A380394E3AF402A36586CBF"
+        },
+        {
+          "rowIndex": 4063,
+          "romStart": 2232320,
+          "romEndExclusive": 2233308,
+          "ownerOffset": 0,
+          "bytes": 988,
+          "vramStart": 2149440816,
+          "sectionName": ".ob64.r4063",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "resource-loader-00213b10",
+          "file": "asm/original/rev0/lib/func_0021EBBC_chunk34tail.s",
+          "sha256": "6DE2614AD6C6EC264B49FE7BE54C05E3BEFCD575A8C3760D33D5AF5FCA9A4C0C"
+        }
+      ],
+      "evidence": {
+        "status": "independent-entry-supported",
+        "caseId": "atomic-body:0021EBBC",
+        "rationale": "Original ROM-backed 744-byte prologue, internal branches and three bounded dispatch tables span two contiguous physical owners in one accepted load slab. The head falls through a LUI/LW dependency at ROM 0x221000; the continuation shares the entry frame and sole JR ra/stack-restore return at 0x2213D4/0x2213D8. Continuation aliases identify the same complete logical body, not independent callable entries. Bounded static reference census is recorded separately; no historical linkage or universal indirect-call claim. One same-slab original JAL at ROM 0x221608 reaches the true entry; no decoded direct edge, bounded table slot, aligned literal or adjacent address-formation pair reaches the continuation cut."
+      }
+    },
+    {
       "romStart": 2497828,
       "romEndExclusive": 2497916,
       "evidence": {

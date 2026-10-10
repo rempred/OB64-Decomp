@@ -5,6 +5,7 @@ const fs = require('fs');
 const textContract = require('./text_contract');
 const auxiliaryProjection = require('./auxiliary_projection');
 const compilationGroups = require('./compilation_groups');
+const atomic = require('./atomic_owner_union');
 const path = require('path');
 const { projectInterior } = require('./auxiliary_interior');
 const {
@@ -54,6 +55,7 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/lib/current_workflow.js',
   'tools/lib/diff_profile.js',
   'tools/lib/elf_text_split.js',
+  'tools/lib/atomic_owner_union.js',
   'tools/lib/compilation_groups.js',
   'tools/lib/phase7_conventional.js',
   'tools/lib/boot_initialized_data.js',
@@ -509,6 +511,7 @@ function sameStringSet(actual, expected) {
 
 
 function validateOwnerSymbols(elf, target, ownerSections, linked = false) {
+  if (target.atomicText) { atomic.checkFunctions(elf, target, linked); return; }
   const base = linked ? target.vramStartNumber : 0;
   const primaryBytes = primaryCompilerFunctionBytes(target);
   for (const [ownerIndex, record] of ownerSections.entries()) {
@@ -524,7 +527,7 @@ function validateOwnerSymbols(elf, target, ownerSections, linked = false) {
 }
 
 function inspectOwnerSections(elf, target, label) {
-  return targetTextOwners(target).map((owner) => {
+  return atomic.objectOwners(target).map((owner) => {
     const sections = elf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (sections.length !== 1 || sections[0].type !== 1 || (sections[0].flags & 6) !== 6
         || sections[0].size !== owner.bytes) {
@@ -673,8 +676,8 @@ function inspectCapturedTargetArtifacts(options, snapshot) {
   }
 
   let splitResult = null;
-  if (target.auxiliaryProjection && !auxiliaryProjection.project(bytesByName['assembler-object.o'], target).buffer.equals(bytesByName['source-object.o'])) fail('projected source-object bytes drift');
-  if (targetTextOwners(target).length > 1) {
+  if (target.auxiliaryProjection && !(target.atomicText ? atomic : auxiliaryProjection).project(bytesByName['assembler-object.o'], target).buffer.equals(bytesByName['source-object.o'])) fail('projected source-object bytes drift');
+  if (!target.atomicText && targetTextOwners(target).length > 1) {
     splitResult = splitRelocatableTextSection(
       bytesByName['assembler-object.o'],
       target.sectionName,

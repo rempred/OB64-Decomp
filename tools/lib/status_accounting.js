@@ -71,6 +71,7 @@ function summarizeAcceptedOwnership(model, targets) {
   }
 
   auxiliaryProjection.validateCensus(targets);
+  require('./atomic_owner_union').assertCensus(targets);
   const seenRows = new Set();
   const rowsByIndex = new Map();
   for (const row of model.rows) {

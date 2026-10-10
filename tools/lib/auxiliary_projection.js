@@ -50,7 +50,7 @@ function normalize(contract, auxiliaries) {
 function normalizeContract(contract, auxiliaries, minimumPayloads) {
   if (contract === undefined) return null;
   if (!keys(contract, ['schemaVersion', 'mode', 'compilerSection', 'bytes', 'alignment', 'expectedObjectSha256', 'segments', ...(contract?.schemaVersion === 3 ? ['nativeText'] : [])])
-      || ![1, 2, 3].includes(contract.schemaVersion) || contract.mode !== 'fixed-row-readonly-projection'
+      || ![1, 2, 3, 4].includes(contract.schemaVersion) || contract.mode !== 'fixed-row-readonly-projection'
       || contract.compilerSection !== '.rodata' || !integer(contract.bytes, 4)
       || !alignment(contract.alignment) || contract.bytes % contract.alignment
       || !SHA.test(contract.expectedObjectSha256) || !Array.isArray(contract.segments)
@@ -69,33 +69,47 @@ function normalizeContract(contract, auxiliaries, minimumPayloads) {
   const sections = new Set(), labels = new Set();
   for (const segment of contract.segments) {
     const payload = segment && segment.kind === 'payload';
-    const fields = payload ? ['kind', 'offset', 'bytes', 'outputSection', 'label', 'alignmentDirectives', ...(contract.schemaVersion === 3 ? ['dispatchSymbol'] : [])]
+    const fields = payload ? ['kind', 'offset', 'bytes', 'outputSection', ...(contract.schemaVersion === 4 ? ['occurrences'] : ['label', 'alignmentDirectives']), ...(contract.schemaVersion === 3 ? ['dispatchSymbol'] : [])]
       : ['kind', 'offset', 'bytes', 'ownerSection', 'ownerOffset', 'ownerBytes', 'expectedOwnerSha256'];
     if (!keys(segment, fields) || !integer(segment.offset) || segment.offset !== cursor
         || !integer(segment.bytes, 4) || segment.bytes % 4 || cursor + segment.bytes > contract.bytes) fail('segment tiling');
     if (payload) {
       const auxiliary = auxiliaries[count++];
+      if (contract.schemaVersion === 4) {
+        if (!Array.isArray(segment.occurrences) || !segment.occurrences.length) fail('row bundle occurrence census');
+        let end = segment.offset;
+        for (const occurrence of segment.occurrences) {
+          if (!keys(occurrence, ['label', 'offset', 'bytes', 'alignmentDirectives']) || !/^\.L[0-9]+$/.test(occurrence.label)
+              || labels.has(occurrence.label) || occurrence.offset !== end || !integer(occurrence.bytes, 4) || occurrence.bytes % 4
+              || !Array.isArray(occurrence.alignmentDirectives) || !occurrence.alignmentDirectives.length
+              || occurrence.alignmentDirectives.some(value => !integer(value) || value > 4)
+              || Math.max(...occurrence.alignmentDirectives.map(value => 2 ** value)) !== contract.alignment
+              || occurrence.offset % contract.alignment) fail('row bundle occurrence partition/directives');
+          labels.add(occurrence.label); end += occurrence.bytes;
+        }
+        if (!auxiliary || end !== segment.offset + auxiliary.entries * 4) fail('row bundle entry coverage');
+      }
       if (contract.schemaVersion === 3 && (typeof segment.dispatchSymbol !== 'string'
           || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(segment.dispatchSymbol))) fail('payload dispatch symbol');
       if (!SECTION.test(segment.outputSection) || sections.has(segment.outputSection)
-          || !/^\.L[0-9]+$/.test(segment.label) || labels.has(segment.label)
+          || (contract.schemaVersion !== 4 && (!/^\.L[0-9]+$/.test(segment.label) || labels.has(segment.label)
           || !Array.isArray(segment.alignmentDirectives) || !segment.alignmentDirectives.length
-          || segment.alignmentDirectives.some(value => !integer(value) || value > 4)
+          || segment.alignmentDirectives.some(value => !integer(value) || value > 4)))
           || !auxiliary || auxiliary.outputSection !== segment.outputSection || auxiliary.bytes !== segment.bytes
           || auxiliary.compilerSection !== contract.compilerSection || !integer(auxiliary.entries, 1)
-          || auxiliary.entries * 4 + (contract.schemaVersion === 2 ? (auxiliary.trailingPaddingBytes || 0) : 0) !== segment.bytes
+          || auxiliary.entries * 4 + ([2, 4].includes(contract.schemaVersion) ? (auxiliary.trailingPaddingBytes || 0) : 0) !== segment.bytes
           || auxiliary.preservedTail !== null || auxiliary.preservedPrefix || auxiliary.preservedInteriorBefore
-          || auxiliary.compilerOccurrences || auxiliary.sourceObjectPrefix || (contract.schemaVersion !== 2 && auxiliary.trailingPaddingBytes)
+          || auxiliary.compilerOccurrences || auxiliary.sourceObjectPrefix || (![2, 4].includes(contract.schemaVersion) && auxiliary.trailingPaddingBytes)
           || (count === 1 && segment.offset !== 0)) fail('payload occurrence or complete-row contract');
-      const occurrenceAlignment = Math.max(...segment.alignmentDirectives.map(value => 2 ** value));
+      const occurrenceAlignment = contract.schemaVersion === 4 ? contract.alignment : Math.max(...segment.alignmentDirectives.map(value => 2 ** value));
       if (occurrenceAlignment !== contract.alignment || segment.offset % occurrenceAlignment
           || auxiliary.alignment !== occurrenceAlignment) fail('payload alignment');
-      if (contract.schemaVersion === 2) {
+      if ([2, 4].includes(contract.schemaVersion)) {
         const padding = auxiliary.trailingPaddingBytes || 0;
         if (!integer(padding) || padding % 4 || (padding && padding !== (occurrenceAlignment - auxiliary.entries * 4 % occurrenceAlignment) % occurrenceAlignment)
             || auxiliary.expectedTrailingPaddingSha256 !== hash(Buffer.alloc(padding))) fail('payload native padding contract');
       }
-      sections.add(segment.outputSection); labels.add(segment.label);
+      sections.add(segment.outputSection); if (contract.schemaVersion !== 4) labels.add(segment.label);
     } else if (segment.kind !== 'zero' || !SECTION.test(segment.ownerSection)
         || !integer(segment.ownerOffset) || segment.ownerOffset % 4 || !integer(segment.ownerBytes, 4)
         || segment.ownerOffset + segment.bytes > segment.ownerBytes
@@ -119,8 +133,9 @@ function normalizeContract(contract, auxiliaries, minimumPayloads) {
 function checkTarget(target) {
   const contract = normalize(target.auxiliaryProjection, target.auxiliarySections);
   if (!contract) return null;
+  if (contract.schemaVersion === 4) require('./atomic_owner_union').authenticate(target);
   if (target.compilationGroup || target.compilationGroupId || target.nativeTextTail
-      || (target.textOwners || []).length !== 1
+      || (contract.schemaVersion === 4 ? !target.atomicText : (target.textOwners || []).length !== 1)
       || (contract.schemaVersion === 3 ? (target.compilerTextFunctions || []).length < 2 : (target.compilerTextFunctions || []).length !== 1)) fail('incompatible text producer');
   if (contract.schemaVersion === 3) {
     if (!target.model || !target.rows || target.rows.length !== 1
@@ -225,8 +240,9 @@ function assembly(compiler, target, adjust) {
   // Reuse the existing strict compiler grammar, with the native occurrence census.
   // No payload is emitted here and no instruction or operand is rewritten.
   let end = 0;
-  const occurrences = tables.map((segment, index) => {
-    const bytes = entryBytes(segment, target.auxiliarySections);
+  const occurrenceSegments = contract.schemaVersion === 4 ? tables.flatMap(segment => segment.occurrences) : tables;
+  const occurrences = occurrenceSegments.map((segment, index) => {
+    const bytes = contract.schemaVersion === 4 ? segment.bytes : entryBytes(segment, target.auxiliarySections);
     const record = { label: segment.label, offset: hex(segment.offset), bytes, entries: bytes / 4,
       alignment: contract.alignment, alignmentDirectives: segment.alignmentDirectives,
       ...(segment.offset > end ? { paddingBefore: { offset: hex(end), bytes: segment.offset - end,
@@ -336,7 +352,8 @@ function project(input, target) {
     seen.add(place);
     const auxiliary = target.auxiliarySections.find(value => value.outputSection === segment.outputSection);
     const expected = auxiliary.expectedRelocations.find(value => parseInt(value.offset, 16) === place - segment.offset);
-    if (!expected || parseInt(expected.addend, 16) !== raw.readUInt32BE(place) || raw.readUInt32BE(place) >= target.bytes) fail('native table addend');
+    if (!expected || parseInt(expected.addend, 16) !== raw.readUInt32BE(place) || raw.readUInt32BE(place) >= target.bytes
+        || contract.schemaVersion === 4 && raw.readUInt32BE(place) % 4) fail('native table addend');
     if (native) {
       const fn = target.compilerTextFunctions.find(fn => fn.symbol === segment.dispatchSymbol);
       if (raw.readUInt32BE(place) % 4 || raw.readUInt32BE(place) < fn.offsetNumber
@@ -422,7 +439,7 @@ function project(input, target) {
     ...(native ? { nativeText: { ...contract.nativeText, nativeSha256: hash(nativeTextBytes),
       projectedSha256: hash(nativeTextBytes.subarray(0, target.bytes)), functions: target.compilerTextFunctions,
       tableAttribution: tables.map(table => ({ outputSection: table.outputSection, dispatchSymbol: table.dispatchSymbol })) } } : {}),
-    ...(contract.schemaVersion === 2 ? { payloadSlices: tables.map(segment => ({ outputSection: segment.outputSection,
+    ...([2, 4].includes(contract.schemaVersion) ? { payloadSlices: tables.map(segment => ({ outputSection: segment.outputSection,
       offset: segment.offset, bytes: segment.bytes, entryBytes: entryBytes(segment, target.auxiliarySections),
       paddingBytes: segment.bytes - entryBytes(segment, target.auxiliarySections),
       nativeSha256: hash(raw.subarray(segment.offset, segment.offset + segment.bytes)),
