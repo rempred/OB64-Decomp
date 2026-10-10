@@ -33,7 +33,9 @@ The [paired-owner](audit/2026-10-09-paired-owner-projection.md) and
 
 W4 completion triggered Joe's fresh-worker rule. QuietPond released production
 source/build and W4/W5 ownership in mail1965 and stopped its own inbox watcher.
-Sol6.1/xhigh / YellowTiger, chat `01a12198-58cd-77f2-85c1-faa3648f698f`, owns production.
+YellowTiger subsequently completed W8 and released all writing ownership in2130.
+Director2131 assigns sole production ownership to fresh Sol6.1/xhigh / SilentForest,
+chat `01a12781-9074-7903-88a9-d5f4659e7544`, starting the complete unfinished W6.
 Movement/routes W5 remains parked unfinished with its complete20-member scope,
 [full roster](../build/matching/movement-w5-20261007/membership.json) and
 [recoverable sources](../build/matching/movement-w5-fresh-261009/cursor.md).
@@ -42,9 +44,10 @@ GoldOx and independent review corrected the proposed late-deletion constraint;
 no source-bound next trial is yet established. Keep the seven instruction-ready
 candidates and accepted shared pursuit producer; no partial-wave acceptance.
 
-Complete action-mode/High Attack W6 resumes under Director2093 after W8's
-candidate handoff. Preserve [all seventeen members](Plans/prompts/combat-shared-mode-wave-r1.md)
-and `build/matching/combat-w6-261009/`: B1F4 remains instruction-ready privately;
+Complete action-mode/High Attack W6 resumes under Director2131 in fresh private
+root `build/matching/combat-w6-fresh-261010/`. Preserve
+[all seventeen members](Plans/prompts/combat-shared-mode-wave-r1.md) and the prior
+read-only `build/matching/combat-w6-261009/`: B1F4 remains instruction-ready privately;
 D14C's [readable best](dossiers/func_0022D14C-8ddf71fbdd.md) has 68 masked word
 differences. Its real-call, buffer-phase and mode1 improvements and bounded
 counterexamples are recoverable. Consult the new EBBC loop-note and 2215D0
@@ -52,19 +55,15 @@ phase/address lessons for a distinct source-bound D14C experiment; transfer is
 not presumed and closed controls must not be repeated. Protect the fifteen accepted siblings
 and the separate 64-byte table/interior-consumer integration gate.
 
-**Terminal W8 candidate handoff, October 10:** all fifteen owners / 19,636 bytes
-have preserved PURE_C candidates with zero differences outside actual native
-relocation fields. The [handoff](../build/matching/terminal-w8-261009/candidate-handoff.json)
-binds the complete membership, sources and saved evidence; its 80 file identities
-were checked without recompiling unchanged candidates. This includes the complete
-10,272-byte two-part EBBC and 2215D0's real native alignment tail.
-All remain inactive ASM in production. Actual linked operands, sole ownership,
-placement, table contracts and compatible callee/caller interfaces remain.
-The private [integration preparation](../build/matching/terminal-w8-261009/integration-preparation/inputs.json)
-binds all 25 data aliases and proposed interface corrections; those changes are
-uncompiled and unaccepted. No source activation is authorized by the handoff.
-The complete wave still requires one final normal verifier. Yellow retains
-production ownership, ready W8 and unfinished W5/W6; no worker retirement yet.
+**Terminal W8 accepted, October 10:** all fifteen owners / 19,636 bytes passed
+normal PURE_C, sole ownership, placement, actual relocation, complete target/table
+and full-ROM gates at source/config commit `289e8bc9`. The
+[accepted summary](../build/matching/terminal-w8-261009/integration-2118/accepted-summary.json)
+records all26 focused checks and one combined verifier, EOF/exit0 in993.263s.
+CURRENT `7ED689CD` retains baseline `D6553DED` and the byte-identical Rev0 ROM.
+Complete EBBC, 2215D0's real alignment tail, all25 data bindings and six compatible
+related interfaces are integrated. No unchanged verifier repeat is needed.
+W5/W6/W7 remain unfinished; W8 acceptance does not waive their real gates.
 
 **Atomic-owner tooling accepted, October 10:** the
 [audit record](audit/2026-10-10-atomic-owner-union.md) closes EBBC's representation
@@ -74,12 +73,13 @@ generic implementation, regression controls and final evidence review passed.
 Audit2115 reached EOF/exit0 with exact ROM at CURRENT `113EBCB3`, retaining baseline
 `D6553DED`; no source or table was activated. Do not repeat unchanged acceptance.
 
-Both workers resumed under Director2116 after result2117: YellowTiger continues
-private W8 interface/preflight checks and LavenderSpire checks the complete
-3,372-byte A9C candidate in W7. Refresh affected context once and retain watchers.
-Private checks run concurrently in separate roots. The Director coordinates the
-bounded drain for canonical W8 integration and linking; private edits and
-reasoning may continue during it. All normal complete-wave gates remain.
+W8's shared-input-stable release2124 resumed Lavender's full W7/A9C checks.
+Yellow retired after its own completed wave, preserving its cursor and recovery
+roots; its inbox watcher and old stop monitor are stopped. SilentForest has a new
+mail identity, separate inbox watcher and Director-owned stop monitor, with actual
+delivery tested. SilentForest/W6 and Lavender/W7 run supported private checks
+concurrently under stable canonical inputs. Only actual shared-input mutation or
+canonical linking/verification requires the normal bounded drain.
 
 **Director sequencing decision, October 10:** intact W8 may be accepted before
 unfinished W6/W7 once its actual gates close. The read-only dependency census
@@ -124,25 +124,31 @@ owners. Consult GoldOx through verified own mail when genuinely stuck; report on
 complete-wave handoffs, actionable blockers or shared-input coordination. Keep
 experiments and next steps in the existing concise cursor and research records.
 
-**W7 shared call declaration:** mail2019/2020 and the
+**Queued analysis-input coverage issue (2119):** A9C's optional analysis packet
+supplies only its 1,380-byte physical head, so Kuna/m2c fail; the supported matching
+intake and private comparison correctly cover the full 3,372-byte body. The
+[bounded evidence](../build/matching/resolution-w7-261009/230a9c-first-coverage2117.json)
+is preserved. Continue W7 without adopting the incomplete analysis output. Any
+generic packet repair is separate tooling work under the existing approval/review
+rules; this does not reopen accepted boundaries or hold matching.
+
+**W7 shared call declaration, resolved in W8:** mail2019/2020 and the
 [call-boundary evidence](../build/matching/resolution-w7-261009/bf8c-call-boundary.json)
 identify `0020BF8C`'s unsigned-short definition versus four signed-int caller
 declarations. The native getter zero-extends a halfword; private W7 uses the
-existing word-return caller view. YellowTiger owns the minimal compatible
-signed-int definition correction at the next coordinated integration, retaining
-the unsigned-halfword load. First confirm the complete 12-byte callee remains
-exact with focused checks; include its affected inputs/callers in that combined
-wave's verification. No shared edit or extra full-ROM run is needed during private
-iteration. This is a source-interface correction, not a tooling exception.
+existing word-return caller view. Commit289e8bc9 applies the compatible signed-int
+definition while retaining the unsigned-halfword load; focused callee/caller checks
+and W8's combined verifier passed. Preserve the accepted correction and refresh
+affected private context; do not repeat that integration or verifier.
 
-**W8 EBBC call declaration:** message 2068 identifies `0004813C`'s void
+**W8 EBBC call declaration, resolved:** message 2068 identified `0004813C`'s void
 definition despite returned helper values consumed by EBBC and accepted `002224F4`.
-At coordinated integration YellowTiger owns a signed-int return, the matching
-`00047dd8` declaration and explicit returns of both existing calls, plus the
-compatible declaration in `0023A5EC`. Preserve all effects and symbol spellings;
-prove the complete 208-byte callee and affected callers with focused checks and
-the same combined verifier. Private EBBC may use the supported signed-int view.
-No canonical edit joins the current tooling repair or its audit.
+Commit289e8bc9 includes the signed-int return, matching `00047dd8` declaration,
+explicit returns of both existing calls and compatible `0023A5EC` declaration.
+The complete208-byte callee and affected callers passed focused and combined
+verification. Preserve the canonical uppercase public symbol; the private
+workbench's lowercase census rejection supplied no comparison result and was
+not bypassed. No additional tooling change was needed for canonical acceptance.
 
 **W7 2317C8 local-storage decision (October 9):** messages 2042/2044 and the
 [storage evidence](../build/matching/resolution-w7-261009/2317c8-reload-storage-blocker.json)
