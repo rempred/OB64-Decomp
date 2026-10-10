@@ -59,11 +59,14 @@ and the separate 64-byte table/interior-consumer integration gate.
 controls left the 68-field best unchanged; they do not prove a required retail
 hidden reload event or pure-C impossibility. Sol2139 and Gold2137/2140 explicitly
 agree the existing pre-reload oracle/dumps cannot expose ordered reload attempts.
-Astra assigns an isolated observational trace of reload1.c, with authenticated
-research build/inputs, trace-off/on parity, real nonmatching controls and independent
-review. Production compiler/configuration/acceptance remain unchanged and W7 is
-not paused. SilentForest preserves complete W6 and prepares its remaining private
-integration gates; the Director owns this separate diagnostic implementation.
+The [isolated reload trace](matching-c/reload-trace.md) passed focused native parity,
+adversarial validation and independent review. Its broad trace-off evidence has
+5,087 successful parity comparisons and 76 paired compiler failures retained as
+nonpasses; no native retry was observed. The best/1720 source pair demonstrates an
+extra successful output allocation changing the next scratch choice, not retail's
+hidden history. SilentForest may use the generic candidate command for distinct
+source-bound tests. Production compiler/configuration/acceptance remain unchanged;
+W7 is not paused and complete W6 remains unfinished.
 The complete private integration preparation is in
 `build/matching/combat-w6-fresh-261010/integration-preparation.json`. Independent
 read-only review confirms the inactive D14C 64-byte table representation fits
