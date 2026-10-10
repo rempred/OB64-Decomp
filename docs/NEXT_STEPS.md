@@ -64,6 +64,18 @@ contracts remain mandatory before W8 integration. All fifteen share one final
 normal verifier at complete readiness. Yellow retains production ownership and
 both parked W5/W6 scopes; this is no wave completion or worker retirement.
 
+**Single-owner native text/table repair, accepted October 9:** the explicit
+single-owner native/read-only mode preserves a complete compiler function, its
+actual alignment tail and attributed switch tables. The
+[audit record](audit/2026-10-09-single-owner-native-auxiliary.md) closes the
+representation gap reported in 2063/2062. Regression tests, one structural audit
+and independent final review passed; current accepted tooling is CURRENT
+`E9E49D47` / unchanged baseline `D6553DED`. No source or table was activated;
+`002215D0` still has real instruction differences. The native hold is released
+for both existing workers: refresh affected private inputs once, then resume
+their complete W7/W8 assignments. Existing group-scratch CLI rejection and all
+wave integration gates remain unchanged. Do not repeat unchanged acceptance.
+
 LavenderSpire retains complete DB10/3C00/6098 and scheduler NINE as parked,
 unfinished obligations. Three real 3C00 trials and GoldOx's consultation left its
 185-word best unchanged; [the current cursor](../build/matching/anim3c00-20261006/cursor.md)
@@ -96,6 +108,15 @@ the unsigned-halfword load. First confirm the complete 12-byte callee remains
 exact with focused checks; include its affected inputs/callers in that combined
 wave's verification. No shared edit or extra full-ROM run is needed during private
 iteration. This is a source-interface correction, not a tooling exception.
+
+**W8 EBBC call declaration:** message 2068 identifies `0004813C`'s void
+definition despite returned helper values consumed by EBBC and accepted `002224F4`.
+At coordinated integration YellowTiger owns a signed-int return, the matching
+`00047dd8` declaration and explicit returns of both existing calls, plus the
+compatible declaration in `0023A5EC`. Preserve all effects and symbol spellings;
+prove the complete 208-byte callee and affected callers with focused checks and
+the same combined verifier. Private EBBC may use the supported signed-int view.
+No canonical edit joins the current tooling repair or its audit.
 
 **W7 2317C8 local-storage decision (October 9):** messages 2042/2044 and the
 [storage evidence](../build/matching/resolution-w7-261009/2317c8-reload-storage-blocker.json)

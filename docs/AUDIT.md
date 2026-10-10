@@ -229,6 +229,13 @@ ASM row ownership. Its check-only padding contributes no matching-C bytes.
 Its [native compilation-group composition](GROUP_AUXILIARY_PROJECTION.md) also
 requires both conserved section anchors, group-relative addends, a complete
 intermediate text-projection artifact, and exactly one auxiliary attribution member.
+The explicit single-owner composition additionally requires one complete GLOBAL
+function plus only its actual minimal native alignment tail to cover the accepted
+physical owner. Text/object/composition schemas 6/10/3 retain the complete stage
+censuses and linked tail evidence; legacy mode minima and schema meanings remain
+unchanged. Tables cannot target terminal padding. The focused single-owner fixture
+must preserve a real nonexact source as nonexact; tooling acceptance does not
+activate that source, extend its owner, or admit groups to public scratch commands.
 
 Audit schema 5 retains complete textContract, objectEvidence, and linkEvidence on every active target and records the logical-function registry identity. Native fixtures exercise untouched compiler input, exact section and function censuses, native alignment, zero tail, sole object contribution, load mapping, and full-owner exactness. Malformed and stale evidence must fail independently of identical reports. The retained nonexact Combat candidate must remain a negative control. Tooling acceptance does not accept the unfinished Combat source wave.
 

@@ -78,6 +78,32 @@ function fail(message) { throw new Error('compilation group: ' + message); }
 function requireKeys(value, keys, label) { if (!exactKeys(value, keys)) fail(label + ' schema'); }
 function integer(value, min = 0) { return Number.isSafeInteger(value) && value >= min; }
 function power(value) { return integer(value, 4) && value <= 0x10000 && (value & (value - 1)) === 0; }
+// Validate the new admission independently of registry loading: object, proof
+// and cache entry points may receive serialized, already-bound contracts.
+function singleOwnerContract(group) {
+  if (!auxiliary.singleOwner(group) || !Array.isArray(group.members) || group.members.length !== 1
+      || !Array.isArray(group.functions) || group.functions.length !== 1) fail('single-owner member/function census');
+  const member = group.members[0], fn = group.functions[0], text = group.text, tail = group.tail;
+  requireKeys(member, ['symbol', 'ownerRowIndex'], 'single-owner member');
+  requireKeys(fn, ['symbol', 'offset', 'bytes', 'binding', 'symbolType', 'visibility'], 'single-owner function');
+  requireKeys(text, ['section', 'bytes', 'alignment', 'type', 'flags', 'sha256'], 'single-owner text');
+  requireKeys(tail, ['offset', 'bytes', 'sha256', 'origin'], 'single-owner tail');
+  if (!SAFE_SYMBOL.test(member.symbol) || !integer(member.ownerRowIndex) || fn.symbol !== member.symbol
+      || fn.offset !== 0 || !integer(fn.bytes, 4) || fn.bytes % 4 || fn.binding !== 1 || fn.symbolType !== 2 || fn.visibility
+      || text.section !== '.text' || text.type !== 1 || text.flags !== 6 || !power(text.alignment)
+      || !integer(text.bytes, 4) || !SHA.test(text.sha256)
+      || tail.offset !== fn.bytes || tail.bytes !== Math.ceil(fn.bytes / text.alignment) * text.alignment - fn.bytes
+      || tail.offset + tail.bytes !== text.bytes || tail.origin !== 'native-assembler-section-alignment'
+      || tail.sha256 !== sha256Buffer(Buffer.alloc(tail.bytes))) fail('single-owner native partition');
+  if (Object.hasOwn(group, 'owners')) {
+    const owner = group.owners?.[0];
+    if (!Array.isArray(group.owners) || group.owners.length !== 1 || owner.rowIndex !== member.ownerRowIndex
+        || owner.symbol !== member.symbol || owner.groupOffset !== 0 || owner.bytes !== text.bytes
+        || owner.alignment !== text.alignment || owner.romStartNumber !== group.romStart
+        || owner.vramStartNumber !== group.vramStart || owner.romEndNumber !== group.romStart + text.bytes
+        || owner.vramEndNumber !== group.vramStart + text.bytes) fail('single-owner physical coverage');
+  }
+}
 function auxiliaryMode(group) {
   if (auxiliary.composed(group) || Object.prototype.hasOwnProperty.call(group, 'auxiliary')) auxiliary.groupContract(group);
 }
@@ -152,7 +178,7 @@ function registry(config, profile) {
         || typeof group.source !== 'string' || !group.source.endsWith('.c') || sources.has(group.source)
         || path.isAbsolute(group.source) || group.source.includes('\\') || group.source.split('/').some(part => !part || part === '.' || part === '..')) fail('producer identity');
     ids.add(group.id); sources.add(group.source);
-    if (!Array.isArray(group.members) || group.members.length < 2 || !Array.isArray(group.functions)
+    if (!Array.isArray(group.members) || (auxiliary.singleOwner(group) ? group.members.length !== 1 : group.members.length < 2) || !Array.isArray(group.functions)
         || (functionMode(group) ? group.functions.length < group.members.length : group.functions.length !== group.members.length)) fail('member/function census');
     requireKeys(group.text, ['section', 'bytes', 'alignment', 'type', 'flags', 'sha256'], 'native text');
     if (group.text.section !== '.text' || group.text.type !== 1 || group.text.flags !== 6
@@ -271,7 +297,7 @@ function allocation(elf, group, stage) {
   const projected = stage !== 'raw', stripped = stage === 'stripped';
   const textNames = projected ? group.owners.map(owner => owner.sectionName) : ['.text'];
   const roNames = auxiliary.composed(group) ? auxiliary.groupReadonlyNames(group, stage) : [];
-  for (const sec of elf.sections.filter(value => value.flags & 3)) {
+  for (const sec of elf.sections.filter(value => value.flags & (auxiliary.singleOwner(group) ? 7 : 3))) {
     if (textNames.includes(sec.name) || roNames.includes(sec.name)) continue;
     if (sec.name === '.reginfo' && !stripped) continue;
     if (['.data', '.bss'].includes(sec.name) && sec.size === 0 && sec.flags === 3 && sec.address === 0
@@ -350,7 +376,8 @@ function validateObject(elf, group, stage) {
 }
 function project(input, group) {
   const raw = parseBuffer(input), rawEvidence = validateObject(raw, group, 'raw');
-  const result = projectNativeTextOwners(input, group.owners.map(owner => ({ sectionName: owner.sectionName, bytes: owner.bytes })));
+  const result = projectNativeTextOwners(input, group.owners.map(owner => ({ sectionName: owner.sectionName, bytes: owner.bytes })),
+    auxiliary.singleOwner(group) ? group.mode : null);
   if (auxiliary.composed(group)) {
     const intermediate = validateObject(parseBuffer(result.buffer), group, 'text-projected');
     if (!same(rawEvidence.metadata, intermediate.metadata)) fail('text projection changed reginfo');
@@ -388,8 +415,8 @@ function contract(target) {
   auxiliary.assertMemberSections(target);
   const tc = require('./text_contract'), group = target.compilationGroup, owner = group.owners[target.groupMemberIndex];
   const ordinary = tc.resolveTextContract({ ...target, compilationGroup: null });
-  return { ...ordinary, schemaVersion: functionMode(group) ? 5 : auxiliary.composed(group) ? 4 : 2,
-    ...(functionMode(group) ? { tail: target.groupMemberIndex === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null } : {}), mode: group.mode, producer: group,
+  return { ...ordinary, schemaVersion: auxiliary.singleOwner(group) ? 6 : functionMode(group) ? 5 : auxiliary.composed(group) ? 4 : 2,
+    ...(functionMode(group) || auxiliary.singleOwner(group) ? { tail: target.groupMemberIndex === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null } : {}), mode: group.mode, producer: group,
     memberIndex: target.groupMemberIndex,
     owners: ordinary.owners.map(value => ({ ...value,
       expectedInputShape: { ...value.expectedInputShape, alignment: owner.alignment },
@@ -430,8 +457,8 @@ function evidence(target, root, files = null) {
   const strippedFunctions = tc.functionCensus(stripped, strippedOwners.map(value => value.section));
   if (!same(rawFunctions, strippedFunctions)) fail('strip changed member functions');
   const rawRelocations = require('./phase8_matching_c').rawRelocationRecords(projected);
-  return { schemaVersion: functionMode(group) ? 9 : auxiliary.composed(group) ? 7 : 3,
-    ...(auxiliary.composed(group) ? { composition: { schemaVersion: 2, groupSha256: hash(group),
+  return { schemaVersion: auxiliary.singleOwner(group) ? 10 : functionMode(group) ? 9 : auxiliary.composed(group) ? 7 : 3,
+    ...(auxiliary.composed(group) ? { composition: { schemaVersion: auxiliary.singleOwner(group) ? 3 : 2, groupSha256: hash(group),
       nativeObjectSha256: sha256Buffer(native.buffer), textProjectedObjectSha256: sha256Buffer(reproduction.intermediate),
       projectedObjectSha256: sha256Buffer(projected.buffer), strippedObjectSha256: sha256Buffer(stripped.buffer),
       implementationSha256: require('./phase7_conventional').sha256File(require.resolve('./auxiliary_projection')),
@@ -444,7 +471,7 @@ function evidence(target, root, files = null) {
     discardedAncillaryRelocations: rawRelocations.filter(value => !group.owners.some(owner => value.section === '.rel' + owner.sectionName)
       && !(auxiliary.composed(group) && group.auxiliary.sections.some(section => value.section === '.rel' + section.outputSection))),
     tail: target.groupMemberIndex === group.members.length - 1 ? group.tail : null,
-    assemblyMode: functionMode(group) ? 'untouched-native-text-owner-functions-projection' : auxiliary.composed(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
+    assemblyMode: auxiliary.singleOwner(group) ? 'untouched-native-text-readonly-single-owner-projection' : functionMode(group) ? 'untouched-native-text-owner-functions-projection' : auxiliary.composed(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
 }
 const compiledProducers = new Map();
 function compile(phase8, target, output, compiler, assembler, objcopy, options) {
@@ -549,15 +576,16 @@ Object.assign(module.exports, { collapseManifest, manifestMembers });
 function validateComposedProof(proof) {
   const object = proof.objectEvidence, text = proof.textContract;
   if (text?.producer) auxiliaryMode(text.producer);
-  if (!auxiliary.composed(text?.producer) && ![5, 7].includes(object?.schemaVersion) && !object?.composition) return;
+  if (!auxiliary.composed(text?.producer) && ![5, 7, 10].includes(object?.schemaVersion) && text?.schemaVersion !== 6 && !object?.composition) return;
   const group = text?.producer, value = object?.composition, artifacts = object?.artifacts;
   if (group) validateNativeRelocationOrder(group);
   if (auxiliary.composed(group)) auxiliary.groupContract(group);
   const compositionKeys = ['schemaVersion', 'groupSha256', 'nativeObjectSha256', 'textProjectedObjectSha256',
     'projectedObjectSha256', 'strippedObjectSha256', 'implementationSha256', 'auxiliaryContract',
     'conservedTextProjection', 'conservedFinalProjection'];
-  if (!auxiliary.composed(group) || text.schemaVersion !== 4 || text.mode !== group.mode || object.schemaVersion !== 7
-      || !exactKeys(value, compositionKeys) || value.schemaVersion !== 2 || !artifacts
+  const single = auxiliary.singleOwner(group);
+  if (!auxiliary.composed(group) || text.schemaVersion !== (single ? 6 : 4) || text.mode !== group.mode || object.schemaVersion !== (single ? 10 : 7)
+      || !exactKeys(value, compositionKeys) || value.schemaVersion !== (single ? 3 : 2) || !artifacts
       || !exactKeys(object.producerStages, ['raw', 'textProjected', 'projected', 'stripped'])
       || !same(value.auxiliaryContract, group.auxiliary) || value.groupSha256 !== hash(group)
       || !exactKeys(value.conservedTextProjection, ['flags', 'sections', 'symbols'])
@@ -573,6 +601,17 @@ function validateComposedProof(proof) {
     if (typeof value[key] !== 'string' || !SHA.test(value[key]) || value[key] !== artifacts[role]?.sha256) fail('composed proof object hash binding');
   }
   if (typeof value.implementationSha256 !== 'string' || !SHA.test(value.implementationSha256)) fail('composed proof implementation identity');
+  if (single) {
+    if (text.memberIndex !== 0 || object.textContractSha256 !== hash(text) || proof.linkEvidence.textContractSha256 !== hash(text)
+        || !same(text.compilerTextFunctions, group.functions) || !same(object.rawFunctions, group.functions)
+        || !same(object.strippedFunctions, group.functions) || !same(proof.linkEvidence.functions, group.functions)
+        || !same(text.tail, group.tail) || !same(object.tail, group.tail) || !same(proof.linkEvidence.tail, group.tail)
+        || object.assemblyMode !== 'untouched-native-text-readonly-single-owner-projection' || object.compilerAssemblyRewritten !== false
+        || object.discardedAncillaryRelocations.length || artifacts.compilerAssembly.sha256 !== artifacts.assemblerInput.sha256
+        || artifacts.compilerAssembly.bytes !== artifacts.assemblerInput.bytes
+        || value.implementationSha256 !== require('./phase7_conventional').sha256File(require.resolve('./auxiliary_projection')))
+      fail('single-owner proof function/tail/provenance binding');
+  }
   const expectedAux = auxiliary.memberSections(group, proof.target.symbol);
   if (proof.assemblyContract.auxiliarySectionCount !== expectedAux.length
       || !same(proof.finalObject.auxiliarySections.map(section => section.outputSection), expectedAux.map(section => section.outputSection))
@@ -656,7 +695,7 @@ function validateComposedStage(stage, group, artifact) {
   const roOffset = name => nativeRO ? (name === '.rodata' ? 0 : undefined) : tables.find(t => t.outputSection === name)?.offset;
   const textNames = raw ? ['.text'] : group.owners.map(o => o.sectionName);
   const roNames = nativeRO ? ['.rodata'] : tables.map(t => t.outputSection);
-  for (const s of c.sections.filter(s => s.flags & 3)) {
+  for (const s of c.sections.filter(s => s.flags & (auxiliary.singleOwner(group) ? 7 : 3))) {
     if (textNames.includes(s.name) || roNames.includes(s.name) || (s.name === '.reginfo' && stage.stage !== 'stripped')) continue;
     if (['.data', '.bss'].includes(s.name) && !s.size && s.flags === 3 && !s.address && s.alignment === 16
         && s.type === (s.name === '.data' ? 1 : 8)) continue;
@@ -687,6 +726,17 @@ function validateComposedStage(stage, group, artifact) {
   for (const s of c.symbols) if (!exactKeys(s, symbolKeys) || typeof s.name !== 'string'
       || symbolKeys.filter(k => k !== 'name').some(k => !uint(s[k])) || c.sections[s.symbolTableIndex]?.type !== 2
       || (s.sectionIndex < 0xff00 && !c.sections[s.sectionIndex])) fail('composed symbol census schema');
+  if (auxiliary.singleOwner(group)) {
+    for (const s of c.symbols) {
+      if ([0xfff2, 0xff00, 0xff03].includes(s.sectionIndex) && s.size) fail('single-owner COMMON census');
+      if (!textNames.includes(c.sections[s.sectionIndex]?.name) || s.symbolType === 2) continue;
+      if (s.symbolType === 3 ? s.name || s.value || s.size || s.binding || s.visibility
+          : s.name !== 'gcc2_compiled.' || s.value || s.size || s.binding || s.symbolType !== 1 || s.visibility)
+        fail('single-owner text symbol census');
+    }
+    if (c.symbols.filter(s => textNames.includes(c.sections[s.sectionIndex]?.name) && s.symbolType === 3).length !== 1)
+      fail('single-owner text anchor census');
+  }
   for (const name of roNames) {
     const symbols = c.symbols.filter(s => c.sections[s.sectionIndex]?.name === name);
     if (symbols.length !== (name === roNames[0] || stage.stage === 'stripped' ? 1 : 0)
@@ -760,7 +810,7 @@ function validateComposedStage(stage, group, artifact) {
   }
   if (pending.size || !same(stage.auxiliary.references, references)) fail('composed reference census binding');
 }
-Object.assign(module.exports, { validateComposedProof });
+Object.assign(module.exports, { validateComposedProof, singleOwnerContract });
 
 Object.assign(module.exports, { functionMode, memberFunctions, authenticateFunctions, fixedBindingRecords, verifyFixedBindings });
 

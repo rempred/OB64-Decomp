@@ -150,8 +150,8 @@ function verifySplitCompilerFunctions(input, parsed, source, owners, functions, 
   }
 }
 
-function normalizeOwners(owners, sourceSectionBytes, compilerFunctions = null) {
-  if (!Array.isArray(owners) || owners.length < 2) fail('owner list must contain at least two sections');
+function normalizeOwners(owners, sourceSectionBytes, compilerFunctions = null, singleNativeOwner = false) {
+  if (!Array.isArray(owners) || (singleNativeOwner ? owners.length !== 1 : owners.length < 2)) fail('owner list must contain at least two sections unless explicitly single-native');
   const names = new Set();
   const symbols = new Set();
   let logicalOffset = 0;
@@ -580,7 +580,8 @@ module.exports = {
 
 // Separate from the legacy continuation contract: compiler public symbols already
 // exist and must retain their sizes. Only ELF placement metadata is projected.
-function projectNativeTextOwners(input, requestedOwners) {
+function projectNativeTextOwners(input, requestedOwners, admission = null) {
+  if (admission !== null && admission !== 'native-text-readonly-single-owner-projection') fail('native owner admission');
   const parsed = parseRelocatable(input);
   const matches = parsed.sections.filter(section => section.name === '.text');
   if (matches.length !== 1) fail('native text section census');
@@ -588,7 +589,7 @@ function projectNativeTextOwners(input, requestedOwners) {
   if (source.type !== SHT_PROGBITS || source.flags !== 6 || source.address !== 0
       || source.size <= 0 || source.size % 4 || source.alignment < 4
       || (source.alignment & (source.alignment - 1))) fail('native text section shape');
-  const owners = normalizeOwners(requestedOwners, source.size);
+  const owners = normalizeOwners(requestedOwners, source.size, null, admission !== null);
   if (owners.some(owner => owner.symbol || parsed.sections.some(section => section.name === owner.sectionName))) {
     fail('native projection cannot synthesize symbols or replace existing sections');
   }

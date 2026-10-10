@@ -22,9 +22,10 @@ function entryBytes(segment, auxiliaries) {
 }
 function groupContract(group) {
   if (!composed(group) || group.auxiliary?.projection?.schemaVersion !== 1) fail('group projection requires version 1');
+  if (singleOwner(group)) require('./compilation_groups').singleOwnerContract(group);
   const bundle = group.auxiliary;
   if (!keys(bundle, ['sections', 'projection', ...(Object.hasOwn(bundle, 'retained') ? ['retained'] : [])])
-      || !Array.isArray(bundle.sections) || !Array.isArray(group.members) || group.members.length < 2
+      || !Array.isArray(bundle.sections) || !Array.isArray(group.members) || (singleOwner(group) ? group.members.length !== 1 : group.members.length < 2)
       || !Array.isArray(group.functions) || group.functions.length !== group.members.length) fail('group auxiliary attribution schema');
   for (const section of bundle.sections) {
     if (!section || typeof section.memberSymbol !== 'string'
@@ -477,7 +478,8 @@ function linkedEvidence(target, root, context) {
 }
 module.exports = { normalize, checkTarget, retainedBindings, validateBindings, validateCensus, assembly, project, linkedEvidence };
 
-function composed(group) { return group?.mode === 'native-text-readonly-owner-projection'; }
+function singleOwner(group) { return group?.mode === 'native-text-readonly-single-owner-projection'; }
+function composed(group) { return singleOwner(group) || group?.mode === 'native-text-readonly-owner-projection'; }
 function assertCompleteGroupRows(group) {
   if (!composed(group)) fail('group mode');
   const contract = groupContract(group);
@@ -676,4 +678,4 @@ function completeObjectCensus(elf) {
       place: relocation.place, type: relocation.type, symbol: relocation.symbol,
       word: elf.buffer.readUInt32BE(relocation.owner.offset + relocation.place) })) };
 }
-Object.assign(module.exports, { composed, groupContract, memberSections, assertMemberSections, assertCompleteGroupRows, groupGrammar, groupReadonlyNames, groupCensus, projectGroupReadonly, conservedOutsideReadonly, completeObjectCensus });
+Object.assign(module.exports, { singleOwner, composed, groupContract, memberSections, assertMemberSections, assertCompleteGroupRows, groupGrammar, groupReadonlyNames, groupCensus, projectGroupReadonly, conservedOutsideReadonly, completeObjectCensus });

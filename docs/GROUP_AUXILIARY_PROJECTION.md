@@ -103,6 +103,43 @@ These fixtures do not activate production owners or reduce a matching wave.
 Artifacts remain ignored under `build/tests`. Production integration and the
 complete-ROM audit belong to the designated production source/build writer.
 
+## Single native function with an owned alignment tail and read-only tables
+
+The explicit `native-text-readonly-single-owner-projection` mode admits exactly
+one physical owner and one GLOBAL compiler function. It uses the same registry
+fields and version-1 auxiliary projection as the composed group mode, including
+mandatory per-table `memberSymbol` attribution and complete original data-row
+ownership. At least one table is required. The older modes still require two or
+more members; standalone auxiliary and legacy text splitting retain their minima.
+
+The function starts at native text offset zero. Its complete body plus the actual
+minimal assembler section-alignment zeros must equal the complete accepted owner.
+Zero-length tails are supported. The section's native alignment determines the
+tail; neither the contract nor projection inserts bytes. Named symbols, relocation
+places, and internal reference destinations in the tail reject. Every table entry
+must point to an aligned instruction inside the function, excluding its tail.
+
+The assembler receives untouched pinned compiler output. The existing raw,
+text-projected, read-only-projected and stripped artifact pipeline authenticates
+all functions, sections, symbols and serialized relocations, retaining both section
+anchors and encoded addends. Linked evidence includes the owner-local tail,
+complete function census, sole contribution, load mapping and full-owner bytes.
+Member text schema 6, object schema 10 and nested composition schema 3 distinguish
+this admission. Proof reconstruction and cache restoration reject older schemas,
+mode substitutions, malformed partitions and stale implementation identities.
+The existing implementation fingerprints invalidate CURRENT and cache reuse;
+private command drift checks already include these helpers.
+
+Public workbench scratch commands still reject compilation-group producers. This
+mode does not add private CLI group admission. The focused isolated fixture is
+`node tests/single_owner_auxiliary_projection.js`, registered in `tools/test.js`.
+It checks two placements, independent native producers, positive and zero tails,
+full source proofs, cache miss/hit reconstruction and malformed evidence controls.
+With the preserved research source available, `--real-candidate` additionally
+checks the inactive `func_002215D0` candidate: its actual native tail and table
+survive projection, while the real ORI/ADDIU mismatch still prevents matching
+proof. These tests do not activate a source or accept an unfinished wave.
+
 
 ## Ordered owners with multiple native functions
 
