@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "004FC93B05C37355C37A3787583AB2B74D40A0EC332B7E580C10E96461A117C0",
+  "observationId": "4FA86812C3F3F617DBC3244E2681FFB00C2EF9B9A67CE4DC8A2CD9FB7A500F6F",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Astra 2155 actual projection boundary control; GoldOx 2160 supplies an advisory compiler explanation. Independently checked against authenticated jump.c and the existing canonical-compiler dumps. Protected F75E remains best.",
+    "effects": [
+      "real-projection-join",
+      "late-cross-jump-boundary",
+      "authored-interpretation-correction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "370FEC2E8262A2B9A1CDA134908C7FF9533514AF8369553B976F71321B813433",
+      "sourceSha256": "83DDC14DD51539BB59F187E917DDF6121097BADB49E5AC3962C288C18E6F49F3"
+    },
+    "label": "real-predicate-join-retains-two-divisions-and-corrects-late-survival-interpretation",
+    "observedEffect": "004FC93B, source 83DDC14D, is PURE_C: 6,908 bytes, frame 616, 178 text relocations, 15 table relocations and 131 calls. The reviewed observer records 121 allocations, four inheritances and eight equivalences, with all ordinal hard-register/cursor decisions equal to best. Both division instructions remain through GREG, schedule2, late-jump and DBR; final projection has two divisions. CBAA, A197 and 10FB also retain two. Authenticated jump.c requires eligible common successors and matching backward RTL tails; different live predicates prevent reaching the earlier divisions. Equal quotient registers alone do not suffice. Local labels at the same next real instruction can compare equal, so label names alone are not the condition. Best 718B also has TWO C division expressions and two GREG divisions, but late-jump merges them into one before the shared predicate.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-predicate-join-watch.json",
+        "sha256": "4F13CB71A3FA0222ABC514DE34C09D13D1DCB350AAADD75A3FE2E95A40C90777"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-predicate-join-measurement.json",
+        "sha256": "D02121571C170E5DAE444975E7AD625CD22B731D9DA30C996167C64127426E9D"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-predicate-join-observer-comparison.json",
+        "sha256": "ACA2028E800BFE48D30B2BB8D3A212102A5D149642CDDAD2CF4EB3E5C44CFC86"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-predicate-join-probe.json",
+        "sha256": "68450A9F7F52961E4EB36D3FE9097D46450D8B5317C1C75A508AE635E7087173"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-predicate-join-coverage.json",
+        "sha256": "11216EC93F84133BBA47B8F49E01BA1C8A03EA3C368D8B6A0D5DD7385ED46E08"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-crossjump-condition.json",
+        "sha256": "32E8DF475B844DC365C055ED7A80BFE41DCF43EED07AFEC846B8D5DB383D7C59"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-best.c",
+        "sha256": "718B3615611E145AB2E8D820AF9E37CCB949F94E427588D93146E3DAB732E098"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-best-late-probe.json",
+        "sha256": "73FF35FD976BDF905B8EDAB17E7F63EBF5E90247DA59BAD2301E012E56B70BE0"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-best-measurement.json",
+        "sha256": "F533F3A4ECF1EA5BEEB596853139A12C506DE5830B14CABEE1DD307D06DF56D0"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-late-survival.json",
+        "sha256": "B49A7A8A4B5F7C91767F3E77D712B59997F1BAAB21FA1E1374598F1471FE38DE"
+      },
+      {
+        "path": "build/matching-studies/reload-trace/compiler-WK2Wdc/source/jump.c",
+        "sha256": "45860E25B20891170703EB33848B01A6B03AC5D9A6629995E40C3748B1B9E6D8"
+      },
+      {
+        "path": "build/matching-studies/reload-trace/compiler-WK2Wdc/manifest.json",
+        "sha256": "3C519BAAA0B82AACC680761038B21F95472B28AF44DC898BA15C99A9F641DC9F"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-8cd61aa37d.md",
+        "sha256": "AADEB2B8EA89F144D20C08B678C05DECCB95964A7A80F69531FA47E6534DFE57"
+      }
+    ],
+    "relatedCandidateIds": [
+      "CBAA3EF180059123EF48CB6664A15BF459E0DE3C3F0180273CDD473BAF837D59",
+      "10FBC1EC740E24069B9F54568AC76622E04BBE4588A3790A3FBA4FD477D55ABE",
+      "8CD61AA37DCF0B62976CA54EC6FF81688F1C401516E4894178E4E30EB51E727A"
+    ],
+    "remainingFailure": "Close these exact extended-arm generated forms; they retain extra native code. This does not establish unique original C or reject every possible source variant. Best projection already has zero masked-word differences; all 68 differences start later at +0x143C. Correction to the survival sentence in 8CD6: BOTH division762 and store4772, the two emitted instructions of allocation15, disappear by late-jump/DBR; second-arm division776 remains. The saved survival data already showed both absences, and the authored store-only interpretation was wrong. Candidate allocation disappearance is observed; retail intermediate history remains unknown. No supported closing construction or complete17 acceptance follows.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Extend each real X arm through its original Y load and ordered height comparison. Keep the Y arithmetic and event call shared. Each executed path retains one comparison and its original memory/arithmetic sequence, with no added guard or call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41755,
+      "sha256": "370FEC2E8262A2B9A1CDA134908C7FF9533514AF8369553B976F71321B813433"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "83DDC14DD51539BB59F187E917DDF6121097BADB49E5AC3962C288C18E6F49F3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-004fc93b05.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
