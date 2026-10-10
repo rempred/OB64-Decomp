@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "87E786BD15E72BEAC95E23C74A3CD431466135C2971C26B2549CCBFFF2F03B79",
+  "observationId": "AAFA613D8BB97F98C79F1EE09B82F9A019776CAB1A3364664396F72F741165EA",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Real producer follow-on to Astra2155 initialization lifetime controls, against protected F75E/source718B best68.",
+    "effects": [
+      "real-value-separation",
+      "shortened-helper-lifetime",
+      "identical-reload-decisions"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C5E7B9FC9893F77EC92A98482BE319091C614934737D4D68274D94837E4CAFB7",
+      "sourceSha256": "32F14BA4F37C1D6E2FF72A4699BF16DD9D639BA9B0522FF7B0BE917DA68D83E1"
+    },
+    "label": "separate-real-mode-results-preserves-prefix-but-adds-s0-consumer-forms",
+    "observedEffect": "87E786BD/source32F14BA4 is PURE_C6844/frame616 with best-identical177 text relocations,64-byte/15-relocation table and131 calls. First retail difference moves earlier to1424;74 differences remain versus best68. Mode3 result stays inS0, replacing its original stack producer/byte/full-word forms. CA431 canonical passes show helper93 LREG18->10 refs/life253->235/cross23->22; metadata95 and probability178 statistics are unchanged. Reviewed focused-Zrempt authenticates all121 allocation descriptors, hard-register choices and cursor transitions identical to best,4 inheritance/7 equivalence/0 failures/retries. Original prefix including early zero is retained; altered real lifetime alone does not change the late reload phase.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode-result-split-watch.json",
+        "sha256": "3E2FEF652D45122C6B3B122E818E5B08A3EA3DE912D151C54EDA4EA88B3CF3C7"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode-result-split-measurement.json",
+        "sha256": "2F70CA7D8CA5F8F63DA44F5CD2214A6C7F2433CB944D41724631D5DBC70D1EE5"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode-result-split-observer-comparison.json",
+        "sha256": "3DB6CA26956D7618CD7BF03B62E644C6738FED892FDF4540789CAF8125047EF0"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode-result-split-probe.json",
+        "sha256": "C16F0ED986D931A0AA42F4721292CF91006D22DA93E26AEBDE99A256921A90E9"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode-result-split-coverage.json",
+        "sha256": "4BC434280964522C52EED726D637F236170F2A5A555A83AC6B6D035D90EF74B1"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/initialization-mechanism.json",
+        "sha256": "FC18CA193D77C155F2567159E60552F41CF8CDBEBB8A4D6468006BC822973911"
+      }
+    ],
+    "relatedCandidateIds": [
+      "B98010A3509535357D8A6CADF78D0E45673E65C0585D52DE72763542E23BFB7C",
+      "4D146B4DAE6BBE4E741DBBFA7371DB3FB4E3B3C3C0A0EBC31AD3FB0C3776C0C4"
+    ],
+    "remainingFailure": "Unselected same-extent counterexample. Retail mode3 stack forms and68 late T3/T4 differences remain unresolved. Moving initialization itself changes global ownership; separating the actual producers preserves the prefix but changes result storage. These source-specific observations do not exclude other real producer forms or establish retail allocation history. Gold2157 requests a concrete late cross-jump source explanation for the separate projection family; complete17 acceptance remains open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain the original early sp1E4 zero and every mode1 default/helper consumer. In mode3, use its actual temp_v0_1409 helper return directly for both the positive-arm byte emission and full-word3422C consumer; remove only the assignment of that return into the shared scalar. The return dominates all its reads, other paths never read it, and no address escapes or operations/calls are added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41313,
+      "sha256": "C5E7B9FC9893F77EC92A98482BE319091C614934737D4D68274D94837E4CAFB7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "32F14BA4F37C1D6E2FF72A4699BF16DD9D639BA9B0522FF7B0BE917DA68D83E1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-87e786bd15.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

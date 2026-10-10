@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CBAA3EF180059123EF48CB6664A15BF459E0DE3C3F0180273CDD473BAF837D59",
+  "observationId": "756EE1DFB3042B62E60EC500999136F272CE97188549542567DE98D23A608BB0",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Astra2155 complete17 W6 source-bound discriminators against protected718B best68 under accepted W8 CURRENT7ED689CD. No canonical compiler/configuration/build changes or full-ROM checks. Reviewed observer authenticates input and pinned/off/on native parity; candidate history does not reconstruct retail.",
+    "effects": [
+      "real-projection-join",
+      "quotient-inheritance",
+      "late-merge-regression"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6539C1C57D1B706F21B4809ADE086A245AA5CD2F1BD76C82A60808674F2CB5BD",
+      "sourceSha256": "C2B82D94E05A598E542BB018138DF585D95058371DE2160279DBC8C12344C5B9"
+    },
+    "label": "longer-real-projection-join-inherits-quotients-but-retains-expanded-tails",
+    "observedEffect": "CBAA3EF1/sourceC2B82D94 is PURE_C6940/frame616/179 textR/15 dataR/131 calls. F213 canonical passes: quotient85 LREG refs9->13/life1339->1341/cross131. Observer focused-c3rQqq adds inherited quotient uses777 from division762/T4 and816 from801/T3, giving6 inheritance/8 equivalence/0 failures/retries.121 allocation hard-register/cursor decisions agree by ordinal with best, but their real operands/order differ; this is not identical source-level allocation history. Both division stores4797/4812 and sampled projection reload/adjustment UIDs survive through GREG/schedule2/late-jump/DBR. The body remains96 bytes larger, with no store-only disappearance represented as whole-allocation loss. Asymmetric follow-on A197 retains one extra inheritance and122 allocations, but grows100 bytes.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-join-watch.json",
+        "sha256": "BA5D32D1A5CE80AB7EF7DA2814F21DC0B4D567DB40AE419784DBCEE375646998"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-join-measurement.json",
+        "sha256": "3EC7AE29557C646AE56132E483D7729664C78C8DEE0D5FABB9CABBA78EC8CD87"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-join-observer-comparison.json",
+        "sha256": "4662E35569B6DAF6F0CE18FC3C1F9259B27AFE6D1C38185161711CA4E36AB361"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-join-probe.json",
+        "sha256": "38BF1EF61D918F95BD375AD6E132A7D21EC2026055B8866EF0B964C610F22FAD"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-join-coverage.json",
+        "sha256": "D8BB195FD1DE29FD967F40738D5E9328621429402C00BA461F684D095E092BC7"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/projection-mechanism.json",
+        "sha256": "79E591D022E349FDC884D9D8A985C1609062E7C6040116F1897620ADDD472B93"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-asymmetric-y-join-watch.json",
+        "sha256": "BB35D0CF2C90F319EEC019FC409FF1421E9D16EBB6084DF889C63708C5C40CCC"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-asymmetric-y-join-measurement.json",
+        "sha256": "704C48268A1C026E32B9443279E85DBA71D18833EA3AAD2FAB9BAC97F5B8B4B8"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-asymmetric-y-join-observer-comparison.json",
+        "sha256": "E2DD61BBFC12F08DF1AC95FDCB2F64A588F06F8D53C1E13B40906C7B83EB8028"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-asymmetric-y-join-mechanism.json",
+        "sha256": "BBE18E3F3CD00B289B4879DD67A2BDFB0F992AE6EDE6867F164F479831A3318B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Unselected longer-join regression; no native merging closes it. Keep718B. Test shorter actual join boundaries or a genuine producer-use follow-on from observed operands; do not infer retail incoming state or reject an entire source family from larger output. All structural/complete17 gates remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "In both positive/nonpositive X arms, retain original multiply/divide through the existing Y load, ordered height comparison and Y-minus/plus-quotient assignment. Keep the subsequent22190 call shared; each executed path has exactly its original memory/arithmetic sequence."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41701,
+      "sha256": "6539C1C57D1B706F21B4809ADE086A245AA5CD2F1BD76C82A60808674F2CB5BD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C2B82D94E05A598E542BB018138DF585D95058371DE2160279DBC8C12344C5B9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-cbaa3ef180.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

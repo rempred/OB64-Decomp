@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4D146B4DAE6BBE4E741DBBFA7371DB3FB4E3B3C3C0A0EBC31AD3FB0C3776C0C4",
+  "observationId": "CA062CA35E59F1650624BC0EC5363DC94E9B0A378EAD9DF06F5CAFFC685B2E5B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Astra2155 complete17 W6 source-bound discriminators against protected718B best68 under accepted W8 CURRENT7ED689CD. No canonical compiler/configuration/build changes or full-ROM checks. Reviewed observer authenticates input and pinned/off/on native parity; candidate history does not reconstruct retail.",
+    "effects": [
+      "real-initialization-lifetime",
+      "global-priority-crossing",
+      "probability-spill"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "829D689CD9E1D560781A065391393A985FEAE7B64C80757F55E4F2F3229FB235",
+      "sourceSha256": "B37EBCAD5FCADB609E64A0DBA691A98A20849DCD8CE8C08348286AFA6E1AE555"
+    },
+    "label": "intermediate-real-default-promotes-helperfp-and-spills-probability",
+    "observedEffect": "4D146B4D/sourceB37EBCAD is PURE_C6852/frame616/177 textR/15 dataR/131 best-ordered calls. Canonical6E37: helper93 FLOW life288->277/cross23->20 and LREG253->223/cross23->16, still18 refs. Its global order index104->102 crosses probability178 index101->103. Native helper holdsFP and probability is spilled. Reviewed observer focused-roHG4z records actual probability178 reloads1922/T4 and2086/T3, while prior helper93 predicate reload2465 is absent:122 successful allocations,5 inheritance/7 equivalence,0 failures/retries. NativeB1FFE11E differs in homes/setup/extent; source-specific UID lists also contain renumbered equivalents and are not semantic alpha alignment.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-target-helper-initialization-watch.json",
+        "sha256": "14BD52A4C6AB418D1F51312C73FD365A50704729BAFB2641F35E0BF0F314523F"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-target-helper-initialization-measurement.json",
+        "sha256": "23063AD060B25C512E54A9F99168503AD0DBAF9C54F79A8254120369C5171B1F"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-target-helper-initialization-observer-comparison.json",
+        "sha256": "34C8ABD6E8D7509E0FBA2BA602F296F830C12F5AB49D224042F1D4989AE0E92D"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-target-helper-initialization-probe.json",
+        "sha256": "74C29B6D6F9B9F23DAAD294751F049B290194232D9F014700E3443C04B05D042"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/initialization-mechanism.json",
+        "sha256": "FC18CA193D77C155F2567159E60552F41CF8CDBEBB8A4D6468006BC822973911"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode1-helper-initialization-coverage.json",
+        "sha256": "DEB19FBCF9EFC532B4169706AD3CCBD009A53F6F412BF73D703B78AB43C5C630"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Unselected. Frame equality does not repair helper/probability disposition, original early zero or body bytes. Mode1-only controlB980 gives helperS0/frame608/120 allocations instead; neither is a closing construction. Preserve718B and whole17 gates.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the existing zero only to the non-compacted target-processing entry after363FC and before365BC; both consuming mode arms are dominated, with no other reads/escape. This is an intermediate follow-on to the mode1-only initialization boundary."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41358,
+      "sha256": "829D689CD9E1D560781A065391393A985FEAE7B64C80757F55E4F2F3229FB235"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B37EBCAD5FCADB609E64A0DBA691A98A20849DCD8CE8C08348286AFA6E1AE555"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-4d146b4dae.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

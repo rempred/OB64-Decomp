@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "10FBC1EC740E24069B9F54568AC76622E04BBE4588A3790A3FBA4FD477D55ABE",
+  "observationId": "9D92595AEB9EE3AD8D5537F4FFBFF0FE491B4E51D5ABD84DB65B3B14A06DA08E",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Astra2155 projection-join discriminator, against protected F75E source718B best68. Complete17 W6 remains unfinished; reviewed observer is diagnostic.",
+    "effects": [
+      "real-projection-join",
+      "identical-reload-decisions",
+      "late-merge-regression"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "282423FBBAF3A8A5CA93F0A4B01186DE962CFB6D2CA3931889574603A23ED974",
+      "sourceSha256": "D38890E916A45511C8D0DD453CFBB5D1D0015FDF43CCCCE523B52FF1B2726CA8"
+    },
+    "label": "real-y-load-join-changes-late-output-with-identical-reload-decisions",
+    "observedEffect": "10FBC1EC/sourceD38890E9 is PURE_C6912/frame616/178 textR/15 dataR/131 calls,68 bytes larger. Reviewed focused-XRbxOf observer records all121 allocation descriptors, hard-register choices and cursor transitions identical to best, with4 inheritance/8 equivalence/0 failures/retries. Canonical18808BAE first division output-store UID4775 is absent by late-jump while division762 remains; second-store UID4781 and sampled Y adjustment/reloads remain. Final assembly still has quotient stores on both paths, so UID disappearance does not establish elimination of the store operation. The full-Y extension CBAA instead adds two quotient inheritances and grows96 bytes. These source-specific results distinguish reload decisions from subsequent final-output changes; an absent UID alone is not a deleted allocation.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-load-join-watch.json",
+        "sha256": "91170A71FFC89B21994699D49E4B845768A9D4648C84B90C8A7018AB87A7CA92"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-load-join-measurement.json",
+        "sha256": "32EFBB1067B7182ED6940A14EC0319D804FA7198B3B199DB8778ECB4C798CB50"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-load-join-observer-comparison.json",
+        "sha256": "70C8F6968C569ACFF142E902B04B15FCFA4AA28CC3E897D748939265EDFD7207"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-load-join-probe.json",
+        "sha256": "8035C945DD7B68D80B805A4954793F47F7F4CD2D7A2AE6C861EE6DEB90930514"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-load-join-coverage.json",
+        "sha256": "13083F450E8B66F927F521E4569EB6C38EB62DA8014FD56E31E31A82B6AF8B15"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-load-join-mechanism.json",
+        "sha256": "247CDEE61BE383176887F4737FBA4444EDA4EB71D5F38AA8DC68F6D2B7CC5901"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/projection-mechanism.json",
+        "sha256": "79E591D022E349FDC884D9D8A985C1609062E7C6040116F1897620ADDD472B93"
+      }
+    ],
+    "relatedCandidateIds": [
+      "CBAA3EF180059123EF48CB6664A15BF459E0DE3C3F0180273CDD473BAF837D59"
+    ],
+    "remainingFailure": "Unselected counterexample. The expanded native body and extra text relocation fail original extent/bytes. No retail allocator history or general impossibility follows. Next test separates the transient quotient from persistent final Y under the real shared tail; keep718B recoverable.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Extend both original X arms only through their real Y load. Keep the height comparison, Y adjustment and22190 call shared; every path executes the original arithmetic and memory reads in order."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41424,
+      "sha256": "282423FBBAF3A8A5CA93F0A4B01186DE962CFB6D2CA3931889574603A23ED974"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D38890E916A45511C8D0DD453CFBB5D1D0015FDF43CCCCE523B52FF1B2726CA8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-10fbc1ec74.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

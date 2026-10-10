@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BC6CF8058A94E98B054A3C716F9B5E1CDBFAB2DD6349B37C6BEEAEFAC2C21505",
+  "observationId": "517638F95CE624C9112050128037220F26D4B3E508C859BDBD7B427EAFC0E2CE",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Follow-on to Astra2155 actual projection joins, against protected F75E/source718B best68.",
+    "effects": [
+      "real-value-separation",
+      "shortened-quotient-lifetime",
+      "reload-history-change"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "31A6B9CF1B430A5C474383CCC064AB2AC4AE11DE70CA8EE3864FECD0DC39D24E",
+      "sourceSha256": "BB2C4AFC3BAC21DD910BBEACAA0466F07F911C2506DF921FA71E32D816BCE689"
+    },
+    "label": "separate-real-quotient-shortens-body-but-removes-required-retail-spill",
+    "observedEffect": "BC6CF805/sourceBB2C4AFC is PURE_C6828/frame616/177 textR/15 dataR/131 calls,16 bytes shorter. Reviewed focused-DC36Wr authenticates117 allocations/4 inheritance/8 equivalence/0 failures/retries; best has121 allocations. The transient quotient stays in a register, omitting retail intermediate spill/reloads. Applying the same real split to full-Y CBAA gives private2DB109F7/sourceDF1DFAE5,6916 bytes/178 textR and the same117/4/8 counts; duplicated Y tails remain. Canonical dumps and source-bound observer preserve each history; ordinal alignment or counts alone are not semantic alpha equivalence.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-value-split-watch.json",
+        "sha256": "D48718F3426C481B5F0861660BB7B489C0E4F4088D2D14287C74A4EB022C7020"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-value-split-measurement.json",
+        "sha256": "E8967BC3B7C1EED109B1351C25835DC0048461DDF53EFD8D2C5FABEF793CADB4"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-value-split-observer-comparison.json",
+        "sha256": "A931A397806BF441B82677D4C7E1DF4940E60F134E26627812A30D9EC5F1E262"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-value-split-probe.json",
+        "sha256": "FE219C3CD8183A07D73244E64513BEB076BFA8BDEF7DC76467E24D4FA76A62E7"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-value-split-coverage.json",
+        "sha256": "21D1D847DA0A454A80E1DD2A9667A396663D4A9DBF90F921F0D97435BB9E2361"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-value-split-mechanism.json",
+        "sha256": "FE2A3EBEA7EB05D192A094B1F4E1FA51F61D9D586A8BB05EA1E97D4214B793FB"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-value-split-watch.json",
+        "sha256": "56AA03E5164D44B82284327B0B5E033FDBD85067DA0E95CCE247AC4052ED06A6"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-value-split-measurement.json",
+        "sha256": "6769A32A559D252BD985D6D3265A7FC6B3E3BFFCEE307FFF14DA136B92D4057C"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-value-split-observer-comparison.json",
+        "sha256": "94BB60202DB831021E9043FFD0CD44B94EDD1284B7C103FAA039D14858B2EC4E"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-value-split-probe.json",
+        "sha256": "62DFA6EDD564CE7C98945F0504B7F735FC2BAA3AD78197DD0A1F03C32D98AF74"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-value-split-coverage.json",
+        "sha256": "E26AA6DF2599710637BF9588E0A4F43B261C9F3CD35D639CB41DE8B7867DCBA2"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-projection-y-value-split-mechanism.json",
+        "sha256": "5F84FFB6EAC45879B25F04E1951352D1739D720D9A92F110514BD36C62EB7490"
+      }
+    ],
+    "relatedCandidateIds": [
+      "CBAA3EF180059123EF48CB6664A15BF459E0DE3C3F0180273CDD473BAF837D59",
+      "10FBC1EC740E24069B9F54568AC76622E04BBE4588A3790A3FBA4FD477D55ABE"
+    ],
+    "remainingFailure": "Neither real value split restores retail extent and operations; the full extension remains72 bytes larger. Protect718B. These results show that the observed quotient inheritances depend on the combined persistent scalar, but do not rule out other genuine producer/join forms or establish retail allocator state. Complete17 acceptance remains open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compute each original X-arm quotient into a shared block-local scalar, retaining the original shared Y load and height comparison. Both height arms assign persistent sp1A4 directly from quotient and Y. All original executed arithmetic, reads and calls remain ordered; the persistent zero and later final-Y consumers remain."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41540,
+      "sha256": "31A6B9CF1B430A5C474383CCC064AB2AC4AE11DE70CA8EE3864FECD0DC39D24E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "BB2C4AFC3BAC21DD910BBEACAA0466F07F911C2506DF921FA71E32D816BCE689"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-bc6cf8058a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
