@@ -55,6 +55,23 @@ phase/address lessons for a distinct source-bound D14C experiment; transfer is
 not presumed and closed controls must not be repeated. Protect the fifteen accepted siblings
 and the separate 64-byte table/interior-consumer integration gate.
 
+**D14C diagnostic follow-up, October 10:** fresh loop-note and callee-address
+controls left the 68-field best unchanged; they do not prove a required retail
+hidden reload event or pure-C impossibility. Sol2139 and Gold2137/2140 explicitly
+agree the existing pre-reload oracle/dumps cannot expose ordered reload attempts.
+Astra assigns an isolated observational trace of reload1.c, with authenticated
+research build/inputs, trace-off/on parity, real nonmatching controls and independent
+review. Production compiler/configuration/acceptance remain unchanged and W7 is
+not paused. SilentForest preserves complete W6 and prepares its remaining private
+integration gates; the Director owns this separate diagnostic implementation.
+The complete private integration preparation is in
+`build/matching/combat-w6-fresh-261010/integration-preparation.json`. Independent
+read-only review confirms the inactive D14C 64-byte table representation fits
+existing tooling and preserves the full row and W7 consumers. At complete-wave
+integration, add D14C's auxiliary contract and remove EF50's retained interior
+together; refresh final-source evidence and complete the applicable structural
+audit/review. This does not activate the still-nonmatching source.
+
 **Terminal W8 accepted, October 10:** all fifteen owners / 19,636 bytes passed
 normal PURE_C, sole ownership, placement, actual relocation, complete target/table
 and full-ROM gates at source/config commit `289e8bc9`. The
