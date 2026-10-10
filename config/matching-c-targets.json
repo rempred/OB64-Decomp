@@ -1169,6 +1169,66 @@
     {
       "symbol": "func_001284C4",
       "source": "src/lib/func_001284C4.c"
+    },
+    {
+      "symbol": "func_00222530",
+      "source": "src/battle/func_00222530.c"
+    },
+    {
+      "symbol": "func_00222190",
+      "source": "src/battle/func_00222190.c"
+    },
+    {
+      "symbol": "func_0022222C",
+      "source": "src/battle/func_0022222C.c"
+    },
+    {
+      "symbol": "func_00222344",
+      "source": "src/battle/func_00222344.c"
+    },
+    {
+      "symbol": "func_002223E0",
+      "source": "src/battle/func_002223E0.c"
+    },
+    {
+      "symbol": "func_0021EAF0",
+      "source": "src/battle/func_0021EAF0.c"
+    },
+    {
+      "symbol": "func_0021E99C",
+      "source": "src/battle/func_0021E99C.c"
+    },
+    {
+      "symbol": "func_0021E070",
+      "source": "src/battle/func_0021E070.c"
+    },
+    {
+      "symbol": "func_0021E2C4",
+      "source": "src/battle/func_0021E2C4.c"
+    },
+    {
+      "symbol": "func_0021D7F0",
+      "source": "src/battle/func_0021D7F0.c"
+    },
+    {
+      "symbol": "func_0021DCA4",
+      "source": "src/battle/func_0021DCA4.c"
+    },
+    {
+      "symbol": "func_0021E50C",
+      "source": "src/battle/func_0021E50C.c"
+    },
+    {
+      "symbol": "func_002213DC",
+      "source": "src/battle/func_002213DC.c"
+    },
+    {
+      "symbol": "func_002215D0",
+      "compilationGroup": "func_002215d0_native"
+    },
+    {
+      "symbol": "func_0021EBBC",
+      "source": "src/battle/func_0021EBBC.c"
     }
   ]
 }
