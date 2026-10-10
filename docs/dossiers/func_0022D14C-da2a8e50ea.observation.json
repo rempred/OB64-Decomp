@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DA2A8E50EA4967DB602F7D1E84F012EB0901A4A726A984A6E0228A4188A732AE",
+  "observationId": "A49477A1B233DB0FDA21E0565AAC719EBDC5E9976AE0333E9507BC5D852154F8",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete17 W6 resumed at accepted W8 CURRENT7ED689CD. Current718B source is refreshed as F75EBEA2 and reproduces full nativeCEBDD465, PURE_C6844/frame616/177 actual textR/131 calls/table64+15R/68 T3-T4 differences. The prior1EE8 loop surrounded helper-result capture outside the nonzero branch; this source moves the boundary to the actual emission argument use.",
+    "effects": [
+      "retained-loop-notes",
+      "register-allocation",
+      "native-equivalence",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0A6D0E372148E2BB4644D864943848C007FF00F31F8E523844908824EE7C47C5",
+      "sourceSha256": "99B4E0BD8E07B1862F0E307284E1F422F49E6D5AAB9110CBF07AA3F6CC415F14"
+    },
+    "label": "mode3-real-argument-loop-retains-notes-and-adds-reference-but-native-neutral",
+    "observedEffect": "DA2A8E50/source99B4E0BD is PURE_C6844/frame616/177R/131calls; all native bytes, actual relocations and table metadata equal current best, retaining68 masked differences. Authenticated current best5679 and variant8CC9 five-pass probes compare successfully. Variant initial RTL3464 copies user95 into790; FLOW forwards95 directly into outgoing store3475 while retaining loop notes3459/3507. FLOW references95 rise37 to38 at identical live813/cross70; LREG references37 to38 at identical live725/cross70. GREG still inserts5034 loading stack500 intoT4 and3475 storesT4 to outgoing24. This establishes a retained-boundary/reference change with unchanged observed scratch choice, not an invisible-allocation trace.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-best-measurement.json",
+        "sha256": "F533F3A4ECF1EA5BEEB596853139A12C506DE5830B14CABEE1DD307D06DF56D0"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-argument-loop-measurement.json",
+        "sha256": "EBDB4F02ADEF9AC7F679B757E553411E95F60FE96795DE0C3BD8C62418951E7A"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-argument-loop-compare.json",
+        "sha256": "F083FC0A0F5B0867308A08286EE340F2B3237922C9B4E3DD399874130D1A1A13"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/targets/func_0022D14C/probes/5679F6FDDC7A7EB27B717CF2D7632DC3079B011A9C6E35BB859F6510C6EAB2DC/probe-report.json",
+        "sha256": "7212130A4EB33E24C98E31FB4BDDEBFD4582FC14DDF8DEA403164D30044FD5B8"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/targets/func_0022D14C/probes/8CC92E5B4A80D7AD7A80DA3B3129358C20C71EF9C68238067499DD21D4DA1F19/probe-report.json",
+        "sha256": "BA84678AE36208527AC279BC760DA0A0D78A069AEA2FCEA8F90128E686EA6DFF"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-1ee8eaae72.md",
+        "sha256": "03B315F1A517BCF49F3AA5F73DAB35B215A50D1B89196721045AE0FA4F90F994"
+      },
+      {
+        "path": "docs/dossiers/func_0021EBBC-d8da8636e3.md",
+        "sha256": "6048F48F88455E44430902DE42B52C04C76AD8F003B49050CAB89C570A42AFA9"
+      },
+      {
+        "path": "docs/dossiers/func_002215D0-233d92db9b.md",
+        "sha256": "DEADE14CBEDDD9A1B0B44F68EA98A61231FB8B76AAC298546808BCEF2811AC5D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "All68 T3/T4 differences remain. Changing reference weight by this boundary does not restore the first143C reload. GoldOx2132 has the precise source-bound discriminator question. No inherent-assembly, parity, tooling-defect or impossibility claim; complete17 and separate table/interior/consumer/linked-placement/full-ROM gates remain.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Enclose only the existing nonzero mode3 D334 emission in do/while(0), with a local capture of its real seventh argument from sp1F4. Preserve3422C, result store, guards, calls and all memory operations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41510,
+      "sha256": "0A6D0E372148E2BB4644D864943848C007FF00F31F8E523844908824EE7C47C5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "99B4E0BD8E07B1862F0E307284E1F422F49E6D5AAB9110CBF07AA3F6CC415F14"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-da2a8e50ea.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

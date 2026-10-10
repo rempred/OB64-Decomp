@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B30D1B5DD431A13E73F97698E7FD694ABA2D3BAB413311A2DF20B54C56CD5D07",
+  "observationId": "CC5516C9BCF68FB215A3637007B94CCF2375CE72E0BD69F9898C697005FAED9B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete17 W6 at accepted CURRENT7ED689CD; refreshed F75EBEA2/718B/nativeCEBDD465 best has68 T3/T4 differences. Accepted2215D0's direct address/phase identity changes a shared symbolic-address lifetime; currentDA2A shows emission loop notes alone retain the same scratch choice.",
+    "effects": [
+      "symbolic-address",
+      "early-folding",
+      "native-equivalence",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "377729DD49590144E8BB0C0636349F865256D976340340BF2EC96882D524D49A",
+      "sourceSha256": "F8CC946E3FA5E442D3B18DF23DFA03D10CED9C52903A3BA5EF01508DEBF57E56"
+    },
+    "label": "mode3-real-callee-address-phase-folds-to-direct-call-before-allocation",
+    "observedEffect": "B30D1B5D remains PURE_C6844/frame616/177 actual textR/131 calls and identical complete nativeCEBDD465/table metadata, retaining68 differences. Own8731876E five-pass probe is authenticated against current5679. Initial RTL3444/3447 load the actual helper symbol;3445 IORs the hit predicate and3448 ANDs the address. COMBINE3454 is already the unchanged direct symbolic call, and GREG5022 still reloads metadata stack500 intoT4. The identity supplies no surviving symbolic-address allocation in this call context.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-call-address-phase-measurement.json",
+        "sha256": "98A01A645292CEAD6F38E76C136B7BA0E54A29B47605D5FDA1AFDB3EDD47089C"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-call-address-phase-compare.json",
+        "sha256": "48F1D14EC3B4A2BFF006C738C965F9D16238795086451FB5F090DE24A2A82C3D"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/targets/func_0022D14C/probes/8731876E5A8B4F939B64CDE73621AEEE94E044A3B2AD5FF46CD3CECD5203F036/probe-report.json",
+        "sha256": "B43DD41F2F79972451A9EB03D13D8BBCD70BBB16506CB3A8ABA2F7E4F10E4354"
+      },
+      {
+        "path": "docs/dossiers/func_002215D0-233d92db9b.md",
+        "sha256": "DEADE14CBEDDD9A1B0B44F68EA98A61231FB8B76AAC298546808BCEF2811AC5D"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-da2a8e50ea.md",
+        "sha256": "805D0D31D96F445C9DFFD4DB36AFE3099DB91C373446AB2888968B69BA8DD6A8"
+      }
+    ],
+    "relatedCandidateIds": [
+      "DA2A8E50EA4967DB602F7D1E84F012EB0901A4A726A984A6E0228A4188A732AE"
+    ],
+    "remainingFailure": "All68 differences remain. This closes this exact direct-call transfer, not address identities generally. GoldOx2133 identifies choose_reload_regs attempt/inheritance state as missing evidence but supplies no current source construction. Candidate final dumps cannot establish a mandatory hidden retail event or exclude every invisible attempt. Complete17/table/interior/consumer/linked/full-ROM gates stay open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "At the existing mode3 helper call, express its actual function address as (address|hitPredicate)&address under the accepted32-bit model, with the same typed function signature and arguments. The real hit predicate already controls this call. No data self-copy, new condition, memory operation or callback ABI claim is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41495,
+      "sha256": "377729DD49590144E8BB0C0636349F865256D976340340BF2EC96882D524D49A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F8CC946E3FA5E442D3B18DF23DFA03D10CED9C52903A3BA5EF01508DEBF57E56"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-b30d1b5dd4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
