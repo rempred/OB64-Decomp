@@ -143,7 +143,7 @@ and replace each accepted/released worker promptly with fresh Sol6.1/xhigh. Dire
 requested Lavender's narrow release of the complete scheduler NINE; verified2342 released
 all9/tables/tails/group gates with zero processes. Fresh top-level Sol6.1/xhigh
 [Scheduler NINE worker](codex://threads/01a12c52-1ef0-7b50-9dab-1912468a1591) has started
-in build/matching/scheduler-nine-fresh-261011/ while Lavender retains complete W7
+in build/matching/sched9-fresh-261011/ while Lavender retains complete W7
 production ownership. SapphireLeopard confirmed startup2344; its stop-monitor delivery and
 own inbox self-test2345 passed. C1C source/coverage preparation is active. This supersedes
 census2336's scheduling recommendation to wait for W7 acceptance. The census's dependency

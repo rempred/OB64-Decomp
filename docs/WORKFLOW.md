@@ -684,6 +684,11 @@ into prose documents.
 
 The Director assigns each candidate worker a separate complete wave and one short ignored directory
 under `build/matching/`, preferably using less-related families. Each worker owns one target at a time.
+Before dispatch, preflight the chosen path through `resolvePrivateWorkspace` in
+`tools/lib/matching/private_workspace.js` without starting native work. Its current guard requires
+a nonreserved lowercase basename of at most24 characters and a resolved root no longer than120;
+the validator remains authoritative. An invalid assignment path is a Director scope correction,
+not grounds to weaken the guard or replace the unfinished worker.
 Keep the original complete wave and any coupled producer, required bodies,
 table ownership and dependency gates intact. Work in the same checkout on `main`; no worker branch,
 worktree or rebase is needed. The production writer alone integrates into `src/`, shared headers and
