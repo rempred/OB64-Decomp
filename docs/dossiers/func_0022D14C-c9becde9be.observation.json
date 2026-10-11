@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C9BECDE9BE3DA0632694514B4063B18BBC51396624B498CA6B6EE31E15B7C72B",
+  "observationId": "2D5515640A8C24AEA9D9BE87EFABD34AB3AF4E3D17ACD4C3EA74E9CF8A46756D",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete17W6 remains under accepted W8 CURRENT7ED689CD. Director2188 retains ordinary private iteration authority after2185 closes the exact shared-call forms. All variants start from protected718B/F75E and preserve complete logical/native body coverage; no canonical input changes.",
+    "effects": [
+      "real-counter-lifetime",
+      "global-register-disposition",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5AB5221424E99DA4BA9492BA8024DBB25511742A9DC090B0DA09DFDB13CB68FB",
+      "sourceSha256": "8918FC94A2CEEAA8DE51FF4373FA66403962AB39723E1BD271BD9CACE69D6EF8"
+    },
+    "label": "scoped-output-source-counter-swaps-global-s5-s6-and-changes-local-loop-registers",
+    "observedEffect": "C9BECDE9/source8918FC94 is PURE_C6844/frame616/177 textR/131 calls with unchanged actual relocations and table metadata, native6309CFD8. It has208 masked-word differences versus retail, beginning in the prologue. An explicitly diagnostic integer-register S5/S6 alpha comparison against best leaves15 differences: four save/restore-slot forms and eleven output-loop register forms. No normalized binary is written or accepted. The late T3/T4 forms remain best-identical; compiler priority/order cause was not probed.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-output-counter-scope-preparation.json",
+        "sha256": "10F591CE7D2BADFD0D919A83707F6CC28E012F6DF2E23CA5B78AE90A3237CBF7"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-output-counter-scope-measurement.json",
+        "sha256": "63871F1F6FF04F8EDADD47C00F37E3DBC05581B1E5969F740EBD150EF0BC3A7B"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-output-counter-scope-alpha.json",
+        "sha256": "DE3A583851B5A43808D3118767D6E1EE7124FEBCD56FFBF24FFB3D80039C1212"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/check-output-counter-alpha.cjs",
+        "sha256": "643BF772E90F0C962733F312906CF2F7863A79D422FE859580A91F1413915BD7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Unselected global/local register regression. Separate source-index scope does not solve best68; real operations/bounds/calls and complete-owner coverage are preserved. No changed placement/table/full-wave acceptance or source-uniqueness claim.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Give only the real output-copy source index its own s32 local and block scope. Main/excluded counters remain unchanged. The destination count var_a2_1641, two read/store expressions, bound, increments and later calls remain identical. The prior var_s5_693 value after this loop is not read before its terminal-loop reinitialization."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41415,
+      "sha256": "5AB5221424E99DA4BA9492BA8024DBB25511742A9DC090B0DA09DFDB13CB68FB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8918FC94A2CEEAA8DE51FF4373FA66403962AB39723E1BD271BD9CACE69D6EF8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-c9becde9be.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

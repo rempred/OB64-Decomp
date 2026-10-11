@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "19EE96674E2C5311DBD965F748C220765EB4DCC105DCEEBD7F633B15E7A9AF13",
+  "observationId": "E085AE74A74C8EB0AFDF5BA7D0CEAC6D5C5E4393C15535BF89AF5A902FB01B3C",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete17W6 remains under accepted W8 CURRENT7ED689CD. Director2188 retains ordinary private iteration authority after2185 closes the exact shared-call forms. All variants start from protected718B/F75E and preserve complete logical/native body coverage; no canonical input changes.",
+    "effects": [
+      "real-return-byte-argument-phase",
+      "reload-observation",
+      "scheduling-regression",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7FF69A8AF3B1460AEDC66FDBD6A5BECB406F27E93FD39CFC59A6E87B7DA41FE2",
+      "sourceSha256": "FA0A43C6D51A1DD47C7470D892558F994096DFBCD4D17E3345D6C78B841A7D0F"
+    },
+    "label": "return-local-to-real-eighth-argument-byte-changes-scheduling-not-scratch-decisions",
+    "observedEffect": "19EE9667/sourceFA0A43C6 is PURE_C6844/frame616/177 textR/131 calls/table64+15R, nativeA6117956 and78 masked-word differences. The real memory-read capture changes scheduling in the positive mode3 argument block; metadata still reloads intoT4. Reviewed observer focused-1pO2dk passes pinned/off/on native parity and agrees with workbench text. It records121 allocations,4 inheritances,8 equivalences and0 failures/retries. All ordinal hard-register/cursor choices equal best; descriptor pseudo renumbering begins at ordinal6, so ordinal equality is not asserted as complete semantic alpha alignment. Relevant metadata allocation85 now UID3476 still reads user95 intoT4, cursor0->1/pass1, and the UID3456 V0 equivalence remains.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-byte823-phase-preparation.json",
+        "sha256": "9D8A493E3DB79316E395FB46E035F1E8E7C60D903CFDEDDB6F6EB3EE8272C4FF"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-byte823-phase-measurement.json",
+        "sha256": "1F7D4603A9A7192E0E3B07C6C577B066A50F4CFCC4BD95FE46032E6FC4020802"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-byte823-phase-observer-comparison.json",
+        "sha256": "A16C12D783E9726E3F92E0EFCD880900677F91E52ABDBDB6EED09E1A290B035D"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-byte823-phase-observer.json",
+        "sha256": "89005071FFECA5D7A22C3AC07BA6E683DB4704A689F81FA80EAC6F6E07E70108"
+      },
+      {
+        "path": "build/director-resume-20261010/w6-next-lead/control-applicability.json",
+        "sha256": "5FAE365CF13D2417767A9A315E3120AC57899A1B492479A29442BB456171A734"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Close this actual eighth-argument memory producer phase, distinct from707A seventh-argument stack-value reuse. Best68 remains selected. No inferred full eligibility, retail allocation history or inherent-assembly claim; complete17 and canonical gates remain open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "After the unchanged helper-result persistent assignment and nonzero test, reuse the now-dead temp_v0_1409 for the actual byte823 read passed as D334 argument8. Its full helper result remains in sp1E4 for byte argument9 and3422C. No added memory operation, guard, call or prototype change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41412,
+      "sha256": "7FF69A8AF3B1460AEDC66FDBD6A5BECB406F27E93FD39CFC59A6E87B7DA41FE2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FA0A43C6D51A1DD47C7470D892558F994096DFBCD4D17E3345D6C78B841A7D0F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-19ee96674e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

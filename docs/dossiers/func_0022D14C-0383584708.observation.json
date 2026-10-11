@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0383584708F3CA68C7BCC41CA865B37167C5EB5D9CC4EF5A9B5923E1990FD6C1",
+  "observationId": "0EFE69C8FBC9978890540679FA492C6A382D0174FEC8F6B9421D7421229ED23B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete17W6 remains under accepted W8 CURRENT7ED689CD. Director2188 retains ordinary private iteration authority after2185 closes the exact shared-call forms. All variants start from protected718B/F75E and preserve complete logical/native body coverage; no canonical input changes.",
+    "effects": [
+      "two-guard-argument-handoff",
+      "native-equivalence",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B74B994F3316A83F071B9A81514A6DF3299C83BE17DC9BDF3F7635170912D04F",
+      "sourceSha256": "56AE97CC66FCE6B15D9B5CF9199D2DC296E0F98B425ED1B544A7B6EC8E2BCE93"
+    },
+    "label": "two-real-optional-calls-with-historical-argument-handoffs-remain-native-neutral",
+    "observedEffect": "03835847/source56AE97CC is PURE_C6844/frame616/177 textR/131 calls; all native bytes, actual relocations and table metadata equal protected F75E, nativeCEBDD465. Value-only155F/sourceFAE51AE3 is also whole-native-neutral. Retaining both optional call expressions retains the original argument blocks; changing the real handoff phases alone produces no native effect. No intermediate/allocation claim is made.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-optional-argument-handoff-preparation.json",
+        "sha256": "BD40499EA37E6B9ED7537E1CB010987AF4F51DCA3E4B17C6352310CC2EDB9D4F"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-optional-argument-handoff-measurement.json",
+        "sha256": "D0A5DE471931E8C98309F84684336E98B162E64E8A47A8E2286855744A702CB4"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-optional-value-handoff-preparation.json",
+        "sha256": "C66C6204B45247056F5A0368647BECD35534EF453DF7334A1F1C2A9F6B10EEFF"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-optional-value-handoff-measurement.json",
+        "sha256": "4A202E360AEF63EB52B26D469A320225A0E3EC4E8AA14EAC24DD4BF1B7566CB8"
+      }
+    ],
+    "relatedCandidateIds": [
+      "49FB01C031C69CFACE962FFD9246881726C22A34380D5024A15302AF1CD92252"
+    ],
+    "remainingFailure": "Close these two measured call-preserving handoffs. The shared-source49FB control fails retail per-arm stack stores; its altered argument block cannot be attributed to the handoff alone. Best68 remains unchanged; no broader impossibility or retail-history claim.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Inside each original0x87 guard after its unchanged first call, capture actual a1/a2/a3 values in existing historical locals; transfer the true normalEmitCode and false zero-extra value for their original optional second call. Two optional source calls remain; no goto/common call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41644,
+      "sha256": "B74B994F3316A83F071B9A81514A6DF3299C83BE17DC9BDF3F7635170912D04F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "56AE97CC66FCE6B15D9B5CF9199D2DC296E0F98B425ED1B544A7B6EC8E2BCE93"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-0383584708.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
