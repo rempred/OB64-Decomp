@@ -35,7 +35,11 @@ loader freeze narrowly for private iteration at the observed static call boundar
 Complete D9C text and its coupled table/prefix/tail remain one retained addendum;
 accepted construction, record/formation and supply groups stay protected. See the
 [Director cursor](Plans/cursors/director.md) for scope, evidence and remaining gates.
-Source iteration is authorized; target-specific structural activation is not.
+The complete private candidate arrived in handoff2273. MagentaSeal is preparing
+the body/table contracts and compatible declarations for the protected callers;
+independent structural preflight found no generic tooling gap. Target-specific
+admission, coordinated production integration and final audit/review remain pending.
+MossyMouse retains the stable source and ownership through complete acceptance.
 
 **Current tooling and continuation, October 9:** complete Squad W4 (all21 owners)
 and the complete Scenario checksum chain (all8 owners/12 native functions) are
