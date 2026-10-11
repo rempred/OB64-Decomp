@@ -69,6 +69,11 @@ function matching and experimentation. Workers own ordinary matching and ask Cla
 directly when they need help choosing what to try. Tooling approval remains with the Director
 under the agreement, audit and review requirements below.
 
+Never use scheduled tasks or heartbeat automations for this program. Use the existing
+thread watcher scripts and Agent Mail inbox watchers for event-driven continuity;
+internal workers also report through collaboration. Preserve watcher routing and
+deduplication, and keep the Director responsible for acting on actionable events.
+
 Use internal agents unless Joe assigns a top-level worker. Top-level candidate workers report to
 and are monitored by the Director; do not place them under the production writer or send that
 writer routine progress messages. Work on `main` with one production source/build writer.

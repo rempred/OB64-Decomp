@@ -22,6 +22,14 @@ tomorrow using the existing experiment records.
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
+**Joe's October11 correction:** never use scheduled tasks or heartbeat automations.
+The Director deleted `ob64-director-continuity`; existing thread watcher scripts,
+Agent Mail inbox watchers and internal collaboration events provide continuity.
+The Director-imposed indefinite W5/W7 holds are lifted: the same unfinished workers
+resume their complete assignments, with ordinary matching decisions and help owned
+by the worker and Claude/GoldOx. Preserve every best source and closed control.
+A no-lead reply on one route is not a reason to leave the whole program idle.
+
 **Director takeover, October 10:** Joe transferred the frozen SilentCrane Director's
 duties to **PurpleSquirrel**, chat `01a1284c-9b2b-7561-8a81-36ca34387ef8`.
 The [Director cursor](Plans/cursors/director.md) records the recovered mission,
@@ -39,7 +47,7 @@ normal/fresh/full-ROM verification, and independent final review pass. See the
 and [review](../build/director-resume-20261010/d9c-structural-review/final-review.md).
 All protected groups and the retail ROM remain unchanged. MossyMouse released the
 entire assignment in2278; its watcher is stopped. Release2279 ended W7's integration
-drain and its affected inputs were refreshed; subsequent source hold2285 is below.
+drain and its affected inputs were refreshed; resumption2286 supersedes hold2285.
 Historical return type and broader runtime meaning remain
 uncertain. No unchanged verifier repeat or further D9C source work is assigned.
 
@@ -61,27 +69,28 @@ Candidate root: `build/matching/movement-w5-fresh-261011/`; single live cursor:
 `docs/Plans/cursors/sol.md`. W5 retains its complete20-member scope,
 [full roster](../build/matching/movement-w5-20261007/membership.json) and
 [recoverable sources](../build/matching/movement-w5-fresh-261009/cursor.md).
-BC64 is intentionally held after GoldOx2271: the improved best and counterexamples
+BC64 resumes under Joe's October11 correction: the improved best and counterexamples
 are preserved in the [source blocker](../build/matching/movement-w5-fresh-261011/12bc64-source-blocker-2271.md),
-with no supported next trial or established repository/tooling defect. All commands
-are at EOF. MagentaSeal retains W5 and production ownership; resume the same worker
-for new relevant evidence or coordinated integration of another complete wave.
+with closed routes retained and no established repository/tooling defect. All commands
+were at EOF before resumption. MagentaSeal retains W5 and production ownership;
+the same worker resumes reconstruction and consults Claude/GoldOx directly for help.
 Keep the seven instruction-ready candidates and accepted shared pursuit producer;
-no partial-wave acceptance or worker replacement. W7's separate source hold below
-does not change W5 ownership; D9C is accepted above.
+no partial-wave acceptance or worker replacement. W7 resumes independently under
+stable shared inputs; D9C is accepted above.
 
-**Resolution W7 source hold, October 11:** LavenderSpire retains the complete
-original seven-member assignment and every coupled producer/table. Director2285
-records the [source blocker2284](../build/matching/resolution-w7-261009/director-w7-c8-allocation-blocker-20261011.md)
-after GoldOx2283 had no further source-bound lead. C8 bestED43D383 has the retail
+**Resolution W7 resumed, October 11:** LavenderSpire retains the complete
+original seven-member assignment and every coupled producer/table. Director2286
+supersedes hold2285; the [source blocker2284](../build/matching/resolution-w7-261009/director-w7-c8-allocation-blocker-20261011.md)
+and GoldOx2283 remain bounded evidence. C8 bestED43D383 has the retail
 extent/frame and two remaining instruction-order differences; six private-ready
 siblings, all controls and parked obligations remain preserved in the
 [worker cursor](../build/matching/resolution-w7-261009/cursor.md). All private
-commands reached actual EOF. No repository, service or tooling defect is established.
-Resume the same unfinished assignment on new source-bound evidence/advice; ordinary
-matching help remains with worker/GoldOx. No partial acceptance, replacement,
+commands reached actual EOF before resumption. No repository, service or tooling defect is established.
+Resume ordinary reconstruction/reasoning and supported private trials; matching
+decisions/help remain with worker/GoldOx. No partial acceptance, replacement,
 independent matching-research helper or additional observer run is assigned.
-Existing mail and stop monitors remain active and must respect this intentional hold.
+Existing mail and stop monitors remain active. A genuine impasse must identify
+missing external evidence/input or a concrete Director decision.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
@@ -102,8 +111,8 @@ are in the [evidence summary](../build/matching/combat-w6-fresh-261010/integrati
 No unchanged verifier repeat. Separately reviewed test corrections retain all
 authentication/mutation controls; stale scenario curation stays historical-only.
 Director2252 ended the W6 drain for the then-active W7/D9C workers. D9C is now
-accepted; release2279 refreshed W7 onto accepted A913A384 inputs. The current C8
-source hold2285 supersedes ordinary iteration until its resume condition is met.
+accepted; release2279 refreshed W7 onto accepted A913A384 inputs. Resumption2286
+restores ordinary private work and supersedes the later Director source hold2285.
 
 MagentaSeal's complete W5 uses the
 [approved inactive structural plan](../build/director-resume-20261010/w5-structural-readiness/director-decision.md)
@@ -134,9 +143,9 @@ W8's shared-input-stable release2124 resumed Lavender's full W7/A9C checks.
 Yellow retired after its own completed wave, preserving its cursor and recovery
 roots; its inbox watcher and old stop monitor are stopped. Completed SilentForest's
 inbox watcher and stop monitor are also stopped. Completed MossyMouse/D9C and its
-inbox watcher are retired. MagentaSeal retains complete W5 on its recorded
-source-information hold; Lavender retains complete W7 on its separate C8 source
-hold2285. Canonical inputs remain stable. Only actual shared-input mutation or canonical
+inbox watcher are retired. MagentaSeal and Lavender resume their same complete W5
+and W7 assignments under Joe's October11 correction. Canonical inputs remain stable.
+Only actual shared-input mutation or canonical
 linking/verification requires the normal bounded drain.
 
 **Director sequencing decision, October 10:** intact W8 may be accepted before
@@ -168,9 +177,9 @@ Director2007 releases this same worker's private source work on the complete
 [seven-member resolution W7](Plans/prompts/combat-shared-resolution-wave-r1.md)
 in `build/matching/resolution-w7-261009/`: 15,404 logical-owner bytes, including
 A9C's complete 3,372-byte head and continuation. Current intake found no existing
-C candidates at initial assignment. The current source hold2285 retains unfinished
-2317C8 and all six private-ready siblings, including complete232458. A new source-bound
-lead is required before resumed private iteration; canonical activation still requires the
+C candidates at initial assignment. Resumption2286 retains unfinished2317C8 and all
+six private-ready siblings, including complete232458. The worker and Claude choose
+further source reconstruction/private trials; canonical activation still requires the
 real upstream, table and complete-wave gates. Preserve F580/32458's row4248
 reads, A9C's two-part body and all original memberships. No overlapping source
 ownership, reduced acceptance wave or worker retirement. Refresh affected private
