@@ -22,10 +22,10 @@ tomorrow using the existing experiment records.
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
-**Joe's pending push instruction, October11:** after the next complete acceptance wave
-is accepted and committed (expected W7), the Director pushes main to origin
-https://github.com/rempred/OB64-Decomp.git and confirms the remote result. This supersedes
-earlier no-push direction for that post-acceptance push; no premature push is authorized.
+**Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
+audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
+and pushed to origin/main at https://github.com/rempred/OB64-Decomp.git. Independent
+`ls-remote` confirmed that exact hash. The requested push is fulfilled.
 
 **Joe's October11 correction:** never use scheduled tasks or heartbeat automations.
 The Director deleted `ob64-director-continuity`; existing thread watcher scripts,
@@ -43,8 +43,7 @@ duties to **PurpleSquirrel**, chat `01a1284c-9b2b-7561-8a81-36ca34387ef8`.
 The [Director cursor](Plans/cursors/director.md) records the recovered mission,
 mail/monitor routing and next action. SilentCrane and completed W6 writer SilentForest
 remain idle. **SandyPelican's complete W5 is accepted**, with all production/private
-ownership released2316 and its inbox/stop watchers retired. LavenderSpire is now the production
-writer assigned2319 to integrate its same complete W7; no replacement chat is created.
+ownership released2316 and its inbox/stop watchers retired. LavenderSpire completed W7 and released ALL2377; fresh SwiftGlen now owns DB10 and production.
 MossyMouse's accepted D9C addendum and its worker/watcher remain retired.
 
 **Squad W2 D9C addendum accepted, October 11:** main `43119554`, CURRENT `A913A384`.
@@ -86,76 +85,44 @@ MagentaSeal, SilentForest and the completed W5 reviewer remain retired/idle.
 Use a fresh worker/conversation for any next assigned wave and preserve Joe's
 top-level role; do not resume completed workers or create extra tasks without authorization.
 
-**Resolution W7 source-ready and integrating, October 11:** complete handoff2318
-preserves all original seven targets/15,404B, A9C's whole3,372-byte body and both
-float-data owners, F580's initializer/table,32458's table, row4248 remainder/tail
-and the separate accepted W6 D14C table. Every private source is PURE_C with zero
-instruction fields outside actual relocations; canonical acceptance is still pending.
-[Source-bound handoff](../build/matching/resolution-w7-261009/w7-complete-wave-handoff2317.json)
-and [drain receipt](../build/matching/resolution-w7-261009/w7-complete-wave-native-drain2317.json)
-bind refreshed CURRENT1E95BD03 inputs and actual EOF/empty native process state.
-Director2319 assigns **LavenderSpire in the same top-level chat** sole production
-source/header/config/build ownership to finish this existing wave, plus its tracked
-live cursor `docs/Plans/cursors/lavender.md`. This supersedes the private-root-only
-restriction for the bounded integration; no retired worker or new chat is used.
-Preserve every parked assignment and useful source. Use accepted mechanisms and
-actual relocation/binding evidence. Any new multi-owner/table coverage admission
-gets the applicable structural audit and final independent structural review;
-ordinary matching gets no extra source-review gate. Run one combined seven-target
-normal/full-ROM verifier, inside the audit if required, with no redundant build or
-unchanged repeat. Unsupported tooling needs explicit Sol/Claude agreement and
-Director approval. Existing inbox/stop routes remain active; observer2265 is exhausted.
+**Resolution W7 accepted and pushed, October11:** complete original7/15,404B passed
+all PURE_C, sole ownership, placement, actual relocation, normal/fresh and exact-ROM
+gates in audit2367. [Final independent structural review](../build/director-resume-20261010/w7-tooling-independent-review/final-proof/REVIEW.md)
+PASS2373 binds complete A9C/both float owners, full row4248 including padding/ASM,
+both new tables and separate W6 D14C. Director accepted2375; exact57-path commit
+`3b14cb65` includes the reviewed shared-auxiliary remedy, configs, sources and selected
+research. [Final handoff](../build/matching/resolution-w7-261009/integration/final-structural-handoff2355.json)
+DFC74623/currentB72EB182/retail571E8339 and [scoped commit](../build/matching/resolution-w7-261009/integration/commit2375.json)
+remain authoritative. Two EOF-only formatting findings were recorded2376 while
+preserving audited bytes. No unchanged verifier repeat. Lavender released ALL
+production/W7/DB10/3C00/6098/animation ownership2377; its inbox and stop watcher are
+stopped with history preserved. GoldKite's tooling and CoralJay's complete review are
+accepted/retired; their dedicated monitors are stopped. Do not resume these workers.
 
-**W7 tooling remedy approved2329:** canonical shared-row validation rejects
-row4248's genuine chunk34/35 contributors. [Blocker evidence](../build/matching/resolution-w7-261009/integration/cross-chunk-shared-auxiliary-blocker.json)
-preserves restored accepted configs, all seven inactive sources and complete contracts.
-A9C already passes the existing splitter. Explicit Sol/Claude agreements2327/2328
-and actual EOF/drain2328 support the [Director decision](../build/director-resume-20261010/w7-shared-auxiliary-tooling/director-decision.md).
-Astra helper `/root/w7_shared_auxiliary_scope` implements authenticated model-owned
-cross-chunk admission within one unique loader-dma slab, explicit full-path selectors
-and independent map/script order checks for every multi-member row, and adversarial
-fixtures including reversed object order with no interior. Seven core tooling/test/doc
-files plus [four required-model test-fixture migrations](../build/director-resume-20261010/w7-shared-auxiliary-tooling/director-test-call-propagation.md)
-are implemented; all nine final focused commands passed at actual EOF. The same helper
-closed the demonstrated `completeCurrent` script/map reuse gap under the
-[bounded caller/test addendum](../build/director-resume-20261010/w7-shared-auxiliary-tooling/director-current-reuse-propagation.md).
-No source/config activation, schema extension, row exception or canonical audit is
-delegated. Lavender retains production ownership and read-only preparation;
-all native/CPP/build/publication work stays drained through the tooling test window.
-CoralJay (`/root/w7_tooling_independent_review`) returned one P2 in2335: legal spaced
-residual wildcards escape the selector census. Correction2341 passed101 native/selector
-controls and all six CURRENT tests with actual EOF. Re-review2346 found a remaining legal
-bare-object selector bypass; correction2351 now uses finite emitted-script forms and passed
-119 native/selector controls, six CURRENT tests and fingerprints at actual EOF. Independent
-review2352 PASSED both findings with bound final inputs and released its test window.
-Director2355 released Lavender to integrate all7 and run ONE changed-input structural
-audit containing normal/fresh/full-ROM gates. Actual resumed turn confirmed through app
-fallback delivery while the mail watcher retained2355 for retry. Dedicated internal
-stop monitors and verified Director inbox delivery cover both review and decision handoffs.
-**Audit2367 PASS:** single audit ended19:55:05Z at actual exit0; zero canonical/native
-processes and stable inputs confirmed19:56:18. CURRENT B72EB182 retains retail571E8339;
-normal/fresh whole7 gates passed. CoralJay's independent final structural proof review
-has started, with no native/build/review-only verifier. Acceptance/57-path commit awaits
-its decision. Director2368 lifted NINE/Gold native drains immediately; NINE actually resumed.
+**Two active matching workers, October11:** fresh top-level Sol6.1/xhigh **SwiftGlen**
+[DB10 chat](codex://threads/01a12c9b-be01-74c2-a136-da8c91aab898) owns complete5548-byte
+DB10 (original preamble/DB18 included) and sole production source/header/config/build
+role, using `build/matching/db10-fresh-261011/` for initial private reconstruction.
+Startup2381 and actual running turn confirmed; own inbox watcher53108, Director
+`db10-to-purple`33668 and actual stop-route delivery test cover the assignment.
+Original animdb10 evidence remains read-only; historical no-discriminator holds are
+superseded. The worker chooses source experiments and consults Claude/GoldOx.
 
-**Joe's two-worker direction, October11:** maintain two disjoint complete matching waves
-and replace each accepted/released worker promptly with fresh Sol6.1/xhigh. Director2340
-requested Lavender's narrow release of the complete scheduler NINE; verified2342 released
-all9/tables/tails/group gates with zero processes. Fresh top-level Sol6.1/xhigh
-[Scheduler NINE worker](codex://threads/01a12c52-1ef0-7b50-9dab-1912468a1591) has started
-in build/matching/sched9-fresh-261011/ while Lavender retains complete W7
-production ownership. SapphireLeopard confirmed startup2344; its stop-monitor delivery and
-own inbox self-test2345 passed. C1C source/coverage preparation is active. This supersedes
-census2336's scheduling recommendation to wait for W7 acceptance. The census's dependency
-finding remains: NINE's former Scenario prerequisite is closed. Preserve all nine members,
-both tables/native tails and structural group gates; use a new private root with original
-evidence read-only. Current tooling edits hold native/CPP checks only; unaffected preparation
-may start as soon as ownership transfers. DB10/3C00/6098 remain candidate-ready alternatives,
-not accepted PURE_C. The Director owns next-wave investigation whenever a slot opens.
-Next W7 slot: after whole7 acceptance, scoped commit and Lavender ownership release,
-start fresh top-level Sol6.1/xhigh on complete5548-byte DB10 including its original
-preamble/DB18 interior. Preserve old animdb10 controls/cursor read-only; its historical
-no-discriminator hold is superseded. No external dependency remains for candidate work.
+**SapphireLeopard** [Scheduler NINE](codex://threads/01a12c52-1ef0-7b50-9dab-1912468a1591)
+continues the full9/9632B assignment, both tables/tails/group gates, in
+`build/matching/sched9-fresh-261011/`. Ownership2342, native release2368 and approved
+same-worker root correction2372 stand; actual intake/native startup2374 passed.
+Both workers run disjoint private checks concurrently; there is no current drain.
+Only real shared-input changes/canonical verification require scoped temporary drains.
+NINE reports directly to the Director; no routine messages to the production writer.
+
+**Next slot owned by Director:** preserve complete3C00/6740B,6098/4148B and remaining
+original animation scope from [Lavender's recovery cursor](Plans/cursors/lavender.md)
+and the [program census](../build/director-resume-20261010/active-program-census/report.md).
+After either worker's own complete wave is accepted and ownership released, immediately
+choose the next dependency-ready full wave and start a fresh Sol6.1/xhigh top-level
+worker. Matching difficulty is not an external blocker; no Director hypothesis is
+required. Preserve all original membership/producer dependencies and final gates.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
