@@ -35,9 +35,10 @@ apply [When matching ideas run out](WORKFLOW.md#when-matching-ideas-run-out).
 duties to **PurpleSquirrel**, chat `01a1284c-9b2b-7561-8a81-36ca34387ef8`.
 The [Director cursor](Plans/cursors/director.md) records the recovered mission,
 mail/monitor routing and next action. SilentCrane and completed W6 writer SilentForest
-remain idle. Top-level **SandyPelican** owns sole production writing and complete
-W5; LavenderSpire retains complete W7. MossyMouse's complete D9C addendum is accepted
-and its ownership is released; that worker and its inbox watcher are retired.
+remain idle. **SandyPelican's complete W5 is accepted**, with all production/private
+ownership released2316 and its inbox/stop watchers retired. No replacement production
+writer is assigned yet; LavenderSpire retains complete W7 and is active after release2315.
+MossyMouse's accepted D9C addendum and its worker/watcher remain retired.
 
 **Squad W2 D9C addendum accepted, October 11:** main `43119554`, CURRENT `A913A384`.
 The complete780-byte PURE_C body and six-entry24-byte table pass, with the original
@@ -61,34 +62,26 @@ scope and evidence. The new mode admits text/functions/tail, not tables or data.
 The [paired-owner](audit/2026-10-09-paired-owner-projection.md) and
 [local-body](audit/2026-10-07-reviewed-local-body.md) contracts remain accepted.
 
-**Movement/routes W5 active, October 11:** Joe explicitly requires a top-level
-Sol6.1/xhigh worker. **SandyPelican**, [chat01a12b30](codex://threads/01a12b30-c3a8-7391-8df9-3151c4be5103),
-is the sole production source/header/config/build/cursor writer, ownership2291/routing2292.
-Internal MagentaSeal `/root/movement_w5` released ALL ownership and confirmed actual
-EOF in its [shutdown handoff](../build/matching/movement-w5-fresh-261011/shutdown-handoff-20261011.md).
-That internal worker and its inbox watcher43972 are permanently retired; never resume them.
-This explicit human-directed transfer overrides normal completed-wave replacement timing;
-it does not complete or reduce W5. The fresh identity retains its own private token.
-SilentForest's own complete W6 passed acceptance and commit `5dc182a1`; mail2251
-released all ownership with every native/CPP/status command at EOF. Its inbox watcher
-is stopped; the existing production stop-monitor script now watches SandyPelican,
-PID50480, with the complete old W6 configuration/state preserved in history.
-SandyPelican inbox watcher45928 routes directly to the new chat; no scheduled task.
-Candidate root: `build/matching/movement-w5-fresh-261011/`; single live cursor:
-`docs/Plans/cursors/sol.md`. W5 retains its complete20-member scope,
-[full roster](../build/matching/movement-w5-20261007/membership.json) and
-[recoverable sources](../build/matching/movement-w5-fresh-261009/cursor.md).
-BC64 resumes under Joe's October11 correction: the improved best and counterexamples
-are preserved in the [source blocker](../build/matching/movement-w5-fresh-261011/12bc64-source-blocker-2271.md),
-with closed routes retained and no established repository/tooling defect. All commands
-were at EOF before transfer. SandyPelican retains W5 and production ownership;
-the new top-level worker resumes reconstruction and consults Claude/GoldOx directly.
-The handoff preserves the answered latest consultation2287/2288 and its bounded evidence.
-Keep the seven instruction-ready candidates and accepted shared pursuit producer;
-no partial-wave acceptance or worker replacement. W7 resumes independently under
-stable shared inputs; D9C is accepted above.
+**Movement/routes W5 accepted, October 11:** complete original20/23,560 owner bytes
+are committed on main at `b91793be5b03611c9709345c4d73ddc2fcdf10de`. The single
+changed-input audit reached actual EOF/exit0 PASS, with all20 normal/fresh PURE_C,
+ownership, placement, actual-relocation, target-byte and exact-ROM gates passing.
+[Final evidence](../build/matching/movement-w5-fresh-261011/integration/final-summary.json)
+binds CURRENT `1E95BD03`, baseline `D6553DED` and retail ROM `571E8339`;
+[independent structural review](../build/director-resume-20261010/w5-final-structural-review/review.md)
+passes with no remaining gate. Both whole pairs, all five131828 bodies/three tables,
+authentic tails,80 table addends, original ASM gaps/fallbacks and protected sources remain intact.
+Top-level SandyPelican released ALL W5/production/private-root ownership in2316;
+all jobs reached EOF. Inbox45928 and production stop monitor50480 are stopped,
+with history preserved. No next wave is assigned to that completed chat. Its
+[committed cursor](Plans/cursors/sol.md) retains roster, proof and source recovery.
+MagentaSeal, SilentForest and the completed W5 reviewer remain retired/idle.
+Use a fresh worker/conversation for any next assigned wave and preserve Joe's
+top-level role; do not resume completed workers or create extra tasks without authorization.
 
-**Resolution W7 resumed, October 11:** LavenderSpire retains the complete
+**Resolution W7 resumed, October 11:** release2315 ends W5's native-check drain
+after actual audit EOF and stable canonical inputs. LavenderSpire is active,
+refreshing affected inputs and continuing the same complete assignment. It retains the complete
 original seven-member assignment and every coupled producer/table. Director2286
 supersedes hold2285; the [source blocker2284](../build/matching/resolution-w7-261009/director-w7-c8-allocation-blocker-20261011.md)
 and GoldOx2283 remain bounded evidence. C8 bestED43D383 has the retail
