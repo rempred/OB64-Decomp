@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A1ECEF80A0C32362E46D5C82B21460BDD70234DB622D7FEFB961D280A7712129",
+  "observationId": "507BB7A01E310A54284EE7902B66803BDCD5F6CC5778EEAEFEECD4EA09193202",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Protected718B/F75E best68 under accepted W8 CURRENT7ED689CD. Current source already has per-mode store tails but still shares mode4/mode3 coords6 emission. Earlier CCAB0BA4 expanded five stores plus these two calls together in a different nonexact context; this selectively transfers only the remaining two real call entries.",
+    "effects": [
+      "real-call-tail-organization",
+      "register-allocation",
+      "target-diagnostic-zero",
+      "full-owner-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "10BF7EAE13B894FF0640F4608C0AACD0AEFE373009AF69C49E818FB00BE02289",
+      "sourceSha256": "127512D0766EBF9112C63E0DE6AAC9AA07D479D055FD13A83F5BF1116A61109E"
+    },
+    "label": "two-real-default-emission-arms-resolve-all68-late-register-differences",
+    "observedEffect": "A1ECEF80/source127512D0 is PURE_C6844/frame616/177 actual text relocations/131 ordered native calls. NativeE300057E resolves every original68 residual word, giving zero masked differences across all1711 original words, with actual relocation records and64-byte/15-relocation table metadata exactly equal best. Reviewed observer focused-KBvrgE passes pinned/off/on parity and agrees with workbench output:122 allocations versus best121,4inherit/8equiv/0retry. Source has19 D334 calls versus18 before (excluding prototype), while final native retains eight D334 sites. No semantic ordinal alignment, specific removed-UID attribution or retail intermediate-history claim is made.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-default-emission-copies-preparation.json",
+        "sha256": "1BA34D9E18F6272B4F1306B45207BBFDE72381B3DC9F68214B08C032F1560205"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-default-emission-copies-measurement.json",
+        "sha256": "BFB3A001B4DC947BD699ED61B6C14D1B22D6422B752CA2B07ED198762E99197F"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-default-emission-copies-watch.json",
+        "sha256": "47FCA84042E633BE72CF091A855DE993AFDA19982ED1BD10EC3EDBD2C5D518FC"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-default-emission-copies-observer-comparison.json",
+        "sha256": "F98F7480B3F5E7A046B6BBE69851DA7EBB976802645C5CA41B3A33A2776A17BC"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/default-emission-copies.cjs",
+        "sha256": "6A07C87709EEC54066626C5BAA86CE735C638E4988E823E04899B88AECF879EB"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-ccab0ba4f6.md",
+        "sha256": "B602A6CD512768BAF5039854E873496E51E266E569AAB7FFD02023166BDB1B9A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object zero is provisional. Complete17 retains15 protected accepted siblings plus ready B1F4 and this D14C. Refresh final source/labels/relocations, coordinate native drain, apply the separately reviewed64-byte auxiliary ownership change coherently with EF50, run its structural audit/independent evidence review and focused canonical proofs, then one verifier for all17 PURE_C/full-ROM gates. Add a concise source comment explaining why real default arms remain separate; reauthenticate that final canonical source.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace each goto to the shared code6/coords-value D334 with that identical call inside its existing mode4/mode3 default else arm. Retain each enclosing original field94 store/exit and remove the unreferenced shared call/store label. Every executed path retains one identical emission followed by one identical store in original order. No added guard, read, runtime call, argument, fake reference or boundary change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41341,
+      "sha256": "10BF7EAE13B894FF0640F4608C0AACD0AEFE373009AF69C49E818FB00BE02289"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "127512D0766EBF9112C63E0DE6AAC9AA07D479D055FD13A83F5BF1116A61109E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-a1ecef80a0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
