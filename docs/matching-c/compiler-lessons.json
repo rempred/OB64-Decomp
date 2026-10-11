@@ -278,12 +278,10 @@
     {
       "id": "scenario-single-set-and-shared-loads",
       "symptoms": ["register-allocation", "scheduling-or-block-order"],
-      "applicability": "For repeated constructor sites with verified body coverage, compare per-site single-set locals against the genuine loaded values shared across sites. This source-context experiment is not a universal allocator recipe.",
+      "applicability": "Historical source-context lead only: the observation's canonical-source reference has drifted, so it is excluded from authenticated curated observations. Its archived source pair remains recoverable. For repeated constructor sites with verified coverage, compare per-site single-set locals against genuine loaded values shared across sites; this is not a universal allocator recipe.",
       "note": "docs/dossiers/func_0023A5EC-9683d35159.md#source-context",
       "references": [],
-      "observations": [
-        {"symbol": "func_0023A5EC", "path": "docs/dossiers/func_0023A5EC-9683d35159.observation.json"}
-      ]
+      "observations": []
     },
     {
       "id": "scenario-word-result-and-byte-index",
