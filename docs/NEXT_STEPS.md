@@ -74,9 +74,9 @@ consumers. Final source/config identities supersede the early draft manifest.
 The obsolete fixture assertion and atomic-authentication test accounting are
 separate tooling repairs with Sol/Gold agreement, Director approval and independent
 review; a stale scenario lesson is explicitly historical-only. Writer release2245
-runs the corrected source-read test first, then the required full routine suite.
-One combined structural audit/normal complete-wave verifier and final structural
-review remain required; exact linked proofs alone do not accept W6. Lavender and
+passed the corrected source-read test and all39 required routine suites, then
+started the one combined structural audit/normal complete-wave verifier. Its result
+and final structural review remain required; linked proofs alone do not accept W6. Lavender and
 MossyMouse remain under native holds until the Director supplies accepted refreshed
 inputs and releases them.
 
