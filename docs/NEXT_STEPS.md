@@ -117,12 +117,22 @@ closed the demonstrated `completeCurrent` script/map reuse gap under the
 No source/config activation, schema extension, row exception or canonical audit is
 delegated. Lavender retains production ownership and read-only preparation;
 all native/CPP/build/publication work stays drained through the tooling test window.
-CoralJay (`/root/w7_tooling_independent_review`) now owns independent code/adversarial
-review and isolated test execution; the implementer awaits review. Dedicated internal
+CoralJay (`/root/w7_tooling_independent_review`) returned one P2 in2335: legal spaced
+residual wildcards escape the selector census. The same implementer now owns the bounded
+generic correction and isolated tests; CoralJay re-reviews after handoff. Dedicated internal
 stop monitors and verified Director inbox delivery cover both review and decision handoffs.
 After independent implementation/test review, the Director releases full W7 integration
 and one changed-input audit containing whole7 normal/fresh/full-ROM verification,
 followed by final independent proof review. Tooling fixtures do not accept W7.
+
+**Remaining staffing, census2336:** [current program census](../build/director-resume-20261010/active-program-census/report.md)
+finds W7 the sole active matching wave after the recorded W5/W6/D9C/W8, Squad,
+Scenario and Shop acceptances. Lavender retains the parked scopes. After whole W7
+acceptance and ownership release, scheduler NINE is the recommended next full assignment;
+its former Scenario checksum prerequisite is closed. Preserve all nine members/tables
+and original gates. DB10/3C00/6098 are also complete candidate-ready alternatives with
+matching difficulties, not external holds or accepted PURE_C. This does not prohibit
+future disjoint parallel candidate assignments under the existing ownership rules.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
