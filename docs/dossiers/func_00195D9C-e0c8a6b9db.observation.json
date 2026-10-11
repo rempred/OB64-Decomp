@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E0C8A6B9DB3F64FB62BB7BDBBE7B5D7388BBA177FED0536AC467764DA1A578D9",
+  "observationId": "2E273EA73871796D85766A1574264B7FC1FA9D20DF5A574995DA3889163D79FA",
+  "symbol": "func_00195D9C",
+  "authored": {
+    "context": "D9C best186B27EC/3360192A is PURE_C780/frame48 with all nonrelocated words outside18 frame fields and all six table addends recovered. Earlier D93 count-guard spill puts count-zero in the capacity delay slot, conflicting with retail. The complete780-byte body and24-byte coupled table stay in scope.",
+    "effects": [
+      "control-flow",
+      "stack-layout-or-offset-family",
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "E26F74C86C01205BE784B804717C168CC3812B3F3A7EAC115895FF11FBCD1EE4",
+      "sourceSha256": "CBE5DF6473B5FCCCD2A5BB38A77EBFB3B24208F7836DA4B0F7A37CCE92FF24A8"
+    },
+    "label": "Separate real presence-path definitions allow phase guard to create the missing compiler slot",
+    "observedEffect": "CandidateE0C8A6B9 emits PURE_C784/frame56, with counter-zero in the preset bne delay70 and phase-zero in the capacity beq delay84. Probe979964BF proves FLOW78 phase84=0;81 p101=lt(phase84,capacity82);82 branch. COMBINE parks USE698(p101) at the joined label and keeps phase-zero as81. GREG homes USE698 at sp+20, yielding vars8/regs8/args16. The multiple initial count definitions prevent CSE from making the earlier count-zero the guard's class head. This is a concrete new mechanism beyond the single-count-definition controls. Follow-up577426BE uses normalized presets and an explicit cursor, giving776/frame56; real successive scalar unions73891A4C preserve primary-to-cursor and secondary-to-tertiary lifetimes. Explicit boolean OR16F626E5 restores780/frame56 and the six retail table addends, but still differs in allocation/scheduling.",
+    "parentCandidateId": "186B27ECB4A17EF613D06B1860BC00C6EEF67097B36410AF721E3B90FA30B32D",
+    "references": [
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-split-presence-initialization.json",
+        "sha256": "5748BBD50C5E9A5D20FACAA4F16A0A4A81465A4A0D62120100E91E6963363D6C"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/probe-split-presence-initialization.json",
+        "sha256": "902684CC62B0A6B740C9E90422CB9AD9C8B3079BF8D2FF9EDB2E931D703644D4"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-split-presence-normalized-cursor.json",
+        "sha256": "151631B7F5C76E0DE879E6D6C440BE0D4A452730204D9D208533BAEF31BCB274"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-split-presence-union-or.json",
+        "sha256": "EA71A909E35A12AAB0CD21BA33D75966309F5A004427609F5776A58808F0699B"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-named-entry-single-count.json",
+        "sha256": "12A71D95F6875190C96CF070D0CFDB1E0A9AD8D6DE8C371FFF8CDC726B9C5A4D"
+      }
+    ],
+    "relatedCandidateIds": [
+      "577426BEB59DB3A2333A75003A83A32DA1129401618922CF23B1926952AF5FBC",
+      "73891A4C1CD499707929A643FCF3F23A248E8C1DF0476C76548F83852B78E2B2",
+      "16F626E54FFB479D355CEDBC0EDA96E732A7924AEC7048EB6049AD85CF1DDB9F",
+      "D93F016A8A1B8AB29EFEA7BB018676C37D6EF7A1BF653B732A010D33DDA35E22"
+    ],
+    "remainingFailure": "The original split candidate loses cached preset masks and initializes indexed cursor at buffer+count; its table addends are retail+4. Later780/frame56 OR intermediate16F626E5 has95 raw differences, including24 unresolved text relocations and ordinary register/setup differences. Original indexed output counters67E84490 keep780/frame56 with83 raw differences. ControlE72672A9 keeps the same named joined entry but restores one count-zero definition before the presence test; it reverts to784/frame48 with the original extra slt, so the label alone is insufficient. No new source is selected as best. Neither worse scores nor the recovered slot establish or disprove full matching readiness; all diagnostics remain symbolic-object and no canonical activation or full-ROM acceptance is claimed.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initialize the actual construction count separately on the preset0-or-preset1 path and the preset2 path, joining at construction_entry. Initialize actual phase to0 in the join and use phase<capacity for the existing empty-capacity guard before the unchanged indexed phase loop. Since capacity consumes a u16 and phase is initially0, the guard preserves the observed machine behavior. No padding, artificial later reader or dummy operation is added."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 4352,
+      "sha256": "E26F74C86C01205BE784B804717C168CC3812B3F3A7EAC115895FF11FBCD1EE4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CBE5DF6473B5FCCCD2A5BB38A77EBFB3B24208F7836DA4B0F7A37CCE92FF24A8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_00195D9C-e0c8a6b9db.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

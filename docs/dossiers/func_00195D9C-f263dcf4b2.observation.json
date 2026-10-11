@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F263DCF4B272074622D7218B3A044B0A75496BBC847DD8017FE41D196AAD1E54",
+  "observationId": "770E922DEEDEE841EDF25B512B70C68151779DFE553E8C9B2D9ED375F22E7A3B",
+  "symbol": "func_00195D9C",
+  "authored": {
+    "context": "Complete D9C780-byte body and six-entry24-byte table. Earlier186B27EC/3360192A has frame48 and18 ordinary frame differences; split join E0C8A6B9 creates the real vars8 slot but loses register reuse. No canonical inputs or structural contracts changed.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "stack-layout-or-offset-family",
+      "loop-optimization"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F0F714F0A7FCE2F028F8F162DA2E597FB1BC82ED48B16C6B587910F891753DD4",
+      "sourceSha256": "AE635E586428C44EA52AAB673FD8CAA3E9ED0EA55EC6EFAB742756785F272155"
+    },
+    "label": "Real stepwise construction counts and known-zero write position recover all ordinary words except one selector copy",
+    "observedEffect": "7AB52D47 stepwise counts recover count=a1 and phase=a2. 8E6A5630 captures preset values and reduces differences further. F263DCF4 write-position source emits PURE_C780/frame56 with all six retail switch-table addends104,114,124,13C,14C,16C. Exactly25 raw words differ:24 actual text relocation slots and one ordinary instruction atA4. Retail is move v1,t1; the candidate is andi v1,t1,0xFF. All other ordinary body words, frame fields and table addends agree. FLOW priorities use weighted references before COMBINE merges the meaningful adjacent count updates; this is supported by pinned global.c and the67E84490 probe.",
+    "parentCandidateId": "186B27ECB4A17EF613D06B1860BC00C6EEF67097B36410AF721E3B90FA30B32D",
+    "references": [
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-split-presence-write-position.json",
+        "sha256": "56C0B66E86904E80243AF0D37BFCE477C300A351C141F1705E2E3C69A6814BC9"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-split-presence-stepwise-count.json",
+        "sha256": "B0E33DA56A6A21CA4FE0AB946079EF542F81737A5C346740290BB8E959FD50BD"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-split-presence-captured-bytes.json",
+        "sha256": "453F87DA0DE5E534F28A9F440A2E4E8C70404D773E44137F879BD6DE1A731D9C"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/probe-split-union-count-allocation.json",
+        "sha256": "68EBF8D26A6EB4327BCE781D9B14A1B8E08A16EB479FC7BAB45FB67623F045DB"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-split-presence-direct-secondary.json",
+        "sha256": "AD6A963E6E7B3ECDD1300BA00BBAFBA5BA93CF688FFEF46D41D67DCE1BF9219A"
+      }
+    ],
+    "relatedCandidateIds": [
+      "7AB52D47415989960676107B1D1595B78FC03620E6118ABB7F952C78A904407E",
+      "8E6A56307CC293D28CB414FDFFF233C81541FCC84D12DE53D57422AF79EE9BE0",
+      "4EBC86DDDE043980EB18C2F470DC0C1BF56733D8AE49A51B40490F08B36545DE",
+      "D93F016A8A1B8AB29EFEA7BB018676C37D6EF7A1BF653B732A010D33DDA35E22"
+    ],
+    "remainingFailure": "The redundant secondary selector mask atA4 remains. Removing that cast in4EBC86DD eliminates the copy entirely, gives776 bytes/table-4 and permutes the count/phase allocation; it does not solve the transfer. Older best3360192A/186B27EC and frame56D93F016A remain recoverable. This result is symbolic-object evidence for an inactive ASM owner, without linked expected-relocation admission, canonical placement, ownership or full-ROM proof. No matching acceptance or structural activation is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain the split presence-path count definitions and joined phase-zero capacity guard. Capture primary and secondary byte presets into scalar values during the real presence test. Increment logical construction count alongside the actual writes, then skip the remaining padding count. Use a separate known-zero integer position for buffer writes, allowing LOOP to derive the cursor. Restore the original indexed counted output tail."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4837,
+      "sha256": "F0F714F0A7FCE2F028F8F162DA2E597FB1BC82ED48B16C6B587910F891753DD4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "AE635E586428C44EA52AAB673FD8CAA3E9ED0EA55EC6EFAB742756785F272155"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_00195D9C-f263dcf4b2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

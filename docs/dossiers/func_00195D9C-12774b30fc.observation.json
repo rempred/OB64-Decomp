@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "12774B30FCE5D7197AB7B89AE744FEEE17C87428A346D37DEE365BB7741BA88E",
+  "observationId": "79D7463EDA98933A344FB533C6AFCDF05C36C0DD3743D3D7A2BDC2969E6AF3B4",
+  "symbol": "func_00195D9C",
+  "authored": {
+    "context": "D9C F263DCF4 is PURE_C780/frame56 with the six retail table addends and only one ordinary word remaining: A4 andi v1,t1,FF rather than move v1,t1. Its secondary scalar is already normalized from the byte argument; a standalone u8 conversion survives COMBINE.",
+    "effects": [
+      "instruction-selection",
+      "register-allocation",
+      "byte-normalization",
+      "compiler-combine"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "753534C7714E3DD6458D79C503F33F8B1087619A9548363F982748A444F83044",
+      "sourceSha256": "C685A75BA872E9B27A3D4CD64D7CE96E86329249A01E0577E848069DF921A917"
+    },
+    "label": "Byte extraction as a signed shift-pair result recovers the final selector MOVE",
+    "observedEffect": "Unsigned extractionA88E5346 recovers the A4 move but changes190 slti to sltiu. Signed extraction8C37B081 and cleaned candidate12774B30 emit identical native FC33287C text: PURE_C780/frame56, vars8/regs8/args16, exact six table addends104/114/124/13C/14C/16C. Supported watch reports rawObjectRelocationMaskedExact=true. The only24 raw differences are the24 actual text relocation sites; all171 other words agree. Probe4D3FEBF5 FLOW727/728 contains shift-left24 followed by logical shift-right24; COMBINE deletes727 and rewrites728 to SET149=reg89, preserving REG_DEAD89. This is the exact missing selector copy. Table.L18 is24 bytes/alignment8 with six real R_MIPS_32 relocations.",
+    "parentCandidateId": "F263DCF4B272074622D7218B3A044B0A75496BBC847DD8017FE41D196AAD1E54",
+    "references": [
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-candidate.json",
+        "sha256": "ED920140C03A46E10A8208C6148C662E0ACC4ECFBE32CD5CF2D8C7A40E6B8BF2"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/probe-candidate.json",
+        "sha256": "46BE7BFD5CBE93EB126D83E2723647FF60F73ED2B3E08B5C8857C29A9F8D6E20"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-split-presence-shift-secondary.json",
+        "sha256": "BEF76E0368EEAADE19869AB4F051FD78F309305D75A068F36CFF4EAC9E2A720D"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/watch-split-presence-signed-shift-secondary.json",
+        "sha256": "1A8172F729338FFA17A7EF6FA99668C0CC6EC16A1AD5B8FAC5334182BF34F4B7"
+      },
+      {
+        "path": "build/matching/squad-w2-d9c-261010/candidate-elf-census.txt",
+        "sha256": "EDA37C3829D7D7FEC5AC83B4CA3A39C6BF4CA2DD33D2071590FE5229C7ED5B36"
+      }
+    ],
+    "relatedCandidateIds": [
+      "A88E5346833C778A84B4F99737A40142DC2007B61EFBF8F185975FB5E212F790",
+      "8C37B081E3B2233198A183A0C7DA723070E50B0243823EA784C1CBA93CF4C5D1",
+      "186B27ECB4A17EF613D06B1860BC00C6EEF67097B36410AF721E3B90FA30B32D"
+    ],
+    "remainingFailure": "No ordinary instruction difference remains in the symbolic object, but its24 text relocations and six table pointers are unresolved object representations. The active owner is ASM, so the supported linked diagnostic and expected relocation contract are unavailable. This is complete coupled private candidate readiness, not canonical matching or structural acceptance. Final auxiliary/text admission still needs Director approval, applicable audit and independent structural review; the production writer then proves ownership, placement, body/table bytes and complete-ROM identity. Original ASM fallback and protected callers/prefix/tail remain intact.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express the actual secondary byte conversion as ((u32)secondaryValue<<24)>>24. Cast its result to s32 for the switch's signed comparison. The shifts implement byte extraction with defined unsigned arithmetic; the final cast is representable0..255. Clean the complete source to use the approved scenario_source_record.h and field_0D, remove unused declarations and explain the required compiler workarounds."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 5356,
+      "sha256": "753534C7714E3DD6458D79C503F33F8B1087619A9548363F982748A444F83044"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C685A75BA872E9B27A3D4CD64D7CE96E86329249A01E0577E848069DF921A917"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_00195D9C-12774b30fc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
