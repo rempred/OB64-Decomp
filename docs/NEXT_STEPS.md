@@ -125,8 +125,9 @@ all native/CPP/build/publication work stays drained through the tooling test win
 CoralJay (`/root/w7_tooling_independent_review`) returned one P2 in2335: legal spaced
 residual wildcards escape the selector census. Correction2341 passed101 native/selector
 controls and all six CURRENT tests with actual EOF. Re-review2346 found a remaining legal
-bare-object selector bypass; GoldKite's next bounded correction is active and owns isolated
-tests, then CoralJay re-reviews. Dedicated internal
+bare-object selector bypass; correction2351 now uses finite emitted-script forms and passed
+119 native/selector controls, six CURRENT tests and fingerprints at actual EOF. CoralJay's
+next independent re-review owns the isolated test window. Dedicated internal
 stop monitors and verified Director inbox delivery cover both review and decision handoffs.
 After independent implementation/test review, the Director releases full W7 integration
 and one changed-input audit containing whole7 normal/fresh/full-ROM verification,
