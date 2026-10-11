@@ -99,18 +99,22 @@ normal/full-ROM verifier, inside the audit if required, with no redundant build 
 unchanged repeat. Unsupported tooling needs explicit Sol/Claude agreement and
 Director approval. Existing inbox/stop routes remain active; observer2265 is exhausted.
 
-**W7 integration blocker2322:** canonical shared auxiliary validation rejects
-row4248 because its C contributors span archive chunks34/35, despite a common
-accepted `resource-loader-0022a280` placement. The [bounded evidence](../build/matching/resolution-w7-261009/integration/cross-chunk-shared-auxiliary-blocker.json)
-binds the rejection and restored accepted config hashes. CURRENT1E95BD03 stays
-stable; all seven inactive canonical source copies and complete proposed contracts
-remain preserved. A9C already passes the existing splitter; no new schema is
-needed for its two physical parts. Lavender retains production ownership and
-continues unaffected evidence preparation. Director2324 assigned read-only Astra
-helper `/root/w7_shared_auxiliary_scope` to investigate accepted alternatives or
-a generic remedy and adversarial checks. Explicit Sol/Claude agreement, Director
-approval/delegation and applicable audit/independent review precede tooling edits.
-Gold2325 confirms no current representation. The [merged proposal](../build/director-resume-20261010/w7-shared-auxiliary-tooling/PROPOSAL.md) adds explicit fragment ordering/map proof for all multi-member rows and authenticated model ownership within one loader-dma slab. Sol/Gold agreement and native-drain confirmation for merged request2326 remain pending; no implementation is approved yet. No chunk reassignment, repartition, special-case bypass or partial-wave acceptance.
+**W7 tooling remedy approved2329:** canonical shared-row validation rejects
+row4248's genuine chunk34/35 contributors. [Blocker evidence](../build/matching/resolution-w7-261009/integration/cross-chunk-shared-auxiliary-blocker.json)
+preserves restored accepted configs, all seven inactive sources and complete contracts.
+A9C already passes the existing splitter. Explicit Sol/Claude agreements2327/2328
+and actual EOF/drain2328 support the [Director decision](../build/director-resume-20261010/w7-shared-auxiliary-tooling/director-decision.md).
+Astra helper `/root/w7_shared_auxiliary_scope` implements authenticated model-owned
+cross-chunk admission within one unique loader-dma slab, explicit full-path selectors
+and independent map/script order checks for every multi-member row, and adversarial
+fixtures including reversed object order with no interior. Seven core tooling/test/doc
+files plus [four required-model test-call edits](../build/director-resume-20261010/w7-shared-auxiliary-tooling/director-test-call-propagation.md)
+are assigned; no source/config activation, schema extension, row exception or canonical
+audit is delegated. Lavender retains production ownership and read-only preparation;
+all native/CPP/build/publication work stays drained through the tooling test window.
+After independent implementation/test review, the Director releases full W7 integration
+and one changed-input audit containing whole7 normal/fresh/full-ROM verification,
+followed by final independent proof review. Tooling fixtures do not accept W7.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
