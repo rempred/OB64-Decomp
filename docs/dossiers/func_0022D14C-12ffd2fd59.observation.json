@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "12FFD2FD593546838D38E808E87F33ADFBCB8CA5DCFCF79DD005C5DA6B15AD67",
+  "observationId": "471E96A1893C825BA8C6F8FA8F307B593DECC065B40D6E7AC8690F6C11F6A28B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Director2205/2206 resumes complete17W6 in the same private root under worker-owned ordinary source iteration. Protected718B/F75E remains current best; accepted W8 inputs unchanged. Transfer is taken from real mode8/10 phases in the same function.",
+    "effects": [
+      "shared-real-scalar-phases",
+      "register-disposition",
+      "reload-observation",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "32985B1C4EE15B300A95F4C5EAF6BB47F748A0D85FCF4B38CF6FA34A7884E7A2",
+      "sourceSha256": "7A5365D04A11F4E765387A1952CD8CE11CF925ECB3EF278714133C9599356507"
+    },
+    "label": "four-real-alternate-extra-phases-change-earlier-setup-but-retain-all-scratch-choices",
+    "observedEffect": "12FFD2FD/source7A5365D0 is PURE_C6844/frame616/177 textR/131 calls, native7025207D and120 masked-word differences: every original68 residual word is unchanged, plus52 earlier differences beginning1170. Actual text relocation positions differ; table64+15R and ordered external call-name census equal best. Real literal/context register and scheduling forms change. Reviewed observer focused-5FxfDu passes pinned/off/on native parity and agrees with workbench text;121 allocations retain all ordinal hard-register/cursor decisions,4inherit/8equiv/0retry. Descriptors differ from ordinal0 because of user renumbering, so this is not complete semantic alpha alignment.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-shared-alternate-extra-preparation.json",
+        "sha256": "962F2BE2B2EEADBB611B1CEAF4F4B045EDBF10AE6AE338AFA89DCC809EF38AFB"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-shared-alternate-extra-measurement.json",
+        "sha256": "2EBD7983FFDE2437B167050D0F95F94B5DCE703CA616F1662402B1683FD97568"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-shared-alternate-extra-observer-comparison.json",
+        "sha256": "007E0841B7CC6DA878824F405293664BAF0E294DBF9610CA150F0CFDA26C89A9"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-shared-alternate-extra-observer.json",
+        "sha256": "AB052454777960B26E34E1CEE69BA94EA6B6A798A0352835C2D237248E60D5C6"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/shared-alternate-extra.cjs",
+        "sha256": "41F47701A5DC5016E57ECAFEF9967E1A047E8755FB03B0B677686C381AF4F166"
+      }
+    ],
+    "relatedCandidateIds": [
+      "FADF57559790517461CE4037469BA989D81F96AA43DA9C402A729252FA3A7E1D"
+    ],
+    "remainingFailure": "Unselected earlier-setup regression. This exact four-definition shared Extra does not alter the late metadata/output choices; it does not reject every producer organization or identify retail C/history. The older5DE6 control shared only the two Buffer locals, retaining distinct Extra variables. Best718B and complete17/table gates remain protected.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use one function-local alternateExtra for the four mutually exclusive mode8/10/4/3 alternate paths. Each path first uses it to read the original buffer value, copies that into its own time-argument Buffer, then reuses alternateExtra for the original0xD ninth argument. Both independent mode4/mode3 transfers were native-neutral. The older5DE6 shared only mode8/10 Buffer, retaining distinct Extra locals; it is not this four-definition shared-Extra control. Original predicates/operations/calls/field94 stores remain."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41948,
+      "sha256": "32985B1C4EE15B300A95F4C5EAF6BB47F748A0D85FCF4B38CF6FA34A7884E7A2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7A5365D04A11F4E765387A1952CD8CE11CF925ECB3EF278714133C9599356507"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-12ffd2fd59.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

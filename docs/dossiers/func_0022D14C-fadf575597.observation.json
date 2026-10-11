@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FADF57559790517461CE4037469BA989D81F96AA43DA9C402A729252FA3A7E1D",
+  "observationId": "E25329B812DBECBA91D01AFA7FB482810A95C1E36AE6172656D1E68567F4F089",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Director2205/2206 resumes complete17W6 in the same private root under worker-owned ordinary source iteration. Protected718B/F75E remains current best; accepted W8 inputs unchanged. Transfer is taken from real mode8/10 phases in the same function.",
+    "effects": [
+      "real-buffer-extra-phases",
+      "native-equivalence",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "82C02EF058886791DE283787CC71A1C8F487E3247EC5FE72D0C61900E276EA22",
+      "sourceSha256": "A69C95385CC86464E9229E3F87CDC001580B402E7D32DDD380794C61399BB2D8"
+    },
+    "label": "mode4-real-buffer-extra-transfer-and-mode3-control-are-native-neutral",
+    "observedEffect": "FADF5755/sourceA69C9538 is PURE_C6844/frame616/177 textR/131 calls with all native text, actual relocation records and table metadata equal protectedF75E/CEBDD465, retaining68 differences. Independent corresponding mode3 transfer AED7B814/sourceF88BAB2C is also whole-native-neutral. These are the two real analogous alternate-call sites proposed in2205, with no new guard/read/call/argument value. No intermediate allocation claim is made.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode4-buffer-extra-preparation.json",
+        "sha256": "7DD7EB070EE96711B61DBF0B669EF899ABD3311EE8459485250DB00CF88D831D"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode4-buffer-extra-measurement.json",
+        "sha256": "73FAB803EAFA7D56A5CA5E349F55ED5BCD9BEDA5777E0CA2E794E4D217E94828"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-buffer-extra-preparation.json",
+        "sha256": "5DA5F14AFB5C06F6BD1652ABDB44B495909BE7D9EA16401F5B004162B5660789"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-mode3-buffer-extra-measurement.json",
+        "sha256": "9762E962FFBA2278CF02190701057CD8AF97F47770EB8027B2C67C9FE85D4025"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/buffer-extra-phases.cjs",
+        "sha256": "CFCDD56327166F154F0B3090515111CD8948F1D4CC9CC8E934623C42EA7FE760"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Close the measured site-local transfers; best remains718B. Native neutrality of individual sites does not exclude shared-value/lifetime organizations. Complete17 and canonical/table integration gates remain unfinished.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Transfer current mode8/10 real buffer→extra phases to mode4 alternate D334 only: read the original buffer value into Extra, preserve it in Buffer for argument2 time, then reuse Extra for the original0xD ninth argument. Original predicates, field94 store, all other arguments/calls/operations remain unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41522,
+      "sha256": "82C02EF058886791DE283787CC71A1C8F487E3247EC5FE72D0C61900E276EA22"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A69C95385CC86464E9229E3F87CDC001580B402E7D32DDD380794C61399BB2D8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-fadf575597.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
