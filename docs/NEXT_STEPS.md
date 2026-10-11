@@ -36,8 +36,8 @@ duties to **PurpleSquirrel**, chat `01a1284c-9b2b-7561-8a81-36ca34387ef8`.
 The [Director cursor](Plans/cursors/director.md) records the recovered mission,
 mail/monitor routing and next action. SilentCrane and completed W6 writer SilentForest
 remain idle. **SandyPelican's complete W5 is accepted**, with all production/private
-ownership released2316 and its inbox/stop watchers retired. No replacement production
-writer is assigned yet; LavenderSpire retains complete W7 and is active after release2315.
+ownership released2316 and its inbox/stop watchers retired. LavenderSpire is now the production
+writer assigned2319 to integrate its same complete W7; no replacement chat is created.
 MossyMouse's accepted D9C addendum and its worker/watcher remain retired.
 
 **Squad W2 D9C addendum accepted, October 11:** main `43119554`, CURRENT `A913A384`.
@@ -79,21 +79,25 @@ MagentaSeal, SilentForest and the completed W5 reviewer remain retired/idle.
 Use a fresh worker/conversation for any next assigned wave and preserve Joe's
 top-level role; do not resume completed workers or create extra tasks without authorization.
 
-**Resolution W7 resumed, October 11:** release2315 ends W5's native-check drain
-after actual audit EOF and stable canonical inputs. LavenderSpire is active,
-refreshing affected inputs and continuing the same complete assignment. It retains the complete
-original seven-member assignment and every coupled producer/table. Director2286
-supersedes hold2285; the [source blocker2284](../build/matching/resolution-w7-261009/director-w7-c8-allocation-blocker-20261011.md)
-and GoldOx2283 remain bounded evidence. C8 bestED43D383 has the retail
-extent/frame and two remaining instruction-order differences; six private-ready
-siblings, all controls and parked obligations remain preserved in the
-[worker cursor](../build/matching/resolution-w7-261009/cursor.md). All private
-commands reached actual EOF before resumption. No repository, service or tooling defect is established.
-Resume ordinary reconstruction/reasoning and supported private trials; matching
-decisions/help remain with worker/GoldOx. No partial acceptance, replacement,
-independent matching-research helper or additional observer run is assigned.
-Existing mail and stop monitors remain active. A genuine impasse must identify
-missing external evidence/input or a concrete Director decision.
+**Resolution W7 source-ready and integrating, October 11:** complete handoff2318
+preserves all original seven targets/15,404B, A9C's whole3,372-byte body and both
+float-data owners, F580's initializer/table,32458's table, row4248 remainder/tail
+and the separate accepted W6 D14C table. Every private source is PURE_C with zero
+instruction fields outside actual relocations; canonical acceptance is still pending.
+[Source-bound handoff](../build/matching/resolution-w7-261009/w7-complete-wave-handoff2317.json)
+and [drain receipt](../build/matching/resolution-w7-261009/w7-complete-wave-native-drain2317.json)
+bind refreshed CURRENT1E95BD03 inputs and actual EOF/empty native process state.
+Director2319 assigns **LavenderSpire in the same top-level chat** sole production
+source/header/config/build ownership to finish this existing wave, plus its tracked
+live cursor `docs/Plans/cursors/lavender.md`. This supersedes the private-root-only
+restriction for the bounded integration; no retired worker or new chat is used.
+Preserve every parked assignment and useful source. Use accepted mechanisms and
+actual relocation/binding evidence. Any new multi-owner/table coverage admission
+gets the applicable structural audit and final independent structural review;
+ordinary matching gets no extra source-review gate. Run one combined seven-target
+normal/full-ROM verifier, inside the audit if required, with no redundant build or
+unchanged repeat. Unsupported tooling needs explicit Sol/Claude agreement and
+Director approval. Existing inbox/stop routes remain active; observer2265 is exhausted.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
@@ -180,9 +184,10 @@ Director2007 releases this same worker's private source work on the complete
 [seven-member resolution W7](Plans/prompts/combat-shared-resolution-wave-r1.md)
 in `build/matching/resolution-w7-261009/`: 15,404 logical-owner bytes, including
 A9C's complete 3,372-byte head and continuation. Current intake found no existing
-C candidates at initial assignment. Resumption2286 retains unfinished2317C8 and all
-six private-ready siblings, including complete232458. The worker and Claude choose
-further source reconstruction/private trials; canonical activation still requires the
+C candidates at initial assignment. Complete handoff2318 and production assignment2319
+supersede the earlier
+private-only matching state; all seven sources are ready. The worker and Claude own
+any remaining source correction; canonical integration still requires the
 real upstream, table and complete-wave gates. Preserve F580/32458's row4248
 reads, A9C's two-part body and all original memberships. No overlapping source
 ownership, reduced acceptance wave or worker retirement. Refresh affected private
