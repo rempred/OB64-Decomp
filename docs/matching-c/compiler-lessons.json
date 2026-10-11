@@ -27,12 +27,13 @@
     {
       "id": "real-delimiter-arms-merge-after-allocation",
       "symptoms": ["register-allocation", "scheduling-or-block-order"],
-      "applicability": "ADF0's genuine delimiter body in each real branch preserves two indexed stores/limit tests through allocation, changes address/count priorities, and produces the required registers. Late jump optimization then merges the tails. Compare the retained baseline and final source/pass evidence; preserve actual operations and index-derived pointers, without dummy work. Native field equality is provisional: caller/binding, linked-owner and full-wave gates remain.",
+      "applicability": "ADF0's real delimiter branches preserve two stores/limit tests through allocation before late merging. D14C's selective transfer of the shared emission into existing mode4/mode3 default arms, retaining enclosing stores, removes 68 word differences; broader earlier expansions used a different context. Compare exact source pairs and receiver evidence; preserve actual operations without dummy work. Neither case identifies original C. Private equality still requires complete-wave gates.",
       "note": "docs/dossiers/func_0019ADF0-b4c93762c6.md#recorded-observation",
-      "references": ["docs/dossiers/func_0019ADF0-b852c88c57.md"],
+      "references": ["docs/dossiers/func_0019ADF0-b852c88c57.md", "docs/dossiers/func_0022D14C-a1ecef80a0.md"],
       "observations": [
         {"symbol": "func_0019ADF0", "path": "docs/dossiers/func_0019ADF0-b852c88c57.observation.json"},
-        {"symbol": "func_0019ADF0", "path": "docs/dossiers/func_0019ADF0-b4c93762c6.observation.json"}
+        {"symbol": "func_0019ADF0", "path": "docs/dossiers/func_0019ADF0-b4c93762c6.observation.json"},
+        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-a1ecef80a0.observation.json"}
       ]
     },
     {
