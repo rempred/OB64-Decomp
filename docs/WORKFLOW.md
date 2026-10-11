@@ -621,6 +621,16 @@ checkpoint receipts, frozen accepted trees, or separate review packages.
 
 ### 8. Start the next wave with a fresh worker
 
+Maintain two matching workers on disjoint complete waves from the existing assigned program,
+with one production writer and private candidate ownership for the other. The Director owns
+finding the next complete dependency-ready assignment whenever a slot opens; do that work
+immediately, using an explicitly assigned retrieval helper when useful. An unrelated unfinished
+wave is not a staffing dependency. Resolve ownership before dispatch, preserve assigned
+top-level roles, and confirm the new worker's turn actually starts. A real shared-input drain
+holds only affected native commands; continue useful authorized private preparation. If a
+second assignment is genuinely blocked, record the exact dependency, owner and release condition
+in the existing cursor; do not manufacture activity or expand the program to fill a slot.
+
 After normal acceptance of the complete assigned wave, the Director starts a fresh matching
 worker using `gpt-6.1-sol` with reasoning `xhigh`. Retain the current top-level/private-worker
 arrangement and single production writer. Do not fork the outgoing conversation's full history.

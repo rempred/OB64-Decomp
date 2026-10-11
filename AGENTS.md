@@ -55,8 +55,14 @@ program history, lane history, promotion history, or archived research chronolog
 New matching-source workers use Sol 6.1 Extra High (`gpt-6.1-sol`, reasoning `xhigh`).
 After a worker's complete assigned wave passes normal acceptance, the Director starts its next
 wave with a fresh worker and fresh conversation, preserving useful knowledge and releasing the
-outgoing worker's ownership first. Existing workers finish their current wave before this
-replacement. Partial matches, parked blockers, tooling repairs and integration of another
+outgoing worker's ownership first. Maintain two matching workers on disjoint complete waves
+within the existing program, preserving assigned top-level roles and one production writer.
+When a slot opens, the Director immediately owns identifying and dispatching its next
+dependency-ready complete wave; do not wait for Joe or an unrelated wave's completion.
+If no second assignment can proceed, name the concrete dependency, resolving owner and
+release condition; matching difficulty is not that dependency. Existing workers finish
+their current wave before replacement unless Joe explicitly reassigns work. Partial matches,
+parked blockers, tooling repairs and integration of another
 worker's wave do not complete the worker's own assignment. This is Joe's October 5 direction
 and supersedes older matching-worker model and continuation rules.
 Director and reviewer assignments remain separate. Retrieval/data-seeking or parsing-only
@@ -83,7 +89,10 @@ Send actionable approval/scope requests through the watched inbox immediately, w
 the concrete decision and evidence, and send the final handoff before ending the turn.
 When blocked on a Director decision, end after sending so the stop watcher also wakes
 the Director; do not wait silently for a collaboration reply. The Director processes
-the request or records its concrete dependency, owner and release condition. Before
+the request or records its concrete dependency, owner and release condition. Close implementation,
+test, review and audit handoffs promptly by deciding and dispatching the next authorized action.
+Confirm an assigned or resumed worker actually starts through a compact task/collaboration
+snapshot; a message-delivery acknowledgement alone is insufficient. Before
 ending an autonomous coordination turn, reconcile active completions and outstanding
 decisions and confirm their wakeup routes. A production drain does not suspend the
 tooling/review handoff needed to release it. See the operational checklist in

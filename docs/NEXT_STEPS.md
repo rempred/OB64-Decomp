@@ -125,14 +125,16 @@ After independent implementation/test review, the Director releases full W7 inte
 and one changed-input audit containing whole7 normal/fresh/full-ROM verification,
 followed by final independent proof review. Tooling fixtures do not accept W7.
 
-**Remaining staffing, census2336:** [current program census](../build/director-resume-20261010/active-program-census/report.md)
-finds W7 the sole active matching wave after the recorded W5/W6/D9C/W8, Squad,
-Scenario and Shop acceptances. Lavender retains the parked scopes. After whole W7
-acceptance and ownership release, scheduler NINE is the recommended next full assignment;
-its former Scenario checksum prerequisite is closed. Preserve all nine members/tables
-and original gates. DB10/3C00/6098 are also complete candidate-ready alternatives with
-matching difficulties, not external holds or accepted PURE_C. This does not prohibit
-future disjoint parallel candidate assignments under the existing ownership rules.
+**Joe's two-worker direction, October11:** maintain two disjoint complete matching waves
+and replace each accepted/released worker promptly with fresh Sol6.1/xhigh. Director2340
+requests Lavender's narrow release of the complete scheduler NINE for a fresh top-level
+candidate worker while Lavender retains complete W7 production ownership. This supersedes
+census2336's scheduling recommendation to wait for W7 acceptance. The census's dependency
+finding remains: NINE's former Scenario prerequisite is closed. Preserve all nine members,
+both tables/native tails and structural group gates; use a new private root with original
+evidence read-only. Current tooling edits hold native/CPP checks only; unaffected preparation
+may start as soon as ownership transfers. DB10/3C00/6098 remain candidate-ready alternatives,
+not accepted PURE_C. The Director owns next-wave investigation whenever a slot opens.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
