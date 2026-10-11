@@ -28,6 +28,14 @@ The [Director cursor](Plans/cursors/director.md) records the recovered mission,
 mail/monitor routing and next action. SilentCrane remains idle; SilentForest keeps
 sole production ownership and LavenderSpire keeps its complete private assignments.
 
+**Retained Squad W2 addendum, October 10:** internal Sol6.1/xhigh **MossyMouse**
+owns only `build/matching/squad-w2-d9c-261010/`. The Director closes the D9C
+loader freeze narrowly for private iteration at the observed static call boundary.
+Complete D9C text and its coupled table/prefix/tail remain one retained addendum;
+accepted construction, record/formation and supply groups stay protected. See the
+[Director cursor](Plans/cursors/director.md) for scope, evidence and remaining gates.
+Source iteration is authorized; target-specific structural activation is not.
+
 **Current tooling and continuation, October 9:** complete Squad W4 (all21 owners)
 and the complete Scenario checksum chain (all8 owners/12 native functions) are
 accepted at CURRENT `B98A0C71` / baseline `D6553DED`. The combined structural audit,
