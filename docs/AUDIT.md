@@ -110,6 +110,9 @@ At minimum verify:
 - a partially replaced auxiliary data row retains exact remainder bytes, placement, and assembly
   ownership through a unique read-only input section rather than `.data` or `.bss`;
 - C switch-table fragments and explicit retained original-ASM intervals completely cover their accepted auxiliary row in address order;
+- shared auxiliary rows re-resolve every complete text/data owner against explicit accepted-model context, retaining actual archive chunk and source identities;
+- cross-chunk contributors share one unique accepted non-descriptor `loader-dma` slab, with model/config agreement, containment and both placement equations; missing context, forged chunks and unsupported cross-chunk placement modes reject;
+- every multi-member auxiliary row has explicit full-path C/ASM linker selectors and exact map contribution order, including rows without interiors and reversed manifest/response-file order; recorded-script checks reject residual wildcards independently of byte equality;
 - auxiliary coverage removes the original row contribution once, retains its authenticated fallback, and leaves no gap, overlap, or duplicate tail;
 - only the first auxiliary fragment may retain an exterior prefix, and only the final fragment may retain the exterior tail;
 - retained interiors contain literal data from a whole original row with no nonempty REL/RELA sections targeting it, even outside retained intervals;

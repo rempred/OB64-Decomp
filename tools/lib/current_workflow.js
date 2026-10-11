@@ -305,6 +305,14 @@ function completeCurrent(directory, phase8, sourcePolicy) {
     const manifest = JSON.parse(metadataInputs[1].contents);
     if (layout.schemaVersion !== 2 || manifest.schemaVersion !== 5) return false;
     manifestMembers = compilationGroups.manifestMembers(manifest.linkedObjects, phase8);
+    if (phase8.targets.some(target => (target.auxiliarySections || []).length)) {
+      const sharedInputs = ['linker/phase8.ld', 'phase8.map'].map(relative =>
+        confinedArtifactContents(directory, relative, `CURRENT shared auxiliary ${relative}`));
+      const auxiliaryVerification = require('./phase8_matching_c');
+      auxiliaryVerification.verifyRecordedSharedAuxiliaryScript(phase8, directory);
+      auxiliaryVerification.verifyInteriorGroupMapOwners(phase8, textLinkContext.mapText);
+      metadataInputs.push(...sharedInputs);
+    }
     // Retain identities, not a second copy of the large parsed inputs. Recheck
     // exact contents at the end; this is only invocation-local parse reuse.
     metadataInputs = metadataInputs.map(({ contents, ...identity }) => identity);

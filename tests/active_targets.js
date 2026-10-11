@@ -741,6 +741,7 @@ function main() {
   if (!secondOwnerSlice) throw new Error('func_002861C8 accepted executable slice is missing');
   const secondOwnerTarget = {
     symbol: 'func_002861C8',
+    textOwners: resolveAcceptedRows(active.model, 'func_002861C8').owners,
     targetIndex: canaryTarget.targetIndex + 1,
     chunkIndex: secondOwnerRow.part.chunkIndex,
     overlayDescriptorId: secondOwnerSlice.overlayDescriptorId,
@@ -814,7 +815,69 @@ function main() {
     ];
   };
   const sharedAuxiliaryTargets = makeSharedAuxiliaryTargets();
-  validateAuxiliaryOwnerGroups(sharedAuxiliaryTargets);
+  validateAuxiliaryOwnerGroups(sharedAuxiliaryTargets, active.model);
+  // Explicit model fixtures: archive partitioning and runtime placement are
+  // independent. The real two-chunk ROM fixture lives in auxiliary_interior.js.
+  const slabFixture = () => {
+    const targets = structuredClone(makeSharedAuxiliaryTargets());
+    const indices = new Set(targets.flatMap(t => [...t.textOwners.map(o => o.rowIndex),
+      ...t.auxiliarySections.map(a => a.ownerRowIndex)]));
+    const rows = structuredClone(active.model.rows.filter(row => indices.has(row.index)));
+    const start = Math.min(...rows.map(row => row.romStart)), end = Math.max(...rows.map(row => row.romEndExclusive));
+    const delta = rows[0].slices[0].vramStart - rows[0].romStart;
+    const slab = { id: 'shared-row-test-slab', kind: 'loader-dma', romStart: start, romEndExclusive: end,
+      vramStart: start + delta, vramEndExclusive: end + delta, executableRanges: [], nonExecutableRanges: [] };
+    const model = { rows, overlays: [], nonDescriptorLoadSlabs: [slab],
+      config: { rom: { bytes: active.model.config.rom.bytes }, expected: { nonDescriptorLoadSlabs: 1 }, nonDescriptorLoadSlabs: [structuredClone(slab)] } };
+    rows.forEach((row, i) => { row.part.chunkIndex = 70 + i; row.slices.forEach(slice => {
+      slice.placementKind = 'non-descriptor-load-slab'; slice.overlayDescriptorId = null;
+      slice.overlaySection = null; slice.loadSlabId = slab.id;
+    }); });
+    targets.forEach(t => {
+      t.textOwners = resolveAcceptedRows(model, t.symbol).owners;
+      t.chunkIndex = t.textOwners[0].chunkIndex;
+      t.row = t.textOwners[0].row;
+      if (t.rows) t.rows = t.textOwners.map(o => o.row);
+      t.auxiliarySections.forEach(a => { a.ownerChunkIndex = rows.find(r => r.index === a.ownerRowIndex).part.chunkIndex; });
+    });
+    return { targets, model };
+  };
+  const crossChunk = slabFixture();
+  validateAuxiliaryOwnerGroups(crossChunk.targets, crossChunk.model);
+  const rejectedSharedPlacementMutations = [
+    ['missing context', f => { f.model = undefined; }],
+    ['forged primary chunk', f => { f.targets[1].chunkIndex += 1; }],
+    ['coordinated forged chunks', f => { f.targets.forEach(t => { t.chunkIndex = 900; t.textOwners.forEach(o => { o.chunkIndex = 900; }); }); }],
+    ['forged data chunk', f => { f.targets.forEach(t => { t.auxiliarySections[0].ownerChunkIndex += 1; }); }],
+    ['forged text source', f => { f.targets[0].textOwners[0].originalAssemblySha256 = '0'.repeat(64); }],
+    ['forged data symbol', f => { f.targets.forEach(t => { t.auxiliarySections[0].ownerSymbol += '_wrong'; }); }],
+    ['missing text census', f => { delete f.targets[0].textOwners; }],
+    ['duplicate text owner', f => { f.targets[0].textOwners.push(f.targets[0].textOwners[0]); }],
+    ['duplicate model row', f => { f.model.rows.push(f.model.rows[0]); }],
+    ['missing slab', f => { f.model.nonDescriptorLoadSlabs = []; }],
+    ['missing config slab', f => { f.model.config.nonDescriptorLoadSlabs = []; }],
+    ['duplicate slab', f => { f.model.config.nonDescriptorLoadSlabs.push(f.model.config.nonDescriptorLoadSlabs[0]); f.model.config.expected.nonDescriptorLoadSlabs = 2; }],
+    ['stale model slab', f => { f.model.nonDescriptorLoadSlabs[0].vramStart += 4; }],
+    ['unsupported slab kind', f => { f.model.nonDescriptorLoadSlabs[0].kind = f.model.config.nonDescriptorLoadSlabs[0].kind = 'boot-initialized-data'; }],
+    ['unrelated equal-address slab', f => { f.targets[1].textOwners[0].row.slices[0].loadSlabId = 'other-slab'; }],
+    ['contradictory overlay', f => { f.targets[1].textOwners[0].row.slices[0].overlayDescriptorId = 7; }],
+    ['wrong ROM containment', f => { const s = f.model.nonDescriptorLoadSlabs[0]; s.romStart += 4; s.vramStart += 4; f.model.config.nonDescriptorLoadSlabs = [structuredClone(s)]; }],
+    ['wrong endpoint equation', f => { const s = f.targets[1].textOwners[0].row.slices[0]; s.vramStart += 4; s.vramEndExclusive += 4; }],
+    ['ROM-only placement', f => { f.targets[1].textOwners[0].row.slices[0].placementKind = 'rom-only'; }],
+    ['cross-chunk fixed overlay', f => { f.model.rows.forEach(row => row.slices.forEach(s => {
+      s.placementKind = 'overlay'; s.overlayDescriptorId = 99; s.loadSlabId = null;
+      s.overlaySection = s.executable ? 'text' : 'data-rodata';
+    })); }],
+    ['forged data primary owner', f => { f.targets.forEach(t => { t.auxiliarySections[0].ownerPrimaryId = 'forged'; }); }],
+    ['forged data extent', f => { f.targets.forEach(t => { t.auxiliarySections[0].ownerRomEndNumber += 4; }); }],
+    ['later constituent provenance', f => {
+      const t = f.targets[0], next = structuredClone(f.targets[1].textOwners[0]);
+      next.logicalOffset = t.bytes; next.logicalEnd = t.bytes + next.bytes; next.chunkIndex += 1;
+      t.textOwners.push(next); t.bytes += next.bytes; if (t.rows) t.rows.push(next.row);
+    }],
+  ].map(([name, mutate]) => expectRejection(`shared placement ${name}`, () => {
+    const fixture = slabFixture(); mutate(fixture); validateAuxiliaryOwnerGroups(fixture.targets, fixture.model);
+  }));
   if (sharedAuxiliaryTargets[0].auxiliarySections[0].ownerFragmentIndex !== 0
       || sharedAuxiliaryTargets[1].auxiliarySections[0].ownerFragmentIndex !== 1
       || sharedAuxiliaryTargets[1].auxiliarySections[0].ownerTailBytes !== 8) {
@@ -864,7 +927,7 @@ function main() {
       return targets;
     }],
   ].map(([name, mutate]) => expectRejection(`shared auxiliary ${name}`, () => (
-    validateAuxiliaryOwnerGroups(mutate(makeSharedAuxiliaryTargets()))
+    validateAuxiliaryOwnerGroups(mutate(makeSharedAuxiliaryTargets()), active.model)
   )));
   const mutateCanaryAuxiliary = (mutate) => ({
     ...linkage,
@@ -1168,6 +1231,7 @@ function main() {
     rejectedAuxiliaryMutations,
     rejectedLoadSlabAuxiliaryMutations,
     rejectedSharedAuxiliaryMutations,
+    rejectedSharedPlacementMutations,
     rejectedRepeatedOccurrenceMutations,
     rejectedPaddingMutations,
     rejectedSourceObjectPrefixMutations,

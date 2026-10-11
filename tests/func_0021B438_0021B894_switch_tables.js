@@ -960,7 +960,7 @@ function verifyImplementedSchemaCapability(model, baserom, textOwners) {
       'Wave 5 final-table schema probe',
     ),
   );
-  validateAuxiliaryOwnerGroups([b438Target, b894Target]);
+  validateAuxiliaryOwnerGroups([b438Target, b894Target], model);
   const b438 = b438Target.auxiliarySections[0];
   const b894 = b894Target.auxiliarySections[0];
   if (b438.ownerFragmentIndex !== 0 || b438.ownerFragmentCount !== 2
@@ -1031,7 +1031,7 @@ function verifyImplementedSchemaCapability(model, baserom, textOwners) {
           `Wave 5 ${name}`,
         );
         const resolved = resolveAuxiliarySectionContracts(model, baserom, b438Target, normalized);
-        validateAuxiliaryOwnerGroups([{ ...b438Target, auxiliarySections: resolved }, b894Target]);
+        validateAuxiliaryOwnerGroups([{ ...b438Target, auxiliarySections: resolved }, b894Target], model);
       }),
     });
   };

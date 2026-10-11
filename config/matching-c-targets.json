@@ -1243,6 +1243,13 @@
     {"symbol":"func_0011AECC","source":"src/lib/func_0011AECC.c"},
     {"symbol":"func_0012B440","source":"src/lib/func_0012B440.c"},
     {"symbol":"func_0012BC64","source":"src/lib/func_0012BC64.c"},
-    {"symbol":"func_0012C788","source":"src/lib/func_0012C788.c"}
+    {"symbol":"func_0012C788","source":"src/lib/func_0012C788.c"},
+    {"symbol":"func_0022F580","source":"src/battle/func_0022F580.c"},
+    {"symbol":"func_00230A9C","source":"src/battle/func_00230A9C.c"},
+    {"symbol":"func_002317C8","source":"src/battle/func_002317C8.c"},
+    {"symbol":"func_00231CC0","source":"src/battle/func_00231CC0.c"},
+    {"symbol":"func_00232280","source":"src/battle/func_00232280.c"},
+    {"symbol":"func_00232458","source":"src/battle/func_00232458.c"},
+    {"symbol":"func_00232D7C","source":"src/battle/func_00232D7C.c"}
   ]
 }

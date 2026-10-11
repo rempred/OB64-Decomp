@@ -6,7 +6,7 @@ const path = require('path');
 const { ROOT, loadAcceptedModel, sha256Buffer: hash, parseElf32BigEndian, elfSectionBytes } = require('../tools/lib/phase7_conventional');
 const { assembleWordAsmText } = require('../tools/lib/word_asm');
 const { normalizeAuxiliarySectionContracts: normalize, resolveAuxiliarySectionContracts: resolve,
-  validateAuxiliaryOwnerGroups } = require('../tools/lib/active_targets');
+  validateAuxiliaryOwnerGroups, resolveAcceptedRows } = require('../tools/lib/active_targets');
 const { verifyAuxiliarySourceObjectSection: verifySource, selectAuxiliarySourceObjectPrefixes: select,
   verifyAuxiliaryLinkedObjectSection: verifyLinked, adjustSectionAssembly,
   validateSourceObjectProofBytes } = require('../tools/lib/phase8_matching_c');
@@ -22,6 +22,7 @@ function fixture(model) {
     const owner = model.rows.find(r => r.part && r.part.file.endsWith(suffix));
     const s = owner.slices[0];
     return { symbol: owner.part.name, sectionName: s.sectionName, row: owner,
+      textOwners: resolveAcceptedRows(model, owner.part.name).owners,
       bytes: owner.bytes, vramStartNumber: s.vramStart, chunkIndex: owner.part.chunkIndex };
   };
   const retained = (kind, start, end) => ({ inputSection: `.ob64.r0789.${kind}`,
@@ -58,7 +59,7 @@ function fixture(model) {
   const resolveAll = () => {
     tag.auxiliarySections = resolve(model, rom, tag, normalize([tagRaw], tag.symbol, 'terminal alignment tag'));
     op.auxiliarySections = resolve(model, rom, op, normalize([opRaw], op.symbol, 'terminal alignment op'));
-    validateAuxiliaryOwnerGroups([tag, op]);
+    validateAuxiliaryOwnerGroups([tag, op], model);
     return [tag, op];
   };
   return { model, rom, row, tag, op, tagRaw, opRaw, resolveAll, loadRow };

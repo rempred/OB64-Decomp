@@ -10,6 +10,7 @@ const {
   ROOT,
   fail,
   loadAcceptedModel,
+  validateNonDescriptorLoadSlabs,
   readJson,
   sha256Buffer,
   sha256File,
@@ -1007,6 +1008,24 @@ function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map(), sou
   };
 }
 
+// Keep per-target pairing and shared-row admission on the same placement rule.
+function auxiliaryPlacementPair(model, targetSlice, auxiliarySlice) {
+  return Boolean(targetSlice && auxiliarySlice && (
+    (targetSlice.placementKind === 'overlay'
+      && auxiliarySlice.placementKind === 'overlay'
+      && auxiliarySlice.overlaySection === 'data-rodata'
+      && auxiliarySlice.overlayDescriptorId !== null
+      && auxiliarySlice.overlayDescriptorId === targetSlice.overlayDescriptorId)
+    || (targetSlice.placementKind === 'non-descriptor-load-slab'
+      && auxiliarySlice.placementKind === 'non-descriptor-load-slab'
+      && auxiliarySlice.loadSlabId !== null
+      && auxiliarySlice.loadSlabId === targetSlice.loadSlabId
+      && !(model.nonDescriptorLoadSlabs || []).some(slab => slab.id === auxiliarySlice.loadSlabId
+        && slab.kind === 'boot-initialized-data'))
+    || bootData.isAuxiliaryPair(model, targetSlice, auxiliarySlice)
+  ));
+}
+
 function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
   const group = auxiliaryProjection.composed(target.compilationGroup) ? target.compilationGroup : null;
@@ -1039,26 +1058,12 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
         ? target.row.slices.find((slice) => slice.sectionName === target.sectionName)
         : targetModelSlices.length === 1 ? targetModelSlices[0] : null;
     const auxiliarySlice = slices[0];
-    const sameFixedOverlay = targetSlice && auxiliarySlice
-      && targetSlice.placementKind === 'overlay'
-      && auxiliarySlice.placementKind === 'overlay'
-      && auxiliarySlice.overlaySection === 'data-rodata'
-      && auxiliarySlice.overlayDescriptorId !== null
-      && auxiliarySlice.overlayDescriptorId === targetSlice.overlayDescriptorId;
-    const sameLoadSlab = targetSlice && auxiliarySlice
-      && targetSlice.placementKind === 'non-descriptor-load-slab'
-      && auxiliarySlice.placementKind === 'non-descriptor-load-slab'
-      && auxiliarySlice.loadSlabId !== null
-      && auxiliarySlice.loadSlabId === targetSlice.loadSlabId
-      && !(model.nonDescriptorLoadSlabs || []).some(slab => slab.id === auxiliarySlice.loadSlabId
-        && slab.kind === 'boot-initialized-data');
-    const sameBootImage = bootData.isAuxiliaryPair(model, targetSlice, auxiliarySlice);
     if (row.inputKind !== 'tracked-assembly'
         || row.primaryClass !== 'data'
         || !row.part
         || slices.length !== 1
         || slices[0].executable
-        || (!sameFixedOverlay && !sameLoadSlab && !sameBootImage)) {
+        || !auxiliaryPlacementPair(model, targetSlice, auxiliarySlice)) {
       fail(`auxiliary output section is not one accepted read-only data owner: ${target.symbol} ${contract.outputSection}`);
     }
     const slice = slices[0];
@@ -1234,7 +1239,75 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   });
 }
 
-function validateAuxiliaryOwnerGroups(targets) {
+function validateAuxiliaryOwnerGroups(targets, model) {
+  if (!model || !Array.isArray(model.rows) || !model.config
+      || !Array.isArray(model.nonDescriptorLoadSlabs)) fail('shared auxiliary accepted model is required');
+  const rowsByIndex = new Map();
+  const slicesBySection = new Map();
+  for (const row of model.rows) {
+    if (rowsByIndex.has(row.index)) fail('shared auxiliary accepted row is ambiguous');
+    rowsByIndex.set(row.index, row);
+    for (const slice of row.slices || []) {
+      if (slicesBySection.has(slice.sectionName)) fail('shared auxiliary accepted section is ambiguous');
+      slicesBySection.set(slice.sectionName, { row, slice });
+    }
+  }
+  const textSlices = new Map();
+  const ownerSlices = new Map();
+  for (const target of targets.filter(value => value.auxiliarySections.length)) {
+    if (!Array.isArray(target.textOwners) || !target.textOwners.length) fail('shared auxiliary text owner census is missing');
+    let bytes = 0;
+    const sections = new Set();
+    const acceptedSlices = target.textOwners.map(owner => {
+      const accepted = slicesBySection.get(owner.sectionName);
+      if (!accepted || sections.has(owner.sectionName)) fail('shared auxiliary text owner is missing or duplicate');
+      sections.add(owner.sectionName);
+      const { row, slice } = accepted;
+      const expected = {
+        rowIndex: row.index, primaryId: row.primaryId, chunkIndex: row.part?.chunkIndex,
+        originalAssembly: row.part?.file, originalAssemblySha256: row.part?.sha256,
+        symbol: row.part?.name, romStartNumber: slice.romStart, romEndNumber: slice.romEndExclusive,
+        vramStartNumber: slice.vramStart, vramEndNumber: slice.vramEndExclusive, bytes: slice.bytes,
+        logicalOffset: bytes, logicalEnd: bytes + slice.bytes,
+      };
+      if (row.inputKind !== 'tracked-assembly' || !row.part || !slice.executable
+          || !Object.entries(expected).every(([key, value]) => owner[key] === value)
+          || (owner.row && !sameJson(owner.row, row))) fail('shared auxiliary accepted text identity drift');
+      bytes += slice.bytes;
+      return slice;
+    });
+    const first = target.textOwners[0];
+    if (target.chunkIndex !== first.chunkIndex || target.sectionName !== first.sectionName
+        || target.vramStartNumber !== first.vramStartNumber || target.bytes !== bytes
+        || (target.rows && !sameJson(target.rows.map(row => row.index), target.textOwners.map(owner => owner.rowIndex)))) {
+      fail('shared auxiliary contributor identity drift');
+    }
+    // Fixtures may omit redundant top-level fields; the complete textOwners census is mandatory.
+    for (const key of ['rowIndex', 'primaryId', 'originalAssembly', 'originalAssemblySha256', 'romStartNumber']) {
+      if (target[key] !== undefined && target[key] !== first[key]) fail('shared auxiliary contributor identity drift');
+    }
+    textSlices.set(target, acceptedSlices);
+    for (const auxiliary of target.auxiliarySections) {
+      const accepted = slicesBySection.get(auxiliary.outputSection);
+      if (!accepted) fail('shared auxiliary accepted data owner is missing');
+      const { row, slice } = accepted;
+      const expected = {
+        ownerRowIndex: row.index, ownerPrimaryId: row.primaryId, ownerChunkIndex: row.part?.chunkIndex,
+        ownerSectionBytes: row.bytes, ownerRomStartNumber: row.romStart, ownerRomEndNumber: row.romEndExclusive,
+        ownerVramStartNumber: slice.vramStart, ownerVramEndNumber: slice.vramEndExclusive,
+        ownerOriginalAssembly: row.part?.file, ownerOriginalAssemblySha256: row.part?.sha256,
+        ownerSymbol: row.part?.name, ownerSymbolVram: slice.vramStart + row.part?.symbolByteOffset,
+      };
+      if (row.inputKind !== 'tracked-assembly' || row.primaryClass !== 'data' || !row.part
+          || row.slices.length !== 1 || slice.executable || slice.bytes !== row.bytes
+          || slice.romStart !== row.romStart || slice.romEndExclusive !== row.romEndExclusive
+          || !Object.entries(expected).every(([key, value]) => auxiliary[key] === value)
+          || acceptedSlices.some(text => !auxiliaryPlacementPair(model, text, slice))) {
+        fail('shared auxiliary accepted data identity or placement drift');
+      }
+      ownerSlices.set(auxiliary, slice);
+    }
+  }
   const textSections = new Set(targets.flatMap((target) => (
     (target.textOwners || [{ sectionName: target.sectionName }]).map((owner) => owner.sectionName)
   )));
@@ -1255,10 +1328,32 @@ function validateAuxiliaryOwnerGroups(targets) {
       fail(`active auxiliary output section resolves to multiple accepted owners: ${first.outputSection}`);
     }
     outputOwners.set(first.outputSection, first.ownerRowIndex);
-    const firstChunkIndex = members[0].target.chunkIndex;
-    if (members.some(({ target, auxiliary }) => (
-      target.chunkIndex !== firstChunkIndex
-      || auxiliary.outputSection !== first.outputSection
+    const chunks = new Set(members.flatMap(({ target }) => target.textOwners.map(owner => owner.chunkIndex)));
+    if (chunks.size > 1) {
+      // Archive chunks are immutable ownership. Only an authenticated loader-DMA slab
+      // proves the new cross-chunk case; equal labels or addresses alone do not.
+      const slabs = validateNonDescriptorLoadSlabs(model.config, model.overlays);
+      if (!sameJson(slabs, model.nonDescriptorLoadSlabs)) fail('shared auxiliary load-slab model/config drift');
+      const allSlices = members.flatMap(({ target, auxiliary }) => [...textSlices.get(target), ownerSlices.get(auxiliary)]);
+      const matches = slabs.filter(slab => slab.id === allSlices[0].loadSlabId);
+      if (matches.length !== 1 || matches[0].kind !== 'loader-dma') fail('shared auxiliary cross-chunk load slab is unsupported');
+      const slab = matches[0];
+      if (allSlices.some(slice => slice.placementKind !== 'non-descriptor-load-slab'
+          || slice.loadSlabId !== slab.id || slice.overlayDescriptorId !== null || slice.overlaySection !== null
+          || slice.romStart < slab.romStart || slice.romEndExclusive > slab.romEndExclusive
+          || slice.bytes !== slice.romEndExclusive - slice.romStart
+          || slice.bytes !== slice.vramEndExclusive - slice.vramStart
+          || slice.vramStart !== slab.vramStart + slice.romStart - slab.romStart
+          || slice.vramEndExclusive !== slab.vramStart + slice.romEndExclusive - slab.romStart)) {
+        fail('shared auxiliary cross-chunk placement drift');
+      }
+    }
+    if (members.some(({ auxiliary }) => (
+      auxiliary.outputSection !== first.outputSection
+      || auxiliary.ownerPrimaryId !== first.ownerPrimaryId
+      || auxiliary.ownerChunkIndex !== first.ownerChunkIndex
+      || auxiliary.ownerSymbol !== first.ownerSymbol
+      || auxiliary.ownerSymbolVram !== first.ownerSymbolVram
       || auxiliary.ownerRowIndex !== first.ownerRowIndex
       || auxiliary.ownerSectionBytes !== first.ownerSectionBytes
       || auxiliary.ownerRomStartNumber !== first.ownerRomStartNumber
@@ -1638,7 +1733,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       }
     }
   }
-  validateAuxiliaryOwnerGroups(targets);
+  validateAuxiliaryOwnerGroups(targets, model);
   auxiliaryProjection.validateCensus(targets);
   const phase8 = {
     config: { ...minimal, compiler: legacy.compiler },

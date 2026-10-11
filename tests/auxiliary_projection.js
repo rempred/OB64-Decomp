@@ -96,9 +96,11 @@ function row(index, start, bytes, vram, executable) {
       vramStart: vram, vramEndExclusive: vram + bytes, placementKind: 'overlay', overlayDescriptorId: 99,
       overlaySection: executable ? 'text' : 'data-rodata', loadSlabId: null }] };
 }
-const model = { rows: [row(1, 0, text.size, base, true), ...segments.map(segment => row(
+const model = { config: { rom: { bytes: rom.length }, expected: { nonDescriptorLoadSlabs: 0 }, nonDescriptorLoadSlabs: [] },
+  nonDescriptorLoadSlabs: [], rows: [row(1, 0, text.size, base, true), ...segments.map(segment => row(
   Number((segment.outputSection || segment.ownerSection).slice(7)), tableRom + segment.offset,
   segment.kind === 'payload' ? segment.bytes : segment.ownerBytes, tableBase + segment.offset, false))] };
+model.rows[0].part.name = 'projection_fixture';
 const owner = { ownerIndex: 0, sectionName: '.ob64.r0001', symbol: 'projection_fixture', rowIndex: 1, primaryId: 'fixture:1', chunkIndex: 0,
   logicalOffset: 0, logicalEnd: text.size, bytes: text.size, romStartNumber: 0, romEndNumber: text.size,
   vramStartNumber: base, vramEndNumber: base + text.size, expectedTextSha256: hash(linkedText),
@@ -111,7 +113,7 @@ const target = { symbol: 'projection_fixture', source: relative, sourceSha256: p
   auxiliarySections: [], auxiliaryProjection: contract, legacyAncillaryRelocations: [], relocationContractSource: 'canonical' };
 target.auxiliarySections = active.resolveAuxiliarySectionContracts(model, rom, target, normalized);
 target.auxiliaryProjectionRetained = projection.retainedBindings(target, model, rom);
-active.validateAuxiliaryOwnerGroups([target]);
+active.validateAuxiliaryOwnerGroups([target], model);
 const projected = projection.project(raw.buffer, target);
 fs.writeFileSync(path.join(root, 'projected.o'), projected.buffer);
 const projectedElf = p7.parseElf32BigEndian(projected.buffer);

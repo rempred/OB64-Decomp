@@ -3043,7 +3043,7 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
       || !objectManifest || !Array.isArray(objectManifest.linkedObjects)) {
     fail('Phase 8 linker input contract is malformed');
   }
-  const auxiliaryGroups = validateAuxiliaryOwnerGroups(phase8.targets);
+  const auxiliaryGroups = validateAuxiliaryOwnerGroups(phase8.targets, phase8.model);
   const aliases = new Map();
   for (const [symbol, value] of Object.entries(phase8.linkSymbols || {})) {
     if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(symbol)) fail('unsafe Phase 8 link alias: ' + symbol);
@@ -3139,7 +3139,12 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
     linkerText = linkerText.replace(selector, `${selector}\n    ${tail.path}(${tail.inputSection})`);
   }
   for (const members of auxiliaryGroups.values()) {
-    if (!members.some(({ auxiliary }) => auxiliary.preservedInteriorBefore)) continue;
+    if (!orderedAuxiliaryGroup(members)) continue;
+    const manifestMembers = compilationGroups.manifestMembers(objectManifest.linkedObjects, phase8);
+    for (const { target } of members) {
+      const owners = manifestMembers.filter(record => record.ownerKind === 'matching-c-target' && record.targetSymbol === target.symbol);
+      if (owners.length !== 1 || owners[0].path !== compilationGroups.objectPath(target)) fail('shared auxiliary C linker ownership drift');
+    }
     const selector = `    *(${members[0].auxiliary.outputSection})`;
     const inputs = [];
     for (const { target, auxiliary } of members) {
@@ -3153,11 +3158,12 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
         }
         inputs.push(`    ${expected.objectRelative}(${expected.inputSection})`);
       }
-      inputs.push(`    objects/c/${target.symbol}.o(${auxiliary.outputSection})`);
+      inputs.push(`    ${compilationGroups.objectPath(target)}(${auxiliary.outputSection})`);
     }
     if (linkerText.split(selector).length !== 2) fail('retained interior linker selector drift');
     linkerText = linkerText.replace(selector, inputs.join('\n'));
   }
+  verifySharedAuxiliaryScript(phase8, linkerText);
   return linkerText + (aliasText.length ? '\n' + aliasText.join('\n') + '\n' : '');
 }
 
@@ -3560,29 +3566,122 @@ function verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText, prefix = null
   };
 }
 
-function verifyInteriorGroupMapOwners(phase8, mapText) {
-  for (const members of validateAuxiliaryOwnerGroups(phase8.targets).values()) {
-    if (!members.some(({ auxiliary }) => auxiliary.preservedInteriorBefore)) continue;
-    const auxiliary = members[0].auxiliary;
-    const expected = [];
-    const firstPrefix = auxiliaryRetainedContract(auxiliary, 'prefix');
-    if (firstPrefix.bytes > 0) expected.push({ section: firstPrefix.inputSection, address: firstPrefix.vramStart,
-      bytes: firstPrefix.bytes, owner: auxiliaryRetainedRelative(auxiliary.ownerChunkIndex, auxiliary.outputSection, 'prefix', 'o') });
-    for (const member of members) {
-      const interior = interiorRecord(member.target, member.auxiliary);
-      if (interior) expected.push({ section: interior.inputSection, address: interior.vramStart,
-        bytes: interior.bytes, owner: interior.objectRelative });
-      expected.push({ section: member.auxiliary.outputSection, address: member.auxiliary.vramStartNumber,
-        bytes: member.auxiliary.bytes, owner: `objects/c/${member.target.symbol}.o` });
+function orderedAuxiliaryGroup(members) {
+  return members.length > 1 || members.some(({ auxiliary }) => auxiliary.preservedInteriorBefore);
+}
+
+// Re-derived at rendering and verification; no persisted ownership certificate.
+function sharedAuxiliaryContributions(members) {
+  const auxiliary = members[0].auxiliary;
+  const expected = [];
+  const firstPrefix = auxiliaryRetainedContract(auxiliary, 'prefix');
+  if (firstPrefix.bytes > 0) expected.push({ section: firstPrefix.inputSection, address: firstPrefix.vramStart,
+    bytes: firstPrefix.bytes, owner: auxiliaryRetainedRelative(auxiliary.ownerChunkIndex, auxiliary.outputSection, 'prefix', 'o') });
+  for (const member of members) {
+    const interior = interiorRecord(member.target, member.auxiliary);
+    if (interior) expected.push({ section: interior.inputSection, address: interior.vramStart,
+      bytes: interior.bytes, owner: interior.objectRelative });
+    expected.push({ section: member.auxiliary.outputSection, address: member.auxiliary.vramStartNumber,
+      bytes: member.auxiliary.bytes, owner: compilationGroups.objectPath(member.target) });
+  }
+  const last = members[members.length - 1].auxiliary;
+  const tail = auxiliaryRetainedContract(last, 'tail');
+  if (tail.bytes > 0) expected.push({ section: tail.inputSection, address: tail.vramStart,
+    bytes: tail.bytes, owner: auxiliaryTailRelative(last.ownerChunkIndex, last.outputSection, 'o') });
+  return expected;
+}
+
+// Validate the finite language emitted by renderLinkerScript and this module.
+// Arbitrary GNU ld input descriptions are not accepted: in particular a bare
+// filename selects all of its sections without using a parenthesized selector.
+function generatedLinkerSelectors(script) {
+  const text = script.replace(/"(?:\\.|[^"\\])*"|\/\*[\s\S]*?\*\/|#[^\n]*/g,
+    token => token.startsWith('"') ? token : token.replace(/[^\n]/g, ' '));
+  const selectors = [];
+  let depth = 0, pending = false, sections = false;
+  const assignment = /^[A-Za-z_.$][A-Za-z0-9_.$]* = (?:0x[0-9A-F]{8}|\.(?: \+ 0x[0-9A-F]{8})?);$/;
+  for (const raw of text.split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (pending) {
+      if (line !== '{') fail('unsupported generated linker block');
+      depth += 1; pending = false; continue;
     }
-    const last = members[members.length - 1].auxiliary;
-    const tail = auxiliaryRetainedContract(last, 'tail');
-    if (tail.bytes > 0) expected.push({ section: tail.inputSection, address: tail.vramStart,
-      bytes: tail.bytes, owner: auxiliaryTailRelative(last.ownerChunkIndex, last.outputSection, 'o') });
+    if (line === '}') {
+      if (depth === 0) fail('unbalanced generated linker block');
+      depth -= 1; continue;
+    }
+    if (depth === 0) {
+      if (!sections && line === 'SECTIONS') { sections = true; pending = true; continue; }
+      if (!sections && (/^OUTPUT_FORMAT\("elf32-bigmips"\)$/.test(line)
+          || /^OUTPUT_ARCH\(mips\)$/.test(line) || /^ENTRY\([A-Za-z_.$][A-Za-z0-9_.$]*\)$/.test(line))) continue;
+      if (sections && assignment.test(line)) continue;
+      fail('unsupported generated linker top-level statement');
+    }
+    if (depth === 1) {
+      if (assignment.test(line)) continue;
+      if (/^\.[A-Za-z_][A-Za-z0-9_.]* 0x[0-9A-F]{8}(?: \(NOLOAD\))? : AT\(0x[0-9A-F]{8}\)$/.test(line)
+          || line === '/DISCARD/ :') { pending = true; continue; }
+      if (line === '.bss 0 (NOLOAD) : {') { depth += 1; continue; }
+      fail('unsupported generated linker output description');
+    }
+    if (assignment.test(line)) continue;
+    const selector = /^(\*|objects\/[A-Za-z0-9_.$/\-]+)\s*\(\s*(\.[A-Za-z_][A-Za-z0-9_.]*)\s*\)$/.exec(line);
+    if (!selector) fail('unsupported generated linker input description');
+    selectors.push({ owner: selector[1], pattern: selector[2] });
+  }
+  if (!sections || depth !== 0 || pending) fail('incomplete generated linker script');
+  return selectors;
+}
+
+function verifySharedAuxiliaryScript(phase8, script) {
+  if (typeof script !== 'string') fail('shared auxiliary linker script is missing');
+  const inputSelectors = generatedLinkerSelectors(script);
+  for (const members of validateAuxiliaryOwnerGroups(phase8.targets, phase8.model).values()) {
+    if (!orderedAuxiliaryGroup(members)) continue;
+    const auxiliary = members[0].auxiliary;
+    const name = auxiliary.outputSection;
+    const stem = '__' + name.replace(/^\./, '').replace(/[^A-Za-z0-9_]/g, '_');
+    const header = `  ${name} ${hex(auxiliary.ownerVramStartNumber)} : AT(${hex(auxiliary.ownerRomStartNumber)})`;
+    const expected = [header, '  {', `    ${stem}_vram_start = .;`,
+      `    ${auxiliary.ownerSymbol} = . + ${hex(auxiliary.ownerSymbolVram - auxiliary.ownerVramStartNumber)};`,
+      ...sharedAuxiliaryContributions(members).map(record => `    ${record.owner}(${record.section})`),
+      `    ${stem}_vram_end = .;`, '  }'].join('\n');
+    const blocks = [...script.replace(/\r\n/g, '\n').matchAll(new RegExp(
+      '^  ' + escapeRegex(name) + ' [^\\n]*\\n  \\{\\n[\\s\\S]*?^  \\}', 'gm'))];
+    if (blocks.length !== 1 || blocks[0][0] !== expected) fail('shared auxiliary explicit linker selector drift: ' + name);
+    const contributions = sharedAuxiliaryContributions(members);
+    for (const section of new Set(contributions.map(record => record.section))) {
+      const selectors = inputSelectors.filter(selector => selector.pattern === section);
+      const expectedSelectors = contributions.filter(record => record.section === section)
+        .map(record => ({ owner: record.owner, pattern: section }));
+      if (!sameJson(selectors, expectedSelectors)) {
+        fail('shared auxiliary selector census drift: ' + name);
+      }
+    }
+  }
+}
+
+function verifyRecordedSharedAuxiliaryScript(phase8, output) {
+  const groups = validateAuxiliaryOwnerGroups(phase8.targets, phase8.model);
+  if ([...groups.values()].some(orderedAuxiliaryGroup)) {
+    verifySharedAuxiliaryScript(phase8, fs.readFileSync(path.join(output, 'linker', 'phase8.ld'), 'utf8'));
+  }
+}
+
+function verifyInteriorGroupMapOwners(phase8, mapText) {
+  for (const members of validateAuxiliaryOwnerGroups(phase8.targets, phase8.model).values()) {
+    if (!orderedAuxiliaryGroup(members)) continue;
+    const auxiliary = members[0].auxiliary;
+    const expected = sharedAuxiliaryContributions(members);
     const lines = mapText.split(/\r?\n/);
     const headings = lines.map((line, index) => new RegExp(`^${escapeRegex(auxiliary.outputSection)}\\s`).test(line) ? index : -1)
       .filter((index) => index >= 0);
     if (headings.length !== 1) fail('retained interior row map heading census drift');
+    const heading = new RegExp('^' + escapeRegex(auxiliary.outputSection)
+      + '\\s+(?:0x)?([0-9A-Fa-f]+)\\s+(?:0x)?([0-9A-Fa-f]+)\\s').exec(lines[headings[0]]);
+    if (!heading || parseInt(heading[1], 16) !== auxiliary.ownerVramStartNumber
+        || parseInt(heading[2], 16) !== auxiliary.ownerSectionBytes) fail('shared auxiliary row map placement drift');
     let end = headings[0] + 1;
     while (end < lines.length && !/^(?:\.[A-Za-z0-9_.]+|\/DISCARD\/)\s/.test(lines[end])) end += 1;
     const actual = lines.slice(headings[0] + 1, end).map((line) => {
@@ -3752,6 +3851,7 @@ function verifyPhase8Output(phase8, options) {
   const outputModel = atomic.outputModel(verificationModel, phase8.targets);
   const elfResult = verifyElfAgainstModel(outputModel, elf);
   const mapText = textLinkContext.mapText;
+  verifyRecordedSharedAuxiliaryScript(phase8, output);
   verifyInteriorGroupMapOwners(phase8, mapText);
   const mapResult = verifyMap(outputModel, mapText);
   const romResult = measure('verify-rom', () => verifyRom(phase8.model, fs.readFileSync(files.rom)));
@@ -4250,6 +4350,7 @@ function validateRecordedPhase8Build(phase8, options) {
   if (!verification || verification.schemaVersion !== 5 || verification.status !== 'pass') {
     fail('current Phase 8 verification result did not pass');
   }
+  verifyRecordedSharedAuxiliaryScript(phase8, output);
   if (typeof options.compilerSha256 !== 'string' || buildReport.compiler.sha256 !== options.compilerSha256) {
     fail('recorded KMC compiler identity drift');
   }
@@ -4560,6 +4661,8 @@ module.exports = {
   verifyTargetMapOwner,
   verifyAuxiliaryMapOwner,
   verifyInteriorGroupMapOwners,
+  verifySharedAuxiliaryScript,
+  verifyRecordedSharedAuxiliaryScript,
   writeJson,
   writeSourceObjectProofs,
   writeLayout,

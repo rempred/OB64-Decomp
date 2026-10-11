@@ -19,7 +19,14 @@ Multiple gaps use separate contracts on their respective following fragments.
 The complete row remains ordered and gap-free: optional assembly prefix, C fragments with explicit assembly interiors, and optional assembly tail.
 Every interval has one owner. A noninitial fragment cannot also own an exterior prefix.
 Only the final fragment may own the exterior tail.
-Accepted placement pairing, same-chunk, alignment and compiler-occurrence restrictions still apply.
+Accepted placement pairing, alignment and compiler-occurrence restrictions still apply.
+Shared-row validation requires the current accepted model and re-resolves every complete
+text owner and the data owner, including their actual archive chunks and source identities.
+Different contributor text chunks are supported only within one unique accepted
+non-descriptor `loader-dma` slab, with model/config agreement, complete containment and
+both ROM/RAM endpoint equations. Equal addresses or slab labels alone are insufficient.
+Existing same-chunk placement modes remain supported; forged chunks and unsupported
+cross-chunk overlay, boot, linear or ROM-only contexts reject.
 
 The interval object requires exactly these fields:
 
@@ -81,6 +88,16 @@ The original row is removed once, and explicit linker selectors interleave retai
 The existing output section and load-segment model remain unchanged.
 
 The verifier checks exact map contribution order, full object paths, addresses, sizes, and sole ownership across the entire affected row.
+Every multi-member shared row uses explicit C/ASM input selectors, including rows without
+interiors. Manifest and linker response-file order cannot determine fragment order.
+Verification also reconstructs the recorded shared-row linker stanza, rejecting wildcard
+selectors even if the observed map happened to have the expected order.
+The global selector census accepts only the finite script forms emitted by the build.
+Bare-file inputs, wildcard section patterns, input lists, nested selector wrappers and
+other unsupported descriptions fail closed, including outside the protected stanza.
+Comments do not create selectors. Literal selectors permit surrounding whitespace.
+Prefix/tail placement and the original row-symbol assignment remain fixed. These checks re-derive existing model
+and contract data without adding persisted certificates or changing evidence schemas.
 It independently reconstructs interval bytes from the original fallback and checks retained binary, retained object, linked interval, and source-object proof.
 Manifest and layout records must agree with the normalized contract.
 Build records carry exact interval artifact identities, and status accounting retains their bytes as assembly.
@@ -102,6 +119,11 @@ Run `node tests/auxiliary_interior.js` for the isolated original-row fixture and
 The routine `node tools/test.js` includes this fixture.
 Its assembly table proxies exercise real relocations and linker order, but they are not C implementations or source-class evidence.
 Its separate D14C placement fixture covers two compiler occurrences and their four-byte alignment gap without claiming D14C compilation acceptance.
+The isolated ordering probes additionally cover genuine text contributors from two archive
+chunks in one accepted slab, and a shared row without an interior. Both link with reversed
+manifest/response-file order and check exact row bytes, explicit selectors and map ownership.
+Model-provenance negatives retain the forged-chunk rejection alongside authentic cross-chunk
+positives. Tooling review and changed-input structural acceptance remain separate from fixtures.
 
 The assignment's isolated actual-C probe separately compiles unchanged B06C and archived EF50 sources, then reconstructs proofs and links the entire ROM.
 Its results do not activate either prospective ownership change.

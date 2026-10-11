@@ -93,7 +93,14 @@ original-ASM contributions must cover the complete row in linker order without g
 Only the first fragment may retain an exterior prefix; only the final fragment may retain the single exact assembly tail.
 A noninitial fragment may declare its immediately preceding original-ASM interval through `preservedInteriorBefore`.
 Multiple interiors require separate contracts, with exact original-source identity, bytes, ROM/RAM placement, and explicit empty relocation evidence.
-Accepted placement pairing, same-chunk, alignment and compiler-occurrence restrictions still apply.
+Accepted placement pairing, alignment and compiler-occurrence restrictions still apply.
+Shared rows require explicit accepted-model context and authentic complete text/data owners.
+Different contributor archive chunks are allowed only in one uniquely accepted non-descriptor
+`loader-dma` slab, with model/config identity, containment and exact ROM/RAM equations.
+Actual archive chunk identities remain unchanged. Missing context, forged ownership and
+unsupported cross-chunk placement modes reject. Existing same-chunk cases retain their pairing rules.
+Every multi-member row uses explicit full-path C/ASM selectors and exact map order, including
+rows without interiors; recorded script verification rejects a wildcard even if linked order agrees.
 This representation neither changes the accepted data boundary nor creates independent structural owners.
 
 An explicit `sourceObjectPrefix.discardedTerminalAlignment: true` may select the compiler's

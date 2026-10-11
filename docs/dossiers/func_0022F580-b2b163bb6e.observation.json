@@ -1,0 +1,685 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B2B163BB6E25C6165E7F172A7F69368C54B34EE677F7C0536840FB207AEDC476",
+  "observationId": "541B3843954B6FE2EE6E1A235324D21D0F85021413B10FC174EB0E4630AE4FFE",
+  "symbol": "func_0022F580",
+  "authored": {
+    "context": "Fresh exact current target intake after Director2315/2317 release; prior target identity differs and is retained only as historical evidence.",
+    "effects": [
+      "current-target-refreshed",
+      "unchanged-source-native-parity",
+      "all-nonrelocation-fields-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7C38FC86CE0D8BCB04ADBDE413888CDDFE53EE1728F98C1158F289C537319056",
+      "sourceSha256": "397EDE7F456714A0BC676CD5D181E6C28C706067CCFF96419E2B47BAED78C2C0"
+    },
+    "label": "22f580-unchanged-source-refreshed-current-target-readiness",
+    "observedEffect": "5404B/frame704, PURE_C, zero instruction fields outside191 actualREL. Current target4CA559804E77C563D65C6A6675A58D425255653C9FAC761531C786CA699008D7 and candidateB2B163BB6E25C6165E7F172A7F69368C54B34EE677F7C0536840FB207AEDC476. Entire native compiler assembly, emitted relocation census and coupled-section contents equal the old source-bound result. Old target/probe/observation IDs are not relabeled or made current parents.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022F580.s",
+        "sha256": "3B9E75EAAD4DF53BA4135F890006EE4C04C200A72234419C5DA9930159B188AA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/22f580-instruction-ready.c",
+        "sha256": "397EDE7F456714A0BC676CD5D181E6C28C706067CCFF96419E2B47BAED78C2C0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/22f580-complete-wave-refresh2317-watch.json",
+        "sha256": "7814A214A54E5CC7C119010D8F095E64555928D887C61E93EA1B0F51B83530E0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/22f580-complete-wave-refresh2317-inspection.json",
+        "sha256": "A1C01CBA2841944A1E42D3D76BD28B65DCF1C320F57CCD1F74711DCAD0F45EE4"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/22f580-complete-wave-refresh2317-intake.json",
+        "sha256": "1262C1935F34E70A5D8E26F27782FD81809FF589381F56E4A6DAEE2CB5A68A09"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/22f580-instruction-ready-r2-import.json",
+        "sha256": "A1246AAA69499EDBDC18D5911093C95B9259BA741A64AA8E9508071C897A5EE1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/7DFBF6BEA1C7B45BA7F4AC2D84E35E1A65451469B41B565BAB7D612EFD1A3EB1/candidate.o",
+        "sha256": "AF2702263360128143B98EF78565FE7DDC5A4235F256005941BCF16BF241C3E2"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/7DFBF6BEA1C7B45BA7F4AC2D84E35E1A65451469B41B565BAB7D612EFD1A3EB1/candidate.compiler.s",
+        "sha256": "1000C1D3DE4F7D7721200EFD1728D9DE8C76B8EB32293907D00D71774A0DBC3E"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/7DFBF6BEA1C7B45BA7F4AC2D84E35E1A65451469B41B565BAB7D612EFD1A3EB1/candidate.input.c",
+        "sha256": "7C38FC86CE0D8BCB04ADBDE413888CDDFE53EE1728F98C1158F289C537319056"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/7DFBF6BEA1C7B45BA7F4AC2D84E35E1A65451469B41B565BAB7D612EFD1A3EB1/workbench-report.json",
+        "sha256": "1E721FF709A1AB2EB79014014497F987047561E1A9E2E40CCEE42D32B0E65E5E"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/22f580-instruction-ready-probe.json",
+        "sha256": "F1C3846C0FDF5F7D55AD9ACBEE055A51073BB6330F9934952399011847A502FB"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/22f580-instruction-ready-probe-audit.json",
+        "sha256": "1B36A61E1774C327001F0A6C7F34B8D1774ADE66C642178EEA1C07518FED294F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/authored.c",
+        "sha256": "397EDE7F456714A0BC676CD5D181E6C28C706067CCFF96419E2B47BAED78C2C0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c",
+        "sha256": "7C38FC86CE0D8BCB04ADBDE413888CDDFE53EE1728F98C1158F289C537319056"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/output.s",
+        "sha256": "A58AFA848069C45084EE0D6CE7489E26E9A29178F18C916C89988D4AAAA7E522"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.rtl",
+        "sha256": "BB2C5F81AF46F04CCA19B636CB638CCA5E346805B5E35BA61F42C5FF592930E6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.cse",
+        "sha256": "1BABCD4F09F4D6DDAF2FA9536365281CE14DC640BEEB5DD94B553162BE0DD2CC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.loop",
+        "sha256": "39FFB6D8B5DA8DCA92404504D41C539CFA2028D3974717980A50453CFD638859"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.cse2",
+        "sha256": "2E8E6E029C8D38F8334A81ADF1206E3307EDDBB3719DA357072688A086D66788"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.flow",
+        "sha256": "3808E569AAFF3C3B946CFE4DE27E774429B1101A59BE7ADF80F1D7FA1344E65E"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.combine",
+        "sha256": "36D383FEDFDACD74BC54668B041D25FA40065EFBE11900337395AE5263245C72"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.sched",
+        "sha256": "601B448C2D1BCE29C4BF18EA4CF3FB77A1D7AB006FCCF1A17A7BF550EB799789"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.lreg",
+        "sha256": "27580009B1CB7911490776558C4F490E702EC01AC02F870F8B8A0074102BC4FE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.greg",
+        "sha256": "EC2CE8F6A116DCBB6966A406CF1B2430AFEDE6813655B71C2920FED0366D5A12"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.sched2",
+        "sha256": "3938C637DBAFE2CA027E0623F2E7B9052E8F48215D2C5AD88A1E956D13859339"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.jump2",
+        "sha256": "CA187615569D14726D7040272ABE3C22F76CF56E7F4EF02A5E70DA43827A4842"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_0022F580/probes/055BF344D42E9B90F336FD70C09A51325A423D3B203E1EB5DE501F64FC1BDFE3/input.c.dbr",
+        "sha256": "FBD28C6DEEB0B43935A0AEA08F597DB6064CA83ACF2F4EE0A69F34EED9566349"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00230A9C.s",
+        "sha256": "3967B2372FC919C9F6F4BD63F7B8945B8D1CC3D81F6457B5440A882476B81471"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00230A9C_chunk35tail.s",
+        "sha256": "8D5747B8A1B6F85B9161790EF65409D501D5259EEBD59D3F83FA1D12FB35385B"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready.c",
+        "sha256": "9F34771CF292FD438EB8EEEA5F169D01F32EFB9864ADB3C83032220AA00180DA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-watch.json",
+        "sha256": "C1D22889AD5321DDABF0B918CD011E848557AD9027AA59D5E5B4D35643D24838"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-inspection.json",
+        "sha256": "376CA437C614D1E839AE4225EA918527E03EA6DC4C0A158124747EC880C81D46"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-complete-wave-refresh2317-intake.json",
+        "sha256": "19566B42D25904C9216DC697269C7C9510D6B7452343FB723A14C52D8715AA74"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-import.json",
+        "sha256": "BC5CEBA345272D407BFA60B5A8F3C5D6EFE696565FBAD30270623A1A77BE31FD"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/DC4A2BAEFC65AFB9B1410E0CB5E96B797F1DB9237913E417956ECC7EB011FCCD/candidate.o",
+        "sha256": "25C26A72841DB5E4A2CCFDCEAA1A0D7A7381C4B1A6DD97B19BEE9326F6CB24EC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/DC4A2BAEFC65AFB9B1410E0CB5E96B797F1DB9237913E417956ECC7EB011FCCD/candidate.compiler.s",
+        "sha256": "150585CC32A171F56F5C882C139AD6C2814EC0DC85E33DDC0695D2ABE25EFBEA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/DC4A2BAEFC65AFB9B1410E0CB5E96B797F1DB9237913E417956ECC7EB011FCCD/candidate.input.c",
+        "sha256": "4B1480AF02E4155B1FD762C6DAD69D2C7DACF1972D194FFE4C5F1D59BAD5B2BF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/DC4A2BAEFC65AFB9B1410E0CB5E96B797F1DB9237913E417956ECC7EB011FCCD/workbench-report.json",
+        "sha256": "C41F3BDC299E8973965AA2578577F8C1B1E8726D3C1E7F3A861F4FB8E67DD8D3"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-probe.json",
+        "sha256": "BBACAD990D82288371197D839AE3E352A6B3B7CA90B7B11FB253460070E2D5B6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-probe-audit.json",
+        "sha256": "7B60564B6E35D81D7EDE6324F24F2BC02D67B16AD0A3CAA0440AAD433B8DBA6D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/authored.c",
+        "sha256": "9F34771CF292FD438EB8EEEA5F169D01F32EFB9864ADB3C83032220AA00180DA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c",
+        "sha256": "4B1480AF02E4155B1FD762C6DAD69D2C7DACF1972D194FFE4C5F1D59BAD5B2BF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/output.s",
+        "sha256": "1E249C171B6A930D681C60A2BCCAEF39E53526EDC6DD01E71EC29EA32C78E201"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.rtl",
+        "sha256": "C172DE1B77A950864B956245FA687887040E5D42246E0024BB4790CB71C721F6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.cse",
+        "sha256": "A092FA4CFABBF9DE9AD1CC03C228DCF579C593B1A5CB4016C9EA39F8FF3A16F6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.loop",
+        "sha256": "9E9E3291C14E9AE0446D359B616A62A31290F34C6787F4E656F95E75FABA1384"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.cse2",
+        "sha256": "7385B1DCEC77F1246F69C8B0420B3C4782554DC5E7E5D2D4B9F3E4065C58DCAC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.flow",
+        "sha256": "3526B9E4108952223720F9FCC1142B45B2D28AB9E7B44B2E89F79857B8B357FC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.combine",
+        "sha256": "9E173B0CE89B647823A0FC4F96EE688D0A85A04C81003B2F7C2C8B00A698843A"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.sched",
+        "sha256": "67C9B9F8651087FD89EB7A32B113DDBF1AF35C24C534D97AF5850C3C9B5E4BB0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.lreg",
+        "sha256": "5284BB9AA4A026CB4AE820AC40724032EC4F5250C1BC4081D5344C86A73153FE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.greg",
+        "sha256": "15C59EA186E33D1357939D0439856E0FF1CBEB2091A1D94A9170C947C390637F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.sched2",
+        "sha256": "0C89A4A1BDAC9C5F4765A62BF9396514F6C6B7517877221F20A339638929EF78"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.jump2",
+        "sha256": "520876C81D90E5B67063501CA486B6BCE61D556FA2D1E446EB9B84652D0C9D63"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.dbr",
+        "sha256": "3BE610F397234372FFE0A8CF8D4A7F3B7C2757C73C2D6E0509F90B27CF47DAEF"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002317C8.s",
+        "sha256": "CEDE26E567FDCBCA91B8D6B7582717611D9F65D334F379646961D61B23C0089A"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-instruction-ready.c",
+        "sha256": "667863E7FF6B24E7116D3C2D30F29B250E4A41577C668AD54FA1833147DC4A3F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-instruction-ready-watch.json",
+        "sha256": "3E8D5438104823EA1A76F316AF72A466A53E87B808472634F5DED58EF884D311"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-instruction-ready-inspection.json",
+        "sha256": "19C289180CA83A673EF7812C1A2E618215B12B9383566EB992AEDF1B65DBFB95"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-resume-director2315-intake.json",
+        "sha256": "7816CBC8C33F346292739B60BA217C25EB81551DFF229B4A63E012AEBEC08190"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-instruction-ready-import.json",
+        "sha256": "C63FC0F9CD53B63D22A07B36514A58B50DCA0BC47E6CC1B0EF62839F4C353ACA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/A84D5BFC104046DD998CE124F495578FC1E38B1E38C50DC6EB9FE97D34DEBD11/candidate.o",
+        "sha256": "898B54E1A4BB2C425C451784752E044DD7FED3DE543D63A95725D715496779A9"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/A84D5BFC104046DD998CE124F495578FC1E38B1E38C50DC6EB9FE97D34DEBD11/candidate.compiler.s",
+        "sha256": "2BEAAAA0E74511E2B67C26B2ED533B46F489A5E3D7B008D0B2CD4AEA4BE48754"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/A84D5BFC104046DD998CE124F495578FC1E38B1E38C50DC6EB9FE97D34DEBD11/candidate.input.c",
+        "sha256": "43976104CF253C754A9FCCD587D86C27A3B43B4C7B19E9A1BED4415E696D65CA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/A84D5BFC104046DD998CE124F495578FC1E38B1E38C50DC6EB9FE97D34DEBD11/workbench-report.json",
+        "sha256": "A267344FC6E02E93A63210CB924A076F845C1DE6782A68382EB0441D88CD77C1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-instruction-ready-probe.json",
+        "sha256": "4386DB809208A24B1C568492E177EF0EF562E5345365874542A71A459B9829ED"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-instruction-ready-probe-audit.json",
+        "sha256": "3B7F278987AFCF9F5530D603D6D37D45078F1868694460AA450E7A236DB0ED35"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/authored.c",
+        "sha256": "667863E7FF6B24E7116D3C2D30F29B250E4A41577C668AD54FA1833147DC4A3F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c",
+        "sha256": "43976104CF253C754A9FCCD587D86C27A3B43B4C7B19E9A1BED4415E696D65CA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/output.s",
+        "sha256": "AC9F4FAD6D90B841EA75C343750CD4392FD900DE2C2D05A34C59D03046CF4FBB"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.rtl",
+        "sha256": "01B3EFDFE6CA75C22E0AC8AF4DD0A3F83DEA244E408646FBEBF569584E964E49"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.jump",
+        "sha256": "DF35ABCCB222FEE26F170B1715D97C76A44F217694589FB9A12E29908A540665"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.cse",
+        "sha256": "3619041CBE5FEA68EDA190010F042D6BF782602263FA5AEA136EF27509D5C13C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.loop",
+        "sha256": "D5838107478B6E1C18A68494C2296682048AA13B5829008A000F796EB496A276"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.cse2",
+        "sha256": "6C2B9D0ADD3C3174D51E2E6506BF2AF88758CD3015E6CD7A2A33FBE7A4064865"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.flow",
+        "sha256": "EF1910248958E674E27224251304CDDA6F36C05E44EB74CBF21B34D127ACDF17"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.combine",
+        "sha256": "D3E5530AC0910B901F08E31C71F82071E49A205E6112D0E0F144F4D785F1775A"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.sched",
+        "sha256": "46A8065EB5990462AD30FEB5CFF3CA3A0C34AA6A2778163D21C1C8DC4E14FD76"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.lreg",
+        "sha256": "8B0ED225F4208D08059EF1A0CDF0B36F0BAA99D91EF8D200695C783DA3CE56EF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.greg",
+        "sha256": "7FA54CE419D1F6C7EE22916A5CFCC9BC34F32F6D8BF27046400F6D6ADEEE163E"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.sched2",
+        "sha256": "38968B296BE38FD948E840E2871C461456D1D60C0A15CDAF97BEEEE64821F154"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.jump2",
+        "sha256": "6F0F0518EEF5CB612D2CB7F51BC75A030DDF68E066076ED3D31EB410874B3EBD"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/32AB332AC49039CD8FF138BFDD3BA7754C7245072987DC9395A3FC821D7FFB89/input.c.dbr",
+        "sha256": "B1AC32BDC8045041DBC626F85A480FB23BFBDEBCF6546729E4853A49593BCE72"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00231CC0.s",
+        "sha256": "B1E9EF2CC30D2BF0ADD9FDB1A076AD463D1E89DBA0F5C8B3A0EEB4EE9BF38A3E"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/231cc0-candidate.c",
+        "sha256": "9ACE4CD1306AFA9F96FAB87A40752326CFF70D064FEB0CA93D2FFBE03EFA6BEF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/231cc0-complete-wave-refresh2317-watch.json",
+        "sha256": "4DE9C57AF6B4C390B1472AA805B1F13F991BB39F08CC3C8D552322A6D8CC51C7"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/231cc0-complete-wave-refresh2317-inspection.json",
+        "sha256": "C319FDAE0BA65E764886C55D6FA1BD8498D18B5CCE8CEF11C2239B4AEC9D67A4"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/231cc0-complete-wave-refresh2317-intake.json",
+        "sha256": "54BD485CE9D293F27F7C22808C967921A3AA6D1845E812AB61B4970A34AFDBFC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/231cc0-candidate-import.json",
+        "sha256": "BA4300176115B9731203B619FC023B0DD16BB21A207AD23414BBEB3670952DB7"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/66492A350702C0AFEE95339A0F6C7415E53E81CCF348AF74DFB56DD2429BDE8D/candidate.o",
+        "sha256": "23C15EA37AC42F80ED432F9BB6FA5AC207D3678FE782970983BCF0841719C616"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/66492A350702C0AFEE95339A0F6C7415E53E81CCF348AF74DFB56DD2429BDE8D/candidate.compiler.s",
+        "sha256": "A2CDB029A227348693D0B301BAAD55245C5538B9B3059FB4843E378C26243550"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/66492A350702C0AFEE95339A0F6C7415E53E81CCF348AF74DFB56DD2429BDE8D/candidate.input.c",
+        "sha256": "7E77D9C0D04C6EAF28925A73466693A515088DC08005B9AA360A784171927272"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/66492A350702C0AFEE95339A0F6C7415E53E81CCF348AF74DFB56DD2429BDE8D/workbench-report.json",
+        "sha256": "C447EBA66556C74050FD81F70AD5FAE1A3AF4A4A74F432E31A296E1D3570B313"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00232280.s",
+        "sha256": "A68FC7DDB8893C0BD8EA68AECFADE7F5929839C8177A2A80C2B04D90333E86EE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232280-index-rotation.c",
+        "sha256": "A7E483D43A34FC1F7A177E1BA62CF9A33B17ADFE438325F6084F4BEE9DB7159D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232280-complete-wave-refresh2317-watch.json",
+        "sha256": "27FE59F8624D7256D6E6A2075A5BB5A6E16DC8BB9D8623C7AAAA1AE81321AFB0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232280-complete-wave-refresh2317-inspection.json",
+        "sha256": "0A1BE429E1BAD4E195305ADB91DE8296F6478E7B46C10C05F67E90D90C715D73"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232280-complete-wave-refresh2317-intake.json",
+        "sha256": "79B19A46DC4BF9D0875955435E8C30CD4E54C72B5685BB0A45A8CF296102E0A3"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232280-index-rotation-import.json",
+        "sha256": "E85F350121DDF4C14732E0976DC0B5F22BE3109112FF8F6838457BF4F13C1128"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/1B3BB3EC57A4862A5DF7695EC58B601A7E0494F5C529A2A64C17472AFA252F03/candidate.o",
+        "sha256": "DFAF42B3AF3AEBC5FE1572633EBFA4CEA50A8BE7EAD898EA854871B9E46FFE78"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/1B3BB3EC57A4862A5DF7695EC58B601A7E0494F5C529A2A64C17472AFA252F03/candidate.compiler.s",
+        "sha256": "530853415EE6BA3C26068B3C1DF4BDEE4B5DCCBE86C83CD211A047B02EA9487B"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/1B3BB3EC57A4862A5DF7695EC58B601A7E0494F5C529A2A64C17472AFA252F03/candidate.input.c",
+        "sha256": "442CA62D0A5A8719DC9870BADD40FC0B20FE95421DA643B134C113AB7ADEF937"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/1B3BB3EC57A4862A5DF7695EC58B601A7E0494F5C529A2A64C17472AFA252F03/workbench-report.json",
+        "sha256": "D686A57BB5606D57DDCE4E3347197E59C0148C10D4E65E48E9A255B16BFA26D7"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00232458.s",
+        "sha256": "56F6542D4EB7959B6556A38AFCD925E3F87EC6D65A1DC09DAD4F64DE995BB159"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232458-ordered-single-definition-address.c",
+        "sha256": "66CF86F9C3C9379EED660FC506DFAE73C02C82A2F1C36FB5B6D04960906419E9"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232458-ordered-single-definition-address-watch.json",
+        "sha256": "9E7117F3B9D0170BBA0532EE2EFAF85EF065EA5E074C98D855ED4410CCC704C2"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232458-ordered-single-definition-address-inspection.json",
+        "sha256": "7E833D48CE518EC8F3D0D9FAE9A3F3A3FFD3A16E1778481097A0F4A796A783F4"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232458-complete-wave-refresh2317-intake.json",
+        "sha256": "96EAE2EED82E31633BA0629C359034182F6BDDAE9CA40E8D402C0F4128232E95"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232458-ordered-single-definition-address-import.json",
+        "sha256": "E36430F5E99A3DC9DBEEE519CC767ED831C9643FB4ABF7B53B776264F4AEDE25"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/F1CA1480B97E26D8BA8FE59A5AFE9CA87D35650F71269DE0CEFEF58DF2696C00/candidate.o",
+        "sha256": "7054AA088FF715362AD213728241D0EF5C531244AF8FFE98877B2EED02C31E97"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/F1CA1480B97E26D8BA8FE59A5AFE9CA87D35650F71269DE0CEFEF58DF2696C00/candidate.compiler.s",
+        "sha256": "A8EA9DE2D3DD83CCA29D273A075771AE33EF2CF5D449B263B02DAD503D1CCF2B"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/F1CA1480B97E26D8BA8FE59A5AFE9CA87D35650F71269DE0CEFEF58DF2696C00/candidate.input.c",
+        "sha256": "9B012BF5752949C04B4D179F50502F60B7B2BBF266736A95E865014A35AF0B9F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/F1CA1480B97E26D8BA8FE59A5AFE9CA87D35650F71269DE0CEFEF58DF2696C00/workbench-report.json",
+        "sha256": "0C653B31D7DDE626C668622589E0F6EF2494151AB575AF02320CDC9CE14F335E"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232458-ordered-single-definition-address-probe.json",
+        "sha256": "457FEDCFCAA09FCE58F88B178B09EC0D6A4676AC32902450E56139A0507DEC34"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232458-ordered-single-definition-address-probe-audit.json",
+        "sha256": "F0A618DE4F10DA67BC044A9E56EBA1F9388FE531B6E2FB7FC31CCBC390FF8EAE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/authored.c",
+        "sha256": "66CF86F9C3C9379EED660FC506DFAE73C02C82A2F1C36FB5B6D04960906419E9"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c",
+        "sha256": "9B012BF5752949C04B4D179F50502F60B7B2BBF266736A95E865014A35AF0B9F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/output.s",
+        "sha256": "5A47B98457B98BFE518868931D0E69C09574B39290A89338D7575398CCEDBA23"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.rtl",
+        "sha256": "118A5E6D27640ED558645A68E14CC56E9CE70DB0066B53D5A9E08CA35F31571C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.jump",
+        "sha256": "B9FC53B1FBF7868A7DB7343DD92691F2B77282A37E2CAD60564943E6C662539C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.cse",
+        "sha256": "23D6912BF774D9B4D240A803C3B726F7A775F882872348DC3E959040A93A0E46"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.loop",
+        "sha256": "753A239D54699C96B27DF7406F0A00985C29C5556258FE693250C923E4E5DEAA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.cse2",
+        "sha256": "5BCDA540FA095D94F880F5F411B8EF1AD1727CD37F125FF367F7A84D133E38B0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.flow",
+        "sha256": "CF0C438749E3ECC802288DAFB9E4F4FD11E67CC7AC779E67283D7F39294C28CD"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.combine",
+        "sha256": "5A1F4AC754A85BB8B25339DC36C56ABF2F228B33E14E52159AD654D910029F3D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.sched",
+        "sha256": "28B7F4CA2EBB8996755BFEA138CCB9138AC77D4CDC5E5E86A7FE50783C10EAA2"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.lreg",
+        "sha256": "86F11538CCB9075011D7055CC1A74EEE3DBFB4B4F2B5C9C450302D1F36265449"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.greg",
+        "sha256": "158F373A8A9C7FD99014DB2FAA50BE9311014D405C4C5093515DB3AC9C482C8B"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.sched2",
+        "sha256": "C4E0D03DD450C65D80AAB70D27FF69EFE5DBA648D9E7D4D154387D9AD6451D15"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.jump2",
+        "sha256": "297E05125168EE63D2292A0B536D34D813C7F8262AC9B4801BEFAB7C4486BC2C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00232458/probes/24F309B0717E1AF8E8D83514B74934AD854D1DEBC51DAD19B0C08FBA1E72C7C5/input.c.dbr",
+        "sha256": "AFA905927F8408D298EF817FC5852586B00CED065B7F8D59FF1996F952FEB7EE"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00232D7C.s",
+        "sha256": "D09433CB44A32D1578BF684F33D0628E8ECDB23B3266A3A622E5CFA598627DBB"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232d7c-candidate.c",
+        "sha256": "9E5549FC67CFD3426D99309EA550B90A64F3D75E94B8C86340939B9214DE88BA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232d7c-complete-wave-refresh2317-watch.json",
+        "sha256": "FE9AA1401FB938FD193F08D027C176D7936CB7ADC164EC2DC91846F16854C3DE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232d7c-complete-wave-refresh2317-inspection.json",
+        "sha256": "57C17397C5E5CAF8A5BD007A71F9F8DD9B89782A8B97AE0EC76443872738C31D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232d7c-complete-wave-refresh2317-intake.json",
+        "sha256": "D4B98C3A28D7F11D5E02F097990D8C493B35AE15ED43BC408A104FA6082C714D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232d7c-candidate-import.json",
+        "sha256": "DE7508ED95D4DA30BE3F1E160F5DFC6627127E1DD21E785DD9DBAAD07488A551"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/42B4A857E39581EDD8505B86C25EDEFE6B2CDEA5E32E0BAA68764A49EA9709BA/candidate.o",
+        "sha256": "F7A4EF9A482B9E10C10E817F59FE0B27055086C1860E6DD0AE7F65DE0D47D093"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/42B4A857E39581EDD8505B86C25EDEFE6B2CDEA5E32E0BAA68764A49EA9709BA/candidate.compiler.s",
+        "sha256": "A16DE77F86BE8C9D343B6EE49F879D3FACA75EBE4430675FEB7B448D8EE25ECE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/42B4A857E39581EDD8505B86C25EDEFE6B2CDEA5E32E0BAA68764A49EA9709BA/candidate.input.c",
+        "sha256": "B3AA67BBC453DAE231343E7F76451D4F4CCAEE1443F3CA8C6A9EA2719D5A6117"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/42B4A857E39581EDD8505B86C25EDEFE6B2CDEA5E32E0BAA68764A49EA9709BA/workbench-report.json",
+        "sha256": "09E2415090D05A644C684C73C1CBB48E5C3BF3A036D4056089F167443F4B6718"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/membership.json",
+        "sha256": "92C6760501E7F76232DB22B856773E1CCA7B906ECF75F07882F447F579F860A2"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-final-scalar-entry-selector-audit.json",
+        "sha256": "59B2F13E68707132820F50FFEFAF3755B5FDE849E848A0F837A3E4B942268E19"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-controls-audit.json",
+        "sha256": "3C07AA98FE8E8C0A8AE0D7D8E78E7B2112D2A9061829A9D9225C1B4F4E66C89E"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/232458-one-definition-address-audit.json",
+        "sha256": "B5DA2D1FBB90E204F86470A3582A0461D48EBF9B52EBB5D363FF783039049715"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/22f580-eighth-controls-audit-r2.json",
+        "sha256": "3D13FB06D3AE4DF5D1BD38030460F00D99A91B66B20384E3DEA847D07FFA0D01"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/director2315-native-release.json",
+        "sha256": "C153C5A8720F7056C7D548EE1F85A87AAE4F4C1DBAC3B4FB0BF964E252654CB2"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/director2317-w5-accepted-production-retired.json",
+        "sha256": "FEF090DF6033B3CFFF9CA5908358A674D4774CA82797F53BE174C95CF1B0C785"
+      },
+      {
+        "path": "src/lib/func_0020BF8C.c",
+        "sha256": "7DA84AE7F198543288321183ABE2AF039F71710713E4B720E73D27FA00FD066B"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0020BF8C.s",
+        "sha256": "CC023B61776E6F27F1449A5454FFDB3F8F0C2F341A3FFEF108365295409342A2"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/w7-complete-refresh2317-audit.json",
+        "sha256": "F54D7B64074EF19F242F81955F1C22F3BEE8A2E4E28F830267EC9F5CFD5D49AA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Production writer integrates all original seven members and coupled producers under accepted existing structural contracts. Record actual expected relocation/addend contracts, then normal focused integrated-source checks for each member and coupled data. Confirm PURE_C/sole C owner, exact placement and linked retail bytes for every original target and both A9C physical parts. Drain private native checks before shared changes; one final canonical verifier on the complete combined wave, without a redundant preceding build, must prove the entire Rev0 ROM exact. Normal integrated source/include and exact linked verification still apply. Raw descriptor-shift domain in32D7C and six-element C8 storage bounds remain unproved semantic questions.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "No C change. Recompile the frozen final source against the current accepted target metadata and authenticate full body, expansion, native compiler assembly, actual relocations and coupled sections against the prior result."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 28155,
+      "sha256": "7C38FC86CE0D8BCB04ADBDE413888CDDFE53EE1728F98C1158F289C537319056"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "397EDE7F456714A0BC676CD5D181E6C28C706067CCFF96419E2B47BAED78C2C0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022F580-b2b163bb6e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

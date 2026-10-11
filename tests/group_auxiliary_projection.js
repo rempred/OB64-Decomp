@@ -89,9 +89,11 @@ function row(index, start, bytes, vram, executable) {return {index,primaryId:'fi
   part:{file:originalRelative,sha256:p7.sha256File(original),chunkIndex:0,name:'fixture_owner_'+index,symbolByteOffset:0},
   slices:[{sectionName:'.ob64.r'+String(index).padStart(4,'0'),executable,bytes,romStart:start,romEndExclusive:start+bytes,
     vramStart:vram,vramEndExclusive:vram+bytes,placementKind:'overlay',overlayDescriptorId:99,overlaySection:executable?'text':'data-rodata',loadSlabId:null}]};}
-const model={overlays:[],rows:[...functions.map((value,index)=>row(index+1,textRom+value.offset,value.bytes+(index===2?group.tail.bytes:0),base+value.offset,true)),
+const model={config:{rom:{bytes:rom.length},expected:{nonDescriptorLoadSlabs:0},nonDescriptorLoadSlabs:[]},
+  nonDescriptorLoadSlabs:[],overlays:[],rows:[...functions.map((value,index)=>row(index+1,textRom+value.offset,value.bytes+(index===2?group.tail.bytes:0),base+value.offset,true)),
   ...segments.map(value=>row(Number((value.outputSection||value.ownerSection).slice(7)),tableRom+value.offset,value.kind==='payload'?value.bytes:value.ownerBytes,tableBase+value.offset,false))]};
 model.slices=model.rows.flatMap(value=>value.slices);
+functions.forEach((fun,index)=>{model.rows[index].part.name=fun.symbol;});
 const targets=functions.map((fun,index)=>{const r=model.rows[index],s=r.slices[0];const owner={ownerIndex:0,sectionName:s.sectionName,symbol:fun.symbol,rowIndex:r.index,
   primaryId:r.primaryId,chunkIndex:0,logicalOffset:0,logicalEnd:r.bytes,bytes:r.bytes,romStartNumber:r.romStart,romEndNumber:r.romEndExclusive,
   vramStartNumber:s.vramStart,vramEndNumber:s.vramEndExclusive,expectedTextSha256:hash(rom.subarray(r.romStart,r.romEndExclusive)),
@@ -100,7 +102,7 @@ const targets=functions.map((fun,index)=>{const r=model.rows[index],s=r.slices[0
   overlayDescriptorId:99,descriptorRawSha256:'0'.repeat(64),legacyAncillaryRelocations:[],relocationContractSource:'compilation-group'};});
 groups.bind([group],targets,{model,baserom:rom});
 const bound=targets[0].compilationGroup, attribution=targets[1];
-active.validateAuxiliaryOwnerGroups(targets);auxiliary.validateCensus(targets);
+active.validateAuxiliaryOwnerGroups(targets, model);auxiliary.validateCensus(targets);
 const result=groups.project(raw.buffer,bound);
 assert.deepEqual(auxiliary.conservedOutsideReadonly(p7.parseElf32BigEndian(result.intermediate),bound),
   auxiliary.conservedOutsideReadonly(p7.parseElf32BigEndian(result.buffer),bound));

@@ -14,10 +14,11 @@ fs.mkdirSync(FIXTURES, { recursive: true });
 const realRequire = createRequire(path.join(ROOT, 'tools/lib/current_workflow.js'));
 const actualText = realRequire('./text_contract');
 const actualGroups = realRequire('./compilation_groups');
+const actualPhase8 = realRequire('./phase8_matching_c');
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase();
 const clone = value => JSON.parse(JSON.stringify(value));
 
-function fixture() {
+function fixture(accepted = null) {
   const root = fs.mkdtempSync(path.join(FIXTURES, 'fixture-'));
   function write(relative, value) {
     const file = path.join(root, relative);
@@ -26,12 +27,13 @@ function fixture() {
     fs.writeFileSync(file, bytes); return { path: relative, bytes: bytes.length, sha256: hash(bytes) };
   }
   for (const name of ['phase8.elf', 'phase8.elf-report.json', 'phase8.map', 'phase8.us_rev0.z64']) write(name, name);
-  const phase8 = { targets: [], logicalFunctionConfigIdentity: { sha256: 'logical' } };
+  const phase8 = { targets: [], logicalFunctionConfigIdentity: { sha256: 'logical' }, ...(accepted ? { model: accepted.model } : {}) };
   const policy = { schemaVersion: 2, status: 'pass', targets: [] };
   const replacements = [], layout = { schemaVersion: 2, phase8MatchingCTargets: [] }, manifest = { schemaVersion: 5, linkedObjects: [] }, representations = new Map();
-  for (const symbol of ['one', 'two', 'three']) {
+  for (const symbol of accepted ? accepted.targets.map(t => t.symbol) : ['one', 'two', 'three']) {
     const source = `src/${symbol}.c`, input = write(source, `int ${symbol}(void) { return 1; }\n`), sourceSha256 = hash(Buffer.from('authored:' + symbol));
-    const target = { symbol, source, sourceSha256, bytes: 4 }; phase8.targets.push(target);
+    const original = accepted?.targets.find(t => t.symbol === symbol);
+    const target = { ...original, symbol, source, sourceSha256, bytes: original?.bytes || 4 }; phase8.targets.push(target);
     policy.targets.push({ symbol, source, sourceSha256, class: 'PURE_C', compilationInput: { bytes: input.bytes, sha256: input.sha256 } });
     const representation = { textContract: { symbol, bytes: 4 }, objectEvidence: { symbol, owner: 'original' }, linkEvidence: { fullOwnerExact: true } };
     representations.set(symbol, representation);
@@ -66,9 +68,9 @@ function run(f, { onTarget, onFinish, linkedExact = true } = {}) {
     fs: fsView,
     './phase7_conventional': { ROOT, sha256Buffer: hash, sha256File: file => hash(fs.readFileSync(file)) },
     './auxiliary_interior': { interiorRecords: () => [] },
-    './phase8_matching_c': { loadCanonicalBaserom: () => Buffer.alloc(4) },
+    './phase8_matching_c': { ...actualPhase8, loadCanonicalBaserom: () => Buffer.alloc(4) },
     './text_contract': {
-      linkContext: () => ({}), finishLinkContext() { onFinish?.(f); },
+      linkContext: () => ({ mapText: fs.readFileSync(path.join(f.root, 'phase8.map'), 'utf8') }), finishLinkContext() { onFinish?.(f); },
       recordsForTarget(target) { counters.targets.push(target.symbol); onTarget?.(target, f); return { ...f.representations.get(target.symbol), linkEvidence: { fullOwnerExact: linkedExact } }; },
       validateRecords(record, expected, label) { counters.validations.push(label); return actualText.validateRecords(record, expected, label); },
     },
@@ -167,4 +169,57 @@ test('metadata confinement rejects nonregular paths and indirect escapes', () =>
     fs.renameSync(path.join(h.root, 'objects'), path.join(h.root, 'original-objects'));
     fs.symlinkSync(replacement, path.join(h.root, 'objects'), process.platform === 'win32' ? 'junction' : 'dir');
   } }).result, false);
+});
+
+test('shared auxiliary CURRENT reuse requires authentic model, explicit recorded selectors and exact map order', () => {
+  const active = realRequire('./active_targets').loadActiveTargetModel();
+  const targets = ['func_0022B06C', 'func_0022D14C', 'func_0022EF50'].map(symbol => active.targets.find(t => t.symbol === symbol));
+  assert(targets.every(Boolean));
+  const accepted = { model: active.model, targets };
+  function sharedFixture() {
+    const f = fixture(accepted), first = targets[0].auxiliarySections[0], last = targets.at(-1).auxiliarySections[0];
+    const tailPath = `objects/assembly/auxiliary/chunk_${String(last.ownerChunkIndex).padStart(3, '0')}_${last.outputSection.slice(6)}_tail.o`;
+    const manifest = { linkedObjects: [
+      ...targets.map(t => ({ path: `objects/c/${t.symbol}.o`, ownerKind: 'matching-c-target', targetSymbol: t.symbol })),
+      { path: tailPath, ownerKind: 'accepted-assembly-auxiliary-tail', targetSymbol: targets.at(-1).symbol,
+        outputSection: last.outputSection, inputSection: last.ownerTailSection, sectionType: 'SHT_PROGBITS', sectionFlags: ['SHF_ALLOC'] },
+    ] };
+    const script = actualPhase8.renderPhase8LinkerScript(f.phase8, manifest);
+    const hex = value => value.toString(16);
+    const contribution = (section, start, bytes, owner) => ` ${section} ${hex(start)} ${hex(bytes)} ${hex(bytes)} 2**3 elf32-bigmips ${owner}(overhead 0 bytes)`;
+    const cLines = targets.map(t => { const a = t.auxiliarySections[0]; return contribution(a.outputSection, a.vramStartNumber, a.bytes, `objects/c/${t.symbol}.o`); });
+    const map = [`${first.outputSection} ${hex(first.ownerVramStartNumber)} ${hex(first.ownerSectionBytes)} 0 2**3 load alloc contents`,
+      ...cLines, contribution(last.ownerTailSection, last.ownerTailVramStartNumber, last.ownerTailBytes, tailPath)].join('\n') + '\n';
+    f.write('linker/phase8.ld', script); f.write('phase8.map', map);
+    return { ...f, script, map, cLines, first };
+  }
+  assert.equal(run(sharedFixture()).result, true, 'valid shared-row reuse');
+  for (const [label, mutate] of [
+    ['recorded wildcard', f => f.write('linker/phase8.ld', f.script.replace(`objects/c/${targets[0].symbol}.o(${f.first.outputSection})`, `*(${f.first.outputSection})`))],
+    ['bare-file input', f => f.write('linker/phase8.ld', f.script.replace('  /DISCARD/ :', `  .unused 0 : { objects/c/${targets[0].symbol}.o }\n  /DISCARD/ :`))],
+    ['implicit input in emitted output form', f => f.write('linker/phase8.ld', f.script.replace('  /DISCARD/ :', `  .unused 0x00000000 : AT(0x00000000)\n  {\n    objects/c/${targets[0].symbol}.o\n  }\n  /DISCARD/ :`))],
+    ['missing recorded script', f => fs.unlinkSync(path.join(f.root, 'linker/phase8.ld'))],
+    ['map owner swap', f => f.write('phase8.map', f.map.replace(f.cLines[0], 'SWAP').replace(f.cLines[1], f.cLines[0]).replace('SWAP', f.cLines[1]))],
+    ['map missing owner', f => f.write('phase8.map', f.map.replace(f.cLines[0], ''))],
+    ['map duplicate owner', f => f.write('phase8.map', f.map.replace(f.cLines[0], f.cLines[0] + '\n' + f.cLines[0]))],
+    ['forged contributor chunk', f => { f.phase8.targets[0].chunkIndex += 1; }],
+    ['missing accepted context', f => { delete f.phase8.model; }],
+  ]) {
+    const f = sharedFixture(); assert.equal(run(f).result, true, label + ' before mutation');
+    mutate(f); assert.equal(run(f).result, false, label);
+  }
+  for (const relative of ['linker/phase8.ld', 'phase8.map']) {
+    const f = sharedFixture();
+    assert.equal(run(f, { onFinish() { fs.appendFileSync(path.join(f.root, relative), ' '); } }).result, false,
+      relative + ' changed after initial shared-row validation');
+  }
+  for (const selector of ['*( .ob64.r4248 )', '* \n (\t.ob64.r4248\n)', '*(.ob64.r*)',
+    '*(.ob64.r????)', '*(.ob64.r[0-9][0-9][0-9][0-9])', '*( .text .ob64.r4248 )',
+    '*( .text, .ob64.r4248 )', '* /* comment */ ( .ob64.r4248 )', '*(".ob64.r4248")',
+    '*(SORT(.ob64.r*))', '*(EXCLUDE_FILE(absent.o) .ob64.r4248)', '*(.ob64.r424[]8])', "*('.ob64.r4248')"]) {
+    const f = sharedFixture();
+    assert.equal(run(f).result, true, 'positive before residual selector: ' + selector);
+    f.write('linker/phase8.ld', f.script.replace('  /DISCARD/ :', `  .unused 0 : { ${selector} }\n  /DISCARD/ :`));
+    assert.equal(run(f).result, false, 'residual selector: ' + selector);
+  }
 });

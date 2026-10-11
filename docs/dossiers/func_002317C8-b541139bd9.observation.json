@@ -1,0 +1,324 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B541139BD927DFEB8C30A752D1CB99EFF3AA3044369631648E6A4BE644C4A59F",
+  "observationId": "04CF9AEC743D386EA2D8F56A5ED4492D0ABAAAE170FB69A6F1FF56194FD4FB0C",
+  "symbol": "func_002317C8",
+  "authored": {
+    "context": "047547/CURRENTA913A384; original complete7 W7 unfinished; native private diagnostics only. Historical source-bound observation: the Director later changed the shared compiler-lesson index in53839c8f. Supported preservation correctly rejects that original stale reference. This new observation uses the byte-identical b91793be Git snapshot and leaves the original observation/source/measurements untouched.",
+    "effects": [
+      "historical-baseline-provenance-preserved",
+      "two-order-field-baseline"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5626B37D7E7981942E7F9EE5B10A18F74C9E1C8F3D97D8F634FA48D3B719AD3A",
+      "sourceSha256": "ED43D383E4F6C6CBEFECF20F0A75AEBC4E077BF2C52DE753AB35B5E70901C30D"
+    },
+    "label": "historical-quantity-guard-baseline-authenticated-index-snapshot",
+    "observedEffect": "Observed: own28742018 full13/16 authenticated artifacts/native parity/actualEOF0 independently transfers Gold2281 to complete sourceED43D383/B541 at CURRENTA913A384/047547. The already-zeroed real selection counter replaces only the existing quantity==0 guard operand with an unsigned relational comparison. No initialization moves, extra guards, consumers or capacity assumptions. Unsigned0>=quantity is equivalent to quantity==0 for every32-bit value. Observed: RTL/JUMP/CSE/CSE2/FLOW57 defines105=ltu(counter82,quantity81), with REG_DEAD105 on branch58. COMBINE replaces57 by the real counter-zero, simplifies58 to the original nonzero branch and parks USE1047 of105 after label44. GREG maps that same no-code USE to SP428. Existing five loop-origin homes266/270/272/273/274 remain; real difference74=SP420 and output-pointer72=SP412 remain. Six code-free homes plus the original376 source bytes and16 real-spill bytes give vars440/frame512. Current native guard/delay words and every other instruction except the two publication-order fields agree with retail outside actualREL. Observed: new selected private bestED43 is PURE_C1272/frame512/2fields at3A4 and3AC: captureS3/V0 and zeroS2 exchange around the same BLEZ. All40 actual relocation offset/symbol/type tuples and symbolic CFG equal priorA921. Expected relocation bindings/addends, linked placement/sole C ownership/target bytes and full original7-wave ROM gates remain unproved; this is diagnostic readiness, not matching acceptance. Observed: independent real selected-count index guard53815B3A/579D, ownA1212012 full13/16 auth/parity/actualEOF0, also creates a genuine code-free home111 from FLOW158=ltu(index85,count83) and COMBINE USE1050. But its moved real index-zero crosses unchanged setup calls, so the first maximum-loop entry comparison remains emitted and its prior parked home disappears. Net five homes111/270/272/273/274 retain vars432/frame504; native1276/270fields regresses. The predicted death-note effect occurred without frame or byte improvement. Do not reject the mechanism from its score or repeat this initialization placement.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-real-entry-guards-audit.json",
+        "sha256": "4BA7B2C50843441A7F402C011B97C32BAFA70CA53E0BE81CAF98D6685E4C26C8"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-quantity-counter-guard.c",
+        "sha256": "ED43D383E4F6C6CBEFECF20F0A75AEBC4E077BF2C52DE753AB35B5E70901C30D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-quantity-counter-guard-prediction.json",
+        "sha256": "993BC812572C517564AE99FD819F529BE4B9F20A057179E015A674D669F88271"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-quantity-counter-guard-watch.json",
+        "sha256": "616C8F2AA0B040D23057F392CD021BA99BB8C3CD78283A84DF17AC77C168ACA8"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-quantity-counter-guard-probe.json",
+        "sha256": "6655461F40BECE20D1A64516D538914150ED63E5F9C6D762EFB3A1A2192D87DD"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-quantity-counter-guard-inspection.json",
+        "sha256": "F7B45E8E9A1DE4147D4E6664DAA7E759DBCE8E6737DF21F68783CE09241E5E75"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-quantity-counter-guard-probe-audit.json",
+        "sha256": "BFE8A2236CFEDD705800BB506153F7CF06B57BBCA8ACBADA3D50B9D9C92230E3"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/authored.c",
+        "sha256": "ED43D383E4F6C6CBEFECF20F0A75AEBC4E077BF2C52DE753AB35B5E70901C30D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c",
+        "sha256": "5626B37D7E7981942E7F9EE5B10A18F74C9E1C8F3D97D8F634FA48D3B719AD3A"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/output.s",
+        "sha256": "CC08EC206DC1B0494EC72AC5A46CB359A42D41A8D3F83491939DA731B5453B78"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.rtl",
+        "sha256": "30265A5C77D7388F354D346D1DEFBFA682B73A5EA3074EBBB1B295EF910BAE1F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.jump",
+        "sha256": "23A6008A021E858023A443EA0B03A14C722AA20D79A70EEB578061EE813A470F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.cse",
+        "sha256": "3684CA65F61D06A7126C1077173248A9E6BFF9B7E27475B53CADBF17726C1A60"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.loop",
+        "sha256": "1E40237B82A4AB89167A234B98DCF85F5C74AD923AD9B6CE793C5E756FADB885"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.cse2",
+        "sha256": "0A447F31EFDFB3E2EACBB89305FC309555848814F9FBAACE879B335603FF0243"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.flow",
+        "sha256": "294453A81E2133E198BE462E8236906783492631562EF139A86EFF813A98773D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.combine",
+        "sha256": "9AE6BAE5E79AD5741046A9252D645839A48C86289F81BEE990A7155FBFC45BA4"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.sched",
+        "sha256": "DFC0D142D18A7867E99D118994B7E958C9B94AA2E2EEC977215D9A30858071F3"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.lreg",
+        "sha256": "3737EA43D1FC3DAB383AE1AC52378B67097F73C826BF18FF5982B2F62DD6AB47"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.greg",
+        "sha256": "11F3AF6E2BBF8E8A7419D94DFE37200B2105A137E80A3E0D521D85A780A07FA8"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.sched2",
+        "sha256": "324340CF8AD8CDE6E012E1DFF37A40843EC36A35DD503684BD6D1C7E12988062"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.jump2",
+        "sha256": "A3F85F32664C8EB3BD0AB02BCA9873C30990DF25B33DE993D7358D495B3E1140"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/28742018FEFBCECA2D239446F862CEB02BBB136E23C1D732BBB7754A33004518/input.c.dbr",
+        "sha256": "1217917C9D36AD6DE4ED37A23586EC42DDFFFCC8FD1DD40A8ED56A192DD1FC21"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/638E124F8E9C18183953BACE83051DF0578CC6C8962450BF5FA64825DC745765/candidate.compiler.s",
+        "sha256": "02E3B1DEDD6DA4FB4D847F3C4F03100F02D7D04373CB13972CDE05442AEF86BF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-unsigned-entry-index.c",
+        "sha256": "53815B3ADC46E195AAB1C3C204BED6DDB9EA5A2B41F51873D8326C1C339F4CD1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-unsigned-entry-index-prediction.json",
+        "sha256": "6B5414B70B599279F0DEC83A9A46E935966438CCAFD799061ACBCB33AE8C8BAB"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-unsigned-entry-index-watch.json",
+        "sha256": "8BBD8038584343636715F90492AABD2061E33443DDE40186FD70ACBF5DD97249"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-unsigned-entry-index-probe.json",
+        "sha256": "F318B788027E3FCB6489894A8C3F502BE4DC3CC74A043DEF738DCDFEACC2ADB1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-unsigned-entry-index-inspection.json",
+        "sha256": "AFFD73F081BEACA0EC3104C4338727C74AD1155939B00200C32F2C97ADA8697C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-unsigned-entry-index-probe-audit.json",
+        "sha256": "B8CDB3DAB53404B6CCD50D82D59997A0128F1918794B2BD62CFFCB95F8432B3A"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/authored.c",
+        "sha256": "53815B3ADC46E195AAB1C3C204BED6DDB9EA5A2B41F51873D8326C1C339F4CD1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c",
+        "sha256": "59A070DEC723A2EE915F5F1ACDE6F206DF2788D2D3136CC7EFE1CBB467DA1EAE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/output.s",
+        "sha256": "08AF4110D8662407AD6D2050A0A852384D866720F6E4D01EE3FA882039F2DD53"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.rtl",
+        "sha256": "4E99754739DE3FA0B191F6122E6A2AF4EBC4C0A536D4EB88569520E02C40DBDF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.jump",
+        "sha256": "FB07106E6066407BA3352FAD35118D4F7FC92C08BBD1288A68F6F6B660171EC3"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.cse",
+        "sha256": "CF2BD670D93832D767C82A4B058029441D9583D20F1C8CAA81BFC1798EA0C73B"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.loop",
+        "sha256": "B7534832A5500C26552B5F9BB1E8FD83CDA0AAEB77BC3C6AD68B391491B52573"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.cse2",
+        "sha256": "1A1F3A6954AD616F0B70EFB8EF65BD80A18985249CE14D01E1DD95BEFFDC4EF7"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.flow",
+        "sha256": "A53E03C8A415CBA818E174B240E1DE4A113A222C24453B3B82964AB80C0C6ED1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.combine",
+        "sha256": "94833929FA5EECBFB4B162DD81283526C4FAF2BEFF29BEF4896542C908D23CF1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.sched",
+        "sha256": "16AE4358CAE8F2C3941EECD0E390A714A90512630FD6C458B1406B0B7753C366"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.lreg",
+        "sha256": "CDD1403D5F939784F29A40687BDF600C619330F101536F32594D9AADBEE61EB3"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.greg",
+        "sha256": "757E337A4863479290A34C04EDF15D776FC9A3A4B378A7050519626CD6114977"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.sched2",
+        "sha256": "AD2813D7A0A2A4C76775373D56E9473CAE9BE3B1416544D2AE72E7525C0F5630"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.jump2",
+        "sha256": "8180E3AD4EDA08ABAECF07E34AAE6BB1D6FD0E8D76CE994004E3EBED162A3FE3"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_002317C8/probes/A1212012B0EACDD0B095E358BC45375F34DEF0652BB4C6A947893315C9A22CB8/input.c.dbr",
+        "sha256": "B8CFD0FB2C59DAE409F5D1CFD4FA99081A20C42D314C26AE7847D9AD9BCA9FE2"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/8A782A8592FAC2349E712EFD6668023E82D6B72E14634CA7E920533A133975CF/candidate.compiler.s",
+        "sha256": "42832384EF8F728C9E0062D0190D7F2B6A9CC0D15D1BD2BDDA7D5803210D8575"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/record-2317c8-real-entry-guards.js",
+        "sha256": "1D9F6CECD51D459FA0C6A888C15E852AEB9CC4BDC1F92F5A9BF2D23BE8C696B0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-resume-d9c-2279-intake.json",
+        "sha256": "95EC936774F6ABD5B31DD1055EE87216B4BD81CE7FF4A450A0BEAEF828CA043C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/director2279-release.json",
+        "sha256": "FEB0347D8D718C383EB6C9DB2F79B655CF915B1A6626D0FD5FBC9750B063A2C6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/gold-2317c8-sixth-home-reply2281.json",
+        "sha256": "A349D89703755ED4E8C3C7980E294D9F1F43BFC5B6522F68165A048DF3DFBA89"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-context-branch-store.c",
+        "sha256": "A921FFA2BBAFB2D68EA1256E65CB5691B081BD5F6AC84488840ED1B7BD5F1A41"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-resume-best-inspection.json",
+        "sha256": "C9CBFADDB014F23FA748A819FD2E627D02AA45451D28EAE29F7EF0715EE43E0C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-entry-origin-correction-audit.json",
+        "sha256": "32BBF5D2A08CF7A9113EDD6B726CB9435BF4D79A8F18A590F5148717C4995D5F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-unsigned-entry-index-preparation-failure.json",
+        "sha256": "F8593851982D2D431BBA4F19D44C825EC3493DD84432F54A822773F6423B284B"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/integration/compiler-lessons-before-53839c8f.json",
+        "sha256": "FF576ED8FA47CCF5BB4C315B2EC648F085EE57BE4C9FDCDCF4DC4C4F0A7BFA2D"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-2f23666082.md",
+        "sha256": "86197BC4A7413AC006CDBAB4AA7D283F76CA83996857AAE222234BA3067444B6"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-ebaf8896cf.md",
+        "sha256": "9C0E2CE9724AA82ACD9C476010C3D5EA7DE1D49DDEFC4F8E15F971E5DFC22175"
+      },
+      {
+        "path": "docs/dossiers/func_00195D9C-e0c8a6b9db.md",
+        "sha256": "409FF83C45FCB5B101E4EB26E644793B1706F93E415C1A19665B8872CB7E7FAB"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/2317c8-quantity-counter-guard.claims.json",
+        "sha256": "118BB8C9DEDE84A86333AC627DB76FD8BFD66310F45927788E138307ECC111D3"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/integration/publication-reference-census.json",
+        "sha256": "845A586E98D119205A5F42070A9865BD766740FA8025C4CDD250BBAAA1DC162B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical private diagnostic1272B/frame512/two instruction-order fields outside40 actualREL; final667863 closes them. No new compiler execution, current linked ownership, placement, expected relocation/addend or complete-ROM acceptance follows from this provenance correction.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "No C change. Reconcile only publication provenance by retaining the exact prior compiler-lesson index bytes from Git under an immutable private reference. Every other original reference remains unchanged. This source is the historical two-order-field baseline superseded by final667863, not the current selected best."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6427,
+      "sha256": "5626B37D7E7981942E7F9EE5B10A18F74C9E1C8F3D97D8F634FA48D3B719AD3A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "ED43D383E4F6C6CBEFECF20F0A75AEBC4E077BF2C52DE753AB35B5E70901C30D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_002317C8-b541139bd9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

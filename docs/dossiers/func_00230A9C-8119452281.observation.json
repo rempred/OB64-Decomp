@@ -1,0 +1,393 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "811945228196A9EAF27B60816E899F749DDE528DD9DE823E4A10596263271BAB",
+  "observationId": "DE9FC41D6C5A6CA40DBFC317F748C8BA7DF808FB68C82B164D3D6BF1889CCDA9",
+  "symbol": "func_00230A9C",
+  "authored": {
+    "context": "Full3372/two accepted physical parts/843words/69calls38, CURRENT7ED689CD, pinnedF3F1. ASM canonical/privateC inactive; no matching-C acceptance asserted.",
+    "effects": [
+      "actual-first-operand-enables-scheduling-birth-priority",
+      "actual-inner-operand-enables-scheduling-birth-priority",
+      "nonoverlapping-operands-and-result-reuse-saved-home",
+      "all-instruction-fields-equal-outside-actual-relocations"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4B1480AF02E4155B1FD762C6DAD69D2C7DACF1972D194FFE4C5F1D59BAD5B2BF",
+      "sourceSha256": "9F34771CF292FD438EB8EEEA5F169D01F32EFB9864ADB3C83032220AA00180DA"
+    },
+    "label": "A9C-full3372-private-instruction-ready-single-definition-helper-operands",
+    "observedEffect": "Own7413 full12passes/15 authenticated artifacts/native parity/actualEOF0. Actual firstOperand96 singledef2refs/live5/block72/1call/S0. SCHED1257 initiallypriority3 but readyT-39 boosted7f000001 versusA0setup1260priority3; schedules copy first backwards, so forward targetA0 precedes savedcopy. SCHED2 preserves; DBR fills CFCslot with savedcopy. Exactly initial2 words fixed,4→2; remaining loopwork97 still12refs/live20/2calls/S0. Preparation nonunique anchor/source-missing watchEOF1 preserved separately and is not evidence for this successful source. OwnC1A0 full12passes/15 authenticated artifacts/native parity/actualEOF0. Actual innerOperand97 singledef6refs/live5/block112/1call and result98 singledef6refs/live14/block112/1call bothS0, with firstOperand96 stillS0. SCHED1965 readypriority7f000001 versus1968priority3, exposing same targetA0-before-copy forward order; SCHED2/DBR retain retail savedcopyCFCslot. Exactly final2 words fixed,2→0 without extent/frame change.3372/frame352/87actualREL/69calls38/symbolicCFGexact. Own final full12passes/15 authenticated artifacts/native instruction parity/actualEOF0. Authored/expanded identities bound to compiler policy. Readability cleanup retains complete native object text17CD873A exactly89AD and identical87 ordered emittedREL. All843 words covered across original1380+1992 physical parts; every difference confined to actual emitted relocation fields. Calls69/distinct38 at original sites and symbolicCFGexact. Original ASM still canonical; private C object sole global is diagnostic and does not prove sole linked ownership. Conditions: This source/context has independent target-A0 setup and saved EC copy, equal initialpriority3 and a larger available scheduling maximum. Splitting actual nonoverlapping operands changes definition counts, making the observed birth boost possible. A single definition alone does not guarantee a given native schedule or allocation in another source.",
+    "parentCandidateId": "E6E757A547A62C99712D1B7B02304BFA1ECC02731848C95299996BEE42E8BB08",
+    "references": [
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-controls-audit.json",
+        "sha256": "3C07AA98FE8E8C0A8AE0D7D8E78E7B2112D2A9061829A9D9225C1B4F4E66C89E"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-initial-helper-operand.c",
+        "sha256": "9D2047AA81EBE1446E6AE4E79F1CF460AEAB259D3B42750C6E7A0325550D314F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-initial-helper-operand-prediction.json",
+        "sha256": "23F1F3EE97A8085BF16CC14AB95F950E08A7CD3DB9AC743988798899F99D502D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-initial-helper-operand-watch.json",
+        "sha256": "0D07A6FE08E26829EC53A72BDEE7A82C2068D2EA69C1E27B9A685211B1EFA6CC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-initial-helper-operand-probe.json",
+        "sha256": "BFD537392FDE2C00430C4081F0D143FAB65759E89CE89A0C43C1EAC28C262C41"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-initial-helper-operand-probe-audit.json",
+        "sha256": "59B75505059D5654FBE0E785540F09F8772868FBE1D55AFA447CCF21FA8923D2"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-initial-helper-operand-inspection.json",
+        "sha256": "0FEB253D9B91440D1CF4EA6840BCBAC7B6957299698FD0FD96B86AEE91B43B2C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-initial-helper-operand-calls.json",
+        "sha256": "5B33C3ED288EA6A5E42434C372A2FD1F1CA98494A1920D94E85F2ECF11C3EF6A"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/authored.c",
+        "sha256": "9D2047AA81EBE1446E6AE4E79F1CF460AEAB259D3B42750C6E7A0325550D314F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c",
+        "sha256": "B4B2154A771824120B8B9778EE4BE80D97A0CE32A54428CEBDF9E4FA6B6E76AD"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/output.s",
+        "sha256": "0E86B0098E8C103BFF8EAD563D32FA5ED3E127C871E23735C88FABDF2893691C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.rtl",
+        "sha256": "7FEA799E80A73716467A105C387B1C832CD2CCED9D39BAF52737E9CDDF8FDF02"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.cse",
+        "sha256": "27EF5AE313C50ED32D74785571A14773A3B1AECC6B1DD101B29E4040F752EFEE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.loop",
+        "sha256": "36A1B89A6E567334E371525C0853A49E0DB474CB96AC77F75E840D2FB562B0D2"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.cse2",
+        "sha256": "04057EF40FEF77995782E9657F428BA308B79652A785DEFE3EF7632D66B7CDD0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.flow",
+        "sha256": "0B68D7590624C4E684A5B224452B4613416FEC2F7237BAE53C216C2A68F69E17"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.combine",
+        "sha256": "0EDE7BCF58F8FBF03850962326594FC4F6E621F95C19688E67EA8B46CB22F896"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.sched",
+        "sha256": "9CAC9DD02D36701D67DECE24AAA8C205A4C9C0CA45EBAD2D66300E2F8625A0B9"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.lreg",
+        "sha256": "70C405258E3807B113342574C0FDE7A816271370327198A40B032D68FF7DC41C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.greg",
+        "sha256": "FDEDD319C893ED8751C48D5B476FED3ADDB0F6CD52920EB80BB8C1F4A929F3BF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.sched2",
+        "sha256": "D38BD45086006D3B8911031BAC8D5B8050B70452BD1C8ABD19DB4C9F3B98345D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.jump2",
+        "sha256": "C1CE963AC282F970F33C3BFE0F51EF491560CB9165306539A633E0D3A557DC30"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/7413488FED6656F005FC9B412F367EF86FDCC2643D713C3B06EE22B102D67DE4/input.c.dbr",
+        "sha256": "4DCF3C85E58E0863E615FCF52F0DD77FF37035142A8AFF0E1D2BD65646AB60C1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/07658846387BF80CB6494401109D62A1D6BE1706B9C89E17EB4D28063AE9C0A9/candidate.compiler.s",
+        "sha256": "72FDF4E2A0D0718F50470AE8C77B8C429D0816083A1C09F7488328F04E551FE5"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-inner-helper-operand.c",
+        "sha256": "89AD813E5DD17AC250B3EA257F87BD573A4A2AB3A5BB44BFDE6DF31F18DF67FF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-inner-helper-operand-prediction.json",
+        "sha256": "41B610B6B2990121454EB859B5967EA8C44B94F3082150E483DA7927C371189B"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-inner-helper-operand-watch.json",
+        "sha256": "99DA207A9F3E6DA96F7349D4EE1BC16D0E19675591BE612DA507D1C7A9D82C55"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-inner-helper-operand-probe.json",
+        "sha256": "5D9581A023BF6A99D6BDBA4CD7073973644781D481DE28B3995F9BF4931D55B9"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-inner-helper-operand-probe-audit.json",
+        "sha256": "C4571559E8178E7A5DBAFC15693D3C20BF6CCB3E5FFBB45398FE30EB6BCC7AA5"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-inner-helper-operand-inspection.json",
+        "sha256": "78F1E6704DA9BB04AAFDA5881310E5D97D3A02BB0FAF344FF06F7C103EEF010C"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-inner-helper-operand-calls.json",
+        "sha256": "6BCE9432B32F9745B131E5BE819F390DC427FBDCD8762DC5838F8E3F72A3D941"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/authored.c",
+        "sha256": "89AD813E5DD17AC250B3EA257F87BD573A4A2AB3A5BB44BFDE6DF31F18DF67FF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c",
+        "sha256": "C437F6215B5AE036740E22ECFB7A372F847CE4B2E1079DAA8500EAAE7AC0F0B1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/output.s",
+        "sha256": "1E249C171B6A930D681C60A2BCCAEF39E53526EDC6DD01E71EC29EA32C78E201"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.rtl",
+        "sha256": "C172DE1B77A950864B956245FA687887040E5D42246E0024BB4790CB71C721F6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.cse",
+        "sha256": "A092FA4CFABBF9DE9AD1CC03C228DCF579C593B1A5CB4016C9EA39F8FF3A16F6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.loop",
+        "sha256": "9E9E3291C14E9AE0446D359B616A62A31290F34C6787F4E656F95E75FABA1384"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.cse2",
+        "sha256": "7385B1DCEC77F1246F69C8B0420B3C4782554DC5E7E5D2D4B9F3E4065C58DCAC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.flow",
+        "sha256": "3526B9E4108952223720F9FCC1142B45B2D28AB9E7B44B2E89F79857B8B357FC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.combine",
+        "sha256": "9E173B0CE89B647823A0FC4F96EE688D0A85A04C81003B2F7C2C8B00A698843A"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.sched",
+        "sha256": "67C9B9F8651087FD89EB7A32B113DDBF1AF35C24C534D97AF5850C3C9B5E4BB0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.lreg",
+        "sha256": "5284BB9AA4A026CB4AE820AC40724032EC4F5250C1BC4081D5344C86A73153FE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.greg",
+        "sha256": "15C59EA186E33D1357939D0439856E0FF1CBEB2091A1D94A9170C947C390637F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.sched2",
+        "sha256": "0C89A4A1BDAC9C5F4765A62BF9396514F6C6B7517877221F20A339638929EF78"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.jump2",
+        "sha256": "520876C81D90E5B67063501CA486B6BCE61D556FA2D1E446EB9B84652D0C9D63"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/C1A01E70E207FB873FE9B3421D4D8AFAE7F621A3BC6142DBE108F9D7825354EF/input.c.dbr",
+        "sha256": "3BE610F397234372FFE0A8CF8D4A7F3B7C2757C73C2D6E0509F90B27CF47DAEF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/4E9F7E1AF801A06046127101DD160F85340B7B0C32651AF4E7EFBE400A2B9406/candidate.compiler.s",
+        "sha256": "150585CC32A171F56F5C882C139AD6C2814EC0DC85E33DDC0695D2ABE25EFBEA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready.c",
+        "sha256": "9F34771CF292FD438EB8EEEA5F169D01F32EFB9864ADB3C83032220AA00180DA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-prediction.json",
+        "sha256": "DDFEFB41BD0FD645E8D2FCD54C2AB0D80DB79CF4EAA6D2837B59D509DD3BD297"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-watch.json",
+        "sha256": "C1D22889AD5321DDABF0B918CD011E848557AD9027AA59D5E5B4D35643D24838"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-probe.json",
+        "sha256": "BBACAD990D82288371197D839AE3E352A6B3B7CA90B7B11FB253460070E2D5B6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-probe-audit.json",
+        "sha256": "7B60564B6E35D81D7EDE6324F24F2BC02D67B16AD0A3CAA0440AAD433B8DBA6D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-inspection.json",
+        "sha256": "376CA437C614D1E839AE4225EA918527E03EA6DC4C0A158124747EC880C81D46"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-instruction-ready-calls.json",
+        "sha256": "DAFDD62AF570216EBF0A91FC4FCEFC506FCC81C39A3B1BB040055159550DCD1D"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/authored.c",
+        "sha256": "9F34771CF292FD438EB8EEEA5F169D01F32EFB9864ADB3C83032220AA00180DA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c",
+        "sha256": "4B1480AF02E4155B1FD762C6DAD69D2C7DACF1972D194FFE4C5F1D59BAD5B2BF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/output.s",
+        "sha256": "1E249C171B6A930D681C60A2BCCAEF39E53526EDC6DD01E71EC29EA32C78E201"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.rtl",
+        "sha256": "C172DE1B77A950864B956245FA687887040E5D42246E0024BB4790CB71C721F6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.cse",
+        "sha256": "A092FA4CFABBF9DE9AD1CC03C228DCF579C593B1A5CB4016C9EA39F8FF3A16F6"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.loop",
+        "sha256": "9E9E3291C14E9AE0446D359B616A62A31290F34C6787F4E656F95E75FABA1384"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.cse2",
+        "sha256": "7385B1DCEC77F1246F69C8B0420B3C4782554DC5E7E5D2D4B9F3E4065C58DCAC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.flow",
+        "sha256": "3526B9E4108952223720F9FCC1142B45B2D28AB9E7B44B2E89F79857B8B357FC"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.combine",
+        "sha256": "9E173B0CE89B647823A0FC4F96EE688D0A85A04C81003B2F7C2C8B00A698843A"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.sched",
+        "sha256": "67C9B9F8651087FD89EB7A32B113DDBF1AF35C24C534D97AF5850C3C9B5E4BB0"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.lreg",
+        "sha256": "5284BB9AA4A026CB4AE820AC40724032EC4F5250C1BC4081D5344C86A73153FE"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.greg",
+        "sha256": "15C59EA186E33D1357939D0439856E0FF1CBEB2091A1D94A9170C947C390637F"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.sched2",
+        "sha256": "0C89A4A1BDAC9C5F4765A62BF9396514F6C6B7517877221F20A339638929EF78"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.jump2",
+        "sha256": "520876C81D90E5B67063501CA486B6BCE61D556FA2D1E446EB9B84652D0C9D63"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/targets/func_00230A9C/probes/1778224F62A646DBCBEDE98C58B04403781F30EA8D3879D2D01B203AC98CE659/input.c.dbr",
+        "sha256": "3BE610F397234372FFE0A8CF8D4A7F3B7C2757C73C2D6E0509F90B27CF47DAEF"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/runs/DC4A2BAEFC65AFB9B1410E0CB5E96B797F1DB9237913E417956ECC7EB011FCCD/candidate.compiler.s",
+        "sha256": "150585CC32A171F56F5C882C139AD6C2814EC0DC85E33DDC0695D2ABE25EFBEA"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-intake2124.json",
+        "sha256": "A0E7867C751FCA2253FDC988568D0B049D5749DE67CFCF5748140FE5FA8AABD9"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-first-coverage2117.json",
+        "sha256": "7ADC2C3A1D9A4298D48947270432D18C95DF8417D25DC9B26A9F0EA3D2CA56E1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-value-phase-controls-audit.json",
+        "sha256": "2BE8FEE5514CEB544DF4221E83D51D6E640695834E82833A99112E992B880277"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-selector-publication-controls-audit.json",
+        "sha256": "3A40DD7B6C9F932E1B3E5A440C8EEB3380F4154D51A790C0D05E913A00A2D6D1"
+      },
+      {
+        "path": "build/matching/resolution-w7-261009/230a9c-compiler-source-identities-r2.json",
+        "sha256": "BE5C03482BC2912BEF6415B323B5C0042C3CD7A36359D13217DED84ACD1D8EFC"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00230A9C.s",
+        "sha256": "3967B2372FC919C9F6F4BD63F7B8945B8D1CC3D81F6457B5440A882476B81471"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00230A9C_chunk35tail.s",
+        "sha256": "8D5747B8A1B6F85B9161790EF65409D501D5259EEBD59D3F83FA1D12FB35385B"
+      }
+    ],
+    "relatedCandidateIds": [
+      "F46EA94421380D1D13EF6DC3215A693755BD071D4A1CC689550680019DDE48C3",
+      "A5C79B4B5759E500C1D35B8C6C725E4981D585590C5EDC780DA86460A8D997F1"
+    ],
+    "remainingFailure": "No instruction-field mismatch remains under the private symbolic-object comparison. Expected relocation identity/addends, original-ASM replacement, sole linked C ownership, placement, exact linked target bytes and complete rebuilt-ROM gates remain unproved and require later complete-wave production integration.2317C8 and232458 remain parked unfinished; no canonical/full-ROM operation performed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Separate actual first EC operand, actual inner EC operand and actual inner C365 result into distinct single-definition int locals, preserving each original use and call order. Final cleanup renames the exclusively inner result and documents scheduling/consumed-cutoff reuse near C. No dummy consumer, artificial operation/read, type/capacity/signature/compiler change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 15630,
+      "sha256": "4B1480AF02E4155B1FD762C6DAD69D2C7DACF1972D194FFE4C5F1D59BAD5B2BF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9F34771CF292FD438EB8EEEA5F169D01F32EFB9864ADB3C83032220AA00180DA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_00230A9C-8119452281.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
