@@ -55,10 +55,13 @@ Candidate root: `build/matching/movement-w5-fresh-261011/`; single live cursor:
 `docs/Plans/cursors/sol.md`. W5 retains its complete20-member scope,
 [full roster](../build/matching/movement-w5-20261007/membership.json) and
 [recoverable sources](../build/matching/movement-w5-fresh-261009/cursor.md).
-BC64's preserved best and supported negative controls remain source-blocked.
-GoldOx and independent review corrected the proposed late-deletion constraint;
-no source-bound next trial is yet established. Keep the seven instruction-ready
-candidates and accepted shared pursuit producer; no partial-wave acceptance.
+BC64 is intentionally held after GoldOx2271: the improved best and counterexamples
+are preserved in the [source blocker](../build/matching/movement-w5-fresh-261011/12bc64-source-blocker-2271.md),
+with no supported next trial or established repository/tooling defect. All commands
+are at EOF. MagentaSeal retains W5 and production ownership; resume the same worker
+for new relevant evidence or coordinated integration of another complete wave.
+Keep the seven instruction-ready candidates and accepted shared pursuit producer;
+no partial-wave acceptance or worker replacement. W7 and D9C continue independently.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
