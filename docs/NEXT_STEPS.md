@@ -28,7 +28,8 @@ Agent Mail inbox watchers and internal collaboration events provide continuity.
 The Director-imposed indefinite W5/W7 holds are lifted: the current owners below
 resume their complete assignments, with ordinary matching decisions and help owned
 by the worker and Claude/GoldOx. Preserve every best source and closed control.
-A no-lead reply on one route is not a reason to leave the whole program idle.
+A no-lead reply on one route is not a reason to suspend an unfinished assignment;
+apply [When matching ideas run out](WORKFLOW.md#when-matching-ideas-run-out).
 
 **Director takeover, October 10:** Joe transferred the frozen SilentCrane Director's
 duties to **PurpleSquirrel**, chat `01a1284c-9b2b-7561-8a81-36ca34387ef8`.

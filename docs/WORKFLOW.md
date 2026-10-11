@@ -337,6 +337,46 @@ Before recording a candidate, confirm the report identifies the current source
 and compiled artifacts. Process exit and scalar diagnostic scores do not prove
 linked-byte equality or a matching relocation contract.
 
+#### When matching ideas run out
+
+Exhausting the current experiment list does not finish or suspend the assignment. The worker
+retains the complete wave and changes its investigative approach. A no-lead reply from
+Claude/GoldOx, a plateau, or inability to identify the exact original source statement is not
+by itself a blocking dependency.
+
+Preserve the best candidate and useful intermediates, then revisit the unresolved mismatch,
+the assumptions behind closed hypotheses, relevant target/caller/data evidence and current
+research intake. Consult Claude/GoldOx directly with a specific question and the source-bound
+evidence that makes it useful. Continue independent reconstruction while awaiting that reply;
+consultation is not a blanket stop. The worker and Claude choose the next meaningful source
+hypothesis or evidence question. The Director handles repository, service, coordination and
+tooling decisions rather than choosing matching experiments.
+
+A plausible hypothesis grounded in available evidence is enough to try ordinary C within
+the accepted contracts. Proof of the original statement and a complete compiler explanation
+are not prerequisites. Preserve uncertainty and informative temporary regressions. Do not
+manufacture activity by repeating trials already shown equivalent without a new discriminator,
+adding arbitrary pressure, or weakening source-policy or acceptance rules. If the current
+route is exhausted, investigate another assumption or evidence question within the assignment.
+Use the existing cursor and research records; no per-trial report, approval or new helper is
+required. A no-ideas stop does not authorize handing the worker's matching work to the Director.
+
+Hold only the affected operation when Joe pauses it, a shared-input/native drain is active,
+an applicable fail-closed rule requires it, or a concrete external input, tool, service or
+Director decision prevents further authorized work. Record the exact dependency or rule,
+who must take what action, and the observable release condition in the existing cursor;
+continue unaffected authorized work. "Need more ideas" or "need the original statement"
+alone does not establish such a dependency. A proposed tooling remedy retains the existing
+Sol/Claude agreement, Director approval, audit and independent review requirements.
+
+When an existing thread or inbox watcher reports an unfinished active worker stopped, the
+Director checks the cursor, process state and any actual hold. If it stopped only for lack
+of ideas, resume that same assignment and its worker/Claude investigation. Do not convert
+the stop into an indefinite hold or replace the worker before its complete assignment is
+accepted and ownership released, unless Joe directs otherwise. Preserve Joe's assigned
+top-level worker role and existing watcher routing. Never resume retired/completed workers
+or add scheduled tasks to provide continuity.
+
 #### Record useful experiments
 
 Routine trials need no separate plan file, journal entry or prose recap of tool output.

@@ -74,9 +74,11 @@ thread watcher scripts and Agent Mail inbox watchers for event-driven continuity
 internal workers also report through collaboration. Preserve watcher routing and
 deduplication, and keep the Director responsible for acting on actionable events.
 
-Use internal agents unless Joe assigns a top-level worker. Top-level candidate workers report to
-and are monitored by the Director; do not place them under the production writer or send that
-writer routine progress messages. Work on `main` with one production source/build writer.
+Use internal agents unless Joe assigns a top-level worker. Preserve Joe's assigned top-level role
+on resumption and replacement; this default does not authorize converting it into a subagent.
+Top-level candidate workers report to and are monitored by the Director; do not place them
+under the production writer or send that writer routine progress messages. Work on `main`
+with one production source/build writer.
 The Director assigns workers separate complete waves, preferably from less-related families
 whose accepted inputs are stable. Each worker handles one target at a time; a function or
 coupled producer belongs to one source worker. Parent top-level task transport requirements do not apply.
@@ -91,6 +93,22 @@ When genuinely stuck, consult Claude/GoldOx with a specific question and source-
 using the worker's own verified Agent Mail identity. No routine per-function review is required.
 Tooling escalation retains explicit Sol/Claude agreement and Astra's approval before changes.
 Fresh-worker instructions must include this communication policy and working mail routing.
+
+Running out of matching ideas is part of the unfinished matching assignment, not grounds for
+an indefinite hold, ownership release or worker replacement. A Claude/GoldOx no-lead reply or
+uncertainty about the original source does not change that. The same worker continues
+reconstruction and targeted consultation under
+[When matching ideas run out](docs/WORKFLOW.md#when-matching-ideas-run-out). Plausible source
+hypotheses grounded in available evidence may be tested without proving the exact original
+statement or explaining the complete compiler mechanism first.
+
+On an active worker's stop event, the Director checks its cursor and actual process state.
+If only matching difficulty caused the stop, resume that same unfinished assignment with
+worker/Claude investigation; do not perpetuate a no-ideas hold merely because a cursor calls
+it deliberate. A genuine hold must identify the concrete dependency or applicable stop rule,
+the action and owner needed to resolve it, and the release condition. Honor user pauses,
+native/shared-input drains and applicable fail-closed rules; continue unaffected authorized work.
+Retired or completed workers remain stopped. This adds no routine reporting or approval gate.
 
 The Director may run independent candidate waves concurrently across families. Preserve each
 wave's full membership, coupled producers and real dependency gates; an unfinished unrelated wave
