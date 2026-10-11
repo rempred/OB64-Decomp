@@ -1231,6 +1231,10 @@
       "symbol": "func_0021EBBC",
       "source": "src/battle/func_0021EBBC.c"
     },
-    { "symbol": "func_0022B1F4", "source": "src/battle/func_0022B1F4.c" }
+    { "symbol": "func_0022B1F4", "source": "src/battle/func_0022B1F4.c" },
+    {
+      "symbol": "func_00195D9C",
+      "source": "src/lib/func_00195D9C.c"
+    }
   ]
 }
