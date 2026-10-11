@@ -25,8 +25,9 @@ tomorrow using the existing experiment records.
 **Director takeover, October 10:** Joe transferred the frozen SilentCrane Director's
 duties to **PurpleSquirrel**, chat `01a1284c-9b2b-7561-8a81-36ca34387ef8`.
 The [Director cursor](Plans/cursors/director.md) records the recovered mission,
-mail/monitor routing and next action. SilentCrane remains idle; SilentForest keeps
-sole production ownership and LavenderSpire keeps its complete private assignments.
+mail/monitor routing and next action. SilentCrane and completed W6 writer SilentForest
+remain idle. Fresh internal **MagentaSeal** owns sole production writing and complete
+W5; LavenderSpire and MossyMouse retain their complete private assignments.
 
 **Retained Squad W2 addendum, October 10:** internal Sol6.1/xhigh **MossyMouse**
 owns only `build/matching/squad-w2-d9c-261010/`. The Director closes the D9C
@@ -45,12 +46,13 @@ scope and evidence. The new mode admits text/functions/tail, not tables or data.
 The [paired-owner](audit/2026-10-09-paired-owner-projection.md) and
 [local-body](audit/2026-10-07-reviewed-local-body.md) contracts remain accepted.
 
-W4 completion triggered Joe's fresh-worker rule. QuietPond released production
-source/build and W4/W5 ownership in mail1965 and stopped its own inbox watcher.
-YellowTiger subsequently completed W8 and released all writing ownership in2130.
-Director2131 assigns sole production ownership to fresh Sol6.1/xhigh / SilentForest,
-chat `01a12781-9074-7903-88a9-d5f4659e7544`, starting the complete unfinished W6.
-Movement/routes W5 remains parked unfinished with its complete20-member scope,
+**Movement/routes W5 active, October 11:** fresh internal Sol6.1/xhigh **MagentaSeal**,
+`/root/movement_w5`, is the sole production source/header/config/build/cursor writer.
+SilentForest's own complete W6 passed acceptance and commit `5dc182a1`; mail2251
+released all ownership with every native/CPP/status command at EOF. Its watcher
+and Director stop monitor are stopped. MagentaSeal confirmed ownership/mail2254.
+Candidate root: `build/matching/movement-w5-fresh-261011/`; single live cursor:
+`docs/Plans/cursors/sol.md`. W5 retains its complete20-member scope,
 [full roster](../build/matching/movement-w5-20261007/membership.json) and
 [recoverable sources](../build/matching/movement-w5-fresh-261009/cursor.md).
 BC64's preserved best and supported negative controls remain source-blocked.
@@ -58,8 +60,8 @@ GoldOx and independent review corrected the proposed late-deletion constraint;
 no source-bound next trial is yet established. Keep the seven instruction-ready
 candidates and accepted shared pursuit producer; no partial-wave acceptance.
 
-**W6 integration, October 10:** the complete action-mode/High Attack source wave
-is ready under SilentForest in `build/matching/combat-w6-fresh-261010/`. Preserve
+**W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
+main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
 [all seventeen members](Plans/prompts/combat-shared-mode-wave-r1.md), the fifteen
 accepted siblings, and the prior read-only `build/matching/combat-w6-261009/`.
 B1F4 and D14C now have exact canonical linked PURE_C/relocation proofs.
@@ -67,21 +69,19 @@ D14C's [winning source and observation](dossiers/func_0022D14C-a1ecef80a0.md)
 resolve the earlier 68-word best through real default-arm source structure.
 No further source experimentation is assigned for W6.
 
-Director2224 opened the coordinated sole-writer integration window after all
-private native/preprocess checks reached EOF. The reviewed D14C64/EF50 ownership
-replacement preserves the complete row, B06C/EF50 pieces, retained ASM and W7
-consumers. Final source/config identities supersede the early draft manifest.
-The obsolete fixture assertion and atomic-authentication test accounting are
-separate tooling repairs with Sol/Gold agreement, Director approval and independent
-review; a stale scenario lesson is explicitly historical-only. Writer release2245
-passed the corrected source-read test and all39 required routine suites, then
-started the one combined structural audit/normal complete-wave verifier. Its result
-and final structural review remain required; linked proofs alone do not accept W6. Lavender and
-MossyMouse remain under native holds until the Director supplies accepted refreshed
-inputs and releases them.
+The single combined structural audit/normal verifier passed every original W6
+member's PURE_C, sole ownership, placement, actual relocation, target/table and
+complete-ROM gates with fresh compilation. All39 routine suites and the
+[final independent structural review](../build/director-resume-20261010/w6-final-structural-review/final-review.md)
+pass. The D14C64/EF50 change preserves the complete row, B06C/EF50 pieces,
+retained ASM, padding and W7 consumers. Actual final input identities and reports
+are in the [evidence summary](../build/matching/combat-w6-fresh-261010/integration-normal-summary.json).
+No unchanged verifier repeat. Separately reviewed test corrections retain all
+authentication/mutation controls; stale scenario curation stays historical-only.
+Director2252 releases Lavender's W7 native checks; MossyMouse's D9C checks are
+released through collaboration. Both refresh accepted F1B253F9 inputs first.
 
-After W6 acceptance and SilentForest's explicit ownership release, a fresh internal
-Sol6.1/xhigh production worker inherits the complete parked movement W5. Its
+MagentaSeal's complete W5 uses the
 [approved inactive structural plan](../build/director-resume-20261010/w5-structural-readiness/director-decision.md)
 uses existing accepted mechanisms for the paired producers and full 131828
 producer/tables. It does not activate those sources or waive final producer,
@@ -96,7 +96,7 @@ records all26 focused checks and one combined verifier, EOF/exit0 in993.263s.
 CURRENT `7ED689CD` retains baseline `D6553DED` and the byte-identical Rev0 ROM.
 Complete EBBC, 2215D0's real alignment tail, all25 data bindings and six compatible
 related interfaces are integrated. No unchanged verifier repeat is needed.
-W5/W6/W7 remain unfinished; W8 acceptance does not waive their real gates.
+W5/W7 remain unfinished; W8 and W6 acceptance do not waive their real gates.
 
 **Atomic-owner tooling accepted, October 10:** the
 [audit record](audit/2026-10-10-atomic-owner-union.md) closes EBBC's representation
@@ -108,9 +108,9 @@ Audit2115 reached EOF/exit0 with exact ROM at CURRENT `113EBCB3`, retaining base
 
 W8's shared-input-stable release2124 resumed Lavender's full W7/A9C checks.
 Yellow retired after its own completed wave, preserving its cursor and recovery
-roots; its inbox watcher and old stop monitor are stopped. SilentForest has a new
-mail identity, separate inbox watcher and Director-owned stop monitor, with actual
-delivery tested. SilentForest/W6 and Lavender/W7 run supported private checks
+roots; its inbox watcher and old stop monitor are stopped. Completed SilentForest's
+inbox watcher and stop monitor are also stopped. MagentaSeal/W5, Lavender/W7 and
+MossyMouse/D9C run supported private checks
 concurrently under stable canonical inputs. Only actual shared-input mutation or
 canonical linking/verification requires the normal bounded drain.
 
@@ -143,9 +143,9 @@ Director2007 releases this same worker's private source work on the complete
 [seven-member resolution W7](Plans/prompts/combat-shared-resolution-wave-r1.md)
 in `build/matching/resolution-w7-261009/`: 15,404 logical-owner bytes, including
 A9C's complete 3,372-byte head and continuation. Current intake found no existing
-C candidates. Start full `func_00232280` using the concrete six-record contract,
-then continue one target at a time. Stable accepted C/ASM inputs permit private
-iteration while W6 remains unfinished; canonical activation still requires the
+C candidates at initial assignment. Continue the live cursor's unfinished
+2317C8/232458 work, preserving ready siblings. Stable accepted C/ASM inputs permit private
+iteration after W6 acceptance; canonical activation still requires the
 real upstream, table and complete-wave gates. Preserve F580/32458's row4248
 reads, A9C's two-part body and all original memberships. No overlapping source
 ownership, reduced acceptance wave or worker retirement. Refresh affected private
@@ -627,12 +627,10 @@ each watcher's `status.json` and actual process.
   coordinate one integration interval and normal verifier. Existing group admission adds
   no routine independent source review; a change outside accepted contracts needs the
   separate structural/tooling process. No shared tooling change is approved.
-- **Parked under Sol:** complete Combat action-mode W6 remains open with all seventeen
-  [original members](Plans/prompts/combat-shared-mode-wave-r1.md). Its useful experiments,
-  best source and precise reopening questions are preserved in Sol's current cursor.
-  Source-level allocation and
-  scheduling blockers do not establish a tooling defect or a final HYBRID exception.
-  B1F4, D14C and their table gate remain pending; no unfinished wave is accepted by parking it.
+- **Complete Combat action-mode W6:** all seventeen
+  [original members](Plans/prompts/combat-shared-mode-wave-r1.md) are accepted at
+  `5dc182a1` / CURRENT `F1B253F9`, including B1F4, D14C and the table ownership gate.
+  Preserve useful source pairs and evidence; no further W6 matching is assigned.
 - **Parked DB10 animation conversion / LavenderSpire, unfinished:** same top-level
   chat `01a11381-0741-7a00-9337-967a16f41e41`, coordinated and monitored by Astra.
   Director1663 assigned the complete one-owner `func_0020DB10` PURE_C conversion,5,548 bytes,
@@ -820,8 +818,8 @@ complete six-member Squad construction wave and three-member Combat context wave
 at `75990627` and `5accc882`; do not repeat their unchanged verification. The complete
 [five-member Combat Actor wave](Plans/task-logs/sol-combat-actor-pure-wave-20261003.md)
 passed the normal combined verifier on October3 at13:21:11.919Z. Sol continues the complete
-Squad wake/lifecycle wave while action-mode W6 is parked and the second worker handles Shop as assigned above.
-Preserve D14C's separate table activation gate. Use the
+Squad wake/lifecycle wave in the historical assignment recorded here. The current
+assignments above supersede that schedule; W6 and D14C's table gate are accepted. Use the
 [current cursor](Plans/cursors/sol.md) for the best source, next experiment and all open gates.
 After ten ordinary target intakes, assess actual example use through existing handbacks;
 there is no scheduled maintenance task or extra ordinary-wave review gate.
