@@ -27,19 +27,20 @@ duties to **PurpleSquirrel**, chat `01a1284c-9b2b-7561-8a81-36ca34387ef8`.
 The [Director cursor](Plans/cursors/director.md) records the recovered mission,
 mail/monitor routing and next action. SilentCrane and completed W6 writer SilentForest
 remain idle. Fresh internal **MagentaSeal** owns sole production writing and complete
-W5; LavenderSpire and MossyMouse retain their complete private assignments.
+W5; LavenderSpire retains complete W7. MossyMouse's complete D9C addendum is accepted
+and its ownership is released; that worker and its inbox watcher are retired.
 
-**Retained Squad W2 addendum, October 10:** internal Sol6.1/xhigh **MossyMouse**
-owns only `build/matching/squad-w2-d9c-261010/`. The Director closes the D9C
-loader freeze narrowly for private iteration at the observed static call boundary.
-Complete D9C text and its coupled table/prefix/tail remain one retained addendum;
-accepted construction, record/formation and supply groups stay protected. See the
-[Director cursor](Plans/cursors/director.md) for scope, evidence and remaining gates.
-The complete private candidate arrived in handoff2273. MagentaSeal is preparing
-the body/table contracts and compatible declarations for the protected callers;
-independent structural preflight found no generic tooling gap. Target-specific
-admission, coordinated production integration and final audit/review remain pending.
-MossyMouse retains the stable source and ownership through complete acceptance.
+**Squad W2 D9C addendum accepted, October 11:** main `43119554`, CURRENT `A913A384`.
+The complete780-byte PURE_C body and six-entry24-byte table pass, with the original
+136-byte prefix/eight-byte tail conserved and both declaration-only changed callers
+remaining exact. Scoped tests, three linked diffs, one structural audit including
+normal/fresh/full-ROM verification, and independent final review pass. See the
+[final evidence](../build/matching/movement-w5-fresh-261011/d9c-integration/final-handoff.md)
+and [review](../build/director-resume-20261010/d9c-structural-review/final-review.md).
+All protected groups and the retail ROM remain unchanged. MossyMouse released the
+entire assignment in2278; its watcher is stopped. Release2279 resumes the same complete
+W7 after refreshed inputs. Historical return type and broader runtime meaning remain
+uncertain. No unchanged verifier repeat or further D9C source work is assigned.
 
 **Current tooling and continuation, October 9:** complete Squad W4 (all21 owners)
 and the complete Scenario checksum chain (all8 owners/12 native functions) are
