@@ -20,6 +20,42 @@ for (const text of texts) {
     assert.equal(indexed.has(symbol), old, symbol + ' ' + JSON.stringify(text)); symbolEquivalences++;
   }
 }
+// Atomic owners independently authenticate each original fragment at these bounded sites.
+const atomicReadChains = {
+  atomicCensus: [['assertCensus', 'atomic_owner_union.js']],
+  atomicOutputModel: [['assertCensus', 'atomic_owner_union.js'], ['outputModel', 'atomic_owner_union.js']],
+  atomicAuxiliaryProjection: [['checkTarget', 'auxiliary_projection.js'], ['validateCensus', 'auxiliary_projection.js']],
+  atomicRetainedBindings: [['checkTarget', 'auxiliary_projection.js'], ['retainedBindings', 'auxiliary_projection.js'],
+    ['', 'active_targets.js'], ['Array.map', '<anonymous>']],
+};
+function atomicReadSite(stack) {
+  const frames = stack.split('\n').slice(1).map(line => {
+    const match = /^\s*at ([^(]+) \((.*):\d+:\d+\)$/.exec(line);
+    if (match) return [match[1].replace(/^Object\./, ''), path.resolve(match[2])];
+    const callback = /^\s*at (.*):\d+:\d+$/.exec(line);
+    if (callback) return ['', path.resolve(callback[1])];
+    return line.trim() === 'at Array.map (<anonymous>)' ? ['Array.map', '<anonymous>'] : null;
+  });
+  const frame = ([name, file]) => [name, file === '<anonymous>' ? file : path.join(p7.ROOT, 'tools/lib', file)];
+  for (const [site, chain] of Object.entries(atomicReadChains)) {
+    const expected = [['sha256File', 'phase7_conventional.js'], ['authenticate', 'atomic_owner_union.js'],
+      ...chain, ['loadActiveTargetModelInternal', 'active_targets.js']].map(frame);
+    if (expected.every((value, i) => frames[i + 1]?.[0] === value[0] && frames[i + 1]?.[1] === value[1])) return site;
+  }
+  return frames.some(value => value?.[0] === 'authenticate'
+    && value[1] === path.join(p7.ROOT, 'tools/lib/atomic_owner_union.js')) ? 'other' : null;
+}
+// An authentication caller must not hide behind the generic retained-projection category.
+const unknownAtomicStack = 'Error\n    at fs.readFileSync (test.js:1:1)\n'
+  + `    at Object.sha256File (${path.join(p7.ROOT, 'tools/lib/phase7_conventional.js')}:1:1)\n`
+  + `    at Object.authenticate (${path.join(p7.ROOT, 'tools/lib/atomic_owner_union.js')}:1:1)\n`
+  + `    at unexpectedCaller (${path.join(p7.ROOT, 'tools/lib/atomic_owner_union.js')}:1:1)\n`
+  + `    at Object.retainedBindings (${path.join(p7.ROOT, 'tools/lib/auxiliary_projection.js')}:1:1)`;
+assert.equal(atomicReadSite(unknownAtomicStack), 'other');
+const sortedReads = rows => rows.map(row => JSON.stringify(row)).sort();
+const assertAtomicReads = (actual, expected) => assert.deepEqual(sortedReads(actual), sortedReads(expected),
+  'atomic authentication path/site/count census');
+const atomicReads = [];
 const read = fs.readFileSync, readSites = {}, assemblyPrefix = path.join(p7.ROOT, 'asm/original/rev0') + path.sep;
 const bootClearSource = path.join(p7.ROOT, 'asm/original/rev0/boot/boot_entry_clear_bss.s');
 let prepared;
@@ -29,12 +65,14 @@ try {
       const stack = new Error().stack;
       const bootProof = stack.includes('at Object.loadProof ') && stack.includes('boot_initialized_data.js');
       if (bootProof) assert.equal(path.resolve(file), bootClearSource, 'unexpected boot proof assembly source');
-      const site = bootProof ? 'bootInitializedDataProof'
+      const atomicSite = atomicReadSite(stack);
+      if (atomicSite && atomicSite !== 'other') atomicReads.push({ site: atomicSite, file: path.resolve(file) });
+      const site = atomicSite || (bootProof ? 'bootInitializedDataProof'
         : stack.includes('at loadAcceptedModel ') ? 'initialAcceptedModel'
         : stack.includes('at verifyRowSymbolSourceCache ') ? 'finalSourceSweep'
           : stack.includes('at cachedAssemblyText ') ? 'cachedAssemblyText'
           : stack.includes('at Object.assertActivationCompatible ') ? 'logicalActivation'
-            : stack.includes('at Object.retainedBindings ') ? 'retainedProjection' : 'other';
+            : stack.includes('at Object.retainedBindings ') ? 'retainedProjection' : 'other');
       readSites[site] = (readSites[site] || 0) + 1;
     }
     return read.call(this, file, ...args);
@@ -52,6 +90,35 @@ try {
   assert.equal(readSites.bootInitializedDataProof, 1, 'independent boot-clear source authentication');
   assert.equal(readSites.finalSourceSweep, identities.length);
   assert.equal(readSites.cachedAssemblyText || 0, 0); assert.equal(readSites.logicalActivation || 0, 0);
+  const expectedAtomicReads = prepared.targets.filter(target => target.atomicText).flatMap(target => {
+    const sites = ['atomicCensus', 'atomicOutputModel',
+      ...(target.auxiliaryProjection?.schemaVersion === 4 ? ['atomicAuxiliaryProjection', 'atomicRetainedBindings'] : [])];
+    return target.atomicBinding.body.fragments.flatMap(fragment => {
+      assert(prepared.model.parts.some(part => part.file === fragment.file && part.sha256 === fragment.sha256),
+        'atomic fragment must be a sealed model part');
+      return sites.map(site => ({ site, file: path.join(p7.ROOT, fragment.file) }));
+    });
+  });
+  assertAtomicReads(atomicReads, expectedAtomicReads);
+  const unexpectedRead = { site: 'unexpectedAtomicCaller', file: assemblyPrefix + 'unexpected.s' };
+  assert.throws(() => assertAtomicReads([...atomicReads, unexpectedRead], expectedAtomicReads));
+  if (expectedAtomicReads.length) {
+    const first = expectedAtomicReads[0], rest = expectedAtomicReads.slice(1);
+    assert.throws(() => assertAtomicReads([{ ...first, file: unexpectedRead.file }, ...rest], expectedAtomicReads));
+    assert.throws(() => assertAtomicReads([{ ...first, site: unexpectedRead.site }, ...rest], expectedAtomicReads));
+    assert.throws(() => assertAtomicReads([...expectedAtomicReads, first], expectedAtomicReads));
+    assert.throws(() => assertAtomicReads(rest, expectedAtomicReads));
+  }
+  // Standalone bindings are read once per target; a composed group binds once at member zero.
+  const expectedRetainedProjectionReads = prepared.targets.reduce((count, target) => {
+    const bindings = target.auxiliaryProjection ? target.auxiliaryProjectionRetained
+      : target.groupMemberIndex === 0 && target.compilationGroup?.auxiliary
+        ? target.compilationGroup.auxiliary.retained : [];
+    assert(Array.isArray(bindings), 'returned retained-projection binding census');
+    return count + bindings.length;
+  }, 0);
+  assert.equal(readSites.retainedProjection || 0, expectedRetainedProjectionReads,
+    'non-authentication retained-projection source reads');
   assert.equal(readSites.other || 0, 0, 'unclassified assembly source reread');
   fs.readFileSync = read;
   const cache = new Map();

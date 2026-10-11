@@ -54,13 +54,14 @@ function fixtureContracts(active, rom) {
 
 function main() {
   const active = loadActiveTargetModel();
+  const canonicalModelBefore = structuredClone({ targets: active.targets, model: active.model });
   const rom = fs.readFileSync(path.join(ROOT, 'build/baserom.us_rev0.z64'));
   assert.equal(sha256Buffer(rom), active.model.config.rom.sha256);
   const { b06, ef, bRaw, efRaw, original, resolve } = fixtureContracts(active, rom);
   const aux = ef.auxiliarySections[0];
   const row = active.model.rows.find((item) => item.index === 4248);
-  // EF50 was activated by the accepted table closure; D14C is still retained ASM.
-  assert(!active.targets.some((target) => target.symbol === 'func_0022D14C'));
+  // Fixture targets are independent of current D14C production activation.
+  // Verify below that canonical targets and their accepted model remain unchanged.
   assert(active.targets.some((target) => target.symbol === 'func_0022EF50'));
   assert.equal(resolve(b06, original)[0].ownerTailBytes, 1208);
   const tc = assertToolchainAvailable(loadToolchainConfig());
@@ -214,6 +215,7 @@ function main() {
   const binaryFile = path.join(scratch, record.binaryRelative);
   const saved = fs.readFileSync(binaryFile); const altered = Buffer.from(saved); altered[0] ^= 1; fs.writeFileSync(binaryFile, altered);
   reject('stale retained binary', () => verifyInteriorArtifacts(ef, aux, scratch, rom, linked)); fs.writeFileSync(binaryFile, saved);
+  assert.deepStrictEqual({ targets: active.targets, model: active.model }, canonicalModelBefore);
   const result = { scope: 'isolated original-row tooling fixture, not production activation', status: 'pass',
     output: scratch, originalAssemblySha256: row.part.sha256, rowSha256: sha256Buffer(linkedBytes),
     retainedInterior: projectInterior(aux), proof, accounting, contiguousAccounting, mutations };

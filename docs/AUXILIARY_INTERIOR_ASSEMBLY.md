@@ -3,10 +3,10 @@
 This capability has an independent [Accepted structural review](audit/high-attack-wave6-interior-asm-review-r1-20260906/review.md).
 Implementation is frozen at `6e0ccd3030ad37e83478181081f3d56350f3de1e`; review is frozen at `091a66dc21b1e45a571741dbf331fcfaae95dbde`.
 This document does not authorize a new production ownership contract.
-EF50, D14C, and B06C remain inactive in canonical production.
-The isolated regression uses B06C's accepted structural table contract as a test fixture, not a production activation.
+Production ownership and matching-C status come from the canonical verifier and generated CURRENT status.
+The isolated regression uses B06C's accepted structural table contract as a test fixture and preserves the current canonical target model.
 That fixture comes from `850aa8f`, reviewed at `4096dc7`, and contains no provisional C source.
-Tooling acceptance does not accept the unfinished seventeen-owner wave. B1F4 and D14C remain nonexact.
+Tooling fixture acceptance does not establish source classification or matching-C acceptance.
 
 ## Contract
 
