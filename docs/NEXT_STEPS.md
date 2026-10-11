@@ -126,12 +126,16 @@ CoralJay (`/root/w7_tooling_independent_review`) returned one P2 in2335: legal s
 residual wildcards escape the selector census. Correction2341 passed101 native/selector
 controls and all six CURRENT tests with actual EOF. Re-review2346 found a remaining legal
 bare-object selector bypass; correction2351 now uses finite emitted-script forms and passed
-119 native/selector controls, six CURRENT tests and fingerprints at actual EOF. CoralJay's
-next independent re-review owns the isolated test window. Dedicated internal
+119 native/selector controls, six CURRENT tests and fingerprints at actual EOF. Independent
+review2352 PASSED both findings with bound final inputs and released its test window.
+Director2355 released Lavender to integrate all7 and run ONE changed-input structural
+audit containing normal/fresh/full-ROM gates. Actual resumed turn confirmed through app
+fallback delivery while the mail watcher retained2355 for retry. Dedicated internal
 stop monitors and verified Director inbox delivery cover both review and decision handoffs.
-After independent implementation/test review, the Director releases full W7 integration
-and one changed-input audit containing whole7 normal/fresh/full-ROM verification,
-followed by final independent proof review. Tooling fixtures do not accept W7.
+CoralJay retains final independent structural proof review after the audit; no unchanged
+canonical repeat. NINE's native/CPP drain2356 now applies only to W7 shared-input changes
+and canonical commands; Director releases it at stable inputs/actual EOF without waiting
+for final read-only review or commit. Tooling fixtures do not accept W7.
 
 **Joe's two-worker direction, October11:** maintain two disjoint complete matching waves
 and replace each accepted/released worker promptly with fresh Sol6.1/xhigh. Director2340
