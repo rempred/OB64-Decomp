@@ -58,36 +58,35 @@ GoldOx and independent review corrected the proposed late-deletion constraint;
 no source-bound next trial is yet established. Keep the seven instruction-ready
 candidates and accepted shared pursuit producer; no partial-wave acceptance.
 
-Complete action-mode/High Attack W6 resumes under Director2131 in fresh private
-root `build/matching/combat-w6-fresh-261010/`. Preserve
-[all seventeen members](Plans/prompts/combat-shared-mode-wave-r1.md) and the prior
-read-only `build/matching/combat-w6-261009/`: B1F4 remains instruction-ready privately;
-D14C's [readable best](dossiers/func_0022D14C-8ddf71fbdd.md) has 68 masked word
-differences. Its real-call, buffer-phase and mode1 improvements and bounded
-counterexamples are recoverable. Consult the new EBBC loop-note and 2215D0
-phase/address lessons for a distinct source-bound D14C experiment; transfer is
-not presumed and closed controls must not be repeated. Protect the fifteen accepted siblings
-and the separate 64-byte table/interior-consumer integration gate.
+**W6 integration, October 10:** the complete action-mode/High Attack source wave
+is ready under SilentForest in `build/matching/combat-w6-fresh-261010/`. Preserve
+[all seventeen members](Plans/prompts/combat-shared-mode-wave-r1.md), the fifteen
+accepted siblings, and the prior read-only `build/matching/combat-w6-261009/`.
+B1F4 and D14C now have exact canonical linked PURE_C/relocation proofs.
+D14C's [winning source and observation](dossiers/func_0022D14C-a1ecef80a0.md)
+resolve the earlier 68-word best through real default-arm source structure.
+No further source experimentation is assigned for W6.
 
-**D14C diagnostic follow-up, October 10:** fresh loop-note and callee-address
-controls left the 68-field best unchanged; they do not prove a required retail
-hidden reload event or pure-C impossibility. Sol2139 and Gold2137/2140 explicitly
-agree the existing pre-reload oracle/dumps cannot expose ordered reload attempts.
-The [isolated reload trace](matching-c/reload-trace.md) passed focused native parity,
-adversarial validation and independent review. Its broad trace-off evidence has
-5,087 successful parity comparisons and 76 paired compiler failures retained as
-nonpasses; no native retry was observed. The best/1720 source pair demonstrates an
-extra successful output allocation changing the next scratch choice, not retail's
-hidden history. SilentForest may use the generic candidate command for distinct
-source-bound tests. Production compiler/configuration/acceptance remain unchanged;
-W7 is not paused and complete W6 remains unfinished.
-The complete private integration preparation is in
-`build/matching/combat-w6-fresh-261010/integration-preparation.json`. Independent
-read-only review confirms the inactive D14C 64-byte table representation fits
-existing tooling and preserves the full row and W7 consumers. At complete-wave
-integration, add D14C's auxiliary contract and remove EF50's retained interior
-together; refresh final-source evidence and complete the applicable structural
-audit/review. This does not activate the still-nonmatching source.
+Director2224 opened the coordinated sole-writer integration window after all
+private native/preprocess checks reached EOF. The reviewed D14C64/EF50 ownership
+replacement preserves the complete row, B06C/EF50 pieces, retained ASM and W7
+consumers. Final source/config identities supersede the early draft manifest.
+The obsolete fixture assertion and atomic-authentication test accounting are
+separate tooling repairs with Sol/Gold agreement, Director approval and independent
+review; a stale scenario lesson is explicitly historical-only. Writer release2245
+runs the corrected source-read test first, then the required full routine suite.
+One combined structural audit/normal complete-wave verifier and final structural
+review remain required; exact linked proofs alone do not accept W6. Lavender and
+MossyMouse remain under native holds until the Director supplies accepted refreshed
+inputs and releases them.
+
+After W6 acceptance and SilentForest's explicit ownership release, a fresh internal
+Sol6.1/xhigh production worker inherits the complete parked movement W5. Its
+[approved inactive structural plan](../build/director-resume-20261010/w5-structural-readiness/director-decision.md)
+uses existing accepted mechanisms for the paired producers and full 131828
+producer/tables. It does not activate those sources or waive final producer,
+symbol-binding, audit/review and complete-wave gates. Matching questions go to
+Claude/GoldOx; the Director handles tooling and coordination.
 
 **Terminal W8 accepted, October 10:** all fifteen owners / 19,636 bytes passed
 normal PURE_C, sole ownership, placement, actual relocation, complete target/table
