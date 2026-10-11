@@ -24,7 +24,9 @@ tomorrow using the existing experiment records.
 
 **Joe's October11 correction:** never use scheduled tasks or heartbeat automations.
 The Director deleted `ob64-director-continuity`; existing thread watcher scripts,
-Agent Mail inbox watchers and internal collaboration events provide continuity.
+Agent Mail inbox watchers provide continuity. Internal workers also require their own
+stop/attention monitor and tested outgoing mail for approvals and final handoffs;
+collaboration alone is insufficient. See [Director event continuity](WORKFLOW.md#director-event-continuity).
 The Director-imposed indefinite W5/W7 holds are lifted: the current owners below
 resume their complete assignments, with ordinary matching decisions and help owned
 by the worker and Claude/GoldOx. Preserve every best source and closed control.
@@ -109,9 +111,15 @@ cross-chunk admission within one unique loader-dma slab, explicit full-path sele
 and independent map/script order checks for every multi-member row, and adversarial
 fixtures including reversed object order with no interior. Seven core tooling/test/doc
 files plus [four required-model test-fixture migrations](../build/director-resume-20261010/w7-shared-auxiliary-tooling/director-test-call-propagation.md)
-are assigned; no source/config activation, schema extension, row exception or canonical
-audit is delegated. Lavender retains production ownership and read-only preparation;
+are implemented; all nine final focused commands passed at actual EOF. The same helper
+closed the demonstrated `completeCurrent` script/map reuse gap under the
+[bounded caller/test addendum](../build/director-resume-20261010/w7-shared-auxiliary-tooling/director-current-reuse-propagation.md).
+No source/config activation, schema extension, row exception or canonical audit is
+delegated. Lavender retains production ownership and read-only preparation;
 all native/CPP/build/publication work stays drained through the tooling test window.
+CoralJay (`/root/w7_tooling_independent_review`) now owns independent code/adversarial
+review and isolated test execution; the implementer awaits review. Dedicated internal
+stop monitors and verified Director inbox delivery cover both review and decision handoffs.
 After independent implementation/test review, the Director releases full W7 integration
 and one changed-input audit containing whole7 normal/fresh/full-ROM verification,
 followed by final independent proof review. Tooling fixtures do not accept W7.

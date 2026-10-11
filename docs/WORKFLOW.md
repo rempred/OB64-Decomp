@@ -377,6 +377,46 @@ accepted and ownership released, unless Joe directs otherwise. Preserve Joe's as
 top-level worker role and existing watcher routing. Never resume retired/completed workers
 or add scheduled tasks to provide continuity.
 
+#### Director event continuity
+
+Use local thread watcher scripts and Agent Mail inbox watchers; never scheduled tasks
+or heartbeat automations. Internal tooling, research and review helpers require the
+same reliable continuation coverage as top-level source workers.
+
+1. At assignment, record the helper's real thread ID, role and ownership in the Director
+   cursor. Reuse the existing tested thread-monitor implementation with a dedicated
+   configuration/state directory for that helper and the current Director destination.
+   Do not copy another worker's delivery cursor or create a duplicate process. Confirm
+   the exact process, destination and fresh status, including a successful read of the
+   internal thread. Keep an active collaboration wait until this route is established.
+2. Give the helper the project key and verified Director mail recipient. The helper
+   registers its own identity and sends one clearly labeled startup delivery test;
+   the Director confirms actual inbox-watcher delivery. Never share sender credentials.
+   Approval/scope requests and final handoffs use this watched mail route as well as
+   collaboration. Ordinary progress and experiments remain exception-only.
+3. A helper needing a decision preserves evidence, sends the concrete request, and ends
+   its turn so the stop/attention monitor is a fallback. A failed send is reported through
+   collaboration and the saved handoff; it is not a reason to wait silently. The Director
+   checks the monitored stop against actual cursor/process state and reads its handoff.
+4. Before yielding an autonomous coordination turn, handle received completions and
+   decisions, or name their concrete owner/dependency/release condition. Confirm every
+   still-assigned helper has a live route. Do not infer that all work should be idle from
+   the production writer's legitimate drain; advance its tooling/review prerequisite.
+   A status-only user request gets a read-only answer, without treating the request as
+   authorization for new edits or worker restarts.
+5. On acceptance and release, stop only that helper's monitor through its owned stop
+   flag, confirm exit and preserve state/history. Never resume a retired worker from
+   an old event. Keep transport retries and durable event deduplication; test completion,
+   attention, restart/retry and wrong-destination rejection when the transport changes.
+
+The current reused implementation lives under
+`C:/Users/Joe/.local/share/codex-thread-monitors/actor-worker-to-astra/`;
+dedicated `internal-*-to-purple` directories carry current internal-helper routes.
+`watch-sol.py` and `desktop-bridge.mjs` perform metadata-only observation and delivery;
+the historical filename does not restrict them to source workers. Read current status
+and ownership records rather than assuming an old PID is still authoritative. A watcher
+alert requests Director intake, not automatic worker resumption or acceptance.
+
 #### Record useful experiments
 
 Routine trials need no separate plan file, journal entry or prose recap of tool output.

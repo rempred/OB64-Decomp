@@ -70,9 +70,24 @@ directly when they need help choosing what to try. Tooling approval remains with
 under the agreement, audit and review requirements below.
 
 Never use scheduled tasks or heartbeat automations for this program. Use the existing
-thread watcher scripts and Agent Mail inbox watchers for event-driven continuity;
-internal workers also report through collaboration. Preserve watcher routing and
-deduplication, and keep the Director responsible for acting on actionable events.
+thread watcher scripts and Agent Mail inbox watchers for event-driven continuity.
+Every assigned internal worker, including tooling, research and review helpers, needs
+its own verified thread stop/attention route to the Director and a tested outgoing
+Agent Mail route to the watched Director inbox. Collaboration messages supplement
+these routes; a completion recorded in chat history is not proof that an idle Director
+will wake. Verify actual delivery, preserve retry/deduplication state, and register
+only currently assigned workers. Retire routes when the assignment is accepted and
+ownership released; do not restart retired workers.
+
+Send actionable approval/scope requests through the watched inbox immediately, with
+the concrete decision and evidence, and send the final handoff before ending the turn.
+When blocked on a Director decision, end after sending so the stop watcher also wakes
+the Director; do not wait silently for a collaboration reply. The Director processes
+the request or records its concrete dependency, owner and release condition. Before
+ending an autonomous coordination turn, reconcile active completions and outstanding
+decisions and confirm their wakeup routes. A production drain does not suspend the
+tooling/review handoff needed to release it. See the operational checklist in
+[Director event continuity](docs/WORKFLOW.md#director-event-continuity).
 
 Use internal agents unless Joe assigns a top-level worker. Preserve Joe's assigned top-level role
 on resumption and replacement; this default does not authorize converting it into a subagent.
