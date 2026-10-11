@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "636AD214973EAEFFD8D43EAC1B48D2148EBD2D86CCAF6421C7D5DF47788CA85F",
+  "observationId": "44A5CC527BE6B61CE2E7A42C7D870E66C01CBDFD8386DFD2D8E7BB09104CCD10",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete17 CombatW6 ordinary source experiments against protected718B/F75E under unchanged accepted W8 inputs. Private native results and the reviewed reload observer establish source-specific effects; retail compiler history remains unknown.",
+    "effects": [
+      "source-grouping",
+      "instruction-scheduling",
+      "reload-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "92449B8335619F7AC2615E404B5ECC4FF575A989948B55F411492987B50A304D",
+      "sourceSha256": "2E7206B3912724812975EC18F6FBA80689D2971DD9F6C74936315FF50F3D6D9E"
+    },
+    "label": "three-statement-random-wrapper-changes-setup-with-identical-reload-history",
+    "observedEffect": "636AD214/source2E7206B3 remains PURE_C6844/frame616/177 text relocations/131 ordered calls, native7F8C53EC. It retains every original68 word difference and adds10 earlier setup differences at+B14..B38. Reviewed observer focused-LPKz4i agrees with pinned/off/on native output: all121 allocation descriptors and register/cursor decisions equal best,4inherit/8equiv/0retry. No expression-tree-collapse or retail-history cause is established.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-main-random-macro-preparation.json",
+        "sha256": "0056656FECF969DAC38D4EECFC63D18CE10F6E3C9240C3925CA6A50F88175A8D"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-main-random-macro-measurement.json",
+        "sha256": "60A07A7C0C82875B233524C218415892277789D785430A532ACBA07C64C47F66"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-main-random-macro-observer-comparison.json",
+        "sha256": "3C96DE14571C4C78C29C536494E80D9FC06433C0B0C198E138E778B37A98D235"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/main-random-macro.cjs",
+        "sha256": "7E693D2516EA86A97B90E3A5966E6B4C1FFDC4678A4178EF77BB15F4954E3C73"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The wrapper changes reciprocal setup without changing the late scratch choices. Compare the five-statement wrapperCDF8; protect718B and the complete17/table gates.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Wrap only the main three-rand word producer in a standard do/while(0) statement macro, retaining its three original assignment expression trees, existing unsigned locals and ordered calls. The packet halfword read and unsigned comparison remain outside the wrapper."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41336,
+      "sha256": "92449B8335619F7AC2615E404B5ECC4FF575A989948B55F411492987B50A304D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2E7206B3912724812975EC18F6FBA80689D2971DD9F6C74936315FF50F3D6D9E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-636ad21497.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

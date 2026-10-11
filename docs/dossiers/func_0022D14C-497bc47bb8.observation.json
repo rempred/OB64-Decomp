@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "497BC47BB8A3E9507835FB659A06E9CC554CAEAE2530ED384A1E01DA62EA5AD1",
+  "observationId": "06CA909C11EFD0EF1809E4B1252D6EEFC6CE05B7CB4369526629232C3BD4EC0C",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete17 CombatW6 ordinary source experiments against protected718B/F75E under unchanged accepted W8 inputs. Private native results and the reviewed reload observer establish source-specific effects; retail compiler history remains unknown.",
+    "effects": [
+      "real-value-phases",
+      "inline-return",
+      "reload-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D225D09ABFE2AF90C2B2453AB93BA8B61AB8EE76906DC8DD1720E5194733772E",
+      "sourceSha256": "49112B06F7FEF64BD7412FA112186F0D2037630E6EDAD50A1AAAE517000F71D1"
+    },
+    "label": "real-modified-inline-probability-and-boolean-byte-return-retain-scratch-choices",
+    "observedEffect": "497BC47B/source49112B06 and byte-return C352C22D/source121FEB55 are PURE_C6844/frame616/177 text relocations/131 calls, whole nativeCEBDD465, with actual relocation records/table equal best. Reviewed focused-aGDsCa/focused-caaNKU agree with pinned/off/on output and retain all121 ordinal register/cursor decisions,4inherit/8equiv/0retry. Descriptors differ from ordinal6 through pseudo renumbering, so no semantic alpha equality is claimed. The byte comparison return adds no instruction, unlike private u8 remainder6200 which adds andi and4bytes.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-inline-random-decision-mutable-preparation.json",
+        "sha256": "2E786CABFEC4E11E6422D96B4B0DD1DFA5593B13343D1D0973A2A68D22D0E5C1"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-inline-random-decision-mutable-measurement.json",
+        "sha256": "D23EEC495E52142F7BEA660C7072576922A97DE7E882D4A90768282E4FC3F02F"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-inline-random-decision-mutable-observer-comparison.json",
+        "sha256": "59F8B1769B1C047993C62E01509EB162BDFB3AFAD644B49539FE4289925D4CD6"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/random-decision-inline.cjs",
+        "sha256": "953D56C6E90EBE616C3E4026FC26CC979B8659D1CB6DB9E06470898C4113B6C1"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-inline-random-decision-byte.c",
+        "sha256": "121FEB55511487B1CF8E266759498E7BEDF11C13D5D2BE66E61C0172414A6FB9"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-inline-random-decision-byte-measurement.json",
+        "sha256": "9229D8F013DAA482A453BE169EB4528929F90A7F2EC1C22DE6897E90B2BAE2E8"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-inline-random-decision-byte-observer-comparison.json",
+        "sha256": "76812DFBFB0A6C6FCE061189E2863C8F3D85C9FCB800E9CDC88068CFA78D78D3"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-inline-remainder-byte-measurement.json",
+        "sha256": "23CBDF92F7BAF8171D7DC9CD070BC5C56BB9B0212DBF5E48FDEA1EC9003EC8BD"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-main-decision-branches-measurement.json",
+        "sha256": "9518EEE59445C025F3CA4B1B6640A491606B339EE78C29F0C01C8C3F16BBA33C"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/d14c-branch-random-decision-measurement.json",
+        "sha256": "B7FC96C2B8DA9932FEAC742FD4B5614A69ADCCABD3DC2B88A457C5D18C3FAB02"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "These concrete modified-formal and0/1 return-width forms retain68 differences. Source55A6AC1D integrate.c confirms argument-copy/return-mode conditions, but does not imply universal transparency. Private bare main1/0 branches531B are also whole-native-neutral; multi-producer byte3 branches8063 instead grow48bytes/frame624 and remain unselected. Further work needs a distinct real producer/lifetime organization.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the real unsigned three-rand decision into an ordinary inline helper. Overwrite its by-value probability parameter with the actual0/1 comparison and return it. Caller captures the decision before the original halfword read, then transfers it to the existing flag. The caller retains original probability for later half/quarter tests. A control changes only the helper return type to u8."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41444,
+      "sha256": "D225D09ABFE2AF90C2B2453AB93BA8B61AB8EE76906DC8DD1720E5194733772E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "49112B06F7FEF64BD7412FA112186F0D2037630E6EDAD50A1AAAE517000F71D1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-497bc47bb8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
