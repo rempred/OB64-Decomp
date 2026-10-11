@@ -110,7 +110,7 @@ continues unaffected evidence preparation. Director2324 assigned read-only Astra
 helper `/root/w7_shared_auxiliary_scope` to investigate accepted alternatives or
 a generic remedy and adversarial checks. Explicit Sol/Claude agreement, Director
 approval/delegation and applicable audit/independent review precede tooling edits.
-No chunk reassignment, repartition, special-case bypass or partial-wave acceptance.
+Gold2325 confirms no current representation. The [merged proposal](../build/director-resume-20261010/w7-shared-auxiliary-tooling/PROPOSAL.md) adds explicit fragment ordering/map proof for all multi-member rows and authenticated model ownership within one loader-dma slab. Sol/Gold agreement and native-drain confirmation for merged request2326 remain pending; no implementation is approved yet. No chunk reassignment, repartition, special-case bypass or partial-wave acceptance.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
