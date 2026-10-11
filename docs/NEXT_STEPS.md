@@ -132,10 +132,11 @@ Director2355 released Lavender to integrate all7 and run ONE changed-input struc
 audit containing normal/fresh/full-ROM gates. Actual resumed turn confirmed through app
 fallback delivery while the mail watcher retained2355 for retry. Dedicated internal
 stop monitors and verified Director inbox delivery cover both review and decision handoffs.
-CoralJay retains final independent structural proof review after the audit; no unchanged
-canonical repeat. NINE's native/CPP drain2356 now applies only to W7 shared-input changes
-and canonical commands; Director releases it at stable inputs/actual EOF without waiting
-for final read-only review or commit. Tooling fixtures do not accept W7.
+**Audit2367 PASS:** single audit ended19:55:05Z at actual exit0; zero canonical/native
+processes and stable inputs confirmed19:56:18. CURRENT B72EB182 retains retail571E8339;
+normal/fresh whole7 gates passed. CoralJay's independent final structural proof review
+has started, with no native/build/review-only verifier. Acceptance/57-path commit awaits
+its decision. Director2368 lifted NINE/Gold native drains immediately; NINE actually resumed.
 
 **Joe's two-worker direction, October11:** maintain two disjoint complete matching waves
 and replace each accepted/released worker promptly with fresh Sol6.1/xhigh. Director2340
@@ -151,6 +152,10 @@ both tables/native tails and structural group gates; use a new private root with
 evidence read-only. Current tooling edits hold native/CPP checks only; unaffected preparation
 may start as soon as ownership transfers. DB10/3C00/6098 remain candidate-ready alternatives,
 not accepted PURE_C. The Director owns next-wave investigation whenever a slot opens.
+Next W7 slot: after whole7 acceptance, scoped commit and Lavender ownership release,
+start fresh top-level Sol6.1/xhigh on complete5548-byte DB10 including its original
+preamble/DB18 interior. Preserve old animdb10 controls/cursor read-only; its historical
+no-discriminator hold is superseded. No external dependency remains for candidate work.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
