@@ -859,7 +859,7 @@
     { "symbol": "func_00128050", "source": "src/lib/func_00128050.c" },
     { "symbol": "func_0012B1C4", "source": "src/lib/func_0012B1C4.c" },
     { "symbol": "func_0012D6FC", "source": "src/lib/func_0012D6FC.c" },
-    { "symbol": "func_00107D60", "source": "src/lib/func_00107D60.c" },
+    {"symbol":"func_00107D60","compilationGroup":"movement_107d60_107e38"},
     { "symbol": "func_0011AB74", "source": "src/lib/func_0011AB74.c" },
     { "symbol": "func_00125298", "source": "src/lib/func_00125298.c" },
     { "symbol": "func_00126D24", "source": "src/lib/func_00126D24.c" },
@@ -1235,6 +1235,14 @@
     {
       "symbol": "func_00195D9C",
       "source": "src/lib/func_00195D9C.c"
-    }
+    },
+    {"symbol":"func_00107E38","compilationGroup":"movement_107d60_107e38"},
+    {"symbol":"func_00125460","compilationGroup":"movement_125460_125f84"},
+    {"symbol":"func_00125F84","compilationGroup":"movement_125460_125f84"},
+    {"symbol":"func_00131828","source":"src/lib/func_00131828.c"},
+    {"symbol":"func_0011AECC","source":"src/lib/func_0011AECC.c"},
+    {"symbol":"func_0012B440","source":"src/lib/func_0012B440.c"},
+    {"symbol":"func_0012BC64","source":"src/lib/func_0012BC64.c"},
+    {"symbol":"func_0012C788","source":"src/lib/func_0012C788.c"}
   ]
 }

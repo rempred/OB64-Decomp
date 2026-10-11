@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A7816E9035EE45DAF69E59336DD4122014BDD0F4ACA6F9C02EF41C3C0DE8EEBB",
+  "observationId": "D6B992D021527A3E4CFB4192CF23AC1FFD53F059847792321DABF75BFA2D66C9",
+  "symbol": "func_0012BC64",
+  "authored": {
+    "context": "Original20 W5 remains incomplete on CURRENT A913A384. Best18D521D7 has2852/frame248/81 masked differences. Gold2301 identifies single-block non-CSE-equivalent FP lifetimes and selector-pointer priority as remaining levers. Nearby movement source supports the banked byte-map shape; scalar settings address7AB9 is exactly ten bytes before map bank7AC3 under existing bindings.",
+    "effects": [
+      "compiler-observation",
+      "register-allocation",
+      "control-flow",
+      "source-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D295CC922B382AAC24DE1574A936A7958B80E3AB6849858D4D48109312133069",
+      "sourceSha256": "DD7D66A5F01DEC151F39406A55B5862FC4140C811AFE79566EC1235DBE7D062C"
+    },
+    "label": "tail-double-grid-and-shared-settings-restore-F10-and-GP-roles",
+    "observedEffect": "ProbeBDBCCD04: four SF/two DF divides through GREG, then four SF/zero DF divides at JUMP2; all48→47 conditions as before. Allocated pseudos541 and550 occupyF8;541 is the real lowerZ load. Both disappear with the query, while reload selects42/43(F10/F11). Probe1878C3E changes only the initial tail angle/weight order from that precision trial. Native watchA7816E90: PURE_C2852/frame248/81actual relocations/21calls/sixSF;12 actual-relocation-field-masked diagnostic differences, all in tail preheader2252..2296. All fourteen formerF8/F10 fields and every GP role agree. No missing words. Selected over81-difference best18D; intermediate17B6D190 and2CE5BDBD remain recoverable.",
+    "parentCandidateId": "18D521D7D8E0A239A153556BF70585A59E6BC50192A84A4A1A578AF1C805AC2F",
+    "references": [
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-local-settings-fields.c",
+        "sha256": "7D2EAD359C86532B3DE8CFC6CAD074841365FCE1FA82DDB1D4D39735FD9553A9"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-local-settings-fields-probe.json",
+        "sha256": "A5F4188B1AFDC9AF2158E1698E727B5CA033302D5BB7E80D083D22B3FDAE443C"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-local-settings-fields-watch.json",
+        "sha256": "3CF08B3880EAB1B62F72CE30B939BCE0BF4FEB08B2C29DA6FFF58FF80652936A"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-local-settings-fields-coverage.json",
+        "sha256": "C30BEE881D58906F87C57BE5156AC826E0871438BD74EC209D96709B578C8878"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-double-grid.c",
+        "sha256": "D6E87BB8CAAF60F0E21C1D3CF1AEDDA5A5C4FBC8268F82738279000D628E4B09"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-double-grid-probe.json",
+        "sha256": "ACE67CAA546756A3F55E0D4901045208FAFA560FDC1F4FBE0505266E57A50BC0"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-double-grid-checked-mechanism.json",
+        "sha256": "DAED77B11B7F75A6AAD8966D0AC567AD7F6297FDF11351154F122DED834DF2CC"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-double-grid-watch.json",
+        "sha256": "7A841D8380BC6FF1FDDEB49FBE29524A4633398BD94C6B4F24A2AD13666B5739"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-double-grid-coverage.json",
+        "sha256": "CD98344CB2AA01DCF6A3752C637DAC8316A4D1CA2611344355A69526776C63FF"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-angle-first-probe.json",
+        "sha256": "5B8679C93D0E35DDCFB5185388C031C356B31712EC5DB2801C9144127B60F709"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-angle-first-checked-mechanism.json",
+        "sha256": "553206B41D56955569238D56AACE6190AE37BB69D019C61A76551110A8FA878D"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-angle-first-watch.json",
+        "sha256": "4EEF23C4F5E78DBB03CE94316087AB24212B2EE7A53B94D191901276D15D1354"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-angle-first-coverage.json",
+        "sha256": "EAA5D51E1EFD5094AEC305F9CD080AF39EE002FD86EBA0EFC6B5CBC40BFCC815"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-angle-first-offset-differences.json",
+        "sha256": "29F2C541ADC7EC7921C9C951B83B8D2291B708B54E98E447168B6E01127C2ED7"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      }
+    ],
+    "relatedCandidateIds": [
+      "17B6D1908088A124311B28681C967C24F066BF6C2B6AF293769596E9D5A2BE58",
+      "2CE5BDBD597BDC7819166A89B356C6CB1E1946E7D13EE6F9ED58775D31ADB5CC"
+    ],
+    "remainingFailure": "Twelve preheader ordering differences remain. Symbolic-object evidence is not matching acceptance; actual linked relocation/addend/sole ownership/placement, existing structural admission and original20 full-ROM gates remain open. No canonical source/config activation or full verifier.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Derive the tail cell index with double grid intermediates and a promoted real64 scale, retaining scalar bound subtraction. Use a body-local settings pointer for the height selector and nearby bank byte, with a separately rematerialized map base. Compute the tail angle before its first formation weight; preserve four independent trig calls and intervening reloads. Original-source spelling, removed body and gameplay meaning remain uncertain."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 14308,
+      "sha256": "D295CC922B382AAC24DE1574A936A7958B80E3AB6849858D4D48109312133069"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DD7D66A5F01DEC151F39406A55B5862FC4140C811AFE79566EC1235DBE7D062C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0012BC64-a7816e9035.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

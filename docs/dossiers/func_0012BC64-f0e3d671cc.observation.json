@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F0E3D671CC04B9981A1E068B0E53D67B1FDAF30F65EA1652F0B6129243D4F731",
+  "observationId": "BA662AAF01003C74433126DC5F0CFD50C5845ABE05D61CC20F5C5B4A1ABBDCAE",
+  "symbol": "func_0012BC64",
+  "authored": {
+    "context": "A7816E90 retained twelve preheader ordering differences after resolving realF8 late-deletion history and the selector/unit/index GP roles. Original20 source readiness uses the existing reviewed whole-pair and131828 admission; no acceptance or schema exception is inferred from private bytes.",
+    "effects": [
+      "compiler-observation",
+      "register-allocation",
+      "source-lifetime",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "519B5D3BEAE9167640834528CFC00F5068E66596CDC8F27B24BAF3FBC52D4505",
+      "sourceSha256": "8E96EE462765DC509E533D274FE640CF6FE259E6A10F4DBC379A5A1D4D491F15"
+    },
+    "label": "BC64-full-body-zero-difference-private-candidate",
+    "observedEffect": "Probe1877AADC retains frame248 and F10/F11 single reload group; preparation order now agrees. Native watch7218E008 and final watchF0E3D671 both emit PURE_C2852/frame248/81R/21calls/sixSF, with zero actual-relocation-field-masked diagnostic differences over all713 words. Their native text and relocation records are identical. Direct pre-loop secondIndices with secondIndices[0] instead has five uses, winsS7 and loses the frame spill; the direct leader lookup restores the three-use narrow pointer and spill156(sp). Full native body, both passes and all predicates remain covered.",
+    "parentCandidateId": "A7816E9035EE45DAF69E59336DD4122014BDD0F4ACA6F9C02EF41C3C0DE8EEBB",
+    "references": [
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-ordered-inputs.c",
+        "sha256": "BE93AAFB3289DE7D8CB0B0D5E463D65F5BC863BB59DFE22DB5ACB0CE07D9EB2E"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-ordered-inputs-probe.json",
+        "sha256": "BFCD4194EE8295364CAB660B1859D57DA8D9600BC092C2D550758281A913EEFA"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-ordered-inputs-checked-mechanism.json",
+        "sha256": "9D32B97B4FB73397F6017199F2466C9B364384B31D69064723B2554D91D3170E"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-direct-leader-index.c",
+        "sha256": "9F3A471D7D91B4ECE864CFCE7BC3961F86E274E00B39B2B09457953AC0DCD53F"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-direct-leader-index-probe.json",
+        "sha256": "C3E0A84942D6CAFD93B489DBB4894219BA9418B48C4C5115AA5B9EA61A638D76"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-direct-leader-index-checked-mechanism.json",
+        "sha256": "16FED86EC4EB53852605CE787C46E18415DC542AE7848DD86FD16CCA8A661B34"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-direct-leader-index-watch.json",
+        "sha256": "ABCE8F134A91656600ED152205B335609E116A254380F0EE439A9DA5A29197D6"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-direct-leader-index-coverage.json",
+        "sha256": "736C7E9E7D4F19C2AFEACAD82D212AD046B40196F38858C6B65BE2CC41B87FA2"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-production-candidate-watch.json",
+        "sha256": "A8DD16AC6FCADF2B9BBDD32F2DB9B5C32FDAAF2FC65D2394014E30B65B083926"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-production-candidate-coverage.json",
+        "sha256": "94DA3324005AD0C2DD154735AA40BCE5DC40F737C3F9178786256C765F098F99"
+      }
+    ],
+    "relatedCandidateIds": [
+      "7218E008000043626E23D4104109D698D5A908A9B5944583B70C73DAFCB38E24"
+    ],
+    "remainingFailure": "Source-ready only. Actual canonical linked bytes, exact relocation/addends, sole C ownership, placement, whole-pair/five-body/table admission, changed-input structural audit and independent structural evidence review, and the one complete20 exact-ROM verifier remain required. The removed body, historical source spelling and gameplay meaning are uncertain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Capture the real tail index pointer, unit array and0.8 scale before factor/64/bounds initialization; use indices[0] directly for the leader, retaining the narrow index-pointer uses in the other arm. Preserve the double-grid discarded-cell hypothesis and separate tail angle-before-weight sequence. Final byte-array selector view and explanatory comments change no object text/relocations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 14422,
+      "sha256": "519B5D3BEAE9167640834528CFC00F5068E66596CDC8F27B24BAF3FBC52D4505"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8E96EE462765DC509E533D274FE640CF6FE259E6A10F4DBC379A5A1D4D491F15"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0012BC64-f0e3d671cc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

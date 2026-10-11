@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "17B6D1908088A124311B28681C967C24F066BF6C2B6AF293769596E9D5A2BE58",
+  "observationId": "8A7198CD94CFAC9C63A5FCDFD18607CB29FF032B94600EA1C998E2295FC3DD97",
+  "symbol": "func_0012BC64",
+  "authored": {
+    "context": "Measured before canonical W5 activation on accepted CURRENT A913A384. This source pair differs only in the tail grid intermediate precision; both have the same settings-pointer/query shape and tail weight/angle order. The selected final F0E3D671 separately passes its canonical linked diff; whole20 audit/review remains open.",
+    "effects": [
+      "compiler-observation",
+      "register-allocation",
+      "control-flow",
+      "source-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "71BDDD64161B73CE8E73CC65C0889E06FCC1D1FD715B482FDEB390B1273C60B4",
+      "sourceSha256": "7D2EAD359C86532B3DE8CFC6CAD074841365FCE1FA82DDB1D4D39735FD9553A9"
+    },
+    "label": "single-precision-tail-grid-is-nearest-F8-allocation-counterexample",
+    "observedEffect": "ProbeE1B6A311 and watch17B6D190 retain the correct GP roles/frame248 but use reload40/41(F8/F9);129 allocated FP pseudos all occur in SCHED1. The six SF divides reduce to four at JUMP2, leaving the same14 incorrect F8 fields. Object2856 bytes/81R/21calls/sixSF. It differs from the double-only companion at exactly14 object words, with identical relocation records.",
+    "parentCandidateId": "18D521D7D8E0A239A153556BF70585A59E6BC50192A84A4A1A578AF1C805AC2F",
+    "references": [
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-sf-df-source-pair.json",
+        "sha256": "B2B1E4BFA8A8103BC8DCA63ADF30AE145A7458934B78E77A9A680A64E0A8701D"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-local-settings-fields-probe.json",
+        "sha256": "A5F4188B1AFDC9AF2158E1698E727B5CA033302D5BB7E80D083D22B3FDAE443C"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-local-settings-fields-watch.json",
+        "sha256": "3CF08B3880EAB1B62F72CE30B939BCE0BF4FEB08B2C29DA6FFF58FF80652936A"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-local-settings-fields-coverage.json",
+        "sha256": "C30BEE881D58906F87C57BE5156AC826E0871438BD74EC209D96709B578C8878"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-double-grid-probe.json",
+        "sha256": "ACE67CAA546756A3F55E0D4901045208FAFA560FDC1F4FBE0505266E57A50BC0"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-double-grid-watch.json",
+        "sha256": "7A841D8380BC6FF1FDDEB49FBE29524A4633398BD94C6B4F24A2AD13666B5739"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-double-grid-coverage.json",
+        "sha256": "CD98344CB2AA01DCF6A3752C637DAC8316A4D1CA2611344355A69526776C63FF"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-double-grid-mechanism.json",
+        "sha256": "4527702C2B0F28C70B51427A6CDB7108314286439A1CFB394627DA62409C2A9C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "2CE5BDBD597BDC7819166A89B356C6CB1E1946E7D13EE6F9ED58775D31ADB5CC"
+    ],
+    "remainingFailure": "These2856-byte intermediates are unselected nonmatches. They isolate a compiler mechanism, not historical source or gameplay meaning. The final source and wave gates are separate.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain single-precision grid intermediates while using the selector byte view for the bank at+10 and rematerializing the separate map base."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 14246,
+      "sha256": "71BDDD64161B73CE8E73CC65C0889E06FCC1D1FD715B482FDEB390B1273C60B4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7D2EAD359C86532B3DE8CFC6CAD074841365FCE1FA82DDB1D4D39735FD9553A9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0012BC64-17b6d19080.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

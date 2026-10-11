@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C90BD9DF79719519DCE7E203B61DCFFF617C681A684008C4993B3EA6EFBC664E",
+  "observationId": "01CD741F075F6002F39206BDAB5C0AC421A4734047C2A8FC701A6B8CBA0BCF32",
+  "symbol": "func_0012BC64",
+  "authored": {
+    "context": "Top-level SandyPelican resumes complete original20 W5 on accepted CURRENT A913A384. Fresh intake authenticates E7F5B100/36DF9B78 and the timer-first7EF877CF source pair; full713-word owner, two passes,21calls and sixSF predicates reconcile. E7F5 remains2820/frame240/77R with172 overlapping masked differences+8 missing words.",
+    "effects": [
+      "source-pair-transfer",
+      "scheduling-or-block-order",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BD2D4F8918125A73FA2968E62B70A3C7CE72D43343B83B68F93E495DDE51450C",
+      "sourceSha256": "8CF2F13346143E1B0577B10F0AF3B72B133F81CBDC118753F838D78E099C4276"
+    },
+    "label": "tail-local-index-base-and-timer-first-cleanup-composition",
+    "observedEffect": "Supported watchC90BD9DF emits PURE_C2820/frame240/77 actual relocations,21calls/sixSF, text866BD64E. Exactly16 words change relative to E7F5, all within the final cleanup; all earlier native words are identical. At the explicitly identified retail0xA90..0xADC cleanup interval, compared at actual offset-32 under actual relocation-field masking, differences fall17->1: occupied count S0 versus retail S6. Whole offset-aligned metric stays172+8. Selected as the current emitted best because it retains the best earlier instructions and restores the evidenced cleanup layout; the old best and independent timer-first source remain recoverable. No pass-level cause is claimed from this native comparison.",
+    "parentCandidateId": "E7F5B10056E1672B4C34F3219CE9626C7D425B0EB8EE9B222652879A156D3039",
+    "references": [
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-local-index-base-watch.json",
+        "sha256": "B8D105795CD786E6F3516ECB6680D9F35720376B24C94A6D1A2C90737B8491BD"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-base-timer-first-watch.json",
+        "sha256": "BAFC6D5935CE466562444833F2E6349A391ACC2D6AA91557DF8B88C66DD96D48"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-base-timer-first-coverage.json",
+        "sha256": "9DDB2CA57D68A0B28D705299B821C27D3C5316CC87E15843527599AD85BE4562"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-base-timer-first-layout.json",
+        "sha256": "6BD648C809C4D9F4475B8DAF834724E2D968C6B41BD3FB5C3FB17BD1A67F98AE"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-cleanup-timer-first-claims.json",
+        "sha256": "A00A1FCF72D2D95C079FB0DFB2238B611E652959EB9FB6700C5CA2AE6177D7C2"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      }
+    ],
+    "relatedCandidateIds": [
+      "7EF877CF78C100E41283F264FFFED0B13B2D57308C15777E01524D0B2FFE846A"
+    ],
+    "remainingFailure": "Nonexact symbolic-object evidence only; no private linked/expected-relocation acceptance for the inactive owner.32-byte second-pass deficit, frame240 versus248, F8/F10 fields, genuine second-pass64/D9C/after-height7A90 preparations and second-index natural home remain unresolved. All original20 canonical linked/structural/PURE_C/full-ROM gates remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Compose only the already observed real timer-first cleanup arm order with E7F5's in-body secondIndices initialization. Existing predicates, reads, stores, calls and storage remain identical; no inferred dead producer or artificial reader is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 13323,
+      "sha256": "BD2D4F8918125A73FA2968E62B70A3C7CE72D43343B83B68F93E495DDE51450C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8CF2F13346143E1B0577B10F0AF3B72B133F81CBDC118753F838D78E099C4276"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0012BC64-c90bd9df79.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

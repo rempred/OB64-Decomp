@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "18D521D7D8E0A239A153556BF70585A59E6BC50192A84A4A1A578AF1C805AC2F",
+  "observationId": "29280374912C495E648241CAA2F34F295D5EC05ED80C79095D33D571A957511A",
+  "symbol": "func_0012BC64",
+  "authored": {
+    "context": "Complete original20 W5 on accepted CURRENT A913A384; C90BD9DF best is2820/frame240/77R/172 overlapping masked differences+8 missing words. Director2297 clarifies that source hypotheses need not prove exact historical statements. Retail prepares tail64/D9C/7A90, and accepted neighboring movement source uses a0x33 bank byte and pointer table. Gold2298 measures a dead-assignment cell test surviving to late JUMP2, unlike a simply ignored query.",
+    "effects": [
+      "compiler-observation",
+      "control-flow",
+      "register-allocation",
+      "source-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CB5EDBA7A79E379E743BF645A51FA56E13B69BBBA5D940BC5B46FD740ECD1F08",
+      "sourceSha256": "9BA1588C6C963E7723327C191FCBDD32DD05C27044CD7A52C629C7C37B50B905"
+    },
+    "label": "plausible-tail-cell-test-retains-invariants-and-natural-index-spill",
+    "observedEffect": "Supported probeA24DEF28 is PURE_C: six SF divides/48 conditions survive through GREG, then JUMP2 leaves four divides/47 conditions. Supported watch18D521D7 emits the full2852 bytes/frame248,81 actual relocations,21 calls/six surviving SF predicates, with81 overlapping actual-relocation-field-masked differences and no extent gap. Retail tail progressF28=64, boundsS0 and natural secondIndices home156(sp) are restored; count becomesS6 and cleanup agrees. Selected over172+8 C90; all older bests remain recoverable. TailMap instead occupiesS8 before the loop, displacing unit base toS7 and losing the desired height-selector capture; the orphan map address is still at the wrong location. F8/F9 remains the sole SF reload group.",
+    "parentCandidateId": "C90BD9DF79719519DCE7E203B61DCFFF617C681A684008C4993B3EA6EFBC664E",
+    "references": [
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-cell-test-invariants-probe.json",
+        "sha256": "D8CF7DAA2EE903370E929D98FD4791D0423CACB57CCB847A6948C1415257AEE6"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-cell-test-invariants-checked-mechanism.json",
+        "sha256": "75EAFE4411F79C8FFF4E1730B347D868965E997900DED851C9B0E2499BA27B43"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-cell-test-invariants-watch.json",
+        "sha256": "36D19E97E207362CD57345AEFD0281B179DF531DC67DD6E981F1392E1B1E2C11"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-cell-test-invariants-coverage.json",
+        "sha256": "3C617F2C1C1AD5BA285C24476CAAE021B7FDC109D67516C22C2860B48F9276E1"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      },
+      {
+        "path": "src/lib/func_00106F34.c",
+        "sha256": "D9916E6FBBE6C913672C6703DE35E46241057CAD30C73856DBAA369376AA3553"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Symbolic-object nonmatch:81 diagnostic differences. Map-base/height-selector/unit-base representation and tail preparation order remain wrong; fourteen F8/F10 fields remain. Final linked relocation/addend/sole ownership/placement, applicable structural admission, PURE_C and original20 full-ROM gates remain open. No production activation or full verifier.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reconstruct a tail map-cell test after the existing point publication, with the same bank/pointer/byte lookup shape as related movement code. Its nonzero arm assigns the computed pointZ to the existing formationZ work scalar; the historical body/meaning remains explicitly uncertain. Capture tailBounds and tailMap before the loop, and reuse the actual progress scalar as the64 quantization scale, passed to a separate inline helper. This is an unaccepted source hypothesis, not behavioral or original-source proof."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 14163,
+      "sha256": "CB5EDBA7A79E379E743BF645A51FA56E13B69BBBA5D940BC5B46FD740ECD1F08"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9BA1588C6C963E7723327C191FCBDD32DD05C27044CD7A52C629C7C37B50B905"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0012BC64-18d521d7d8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

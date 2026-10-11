@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "87BA66F0ACBB009A1AEE6558AB17EEB917106C538A15DD4FC18E904A81361B00",
+  "observationId": "8AC98966BCF5B86063B9D9E40A27006384CB5FC9C9596A0AEFDF074E07AF6795",
+  "symbol": "func_0012BC64",
+  "authored": {
+    "context": "Current emitted-best C90BD9DF8CF2F133 retains PURE_C2820/frame240/77R,21calls/sixSF and diagnostic cleanup1 difference. GoldOx2295 correctly separates F8/F10's necessary counted/excluded allocation from the unproven unified tail chain, and identifies stale combine-deleted pseudo allocation as another possible mechanism. Earlier four-bound snapshots and product/grid phases did not test grouping both real numerators and both real denominators before divisions.",
+    "effects": [
+      "compiler-observation",
+      "register-allocation",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "175D5F6E8AE87F4953FF1CC151D6EFD252165971C71DB9483F1C43C7BF7EE7BD",
+      "sourceSha256": "A3256F939919907D2C74A226C2B385314246CA2E222207BC07FD117CC5D1492B"
+    },
+    "label": "paired-real-grid-numerators-denominators-no-stale-fp-allocation",
+    "observedEffect": "Supported probe477E76A1 completes PURE_C. GREG still spills8/40/41 twice, with no40/41 pseudo allocation. All115 FP-allocated pseudo entries appear in actual SCHED1 instruction records; no stale combine-deleted FP allocation is observed. After normalizing local labels to instruction positions and omitting only comments/filename, the complete compiler instruction/directive sequence equals C90BD9DF. Frame240,21 calls and sixSF remain. No redundant native watch is run for identical assembler input. This closes the paired-arithmetic source form as a discriminator here, not the general stale-allocation hypothesis or PURE_C feasibility.",
+    "parentCandidateId": "C90BD9DF79719519DCE7E203B61DCFFF617C681A684008C4993B3EA6EFBC664E",
+    "references": [
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-paired-grid-arithmetic-probe.json",
+        "sha256": "A98CE51D5F6CB5B1A47FB02789393A0D8773347FBF492B85CAC67A1DF0418A8F"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-paired-grid-arithmetic-mechanism.json",
+        "sha256": "7BB2B48C8B51693241865803D3B40508EF2B3E9D117F61B2445067F82DBF518E"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/12bc64-tail-base-timer-first-watch.json",
+        "sha256": "BAFC6D5935CE466562444833F2E6349A391ACC2D6AA91557DF8B88C66DD96D48"
+      },
+      {
+        "path": "build/matching/movement-w5-fresh-261011/compare-grid-probe.cjs",
+        "sha256": "14CA5FAC31A9E7EAC07CFD21D3E6BDF8F2D4CEDBBC8947493E64801EBFC58E7B"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Probe-only nonselected source; no new object comparison or linked verdict. Preserved best remains8CF2F133. Exact identity of any Rev0-supported deleted tail condition/body remains missing, while the32-byte deficit,F8/F10,frame and index-home residuals remain. Full original20 acceptance is still open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "In the existing inline point_index helper, compute both existing scaled coordinate deltas and both existing bound differences before either division. Preserve every existing subtraction,64 multiply,division,truncation,shift/add and caller; no new arithmetic, memory access, predicate, storage array, qualifier or unused reader is introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 13463,
+      "sha256": "175D5F6E8AE87F4953FF1CC151D6EFD252165971C71DB9483F1C43C7BF7EE7BD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A3256F939919907D2C74A226C2B385314246CA2E222207BC07FD117CC5D1492B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0012BC64-87ba66f0ac.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
