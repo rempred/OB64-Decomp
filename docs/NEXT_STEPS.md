@@ -22,6 +22,11 @@ tomorrow using the existing experiment records.
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
+**Joe's pending push instruction, October11:** after the next complete acceptance wave
+is accepted and committed (expected W7), the Director pushes main to origin
+https://github.com/rempred/OB64-Decomp.git and confirms the remote result. This supersedes
+earlier no-push direction for that post-acceptance push; no premature push is authorized.
+
 **Joe's October11 correction:** never use scheduled tasks or heartbeat automations.
 The Director deleted `ob64-director-continuity`; existing thread watcher scripts,
 Agent Mail inbox watchers provide continuity. Internal workers also require their own
@@ -118,8 +123,10 @@ No source/config activation, schema extension, row exception or canonical audit 
 delegated. Lavender retains production ownership and read-only preparation;
 all native/CPP/build/publication work stays drained through the tooling test window.
 CoralJay (`/root/w7_tooling_independent_review`) returned one P2 in2335: legal spaced
-residual wildcards escape the selector census. The same implementer now owns the bounded
-generic correction and isolated tests; CoralJay re-reviews after handoff. Dedicated internal
+residual wildcards escape the selector census. Correction2341 passed101 native/selector
+controls and all six CURRENT tests with actual EOF. Re-review2346 found a remaining legal
+bare-object selector bypass; GoldKite's next bounded correction is active and owns isolated
+tests, then CoralJay re-reviews. Dedicated internal
 stop monitors and verified Director inbox delivery cover both review and decision handoffs.
 After independent implementation/test review, the Director releases full W7 integration
 and one changed-input audit containing whole7 normal/fresh/full-ROM verification,
@@ -127,8 +134,12 @@ followed by final independent proof review. Tooling fixtures do not accept W7.
 
 **Joe's two-worker direction, October11:** maintain two disjoint complete matching waves
 and replace each accepted/released worker promptly with fresh Sol6.1/xhigh. Director2340
-requests Lavender's narrow release of the complete scheduler NINE for a fresh top-level
-candidate worker while Lavender retains complete W7 production ownership. This supersedes
+requested Lavender's narrow release of the complete scheduler NINE; verified2342 released
+all9/tables/tails/group gates with zero processes. Fresh top-level Sol6.1/xhigh
+[Scheduler NINE worker](codex://threads/01a12c52-1ef0-7b50-9dab-1912468a1591) has started
+in build/matching/scheduler-nine-fresh-261011/ while Lavender retains complete W7
+production ownership. SapphireLeopard confirmed startup2344; its stop-monitor delivery and
+own inbox self-test2345 passed. C1C source/coverage preparation is active. This supersedes
 census2336's scheduling recommendation to wait for W7 acceptance. The census's dependency
 finding remains: NINE's former Scenario prerequisite is closed. Preserve all nine members,
 both tables/native tails and structural group gates; use a new private root with original
