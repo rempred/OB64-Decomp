@@ -63,6 +63,12 @@ Director and reviewer assignments remain separate. Retrieval/data-seeking or par
 helpers use Sol High (`gpt-5.6-sol`, reasoning `high`); separately assigned tooling or substantive
 research helpers use Astra Medium (`gpt-6-astra`, reasoning `medium`) unless Joe directs otherwise.
 
+The Director keeps assignments moving, resolves repository blockers, approves and delegates
+tooling changes, and coordinates integration and its required checks. Limit the Director's own
+function matching and experimentation. Workers own ordinary matching and ask Claude/GoldOx
+directly when they need help choosing what to try. Tooling approval remains with the Director
+under the agreement, audit and review requirements below.
+
 Use internal agents unless Joe assigns a top-level worker. Top-level candidate workers report to
 and are monitored by the Director; do not place them under the production writer or send that
 writer routine progress messages. Work on `main` with one production source/build writer.
