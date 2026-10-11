@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "29C9E93D48DA24ECCC068074BBBB54300AFD9D326B2381CDCE1A21A882A27973",
+  "observationId": "E49B60464C34F04CFD5E8585846753C87BC6DB08242CDA7C264DBD22F9F1FC08",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Director2185 supersedes the unrun2180/2182 transfers with GoldOx2183/2186 existing exact controls. Authenticated source context is protected718B except comment stripping/newlines and the bounded optional-second-call replacement. Baseline cc1 assembly equals our F75E compiler assembly after ignoring file/location directives and comments. Pinned F3F1 compiler is authenticated. No new KMC compilation.",
+    "effects": [
+      "two-guard-shared-call",
+      "post-join-stack-argument-stores",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A0FC1622D784A22D3409672AD74004392AFEA95EE9BDBBA75A3237DE53B41C0A",
+      "sourceSha256": "F880E3F8FA4AC9DAEBCCA1A451C38B0ED18D55E65882CFCE9AD05CC180848802"
+    },
+    "label": "two-guards-shared-optional-call-moves-stack-stores-after-join",
+    "observedEffect": "Existing cc1 output has one post-join block with sw s0,16(sp), sw s1,24(sp), sw t4,20(sp), before the shared jal. The historical a1/a2/a3 handoff recovers per-arm register-argument preparation, but still shares these stack stores. Retail words22D95C/22D964 store s1/s0 to16/24(sp) in the true arm;22D9CC/22D9D0 store s0/zero in the false arm; only the t3 store to20(sp) and jal tail are shared. Both saved sources match the assigned two-guard forms; no own native job or duplicate experiment was started.",
+    "parentCandidateId": "F75EBEA2FEA08F57F49153B86FA82A1D6FB13D9DA739ED1C6BC5FF00273AD0AF",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-fresh-261010/reuse-2185/authentication.json",
+        "sha256": "D2DCFF9BCBB29D5A9BC62A484431F2542D22D2BCF0DE039F5F11083A03D5D1AF"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/reuse-2185/v_twoguard.s",
+        "sha256": "A11E2B54B30B97858A1682B6F18B86A2E3EB7BF284139DF0823DEF4B0D765E02"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/reuse-2185/mk_d14b.py",
+        "sha256": "0A8101F05769DB1CE205634D76AD1764659120E60BB524878F3CAA11483FC202"
+      },
+      {
+        "path": "build/matching/combat-w6-fresh-261010/reuse-2185/d14prep.py",
+        "sha256": "60994B8D2E3CE9C26F01382DEB708D9F5BD899F311ED499D381395B54634543E"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "These exact measured transfers fail the earlier retail per-arm stack-store layout, independently of the unresolved68 late T3/T4 differences. Evidence is authenticated adviser cc1 assembly/dumps, not native-object byte totals or an observer run. No claim about all shared-call forms, original retail C, retail allocation history or inherent assembly. Protected best remains unchanged; complete17W6 is unfinished.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep both original0x87 guards, both first calls, type5 bypass and branch-local normalEmitCode through its first call. Inside each guard hand over emitFlag/emitCode/emitExtra to one optional second D2C0 source call in the false-arm guarded block."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41448,
+      "sha256": "A0FC1622D784A22D3409672AD74004392AFEA95EE9BDBBA75A3237DE53B41C0A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F880E3F8FA4AC9DAEBCCA1A451C38B0ED18D55E65882CFCE9AD05CC180848802"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-29c9e93d48.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
