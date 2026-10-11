@@ -108,7 +108,7 @@ Astra helper `/root/w7_shared_auxiliary_scope` implements authenticated model-ow
 cross-chunk admission within one unique loader-dma slab, explicit full-path selectors
 and independent map/script order checks for every multi-member row, and adversarial
 fixtures including reversed object order with no interior. Seven core tooling/test/doc
-files plus [four required-model test-call edits](../build/director-resume-20261010/w7-shared-auxiliary-tooling/director-test-call-propagation.md)
+files plus [four required-model test-fixture migrations](../build/director-resume-20261010/w7-shared-auxiliary-tooling/director-test-call-propagation.md)
 are assigned; no source/config activation, schema extension, row exception or canonical
 audit is delegated. Lavender retains production ownership and read-only preparation;
 all native/CPP/build/publication work stays drained through the tooling test window.
