@@ -66,7 +66,8 @@ with no supported next trial or established repository/tooling defect. All comma
 are at EOF. MagentaSeal retains W5 and production ownership; resume the same worker
 for new relevant evidence or coordinated integration of another complete wave.
 Keep the seven instruction-ready candidates and accepted shared pursuit producer;
-no partial-wave acceptance or worker replacement. W7 and D9C continue independently.
+no partial-wave acceptance or worker replacement. W7 continues independently; D9C
+is accepted above.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
@@ -86,8 +87,8 @@ retained ASM, padding and W7 consumers. Actual final input identities and report
 are in the [evidence summary](../build/matching/combat-w6-fresh-261010/integration-normal-summary.json).
 No unchanged verifier repeat. Separately reviewed test corrections retain all
 authentication/mutation controls; stale scenario curation stays historical-only.
-Director2252 releases Lavender's W7 native checks; MossyMouse's D9C checks are
-released through collaboration. Both refresh accepted F1B253F9 inputs first.
+Director2252 ended the W6 drain for the then-active W7/D9C workers. D9C is now
+accepted; release2279 and accepted A913A384 inputs govern W7's current resumption.
 
 MagentaSeal's complete W5 uses the
 [approved inactive structural plan](../build/director-resume-20261010/w5-structural-readiness/director-decision.md)
@@ -117,10 +118,11 @@ Audit2115 reached EOF/exit0 with exact ROM at CURRENT `113EBCB3`, retaining base
 W8's shared-input-stable release2124 resumed Lavender's full W7/A9C checks.
 Yellow retired after its own completed wave, preserving its cursor and recovery
 roots; its inbox watcher and old stop monitor are stopped. Completed SilentForest's
-inbox watcher and stop monitor are also stopped. MagentaSeal/W5, Lavender/W7 and
-MossyMouse/D9C run supported private checks
-concurrently under stable canonical inputs. Only actual shared-input mutation or
-canonical linking/verification requires the normal bounded drain.
+inbox watcher and stop monitor are also stopped. Completed MossyMouse/D9C and its
+inbox watcher are retired. MagentaSeal retains complete W5 on its recorded
+source-information hold; Lavender/W7 continues supported private checks under
+stable canonical inputs. Only actual shared-input mutation or canonical
+linking/verification requires the normal bounded drain.
 
 **Director sequencing decision, October 10:** intact W8 may be accepted before
 unfinished W6/W7 once its actual gates close. The read-only dependency census
