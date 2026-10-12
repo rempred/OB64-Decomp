@@ -33,10 +33,11 @@ structural contracts. Joe now assigns DB10, 3C00 and 6098 to SwiftGlen as one co
 animation wave, working in that order with one final whole-wave verification. NINE
 is accepted and committed as `21a0d61e`; its source/reviewer ownership and monitors
 are retired. S2 is accepted2545/committed `24d80141`; S5 is accepted2573/committed
-`198e5fe2`. S4 is accepted2666/committed `d6c115d6`. Their source ownership is
-released and their routes are retired. Fresh top-level Sol6.1/xhigh SilverBison
-owns complete Q5. Drain2657 is released2666; SwiftGlen's refreshed animation work
-actually resumed2670 against accepted CURRENT `2103E4D5`.
+`198e5fe2`. S4 is accepted2666/committed `d6c115d6`; Q5 is accepted2681 at
+CURRENT `7B2BEBE1`. Their source ownership and routes are retired. Fresh top-level
+Sol6.1/xhigh Q7 owns the complete ten-member scripted/site wave. Drain2676 is
+released2681; model-capacity failures currently prevent actual animation/Q7 startup.
+The Director owns recovery of these same assignments; see the current cursor.
 
 **Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
 audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
@@ -115,7 +116,7 @@ production/W7/DB10/3C00/6098/animation ownership2377; its inbox and stop watcher
 stopped with history preserved. GoldKite's tooling and CoralJay's complete review are
 accepted/retired; their dedicated monitors are stopped. Do not resume these workers.
 
-**Two active matching workers, October12:** fresh top-level Sol6.1/xhigh **SwiftGlen**
+**Two assigned matching workers, October12:** fresh top-level Sol6.1/xhigh **SwiftGlen**
 [DB10 chat](codex://threads/01a12c9b-be01-74c2-a136-da8c91aab898) owns the complete DB10 + 3C00 + 6098
 animation wave (all original bodies/preambles/interior entries included) and sole production
 source/header/config/build role, using `build/matching/db10-fresh-261011/` for private reconstruction.
@@ -126,15 +127,28 @@ no-discriminator holds are superseded. Continue DB10 first, then 3C00 and 6098;
 keep partial results provisional until one final verification accepts all three.
 The worker chooses source experiments and consults Claude/GoldOx.
 
-**SilverBison** [Squad Q5 alignment average pure C](codex://threads/01a1309e-428e-7030-8ecd-c722d6914aab)
-owns the complete 580-byte `func_0012FBB8` wave in `build/matching/q5-average-261012/`.
-The fresh top-level Sol6.1/xhigh worker completed intake/full-body reconciliation and
-started private reconstruction/comparison, retaining the exact hybrid and original ASM.
-Startup2669 reached the watched Director inbox. Incoming test2673 reached this exact
-Q5 chat and was acknowledged; stop-route test f8812e38-856d-466d-b161-f1ef6eae3cb8
-reached the exact Director. Inbox55400 and stop34552 are live with retry/deduplication.
-Q5 reports directly to the Director; SwiftGlen alone integrates complete accepted waves.
-The Director owns choosing and dispatching the next ready complete wave when a slot opens.
+**Q7** [Squad Q7 scripted site pure C wave](codex://threads/01a130d3-cc31-7b90-8b83-e8659be98b84)
+owns all ten existing scripted/site members in `build/matching/q7-scripted-261012/`.
+Preserve 17,368 owner bytes, including119454/127154 eight-byte terminal regions,
+and the complete roster/interfaces; accepted09C04 remains a protected dependency.
+The fresh Sol6.1/xhigh worker's initial and retry turns failed at model capacity
+before intake or identity registration. Director-owned same-assignment recovery
+continues; no source work is claimed. Stop37736 is live, six tests pass, and actual
+test b39dcc70-48bb-43aa-a558-4d3b7cf07cc7 reached this exact Director. The inbox route
+will be attached/tested when the worker registers its public identity. No duplicate monitors.
+
+**Q5 accepted, October12:** complete580-byte `func_0012FBB8` passes PURE_C, sole C
+ownership, placement, all13 actual relocations, exact target bytes and exact full ROM.
+[Final evidence](../build/matching/db10-fresh-261011/q5-final-integration-evidence-v1.json)
+SHA `A9BE7843` binds CURRENT `7B2BEBE1`, verifier `62EDC745`, fresh `DB71BBF9`
+and retail `571E8339`. Four supported publications, one focused diff and the single
+normal verifier reached EOF0; configs, original interfaces and ASM fallback are unchanged.
+Director2681 accepted/released drain2676 and assigned SwiftGlen the exact13-path commit
+(one source plus12 research files) and animation refresh/resumption. Capacity failures
+currently prevent that continuation; no extra verifier or push is required.
+SilverBison's administrative closeout reply also failed before action. The Director
+released ALL completed Q5 ownership directly after verified EOF; inbox55400 and
+stop34552 are stopped/PIDs absent. Its root is read-only history; never resume it.
 
 **Scenario S4 accepted, October12:** all four complete owners (127830/130D74/13109C/13C060)
 pass PURE_C, unique C ownership, placement, 165 actual relocations, exact target bytes

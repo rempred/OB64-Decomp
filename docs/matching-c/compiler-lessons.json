@@ -353,28 +353,14 @@
     },
     {
       "id": "conditional-expression-shape",
-      "symptoms": [
-        "branch-polarity",
-        "load-store-width-or-signedness",
-        "opcode-or-expression"
-      ],
-      "applicability": "Use instruction-supported widths, branch targets and grouping before allocator tuning. In BC8C, a Boolean-result first guard preserves a repeated null guard through first CSE; moving the genuine byte clear before the repeat restores the delay-slot shape. Compare the simpler guarded-call control, which loses the repeat. This is source-context evidence, not a universal recipe; check exact source pairs and production binding separately.",
+      "symptoms": ["branch-polarity", "load-store-width-or-signedness", "opcode-or-expression"],
+      "applicability": "Use evidenced widths and real control paths together. BC8C retains a repeated guard through first CSE; moving its byte clear restores the delay shape. Q5 narrows the actual accumulator to u16 and uses default-first average selection, restoring the signed quotient copy and full580-byte match. The wide default-first control omits the copy; narrow ternary restores it but remains588 bytes. Read exact source pairs; these outcomes do not prove original C or universal compiler behavior.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#conditionals-and-control-flow-shape",
-      "references": [
-        "docs/dossiers/func-000135a0.md",
-        "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.md",
-        "docs/dossiers/boot_resource_record_resolve_load-ec8f738aab.md",
-        "docs/Plans/task-logs/sol-resource-archive-wave-20261005.md"
-      ],
+      "references": ["docs/dossiers/func-000135a0.md", "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.md", "docs/dossiers/boot_resource_record_resolve_load-ec8f738aab.md", "docs/dossiers/func_0012FBB8-3f52fef7ce.md", "docs/dossiers/func_0012FBB8-e035a7f118.md", "docs/dossiers/func_0012FBB8-3a1a7ffcec.md"],
       "observations": [
-        {
-          "symbol": "boot_resource_record_resolve_load",
-          "path": "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.observation.json"
-        },
-        {
-          "symbol": "boot_resource_record_resolve_load",
-          "path": "docs/dossiers/boot_resource_record_resolve_load-ec8f738aab.observation.json"
-        }
+        {"symbol": "boot_resource_record_resolve_load", "path": "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.observation.json"},
+        {"symbol": "boot_resource_record_resolve_load", "path": "docs/dossiers/boot_resource_record_resolve_load-ec8f738aab.observation.json"},
+        {"symbol": "func_0012FBB8", "path": "docs/dossiers/func_0012FBB8-3f52fef7ce.observation.json"}
       ]
     },
     {
