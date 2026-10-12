@@ -32,8 +32,10 @@ wording and older scheduling below; it does not reopen accepted work or admit ne
 structural contracts. Joe now assigns DB10, 3C00 and 6098 to SwiftGlen as one complete
 animation wave, working in that order with one final whole-wave verification. NINE
 is accepted and committed as `21a0d61e`; its source/reviewer ownership and monitors
-are retired. Fresh top-level Sol6.1/xhigh CobaltLake now owns complete Scenario S2,
-with tested inbox and stop monitoring. The native drain is released.
+are retired. S2 is accepted2545 and committed as `24d80141`; CobaltLake released
+all ownership2546 and its monitors are stopped. Fresh top-level Sol6.1/xhigh HazyPuma
+now owns complete Scenario S5. SwiftGlen's refreshed animation work resumed2549.
+The native drain is released; S5's dedicated watcher launch is blocked as recorded below.
 
 **Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
 audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
@@ -112,7 +114,7 @@ production/W7/DB10/3C00/6098/animation ownership2377; its inbox and stop watcher
 stopped with history preserved. GoldKite's tooling and CoralJay's complete review are
 accepted/retired; their dedicated monitors are stopped. Do not resume these workers.
 
-**Two active matching workers, October11:** fresh top-level Sol6.1/xhigh **SwiftGlen**
+**Two active matching workers, October12:** fresh top-level Sol6.1/xhigh **SwiftGlen**
 [DB10 chat](codex://threads/01a12c9b-be01-74c2-a136-da8c91aab898) owns the complete DB10 + 3C00 + 6098
 animation wave (all original bodies/preambles/interior entries included) and sole production
 source/header/config/build role, using `build/matching/db10-fresh-261011/` for private reconstruction.
@@ -123,16 +125,28 @@ no-discriminator holds are superseded. Continue DB10 first, then 3C00 and 6098;
 keep partial results provisional until one final verification accepts all three.
 The worker chooses source experiments and consults Claude/GoldOx.
 
-**CobaltLake** [Scenario S2 cold consumer loaders](codex://threads/01a12e3f-bb07-7da0-b41a-e21b1f322ade)
-owns the complete `func_0004d634` / `func_0004da84` / `func_0004e1c4` wave in
-`build/matching/s2-cold-261011/`, including 4D634's original preamble/interior entry.
-The fresh top-level Sol6.1/xhigh worker started supported intake2532 after complete
-NINE acceptance2526 and SapphireLeopard's ownership release2529. Current base is
-`1B6CCCFE`; retain accepted cold-load and resource-consumer interfaces. Its own inbox
-and Director `s2-to-purple` stop monitor are live and actual delivery-tested.
+**HazyPuma** [Scenario S5 link record builders](codex://threads/01a12e75-75e6-7941-b6ba-95453cc700d0)
+owns the complete `func_0023A3A0` / `func_002488D0` / `func_00249290` wave in
+`build/matching/s5-links-261012/`. Preserve both original sixteen-byte descriptor
+constants and generic class/stat/memory interfaces. The fresh top-level Sol6.1/xhigh
+worker confirmed actual intake/full-body reconciliation and started its first C draft2548.
+Current base is `D08CE771`. Its outgoing startup mail reached the watched Director inbox;
+the dedicated stop-route test reached this Director. Automatic approval review blocked
+inbox-watcher configuration and background stop-monitor launch with only "blocked by policy".
+These new monitors are not live; the Director owns resolving that explicit monitoring blocker.
 Both workers run disjoint private checks concurrently; there is no current drain.
 Only real shared-input changes/canonical verification require scoped temporary drains.
-S2 reports directly to the Director; no routine messages to the production writer.
+S5 reports directly to the Director; no routine messages to the production writer.
+
+**Scenario S2 accepted, October12:** all three functions passed the single final
+normal verifier with PURE_C ownership, actual relocations, exact target bytes and
+an exact ROM. [Final evidence](../build/matching/db10-fresh-261011/s2-final-integration-evidence-v1.json)
+binds CURRENT `D08CE771`, verifier `C88FB725`, and fresh proof `333E9B72`.
+Commit `24d80141e0694aec4f49f1c47c7351f0bb0d5295` records five canonical inputs
+and five published research files. CobaltLake released all source/root ownership2546;
+inbox55388 and stop39368 are stopped/PIDs absent. Drain2538 was released2545;
+SwiftGlen refreshed its private context and confirmed actual animation continuation2549.
+No unchanged verification repeat, extra ordinary source review or new push is required.
 
 **Scheduler NINE accepted, October11:** complete source, tables and native tail passed
 one changed-input structural audit and fresh whole-wave verification, then independent
@@ -145,8 +159,8 @@ Joe's request. Drain2516 was released2524; SwiftGlen's refreshed animation work 
 **Next slot owned by Director:** use the complete wave roster and gates in
 [remaining-program scope](Plans/remaining-program-scope-20261011.md#scheduling-and-acceptance).
 After either worker's own complete acceptance/release, immediately start a fresh
-Sol6.1/xhigh top-level worker on a dependency-ready full wave. Prefer Scenario S2,
-then S5/S4 under stable accepted inputs; preserve every Squad package. The animation
+Sol6.1/xhigh top-level worker on a dependency-ready full wave. S5 is active; prefer
+S4 next under stable accepted inputs; preserve every Squad package. The animation
 conversions are already owned together by SwiftGlen. The Director owns the bounded
 DDB4 producer study before its integration;
 adjacent D450/D484 are conditional candidates, not an assumed native producer.

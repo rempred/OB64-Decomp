@@ -394,12 +394,12 @@
     },
     {
       "id": "symbol-address-construction",
-      "symptoms": ["constant-or-immediate-construction", "register-allocation"],
-      "applicability": "Supported symbols can alter address materialization. In 2215D0, a real-phase unsigned word identity folds in combine but changes address-reference priority, restoring ADDIU and S7/S8. D14C's B30D direct-callee form folds to the original call before allocation; native bytes remain unchanged. Distinguish stored-address lifetime from direct calls; preserve real values and signatures without invented callbacks or symbols. Examples do not establish linked or full-wave acceptance.",
+      "symptoms": ["constant-or-immediate-construction", "register-allocation", "stack-layout-or-offset-family"],
+      "applicability": "Evidenced symbols can change address reuse. 2215D0's real-phase word form changes reference priority; D14C's direct-callee form preserves native bytes. In 4D634, distinct cache/DMA boundary declarations alter call-crossing address reuse and allocation. Read the linked source pairs and observations. Preserve actual addresses, values and signatures; no invented symbols/callbacks or universal allocation rule. Diagnostics and whole-wave acceptance remain separate.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#evidence-backed-symbols-instead-of-numeric-pointers",
-      "references": ["docs/dossiers/func_0002def4-ef1d77993b.md", "docs/dossiers/func_0002def4-d0e15208f4.md", "docs/Plans/task-logs/sol-resource-header-loading-wave-20261005.md", "docs/dossiers/func_002215D0-233d92db9b.md", "docs/dossiers/func_002215D0-d685d8db29.md", "docs/dossiers/func_0022D14C-b30d1b5dd4.md"],
+      "references": ["docs/dossiers/func_0002def4-ef1d77993b.md", "docs/dossiers/func_0002def4-d0e15208f4.md", "docs/dossiers/func_0004d634-8c1039668d.md", "docs/dossiers/func_002215D0-233d92db9b.md", "docs/dossiers/func_002215D0-d685d8db29.md", "docs/dossiers/func_0022D14C-b30d1b5dd4.md"],
       "observations": [
-        {"symbol": "func_0002def4", "path": "docs/dossiers/func_0002def4-ef1d77993b.observation.json"},
+        {"symbol": "func_0004d634", "path": "docs/dossiers/func_0004d634-cd4cd4a91f.observation.json"},
         {"symbol": "func_002215D0", "path": "docs/dossiers/func_002215D0-233d92db9b.observation.json"},
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-b30d1b5dd4.observation.json"}
       ]
