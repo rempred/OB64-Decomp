@@ -8,36 +8,30 @@ typedef unsigned int u32;
 s32 func_00022e60(void);
 extern u8 g_func_001957D0_source_records[];
 
-asm(
-    "# Hybrid compiler-placement constraint for func_0012FBB8.\n"
-    "# The fixed $v0 register binding emits no MIPS instruction and does not implement division in assembly.\n"
-    "# Signed division remains C; the binding leaves its quotient in $v0, and the next C assignment emits move $s0,$v0.\n"
-    "# Without the binding KMC coalesces the quotient into $s0, omits that move, and changes the zero-count block layout.\n");
-
-s32 func_0012FBB8(s32 arg0, s32 arg1)
-{
-    s32 temp_a1_106;
-    s32 temp_a1_114;
-    s32 temp_a2_109;
-    s32 temp_a3_41;
-    s32 temp_v1_107;
-    s32 temp_v1_153;
-    s32 temp_v1_75;
-    s32 temp_v1_98;
-    register s32 quotient asm ("$2");
-    s32 var_a2_32;
-    s32 var_s0_31;
-    s32 var_v0_108;
-    s32 var_v0_96;
-    s32 var_v1_120;
+s32 func_0012FBB8(s32 arg0, s32 arg1) {
+    s32 average_value;
+    s32 score;
+    s32 penalty;
+    s32 slots_end;
+    s32 morale_value;
+    s32 new_chaos_frame;
+    s32 member_count;
+    s32 random_value;
+    s32 included_count;
+    /* Keep the accumulated value narrow. KMC then computes the signed quotient
+     * in a temporary and copies it back, preserving the retail division block. */
+    u16 alignment;
+    s32 alignment_gap;
+    s32 work_value;
+    s32 chaos_delta;
     s32 is_player_unit;
-    u8 *var_a1_40;
-    u8 temp_a0_43;
-    u16 temp_s1_17;
+    u8 *slot;
+    u8 member;
+    u16 site_morale;
     u16 high_bit_adjustment;
 
-    temp_s1_17 = *(u8 *)(0x801951CE + (arg1 * 0x24));
-    if ((temp_s1_17 & 0xFFFF) == 0xFF) {
+    site_morale = *(u8 *)(0x801951CE + (arg1 * 0x24));
+    if ((site_morale & 0xFFFF) == 0xFF) {
         goto reject;
     }
     if (arg0 < 0x1E) {
@@ -47,80 +41,79 @@ reject:
     return 0;
 
 accepted:
-    high_bit_adjustment = (temp_s1_17 & 0x80) ? 0x28 : 0;
-    temp_s1_17 &= 0x7F;
-    var_s0_31 = 0;
-    var_a2_32 = 0;
+    high_bit_adjustment = (site_morale & 0x80) ? 0x28 : 0;
+    site_morale &= 0x7F;
+    alignment = 0;
+    included_count = 0;
     is_player_unit = 1;
-    var_a1_40 = g_func_001957D0_source_records + 2 + (arg0 * 0x19);
-    temp_a3_41 = (s32)(var_a1_40 + 5);
+    slot = g_func_001957D0_source_records + 2 + (arg0 * 0x19);
+    slots_end = (s32)(slot + 5);
 loop:
-    temp_a0_43 = *var_a1_40;
-    if ((temp_a0_43 == 0) | (temp_a0_43 >= 0x63U)) {
+    member = *slot;
+    if ((member == 0) | (member >= 0x63U)) {
         goto next;
     }
     if (is_player_unit == 0) {
         goto alternate_table;
     }
-    var_s0_31 += *(u8 *)(0x80193BDB + (temp_a0_43 * 0x38));
+    alignment += *(u8 *)(0x80193BDB + (member * 0x38));
     goto counted;
 alternate_table:
-    var_s0_31 += *(u8 *)(0x8019557B + (temp_a0_43 * 0x34));
+    alignment += *(u8 *)(0x8019557B + (member * 0x34));
 counted:
-    var_a2_32 += 1;
+    included_count += 1;
 next:
-    var_a1_40 += 1;
-    temp_v1_75 = var_a2_32 & 0xFF;
-    if ((s32)var_a1_40 < temp_a3_41) {
+    slot += 1;
+    member_count = included_count & 0xFF;
+    if ((s32)slot < slots_end) {
         goto loop;
     }
-    if (temp_v1_75 != 0) {
+    if (member_count != 0) {
         goto divide_average;
     }
-    var_s0_31 = 0x32;
+    alignment = 0x32;
     goto average_ready;
 divide_average:
-    quotient = (s32)(var_s0_31 & 0xFFFF) / temp_v1_75;
-    var_s0_31 = quotient;
+    alignment = (s32)(alignment & 0xFFFF) / member_count;
 average_ready:
 
-    temp_v1_98 = func_00022e60();
-    var_v0_96 = temp_v1_98 % 8;
-    temp_a1_106 = var_s0_31 & 0xFFFF;
-    temp_v1_107 = temp_s1_17 & 0xFFFF;
-    var_v0_108 = temp_a1_106 - temp_v1_107;
-    temp_a2_109 = high_bit_adjustment & 0xFFFF;
-    if (var_v0_108 > 0) {
+    random_value = func_00022e60();
+    work_value = random_value % 8;
+    average_value = alignment & 0xFFFF;
+    morale_value = site_morale & 0xFFFF;
+    alignment_gap = average_value - morale_value;
+    penalty = high_bit_adjustment & 0xFFFF;
+    if (alignment_gap > 0) {
         goto absolute_ready;
     }
-    var_v0_108 = temp_v1_107 - temp_a1_106;
+    alignment_gap = morale_value - average_value;
 absolute_ready:
-    temp_a1_114 = var_v0_108 + var_v0_96 + temp_a2_109;
-    var_v0_96 = temp_a1_114 & 0xFFFF;
-    if ((u32)var_v0_96 >= 0x8D) {
-        var_v1_120 = -5;
-    } else if ((u32)var_v0_96 >= 0x6F) {
-        var_v1_120 = -4;
-    } else if ((u32)var_v0_96 >= 0x51) {
-        var_v1_120 = -3;
-    } else if ((u32)var_v0_96 >= 0x33) {
-        var_v1_120 = -2;
-    } else if ((u32)var_v0_96 >= 0x1F) {
-        var_v1_120 = -1;
-    } else if ((u32)var_v0_96 >= 0x10) {
-        var_v1_120 = 0;
+    score = alignment_gap + work_value + penalty;
+    work_value = score & 0xFFFF;
+    if ((u32)work_value >= 0x8D) {
+        chaos_delta = -5;
+    } else if ((u32)work_value >= 0x6F) {
+        chaos_delta = -4;
+    } else if ((u32)work_value >= 0x51) {
+        chaos_delta = -3;
+    } else if ((u32)work_value >= 0x33) {
+        chaos_delta = -2;
+    } else if ((u32)work_value >= 0x1F) {
+        chaos_delta = -1;
+    } else if ((u32)work_value >= 0x10) {
+        chaos_delta = 0;
     } else {
-        var_v1_120 = 2;
-        if ((u32)var_v0_96 >= 6) {
-            var_v1_120 = 1;
+        chaos_delta = 2;
+        if ((u32)work_value >= 6) {
+            chaos_delta = 1;
         }
     }
-    temp_v1_153 = var_v1_120 + *(u8 *)0x801936A9;
-    if (temp_v1_153 >= 0x65) {
-        temp_v1_153 = 0x64;
+    new_chaos_frame = chaos_delta + *(u8 *)0x801936A9;
+    if (new_chaos_frame >= 0x65) {
+        new_chaos_frame = 0x64;
     } else {
-        temp_v1_153 &= (s32)~temp_v1_153 >> 31;
+        new_chaos_frame &= (s32)~new_chaos_frame >> 31;
     }
-    *(u8 *)0x801936A9 = temp_v1_153;
-    return (u32)(temp_a1_114 & 0xFFFF) >= 0x1F;
+    *(u8 *)0x801936A9 = new_chaos_frame;
+    return (u32)(score & 0xFFFF) >= 0x1F;
 }

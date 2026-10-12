@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B125848D0EB41C76144C2B3C969C00B5CAFE6408DB365B400C40856C03791386",
+  "observationId": "E8B969DAD17B92355113E50BE0070CEE144CD8837CC7B44D1AF6F148BC496C39",
+  "symbol": "func_0012FBB8",
+  "authored": {
+    "context": "Complete one-body Q5 wave, func_0012FBB8 ROM12FBB8..12FDFC. Narrow actual accumulator plus default-first average selection has an exact isolated linked predecessor. Site/alignment/Chaos Frame names are supported by existing parent alignment-system.md evidence; function/global interfaces retain accepted names and addresses.",
+    "effects": [
+      "readable-locals",
+      "narrowed-accumulator",
+      "exact-private-link"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BB2D8DB9254ACBDFBA921E7D616AC58BB3CCD07DE735151FF1209E8C5CE1061C",
+      "sourceSha256": "71B2AB1E6C67A8BA2CE2925C01FC0BE028FA319F1912598E6DE31D5985D8DFE5"
+    },
+    "label": "q5-readable-pure-c-whole-owner-private-exact",
+    "observedEffect": "Authenticated private watch B125848D compiles PURE_C. Full function and owner are 580 bytes with no prefix/tail; frame32 and all13 actual relocations agree with expected records and operands. Raw bytes false, raw relocation-masked exact true, isolated linked exact true, zero differing bytes. Both five-slot table paths, zero/default case, signed division, random call, threshold ladder, byte clamp/store and return are covered. Canonical hybrid and ASM fallback were untouched.",
+    "parentCandidateId": "3F52FEF7CED05D74D33A0A04D14FC5E1B4D695F3E5BAB3798EA29F03459DEAC3",
+    "references": [
+      {
+        "path": "build/matching/q5-average-261012/candidate-watch.json",
+        "sha256": "7E807D85FDCA491A798E8E2F4FCC6572C07320140347BE7D393A63BE4A0A01E8"
+      },
+      {
+        "path": "docs/Plans/remaining-program-scope-20261011.md",
+        "sha256": "E5365740067628F27205A2A489166C7D314C7E18EEA0495DEE4C663C766671A1"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012FBB8.s",
+        "sha256": "EB13ED9BB21E1B15F1975D7E9B199AE47377B00BD93F67CCC8386517E3678AA6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Ready for sole production writer integration, focused canonical diff and one whole-wave normal verifier. Private results alone do not satisfy canonical ownership/placement/full-ROM acceptance; retain worker ownership until Director acceptance and explicit release.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Rename local values for readability and explain the necessary u16 accumulator near its declaration. Preserve all control, types, arithmetic, table paths, addresses and external interfaces of the exact predecessor."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3129,
+      "sha256": "BB2D8DB9254ACBDFBA921E7D616AC58BB3CCD07DE735151FF1209E8C5CE1061C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "71B2AB1E6C67A8BA2CE2925C01FC0BE028FA319F1912598E6DE31D5985D8DFE5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_0012FBB8-b125848d0e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3F52FEF7CED05D74D33A0A04D14FC5E1B4D695F3E5BAB3798EA29F03459DEAC3",
+  "observationId": "C099B63B77FC65C618722636BBFECC8D2C4EDE0404AE4870284265276D605BA4",
+  "symbol": "func_0012FBB8",
+  "authored": {
+    "context": "The actual accumulator must remain u16 through the five-slot sum and signed average assignment. Wide default-first source omits the quotient copy; narrow ternary source restores the copy but retains a nonretail 588-byte layout.",
+    "effects": [
+      "quotient-destination",
+      "narrowed-accumulator",
+      "block-order",
+      "exact-private-link"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FBF7905CCFF053E92930C78CDA8D3442D3A8981EAD70152F9094B303E9114E4F",
+      "sourceSha256": "D8E8C8698BEF129393054BBC8115733EAA5BE356DD724711EA0B5711DD05D43E"
+    },
+    "label": "q5-narrow-accumulator-default-first-restores-whole-owner",
+    "observedEffect": "Authenticated watch compiles PURE_C at 580 bytes/frame32 with all 13 expected relocations. Signed division into v0 plus move s0,v0 and original default-first shape are restored. Raw relocation-masked bytes and isolated linked full-owner bytes are exact; raw unlinked bytes are nonexact due relocations. No assembler escape is used. This proves this bounded source mechanism, not original source provenance.",
+    "parentCandidateId": "E035A7F1187B7A47F688081845513CD4A6E80A5240BB25723605CF85DD6BB75E",
+    "references": [
+      {
+        "path": "build/matching/q5-average-261012/narrow-sum-default-first-watch.json",
+        "sha256": "878473044D185BACEDF1E3BA2636899935B9697B8227BC38A86809F5B76D2F26"
+      },
+      {
+        "path": "build/matching/q5-average-261012/wide-sum-default-first-watch.json",
+        "sha256": "8E4ACE91C66C1B5397E345FD07B3AB6BE2CCF2FE09A162F5E3D0A0C5410F640A"
+      },
+      {
+        "path": "build/matching/q5-average-261012/narrow-sum-watch.json",
+        "sha256": "078F21F2C9B12770F7B209109CA8CDEBE3E86D7021153854F9BC9BFCCD9B4410"
+      }
+    ],
+    "relatedCandidateIds": [
+      "3A1A7FFCEC9C7CE542C709BDAC7A010219C8CCE212E35A5561604B1C8BA03086"
+    ],
+    "remainingFailure": "Private diagnostics do not establish canonical sole ownership or full-ROM identity. The readable equivalent candidate.c is selected for production handoff.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the explicit default-first branch/goto average selection with the u16 accumulator. Compared with wide-sum-default-first.c, only the accumulator's declared type changes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3106,
+      "sha256": "FBF7905CCFF053E92930C78CDA8D3442D3A8981EAD70152F9094B303E9114E4F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D8E8C8698BEF129393054BBC8115733EAA5BE356DD724711EA0B5711DD05D43E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_0012FBB8-3f52fef7ce.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

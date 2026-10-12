@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3A1A7FFCEC9C7CE542C709BDAC7A010219C8CCE212E35A5561604B1C8BA03086",
+  "observationId": "898CABFE066221BCBBC109844F67F01712903C6CDA7E6152BCAA0F41CB0488FC",
+  "symbol": "func_0012FBB8",
+  "authored": {
+    "context": "Historical PURE_C C67C7E65CD source was reproduced as control.c under current authenticated inputs: 580 bytes, 15 differing words/44 bytes, with quotient forwarded into s0.",
+    "effects": [
+      "quotient-destination",
+      "narrowed-accumulator",
+      "block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "881861E546AE959840495593799713423A985F0084D2D66341D1CFB028379A52",
+      "sourceSha256": "6362825C2C2729CF464CBF8FBD0B17717B05F3D8AAB2F4C9FEC30C07D56F099E"
+    },
+    "label": "q5-narrow-accumulator-restores-copy-but-ternary-remains-expanded",
+    "observedEffect": "PURE_C private watch restores div v0,v0,v1 and move s0,v0 but emits the division before the default block with a jump/copy delay slot. The full function is 588 bytes and remains nonexact. Narrowing changes the desired mechanism despite the worse whole-body comparison.",
+    "parentCandidateId": "ECF400F7E1898D791C8937BE941A0EEC1627E7D79B7B66FEF2A415EF9EA7C794",
+    "references": [
+      {
+        "path": "build/matching/q5-average-261012/narrow-sum-watch.json",
+        "sha256": "078F21F2C9B12770F7B209109CA8CDEBE3E86D7021153854F9BC9BFCCD9B4410"
+      },
+      {
+        "path": "build/matching/q5-average-261012/control-watch.json",
+        "sha256": "99D6D08E77F0CEC84AC2FDC3E6617B72266CD6C61B21FAF5F58DF4DD9C16BB32"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Default/divide selection ordering and extra extent remain. This is an informative intermediate, not a selected best or canonical match.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change only the actual accumulator var_s0_31 from s32 to u16 while keeping ternary average selection."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3031,
+      "sha256": "881861E546AE959840495593799713423A985F0084D2D66341D1CFB028379A52"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6362825C2C2729CF464CBF8FBD0B17717B05F3D8AAB2F4C9FEC30C07D56F099E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_0012FBB8-3a1a7ffcec.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

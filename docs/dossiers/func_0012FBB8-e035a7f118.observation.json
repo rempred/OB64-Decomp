@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E035A7F1187B7A47F688081845513CD4A6E80A5240BB25723605CF85DD6BB75E",
+  "observationId": "3161BB02989232299D5E5019BC4056B6AF10B9F12966DA01DCD163935FB61FFA",
+  "symbol": "func_0012FBB8",
+  "authored": {
+    "context": "Whole 580-byte func_0012FBB8; existing owner and compiler. This is the exact default-first source with only its accumulator changed back from u16 to s32.",
+    "effects": [
+      "quotient-destination",
+      "narrowed-accumulator"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EC4AFD4A98181661EC80BC7E7AB42908B575404316BAD65C96268F95F45CB580",
+      "sourceSha256": "E36599C1C4C35075FC426ABC62EEFEFF209968043C2382DCF0189000E4DDF6B3"
+    },
+    "label": "q5-wide-accumulator-default-first-misses-quotient-copy",
+    "observedEffect": "Authenticated private watch compiles PURE_C but divides directly into s0 and omits retail's move s0,v0. The source keeps the default-first control shape. The whole linked result differs in 70 words/233 bytes; this is a counterexample to control-flow spelling alone resolving the hybrid constraint.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/q5-average-261012/wide-sum-default-first-watch.json",
+        "sha256": "8E4ACE91C66C1B5397E345FD07B3AB6BE2CCF2FE09A162F5E3D0A0C5410F640A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012FBB8.s",
+        "sha256": "EB13ED9BB21E1B15F1975D7E9B199AE47377B00BD93F67CCC8386517E3678AA6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Quotient destination/copy and resulting extent are nonexact. No canonical acceptance claimed.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use s32 var_s0_31 for the real accumulated sum and subsequent average, retaining the explicit default-first average selection."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3106,
+      "sha256": "EC4AFD4A98181661EC80BC7E7AB42908B575404316BAD65C96268F95F45CB580"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E36599C1C4C35075FC426ABC62EEFEFF209968043C2382DCF0189000E4DDF6B3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_0012FBB8-e035a7f118.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
