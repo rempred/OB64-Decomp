@@ -1262,6 +1262,9 @@
     {"symbol":"func_0010ADB8","compilationGroup":"func_00108aa0_group"},
     {"symbol":"func_0004d634","source":"src/lib/func_0004d634.c"},
     {"symbol":"func_0004da84","source":"src/lib/func_0004da84.c"},
-    {"symbol":"func_0004e1c4","source":"src/lib/func_0004e1c4.c"}
+    {"symbol":"func_0004e1c4","source":"src/lib/func_0004e1c4.c"},
+    {"symbol":"func_0023A3A0","source":"src/lib/func_0023a3a0.c"},
+    {"symbol":"func_002488D0","source":"src/lib/func_002488d0.c"},
+    {"symbol":"func_00249290","source":"src/lib/func_00249290.c"}
   ]
 }

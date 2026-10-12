@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1363FB6ABC7A5278A48B50AD2C5D2FAA4553DDDE6333E9F99E33A35CA2077F5B",
+  "observationId": "1563445E543ED05A16D2609B836B39C804C713E59E423C692AD4E3F1B6512C64",
+  "symbol": "func_0023A3A0",
+  "authored": {
+    "context": "Full single588-byte23A3A0 body; u8-returning class/category services, both optional four-halfword replacement passes,52-byte record difference, final flag selection. Approved ClassEntry shared layout, accepted caller u8* signature.",
+    "effects": [
+      "register-allocation",
+      "length"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 262,
+          "path": "include/game/class_entry.h",
+          "sha256": "7484DF99811858FD0F641F927EF6C943E4336B7191DA159DBD74538A341F0E2F"
+        }
+      ],
+      "expandedSha256": "CABBD714711F35C928D9EF8B440B288C45E21E42AD0980D3F8DB522269C7F530",
+      "sourceSha256": "3CDE92C35DF69B27C91B59E3D9C06E5C304383BAFB8EC3DDF6F7AAAD945799F0"
+    },
+    "label": "full-builder-distinct-final-result",
+    "observedEffect": "v1 reused u8 category:592bytes with extra move s0,v0 at final call result. v2 separate u32 final_category:588bytes/rawRelocationMaskedExact=true. v3 added local pointer alias:588bytes but prologue save/copy schedule differed. v4 direct casts preserves accepted caller signature and restores588bytes/rawRelocationMaskedExact=true,25 actual relocations; all147 instructions/body represented.",
+    "parentCandidateId": "9BED4FB91C11B3FCD73F3BBEB8469C9000067188605F515BACEF09802E2A2888",
+    "references": [
+      {
+        "path": "build/matching/s5-links-261012/watch-23a3a0-v4.json",
+        "sha256": "720DAEA87E538F68239DDAEE1886A029DD5080054BD4E018EDEFD7317584F3F0"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023A3A0.s",
+        "sha256": "DC2B516C80313C8C3BACF011358E032A687556F94FFF1271C65AF04BC111DC37"
+      }
+    ],
+    "relatedCandidateIds": [
+      "6A0DE2A2F32E04560E015778B972D1C40FF16EE753C061B259504876308599EC",
+      "ED67BD5079FCD90674DE23FBE43CFE3D55AF4AA56F37A5581DE73576C64654CD"
+    ],
+    "remainingFailure": "Private authenticated isolated link unavailable because original owner is inactive ASM. Raw bytes differ at25 relocation-bearing words; actual symbol/addend operands need canonical registration/link and complete-wave normal verifier. No matching acceptance claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a separate u32 final_category after the replacement-pass u8 category; retain u8* parameter with direct struct casts rather than introducing a separate pointer alias."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 262,
+        "path": "include/game/class_entry.h",
+        "sha256": "7484DF99811858FD0F641F927EF6C943E4336B7191DA159DBD74538A341F0E2F"
+      }
+    ],
+    "expanded": {
+      "bytes": 3699,
+      "sha256": "CABBD714711F35C928D9EF8B440B288C45E21E42AD0980D3F8DB522269C7F530"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3CDE92C35DF69B27C91B59E3D9C06E5C304383BAFB8EC3DDF6F7AAAD945799F0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_0023A3A0-1363fb6abc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
