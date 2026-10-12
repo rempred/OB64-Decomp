@@ -134,7 +134,14 @@ and actual private watch86123 in startup2577 against accepted CURRENT `1CB02AB9`
 Inbox46460 and stop61144 are live; all six stop tests and delivery84b051be-a641-4595-b183-558d87c2d687
 to this exact Director passed. Inbox test2579 reached the exact S4 chat and was acknowledged;
 durable retry/deduplication remains enabled. See the current cursor for routes.
-Both workers may run disjoint private checks concurrently; no native drain remains.
+CobaltFox's complete four-member private handoff2654 is ready, with all original
+3040 bytes and165 actual relocations; private masked equality is not acceptance.
+Native checks are temporarily drained2657/clearance2659 for complete S4 integration
+released2660 to SwiftGlen: four exact sources, ordinary source-bound registrations,
+four focused canonical diffs and one normal final verifier. Preserve13C060's preamble
+and neutral call identity at shared VRAM80214F80. CobaltFox retains all ownership;
+actual source discrepancies return there. Resume animation promptly after canonical
+proof/native EOF, stable accepted inputs, drain release and affected-input refresh.
 S4 reports directly to the Director; no routine messages to the production writer.
 
 **Scenario S5 accepted, October12:** Director2573 accepts the complete three-function
