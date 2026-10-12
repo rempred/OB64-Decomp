@@ -33,9 +33,10 @@ structural contracts. Joe now assigns DB10, 3C00 and 6098 to SwiftGlen as one co
 animation wave, working in that order with one final whole-wave verification. NINE
 is accepted and committed as `21a0d61e`; its source/reviewer ownership and monitors
 are retired. S2 is accepted2545/committed `24d80141`; S5 is accepted2573/committed
-`198e5fe2`. Their source ownership is released and their routes are retired.
-Fresh top-level Sol6.1/xhigh CobaltFox owns the complete S4 record/site-consumer wave.
-Drain2565 is released2573; SwiftGlen's refreshed animation work actually resumed2575.
+`198e5fe2`. S4 is accepted2666/committed `d6c115d6`. Their source ownership is
+released and their routes are retired. Fresh top-level Sol6.1/xhigh SilverBison
+owns complete Q5. Drain2657 is released2666; SwiftGlen's refreshed animation work
+actually resumed2670 against accepted CURRENT `2103E4D5`.
 
 **Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
 audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
@@ -125,24 +126,28 @@ no-discriminator holds are superseded. Continue DB10 first, then 3C00 and 6098;
 keep partial results provisional until one final verification accepts all three.
 The worker chooses source experiments and consults Claude/GoldOx.
 
-**CobaltFox** [Scenario S4 record and site consumers](codex://threads/01a12ed9-189b-7fd1-a431-a94960eefcae)
-owns the complete `func_00127830` / `func_00130D74` / `func_0013109C` / `func_0013C060`
-wave in `build/matching/s4-sites-261012/`. Preserve the original13C060 preamble/interior
-entry and all complete owners/interfaces. 130D74/13109C are not part of130E60's pair.
-The fresh top-level Sol6.1/xhigh chat confirmed127830 intake/full-body reconciliation
-and actual private watch86123 in startup2577 against accepted CURRENT `1CB02AB9`.
-Inbox46460 and stop61144 are live; all six stop tests and delivery84b051be-a641-4595-b183-558d87c2d687
-to this exact Director passed. Inbox test2579 reached the exact S4 chat and was acknowledged;
-durable retry/deduplication remains enabled. See the current cursor for routes.
-CobaltFox's complete four-member private handoff2654 is ready, with all original
-3040 bytes and165 actual relocations; private masked equality is not acceptance.
-Native checks are temporarily drained2657/clearance2659 for complete S4 integration
-released2660 to SwiftGlen: four exact sources, ordinary source-bound registrations,
-four focused canonical diffs and one normal final verifier. Preserve13C060's preamble
-and neutral call identity at shared VRAM80214F80. CobaltFox retains all ownership;
-actual source discrepancies return there. Resume animation promptly after canonical
-proof/native EOF, stable accepted inputs, drain release and affected-input refresh.
-S4 reports directly to the Director; no routine messages to the production writer.
+**SilverBison** [Squad Q5 alignment average pure C](codex://threads/01a1309e-428e-7030-8ecd-c722d6914aab)
+owns the complete 580-byte `func_0012FBB8` wave in `build/matching/q5-average-261012/`.
+The fresh top-level Sol6.1/xhigh worker completed intake/full-body reconciliation and
+started private reconstruction/comparison, retaining the exact hybrid and original ASM.
+Startup2669 reached the watched Director inbox. Incoming test2673 reached this exact
+Q5 chat and was acknowledged; stop-route test f8812e38-856d-466d-b161-f1ef6eae3cb8
+reached the exact Director. Inbox55400 and stop34552 are live with retry/deduplication.
+Q5 reports directly to the Director; SwiftGlen alone integrates complete accepted waves.
+The Director owns choosing and dispatching the next ready complete wave when a slot opens.
+
+**Scenario S4 accepted, October12:** all four complete owners (127830/130D74/13109C/13C060)
+pass PURE_C, unique C ownership, placement, 165 actual relocations, exact target bytes
+and byte-identical ROM gates. The original13C060 preamble/interior13C068 is preserved;
+the four-argument call at shared VRAM80214F80 remains neutrally identified.
+[Final evidence](../build/matching/db10-fresh-261011/s4-final-integration-evidence-v1.json)
+SHA `A4FBF574` binds CURRENT `2103E4D5`, verifier `CA32BA2E`, fresh `41F888C1`
+and retail `571E8339`. All focused checks, one verifier and publications reached EOF0.
+Director2666 accepted the wave and released drain2657; CobaltFox released ALL2667.
+Commit `d6c115d6b728b5b4b0d7e086005fd1857eb34890` contains exactly six canonical
+and32 published research files. Both retired S4 watcher processes are absent.
+SwiftGlen's refreshed animation continuation2670 binds the accepted CURRENT; the
+same unfinished DB10/3C00/6098 wave remains active. No extra verifier, review or push.
 
 **Scenario S5 accepted, October12:** Director2573 accepts the complete three-function
 PURE_C wave and exact protected249A14 caller after all four focused diffs and the

@@ -144,11 +144,13 @@
     {
       "id": "real-argument-definitions-and-loop-hoisting",
       "symptoms": ["constant-or-immediate-construction", "scheduling-or-block-order"],
-      "applicability": "Separate genuine definitions of one argument in existing paths can prevent loop hoisting. In this clean nonmatching example, RTL/LOOP/FLOW retain four definitions; allocation then selects the wrong register and delay filling duplicates the constants into unwanted slots. The overall candidate regresses despite resolving hoisting. Preserve actual calls, producers and path behavior; do not invent assignments or consumers. Stage progress alone does not select a best candidate or establish transfer.",
+      "applicability": "Real argument definitions and loop scopes can change hoisting, allocation and scheduling. D14C retains four definitions but regresses through register/delay choices. S4 127830 moves scope before one-time initialization to remove a loop-note barrier, then scopes flags to restore allocation; 13C060 scopes value and early-call preparation. Preserve actual calls, producers and paths. These outcomes do not prove universal transfer; stage progress alone does not select a best.",
       "note": "docs/dossiers/func_0022D14C-24dd5fe250.md#source-context",
-      "references": [],
+      "references": ["docs/dossiers/func_00127830-626dd1cc85.md", "docs/dossiers/func_0013C060-c73ea9e11c.md"],
       "observations": [
-        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-24dd5fe250.observation.json"}
+        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-24dd5fe250.observation.json"},
+        {"symbol": "func_00127830", "path": "docs/dossiers/func_00127830-626dd1cc85.observation.json"},
+        {"symbol": "func_0013C060", "path": "docs/dossiers/func_0013C060-c73ea9e11c.observation.json"}
       ]
     },
     {
