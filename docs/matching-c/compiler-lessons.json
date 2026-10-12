@@ -201,12 +201,13 @@
     {
       "id": "real-path-increments-and-induction-reduction",
       "symptoms": ["register-allocation", "opcode-or-expression"],
-      "applicability": "If a real pointer disappears into a biased induction variable, inspect loop-pass combination and profitability. Moving its genuine increment into existing alternative paths prevented reduction in this clean nonmatching example and restored base-plus-field addressing. Preserve one increment per original path and operation order. Baseline evidence is native-only; stage facts belong to the changed source. Final tail merging and other registers remain unresolved; this is not a general rule.",
+      "applicability": "D14C's genuine pointer increments in alternative paths prevent induction reduction but leave other mismatches. In 2488D0, separate-path increments preserve a wide counter and change reorg output in the linked source pair. Preserve one increment per original path, actual operation order and the baseline's evidence limits. Compare each target's full context; neither observation is a universal loop rule. Final wave acceptance is separate.",
       "note": "docs/dossiers/func_0022D14C-28d08a87ca.md#source-context",
-      "references": ["docs/dossiers/func_0022D14C-4fc43a6437.md", "docs/dossiers/func_0022D14C-1921b5ec8c.md"],
+      "references": ["docs/dossiers/func_0022D14C-4fc43a6437.md", "docs/dossiers/func_0022D14C-1921b5ec8c.md", "docs/dossiers/func_002488D0-535425129c.md"],
       "observations": [
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-4fc43a6437.observation.json"},
-        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-28d08a87ca.observation.json"}
+        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-28d08a87ca.observation.json"},
+        {"symbol": "func_002488D0", "path": "docs/dossiers/func_002488D0-535425129c.observation.json"}
       ]
     },
     {
@@ -289,12 +290,13 @@
     },
     {
       "id": "scenario-word-result-and-byte-index",
-      "symptoms": ["branch-polarity", "opcode-or-expression", "load-store-width-or-signedness"],
-      "applicability": "When a real classifier result becomes a Boolean-to-index expression instead of the observed branch, inspect the separate word result and narrowed byte index. Preserve actual uses; do not introduce dummy carriers or infer original types.",
+      "symptoms": ["branch-polarity", "opcode-or-expression", "load-store-width-or-signedness", "register-allocation"],
+      "applicability": "249A14's separate word result and narrowed byte index preserve the observed branch. In 249290, byte modifier/option formals change 27 setup/allocation words while real persistent results remain wide; the caller already supplies byte casts. Read the wider-input control and historical pre-declaration-update caller context. These observed effects neither prove original types nor authorize dummy carriers. Whole-wave acceptance remains separate.",
       "note": "docs/dossiers/func_00249A14-9099d087ea.md#source-context",
-      "references": [],
+      "references": ["docs/dossiers/func_00249290-f8819d8982.md", "docs/dossiers/func_00249290-a93a8f8e18.md"],
       "observations": [
-        {"symbol": "func_00249A14", "path": "docs/dossiers/func_00249A14-9099d087ea.observation.json"}
+        {"symbol": "func_00249A14", "path": "docs/dossiers/func_00249A14-9099d087ea.observation.json"},
+        {"symbol": "func_00249290", "path": "docs/dossiers/func_00249290-a93a8f8e18.observation.json"}
       ]
     },
     {

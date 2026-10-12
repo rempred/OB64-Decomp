@@ -32,11 +32,10 @@ wording and older scheduling below; it does not reopen accepted work or admit ne
 structural contracts. Joe now assigns DB10, 3C00 and 6098 to SwiftGlen as one complete
 animation wave, working in that order with one final whole-wave verification. NINE
 is accepted and committed as `21a0d61e`; its source/reviewer ownership and monitors
-are retired. S2 is accepted2545 and committed as `24d80141`; CobaltLake released
-all ownership2546 and its monitors are stopped. Fresh top-level Sol6.1/xhigh HazyPuma
-now owns complete Scenario S5. SwiftGlen's refreshed animation work resumed2549.
-S5's complete candidate handoff2564 is now released2567 for SwiftGlen integration
-after native drain2565/clearance2566. Its dedicated watcher launch remains blocked below.
+are retired. S2 is accepted2545/committed `24d80141`; S5 is accepted2573/committed
+`198e5fe2`. Their source ownership is released and their routes are retired.
+Fresh top-level Sol6.1/xhigh CobaltFox owns the complete S4 record/site-consumer wave.
+Drain2565 is released2573; SwiftGlen's refreshed animation work actually resumed2575.
 
 **Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
 audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
@@ -126,23 +125,29 @@ no-discriminator holds are superseded. Continue DB10 first, then 3C00 and 6098;
 keep partial results provisional until one final verification accepts all three.
 The worker chooses source experiments and consults Claude/GoldOx.
 
-**HazyPuma** [Scenario S5 link record builders](codex://threads/01a12e75-75e6-7941-b6ba-95453cc700d0)
-owns the complete `func_0023A3A0` / `func_002488D0` / `func_00249290` wave in
-`build/matching/s5-links-261012/`. Preserve both original sixteen-byte descriptor
-constants and generic class/stat/memory interfaces. The fresh top-level Sol6.1/xhigh
-worker delivered all three complete PURE_C/masked-exact candidates in2564, with171
-actual text relocations. Director2567 released ordinary canonical integration and the
-two-line249A14 caller-declaration adaptation, four focused diffs and ONE normal verifier.
-HazyPuma retains whole ownership until canonical acceptance/release; actual source
-discrepancies return to that worker. The incoming accepted base is `D08CE771`.
-Its outgoing startup and whole-wave mail reached the watched Director inbox;
-the dedicated stop-route test reached this Director. Automatic approval review blocked
-inbox-watcher configuration and background stop-monitor launch with only "blocked by policy".
-These new monitors are not live; the Director owns resolving that explicit monitoring blocker.
-Native checks are temporarily drained2565 for S5 integration; both roots reached EOF
-and the actual native census is clear2566. SwiftGlen owns the next canonical action.
-Release the drain promptly after native EOF/stable verified inputs and refresh animation.
-S5 reports directly to the Director; no routine messages to the production writer.
+**CobaltFox** [Scenario S4 record and site consumers](codex://threads/01a12ed9-189b-7fd1-a431-a94960eefcae)
+owns the complete `func_00127830` / `func_00130D74` / `func_0013109C` / `func_0013C060`
+wave in `build/matching/s4-sites-261012/`. Preserve the original13C060 preamble/interior
+entry and all complete owners/interfaces. 130D74/13109C are not part of130E60's pair.
+The fresh top-level Sol6.1/xhigh chat confirmed127830 intake/full-body reconciliation
+and actual private watch86123 in startup2577 against accepted CURRENT `1CB02AB9`.
+Inbox46460 and stop61144 are live; all six stop tests and delivery84b051be-a641-4595-b183-558d87c2d687
+to this exact Director passed. Inbox test2579 reached the exact S4 chat and was acknowledged;
+durable retry/deduplication remains enabled. See the current cursor for routes.
+Both workers may run disjoint private checks concurrently; no native drain remains.
+S4 reports directly to the Director; no routine messages to the production writer.
+
+**Scenario S5 accepted, October12:** Director2573 accepts the complete three-function
+PURE_C wave and exact protected249A14 caller after all four focused diffs and the
+single final verifier reached actual EOF0. [Final evidence](../build/matching/db10-fresh-261011/s5-final-integration-evidence-v1.json)
+SHA `3C8FD4A5` binds CURRENT `1CB02AB9`, verifier `2F4C4D08`, fresh `BECF1B6A`
+and byte-identical retail ROM. All six integrated inputs and proof identities were
+restored unchanged after supported historical-context research publication.
+Commit `198e5fe265953d5e1b7f9cea6fcc4518fbf52c3f` records exactly six canonical
+files and27 supported research files. HazyPuma released ALL source/root ownership2574
+and remains retired; unused monitor setup remains unused. No additional verifier,
+review or push is required. SwiftGlen refreshed inputs and confirmed actual animation
+continuation2575 after the released drain.
 
 **Scenario S2 accepted, October12:** all three functions passed the single final
 normal verifier with PURE_C ownership, actual relocations, exact target bytes and
@@ -165,8 +170,9 @@ Joe's request. Drain2516 was released2524; SwiftGlen's refreshed animation work 
 **Next slot owned by Director:** use the complete wave roster and gates in
 [remaining-program scope](Plans/remaining-program-scope-20261011.md#scheduling-and-acceptance).
 After either worker's own complete acceptance/release, immediately start a fresh
-Sol6.1/xhigh top-level worker on a dependency-ready full wave. S5 is active; prefer
-S4 next under stable accepted inputs; preserve every Squad package. The animation
+Sol6.1/xhigh top-level worker on a dependency-ready full wave. S4 is active; next
+prefer Q5 under its existing accepted owner, subject to readiness, and preserve every
+complete package in the roster. The animation
 conversions are already owned together by SwiftGlen. The Director owns the bounded
 DDB4 producer study before its integration;
 adjacent D450/D484 are conditional candidates, not an assumed native producer.
