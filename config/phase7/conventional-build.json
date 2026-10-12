@@ -15,10 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7257,
-    "splitOwners": 15,
+    "linkSlices": 7259,
+    "splitOwners": 17,
     "overlayReservations": 19,
-    "fixedOverlayNonExecutableRanges": 2,
+    "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
   },
@@ -36,6 +36,20 @@
       "overlaySection": "text",
       "romStart": 2102308,
       "romEndExclusive": 2102320
+    },
+    {
+      "id": "func-00127154-retained-tail",
+      "overlayDescriptorId": 7,
+      "overlaySection": "text",
+      "romStart": 1210408,
+      "romEndExclusive": 1210416
+    },
+    {
+      "id": "func-00119454-retained-tail",
+      "overlayDescriptorId": 7,
+      "overlaySection": "text",
+      "romStart": 1156408,
+      "romEndExclusive": 1156416
     }
   ],
   "nonDescriptorLoadSlabs": [

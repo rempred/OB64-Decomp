@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const textContract = require('../tools/lib/text_contract');
+const compilationGroups = require('../tools/lib/compilation_groups');
 const {
   ROOT,
   elfSectionBytes,
@@ -38,6 +39,7 @@ const {
   verifyAuxiliarySourceObjectSection,
   verifyObjectManifest,
   verifyPhase8Layout,
+  verifySharedAuxiliaryScript,
   verifyTargetMapOwner,
   writeLayout,
   writeObjectManifest,
@@ -325,15 +327,48 @@ function verifySyntheticPrefixExtraction(phase8, output) {
     fs.writeFileSync(manifestFile, manifestBytes);
     const linkerText = renderPhase8LinkerScript(syntheticPhase8, manifest);
     const prefixSelector = `    ${prefix.objectRelative}(${prefix.inputSection})`;
-    const logicalSelector = `    *(${auxiliary.outputSection})`;
-    const prefixSelectorIndex = linkerText.indexOf(prefixSelector);
-    const logicalSelectorIndex = linkerText.indexOf(logicalSelector);
-    if (prefixSelectorIndex < 0 || logicalSelectorIndex < 0
-        || prefixSelectorIndex >= logicalSelectorIndex
-        || linkerText.indexOf(prefixSelector, prefixSelectorIndex + 1) >= 0
-        || linkerText.indexOf(logicalSelector, logicalSelectorIndex + 1) >= 0) {
-      fail('synthetic retained-prefix linker ordering drift');
+    // Shared auxiliaries use explicit, ordered C object selectors.
+    const logicalSelectors = syntheticPhase8.targets.map((target) => (
+      `    ${compilationGroups.objectPath(target)}(${auxiliary.outputSection})`
+    ));
+    const selectors = [prefixSelector, ...logicalSelectors];
+    const selectorLines = linkerText.replace(/\r\n/g, '\n').split('\n');
+    let previousSelectorIndex = -1;
+    for (const selector of selectors) {
+      const index = selectorLines.indexOf(selector);
+      if (index <= previousSelectorIndex
+          || selectorLines.indexOf(selector, index + 1) >= 0) {
+        fail('synthetic retained-prefix linker ordering drift');
+      }
+      previousSelectorIndex = index;
     }
+    const wildcardSelector = `    *(${auxiliary.outputSection})`;
+    if (selectorLines.includes(wildcardSelector)) {
+      fail('synthetic retained-prefix wildcard linker selector drift');
+    }
+    const linkerMutations = selectors.flatMap((selector, index) => [
+      expectRejection(`retained prefix contributor ${index} missing`,
+        /shared auxiliary/, () => verifySharedAuxiliaryScript(
+          syntheticPhase8, linkerText.replace(selector, ''))),
+      expectRejection(`retained prefix contributor ${index} duplicated`,
+        /shared auxiliary/, () => verifySharedAuxiliaryScript(
+          syntheticPhase8, linkerText.replace(selector, selector + '\n' + selector))),
+    ]);
+    linkerMutations.push(
+      expectRejection('retained prefix after first C contributor', /shared auxiliary/,
+        () => verifySharedAuxiliaryScript(syntheticPhase8,
+          linkerText.replace(prefixSelector, '').replace(
+            logicalSelectors[0], logicalSelectors[0] + '\n' + prefixSelector))),
+      expectRejection('retained prefix C contributors reversed', /shared auxiliary/,
+        () => verifySharedAuxiliaryScript(syntheticPhase8,
+          selectorLines.map((line) => (
+            line === logicalSelectors[0] ? logicalSelectors[1]
+              : line === logicalSelectors[1] ? logicalSelectors[0] : line
+          )).join('\n'))),
+      expectRejection('retained prefix wildcard C contributor', /shared auxiliary/,
+        () => verifySharedAuxiliaryScript(syntheticPhase8,
+          linkerText.replace(logicalSelectors[0], wildcardSelector))),
+    );
     const baseLayout = readJson(path.join(output, 'layout.json'));
     for (const target of syntheticPhase8.targets) {
       for (const ownerContract of targetTextOwners(target)) {
@@ -394,7 +429,7 @@ function verifySyntheticPrefixExtraction(phase8, output) {
       manifestSha256: manifest.sha256,
       linkerScriptSha256: sha256Buffer(Buffer.from(linkerText, 'utf8')),
       layoutPrefixObject: layoutPrefix.acceptedAssemblyPrefixObject,
-      mutations: [manifestMutation, layoutMutation, invalidPrefixGrammar],
+      mutations: [manifestMutation, layoutMutation, invalidPrefixGrammar, ...linkerMutations],
     };
   } finally {
     if (path.dirname(path.resolve(scratch)) !== path.resolve(scratchRoot)) {

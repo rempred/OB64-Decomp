@@ -123,7 +123,7 @@ function main() {
   assert.strictEqual(crossingEntry[0].value, 0x8022A840);
   assert.strictEqual(baselineElf.sections[crossingEntry[0].sectionIndex].name, model.rows[3413].slices[1].sectionName);
 
-  const results = [];
+  const results = require('./q7_retained_tails').runTests(model, romBytes, elfBytes);
   // FC7C's retained word is justified by its accepted entry/return/successor
   // evidence. Scan complete raw descriptor text, including non-executable slices;
   // negative direct-edge/pointer results do not resolve computed transfers.
@@ -244,9 +244,9 @@ function main() {
     results.push(expectRejection(`FC7C ${label}`, pattern, () => verifyElfAgainstModel(model, parseElf32BigEndian(changed))));
   }
   assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 30, 'accepted load-slab count drift');
-  assert.strictEqual(model.counts.fixedOverlayNonExecutableRanges, 2, 'accepted fixed-overlay non-executable-range count drift');
-  assert.strictEqual(model.slices.length, 7257, 'accepted link-slice count drift');
-  assert.strictEqual(model.counts.splitOwners, 15, 'accepted split-owner count drift');
+  assert.strictEqual(model.counts.fixedOverlayNonExecutableRanges, 4, 'accepted fixed-overlay non-executable-range count drift');
+  assert.strictEqual(model.slices.length, 7259, 'accepted link-slice count drift');
+  assert.strictEqual(model.counts.splitOwners, 17, 'accepted split-owner count drift');
   assert.strictEqual(model.overlays.length, 19, 'fixed-descriptor count drift');
   assert.deepStrictEqual(model.fixedOverlayNonExecutableRanges, [{
     id: 'func-0020fc7c-retained-tail', overlayDescriptorId: 10, overlaySection: 'text',
@@ -257,6 +257,12 @@ function main() {
     overlaySection: 'text',
     romStart: 0x00201424,
     romEndExclusive: 0x00201430,
+  }, {
+    id: 'func-00127154-retained-tail', overlayDescriptorId: 7, overlaySection: 'text',
+    romStart: 0x00127828, romEndExclusive: 0x00127830,
+  }, {
+    id: 'func-00119454-retained-tail', overlayDescriptorId: 7, overlaySection: 'text',
+    romStart: 0x0011A538, romEndExclusive: 0x0011A540,
   }], 'accepted fixed-overlay non-executable-range record drift');
   assert.deepStrictEqual(model.nonDescriptorLoadSlabs.slice(0, 6), [{
     id: 'scenario-loader-00195410',
