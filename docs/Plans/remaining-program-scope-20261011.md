@@ -1,16 +1,15 @@
 # Remaining assigned program scope — October 11, 2026
 
-Director scope decision following Joe's request. **54 remaining logical functions, 80,236 text-owner bytes (80,184 body bytes), in 14 complete matching waves.** This includes active NINE and DB10. These are the fixed remaining assignment at CURRENT B72EB182, not global game progress counters or new matching acceptance. Source counts were derived from the passing current verifier and the reconciled inventories; no build, native experiment or verifier was run.
+Director scope decision following Joe's request. **45 remaining logical functions, 70,604 text-owner bytes (70,560 body bytes), in 13 complete matching waves.** This includes active animation and Scenario S2. NINE was accepted2526 and committed as21a0d61e after the complete changed-input audit and independent final PASS2525; its owners are excluded from the remaining totals. These are the remaining assigned program at CURRENT1B6CCCFE, not global game progress counters or new matching acceptance. Source counts were derived from the passing current verifier and the reconciled inventories; no build, native experiment or verifier was run.
 
-Two independently known bodies, D450 and D484, are separately enumerated conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. Their necessity is unproven. If both are admitted, the same DDB4 wave expands and the total becomes **56 functions / 82,640 owner bytes**, still14 waves. No unnamed producer group is assumed.
+Two independently known bodies, D450 and D484, are separately enumerated conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. Their necessity is unproven. If both are admitted, the same DDB4 wave expands and the total becomes **47 functions / 73,008 owner bytes**, still13 waves. No unnamed producer group is assumed.
 
-This plan supersedes vague remaining Scenario/animation wording and historical owner/hold instructions in the active queue. Joe subsequently combined DB10, 3C00 and 6098 into SwiftGlen's one complete animation wave. NINE and the animation wave retain their current top-level workers, roots and monitoring; this assignment change requires no native drain. The original five-family boundary is retained.
+This plan supersedes vague remaining Scenario/animation wording and historical owner/hold instructions in the active queue. Joe subsequently combined DB10, 3C00 and 6098 into SwiftGlen's one complete animation wave. The NINE source/review assignments are accepted and released; CobaltLake now owns the complete Scenario S2 wave in a fresh top-level Sol6.1/xhigh chat. SwiftGlen retains the animation wave and sole production role. Drain2516 is released; both current workers have tested mail/stop routes. The original five-family boundary is retained.
 
 ## Complete waves
 
 | Wave | Assignment | Functions | Text-owner bytes | Body bytes | State |
 |---|---|---:|---:|---:|---|
-| NINE | Scheduler NINE | 9 | 9,632 | 9,624 | Active — SapphireLeopard |
 | DB10 | Complete animation: DB10 + 3C00 + 6098 | 3 | 16,436 | 16,436 | Active — SwiftGlen |
 | Q1 | Terrain policy | 3 | 4,340 | 4,340 | Queued; gates retained |
 | Q2 | Placement pair | 2 | 1,420 | 1,416 | Queued; gates retained |
@@ -20,33 +19,17 @@ This plan supersedes vague remaining Scenario/animation wording and historical o
 | Q6 | DDB4 broad site-event producer | 1 | 9,132 | 9,128 | Queued; gates retained |
 | Q7 | Scripted/site family | 10 | 17,368 | 17,352 | Queued; gates retained |
 | S1 | Descriptor/group loader | 3 | 764 | 756 | Queued; gates retained |
-| S2 | Cold consumer loaders | 3 | 1,144 | 1,144 | Queued; gates retained |
+| S2 | Cold consumer loaders | 3 | 1,144 | 1,144 | Active — CobaltLake |
 | S3 | Scenario DMA-window requesters | 10 | 12,772 | 12,772 | Queued; gates retained |
 | S4 | Scenario record/site consumers | 4 | 3,040 | 3,040 | Queued; gates retained |
 | S5 | Link-record builders | 3 | 2,876 | 2,876 | Queued; gates retained |
-| **Total** | | **54** | **80,236** | **80,184** | |
+| **Total** | | **45** | **70,604** | **70,560** | |
 
-Tables, descriptor records, literal constants and retained ASM data are separate from these text-owner totals and never add functions. This includes NINE's complete constant/table/zero owners, Scenario's688 table bytes, DDB4's208-byte table and terrain's26 inventoried tables. Original fallbacks, complete data rows and applicable auxiliary gates remain required.
+Tables, descriptor records, literal constants and retained ASM data are separate from these text-owner totals and never add functions. Accepted NINE data ownership is preserved outside the remaining roster. Remaining obligations include Scenario's688 table bytes, DDB4's208-byte table and terrain's26 inventoried tables. Original fallbacks, complete data rows and applicable auxiliary gates remain required.
 
 ## Exact function roster
 
 All ROM intervals below are half-open; runtime placement is in the bound JSON evidence. Body bytes exclude the explicitly identified prefix/tail bytes. A shared physical interval appears on each logical body row for clarity and is counted only once in wave totals. No physical row split becomes an extra function.
-
-### NINE — Scheduler NINE
-
-Keep all nine and both tables/constant/tails together. Existing whole-group admission, actual relocations and final complete-wave verification remain required.
-
-| Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
-|---|---|---|---:|---|
-| `func_00108AA0` | ASM | `0x00108AA0..0x00108C1C` | 380 | `0x00108AA0..0x00108C1C` |
-| `func_00108C1C` | ASM | `0x00108C1C..0x001094BC` | 2,208 | `0x00108C1C..0x001094BC` |
-| `func_001094BC` | ASM | `0x001094BC..0x00109A48` | 1,420 | `0x001094BC..0x00109A48` |
-| `func_00109A48` | ASM | `0x00109A48..0x00109C04` | 444 | `0x00109A48..0x00109C04` |
-| `func_00109C04` | ASM | `0x00109C04..0x00109C3C` | 56 | `0x00109C04..0x00109C3C` |
-| `func_00109C3C` | ASM | `0x00109C3C..0x0010A128` | 1,260 | `0x00109C3C..0x0010A128` |
-| `func_0010A128` | ASM | `0x0010A128..0x0010A718` | 1,520 | `0x0010A128..0x0010A718` |
-| `func_0010A718` | ASM | `0x0010A718..0x0010ADB8` | 1,696 | `0x0010A718..0x0010ADB8` |
-| `func_0010ADB8` | ASM | `0x0010ADB8..0x0010B038` | 640 | `0x0010ADB8..0x0010B040` |
 
 ### DB10 — Complete animation: DB10 + 3C00 + 6098
 
@@ -111,7 +94,7 @@ One9128-byte body plus4-byte explicit ASM tail in9132-byte owner; preserve52-ent
 
 ### Q7 — Scripted/site family
 
-Director includes the complete retained ten as one future wave under the original broad Squad assignment. Shared09C04 remains exclusively in NINE and is reused as a dependency/control. Preserve complete bodies, tails and original interface gates; source readiness and representation are checked before production integration.
+Director includes the complete retained ten as one future wave under the original broad Squad assignment. Shared09C04 is accepted in NINE and is reused as a dependency/control. Preserve complete bodies, tails and original interface gates; source readiness and representation are checked before production integration.
 
 | Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
 |---|---|---|---:|---|
@@ -186,7 +169,7 @@ Three specific record builders used by the accepted23A5EC/249A14 pair. Preserve 
 
 ## Scope decisions, prerequisites and exclusions
 
-- **Scripted/site scope is finite:** include all ten preserved owners in Q7. Their deferral came from internal planning, not an identified Joe pause. This is a Director source-scope decision under the existing broad Squad mission; it grants no structural exception or stronger behavioral claim. Shared09C04 remains in NINE, counted once.
+- **Scripted/site scope is finite:** include all ten preserved owners in Q7. Their deferral came from internal planning, not an identified Joe pause. This is a Director source-scope decision under the existing broad Squad mission; it grants no structural exception or stronger behavioral claim. Shared09C04 is accepted in NINE and excluded from remaining work.
 - **DDB4 is one function:** full9,128-byte body includes its original preamble; DDBC is an interior label. The existing9,132-byte exact hybrid adds four explicit ASM bytes and does not prove native pure-C padding. Keep all52 table entries/208 bytes and original fallback. The Director owns assigning bounded producer research before integration; release requires actual source/native producer evidence and applicable independent structural acceptance.
 - **Conditional DDB4 candidates:** D450 is52 bytes at`0x0010D450..0x0010D484`; D484 is2,352 bytes at`0x0010D484..0x0010DDB4`. Both are real ASM bodies. Their11,536-byte envelope with DDB4 is arithmetic, not proof of a common producer. Inspect them in the bounded study; do not count them as committed conversions or activate a group without evidence.
 - **Five Squad interfaces stay interfaces:** retain the original assembly/source-record/coordinate boundary dispositions below. They are explicitly accounted for and excluded from matching-wave totals; calls do not automatically transfer source ownership. Reopen only on contradictory supported family evidence.
@@ -200,7 +183,7 @@ Three specific record builders used by the accepted23A5EC/249A14 pair. Preserve 
 | `func_00131B50` | 288 | assembly boundary interface. |
 
 - **Scenario boundary:** documented descriptor/group loader; direct literal DMA requesters for accepted scenario windows and cold consumer slabs; direct scenario-record/site consumers; three specific builders called by the accepted link-consumer pair. Stop at generic allocator/cache/codec/PI/memory/math/class/stat interfaces. Do not import every function in a loaded slab. DDB4 and101DDC remain exclusively Squad. The generic4894 bitstream descriptor encoder is a separate boot-trial obligation outside this five-family roster.
-- **Accepted work stays accepted:** all74 original High Attack inventory entries are covered by current PURE_C proof (D3BC is the accepted continuation of D374, not a remaining function). All23 Shop roster members are PURE_C/exact. Combat's remaining source conversions are the three animation hybrids above; accepted supplements/shared owners are protected. Squad's83 accepted original-ledger identities and Scenario's accepted pair/checksum/resource dependencies are not rematched. Source acceptance does not strengthen semantic claims.
+- **Accepted work stays accepted:** all74 original High Attack inventory entries are covered by current PURE_C proof (D3BC is the accepted continuation of D374, not a remaining function). All23 Shop roster members are PURE_C/exact. Combat's remaining source conversions are the three animation hybrids above; accepted supplements/shared owners are protected. Squad's accepted original-ledger identities and Scenario's accepted pair/checksum/resource dependencies are not rematched. Source acceptance does not strengthen semantic claims.
 
 ## Remaining evidence work, separate from matching waves
 
@@ -211,7 +194,7 @@ Structural producer/prefix/tail/table gates are attached to the listed complete 
 
 ## Scheduling and acceptance
 
-NINE/SapphireLeopard continues its complete nine-member assignment. SwiftGlen owns the full animation wave DB10 -> 3C00 -> 6098, retaining the existing DB10 chat and private root. Preserve current DB10 progress; record provisional members and continue directly to the next target without per-function full-ROM verification or worker replacement. After either complete wave is accepted and its ownership released, immediately replace that worker with fresh top-level Sol6.1/xhigh on a dependency-ready complete wave. Prefer S2 (three cold consumers, stable accepted inputs), then S5/S4; the Director may choose another ready full wave as real evidence dictates. Q1/Q7 remain queued; S1/S3/Q2/Q3/Q4/Q6 retain their stated structural preparation. Existing ASM interfaces do not force an artificial wait for unrelated source conversions.
+NINE is accepted and committed; SapphireLeopard and GoldDesert released their completed assignments and their monitors are retired. Fresh top-level Sol6.1/xhigh CobaltLake owns complete S2 (4D634/4DA84/4E1C4) in build/matching/s2-cold-261011/, with intake2532 and tested inbox/stop routes. SwiftGlen owns the full animation wave DB10 -> 3C00 -> 6098, retaining the existing DB10 chat and private root. Preserve current DB10 progress; record provisional members and continue directly to the next target without per-function full-ROM verification or worker replacement. After either complete wave is accepted and its ownership released, immediately replace that worker with fresh top-level Sol6.1/xhigh on a dependency-ready complete wave. S2 is active; prefer S5/S4 for the next dependency-ready slot; the Director may choose another ready full wave as real evidence dictates. Q1/Q7 remain queued; S1/S3/Q2/Q3/Q4/Q6 retain their stated structural preparation. Existing ASM interfaces do not force an artificial wait for unrelated source conversions.
 
 The sole production writer integrates one complete wave at a time. Drain only native commands affected by actual shared-input changes or canonical verification, then promptly release them. Every assigned member must meet PURE_C, unique C ownership, placement, actual relocation, target-byte and complete-ROM gates in one final wave verification; structural changes retain audit and independent review. Preserve user pauses and original coupled bodies/data. This planning document grants no tool changes or pushes.
 
@@ -221,4 +204,4 @@ The sole production writer integrates one complete wave at a time. Drain only na
 - [Scenario conclusion](../../build/director-resume-20261011/scenario-scope/conclusion.md), [full roster](../../build/director-resume-20261011/scenario-scope/roster.json), [whole-body census](../../build/director-resume-20261011/scenario-scope/body-census.json), and [63 edge dispositions](../../build/director-resume-20261011/scenario-scope/runtime-edge-dispositions.json). Accepted as planning evidence in handoff2432.
 - [Squad/DDB4 recommendation](../../build/director-resume-20261011/ddb4-scope/recommendation.md), [all113 ledger dispositions](../../build/director-resume-20261011/ddb4-scope/census.json), and [exact residual intervals](../../build/director-resume-20261011/ddb4-scope/residual-table.md). Accepted planning evidence2429.
 - [Cross-family current proof join](../../build/director-resume-20261011/other-family-coverage.json) and [combined scoped roster/counts/input hashes](../../build/director-resume-20261011/complete-program-scope.json). Generated scratch evidence remains ignored.
-- Current verification SHA`ABEAE080B21B64748B2560CA5329782410E815E1ACB5A982D9D19F05A432DCB2`, CURRENT`B72EB18218EE66180263F7588289A5192251AB7B7B27B048A12044328403EC4B`, exact Rev0 ROM`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. This is existing accepted evidence, not a repeated verifier run.
+- Current verification SHA`DF34EF929438F690FBC9CF33D09BA43D4453AB690417B3CCBA57D78F5FEB591D`, CURRENT`1B6CCCFE83C7CA34812063E60F40FF1106C5C08A964A67C69B4A2CBD837663E1`, exact Rev0 ROM`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. This is existing accepted evidence, not a repeated verifier run.

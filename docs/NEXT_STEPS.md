@@ -31,7 +31,9 @@ and the separate semantic evidence gates. This supersedes vague remaining-family
 wording and older scheduling below; it does not reopen accepted work or admit new
 structural contracts. Joe now assigns DB10, 3C00 and 6098 to SwiftGlen as one complete
 animation wave, working in that order with one final whole-wave verification. NINE
-continues its existing wave; both workers retain their current monitors.
+is accepted and committed as `21a0d61e`; its source/reviewer ownership and monitors
+are retired. Fresh top-level Sol6.1/xhigh CobaltLake now owns complete Scenario S2,
+with tested inbox and stop monitoring. The native drain is released.
 
 **Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
 audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
@@ -121,13 +123,24 @@ no-discriminator holds are superseded. Continue DB10 first, then 3C00 and 6098;
 keep partial results provisional until one final verification accepts all three.
 The worker chooses source experiments and consults Claude/GoldOx.
 
-**SapphireLeopard** [Scheduler NINE](codex://threads/01a12c52-1ef0-7b50-9dab-1912468a1591)
-continues the full9/9632B assignment, both tables/tails/group gates, in
-`build/matching/sched9-fresh-261011/`. Ownership2342, native release2368 and approved
-same-worker root correction2372 stand; actual intake/native startup2374 passed.
+**CobaltLake** [Scenario S2 cold consumer loaders](codex://threads/01a12e3f-bb07-7da0-b41a-e21b1f322ade)
+owns the complete `func_0004d634` / `func_0004da84` / `func_0004e1c4` wave in
+`build/matching/s2-cold-261011/`, including 4D634's original preamble/interior entry.
+The fresh top-level Sol6.1/xhigh worker started supported intake2532 after complete
+NINE acceptance2526 and SapphireLeopard's ownership release2529. Current base is
+`1B6CCCFE`; retain accepted cold-load and resource-consumer interfaces. Its own inbox
+and Director `s2-to-purple` stop monitor are live and actual delivery-tested.
 Both workers run disjoint private checks concurrently; there is no current drain.
 Only real shared-input changes/canonical verification require scoped temporary drains.
-NINE reports directly to the Director; no routine messages to the production writer.
+S2 reports directly to the Director; no routine messages to the production writer.
+
+**Scheduler NINE accepted, October11:** complete source, tables and native tail passed
+one changed-input structural audit and fresh whole-wave verification, then independent
+final review2525. Commit `21a0d61eb150bf9b3a81b2707d20feb74debea5d` records the four exact
+canonical files and concise [structural admission](GROUP_AUXILIARY_PROJECTION.md).
+SapphireLeopard and GoldDesert are released/retired; evidence remains read-only.
+No unchanged verification repeat or new push is required. The earlier W7 push fulfilled
+Joe's request. Drain2516 was released2524; SwiftGlen's refreshed animation work resumed2528.
 
 **Next slot owned by Director:** use the complete wave roster and gates in
 [remaining-program scope](Plans/remaining-program-scope-20261011.md#scheduling-and-acceptance).
