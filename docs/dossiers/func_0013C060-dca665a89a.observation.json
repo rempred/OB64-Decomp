@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DCA665A89A9FB9BC001BC1BDCD30B50C4975CD8F2D9DFF6F2D382917DA02A3CE",
+  "observationId": "77EAB9D3D0C0F521111D5F90492533858F78D55BACEC229C9C424B2475A299E9",
+  "symbol": "func_0013C060",
+  "authored": {
+    "context": "04 was preserved as prior best.13/16 restored selector S8 and next-pointer spill3C but retained reverse-fill register swaps, setup order and partial table addresses.29 preserves source/pass evidence for the fill repair;31 demonstrates that an explicit loop-invariant lookup-table pointer keeps a full base but wins S8 and rematerializes selector.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "loop-recognition",
+      "operand-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4DD4907337FD09CD1F545317A83FE4C40E41802661A128FE5B1B23EDFFEF6E6F",
+      "sourceSha256": "66AB9FEF62C2D0D0AD0BF88A8B69F3EA79EEE1F5700CCD07FF12FEAB6225FB32"
+    },
+    "label": "exact-reverse-fill-and-rematerialized-lookup-base",
+    "observedEffect": "33 watch actualEOF0, PURE_C1080/frame104, diagnostic score89.67. The entire reverse-fill sequence and candidate-loop setup now agree in opcodes/registers/stack offsets, apart from normal unresolved relocations. The selector load, full lookup-table base rematerialized inT0, scaled-index-first ADD and lookup load agree as well. This is a new diagnostic best over04's73.23; no linked or full-ROM acceptance is claimed.",
+    "parentCandidateId": "CA5F2F125E9ABDB5CBBA5599D2889F57C111EDFB3E5C2BCEEA22F9A78207A2FC",
+    "references": [
+      {
+        "path": "build/matching/s4-sites-261012/watch-13c060-33.json",
+        "sha256": "E2A8C4FB828A406FFC0A706E95E90A372F53D9A54AC253CA1BCA42EC617D56A1"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-fill-init-note29.c",
+        "sha256": "F41645E7BD9A13709896C803E224ACEE23EBA4CC5C445F5BA0DC50B953AAE6F1"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/probe-13c060-29.json",
+        "sha256": "7C2A5B20CB721725A154E78631CBD34B24158F4EC626F36B0361B48F97F32B07"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-lookup-table31.c",
+        "sha256": "079E73E3336F3CC8E6768EE42239C2B304C99375104C5B6345A8A577C8CFF6C8"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-register-last32.c",
+        "sha256": "25DF20682B7BFA0EFAEDAF85A07429B621507C4793E28BA560E5DCEC85E4D223"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0013C060.s",
+        "sha256": "F28232B553C28C8998B960C9BAC0794D2B90DC6E725FD64968FB4CACBB4F17F6"
+      }
+    ],
+    "relatedCandidateIds": [
+      "4A315A2E015FDDF009CBA2A577FB26351F76A9DE9E0BB5262248A86EE960F724",
+      "9DFFE7B57C6637B91524E11A8676351BEDB27DEB657C51C4E82C03D29185C7AC"
+    ],
+    "remainingFailure": "One instruction short. Call argument order around1314D0, value-table temporaries/order and genuine copy-bound A2 plus pointer operand order still differ. Inactive ASM owner prevents private linked acceptance and expected relocation contracts. Complete S4 ownership remains assigned.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "27 raises only the actual reverse pointer decrement's loop-note reference weight;29 adds a one-pass scope to real counter initialization and another to pointer decrement, restoring both fill registers and initialization order.30 moves real last-bound initialization before the outer backward label;32 uses register last and scopes actual random-index production, recovering lastS5/indexS4 and frame104.33 explicitly initializes lookup_table outside the candidate loop and uses the independent accepted selector address with its initialization scope. The table constant spills and rematerializes, while selector remainsS8."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5115,
+      "sha256": "4DD4907337FD09CD1F545317A83FE4C40E41802661A128FE5B1B23EDFFEF6E6F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "66AB9FEF62C2D0D0AD0BF88A8B69F3EA79EEE1F5700CCD07FF12FEAB6225FB32"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_0013C060-dca665a89a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

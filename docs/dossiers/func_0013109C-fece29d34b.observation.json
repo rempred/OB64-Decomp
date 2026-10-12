@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FECE29D34BA54291620CE8A3D2FB5177D54B2819E5623EBABED6CD6490CE954F",
+  "observationId": "51DF3FD2E65453B5DFB1B05F1977CE55AF910DDEFA606A83D7B858312DF2331C",
+  "symbol": "func_0013109C",
+  "authored": {
+    "context": "Accepted one-body owner748 bytes/frame48. First independent candidate684 bytes covers the complete scenario selection, output-byte branches,50-unit loop and final call/return. Its64-byte shortening comes from folded comparison pairs, merged flags/index computations and register-held outputs. Default m2c omits stack byte10; full original assembly supplies both output bytes. No body/owner gap remains unexplained.",
+    "effects": [
+      "register-allocation",
+      "control-flow",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2A3B2EE1584B2930CD7432F34917ECBC12A41FA7B85F380AA1F063B29BDD70DA",
+      "sourceSha256": "20B90657DD2077B83D679F6A95D818165D255EF2ABABF92071F2873FDD79B5FA"
+    },
+    "label": "inline-byte-outputs-separate-comparisons-and-halfword-index",
+    "observedEffect": "07 and polished08 actual EOF0 are PURE_C748/frame48, rawObjectRelocationMaskedExact=true. All32 raw differing instructions are emitted relocation records; opcode/register/branch-polarity/memory-width/signedness/stack differences0. Inline output helper02 restores all original stack byte stores/loads and saved-register set. Separate arms04 restore individual comparisons. Existing flags alias06 avoids merged loads but retains a common index; register halfword07 restores the exact repeated truncation/index sequence without extra stack reservation. Full helper expansion remains inside the sole body; no emitted helper body is needed.",
+    "parentCandidateId": "661F48CC3C95C665610A901A051ED322C9C5EC5FDC8F7061CACFBB3894C25292",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0013109C.s",
+        "sha256": "4CE7EC9991A31DBB0F31BC31A28EF0DFA043B146747ED76AF5E9223727B5C438"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/watch-13109c-08.json",
+        "sha256": "A0D02FA7D25498B96119DE987F8E76720FB6450C32E266A80D395EF1C671E13E"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/watch-13109c-01.json",
+        "sha256": "99ECA07154DF462E417CB79F3B6715F4EE65C5A4E16D7FFB3A6B11B4D5D37C94"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13109c-direct01.c",
+        "sha256": "910473FCC4A8B11636431061F0BAB096741F70E9D2714D5FD41005B9A6D1135D"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13109c-field-alias06.c",
+        "sha256": "A8E8503F351AC9F639602743E4F958CEC0778DAB5E422A630F2B16CEBB1F48A2"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/relocation-references-13109c.json",
+        "sha256": "B42DFB6552536BA3B3CE5E21D646DB7F958D51C5637DC23B4C3AE39291CD0D64"
+      },
+      {
+        "path": "build/director-resume-20261011/scenario-scope/roster.json",
+        "sha256": "F0BC6B74609DF2816C1078160739C21053A3BC7412FAE16B159240CC2C399B70"
+      },
+      {
+        "path": "src/lib/func_00108AA0_group.c",
+        "sha256": "BAA680D1874FAB388B8E1A16FC239146984CD0F32AA04CE1EF27D4E26DC065E2"
+      }
+    ],
+    "relatedCandidateIds": [
+      "AA65DF9B88F5EA746B3BD6C4C6FEAF639604EAD183975D31674C8BB4454AD1CC",
+      "BF37B62F82D8E7C883ED43B550E6BD9C30F6E075F2240AEACDDF9C33655BACA8"
+    ],
+    "remainingFailure": "Inactive ASM owner: expected relocation contract/private linked evidence unavailable, acceptanceEligible=false. relocation-references-13109c.json captures32 actual records and unique accepted ELF references except D_801E7E13/14 and neutral func_80214F80. Original target directly encodes these addresses; normal integration alias definitions remain. The call at runtime80214F80 prepares u16 site, selection and signed/unsigned output bytes. Several loaded images share that address; do not infer callee ownership or substitute a two-argument prototype based only on equal runtime addresses. Scope roster's195410 interface is retained as an interface; no structural or semantic reassignment. Canonical focused checks and complete-wave verifier remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use an inline output-pointer helper to retain byte stack storage, separate equal-result comparison arms to avoid range folding, distinct scenario reload with explicit u8 comparisons, and register u16 second_site with the existing D_801951CC[][18] flags view for the fresh truncation/index/load.08 adds comments explaining these KMC workarounds."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3313,
+      "sha256": "2A3B2EE1584B2930CD7432F34917ECBC12A41FA7B85F380AA1F063B29BDD70DA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "20B90657DD2077B83D679F6A95D818165D255EF2ABABF92071F2873FDD79B5FA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_0013109C-fece29d34b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

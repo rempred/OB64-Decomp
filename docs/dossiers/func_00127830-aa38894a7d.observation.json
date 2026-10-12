@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AA38894A7D8E460B95E9AFFE8FC8DA00542B1BC4375F73CEFA475CCD090B17B4",
+  "observationId": "D93D6E227368990D8CD1690EBE306F5BD18EB7668744BF4649DE8C1275794680",
+  "symbol": "func_00127830",
+  "authored": {
+    "context": "81 shares end across terminator setup and reverse copy, and reuses the copy byte as FF. The global byte quantity conflicts with hardV0 from the reverse pointerload, so it cannot hold retail FFv0.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "delay-slots"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B5664BCAC82B5CC64D1484E6296F58FFDAA76CDC3A1A383E51F857D8CBFC9919",
+      "sourceSha256": "8DCA09CC198CFA1290A9B53D4091008723425220EB79D934ED1B42F7AEBE5B6B"
+    },
+    "label": "separate-terminator-and-copy-pointer-lifetimes",
+    "observedEffect": "95 actualEOF0 PURE_C972bytes/frame136, symbolic97.39; entire native320..33C preheader matches retail operations/registers/order.93's explicit end+=count with the old shared end recovered FFv0 but forced pointer/copy/offset toA0/A1/A2; splitting the pointer removes that cross-BB quantity.89 declaration reordering and91 separateFFvariable alone emit81. Probe81 C66EEE09 shows post-sched dest9/75,flags9/62,record_id6/32, counter9/16,scan7/12; global byte's hardV0 conflict is explicit in .greg.",
+    "parentCandidateId": "93DA318A532EBCDD5B11C83CD3A6DE011078718856857D36F053FE600B910855",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00127830.s",
+        "sha256": "93A8838DC96CC03F78EB8E99BF09ED89915FF655F7B52A2F8BC41A2F5CE830B3"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/watch-127830-95.json",
+        "sha256": "7BE00B029167EC62261FC2798D262D66BB6445874BB5F16A4BF84E0EBCBA2E64"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/probe-127830-81.json",
+        "sha256": "187FF0FC8E1291F7833B91DF8F2E7CE5339C441CCCCF983FC835CE76E21576C7"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/127830-end-advance93.c",
+        "sha256": "E49DF1B9C6ECC6B8722BE1DD91F0B353B422D849D6F7D191A91C212F085E68DD"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/127830-distinct-terminator91.c",
+        "sha256": "73B7E5548DF72C01C52F6F5397715B6968C62D96BF437FB67AAF926B67AAE623"
+      }
+    ],
+    "relatedCandidateIds": [
+      "62A0CB476B16867B59B0D9ED00127D7583E5482CD8A8A31E9ECC3FEECEB15AE9",
+      "EDCD801302903C895809D74925D294DBFC004D65F4AF5A4432075F99D44E5DCE"
+    ],
+    "remainingFailure": "Destination/record_id and counter/scan remain swapped; context and two decoder additions reverse operands.96 register volatile low locals spill, producing996/frame144.97 halfword high accumulators preserve972 but change first ADD toOR and reorder setup. No canonical matching claim; full-wave integration gates remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a separate terminator_slot pointer: load it before copy_offset/copy setup, advance it by count, and write literalFF. Keep end only for the reverse-copy body's pointer recomputation."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6788,
+      "sha256": "B5664BCAC82B5CC64D1484E6296F58FFDAA76CDC3A1A383E51F857D8CBFC9919"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8DCA09CC198CFA1290A9B53D4091008723425220EB79D934ED1B42F7AEBE5B6B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_00127830-aa38894a7d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

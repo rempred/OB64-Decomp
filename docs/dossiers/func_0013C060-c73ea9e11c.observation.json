@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C73EA9E11CA4B481278308CAA083AE429D003943219D2D387C206F78F0450D0C",
+  "observationId": "D29F6E57758A823C8BC60E0E344F1620A134A09724F24201DC28BD5D0E507450",
+  "symbol": "func_0013C060",
+  "authored": {
+    "context": "S4 is indivisible:127830,130D74,13109C,13C060. Accepted13C060 extent1084 includes the eight-byte preamble and interior13C068. Full reference disassembly, census and first candidate covered every path. Inactive ASM prevents private linked acceptance.33 was the prior diagnostic best with exact reverse fill/setup and full lookup-table rematerialization.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "loop-recognition",
+      "operand-order",
+      "signedness",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B444C01E47A4A1F0A65D78760B171F35570150423443F94330DBEC9C1F1E7EBD",
+      "sourceSha256": "05B7322C6E5B19D3F135773B1ACE1B4CCFD2F21E30E40E2DAB172BA708948B0D"
+    },
+    "label": "complete-s4-last-body-pure-c-raw-masked-exact",
+    "observedEffect": "59 watch actualEOF0. Mechanically PURE_C,1084 bytes/frame104,271 instructions, rawObjectRelocationMaskedExact=true, diagnostic97.14. All opcode/register/width/signedness/stack-offset and expected/actual-only differences are zero. The72 differing words and155 operand bytes are exactly the72 actual R_MIPS relocation records. All paths, both preamble loads and the full return/delay-slot tail agree.57 first reached raw masked equality;58 added comments/formatting;59 removes one dead duplicate assignment and remains equal.50 already matched the complete value/removal fragments but had three reordered early-call words;57's early-read scope fixed them.",
+    "parentCandidateId": "DCA665A89A9FB9BC001BC1BDCD30B50C4975CD8F2D9DFF6F2D382917DA02A3CE",
+    "references": [
+      {
+        "path": "build/matching/s4-sites-261012/watch-13c060-59.json",
+        "sha256": "E69A04EB2DC4D09CE730EB76B1C5D2C06C14AA1F7B032C40E0F5D9F04ECDD05D"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/relocation-references-13c060.json",
+        "sha256": "4E5A5A46371943BC98A0BD898A84158D91093E4636C6902439FB8840F0B3A238"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-selector-alias33.c",
+        "sha256": "66AB9FEF62C2D0D0AD0BF88A8B69F3EA79EEE1F5700CCD07FF12FEAB6225FB32"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-value-index36.c",
+        "sha256": "9E90128A9991428796E5D23452BA51EAF9051B940BD27348A074C5A849B62088"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-value-negative-base37.c",
+        "sha256": "03243BC64FF6A892A932DF4AA9370769D1D0D2E46C511AA87ABEA13BAA0305E1"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-reused-parity-row45.c",
+        "sha256": "C0413F535C7505B0BEB240D819246F51A5C7CB79AB353D2F81FE5831FCB67E39"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-full-value-scope47.c",
+        "sha256": "6F3417165BBA881FD861ADA7E75E72AF52B582FAF1485626A72EDAA4D6757AE0"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-copy-return48.c",
+        "sha256": "899E3FE0ADBBCCF63A471F45BCAA062996B5E4760E5568C74E1F636A97F27DE6"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-index-first-and-biased49.c",
+        "sha256": "F41A1B54713604A1038F9D7050E93AE0FA5B91FD002B37FFF38D1BE33884E4CE"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-ignored-return50.c",
+        "sha256": "7381AA6C963ABC9329C70E4C97706F94EC8089B97A947280AD2F999AA5DEEBFB"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/13c060-early-load-note57.c",
+        "sha256": "F4217252182AC357337DC25424F9A55F7051FF5B475C82616EA304AE33272B63"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0013C060.s",
+        "sha256": "F28232B553C28C8998B960C9BAC0794D2B90DC6E725FD64968FB4CACBB4F17F6"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/callee-1314d0.json",
+        "sha256": "8E3CD214EC358862EC8AE83D4E0FD4046169DDA075867A8830D5C77683C43DE9"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/callee-10d484.json",
+        "sha256": "4B2A62D4FFB67F13CCADDC1617987B6EA7E71DCE2142236CA237115CD4B30E6D"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EB7C80CD856BAFAB1814A94BFE1FCFF28A5A68FE770A8A6B548C9C98F643BAA7",
+      "F45B63FA1D0AEC68EE92EFDD1E30FA681F5A85DB0A1A272C4BDDEBBBD9F356EB"
+    ],
+    "remainingFailure": "No raw instruction differences remain. Private linked/expected-relocation evidence is unavailable because every S4 owner remains inactive ASM. acceptanceEligible=false; this is diagnostic object evidence, not matching-C acceptance. Production writer must activate the accepted complete owners, supply ordinary numeric aliases from reference instructions, establish actual per-target relocation/ownership/placement/byte contracts and run the single completed-wave full-ROM verifier. No structural/tooling/compiler exceptions were introduced.39..41 intended multiline edits did not apply due mixed line endings; they are not valid hypothesis counterexamples. Correct48/50 source pairs establish the helper-bound result.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Remove the lookup-read loop note so A0 moves into the preceding branch delay; scope whole value production instead to preserve lookupS2 versus remainingS3. Explicit invariant table pointers outside the candidate backedge rematerialize inT0. Reuse a signed offset for parity quotient and row indexing, with a distinct biased temporary, preserving all register lifetimes and ADD operand order. Use target-width integer address sums for index-first copy operands. The removal helper returns its reduced bound; ignoring that result preserves KMC's real A2 bound snapshot while the caller advances its own outer counters. Separately scoped early halfword read, unit/value preparation and constant-argument initialization pin the retail three-word early-call ordering.59 removes a redundant overwritten pointer initialization and retains58's exact instructions; comments explain the necessary compiler workarounds."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6041,
+      "sha256": "B444C01E47A4A1F0A65D78760B171F35570150423443F94330DBEC9C1F1E7EBD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "05B7322C6E5B19D3F135773B1ACE1B4CCFD2F21E30E40E2DAB172BA708948B0D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_0013C060-c73ea9e11c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

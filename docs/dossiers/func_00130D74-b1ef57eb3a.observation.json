@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B1EF57EB3A69F122ACDB48165B6BD49D5DADA13A8FAADECEA6A3D4117F9502A8",
+  "observationId": "135E7CE1DE471EA05BE153A51CA774893CE771C8EB0DFD62C11725EC3426B322",
+  "symbol": "func_00130D74",
+  "authored": {
+    "context": "First independent reconstruction covers all59 instructions and236 bytes, including both flag branches, the default stores and return/delay. First candidate has the correct32-byte frame; only a ternary result's branch polarity/register and unsigned default constant differ beyond actual relocations.",
+    "effects": [
+      "register-allocation",
+      "control-flow",
+      "signedness"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1E8771C76253F3F80485079D61C75586B408BFF2940DC3733C3A0710565F9A33",
+      "sourceSha256": "8EE508413AD0D9A74C3884DA539B8868476D7312A2D0784D811D0307EE4E5162"
+    },
+    "label": "signed-output-byte-and-branch-local-stores",
+    "observedEffect": "Watch04 actual EOF0 is mechanical PURE_C236/frame32 and rawObjectRelocationMaskedExact=true. All14 raw differing words are exactly emitted relocation records; opcode, register, branch polarity, memory width/signedness and stack-offset differences are0. A value initialized before the call (02) adds a saved register; an if-selected temporary (03) retains ternary lowering. Direct branch-local stores (04) recover the original bne, v0 constants and merged store.",
+    "parentCandidateId": "1DC322551F7000B711602CCC577E5EDC7901F48C56CD56D1D8878E965FF96EAD",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00130D74.s",
+        "sha256": "E8CD20CE64925990DFBF3010D060CF9F5BFCDD3E481F86E5D722AF4DE4BCB007"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/watch-130d74-04.json",
+        "sha256": "B3FB4BB627033829840462D2C2D87CDC021F7EBE108CAD75BD5FEC7786DAA4F2"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/watch-130d74-03.json",
+        "sha256": "C19B79FEF8F99DBE33E15E33CD63314CC041680BE11676C4E629A65AD3F323F6"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/130d74-value03.c",
+        "sha256": "90CDD88076CBA3636E0A7AA6A11ECB4A60768959D1A05E77FCDB03E3104D301B"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/relocation-references-130d74.json",
+        "sha256": "A3ED42DA5074AF394FD8142BAD93BA993C2845500DE3B77C16E8F8CD90D8E44C"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/callee-45df4.json",
+        "sha256": "982CB1388039C8FA9FD9CF38FBBB0A3D3DA2A112C04B1FD9DD4646D4AA62227D"
+      }
+    ],
+    "relatedCandidateIds": [
+      "05EB1376D22A8364C8BB63EF5EE2953D4A07ECB6247DA8E77BE8D4EFCB55CD16",
+      "172747D56F0E4CB52F2FBB36E638D78710FA46A5D4B2978F7EEA5CD439ACCAFE"
+    ],
+    "remainingFailure": "Inactive ASM owner means expected relocation contract and private linked evidence unavailable; acceptanceEligible=false. relocation-references-130d74.json records14 actual relocations and unique accepted ELF references except new data aliases D_801E7E13/14. Their numeric addresses are directly encoded in original assembly and require normal production linkage definitions. Canonical activation, focused target checks and the complete S4 wave verifier remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use signed-char out0 for the -1 default and store1/4 to out0 directly in the respective conditional branches, rather than selecting a temporary value. Output meanings remain neutral because static evidence does not establish their behavior."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 826,
+      "sha256": "1E8771C76253F3F80485079D61C75586B408BFF2940DC3733C3A0710565F9A33"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8EE508413AD0D9A74C3884DA539B8868476D7312A2D0784D811D0307EE4E5162"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_00130D74-b1ef57eb3a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

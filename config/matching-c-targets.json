@@ -1265,6 +1265,10 @@
     {"symbol":"func_0004e1c4","source":"src/lib/func_0004e1c4.c"},
     {"symbol":"func_0023A3A0","source":"src/lib/func_0023a3a0.c"},
     {"symbol":"func_002488D0","source":"src/lib/func_002488d0.c"},
-    {"symbol":"func_00249290","source":"src/lib/func_00249290.c"}
+    {"symbol":"func_00249290","source":"src/lib/func_00249290.c"},
+    {"symbol":"func_00127830","source":"src/lib/func_00127830.c"},
+    {"symbol":"func_00130D74","source":"src/lib/func_00130d74.c"},
+    {"symbol":"func_0013109C","source":"src/lib/func_0013109c.c"},
+    {"symbol":"func_0013C060","source":"src/lib/func_0013c060.c"}
   ]
 }

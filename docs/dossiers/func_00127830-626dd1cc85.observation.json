@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "626DD1CC85DE49CBF79B079A80B985F5FC79F3CD6703459B4767ED75A1ABD8CB",
+  "observationId": "883E8438E250D9154E388B7A0D2A3E8A528514FDFCA99CF532E3113373441B64",
+  "symbol": "func_00127830",
+  "authored": {
+    "context": "104 has only two ADD operand-order differences. Volatile low reads become SUBREGSI(QI), while ordinary low reads use SI registers but make descriptor address GIVs live.106 probe E6D1C054 shows offsets1/2 combining into3, with only ordinary MEM addresses rewritten.",
+    "effects": [
+      "loop-recognition",
+      "register-allocation",
+      "instruction-scheduling",
+      "operand-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7CF3934360318BE64D7F0DC4340526ED6AFBD9B18F39D44C54B659FBCEFA7667",
+      "sourceSha256": "C21C70884BD0D5E5F6547627F39D1A9504941681ADB3F8E87FDE2F452EAE0437"
+    },
+    "label": "ordinary-low-bytes-phony-parser-loop-and-scope-placement",
+    "observedEffect": "110 recovers both ADD operands and all registers but pins its first byte load ahead of copy arguments. Probes110b949B1EFE and104bFCE3011E expose the mid-block loop-note barrier.119 removes it and recovers scheduling, but adds a weighted destination use and swaps flags/destination;121 restores their allocation. Final123 actualEOF0 PURE_C972/frame136, rawObjectRelocationMaskedExact=true. Opcode/register/memory-width/stack-offset differences are0; all47 raw differing words are the47 emitted relocation records.122/123 source cleanup retains the same native object bytes.",
+    "parentCandidateId": "E6ECBC56F5604797D7412AA9E251F28D670AB89C70AF3F04827F55F53FE96CBC",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00127830.s",
+        "sha256": "93A8838DC96CC03F78EB8E99BF09ED89915FF655F7B52A2F8BC41A2F5CE830B3"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/watch-127830-123.json",
+        "sha256": "B990B460AECD2C76AC7361384E001000C63153D01139F41FC5A75B2642D6F63A"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/relocation-references-127830.json",
+        "sha256": "E639ECF26482A199E39DE06F285F0DA6D6E2512B1AED136D45299552DD292B53"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/probe-127830-106.json",
+        "sha256": "8ACD0D3F149A14EF135083F9C0C7A7100622F73D0699DF350098649EE6270D79"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/probe-127830-110.json",
+        "sha256": "C9DA5CF1D3F8CA2F020657B55853156231FB9F780367B9AA52CA07088D8484BF"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/probe-127830-110b.json",
+        "sha256": "F134DFB0CE942C68E983C94E4BC4AB18BA101C47C3F0220A9FB3BE3600386771"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/probe-127830-104b.json",
+        "sha256": "BE33494EA972FA71DCF18198DF18B1F856330AE544C765D9ED5BD5C31A8026F8"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/127830-parser-goto110.c",
+        "sha256": "67EF8A564E13922A6ADBE9C41B1937661357544D03DF456C4DA3CC0BF55FF40F"
+      },
+      {
+        "path": "build/matching/s4-sites-261012/127830-prelabel-tail119.c",
+        "sha256": "0C133EF143689EA869D3A44BE7749389BF72C30F46F130427F660615C137DABA"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EFBB8D11D180D2236FFC73BF5CAB837FEEE4329CF0CB577B220436160110D2FC",
+      "B22B266BE5842CFA92E8B50FE3048C3589ECA75859696FAA4139F01212DC390E",
+      "5EA60F05937FC9ED5B3260747F4A83F34FCE183BB89632F7303F03167898B0B0"
+    ],
+    "remainingFailure": "Inactive ASM owner: expected relocation contract and authenticated private linked evidence unavailable, acceptanceEligible=false. The47 actual records are captured in relocation-references-127830.json. Accepted ELF has unique definitions for every external except new data aliases D_800E7AC5, D_801F1038 and D_801EE7D0; their numeric addresses are encoded by the original target and require normal production linkage definitions. Canonical focused linking/placement/ownership/target bytes and the complete S4 wave ROM verifier remain. This is a provisional private candidate, not matching acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "110 controls parser iteration with backward goto inside a single-pass scope and manually biases tail to offset0x20, disabling descriptor/tail GIVs while preserving flow weights.119 opens that scope before the real one-time tail initialization, with record_loop label after it, removing a mid-block scheduling barrier.121 scopes flags initialization separately to restore destination/flags allocation.123 adds source comments, typed byte pointers, explicit strncpy casts and target-width reverse-pointer arithmetic."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7237,
+      "sha256": "7CF3934360318BE64D7F0DC4340526ED6AFBD9B18F39D44C54B659FBCEFA7667"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C21C70884BD0D5E5F6547627F39D1A9504941681ADB3F8E87FDE2F452EAE0437"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_00127830-626dd1cc85.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
