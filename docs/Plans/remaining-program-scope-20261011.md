@@ -1,19 +1,17 @@
 # Remaining assigned program scope — October 11, 2026
 
-Director scope decision following Joe's request. **54 remaining logical functions, 80,236 text-owner bytes (80,184 body bytes), in 16 complete matching waves.** This includes active NINE and DB10. These are the fixed remaining assignment at CURRENT B72EB182, not global game progress counters or new matching acceptance. Source counts were derived from the passing current verifier and the reconciled inventories; no build, native experiment or verifier was run.
+Director scope decision following Joe's request. **54 remaining logical functions, 80,236 text-owner bytes (80,184 body bytes), in 14 complete matching waves.** This includes active NINE and DB10. These are the fixed remaining assignment at CURRENT B72EB182, not global game progress counters or new matching acceptance. Source counts were derived from the passing current verifier and the reconciled inventories; no build, native experiment or verifier was run.
 
-Two independently known bodies, D450 and D484, are separately enumerated conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. Their necessity is unproven. If both are admitted, the same DDB4 wave expands and the total becomes **56 functions / 82,640 owner bytes**, still16 waves. No unnamed producer group is assumed.
+Two independently known bodies, D450 and D484, are separately enumerated conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. Their necessity is unproven. If both are admitted, the same DDB4 wave expands and the total becomes **56 functions / 82,640 owner bytes**, still14 waves. No unnamed producer group is assumed.
 
-This plan supersedes vague remaining Scenario/animation wording and historical owner/hold instructions in the active queue. NINE and DB10 keep their current top-level workers, roots and monitoring; no drain or new source worker is created by this scope decision. The original five-family boundary is retained.
+This plan supersedes vague remaining Scenario/animation wording and historical owner/hold instructions in the active queue. Joe subsequently combined DB10, 3C00 and 6098 into SwiftGlen's one complete animation wave. NINE and the animation wave retain their current top-level workers, roots and monitoring; this assignment change requires no native drain. The original five-family boundary is retained.
 
 ## Complete waves
 
 | Wave | Assignment | Functions | Text-owner bytes | Body bytes | State |
 |---|---|---:|---:|---:|---|
 | NINE | Scheduler NINE | 9 | 9,632 | 9,624 | Active — SapphireLeopard |
-| DB10 | Animation DB10 | 1 | 5,548 | 5,548 | Active — SwiftGlen |
-| 3C00 | Animation 3C00 | 1 | 6,740 | 6,740 | Queued |
-| 6098 | Animation 6098 | 1 | 4,148 | 4,148 | Queued |
+| DB10 | Complete animation: DB10 + 3C00 + 6098 | 3 | 16,436 | 16,436 | Active — SwiftGlen |
 | Q1 | Terrain policy | 3 | 4,340 | 4,340 | Queued; gates retained |
 | Q2 | Placement pair | 2 | 1,420 | 1,416 | Queued; gates retained |
 | Q3 | Encoded-item writer | 1 | 496 | 496 | Queued; gates retained |
@@ -50,28 +48,14 @@ Keep all nine and both tables/constant/tails together. Existing whole-group admi
 | `func_0010A718` | ASM | `0x0010A718..0x0010ADB8` | 1,696 | `0x0010A718..0x0010ADB8` |
 | `func_0010ADB8` | ASM | `0x0010ADB8..0x0010B038` | 640 | `0x0010ADB8..0x0010B040` |
 
-### DB10 — Animation DB10
+### DB10 — Complete animation: DB10 + 3C00 + 6098
 
-Complete original single-body PURE_C conversion; retain exact hybrid and original ASM until whole-wave acceptance. Historical matching difficulty does not justify a hold.
+Joe assigns all three PURE_C conversions to SwiftGlen as one complete animation wave. Continue DB10 first, then 3C00 and 6098, one target at a time in the existing private root. Preserve each complete original body, preamble/interior entry, accepted physical producer, exact hybrid and original ASM fallback. Keep every other accepted animation sibling and shared interface protected. Individual matches remain provisional; one final complete-wave verification must establish all three as PURE_C with unique C ownership, placement, actual relocations, exact target bytes and full-ROM equality. The worker remains assigned until the whole wave is accepted and released. Historical matching difficulty does not justify a hold.
 
 | Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
 |---|---|---|---:|---|
 | `func_0020DB10` | HYBRID_C | `0x0020DB10..0x0020F0BC` | 5,548 | `0x0020DB10..0x0020F0BC` |
-
-### 3C00 — Animation 3C00
-
-Complete original single-body PURE_C conversion; retain exact hybrid and original ASM until whole-wave acceptance. Historical matching difficulty does not justify a hold.
-
-| Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
-|---|---|---|---:|---|
 | `func_001F3C00` | HYBRID_C | `0x001F3C00..0x001F5654` | 6,740 | `0x001F3C00..0x001F5654` |
-
-### 6098 — Animation 6098
-
-Complete original single-body PURE_C conversion; retain exact hybrid and original ASM until whole-wave acceptance. Historical matching difficulty does not justify a hold.
-
-| Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
-|---|---|---|---:|---|
 | `func_001F6098` | HYBRID_C | `0x001F6098..0x001F70CC` | 4,148 | `0x001F6098..0x001F70CC` |
 
 ### Q1 — Terrain policy
@@ -227,7 +211,7 @@ Structural producer/prefix/tail/table gates are attached to the listed complete 
 
 ## Scheduling and acceptance
 
-NINE/SapphireLeopard and DB10/SwiftGlen continue unchanged. After either complete wave is accepted and its ownership released, immediately replace that worker with fresh top-level Sol6.1/xhigh on a dependency-ready complete wave. Prefer S2 (three cold consumers, stable accepted inputs), then S5/S4; the Director may choose another ready full wave as real evidence dictates. Q1/Q7 and the two animation retries remain available; S1/S3/Q2/Q3/Q4/Q6 retain their stated structural preparation. Existing ASM interfaces do not force an artificial wait for unrelated source conversions.
+NINE/SapphireLeopard continues its complete nine-member assignment. SwiftGlen owns the full animation wave DB10 -> 3C00 -> 6098, retaining the existing DB10 chat and private root. Preserve current DB10 progress; record provisional members and continue directly to the next target without per-function full-ROM verification or worker replacement. After either complete wave is accepted and its ownership released, immediately replace that worker with fresh top-level Sol6.1/xhigh on a dependency-ready complete wave. Prefer S2 (three cold consumers, stable accepted inputs), then S5/S4; the Director may choose another ready full wave as real evidence dictates. Q1/Q7 remain queued; S1/S3/Q2/Q3/Q4/Q6 retain their stated structural preparation. Existing ASM interfaces do not force an artificial wait for unrelated source conversions.
 
 The sole production writer integrates one complete wave at a time. Drain only native commands affected by actual shared-input changes or canonical verification, then promptly release them. Every assigned member must meet PURE_C, unique C ownership, placement, actual relocation, target-byte and complete-ROM gates in one final wave verification; structural changes retain audit and independent review. Preserve user pauses and original coupled bodies/data. This planning document grants no tool changes or pushes.
 

@@ -29,7 +29,9 @@ It includes the finite Scenario and Squad/DDB4 remainder, the retained scripted/
 wave, five explicit interface exclusions, two conditional DDB4 producer candidates,
 and the separate semantic evidence gates. This supersedes vague remaining-family
 wording and older scheduling below; it does not reopen accepted work or admit new
-structural contracts. NINE and DB10 continue unchanged with their current monitors.
+structural contracts. Joe now assigns DB10, 3C00 and 6098 to SwiftGlen as one complete
+animation wave, working in that order with one final whole-wave verification. NINE
+continues its existing wave; both workers retain their current monitors.
 
 **Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
 audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
@@ -52,7 +54,7 @@ duties to **PurpleSquirrel**, chat `01a1284c-9b2b-7561-8a81-36ca34387ef8`.
 The [Director cursor](Plans/cursors/director.md) records the recovered mission,
 mail/monitor routing and next action. SilentCrane and completed W6 writer SilentForest
 remain idle. **SandyPelican's complete W5 is accepted**, with all production/private
-ownership released2316 and its inbox/stop watchers retired. LavenderSpire completed W7 and released ALL2377; fresh SwiftGlen now owns DB10 and production.
+ownership released2316 and its inbox/stop watchers retired. LavenderSpire completed W7 and released ALL2377; fresh SwiftGlen now owns the complete animation wave and production.
 MossyMouse's accepted D9C addendum and its worker/watcher remain retired.
 
 **Squad W2 D9C addendum accepted, October 11:** main `43119554`, CURRENT `A913A384`.
@@ -109,13 +111,15 @@ stopped with history preserved. GoldKite's tooling and CoralJay's complete revie
 accepted/retired; their dedicated monitors are stopped. Do not resume these workers.
 
 **Two active matching workers, October11:** fresh top-level Sol6.1/xhigh **SwiftGlen**
-[DB10 chat](codex://threads/01a12c9b-be01-74c2-a136-da8c91aab898) owns complete5548-byte
-DB10 (original preamble/DB18 included) and sole production source/header/config/build
-role, using `build/matching/db10-fresh-261011/` for initial private reconstruction.
+[DB10 chat](codex://threads/01a12c9b-be01-74c2-a136-da8c91aab898) owns the complete DB10 + 3C00 + 6098
+animation wave (all original bodies/preambles/interior entries included) and sole production
+source/header/config/build role, using `build/matching/db10-fresh-261011/` for private reconstruction.
 Startup2381 and actual running turn confirmed; own inbox watcher53108, Director
 `db10-to-purple`33668 and actual stop-route delivery test cover the assignment.
-Original animdb10 evidence remains read-only; historical no-discriminator holds are
-superseded. The worker chooses source experiments and consults Claude/GoldOx.
+Original animation evidence remains read-only; historical separate assignments and
+no-discriminator holds are superseded. Continue DB10 first, then 3C00 and 6098;
+keep partial results provisional until one final verification accepts all three.
+The worker chooses source experiments and consults Claude/GoldOx.
 
 **SapphireLeopard** [Scheduler NINE](codex://threads/01a12c52-1ef0-7b50-9dab-1912468a1591)
 continues the full9/9632B assignment, both tables/tails/group gates, in
@@ -129,8 +133,9 @@ NINE reports directly to the Director; no routine messages to the production wri
 [remaining-program scope](Plans/remaining-program-scope-20261011.md#scheduling-and-acceptance).
 After either worker's own complete acceptance/release, immediately start a fresh
 Sol6.1/xhigh top-level worker on a dependency-ready full wave. Prefer Scenario S2,
-then S5/S4 under stable accepted inputs; preserve the animation retries and every
-Squad package. The Director owns the bounded DDB4 producer study before its integration;
+then S5/S4 under stable accepted inputs; preserve every Squad package. The animation
+conversions are already owned together by SwiftGlen. The Director owns the bounded
+DDB4 producer study before its integration;
 adjacent D450/D484 are conditional candidates, not an assumed native producer.
 Matching difficulty is not an external blocker or a Director-hypothesis prerequisite.
 
