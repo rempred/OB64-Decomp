@@ -35,7 +35,8 @@ is accepted and committed as `21a0d61e`; its source/reviewer ownership and monit
 are retired. S2 is accepted2545 and committed as `24d80141`; CobaltLake released
 all ownership2546 and its monitors are stopped. Fresh top-level Sol6.1/xhigh HazyPuma
 now owns complete Scenario S5. SwiftGlen's refreshed animation work resumed2549.
-The native drain is released; S5's dedicated watcher launch is blocked as recorded below.
+S5's complete candidate handoff2564 is now released2567 for SwiftGlen integration
+after native drain2565/clearance2566. Its dedicated watcher launch remains blocked below.
 
 **Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
 audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
@@ -129,13 +130,18 @@ The worker chooses source experiments and consults Claude/GoldOx.
 owns the complete `func_0023A3A0` / `func_002488D0` / `func_00249290` wave in
 `build/matching/s5-links-261012/`. Preserve both original sixteen-byte descriptor
 constants and generic class/stat/memory interfaces. The fresh top-level Sol6.1/xhigh
-worker confirmed actual intake/full-body reconciliation and started its first C draft2548.
-Current base is `D08CE771`. Its outgoing startup mail reached the watched Director inbox;
+worker delivered all three complete PURE_C/masked-exact candidates in2564, with171
+actual text relocations. Director2567 released ordinary canonical integration and the
+two-line249A14 caller-declaration adaptation, four focused diffs and ONE normal verifier.
+HazyPuma retains whole ownership until canonical acceptance/release; actual source
+discrepancies return to that worker. The incoming accepted base is `D08CE771`.
+Its outgoing startup and whole-wave mail reached the watched Director inbox;
 the dedicated stop-route test reached this Director. Automatic approval review blocked
 inbox-watcher configuration and background stop-monitor launch with only "blocked by policy".
 These new monitors are not live; the Director owns resolving that explicit monitoring blocker.
-Both workers run disjoint private checks concurrently; there is no current drain.
-Only real shared-input changes/canonical verification require scoped temporary drains.
+Native checks are temporarily drained2565 for S5 integration; both roots reached EOF
+and the actual native census is clear2566. SwiftGlen owns the next canonical action.
+Release the drain promptly after native EOF/stable verified inputs and refresh animation.
 S5 reports directly to the Director; no routine messages to the production writer.
 
 **Scenario S2 accepted, October12:** all three functions passed the single final
