@@ -103,6 +103,18 @@ These fixtures do not activate production owners or reduce a matching wave.
 Artifacts remain ignored under `build/tests`. Production integration and the
 complete-ROM audit belong to the designated production source/build writer.
 
+The complete NINE producer `func_00108aa0_group` was admitted on 2026-10-11 using
+this unchanged mode and version-1 auxiliary projection. Its nine PURE_C functions
+preserve all nine physical owners, 374 text relocations and the natural eight-byte
+terminal alignment tail. The two 76-byte tables belong to `func_0010A718` and
+`func_0010ADB8`, with 19 relocations each and their original group-relative addends.
+Original ASM rows r2551/r2553/r2555 retain their complete 8/4/12 bytes; original
+text and table assembly remain available as excluded fallbacks. One changed-input
+structural audit passed normal and fresh compilation, sole C ownership, placement,
+complete owner/table bytes and byte-identical Rev 0 ROM gates. Independent final
+structural review passed before whole-wave acceptance. This admission changes no
+generic contract, compiler identity, boundary or semantic claim.
+
 ## Single native function with an owned alignment tail and read-only tables
 
 The explicit `native-text-readonly-single-owner-projection` mode admits exactly

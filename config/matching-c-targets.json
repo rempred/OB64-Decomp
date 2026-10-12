@@ -1250,6 +1250,15 @@
     {"symbol":"func_00231CC0","source":"src/battle/func_00231CC0.c"},
     {"symbol":"func_00232280","source":"src/battle/func_00232280.c"},
     {"symbol":"func_00232458","source":"src/battle/func_00232458.c"},
-    {"symbol":"func_00232D7C","source":"src/battle/func_00232D7C.c"}
+    {"symbol":"func_00232D7C","source":"src/battle/func_00232D7C.c"},
+    {"symbol":"func_00108AA0","compilationGroup":"func_00108aa0_group"},
+    {"symbol":"func_00108C1C","compilationGroup":"func_00108aa0_group"},
+    {"symbol":"func_001094BC","compilationGroup":"func_00108aa0_group"},
+    {"symbol":"func_00109A48","compilationGroup":"func_00108aa0_group"},
+    {"symbol":"func_00109C04","compilationGroup":"func_00108aa0_group"},
+    {"symbol":"func_00109C3C","compilationGroup":"func_00108aa0_group"},
+    {"symbol":"func_0010A128","compilationGroup":"func_00108aa0_group"},
+    {"symbol":"func_0010A718","compilationGroup":"func_00108aa0_group"},
+    {"symbol":"func_0010ADB8","compilationGroup":"func_00108aa0_group"}
   ]
 }
