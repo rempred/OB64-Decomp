@@ -22,6 +22,15 @@ tomorrow using the existing experiment records.
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
+**Complete remaining scope, October11:** the Director's
+[remaining-program roster](Plans/remaining-program-scope-20261011.md) now binds every
+remaining logical function, complete wave, size, source/data boundary and dependency.
+It includes the finite Scenario and Squad/DDB4 remainder, the retained scripted/site
+wave, five explicit interface exclusions, two conditional DDB4 producer candidates,
+and the separate semantic evidence gates. This supersedes vague remaining-family
+wording and older scheduling below; it does not reopen accepted work or admit new
+structural contracts. NINE and DB10 continue unchanged with their current monitors.
+
 **Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
 audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
 and pushed to origin/main at https://github.com/rempred/OB64-Decomp.git. Independent
@@ -116,13 +125,14 @@ Both workers run disjoint private checks concurrently; there is no current drain
 Only real shared-input changes/canonical verification require scoped temporary drains.
 NINE reports directly to the Director; no routine messages to the production writer.
 
-**Next slot owned by Director:** preserve complete3C00/6740B,6098/4148B and remaining
-original animation scope from [Lavender's recovery cursor](Plans/cursors/lavender.md)
-and the [program census](../build/director-resume-20261010/active-program-census/report.md).
-After either worker's own complete wave is accepted and ownership released, immediately
-choose the next dependency-ready full wave and start a fresh Sol6.1/xhigh top-level
-worker. Matching difficulty is not an external blocker; no Director hypothesis is
-required. Preserve all original membership/producer dependencies and final gates.
+**Next slot owned by Director:** use the complete wave roster and gates in
+[remaining-program scope](Plans/remaining-program-scope-20261011.md#scheduling-and-acceptance).
+After either worker's own complete acceptance/release, immediately start a fresh
+Sol6.1/xhigh top-level worker on a dependency-ready full wave. Prefer Scenario S2,
+then S5/S4 under stable accepted inputs; preserve the animation retries and every
+Squad package. The Director owns the bounded DDB4 producer study before its integration;
+adjacent D450/D484 are conditional candidates, not an assumed native producer.
+Matching difficulty is not an external blocker or a Director-hypothesis prerequisite.
 
 **W6 accepted, October 11:** the complete action-mode/High Attack wave passed at
 main `5dc182a1`, CURRENT `F1B253F9` / baseline `D6553DED`. Preserve
