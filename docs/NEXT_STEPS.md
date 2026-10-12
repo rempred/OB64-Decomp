@@ -36,8 +36,8 @@ are retired. S2 is accepted2545/committed `24d80141`; S5 is accepted2573/committ
 `198e5fe2`. S4 is accepted2666/committed `d6c115d6`; Q5 is accepted2681 at
 CURRENT `7B2BEBE1`. Their source ownership and routes are retired. Fresh top-level
 Sol6.1/xhigh Q7 owns the complete ten-member scripted/site wave. Drain2676 is
-released2681; model-capacity failures currently prevent actual animation/Q7 startup.
-The Director owns recovery of these same assignments; see the current cursor.
+released2681; SwiftGlen committed Q5 and confirmed refreshed animation continuation2685. Both workers
+recovered on Sol6.1/xhigh; BoldHollow confirmed actual Q7 intake/startup2683.
 
 **Joe's post-acceptance push completed, October11:** full W7 was accepted2375 after
 audit2367 and final independent PASS2373, committed as `3b14cb65416a27e1167feeaf56337a41e735e48e`,
@@ -127,15 +127,15 @@ no-discriminator holds are superseded. Continue DB10 first, then 3C00 and 6098;
 keep partial results provisional until one final verification accepts all three.
 The worker chooses source experiments and consults Claude/GoldOx.
 
-**Q7** [Squad Q7 scripted site pure C wave](codex://threads/01a130d3-cc31-7b90-8b83-e8659be98b84)
+**BoldHollow** [Squad Q7 scripted site pure C wave](codex://threads/01a130d3-cc31-7b90-8b83-e8659be98b84)
 owns all ten existing scripted/site members in `build/matching/q7-scripted-261012/`.
 Preserve 17,368 owner bytes, including119454/127154 eight-byte terminal regions,
 and the complete roster/interfaces; accepted09C04 remains a protected dependency.
-The fresh Sol6.1/xhigh worker's initial and retry turns failed at model capacity
-before intake or identity registration. Director-owned same-assignment recovery
-continues; no source work is claimed. Stop37736 is live, six tests pass, and actual
-test b39dcc70-48bb-43aa-a558-4d3b7cf07cc7 reached this exact Director. The inbox route
-will be attached/tested when the worker registers its public identity. No duplicate monitors.
+The fresh Sol6.1/xhigh worker recovered from startup capacity failures and confirmed
+actual118E44 intake/full-body reconciliation in startup2683. Stop37736 is live, six
+tests pass, and actual test b39dcc70-48bb-43aa-a558-4d3b7cf07cc7 reached this exact
+Director. Inbox44124 is live; incoming test2684 reached this Q7 chat and was acknowledged. Durable retries and
+deduplication remain enabled. See the Director cursor for active route details.
 
 **Q5 accepted, October12:** complete580-byte `func_0012FBB8` passes PURE_C, sole C
 ownership, placement, all13 actual relocations, exact target bytes and exact full ROM.
@@ -143,9 +143,8 @@ ownership, placement, all13 actual relocations, exact target bytes and exact ful
 SHA `A9BE7843` binds CURRENT `7B2BEBE1`, verifier `62EDC745`, fresh `DB71BBF9`
 and retail `571E8339`. Four supported publications, one focused diff and the single
 normal verifier reached EOF0; configs, original interfaces and ASM fallback are unchanged.
-Director2681 accepted/released drain2676 and assigned SwiftGlen the exact13-path commit
-(one source plus12 research files) and animation refresh/resumption. Capacity failures
-currently prevent that continuation; no extra verifier or push is required.
+Director2681 accepted/released drain2676; exact13-path commit `eac47d65f7a47a0845769311242c1924e0309997`
+records one source plus12 research files. SwiftGlen confirmed actual refreshed animation continuation2685 after capacity recovery; no extra verifier or push is required.
 SilverBison's administrative closeout reply also failed before action. The Director
 released ALL completed Q5 ownership directly after verified EOF; inbox55400 and
 stop34552 are stopped/PIDs absent. Its root is read-only history; never resume it.
