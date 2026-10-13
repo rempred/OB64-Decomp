@@ -187,6 +187,7 @@ function summarizeAcceptedOwnership(model, targets) {
       fail(`target auxiliary owner census drift: ${target.symbol}`);
     }
     if (target.auxiliaryProjection) auxiliaryProjection.checkTarget(target);
+    if (auxiliaryProjection.bundle(target.compilationGroup)) auxiliaryProjection.assertMemberSections(target);
     for (const auxiliary of target.auxiliarySections) {
       const row = auxiliary && rowsByIndex.get(auxiliary.ownerRowIndex);
       if (!row) fail(`target auxiliary owner row is missing: ${target.symbol}`);

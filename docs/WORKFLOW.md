@@ -10,6 +10,56 @@ overlay, placement, executable extent, linker ownership rule, or toolchain
 contract, stop using this ordinary workflow and follow
 [the structural audit](AUDIT.md).
 
+## Comparison scratch storage
+
+`diff.js` preserves an immutable diagnostic report, complete authored producer and
+expanded compiler input under each run's `.scratch-retention/` directory. The
+capture authenticates existing source-policy and compiled-input identities; it
+is diagnostic evidence, not matching acceptance or a complete replayable dependency
+archive. A small summary and file census identify the retained bytes. Existing
+compiler, owner, source-class, relocation and full-ROM rules do not change.
+
+Storage control currently performs **no deletion**. Defaults of 32 runs, 12 GiB of
+recorded run bytes and 4 GiB of retained records are warning thresholds only. There
+is no hard storage quota or bounded-total cleanup. Legacy/incomplete byte totals
+remain explicitly unknown in the cheap per-run accounting. Large manifest, ELF
+JSON and map files are bulk, not part of the retained-record allowlist.
+
+Live free space is a hard admission check on the diff destination volume, before
+baseline reuse and again before copy, compile and link: 8 GiB floor plus 2 GiB for each
+active cooperative diff reservation. With mixed settings, the largest active floor
+plus all active peaks applies; a new caller cannot lower an existing reserve.
+Old or malformed claims fail closed. The 2 GiB peak is provisional; this is not a
+volume quota or a guarantee against unrelated writers. A missing/stale baseline
+refuses before its native build starts and requires separately budgeted setup.
+Existing context preparation still precedes this comparison-run admission.
+
+Configure positive integer byte/run values with `OB64_SCRATCH_MAX_RUNS`,
+`OB64_SCRATCH_MAX_BYTES`, `OB64_SCRATCH_MAX_RECORD_BYTES`,
+`OB64_SCRATCH_FLOOR_BYTES` and `OB64_SCRATCH_PEAK_BYTES`.
+Run/byte thresholds continue to warn when exceeded. A reservation claim is
+append-only; a separate completion/failure release records a finished command.
+Crashed or malformed claims are never cleared by age/PID and require Director
+inspection. Concurrent same-symbol commands reject while the other claim is
+active; latest reports publish atomically, with every run retaining its own report.
+Error paths retain files. These records are internal scratch lifecycle metadata,
+not a new matching-worker handoff protocol.
+
+Read-only inventory is available through:
+
+`node tools/scratch-retention.js --root <absolute-diff-root> --dry-run --docs <absolute-docs-root> --memory <absolute-memory-root> --mail <absolute-project-mail-archive>`
+
+Repeat reference options to cover all relevant roots. Missing, unreadable or unsafe
+inputs are exposed as incomplete, protecting affected data. Supplied-root coverage
+is not proof that every current/best/pinned/live reference has been found. The
+inventory recognizes full diff names/paths, bare 13-digit timestamps and a 6-hex
+suffix adjacent to its symbol; 64-/8-hex identifiers apply only to actual hash run
+IDs. Function address mentions alone are not hash-run references. No apply/remove
+operation exists. All data, including current/best/referenced/unknown runs and their
+complete dependency closure, remains untouched. The Director owns the next reviewed
+historical dry-run and operator-apply decision after this stage; inspection does not
+authorize cleanup of workbench/probes, accepted proofs, compiler sources or fixtures.
+
 ## The short path
 
 Use the agent guide's worker assignments on `main`, with one production source/build writer.

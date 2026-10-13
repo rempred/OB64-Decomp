@@ -120,7 +120,7 @@ function adjustSectionAssembly(compilerAssembly, sectionName, options = {}) {
     const projection = auxiliaryProjection.groupContract(composedGroup);
     const tables = projection.segments.filter(segment => segment.kind === 'payload');
     let end = 0;
-    const occurrences = tables.map(segment => {
+    const occurrences = auxiliaryProjection.groupOccurrences(composedGroup).map(segment => {
       const record = { label: segment.label, offset: '0x' + segment.offset.toString(16).toUpperCase().padStart(8, '0'),
         bytes: segment.bytes, entries: segment.bytes / 4, alignment: projection.alignment,
         alignmentDirectives: segment.alignmentDirectives,
@@ -2353,6 +2353,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   };
   const proofBytes = Buffer.from(`${JSON.stringify(proof, null, 2)}\n`, 'utf8');
   if (target.atomicText) atomic.registerProofContext(phase8,target,output,proof);
+  compilationGroups.registerBundleProofContext(phase8, target, output, classification, canonicalBaserom, proof);
   if (!sharedLinkContext) textContract.finishLinkContext(linkContext);
   return { proof, proofBytes, rawComparison };
 }
@@ -2418,6 +2419,7 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
   }
   compilationGroups.validateFunctionGroupProof(actual);
   compilationGroups.validateComposedProof(actual);
+
   atomic.validateProof(actual);
   const projected = actual.target.auxiliaryProjection;
   const projectionEvidence = actual.objectEvidence.auxiliaryProjection;
@@ -4668,3 +4670,4 @@ module.exports = {
   writeLayout,
   writeObjectManifest,
 };
+

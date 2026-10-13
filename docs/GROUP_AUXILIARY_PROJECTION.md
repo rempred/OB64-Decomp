@@ -7,13 +7,13 @@ An isolated fixture does not accept a production member or matching wave.
 
 The group registry keeps the existing text, function, tail, and relocation
 contracts. This mode additionally requires an `auxiliary` object with exactly
-`sections` and `projection`. Every `sections` entry has a mandatory `memberSymbol`
+`sections` and `projection`. In the legacy version-1 contract, every `sections` entry has a mandatory `memberSymbol`
 naming its group member, in addition to its complete-row auxiliary contract.
 There is no top-level attribution, implicit default, or legacy fallback.
 `projection` uses the
 [fixed-row read-only census](AUXILIARY_PROJECTION.md). Ordinary group and standalone
 auxiliary contracts retain their existing meanings and rejection rules.
-This composition supports projection schema version 1 only. Version 2's owned
+The legacy composition contract supports projection schema version 1 only. The separately gated version-5 bundle extension below has its own occurrence attribution. Version 2's owned
 native padding is rejected by registry, binding, grammar, object, projection,
 conservation and proof entry points; standalone support does not extend group
 composition implicitly.
@@ -193,3 +193,100 @@ clean-room twelve-function producer, an unrelated multi-function final-owner
 fixture, native old-alias callers, compiled nonmatching sources and malformed
 census/order/tail/alias/proof/cache controls. Generated objects and reports remain
 ignored. These fixtures do not activate production sources.
+
+
+## Complete shared rows with per-occurrence attribution
+
+Auxiliary projection version 5 is admitted only through explicit multi-member
+read-only composition. It retains complete original payload rows while each
+ordered `occurrences` record carries `label`, `memberSymbol`, native `offset`,
+`bytes`, and the exact emitted `alignmentDirectives`. Whole rows carry no
+row-wide semantic member. Complete occurrences may not cross row boundaries.
+Every original callable member, compiler occurrence and pointer occurs once.
+Standalone versions 1–4, atomic union, single-owner composition and the older
+multi-member version-1 contract retain their existing restrictions.
+
+The native and original partitions are different. Replay actual alignment
+directives between occurrences; only minimal native gaps are admitted. Interior
+zeros within a payload row are copied from the native object. Gaps belonging to
+separate original ASM rows remain check-only in the native census; those entire
+original rows stay linked once. A final original row can extend beyond the native
+section. Its exterior bytes have original ASM provenance only, and do not acquire
+a compiler-padding origin. No bytes are manufactured or inserted by projection.
+
+Every occurrence binds exact ordered R_MIPS_32 places and group-relative addends.
+Pointer destinations belong to its attributed function; incoming table references
+must originate in that same member and address that exact occurrence. Padding is
+never a pointer or reference destination. Native serialized order, both original
+section anchors, same-owner HI16/LO16 pairing, full symbol/ancillary censuses and
+unchanged text bytes remain mandatory. Every text contributor to a shared row is
+resolved against the accepted model, including contributors with no reporting
+row; existing loader-slab rules govern cross-chunk text contributors.
+
+Whole-row accounting uses a derived reporting custodian: the first occurrence's
+member. This is not exclusive table attribution or a historical ownership claim.
+Each member separately records all its occurrences and validates the complete
+producer. A member can have tables without a reporting row. Manifest collapse,
+original ASM exclusion, map contribution and byte accounting still consume each
+whole payload row once. Member text/object/composition schemas are 8/12/5.
+
+## Interior member runs with subset-compilation alignment
+
+The separate `native-text-readonly-interior-run-projection` mode uses the same
+version-5 read-only bundles. It adds exactly this raw `interiorRun` contract:
+
+```json
+{
+  "schemaVersion": 1,
+  "mode": "accepted-interior-member-run",
+  "outputAlignment": 4,
+  "precedingOwnerRowIndex": 0,
+  "followingOwnerRowIndex": 0,
+  "expectedProjectedTextSha256": "<measured instruction-envelope SHA-256>"
+}
+```
+
+The row indices must identify distinct, actual immediately adjacent accepted code
+owners in the same overlay text placement. They are not optional or wildcard
+values. Binding independently authenticates original source and complete ROM
+bytes for both neighbours and every member, exact ROM/VMA adjacency, original
+fallback identities, and complete one-to-one native function sizes and offsets.
+Ambiguous zero boundary words reject conservatively; this mode does not admit
+an original padding boundary or infer a unique historical compilation unit.
+Unsupported original boundary cases require further evidence, not an override.
+
+The pinned compiler's actual function entries must each emit `.align 2`. Native
+`.text` alignment remains 16 in raw evidence; projected instruction sections have
+alignment 4 with no prepadding. Only the actual minimal 0–12 terminal zero bytes
+after the final complete function are omitted. The tail's origin is
+`native-subset-artifact`; it is never linked, placed, counted as C, or attributed
+to retail padding. Raw text identity and projected instruction-envelope identity
+are distinct. All original physical owners and their load mappings remain whole.
+The older native-text projection modes remain strict.
+
+Complete symbols, relocation places and effective destinations—including named
+function addends—must exclude that omitted span. Decoded branches and relocated
+direct transfers must remain within supported executable accounting or declared
+external calls. The admitted indirect dispatch is the bounded native KMC switch
+sequence with its exact bounds check, shift, HI16/LO16 table address, load and
+jump. Other indirect transfers fail closed. Reachability includes every function
+entry, table destination and local address reference; transfers through delay
+instructions and implicit fallthrough cannot enter omitted bytes or run across
+member boundaries. Every function must have a proven terminal transfer.
+
+Text/object/composition schemas 9/13/6 distinguish this mode. Raw, text-projected,
+fully projected, stripped and linked evidence retain native alignment, omitted
+span, control destinations, dispatch bindings and authenticated adjacent rows.
+Proof validation rereads registered on-disk inputs and ELF/map, verifies the source
+classification closure, replays projection and independently reconstructs the
+complete proof. A self-compared or rehashed report is not authority. Cold/warm
+cache paths reconstruct artifacts; existing implementation fingerprints invalidate
+old reuse inputs. Neither extension adds a public scratch group CLI.
+
+`tests/group_auxiliary_bundles.js` compiles unrelated three-function producers at
+two placements, with shared rows, native internal gaps, zero/nonzero tails and a
+member with occurrences but no reporting row. It checks all-member proofs,
+source changes, cold/warm caches, original ASM ownership and malformed contract,
+object, control-flow, source, artifact, map and proof inputs. These fixtures do not
+activate production sources. Changed-input structural audit and independent review
+remain required before tooling acceptance or canonical integration.

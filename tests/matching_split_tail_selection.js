@@ -4,6 +4,7 @@ const assert = require('assert');
 const fs = require('fs');
 const cp = require('child_process');
 const path = require('path');
+const v8 = require('v8');
 const { ROOT, sha256Buffer } = require('../tools/lib/phase7_conventional');
 const { loadActiveTargetModel, resolveAcceptedRows } = require('../tools/lib/active_targets');
 const {
@@ -159,13 +160,31 @@ async function run(workbench = loadWorkbenchModel()) {
     assert.throws(() => assertExecutablePrefixSelection(workbench, value), /executable-prefix/);
   }
 
-  // Inactive ASM stays symbolic even for byte-identical object input. Actual
-  // relocation availability is separate from accepted relocation availability.
+  // Synthetic inactive ASM stays symbolic even for byte-identical object input.
+  // Keep real active membership and unavailable relocation evidence distinct.
   const session = { context: { phase8: authority }, toolId: 'pure-js-selection-test' };
-  const expectedRelocationEvidence = { available: false, reason: 'inactive fixture' };
-  const prepared = prepareTargetDiagnostic(session, target, expectedRelocationEvidence);
+  const matchesTarget = candidate => candidate.symbol === target.symbol && candidate.bytes === target.bytes
+    && candidate.romStartNumber === target.romStart && candidate.vramStartNumber === target.vramStart;
+  assert.equal(authority.targets.filter(matchesTarget).length, 1, 'real fixture must have one exact active owner');
+  const snapshot = v8.deserialize(v8.serialize({ authority, target }));
+  assert.deepStrictEqual(snapshot, { authority, target }, 'snapshot must preserve authority and target data types');
+  const canonicalTargets = authority.targets;
+  const removedIndex = authority.targets.findIndex(matchesTarget);
+  const removedTarget = authority.targets[removedIndex];
+  const inactiveAuthority = { ...authority, targets: authority.targets.filter(candidate => !matchesTarget(candidate)) };
+  assert.equal(inactiveAuthority.targets.length, authority.targets.length - 1);
+  assert.equal(inactiveAuthority.targets.filter(matchesTarget).length, 0);
+  assert.strictEqual(inactiveAuthority.model, authority.model);
+  const restoredTargets = [...inactiveAuthority.targets];
+  restoredTargets.splice(removedIndex, 0, removedTarget);
+  assert.deepStrictEqual({ ...inactiveAuthority, targets: restoredTargets }, snapshot.authority);
+  const inactiveSession = { ...session, context: { ...session.context, phase8: inactiveAuthority } };
+  assert.equal(prepareTargetDiagnostic(session, target,
+    { available: false, reason: 'active fixture missing relocation evidence' }).code, 'missing-accepted-relocation-contract');
+  const expectedRelocationEvidence = { available: false, reason: 'synthetic inactive fixture' };
+  const prepared = prepareTargetDiagnostic(inactiveSession, target, expectedRelocationEvidence);
   assert.equal(prepared.code, 'nonactive-asm-owner');
-  const comparison = compareCandidateDiagnostic({ session, target, objectText: target.expectedBytes,
+  const comparison = compareCandidateDiagnostic({ session: inactiveSession, target, objectText: target.expectedBytes,
     actualRelocations: [], expectedRelocationEvidence, prepared });
   assert.equal(comparison.acceptanceEligible, false);
   assert.equal(comparison.evidenceMode, 'symbolic-object');
@@ -179,6 +198,10 @@ async function run(workbench = loadWorkbenchModel()) {
   assert(comparisonIsCurrent({ details: comparison }, prepared));
   assert(!comparisonIsCurrent({ details: { ...comparison, comparisonScope: { ...comparison.comparisonScope, fullOriginalOwnerCompared: true } } }, prepared));
   assert(!comparisonIsCurrent({ details: { ...comparison, originalOwnerComparison: { available: true } } }, prepared));
+  assert.strictEqual(authority.targets, canonicalTargets);
+  assert.deepStrictEqual(authority, snapshot.authority, 'synthetic diagnostic mutated real authority');
+  assert.deepStrictEqual(authority.targets, snapshot.authority.targets, 'synthetic diagnostic mutated active targets');
+  assert.deepStrictEqual(target, snapshot.target, 'synthetic diagnostic mutated target bytes or metadata');
 
   // 013D0 has coincidentally equal 12-byte native rounding and retained ASM.
   const equalTail = resolveTarget(workbench, 'func_002013D0');

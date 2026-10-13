@@ -264,3 +264,32 @@ Require one linked producer object with complete ordered member records, individ
 `node tests/compilation_groups.js` covers unrelated pure-C call/address and zero-tail groups, two link placements, source/cache artifact agreement and bounded malformed inputs. `node tests/compilation_groups_phase8.js` exercises the designated pose research group with art-native coexistence through an isolated full-ROM link and strict proof. Its source and artifacts remain ignored. It does not activate production targets. Existing native, multi-owner and multi-function tests retain their contracts.
 
 The accepted design is `docs/Plans/compilation-groups-design.md` with `docs/Plans/compilation-groups-design-r2.md`. Implementation acceptance requires a completed changed-input structural audit and independent review. Ordinary matching waves gain no additional review gate.
+
+### Shared occurrence bundles and interior member runs
+
+Auxiliary projection 5 retains complete original payload rows, per-occurrence
+callable attribution, native interior alignment provenance and a separate original
+ASM partition. Audit must reject missing or duplicated row custody, occurrence
+references crossing callable attribution, padding pointers, changed anchors/addends
+or relocation order, and claims assigning external retained ASM bytes a native
+origin. Complete raw/intermediate/projected/stripped artifacts, all-member proof
+reconstruction and cold/warm cache evidence are required. Bundle text/object/nested
+schemas are 8/12/5; legacy contracts remain unchanged.
+
+The separately gated interior-run composition uses schemas 9/13/6. Authenticate
+both immediately adjacent original accepted neighbours and every complete member
+against source and ROM, with unchanged overlay placement and no original padding
+boundary. Actual `.align 2` entries justify output alignment 4; native alignment 16
+remains visible. Only the minimal authenticated 0–12-byte subset-compilation tail
+may be omitted, with no symbol, relocation, effective address, decoded control
+edge or executable fallthrough reaching it. No original owner receives that span.
+Conservative ambiguous boundary or unsupported indirect-control forms reject.
+No unique historical compilation-unit origin is inferred. See
+[the composition contract](GROUP_AUXILIARY_PROJECTION.md).
+
+Source/artifact/link reconstruction must reject self-compared forged reports and
+changed on-disk maps or sibling artifacts independently of reported byte equality.
+The registered shared-bundle suite supplies native positives and adversarial
+controls. Isolated real-source evidence remains diagnostic; production acceptance
+requires the changed-input heavyweight audit, independent review and ordinary
+complete-wave source/ownership/relocation/target-byte/full-ROM gates.

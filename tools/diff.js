@@ -5,6 +5,8 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const textContract = require('./lib/text_contract');
+const scratchRetention = require('./lib/scratch_retention');
+const { compilationInputBytes } = require('./lib/source_policy');
 const {
   ROOT,
   assertBuildLocations,
@@ -32,7 +34,6 @@ const {
 const {
   ensureBaseline,
   prepareContext,
-  writeJson,
 } = require('./lib/current_workflow');
 
 function usage() {
@@ -249,6 +250,10 @@ function runDiff(argv) {
   let target = null;
   let output = null;
   let linkContext = null;
+  let scratch = null;
+  let capturedSource = null;
+  let capturedComplete = false;
+  let originalError = null;
   if (profiler) profiler.installChildProcessObserver();
 
   try {
@@ -257,14 +262,20 @@ function runDiff(argv) {
     ));
     target = measure('select-target', () => selectTarget(context.phase8, parsed.symbol));
     if (profiler) profileFile = profileOutputPath(ROOT, target.symbol, profiler.startedAt);
-    const baseline = measure('ensure-baseline', () => ensureBaseline(context, {
-      onStep: (message) => console.log(`${message}...`),
-    }));
     measure('initialize-output', () => {
       const suffix = `${Date.now()}-${crypto.randomBytes(3).toString('hex')}`;
-      output = path.join(context.localTools.workRoot, 'diff', `${target.symbol}-${suffix}`);
-      assertBuildLocations(output, baseline.phase7Output);
+      const root = path.join(context.localTools.workRoot, 'diff');
+      output = path.join(root, `${target.symbol}-${suffix}`);
+      scratch = scratchRetention.begin({ root, output });
+      const accounting = scratchRetention.accounting(root, scratch.config);
+      for (const warning of accounting.warnings) console.warn(warning);
     });
+    const baseline = measure('ensure-baseline', () => ensureBaseline(context, {
+      // ensureBaseline calls onStep before any split/build subprocess when reuse fails.
+      // The provisional diff slot does not budget a new baseline build.
+      onStep: () => { throw new Error('Diff storage admission requires an existing reusable baseline; run separately budgeted setup before retrying'); },
+    }));
+    assertBuildLocations(output, baseline.phase7Output);
 
     measure('print-start', () => console.log(`Compiling ${target.symbol}...`));
     const runtimeOptions = {
@@ -280,16 +291,20 @@ function runDiff(argv) {
     ));
     const sourcePolicy = measure('classify-target-sources', () => context.sourcePolicy);
     const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
+    capturedSource = scratchRetention.captureSource(scratch, ROOT,
+      classificationBySymbol.get(target.symbol), compilationInputBytes(classificationBySymbol.get(target.symbol)));
     const phase7 = measure('verify-phase7-input', () => verifyPhase7Input(
       context.phase8,
       baseline.phase7Output,
     ));
+    scratch.check('before-copy');
     const replacement = measure('copy-phase7-objects', () => copyPhase7Objects(
       context.phase8,
       phase7,
       output,
       runtime.tools['mips-kmc-elf-objcopy.exe'].path,
     ));
+    scratch.check('before-compile');
     const targetCompilation = measure('compile-diff-targets', () => compileDiffTargets({
       phase8: context.phase8,
       requestedTarget: target,
@@ -312,6 +327,7 @@ function runDiff(argv) {
       replacement.replacements,
       compiled,
     ));
+    scratch.check('before-link');
     measure('link-phase8', () => linkPhase8(context.phase8, output, objectManifest, runtime.tools));
     linkContext = measure('prepare-linked-evidence', () => textContract.linkContext(
       output, require('./lib/phase8_matching_c').loadCanonicalBaserom(context.phase8),
@@ -363,7 +379,7 @@ function runDiff(argv) {
     linkContext = null;
     measure('verify-preprocessing-identity', () => context.diffPreprocess.finish());
     const reportFile = path.join(ROOT, 'build', 'diff', `${target.symbol}.json`);
-    measure('write-diff-report', () => writeJson(reportFile, report));
+    measure('write-diff-report', () => scratchRetention.publishLatest(path.dirname(reportFile), target.symbol, report));
     measure('print-summary', () => printSummary({
       candidateRelocations,
       comparison,
@@ -398,8 +414,14 @@ function runDiff(argv) {
       console.log(`Profiled wall time .......... ${seconds(timingReport.totalMs)} s`);
       console.log(`Child-process wall time ..... ${seconds(timingReport.childProcessMs)} s`);
     }
+    scratchRetention.captureReport(scratch, capturedSource, report);
+    capturedComplete = true;
+    const accounting = scratchRetention.accounting(scratch.root, scratch.config);
+    console.log(`Retained source/report bytes .. ${accounting.totals.retainedBytes} (measured records; no deletion)`);
+    for (const warning of accounting.warnings) console.warn(warning);
     return report;
   } catch (error) {
+    originalError = error;
     if (profiler && !profileFinished) {
       try {
         const timingReport = profiler.finish({
@@ -419,6 +441,14 @@ function runDiff(argv) {
       }
     }
     throw error;
+  } finally {
+    if (scratch) {
+      try { scratch.release(capturedComplete ? 'complete' : 'failed'); }
+      catch (releaseError) {
+        if (!originalError) throw releaseError;
+        originalError.scratchReleaseError = releaseError.message;
+      }
+    }
   }
 }
 

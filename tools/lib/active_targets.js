@@ -195,6 +195,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, proj
     ];
     const hasPreservedPrefix = Object.prototype.hasOwnProperty.call(contract, 'preservedPrefix');
     const hasInterior = Object.prototype.hasOwnProperty.call(contract, 'preservedInteriorBefore');
+    const bundleRow = auxiliaryProjection.bundle(composedGroup) ? projection.segments.find(row => row.kind === 'payload' && row.outputSection === contract.outputSection) : null;
     const hasCompilerOccurrences = Object.prototype.hasOwnProperty.call(contract, 'compilerOccurrences');
     const hasSourceObjectPrefix = Object.prototype.hasOwnProperty.call(contract, 'sourceObjectPrefix');
     const hasTrailingPaddingBytes = Object.prototype.hasOwnProperty.call(contract, 'trailingPaddingBytes');
@@ -238,7 +239,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, proj
         || (hasTrailingPaddingBytes && trailingPaddingBytes <= 0)
         || trailingPaddingBytes % 4 !== 0
         || (hasTrailingPaddingBytes && trailingPaddingBytes !== alignmentPaddingBytes)
-        || (!hasCompilerOccurrences && contract.bytes !== entryBytes + trailingPaddingBytes)
+        || (!hasCompilerOccurrences && !bundleRow && contract.bytes !== entryBytes + trailingPaddingBytes)
         || typeof expectedTrailingPaddingSha256 !== 'string'
         || !SHA256.test(expectedTrailingPaddingSha256)) {
       fail(`${contractLabel} trailing alignment padding is malformed`);
@@ -422,12 +423,30 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, proj
       `${contractLabel} relocations`,
     );
     if (expectedRelocations.length !== contract.entries
-        || (!hasCompilerOccurrences && expectedRelocations.some((record, relocationIndex) => (
+        || (!hasCompilerOccurrences && !bundleRow && expectedRelocations.some((record, relocationIndex) => (
           Number.parseInt(record.offset.slice(2), 16) !== relocationIndex * 4
         )))) {
       fail(`${contractLabel} switch-table entry census is malformed`);
     }
     let compilerOccurrences;
+    if (bundleRow) {
+      if (hasCompilerOccurrences || prefix || interior || tail || trailingPaddingBytes || hasSourceObjectPrefix) fail('bundle legacy row combination');
+      const hex=value => '0x'+value.toString(16).toUpperCase().padStart(8,'0');
+      let end=0;
+      compilerOccurrences = bundleRow.occurrences.map(o => {
+        const offsetNumber=o.offset-bundleRow.offset, endOffsetNumber=offsetNumber+o.bytes;
+        const rels=expectedRelocations.filter(r=>Number(r.offset)>=offsetNumber&&Number(r.offset)<endOffsetNumber);
+        if(rels.length!==o.bytes/4 || rels.some((r,i)=>Number(r.offset)!==offsetNumber+i*4)) fail('bundle occurrence relocation census');
+        const bytes=Buffer.alloc(o.bytes), linked=Buffer.alloc(o.bytes);
+        rels.forEach((r,i)=>{ bytes.writeUInt32BE(Number(r.addend),i*4); linked.writeUInt32BE(((composedGroup.vramStart||0)+Number(r.addend))>>>0,i*4); });
+        const value={label:o.label,offset:hex(offsetNumber),offsetNumber,endOffsetNumber,bytes:o.bytes,entries:o.bytes/4,
+          alignment:contract.alignment,alignmentDirectives:o.alignmentDirectives,expectedObjectSha256:sha256Buffer(bytes),
+          expectedLinkedSha256:sha256Buffer(linked),expectedRelocations:rels,
+          ...(offsetNumber>end?{paddingBefore:{offset:hex(end),bytes:offsetNumber-end,expectedSha256:sha256Buffer(Buffer.alloc(offsetNumber-end))}}:{})};
+        end=endOffsetNumber;return value;
+      });
+      if(compilerOccurrences.reduce((n,o)=>n+o.entries,0)!==contract.entries || end!==contract.bytes) fail('bundle occurrence coverage');
+    }
     if (hasCompilerOccurrences) {
       const minimumCompilerOccurrences = hasSourceObjectPrefix || composedGroup !== null ? 1 : 2;
       if (!Array.isArray(contract.compilerOccurrences)
@@ -526,7 +545,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, proj
           vramEndNumber: prefixVramEndExclusive,
         },
       } : {}),
-      ...(hasCompilerOccurrences ? { compilerOccurrences } : {}),
+      ...(compilerOccurrences ? { compilerOccurrences } : {}),
       ...(hasSourceObjectPrefix ? { sourceObjectPrefix } : {}),
       preservedTail: tail === null ? null : {
         ...tail,
@@ -1030,7 +1049,7 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
   const group = auxiliaryProjection.composed(target.compilationGroup) ? target.compilationGroup : null;
   const attribution = group && group.functions.find(value => value.symbol === target.symbol);
-  if (group && (!attribution || contracts.some(contract => contract.memberSymbol !== target.symbol))) fail('group auxiliary attribution mismatch');
+  if (group && (!attribution || (!auxiliaryProjection.bundle(group) && contracts.some(contract => contract.memberSymbol !== target.symbol)))) fail('group auxiliary attribution mismatch');
   const referenceStart = group ? attribution.offset : 0;
   const referenceEnd = group ? attribution.offset + attribution.bytes : target.bytes;
   const referenceBase = group ? group.vramStart : target.vramStartNumber;
@@ -1067,6 +1086,31 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
       fail(`auxiliary output section is not one accepted read-only data owner: ${target.symbol} ${contract.outputSection}`);
     }
     const slice = slices[0];
+    if (auxiliaryProjection.bundle(group)) {
+      const contributors=[];
+      for(const name of new Set(auxiliaryProjection.groupOccurrences(group).filter(o=>o.outputSection===contract.outputSection).map(o=>o.memberSymbol))) {
+        const owner=group.owners.find(o=>o.symbol===name);
+        const accepted=model.rows.find(r=>r.index===owner?.rowIndex);
+        const textSlice=accepted?.slices?.find(s=>s.sectionName===owner?.sectionName);
+        if(!owner||!accepted||accepted.inputKind!=='tracked-assembly'||!accepted.part||!textSlice||!textSlice.executable
+          || owner.originalAssembly!==accepted.part.file||owner.originalAssemblySha256!==accepted.part.sha256||owner.chunkIndex!==accepted.part.chunkIndex
+          || owner.romStartNumber!==textSlice.romStart||owner.romEndNumber!==textSlice.romEndExclusive
+          || owner.vramStartNumber!==textSlice.vramStart||owner.vramEndNumber!==textSlice.vramEndExclusive
+          || !auxiliaryPlacementPair(model,textSlice,slice)) fail('bundle contributor accepted identity/placement');
+        contributors.push({owner,slice:textSlice});
+      }
+      if(new Set(contributors.map(c=>c.owner.chunkIndex)).size>1) {
+        const slabs=validateNonDescriptorLoadSlabs(model.config,model.overlays);
+        if(!sameJson(slabs,model.nonDescriptorLoadSlabs)) fail('bundle cross-chunk model/config drift');
+        const all=[...contributors.map(c=>c.slice),slice],matches=slabs.filter(s=>s.id===slice.loadSlabId);
+        if(matches.length!==1||matches[0].kind!=='loader-dma') fail('bundle cross-chunk loader slab required');
+        const slab=matches[0];
+        if(all.some(s=>s.placementKind!=='non-descriptor-load-slab'||s.loadSlabId!==slab.id||s.overlayDescriptorId!==null||s.overlaySection!==null
+          || s.romStart<slab.romStart||s.romEndExclusive>slab.romEndExclusive||s.bytes!==s.romEndExclusive-s.romStart
+          ||s.bytes!==s.vramEndExclusive-s.vramStart||s.vramStart!==slab.vramStart+s.romStart-slab.romStart
+          ||s.vramEndExclusive!==slab.vramStart+s.romEndExclusive-slab.romStart)) fail('bundle cross-chunk placement equations');
+      }
+    }
     if (contract.preservedInteriorBefore) resolveInterior(contract.preservedInteriorBefore, row, slice, baserom);
     if (contract.outputSection === target.sectionName
         || contract.romStartNumber < row.romStart
@@ -1112,7 +1156,10 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
         ? contract.compilerOccurrences.some((occurrence) => offset >= occurrence.offsetNumber
           && offset + 4 <= occurrence.endOffsetNumber && offset % 4 === 0)
         : offset === index * 4 && offset + 4 <= contract.entryBytes;
-      if (!isEntry || addend < referenceStart || addend + 4 > referenceEnd) {
+      const occurrence=auxiliaryProjection.bundle(group) && auxiliaryProjection.groupOccurrences(group).find(o=>o.outputSection===contract.outputSection
+        && offset>=o.rowOffset && offset+4<=o.rowOffset+o.bytes);
+      const attributed=occurrence && group.functions.find(f=>f.symbol===occurrence.memberSymbol);
+      if (!isEntry || (auxiliaryProjection.bundle(group) && addend % 4) || addend < (attributed ? attributed.offset : referenceStart) || addend + 4 > (attributed ? attributed.offset+attributed.bytes : referenceEnd)) {
         fail(`auxiliary local-label relocation is outside its accepted text owner: ${target.symbol} ${contract.outputSection}`);
       }
       objectBytes.writeUInt32BE(addend >>> 0, offset);
@@ -1806,3 +1853,5 @@ module.exports = {
   validateToolchainPin,
   verifyRowSymbolSourceCache,
 };
+
+

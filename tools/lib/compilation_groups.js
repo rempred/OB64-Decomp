@@ -14,6 +14,8 @@ const SHA = /^[0-9A-F]{64}$/;
 const FUNCTIONS_MODE = 'native-text-owner-functions-projection';
 const functionMode = group => group?.mode === FUNCTIONS_MODE;
 const functionContexts = new Map();
+const interiorContexts = new Map();
+const interior = group => group?.mode === 'native-text-readonly-interior-run-projection';
 function memberFunctions(group, index) { return functionMode(group)
   ? group.members[index].functionSymbols.map(name => group.functions.find(fn => fn.symbol === name)) : [group.functions[index]]; }
 function memberIndexAt(group, offset) {
@@ -107,7 +109,7 @@ function singleOwnerContract(group) {
 function auxiliaryMode(group) {
   if (auxiliary.composed(group) || Object.prototype.hasOwnProperty.call(group, 'auxiliary')) auxiliary.groupContract(group);
 }
-function alignment(group, offset) { let value = group.text.alignment; while (offset % value) value /= 2; return value; }
+function alignment(group, offset) { let value = interior(group) ? 4 : group.text.alignment; while (offset % value) value /= 2; return value; }
 function stem(target) { return target.compilationGroup ? 'groups/' + target.compilationGroup.id : target.symbol; }
 function objectPath(target, suffix = '.o') { return 'objects/c/' + stem(target) + suffix; }
 function assemblyPath(target, suffix = '.compiler.s') { return 'generated/c/' + stem(target) + suffix; }
@@ -117,7 +119,7 @@ function normalizeAuxiliary(group) {
   auxiliary.groupContract(group);
   const contracts = group.auxiliary.sections.map(({ memberSymbol, ...section }) => section);
   return require('./active_targets').normalizeAuxiliarySectionContracts(contracts, group.id, 'group auxiliary', group.auxiliary.projection, group)
-    .map((section, index) => ({ ...section, memberSymbol: group.auxiliary.sections[index].memberSymbol }));
+    .map((section, index) => auxiliary.bundle(group) ? section : ({ ...section, memberSymbol: group.auxiliary.sections[index].memberSymbol }));
 }
 // Preserve the native REL record sequence. Descending addresses within one
 // member are valid; regrouping interleaved member records is not byte-preserving.
@@ -168,7 +170,8 @@ function registry(config, profile) {
   const ids = new Set(), symbols = new Set(), sources = new Set();
   for (const group of config.groups) {
     requireKeys(group, ['id', 'source', 'mode', 'members', 'text', 'functions', 'tail', 'relocations',
-      ...(auxiliary.composed(group) ? ['auxiliary'] : [])], 'producer');
+      ...(auxiliary.composed(group) ? ['auxiliary'] : []), ...(interior(group) ? ['interiorRun'] : [])], 'producer');
+    if(interior(group)) interiorContract(group);
     if (auxiliary.composed(group)) {
       requireKeys(group.auxiliary, ['sections', 'projection'], 'auxiliary producer');
       const sections = normalizeAuxiliary(group);
@@ -202,7 +205,7 @@ function registry(config, profile) {
     if (functionIndex !== group.functions.length || new Set(group.members.map(m => m.ownerRowIndex)).size !== group.members.length) fail('member/function coverage');
     requireKeys(group.tail, ['offset', 'bytes', 'sha256', 'origin'], 'tail');
     if (group.tail.offset !== end || !integer(group.tail.bytes) || group.tail.bytes !== Math.ceil(end / group.text.alignment) * group.text.alignment - end
-        || end + group.tail.bytes !== group.text.bytes || group.tail.origin !== 'native-assembler-section-alignment'
+        || end + group.tail.bytes !== group.text.bytes || group.tail.origin !== (interior(group) ? 'native-subset-artifact' : 'native-assembler-section-alignment')
         || group.tail.sha256 !== sha256Buffer(Buffer.alloc(group.tail.bytes))) fail('native tail contract');
     validateNativeRelocationOrder(group);
   }
@@ -227,20 +230,20 @@ function bind(groups, targets, context = {}) {
       const slice = target.row.slices[0];
       return [slice.placementKind, slice.overlayDescriptorId, slice.loadSlabId, slice.overlaySection];
     };
-    if (first.vramStartNumber % group.text.alignment) fail('native group start alignment');
+    if (first.vramStartNumber % (interior(group) ? 4 : group.text.alignment)) fail('native group start alignment');
     const owners = selected.map((target, index) => {
       if (target.romStartNumber !== first.romStartNumber + offset || target.vramStartNumber !== first.vramStartNumber + offset
           || !same(placement(target), placement(first))
           || target.overlayDescriptorId !== first.overlayDescriptorId || target.descriptorRawSha256 !== first.descriptorRawSha256
           || memberFunctions(group, index)[0].offset !== offset
-          || target.bytes !== memberFunctions(group, index).reduce((n, f) => n + f.bytes, 0) + (index === selected.length - 1 ? group.tail.bytes : 0)) fail('member placement/extent');
+          || target.bytes !== memberFunctions(group, index).reduce((n, f) => n + f.bytes, 0) + (index === selected.length - 1 && !interior(group) ? group.tail.bytes : 0)) fail('member placement/extent');
       assigned.add(target.symbol);
       const owner = { ...target.textOwners[0], groupOffset: offset, alignment: alignment(group, offset) };
       delete owner.row;
       offset += target.bytes;
       return owner;
     });
-    if (offset !== group.text.bytes) fail('group extent');
+    if (offset !== (interior(group) ? group.tail.offset : group.text.bytes)) fail('group extent');
     const normalized = { ...group, owners, romStart: first.romStartNumber, vramStart: first.vramStartNumber };
     for (const [index, target] of selected.entries()) {
       target.compilationGroup = normalized;
@@ -261,12 +264,13 @@ function bind(groups, targets, context = {}) {
     }
     if (auxiliary.composed(group)) {
       const active = require('./active_targets');
-      normalized.auxiliary = { ...group.auxiliary, sections: normalizeAuxiliary(group) };
+      normalized.auxiliary = { ...group.auxiliary, sections: normalizeAuxiliary(normalized) };
       normalized.auxiliary.sections = normalized.auxiliary.sections.flatMap(section => active.resolveAuxiliarySectionContracts(
-        context.model, context.baserom, selected.find(target => target.symbol === section.memberSymbol), [section]));
+        context.model, context.baserom, selected.find(target => auxiliary.bundle(normalized) ? auxiliary.memberSections(normalized,target.symbol).some(s=>s.outputSection===section.outputSection) : target.symbol === section.memberSymbol), [section]));
       for (const member of selected) member.auxiliarySections = auxiliary.memberSections(normalized, member.symbol);
       auxiliary.assertCompleteGroupRows(normalized);
       normalized.auxiliary.retained = auxiliary.retainedBindings(first, context.model, context.baserom);
+      if(interior(group)) bindInterior(normalized, context.model, context.baserom);
     }
 
   }
@@ -327,8 +331,8 @@ function census(elf, group, stage) {
     all.push(elfSectionBytes(elf, sec));
   }
   const bytes = Buffer.concat(all);
-  if (sha256Buffer(bytes) !== group.text.sha256) fail('raw text hash');
-  if (!bytes.subarray(group.tail.offset).equals(Buffer.alloc(group.tail.bytes))) fail('native tail bytes');
+  if (sha256Buffer(bytes) !== (interior(group) && !raw ? group.interiorRun.expectedProjectedTextSha256 : group.text.sha256)) fail('raw text hash');
+  if ((!interior(group) || raw) && !bytes.subarray(group.tail.offset).equals(Buffer.alloc(group.tail.bytes))) fail('native tail bytes');
   const offsetOf = sec => raw ? (sec.name === '.text' ? 0 : undefined)
     : group.owners.find(owner => owner.sectionName === sec.name)?.groupOffset;
   const functions = elf.symbols.filter(symbol => symbol.symbolType === 2).map(symbol => {
@@ -367,16 +371,18 @@ function census(elf, group, stage) {
 function validateObject(elf, group, stage) {
   auxiliaryMode(group);
   authenticateFunctions(group);
+  if(interior(group)) authenticateInterior(group);
   validateNativeRelocationOrder(group);
   if (![...['raw', 'projected', 'stripped'], ...(auxiliary.composed(group) ? ['text-projected'] : [])].includes(stage) || elf.header.type !== 1 || elf.header.machine !== 8
       || elf.header.entry !== 0 || elf.header.phoff !== 0 || elf.header.phnum !== 0) fail('relocatable object header/stage');
   return { schemaVersion: 1, stage, groupSha256: hash(group), objectFlags: elf.header.flags,
     metadata: allocation(elf, group, stage), ...census(elf, group, stage),
+    ...(interior(group) ? { interiorText: interiorObject(elf,group,stage) } : {}),
     ...(auxiliary.composed(group) ? { auxiliary: auxiliary.groupCensus(elf, group, stage), completeCensus: auxiliary.completeObjectCensus(elf) } : functionMode(group) ? { completeCensus: auxiliary.completeObjectCensus(elf) } : {}) };
 }
 function project(input, group) {
   const raw = parseBuffer(input), rawEvidence = validateObject(raw, group, 'raw');
-  const result = projectNativeTextOwners(input, group.owners.map(owner => ({ sectionName: owner.sectionName, bytes: owner.bytes })),
+  const result = projectNativeTextOwners(interior(group) ? trimInterior(input,group) : input, group.owners.map(owner => ({ sectionName: owner.sectionName, bytes: owner.bytes })),
     auxiliary.singleOwner(group) ? group.mode : null);
   if (auxiliary.composed(group)) {
     const intermediate = validateObject(parseBuffer(result.buffer), group, 'text-projected');
@@ -415,9 +421,10 @@ function contract(target) {
   auxiliary.assertMemberSections(target);
   const tc = require('./text_contract'), group = target.compilationGroup, owner = group.owners[target.groupMemberIndex];
   const ordinary = tc.resolveTextContract({ ...target, compilationGroup: null });
-  return { ...ordinary, schemaVersion: auxiliary.singleOwner(group) ? 6 : functionMode(group) ? 5 : auxiliary.composed(group) ? 4 : 2,
+  return { ...ordinary, schemaVersion: interior(group) ? 9 : auxiliary.bundle(group) ? 8 : auxiliary.singleOwner(group) ? 6 : functionMode(group) ? 5 : auxiliary.composed(group) ? 4 : 2,
     ...(functionMode(group) || auxiliary.singleOwner(group) ? { tail: target.groupMemberIndex === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null } : {}), mode: group.mode, producer: group,
     memberIndex: target.groupMemberIndex,
+    ...(auxiliary.bundle(group) ? { memberOccurrences: auxiliary.groupOccurrences(group).filter(o=>o.memberSymbol===target.symbol) } : {}),
     owners: ordinary.owners.map(value => ({ ...value,
       expectedInputShape: { ...value.expectedInputShape, alignment: owner.alignment },
       expectedOutputShape: { ...value.expectedOutputShape, alignment: owner.alignment } })) };
@@ -457,8 +464,8 @@ function evidence(target, root, files = null) {
   const strippedFunctions = tc.functionCensus(stripped, strippedOwners.map(value => value.section));
   if (!same(rawFunctions, strippedFunctions)) fail('strip changed member functions');
   const rawRelocations = require('./phase8_matching_c').rawRelocationRecords(projected);
-  return { schemaVersion: auxiliary.singleOwner(group) ? 10 : functionMode(group) ? 9 : auxiliary.composed(group) ? 7 : 3,
-    ...(auxiliary.composed(group) ? { composition: { schemaVersion: auxiliary.singleOwner(group) ? 3 : 2, groupSha256: hash(group),
+  return { schemaVersion: interior(group) ? 13 : auxiliary.bundle(group) ? 12 : auxiliary.singleOwner(group) ? 10 : functionMode(group) ? 9 : auxiliary.composed(group) ? 7 : 3,
+    ...(auxiliary.composed(group) ? { composition: { schemaVersion: interior(group) ? 6 : auxiliary.bundle(group) ? 5 : auxiliary.singleOwner(group) ? 3 : 2, groupSha256: hash(group),
       nativeObjectSha256: sha256Buffer(native.buffer), textProjectedObjectSha256: sha256Buffer(reproduction.intermediate),
       projectedObjectSha256: sha256Buffer(projected.buffer), strippedObjectSha256: sha256Buffer(stripped.buffer),
       implementationSha256: require('./phase7_conventional').sha256File(require.resolve('./auxiliary_projection')),
@@ -470,8 +477,8 @@ function evidence(target, root, files = null) {
     rawRelocations: rawRelocations.filter(value => value.section === '.rel' + target.sectionName),
     discardedAncillaryRelocations: rawRelocations.filter(value => !group.owners.some(owner => value.section === '.rel' + owner.sectionName)
       && !(auxiliary.composed(group) && group.auxiliary.sections.some(section => value.section === '.rel' + section.outputSection))),
-    tail: target.groupMemberIndex === group.members.length - 1 ? group.tail : null,
-    assemblyMode: auxiliary.singleOwner(group) ? 'untouched-native-text-readonly-single-owner-projection' : functionMode(group) ? 'untouched-native-text-owner-functions-projection' : auxiliary.composed(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
+    tail: target.groupMemberIndex === group.members.length - 1 && !interior(group) ? group.tail : null,
+    assemblyMode: interior(group) ? 'untouched-native-text-readonly-interior-run-projection' : auxiliary.singleOwner(group) ? 'untouched-native-text-readonly-single-owner-projection' : functionMode(group) ? 'untouched-native-text-owner-functions-projection' : auxiliary.composed(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
 }
 const compiledProducers = new Map();
 function compile(phase8, target, output, compiler, assembler, objcopy, options) {
@@ -573,7 +580,37 @@ function manifestMembers(records, phase8) {
 }
 Object.assign(module.exports, { collapseManifest, manifestMembers });
 
+const bundleProofContexts = new Map();
+const bundleArtifactIdentities = new Set();
+function registerBundleProofContext(phase8, target, output, classification, rom, proof) {
+  if (!auxiliary.bundle(target.compilationGroup)) return;
+  const artifacts = hash(proof.objectEvidence.artifacts);
+  bundleArtifactIdentities.add(artifacts);
+  bundleProofContexts.set(artifacts + ':' + target.symbol, {
+    phase8, target, output: path.resolve(output), classification, rom: Buffer.from(rom),
+    textContract: hash(contract(target)), artifacts: structuredClone(proof.objectEvidence.artifacts)
+  });
+}
+function validateBundleProofArtifacts(proof) {
+  const id = proof.objectEvidence?.artifacts === undefined ? null : hash(proof.objectEvidence.artifacts);
+  if (!bundleArtifactIdentities.has(id) && ![8,9].includes(proof.textContract?.schemaVersion)
+      && ![12,13].includes(proof.objectEvidence?.schemaVersion) && !auxiliary.bundle(proof.textContract?.producer)) return;
+  const context = bundleProofContexts.get(id + ':' + proof.target?.symbol);
+  if (!context || !auxiliary.bundle(context.target.compilationGroup)
+      || hash(contract(context.target)) !== context.textContract) fail('bundle proof lacks fresh authenticated context');
+  require('./source_policy').verifyClassificationInputs(context.classification);
+  if (!same(proof.objectEvidence.artifacts, context.artifacts)) fail('bundle proof artifact identity drift');
+  // The report supplies no filesystem authority. Re-read the registered native,
+  // intermediate, projected, stripped and linked files, and reproduce every
+  // source-policy, occurrence, relocation, ownership and map field independently.
+  const fresh = require('./phase8_matching_c').deriveSourceObjectProof(context.phase8, context.target,
+    context.output, context.classification, parseElfFile(path.join(context.output, 'phase8.elf')), context.rom).proof;
+  if (!same(fresh, proof)) fail('bundle proof differs from independent artifact/link reconstruction');
+}
+Object.assign(module.exports, { registerBundleProofContext, validateBundleProofArtifacts });
+
 function validateComposedProof(proof) {
+  validateBundleProofArtifacts(proof);
   const object = proof.objectEvidence, text = proof.textContract;
   if (text?.producer) auxiliaryMode(text.producer);
   if (!auxiliary.composed(text?.producer) && ![5, 7, 10].includes(object?.schemaVersion) && text?.schemaVersion !== 6 && !object?.composition) return;
@@ -584,8 +621,9 @@ function validateComposedProof(proof) {
     'projectedObjectSha256', 'strippedObjectSha256', 'implementationSha256', 'auxiliaryContract',
     'conservedTextProjection', 'conservedFinalProjection'];
   const single = auxiliary.singleOwner(group);
-  if (!auxiliary.composed(group) || text.schemaVersion !== (single ? 6 : 4) || text.mode !== group.mode || object.schemaVersion !== (single ? 10 : 7)
-      || !exactKeys(value, compositionKeys) || value.schemaVersion !== (single ? 3 : 2) || !artifacts
+  if(interior(group)) authenticateInterior(group);
+  if (!auxiliary.composed(group) || text.schemaVersion !== (interior(group) ? 9 : auxiliary.bundle(group) ? 8 : single ? 6 : 4) || text.mode !== group.mode || object.schemaVersion !== (interior(group) ? 13 : auxiliary.bundle(group) ? 12 : single ? 10 : 7)
+      || !exactKeys(value, compositionKeys) || value.schemaVersion !== (interior(group) ? 6 : auxiliary.bundle(group) ? 5 : single ? 3 : 2) || !artifacts
       || !exactKeys(object.producerStages, ['raw', 'textProjected', 'projected', 'stripped'])
       || !same(value.auxiliaryContract, group.auxiliary) || value.groupSha256 !== hash(group)
       || !exactKeys(value.conservedTextProjection, ['flags', 'sections', 'symbols'])
@@ -612,6 +650,7 @@ function validateComposedProof(proof) {
         || value.implementationSha256 !== require('./phase7_conventional').sha256File(require.resolve('./auxiliary_projection')))
       fail('single-owner proof function/tail/provenance binding');
   }
+  if(auxiliary.bundle(group) && !same(text.memberOccurrences,auxiliary.groupOccurrences(group).filter(o=>o.memberSymbol===proof.target.symbol))) fail('bundle member occurrence evidence');
   const expectedAux = auxiliary.memberSections(group, proof.target.symbol);
   if (proof.assemblyContract.auxiliarySectionCount !== expectedAux.length
       || !same(proof.finalObject.auxiliarySections.map(section => section.outputSection), expectedAux.map(section => section.outputSection))
@@ -627,7 +666,7 @@ function validateComposedProof(proof) {
   }
   for (const [key, stage] of Object.entries(object.producerStages)) {
     const stageName = key === 'textProjected' ? 'text-projected' : key;
-    if (stage.stage !== stageName || stage.groupSha256 !== hash(group) || stage.sha256 !== group.text.sha256
+    if (stage.stage !== stageName || stage.groupSha256 !== hash(group) || stage.sha256 !== (interior(group) && stage.stage !== 'raw' ? group.interiorRun.expectedProjectedTextSha256 : group.text.sha256)
         || !same(stage.functions, group.functions) || !stage.auxiliary
         || stage.auxiliary.nativeSha256 !== group.auxiliary.projection.expectedObjectSha256
         || !same(stage.auxiliary.tableRelocations, object.producerStages.raw.auxiliary?.tableRelocations)
@@ -668,11 +707,11 @@ function validateComposedProof(proof) {
 }
 
 function validateComposedStage(stage, group, artifact) {
-  const keys = ['schemaVersion', 'stage', 'groupSha256', 'objectFlags', 'metadata', 'bytes', 'sha256', 'functions', 'relocations', 'auxiliary', 'completeCensus'];
+  const keys = ['schemaVersion', 'stage', 'groupSha256', 'objectFlags', 'metadata', 'bytes', 'sha256', 'functions', 'relocations', 'auxiliary', 'completeCensus', ...(interior(group) ? ['interiorText'] : [])];
   const uint = value => integer(value) && value <= 0xffffffff;
   if (!exactKeys(stage, keys) || stage.schemaVersion !== 1 || !uint(stage.objectFlags)
-      || stage.bytes !== group.text.bytes || !same(stage.relocations, group.relocations)
-      || !exactKeys(stage.auxiliary, ['nativeSha256', 'payloadBytes', 'tableRelocations', 'references', 'marker'])) fail('composed stage schema/contract');
+      || stage.bytes !== (interior(group) && stage.stage !== 'raw' ? group.tail.offset : group.text.bytes) || !same(stage.relocations, group.relocations)
+      || !exactKeys(stage.auxiliary, ['nativeSha256', 'payloadBytes', 'tableRelocations', 'references', 'marker', ...(auxiliary.bundle(group) ? ['occurrenceEvidence','paddingEvidence'] : [])])) fail('composed stage schema/contract');
   const c = stage.completeCensus, h = c.header;
   if (!exactKeys(h, ['type', 'machine', 'entry', 'phoff', 'shoff', 'flags', 'ehsize', 'phentsize', 'phnum', 'shentsize', 'shnum', 'shstrndx'])
       || Object.values(h).some(v => !uint(v)) || h.type !== 1 || h.machine !== 8 || h.entry || h.phoff || h.phnum
@@ -775,20 +814,28 @@ function validateComposedStage(stage, group, artifact) {
   const expectedTables = tables.flatMap((t, i) => group.auxiliary.sections[i].expectedRelocations.map(r => ({ offset: t.offset + Number(r.offset), type: 2, symbol: '.text', symbolValue: 0, word: Number(r.addend) })));
   for (const record of tableRels) {
     const index = tables.findIndex(table => record.offset >= table.offset && record.offset + 4 <= table.offset + table.bytes);
-    const member = index < 0 ? null : group.functions.find(member => member.symbol === group.auxiliary.sections[index].memberSymbol);
+    const occurrence=auxiliary.bundle(group) && auxiliary.groupOccurrences(group).find(o=>record.offset>=o.offset&&record.offset+4<=o.offset+o.bytes);
+    const member = index < 0 ? null : group.functions.find(member => member.symbol === (auxiliary.bundle(group) ? occurrence?.memberSymbol : group.auxiliary.sections[index].memberSymbol));
     if (record.word % 4) fail('composed table instruction destination alignment');
     if (!member || record.word < member.offset || record.word + 4 > member.offset + member.bytes) fail('composed table target attribution');
   }
   if (!same(tableRels, expectedTables) || !same(stage.auxiliary.tableRelocations, expectedTables)
       || stage.auxiliary.payloadBytes !== tables.reduce((sum, t) => sum + t.bytes, 0)
       || c.relocations.length !== textRels.length + tableRels.length) fail('composed table census binding');
+  if(auxiliary.bundle(group)) {
+    const bytes=Buffer.alloc(group.auxiliary.projection.bytes);
+    for(const r of tableRels) bytes.writeUInt32BE(r.word,r.offset);
+    if(sha256Buffer(bytes)!==group.auxiliary.projection.expectedObjectSha256
+      || !same(stage.auxiliary.occurrenceEvidence,auxiliary.bundleEvidence(group,bytes,tableRels))
+      || !same(stage.auxiliary.paddingEvidence,auxiliary.bundlePadding(group))) fail('bundle stage occurrence/padding evidence');
+  }
   const references = [], pending = new Map();
   const memberAt = offset => group.functions.find(member => offset >= member.offset && offset + 4 <= member.offset + member.bytes);
   const inspectReference = (r, addend) => {
     if (r.symbolSection === '.rodata') {
       const index = tables.findIndex(table => addend >= table.offset && addend + 4 <= table.offset + table.bytes);
       if (r.symbol !== '.rodata' || r.symbolValue !== 0 || index < 0
-          || memberAt(r.offset)?.symbol !== group.auxiliary.sections[index].memberSymbol) fail('composed reference attribution/padding');
+          || memberAt(r.offset)?.symbol !== (auxiliary.bundle(group) ? auxiliary.groupOccurrences(group).find(o=>addend>=o.offset&&addend+4<=o.offset+o.bytes)?.memberSymbol : group.auxiliary.sections[index].memberSymbol)) fail('composed reference attribution/padding');
       const owner = raw ? 0 : group.owners.find(o => r.offset >= o.groupOffset && r.offset < o.groupOffset + o.bytes)?.groupOffset;
       references.push({ ownerOffset: owner, place: r.offset - owner, type: r.type, addend });
     } else if (r.symbolSection === '.text') {
@@ -922,3 +969,170 @@ function validateFunctionGroupProof(proof) {
   for(const o of group.owners){const a=object.producerStages.projected.completeCensus.sections.find(s=>s.name===o.sectionName),b=object.producerStages.stripped.completeCensus.sections.find(s=>s.name===o.sectionName);if(!same(a,b))fail('native functions stripped text drift');}
 }
 Object.assign(module.exports, { validateFunctionGroupProof });
+
+
+// An interior run is a bounded representation of complete accepted functions.
+// It makes no historical compilation-unit start/end claim.
+function interiorContract(group) {
+  if(!interior(group) || !auxiliary.bundle(group)) fail('interior readonly bundle mode');
+  const r=group.interiorRun;
+  requireKeys(r,['schemaVersion','mode','outputAlignment','precedingOwnerRowIndex','followingOwnerRowIndex','expectedProjectedTextSha256',...(Object.hasOwn(r||{},'binding')?['binding']:[])],'interior run');
+  if(r.schemaVersion!==1||r.mode!=='accepted-interior-member-run'||r.outputAlignment!==4
+    ||!integer(r.precedingOwnerRowIndex)||!integer(r.followingOwnerRowIndex)||!SHA.test(r.expectedProjectedTextSha256)
+    ||group.text.alignment!==16||group.tail.bytes<0||group.tail.bytes>12||group.tail.bytes%4
+    ||group.tail.origin!=='native-subset-artifact') fail('interior run native shape');
+  if(!Array.isArray(group.members)||group.members.length<2||!Array.isArray(group.functions)||group.functions.length!==group.members.length)fail('interior function/member census');
+  let end=0;const names=new Set();
+  for(const [i,f] of group.functions.entries()){
+    requireKeys(f,['symbol','offset','bytes','binding','symbolType','visibility'],'interior native function');
+    if(f.symbol!==group.members[i].symbol||names.has(f.symbol)||f.offset!==end||!integer(f.bytes,4)||f.bytes%4||f.binding!==1||f.symbolType!==2||f.visibility)fail('interior complete function partition');
+    end+=f.bytes;names.add(f.symbol);
+  }
+  if(group.tail.offset!==end||group.text.bytes!==Math.ceil(end/16)*16||group.tail.bytes!==group.text.bytes-end
+    ||group.tail.sha256!==sha256Buffer(Buffer.alloc(group.tail.bytes)))fail('interior minimal subset tail');
+}
+function interiorOriginal(row,model,rom) {
+  if(!row||row.inputKind!=='tracked-assembly'||row.primaryClass!=='code'||row.ambiguous!==false||!row.part||row.slices?.length!==1) fail('interior accepted original row');
+  const slice=row.slices[0];
+  if(!slice.executable||slice.placementKind!=='overlay'||slice.overlaySection!=='text'||slice.overlayDescriptorId===null
+    ||slice.bytes!==row.bytes||slice.romStart!==row.romStart||slice.romEndExclusive!==row.romEndExclusive
+    ||slice.vramEndExclusive-slice.vramStart!==row.bytes) fail('interior original placement');
+  const file=path.resolve(ROOT,row.part.file);
+  if(!file.startsWith(ROOT+path.sep)||require('./phase7_conventional').sha256File(file)!==row.part.sha256) fail('interior original source identity');
+  const source=fs.readFileSync(file,'utf8');
+  const words=[...source.matchAll(/\/\* 0x([0-9A-Fa-f]{8})[^\n]*?\*\/ \.word 0x([0-9A-Fa-f]{8})/g)]
+    .filter(m=>parseInt(m[1],16)>=row.romStart&&parseInt(m[1],16)<row.romEndExclusive);
+  const bytes=Buffer.alloc(row.bytes);
+  if(words.length*4!==row.bytes||row.romStart<0||row.romEndExclusive>rom.length) fail('interior original word coverage');
+  words.forEach((m,i)=>{if(parseInt(m[1],16)!==row.romStart+i*4)fail('interior original word order');bytes.writeUInt32BE(parseInt(m[2],16)>>>0,i*4);});
+  if(!bytes.equals(rom.subarray(row.romStart,row.romEndExclusive))) fail('interior original ROM mismatch');
+  // A padding boundary following the final return+delay instruction is not an
+  // interior cut. Zero-free boundary words are required conservatively here;
+  // ambiguous original padding needs separate evidence, not an override flag.
+  if(!bytes.readUInt32BE(0)||!bytes.readUInt32BE(bytes.length-4)) fail('interior original boundary has zero padding or is ambiguous');
+  return {rowIndex:row.index,sectionName:slice.sectionName,romStart:row.romStart,romEndExclusive:row.romEndExclusive,
+    vramStart:slice.vramStart,vramEndExclusive:slice.vramEndExclusive,bytes:row.bytes,overlayDescriptorId:slice.overlayDescriptorId,
+    originalAssembly:row.part.file,originalAssemblySha256:row.part.sha256,originalBytesSha256:sha256Buffer(bytes),firstWord:bytes.readUInt32BE(0),lastWord:bytes.readUInt32BE(bytes.length-4)};
+}
+function interiorBinding(group,model,rom) {
+  interiorContract(group);
+  const ids=[group.interiorRun.precedingOwnerRowIndex,...group.members.map(m=>m.ownerRowIndex),group.interiorRun.followingOwnerRowIndex];
+  if(new Set(ids).size!==ids.length) fail('interior neighbour/member collision');
+  const records=ids.map(id=>{const rows=model.rows.filter(r=>r.index===id);if(rows.length!==1)fail('interior neighbour row census');return interiorOriginal(rows[0],model,rom);});
+  for(let i=1;i<records.length;i++){
+    const p=records[i-1],r=records[i];
+    if(p.romEndExclusive!==r.romStart||p.vramEndExclusive!==r.vramStart||p.overlayDescriptorId!==r.overlayDescriptorId
+      ||model.rows.filter(row=>row.slices?.some(s=>s.executable&&s.overlayDescriptorId===r.overlayDescriptorId&&s.vramStart>=p.vramStart&&s.vramStart<r.vramStart)).length!==1) fail('interior adjacency gap/overlap');
+  }
+  for(const [i,o] of group.owners.entries()) {const r=records[i+1];if(o.rowIndex!==r.rowIndex||o.bytes!==r.bytes||o.romStartNumber!==r.romStart||o.vramStartNumber!==r.vramStart||o.romEndNumber!==r.romEndExclusive||o.vramEndNumber!==r.vramEndExclusive||o.originalAssembly!==r.originalAssembly||o.originalAssemblySha256!==r.originalAssemblySha256||o.expectedTextSha256!==r.originalBytesSha256||o.alignment!==4)fail('interior member placement');}
+  return {schemaVersion:1,preceding:records[0],members:records.slice(1,-1),following:records.at(-1),historicalUnitBoundaries:'unresolved'};
+}
+function bindInterior(group,model,rom) {
+  group.interiorRun={...group.interiorRun,binding:interiorBinding(group,model,rom)};
+  interiorContexts.set(hash({ ...group, auxiliary: undefined }),{model,rom:Buffer.from(rom)});
+}
+function authenticateInterior(group) {
+  interiorContract(group);
+  let c=interiorContexts.get(hash({ ...group, auxiliary: undefined }));
+  if(!c) {require('./active_targets').loadActiveTargetModel();c=interiorContexts.get(hash({ ...group, auxiliary: undefined }));}
+  if(!c||!same(interiorBinding(group,c.model,c.rom),group.interiorRun.binding)) fail('interior accepted context/binding drift');
+}
+function interiorGrammar(compiler,group) {
+  if(!interior(group))return;
+  interiorContract(group);
+  const entries=[...compiler.toString('utf8').matchAll(/\.align\s+(\d+)\s+\.globl\s+([A-Za-z_.$][A-Za-z0-9_.$]*)\s+\.type[^\n]+\n\s*\.ent\s+([A-Za-z_.$][A-Za-z0-9_.$]*)/g)];
+  if(entries.length!==group.functions.length||entries.some((m,i)=>Number(m[1])!==2||m[2]!==group.functions[i].symbol||m[3]!==m[2]))fail('interior emitted instruction alignment census');
+}
+function interiorObject(elf,group,stage) {
+  const raw=stage==='raw', sections=raw?[section(elf,'.text')]:group.owners.map(o=>section(elf,o.sectionName));
+  const bytes=Buffer.concat(sections.map(s=>Buffer.from(elfSectionBytes(elf,s))));
+  if(raw&&(!bytes.subarray(group.tail.offset).equals(Buffer.alloc(group.tail.bytes))||sha256Buffer(bytes.subarray(0,group.tail.offset))!==group.interiorRun.expectedProjectedTextSha256)) fail('interior native omitted bytes');
+  const control=[],dispatch=[];
+  for(const f of group.functions){
+    if(f.bytes<8)fail('interior function cannot prove terminal transfer');
+    const terminal=bytes.readUInt32BE(f.offset+f.bytes-8),opcode=terminal>>>26;
+    const returns=opcode===0&&(terminal&63)===8&&((terminal>>>21)&31)===31;
+    const unconditional=opcode===2 || (opcode===4&&((terminal>>>21)&31)===((terminal>>>16)&31));
+    if(!returns&&!unconditional)fail('interior executable fallthrough at function boundary');
+  }
+  const contains=n=>n%4===0&&group.functions.some(f=>n>=f.offset&&n+4<=f.offset+f.bytes);
+  const rs=w=>w>>>21&31,rt=w=>w>>>16&31,rd=w=>w>>>11&31,op=w=>w>>>26;
+  for(let pc=0;pc<group.tail.offset;pc+=4){const w=bytes.readUInt32BE(pc),code=op(w),low=(w<<16)>>16;
+    if([16,18,19].includes(code)||(code===17&&rs(w)===8&&rt(w)>3))fail('interior unsupported coprocessor control');
+    if([1,4,5,6,7,20,21,22,23].includes(code)||(code===17&&rs(w)===8)){
+      if(code===1&&![0,1,2,3,16,17,18,19].includes(rt(w)))fail('interior unsupported REGIMM control');
+      const destination=pc+4+low*4;if(!contains(destination))fail('interior branch targets omitted/outside text');control.push({place:pc,kind:'branch',destination});
+    } else if(code===2||code===3){const r=group.relocations.find(r=>r.offset===pc&&r.type===4);if(!r)fail('interior direct jump missing relocation');
+      if(r.symbolSection==='.text'&&!contains(r.symbolValue+(w&0x3ffffff)*4))fail('interior jump targets omitted/outside text');
+      if(!['.text','UND'].includes(r.symbolSection))fail('interior unsupported direct control target');
+      control.push({place:pc,kind:'relocated-jump',symbol:r.symbol,symbolSection:r.symbolSection,symbolValue:r.symbolValue,addend:(w&0x3ffffff)*4});
+    } else if(code===0&&(w&63)===9)fail('interior unsupported indirect call');
+    else if(code===0&&(w&63)===8&&rs(w)!==31){
+      if(pc<24)fail('interior unsupported indirect control');
+      const q=Array.from({length:6},(_,i)=>bytes.readUInt32BE(pc-24+i*4));
+      let [bound,branch,shift,high,add,load]=q; const jump=rs(w),base=rt(high);
+      let branchPc=pc-20;
+      if(op(branch)!==4&&pc>=28){const delay=branch;branchPc=pc-24;branch=bound;if(delay!==0 && !(op(delay)===43&&rs(delay)===29))fail('interior unsupported dispatch delay');}
+      let boundPc=branchPc-4; bound=bytes.readUInt32BE(boundPc);
+      while(boundPc>=pc-48&&boundPc>=4&&(bound===0||(op(bound)===43&&rs(bound)===29))){boundPc-=4;bound=bytes.readUInt32BE(boundPc);}
+      const hi=group.relocations.find(r=>r.offset===pc-12&&r.type===5),lo=group.relocations.find(r=>r.offset===pc-4&&r.type===6);
+      if(op(bound)!==11||rt(bound)!==jump||op(branch)!==4||rs(branch)!==jump||rt(branch)!==0
+        ||op(shift)!==0||rs(shift)!==0||(shift&63)!==0||rd(shift)!==jump||rt(shift)!==rs(bound)||(shift>>>6&31)!==2
+        ||op(high)!==15||rs(high)!==0||op(add)!==0||(add&63)!==33||rd(add)!==base||!([rs(add),rt(add)].includes(base)&&[rs(add),rt(add)].includes(jump))
+        ||op(load)!==35||rs(load)!==base||rt(load)!==jump||!hi||!lo||hi.symbolSection!=='.rodata'||lo.symbolSection!=='.rodata'
+        ||hi.symbol!=='.rodata'||lo.symbol!=='.rodata'||hi.symbolValue||lo.symbolValue)fail('interior unproven indirect dispatch at '+pc);
+      const offset=(((high&65535)<<16)+((load<<16)>>16))>>>0,occurrence=auxiliary.groupOccurrences(group).find(o=>o.offset===offset);
+      const f=group.functions.find(f=>pc>=f.offset&&pc<f.offset+f.bytes);
+      if(!occurrence||(bound&65535)>32767||occurrence.bytes/4!==(bound&65535)||occurrence.memberSymbol!==f?.symbol||boundPc<f.offset)fail('interior dispatch bound/attribution');
+      dispatch.push({place:pc,boundPlace:boundPc,occurrence:occurrence.label,offset,entries:bound&65535,memberSymbol:occurrence.memberSymbol});
+    }
+  }
+  // Reachability includes entry points into delay instructions. Merely checking
+  // the last return pair would miss an incoming edge to its delay instruction.
+  const seeds=group.functions.map(f=>f.offset);
+  for(const row of group.auxiliary.sections)for(const r of row.expectedRelocations)seeds.push(Number(r.addend));
+  const pending=new Map();
+  for(const r of group.relocations){
+    const key=r.symbolSection+':'+r.symbol+':'+r.symbolValue;
+    if(r.type===5){if(!pending.has(key))pending.set(key,[]);pending.get(key).push(r);}
+    else if(r.type===6){for(const h of pending.get(key)||[]){if(r.symbolSection==='.text')seeds.push(r.symbolValue+((((h.word&65535)<<16)+((r.word<<16)>>16))>>>0));}pending.delete(key);}
+  }
+  // No alternate entry may bypass a switch bounds check, including its own
+  // default branch entering the unchecked load/jump sequence.
+  const entries=[...seeds,...control.flatMap(c=>c.kind==='branch'?[c.destination]:c.symbolSection==='.text'?[c.symbolValue+c.addend]:[])];
+  for(const d of dispatch)if(entries.some(pc=>pc>d.boundPlace&&pc<=d.place))fail('interior alternate entry bypasses dispatch bound');
+  const visited=new Set(), queue=[...seeds];
+  const isControl=w=>[1,2,3,4,5,6,7,20,21,22,23].includes(op(w))||(op(w)===17&&rs(w)===8)||(op(w)===0&&[8,9].includes(w&63));
+  while(queue.length){const pc=queue.pop();if(!contains(pc))fail('interior executable fallthrough or control reaches omitted/outside text');if(visited.has(pc))continue;visited.add(pc);
+    const w=bytes.readUInt32BE(pc),code=op(w),f=group.functions.find(f=>pc>=f.offset&&pc<f.offset+f.bytes);
+    if(isControl(w)){
+      if(pc+8>f.offset+f.bytes||isControl(bytes.readUInt32BE(pc+4)))fail('interior invalid or missing control delay');
+      const branch=control.find(r=>r.place===pc&&r.kind==='branch');
+      if(branch){queue.push(branch.destination);if(!(code===4&&rs(w)===rt(w)))queue.push(pc+8);continue;}
+      const jump=control.find(r=>r.place===pc&&r.kind==='relocated-jump');
+      if(jump){if(jump.symbolSection==='.text')queue.push(jump.symbolValue+jump.addend);if(code===3)queue.push(pc+8);continue;}
+      if(code===0&&(w&63)===8){if(rs(w)!==31){const d=dispatch.find(d=>d.place===pc);if(!d)fail('interior dispatch proof missing');
+        const o=auxiliary.groupOccurrences(group).find(o=>o.label===d.occurrence),row=group.auxiliary.sections.find(row=>row.outputSection===o.outputSection);
+        for(const r of row.expectedRelocations)if(Number(r.offset)>=o.rowOffset&&Number(r.offset)<o.rowOffset+o.bytes)queue.push(Number(r.addend));}continue;}
+      fail('interior unsupported executable control');
+    }
+    if(pc+4>=f.offset+f.bytes)fail('interior executable fallthrough crosses a member boundary');
+    queue.push(pc+4);
+  }
+  return {schemaVersion:1,reachableInstructions:visited.size,nativeBytes:group.text.bytes,nativeAlignment:group.text.alignment,projectedBytes:group.tail.offset,
+    projectedAlignment:4,omittedTail:group.tail,controlDestinations:control,dispatches:dispatch,originalBinding:group.interiorRun.binding};
+}
+function trimInterior(input,group) {
+  const elf=parseBuffer(input),text=section(elf,'.text'),result=Buffer.from(input);
+  // Change section metadata only; the original unsplit artifact is preserved.
+  // The ordinary splitter receives only the authenticated instruction envelope.
+  result.writeUInt32BE(group.tail.offset,elf.header.shoff+text.index*40+20);
+  result.writeUInt32BE(4,elf.header.shoff+text.index*40+32);
+  return result;
+}
+Object.assign(module.exports,{interior,interiorGrammar,interiorObject});
+
+
+
+
+

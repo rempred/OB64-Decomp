@@ -6,11 +6,14 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const vm = require('vm');
-const test = require('node:test');
+const nodeTest = require('node:test');
+const { createFixtureSuite } = require('./lib/fixture_lifecycle');
 const { createRequire } = require('module');
 const ROOT = process.cwd();
 const FIXTURES = path.join(ROOT, 'build/current-metadata-tests');
-fs.mkdirSync(FIXTURES, { recursive: true });
+// Successful cases discard only their newly owned synthetic fixtures after result capture.
+// Set OB64_KEEP_TEST_FIXTURES=1 to retain them; failed/unsafe/crashed cases always remain.
+const { test, fixtureDirectory } = createFixtureSuite(nodeTest, { root: FIXTURES });
 const realRequire = createRequire(path.join(ROOT, 'tools/lib/current_workflow.js'));
 const actualText = realRequire('./text_contract');
 const actualGroups = realRequire('./compilation_groups');
@@ -19,7 +22,7 @@ const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex').to
 const clone = value => JSON.parse(JSON.stringify(value));
 
 function fixture(accepted = null) {
-  const root = fs.mkdtempSync(path.join(FIXTURES, 'fixture-'));
+  const root = fixtureDirectory('fixture-');
   function write(relative, value) {
     const file = path.join(root, relative);
     fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -156,14 +159,14 @@ test('metadata confinement rejects nonregular paths and indirect escapes', () =>
   const f = fixture(), file = path.join(f.root, 'layout.json');
   fs.unlinkSync(file); fs.mkdirSync(file);
   assert.equal(run(f).result, false);
-  const g = fixture(), outside = fs.mkdtempSync(path.join(FIXTURES, 'outside-'));
+  const g = fixture(), outside = fixtureDirectory('outside-');
   fs.writeFileSync(path.join(outside, 'manifest.json'), JSON.stringify(g.manifest));
   fs.renameSync(path.join(g.root, 'objects'), path.join(g.root, 'original-objects'));
   try { fs.symlinkSync(outside, path.join(g.root, 'objects'), process.platform === 'win32' ? 'junction' : 'dir'); }
   catch (error) { if (['EPERM', 'EACCES'].includes(error.code)) return; throw error; }
   const escaped = run(g);
   assert.equal(escaped.result, false); assert.equal(escaped.counters.targets.length, 0);
-  const h = fixture(), replacement = fs.mkdtempSync(path.join(FIXTURES, 'replacement-'));
+  const h = fixture(), replacement = fixtureDirectory('replacement-');
   fs.writeFileSync(path.join(replacement, 'manifest.json'), JSON.stringify(h.manifest));
   assert.equal(run(h, { onFinish() {
     fs.renameSync(path.join(h.root, 'objects'), path.join(h.root, 'original-objects'));

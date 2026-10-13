@@ -24,6 +24,7 @@ const ROUTINE_TESTS = [
   ['auxiliary-interior', 'tests/auxiliary_interior.js'],
   ['auxiliary-projection', 'tests/auxiliary_projection.js'],
   ['group-auxiliary-projection', 'tests/group_auxiliary_projection.js'],
+  ['group-auxiliary-bundles', 'tests/group_auxiliary_bundles.js'],
   ['paired-owner-projection', 'tests/paired_owner_projection.js'],
   ['single-owner-auxiliary-projection', 'tests/single_owner_auxiliary_projection.js'],
   ['atomic-owner-union', 'tests/atomic_owner_union.js'],
@@ -32,6 +33,7 @@ const ROUTINE_TESTS = [
   ['matching-context', 'tests/matching_context.js'],
   ['status-accounting', 'tests/status.js'],
   ['diff-exactness', 'tests/diff_exactness.js'],
+  ['scratch-retention', 'tests/scratch_retention.js'],
   ['diff-profile', 'tests/diff_profile.js'],
   ['verification-profile', 'tests/verification_profile.js'],
   ['prepared-link-view', 'tests/prepared_link_view.js'],
@@ -114,3 +116,4 @@ function main() {
 if (require.main === module) main();
 
 module.exports = { ROUTINE_TESTS };
+
