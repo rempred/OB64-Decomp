@@ -186,3 +186,7 @@ docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-636ad21497.c -text w
 docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-cdf86b3d7a.c -text whitespace=cr-at-eol,-blank-at-eof
 docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-497bc47bb8.c -text whitespace=cr-at-eol,-blank-at-eof
 docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-a1ecef80a0.c -text whitespace=cr-at-eol,-blank-at-eof
+
+# Frozen maintenance research inputs retain their authenticated raw bytes.
+docs/archive/matching-c-inputs/2026-10-12-phase7-pre-q7-79adf4fa.json -text
+docs/archive/matching-c-candidates/2026-10-12-func_0004d634-308b580d67.c -text
