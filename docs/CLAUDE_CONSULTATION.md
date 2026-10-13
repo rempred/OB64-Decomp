@@ -1,34 +1,30 @@
 # Paired Claude consultation
 
-Run `python tools/consult_claude.py --prompt-file <UTF-8-file>` from the assigned Codex worker. Standard input also accepts UTF-8 text. The inherited `CODEX_THREAD_ID` owns one lifetime Claude session; optional `--worker-id` must match it. Keep that identity and UUID across questions and failures. Never create a replacement session, resend a pending question or edit its mapping/history by hand.
+Run `python tools/consult_claude.py --prompt-file <UTF-8-file>` from your assigned Codex worker, or supply UTF-8 stdin. The inherited `CODEX_THREAD_ID` owns one persistent Claude session. Optional `--worker-id` must match it. Every later problem resumes that same UUID; never edit mappings, borrow another worker's session or create a replacement pairing after failure.
 
-The wrapper uses the fixed repository cwd, a scrubbed environment, `claude-opus-5-5` and requested xhigh. It admits only native Max subscription authentication (`claude.ai` / `firstParty`); keep extra usage OFF. API/provider overrides and present or uncertain managed policy refuse. Native version, authentication and successful response evidence are separate checks. Only reviewed CLI versions 2.1.292 and 2.1.296 pass the version preflight; unknown versions fail before model dispatch. Concurrent executable changes remain fail-closed. Version strings and cost metadata do not prove authentication, model behavior or billing.
+The adapter uses the fixed repository cwd/config, a scrubbed environment, Max subscription authentication (`claude.ai` / `firstParty`), and explicit `claude-opus-5-5 --effort xhigh`. Keep extra usage OFF. Read/Grep/Glob, restricted/safe mode, dontAsk and strict MCP isolation are retained. Present/uncertain managed policy refuses. Model and effort are requested configuration; xhigh is not independently measured, and list-price cost metadata is not billing proof.
 
-Consultations allow Read/Grep/Glob with restricted/safe modes and dontAsk permissions. One worker lock and owned process tree prevent overlapping wrapper calls; a consultation has a 900-second deadline and 48-turn ceiling. Failed/uncertain calls preserve pending evidence. A successful answer requires this worker's exact fresh attempt, immutable prior history, supported native version, real model/xhigh evidence and matching terminal result. Limits and parser refusals do not authorize bypasses or automatic retries.
+Claude owns native history. The adapter does not parse JSONL, pin CLI patch versions, adopt history hashes or restore backups. A successful call requires a clean owned EOF0 and a successful final JSON result for the saved UUID with nonempty answer. Extra JSON fields are tolerated; supplied modelUsage must contain requested Opus output but may include auxiliary models. One worker lock and the existing owned Windows Job protect calls; timeout/output bounds remain, without a tight turn-count cap.
 
-## Recovery
+## Pending calls
 
-Keep the native client closed and route failures with session/attempt/evidence identities to the Director through the verified native route. Use the appropriate reviewed recovery only after the cause and outcome are established:
+Failure preserves the same session and pending attempt. Do not automatically resend. Choose one explicit action once the native client/process is closed:
 
-- `--recover recover-completed` validates the retained completed pending result and owned EOF receipt without another model call.
-- `--recover restore-backup` restores only an absent previously validated transcript from its verified backup; it refuses pending turns or overwriting existing history.
-- `--recover dispose-completed-high-probe --attempt-id <ID> --history-sha256 <digest>` explicitly disposes a completed, rejected high-effort control without certifying it as xhigh.
-- `--recover dispose-terminal-oauth-failure --attempt-id <ID> --history-sha256 <digest>` disposes only the supported terminal expired-OAuth error. Joe handles interactive reauthentication separately; this action does not log in or retry.
+- `python tools/consult_claude.py --recover recover-completed` accepts an already-completed successful current result without another model call.
+- `python tools/consult_claude.py --recover abandon-pending` preserves available prompt/output/error/receipt and pending evidence, accepts no answer, and permits a distinct new prompt on the same UUID. It refuses while the owned process tree is live or its closure cannot be established.
 
-Disposition preserves accepted evidence and the same UUID; only a distinct new prompt may follow. Missing/corrupt/ambiguous history, live process ownership or uncertain completion stays blocked. Current mapping, backup and process/result evidence live under `C:/Users/Joe/.local/share/ob64-claude-consult/<worker-id>/`. Protect these files and the native transcript.
+New outputs live in the worker's `attempts/<attempt-id>/` directory identified by pending state. Older root-level receipts remain recoverable in place; abandonment preserves them before clearing pending. Historical backup/hash fields and files are retained artifacts, not acceptance authority. Successful recovery cannot be repeated after pending clears.
 
-## Manual transcript inspection
+A UUID is saved before dispatch. An auth/preflight failure before a possible first model launch leaves it eligible for its initial `--session-id`. Once possible launch is durably recorded, all later calls use `--resume`; a missing native session becomes an explicit error, never an automatic creation fallback or resend. Route unresolved failures through native Codex coordination. Ordinary explicit recovery/abandonment does not require a new failure-specific protocol.
 
-Pause the worker, establish ready/no pending/no owned process, and hold its worker lock throughout inspection. Use the fixed repository cwd and the wrapper's scrubbed `child_env()` environment. A bare resume command is not the tested path. In a real terminal use the fixed executable `C:/Users/Joe/.local/bin/claude.exe` with these exact arguments, replacing UUID with this worker's saved session UUID:
+## Manual inspection
+
+Inspect only your own saved UUID while the worker is idle and its `owner.lock` is held for the entire native interactive session. Use the fixed repository cwd and the wrapper's scrubbed child environment (including fixed `CLAUDE_CONFIG_DIR`); the tested native command is:
 
 ```text
---restricted --safe-mode --model claude-opus-5-5 --effort xhigh --tools Read,Grep,Glob --permission-mode dontAsk --strict-mcp-config --disallowedTools mcp__* --resume UUID
+claude.exe --restricted --safe-mode --model claude-opus-5-5 --effort xhigh --tools Read,Grep,Glob --permission-mode dontAsk --strict-mcp-config --disallowedTools mcp__* --resume <own-UUID>
 ```
 
-Supply no prompt. Ctrl+O views the transcript; double Ctrl+D within 800 ms exits from empty input. Wait for normal process EOF and close the native client before releasing the hold or consulting again. Never inspect concurrently, change permissions, rename/rewind the session, fork it or submit recalled text.
+Do not send a model prompt merely to inspect history. Ctrl+O shows history; double Ctrl+D within 800 ms exits. Close the interactive client before consulting again. Native metadata changes require no hash adoption. The lock cannot protect an independently launched manual client that ignores it.
 
-Opening inspection may append metadata. The wrapper can admit only 1-128 complete records / 64 KiB of strict same-session cost-state or dontAsk permission-mode metadata after the exact validated backup prefix. It rechecks native/backup bytes before dispatch and freezes the complete history into the next attempt; accepted history/answer advances only after a genuine validated reply. Metadata cannot prove client closure or carry authority. No manual hash adoption is needed or allowed. Unknown suffixes, an unvalidated/disposed baseline, changed old bytes or permission-mode inside a fresh attempt stop for evidence.
-
-## Coordination
-
-Use native Codex collaboration/thread messaging and the exact Director's verified stop/attention route; send actionable handoffs before ending. The Director owns tooling approval and the independent reviewer owns code review. Operational Agent Mail is retired after cutover; preserved archives remain historical evidence. See [WORKFLOW](WORKFLOW.md#director-event-continuity) for routing, and the active plan/cursor for transient acceptance evidence and ownership. The deferred storage pilot still requires its separately reviewed native authorization change.
+Claude supplies advice; Sol owns implementation. Keep inter-worker coordination in native Codex messaging and existing stop/attention watchers. Do not rebuild a transcript grammar around this adapter. Real session recall and billing behavior remain separate from offline mocked tests; retained acceptance evidence is in the Director's existing cursor and consultation records.
