@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "71DAA2479368405241D91A061E79E2FC6699F4BCC07D9869A8D75A90A307303A",
+  "observationId": "8826BE11A7AA9D3DC45626BD49F769B537AE6E6A59D65AC3D27C3ECB9A49CFAD",
+  "symbol": "func_00118E44",
+  "authored": {
+    "context": "Current R2 target60133422/model2B118C4F; full376-byte body and seven physical calls. Earlier provisional source incorrectly declared D_800FB1F0. The current native relocation mask cannot establish symbol/addend identity, so the failure is preserved rather than relabeled.",
+    "effects": [
+      "relocation-identity",
+      "address-name-correction",
+      "preserved-counterexample"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "9F2C2C23AE4CA357A1772799ACED646742917A3518D48B5315B494465D5E586F",
+      "sourceSha256": "E7417C2702C4F81D908B58A72552217B70D6EB4020A12F51E4B1712CC9036CD9"
+    },
+    "label": "address-spelled-global-corrected-from-retail-pair",
+    "observedEffect": "Uncorrected current candidate477F631C emitted PURE_C376/frame32/19REL with relocationMaskedExact=true, but the unauthenticated address display showed one wrong HI16 word:8010 instead of800F. Corrected candidate71DAA247 retains PURE_C376/frame32/19REL and relocationMaskedExact=true, with zero displayed word differences and all seven call offsets/targets aligned. The private collect-ready failure is thus a real source address-name error, not a display helper defect or native opcode mismatch.",
+    "parentCandidateId": "477F631CAD8F26C4282877438BE8720234B1D7213B406A302DA1800D0402749D",
+    "references": [
+      {
+        "path": "build/matching/q7-scripted-261012/watch-118e44-current-r2.json",
+        "sha256": "364A706179AAAD00A46616973541A20244A186B85F8800404220128ABB9E5AFF"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-118e44-address-corrected-r2.json",
+        "sha256": "3791687D73183B6E50BC5A4A2B7120D04EE9108FF4D3740ED1C75F37C5BDCDF7"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/ready-118e44-current-r2.json",
+        "sha256": "F278900CE472680D386EBD73F0D02CC818E23A94E83D8EA8CBB0F086399364ED"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00118E44.s",
+        "sha256": "9D05F25DA9A7F17562B658D23E6195A82D3AA56CB8A0011639EC20A85A96332A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner remains symbolic-object only. Expected relocation records/addend identity are unavailable; name-address display is unauthenticated. Canonical ownership, placement, relocation, target-byte and combined full-ROM acceptance remain outstanding for the complete ten-owner Q7 wave.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Correct the declaration and call argument from D_800FB1F0 to D_800EB1F0. Original body offset28 is LUI A0,800F and offset2C is ADDIU A0,A0,-4E10; their effective pointer is800EB1F0. Preserve the former source as func_00118E44.historical-address-name.c."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1939,
+      "sha256": "9F2C2C23AE4CA357A1772799ACED646742917A3518D48B5315B494465D5E586F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E7417C2702C4F81D908B58A72552217B70D6EB4020A12F51E4B1712CC9036CD9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-13-func_00118E44-71daa24793.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

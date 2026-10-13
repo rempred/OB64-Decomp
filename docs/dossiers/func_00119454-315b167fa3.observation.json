@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "315B167FA39818AB966CFCD29286C6CD9F3494A24F9D4148AAA64BD7DAC778AC",
+  "observationId": "63A316FF5CEF7A6229C74DC1763AE91593A65EAAA03956B679D8CE246422C9B1",
+  "symbol": "func_00119454",
+  "authored": {
+    "context": "Current R2 target7C30472D/model2B118C4F,primary:e0be183f53256682e2ac,row2317. Executable prefix4324B ROM119454..11A538/runtime801C4D14..801C5DF8; retained8B original ASM remains outside comparison, fullOriginalOwnerCompared=false. Private symbolic-object evidence only.",
+    "effects": [
+      "loop-weight",
+      "register-allocation",
+      "addressing-form",
+      "instruction-scheduling",
+      "volatile-declaration"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E2C950CF063FCC988C6216690232F7DEAD9A05C588F66390DFD569A9A846F050",
+      "sourceSha256": "4AEC2B68C8862A6F4E8CF460B759C3D96D3588511FFC599C3AF84D1B4D36AD59"
+    },
+    "label": "mode-weight-address-phase-and-declared-volatile-snapshots",
+    "observedEffect": "Final315B167FA39818AB966CFCD29286C6CD9F3494A24F9D4148AAA64BD7DAC778AC is mechanically PURE_C4324/frame80/297REL; workbench relocationMaskedExact=true. Full-prefix unauthenticated name-address display has zero differences over1081 words, and all60 JAL offsets/targets/order agree. Mode-query8847152C fixesS7/S8/prologue and leaves12words; Boolean6288C9EC leaves8; scoped owner069ED30B leaves4 (exchanged E00/E04 load pairs). Direct declared-volatile reads restore those four without extra instructions. Casting each address to volatile pointer instead46B6F9F6 emits separate LA+LW and regresses4332B; that source is not selected. Initial mode scopesB8BE/80F fix allocation but move the prologue; lookup-scope3A0 fixes index load order but shifts owner/result initialization, so these variants are not selected.",
+    "parentCandidateId": "069ED30BC75E6903843201B63DAB2D157F1D805AB1217210F7575E4DE06C1B6B",
+    "references": [
+      {
+        "path": "build/matching/q7-scripted-261012/watch-119454-volatile-index-declarations.json",
+        "sha256": "CD50BDA8FB1DEECAEF9268EBB7281211F3E4679A7332A4BC2DE94A278CCC6C86"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/probe-119454-final-current.json",
+        "sha256": "539B5A0D2C7DEA0786795F17DAE1B4D142AC6FC6E2964FACC0708D810609A983"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-119454-mode-query-scope.json",
+        "sha256": "5870B8324F5D17CFB3440CF1E14C28694BBFB33CE7F3FFF935123ACC161021D6"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-119454-query-boolean-phases.json",
+        "sha256": "E98E49F484CFDFF69D186E50DE3FF1012CBE78F3BD2C83E2BEC19AED5A3B6EEF"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-119454-query-owner-address-scope.json",
+        "sha256": "63BB0B9D3044346D1F39C52E57DC7099E05F6236FA79459B60578FE86F12DB4D"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-119454-ordered-index-reads.json",
+        "sha256": "EA88CC6D9F4AD9B2C8ABFD1D076EDA4CF241D1FF64BD28784F5F3E19ECC3336E"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/probe-119454-mode-initialization-scopes.json",
+        "sha256": "9B07825D209ECE642FEF38F2F8FDEB71ED9E499BE50D1200E3885BBA553C9BC7"
+      }
+    ],
+    "relatedCandidateIds": [
+      "749DE0FDB625FEB198979125C68AE3B12BF8667DE0CD81514177C1BBAE0AB275",
+      "8847152CD812038341A28C64AE83462FB200341714CF4F91192ED7762AADBCD7",
+      "6288C9EC7D1F293AF4E7E1FDB65330371C853E833BCDD577B6B0692AE5AA79F9",
+      "46B6F9F6D2D213B5441A4869998D312FB65330C200E7465DC403795662416220"
+    ],
+    "remainingFailure": "No private symbolic/relocation-masked result establishes canonical matching acceptance. Exact current linked relocations, sole C ownership/placement/source class, target bytes and the complete Q7 rebuilt ROM remain the production writer's full-wave gates. The original8B tail stays ASM, without native-padding/deadness claims. Source phases and loop weights are compiler lessons, not claims about original variable names or exact original C.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "From shared-scan-index749DE0FD, put the existing mode update and final query/call phase in separate once-only scopes, keeping the original initialization in place. Name the two existing Boolean result phases so the second comparison carries each AND result. Put the real scaled owner offset and owner result in one once-only address phase with its base outside. Finally declare the two index globals volatile and read them directly to preserve the observed snapshot order. Compiler reasons are documented beside affected source."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 18527,
+      "sha256": "E2C950CF063FCC988C6216690232F7DEAD9A05C588F66390DFD569A9A846F050"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4AEC2B68C8862A6F4E8CF460B759C3D96D3588511FFC599C3AF84D1B4D36AD59"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-13-func_00119454-315b167fa3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

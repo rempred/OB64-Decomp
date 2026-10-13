@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5FEC30F21FBC68842781802FC1EA8CFAE4E86DB0E6EFD68A2DFBEB75EF3CD681",
+  "observationId": "3281A8A5ED85E755C25E85FB78C18B67F08DD5E49027189B08DC4A7E35074C32",
+  "symbol": "func_00101DDC",
+  "authored": {
+    "context": "Complete4388-byte primary:b5f3aed2955e02346c9f row2218, target70B6CFC0/model2B118C4F. All1097 original words and73 external calls reconciled. Private symbolic-object evidence only; no canonical ownership/placement/full-ROM acceptance.",
+    "effects": [
+      "addressing-form",
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E20AC0FB1B0A34855A2DBBC9DCB376E85078B51B1CA9D8DE9273C0E7A679033F",
+      "sourceSha256": "28D2D305936189114BD67FA16863D84EF044AB8631DB91CE1978AE743474488D"
+    },
+    "label": "separate-selector-base-and-selected-result-restores-la-order",
+    "observedEffect": "Candidate5FEC30F21FBC68842781802FC1EA8CFAE4E86DB0E6EFD68A2DFBEB75EF3CD681 is mechanically PURE_C4388/frame80/564REL; workbench relocationMaskedExact=true. The full unauthenticated name-address display has zero differences over all1097 words, and all73 call offsets/targets/order agree. Separating the selected result restores the two LA pairs at14C/150 and160/164 without changing the remaining body or emitting extra instructions. Earlier named unit_id, late base initialization, swapped pointer initializers and volatile byte access forms did not change those pairs.",
+    "parentCandidateId": "67E3D7E3B99A3C488EEC7148795E86AD0A828F1043DBC696888B98004A9FDF84",
+    "references": [
+      {
+        "path": "build/matching/q7-scripted-261012/watch-101ddc-selected-pointer-phase.json",
+        "sha256": "B95D387C37695B55AE1125120A71B9AFA198280F5A835FDC5259153F628E140A"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/probe-101ddc-selected-pointer-phase.json",
+        "sha256": "383C062335E04DB0B85EB59D7ABA049A6F2CBC17B2DBDB7B7BE2253F9E2ABDF8"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-101ddc-subtract-negative-selector-offset.json",
+        "sha256": "902BD04F8FB4B7214CA54C2BAD49E7C6DB94BCB02B1BE9B6AAFB92550A6C843E"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/probe-101ddc-subtract-negative-selector-offset.json",
+        "sha256": "35500D64554A650174408B01A629B758C862A0A30725A513A3131610FE3F9470"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/probe-101ddc-negative-offset-late-passes.json",
+        "sha256": "0CEAE89948FFF57A4B5F25E09E078B998B6B0BDBF64110B85E2C3C360526AD3A"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-101ddc-reset-id-scalar.json",
+        "sha256": "BAD072DA4DAD22DEDD04C8517CCEB0E7E6C3C75D9331CA633233827094523E0B"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-101ddc-reset-id-scalar-late-base.json",
+        "sha256": "758C513BCD73AC4723A28D6EF36E8143180796FBF5FC8EF28515F6491D01FEB1"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-101ddc-selector-before-reset-base.json",
+        "sha256": "302546A924BBE094E2F8E8BB626B5D7673571690FB395E485667C25A153A9053"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object/relocation-masked equality is diagnostic only. Authenticated linked target bytes, exact current relocations, sole C ownership/placement/source class and complete-wave full-ROM verification remain the production writer's acceptance gates. This result establishes a useful compiler source pair, not an original variable name or source-expression claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "From subtract-negative-selector-offset67E3D7E3, retain the selector byte pointer as an immutable local and put the indexed result in a distinct selected_pointer local. Read the selected word through that result. Keep the named negative-offset/subtraction form and document its pinned-compiler reason near the source."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 18171,
+      "sha256": "E20AC0FB1B0A34855A2DBBC9DCB376E85078B51B1CA9D8DE9273C0E7A679033F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "28D2D305936189114BD67FA16863D84EF044AB8631DB91CE1978AE743474488D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-13-func_00101DDC-5fec30f21f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

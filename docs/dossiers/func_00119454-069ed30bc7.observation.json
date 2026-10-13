@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "069ED30BC75E6903843201B63DAB2D157F1D805AB1217210F7575E4DE06C1B6B",
+  "observationId": "3F55876C734CDEE01F5F082264D9372903E40A1259CF59B79F55C247EDE5A970",
+  "symbol": "func_00119454",
+  "authored": {
+    "context": "Exact frozen Q7 R2 source snapshot 069ED30BC75E6903843201B63DAB2D157F1D805AB1217210F7575E4DE06C1B6B. Publication authenticates existing source and references; it does not compile a new experiment or relabel historical diagnostic evidence. Original source/pinned compiler context is preserved in the referenced watch and final observation.",
+    "effects": [
+      "addressing-form",
+      "instruction-scheduling",
+      "preserved-counterexample"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "0E0B9D2A2D3058C47AD4E8F420BB2287DE5FE1E073FC2E36C162F9626A46B478",
+      "sourceSha256": "E29FB67689DF3ED7C929B917D66CCAE486F6F71C79E357CF0EA2FA4C31A75179"
+    },
+    "label": "historical-scoped-owner-pair-baseline",
+    "observedEffect": "Frozen final-allocation observation63A316FF records scoped-owner069ED30B as leaving four exchanged E00/E04 load-pair words before declared-volatile snapshots restore their order. Publication performs source/reference authentication only; private display equality remains diagnostic.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/q7-scripted-261012/watch-119454-query-owner-address-scope.json",
+        "sha256": "63BB0B9D3044346D1F39C52E57DC7099E05F6236FA79459B60578FE86F12DB4D"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/119454-final-allocation-observation.json",
+        "sha256": "2032AC66F79E9E6158700C059D15BFE21E45100531C410DB406FFC8D23B41D3C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical private symbolic-object/relocation-masked/display evidence is not canonical matching acceptance. Preserve original statuses and exact failed/baseline source; use current accepted target/intake and dependency identities before attempting transfer. The complete canonical Q7 wave has separate linked and full-ROM gates.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve the once-only scoped scaled-owner/result form before the final declared-volatile snapshot change. The selected source observation uses this exact candidate as its pair baseline."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 18518,
+      "sha256": "0E0B9D2A2D3058C47AD4E8F420BB2287DE5FE1E073FC2E36C162F9626A46B478"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E29FB67689DF3ED7C929B917D66CCAE486F6F71C79E357CF0EA2FA4C31A75179"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-13-func_00119454-069ed30bc7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

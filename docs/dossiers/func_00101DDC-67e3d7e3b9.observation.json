@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "67E3D7E3B99A3C488EEC7148795E86AD0A828F1043DBC696888B98004A9FDF84",
+  "observationId": "582F82B2DFC190A4A2D86340FB38B6877F6C3F8744FA7E03FA68B33C3149CA3D",
+  "symbol": "func_00101DDC",
+  "authored": {
+    "context": "Complete4388-byte primary:b5f3aed2955e02346c9f row2218, target70B6CFC0/model2B118C4F. All1097 words/all73 external calls reconciled. Private symbolic-object diagnostics only; the name-address display is unauthenticated, with no canonical matching acceptance.",
+    "effects": [
+      "addressing-form",
+      "constant-equivalence",
+      "combine"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E8C1108CB5302EE7161B9C09543B89D9D183A9A37ECC8FA6FA90782DC2A21C2F",
+      "sourceSha256": "8D4276958503618BFC7BD2A3A7ABD08085AE8F971B55589FA82D071417E6BBE1"
+    },
+    "label": "late-minus-negation-combine-preserves-pointer-first",
+    "observedEffect": "Candidate67E3D7E3B99A3C488EEC7148795E86AD0A828F1043DBC696888B98004A9FDF84 is mechanically PURE_C4388/frame80/564REL, with exactly four remaining display-word differences (two exchanged LA pairs14C/150 and160/164). ADDU194 now has the retail pointer-first order; all other1093 words/all73 calls agree under the display substitution. ProbeB619BB51E9EB4DA5AA179B1E362407F3005E257FB356ED9E1E7FE31E68C6E44A .rtl and .cse2 retain NEG137→131(uid232), then MINUS125,131(uid235). .combine deletes232 and rewrites235 as PLUS125,137. This later opcode change avoids cse's constant-equivalent commutation while emitting no extra instruction.",
+    "parentCandidateId": "E2B2B24A786D06BCD341502E1086EB8E61DC3106E39C3883EA3AA3D9E29A72C9",
+    "references": [
+      {
+        "path": "build/matching/q7-scripted-261012/watch-101ddc-subtract-negative-selector-offset.json",
+        "sha256": "902BD04F8FB4B7214CA54C2BAD49E7C6DB94BCB02B1BE9B6AAFB92550A6C843E"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/probe-101ddc-subtract-negative-selector-offset.json",
+        "sha256": "35500D64554A650174408B01A629B758C862A0A30725A513A3131610FE3F9470"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/watch-101ddc-selector-late-base.json",
+        "sha256": "861F38897141A202035106A05EF6F1C740A7B52A46D185008E1D7BE7E5DC8206"
+      },
+      {
+        "path": "build/matching/q7-scripted-261012/probe-101ddc-selector-late-base.json",
+        "sha256": "8A35FE6999E9DBB59CCCE7412EEE77E60DF6199C05214C30C3639FB21FA3075A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "LA reset-base and selector pairs remain exchanged. No authenticated isolated link, ownership, placement, complete relocation or full-ROM acceptance has occurred. This counterexample disproves the earlier necessity inference that a missing cse block boundary must explain retail's operand order: that inference assumed PLUS existed when cse2 processed the instruction. It does not establish the original source expression.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "From selector-late-baseE2B2B24A, use a named negative_offset=selector_index*-4 followed by unsigned address subtraction, rather than adding a positive scaled selector index. No guards, flags, assembler mechanisms, new calls, or shared-input changes."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 18124,
+      "sha256": "E8C1108CB5302EE7161B9C09543B89D9D183A9A37ECC8FA6FA90782DC2A21C2F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8D4276958503618BFC7BD2A3A7ABD08085AE8F971B55589FA82D071417E6BBE1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-13-func_00101DDC-67e3d7e3b9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
