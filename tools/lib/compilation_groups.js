@@ -534,9 +534,12 @@ function compiledMember(target, output, classification, files = null) {
     splitContract: { sourceSection: '.text', sourceBytes: target.compilationGroup.text.bytes, owners: target.compilationGroup.owners },
     relocations: memberRelocations(target, elf), auxiliarySections: target.auxiliarySections.map(section => {
       const value = p8.verifyAuxiliarySourceObjectSection(elf, target, section, 'group member auxiliary');
+      const compilerOccurrences = p8.verifyAuxiliaryCompilerOccurrences(value.selectedBytes, value.relocations, section,
+        target.symbol + ' ' + section.outputSection + ' group member auxiliary');
       return { compilerSection: section.compilerSection, outputSection: section.outputSection, bytes: value.selectedBytes.length,
         sha256: sha256Buffer(value.selectedBytes), alignment: value.section.alignment, flags: value.section.flags,
-        relocations: value.relocations, ...value.padding, retainedInteriorBefore: null };
+        relocations: value.relocations, ...value.padding, retainedInteriorBefore: null,
+        ...(compilerOccurrences === null ? {} : { compilerOccurrences }) };
     }) };
 }
 Object.assign(module.exports, { memberRelocations, contract, evidence, compile, compiledMember });

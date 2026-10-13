@@ -49,6 +49,12 @@ extern DrawMatrix *D_801969B0;
 extern CombatDrawVertex *D_80197178;
 extern CombatDrawCommand D_801CE930[];
 
+/* The first load word is staged before the preceding sync zero store. */
+static __inline__ u32 merge_tile_line(u32 line, u32 tile) { line |= tile; return line; }
+
+static __inline__ u32 tile7_end(u32 end) { end |= 0x07000000u; return end; }
+static __inline__ u32 load_width_field(u32 width, int scale) { width--; width *= scale; width &= 0xFFF; width <<= 12; return width; }
+
 static __inline__ u32 line_field(u32 width) { width += 7; width >>= 3; width &= 0x1FF; width <<= 9; return width; }
 
 #define HALF(p,o) (*(short *)((u8 *)(p) + (o)))
@@ -57,6 +63,11 @@ static __inline__ u32 line_field(u32 width) { width += 7; width >>= 3; width &= 
 #define MATRIX_CURSOR D_801969B0
 #define VERTEX_CURSOR D_80197178
 #define PAIR COMBAT_DRAW_PAIR
+#define ZERO_FORMAT_TILE_PAIR(a, b) { \
+    CombatDrawCommand *offsetCommand = D_800E9BA0++; \
+    offsetCommand->first = (a); \
+    offsetCommand->second = (b); \
+}
 #define FIELD COMBAT_DRAW_FIELD
 
 extern u8 func_00205794(void);
@@ -68,11 +79,12 @@ extern void *D_801CE8BC;
 extern CombatDrawCommand D_801CEA38[], D_801CEA48[], D_801CEA58[], D_801CEA68[];
 extern CombatDrawCommand D_801CEA78[], D_801CEA88[], D_801CEA98[];
 #define WIDTH(p) func_00201E9C((p)->format, (p)->width)
+/* KMC 2.7.2 counts these once-only scopes when weighting register references.
+ * The selected five existing WIDTH producers retain the companion address in
+ * the retail register without changing the calls or their values. Placement is
+ * significant: scoping the zero-format tile-width producer changes scheduling. */
+#define COMPANION_WIDTH(p) ({ u32 widthValue; do { widthValue = WIDTH(p); } while (0); widthValue; })
 
-/* HYBRID_C: KMC register/ordering constraints retain the retail packet stream.
- * Only the companion address ADDU and packed-width SLL have nonempty templates.
- * Empty tied outputs preserve their input value; memory operands only constrain
- * ordering. Packet calls, fields and cursor reads remain explicit C below. */
 int func_001F3C00(void *input, int setup, int mode,
                   DrawImage *optional, int xOffset, int yOffset)
 {
@@ -91,14 +103,11 @@ int func_001F3C00(void *input, int setup, int mode,
     CombatDrawCommand *stateA, *stateB, *currentState;
     int remaining, left, top, flags, accumulated;
     u8 *image;
-    DrawImage *header;
-    /* Keep the companion across calls without displacing the full-width strip. */
-    register DrawImage *companion asm("$22");
+    DrawImage *header, *companion;
     int leftVertex, leftU, rightVertex, rightU, tileBytes;
     int bit10, bit8, alpha, stride, capacity, right;
     u8 saved;
-    short u0;
-    int u1;
+    short u0, u1;
     int strip, row, colorMask;
     int nextAccumulated, nextNormalRow, nextRemaining;
 
@@ -251,10 +260,12 @@ int func_001F3C00(void *input, int setup, int mode,
         header = (DrawImage *)image;
         stride = func_00201E38(header->format, header->width);
         if (*(u16 *)((u8 *)header + 2) == 2) {
-            u32 companionOffset = (u32)(stride * header->height) + 8u;
-            /* Earlyclobber keeps the stride product out of the bound destination. */
-            asm ("addu %0,%1,%2" : "=&r" (companion)
-                 : "r" (image), "r" (companionOffset));
+            /* Stage the actual height, byte extent, and resulting image address. */
+            {
+                int imageHeight = header->height;
+                int payloadBytes = stride * imageHeight;
+                companion = (DrawImage *)(image + 8 + payloadBytes);
+            }
             capacity = 4096 / (int)(stride + func_00201E38(companion->format, companion->width));
             if (currentState != stateB) {
                 currentState = stateB;
@@ -274,35 +285,25 @@ int func_001F3C00(void *input, int setup, int mode,
                 PAIR(0xDE000000, (u32)currentState);
             }
         }
-        {
-            /* Capture the decoded width once; narrow u1 at the vertex consumer. */
-            register int capturedWidth asm("$5");
-            capturedWidth = decoded.record.field_0C;
-            remaining = header->height;
-            left = decoded.record.field_04 + xOffset;
-            right = capturedWidth + decoded.record.field_04 + xOffset;
-            top = yOffset - decoded.record.field_08;
-            if (BYTE(object, 0x15) & 1) {
-                left = -right;
-                right = -(decoded.record.field_04 + xOffset);
-            }
-            flags = BYTE(object, 0x15) ^ (decoded.record.field_14 & 3);
-            if (flags & 1) { u0 = capturedWidth - 1; u1 = 0; }
-            else { u0 = 0; u1 = capturedWidth - 1; }
-            {
-                register int boundU asm("$23");
-                asm ("" : "=r" (boundU) : "0" (u1));
-                u1 = boundU;
-            }
+        remaining = header->height;
+        left = decoded.record.field_04 + xOffset;
+        right = decoded.record.field_0C + decoded.record.field_04 + xOffset;
+        top = yOffset - decoded.record.field_08;
+        if (BYTE(object, 0x15) & 1) {
+            left = -right;
+            right = -(decoded.record.field_04 + xOffset);
         }
+        flags = BYTE(object, 0x15) ^ (decoded.record.field_14 & 3);
+        if (flags & 1) { u0 = decoded.record.field_0C - 1; u1 = 0; }
+        else { u0 = 0; u1 = decoded.record.field_0C - 1; }
         if (func_00043d1c(BYTE(actor, 0x4B), BYTE(actor, 0x4F)) == 2) {
             decoded.record.field_18 *= *(double *)0x801CFE00;
             decoded.record.field_1C *= *(double *)0x801CFE00;
         }
         accumulated = 0;
         guScale(MATRIX_CURSOR, decoded.record.field_18, decoded.record.field_1C, 1.0f);
-        PAIR(0xDA380000, (u32)MATRIX_CURSOR++);
         strip = capacity;
+        PAIR(0xDA380000, (u32)MATRIX_CURSOR++);
         if (remaining < strip) strip = remaining;
         row = 0;
         if (flags & 2) row = remaining - strip;
@@ -342,205 +343,104 @@ next_row:
                                0, row, WIDTH(header) - 1, row + strip - 1, 0, 0, 0, 0, 0, 0, 0);
                 goto triangles;
             } else if (optional) {
-                /* These real masked fields remain live through the size packet. */
-                register u32 optionalEnd asm("$16");
-                register u32 optionalRow asm("$19");
-                u32 optionalWidth;
+                u16 optionalEndBits;
                 PAIR(0xFD180000 | FIELD(WIDTH(header) - 1, 0, 12), (u32)(image + 8));
-                {
-                    CombatDrawCommand *tileCommand = D_800E9BA0++;
-                    register CombatDrawCommand *loadSync asm("$18");
-                    u32 line = ((WIDTH(header) * 2u + 7) >> 3) & 511;
-                    /* Retail captures the next cursor before completing this pair. */
-                    loadSync = D_800E9BA0;
-
-                    tileCommand->first = 0xF5180000 | (line << 9);
-                    tileCommand->second = 0x07000000;
-                    D_800E9BA0 = loadSync + 1;
-                    loadSync->first = 0xE6000000;
-                    loadSync->second = 0;
-                }
-                /* Keep the exact masks and WIDTH/endpoint normalization order. */
-                PAIR(0xF4000000 | ({
-                         optionalRow = row * 4;
-                         asm ("" : "=r" (optionalRow) : "0" (optionalRow & 4095u));
-                         optionalRow;
-                     }),
-                     ({
-                        optionalEnd = row + strip;
-                        optionalWidth = FIELD((WIDTH(header) - 1) * 4, 12, 12);
-                        asm ("" : "=r" (optionalEnd) : "0" (optionalEnd), "r" (optionalWidth));
-                        optionalEnd = (optionalEnd - 1) * 4;
-                        asm ("" : "=r" (optionalEnd) : "0" (optionalEnd & 4095u));
-                        0x07000000 | optionalWidth | optionalEnd; }));
+                PAIR(0xF5180000 | line_field(WIDTH(header) * 2), 0x07000000);
+                PAIR(0xE6000000, 0);
+                PAIR(0xF4000000 | FIELD(row * 4, 0, 12),
+                     0x07000000 | FIELD((WIDTH(header) - 1) * 4, 12, 12) | (optionalEndBits = FIELD((row + strip - 1) * 4, 0, 12)));
                 PAIR(0xE7000000, 0);
                 PAIR(0xF5180000 | line_field(WIDTH(header) * 2), 0x01000000);
                 sizeCommand = D_800E9BA0;
                 D_800E9BA0 = sizeCommand + 1;
-                {
-                    u32 renderOpcode;
-                    /* Keep F200 construction after the preceding packet stores. */
-                    asm volatile ("" : "=r" (renderOpcode) : "0" (0xF2000000) : "memory");
-                    optionalRow |= renderOpcode;
-                    sizeCommand->first = optionalRow;
-                }
+                sizeCommand->first = 0xF2000000 | FIELD(row * 4, 0, 12);
                 sizeWidth = FIELD((WIDTH(header) - 1) * 4, 12, 12);
-                sizeEnd = 0x01000000 | optionalEnd;
+                sizeEnd = 0x01000000 | optionalEndBits;
             } else {
                 int rowField, endField, tileOffset;
-                register int primaryEnd asm("$16");
-                CombatDrawCommand *primarySync;
+                /* This cache holds only the masked 12-bit end coordinate. */
+                u16 primaryEnd;
                 CombatDrawCommand *companionCommand;
                 CombatDrawCommand *companionSizeCommand;
-                u32 companionTile;
+                u32 companionTile, companionSizeWord;
                 if (companion->format == 0) {
                     CombatDrawCommand *loadSync;
-                    PAIR(0xFD880000 | FIELD((WIDTH(companion) >> 1) - 1, 0, 12), (u32)((u8 *)companion + 8));
-                    PAIR(FIELD(((WIDTH(companion) >> 1) + 7) >> 3, 9, 9) | ({
+                    PAIR(0xFD880000 | FIELD((COMPANION_WIDTH(companion) >> 1) - 1, 0, 12), (u32)((u8 *)companion + 8));
+                    ZERO_FORMAT_TILE_PAIR(FIELD(((WIDTH(companion) >> 1) + 7) >> 3, 9, 9) | ({
                         u32 tileWord;
                         tileOffset = tileBytes / 8 & 511;
                         tileWord = 0xF5880000u;
-
                         loadSync = D_800E9BA0;
-                        tileWord = (tileOffset) | tileWord;
+                        tileWord = tileOffset | tileWord;
                         tileWord;
                     }), 0x07000000);
                     D_800E9BA0 = loadSync + 1;
                     loadSync->first = 0xE6000000;
-                    loadSync->second = 0;
-                    /* Order the row field after the actual sync/cursor stores. */
-                    PAIR(0xF4000000 | ({
-                        u32 rawRow;
-                        asm ("" : "=r" (rawRow) : "0" ((u32)row << 2),
-                             "m" (D_800E9BA0), "m" (loadSync->first));
-                        rowField = rawRow & 0xFFF;
-                    }), ({
-                        u32 widthField = FIELD((WIDTH(companion) - 1) * 2, 12, 12);
-                        u32 endpointSum;
-                        /* The real endpoint arithmetic follows this WIDTH result. */
-                        asm ("" : "=r" (endpointSum) : "0" ((u32)row + (u32)strip), "r" (widthField));
-                        endField = (endpointSum - 1) * 4 & 0xFFF;
-                        companionCommand = D_800E9BA0;
-
-                        ({
-                            u32 endpointWord;
-                            endpointWord = endField | 0x07000000;
-                            widthField | endpointWord;
-                        });
-                    }));
+                    PAIR(({ u32 firstWord = 0xF4000000 | ({ do { rowField = row * 4 & 0xFFF; } while (0); rowField; }); loadSync->second = 0; firstWord; }), load_width_field(COMPANION_WIDTH(companion), 2) | tile7_end((endField = (row + strip - 1) * 4 & 0xFFF)));
+                    companionCommand = D_800E9BA0;
                     D_800E9BA0 = companionCommand + 1;
                     companionCommand->first = 0xE7000000;
                     companionCommand->second = 0;
                     ++D_800E9BA0;
-                    companionTile = WIDTH(companion);
                     {
-                        u32 line;
-                        register u32 widthField asm("$3");
-                        u32 tileWord;
-                        /* Retail retains this tileBytes reload after division reuse.
-                         * The real-value input preserves that read, not a claim about
-                         * its original C spelling; the compiler owns its stack home. */
-                        asm ("" : "=r" (line) : "0" (((companionTile >> 1) + 7) >> 3), "r" (tileBytes));
-                        line &= 511;
-                        /* Preserve the final packed-width shift at this boundary. */
-                        asm ("sll %0,%1,9" : "=r" (widthField) : "r" (line));
-                        tileWord = 0xF5800000u;
-
+                        u32 renderLineWord, renderTileBase;
+                        companionTile = COMPANION_WIDTH(companion);
+                        companionTile = ((companionTile >> 1) + 7) >> 3;
+                        companionTile &= 511;
+                        renderLineWord = companionTile << 9;
+                        /* This stage preserves KMC scheduling of the tile-base reload. */
+                        renderTileBase = tileBytes / 8 & 511;
+                        companionTile = 0xF5800000u;
                         companionSizeCommand = D_800E9BA0;
-                        tileWord = (tileBytes / 8 & 511) | tileWord;
-                        companionTile = widthField | tileWord;
+                        companionTile = renderTileBase | companionTile;
+                        companionTile = merge_tile_line(renderLineWord, companionTile);
                     }
                 } else {
-                    CombatDrawCommand *loadSync;
-                    PAIR(0xFD880000 | FIELD(WIDTH(companion) - 1, 0, 12), (u32)((u8 *)companion + 8));
+                    CombatDrawCommand *defaultSync;
+                    PAIR(0xFD880000 | FIELD(COMPANION_WIDTH(companion) - 1, 0, 12), (u32)((u8 *)companion + 8));
                     PAIR(FIELD((WIDTH(companion) + 7) >> 3, 9, 9) | (tileOffset = (tileBytes / 8 & 511) | 0xF5880000), 0x07000000);
-                    loadSync = D_800E9BA0++;
-                    loadSync->first = 0xE6000000;
-                    loadSync->second = 0;
-                    /* Order the row field after the actual sync/cursor stores. */
-                    PAIR(0xF4000000 | ({
-                        u32 rawRow;
-                        asm ("" : "=r" (rawRow) : "0" ((u32)row << 2),
-                             "m" (D_800E9BA0), "m" (loadSync->first));
-                        rowField = rawRow & 0xFFF;
-                    }), ({
-                        u32 widthField = FIELD((WIDTH(companion) - 1) * 4, 12, 12);
-                        u32 endpointSum;
-                        /* The real endpoint arithmetic follows this WIDTH result. */
-                        asm ("" : "=r" (endpointSum) : "0" ((u32)row + (u32)strip), "r" (widthField));
-                        endField = (endpointSum - 1) * 4 & 0xFFF;
-                        companionCommand = D_800E9BA0;
-
-                        ({
-                            u32 endpointWord;
-                            endpointWord = endField | 0x07000000;
-                            widthField | endpointWord;
-                        });
-                    }));
+                    defaultSync = D_800E9BA0++;
+                    defaultSync->first = 0xE6000000;
+                    PAIR(({ u32 firstWord = 0xF4000000 | ({ do { rowField = row * 4 & 0xFFF; } while (0); rowField; }); defaultSync->second = 0; firstWord; }), load_width_field(COMPANION_WIDTH(companion), 4) | tile7_end((endField = (row + strip - 1) * 4 & 0xFFF)));
+                    companionCommand = D_800E9BA0;
                     D_800E9BA0 = companionCommand + 1;
                     companionCommand->first = 0xE7000000;
                     companionCommand->second = 0;
                     ++D_800E9BA0;
                     companionTile = WIDTH(companion);
-                    {
-                        register u32 line asm("$2");
-                        /* Same observed tileBytes read/normalization boundary. */
-                        asm ("" : "=r" (line) : "0" ((companionTile + 7) >> 3), "r" (tileBytes));
-                        line &= 511;
-                        line <<= 9;
-
-                        companionSizeCommand = D_800E9BA0;
-                        companionTile = line | (tileOffset = (tileBytes / 8 & 511) | 0xF5880000);
-                    }
+                    companionTile = ((companionTile + 7) >> 3) & 511;
+                    companionTile <<= 9;
+                    tileOffset = (tileBytes / 8 & 511) | 0xF5880000;
+                    companionSizeCommand = D_800E9BA0;
+                    /* This once-only merge scope raises the real tile value
+                     * above strip in KMC allocation priority. Together with the
+                     * width scopes it preserves the retail strip register and
+                     * initial min sequence; no extra operation is emitted. */
+                    do { companionTile |= tileOffset; } while (0);
                 }
                 companionCommand[1].first = companionTile;
-                companionCommand[1].second = 0;
-                /* Complete both real packet fields before advancing the cursor. */
-                asm volatile ("" : : "m" (companionCommand[1].first),
-                              "m" (companionCommand[1].second));
-
+                /* Keep the zero store before the next command-cursor update. */
+                do { companionCommand[1].second = 0; } while (0);
                 D_800E9BA0 = companionSizeCommand + 1;
-                {
-                    u32 renderOpcode;
-                    renderOpcode = 0xF2000000u;
-                    companionSizeCommand->first = rowField | renderOpcode;
-                }
-                /* The old row field is consumed; split the next raw row/mask
-                 * across the two WIDTH calls, matching their call delay slots. */
+                /* KMC loop notes retain the retail first-word scheduling. */
+                do {
+                    companionSizeWord = 0xF2000000u;
+                    companionSizeWord |= rowField;
+                    companionSizeCommand->first = companionSizeWord;
+                } while (0);
                 rowField = row * 4;
                 companionSizeCommand->second = FIELD((WIDTH(companion) - 1) * 4, 12, 12) | endField;
-                rowField &= 0xFFF;
                 PAIR(0xFD100000 | FIELD(WIDTH(header) - 1, 0, 12), (u32)(image + 8));
+                rowField &= 0xFFF;
                 PAIR(0xF5100000 | line_field(WIDTH(header) * 2), 0x07000000);
                 PAIR(0xE6000000, 0);
-                PAIR(0xF4000000 | rowField, ({
-                    u32 widthField;
-                    primaryEnd = row + strip;
-                    widthField = FIELD((WIDTH(header) - 1) * 4, 12, 12);
-                    asm ("" : "=r" (primaryEnd) : "0" (primaryEnd), "r" (widthField));
-                    primaryEnd = (primaryEnd - 1) * 4;
-                    asm ("" : "=r" (primaryEnd) : "0" (primaryEnd & 4095u));
-                    primarySync = D_800E9BA0;
-
-                    ({
-                        register u32 endpointWord asm("$3");
-                        endpointWord = primaryEnd | 0x07000000;
-                        widthField | endpointWord;
-                    });
-                }));
-                D_800E9BA0 = primarySync + 1;
-                primarySync->first = 0xE7000000;
-                primarySync->second = 0;
+                PAIR(0xF4000000 | rowField, load_width_field(WIDTH(header), 4) | tile7_end((primaryEnd = (row + strip - 1) * 4 & 0xFFF)));
+                PAIR(0xE7000000, 0);
                 PAIR(0xF5100000 | line_field(WIDTH(header) * 2), 0x01000000);
                 sizeCommand = D_800E9BA0;
                 D_800E9BA0 = sizeCommand + 1;
-                {
-                    u32 renderOpcode;
-                    /* Keep F200 construction after the preceding packet stores. */
-                    asm volatile ("" : "=r" (renderOpcode) : "0" (0xF2000000) : "memory");
-                    rowField |= renderOpcode;
-                    sizeCommand->first = rowField;
-                }
+                /* Preserve the same packet boundary for the primary size word. */
+                do { sizeCommand->first = (rowField |= 0xF2000000); } while (0);
                 sizeWidth = FIELD((WIDTH(header) - 1) * 4, 12, 12);
                 sizeEnd = primaryEnd | 0x01000000;
             }

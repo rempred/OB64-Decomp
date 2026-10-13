@@ -1,26 +1,24 @@
 # Remaining assigned program scope — October 13, 2026
 
-The [generated remaining-scope snapshot](../../build/director-resume-20261013/complete-program-scope.json) derives **24 remaining logical functions, 45,596 text-owner bytes (45,568 body bytes), in 8 complete waves** from the preserved previous roster and accepted Q7 proof. Q7's ten complete functions passed the final normalized canonical verifier and were accepted2935, committed as78826618 at CURRENTF6908CF6. Its 17,352 C-body bytes and 16 retained original-ASM bytes are excluded from remaining totals. NINE, S2, S5, S4 and Q5 remain accepted; none is reopened. Generated current verification/status owns matching counts, separate from this bounded program roster.
+The [generated remaining-scope snapshot](../../build/director-resume-20261013/storage-retention/new-wave-continuity/complete-program-scope-after-db10-q1.json) derives **18 remaining logical functions, 24,820 text-owner bytes (24,792 body bytes), in 6 complete waves** by unique physical owners. DB10 (all three animation bodies) and Q1 (all 15 coupled acceptance members, including three new logical terrain bodies) are accepted by Astra at CURRENT `355186C5`, against audit handoff `0D0A2FB5` and the seven exact report hashes in the [final integration evidence](../../build/matching/db10-fresh-261011/independent-repairs-261013/final-integration-handoff.json). Accepted DB10/Q1 rosters remain below as reference and are excluded from remaining totals. Earlier accepted NINE, S2, S5, S4, Q5 and Q7 remain accepted. Generated current verification/status owns matching counts.
 
-D450 and D484 remain conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. Their necessity is unproven. If both are admitted, the same DDB4 wave expands to **26 remaining functions / 48,000 owner bytes**, still8 waves. No unnamed producer group is assumed.
+D450 and D484 remain conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. If both are admitted, the same wave expands the remainder to **20 functions / 27,224 owner bytes**, still 6 waves. Their necessity remains unproven.
 
-SwiftGlen retains the complete animation wave and sole production writer role. BoldHollow's complete Q7 ownership is released2935 and both routes are retired. A fresh top-level Sol6.1/xhigh worker in chat01a13403-d46f-7d20-9dc5-7149ecb652a6 owns the complete Q1 terrain family in build/matching/q1-terrain-261013/. Existing native table/auxiliary structural gates remain attached to Q1 before integration. Drain2928 is released2935; no unrelated wave delays animation continuation. See the Director cursor for current identities/routes. The original five-family boundary remains unchanged.
+S1 chat `01a13761-1df5-7b53-9e57-595cc7e3aaf3` owns the complete descriptor/group loader in `build/matching/s1-descriptor-261013/` and remains private until explicit production transfer. Q2 chat `01a13761-1167-7021-9420-cb2904800a3d` owns the complete placement pair in `build/matching/q2-placement-261013/`. Both are fresh top-level Sol 6.1/xhigh workers with verified native startup and stop/attention routes. SwiftGlen retains only final record/commit and production duties until explicit release; CalmSquirrel is retired. The original five-family boundary is unchanged.
 
 ## Complete waves
 
 | Wave | Assignment | Functions | Text-owner bytes | Body bytes | State |
 |---|---|---:|---:|---:|---|
-| DB10 | Complete animation: DB10 + 3C00 + 6098 | 3 | 16,436 | 16,436 | Active — SwiftGlen |
-| Q1 | Terrain policy | 3 | 4,340 | 4,340 | Active - CalmSquirrel; gates retained |
-| Q2 | Placement pair | 2 | 1,420 | 1,416 | Queued; gates retained |
+| Q2 | Placement pair | 2 | 1,420 | 1,416 | Active private candidate; gates retained |
 | Q3 | Encoded-item writer | 1 | 496 | 496 | Queued; gates retained |
 | Q4 | Route deallocator PURE_C retry | 1 | 236 | 224 | Queued; gates retained |
 | Q6 | DDB4 broad site-event producer | 1 | 9,132 | 9,128 | Queued; gates retained |
-| S1 | Descriptor/group loader | 3 | 764 | 756 | Queued; gates retained |
+| S1 | Descriptor/group loader | 3 | 764 | 756 | Active private; production transfer pending |
 | S3 | Scenario DMA-window requesters | 10 | 12,772 | 12,772 | Queued; gates retained |
-| **Total** | | **24** | **45,596** | **45,568** | |
+| **Total** | | **18** | **24,820** | **24,792** | |
 
-Tables, descriptor records, literal constants and retained ASM data are separate from these text-owner totals and never add functions. Accepted NINE data ownership is preserved outside the remaining roster. Remaining obligations include Scenario's688 table bytes, DDB4's208-byte table and terrain's26 inventoried tables. Original fallbacks, complete data rows and applicable auxiliary gates remain required.
+Tables, descriptor records, literal constants and retained ASM data are separate from these text-owner totals and never add functions. Accepted NINE data ownership is preserved outside the remaining roster. Remaining obligations include Scenario's 688 table bytes and DDB4's 208-byte table. Accepted Q1 preserves all 26 compiler table occurrences across three physical auxiliary rows r2607/r2609/r2611 (11/11/4), separate from the three logical bodies' 10/10/6 table uses, and all 337 pointers. Original fallbacks, complete data rows and applicable auxiliary gates remain required.
 
 ## Exact function roster
 
@@ -28,23 +26,23 @@ All ROM intervals below are half-open; runtime placement is in the bound JSON ev
 
 ### DB10 — Complete animation: DB10 + 3C00 + 6098
 
-Joe assigns all three PURE_C conversions to SwiftGlen as one complete animation wave. Continue DB10 first, then 3C00 and 6098, one target at a time in the existing private root. Preserve each complete original body, preamble/interior entry, accepted physical producer, exact hybrid and original ASM fallback. Keep every other accepted animation sibling and shared interface protected. Individual matches remain provisional; one final complete-wave verification must establish all three as PURE_C with unique C ownership, placement, actual relocations, exact target bytes and full-ROM equality. The worker remains assigned until the whole wave is accepted and released. Historical matching difficulty does not justify a hold.
+Accepted complete animation: all three bodies are PURE_C under the current complete-wave proof. SwiftGlen source ownership is released; final production recording remains assigned. This reference roster is excluded from remaining totals; original fallbacks, interfaces and accepted structural contracts remain protected.
 
 | Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
 |---|---|---|---:|---|
-| `func_0020DB10` | HYBRID_C | `0x0020DB10..0x0020F0BC` | 5,548 | `0x0020DB10..0x0020F0BC` |
-| `func_001F3C00` | HYBRID_C | `0x001F3C00..0x001F5654` | 6,740 | `0x001F3C00..0x001F5654` |
-| `func_001F6098` | HYBRID_C | `0x001F6098..0x001F70CC` | 4,148 | `0x001F6098..0x001F70CC` |
+| `func_0020DB10` | PURE_C | `0x0020DB10..0x0020F0BC` | 5,548 | `0x0020DB10..0x0020F0BC` |
+| `func_001F3C00` | PURE_C | `0x001F3C00..0x001F5654` | 6,740 | `0x001F3C00..0x001F5654` |
+| `func_001F6098` | PURE_C | `0x001F6098..0x001F70CC` | 4,148 | `0x001F6098..0x001F70CC` |
 
 ### Q1 — Terrain policy
 
-Preserve complete three-member policy family and all 26 inventoried switch tables. Native table provenance/auxiliary representation receives applicable structural audit/review before integration.
+Accepted complete terrain family: all 15 coupled acceptance members pass, including these three new logical bodies. All 26 compiler table occurrences across three physical auxiliary rows r2607/r2609/r2611 (11/11/4), logical table uses (10/10/6), and 337 pointers are preserved. CalmSquirrel ownership is released. This reference roster is excluded from remaining totals; original fallbacks, interfaces and accepted structural contracts remain protected.
 
 | Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
 |---|---|---|---:|---|
-| `func_0013A558` | ASM | `0x0013A558..0x0013AA40` | 1,256 | `0x0013A558..0x0013AA40` |
-| `func_0013AA40` | ASM | `0x0013AA40..0x0013B350` | 2,320 | `0x0013AA40..0x0013B350` |
-| `func_0013B350` | ASM | `0x0013B350..0x0013B64C` | 764 | `0x0013B350..0x0013B64C` |
+| `func_0013A558` | PURE_C | `0x0013A558..0x0013AA40` | 1,256 | `0x0013A558..0x0013AA40` |
+| `func_0013AA40` | PURE_C | `0x0013AA40..0x0013B350` | 2,320 | `0x0013AA40..0x0013B350` |
+| `func_0013B350` | PURE_C | `0x0013B350..0x0013B64C` | 764 | `0x0013B350..0x0013B64C` |
 
 ### Q2 — Placement pair
 
@@ -141,7 +139,7 @@ Ten unique requesters;102FA0 owns two scenario-window witnesses. Keep its two sw
 | `func_00131B50` | 288 | assembly boundary interface. |
 
 - **Scenario boundary:** documented descriptor/group loader; direct literal DMA requesters for accepted scenario windows and cold consumer slabs; direct scenario-record/site consumers; three specific builders called by the accepted link-consumer pair. Stop at generic allocator/cache/codec/PI/memory/math/class/stat interfaces. Do not import every function in a loaded slab. DDB4 and101DDC remain exclusively Squad. The generic4894 bitstream descriptor encoder is a separate boot-trial obligation outside this five-family roster.
-- **Accepted work stays accepted:** all74 original High Attack inventory entries are covered by current PURE_C proof (D3BC is the accepted continuation of D374, not a remaining function). All23 Shop roster members are PURE_C/exact. Combat's remaining source conversions are the three animation hybrids above; accepted supplements/shared owners are protected. Squad's accepted original-ledger identities and Scenario's accepted pair/checksum/resource dependencies are not rematched. Source acceptance does not strengthen semantic claims.
+- **Accepted work stays accepted:** all74 original High Attack inventory entries are covered by current PURE_C proof (D3BC is the accepted continuation of D374, not a remaining function). All23 Shop roster members are PURE_C/exact. Combat's three animation conversions are accepted above; accepted supplements/shared owners remain protected. Squad's accepted original-ledger identities and Scenario's accepted pair/checksum/resource dependencies are not rematched. Source acceptance does not strengthen semantic claims.
 
 ## Remaining evidence work, separate from matching waves
 
@@ -152,7 +150,7 @@ Structural producer/prefix/tail/table gates are attached to the listed complete 
 
 ## Scheduling and acceptance
 
-NINE/S2/S5/S4/Q5 and complete Q7 are accepted; their released workers/routes remain retired. Q7 commit78826618 and final proof6155CE8A bind all ten PURE_C bodies, actual relocations, original-ASM tails and exact retail ROM. SwiftGlen retains unfinished animation and the sole production role. Fresh top-level Sol6.1/xhigh Q1 owns all three terrain functions and26 tables; existing native table/auxiliary admission gates remain before integration. S1/S3/Q2/Q3/Q4/Q6 retain their stated preparation. After a worker's complete assigned wave is accepted and ownership released, the Director immediately dispatches a fresh top-level Sol6.1/xhigh worker to the next dependency-ready complete wave. Existing ASM interfaces do not force a wait for unrelated conversions.
+NINE/S2/S5/S4/Q5, complete Q7, DB10 animation and Q1 terrain are accepted; released worker ownership stays retired. Q7 commit78826618 and final proof6155CE8A remain protected. Active fresh top-level Sol 6.1/xhigh workers own complete S1 and Q2 privately; S1 remains the production successor pending explicit transfer. SwiftGlen retains only final recording/commit and sole production duties until release. S3/Q3/Q4/Q6 retain their stated preparation and every dependency gate. After a worker's complete assigned wave is accepted and ownership released, the Director immediately dispatches a fresh top-level Sol6.1/xhigh worker to the next dependency-ready complete wave. Existing ASM interfaces do not force a wait for unrelated conversions.
 
 The sole production writer integrates one complete wave at a time. Drain only native commands affected by actual shared-input changes or canonical verification, then promptly release them. Every assigned member must meet PURE_C, unique C ownership, placement, actual relocation, target-byte and complete-ROM gates in one final wave verification; structural changes retain audit and independent review. Preserve user pauses and original coupled bodies/data. This planning document grants no tool changes or pushes.
 

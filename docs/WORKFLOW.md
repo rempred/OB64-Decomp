@@ -49,7 +49,8 @@ Read-only inventory is available through:
 
 `node tools/scratch-retention.js --root <absolute-diff-root> --dry-run --docs <absolute-docs-root> --memory <absolute-memory-root> --mail <absolute-project-mail-archive>`
 
-Repeat reference options to cover all relevant roots. Missing, unreadable or unsafe
+The --mail option above reads preserved historical archives only; it is not an operational
+Mail dependency. Repeat reference options to cover all relevant roots. Missing, unreadable or unsafe
 inputs are exposed as incomplete, protecting affected data. Supplied-root coverage
 is not proof that every current/best/pinned/live reference has been found. The
 inventory recognizes full diff names/paths, bare 13-digit timestamps and a 6-hex
@@ -396,7 +397,8 @@ by itself a blocking dependency.
 
 Preserve the best candidate and useful intermediates, then revisit the unresolved mismatch,
 the assumptions behind closed hypotheses, relevant target/caller/data evidence and current
-research intake. Consult Claude/GoldOx directly with a specific question and the source-bound
+research intake. Consult the worker-lifetime paired Claude session through `tools/consult_claude.py`
+with a specific question and the source-bound
 evidence that makes it useful. Continue independent reconstruction while awaiting that reply;
 consultation is not a blanket stop. The worker and Claude choose the next meaningful source
 hypothesis or evidence question. The Director handles repository, service, coordination and
@@ -419,7 +421,7 @@ continue unaffected authorized work. "Need more ideas" or "need the original sta
 alone does not establish such a dependency. A proposed tooling remedy retains the existing
 Sol/Claude agreement, Director approval, audit and independent review requirements.
 
-When an existing thread or inbox watcher reports an unfinished active worker stopped, the
+When an existing native thread stop/attention watcher reports an unfinished active worker stopped, the
 Director checks the cursor, process state and any actual hold. If it stopped only for lack
 of ideas, resume that same assignment and its worker/Claude investigation. Do not convert
 the stop into an indefinite hold or replace the worker before its complete assignment is
@@ -429,8 +431,10 @@ or add scheduled tasks to provide continuity.
 
 #### Director event continuity
 
-Use local thread watcher scripts and Agent Mail inbox watchers; never scheduled tasks
-or heartbeat automations. Internal tooling, research and review helpers require the
+After accepted consultation setup, use native Codex collaboration/thread messaging and
+local thread stop/attention watchers; never scheduled tasks or heartbeat automations.
+Agent Mail is no longer an operational transport for this decomp program. Preserve its
+archives as read-only historical evidence; do not modify unrelated global Mail services. Internal tooling, research and review helpers require the
 same reliable continuation coverage as top-level source workers.
 
 1. At assignment, record the helper's real thread ID, role and ownership in the Director
@@ -439,14 +443,14 @@ same reliable continuation coverage as top-level source workers.
    Do not copy another worker's delivery cursor or create a duplicate process. Confirm
    the exact process, destination and fresh status, including a successful read of the
    internal thread. Keep an active collaboration wait until this route is established.
-2. Give the helper the project key and verified Director mail recipient. The helper
-   registers its own identity and sends one clearly labeled startup delivery test;
-   the Director confirms actual inbox-watcher delivery. Never share sender credentials.
-   Approval/scope requests and final handoffs use this watched mail route as well as
-   collaboration. Ordinary progress and experiments remain exception-only.
+2. Give the helper the exact current Director thread identity and tested native route.
+   Send one clearly labeled native startup delivery test and verify actual receipt and
+   stop-watcher wakeup at that destination. Approval/scope requests and final handoffs,
+   including tooling agreements, use this verified native route. Preserve durable retry
+   and deduplication state. Ordinary progress and experiments remain exception-only.
 3. A helper needing a decision preserves evidence, sends the concrete request, and ends
    its turn so the stop/attention monitor is a fallback. A failed send is reported through
-   collaboration and the saved handoff; it is not a reason to wait silently. The Director
+   the other verified native route and the saved handoff; it is not a reason to wait silently. The Director
    checks the monitored stop against actual cursor/process state and reads its handoff.
 4. Before yielding an autonomous coordination turn, handle received completions and
    decisions, or name their concrete owner/dependency/release condition. Confirm every
@@ -685,7 +689,7 @@ After normal acceptance of the complete assigned wave, the Director starts a fre
 worker using `gpt-6.1-sol` with reasoning `xhigh`. Retain the current top-level/private-worker
 arrangement and single production writer. Do not fork the outgoing conversation's full history.
 Release its source/private-root ownership before reuse, stop its retired watchers, and attach
-the replacement's own mail and stop monitoring without copying delivery state. A private
+the replacement's own native message and stop monitoring without copying delivery state. A private
 candidate packet alone is not wave acceptance; coordinate its normal production integration
 before treating that wave as completed. Integrating another worker's wave does not complete
 the production writer's own unfinished assignment.
@@ -699,9 +703,11 @@ The new worker's initial prompt must start work immediately and include:
   research-intake commands; publish reusable private observations through the existing shared
   research commands and maintain the lesson index without creating another archive;
 - the concrete first target/experiment and the existing concise continuation note;
-- Agent Mail connection/project key, registration under its own identity, verified Claude
-  recipient `GoldOx`, and Astra's director route. Save credentials privately. A specific stuck
-  question goes directly to Claude; ordinary matching does not wait for routine review;
+- inherited worker identity, its paired Claude wrapper instructions and the verified native
+  route to the exact current Director thread with tested stop/attention wakeup. The Director
+  is Astra and owns infrastructure approval; independent exact-code review remains separate.
+  A specific stuck question goes to the paired Claude session; ordinary matching does not
+  wait for routine review;
 - the normal one-target loop, concurrent private checks, complete-wave verifier, and the
   exception-only reporting policy in `AGENTS.md`.
 
@@ -938,3 +944,7 @@ Edit the group's one authored translation unit, then run `node tools/diff.js <me
 The canonical diff compares the selected complete owner and freshly links all active members. Group admission requires its reviewed raw text and relocation contract. Changing that contract is explicit provisional source-wave work; failed producer checks must not be described as an exact diff. The optional standalone workbench rejects grouped members until it supports complete group candidates.
 
 Strict verification recreates group artifacts and retains separate member proofs. One group object contributes each accepted owner section exactly once. A complete wave receives one final verifier; neither tooling acceptance nor a successful isolated group fixture accepts production members.
+
+The deferred historical storage pilot is not authorized by consultation cutover. Its old
+Mail-based operator-GO protocol cannot be used after cutover; a separately scoped, reviewed
+native authorization correction is required before any pilot execution.

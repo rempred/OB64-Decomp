@@ -9,7 +9,8 @@ const scratchRetention = require('./lib/scratch_retention');
 const { compilationInputBytes } = require('./lib/source_policy');
 const {
   ROOT,
-  assertBuildLocations,
+  assertBuildOutputLocation,
+  assertBuildPathSeparation,
   copyPhase7Objects,
   linkPhase8,
   pathIndependentRuntime,
@@ -266,6 +267,7 @@ function runDiff(argv) {
       const suffix = `${Date.now()}-${crypto.randomBytes(3).toString('hex')}`;
       const root = path.join(context.localTools.workRoot, 'diff');
       output = path.join(root, `${target.symbol}-${suffix}`);
+      assertBuildOutputLocation(output);
       scratch = scratchRetention.begin({ root, output });
       const accounting = scratchRetention.accounting(root, scratch.config);
       for (const warning of accounting.warnings) console.warn(warning);
@@ -275,7 +277,7 @@ function runDiff(argv) {
       // The provisional diff slot does not budget a new baseline build.
       onStep: () => { throw new Error('Diff storage admission requires an existing reusable baseline; run separately budgeted setup before retrying'); },
     }));
-    assertBuildLocations(output, baseline.phase7Output);
+    assertBuildPathSeparation(output, baseline.phase7Output);
 
     measure('print-start', () => console.log(`Compiling ${target.symbol}...`));
     const runtimeOptions = {

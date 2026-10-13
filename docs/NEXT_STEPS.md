@@ -6,7 +6,7 @@ This file is the active queue only. Changing counts belong in `node tools/status
 
 The Director includes the four tips below in every new matching worker's initial
 prompt tonight, alongside its complete assignment and existing workflow. Current
-workers receive the same advice through Agent Mail. These replace the earlier
+workers receive the same advice through native Codex messaging. These replace the earlier
 eight-tip advice for this overnight trial; they are not additional rules or
 approval gates. Continue the assigned work without acknowledgement, new reporting,
 mandatory pass-dump studies or extra verification. Joe will assess usefulness
@@ -22,7 +22,9 @@ tomorrow using the existing experiment records.
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
-**October13 continuation:** Complete Q7 is accepted2935 and committed78826618 after all ten PURE_C/ownership/relocation/target/full-ROM gates passed at CURRENTF6908CF6. BoldHollow's ownership and routes are retired; drain2928 is released. SwiftGlen retains production and the unfinished complete animation wave. Fresh top-level Sol6.1/xhigh Q1, chat01a13403-d46f-7d20-9dc5-7149ecb652a6, owns the complete three-function terrain family and all26 tables with existing structural gates preserved. The [current roster](Plans/remaining-program-scope-20261011.md) and Director cursor supersede the historical worker/queue states below. No push or program expansion is authorized.
+**October 13 current continuation:** Complete DB10 animation and Q1 terrain are accepted by Astra at CURRENT `355186C5` against audit handoff `0D0A2FB5`; all three animation bodies and all 15 coupled Q1 members passed their complete-wave gates. Q1 preserves 26 compiler table occurrences across three physical auxiliary rows r2607/r2609/r2611 (11/11/4), logical uses (10/10/6), and 337 pointers. S1 chat `01a13761-1df5-7b53-9e57-595cc7e3aaf3` owns the complete descriptor/group loader in `build/matching/s1-descriptor-261013/` and remains private until explicit production transfer. Q2 chat `01a13761-1167-7021-9420-cb2904800a3d` owns the complete placement pair in `build/matching/q2-placement-261013/`. Both are fresh top-level Sol 6.1/xhigh workers with verified native startup and stop/attention routes. SwiftGlen retains only final record/commit and production duties until explicit release; CalmSquirrel is retired. The [generated current roster](Plans/remaining-program-scope-20261011.md) owns remaining totals and preserves every boundary, tail, table, conditional producer and interface exclusion. Prior audit drain is released for supported disjoint private checks. Canonical integration stays serialized. No push or scope expansion is authorized. Native Codex routes and per-worker paired Claude remain the operational communication path.
+
+**Historical scheduling below is reference only; the current continuation and Director cursor supersede its worker/queue states.**
 
 **Complete remaining scope, October11:** the Director's
 [remaining-program roster](Plans/remaining-program-scope-20261011.md) now binds every
@@ -47,10 +49,9 @@ and pushed to origin/main at https://github.com/rempred/OB64-Decomp.git. Indepen
 `ls-remote` confirmed that exact hash. The requested push is fulfilled.
 
 **Joe's October11 correction:** never use scheduled tasks or heartbeat automations.
-The Director deleted `ob64-director-continuity`; existing thread watcher scripts,
-Agent Mail inbox watchers provide continuity. Internal workers also require their own
-stop/attention monitor and tested outgoing mail for approvals and final handoffs;
-collaboration alone is insufficient. See [Director event continuity](WORKFLOW.md#director-event-continuity).
+The Director deleted `ob64-director-continuity`; existing native stop/attention
+watchers provide continuity. Internal workers also require a tested native Director
+message route for approvals and final handoffs; chat history alone is insufficient. See [Director event continuity](WORKFLOW.md#director-event-continuity).
 The Director-imposed indefinite W5/W7 holds are lifted: the current owners below
 resume their complete assignments, with ordinary matching decisions and help owned
 by the worker and Claude/GoldOx. Preserve every best source and closed control.

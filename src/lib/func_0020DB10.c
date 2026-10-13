@@ -125,6 +125,17 @@ static __inline__ void *scene_actor(u32 index, int offset)
     if (!WORD(scene + offset,0x20C)) return 0;
     return scene + (offset + 0x1C4);
 }
+/* Keep the ordinal conversion: it retains GCC's unused predicate slot while
+ * the zero-based caller counter shares its register with the later scans. */
+static __inline__ void *scene_actor_ordinal(u32 visit, int offset)
+{
+    u8 *scene;
+    visit--;
+    if (visit >= 20) return 0;
+    scene = D_801CE8BC;
+    if (!WORD(scene + offset,0x20C)) return 0;
+    return scene + (offset + 0x1C4);
+}
 /* Adjacent half-open bands reuse the boundary already loaded on that path. */
 static __inline__ u8 remap_token(float position, u8 input, const double *bands)
 {
@@ -153,8 +164,12 @@ void func_0020DB10(int selector)
     int latch, outputCount, slot, outputOffset, index;
     void *actor;
     u8 *selection, *row, *auxiliary;
-    u32 sourceId; u8 token;
-    u32 count, actorIndex;
+    /* Source IDs and the later collection count have disjoint lifetimes.
+     * Reuse keeps GCC's saved-register allocation; sourceByte retains the
+     * byte-width call argument from the same input load. */
+    u32 sourceId;
+    u8 token;
+    u32 actorIndex;
 
     WORD(D_801CE8BC,0x5124) = (int)func_0020D9C4;
     WORD(D_801CE8BC,0x5128) = -0x11D0;
@@ -168,7 +183,7 @@ void func_0020DB10(int selector)
         
         slot = 0;
         while (slot < 5) {
-            u8 selected = *(u8 *)0x801976E8; u8 rowId;
+            u8 selected = *(u8 *)0x801976E8; u8 rowId, sourceByte;
             selection = D_801971F0 + selected * 0x19;
             rowId = (slot + selection)[2];
             if (rowId) {
@@ -183,13 +198,14 @@ void func_0020DB10(int selector)
                 }
                 position = *(float *)0x801976EC;
                 token = remap_token(position, (slot + selection)[7], (double *)0x801D05E0);
-                sourceId = (slot + selection)[2];
+                sourceByte = (slot + selection)[2];
+                sourceId = sourceByte;
                 if (sourceId < 100) {
                     if ((HALF(row,0x18) != 0) | (selector != 0)) {
                         if (*(u8 *)0x801976E8 < 30) {
                             COPY_ROW(actor, D_80193BC0 + sourceId * 0x38, sourceId);
                         } else {
-                            func_0020C908(actor, sourceId);
+                            func_0020C908(actor, sourceByte);
                         }
                         if (!BYTE(D_801CE8BC,0x6084) && (FLAGS(actor) & 2)) {
                             func_00023780(actor, 0xF8);
@@ -251,7 +267,7 @@ next_slot_0:
         latch = 0;
         slot = 0;
         while (slot < 5) {
-            u8 selected = *(u8 *)0x801976DC; u8 rowId;
+            u8 selected = *(u8 *)0x801976DC; u8 rowId, sourceByte;
             selection = D_801971F0 + selected * 0x19;
             rowId = (slot + selection)[2];
             if (rowId) {
@@ -269,13 +285,14 @@ next_slot_0:
                 }
                 position = *(float *)0x801976E0;
                 token = remap_token(position, (slot + selection)[7], (double *)0x801D0610);
-                sourceId = (slot + selection)[2];
+                sourceByte = (slot + selection)[2];
+                sourceId = sourceByte;
                 if (sourceId < 100) {
                     if ((HALF(row,0x18) != 0) | (selector != 0)) {
                         if (*(u8 *)0x801976DC < 30) {
                             COPY_ROW(actor, D_80193BC0 + sourceId * 0x38, sourceId);
                         } else {
-                            func_0020C908(actor, sourceId);
+                            func_0020C908(actor, sourceByte);
                         }
                         if (!BYTE(D_801CE8BC,0x6084) && (FLAGS(actor) & 2)) {
                             func_00023780(actor, 0xF8);
@@ -321,149 +338,101 @@ next_slot_1:
         }
     }
 
-    count = 0;
+    sourceId = 0;
     {
-        int sortOffset;
-        register int *sourceBase asm("$22");
-        /* Assembly-owned frame reservations, never read by C. One occupies a
-         * late reload home; the other conflicts with it in the frame register. */
-        int frameReservation, frameRegister;
-        u32 contextPreviousBase, resourcePreviousBase;
-        sortOffset = 0;
-        sourceBase = sources;
-        /* Integer predecessor addresses are dereferenced only with shift >= 1. */
-        contextPreviousBase = (u32)contexts - 4u;
-        resourcePreviousBase = (u32)resources - 4u;
-        /* Clear the real actor index after its consumed bases are materialized.
-         * The memory boundary retains the two compiler-owned reload-home stores. */
-        asm ("move %0,$0" : "=r" (actorIndex)
-             : "g" (sourceBase), "g" (contextPreviousBase), "g" (resourcePreviousBase) : "memory");
+    int sortOffset;
+    sortOffset = 0;
+    actorIndex = 0;
+    while (actorIndex < 20) {
+        actor = scene_actor_ordinal(actorIndex + 1u, sortOffset);
+        if (actor) {
+            u32 key, shift; int context;
+            int variant, flag10, flag8;
+            variant = func_00045934(HALF(actor,0x36), HALF(actor,0x38), HALF(actor,0x3A), HALF(actor,0x3C)) & 0xFFFF;
+            flag8 = (FLAGS(actor) >> 8) & 1;
+            flag10 = (FLAGS(actor) >> 10) & 1;
+            for (index = 0; index < sourceId; index++) {
+                if (WORD(actor,0x48) == sources[index] && variant == variants[index] &&
+                    flag10 == flag10s[index] && flag8 == flag8s[index]) break;
+            }
+            if (index < sourceId) goto next_actor;
+            {
+                key = func_002015C8(WORD(actor,0x48), WORD(actor,0x4C), flag10, flag8);
+                for (index = 0; index < sourceId; index++) {
+                    if (key < resources[index]) break;
+                }
+                for (shift = sourceId; index < shift; shift--) {
+                    sources[shift] = sources[shift - 1];
+                    contexts[shift] = contexts[shift - 1];
+                    resources[shift] = resources[shift - 1];
+                    variants[shift] = variants[shift - 1];
+                    flag10s[shift] = flag10s[shift - 1];
+                    flag8s[shift] = flag8s[shift - 1];
+                }
+                sources[shift] = WORD(actor,0x48);
+                context = WORD(actor,0x4C);
+                sourceId++;
+                resources[shift] = key;
+                variants[shift] = variant;
+                flag10s[shift] = flag10;
+                flag8s[shift] = flag8;
+                contexts[shift] = context;
+            }
+        }
+next_actor:
+        actorIndex++;
+        sortOffset += 0xF8;
+    }
+    }
+    if (sourceId) {
+        actorIndex = 0;
+        while (actorIndex < sourceId) {
+            u32 run = 1;
+            /* Retail compares run with the total count even after actorIndex advances. */
+            while (run < sourceId && resources[actorIndex + run] == resources[actorIndex]) run++;
+            func_00207658(sources + actorIndex, contexts + actorIndex, flag8s + actorIndex,
+                          flag10s + actorIndex, variants + actorIndex, run);
+            actorIndex += run;
+        }
+        func_002073CC(5, 0);
+        func_0021088C();
+        {
+        int policyOffset; void *policyActor;
+        sourceId = 0;
+        policyOffset = 0;
         do {
-            u8 *scene = D_801CE8BC;
-            if (!WORD(scene + sortOffset,0x20C)) actor = 0;
-            else actor = scene + (sortOffset + 0x1C4);
-            if (actor) {
-                u32 key, shift; int context;
-                int variant, flag10, flag8;
-                variant = func_00045934(HALF(actor,0x36), HALF(actor,0x38), HALF(actor,0x3A), HALF(actor,0x3C)) & 0xFFFF;
-                flag8 = (FLAGS(actor) >> 8) & 1;
-                flag10 = (FLAGS(actor) >> 10) & 1;
+            policyActor = scene_actor(sourceId, policyOffset);
+            if (policyActor && !((FLAGS(policyActor) >> 1) & 1) &&
+                !func_0021062C(WORD(policyActor,0x48), WORD(policyActor,0x4C), 4)) {
+                int side = func_0020C014(policyActor);
+                u8 *status = &D_801976E8;
+                if (side) status -= 0xC;
+                if (status[1] & 2) {
+                    FLAGS(policyActor) |= 4;
+                    func_0020FC7C(policyActor);
+                }
+            }
+            sourceId++;
+            policyOffset += 0xF8;
+        } while ((int)sourceId < 20);
+        }
+        func_00210930();
+        {
+        int updateOffset; void *updateActor;
+        actorIndex = 0;
+        updateOffset = 0;
+        do {
+            updateActor = scene_actor(actorIndex, updateOffset);
+            if (updateActor) {
                 index = 0;
-                if (index < count) {
-                for (; index < count; index++) {
-                    if (WORD(actor,0x48) == sources[index] && variant == variants[index] &&
-                        flag10 == flag10s[index] && flag8 == flag8s[index]) break;
-                }
-                }
-                if (index < count) goto next_actor;
-                {
-                    key = func_002015C8(WORD(actor,0x48), WORD(actor,0x4C), flag10, flag8);
-                    for (index = 0; index < count; index++) {
-                        if (key < resources[index]) break;
-                    }
-                    shift = count;
-                    if (index < shift) {
-                        /* Keep each real predecessor base local to this guarded
-                         * shift, then walk its integer cursor backwards. Separate
-                         * base temporaries retain the pinned induction history. */
-                        u32 variantCursor, flag10Cursor, flag8Cursor;
-                        u32 contextCursor;
-                        register u32 resourceCursor asm("$5");
-                        { u32 base;
-                          base = (u32)flag8s - 4u;
-                          flag8Cursor = shift * 4u + base; }
-                        { u32 base;
-                          base = (u32)flag10s - 4u;
-                          flag10Cursor = shift * 4u + base;
-                          resourceCursor = shift * 4u + resourcePreviousBase; }
-                        { u32 base;
-                          base = (u32)variants - 4u;
-                          variantCursor = shift * 4u + base;
-                          contextCursor = shift * 4u + contextPreviousBase; }
-                        do {
-                        sources[shift] = sources[shift - 1];
-                        contexts[shift] = *(int *)contextCursor;
-                        resources[shift] = *(u32 *)resourceCursor;
-                        variants[shift] = *(int *)variantCursor;
-                        flag10s[shift] = *(int *)flag10Cursor;
-                        flag8s[shift] = *(int *)flag8Cursor;
-                        contextCursor -= 4u;
-                        resourceCursor -= 4u;
-                        variantCursor -= 4u;
-                        flag10Cursor -= 4u;
-                        flag8Cursor -= 4u;
-                        shift--;
-                        } while (index < shift);
-                    }
-                    sources[shift] = WORD(actor,0x48);
-                    context = WORD(actor,0x4C);
-                    count++;
-                    resources[shift] = key;
-                    variants[shift] = variant;
-                    flag10s[shift] = flag10;
-                    flag8s[shift] = flag8;
-                    contexts[shift] = context;
-                }
+                do {
+                    func_001F114C(updateActor);
+                    index++;
+                } while (index < 10);
             }
-    next_actor:
             actorIndex++;
-            sortOffset += 0xF8;
-        } while (actorIndex < 20);
-        if (count) {
-            asm volatile ("" : "=g" (frameReservation), "=g" (frameRegister));
-            actorIndex = 0;
-            while (actorIndex < count) {
-                u32 run = 1;
-                /* The original compares run with total count, not count - actorIndex. */
-                while (run < count && resources[actorIndex + run] == resources[actorIndex]) run++;
-                func_00207658(sources + actorIndex, contexts + actorIndex, flag8s + actorIndex,
-                              flag10s + actorIndex, variants + actorIndex, run);
-                actorIndex += run;
-            }
-            func_002073CC(5, 0);
-            func_0021088C();
-            {
-            int policyOffset; void *policyActor;
-            count = 0;
-            policyOffset = 0;
-            do {
-                policyActor = scene_actor(count, policyOffset);
-                if (policyActor && !((FLAGS(policyActor) >> 1) & 1) &&
-                    !func_0021062C(WORD(policyActor,0x48), WORD(policyActor,0x4C), 4)) {
-                    int side = func_0020C014(policyActor);
-                    u8 *status = &D_801976E8;
-                    if (side) status -= 0xC;
-                    if (status[1] & 2) {
-                        FLAGS(policyActor) |= 4;
-                        func_0020FC7C(policyActor);
-                    }
-                }
-                count++;
-                policyOffset += 0xF8;
-            } while ((int)count < 20);
-            }
-            func_00210930();
-            {
-            int updateOffset; void *updateActor;
-            actorIndex = 0;
-            updateOffset = 0;
-            do {
-                updateActor = scene_actor(actorIndex, updateOffset);
-                if (updateActor) {
-                    index = 0;
-                    do {
-                        func_001F114C(updateActor);
-                        index++;
-                    } while (index < 10);
-                }
-                actorIndex++;
-                updateOffset += 0xF8;
-            } while ((int)actorIndex < 20);
-            }
-            /* All real C values are dead here. Exclude saved registers from the
-             * opaque reservations; no instruction or C object access is emitted. */
-            asm volatile ("" : : : "$16", "$17", "$18", "$19", "$20", "$21", "$22", "$23");
-            asm volatile ("" : : "g" (frameReservation), "g" (frameRegister));
+            updateOffset += 0xF8;
+        } while ((int)actorIndex < 20);
         }
     }
 }

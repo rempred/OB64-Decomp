@@ -950,10 +950,18 @@ function isInside(candidate, root) {
   return resolvedCandidate === resolvedRoot || resolvedCandidate.startsWith(resolvedRoot + path.sep);
 }
 
-function assertBuildLocations(output, phase7Output) {
+function assertBuildOutputLocation(output) {
   if (isInside(output, ROOT)) fail('Phase 8 build output must remain outside the integration repository');
+}
+
+function assertBuildPathSeparation(output, phase7Output) {
+  assertBuildOutputLocation(output);
   if (isInside(phase7Output, ROOT)) fail('Phase 7 input must remain outside the integration repository');
   if (path.resolve(output).toLowerCase() === path.resolve(phase7Output).toLowerCase()) fail('Phase 7 and Phase 8 outputs must differ');
+}
+
+function assertBuildLocations(output, phase7Output) {
+  assertBuildPathSeparation(output, phase7Output);
   if (fs.existsSync(output) && fs.readdirSync(output).length !== 0) fail('Phase 8 build output must be absent or empty');
   ensureDir(output);
 }
@@ -4616,6 +4624,8 @@ module.exports = {
   ROOT,
   adjustSectionAssembly,
   assertBuildLocations,
+  assertBuildOutputLocation,
+  assertBuildPathSeparation,
   auxiliaryRelocationRecords,
   compareLinkedTargetBytes,
   compareLinkedAuxiliaryBytes,

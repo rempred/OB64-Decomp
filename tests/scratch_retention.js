@@ -223,6 +223,18 @@ test('escaping paths, junction ancestors and hardlinked records are rejected wit
   assert.equal(fs.readFileSync(path.join(outside, 'proof.txt'), 'utf8'), 'evidence');
 });
 
+// Pure fixture geometry only; unchanged diff_admission tests the real guards and call order.
+function fixtureGeometry(root) {
+  function assertBuildOutputLocation(output) {
+    assert.equal(path.dirname(path.resolve(output)), path.join(root, 'diff'), 'fixture output geometry');
+  }
+  function assertBuildPathSeparation(output, baseline) {
+    assertBuildOutputLocation(output);
+    assert.equal(path.resolve(baseline), path.resolve(root), 'fixture baseline geometry');
+    assert.notEqual(path.resolve(output), path.resolve(baseline), 'fixture distinct geometry');
+  }
+  return { assertBuildOutputLocation, assertBuildPathSeparation };
+}
 function stubbedDiff({ free = () => 1000, missingBaseline = false, failPhase = null, failRelease = false } = {}) {
   const root = fixture(), events = [], authored = Buffer.from('int producer(void){return 1;}\n');
   fs.mkdirSync(path.join(root, 'src')); fs.mkdirSync(path.join(root, 'build'));
@@ -241,7 +253,7 @@ function stubbedDiff({ free = () => 1000, missingBaseline = false, failPhase = n
     './lib/source_policy': { compilationInputBytes: () => authored },
     './lib/text_contract': { withObjectEvidenceMemo: callback => callback(), linkContext: () => ({ canonicalBaserom: Buffer.alloc(4) }),
       recordsForTarget: () => ({}), finishLinkContext: () => phase('identity') },
-    './lib/phase8_matching_c': { ROOT: root, assertBuildLocations() {}, copyPhase7Objects() { phase('copy'); return { linkedObjects: [], replacements: [] }; },
+    './lib/phase8_matching_c': { ROOT: root, ...fixtureGeometry(root), copyPhase7Objects() { phase('copy'); return { linkedObjects: [], replacements: [] }; },
       linkPhase8: () => phase('link'), pathIndependentRuntime() {}, runTargetAsmDiffer: () => ({ exact: false, asmDifferPairwiseExact: false, rawBytesExact: false }),
       sha256File() {}, verifyCompiler: () => ({}), verifyPhase7Input: () => ({}), verifyRuntimeTools: () => runtime,
       writeLayout() {}, writeObjectManifest: () => ({}), loadCanonicalBaserom: () => Buffer.alloc(4) },
@@ -263,6 +275,15 @@ function stubbedDiff({ free = () => 1000, missingBaseline = false, failPhase = n
 }
 
 test('diff integration checks reserve before baseline and each heavy phase; missing baseline never builds', () => {
+  // No files/events are needed to falsify the mocks, regardless of fixture-root location.
+  const geometryRoot = path.resolve(base, 'geometry-only'), geometry = fixtureGeometry(geometryRoot);
+  geometry.assertBuildPathSeparation(path.join(geometryRoot, 'diff/run'), geometryRoot);
+  for (const [output, baseline, message] of [
+    [path.join(geometryRoot, 'wrong/run'), geometryRoot, 'fixture output geometry'],
+    [path.join(geometryRoot, 'diff/run'), path.join(geometryRoot, 'wrong'), 'fixture baseline geometry'],
+    [geometryRoot, geometryRoot, 'fixture output geometry'],
+  ]) assert.throws(() => geometry.assertBuildPathSeparation(output, baseline), error => error.message.includes(message)
+    && !/free-space|separately budgeted|original compile failure/.test(error.message));
   const low = stubbedDiff({ free: () => 29 });
   assert.throws(low.run, /free-space/); assert(!low.events.includes('baseline'));
   const missing = stubbedDiff({ missingBaseline: true });

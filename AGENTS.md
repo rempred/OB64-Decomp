@@ -71,21 +71,21 @@ research helpers use Astra Medium (`gpt-6-astra`, reasoning `medium`) unless Joe
 
 The Director keeps assignments moving, resolves repository blockers, approves and delegates
 tooling changes, and coordinates integration and its required checks. Limit the Director's own
-function matching and experimentation. Workers own ordinary matching and ask Claude/GoldOx
-directly when they need help choosing what to try. Tooling approval remains with the Director
+function matching and experimentation. Workers own ordinary matching and use their paired Claude session through
+`tools/consult_claude.py` when they need help choosing what to try. Tooling approval remains with the Director
 under the agreement, audit and review requirements below.
 
 Never use scheduled tasks or heartbeat automations for this program. Use the existing
-thread watcher scripts and Agent Mail inbox watchers for event-driven continuity.
+native thread watcher scripts for event-driven continuity. After accepted consultation setup,
+this decomp program uses native Codex collaboration/thread messaging, not Agent Mail.
 Every assigned internal worker, including tooling, research and review helpers, needs
-its own verified thread stop/attention route to the Director and a tested outgoing
-Agent Mail route to the watched Director inbox. Collaboration messages supplement
-these routes; a completion recorded in chat history is not proof that an idle Director
-will wake. Verify actual delivery, preserve retry/deduplication state, and register
+its own verified native thread stop/attention route and tested native message route to
+the exact current Director thread. A completion recorded in chat history alone is not
+proof that an idle Director will wake. Verify actual delivery, preserve retry/deduplication state, and register
 only currently assigned workers. Retire routes when the assignment is accepted and
 ownership released; do not restart retired workers.
 
-Send actionable approval/scope requests through the watched inbox immediately, with
+Send actionable approval/scope requests through the verified native Director route immediately, with
 the concrete decision and evidence, and send the final handoff before ending the turn.
 When blocked on a Director decision, end after sending so the stop watcher also wakes
 the Director; do not wait silently for a collaboration reply. The Director processes
@@ -113,10 +113,13 @@ a blocker needing director action, a shared-input/build coordination need, or an
 requested answer. Do not send per-experiment, per-function, provisional-match, target-transition,
 or routine status messages; keep those in the existing cursor and research records. Routine
 instructions need no acknowledgement unless ownership or a requested drain must be confirmed.
-When genuinely stuck, consult Claude/GoldOx with a specific question and source-bound evidence,
-using the worker's own verified Agent Mail identity. No routine per-function review is required.
-Tooling escalation retains explicit Sol/Claude agreement and Astra's approval before changes.
-Fresh-worker instructions must include this communication policy and working mail routing.
+When genuinely stuck, consult the worker's paired Claude session with a specific question and
+source-bound evidence through `tools/consult_claude.py`. Preserve the inherited worker identity;
+never create a replacement session on failure. Route failures and tooling agreements through
+the worker's verified native Director route with session/attempt/result evidence. No routine per-function review is required.
+Tooling escalation retains explicit Sol/Claude agreement and the Director's approval before changes.
+The Director is Astra; independent exact-code review remains a separate reviewer responsibility.
+Fresh-worker instructions must include this communication policy and verified native Director routing.
 
 Running out of matching ideas is part of the unfinished matching assignment, not grounds for
 an indefinite hold, ownership release or worker replacement. A Claude/GoldOx no-lead reply or

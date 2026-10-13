@@ -128,10 +128,43 @@ const rejected=[];
 function reject(name,callback,pattern){assert.throws(callback,pattern,name);rejected.push(name);}
 const output=path.join(root,'compiled');fs.mkdirSync(output);
 const classifications=policy.classifyTargetSources(targets);
+// Independent oracle: compiler.s blocks and actual native bytes/relocations, not the helper under test.
+const rawTableRelocations=groups.relocations(raw).filter(r=>r.owner.name==='.rodata');
+const expectedOccurrences=section=>{
+  const payload=segments.find(s=>s.kind==='payload'&&s.outputSection===section.outputSection);assert(payload);
+  let end=0;
+  return payload.occurrences.map(o=>{
+    const offset=o.offset-payload.offset,bytes=rawRo.subarray(o.offset,o.offset+o.bytes);
+    const rels=rawTableRelocations.filter(r=>r.place>=o.offset&&r.place<o.offset+o.bytes).map(r=>{
+      assert.equal(r.type,2);assert.equal(raw.sections[r.symbol.sectionIndex].name,'.text');
+      return {offset:hex(r.place-payload.offset),type:'R_MIPS_32',symbol:'.text',addend:hex(rawRo.readUInt32BE(r.place)),section:'.rel.rodata'};
+    });
+    assert.equal(rels.length,o.bytes/4);
+    const padding=rawRo.subarray(payload.offset+end,o.offset);assert(padding.every(b=>b===0));
+    const expected={label:o.label,offset:hex(offset),bytes:o.bytes,entries:o.bytes/4,alignment:ro.alignment,
+      alignmentDirectives:o.alignmentDirectives,
+      ...(offset>end?{paddingBefore:{offset:hex(end),bytes:offset-end,expectedSha256:hash(padding)}}:{}),
+      objectSha256:hash(bytes),acceptedObjectSha256:hash(bytes),expectedLinkedSha256:hash(linkedRo.subarray(o.offset,o.offset+o.bytes)),
+      loadRelevantRelocationsNormalized:rels};end=offset+o.bytes;return expected;
+  });
+};
+assert(targets.some(t=>t.auxiliarySections.some(s=>Array.isArray(s.compilerOccurrences)&&s.compilerOccurrences.length>=2)), 'nonvacuous grouped occurrence contract');
+if(!multipleMembers)assert(targets.some(t=>t.auxiliarySections.some(s=>expectedOccurrences(s).some(o=>o.paddingBefore))), 'real internal padding fixture');
+function assertOccurrenceRecords(record,target){
+  for(const value of [record,JSON.parse(JSON.stringify(record))]){
+    assert.equal(value.auxiliarySections.length,target.auxiliarySections.length);
+    for(const section of target.auxiliarySections){
+      const actual=value.auxiliarySections.find(a=>a.outputSection===section.outputSection);assert(actual);
+      assert(Object.hasOwn(actual,'compilerOccurrences'),'required compiled occurrence field');
+      assert.deepEqual(actual.compilerOccurrences,expectedOccurrences(section));
+    }
+  }
+}
 const compiled=[];
 for(const [index,target] of targets.entries()){
   const record=p8.compileTarget({...phase8,targets},target,output,local.compiler,tools.assemblerAbs,tools.objcopyAbs,{classification:classifications.targets[index]});
   const inspected=cache.inspectCompiledTargetArtifacts({phase8,target,classification:classifications.targets[index],files:cache.outputArtifactFiles(output,target)});
+  assertOccurrenceRecords(record,target);assertOccurrenceRecords(inspected,target);
   assert.deepEqual(record,inspected);compiled.push(record);
 }
 fs.mkdirSync(path.join(output,'objects/assembly'),{recursive:true});
@@ -262,9 +295,63 @@ const options={phase8:{...phase8,targets},compiler:local.compiler,verifiedCompil
   preprocessor:classifications.preprocessor,cacheRoot:path.join(root,'cache')};
 let cacheKey;
 for(const expected of ['miss','hit']){const dest=path.join(root,'cache-'+expected);fs.mkdirSync(dest);
-  const value=cache.compileOrReuseTarget({...options,target:targets[0],classification:classifications.targets[0],output:dest});assert.equal(value.cache.status,expected);cacheKey=value.cache.key;}
+  const value=cache.compileOrReuseTarget({...options,target:targets[0],classification:classifications.targets[0],output:dest});assert.equal(value.cache.status,expected);cacheKey=value.cache.key;
+  assertOccurrenceRecords(value.compiled,targets[0]);
+  for(const [index,target] of targets.entries())assertOccurrenceRecords(groups.compiledMember(target,dest,classifications.targets[index]),target);}
 const metadataFile=path.join(cache.cacheEntryPath(options.cacheRoot,targets[0],cacheKey),'metadata.json');
 const metadata=JSON.parse(fs.readFileSync(metadataFile));
+// Omitted old-producer records and forged metadata must fail the unchanged cache consumer.
+const contracted=metadata.compiled.auxiliarySections.find(a=>a.compilerOccurrences);assert(contracted,'cache leader owns an occurrence contract');
+const occurrenceMutations=[['deleted',a=>delete a.compilerOccurrences],['null',a=>a.compilerOccurrences=null],['empty',a=>a.compilerOccurrences=[]],
+ ['duplicate',a=>a.compilerOccurrences.push(a.compilerOccurrences[0])],['reordered',a=>a.compilerOccurrences.reverse()],
+ ['extra',a=>a.compilerOccurrences.push({...a.compilerOccurrences[0],label:'.L999999'})]];
+for(const key of ['label','offset','bytes','entries','alignment','alignmentDirectives','paddingBefore','objectSha256','acceptedObjectSha256','expectedLinkedSha256','loadRelevantRelocationsNormalized','linkedSha256','rawLinkedBytesExact']){
+  occurrenceMutations.push([key,a=>{a.compilerOccurrences[0][key]=key==='rawLinkedBytesExact'?true:'forged';}]);
+}
+for(const [name,mutate] of occurrenceMutations){
+  const changed=structuredClone(metadata);mutate(changed.compiled.auxiliarySections.find(a=>a.outputSection===contracted.outputSection));
+  fs.writeFileSync(metadataFile,JSON.stringify(changed));
+  reject('occurrence metadata '+name,()=>cache.validateCacheEntry({...options,target:targets[0],classification:classifications.targets[0],keyMaterial:metadata.keyMaterial}),/compiled metadata drift/);
+}
+fs.writeFileSync(metadataFile,JSON.stringify(metadata));
+const staleKey=structuredClone(metadata.keyMaterial);
+const mutateIdentity=value=>{if(Array.isArray(value)){for(const v of value)if(mutateIdentity(v))return true;}else if(value&&typeof value==='object'){
+  if(value.path==='tools/lib/compilation_groups.js'){value.sha256='0'.repeat(64);return true;}
+  for(const v of Object.values(value))if(mutateIdentity(v))return true;
+}return false;};
+assert(mutateIdentity(staleKey),'group implementation belongs to key');
+assert.notEqual(cache.sha256Value(staleKey),cacheKey,'old implementation cannot address current entry');
+assert.equal(cache.tryCacheEntry({...options,target:targets[0],classification:classifications.targets[0],keyMaterial:staleKey}).hit,false);
+// Producer helper negatives: mutate measured data or checked contract fields, never demand
+// that this helper independently reconstruct labels/directives/linked hashes from bytes.
+for(const target of targets)for(const section of target.auxiliarySections){
+  const payload=segments.find(s=>s.kind==='payload'&&s.outputSection===section.outputSection);
+  const bytes=rawRo.subarray(payload.offset,payload.offset+payload.bytes),rels=expectedOccurrences(section).flatMap(o=>o.loadRelevantRelocationsNormalized);
+  for(const [name,mutate] of [
+    ['null',a=>a.compilerOccurrences=null],['empty',a=>a.compilerOccurrences=[]],['single',a=>a.compilerOccurrences=a.compilerOccurrences.slice(0,1)],
+    ['object hash',a=>a.compilerOccurrences[0].expectedObjectSha256='0'.repeat(64)],
+    ['duplicate label',a=>a.compilerOccurrences[1].label=a.compilerOccurrences[0].label],
+    ['gap',a=>a.compilerOccurrences[1].offsetNumber+=4],['extent',a=>a.compilerOccurrences[0].bytes+=4],
+    ['entry count',a=>a.compilerOccurrences[0].entries++],['order',a=>a.compilerOccurrences.reverse()],
+    ['extra',a=>a.compilerOccurrences.push({...a.compilerOccurrences[0]})]]){
+    const bad=structuredClone(section);mutate(bad);reject('occurrence contract '+name,()=>p8.verifyAuxiliaryCompilerOccurrences(bytes,rels,bad,'fixture mutation'));
+  }
+  for(const [name,bad] of [['missing',rels.slice(1)],['duplicate',[...rels,rels[0]]],['order',[...rels].reverse()],['moved',[{...rels[0],offset:hex(bytes.length)},...rels.slice(1)]]]){
+    reject('occurrence relocation '+name,()=>p8.verifyAuxiliaryCompilerOccurrences(bytes,bad,section,'fixture mutation'));
+  }
+  const corrupt=Buffer.from(bytes);corrupt[0]^=1;
+  reject('occurrence payload bytes',()=>p8.verifyAuxiliaryCompilerOccurrences(corrupt,rels,section,'fixture mutation'));
+  const padded=section.compilerOccurrences.find(o=>o.paddingBefore);
+  if(padded){const bad=structuredClone(section);bad.compilerOccurrences.find(o=>o.paddingBefore).paddingBefore.bytes++;
+    reject('occurrence padding contract',()=>p8.verifyAuxiliaryCompilerOccurrences(bytes,rels,bad,'fixture mutation'));
+    const corruptPadding=Buffer.from(bytes);corruptPadding[Number(padded.paddingBefore.offset)]=1;
+    reject('occurrence padding bytes',()=>p8.verifyAuxiliaryCompilerOccurrences(corruptPadding,rels,section,'fixture mutation'));
+  }
+}
+const materializedOutput=path.join(root,'group-materialized');fs.mkdirSync(materializedOutput);
+const materialized=cache.compileDiffTargets({...options,output:materializedOutput,requestedTarget:targets[1],
+  classificationBySymbol:new Map(classifications.targets.map(c=>[c.symbol,c]))});
+for(const target of targets)assertOccurrenceRecords(materialized.compiled.get(target.symbol),target);
 for(const key of ['nativeObjectSha256','textProjectedObjectSha256','auxiliaryContract']){
   const changed=structuredClone(metadata);delete changed.compiled.objectEvidence.composition[key];fs.writeFileSync(metadataFile,JSON.stringify(changed));
   reject('stale cache omitted composition '+key,()=>cache.validateCacheEntry({...options,target:targets[0],classification:classifications.targets[0],keyMaterial:metadata.keyMaterial}));

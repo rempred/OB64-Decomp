@@ -189,10 +189,19 @@ const changedReg=p7.parseElf32BigEndian(Buffer.from(result.buffer));changedReg.b
 reject('RO stage metadata conservation',()=>assert.deepEqual(auxiliary.conservedOutsideReadonly(intermediate,bound),auxiliary.conservedOutsideReadonly(changedReg,bound)));
 const output=path.join(root,'compiled');fs.mkdirSync(output);
 const classifications=policy.classifyTargetSources(targets);
+assert(targets.some(t=>t.auxiliarySections.length>0),'real no-occurrence section required');
+function assertNoOccurrences(record,target){
+  assert(target.auxiliarySections.every(s=>!Object.hasOwn(s,'compilerOccurrences')),'fixture truly has no occurrence contract');
+  for(const value of [record,JSON.parse(JSON.stringify(record))]){
+    assert.equal(value.auxiliarySections.length,target.auxiliarySections.length);
+    assert(value.auxiliarySections.every(s=>!Object.hasOwn(s,'compilerOccurrences')),'absence must not become null/empty/own undefined');
+  }
+}
 const compiled=[];
 for(const [index,target] of targets.entries()){
   const record=p8.compileTarget({...phase8,targets},target,output,local.compiler,tools.assemblerAbs,tools.objcopyAbs,{classification:classifications.targets[index]});
   const inspected=cache.inspectCompiledTargetArtifacts({phase8,target,classification:classifications.targets[index],files:cache.outputArtifactFiles(output,target)});
+  assertNoOccurrences(record,target);assertNoOccurrences(inspected,target);
   assert.deepEqual(record,inspected);compiled.push(record);
 }
 fs.mkdirSync(path.join(output,'objects/assembly'),{recursive:true});
@@ -378,7 +387,13 @@ const options={phase8:{...phase8,targets},compiler:local.compiler,verifiedCompil
   preprocessor:classifications.preprocessor,cacheRoot:path.join(root,'cache')};
 let cacheKey;
 for(const expected of ['miss','hit']){const dest=path.join(root,'cache-'+expected);fs.mkdirSync(dest);
-  const value=cache.compileOrReuseTarget({...options,target:targets[0],classification:classifications.targets[0],output:dest});assert.equal(value.cache.status,expected);cacheKey=value.cache.key;}
+  const value=cache.compileOrReuseTarget({...options,target:targets[0],classification:classifications.targets[0],output:dest});assert.equal(value.cache.status,expected);cacheKey=value.cache.key;
+  assertNoOccurrences(value.compiled,targets[0]);
+  for(const [index,target] of targets.entries())assertNoOccurrences(groups.compiledMember(target,dest,classifications.targets[index]),target);}
+const materializedOutput=path.join(root,'group-materialized');fs.mkdirSync(materializedOutput);
+const materialized=cache.compileDiffTargets({...options,output:materializedOutput,requestedTarget:targets[1],
+  classificationBySymbol:new Map(classifications.targets.map(c=>[c.symbol,c]))});
+for(const target of targets)assertNoOccurrences(materialized.compiled.get(target.symbol),target);
 const metadataFile=path.join(cache.cacheEntryPath(options.cacheRoot,targets[0],cacheKey),'metadata.json');
 const metadata=JSON.parse(fs.readFileSync(metadataFile));
 for(const key of ['nativeObjectSha256','textProjectedObjectSha256','auxiliaryContract']){

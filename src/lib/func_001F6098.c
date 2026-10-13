@@ -57,6 +57,36 @@ extern CombatDrawCommand D_801CE980[];
 #define PAIR COMBAT_DRAW_PAIR
 #define FIELD COMBAT_DRAW_FIELD
 
+/* The range mask implements the same low-byte field for all inputs. */
+#define PACK_RGB_BYTE(input, shift) ({ \
+    u32 value = (input); \
+    u32 mask = 255u; \
+    int within = value <= mask; \
+    mask |= -(u32)within; \
+    (value << (shift)) & (mask << (shift)); \
+})
+
+/* Each destination already truncates the coordinate to its field width. */
+#define RANGE_COORDINATE(input, bits) ({ \
+    u32 coordinate = (input); \
+    u32 fieldMask = (1u << (bits)) - 1u; \
+    int within = (coordinate >> (bits)) == 0u; \
+    fieldMask |= -(u32)within; \
+    coordinate & fieldMask; \
+})
+
+/* The u16 half-width already fits this mask. Retaining the equivalent range
+ * guard keeps x0 live until KMC combine removes the mask; without it the old
+ * allocator reverses x0 and remaining-height registers. */
+#define RANGE_COORDINATE_SHIFTED_SUM(input, offset, shift) ({ \
+    u32 coordinate = (input); \
+    u32 coordinateOffset = (offset); \
+    u32 fieldMask = 65535u; \
+    int within = (coordinate >> 16) == 0u; \
+    fieldMask |= -(u32)within; \
+    ((u32)(input) + (coordinateOffset & fieldMask)) << (shift); \
+})
+
 int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount)
 {
     CombatPoseIndexedRecord decoded;
@@ -86,13 +116,7 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
     int remaining, nextRemaining, nextAccumulated, nextNormalRow;
     int row, u0, u1;
     int x0, alpha;
-    /* HYBRID_C: opaque assembly lifetimes reserve the six unaccessed reload
-       homes in the retail frame. Pure C currently omits these two groups;
-       they are not game values or identified original locals. Keep sourceY
-       between the groups. The empty templates emit no loads or stores. */
-    int frameBefore0, frameBefore1, frameBefore2;
-    int sourceY, halfWidth, renderHalfWidth;
-    int frameAfter0, frameAfter1, frameAfter2;
+    int halfWidth, renderHalfWidth;
 
     actor = object->actor;
     poseId = object->field4E;
@@ -104,9 +128,6 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
     if (factor == 0) {
         return 0;
     }
-    asm volatile (""
-        : "=g" (frameBefore0), "=g" (frameBefore1), "=g" (frameBefore2),
-          "=g" (frameAfter0), "=g" (frameAfter1), "=g" (frameAfter2));
     PAIR(0xE7000000, 0);
     PAIR(0xE7000000, 0);
     PAIR(0xE3000A01, 0x00100000);
@@ -159,15 +180,11 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
     finalBlue = inverseZ * ((float)colors[5] - (float)colors[2]) / 380.0f + (float)colors[2];
     {
         float first = blendState.red;
-        PAIR(0xFB000000, (blendState.blue = finalBlue, ((u32)first << 24) | (((u32)blendState.green & 255) << 16) |
-             (((u32)blendState.blue & 255) << 8) | 1));
+        PAIR(0xFB000000, (blendState.blue = finalBlue, ((u32)(u8)(u32)first << 24) | ((u32)(u8)(u32)blendState.green << 16) |
+             ((u32)(u8)(u32)blendState.blue << 8) | 1));
     }
     index = 0;
     while (1) {
-        /* Retain the opaque lifetimes across calls and the loop backedge. */
-        asm volatile ("" :
-            : "g" (frameBefore0), "g" (frameBefore1), "g" (frameBefore2),
-              "g" (frameAfter0), "g" (frameAfter1), "g" (frameAfter2));
         bit10 = func_0020C034(actor);
         if (!func_00205484(firstId, secondId, bit10, func_0020BFF8(actor),
                            poseId, index, &decoded)) {
@@ -206,14 +223,6 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
             func_00201E38(secondary->format, secondary->width);
             remaining = header->height;
             x0 = decoded.record.field_04;
-            {
-                /* Constrain only this real value transition. A function-wide
-                   binding changes later packet scheduling. No instruction is
-                   needed for the matching input/output identity. */
-                register int boundX asm("$23");
-                asm ("" : "=r" (boundX) : "0" (x0));
-                x0 = boundX;
-            }
             top = -decoded.record.field_08;
             right = decoded.record.field_0C + x0;
             flags = decoded.record.field_14;
@@ -240,82 +249,85 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
             } else {
                 row = remaining - strip;
             }
-            left = (short)x0;
-            leftU = (short)u0;
-            rightVertex = (short)(right - 1);
-            rightU = (short)u1;
-            sourceY = -top;
-            /* Keep the full row coordinate separate from its narrowed vertex
-               value, with one definition in each branch. The compiler's local
-               allocation and shared corner-call tail depend on these lifetimes. */
-            do {
-                if (!(flags & 2)) {
-                    int y = top - accumulated;
-                    int bottomY, nextY;
-                    func_002103EC(VERTEX_CURSOR, left, (short)y, leftU, (short)row);
-                    func_002103EC(VERTEX_CURSOR + 1, rightVertex, (short)y, rightU, (short)row);
-                    nextY = y + 1;
-                    bottomY = (short)(nextY - strip);
+            left = (short)RANGE_COORDINATE(x0, 16);
+            {
+                int sourceY;
+                leftU = (short)u0;
+                rightVertex = (short)(right - 1);
+                rightU = (short)u1;
+                sourceY = -top;
+                /* Keep the full row coordinate separate from its narrowed vertex
+                   value, with one definition in each branch. The compiler's local
+                   allocation and shared corner-call tail depend on these lifetimes. */
+                do {
+                    if (!(flags & 2)) {
+                        int y = top - accumulated;
+                        int bottomY, nextY;
+                        func_002103EC(VERTEX_CURSOR, left, (short)y, leftU, (short)row);
+                        func_002103EC(VERTEX_CURSOR + 1, rightVertex, (short)y, rightU, (short)row);
+                        nextY = y + 1;
+                        bottomY = (short)(nextY - strip);
 
-                    func_002103EC(VERTEX_CURSOR + 2, left, bottomY, leftU, (short)(row + strip - 1));
-                    func_002103EC(VERTEX_CURSOR + 3, rightVertex, bottomY, rightU, (short)(row + strip - 1));
-                } else {
-                    int y = top - accumulated;
-                    int bottomY, nextY;
+                        func_002103EC(VERTEX_CURSOR + 2, left, bottomY, leftU, (short)(row + strip - 1));
+                        func_002103EC(VERTEX_CURSOR + 3, rightVertex, bottomY, rightU, (short)(row + strip - 1));
+                    } else {
+                        int y = top - accumulated;
+                        int bottomY, nextY;
 
-                    func_002103EC(VERTEX_CURSOR, left, (short)y, leftU, (short)(row + strip - 1));
-                    func_002103EC(VERTEX_CURSOR + 1, rightVertex, (short)y, rightU, (short)(row + strip - 1));
-                    nextY = y + 1;
-                    bottomY = (short)(nextY - strip);
+                        func_002103EC(VERTEX_CURSOR, left, (short)y, leftU, (short)(row + strip - 1));
+                        func_002103EC(VERTEX_CURSOR + 1, rightVertex, (short)y, rightU, (short)(row + strip - 1));
+                        nextY = y + 1;
+                        bottomY = (short)(nextY - strip);
 
-                    func_002103EC(VERTEX_CURSOR + 2, left, bottomY, leftU, (short)row);
-                    func_002103EC(VERTEX_CURSOR + 3, rightVertex, bottomY, rightU, (short)row);
-                }
+                        func_002103EC(VERTEX_CURSOR + 2, left, bottomY, leftU, (short)row);
+                        func_002103EC(VERTEX_CURSOR + 3, rightVertex, bottomY, rightU, (short)row);
+                    }
 
-                PAIR(0x01004008, (u32)VERTEX_CURSOR);
-                VERTEX_CURSOR += 4;
-                PAIR(0xFD180000 | FIELD(func_00201E9C(header->format, header->width) - 1, 0, 12), (u32)(image + 8));
-                PAIR(0xF5180000 | FIELD((header->width * 2 + 7) >> 3, 9, 9), 0x07000000);
-                PAIR(0xE6000000, 0);
-                PAIR(0xF4000000 | FIELD((u32)row << 2, 0, 12),
-                     0x07000000 | FIELD((u32)(header->width - 1) << 2, 12, 12) | FIELD((u32)(row + strip - 1) << 2, 0, 12));
-                PAIR(0xE7000000, 0);
-                PAIR(0xF5180000 | FIELD((header->width * 2 + 7) >> 3, 9, 9), 0);
-                PAIR(0xF2000000 | FIELD((u32)row << 2, 0, 12),
-                     FIELD((u32)(header->width - 1) << 2, 12, 12) | FIELD((u32)(row + strip - 1) << 2, 0, 12));
-                PAIR(0xFD880000 | FIELD((func_00201E9C(secondary->format, secondary->width) >> 1) - 1, 0, 12), (u32)((u8 *)secondary + 8));
-                PAIR(0xF5880180 | FIELD((halfWidth = header->width, ((halfWidth >> 1) + 7) >> 3), 9, 9), 0x07000000);
-                PAIR(0xE6000000, 0);
-                PAIR(0xF4000000 | FIELD((u32)(x0 + (secondary->width >> 1)) << 1, 12, 12) | FIELD((u32)(sourceY + (secondary->height >> 1) + secondaryOffset + row) << 2, 0, 12),
-                     0x07000000 | FIELD((u32)((x0 + (secondary->width >> 1)) + header->width - 1) << 1, 12, 12) | FIELD((u32)((sourceY + (secondary->height >> 1) + secondaryOffset + row) + strip - 1) << 2, 0, 12));
-                PAIR(0xE7000000, 0);
-                PAIR(0xF5800180 | FIELD((renderHalfWidth = header->width, ((renderHalfWidth >> 1) + 7) >> 3), 9, 9), 0x01000000);
-                PAIR(0xF2000000 | FIELD((u32)(x0 + (secondary->width >> 1)) << 2, 12, 12) | FIELD((u32)(sourceY + (secondary->height >> 1) + secondaryOffset + row) << 2, 0, 12),
-                     0x01000000 | FIELD((u32)((x0 + (secondary->width >> 1)) + header->width - 1) << 2, 12, 12) | FIELD((u32)((sourceY + (secondary->height >> 1) + secondaryOffset + row) + strip - 1) << 2, 0, 12));
-                PAIR(0xF2000000 | FIELD((u32)row << 2, 0, 12),
-                     0x01000000 | FIELD((u32)(header->width - 1) << 2, 12, 12) | FIELD((u32)(row + strip - 1) << 2, 0, 12));
-                PAIR(0x06000602, 0x00000406);
-                /* Named successors preserve the separate overlap updates;
-                   folding strip - 1 across them changes current-toolchain output. */
-                nextAccumulated = accumulated - 1;
-                accumulated = nextAccumulated + strip;
-                if (!(flags & 2)) {
-                    nextNormalRow = row - 1;
-                    row = nextNormalRow + strip;
-                } else {
-                    nextRow = row + 1;
-                    nextRow -= strip;
-                    row = nextRow < 0 ? 0 : nextRow;
-                }
-                nextRemaining = remaining + 1;
-                remaining = nextRemaining - strip;
-                if (remaining < 2) {
-                    break;
-                }
-                if (strip >= remaining) {
-                    strip = remaining;
-                }
-            } while (1);
+                    PAIR(0x01004008, (u32)VERTEX_CURSOR);
+                    VERTEX_CURSOR += 4;
+                    PAIR(0xFD180000 | FIELD(func_00201E9C(header->format, header->width) - 1, 0, 12), (u32)(image + 8));
+                    PAIR(0xF5180000 | FIELD((header->width * 2 + 7) >> 3, 9, 9), 0x07000000);
+                    PAIR(0xE6000000, 0);
+                    PAIR(0xF4000000 | FIELD((u32)row << 2, 0, 12),
+                         0x07000000 | FIELD((u32)(header->width - 1) << 2, 12, 12) | FIELD((u32)(row + strip - 1) << 2, 0, 12));
+                    PAIR(0xE7000000, 0);
+                    PAIR(0xF5180000 | FIELD((header->width * 2 + 7) >> 3, 9, 9), 0);
+                    PAIR(0xF2000000 | FIELD((u32)row << 2, 0, 12),
+                         FIELD((u32)(header->width - 1) << 2, 12, 12) | FIELD((u32)(row + strip - 1) << 2, 0, 12));
+                    PAIR(0xFD880000 | FIELD((func_00201E9C(secondary->format, secondary->width) >> 1) - 1, 0, 12), (u32)((u8 *)secondary + 8));
+                    PAIR(0xF5880180 | FIELD((halfWidth = header->width, ((halfWidth >> 1) + 7) >> 3), 9, 9), 0x07000000);
+                    PAIR(0xE6000000, 0);
+                    PAIR(0xF4000000 | FIELD(RANGE_COORDINATE_SHIFTED_SUM(x0, secondary->width >> 1, 1), 12, 12) | FIELD((u32)(sourceY + (secondary->height >> 1) + secondaryOffset + row) << 2, 0, 12),
+                         0x07000000 | FIELD((u32)((x0 + (secondary->width >> 1)) + header->width - 1) << 1, 12, 12) | FIELD((u32)((sourceY + (secondary->height >> 1) + secondaryOffset + row) + strip - 1) << 2, 0, 12));
+                    PAIR(0xE7000000, 0);
+                    PAIR(0xF5800180 | FIELD((renderHalfWidth = header->width, ((renderHalfWidth >> 1) + 7) >> 3), 9, 9), 0x01000000);
+                    PAIR(0xF2000000 | FIELD((u32)(x0 + (secondary->width >> 1)) << 2, 12, 12) | FIELD((u32)(sourceY + (secondary->height >> 1) + secondaryOffset + row) << 2, 0, 12),
+                         0x01000000 | FIELD((u32)((x0 + (secondary->width >> 1)) + header->width - 1) << 2, 12, 12) | FIELD((u32)((sourceY + (secondary->height >> 1) + secondaryOffset + row) + strip - 1) << 2, 0, 12));
+                    PAIR(0xF2000000 | FIELD((u32)row << 2, 0, 12),
+                         0x01000000 | FIELD((u32)(header->width - 1) << 2, 12, 12) | FIELD((u32)(row + strip - 1) << 2, 0, 12));
+                    PAIR(0x06000602, 0x00000406);
+                    /* Named successors preserve the separate overlap updates;
+                       folding strip - 1 across them changes current-toolchain output. */
+                    nextAccumulated = accumulated - 1;
+                    accumulated = nextAccumulated + strip;
+                    if (!(flags & 2)) {
+                        nextNormalRow = row - 1;
+                        row = nextNormalRow + strip;
+                    } else {
+                        nextRow = row + 1;
+                        nextRow -= strip;
+                        row = nextRow < 0 ? 0 : nextRow;
+                    }
+                    nextRemaining = remaining + 1;
+                    remaining = nextRemaining - strip;
+                    if (remaining < 2) {
+                        break;
+                    }
+                    if (strip >= remaining) {
+                        strip = remaining;
+                    }
+                } while (1);
+            }
             PAIR(0xD8380002, 0x40);
         }
         index++;
