@@ -168,3 +168,89 @@ try {
 const root = fs.mkdtempSync(path.join(p7.ROOT, 'build/tests/active-model-sources-'));
 const report = { status: 'pass', symbolEquivalences, assemblyParts: prepared.model.parts.length, readSites, mutations };
 fs.writeFileSync(path.join(root, 'report.json'), JSON.stringify(report, null, 2) + '\n'); console.log(JSON.stringify({ ...report, output: root }, null, 2));
+
+// Auxiliary logical checks must reuse only the active loader's authenticated callback.
+const projection = require('../tools/lib/auxiliary_projection');
+const logical = require('../tools/lib/logical_functions');
+const retained = projection.retainedBindings, census = projection.validateCensus;
+const loadRegistry = logical.loadRegistry, activate = logical.assertActivationCompatible;
+let authenticatedSource, currentRoute, callbackContext;
+const callbackRoutes = [];
+try {
+  projection.retainedBindings = function (target, model, rom, source) {
+    if (target.auxiliaryProjection?.schemaVersion !== 3) return retained(...arguments);
+    assert.equal(typeof source, 'function');
+    authenticatedSource = source; currentRoute = 'retainedBindings';
+    try { return retained(...arguments); } finally { currentRoute = null; }
+  };
+  projection.validateCensus = function (targets, source) {
+    assert.equal(source, authenticatedSource, 'both routes use the same loader callback');
+    currentRoute = 'validateCensus';
+    try { return census(...arguments); } finally { currentRoute = null; }
+  };
+  logical.loadRegistry = function (model, rom, config, source) {
+    if (currentRoute) {
+      assert.equal(config, undefined, 'preserve default registry configuration');
+      assert.equal(source, authenticatedSource); callbackRoutes.push(currentRoute + ':registry');
+    }
+    return loadRegistry(...arguments);
+  };
+  logical.assertActivationCompatible = function (registry, symbol, rows, functions, source) {
+    if (currentRoute) {
+      assert.equal(source, authenticatedSource); callbackRoutes.push(currentRoute + ':activation');
+    }
+    return activate(...arguments);
+  };
+  callbackContext = active.loadActiveTargetModelForContext();
+} finally {
+  projection.retainedBindings = retained; projection.validateCensus = census;
+  logical.loadRegistry = loadRegistry; logical.assertActivationCompatible = activate;
+}
+assert.deepEqual(callbackRoutes, ['retainedBindings:registry', 'retainedBindings:activation',
+  'validateCensus:registry', 'validateCensus:activation']);
+const logicalTarget = prepared.targets.find(target => target.auxiliaryProjection?.schemaVersion === 3);
+assert(logicalTarget, 'accepted native multi-function target required');
+const logicalSourceFile = path.resolve(p7.ROOT, logicalTarget.rows[0].part.file);
+let fallbackReads = 0;
+try {
+  fs.readFileSync = function (file, ...args) {
+    if (path.resolve(String(file)) === logicalSourceFile) fallbackReads++;
+    return read.call(this, file, ...args);
+  };
+  projection.checkTarget(logicalTarget, authenticatedSource);
+  assert.equal(fallbackReads, 0);
+  for (const [name, badSource] of [
+    ['missing cached row', (file, sha) => authenticatedSource(file + '.missing', sha)],
+    ['forged cached SHA', (file) => authenticatedSource(file, '0'.repeat(64))],
+  ]) {
+    assert.throws(() => projection.checkTarget(logicalTarget, badSource), /assembly source callback identity drift/, name);
+    assert.equal(fallbackReads, 0, name + ' must never fall back to disk');
+  }
+  assert.throws(() => projection.checkTarget({ ...logicalTarget,
+    reviewedLocalBodyRegistryIdentity: { ...logicalTarget.reviewedLocalBodyRegistryIdentity, sha256: '0'.repeat(64) },
+  }, authenticatedSource), /registry identity drift/, 'forged registry identity');
+  // A parse-equivalent changed registry still has a different independently read identity.
+  fs.readFileSync = function (file, ...args) {
+    const value = read.call(this, file, ...args);
+    if (path.resolve(String(file)) !== path.resolve(logical.CONFIG_PATH)) return value;
+    return typeof value === 'string' ? value + '\n' : Buffer.concat([value, Buffer.from('\n')]);
+  };
+  assert.throws(() => projection.checkTarget(logicalTarget, authenticatedSource), /registry identity drift/, 'stale registry');
+  fs.readFileSync = function (file, ...args) {
+    if (path.resolve(String(file)) === logicalSourceFile) fallbackReads++;
+    return read.call(this, file, ...args);
+  };
+  projection.checkTarget(logicalTarget);
+  assert(fallbackReads > 0, 'context-free callers independently read assembly');
+  // Context-free registry authentication must reject changed source bytes.
+  fs.readFileSync = function (file, ...args) {
+    const value = read.call(this, file, ...args);
+    if (path.resolve(String(file)) !== logicalSourceFile) return value;
+    return typeof value === 'string' ? value + '\n' : Buffer.concat([value, Buffer.from('\n')]);
+  };
+  assert.throws(() => projection.checkTarget(logicalTarget), /fallback source drift/, 'context-free source drift');
+} finally { fs.readFileSync = read; }
+active.finishActiveTargetModelSources(callbackContext);
+assert.throws(() => projection.checkTarget(logicalTarget, authenticatedSource),
+  /assembly source callback identity drift/, 'finished context must invalidate its cached callback');
+console.log(JSON.stringify({ authenticatedCachePlumbing: 'pass', callbackRoutes, contextFreeReads: fallbackReads }));

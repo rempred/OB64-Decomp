@@ -293,12 +293,12 @@
     {
       "id": "scenario-word-result-and-byte-index",
       "symptoms": ["branch-polarity", "opcode-or-expression", "load-store-width-or-signedness", "register-allocation"],
-      "applicability": "249A14's separate word result and narrowed byte index preserve the observed branch. In 249290, byte modifier/option formals change 27 setup/allocation words while real persistent results remain wide; the caller already supplies byte casts. Read the wider-input control and historical pre-declaration-update caller context. These observed effects neither prove original types nor authorize dummy carriers. Whole-wave acceptance remains separate.",
-      "note": "docs/dossiers/func_00249A14-9099d087ea.md#source-context",
-      "references": ["docs/dossiers/func_00249290-f8819d8982.md", "docs/dossiers/func_00249290-a93a8f8e18.md"],
+      "applicability": "Historical source pairs: 249A14's separate word result and narrowed byte index preserve the observed branch. In 249290, byte modifier/option formals change 27 setup/allocation words while persistent results remain wide; the historical caller supplies byte casts. Read the wider-input control and immutable pre-declaration-update caller context. These effects neither prove original types nor authorize dummy carriers; repaired records add no new measurement or matching acceptance.",
+      "note": "docs/dossiers/func_00249A14-df5262ccce.md#source-context",
+      "references": ["docs/dossiers/func_00249290-f8819d8982.md", "docs/dossiers/func_00249290-c0f2d9fa01.md"],
       "observations": [
-        {"symbol": "func_00249A14", "path": "docs/dossiers/func_00249A14-9099d087ea.observation.json"},
-        {"symbol": "func_00249290", "path": "docs/dossiers/func_00249290-a93a8f8e18.observation.json"}
+        {"symbol": "func_00249A14", "path": "docs/dossiers/func_00249A14-df5262ccce.observation.json"},
+        {"symbol": "func_00249290", "path": "docs/dossiers/func_00249290-c0f2d9fa01.observation.json"}
       ]
     },
     {
@@ -385,11 +385,11 @@
     {
       "id": "symbol-address-construction",
       "symptoms": ["constant-or-immediate-construction", "register-allocation", "stack-layout-or-offset-family"],
-      "applicability": "Evidenced symbols can change address reuse. 2215D0's real-phase word form changes reference priority; D14C's direct-callee form preserves native bytes. In 4D634, distinct cache/DMA boundary declarations alter call-crossing address reuse and allocation. Read the linked source pairs and observations. Preserve actual addresses, values and signatures; no invented symbols/callbacks or universal allocation rule. Diagnostics and whole-wave acceptance remain separate.",
+      "applicability": "Evidenced symbols can change address reuse. 2215D0's real-phase word form changes reference priority; D14C's direct-callee form preserves native bytes. The historical 4D634 source example shows distinct cache/DMA declarations changing call-crossing address reuse; its pre-Q7 config is archived. Read source pairs and qualified observations. Preserve actual addresses, values and signatures; no invented symbols or universal allocation rule. Current whole-wave acceptance is separate.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#evidence-backed-symbols-instead-of-numeric-pointers",
-      "references": ["docs/dossiers/func_0002def4-ef1d77993b.md", "docs/dossiers/func_0002def4-d0e15208f4.md", "docs/dossiers/func_0004d634-8c1039668d.md", "docs/dossiers/func_002215D0-233d92db9b.md", "docs/dossiers/func_002215D0-d685d8db29.md", "docs/dossiers/func_0022D14C-b30d1b5dd4.md"],
+      "references": ["docs/dossiers/func_0002def4-ef1d77993b.md", "docs/dossiers/func_0002def4-d0e15208f4.md", "docs/dossiers/func_0004d634-308b580d67.md", "docs/dossiers/func_002215D0-233d92db9b.md", "docs/dossiers/func_002215D0-d685d8db29.md", "docs/dossiers/func_0022D14C-b30d1b5dd4.md"],
       "observations": [
-        {"symbol": "func_0004d634", "path": "docs/dossiers/func_0004d634-cd4cd4a91f.observation.json"},
+        {"symbol": "func_0004d634", "path": "docs/dossiers/func_0004d634-308b580d67.observation.json"},
         {"symbol": "func_002215D0", "path": "docs/dossiers/func_002215D0-233d92db9b.observation.json"},
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-b30d1b5dd4.observation.json"}
       ]

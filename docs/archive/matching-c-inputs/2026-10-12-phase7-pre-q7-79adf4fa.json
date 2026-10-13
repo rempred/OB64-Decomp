@@ -1,0 +1,371 @@
+{
+  "schemaVersion": 1,
+  "profile": "us-rev0",
+  "rom": {
+    "bytes": 41943040,
+    "sha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A",
+    "codeRegionStart": 4096,
+    "codeRegionEndExclusive": 6514540,
+    "codeRegionSha256": "40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409",
+    "earlyBootLinearEndExclusive": 192512,
+    "earlyBootLinearBase": 2147941376,
+    "bootInitializedDataRomEndExclusive": 258480
+  },
+  "expected": {
+    "primaryRows": 7242,
+    "assemblyOwners": 6184,
+    "dataOwners": 1058,
+    "linkSlices": 7257,
+    "splitOwners": 15,
+    "overlayReservations": 19,
+    "fixedOverlayNonExecutableRanges": 2,
+    "nonDescriptorLoadSlabs": 30,
+    "rspRows": 13
+  },
+  "fixedOverlayNonExecutableRanges": [
+    {
+      "id": "func-0020fc7c-retained-tail",
+      "overlayDescriptorId": 10,
+      "overlaySection": "text",
+      "romStart": 2162108,
+      "romEndExclusive": 2162112
+    },
+    {
+      "id": "func-002013d0-alignment-padding",
+      "overlayDescriptorId": 10,
+      "overlaySection": "text",
+      "romStart": 2102308,
+      "romEndExclusive": 2102320
+    }
+  ],
+  "nonDescriptorLoadSlabs": [
+    {
+      "id": "scenario-loader-00195410",
+      "kind": "loader-dma",
+      "romStart": 1659920,
+      "romEndExclusive": 1669088,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149675856
+    },
+    {
+      "id": "cold-boot-loader-00040e80",
+      "kind": "loader-dma",
+      "romStart": 265856,
+      "romEndExclusive": 421392,
+      "vramStart": 2148970368,
+      "vramEndExclusive": 2149125904,
+      "executableRanges": [
+        {
+          "id": "cold-boot-entry-stubs-00040e80",
+          "romStart": 265856,
+          "romEndExclusive": 265872
+        }
+      ]
+    },
+    {
+      "id": "loader-dma-00087200",
+      "kind": "loader-dma",
+      "romStart": 553472,
+      "romEndExclusive": 909152,
+      "vramStart": 2149164960,
+      "vramEndExclusive": 2149520640
+    },
+    {
+      "id": "loader-dma-0029a4c0",
+      "kind": "loader-dma",
+      "romStart": 2729152,
+      "romEndExclusive": 2788640,
+      "vramStart": 2149756048,
+      "vramEndExclusive": 2149815536
+    },
+    {
+      "id": "resource-loader-00213b10",
+      "kind": "loader-dma",
+      "romStart": 2177808,
+      "romEndExclusive": 2269824,
+      "vramStart": 2149386304,
+      "vramEndExclusive": 2149478320,
+      "nonExecutableRanges": [
+        {
+          "id": "func-0021c8dc-alignment-padding",
+          "romStart": 2214248,
+          "romEndExclusive": 2214256
+        }
+      ]
+    },
+    {
+      "id": "resource-loader-0022a280",
+      "kind": "loader-dma",
+      "romStart": 2269824,
+      "romEndExclusive": 2335648,
+      "vramStart": 2149478320,
+      "vramEndExclusive": 2149544144
+    },
+    {
+      "id": "boot-resource-loader-0003f1b0",
+      "kind": "loader-dma",
+      "romStart": 258480,
+      "romEndExclusive": 265856,
+      "vramStart": 2148441120,
+      "vramEndExclusive": 2148448496
+    },
+    {
+      "id": "cold-boot-loader-00071280",
+      "kind": "loader-dma",
+      "romStart": 463488,
+      "romEndExclusive": 497456,
+      "vramStart": 2149164960,
+      "vramEndExclusive": 2149198928
+    },
+    {
+      "id": "cold-boot-loader-00079730",
+      "kind": "loader-dma",
+      "romStart": 497456,
+      "romEndExclusive": 553472,
+      "vramStart": 2149164960,
+      "vramEndExclusive": 2149220976
+    },
+    {
+      "id": "scenario-loader-00165fc0",
+      "kind": "loader-dma",
+      "romStart": 1466304,
+      "romEndExclusive": 1515168,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149715552
+    },
+    {
+      "id": "scenario-loader-00171ea0",
+      "kind": "loader-dma",
+      "romStart": 1515168,
+      "romEndExclusive": 1539792,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149691312
+    },
+    {
+      "id": "scenario-loader-00177ed0",
+      "kind": "loader-dma",
+      "romStart": 1539792,
+      "romEndExclusive": 1571264,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149698160
+    },
+    {
+      "id": "scenario-loader-0017f9c0",
+      "kind": "loader-dma",
+      "romStart": 1571264,
+      "romEndExclusive": 1608544,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149703968
+    },
+    {
+      "id": "scenario-loader-00188b60",
+      "kind": "loader-dma",
+      "romStart": 1608544,
+      "romEndExclusive": 1634560,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149692704
+    },
+    {
+      "id": "scenario-loader-0018f100",
+      "kind": "loader-dma",
+      "romStart": 1634560,
+      "romEndExclusive": 1659920,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149692048
+    },
+    {
+      "id": "scenario-loader-001977e0",
+      "kind": "loader-dma",
+      "romStart": 1669088,
+      "romEndExclusive": 1689440,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149687040
+    },
+    {
+      "id": "scenario-loader-0019c760",
+      "kind": "loader-dma",
+      "romStart": 1689440,
+      "romEndExclusive": 1715232,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149692480
+    },
+    {
+      "id": "scenario-loader-001a2c20",
+      "kind": "loader-dma",
+      "romStart": 1715232,
+      "romEndExclusive": 1723408,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149674864
+    },
+    {
+      "id": "scenario-loader-001a4c10",
+      "kind": "loader-dma",
+      "romStart": 1723408,
+      "romEndExclusive": 1741456,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149684736
+    },
+    {
+      "id": "scenario-loader-001a9290",
+      "kind": "loader-dma",
+      "romStart": 1741456,
+      "romEndExclusive": 1779312,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149704544
+    },
+    {
+      "id": "scenario-loader-001b2670",
+      "kind": "loader-dma",
+      "romStart": 1779312,
+      "romEndExclusive": 1810512,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149697888
+    },
+    {
+      "id": "ovl18-table-loader-001c3300",
+      "kind": "loader-dma",
+      "romStart": 1848064,
+      "romEndExclusive": 1871952,
+      "vramStart": 2149754944,
+      "vramEndExclusive": 2149778832
+    },
+    {
+      "id": "ovl18-table-loader-001c9050",
+      "kind": "loader-dma",
+      "romStart": 1871952,
+      "romEndExclusive": 1892464,
+      "vramStart": 2149754944,
+      "vramEndExclusive": 2149775456
+    },
+    {
+      "id": "cold-boot-loader-0023a3a0",
+      "kind": "loader-dma",
+      "romStart": 2335648,
+      "romEndExclusive": 2339360,
+      "vramStart": 2149386304,
+      "vramEndExclusive": 2149390016
+    },
+    {
+      "id": "cold-boot-loader-0023b220",
+      "kind": "loader-dma",
+      "romStart": 2339360,
+      "romEndExclusive": 2377632,
+      "vramStart": 2149478320,
+      "vramEndExclusive": 2149516592
+    },
+    {
+      "id": "cold-boot-loader-002447a0",
+      "kind": "loader-dma",
+      "romStart": 2377632,
+      "romEndExclusive": 2407584,
+      "vramStart": 2149386304,
+      "vramEndExclusive": 2149416256
+    },
+    {
+      "id": "resource-dispatcher-00286bd0",
+      "kind": "loader-dma",
+      "romStart": 2649040,
+      "romEndExclusive": 2729152,
+      "vramStart": 2149756048,
+      "vramEndExclusive": 2149836160
+    },
+    {
+      "id": "resource-dispatcher-002a8d20",
+      "kind": "loader-dma",
+      "romStart": 2788640,
+      "romEndExclusive": 2810816,
+      "vramStart": 2149815744,
+      "vramEndExclusive": 2149837920
+    },
+    {
+      "id": "resource-dispatcher-002ae3c0",
+      "kind": "loader-dma",
+      "romStart": 2810816,
+      "romEndExclusive": 2853792,
+      "vramStart": 2149815744,
+      "vramEndExclusive": 2149858720
+    },
+    {
+      "id": "boot-initialized-data-0003ddc0",
+      "kind": "boot-initialized-data",
+      "romStart": 253376,
+      "romEndExclusive": 258480,
+      "vramStart": 2148194752,
+      "vramEndExclusive": 2148199856
+    }
+  ],
+  "acceptedInputSha256": {
+    "asm/original/rev0/manifest.json": "2726E93A0CF0668C0779825DABF1D19633CC48EE95206AE2E6D154B94A079B93",
+    "config/roms/us_rev0.json": "5E9183D5DF1D87D83EEC70E7DCA4BE3F859059B85FF192B8E1317F38B60D0331",
+    "config/overlays/us_rev0.json": "AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B",
+    "config/segments/rev0.yaml": "9161DC47F890BB55A44A7B487F2D8AA34BD20080E311F6A247657A1EDAF75856",
+    "config/splat/us_rev0.semantic.json": "6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1",
+    "config/splat/us_rev0.overlay-linker-inputs.json": "180068DFF9AD5AC4B75450E7248955CE3E57F00187675B75B38808A240F2CFA2",
+    "config/splat/us_rev0.yaml": "4A06310B83005E8F6F2986A6CD00B51083F7D6F002F4A7E670B41CCF4D8FFE67",
+    "config/splat/splat64-0.34.0.lock.json": "FF1669083684AD936B3679C2C8EC6EB4664045D78B88C24CDFAEEB0068B2EB87",
+    "config/splat/splat64-0.34.0.provenance.json": "E7F0F6C06DEB58D3C899F39169DDCAD14C56B3CBC3E8EA546886C8A780BC2EFF",
+    "config/toolchain.json": "EC642F5AEB318853BE699010E3B2BB43F186EE13C9761B5DB4A668A1BE9D0015",
+    "config/gnu-binutils-2.6-build.json": "86299428600F428E032CC2219C1D26EEDD38FF0F436805B0E87FDE1D3EDF910F",
+    "tools/toolchain/gnu-binutils-2.6-msys2-host.patch": "EA44CC33A07F16856E01C7F9E8EC7295F6CF048F1201007D9F0A8A835798DA33",
+    "tools/toolchain/gnu-binutils-2.6-ob64-load-segments.patch": "CB1B310B38F6B45A44E690BA1B7A00A7528E7886BC4BAC7E74CAC69E2A84D997",
+    "tools/toolchain/gnu-binutils-2.6-ob64-binary-lma.patch": "3CFB1E09F41E3335BDE2BE1CDC38ACF06DF6D49E8F81D103CC1F0D70DDC277CF",
+    "tools/toolchain/gnu-binutils-2.6-ob64-hi16-pairing.patch": "3C1F6F51AAC2268ADDF4E2B6B2BD3AC5BD39313F2ACE5D0A623A7CC995A9E480",
+    "docs/external-intake/phase6-kmc-reproduction-20260801/reproduction-manifest.json": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+    "data/source-owners/rev0/raw_header/0000_raw_header_00000000_00001000.srcbin": "AC11C6D6A7A4EFAB4817612268A7EA9CE418677418B299B15CD908B09B621A84"
+  },
+  "splat": {
+    "version": "0.34.0",
+    "commit": "999c792fdda1002f29926717d2b7197bb90480a9",
+    "splitPySha256": "EED41D3C36AFA4A980A3B22BC76C371569696CADFEF925DBB63606BFB081544E",
+    "pythonVersion": "Python 3.11.15",
+    "pythonExeSha256": "4CCA2027319C08DCA5CC4B64C9BA415CC89205152202CB6805081277C43B610F"
+  },
+  "asmDiffer": {
+    "commit": "093360aa31f90e67216ed1971c4087516cc7b940",
+    "diffPySha256": "D69AA5916DA99A9D88D3B3156C4ABB1C656E425205644B3DB4726204DC7C2211",
+    "pyprojectSha256": "5B85F33ED68C30021AAD5F03E029E60B4D5DB577B9F2E5FB015FF79159CFFD5D",
+    "license": "Unlicense",
+    "licenseSha256": "E9B0E94F628E00B5ED98046CFA041696FF89EEBBBDD54108EE350625BC6D0363"
+  },
+  "binutils": {
+    "version": "GNU Binutils 2.6",
+    "assemblerFlags": ["-G", "0", "-mips3", "-mabi=32", "-V", "-EB"],
+    "compilerAssemblerFlags": ["-G", "0", "-mips3", "-mabi=32", "-force-n64align", "-EB"],
+    "linkerFlags": ["-EB", "-m", "elf32bmip"],
+    "tools": {
+      "mips-kmc-elf-as.exe": "0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938",
+      "mips-kmc-elf-ld.exe": "48944635BC840256BC2FBA86D2701A4CA59B2424B924AC8B9F4853D4E1DA609F",
+      "mips-kmc-elf-nm.exe": "47BF09DC0E559C7D0D8B9E145977715D03FC06E8F3294D76AED3597CD5AF45CF",
+      "mips-kmc-elf-objcopy.exe": "9C3C821BE67C96AF204CC9B49FA1E285506E6E986B853AB898DFF48DC8B6F1AE",
+      "mips-kmc-elf-objdump.exe": "5F5B5822691BFAD87E628BCE4C781459902E4124AB7ED6604CA2DB62075D9816",
+      "mips-kmc-elf-size.exe": "C79E77F51D0B3EC30B694A448CB85C30C864CA5FF3D3E0174B73334384251A12",
+      "mips-kmc-elf-strings.exe": "D95DA29B12432F5CBD62DFE7FAE204C675C47235667A6CBD3C6C2A08E061B6DB",
+      "mips-kmc-elf-strip.exe": "D1C7AA9E8B28EECB7942C58250246BA0AB0ECC071AF2655D5BEC703800730564",
+      "msys-2.0.dll": "D9BB385834F1A235009F0962B7BDA7E1832FB12E53D832F1DC389C3144E03D44"
+    }
+  },
+  "host": {
+    "platform": "win32",
+    "release": "10.0.26300",
+    "architecture": "x64",
+    "nodeVersion": "v24.13.1",
+    "nodeExeSha256": "E3BE0545990C90995D7BF3A7AF5D64AF1F2E0FC1BBD9B79C27F7ABC1E9676E50",
+    "powershellVersion": "5.1.26100.8972",
+    "powershellExeSha256": "7600FFE12DA441FE89D035B13801E8E91D064BC544A27B19A5CF49F6AB8B18F5",
+    "powershellAutomationDllSha256": "13FB07233112F765DE69AE4CDE6728AF672442DC9C5D7C9412C830E27FC1FC26"
+  },
+  "representativeSymbols": [
+    {
+      "name": "boot_entry_clear_bss_and_jump",
+      "rowIndex": 1,
+      "romStart": 4096,
+      "vramStart": 2147945472
+    },
+    {
+      "name": "func_0020C3A8",
+      "rowIndex": 3896,
+      "romStart": 2147240,
+      "vramStart": 2149355288
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "308B580D675E5F728C8B08F5CC32007E21C249C3F5333B6DF934AB771BE95AD1",
+  "observationId": "59DF93C0DEAA3AD5CA85465AA4763938478725E0375E3BC50BBADD66114D98D6",
+  "symbol": "func_0004d634",
+  "authored": {
+    "context": "Historical source/effect example with the authentic pre-Q7 configuration preserved as a reference. No new compiler measurement, CURRENT acceptance or structural decision. Original context:\nComplete600-byte4d634 C reconstruction; initial source reused text/data-start external symbols across cache and DMA calls. Initial candidate8C1039668DCBCD0BD56BA5C81B5BA2C6580EFE45BB4B42841856A2B68BB5A991 retained two saved address registers and a48-byte frame.",
+    "effects": [
+      "register-allocation",
+      "stack-layout",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "511D8A69337284DB76A087C2E3C98B36F644D15AEE67382D6277DC56C19F4698",
+      "sourceSha256": "3643B7D55CC627CB6CB62250EE07E957A35135BBCB86401D73C155450B29FE15"
+    },
+    "label": "historical-separate-load-boundaries-config-closure",
+    "observedEffect": "Historical quotation of the original observation; no new experiment or matching acceptance:\nCandidateCD4CD4A91F3CABED5904EAADD67A78830AE9765007DFC88594A0DFBC0734FAC7 compiles PURE_C with40-byte frame and no saved address registers; all600 emitted bytes compare equal after masking actual address-bearing relocations. Original preframe load and all body paths remain present.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0004d634.s",
+        "sha256": "5D233D78AB30FB6C9C8C8FF2BFD57C484C344E3A56647CE6FC2921A7CC4923A3"
+      },
+      {
+        "path": "src/lib/func_002827EC.c",
+        "sha256": "4DEADA420330724F73CE85DC8AF36195DC9710D6A046DED639A0E5DDC8449005"
+      },
+      {
+        "path": "docs/archive/matching-c-inputs/2026-10-12-phase7-pre-q7-79adf4fa.json",
+        "sha256": "79ADF4FA4920FF5356123A1370D8E22302FA8182BDFFCCF921B6B853DA3B299E"
+      },
+      {
+        "path": "docs/dossiers/func_0004d634-cd4cd4a91f.observation.json",
+        "sha256": "71FE4314E63A9CAD1E29AA9F76E8B05045CA68788FBA95C2311E1D45CE4D47B8"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This record preserves a historical source example; acceptance and the current queue require their own current evidence.\n\nOriginal remaining-failure note (historical quotation; describes the original observation time, not current blockers, acceptance, or the current queue):\nPrivate isolated link unavailable for inactive ASM owner (nonactive-asm-owner), and accepted relocation expectations unavailable. Masked equality is provisional only. Production writer must register independently derived boundary addresses, review actual relocation addends and run canonical focused diff at complete-wave integration, followed by single whole-wave verification.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use separate independently evidenced linker boundary declarations for I-cache start/end, D-cache start/end and DMA destination, following the existing accepted overlay-loader source convention. Keep original structured conditions and all calls; final boundary names reflect signed-low ROM22A280."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3799,
+      "sha256": "511D8A69337284DB76A087C2E3C98B36F644D15AEE67382D6277DC56C19F4698"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3643B7D55CC627CB6CB62250EE07E957A35135BBCB86401D73C155450B29FE15"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_0004d634-308b580d67.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

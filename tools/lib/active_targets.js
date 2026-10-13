@@ -1663,7 +1663,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       target,
       relocationContract.auxiliarySections,
     );
-    if (target.auxiliaryProjection) target.auxiliaryProjectionRetained = auxiliaryProjection.retainedBindings(target, model, baserom);
+    if (target.auxiliaryProjection) target.auxiliaryProjectionRetained = auxiliaryProjection.retainedBindings(target, model, baserom, assemblySource);
     const comparisons = legacyTarget ? [
       assertEquivalent(entry.symbol, 'primaryId', target.primaryId, legacyTarget.primaryId),
       assertEquivalent(entry.symbol, 'rowIndex', target.rowIndex, legacyTarget.rowIndex),
@@ -1734,7 +1734,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
     }
   }
   validateAuxiliaryOwnerGroups(targets, model);
-  auxiliaryProjection.validateCensus(targets);
+  auxiliaryProjection.validateCensus(targets, assemblySource);
   const phase8 = {
     config: { ...minimal, compiler: legacy.compiler },
     compatibility,

@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const textContract = require('../tools/lib/text_contract');
 const compilationGroups = require('../tools/lib/compilation_groups');
+const atomic = require('../tools/lib/atomic_owner_union');
 const {
   ROOT,
   elfSectionBytes,
@@ -25,6 +26,7 @@ const {
   fail,
   loadCanonicalBaserom,
   loadPhase8Model,
+  phase8VerificationModel,
   renderPhase8LinkerScript,
   sameCompilerOccurrenceEvidence,
   targetTextOwners,
@@ -477,14 +479,14 @@ function main() {
     fail('retired compiler-assembly adapter evidence returned');
   }
 
-  const replacedRows = new Set(phase8.targets.flatMap((target) => targetTextOwners(target).map((owner) => owner.rowIndex)));
-  const verificationModel = {
-    ...phase8.model,
-    rows: phase8.model.rows.map((row) => replacedRows.has(row.index) ? { ...row, inputKind: 'matching-c' } : row),
-  };
+  // Restore the complete target census on shared phase8.model after the synthetic renderer; text_contract reads that census implicitly.
+  const verificationModel = phase8VerificationModel({
+    ...phase8,
+    model: atomic.outputModel(phase8.model, phase8.targets),
+  });
   verifyElfAgainstModel(verificationModel, linkedElf);
   verifyRom(phase8.model, romBytes);
-  verifyMap(phase8.model, mapText);
+  verifyMap(verificationModel, mapText);
   if (!romBytes.equals(canonicalBaserom) || sha256Buffer(romBytes) !== '571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A') {
     fail('complete Rev 0 ROM is not exact');
   }
@@ -502,9 +504,14 @@ function main() {
     fail('source-to-object evidence aggregate drift');
   }
 
-  const rewrittenHybrids = new Set([
-    'func_0002CD70', 'func_0000BC8C', 'func_0015DF10',
-    'func_0002DE10', 'func_00269798', 'func_0000B29C',
+  // Retain all historical GNU 2.6 cases under their current mechanical classes.
+  const gnu26RegressionClasses = new Map([
+    ['func_0002CD70', SOURCE_CLASSES.HYBRID_C],
+    ['func_0000BC8C', SOURCE_CLASSES.PURE_C],
+    ['func_0015DF10', SOURCE_CLASSES.HYBRID_C],
+    ['func_0002DE10', SOURCE_CLASSES.HYBRID_C],
+    ['func_00269798', SOURCE_CLASSES.HYBRID_C],
+    ['func_0000B29C', SOURCE_CLASSES.PURE_C],
   ]);
   const targetProofs = [];
   for (const target of phase8.targets) {
@@ -520,8 +527,13 @@ function main() {
     const prunedObject = parseElfFile(path.join(output, ...replacement.prunedAssemblyObject.split('/')));
     const rawComparison = compareLinkedTargetBytes(target, linkedElf, canonicalBaserom);
     const textOwners = targetTextOwners(target);
-    const sourceText = Buffer.concat(textOwners.map((textOwner) => sectionBytes(sourceObject, textContract.inputSection(target, textOwner.sectionName))));
-    const linkedObjectText = Buffer.concat(textOwners.map((textOwner) => sectionBytes(linkedObject, textContract.inputSection(target, textOwner.sectionName))));
+    const objectText = (elf) => Buffer.concat(textOwners.map((textOwner) => (
+      target.atomicText
+        ? atomic.ownerBytes(elf, target, textOwner)
+        : sectionBytes(elf, textContract.inputSection(target, textOwner.sectionName))
+    )));
+    const sourceText = objectText(sourceObject);
+    const linkedObjectText = objectText(linkedObject);
     const sourceTextSection = sourceObject.sections.find((section) => section.name === textContract.inputSection(target, target.sectionName));
     const linkedTextSection = linkedElf.sections.find((section) => section.name === target.sectionName);
     const compilerTextFunctions = verifyCompilerTextFunctions(sourceObject, target, sourceTextSection);
@@ -721,8 +733,9 @@ function main() {
     if (![SOURCE_CLASSES.PURE_C, SOURCE_CLASSES.HYBRID_C].includes(classification.class)) {
       fail(`unexpected active source class: ${target.symbol}`);
     }
-    if (rewrittenHybrids.has(target.symbol) && classification.class !== SOURCE_CLASSES.HYBRID_C) {
-      fail(`GNU 2.6 hybrid rewrite changed source class: ${target.symbol}`);
+    if (gnu26RegressionClasses.has(target.symbol)
+        && classification.class !== gnu26RegressionClasses.get(target.symbol)) {
+      fail(`GNU 2.6 regression source class drift: ${target.symbol}`);
     }
     if (target.symbol === 'func_0002CD70'
         && (sourceText.readUInt32BE(0x004) !== 0x00801025 || sourceText.readUInt32BE(0x028) !== 0x00801025
@@ -751,8 +764,8 @@ function main() {
       sourceObjectProofSha256: replacement.sourceObjectProof.sha256,
     });
   }
-  if (![...rewrittenHybrids].every((symbol) => targetProofs.some((record) => record.symbol === symbol))) {
-    fail('GNU 2.6 hybrid rewrite census was not exercised');
+  if (![...gnu26RegressionClasses.keys()].every((symbol) => targetProofs.some((record) => record.symbol === symbol))) {
+    fail('GNU 2.6 regression target census was not exercised');
   }
   if (!buildReport.verification.asmDiffer.every((record) => record.exact && record.rawBytesExact && record.asmDifferPairwiseExact)) {
     fail('asm-differ/raw target comparison drift');
@@ -1146,7 +1159,7 @@ function main() {
     romSha256: sha256Buffer(romBytes),
     targets: targetProofs.length,
     counts: classifications.counts,
-    rewrittenHybrids: [...rewrittenHybrids],
+    gnu26RegressionTargets: [...gnu26RegressionClasses].map(([symbol, sourceClass]) => ({ symbol, sourceClass })),
     sourceObjectEvidence: independentEvidence.counts,
     recordedCompilerOccurrenceEquality,
     syntheticPrefixExtraction,

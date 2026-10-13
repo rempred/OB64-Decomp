@@ -130,7 +130,7 @@ function normalizeContract(contract, auxiliaries, minimumPayloads) {
   if (contract.bytes !== Math.ceil((last.offset + last.bytes) / contract.alignment) * contract.alignment) fail('non-native terminal padding');
   return structuredClone(contract);
 }
-function checkTarget(target) {
+function checkTarget(target, assemblySource = null) {
   const contract = normalize(target.auxiliaryProjection, target.auxiliarySections);
   if (!contract) return null;
   if (contract.schemaVersion === 4) require('./atomic_owner_union').authenticate(target);
@@ -152,8 +152,8 @@ function checkTarget(target) {
         || owner.vramStartNumber !== slice.vramStart || owner.vramEndNumber !== slice.vramEndExclusive) fail('native text selected-owner placement');
     const logical = require('./logical_functions');
     const rom = fs.readFileSync(path.join(ROOT, 'build/baserom.us_rev0.z64'));
-    const registry = logical.loadRegistry(target.model, rom);
-    logical.assertActivationCompatible(registry, target.symbol, target.rows, target.compilerTextFunctions);
+    const registry = logical.loadRegistry(target.model, rom, undefined, assemblySource);
+    logical.assertActivationCompatible(registry, target.symbol, target.rows, target.compilerTextFunctions, assemblySource);
     if (!same(target.reviewedLocalBodyRegistryIdentity, registry.identity)) fail('native multi-function registry identity drift');
     for (const table of payloads(contract)) {
       const matches = target.compilerTextFunctions.filter(fn => fn.symbol === table.dispatchSymbol);
@@ -174,9 +174,9 @@ function checkTarget(target) {
   }
   return contract;
 }
-function retainedBindings(target, model, baserom) {
+function retainedBindings(target, model, baserom, assemblySource = null) {
   if (target.compilationGroup?.auxiliary) groupContract(target.compilationGroup);
-  const contract = composed(target.compilationGroup) ? groupContract(target.compilationGroup) : checkTarget(target);
+  const contract = composed(target.compilationGroup) ? groupContract(target.compilationGroup) : checkTarget(target, assemblySource);
   if (!contract) return [];
   const sections = composed(target.compilationGroup) ? target.compilationGroup.auxiliary.sections : target.auxiliarySections;
   const first = sections[0];
@@ -217,10 +217,10 @@ function validateBindings(target, model, baserom) {
   if (!same(derived, recorded)) fail('retained binding evidence drift');
   return derived;
 }
-function validateCensus(targets) {
+function validateCensus(targets, assemblySource = null) {
   for (const target of targets) if (target.compilationGroup?.auxiliary) groupContract(target.compilationGroup);
   for (const target of targets.filter(value => value.auxiliaryProjection || composed(value.compilationGroup))) {
-    const contract = composed(target.compilationGroup) ? groupContract(target.compilationGroup) : checkTarget(target);
+    const contract = composed(target.compilationGroup) ? groupContract(target.compilationGroup) : checkTarget(target, assemblySource);
     if (composed(target.compilationGroup)) {
       assertMemberSections(target);
       for (const member of target.compilationGroup.members) {

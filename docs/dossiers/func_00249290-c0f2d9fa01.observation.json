@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C0F2D9FA01BC8E2B5C22FD8D47421162F7FDDA41992CFDCE9449E6270795A0DB",
+  "observationId": "6981280B00BC50CE48B7BA55288D827CB2BB31B6C129F4B152B7C5F1FB55EC28",
+  "symbol": "func_00249290",
+  "authored": {
+    "context": "Historical evidence closure repair only; no new compiler or linked experiment. Original envelope docs/dossiers/func_00249290-a93a8f8e18.observation.json remains unchanged. Its canonical caller reference has since received the accepted S5 declaration update. The replacement archive is byte-identical to the original recorded 7EADF27F caller, preserving the pre-update declarations. Original context: Complete1924-byte249290 one-body producer: special120-slot path, general56-byte record allocation, eight inline value-registry updates and final calls. Accepted249A14 caller explicitly supplies signed-byte modifier and byte option. No stronger record/field semantics claimed.",
+    "effects": [
+      "argument-width",
+      "register-allocation",
+      "instruction-scheduling",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 262,
+          "path": "include/game/class_entry.h",
+          "sha256": "7484DF99811858FD0F641F927EF6C943E4336B7191DA159DBD74538A341F0E2F"
+        }
+      ],
+      "expandedSha256": "9A2F019B51BF46F9D3263ABC60405A9B9959022D4736A0CB080933F43F0F8B7D",
+      "sourceSha256": "B194D5C0542A954C4E61290C780F4F8E8F786699D2FE4CB4AF331E492C590201"
+    },
+    "label": "byte-inputs-preserve-setup-lifetimes-historical-closure",
+    "observedEffect": "Historical observation, quoted from the preserved original envelope; this repair authenticates source context and does not newly reproduce the measurement. FinalA93A8F8E/run9DCDA844 compiles PURE_C,1924bytes/frame48/481instructions,133 actual relocations,rawRelocationMaskedExact=true. Wider input controlF8819D89 remains1924B with27 setup/register words differing. Narrowing both final inputs removes all27 differences, including index/selected S2/S3 and early kind copy. u8 modifier controlE7A353E8 also matches; final signed byte follows the existing caller's (s8) cast. Kind/index-width, unbound-register and pointer-alias controls do not fix the wider-input mismatch; pointer walk, narrowing persistent value and initial narrow-to-wide copy regress and remain recoverable. The measured type effect does not itself prove the original source declaration or full allocator mechanism.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/s5-links-261012/watch-249290-final.json",
+        "sha256": "8331D2C875D6377A17963EC82D0202A314B0CCFCB6CB9A3674491A9528B11695"
+      },
+      {
+        "path": "build/matching/s5-links-261012/watch-249290-v6.json",
+        "sha256": "94D193CE91F100C0072A364F6E940E0C3EC5AF8432A42E3A185AB5B0823CC3D8"
+      },
+      {
+        "path": "build/matching/s5-links-261012/probe-249290-v3.json",
+        "sha256": "D001ACA18A56DBDC3A82CD0081AB7A63806CECDBB07004C3BB40AFE470A531C6"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00249290.s",
+        "sha256": "A8F62003C550B89C8580091C476F1AFA9E1AA8A12D36343811FDE368990E1930"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_00249A14-9099d087ea.c",
+        "sha256": "7EADF27F4E48A2EE58B1C78813772474403D1F93D56AC8C139A6796EDE7EF26D"
+      },
+      {
+        "path": "docs/dossiers/func_00249290-a93a8f8e18.observation.json",
+        "sha256": "0563C1FD1AEC521927BE8918DA02A875A1AD7F2B7291A975F046D0A6841AA97B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This new record is a historical source example, not new matching acceptance. Current target binding must be computed by the ordinary research commands. \n\nOriginal remaining-failure note (historical quotation; describes the original observation time, not current blockers, acceptance, or the current queue):\nInactive ASM owner prevents authenticated isolated link. Raw bytes differ only at133 relocation operands; symbolic arithmetic notes are not linked proof. Canonical source/include context, sole C ownership, placement, exact actual relocation operands, target bytes and one complete-S5 final ROM verifier remain required. Accepted caller has wider declarations; any declaration-only consistency adaptation belongs to Director/production writer, with caller bytes protected.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use s8 modifier and u8 option formals; retain u16 kind and wide persistent value/getter returns with use-site truncations. Use u8 remainder on the special path and assign selected halfword to the persistent value only after its zero guard."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 262,
+        "path": "include/game/class_entry.h",
+        "sha256": "7484DF99811858FD0F641F927EF6C943E4336B7191DA159DBD74538A341F0E2F"
+      }
+    ],
+    "expanded": {
+      "bytes": 7622,
+      "sha256": "9A2F019B51BF46F9D3263ABC60405A9B9959022D4736A0CB080933F43F0F8B7D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B194D5C0542A954C4E61290C780F4F8E8F786699D2FE4CB4AF331E492C590201"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-12-func_00249290-c0f2d9fa01.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

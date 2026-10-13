@@ -173,13 +173,18 @@ test('metadata confinement rejects nonregular paths and indirect escapes', () =>
 
 test('shared auxiliary CURRENT reuse requires authentic model, explicit recorded selectors and exact map order', () => {
   const active = realRequire('./active_targets').loadActiveTargetModel();
-  const targets = ['func_0022B06C', 'func_0022D14C', 'func_0022EF50'].map(symbol => active.targets.find(t => t.symbol === symbol));
+  const targets = ['func_0022B06C', 'func_0022D14C', 'func_0022EF50', 'func_0022F580', 'func_00232458'].map(symbol => active.targets.find(t => t.symbol === symbol));
   assert(targets.every(Boolean));
+  const interiors = realRequire('./auxiliary_interior').interiorRecords(targets);
+  assert.equal(interiors.length, 1);
+  assert.equal(interiors[0].bytes, 8);
   const accepted = { model: active.model, targets };
   function sharedFixture() {
     const f = fixture(accepted), first = targets[0].auxiliarySections[0], last = targets.at(-1).auxiliarySections[0];
     const tailPath = `objects/assembly/auxiliary/chunk_${String(last.ownerChunkIndex).padStart(3, '0')}_${last.outputSection.slice(6)}_tail.o`;
     const manifest = { linkedObjects: [
+      ...interiors.map(record => ({ path: record.objectRelative, ownerKind: 'accepted-assembly-auxiliary-interior',
+        targetSymbol: record.symbol, retainedInterior: record })),
       ...targets.map(t => ({ path: `objects/c/${t.symbol}.o`, ownerKind: 'matching-c-target', targetSymbol: t.symbol })),
       { path: tailPath, ownerKind: 'accepted-assembly-auxiliary-tail', targetSymbol: targets.at(-1).symbol,
         outputSection: last.outputSection, inputSection: last.ownerTailSection, sectionType: 'SHT_PROGBITS', sectionFlags: ['SHF_ALLOC'] },
@@ -188,8 +193,12 @@ test('shared auxiliary CURRENT reuse requires authentic model, explicit recorded
     const hex = value => value.toString(16);
     const contribution = (section, start, bytes, owner) => ` ${section} ${hex(start)} ${hex(bytes)} ${hex(bytes)} 2**3 elf32-bigmips ${owner}(overhead 0 bytes)`;
     const cLines = targets.map(t => { const a = t.auxiliarySections[0]; return contribution(a.outputSection, a.vramStartNumber, a.bytes, `objects/c/${t.symbol}.o`); });
+    const orderedLines = targets.flatMap((target, index) => [
+      ...interiors.filter(record => record.symbol === target.symbol).map(record =>
+        contribution(record.inputSection, record.vramStart, record.bytes, record.objectRelative)), cLines[index],
+    ]);
     const map = [`${first.outputSection} ${hex(first.ownerVramStartNumber)} ${hex(first.ownerSectionBytes)} 0 2**3 load alloc contents`,
-      ...cLines, contribution(last.ownerTailSection, last.ownerTailVramStartNumber, last.ownerTailBytes, tailPath)].join('\n') + '\n';
+      ...orderedLines, contribution(last.ownerTailSection, last.ownerTailVramStartNumber, last.ownerTailBytes, tailPath)].join('\n') + '\n';
     f.write('linker/phase8.ld', script); f.write('phase8.map', map);
     return { ...f, script, map, cLines, first };
   }
@@ -199,6 +208,7 @@ test('shared auxiliary CURRENT reuse requires authentic model, explicit recorded
     ['bare-file input', f => f.write('linker/phase8.ld', f.script.replace('  /DISCARD/ :', `  .unused 0 : { objects/c/${targets[0].symbol}.o }\n  /DISCARD/ :`))],
     ['implicit input in emitted output form', f => f.write('linker/phase8.ld', f.script.replace('  /DISCARD/ :', `  .unused 0x00000000 : AT(0x00000000)\n  {\n    objects/c/${targets[0].symbol}.o\n  }\n  /DISCARD/ :`))],
     ['missing recorded script', f => fs.unlinkSync(path.join(f.root, 'linker/phase8.ld'))],
+    ['map missing retained interior', f => { const record = interiors[0]; f.write('phase8.map', f.map.split('\n').filter(line => !line.includes(record.inputSection)).join('\n')); }],
     ['map owner swap', f => f.write('phase8.map', f.map.replace(f.cLines[0], 'SWAP').replace(f.cLines[1], f.cLines[0]).replace('SWAP', f.cLines[1]))],
     ['map missing owner', f => f.write('phase8.map', f.map.replace(f.cLines[0], ''))],
     ['map duplicate owner', f => f.write('phase8.map', f.map.replace(f.cLines[0], f.cLines[0] + '\n' + f.cLines[0]))],
