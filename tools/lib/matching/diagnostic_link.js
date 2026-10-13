@@ -15,7 +15,7 @@ const {
 const { relocationRecords } = require('../phase8_matching_c');
 const { currentVerificationState } = require('../current_workflow');
 const { compareMips } = require('./mips_analysis');
-const { canonicalJson, digest } = require('./target_model');
+const { canonicalJson, digest, assertExecutablePrefixSelection, executablePrefixComparisonScope, originalOwnerComparison } = require('./target_model');
 
 const WORKBENCH_COMPARISON_CONTRACT = 2;
 const DIAGNOSTIC_LINK_CONTRACT = 2;
@@ -382,6 +382,7 @@ function exactAcceptedTargetBytes(environment, target) {
 }
 
 function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, options = {}) {
+  assertExecutablePrefixSelection(session?.context?.phase8, target);
   if (target) target = textContract.bindWorkbenchTarget(session, target);
   const baseIdentity = {
     textContract: target?.nativeTextTail ? textContract.resolveTextContract(target) : null,
@@ -392,12 +393,14 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
     toolId: session?.toolId || null,
     currentFingerprint: session?.context?.currentFingerprint || null,
     targetId: target?.targetId || null,
+    comparisonScope: target ? executablePrefixComparisonScope(target) : null,
     expectedRelocationEvidence,
   };
   function reject(code, reason, details = {}) {
     const result = unavailable(code, reason, details);
     result.comparisonAlgorithmId = baseIdentity.comparisonAlgorithmId;
     result.currentFingerprint = baseIdentity.currentFingerprint;
+    result.comparisonScope = baseIdentity.comparisonScope;
     result.inputId = digest({ ...baseIdentity, unavailable: { code, reason, details } });
     return result;
   }
@@ -482,6 +485,7 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
       inputId,
       comparisonAlgorithmId: baseIdentity.comparisonAlgorithmId,
       currentFingerprint: baseIdentity.currentFingerprint,
+      comparisonScope: baseIdentity.comparisonScope,
       environment,
       linkedTarget,
       replacement,
@@ -746,6 +750,8 @@ function symbolicFallback(target, objectText, comparisonOptions, rawComparison, 
     diagnosticEnvironmentConsulted: diagnosticEnvironmentId !== null,
     diagnosticEnvironmentId,
     textContract: target.nativeTextTail ? textContract.resolveTextContract(target) : null,
+    comparisonScope: executablePrefixComparisonScope(target),
+    originalOwnerComparison: originalOwnerComparison(target),
     functionComparison: nativeComparisonSummary(target, objectText, false),
     fullOwnerComparison: target.nativeTextTail ? { available: false, reason: 'symbolic comparison contains function bytes only' } : null,
     evidenceMode: 'symbolic-object',
@@ -856,6 +862,8 @@ function resolvedDiagnosticComparison({
     diagnosticEnvironmentConsulted: diagnosticEnvironmentId !== null,
     diagnosticEnvironmentId,
     textContract: target.nativeTextTail ? textContract.resolveTextContract(target) : null,
+    comparisonScope: executablePrefixComparisonScope(target),
+    originalOwnerComparison: originalOwnerComparison(target),
     functionComparison: nativeComparisonSummary(target, linkedBytes, true),
     fullOwnerComparison: target.nativeTextTail ? { exactBytes: selected.exactBytes, expectedBytes: target.bytes, actualBytes: linkedBytes.length, tail: candidateEvidence.fullOwner } : null,
     evidenceMode: 'authenticated-isolated-link',
@@ -903,6 +911,7 @@ function compareCandidateDiagnostic({
   prepared,
   options = {},
 }) {
+  assertExecutablePrefixSelection(session?.context?.phase8, target);
   const comparisonOptions = {
     actualRelocations,
     actualRelocationsAvailable: true,
@@ -981,6 +990,9 @@ function comparisonIsCurrent(record, prepared) {
     && details.comparisonContract === WORKBENCH_COMPARISON_CONTRACT
     && details.comparisonAlgorithmId === prepared.comparisonAlgorithmId
     && details.diagnosticCurrentFingerprint === prepared.currentFingerprint
+    && canonicalJson(details.comparisonScope ?? null) === canonicalJson(prepared.comparisonScope ?? null)
+    && (!prepared.comparisonScope || canonicalJson(details.originalOwnerComparison) === canonicalJson({
+      available: false, reason: 'retained original ASM is outside the scratch comparison' }))
     && details.acceptanceEligible === false
     && details.diagnosticInputId === prepared.inputId
     && details.rawObjectComparison);

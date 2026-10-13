@@ -1245,7 +1245,8 @@ async function acceptedModelTests() {
     'overlapping continuation and alias evidence double-counted a consumed physical row');
   const workbench = loadWorkbenchModel();
   await require('./matching_group_consumers').run(workbench);
-  assert(workbench.modelManifest.targetModelContract === 5, 'target-model contract drift');
+  await require('./matching_split_tail_selection').run(workbench);
+  assert(workbench.modelManifest.targetModelContract === 6, 'target-model contract drift');
   assert(JSON.stringify(workbench.modelManifest.conventionalBuild) === JSON.stringify({
     path: 'config/phase7/conventional-build.json',
     sha256: sha256File(PHASE7_CONFIG_PATH),
@@ -1256,7 +1257,8 @@ async function acceptedModelTests() {
   const executableCodeRows = workbench.model.rows.filter((row) => (
     row.primaryClass === 'code' && row.part && row.slices.length === 1 && row.slices[0].executable
   ));
-  assert(workbench.targets.length === expectedPhysicalHeadCount(executableCodeRows, workbench.logicalRegistry.bodies),
+  assert(workbench.targets.length === expectedPhysicalHeadCount(executableCodeRows, workbench.logicalRegistry.bodies)
+    + workbench.targets.filter(target => target.selectionKind === 'executable-prefix').length,
     'workbench target census does not equal physical heads minus validated logical continuations');
   const prefixedTargets = workbench.targets.filter((target) => target.symbolByteOffset !== 0);
   assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length

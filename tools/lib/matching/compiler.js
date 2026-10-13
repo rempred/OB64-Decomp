@@ -32,7 +32,8 @@ const {
 } = require('./diagnostic_link');
 const { canonicalJson, digest, targetRecord } = require('./target_model');
 const { requestStore } = require('./store');
-const { assertScratchCapability } = require('./target_model');
+const { assertScratchCapability, assertExecutablePrefixSelection, executablePrefixComparisonScope, originalOwnerComparison,
+  assertExecutablePrefixReportScope } = require('./target_model');
 const { SCRATCH_ASSEMBLY_POLICY, assertScratchEnvironment, scratchAssemblerInput } = require('./scratch_assembly');
 
 const MATCHING_ROOT = path.join(ROOT, 'build', 'matching');
@@ -239,6 +240,7 @@ function validateLogicalFunctionCensus(functions, expected, textSize) {
 
 function compileScratchCandidate({ session, target, sourceFile, artifactDir, classification = null }) {
   assertScratchEnvironment();
+  assertExecutablePrefixSelection(session?.context?.phase8, target);
   if (target?.placementKind === 'rom-only') throw new Error('scratch compilation requires qualified runtime placement');
   if (target?.logicalFunctions && !target.logicalCoverageComplete) throw new Error('complete candidate blocked by unresolved logical coverage');
   if (!session || !session.context || !session.runtime || !target
@@ -692,7 +694,8 @@ function verifyNativeScratchProvenance(scratch, target, directory) {
       || elf.symbols.filter(symbol => symbol.symbolType === 2).length !== 1
       || !textContract.same(relocations, scratch.textRelocations)) throw new Error('cached native object census drift');
 }
-function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING_ROOT) {
+function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING_ROOT, authority = null) {
+  assertExecutablePrefixSelection(authority, target);
   assertScratchEnvironment();
   const directory = resolveRunArtifactDirectory(run, matchingRoot);
   const reportFile = path.join(directory, 'workbench-report.json');
@@ -703,6 +706,7 @@ function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING
     throw new Error('cached compilation report is not a plain run artifact');
   }
   const report = JSON.parse(fs.readFileSync(reportFile, 'utf8'));
+  assertExecutablePrefixReportScope(target, report.target);
   if (report.schemaVersion !== 3 || report.target?.targetId !== target.targetId
       || report.candidate?.candidateId !== candidate.candidateId
       || report.compile?.runId !== run.run_id || report.compile?.cacheKey !== run.cache_key
@@ -898,6 +902,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       candidate,
       target,
       options.matchingRoot || MATCHING_ROOT,
+      workbench,
     );
     const candidatePrepared = diagnosticPreparedForCandidate(
       preparedDiagnostic,
@@ -926,7 +931,8 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     const diagnosticReportFile = path.join(diagnosticReports, `${refreshedRecord.comparisonId}.json`);
     writeUniqueRunJson(diagnosticReportFile, {
       schemaVersion: 1,
-      target: { symbol: target.symbol, targetId: target.targetId, expectedBytesSha256: target.expectedBytesSha256 },
+      target: { symbol: target.symbol, targetId: target.targetId, expectedBytesSha256: target.expectedBytesSha256,
+        comparisonScope: executablePrefixComparisonScope(target), originalOwnerComparison: originalOwnerComparison(target) },
       candidate: { candidateId: candidate.candidateId, sourceSha256: candidate.sourceSha256 },
       compile: { runId: cached.run_id, cacheKey: cached.cache_key, reused: true },
       comparison,
@@ -980,7 +986,8 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     comparisonRecord = makeComparisonRecord(runId, comparison);
     writeJson(path.join(artifactDir, 'workbench-report.json'), {
       schemaVersion: 3,
-      target: { symbol: target.symbol, targetId: target.targetId, expectedBytesSha256: target.expectedBytesSha256 },
+      target: { symbol: target.symbol, targetId: target.targetId, expectedBytesSha256: target.expectedBytesSha256,
+        comparisonScope: executablePrefixComparisonScope(target), originalOwnerComparison: originalOwnerComparison(target) },
       candidate: { ...candidate, sourceText: undefined },
       sourcePolicy,
       compile: compileRecord,

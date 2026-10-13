@@ -3,7 +3,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const { loadActiveTargetModel } = require('../active_targets');
+const { loadActiveTargetModel, resolveAcceptedRow, resolveAcceptedRows } = require('../active_targets');
 const logical = require('../logical_functions');
 const { resolveWorkbenchActiveTarget } = require('../text_contract');
 // Keep scratch admission in this sealed comparison-algorithm input.
@@ -61,6 +61,7 @@ function scratchCapability(workbench, target, sessionTargets = []) {
 function assertScratchCapability(workbench, target, sessionTargets) {
   const capability = scratchCapability(workbench, target, sessionTargets);
   if (!capability.supported) throw new Error(capability.reason);
+  assertExecutablePrefixSelection(workbench, target);
   if (target.logicalFunctions && (!target.expectedBytes || sha256Buffer(target.expectedBytes) !== target.expectedBytesSha256)) throw new Error('logical target expected bytes drift');
 }
 
@@ -124,6 +125,163 @@ function continuationPartStem(name) {
   return match ? match[1].toLowerCase() : null;
 }
 
+// Select code bytes only; the complete original row remains the ASM fallback.
+// The caller supplies the authenticated model AND its live multi-owner registry.
+function executablePrefixSelection(authority, row, baserom = null, requestedSymbol = row?.part?.name) {
+  const model = authority?.model;
+  if (!model || !(authority.multiOwnerContracts instanceof Map) || !authority.multiOwnerConfigIdentity)
+    throw new Error('executable-prefix selection requires authenticated owner membership');
+  const slices = row?.slices;
+  if (!row || row.primaryClass !== 'code' || row.ambiguous !== false || row.inputKind !== 'tracked-assembly'
+      || !row.part || ![true, false].includes(row.part.hasOwnerLabel) || row.part.symbolByteOffset !== 0
+      || !Array.isArray(slices) || slices.length !== 2 || slices[0].executable !== true || slices[1].executable !== false
+      || continuationPartStem(row.part.name) || /_chunk[0-9]+head$/i.test(row.part.name)) return null;
+  // Existing structural metadata can identify an unlabeled original owner.
+  // It does not authorize an arbitrary label or an interior-address function.
+  const structuralNames = [row.part.name.toLowerCase(), `func_${hex(row.romStart).slice(2)}`.toLowerCase()];
+  if (typeof requestedSymbol !== 'string' || !structuralNames.includes(requestedSymbol.toLowerCase())) return null;
+  // A member cannot become an independent candidate, including the contract's
+  // primary member. resolveAcceptedRows alone permits that complete contract.
+  if ([...authority.multiOwnerContracts.values()].some(contract => contract.rows.some(member => member.index === row.index))) return null;
+  const [prefix, tail] = slices;
+  const word = value => Number.isSafeInteger(value) && value >= 0 && value % 4 === 0;
+  const extent = value => word(value.romStart) && word(value.romEndExclusive) && word(value.bytes) && value.bytes > 0
+    && value.romEndExclusive - value.romStart === value.bytes && word(value.vramStart) && word(value.vramEndExclusive)
+    && value.vramEndExclusive - value.vramStart === value.bytes;
+  const placementFields = ['placementKind', 'overlayDescriptorId', 'loadSlabId', 'overlaySection'];
+  if (!word(row.romStart) || !word(row.romEndExclusive) || row.bytes !== row.romEndExclusive - row.romStart
+      || row.part.romStartNumber !== row.romStart || row.part.romEndNumber !== row.romEndExclusive || row.part.bytes !== row.bytes
+      || model.rows.filter(value => value.index === row.index || value.part?.name.toLowerCase() === row.part.name.toLowerCase()).length !== 1
+      || !['overlay', 'non-descriptor-load-slab', 'early-boot-linear'].includes(prefix.placementKind)
+      || placementFields.some(field => prefix[field] !== tail[field])
+      || prefix.romStart !== row.romStart || prefix.romEndExclusive !== tail.romStart || tail.romEndExclusive !== row.romEndExclusive
+      || prefix.vramEndExclusive !== tail.vramStart || typeof tail.nonExecutableRangeId !== 'string' || !tail.nonExecutableRangeId
+      || prefix.nonExecutableRangeId !== null || tail.executableRangeId !== null
+      || prefix.sectionName === tail.sectionName || prefix.ordinal === tail.ordinal
+      || slices.some((slice, index) => !extent(slice) || slice.rowIndex !== row.index || slice.primaryId !== row.primaryId
+        || slice.inputKind !== 'tracked-assembly' || slice.ownerName !== row.name
+        || slice.sliceIndex !== index || slice.sliceCount !== 2
+        || model.slices.filter(value => value.sectionName === slice.sectionName || value.ordinal === slice.ordinal).length !== 1
+        || canonicalJson(model.slices.find(value => value.sectionName === slice.sectionName)) !== canonicalJson(slice))) return null;
+  const accepted = resolveAcceptedRows(model, requestedSymbol, authority.multiOwnerContracts);
+  const owner = accepted.owners[0];
+  if (accepted.contract || accepted.rows.length !== 1 || accepted.rows[0] !== row || accepted.owners.length !== 1
+      || owner.sectionName !== prefix.sectionName || owner.romStartNumber !== prefix.romStart
+      || owner.romEndNumber !== prefix.romEndExclusive || owner.vramStartNumber !== prefix.vramStart
+      || owner.vramEndNumber !== prefix.vramEndExclusive || owner.bytes !== prefix.bytes) return null;
+  const bytesHash = slice => baserom ? sha256Buffer(baserom.subarray(slice.romStart, slice.romEndExclusive)) : null;
+  return {
+    selectionKind: 'executable-prefix', entryEvidence: row.part.hasOwnerLabel ? 'actual-label' : 'accepted-owner-metadata',
+    primaryId: row.primaryId, rowIndex: row.index,
+    romStart: prefix.romStart, romEndExclusive: prefix.romEndExclusive, bytes: prefix.bytes,
+    vramStart: prefix.vramStart, vramEndExclusive: prefix.vramEndExclusive, entryVram: prefix.vramStart,
+    symbolByteOffset: 0, sectionName: prefix.sectionName, placementKind: prefix.placementKind,
+    overlayDescriptorId: prefix.overlayDescriptorId, loadSlabId: prefix.loadSlabId,
+    originalAssembly: row.part.file, originalAssemblySha256: row.part.sha256,
+    originalOwner: {
+      schemaVersion: 1, rowIndex: row.index, primaryId: row.primaryId, chunkIndex: row.part.chunkIndex,
+      acceptedModelSha256: digest({ config: model.config, inputs: model.inputFiles, multiOwnerConfig: authority.multiOwnerConfigIdentity }),
+      symbol: row.part.name, romStart: row.romStart, romEndExclusive: row.romEndExclusive, bytes: row.bytes,
+      originalAssembly: row.part.file, originalAssemblySha256: row.part.sha256,
+      expectedBytesSha256: bytesHash(row), comparedSection: prefix.sectionName,
+      slices: slices.map(slice => ({ ...slice, expectedBytesSha256: bytesHash(slice),
+        comparisonRole: slice.executable ? 'compared-executable-prefix' : 'retained-original-assembly' })),
+    },
+  };
+}
+
+// Existing logical bodies can occupy interior executable slices of coarse data
+// rows. Authenticate their established registry contract before prefix inference;
+// a caller's selectionKind alone never grants this route.
+function authenticatedSplitLogicalBody(authority, target) {
+  if (target.selectionKind !== 'logical-body' || target.originalOwner !== undefined || target.entryEvidence !== undefined) return false;
+  const baserom = authority.baserom || loadBaserom(authority.model);
+  const registry = logical.loadRegistry(authority.model, baserom);
+  const bodies = registry.bodies.filter(body => [body.symbol, ...body.aliases].some(symbol => symbol.toLowerCase() === target.symbol.toLowerCase()));
+  if (bodies.length !== 1) return false;
+  const body = bodies[0], first = body.fragments[0], last = body.fragments[body.fragments.length - 1];
+  const row = authority.model.rows.find(value => value.index === first.rowIndex);
+  const expected = { primaryId: row.primaryId, rowIndex: row.index, romStart: body.romStart,
+    romEndExclusive: body.romEndExclusive, bytes: body.romEndExclusive - body.romStart,
+    vramStart: first.vramStart, vramEndExclusive: last.vramStart + last.bytes,
+    entryVram: first.vramStart, symbolByteOffset: 0, sectionName: first.sectionName,
+    placementKind: first.placementKind, overlayDescriptorId: first.overlayDescriptorId, loadSlabId: first.loadSlabId,
+    originalAssembly: first.file, originalAssemblySha256: first.sha256, logicalFragments: body.fragments,
+    logicalFunctions: [{ symbol: target.symbol, romStart: body.romStart, romEndExclusive: body.romEndExclusive,
+      offset: 0, bytes: body.romEndExclusive - body.romStart, evidence: body.evidence, fragments: body.fragments }],
+    logicalCoverage: logical.coverage(registry, body.romStart, body.romEndExclusive, baserom), logicalCoverageComplete: true,
+    expectedBytesSha256: body.expectedBytesSha256 };
+  if (Object.entries(expected).some(([field, value]) => canonicalJson(target[field]) !== canonicalJson(value))
+      || !Buffer.isBuffer(target.expectedBytes) || !target.expectedBytes.equals(baserom.subarray(body.romStart, body.romEndExclusive))
+      || authority.modelId && target.modelId !== authority.modelId) return false;
+  return true;
+}
+
+function assertExecutablePrefixSelection(authority, target) {
+  const claimsPrefix = target?.selectionKind === 'executable-prefix' || target?.originalOwner !== undefined
+    || /^\.ob64\.r[0-9]+\.s[0-9]+$/.test(target?.sectionName || '');
+  if (!authority?.model) {
+    if (claimsPrefix) throw new Error('executable-prefix selection requires an authenticated live model');
+    return;
+  }
+  const splitHint = authority.model.rows.some(value => value.slices.length > 1
+    && (value.index === target?.rowIndex || target?.romStart >= value.romStart && target?.romStart < value.romEndExclusive));
+  const namedSplit = authority.model.rows.some(value => value.slices.length > 1 && value.part
+    && [value.part.name.toLowerCase(), `func_${hex(value.romStart).slice(2)}`.toLowerCase()].includes(String(target?.symbol || '').toLowerCase()));
+  if (!claimsPrefix && !splitHint && !namedSplit) return;
+  if ((claimsPrefix || splitHint) && authenticatedSplitLogicalBody(authority, target)) return;
+  let row;
+  try { row = resolveAcceptedRow(authority.model, String(target?.symbol || '')); }
+  catch (error) { if (claimsPrefix || splitHint) throw new Error('executable-prefix structural symbol does not resolve: ' + error.message); return; }
+  if (row.slices.length === 1 && !claimsPrefix && !splitHint) return;
+  // All split-row requests, including stripped descriptors, are checked here.
+  const baserom = authority.baserom || loadBaserom(authority.model);
+  const selected = executablePrefixSelection(authority, row, baserom, target.symbol);
+  if (!selected) throw new Error('unsupported executable-prefix selection or owner membership');
+  if (target.requestedSymbol !== undefined && !executablePrefixSelection(authority, row, baserom, target.requestedSymbol))
+    throw new Error('executable-prefix requested structural symbol is unsupported');
+  if (target.nativeTextTail || target.compilationGroup || target.atomicText || target.logicalFunctions
+      || target.logicalFragments || target.continuationRows || target.originalAssemblyParts)
+    throw new Error('executable-prefix selection cannot change producer representation');
+  for (const [field, value] of Object.entries(selected)) {
+    if (canonicalJson(target[field]) !== canonicalJson(value)) throw new Error('executable-prefix selection identity drift: ' + field);
+  }
+  const expected = baserom.subarray(selected.romStart, selected.romEndExclusive);
+  if (!Buffer.isBuffer(target.expectedBytes) || !target.expectedBytes.equals(expected)
+      || target.expectedBytesSha256 !== sha256Buffer(expected)) throw new Error('executable-prefix expected bytes drift');
+  if (authority.modelId && target.modelId !== authority.modelId) throw new Error('executable-prefix model identity drift');
+  const live = authority.bySymbol?.get(target.symbol.toLowerCase());
+  if (live && target.targetId !== live.targetId) throw new Error('executable-prefix target identity drift');
+  if (authority.modelId) {
+    const metadata = Object.fromEntries(Object.entries(target).filter(([key]) => ![
+      ...LIVE_TARGET_FIELDS, 'expectedBytes', 'row', 'targetId', 'modelId', 'expectedBytesSha256',
+    ].includes(key)));
+    if (target.targetId !== digest({ modelId: authority.modelId, metadata, expectedBytesSha256: target.expectedBytesSha256 }))
+      throw new Error('executable-prefix serialized target identity drift');
+  }
+  if (sha256File(path.join(ROOT, row.part.file)) !== row.part.sha256) throw new Error('executable-prefix original assembly drift');
+}
+
+function executablePrefixComparisonScope(target) {
+  if (target.selectionKind !== 'executable-prefix') return null;
+  return { kind: 'executable-prefix', entryEvidence: target.entryEvidence, sectionName: target.sectionName,
+    romStart: target.romStart, romEndExclusive: target.romEndExclusive, bytes: target.bytes,
+    expectedBytesSha256: target.expectedBytesSha256, originalOwner: target.originalOwner,
+    fullOriginalOwnerCompared: false };
+}
+
+function originalOwnerComparison(target) {
+  return target.selectionKind === 'executable-prefix'
+    ? { available: false, reason: 'retained original ASM is outside the scratch comparison' } : null;
+}
+
+function assertExecutablePrefixReportScope(target, record) {
+  if (target.selectionKind === 'executable-prefix'
+      && (canonicalJson(record?.comparisonScope) !== canonicalJson(executablePrefixComparisonScope(target))
+        || canonicalJson(record?.originalOwnerComparison) !== canonicalJson(originalOwnerComparison(target))))
+    throw new Error('cached executable-prefix comparison scope drift');
+}
+
 function compositeFunctionRows(model) {
   const eligible = (row) => row.primaryClass === 'code'
     && row.part
@@ -165,7 +323,8 @@ function loadWorkbenchModel(options = {}) {
   const activeBySymbol = new Map(activeModel.targets.map(target => [target.symbol.toLowerCase(), target]));
   const modelManifest = {
     schemaVersion: 1,
-    targetModelContract: 5,
+    targetModelContract: 6,
+    multiOwnerConfig: activeModel.multiOwnerConfigIdentity,
     logicalFunctionRegistry: logicalRegistry.identity,
     logicalFunctionSemantics: [__filename, require.resolve('../logical_functions'), require.resolve('../text_contract')].map(file => ({
       path: path.relative(ROOT, file).replace(/\\/g, '/'), sha256: sha256File(file),
@@ -181,8 +340,10 @@ function loadWorkbenchModel(options = {}) {
   };
   const modelId = digest(modelManifest);
   const compositeRows = compositeFunctionRows(model);
+  const prefixes = new Map(model.rows.filter(row => row.slices.length > 1).map(row =>
+    [row.index, executablePrefixSelection(activeModel, row, baserom)]).filter(([, value]) => value));
   let targets = model.rows
-    .filter((row) => row.primaryClass === 'code' && row.part && row.slices.length === 1 && row.slices[0].executable)
+    .filter((row) => prefixes.has(row.index) || row.primaryClass === 'code' && row.part && row.slices.length === 1 && row.slices[0].executable)
     .filter((row) => !compositeRows.consumedRows.has(row.index))
     .map((row) => {
       const slice = row.slices[0];
@@ -192,7 +353,7 @@ function loadWorkbenchModel(options = {}) {
         ? `func_${continuationPartStem(continuation.part.name).slice(5).toUpperCase()}`
         : row.part.name;
       const romStart = continuation ? row.romStart + row.part.symbolByteOffset : row.romStart;
-      const romEndExclusive = continuation ? continuation.romEndExclusive : row.romEndExclusive;
+      const romEndExclusive = continuation ? continuation.romEndExclusive : prefixes.has(row.index) ? slice.romEndExclusive : row.romEndExclusive;
       const bytes = romEndExclusive - romStart;
       const expected = baserom ? Buffer.from(baserom.subarray(romStart, romEndExclusive)) : null;
       const metadata = {
@@ -213,6 +374,7 @@ function loadWorkbenchModel(options = {}) {
         loadSlabId: slice.loadSlabId,
         originalAssembly: row.part.file,
         originalAssemblySha256: row.part.sha256,
+        ...(prefixes.get(row.index) || {}),
         ...(continuation ? {
           continuationRows: [continuation.index],
           ownerSymbolByteOffset: row.part.symbolByteOffset,
@@ -279,6 +441,7 @@ function loadWorkbenchModel(options = {}) {
   }
   for (const target of targets) {
     const relevant = logicalRegistry.bodies.filter(body => body.romStart < target.romEndExclusive && body.romEndExclusive > target.romStart);
+    if (target.selectionKind === 'executable-prefix' && relevant.length) throw new Error('executable-prefix selection overlaps logical-function metadata');
     if (relevant.length) {
       target.logicalCoverage = logical.coverage(logicalRegistry, target.romStart, target.romEndExclusive, baserom);
       target.logicalFunctions = relevant.filter(body => body.romStart >= target.romStart && body.romEndExclusive <= target.romEndExclusive)
@@ -332,7 +495,9 @@ function loadWorkbenchModel(options = {}) {
     logicalTargets.push(target); bySymbol.set(body.symbol.toLowerCase(), target);
   }
   for (const target of targets) target.scratchCompilation = scratchCapability({ activeTargetsBySymbol: activeBySymbol }, target);
-  return { config, model, modelId, modelManifest, baserom, targets, logicalTargets, bySymbol, logicalRegistry, activeTargetsBySymbol: activeBySymbol };
+  return { config, model, modelId, modelManifest, baserom, targets, logicalTargets, bySymbol, logicalRegistry,
+    multiOwnerContracts: activeModel.multiOwnerContracts, multiOwnerConfigIdentity: activeModel.multiOwnerConfigIdentity,
+    activeTargetsBySymbol: activeBySymbol };
 }
 
 function resolveTarget(workbench, symbol) {
@@ -383,6 +548,9 @@ function publicTarget(target) {
     activeMatchingProducer: target.activeMatchingProducer,
     scratchCompilation: target.scratchCompilation,
     selectionKind: target.selectionKind,
+    ...(target.entryEvidence ? { entryEvidence: target.entryEvidence } : {}),
+    ...(target.originalOwner ? { originalOwner: target.originalOwner, comparisonScope: executablePrefixComparisonScope(target),
+      originalOwnerComparison: originalOwnerComparison(target) } : {}),
     logicalFunctions: target.logicalFunctions,
     logicalCoverage: target.logicalCoverage,
     logicalCoverageComplete: target.logicalCoverageComplete,
@@ -393,6 +561,8 @@ function publicTarget(target) {
 }
 
 module.exports = {
+  executablePrefixSelection, assertExecutablePrefixSelection, executablePrefixComparisonScope, originalOwnerComparison,
+  assertExecutablePrefixReportScope,
   historicalSymbols,
   LIVE_TARGET_FIELDS, assertScratchCapability, isActiveTarget, producerView, scratchCapability,
   ACTIVE_PATH,

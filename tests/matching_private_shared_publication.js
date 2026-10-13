@@ -5,6 +5,7 @@ const path = require('path');
 const vm = require('vm');
 const crypto = require('crypto');
 const test = require('node:test');
+const { executablePrefixComparisonScope, originalOwnerComparison } = require('../tools/lib/matching/target_model');
 const ROOT = process.cwd();
 const FIXTURES = path.join(ROOT, 'build/private-preparation-tests');
 fs.mkdirSync(FIXTURES, { recursive: true });
@@ -22,6 +23,7 @@ test('real compileCandidate publication boundary rejects shared drift on fresh a
     const session = { preprocessor: {}, tool: {}, context: { phase8: { targets: [] } } };
     const sandbox = {
       Buffer, path, Date, JSON, MATCHING_ROOT: 'private',
+      executablePrefixComparisonScope, originalOwnerComparison,
       fs: { readFileSync: () => Buffer.from(text) },
       require: () => ({ regular: x => x, assertPrivateClassification() {}, equalExpandedInputs() {} }),
       assertScratchEnvironment() {}, assertScratchCapability() {}, recordCandidate: () => ({ candidate, sourceFile: 'source.c' }),

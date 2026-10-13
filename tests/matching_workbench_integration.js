@@ -232,6 +232,47 @@ void *memcpy_bytewise(void *destination, const void *source, unsigned int bytes)
   if (repeated.some((compilation) => !compilation?.cached || compilation.candidate.candidateId !== candidateId)) {
     throw new Error('identical generated target/source did not reuse its exact compile result');
   }
+  // Already active split source is an exact isolated-link control. Its assigned
+  // scratch section ends at the 84-byte function; the retained twelve-byte ASM
+  // tail stays outside both fresh and cached comparisons of that prefix.
+  const split = resolveTarget(workbench, 'func_002013D0');
+  const splitSource = fs.readFileSync(path.join(ROOT, split.activeMatchingSource), 'utf8');
+  const splitOptions = { matchingRoot, storeOptions, session: compilerSession, syncTargets: false,
+    origin: 'matching-workbench-integration', variant: 'executable-prefix' };
+  const splitFirst = compileCandidate(workbench, split, splitSource, splitOptions);
+  const splitReport = compileReport(splitFirst);
+  const splitComparison = comparisonDetails(splitFirst);
+  requireCondition(splitFirst.compile.status === 'compiled' && splitFirst.compile.source_class === 'PURE_C'
+    && splitReport.scratchContract.primarySymbol.bytes === 84
+    && splitReport.scratchContract.textSection.trailingAlignmentBytes === 0
+    && splitComparison.evidenceMode === 'authenticated-isolated-link' && splitComparison.diagnosticExactBytes === true
+    && splitComparison.comparisonScope.bytes === 84 && splitComparison.comparisonScope.originalOwner.bytes === 96
+    && splitComparison.comparisonScope.fullOriginalOwnerCompared === false
+    && splitComparison.originalOwnerComparison.available === false && splitComparison.acceptanceEligible === false,
+  'split prefix/rounding/retained-ASM diagnostic provenance drift');
+  const splitCached = compileCandidate(workbench, split, splitSource, splitOptions);
+  requireCondition(splitCached.cached && JSON.stringify(comparisonDetails(splitCached).comparisonScope)
+    === JSON.stringify(splitComparison.comparisonScope), 'split cached comparison lost original-owner scope');
+  const reportPath = path.join(ROOT, splitFirst.compile.artifact_dir, 'workbench-report.json');
+  const reportBytes = fs.readFileSync(reportPath);
+  try {
+    const forgedReport = JSON.parse(reportBytes);
+    forgedReport.target.comparisonScope.entryEvidence = 'accepted-owner-metadata';
+    fs.writeFileSync(reportPath, JSON.stringify(forgedReport));
+    let rejected = false;
+    try { compileCandidate(workbench, split, splitSource, splitOptions); }
+    catch (error) { if (!/comparison scope drift/.test(error.message)) throw error; rejected = true; }
+    requireCondition(rejected, 'cached split report accepted forged entry evidence');
+  } finally { fs.writeFileSync(reportPath, reportBytes); }
+  // This deliberately short source tests inactive Q7 routing, not reconstruction.
+  const inactive = resolveTarget(workbench, 'func_00119454');
+  const inactiveResult = compileCandidate(workbench, inactive, 'void func_00119454(void) {}\n', splitOptions);
+  const inactiveComparison = comparisonDetails(inactiveResult);
+  requireCondition(inactiveResult.compile.status === 'compiled' && inactiveResult.compile.source_class === 'PURE_C'
+    && inactiveComparison.evidenceMode === 'symbolic-object' && inactiveComparison.primaryClass === 'length-mismatch'
+    && inactiveComparison.comparisonScope.bytes === 4324 && inactiveComparison.acceptanceEligible === false
+    && inactiveComparison.originalOwnerComparison.available === false,
+  'inactive Q7 prefix gained linked/whole-owner acceptance or lost real length mismatch');
   console.log(`Matching workbench integration: PASS (${target.symbol}, ${target.bytes} exact bytes, six rulesets, one generation/compile, shorter/longer scored, .rodata relocations preserved, malformed functions and COMMON storage rejected, repeat cached)`);
 }
 

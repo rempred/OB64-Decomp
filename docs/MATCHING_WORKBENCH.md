@@ -3,6 +3,29 @@
 See [logical functions and physical owners](LOGICAL_FUNCTIONS.md) for complete
 multi-body preparation, corrected entry aliases, coverage limits, and history identity.
 
+## Executable prefix with retained original assembly
+
+The existing symbol selector also supports one accepted executable prefix followed by
+one non-executable original-ASM tail in the same complete owner. Target bounds and
+expected bytes describe only the executable slice. `originalOwner` retains the full
+row, immutable ASM identity, accepted structural identity, and ordered slice census.
+`entryEvidence` distinguishes an actual owner label from the existing accepted
+owner-metadata fallback at offset zero; it does not invent a source label. The live
+accepted resolver and multi-owner membership map authenticate both routes.
+
+Analysis and generation stop at the executable prefix. Compiler section rounding
+is independently reported and remains subject to the existing twelve-byte zero-tail
+limit; it never substitutes for retained ASM. Fresh and cached comparisons state
+`fullOriginalOwnerCompared:false` and an unavailable `originalOwnerComparison`.
+Inactive ASM targets still provide symbolic-object diagnostics only. An isolated
+linked comparison remains diagnostic and cannot establish matching-C acceptance.
+
+Target-model contract 6 binds the selection and complete original-owner metadata.
+Old candidates retain their source files, but old target/comparison identities are
+stale; import useful source through the current target rather than relabeling old
+evidence. Multiple executable slices, interior entries, overlapping/gapped slices,
+different placement contexts, and members of multi-owner producers remain unsupported.
+
 ## Research intake
 
 `node tools/match.js intake <symbol> --limit 20 --json` reads preserved dossier observations
