@@ -411,6 +411,76 @@
         {"symbol": "resource_ptr_validate", "path": "docs/dossiers/resource_ptr_validate-f187f330ba.observation.json"},
         {"symbol": "resource_ptr_validate", "path": "docs/dossiers/resource_ptr_validate-10fb1fcbac.observation.json"}
       ]
+    },
+    {
+      "id": "immutable-selector-and-distinct-selected-result",
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
+      "applicability": "In Q7 101DDC, keeping the selector base immutable and assigning the indexed result to a separate local restores two LA pairs without changing the remaining body. The named negative-offset/subtraction form remains necessary in this pinned source context. Compare 67E3D7E3 with 5FEC30F2 and preserve actual reads, values and interfaces. This records allocation behavior, not original names or a universal pointer rule. Historical private evidence and later whole-wave acceptance remain separate.",
+      "note": "docs/dossiers/func_00101DDC-5fec30f21f.md#recorded-observation",
+      "references": [
+        "docs/dossiers/func_00101DDC-67e3d7e3b9.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_00101DDC",
+          "path": "docs/dossiers/func_00101DDC-67e3d7e3b9.observation.json"
+        },
+        {
+          "symbol": "func_00101DDC",
+          "path": "docs/dossiers/func_00101DDC-5fec30f21f.observation.json"
+        }
+      ]
+    },
+    {
+      "id": "declared-volatile-index-snapshots",
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
+      "applicability": "In Q7 119454, real mode/query, Boolean and scaled-owner scopes narrow the remaining mismatch. Declaring the two index globals volatile and reading them directly restores the final four load-order differences; casting each address to a volatile pointer instead introduces separate LA/LW sequences and an oversized body. Compare the scoped-owner, direct-declaration and rejected-cast sources, retaining actual snapshot semantics. Do not infer universal volatile behavior, original source spelling, or C ownership of the retained ASM tail.",
+      "note": "docs/dossiers/func_00119454-315b167fa3.md#recorded-observation",
+      "references": [
+        "docs/dossiers/func_00119454-069ed30bc7.md",
+        "docs/dossiers/func_00119454-46b6f9f6d2.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_00119454",
+          "path": "docs/dossiers/func_00119454-069ed30bc7.observation.json"
+        },
+        {
+          "symbol": "func_00119454",
+          "path": "docs/dossiers/func_00119454-46b6f9f6d2.observation.json"
+        },
+        {
+          "symbol": "func_00119454",
+          "path": "docs/dossiers/func_00119454-315b167fa3.observation.json"
+        }
+      ]
+    },
+    {
+      "id": "signed-low-address-name-correction",
+      "symptoms": [
+        "constant-or-immediate-construction"
+      ],
+      "applicability": "Q7 118E44 demonstrates that relocation-masked equality can hide a wrong address-spelled symbol. Its original LUI 800F plus ADDIU -4E10 resolves 800EB1F0; the earlier D_800FB1F0 declaration retained masked equality but emitted the wrong displayed HI16 word. Compare preserved failing 477F631C and corrected 71DAA247. Decode the actual address pair and preserve signed addends; unauthenticated display is a diagnostic, and canonical linked relocation/byte gates establish acceptance.",
+      "note": "docs/dossiers/func_00118E44-71daa24793.md#recorded-observation",
+      "references": [
+        "docs/dossiers/func_00118E44-477f631cad.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_00118E44",
+          "path": "docs/dossiers/func_00118E44-477f631cad.observation.json"
+        },
+        {
+          "symbol": "func_00118E44",
+          "path": "docs/dossiers/func_00118E44-71daa24793.observation.json"
+        }
+      ]
     }
   ]
 }
