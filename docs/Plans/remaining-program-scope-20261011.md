@@ -4,7 +4,7 @@ The [generated remaining-scope snapshot](../../build/director-resume-20261013/st
 
 D450 and D484 remain conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. If both are admitted, the same wave expands the remainder to **20 functions / 27,224 owner bytes**, still 6 waves. Their necessity remains unproven.
 
-S1 chat `01a13761-1df5-7b53-9e57-595cc7e3aaf3` owns the complete descriptor/group loader in `build/matching/s1-descriptor-261013/` and remains private until explicit production transfer. Q2 chat `01a13761-1167-7021-9420-cb2904800a3d` owns the complete placement pair in `build/matching/q2-placement-261013/`. Both are fresh top-level Sol 6.1/xhigh workers with verified native startup and stop/attention routes. SwiftGlen retains only final record/commit and production duties until explicit release; CalmSquirrel is retired. The original five-family boundary is unchanged.
+S1 chat `01a13761-1df5-7b53-9e57-595cc7e3aaf3` owns the complete descriptor/group loader in `build/matching/s1-descriptor-261013/` and is the sole production source/build writer after explicit transfer. Q2 chat `01a13761-1167-7021-9420-cb2904800a3d` owns the complete placement pair privately in `build/matching/q2-placement-261013/` and reports directly to the Director. Both are fresh top-level Sol 6.1/xhigh workers with verified native startup and stop/attention routes. SwiftGlen is fully released and retired after accepted commit `ced71efd`; CalmSquirrel is retired. Structural admission gates remain required before either wave is activated. The original five-family boundary is unchanged.
 
 ## Complete waves
 
@@ -14,7 +14,7 @@ S1 chat `01a13761-1df5-7b53-9e57-595cc7e3aaf3` owns the complete descriptor/grou
 | Q3 | Encoded-item writer | 1 | 496 | 496 | Queued; gates retained |
 | Q4 | Route deallocator PURE_C retry | 1 | 236 | 224 | Queued; gates retained |
 | Q6 | DDB4 broad site-event producer | 1 | 9,132 | 9,128 | Queued; gates retained |
-| S1 | Descriptor/group loader | 3 | 764 | 756 | Active private; production transfer pending |
+| S1 | Descriptor/group loader | 3 | 764 | 756 | Active; sole production writer; structural gates retained |
 | S3 | Scenario DMA-window requesters | 10 | 12,772 | 12,772 | Queued; gates retained |
 | **Total** | | **18** | **24,820** | **24,792** | |
 
@@ -150,7 +150,7 @@ Structural producer/prefix/tail/table gates are attached to the listed complete 
 
 ## Scheduling and acceptance
 
-NINE/S2/S5/S4/Q5, complete Q7, DB10 animation and Q1 terrain are accepted; released worker ownership stays retired. Q7 commit78826618 and final proof6155CE8A remain protected. Active fresh top-level Sol 6.1/xhigh workers own complete S1 and Q2 privately; S1 remains the production successor pending explicit transfer. SwiftGlen retains only final recording/commit and sole production duties until release. S3/Q3/Q4/Q6 retain their stated preparation and every dependency gate. After a worker's complete assigned wave is accepted and ownership released, the Director immediately dispatches a fresh top-level Sol6.1/xhigh worker to the next dependency-ready complete wave. Existing ASM interfaces do not force a wait for unrelated conversions.
+NINE/S2/S5/S4/Q5, complete Q7, DB10 animation and Q1 terrain are accepted; released worker ownership stays retired. Q7 commit78826618 and final proof6155CE8A remain protected. Active fresh top-level Sol 6.1/xhigh workers retain the complete S1 and Q2 waves. S1 is the sole production source/build writer; Q2 remains private and reports directly to the Director. SwiftGlen is fully released and retired after accepted commit `ced71efd`. S3/Q3/Q4/Q6 retain their stated preparation and every dependency gate. After a worker's complete assigned wave is accepted and ownership released, the Director immediately dispatches a fresh top-level Sol6.1/xhigh worker to the next dependency-ready complete wave. Existing ASM interfaces do not force a wait for unrelated conversions.
 
 The sole production writer integrates one complete wave at a time. Drain only native commands affected by actual shared-input changes or canonical verification, then promptly release them. Every assigned member must meet PURE_C, unique C ownership, placement, actual relocation, target-byte and complete-ROM gates in one final wave verification; structural changes retain audit and independent review. Preserve user pauses and original coupled bodies/data. This planning document grants no tool changes or pushes.
 
