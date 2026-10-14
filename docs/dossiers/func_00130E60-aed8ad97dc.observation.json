@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AED8AD97DCCA440D6C4AF8519FCEFB8B09548A53D9248B0270B9BA7978EAD4A5",
+  "observationId": "2BE4B698E105B1187D5A1A9F8173AA39A6F55A465CF89C4603C2DD6D5D12C243",
+  "symbol": "func_00130E60",
+  "authored": {
+    "context": "Complete Q3 logical function func_00130E60, ROM00130E60..00131050, overlay7 RAM801DC720..801DC910; preserved original physical rows2449/2450 (416+80). Pinned KMC GCC2.7.2/GNU2.6 private watch compiler contract12. No linked/production or matching acceptance claim. One callable body, no table, original fallback interfaces conserved. Historical private compiler12 observation preserved source-for-source during complete Q3 integration under its admitted multi-owner model. This source-only publication is not another native compile or acceptance claim. Original parent/related IDs and diagnostic context remain authenticated in the referenced original authored observation/import receipt.",
+    "effects": [
+      "byte-field-increment",
+      "duplicate-induction-cursors",
+      "reloads",
+      "length"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E0453BC18962FA3314994D1B90181FFD492572B12856706EE5563093D654231B",
+      "sourceSha256": "1F0B5AC5A982CA9590D7E8F9F92B845A4493AAB0261E261A387993D6210671C2"
+    },
+    "label": "Q3 baseline: postfix byte-field increments create redundant cursors",
+    "observedEffect": "PURE_C, one GLOBAL520-byte function vs expected496. High search emits a separate write-base cursor and post-store byte reload; low search emits a third base cursor. Complete function control flow remains represented; the24-byte excess is explained by these extra cursor/reload instructions, not a missing or extra callable body.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/q3-encoded-writer-261014/watch-initial.json",
+        "sha256": "69D643AFE4E7104DF3BE6DF3040E6120435C6137C1F8F3FAF1B1F2BB1830982E"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/coverage-original.json",
+        "sha256": "E78F9BFB763EF9FF6D593C8799E5AC5070334B2A8741FC584D8AB68161DA1428"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/original-mapped.txt",
+        "sha256": "E57BC6FD37ACAC4E809A6720043BDC872C1379B22C49A995867C3C7787C3B75E"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/initial.observation-authored.json",
+        "sha256": "818145342A6D2A5C75BBF688350771B0196459E7C8533A52804D15672ECDA0DF"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/initial-import.json",
+        "sha256": "4B294EFA96DC46687B89FA2415DCBFB6CEA59721A91DF7E632367CA4925D53DB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Compiled nonmatch; length, instruction scheduling/allocation and unresolved relocations. Inactive ASM owner supplies symbolic-object evidence only, no expected relocation identity or isolated linked comparison. Complete producer admission and whole-ROM gates remain unrun.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently reconstruct all four scans with structured C, four-byte entry layout, postfix increments, break plus post-loop checks, original byte narrowing/clamp order and diagnostic arguments."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2344,
+      "sha256": "E0453BC18962FA3314994D1B90181FFD492572B12856706EE5563093D654231B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1F0B5AC5A982CA9590D7E8F9F92B845A4493AAB0261E261A387993D6210671C2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_00130E60-aed8ad97dc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

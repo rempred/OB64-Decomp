@@ -1290,6 +1290,10 @@
     {
       "symbol": "func_001307D4",
       "source": "src/lib/func_001307D4.c"
+    },
+    {
+      "symbol": "func_00130E60",
+      "source": "src/lib/func_00130E60.c"
     }
   ]
 }

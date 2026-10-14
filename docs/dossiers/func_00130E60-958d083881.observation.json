@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "958D0838812628533D0C34EB7DA24F94A53E15C3FAF9013444BB434AB0C0D419",
+  "observationId": "1A06F973C034539F9EB17331745DADD19C45EDE5F991167B646A5A4401DAEEEC",
+  "symbol": "func_00130E60",
+  "authored": {
+    "context": "Complete Q3 logical function func_00130E60, ROM00130E60..00131050, overlay7 RAM801DC720..801DC910; preserved original physical rows2449/2450 (416+80). Pinned KMC GCC2.7.2/GNU2.6 private watch compiler contract12. No linked/production or matching acceptance claim. One callable body, no table, original fallback interfaces conserved. Historical private compiler12 observation preserved source-for-source during complete Q3 integration under its admitted multi-owner model. This source-only publication is not another native compile or acceptance claim. Original parent/related IDs and diagnostic context remain authenticated in the referenced original authored observation/import receipt.",
+    "effects": [
+      "byte-field-increment",
+      "duplicate-induction-cursors",
+      "reloads",
+      "readability",
+      "unresolved-relocations"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "1EDB7AD1942FDBC4F005BB79E8CA98252B1D3144E7AF947645E93C32595A5DAD",
+      "sourceSha256": "18D0DB28D700B6E3E6F2D76093B9FBC08412CA0100ECE80FCDABEAA1A377C7A1"
+    },
+    "label": "Q3 best: explicit byte read/add/write preserves496-byte native function",
+    "observedEffect": "PURE_C; exactly one GLOBAL496-byte STT_FUNC, one496-byte RX section with alignment4 and zero text tail. All124 instruction words align outside relocation operand fields; private watch rawRelocationMaskedExact and diagnosticRelocationMaskedExact=true, rawExactBytes and diagnosticExactBytes=false. Score97.7;28 raw differing instructions at exactly28 actual relocation sites. No added table or compiler function. Explicit assignments remove the baseline duplicate field cursors/reload. Pointer-only and byte-array forms remain recoverable intermediate counterexamples with different induction scheduling/allocation.",
+    "parentCandidateId": "AED8AD97DCCA440D6C4AF8519FCEFB8B09548A53D9248B0270B9BA7978EAD4A5",
+    "references": [
+      {
+        "path": "build/matching/q3-encoded-writer-261014/watch-final-source.json",
+        "sha256": "D4D80FAF9EA1AE58813D89A216C105010E21DD2478C6BD78A5FBC41BE82DB804"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/watch-explicit-assignments.json",
+        "sha256": "6DDF595F93F4D80E3035BA258409F3406B9ECBB9041C3ADD6205242C46FADB92"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/watch-initial.json",
+        "sha256": "69D643AFE4E7104DF3BE6DF3040E6120435C6137C1F8F3FAF1B1F2BB1830982E"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/watch-field-pointers.json",
+        "sha256": "DF2F63A71FFB24DF7CC72A48BCE251A40310D74D215C1EEB970C7965E7B77026"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/watch-byte-views.json",
+        "sha256": "711EED40031382AA20C17B7D5EAF8C0A368D1A0C0E2B0DDBFD95CAF64944BF52"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/watch-low-word-copies.json",
+        "sha256": "8880CB89B067C8BDE860DB528BEAD817668295A1F1A4A964B635659169D6C0AA"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/coverage-original.json",
+        "sha256": "E78F9BFB763EF9FF6D593C8799E5AC5070334B2A8741FC584D8AB68161DA1428"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/original-mapped.txt",
+        "sha256": "E57BC6FD37ACAC4E809A6720043BDC872C1379B22C49A995867C3C7787C3B75E"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/final.observation-authored.json",
+        "sha256": "EC23C04BF5F66652D55337A5A92F925EF522CFC88B04D5F36C21BB6B216F7AAE"
+      },
+      {
+        "path": "build/matching/q3-encoded-writer-261014/final-import.json",
+        "sha256": "F674F38F1653E1501D5E8A5C11FA8E123E1E521910984FDF940965E27AF4EAC4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object diagnostic only: diagnostic unavailable/nonactive-asm-owner; expected relocation evidence unavailable. Actual28 relocations and encoded addends need canonical linked authentication. Both original physical owners/entries/fallbacks, producer admission, structural audit/independent review and one final complete-Q3 canonical verifier remain required. Mask equality is not accepted matching C or callee-identity proof.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace all three postfix byte-field increments in the baseline with explicit same-field read +1 assignments. Retain indexed struct fields, both branches, four scans, break/post-loop checks and diagnostic tail. Add the observed compiler workaround comment."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2434,
+      "sha256": "1EDB7AD1942FDBC4F005BB79E8CA98252B1D3144E7AF947645E93C32595A5DAD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "18D0DB28D700B6E3E6F2D76093B9FBC08412CA0100ECE80FCDABEAA1A377C7A1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_00130E60-958d083881.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
