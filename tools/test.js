@@ -23,6 +23,7 @@ const ROUTINE_TESTS = [
   ['owner-function-groups', 'tests/owner_function_groups.js'],
   ['auxiliary-interior', 'tests/auxiliary_interior.js'],
   ['auxiliary-projection', 'tests/auxiliary_projection.js'],
+  ['auxiliary-occurrence-projection', 'tests/auxiliary_occurrence_projection.js'],
   ['group-auxiliary-projection', 'tests/group_auxiliary_projection.js'],
   ['group-auxiliary-bundles', 'tests/group_auxiliary_bundles.js'],
   ['paired-owner-projection', 'tests/paired_owner_projection.js'],

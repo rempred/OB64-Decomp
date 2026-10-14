@@ -1741,6 +1741,7 @@ function verifyCompilerTextFunctions(elf, target, section, linked = false, nativ
 }
 
 function relocationRecords(elf, target) {
+  auxiliaryProjection.validateOccurrenceObject(elf,target);
   if (target.compilationGroup) return compilationGroups.memberRelocations(target, elf);
   const owners = atomic.objectOwners(target);
   const targetSections = owners.map((owner) => {
@@ -2403,7 +2404,8 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     },
     assemblyContract: {
       compilerAssemblyRewritten: false,
-      permittedAdjustment: target.auxiliaryProjection?.schemaVersion === 3 ? 'none in compiler assembly; project fixed read-only rows and omit authenticated unowned native terminal text alignment'
+      permittedAdjustment: auxiliaryProjection.occurrenceMode(target.auxiliaryProjection) ? 'assign native sections; project exact readonly occurrences with derived local anchors and paired symbol retargeting; preserve instruction and addend bytes'
+        : target.auxiliaryProjection?.schemaVersion === 3 ? 'none in compiler assembly; project fixed read-only rows and omit authenticated unowned native terminal text alignment'
         : target.atomicText ? 'assign complete compiler text to one atomic owner union at alignment four; project authentic read-only occurrence bundles and their native alignment zeros to complete original rows; preserve non-function boundary markers'
         : target.auxiliaryProjection ? 'assign native compiler occurrences to the first auxiliary anchor; project complete payload rows while retaining original ASM padding'
         : target.nativeTextTail || target.compilationGroup ? 'none; untouched native compiler assembly'
@@ -2545,17 +2547,18 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
   atomic.validateProof(actual);
   const projected = actual.target.auxiliaryProjection;
   const projectionEvidence = actual.objectEvidence.auxiliaryProjection;
-  if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || [4, 6, 8].includes(actual.objectEvidence.schemaVersion)) {
+  if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || [4, 6, 8, 17].includes(actual.objectEvidence.schemaVersion)) {
+    const occurrenceProjection = auxiliaryProjection.occurrenceMode(projected);
     const bundleProjection = projected?.schemaVersion === 4;
     const paddedProjection = projected?.schemaVersion === 2 || bundleProjection;
     const nativeFunctionsProjection = projected?.schemaVersion === 3;
     const projectionKeys = ['schemaVersion', 'contract', 'retained', 'implementationSha256',
       'nativeSections', 'nativeSymbols', 'nativeRelocationSections', 'nativeObjectSha256',
       'projectedObjectSha256', 'nativeSectionSha256', 'nativeRelocations', 'references',
-      'payloadBytes', 'checkOnlyBytes', ...(paddedProjection ? ['payloadSlices'] : []), ...(nativeFunctionsProjection ? ['nativeText'] : [])];
+      'payloadBytes', 'checkOnlyBytes', ...(paddedProjection ? ['payloadSlices'] : []), ...(nativeFunctionsProjection ? ['nativeText'] : []), ...(occurrenceProjection ? ['occurrence'] : [])];
     const projectionHashes = ['implementationSha256', 'nativeObjectSha256', 'projectedObjectSha256', 'nativeSectionSha256'];
-    if (!projected || ![1, 2, 3, 4].includes(projected.schemaVersion) || actual.assemblyContract.auxiliaryProjection !== true
-        || actual.objectEvidence.schemaVersion !== (bundleProjection ? 11 : nativeFunctionsProjection ? 8 : paddedProjection ? 6 : 4)
+    if (!projected || ![1, 2, 3, 4, 6].includes(projected.schemaVersion) || actual.assemblyContract.auxiliaryProjection !== true
+        || actual.objectEvidence.schemaVersion !== (occurrenceProjection ? 17 : bundleProjection ? 11 : nativeFunctionsProjection ? 8 : paddedProjection ? 6 : 4)
         || !textContract.exactKeys(projectionEvidence, projectionKeys) || projectionEvidence.schemaVersion !== projected.schemaVersion
         || projectionHashes.some(key => typeof projectionEvidence[key] !== 'string' || !/^[0-9A-F]{64}$/.test(projectionEvidence[key]))
         || !isDeepStrictEqual(projected, projectionEvidence.contract)
@@ -2574,6 +2577,7 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
         || projectionEvidence.payloadBytes + projectionEvidence.checkOnlyBytes !== projected.bytes) {
       fail('source-to-object auxiliary projection evidence schema drift');
     }
+    if(occurrenceProjection) auxiliaryProjection.validateOccurrenceProof(actual);
     if (nativeFunctionsProjection) {
       const native = projectionEvidence.nativeText;
       if (!textContract.exactKeys(native, ['bytes', 'alignment', 'outputAlignment', 'terminal', 'nativeSha256', 'projectedSha256', 'functions', 'tableAttribution'])

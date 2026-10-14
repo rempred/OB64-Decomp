@@ -361,3 +361,15 @@ Classification uses the complete authenticated translation unit once per produce
 An admitted complete registered-padding producer may preserve a differently named original physical GLOBAL FUNC/default/size-zero entry at primary offset zero through deterministic metadata-only derivation. The immutable native assembler artifact retains its literal compiler function/REL census. The derived source object appends exactly one separately authenticated interface symbol; it is not another native function or additional C bytes. Only symbol/string table copies are appended, preserving old indices, REL bytes, section names and payload positions. No source annotation, extra owner or linker alias is permitted.
 
 Text contract version2 mode `native-with-derived-physical-interface` and object evidence16 require the native artifact, exact rederivation, explicit native versus derived censuses and fresh/recorded/CURRENT/cache checks. Full retained ASM/body ownership and original physical metadata remain mandatory. The pinned PURE_C production-path fixture and on-disk falsifiers accompany independent review and the changed-input structural audit; they do not accept a matching wave by themselves.
+
+
+### Derived readonly occurrence anchors
+
+The separately reviewed standalone [schema-6 occurrence projection](AUXILIARY_PROJECTION.md)
+may derive zero-size LOCAL/STT_OBJECT/default readonly anchors in the projected
+source object and retarget fully authenticated HI16/LO16 pair symbols. Native
+compiler assembly/object, all instruction/data bytes and encoded addends remain
+unchanged. The exact symbol-index mapping and retail placement equation are
+independently reproduced. This is an ELF representation permission, not an
+assembler escape or a source classification exception. No source-authored extra
+symbol, new owner, fabricated padding or additional matching-C bytes is admitted.

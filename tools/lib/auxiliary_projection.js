@@ -16,6 +16,11 @@ function keys(value, expected) {
 }
 function integer(value, min = 0) { return Number.isSafeInteger(value) && value >= min && value <= 0xffffffff; }
 function alignment(value) { return integer(value, 4) && value <= 16 && (value & (value - 1)) === 0; }
+function occurrenceMode(contract) { return contract?.schemaVersion === 6 && contract.mode === 'native-occurrence-readonly-projection'; }
+function retainedSegments(contract) {
+  return occurrenceMode(contract) ? contract.retainedRows.map(row => ({...row, kind:'retained', bytes:row.ownerBytes, ownerOffset:0}))
+    : contract.segments.filter(segment => segment.kind === 'zero');
+}
 function payloads(contract) { return contract.segments.filter(segment => segment.kind === 'payload'); }
 function entryBytes(segment, auxiliaries) {
   return auxiliaries.find(value => value.outputSection === segment.outputSection).entries * 4;
@@ -51,8 +56,8 @@ function normalize(contract, auxiliaries) {
 // and member attribution checks. Standalone schemas retain their old minimum.
 function normalizeContract(contract, auxiliaries, minimumPayloads) {
   if (contract === undefined) return null;
-  if (!keys(contract, ['schemaVersion', 'mode', 'compilerSection', 'bytes', 'alignment', 'expectedObjectSha256', 'segments', ...(contract?.schemaVersion === 3 ? ['nativeText'] : [])])
-      || ![1, 2, 3, 4].includes(contract.schemaVersion) || contract.mode !== 'fixed-row-readonly-projection'
+  if (!keys(contract, ['schemaVersion', 'mode', 'compilerSection', 'bytes', 'alignment', 'expectedObjectSha256', 'segments', ...(contract?.schemaVersion === 3 ? ['nativeText'] : []), ...(occurrenceMode(contract) ? ['retainedRows'] : [])])
+      || ![1, 2, 3, 4, 6].includes(contract.schemaVersion) || (contract.schemaVersion === 6 ? !occurrenceMode(contract) : contract.mode !== 'fixed-row-readonly-projection')
       || contract.compilerSection !== '.rodata' || !integer(contract.bytes, 4)
       || !alignment(contract.alignment) || contract.bytes % contract.alignment
       || !SHA.test(contract.expectedObjectSha256) || !Array.isArray(contract.segments)
@@ -67,9 +72,20 @@ function normalizeContract(contract, auxiliaries, minimumPayloads) {
         || text.bytes !== tail.offset + tail.bytes || text.bytes !== Math.ceil(tail.offset / text.alignment) * text.alignment
         || tail.sha256 !== hash(Buffer.alloc(tail.bytes)) || tail.origin !== 'native-assembler-section-alignment') fail('native text terminal contract');
   }
+  if (occurrenceMode(contract)) {
+    if (!Array.isArray(contract.retainedRows)) fail('occurrence retained row census');
+    let previousEnd=0; const names=new Set();
+    for(const row of contract.retainedRows) {
+      if(!keys(row,['offset','ownerSection','ownerBytes','expectedOwnerSha256']) || !integer(row.offset,4) || row.offset%4
+        || !integer(row.ownerBytes,4) || row.ownerBytes%4 || !SECTION.test(row.ownerSection) || names.has(row.ownerSection)
+        || !SHA.test(row.expectedOwnerSha256) || row.offset<previousEnd) fail('occurrence retained row schema/order');
+      names.add(row.ownerSection); previousEnd=row.offset+row.ownerBytes;
+    }
+  }
   let cursor = 0, count = 0;
   const sections = new Set(), labels = new Set();
   for (const segment of contract.segments) {
+    if (occurrenceMode(contract) && segment?.kind !== 'payload') fail('occurrence native padding unsupported');
     const payload = segment && segment.kind === 'payload';
     const fields = payload ? ['kind', 'offset', 'bytes', 'outputSection', ...(contract.schemaVersion === 4 ? ['occurrences'] : ['label', 'alignmentDirectives']), ...(contract.schemaVersion === 3 ? ['dispatchSymbol'] : [])]
       : ['kind', 'offset', 'bytes', 'ownerSection', 'ownerOffset', 'ownerBytes', 'expectedOwnerSha256'];
@@ -100,7 +116,7 @@ function normalizeContract(contract, auxiliaries, minimumPayloads) {
           || !auxiliary || auxiliary.outputSection !== segment.outputSection || auxiliary.bytes !== segment.bytes
           || auxiliary.compilerSection !== contract.compilerSection || !integer(auxiliary.entries, 1)
           || auxiliary.entries * 4 + ([2, 4].includes(contract.schemaVersion) ? (auxiliary.trailingPaddingBytes || 0) : 0) !== segment.bytes
-          || auxiliary.preservedTail !== null || auxiliary.preservedPrefix || auxiliary.preservedInteriorBefore
+          || (!occurrenceMode(contract) && auxiliary.preservedTail !== null) || auxiliary.preservedPrefix || auxiliary.preservedInteriorBefore
           || auxiliary.compilerOccurrences || auxiliary.sourceObjectPrefix || (![2, 4].includes(contract.schemaVersion) && auxiliary.trailingPaddingBytes)
           || (count === 1 && segment.offset !== 0)) fail('payload occurrence or complete-row contract');
       const occurrenceAlignment = contract.schemaVersion === 4 ? contract.alignment : Math.max(...segment.alignmentDirectives.map(value => 2 ** value));
@@ -121,6 +137,7 @@ function normalizeContract(contract, auxiliaries, minimumPayloads) {
   if (cursor !== contract.bytes || count < minimumPayloads || count !== auxiliaries.length
       || contract.segments.some(segment => segment.kind === 'zero' && sections.has(segment.ownerSection))) fail('payload/zero census');
   const tables = payloads(contract);
+  if(occurrenceMode(contract) && contract.retainedRows.some(row=>sections.has(row.ownerSection))) fail('retained row also payload');
   for (let i = 0; i < tables.length; i++) {
     const previousEnd = i ? tables[i - 1].offset + entryBytes(tables[i - 1], auxiliaries) : 0;
     if (tables[i].offset !== Math.ceil(previousEnd / contract.alignment) * contract.alignment) fail('non-native inter-occurrence padding');
@@ -162,9 +179,37 @@ function checkTarget(target, assemblySource = null) {
       if (matches.length !== 1) fail('payload dispatch function census');
     }
   }
+  if(occurrenceMode(contract)) {
+    const row=target.rows?.[0],owner=target.textOwners[0],slice=row?.slices?.[0];
+    if(target.atomicText || target.rows?.length!==1 || row?.retainedPadding || row?.slices?.length!==1 || !slice?.executable
+      || row.bytes!==target.bytes || owner.logicalOffset!==0 || owner.bytes!==row.bytes || owner.rowIndex!==row.index
+      || target.sectionName!==slice.sectionName || target.romStartNumber!==row.romStart || target.romEndNumber!==row.romEndExclusive
+      || target.vramStartNumber!==slice.vramStart || target.vramEndNumber!==slice.vramEndExclusive) fail('occurrence complete ordinary text owner');
+  }
   const first = target.auxiliarySections[0];
   for (const [index, segment] of payloads(contract).entries()) {
     const auxiliary = target.auxiliarySections[index];
+    if (occurrenceMode(contract)) {
+      if(auxiliary.ownerPrefixBytes || auxiliary.ownerRomStartNumber!==auxiliary.romStartNumber
+        || auxiliary.ownerVramStartNumber!==auxiliary.vramStartNumber || auxiliary.ownerSectionBytes!==auxiliary.bytes+auxiliary.ownerTailBytes
+        || auxiliary.ownerRomEndNumber!==auxiliary.romEndNumber+auxiliary.ownerTailBytes
+        || auxiliary.ownerVramEndNumber!==auxiliary.vramEndNumber+auxiliary.ownerTailBytes
+        || Boolean(auxiliary.ownerTailBytes)!==Boolean(auxiliary.preservedTail)
+        || index===0 && auxiliary.ownerTailBytes) fail('occurrence owner prefix/tail');
+      const delta=auxiliary.romStartNumber-first.romStartNumber-segment.offset;
+      if(delta!==auxiliary.vramStartNumber-first.vramStartNumber-segment.offset || !integer(delta) || delta%4
+        || delta>=first.bytes || index===0 && delta!==0) fail('occurrence bounded anchor placement');
+      if(index) {
+        const previous=target.auxiliarySections[index-1];
+        let cursor=previous.ownerRomEndNumber-first.romStartNumber;
+        const end=auxiliary.romStartNumber-first.romStartNumber;
+        for(const row of contract.retainedRows.filter(row=>row.offset>=cursor && row.offset<end)) {
+          if(row.offset!==cursor) fail('occurrence retained row gap'); cursor+=row.ownerBytes;
+        }
+        if(cursor!==end) fail('occurrence retail partition');
+      }
+      continue;
+    }
     if (auxiliary.romStartNumber - first.romStartNumber !== segment.offset
         || auxiliary.vramStartNumber - first.vramStartNumber !== segment.offset
         || auxiliary.ownerSectionBytes !== segment.bytes || auxiliary.ownerPrefixBytes
@@ -173,6 +218,10 @@ function checkTarget(target, assemblySource = null) {
         || auxiliary.ownerRomEndNumber !== auxiliary.romEndNumber
         || auxiliary.ownerVramStartNumber !== auxiliary.vramStartNumber
         || auxiliary.ownerVramEndNumber !== auxiliary.vramEndNumber) fail('fixed payload row or ROM/RAM spacing');
+  }
+  if(occurrenceMode(contract)) for(const row of contract.retainedRows) {
+    if(!target.auxiliarySections.slice(1).some((aux,index)=>row.offset>=target.auxiliarySections[index].ownerRomEndNumber-first.romStartNumber
+      && row.offset+row.ownerBytes<=aux.romStartNumber-first.romStartNumber)) fail('extraneous retained row');
   }
   return contract;
 }
@@ -190,7 +239,7 @@ function retainedBindings(target, model, baserom, assemblySource = null) {
     if (!slice || slice.placementKind !== anchor.placementKind || slice.overlayDescriptorId !== anchor.overlayDescriptorId
         || slice.loadSlabId !== anchor.loadSlabId || slice.overlaySection !== anchor.overlaySection) fail('payload placement context');
   }
-  return contract.segments.filter(segment => segment.kind === 'zero').map(segment => {
+  return retainedSegments(contract).map(segment => {
     const rows = model.rows.filter(row => (row.slices || []).some(slice => slice.sectionName === segment.ownerSection));
     if (rows.length !== 1) fail('retained original row census');
     const row = rows[0], slice = row.slices[0];
@@ -205,7 +254,7 @@ function retainedBindings(target, model, baserom, assemblySource = null) {
     const original = path.resolve(ROOT, row.part.file);
     if (!original.startsWith(ROOT + path.sep) || !fs.existsSync(original) || sha256File(original) !== row.part.sha256) fail('retained original source identity');
     if (!Buffer.isBuffer(baserom) || row.romStart < 0 || row.romEndExclusive > baserom.length
-        || !baserom.subarray(row.romStart, row.romEndExclusive).every(byte => byte === 0)
+        || (!occurrenceMode(contract) && !baserom.subarray(row.romStart, row.romEndExclusive).every(byte => byte === 0))
         || hash(baserom.subarray(row.romStart, row.romEndExclusive)) !== segment.expectedOwnerSha256) fail('complete retained original row bytes');
     return { ...segment, rowIndex: row.index, primaryId: row.primaryId, chunkIndex: row.part.chunkIndex,
       originalAssembly: row.part.file, originalAssemblySha256: row.part.sha256,
@@ -230,7 +279,7 @@ function validateCensus(targets, assemblySource = null) {
         if (matches.length !== 1 || !same(matches[0].compilationGroup, target.compilationGroup)) fail('incomplete auxiliary member bundle');
       }
     }
-    for (const zero of contract.segments.filter(segment => segment.kind === 'zero')) {
+    for (const zero of retainedSegments(contract)) {
       if (targets.some(value => (value.auxiliarySections || []).some(auxiliary => auxiliary.outputSection === zero.ownerSection)
           || (value.textOwners || []).some(owner => owner.sectionName === zero.ownerSection))) fail('check-only row also has a C owner');
     }
@@ -261,8 +310,8 @@ function hex(value) { return '0x' + value.toString(16).toUpperCase().padStart(8,
 function project(input, target) {
   const contract = checkTarget(target), tables = payloads(contract);
   if (!Array.isArray(target.auxiliaryProjectionRetained)
-      || target.auxiliaryProjectionRetained.length !== contract.segments.filter(segment => segment.kind === 'zero').length) fail('missing retained bindings');
-  for (const [index, segment] of contract.segments.filter(value => value.kind === 'zero').entries()) {
+      || target.auxiliaryProjectionRetained.length !== retainedSegments(contract).length) fail('missing retained bindings');
+  for (const [index, segment] of retainedSegments(contract).entries()) {
     const record = target.auxiliaryProjectionRetained[index];
     const row = target.model?.rows.find(value => value.index === record?.rowIndex);
     if (!record || !row || Object.entries(segment).some(([key, value]) => !same(record[key], value))
@@ -373,11 +422,13 @@ function project(input, target) {
     if (rel.entrySize !== 8 || rel.size % 8 || rel.link !== relocation.link) fail('relocation table census');
     const owner = parsed.sections[rel.info];
     if (!owner) fail('relocation owner');
-    let pending = [];
+    let pending = []; const referencePlaces=new Set();
     for (let cursor = 0; cursor < rel.size; cursor += 8) {
       const place = input.readUInt32BE(rel.offset + cursor), info = input.readUInt32BE(rel.offset + cursor + 4);
       const symbol = symbols[info >>> 8], type = info & 255;
       if (!symbol || place % 4 || place + 4 > owner.size) fail('relocation place or symbol');
+      if(occurrenceMode(contract) && referencePlaces.has(place)) fail('duplicate occurrence relocation place');
+      referencePlaces.add(place);
       if (symbol === marker) fail('reference to compiler marker');
       if (native && owner.index === text[0].index && place + 4 > target.bytes) fail('relocation in native terminal text');
       if (native && symbol.sectionIndex === text[0].index) {
@@ -393,10 +444,15 @@ function project(input, target) {
       const word = input.readUInt32BE(owner.offset + place);
       if (type === 5) { pending.push({ place, info, immediate: word & 0xffff }); continue; }
       if (!pending.length) fail('unpaired auxiliary LO16');
-      const low = (word << 16) >> 16;
+      const low = (word << 16) >> 16; let pairedTable=null;
       for (const high of pending) {
         const addend = ((high.immediate << 16) + low) >>> 0;
         if (!tables.some(segment => addend >= segment.offset && addend + 4 <= segment.offset + entryBytes(segment, target.auxiliarySections))) fail('reference into padding or outside native payloads');
+        if(occurrenceMode(contract)) {
+          const table=tables.find(segment=>addend>=segment.offset && addend+4<=segment.offset+entryBytes(segment,target.auxiliarySections));
+          if(addend%4 || pairedTable && pairedTable!==table) fail('ambiguous occurrence pair set');
+          pairedTable=table;
+        }
         if (native) {
           const table = tables.find(segment => addend >= segment.offset && addend + 4 <= segment.offset + entryBytes(segment, target.auxiliarySections));
           const fn = target.compilerTextFunctions.find(fn => fn.symbol === table.dispatchSymbol);
@@ -409,6 +465,7 @@ function project(input, target) {
     }
     if (pending.length) fail('unpaired auxiliary HI16');
   }
+  if(occurrenceMode(contract) && tables.some(t=>!references.some(r=>r.addend>=t.offset&&r.addend+4<=t.offset+t.bytes))) fail('unreferenced native occurrence');
   const owners = tables.map(segment => ({ sectionName: segment.outputSection, bytes: segment.bytes,
     logicalOffset: segment.offset, logicalEnd: segment.offset + segment.bytes, alignment: contract.alignment }));
   for (const owner of owners.slice(1)) if (parsed.sections.some(section => section.name === owner.sectionName)) fail('projected destination already exists');
@@ -425,12 +482,18 @@ function project(input, target) {
     const textRel = list.sections.find(section => section.name === '.rel.text');
     if (textRel) textRel.name = '.rel' + target.sectionName;
   }
+  const occurrenceEvidence = occurrenceMode(contract) ? deriveOccurrenceSymbols(list, target, references, source, text[0], symbols) : null;
   const shstr = elfTools.rebuildSectionNames(list, parsed.shstrIndex);
   const buffer = elfTools.serialize(input, parsed, list, shstr);
   const projected = parseElf32BigEndian(buffer);
   for (const segment of tables) {
     const section = projected.sections.find(value => value.name === segment.outputSection);
     if (!section || !Buffer.from(elfSectionBytes(projected, section)).equals(raw.subarray(segment.offset, segment.offset + segment.bytes))) fail('projection changed payload');
+  }
+  if(occurrenceMode(contract)) {
+    validateOccurrenceObject(projected,target);
+    const after=projected.sections.find(s=>s.name===target.sectionName);
+    if(!after||!Buffer.from(elfSectionBytes(projected,after)).equals(nativeTextBytes))fail('occurrence projection changed text bytes');
   }
   if (native) {
     const after = projected.sections.find(section => section.name === target.sectionName);
@@ -446,6 +509,7 @@ function project(input, target) {
       paddingBytes: segment.bytes - entryBytes(segment, target.auxiliarySections),
       nativeSha256: hash(raw.subarray(segment.offset, segment.offset + segment.bytes)),
       paddingSha256: hash(raw.subarray(segment.offset + entryBytes(segment, target.auxiliarySections), segment.offset + segment.bytes)) })) } : {}),
+    ...(occurrenceEvidence ? {occurrence:occurrenceEvidence} : {}),
     implementationSha256: sha256File(__filename),
     nativeSections: parsed.sections.map(section => ({ name: section.name, type: section.type, flags: section.flags,
       bytes: section.size, alignment: section.alignment, entrySize: section.entrySize, link: section.link, info: section.info,
@@ -495,7 +559,7 @@ function linkedEvidence(target, root, context) {
       contributionCount: 1, fullRowExact: true };
   });
 }
-module.exports = { normalize, checkTarget, retainedBindings, validateBindings, validateCensus, assembly, project, linkedEvidence };
+module.exports = { occurrenceMode, normalize, checkTarget, retainedBindings, validateBindings, validateCensus, assembly, project, linkedEvidence };
 
 function singleOwner(group) { return group?.mode === 'native-text-readonly-single-owner-projection'; }
 function composed(group) { return singleOwner(group) || ['native-text-readonly-owner-projection','native-text-readonly-interior-run-projection'].includes(group?.mode); }
@@ -777,4 +841,100 @@ function bundleEvidence(group, bytes, relocations) {
     relocations:relocations.filter(r=>r.offset>=o.offset&&r.offset<o.offset+o.bytes) }));
 }
 Object.assign(module.exports,{bundle:rowBundle,groupOccurrences,bundlePadding,bundleEvidence});
+
+
+// New locals are inserted before globals; every original symbol retains its
+// identity through the explicit bijection, including ancillary relocations.
+function deriveOccurrenceSymbols(list,target,references,source,text,symbols) {
+  const contract=target.auxiliaryProjection,tables=payloads(contract),first=target.auxiliarySections[0];
+  const deltas=tables.map((table,i)=>target.auxiliarySections[i].vramStartNumber-first.vramStartNumber-table.offset);
+  const unique=[...new Set(deltas.filter(d=>d!==0))].sort((a,b)=>a-b);
+  const symtabs=list.sections.filter(s=>s.type===2); if(symtabs.length!==1) fail('occurrence symbol table census');
+  const symtab=symtabs[0],strtab=list.sections[symtab.link],cut=symtab.info,count=symbols.length;
+  if(symtab.entrySize!==16 || symtab.data.length!==count*16 || !integer(cut,1) || cut>count || !strtab || strtab.type!==3
+    || symbols.some((s,i)=>(i<cut)!==(s.binding===0))) fail('occurrence local/global partition');
+  const symbolMap=symbols.map((_,i)=>({oldIndex:i,newIndex:i<cut?i:i+unique.length}));
+  const anchors=unique.map((delta,i)=>({name:'__ob64_readonly_anchor_'+delta.toString(16),value:delta,index:cut+i,
+    section:tables[0].outputSection,binding:0,symbolType:1,size:0,visibility:0}));
+  if(anchors.some(a=>symbols.some(s=>s.name===a.name))) fail('occurrence derived symbol collision');
+  const added=[];
+  for(const anchor of anchors) {
+    const record=Buffer.alloc(16);record.writeUInt32BE(strtab.data.length,0); record.writeUInt32BE(anchor.value,4);
+    record[12]=1; record.writeUInt16BE(list.ownerSections.get(anchor.section).index,14);added.push(record);
+    strtab.data=Buffer.concat([strtab.data,Buffer.from(anchor.name+'\0')]);
+  }
+  strtab.size=strtab.data.length;
+  symtab.data=Buffer.concat([symtab.data.subarray(0,cut*16),...added,symtab.data.subarray(cut*16)]);
+  symtab.size=symtab.data.length;symtab.info=cut+anchors.length;
+  const changes=new Map(),pairs=[];
+  for(const ref of references) {
+    const i=tables.findIndex(t=>ref.addend>=t.offset && ref.addend+4<=t.offset+t.bytes),table=tables[i];
+    if(i<0) fail('occurrence reference coverage');
+    const delta=deltas[i],newIndex=delta?anchors.find(a=>a.value===delta).index:symbolMap[ref.highInfo>>>8].newIndex;
+    for(const [place,info] of [[ref.highPlace,ref.highInfo],[ref.lowPlace,ref.lowInfo]]) {
+      if(changes.has(place) && changes.get(place).newIndex!==newIndex) fail('occurrence low retarget ambiguity');
+      changes.set(place,{info,newIndex});
+    }
+    const effective=first.vramStartNumber+delta+ref.addend;
+    if(effective!==target.auxiliarySections[i].vramStartNumber+ref.addend-table.offset || effective>0xffffffff) fail('occurrence reference equation');
+    pairs.push({...ref,outputSection:table.outputSection,newSymbolIndex:newIndex,anchorDelta:delta,effectiveAddress:effective});
+  }
+  for(const rel of list.sections.filter(s=>s.type===9)) {
+    if(rel.link!==symtab.index || rel.entrySize!==8 || rel.data.length%8) fail('occurrence relocation symbol table');
+    for(let offset=0;offset<rel.data.length;offset+=8) {
+      const place=rel.data.readUInt32BE(offset),info=rel.data.readUInt32BE(offset+4),oldIndex=info>>>8;
+      if(!symbolMap[oldIndex]) fail('occurrence relocation symbol index');
+      const change=rel.info===list.oldToNew.get(text.index)?changes.get(place):null;
+      if(change && change.info!==info) fail('occurrence relocation reference identity');
+      rel.data.writeUInt32BE(((change?change.newIndex:symbolMap[oldIndex].newIndex)*256+(info&255))>>>0,offset+4);
+    }
+  }
+  return {symbolMap,anchors,pairs};
+}
+
+function validateOccurrenceObject(elf,target,linked=false) {
+  if(!occurrenceMode(target.auxiliaryProjection)) return;
+  checkTarget(target);
+  const first=target.auxiliarySections[0],tables=payloads(target.auxiliaryProjection);
+  const deltas=[...new Set(tables.map((t,i)=>target.auxiliarySections[i].vramStartNumber-first.vramStartNumber-t.offset).filter(d=>d!==0))].sort((a,b)=>a-b);
+  const section=elf.sections.filter(s=>s.name===first.outputSection);
+  if(section.length!==1) fail('occurrence anchor section');
+  const anchors=elf.symbols.filter(s=>s.name.startsWith('__ob64_readonly_anchor_') && (!linked || s.sectionIndex===section[0].index));
+  if(anchors.length!==deltas.length) fail('occurrence derived anchor census');
+  for(const delta of deltas) {
+    const found=anchors.filter(s=>s.name==='__ob64_readonly_anchor_'+delta.toString(16));
+    if(found.length!==1 || found[0].value!==delta+(linked?first.vramStartNumber:0) || found[0].size!==0
+      || found[0].binding!==0 || found[0].symbolType!==1 || found[0].visibility!==0 || found[0].sectionIndex!==section[0].index)
+      fail('occurrence derived anchor identity');
+  }
+}
+function validateOccurrenceProof(proof) {
+  const contract=proof.target.auxiliaryProjection;
+  if(!occurrenceMode(contract)) {if(contract?.schemaVersion===6)fail('occurrence proof mode');return;}
+  const e=proof.objectEvidence.auxiliaryProjection,detail=e.occurrence,rows=proof.finalObject.auxiliarySections,tables=payloads(contract);
+  if(!keys(detail,['symbolMap','anchors','pairs']) || rows.length!==tables.length || !e.nativeSymbols.length) fail('occurrence proof schema');
+  const first=Number.parseInt(rows[0].finalPlacement.vramStart,16),symbols=e.nativeSymbols;
+  const cut=symbols.findIndex(s=>s.binding!==0);if(cut<1)fail('occurrence proof native local/global census');
+  const deltas=tables.map((t,i)=>Number.parseInt(rows[i].finalPlacement.vramStart,16)-first-t.offset);
+  if(deltas.some(d=>!integer(d)||d%4||d>=tables[0].bytes)||deltas[0]!==0)fail('occurrence proof anchor bounds');
+  const unique=[...new Set(deltas.filter(d=>d!==0))].sort((a,b)=>a-b);
+  const expectedMap=symbols.map((_,i)=>({oldIndex:i,newIndex:i<cut?i:i+unique.length}));
+  const anchors=unique.map((delta,i)=>({name:'__ob64_readonly_anchor_'+delta.toString(16),value:delta,index:cut+i,
+    section:tables[0].outputSection,binding:0,symbolType:1,size:0,visibility:0}));
+  if(!same(detail.symbolMap,expectedMap)||!same(detail.anchors,anchors))fail('occurrence proof symbol mapping');
+  const pairs=e.references.map(ref=>{
+    const i=tables.findIndex(t=>ref.addend>=t.offset && ref.addend+4<=t.offset+t.bytes);
+    if(i<0||ref.addend%4||!expectedMap[ref.highInfo>>>8]||(ref.highInfo>>>8)!==(ref.lowInfo>>>8))fail('occurrence proof reference');
+    const delta=deltas[i],newSymbolIndex=delta?anchors.find(a=>a.value===delta).index:expectedMap[ref.highInfo>>>8].newIndex;
+    return {...ref,outputSection:tables[i].outputSection,newSymbolIndex,anchorDelta:delta,effectiveAddress:first+delta+ref.addend};
+  });
+  if(!same(detail.pairs,pairs)||tables.some(t=>!pairs.some(p=>p.outputSection===t.outputSection)))fail('occurrence proof pairs');
+  for(const pair of pairs) for(const [place,info] of [[pair.highPlace,pair.highInfo],[pair.lowPlace,pair.lowInfo]]) {
+    const native=e.nativeRelocationSections.filter(r=>r.owner===proof.target.sectionName).flatMap(r=>r.entries);
+    if(native.filter(r=>r.place===place&&r.info===info).length!==1)fail('occurrence proof native reference census');
+  }
+}
+module.exports.validateOccurrenceObject=validateOccurrenceObject;
+module.exports.validateOccurrenceProof=validateOccurrenceProof;
+
 

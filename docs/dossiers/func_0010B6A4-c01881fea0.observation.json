@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C01881FEA0A555E816D2BDA9DFD9BA5B0C409D4F1554F0C3C9C3D0EF2FFC6E35",
+  "observationId": "141F09BC4AFC1E0B8BD53D8DCC61FED4C8C64ACABBFDB4E392D3B5424D4E96CF",
+  "symbol": "func_0010B6A4",
+  "authored": {
+    "context": "Complete B6A4 source covers both 30-slot scans, selected field74 lookup, list allocation/sentinel, calls/free and final flag update. The first malformed trial had a missing declaration and is not comparison evidence. The full nested candidate uses the retail frame but needs store/initialization ordering changes.",
+    "effects": [
+      "predicate-folding",
+      "memory-access-form",
+      "register-allocation",
+      "loop-initialization-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E4A393A951DFAE630C89EAE312B4F1D96D85157E6076A887EA65EE1DF29BA8A0",
+      "sourceSha256": "454B5F999B866CD8D96C4C204707CDB767A37ECA9A3E51750DD8FFC51DFB431D"
+    },
+    "label": "separate-mask-checks-and-explicit-slot-view",
+    "observedEffect": "Output is the full 572-byte retail opcode/register/stack stream with raw relocation-masked exact bytes and 45 actual relocations. Native text/primary size are572 and trailing alignment bytes0, frame40/RA36. A simpler *(D_801F0CB0+selected) slot view regresses to six opcode/seven register differences; nested checks alone retain six opcode/twelve register differences. The tested best remains recoverable.",
+    "parentCandidateId": "C8861A3FBE46600729A89DED4B3E8D55C1C5A8ED7271D3279922F2EF56349467",
+    "references": [
+      {
+        "path": "build/matching/s3-scenario-261014/b6a4-loop-order.json",
+        "sha256": "7C875E75CEC680C710160E5A106C162F0356F56DD7179C152C31345A4D9F1C33"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/b6a4-nested.c",
+        "sha256": "0CB3D7535CDC1BCDDAEFE332E06F6FF2985C0ECD9F402285981460EB52240642"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/b6a4-nested.json",
+        "sha256": "22F3791D758E7BFEBE6B71413470A377FB8CC378D83017A52BC7F8AB801AF75B"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/b6a4-pointer-slot.c",
+        "sha256": "D932304C5B18D11F5A3E68BE8447DCB7D4D3E3FE8D3CDAD324C92BB662324EF6"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/b6a4-pointer-slot.json",
+        "sha256": "151045C746E99F6BA512A07FFB247E275AD36BD8359456975505736D46681018"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010B6A4.s",
+        "sha256": "3F9F425C1088E904D71B8FA525235CC8EC88BE0B8338ECC552F312CFD334E123"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM private comparison cannot establish linked bytes or expected relocation provenance. Keep original owner/fallback and complete-wave canonical binding/acceptance gates.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep separate nested checks in both scans, initialize loop index before count, and load the initial pointer-table slot through a byte-offset view. All arithmetic uses actual fields/table stride; no dummy storage is added."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2860,
+      "sha256": "E4A393A951DFAE630C89EAE312B4F1D96D85157E6076A887EA65EE1DF29BA8A0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "454B5F999B866CD8D96C4C204707CDB767A37ECA9A3E51750DD8FFC51DFB431D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_0010B6A4-c01881fea0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

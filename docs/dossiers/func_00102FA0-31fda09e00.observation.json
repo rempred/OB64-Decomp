@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "31FDA09E009E0F48E679844A4FD708A379B7029B743E7058E145DC575010BDB2",
+  "observationId": "C76C45318643278C65B32B8316C5D19CF574DD364EEA6CE949F2B8D47B6541C0",
+  "symbol": "func_00102FA0",
+  "authored": {
+    "context": "Complete1909-word body/preamble at ROM102FA0..104D74, accepted row2220/VMA801AE860..801B0634; full100/42-entry matrices. Preserved C2F has correct7636/frame104 and42 actual-relocation-masked differing words. Both prior Claude allocation hypotheses were source-tested; no shared tooling, compiler identity, owner boundaries or canonical inputs changed.",
+    "effects": [
+      "control-flow",
+      "source-type-width",
+      "local-register-allocation",
+      "complete-body-coverage",
+      "native-readonly-data"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "03B2943FC25131CF6CEAEB56F30E6FB911922D3C9216341567D3490DA824BB5D",
+      "sourceSha256": "8288F0493335759FF2C1D76A14D0087ECE9B3EED59311CFBB8BA649384E36722"
+    },
+    "label": "complete-pure-c-body-native-relocation-masked-exact",
+    "observedEffect": "31FDA09E compiles PURE_C with7636 function/text bytes, frame104, no trailing text alignment,1909 native words,922 text relocation records,568 readonly bytes/alignment8/142R32. Stock rawRelocationMaskedExact=true and independent same-offset comparison masking only actual relocation fields has zero differences; branch immediates and register/width encodings are not masked. Unannotated4B5C is the same emitted text. Static projection of native table words to ROM142380..142510 and142530..1425D8 has zero mismatches across all142 entries. This is provisional native evidence, not linked or full-ROM matching acceptance.",
+    "parentCandidateId": "C2F7E3EE3AF918355849369DB2B7B7E7C39AEB05D745A0E35B2EAE58FDBAC48F",
+    "references": [
+      {
+        "path": "build/matching/s3-scenario-261014/102fa0-ready.json",
+        "sha256": "7F863F808A82F0DF10B1720FC699E1B628C2FB28228AA3A152B9B008758A654C"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/102fa0-ready-raw-differences.json",
+        "sha256": "FABC78B0C4D692ECA4C954F89B4701A1E216A88EE37FC4AC9562A2637D8FA285"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/102fa0-ready-table-projection.json",
+        "sha256": "AFF6A4FDFE625353BE417160EE2678286ABAC840C84A21538E37E6A39F453375"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/102fa0-all-controls-combined.json",
+        "sha256": "E18C09D41813DA72DD5F1E3082CBF5EC03BB5E6E04D360DE88D74A27B4CCDEAD"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/102fa0-halfword-declaration-order.json",
+        "sha256": "96A6721B94F1F30031D29FFB1DF84A16715DF84805D643005A06971311262081"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/102fa0-float-commit-scopes.json",
+        "sha256": "CC3D480172C9E8663FAE2143E36B67918C59A4DA7A91E4A39E6F39734E5B9066"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/102fa0-step-counter-iteration.json",
+        "sha256": "60DB849642692DD13A952C02883C4A644F889888E81CFB4FFA46F45BB99AA22E"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/102fa0-footer-update-scope.json",
+        "sha256": "45489E2C2903D84ED3B2E7B513B494C375EC0FD1B998E960328B401C62F35802"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/102fa0-deferred-decrement.json",
+        "sha256": "5AAB8CBAE3D50A369DC78406A9E750E1321576C26FB8BA97A79299349F8C5B09"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/claude-102fa0-halfword-only-answer.txt",
+        "sha256": "48B2313A6A572334288DD1C9F196A7F2361A2D85A1A9B2D7FFEC4A4A8E91FFED"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00102FA0.s",
+        "sha256": "8F3262D5B7CEC219AD0487808E66EABE494D9D6F4DF974DBB2B24A0750423EBA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Canonical auxiliary-output contracts and ownership/placement/relocation admission remain required for both complete C producers and all four S3 tables. Preserve the original32-byte pool gap, original504-byte second-table-owner remainder,1390's original owner prefix/remainder and both preambles/aliases. All ten bodies/four tables remain one unfinished S3 assignment until integration and its single complete-wave canonical full-ROM verifier pass. Original ASM/data, canonical sources/headers/config/CURRENT unchanged.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Declare record pointers before widened halfword captures, resolving the measured3-reference/6-instruction global-allocation tie (14 words). Compute the byte decrement only in its actual nonzero arm (3). Use explicit byte-result arms and single-iteration counter scopes (8). Preserve scalar float stores with explicit count/flag snapshots and one-shot scheduling scopes (13). Keep the footer word snapshot outside the flag-update scope and reload its global for the later call (4). The explicit30-unit backedge, every case, all original data references and all observable operations remain represented. Add concise comments near the required pinned-compiler source forms."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40533,
+      "sha256": "03B2943FC25131CF6CEAEB56F30E6FB911922D3C9216341567D3490DA824BB5D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8288F0493335759FF2C1D76A14D0087ECE9B3EED59311CFBB8BA649384E36722"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_00102FA0-31fda09e00.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

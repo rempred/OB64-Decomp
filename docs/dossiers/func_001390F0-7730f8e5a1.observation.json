@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7730F8E5A129BE50FCBA820584412CA467A2F742992983DD0687466D9EC34E0B",
+  "observationId": "F9B967002CF95E13097340B1CF6E7360DD3C5060414212F7390C66AE580B1FCC",
+  "symbol": "func_001390F0",
+  "authored": {
+    "context": "Complete2848-byte body/preamble and both23/7-entry matrices remain covered. Original exact hybrid remains fallback. Shared-exit parent0DE removed six dispatch register differences. Corrected import02A920DE establishes that the repeated-li1 gap already exists in parent811, superseding original observation5003B4AE's attribution; this publication retains that correction.",
+    "effects": [
+      "integer-promotion",
+      "early-commoning",
+      "local-register-allocation",
+      "shared-exit",
+      "branch-destination",
+      "scoped-scalar-roles",
+      "native-readonly-data"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "426ADFD6713E93124612D7F9F94F3D91760F3AE2CA684F3D5A9677C4D61FA965",
+      "sourceSha256": "CD67489E024BB061CE7C6A6DB628E11A797AE8B3A48D9D3E89D3DA0F2DAD5CCD"
+    },
+    "label": "complete-pure-c-body-symbolic-match-and-native-table-projection",
+    "observedEffect": "Mechanically PURE_C. Complete native2848/no tail/frame96,712 instructions. Stock rawRelocationMaskedExact and rawObjectRelocationMaskedExact are true, with zero opcode/register/stack/access-width differences. All534 unrelocated/equal words agree and178 differing words carry actual text relocations (66 R26,56 HI16,56 LO16); no unrecorded branch differences remain. Byte-view comparison preserves separate comparison/capped subtractions and retail allocations; the source without this view reuses the subtraction/native2844. Shared zero-float exit restores three branch destinations from early590 to retail AF4. Static ELF projection at the accepted body VMA801E49B0 matches both tables plus alignment bytes over originalROM144A48..144AC8: native128/align8,30 R32 at outer0..88 and inner96..120,0 mismatches. This projection is diagnostic data evidence, not linked acceptance. Annotated source retains the same native text hash7B23F7CBC5C15871163B2B60DB6E3738300988E3759FC98E36C1713E0D56702D.",
+    "parentCandidateId": "D1655C733184579249054040A2AA10A5C8474493C6E9B611CBBFF0D545D60116",
+    "references": [
+      {
+        "path": "build/matching/s3-scenario-261014/1390-ready.json",
+        "sha256": "99D8F2E61BF13ED2808AE419BDABB4CE3C449E1E95A0766B0E46ED94A80763A0"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/1390-ready-relocation-coverage.json",
+        "sha256": "E207A8DEAC6FD15E71F45E4592257DD892F715FEC723A7E97718F0A858BDD147"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/1390-ready-table-projection.json",
+        "sha256": "79BF786627FFC8F46B7CD151D00CF75E827C7DE99B30986428776AB63BA26BD6"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/1390-result-fresh-byte-comparison.json",
+        "sha256": "564457EDF581439FDE0A77218B22385A49ED26CE9718327D051A595BA0670A02"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/1390-byte-comparison-relocation-coverage.json",
+        "sha256": "7BCA8A8BC00C33F35F779B9FA51EFAB46A91BA7131A73A4F39F7EB5F1A380E42"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/1390-result-fresh-promoted-bytes.json",
+        "sha256": "626E6148DFC159B16A469F147030D32038FBA1DB3892DBBCF6B662D633301B2E"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/1390-scoped-result-fresh-final.json",
+        "sha256": "AB073EE861500B6B22806D402297BF4D037735B1D9D4FB337612B43CB52161B2"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/claude-1390-byte-scheduler-answer.txt",
+        "sha256": "0FB2AFCC39507FC26D16481D57556E39A852A13A6D5926E5B3471B8737531B3A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001390F0.s",
+        "sha256": "01261FD95057F372066C8E34788B567CA6840C0EBEE41E51FA9C209DFF011B11"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00144A08.s",
+        "sha256": "90A5378ACD69C2E66FE8266BCCBB011928204A3446412063E8CE87C140AB1290"
+      }
+    ],
+    "relatedCandidateIds": [
+      "C178CB39D5E478FA42C74092A46C431F5A366240A5E72255F314CA40783CF9DE",
+      "023B1C1A13CB26D3BB85383E29B15BB1A299399461136EE14BBE91AC2FFD6098",
+      "009C595944888CA47512605F16E996483B55E6488934CC4B125424D62897A0B8"
+    ],
+    "remainingFailure": "Canonical placement/ownership/relocation and linked-byte evidence is unavailable because generated .rodata ownership is unadmitted. Table admission still requires Sol/Claude agreement, Director approval, audit and independent review. D_8021C744 needs ordinary binding to its already-used absolute address. Original exact hybrid and original assembly/data remain fallback. No matching-C count or acceptance claim. Complete S3 membership, including unstarted00102FA0 and its two tables, plus final combined ROM verification remains outstanding.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Promote both byte inputs to s32 and use an arm-local s32 accumulator. Keep an explicit u8 view of current byte0 in the capacity comparison, while the capped arithmetic uses the integer view. Keep the capped arithmetic before the byte0 store and byte1 last, with direct uncapped byte1 addition. Route the zero-float dispatch exit to the final return so late jump merging does not move three bounds exits to an earlier equivalent stub. Add source-adjacent explanations for scalar roles, byte view, result initialization and shared exit."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 16626,
+      "sha256": "426ADFD6713E93124612D7F9F94F3D91760F3AE2CA684F3D5A9677C4D61FA965"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CD67489E024BB061CE7C6A6DB628E11A797AE8B3A48D9D3E89D3DA0F2DAD5CCD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_001390F0-7730f8e5a1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

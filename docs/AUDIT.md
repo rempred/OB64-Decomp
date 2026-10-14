@@ -315,3 +315,19 @@ complete-wave source/ownership/relocation/target-byte/full-ROM gates.
 An admitted complete registered-padding producer may preserve a differently named original physical GLOBAL FUNC/default/size-zero entry at primary offset zero through deterministic metadata-only derivation. The immutable native assembler artifact retains its literal compiler function/REL census. The derived source object appends exactly one separately authenticated interface symbol; it is not another native function or additional C bytes. Only symbol/string table copies are appended, preserving old indices, REL bytes, section names and payload positions. No source annotation, extra owner or linker alias is permitted.
 
 Text contract version2 mode `native-with-derived-physical-interface` and object evidence16 require the native artifact, exact rederivation, explicit native versus derived censuses and fresh/recorded/CURRENT/cache checks. Full retained ASM/body ownership and original physical metadata remain mandatory. The pinned PURE_C production-path fixture and on-disk falsifiers accompany independent review and the changed-input structural audit; they do not accept a matching wave by themselves.
+
+
+### Standalone readonly occurrence placement
+
+Schema-6 native occurrence projection requires object evidence17, complete native
+and projected symbol/REL census, the derived LOCAL/STT_OBJECT/size-zero anchor
+census and exact old/new symbol-index mapping. Authenticate every incoming
+HI16/LO16 set and signed-low effective-address equation, all original R32 table
+entries, unchanged instruction/addend bytes, and full original ASM custody for
+intervening rows and ordinary retained tails. Native output cannot author extra
+anchors. Projected/stripped/linked metadata and byte/reference conservation,
+source/recorded/cache reconstruction, on-disk falsifiers and status counts must
+agree. Existing schemas retain rejection. Run the registered real-native
+occurrence suite, independent review, installed canonical-caller checks and the
+changed-input baseline/current structural audit. Tooling success alone neither
+activates a source producer nor accepts its unfinished complete matching wave.

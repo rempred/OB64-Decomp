@@ -400,7 +400,7 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const loadSections = new Set([...contract.owners.map((owner) => '.rel' + owner.inputSection), ...(target.auxiliarySections || []).map((section) => '.rel' + section.outputSection)]);
   const tail = tailEvidence(contract, rawOwners, normalizedRelocations);
   tailEvidence(contract, strippedOwners, normalizedRelocations);
-  const evidence = { schemaVersion: physicalEvidence ? 16 : target.atomicText ? 11 : projectionEvidence ? (projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
+  const evidence = { schemaVersion: physicalEvidence ? 16 : target.atomicText ? 11 : projectionEvidence ? (projectionEvidence.schemaVersion === 6 ? 17 : projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
     ...(target.atomicText ? {atomicUnion:require('./atomic_owner_union').evidence(target,buffers,artifacts,files)} : {}),
     ...(physicalEvidence ? {physicalInterface:physicalEvidence,rawObjectRole:'derived-physical-interface',nativeArtifactRole:'unsplitAssemblerObject'} : {}),
     ...(projectionEvidence ? { auxiliaryProjection: projectionEvidence } : {}), textContractSha256: hash(contract), artifacts,
@@ -459,6 +459,7 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
     return { ...record.record, vramStart: owner.vramStart, romStart: owner.romStart, bytes: owner.bytes,
       loadIndex: loads[0].index, expectedSha256: sha256Buffer(retail), rawBytesExact: record.bytes.equals(retail) };
   });
+  auxiliaryProjection.validateOccurrenceObject(elf,target,true);
   const functions = functionCensus(elf, records.map((record) => record.section), true);
   if(physicalInterface(target)) require('./phase8_matching_c').verifyCompilerTextFunctions(elf,target,records[0].section,true);
   if ((target.nativeTextTail || target.compilationGroup) && !same(functions, contract.compilerTextFunctions)) fail('linked native function census');

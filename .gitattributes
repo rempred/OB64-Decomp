@@ -200,3 +200,43 @@ docs/archive/matching-c-candidates/2026-10-14-func_00120BC0-374cdb5a94.c -text w
 docs/archive/matching-c-candidates/2026-10-14-func_00120BC0-b4d9aae65e.c -text whitespace=cr-at-eol,-blank-at-eof
 docs/archive/matching-c-candidates/2026-10-14-func_001307D4-79800e07c0.c -text whitespace=cr-at-eol,-blank-at-eof
 config/phase7/conventional-build.json -text
+
+# S3 accepted-input recording preserves reviewed and verified raw bytes.
+docs/AUDIT.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/AUXILIARY_PROJECTION.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/SOURCE_POLICY.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+tests/auxiliary_occurrence_projection.js -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+tools/lib/auxiliary_projection.js -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+tools/lib/phase8_matching_c.js -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+tools/lib/text_contract.js -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+tools/test.js -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_00102fa0.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_0010b040.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_0010b46c.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_0010b598.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_0010b6a4.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_0010ba0c.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_0010bb2c.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_0010bc4c.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_0010c1a8.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_001390f0.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+config/matching-c-targets.json text eol=crlf whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+config/matching-c-linkage.json text eol=crlf whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+
+.gitattributes -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/Plans/cursors/s3.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-10-14-func_00102FA0-31fda09e00.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_00102FA0-31fda09e00.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_00102FA0-31fda09e00.observation.json -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-10-14-func_0010B040-52bff54ab6.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_0010B040-52bff54ab6.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_0010B040-52bff54ab6.observation.json -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-10-14-func_0010B598-f5ddb45d00.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_0010B598-f5ddb45d00.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_0010B598-f5ddb45d00.observation.json -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-10-14-func_0010B6A4-c01881fea0.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_0010B6A4-c01881fea0.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_0010B6A4-c01881fea0.observation.json -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-10-14-func_001390F0-7730f8e5a1.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_001390F0-7730f8e5a1.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/dossiers/func_001390F0-7730f8e5a1.observation.json -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol

@@ -153,3 +153,66 @@ derived C fixture, creates a real source control, compiles with pinned tools,
 and writes generated evidence only below build/tests. It needs no ignored
 matching candidate or historical object. Structural acceptance remains gated by
 independent review and one changed-input audit.
+
+
+## Standalone native occurrence projection (schema 6)
+
+The explicit mode `native-occurrence-readonly-projection` admits one ordinary
+complete text function/owner and two or more gapless pointer-only native readonly
+occurrences in distinct existing data rows. Schemas 1–5 retain their meanings.
+Groups, atomic unions, native text tails, compiler padding, prefixes, interiors,
+shared rows and changes to accepted row boundaries are unsupported.
+
+The contract keeps the existing native size/alignment/hash and payload segment
+census and adds `retainedRows`: ordered records with `offset` (retail displacement
+from first payload), `ownerSection`, `ownerBytes`, and `expectedOwnerSha256`.
+These are complete original ASM rows, not native zero segments. Their source,
+accepted placement context, bounded complete ROM bytes, original object, sole
+map contribution and load mapping are independently authenticated. Payloads
+start at row starts; the first covers its complete row. A later payload may
+retain its original suffix through the ordinary exact `preservedTail` contract.
+Payloads, retained row tails and intervening whole rows must tile the retail
+span. Retained rows/tails contribute no matching-C bytes.
+
+Compiler assembly changes only the established section assignment. The native
+assembler artifact is immutable. Every table word and instruction/addend byte
+is copied exactly. Actual R_MIPS_32 entries partition by place; only r_offset
+changes relative to the selected occurrence, plus any explicit symbol-index
+remapping needed below. Every occurrence must have an actual incoming text
+HI16/LO16 reference. Complete pending-high sets must resolve with signed-low
+carry to aligned entries in one occurrence. Missing, duplicate, unpaired,
+ambiguous, mixed-occurrence, unsupported or out-of-range references reject.
+
+For native occurrence offset o and accepted address V, its virtual anchor is
+B=V-o. The original section symbol remains at the first payload address V0.
+Every distinct positive delta=B-V0 derives one zero-size LOCAL/STT_OBJECT/default
+symbol named `__ob64_readonly_anchor_<lowercase-hex-delta>` in that first payload.
+Delta must be word-aligned and strictly inside that payload, agree in ROM/RAM,
+and be completely explained by the retained retail partition. No arbitrary,
+negative, absolute or global anchor is admitted. The OBJECT type is required:
+the pinned GNU2.6 objcopy converts NOTYPE data locals to OBJECT during ancillary
+removal. Native compiler output still cannot author this extra data symbol.
+The projected source object and stripped link object must retain exactly the
+same derived OBJECT census/value/binding/size; linked values add V0.
+
+Only proved pair symbols are retargeted; all encoded addends remain unchanged.
+The proof equation is B+A=V+(A-o). New locals are inserted before original
+globals, with a complete bijective old-to-new index map and corresponding index
+updates in every REL section, including ancillary records. Existing symbol
+identities, relocation types, order and places are conserved apart from the
+explicit payload-place and paired-symbol transforms. No symbol is another C
+owner or additional native function.
+
+Object evidence schema 17 and nested projection schema 6 add `occurrence`
+with exact `symbolMap`, `anchors` and `pairs` records to the native census.
+Independent source-object, recorded-build and cache replay rebuild the projection
+from native artifacts; proof schema checks reconstruct the anchor/index/effective
+address equations. Stripped and linked anchors have independently checked exact
+metadata. Implementation fingerprints invalidate stale reuse inputs. Ordinary
+auxiliary tail custody, fallback exclusion and full-ROM gates remain mandatory.
+
+`tests/auxiliary_occurrence_projection.js` uses an unrelated PURE_C source and
+real pinned tools, including a HI16 carry placement, canonical compile/proof
+callers, cold/warm cache replay, a real nonmatch and malformed evidence controls.
+These bounded fixture checks do not activate a source target or establish wave
+acceptance. Installation requires independent review and the changed-input audit.

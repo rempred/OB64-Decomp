@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "52BFF54AB623740599D7C6B9A1C69A5C9F49C239E2EB5ACED55119CA58FDB882",
+  "observationId": "5CC2029EA465F4E0237A828A861D737959C4A0616FF839027066D1C5721E1E3D",
+  "symbol": "func_0010B040",
+  "authored": {
+    "context": "Complete 332-byte B040 reconstructs the partial six-byte argument and independent overlay boundaries. Direct 0x22 assignment leaves a 32-byte frame. The neighboring BE64 body independently shows D_80210219 updated by low-nibble preservation and high-nibble assignment; the same-session Claude answer suggested testing both nibble updates.",
+    "effects": [
+      "stack-layout-or-offset-family",
+      "combine-use-stack-home",
+      "nibble-update-folding"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "2B9600ED50C616CAF765AE1A4778A7F4BB1CB6058BCCA25721ACDE4E7E1D3707",
+      "sourceSha256": "104D68D2E3015A42CE20780A0121673C9854208B87DF66349AE8E23145A0CF30"
+    },
+    "label": "separate-nibble-stores-retain-unused-homes",
+    "observedEffect": "The pinned compiler folds both writes to one 0x22 byte store. Its combine dump creates standalone USEs of SI pseudo99 and QI pseudo98, absent in preceding cse/flow dumps; global allocation/reload changes them to unused MEM uses at sp+36 and sp+31. The emitted 332-byte stream uses the retail 48-byte frame and RA40, with no extra stack access. Symbolic opcode/register/stack fields agree and raw relocation-masked bytes are exact. The typed bitfield counterexample reaches the frame but has two nonretail load-width differences.",
+    "parentCandidateId": "747DF39C441B34CEFA3B04B88D13C73750797E93A1ADCA0E584153D91DD8FC14",
+    "references": [
+      {
+        "path": "build/matching/s3-scenario-261014/b040-ready.json",
+        "sha256": "ABE4E2F0428FCFF4A94857F1AE92E14AD7ED32D5C14F14EE78C07B4F19A7B0E5"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/b040-nibble-low-high.c",
+        "sha256": "FFF6F9201D4EFBC4594B65325C1AE463EDE33A2B8123C46E6BF38986E512F5D0"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/b040-nibble-low-high.json",
+        "sha256": "4DD6FD18D852A2AD5D081D4647DBCD45A3646650F756AD66F99F33454314820D"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/b040-nibble-probe.json",
+        "sha256": "7FB99191071955EA3047610E042288C4C7311B489DF62B8DE24AEC393614A1B3"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/targets/func_0010B040/probes/800A9739824E3DEFF2457E337ABBD184028BC81DA8D4B0053A40F5A078A4661B/input.c.combine",
+        "sha256": "2A90941C001B44AAA565111593F7953FAA0299A73222CBD2FAF03DA89DADAFF3"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/targets/func_0010B040/probes/800A9739824E3DEFF2457E337ABBD184028BC81DA8D4B0053A40F5A078A4661B/input.c.greg",
+        "sha256": "162258BA39F4C9FE63DB6A55B40F246C0F7F621A994C5A39CB2ECB9D996F0692"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/targets/func_0010B040/probes/800A9739824E3DEFF2457E337ABBD184028BC81DA8D4B0053A40F5A078A4661B/output.s",
+        "sha256": "1EED26101172D17E009426E7187CB0A09046B92B150EE60213EBCCB534B43074"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/b040-nibble-fields.c",
+        "sha256": "B0938CFE71DD4870A1618F225A196DA9334F02AA055EB1B8DE0FE4F349D0604F"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/b040-nibble-fields.json",
+        "sha256": "2C278CFC9BD9925C1B8C5EAF9AB764312D63F1062B20A6AB705877145F87C8C4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010B040.s",
+        "sha256": "249AC01DDCBDFC9B4BF9183916EB2279386D41C1050D2DF5F376CF217938D4BE"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010BE64.s",
+        "sha256": "757CD3772D6DAC10FA7E1701C9176C618F7AEA94BB9E4A0F1F806D2516585644"
+      },
+      {
+        "path": "build/matching/s3-scenario-261014/claude-b040-predicate-answer.txt",
+        "sha256": "49463505FE187267E8CCEEC1591D833A55C5C167F8F6E58A41DB404727EAA26D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private isolated linking and expected relocation provenance remain unavailable for this inactive ASM owner. The 37 actual relocations and independent boundary bindings still need canonical linked comparison at complete-wave integration; no matching acceptance is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace the direct byte assignment with a low-nibble update followed by a high-nibble update. Keep the tested snapshot and add a nearby compiler-workaround comment in b040-ready.c."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2039,
+      "sha256": "2B9600ED50C616CAF765AE1A4778A7F4BB1CB6058BCCA25721ACDE4E7E1D3707"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "104D68D2E3015A42CE20780A0121673C9854208B87DF66349AE8E23145A0CF30"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_0010B040-52bff54ab6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

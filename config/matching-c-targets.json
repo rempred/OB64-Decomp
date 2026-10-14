@@ -1298,6 +1298,15 @@
     {
       "symbol": "func_000065E4",
       "source": "src/boot/boot_resource_table_mask_apply.c"
-    }
+    },
+    {"symbol":"func_00102FA0","source":"src/lib/func_00102fa0.c"},
+    {"symbol":"func_0010B040","source":"src/lib/func_0010b040.c"},
+    {"symbol":"func_0010B46C","source":"src/lib/func_0010b46c.c"},
+    {"symbol":"func_0010B598","source":"src/lib/func_0010b598.c"},
+    {"symbol":"func_0010B6A4","source":"src/lib/func_0010b6a4.c"},
+    {"symbol":"func_0010BA0C","source":"src/lib/func_0010ba0c.c"},
+    {"symbol":"func_0010BB2C","source":"src/lib/func_0010bb2c.c"},
+    {"symbol":"func_0010BC4C","source":"src/lib/func_0010bc4c.c"},
+    {"symbol":"func_0010C1A8","source":"src/lib/func_0010c1a8.c"}
   ]
 }
