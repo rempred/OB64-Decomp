@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2FD80B27F7F9BCAD8C008D9398B7C42C07BE6CFBD5E00D24546DDF26BBD74EC9",
+  "observationId": "DF2D3EC08AA39080E9642E2880CB8B844086AE1F27D864DAE7A93D5FCD39178D",
+  "symbol": "func_0011B344",
+  "authored": {
+    "context": "Complete Q4 assignment preserves one224-byte callable body and full236-byte physical owner. Independently derived plain C keeps the five conditional slot frees/clears and final A4 free/clear; canonical exact hybrid fallback remains unchanged.",
+    "effects": [
+      "complete-owner-coverage",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F3EA94B91515A1E30CEA90FF65067A67F07F3E165C4CB482FA826FA4B9A5BCA4",
+      "sourceSha256": "1FC5F9EDD8EDE9628D70064EA5E4ECA5B2653EDB2A7F0F17E1523FDC0D955661"
+    },
+    "label": "plain-c-exact224-body-retained12-question",
+    "observedEffect": "Pinned supported private watch reports PURE_C; one GLOBAL224-byte native function in a section-assigned224-byte object, frame24 and six actual R_MIPS_26 relocations at28/48/68/88/A8/C4 to func_000016C4. Authenticated isolated linked body is byte-identical to all224 original body bytes (BF92DE73 full hash in body-proof.json), including prologue addu, all nop delay slots and null-edge pointer reuse. The full236-byte authoritative comparison remains a12-byte length mismatch; all aligned linked words match.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0011B344.s",
+        "sha256": "49D476B0505B845A4CD7535B0884AD3706C81C724BB73B8C69CE4FD1E658D49C"
+      },
+      {
+        "path": "build/matching/q4-route-261014/baseline-watch.json",
+        "sha256": "E051FDBD3D82B1E7652E928C380824CE7CE1366ADE3DF0C9427374E324424C98"
+      },
+      {
+        "path": "build/matching/q4-route-261014/body-proof.json",
+        "sha256": "0BA7957D6546C20B2C828F7BC3C890964E514F464FF6EBA85D913F1F2E06D7B3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Original12-byte zero suffix throughB430 is absent from this ordinary C object. Untouched native .text was not separately assembled; no native-tail claim. Director structural disposition/admission, original fallback/interfaces/full-owner conservation, canonical sole-C/placement/actual-relocation/target and whole-ROM acceptance remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Remove every register-asm/empty-asm barrier and explicit12-byte injection from the current hybrid reference, retaining readable direct field accesses and actual call prototype. No additional candidate tuning was required."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1326,
+      "sha256": "F3EA94B91515A1E30CEA90FF65067A67F07F3E165C4CB482FA826FA4B9A5BCA4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1FC5F9EDD8EDE9628D70064EA5E4ECA5B2653EDB2A7F0F17E1523FDC0D955661"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_0011B344-2fd80b27f7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

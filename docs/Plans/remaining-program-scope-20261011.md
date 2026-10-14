@@ -1,19 +1,18 @@
 # Remaining assigned program scope — October 14, 2026
 
-The [generated remaining-scope snapshot](../../build/matching/s1-descriptor-261013/s1-integration/metadata-rollout/complete-program-scope-after-s1.json) derives **12 remaining logical functions, 22,140 text-owner bytes (22,124 body bytes), in 3 complete waves** by unique physical owners. Complete S1 and reviewed physical-interface metadata repair are accepted by Astra at CURRENT `4179444B`; the [S1 final handoff](../../build/matching/s1-descriptor-261013/s1-integration/metadata-rollout/final-handoff.md) binds all three PURE_C bodies, sole C756 plus original ASM8/full764, actual43REL, original interfaces, nineteen descriptor/eleven group records and exact-ROM proof. Accepted S1, Q2, Q3, DB10 and Q1 are excluded from remaining totals; earlier accepted waves and coupled data remain protected. Generated current verification/status owns matching counts.
+The [generated remaining-scope snapshot](../../build/matching/s3-scenario-261014/q4-integration/complete-program-scope-after-q4.json) derives **11 remaining logical functions, 21,904 text-owner bytes (21,900 body bytes), in 2 complete waves** by unique physical owners. Complete Q4 and reviewed retained-edge admission are accepted by Astra at CURRENT `09BEE16B`; the [Q4 final handoff](../../build/matching/s3-scenario-261014/q4-integration/final-handoff.md) binds PURE_C 224 plus original RX ASM 12/full 236, six relocations, original interfaces, fresh compilation and exact full retail ROM. Accepted Q4, S1, Q2, Q3, DB10 and Q1 are excluded from remaining totals; all earlier accepted waves and coupled data remain protected. Generated current verification/status owns matching counts.
 
-D450 and D484 remain conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. If both are admitted, the same wave expands the remainder to **14 functions / 24,544 owner bytes**, still 3 waves. Their necessity remains unproven.
+D450 and D484 remain conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. If both are admitted, the same wave expands the remainder to **13 functions / 24,308 owner bytes**, still 2 waves. Their necessity remains unproven.
 
-Complete S1 is accepted. Chat `01a13761-1df5-7b53-9e57-595cc7e3aaf3` completes its bounded accepted-state recording, then releases all S1 matching, private-root and canonical source/build/docs writer ownership. Its evidence under `build/matching/s1-descriptor-261013/` remains read-only history. The Director assigns a fresh top-level Sol6.1/xhigh S3 worker to the complete ten-member requester wave and production role after explicit release. Q4 native checks are released; Q4/Q6/S3 retain their complete bodies and existing producer/tail/table gates. Released Q2/Q3 and older workers stay stopped. The original five-family boundary is unchanged.
+Complete S1 is accepted/recorded `8d32de0b` and released. Its evidence remains read-only history. Top-level Sol6.1/xhigh S3 `01a138c9-6939-7d91-b064-d323f5643465` owns the complete ten-member requester wave and sole production role, using `build/matching/s3-scenario-261014/`. Fresh top-level Q6 `01a138fe-0c30-71e1-9648-0fbb5d02e2ba` is active privately in `build/matching/q6-ddb4-261014/`. Complete Q4 and its helpers are accepted/released/retired. S3/Q6 preserve every body, preamble, tail, table and conditional producer gate. Native drain is released; unchanged-input recording adds no hold. Older released workers stay stopped; the original five-family boundary is unchanged.
 
 ## Complete waves
 
 | Wave | Assignment | Functions | Text-owner bytes | Body bytes | State |
 |---|---|---:|---:|---:|---|
-| Q4 | Route deallocator PURE_C retry | 1 | 236 | 224 | Director-assigned fresh worker; native checks released |
-| Q6 | DDB4 broad site-event producer | 1 | 9,132 | 9,128 | Queued; gates retained |
-| S3 | Scenario DMA-window requesters | 10 | 12,772 | 12,772 | Next fresh production worker; complete ten-member wave and gates retained |
-| **Total** | | **12** | **22,140** | **22,124** | |
+| Q6 | DDB4 broad site-event producer | 1 | 9,132 | 9,128 | Active private worker; gates retained |
+| S3 | Scenario DMA-window requesters | 10 | 12,772 | 12,772 | Active sole production writer; complete ten-member wave and gates retained |
+| **Total** | | **11** | **21,904** | **21,900** | |
 
 Tables, descriptor records, literal constants and retained ASM data are separate from these text-owner totals and never add functions. Accepted NINE data ownership is preserved outside the remaining roster. Remaining obligations include Scenario's 688 table bytes and DDB4's 208-byte table. Accepted Q1 preserves all 26 compiler table occurrences across three physical auxiliary rows r2607/r2609/r2611 (11/11/4), separate from the three logical bodies' 10/10/6 table uses, and all 337 pointers. Original fallbacks, complete data rows and applicable auxiliary gates remain required.
 
@@ -60,11 +59,11 @@ Accepted complete Q3: PURE_C496 under CURRENT DDA5C0F4, with both416+80 owners, 
 
 ### Q4 — Route deallocator PURE_C retry
 
-Preserve224-byte body and12-byte native-tail question; exact hybrid is not proof of a pure-C native tail. Structural evidence is required for replacement handling.
+Accepted complete Q4: PURE_C 224 and original RX ASM 12/full 236 under CURRENT `09BEE16B`. Structural review, composed audit, fresh source proof and exact full-ROM verification passed. Original entry/envelopes, both load/custody mappings, six calls and fallback are preserved; the suffix remains ASM and adds no matching-C bytes. Ownership is released; this reference roster is excluded from remaining totals.
 
 | Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
 |---|---|---|---:|---|
-| `func_0011B344` | HYBRID_C | `0x0011B344..0x0011B424` | 224 | `0x0011B344..0x0011B430` |
+| `func_0011B344` | PURE_C | `0x0011B344..0x0011B424` | 224 | `0x0011B344..0x0011B430` |
 
 ### Q6 — DDB4 broad site-event producer
 
@@ -147,7 +146,7 @@ Structural producer/prefix/tail/table gates are attached to the listed complete 
 
 ## Scheduling and acceptance
 
-NINE/S2/S5/S4/Q5, complete Q7, DB10 animation, Q1 terrain, Q2, Q3 and complete S1 are accepted; released ownership stays retired. Original bodies, tables, tails and interfaces remain protected. After final scoped recording and explicit S1 writer release, the Director assigns fresh top-level Sol6.1/xhigh S3 on all ten requester members and the production role. Q4 native checks are released. S3/Q4/Q6 keep every stated dependency gate; an unrelated unfinished wave does not block private candidate work.
+NINE/S2/S5/S4/Q5, complete Q7, DB10 animation, Q1 terrain, Q2, Q3, complete S1 and Q4 are accepted; released ownership stays retired. Original bodies, tables, tails and interfaces remain protected. S3 owns all ten requester members and the production role; fresh top-level Q6 owns the complete DDB4 wave privately. S3/Q6 retain every stated dependency gate; an unrelated unfinished wave does not block private candidate work.
 
 The sole production writer integrates one complete wave at a time. Drain only native commands affected by actual shared-input changes or canonical verification, then promptly release them. Every assigned member must meet PURE_C, unique C ownership, placement, actual relocation, target-byte and complete-ROM gates in one final wave verification; structural changes retain audit and independent review. Preserve user pauses and original coupled bodies/data. This planning document grants no tool changes or pushes.
 

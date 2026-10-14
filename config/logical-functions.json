@@ -99,6 +99,12 @@
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
     },
     {
+      "romStart": 1160228,
+      "romEndExclusive": 1160240,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Original source-authenticated terminal zero bytes after the complete JR ra/delay-slot body and before the next physical owner at 0x0011B430. Retained as original executable ASM; native compiler text224/alignment16 has zero tail. This does not establish absence of numeric or runtime references."
+    },
+    {
       "romStart": 1182652,
       "romEndExclusive": 1182656,
       "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
@@ -3247,6 +3253,33 @@
           "sha256": "0941FD7CD03E493BC1CA4C242BFF00EB019077DC5ADB07C79196F2894D608F6F"
         }
       ]
+    },
+    {
+      "symbol": "func_0011B344",
+      "aliases": [],
+      "romStart": 1160004,
+      "romEndExclusive": 1160228,
+      "expectedBytesSha256": "BF92DE7357651462BDDA2A6087EC321F8D4A4A59017C9D549D78DAE3A4C3A71F",
+      "fragments": [
+        {
+          "rowIndex": 2327,
+          "romStart": 1160004,
+          "romEndExclusive": 1160228,
+          "ownerOffset": 0,
+          "bytes": 224,
+          "vramStart": 2149346308,
+          "sectionName": ".ob64.r2327.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0011B344.s",
+          "sha256": "49D476B0505B845A4CD7535B0884AD3706C81C724BB73B8C69CE4FD1E658D49C"
+        }
+      ],
+      "evidence": {
+        "status": "known-entry-or-ownership",
+        "rationale": "Original physical GLOBAL entry and complete 224-byte body, including JR ra at ROM 0x0011B41C and its delay slot at 0x0011B420. Untouched pinned compiler output independently emits exactly this body with no native tail. The final 12 literal zero bytes remain original executable ASM under registered-row2327-terminal; no runtime-reference absence or original compilation-unit claim is implied."
+      }
     },
     {
       "romStart": 1182656,

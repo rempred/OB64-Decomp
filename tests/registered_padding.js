@@ -8,7 +8,7 @@ function main(){
  const model=p7.loadAcceptedModel(),rom=fs.readFileSync(path.join(p7.ROOT,'build/baserom.us_rev0.z64'));
  const registry=logical.loadRegistry(model,rom);let controls=0;
  const reject=(fn,pattern=/retained padding|fragment|placement|coverage|entry/)=>{assert.throws(fn,pattern);controls++;};
- for(const index of [58,2351]){
+ for(const index of [58,2327,2351]){
   const row=model.rows[index],edge=p7.retainedPaddingSlices(row),binding=logical.assertRetainedPaddingProducer(registry,row);
   assert.equal(row.slices.length,2);assert(row.slices.every(s=>s.executable));assert(row.slices.every(s=>s.nonExecutableRangeId===null));
   const symbol=binding.bodies[0].symbol, resolved=active.resolveAcceptedRows(model,symbol,new Map(),null,registry);
@@ -16,14 +16,14 @@ function main(){
   logical.assertActivationCompatible(registry,symbol,[row],functions);
   const target={symbol,row,rows:[row],textOwners:resolved.owners,bytes:edge.body.bytes,compilerTextFunctions:functions,auxiliarySections:[]};
   const account=require('../tools/lib/status_accounting').summarizeAcceptedOwnership(model,[target]);
-  assert.equal(account.assembly.rows.find(r=>r.rowIndex===index).bytes,index===58?8:4);
+  assert.equal(account.assembly.rows.find(r=>r.rowIndex===index).bytes,index===58?8:index===2327?12:4);
   assert.equal(account.replacements.bytes,edge.body.bytes);
-  const retained=p8.targetRetainedAssemblySlices(target);assert.equal(retained.length,1);assert.equal(retained[0].executable,true);assert.equal(retained[0].bytes,index===58?8:4);
+  const retained=p8.targetRetainedAssemblySlices(target);assert.equal(retained.length,1);assert.equal(retained[0].executable,true);assert.equal(retained[0].bytes,index===58?8:index===2327?12:4);
   assert.equal(target.bytes+retained[0].bytes,row.bytes);
   const authority={model,baserom:rom,multiOwnerContracts:new Map(),multiOwnerConfigIdentity:{sha256:'test'}};
   const selection=workbench.retainedPaddingSelection(authority,row,rom);
   assert.equal(selection.logicalFunctions.length,index===58?3:1);
-  assert.deepEqual(selection.originalOwner.slices.map(s=>s.comparisonRole),index===58?['compared-complete-producer','retained-original-assembly']:['retained-original-assembly','compared-complete-producer']);
+  assert.deepEqual(selection.originalOwner.slices.map(s=>s.comparisonRole),index!==2351?['compared-complete-producer','retained-original-assembly']:['retained-original-assembly','compared-complete-producer']);
   const selected={...selection,expectedBytes:rom.subarray(selection.romStart,selection.romEndExclusive),expectedBytesSha256:p7.sha256Buffer(rom.subarray(selection.romStart,selection.romEndExclusive))};
   workbench.assertExecutablePrefixSelection(authority,selected);
   const native=selection.logicalFunctions.map((fn,i)=>({name:fn.symbol,value:fn.offset,size:fn.bytes,binding:i?0:1,visibility:0,symbolType:2}));
@@ -61,6 +61,6 @@ function main(){
  delete layout.owners.find(r=>r.index===58).slices[1].retainedPaddingId;
  reject(()=>p7.verifyLayoutAgainstModel(model,layout),/slice drift/);
  const legacy=[{name:'ordinary',value:0,size:8,binding:1,visibility:0,symbolType:2}];assert.equal(validateLogicalFunctionCensus(legacy,[{symbol:'ordinary'}],8),8);
- console.log(JSON.stringify({status:'pass',controls,rows:[58,2351],native:false}));return {controls};
+ console.log(JSON.stringify({status:'pass',controls,rows:[58,2327,2351],native:false}));return {controls};
 }
 if(require.main===module)main();module.exports={main};
