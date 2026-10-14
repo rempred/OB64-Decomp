@@ -137,6 +137,52 @@ function loadConfig() {
   return config;
 }
 
+// A retained edge is an ownership cut, never an execution-classification carve.
+function retainedPaddingSlices(row) {
+  const marked = (row?.slices || []).filter(s => s.retainedPaddingId);
+  if (!marked.length) return null;
+  const record = row.retainedPadding;
+  const kept = marked[0], body = row.slices.find(s => !s.retainedPaddingId);
+  if (!record || !Array.isArray(record.compilerFunctions) || !record.compilerFunctions.length
+      || record.compilerFunctions.some((fn,i)=>fn.binding!==(i===0?'GLOBAL':'LOCAL') || (i===0?fn.entryEvidence!=='owner':!['fixed-address-call','internal-call-only','reviewed-local-body'].includes(fn.entryEvidence)))
+      || marked.length !== 1 || row.slices.length !== 2 || !body
+      || record.rowIndex !== row.index || record.sourceSha256 !== row.part?.sha256
+      || kept.retainedPaddingId !== record.id || kept.romStart !== record.romStart || kept.romEndExclusive !== record.romEndExclusive
+      || !['leading', 'terminal'].includes(record.edge)
+      || (record.edge === 'leading' ? kept.romStart !== row.romStart || kept.romEndExclusive !== body.romStart || body.romEndExclusive !== row.romEndExclusive
+        : body.romStart !== row.romStart || body.romEndExclusive !== kept.romStart || kept.romEndExclusive !== row.romEndExclusive)
+      || row.bytes !== body.bytes + kept.bytes || body.executable !== true || kept.executable !== true
+      || [body, kept].some(s => s.nonExecutableRangeId !== null || s.executableRangeId !== null || s.placementKind === 'rom-only')
+      || ['placementKind','overlayDescriptorId','overlaySection','loadSlabId'].some(k => body[k] !== kept[k])
+      || kept.vramStart - kept.romStart !== body.vramStart - body.romStart) fail('retained padding slice binding drift');
+  return { record, body, retained: kept };
+}
+function validateRetainedPaddingCuts(config, rows, parts, assemblySource = null) {
+  const records = config.retainedPaddingCuts || [];
+  if (!Array.isArray(records) || records.length !== (config.expected.retainedPaddingCuts || 0)) fail('retained padding cut count drift');
+  const seen = new Set(), ids = new Set();
+  for (const c of records) {
+    if (!c || Object.keys(c).sort().join(',') !== ['compilerFunctions','edge','expectedSha256','id','romEndExclusive','romStart','rowIndex','sourceSha256'].sort().join(',')
+        || !Number.isSafeInteger(c.rowIndex) || seen.has(c.rowIndex) || typeof c.id !== 'string' || !/^[a-z0-9][a-z0-9-]*$/.test(c.id) || ids.has(c.id)
+        || !['leading','terminal'].includes(c.edge) || !/^[A-F0-9]{64}$/.test(c.sourceSha256) || !/^[A-F0-9]{64}$/.test(c.expectedSha256)
+        || ![c.romStart,c.romEndExclusive].every(n=>Number.isSafeInteger(n)&&n%4===0) || c.romStart>=c.romEndExclusive) fail('retained padding cut schema');
+    if (!Array.isArray(c.compilerFunctions) || !c.compilerFunctions.length || new Set(c.compilerFunctions.map(f=>f.symbol)).size!==c.compilerFunctions.length
+        || c.compilerFunctions.some((f,i)=>!f || Object.keys(f).sort().join(',')!=='binding,entryEvidence,symbol' || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(f.symbol)
+          || f.binding!==(i===0?'GLOBAL':'LOCAL') || (i===0?f.entryEvidence!=='owner':!['fixed-address-call','internal-call-only','reviewed-local-body'].includes(f.entryEvidence)))) fail('retained padding compiler binding contract');
+    const row=rows.find(r=>r.index===c.rowIndex), part=parts.find(p=>p.romStartNumber===row?.romStart&&p.romEndNumber===row?.romEndExclusive);
+    if (!row || !part || row.primaryClass!=='code' || row.processorClass==='rsp' || row.ambiguous!==false || part.sha256!==c.sourceSha256
+        || (c.edge==='leading' ? c.romStart!==row.romStart || c.romEndExclusive>=row.romEndExclusive : c.romEndExclusive!==row.romEndExclusive || c.romStart<=row.romStart)) fail('retained padding physical owner drift');
+    const source=assemblySource ? assemblySource(part) : fs.readFileSync(path.join(ROOT,part.file));
+    if(sha256Buffer(source)!==part.sha256)fail('retained padding source drift');
+    const words=source.toString('utf8').split(/\r?\n/).filter(isTrackedWordDirective).map(line=>Number(/\.word\s+(0x[0-9a-f]+)/i.exec(line)?.[1]));
+    if(words.length*4!==row.bytes || words.some(n=>!Number.isInteger(n)))fail('retained padding original word grammar');
+    const bytes=Buffer.alloc(words.length*4);words.forEach((w,i)=>bytes.writeUInt32BE(w>>>0,i*4));
+    const padding=bytes.subarray(c.romStart-row.romStart,c.romEndExclusive-row.romStart);
+    if(padding.some(b=>b!==0)||sha256Buffer(padding)!==c.expectedSha256)fail('retained padding original bytes/hash');
+    seen.add(c.rowIndex);ids.add(c.id);
+  }
+  return records;
+}
 function validateNonDescriptorLoadSlabs(config, overlays = []) {
   const slabs = config.nonDescriptorLoadSlabs;
   const expectedCount = config.expected && config.expected.nonDescriptorLoadSlabs;
@@ -422,6 +468,10 @@ function loadAcceptedModel(options = {}) {
   }
   if (parts.length !== config.expected.assemblyOwners) fail('tracked assembly owner count drift');
   const partByRange = new Map();
+  // Reuse the exact authenticated read for edge validation; the context loader
+  // still performs its independent final source sweep before sealing inputs.
+  const retainedSourceHashes = new Set((config.retainedPaddingCuts || []).map(c => c.sourceSha256));
+  const retainedSources = new Map();
   for (const part of parts) {
     const key = rangeKey(part.romStartNumber, part.romEndNumber);
     if (partByRange.has(key)) fail(`duplicate tracked assembly range: ${key}`);
@@ -434,6 +484,7 @@ function loadAcceptedModel(options = {}) {
       throw error;
     }
     if (sourceBuffer.length !== part.textBytes || sha256Buffer(sourceBuffer) !== part.sha256) fail(`tracked assembly source drift: ${part.file}`);
+    if (retainedSourceHashes.has(part.sha256)) retainedSources.set(part.file, sourceBuffer);
     const sourceText = sourceBuffer.toString('utf8');
     if (options.onAssemblySource) options.onAssemblySource(Object.freeze({ file: sourceFile, relative: part.file,
       bytes: sourceBuffer.length, sha256: part.sha256, text: sourceText }));
@@ -448,6 +499,11 @@ function loadAcceptedModel(options = {}) {
     partByRange.set(key, part);
   }
 
+  const retainedPaddingCuts = validateRetainedPaddingCuts(config, semantic.rows, parts, part => {
+    const source = retainedSources.get(part.file);
+    if (!source) fail('retained padding captured source is missing: ' + part.file);
+    return source;
+  });
   const rows = [];
   const slices = [];
   let cursor = 0;
@@ -479,7 +535,9 @@ function loadAcceptedModel(options = {}) {
       dataOwners += 1;
     }
 
+    const retainedPadding = retainedPaddingCuts.find(c => c.rowIndex === row.index);
     const cuts = new Set([row.romStart, row.romEndExclusive]);
+    if (retainedPadding) { cuts.add(retainedPadding.romStart); cuts.add(retainedPadding.romEndExclusive); }
     for (const overlay of overlays) {
       for (const boundary of [
         overlay.rom_start,
@@ -611,6 +669,7 @@ function loadAcceptedModel(options = {}) {
         executable,
         executableRangeId,
         nonExecutableRangeId,
+        ...(retainedPadding && romStart === retainedPadding.romStart && romEndExclusive === retainedPadding.romEndExclusive ? { retainedPaddingId: retainedPadding.id } : {}),
         inputKind: insideAssembly ? 'tracked-assembly' : 'splat-data',
         primaryId: row.primaryId,
         ownerName: row.name,
@@ -618,7 +677,9 @@ function loadAcceptedModel(options = {}) {
       slices.push(slice);
       rowSlices.push(slice);
     }
-    rows.push({ ...row, inputKind: insideAssembly ? 'tracked-assembly' : 'splat-data', part, slices: rowSlices });
+    const resolvedRow = { ...row, inputKind: insideAssembly ? 'tracked-assembly' : 'splat-data', part, slices: rowSlices, ...(retainedPadding ? { retainedPadding } : {}) };
+    if (retainedPadding) retainedPaddingSlices(resolvedRow);
+    rows.push(resolvedRow);
   }
 
   bootData.validateSlabs(config, nonDescriptorLoadSlabs, overlays, rows, bootInitializedDataProof);
@@ -638,6 +699,7 @@ function loadAcceptedModel(options = {}) {
     romProfile,
     overlays,
     fixedOverlayNonExecutableRanges,
+    retainedPaddingCuts,
     nonDescriptorLoadSlabs,
     parts,
     rows,
@@ -804,15 +866,20 @@ function renderLinkerScript(model) {
   lines.push('');
   for (const slice of model.slices) {
     const stem = `__${symbolStem(slice.sectionName)}`;
+    const physicalRow = model.rows.find(row => row.index === slice.rowIndex && row.retainedPadding);
+    const envelope = physicalRow ? '__ob64_r' + String(physicalRow.index).padStart(4, '0') : null;
     lines.push(
       `  ${slice.sectionName} ${hex(slice.vramStart)} : AT(${hex(slice.romStart)})`,
       '  {',
+      ...(envelope && slice.romStart === physicalRow.romStart ? [`    ${envelope}_vram_start = .;`] : []),
       `    ${stem}_vram_start = .;`,
       `    *(${slice.sectionName})`,
       `    ${stem}_vram_end = .;`,
+      ...(envelope && slice.romEndExclusive === physicalRow.romEndExclusive ? [`    ${envelope}_vram_end = .;`] : []),
       '  }',
       `  ${stem}_rom_start = ${hex(slice.romStart)};`,
       `  ${stem}_rom_end = ${hex(slice.romEndExclusive)};`,
+      ...(envelope && slice.romStart === physicalRow.romStart ? [`  ${envelope}_rom_start = ${hex(physicalRow.romStart)};`, `  ${envelope}_rom_end = ${hex(physicalRow.romEndExclusive)};`] : []),
       '',
     );
   }
@@ -1142,14 +1209,7 @@ function runAsmDifferProof(model, options) {
   return { shimSha256: sha256File(shim), objdumpCompatibilityShimSha256: sha256Buffer(Buffer.from(OBJDUMP_SHIM_TEXT)), results };
 }
 
-function verifyOutput(model, options) {
-  const output = path.resolve(options.output);
-  const elfFile = path.join(output, 'phase7.elf');
-  const mapFile = path.join(output, 'phase7.map');
-  const romFile = path.join(output, 'phase7.us_rev0.z64');
-  const layoutFile = path.join(output, 'layout.json');
-  for (const file of [elfFile, mapFile, romFile, layoutFile]) if (!fs.existsSync(file)) fail(`build output is missing: ${file}`);
-  const layout = readJson(layoutFile);
+function verifyLayoutAgainstModel(model, layout) {
   if (layout.schemaVersion !== 1 || layout.rows !== model.rows.length || layout.slices !== model.slices.length || layout.representedBytes !== model.config.rom.bytes) fail('external layout summary drift');
   const expectedSlabs = model.nonDescriptorLoadSlabs.map((slab) => ({
     id: slab.id,
@@ -1202,11 +1262,24 @@ function verifyOutput(model, options) {
         'executable',
         'executableRangeId',
         'nonExecutableRangeId',
+        'retainedPaddingId',
       ]) {
         if (!actual || actual[field] !== expected[field]) fail(`external layout slice drift: ${expected.sectionName}.${field}`);
       }
     }
   }
+  return true;
+}
+
+function verifyOutput(model, options) {
+  const output = path.resolve(options.output);
+  const elfFile = path.join(output, 'phase7.elf');
+  const mapFile = path.join(output, 'phase7.map');
+  const romFile = path.join(output, 'phase7.us_rev0.z64');
+  const layoutFile = path.join(output, 'layout.json');
+  for (const file of [elfFile, mapFile, romFile, layoutFile]) if (!fs.existsSync(file)) fail(`build output is missing: ${file}`);
+  const layout = readJson(layoutFile);
+  verifyLayoutAgainstModel(model, layout);
   const elf = parseElfFile(elfFile);
   const elfResult = verifyElfAgainstModel(model, elf);
   const mapResult = verifyMap(model, fs.readFileSync(mapFile, 'utf8'));
@@ -1266,8 +1339,11 @@ module.exports = {
   runAsmDifferProof,
   sha256Buffer,
   sha256File,
+  retainedPaddingSlices,
+  validateRetainedPaddingCuts,
   validateFixedOverlayNonExecutableRanges,
   validateNonDescriptorLoadSlabs,
+  verifyLayoutAgainstModel,
   verifyElfAgainstModel,
   verifyMap,
   verifyOutput,

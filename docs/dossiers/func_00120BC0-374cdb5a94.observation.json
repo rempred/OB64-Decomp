@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "374CDB5A94CC829C86CB91F04D21F20A9649E9F14C9CF53254B77F3FCF247BAC",
+  "observationId": "B38BDD760A94C143F8E7134C881B1A5B27349E8C11251CB8D73655865CE01AFC",
+  "symbol": "func_00120BC0",
+  "authored": {
+    "context": "Complete logical Q2 placement body304 within original physical308, descriptor7. These source-bound canonical focused comparisons remain provisional until complete-wave ownership/ROM audit. Original active func001072B8 exists at801B2B78, while retail JAL atROM120C8C targets801D5208. Accepted descriptor7/row2406 and actual linked GLOBAL func00129948 resolve that address; RAM-overlapping load slabs require placement context.",
+    "effects": [
+      "address-binding",
+      "unresolved-relocations",
+      "counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3C483182D4FA6AA5E0CA52AA8F54439D0107E145B720630F583AF070D311B9F2",
+      "sourceSha256": "81CBD7589350804F6DDDA95369477F1E0E008038192525871EA40E6F874F59E8"
+    },
+    "label": "Q2 placement: correct overlay-bound callee restores linked retail JAL",
+    "observedEffect": "Fresh PURE_C304 object emits nine actual relocations, with only normalized R26 symbol at0xCC changed tofunc00129948. Canonical focused linked diff becomes byte-exact1F9E4875, zero differing words/bytes, with matching relocation contract. No alias/tooling/compiler change.",
+    "parentCandidateId": "1F2DED5E01DC8C3E54F7175D83D3F19CA3C24F2DAAFFCEA6F3E3A2B9DC7C0C2A",
+    "references": [
+      {
+        "path": "build/matching/s1-descriptor-261013/q2-integration/diff-bc0-failed-binding.json",
+        "sha256": "CA6C511A6EAFDF3204FCA1EE7D999CB7C707BE2B1E8A2C0F198869B991309D00"
+      },
+      {
+        "path": "build/matching/s1-descriptor-261013/q2-integration/diff-bc0-corrected.json",
+        "sha256": "F8F77CCBEBE20426641BD9EB89A33F450B75EB46409BFD660C89CA87058CC6C2"
+      },
+      {
+        "path": "build/matching/s1-descriptor-261013/q2-integration/binding-correction.json",
+        "sha256": "D9C6F6C645FADBBFEA75722107211DCD5B2E5DD87CD75F7E17A7ABD237C5700E"
+      },
+      {
+        "path": "build/matching/s1-descriptor-261013/q2-integration/corrected-emitted-contract.json",
+        "sha256": "4E8640DF8DC4F57DF254499EC5162EA12205304995CDF87A2F929D28072A5C8F"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00129948.s",
+        "sha256": "E067D8B879388160CCB057D69220160DE110C8F4D94836A7847C0FAEF37935E3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Canonical focused linked checks do not establish complete-wave acceptance. Full physical-owner/retained-ASM/unique-C/source-proof and complete-ROM audit gates still apply.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Change only extern/call func001072B8 to existing func00129948; retain native instructions/size and nine relocation sites."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1558,
+      "sha256": "3C483182D4FA6AA5E0CA52AA8F54439D0107E145B720630F583AF070D311B9F2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "81CBD7589350804F6DDDA95369477F1E0E008038192525871EA40E6F874F59E8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_00120BC0-374cdb5a94.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

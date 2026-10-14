@@ -145,7 +145,7 @@ function prepareCompilerSession(options = {}) {
     compilerFlags: context.phase8.config.compiler.compileFlags,
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessor: preprocessorIdentity(preprocessor),
-    workbenchCompilerContract: 11,
+    workbenchCompilerContract: 12,
     scratchAssembly: SCRATCH_ASSEMBLY_POLICY,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
@@ -223,13 +223,17 @@ function validateScratchSymbolOwnership(elf, textSection, rodataSections, reginf
   return owned;
 }
 
-function validateLogicalFunctionCensus(functions, expected, textSize) {
+function validateLogicalFunctionCensus(functions, expected, textSize, admittedBindings = null) {
+  // Callers authenticate the complete registered producer before supplying bindings.
+  // A binding field on ordinary/legacy expected metadata never grants LOCAL.
+  if(admittedBindings !== null && (!Array.isArray(admittedBindings) || admittedBindings.length !== expected.length
+      || admittedBindings.some((binding,i)=>binding!==(i===0?'GLOBAL':'LOCAL')))) throw new Error('scratch admitted binding census drift');
   const ordered = [...functions].sort((a, b) => a.value - b.value);
   if (ordered.length !== expected.length) throw new Error(`scratch object function census differs: expected ${expected.length}, found ${ordered.length}`);
   let end = 0;
   for (const [index, actual] of ordered.entries()) {
     if (actual.name !== expected[index].symbol || actual.value !== end
-      || actual.binding !== 1 || actual.visibility !== 0 || actual.symbolType !== 2 || !Number.isInteger(actual.size)
+      || actual.binding !== (admittedBindings?.[index] === 'LOCAL' ? 0 : 1) || actual.visibility !== 0 || actual.symbolType !== 2 || !Number.isInteger(actual.size)
       || actual.size <= 0 || actual.size % 4 || actual.value + actual.size > textSize) {
       throw new Error('scratch object has missing, reordered, overlapping, or malformed logical functions');
     }
@@ -315,7 +319,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
   ));
   const expectedFunctions = target.logicalFunctions || [{ symbol: target.symbol }];
   sectionFunctions.sort((a, b) => a.value - b.value);
-  const functionEnd = validateLogicalFunctionCensus(sectionFunctions, expectedFunctions, textSection.size);
+  const functionEnd = validateLogicalFunctionCensus(sectionFunctions, expectedFunctions, textSection.size, target.selectionKind === 'registered-padding-producer' ? expectedFunctions.map(fn=>fn.binding) : null);
   const primary = sectionFunctions[0];
   if (primary.name !== target.symbol || primary.value !== 0 || primary.binding !== 1
       || primary.visibility !== 0 || !Number.isInteger(primary.size) || primary.size <= 0
@@ -404,7 +408,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
     textContract: nativeContract,
     fullOwner: { bytes: textSectionBytes.length, sha256: sha256Buffer(textSectionBytes), tailBytes: tail.length },
     kind: target.logicalFunctions ? 'logical-functions-scratch-object' : 'single-function-scratch-object',
-    logicalFunctions: sectionFunctions.map(fn => ({ symbol: fn.name, offset: fn.value, bytes: fn.size })),
+    logicalFunctions: sectionFunctions.map(fn => ({ symbol: fn.name, offset: fn.value, bytes: fn.size, ...(target.selectionKind === 'registered-padding-producer' ? { binding: fn.binding === 1 ? 'GLOBAL' : 'LOCAL' } : {}) })),
     logicalCoverageComplete: target.logicalCoverageComplete ?? null,
     primarySymbol: {
       name: primary.name,
@@ -742,7 +746,11 @@ function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING
     if (sections.length !== 1) throw new Error('cached logical text section census drift');
     const section = sections[0];
     const functions = elf.symbols.filter(symbol => symbol.sectionIndex === section.index && symbol.symbolType === 2);
-    const end = validateLogicalFunctionCensus(functions, target.logicalFunctions, section.size);
+    const end = validateLogicalFunctionCensus(functions, target.logicalFunctions, section.size, target.selectionKind === 'registered-padding-producer' ? target.logicalFunctions.map(fn=>fn.binding) : null);
+    if (target.selectionKind === 'registered-padding-producer') {
+      const actualFunctions = [...functions].sort((a,b)=>a.value-b.value).map(fn=>({symbol:fn.name,offset:fn.value,bytes:fn.size,binding:fn.binding===1?'GLOBAL':'LOCAL'}));
+      if(canonicalJson(report.scratchContract.logicalFunctions)!==canonicalJson(actualFunctions))throw new Error('cached admitted compiler binding evidence drift');
+    }
     const bytes = Buffer.from(elfSectionBytes(elf, section));
     const tail = bytes.subarray(end);
     if (tail.length > SCRATCH_TEXT_TAIL_ALIGNMENT_LIMIT || tail.length % 4 || tail.some(byte => byte !== 0)

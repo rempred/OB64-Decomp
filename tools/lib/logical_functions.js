@@ -12,13 +12,13 @@ const authenticatedRegistries = new WeakMap();
 const EVIDENCE_STATUSES = new Set(['known-entry-or-ownership', 'independent-entry-supported',
   'supported-logical-continuation', 'accepted-primary-before-reviewed-secondary', 'supplemental-reviewed-body']);
 
-function intersections(model, start, end) {
+function intersections(model, start, end, padding = false) {
   let cursor = start;
   const result = [];
   for (const row of model.rows.filter(row => row.romStart < end && row.romEndExclusive > start)) {
     const a = Math.max(start, row.romStart), b = Math.min(end, row.romEndExclusive);
     const slice = row.slices.find(slice => slice.romStart <= a && slice.romEndExclusive >= b);
-    if (a !== cursor || !row.part || !slice?.executable || slice.placementKind === 'rom-only') fail('unqualified or noncontiguous body placement');
+    if (a !== cursor || !row.part || !slice?.executable || (!padding && slice.retainedPaddingId) || slice.placementKind === 'rom-only') fail('unqualified or noncontiguous body placement');
     const fragment = { rowIndex: row.index, romStart: a, romEndExclusive: b,
       ownerOffset: a - row.romStart, bytes: b - a, vramStart: slice.vramStart + a - slice.romStart,
       sectionName: slice.sectionName, placementKind: slice.placementKind,
@@ -78,7 +78,7 @@ function loadRegistry(model, baserom, config = JSON.parse(fs.readFileSync(CONFIG
     if (baserom && (baserom.subarray(piece.romStart, piece.romEndExclusive).some(byte => byte !== 0)
       || sha256Buffer(baserom.subarray(piece.romStart, piece.romEndExclusive)) !== piece.expectedBytesSha256)) fail('padding hash drift');
     paddingEnd = piece.romEndExclusive;
-    intersections(model, piece.romStart, piece.romEndExclusive);
+    intersections(model, piece.romStart, piece.romEndExclusive, true);
   }
   const preservedSymbols = new Set();
   for (const entry of config.preservedProductionEnvelopes) {
@@ -127,7 +127,45 @@ function loadRegistry(model, baserom, config = JSON.parse(fs.readFileSync(CONFIG
     authenticatedRegistries.set(registry, { bodies: JSON.stringify(bodies), padding: JSON.stringify(padding), unavailableBodies: JSON.stringify(registry.unavailableBodies),
       rows: new Map(model.rows.map(row => [row.index, JSON.stringify(row)])) });
   }
+  for (const row of model.rows.filter(row => row.retainedPadding)) {
+    const edge = require('./phase7_conventional').retainedPaddingSlices(row);
+    const cuts = (model.config.retainedPaddingCuts || []).filter(c=>c.rowIndex===row.index);
+    if(cuts.length!==1 || JSON.stringify(cuts[0])!==JSON.stringify(edge.record)) fail('retained padding model/config binding drift');
+    const matches = padding.filter(p => p.romStart < row.romEndExclusive && p.romEndExclusive > row.romStart);
+    const whole = bodies.filter(b => b.romStart < row.romEndExclusive && b.romEndExclusive > row.romStart);
+    if (edge.record.compilerFunctions.length !== whole.length || whole.some((body,i)=>body.symbol!==edge.record.compilerFunctions[i].symbol)) fail('retained padding registered compiler binding census');
+    let cursor = edge.body.romStart;
+    for (const body of whole) {
+      if (body.romStart !== cursor || body.romEndExclusive > edge.body.romEndExclusive) fail('retained padding complete body census');
+      cursor = body.romEndExclusive;
+    }
+    if (matches.length !== 1 || matches[0].romStart !== edge.retained.romStart || matches[0].romEndExclusive !== edge.retained.romEndExclusive
+        || matches[0].expectedBytesSha256 !== edge.record.expectedSha256 || !whole.length || cursor !== edge.body.romEndExclusive
+        || registry.unavailableBodies.some(b=>b.romStart<row.romEndExclusive&&b.romEndExclusive>row.romStart)) fail('retained padding registered coverage drift');
+  }
   return registry;
+}
+
+function assertRetainedPaddingProducer(registry, row, symbol = null, functions = null) {
+  const edge = require('./phase7_conventional').retainedPaddingSlices(row);
+  if (!edge) return null;
+  const authenticated = authenticatedRegistries.get(registry);
+  if (!authenticated || authenticated.rows.get(row.index) !== JSON.stringify(row)
+      || authenticated.bodies !== JSON.stringify(registry.bodies) || authenticated.padding !== JSON.stringify(registry.padding)
+      || authenticated.unavailableBodies !== JSON.stringify(registry.unavailableBodies)) fail('retained padding needs unchanged ROM-authenticated registry');
+  const bodies = registry.bodies.filter(b => b.romStart >= edge.body.romStart && b.romEndExclusive <= edge.body.romEndExclusive);
+  if (symbol !== null && symbol !== bodies[0]?.symbol) fail('retained padding producer entry is not the complete registered entry');
+  if (functions !== null) {
+    if (!Array.isArray(functions) || functions.length !== bodies.length) fail('retained padding compiler body census');
+    functions.forEach((fn,i)=>{
+      const body=bodies[i];
+      const expected = edge.record.compilerFunctions[i];
+      if(fn.symbol!==expected.symbol || fn.binding!==expected.binding || fn.entryEvidence!==expected.entryEvidence || fn.symbol!==body.symbol || fn.offsetNumber!==body.romStart-edge.body.romStart || fn.bytes!==body.romEndExclusive-body.romStart
+          || fn.binding!==(i===0?'GLOBAL':'LOCAL') || (i===0?fn.entryEvidence!=='owner':!['internal-call-only','fixed-address-call','reviewed-local-body'].includes(fn.entryEvidence))
+          || fn.entryEvidence==='reviewed-local-body'&&!['supplemental-reviewed-body','independent-entry-supported'].includes(body.evidence.status)) fail('retained padding compiler function identity');
+    });
+  }
+  return { ...edge, bodies, registryIdentity: {...registry.identity} };
 }
 
 function coverage(registry, start, end, baserom) {
@@ -181,6 +219,10 @@ function assertReviewedLocalBodies(registry, symbol, rows, functions) {
 }
 
 function assertActivationCompatible(registry, symbol, rows, compilerTextFunctions = null, assemblySource = null) {
+  if (rows.length === 1 && rows[0].retainedPadding) {
+    assertRetainedPaddingProducer(registry, rows[0], symbol, compilerTextFunctions);
+    return;
+  }
   assertReviewedLocalBodies(registry, symbol, rows, compilerTextFunctions);
   const start = rows[0].romStart, end = rows[rows.length - 1].romEndExclusive;
   if (registry.bodies.some(body => body.romStart < start && body.romEndExclusive > start)) fail(`producer starts inside a logical body: ${symbol}`);
@@ -280,4 +322,4 @@ function assertAtomicOwnerBody(registry, symbol, rows) {
   return { registryIdentity: { ...registry.identity }, body: JSON.parse(JSON.stringify(body)) };
 }
 
-module.exports = { assertAtomicOwnerBody, assertNativeGroupBodies, CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };
+module.exports = { assertRetainedPaddingProducer, assertAtomicOwnerBody, assertNativeGroupBodies, CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };

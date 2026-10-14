@@ -171,7 +171,7 @@ async function main() {
   const localTools = JSON.parse(fs.readFileSync(path.join(p7.ROOT, 'config/local-tools.json')));
   const context = { phase8, localTools };
   const session = compiler.prepareCompilerSession({ context });
-  assert.equal(session.tool.workbenchCompilerContract, 11);
+  assert.equal(session.tool.workbenchCompilerContract, 12);
   assert.deepEqual(session.tool.scratchAssembly, SCRATCH_ASSEMBLY_POLICY);
   const workbench = loadWorkbenchModel(), target = resolveTarget(workbench, 'func_00128050');
   const sourceFile = path.join(p7.ROOT, 'docs/archive/matching-c-candidates/2026-09-30-func_00128050-d0d3bc890f.c');

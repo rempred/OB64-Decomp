@@ -984,10 +984,13 @@ function validateMultiOwnerConfig(config, expectedProfile, model, baserom, sourc
   return contracts;
 }
 
-function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map(), sourceCache = null) {
+function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map(), sourceCache = null, logicalRegistry = null) {
   const contract = multiOwnerContracts.get(symbol.toLowerCase()) || null;
   if (contract) return { rows: contract.rows, owners: contract.owners, contract };
-  const row = resolveAcceptedRow(model, symbol, sourceCache);
+  const logicalBody = logicalRegistry?.aliases.get(symbol.toLowerCase());
+  const registeredRow = logicalBody?.fragments.length === 1 ? model.rows.find(row=>row.index===logicalBody.fragments[0].rowIndex && row.retainedPadding) : null;
+  const row = registeredRow || resolveAcceptedRow(model, symbol, sourceCache);
+  const edge = row.retainedPadding ? require('./logical_functions').assertRetainedPaddingProducer(logicalRegistry, row, symbol) : null;
   const containingContracts = [...multiOwnerContracts.values()].filter((candidate) => (
     candidate.rows.some((owner) => owner.index === row.index)
   ));
@@ -999,8 +1002,8 @@ function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map(), sou
   const symbolSlices = executableSlices.filter((slice) => (
     symbolRomAddress >= slice.romStart && symbolRomAddress < slice.romEndExclusive
   ));
-  const slice = symbolSlices.length === 1 && executableSlices.length === 1 ? symbolSlices[0] : null;
-  if (row.slices.length !== 1 && (!slice || symbolRomAddress !== slice.romStart)) {
+  const slice = edge ? edge.body : symbolSlices.length === 1 && executableSlices.length === 1 ? symbolSlices[0] : null;
+  if (!edge && row.slices.length !== 1 && (!slice || symbolRomAddress !== slice.romStart)) {
     fail(`active target does not resolve to one complete executable slice: ${symbol}`);
   }
   return {
@@ -1612,7 +1615,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       legacyTarget,
       allowMissing.has(entry.symbol.toLowerCase()),
     );
-    const acceptedOwners = resolveAcceptedRows(model, entry.symbol, multiOwnerContracts, rowSymbolSourceCache);
+    const acceptedOwners = resolveAcceptedRows(model, entry.symbol, multiOwnerContracts, rowSymbolSourceCache, logicalRegistry);
     const rows = acceptedOwners.rows;
     const row = rows[0];
     const owners = acceptedOwners.owners;
@@ -1627,6 +1630,8 @@ function loadActiveTargetModelInternal(options, deferFinish) {
         })) {
       fail(`active target is not an accepted executable assembly owner census: ${entry.symbol}`);
     }
+    if (row.retainedPadding && (group || acceptedOwners.contract || relocationContract.nativeTextTail || relocationContract.atomicText
+        || relocationContract.auxiliaryProjection || relocationContract.auxiliarySections.length)) fail('retained padding incompatible producer mode');
     const firstOwner = owners[0];
     const lastOwner = owners[owners.length - 1];
     const slice = row.slices.find((candidate) => candidate.sectionName === firstOwner.sectionName);

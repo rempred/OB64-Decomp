@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B4D9AAE65E533AC79D527AFBEB902A3A9734826625D9E4BB6BD5F7BA70B5C674",
+  "observationId": "CDE11EC28CE8B0922B99FB74BFCD84F7D4E606F512EDD89FD2A448D444D81912",
+  "symbol": "func_00120BC0",
+  "authored": {
+    "context": "Inactive ASM physical owner120BBC..120CF0; supported304-byte logical-body selection120BC0 uses historical diagnostic symbol120BBC. Pinned KMC/GNU2.6 compiler contract11. Original4-byte lead remains ASM. Historical observation preserved unchanged during complete Q2 integration. This publication binds the same source to the newly admitted target model; the original compiler11 result remains historical, not a fresh native check. Original parent/related IDs remain in the authenticated original authored file/import receipt referenced below. Placement sources retain their historical BBC function spelling; canonical BC0 is separately compiled and verified.",
+    "effects": [
+      "readability",
+      "unresolved-relocations"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DFF0152E9EDE71340D8E4F129C51C7656544033B8159B34F61E8F884DD7B00C4",
+      "sourceSha256": "14B8833251861AD9000451DD6E6DB4D2A681943F3CE6152F2465E2833FD35DE8"
+    },
+    "label": "Q2 placement body: explained source with unchanged native alignment",
+    "observedEffect": "Source07 remains mechanicallyPURE_C,304bytes/76instructions/frame32, score98.75 and nine raw differences at nine emitted relocations. All nonrelocation native words and opcode/register/stack fields align. Previous source06 observationC5CC42A2 contains the decisive store-order/reload/hoisting experiments.",
+    "parentCandidateId": "19EFC81BDDA52847E1F547BE62D9A8AD10AC7154D1068AB6C95DE78F28E0660A",
+    "references": [
+      {
+        "path": "build/matching/q2-placement-261013/watch-120BC0-07.json",
+        "sha256": "8C5FDD32B026D69542A62B3ABC407C096B3D98095044ECECC029A2F3355F1D32"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/watch-120BC0-06.json",
+        "sha256": "368BE70C0E78D4030CC5403F95ECFB96958080ECE37A3D3C1BB999BC77E8F2EF"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/rom-entry-evidence.json",
+        "sha256": "8E2ACE0879DF6545E95553EF5EA8C7203DFCD53D16189DBE5D62C4204598F846"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/prefix-admission-proposal.md",
+        "sha256": "AA0565D621B5573C99447182040F98582A876454229D99652209BA7861D11967"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/placement-final.observation-authored.json",
+        "sha256": "BBBF67D588B1D7036D9A5FC5A960D35AC47981D3DF19E37730B52322993A6E81"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/placement-final-import.json",
+        "sha256": "4696DC970D2AB6ECDC5BFF1B46180928CFDAD25BB53F8E3D22115F5F6C785F2A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Symbolic-object evidence only; no expected relocation identity, linked exact-body/full308-byte owner proof or complete-ROM acceptance. Structural prefix admission/marker preservation and final complete two-member wave integration remain required. Both private bodies are now provisional-ready; neither is accepted by this record.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Explain intentional global array views, destructive float argument reuse and scoped volatile final flag reload; remove unused UNIT_FIELD macro. Native source06 structure is unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1558,
+      "sha256": "DFF0152E9EDE71340D8E4F129C51C7656544033B8159B34F61E8F884DD7B00C4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "14B8833251861AD9000451DD6E6DB4D2A681943F3CE6152F2465E2833FD35DE8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_00120BC0-b4d9aae65e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

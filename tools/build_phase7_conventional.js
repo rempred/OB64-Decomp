@@ -382,6 +382,7 @@ function writeLayout(model, output) {
         executable: slice.executable,
         executableRangeId: slice.executableRangeId,
         nonExecutableRangeId: slice.nonExecutableRangeId,
+        ...(slice.retainedPaddingId ? { retainedPaddingId: slice.retainedPaddingId } : {}),
       })),
     })),
     overlays: model.overlays.map((overlay) => ({
@@ -492,4 +493,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { transformTrackedPart, transformTrackedPartSource };
+module.exports = { writeLayout, transformTrackedPart, transformTrackedPartSource };

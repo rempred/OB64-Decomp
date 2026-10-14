@@ -190,3 +190,12 @@ docs/archive/matching-c-candidates/2026-10-11-func_0022D14C-a1ecef80a0.c -text w
 # Frozen maintenance research inputs retain their authenticated raw bytes.
 docs/archive/matching-c-inputs/2026-10-12-phase7-pre-q7-79adf4fa.json -text
 docs/archive/matching-c-candidates/2026-10-12-func_0004d634-308b580d67.c -text
+
+# Accepted Q2 production checkouts and research inputs preserve recorded bytes.
+src/lib/func_00120BC0.c -text whitespace=cr-at-eol,-blank-at-eof
+src/lib/func_001307D4.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-14-func_00120BC0-19efc81bdd.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-14-func_00120BC0-1f2ded5e01.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-14-func_00120BC0-374cdb5a94.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-14-func_00120BC0-b4d9aae65e.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-14-func_001307D4-79800e07c0.c -text whitespace=cr-at-eol,-blank-at-eof

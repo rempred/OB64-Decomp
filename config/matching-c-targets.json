@@ -1282,6 +1282,14 @@
     {"symbol":"func_0013A3D8","source":"src/lib/func_0013a3d8.c"},
     {"symbol":"func_0013A558","compilationGroup":"q1_terrain_policy"},
     {"symbol":"func_0013AA40","compilationGroup":"q1_terrain_policy"},
-    {"symbol":"func_0013B350","compilationGroup":"q1_terrain_policy"}
+    {"symbol":"func_0013B350","compilationGroup":"q1_terrain_policy"},
+    {
+      "symbol": "func_00120BC0",
+      "source": "src/lib/func_00120BC0.c"
+    },
+    {
+      "symbol": "func_001307D4",
+      "source": "src/lib/func_001307D4.c"
+    }
   ]
 }

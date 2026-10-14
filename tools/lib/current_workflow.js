@@ -304,6 +304,7 @@ function completeCurrent(directory, phase8, sourcePolicy) {
     layout = JSON.parse(metadataInputs[0].contents);
     const manifest = JSON.parse(metadataInputs[1].contents);
     if (layout.schemaVersion !== 2 || manifest.schemaVersion !== 5) return false;
+    require('./phase8_matching_c').verifyRecordedEdgePadding(phase8, directory, report.verification, textLinkContext);
     manifestMembers = compilationGroups.manifestMembers(manifest.linkedObjects, phase8);
     if (phase8.targets.some(target => (target.auxiliarySections || []).length)) {
       const sharedInputs = ['linker/phase8.ld', 'phase8.map'].map(relative =>

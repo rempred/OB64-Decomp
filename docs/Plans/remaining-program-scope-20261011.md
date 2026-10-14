@@ -1,22 +1,21 @@
 # Remaining assigned program scope — October 13, 2026
 
-The [generated remaining-scope snapshot](../../build/director-resume-20261013/storage-retention/new-wave-continuity/complete-program-scope-after-db10-q1.json) derives **18 remaining logical functions, 24,820 text-owner bytes (24,792 body bytes), in 6 complete waves** by unique physical owners. DB10 (all three animation bodies) and Q1 (all 15 coupled acceptance members, including three new logical terrain bodies) are accepted by Astra at CURRENT `355186C5`, against audit handoff `0D0A2FB5` and the seven exact report hashes in the [final integration evidence](../../build/matching/db10-fresh-261011/independent-repairs-261013/final-integration-handoff.json). Accepted DB10/Q1 rosters remain below as reference and are excluded from remaining totals. Earlier accepted NINE, S2, S5, S4, Q5 and Q7 remain accepted. Generated current verification/status owns matching counts.
+The [generated remaining-scope snapshot](../../build/matching/s1-descriptor-261013/q2-integration/complete-program-scope-after-q2.json) derives **16 remaining logical functions, 23,400 text-owner bytes (23,376 body bytes), in 5 complete waves** by unique physical owners. Complete Q2 is accepted by Astra at CURRENT `7FE926D2`, with fresh audit, source/object, sole-C, actual-relocation, full-owner and complete-ROM proof in the [Q2 final handoff](../../build/matching/s1-descriptor-261013/q2-integration/composed-final-handoff.md). DB10 and Q1 remain accepted at CURRENT `355186C5`; their reference rosters and coupled data gates are preserved below. Accepted Q2 is excluded from remaining totals. Earlier accepted NINE, S2, S5, S4, Q5 and Q7 remain accepted. Generated current verification/status owns matching counts.
 
-D450 and D484 remain conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. If both are admitted, the same wave expands the remainder to **20 functions / 27,224 owner bytes**, still 6 waves. Their necessity remains unproven.
+D450 and D484 remain conditional DDB4 producer candidates: **2 functions / 2,404 bytes**. If both are admitted, the same wave expands the remainder to **18 functions / 25,804 owner bytes**, still 5 waves. Their necessity remains unproven.
 
-S1 chat `01a13761-1df5-7b53-9e57-595cc7e3aaf3` owns the complete descriptor/group loader in `build/matching/s1-descriptor-261013/` and is the sole production source/build writer after explicit transfer. Q2 chat `01a13761-1167-7021-9420-cb2904800a3d` owns the complete placement pair privately in `build/matching/q2-placement-261013/` and reports directly to the Director. Both are fresh top-level Sol 6.1/xhigh workers with verified native startup and stop/attention routes. SwiftGlen is fully released and retired after accepted commit `ced71efd`; CalmSquirrel is retired. Structural admission gates remain required before either wave is activated. The original five-family boundary is unchanged.
+S1 chat `01a13761-1df5-7b53-9e57-595cc7e3aaf3` retains the complete descriptor/group loader and sole production source/build ownership in `build/matching/s1-descriptor-261013/`. Complete Q2 is accepted and its source ownership released; fresh top-level Sol 6.1/xhigh Q3 chat `01a1382a-8036-7c63-9981-4f3cee002011` is active in private reconstruction with verified native message/stop routing (watcher62132). Its native compile/link/watch hold remains during complete S1 integration. Retired Q2 watcher42184 is stopped; its evidence is preserved. The reviewed retained-padding structural model is accepted; ordinary S1 activation must preserve all three bodies, original ASM8, full764-byte owner and interfaces, then pass the normal complete-wave verifier. SwiftGlen and CalmSquirrel remain retired. The original five-family boundary is unchanged.
 
 ## Complete waves
 
 | Wave | Assignment | Functions | Text-owner bytes | Body bytes | State |
 |---|---|---:|---:|---:|---|
-| Q2 | Placement pair | 2 | 1,420 | 1,416 | Active private candidate; gates retained |
-| Q3 | Encoded-item writer | 1 | 496 | 496 | Queued; gates retained |
+| Q3 | Encoded-item writer | 1 | 496 | 496 | Active Q3 private reconstruction; native-check hold during S1 integration |
 | Q4 | Route deallocator PURE_C retry | 1 | 236 | 224 | Queued; gates retained |
 | Q6 | DDB4 broad site-event producer | 1 | 9,132 | 9,128 | Queued; gates retained |
-| S1 | Descriptor/group loader | 3 | 764 | 756 | Active; sole production writer; structural gates retained |
+| S1 | Descriptor/group loader | 3 | 764 | 756 | Active complete producer; sole production writer; normal verification pending |
 | S3 | Scenario DMA-window requesters | 10 | 12,772 | 12,772 | Queued; gates retained |
-| **Total** | | **18** | **24,820** | **24,792** | |
+| **Total** | | **16** | **23,400** | **23,376** | |
 
 Tables, descriptor records, literal constants and retained ASM data are separate from these text-owner totals and never add functions. Accepted NINE data ownership is preserved outside the remaining roster. Remaining obligations include Scenario's 688 table bytes and DDB4's 208-byte table. Accepted Q1 preserves all 26 compiler table occurrences across three physical auxiliary rows r2607/r2609/r2611 (11/11/4), separate from the three logical bodies' 10/10/6 table uses, and all 337 pointers. Original fallbacks, complete data rows and applicable auxiliary gates remain required.
 
@@ -46,12 +45,12 @@ Accepted complete terrain family: all 15 coupled acceptance members pass, includ
 
 ### Q2 — Placement pair
 
-Logical120BC0 starts four bytes into physical120BBC; preserve that leading NOP and all six existing plus-four call sites. Structural producer/prefix admission and review precede replacement.
+Accepted complete Q2: both bodies are PURE_C/exact under CURRENT7FE926D2. Original ASM4, physical120BBC interface, full308-byte owner and all six plus-four calls are preserved. Source ownership is released; this roster is reference evidence excluded from remaining totals.
 
 | Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
 |---|---|---|---:|---|
-| `func_00120BC0` | ASM | `0x00120BC0..0x00120CF0` | 304 | `0x00120BBC..0x00120CF0` |
-| `func_001307D4` | ASM | `0x001307D4..0x00130C2C` | 1,112 | `0x001307D4..0x00130C2C` |
+| `func_00120BC0` | PURE_C | `0x00120BC0..0x00120CF0` | 304 | `0x00120BBC..0x00120CF0` |
+| `func_001307D4` | PURE_C | `0x001307D4..0x00130C2C` | 1,112 | `0x001307D4..0x00130C2C` |
 
 ### Q3 — Encoded-item writer
 
@@ -98,7 +97,7 @@ Director includes the complete retained ten as one future wave under the origina
 
 ### S1 — Descriptor/group loader
 
-Keep all three bodies and eight terminal zeros in physical65E4..68E0. Preserve19 descriptor/11 group tables and stable DMA/cache/BSS interfaces. Native producer/ownership admission still requires structural audit/review.
+Keep all three bodies and eight terminal zeros in physical65E4..68E0. Preserve19 descriptor/11 group tables and stable DMA/cache/BSS interfaces. The reviewed retained-padding structural model is accepted; ordinary complete-producer activation and normal complete-wave verification remain pending.
 
 | Logical function | Current class | Body ROM interval | Body bytes | Complete physical ROM interval |
 |---|---|---|---:|---|
@@ -150,7 +149,7 @@ Structural producer/prefix/tail/table gates are attached to the listed complete 
 
 ## Scheduling and acceptance
 
-NINE/S2/S5/S4/Q5, complete Q7, DB10 animation and Q1 terrain are accepted; released worker ownership stays retired. Q7 commit78826618 and final proof6155CE8A remain protected. Active fresh top-level Sol 6.1/xhigh workers retain the complete S1 and Q2 waves. S1 is the sole production source/build writer; Q2 remains private and reports directly to the Director. SwiftGlen is fully released and retired after accepted commit `ced71efd`. S3/Q3/Q4/Q6 retain their stated preparation and every dependency gate. After a worker's complete assigned wave is accepted and ownership released, the Director immediately dispatches a fresh top-level Sol6.1/xhigh worker to the next dependency-ready complete wave. Existing ASM interfaces do not force a wait for unrelated conversions.
+NINE/S2/S5/S4/Q5, complete Q7, DB10 animation, Q1 terrain and complete Q2 are accepted; released worker ownership stays retired. Q7 commit78826618 and final proof6155CE8A remain protected. S1 retains its complete own wave and sole production source/build ownership. Fresh top-level Sol6.1/xhigh Q3 chat `01a1382a-8036-7c63-9981-4f3cee002011` actively owns the complete496-byte encoded-item wave over416+80 owners, with verified native routing. Its private reconstruction proceeds during the serialized S1 native-check hold. SwiftGlen remains retired after ced71efd. S3/Q4/Q6 retain every stated dependency gate. Fresh replacement follows complete-wave acceptance and release; existing ASM interfaces do not force a wait for unrelated conversions.
 
 The sole production writer integrates one complete wave at a time. Drain only native commands affected by actual shared-input changes or canonical verification, then promptly release them. Every assigned member must meet PURE_C, unique C ownership, placement, actual relocation, target-byte and complete-ROM gates in one final wave verification; structural changes retain audit and independent review. Preserve user pauses and original coupled bodies/data. This planning document grants no tool changes or pushes.
 

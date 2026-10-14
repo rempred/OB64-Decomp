@@ -325,6 +325,25 @@ If desired, call the combined set “exact source replacements,” but keep the 
 
 Native assembler alignment is representation evidence, independent of source classification. A generated inline-assembly fixture remains HYBRID_C even when its full ROM is exact. A native PURE_C match still requires sole C ownership, exact complete owner bytes including its tail, accepted relocations, and an exact complete retail ROM.
 
+## Registered original assembly edge padding
+
+An explicitly registered edge-padding cut may derive two ELF slices from one
+unchanged physical source row. Both retain the original executable classification.
+The selected C slice contains the complete admitted GLOBAL/LOCAL producer; the
+other slice remains original ASM in the pruned original chunk. Only the selected
+C bytes contribute to source-policy totals. Padding is never a matching target.
+The compiler and ordinary section-assigned C object are unchanged.
+
+Admission binds the cut, original source and padding hash, logical-body coverage,
+compiler function bindings and placement. A separate full-row proof must conserve
+both slices, exact ownership and all bytes; sole C ownership applies literally to
+the complete C output section. Physical GLOBAL and envelope interfaces remain.
+An unused original LOCAL zero-size non-FUNC/non-SECTION marker may disappear with
+the removed ASM section only under the verified no-symbolic-reference rule; its
+fallback and numeric address/bytes remain. No ELF-symbol injection or renaming of
+a native compiler function is permitted. Numeric/runtime references are not
+inferred absent from a lack of ELF relocations.
+
 ## Compilation groups
 
 A compilation group is one C producer for several existing function targets. The version-1 registry is `config/matching-c-compilation-groups.json`. A grouped target uses `{ "symbol": "func_XXXXXXXX", "compilationGroup": "group_id" }` instead of a standalone source record. A separately assigned source wave must activate all group members together; registry activation alone does not establish completed-wave matching acceptance.

@@ -101,6 +101,9 @@ function runAudit(args, profile) {
   console.log('');
   console.log('Running structural ROM, coverage, overlay, ownership, and toolchain checks...');
   measure(profile, 'structural-checks', () => runNode('verify_setup.js', ['--phase5a-root', phase5aRoot], 'structural audit'));
+  measure(profile, 'registered-padding', () => require('../tests/registered_padding').main());
+  measure(profile, 'registered-padding-native', () => require('../tests/registered_padding_native').main());
+  measure(profile, 'registered-padding-scratch', () => require('../tests/registered_padding_scratch').main());
   const func002861C8Structure = measure(profile, 'func002861c8-structure', () => verifyFunc002861C8Structure({ runMutations: true }));
   console.log('Running CURRENT ownership and exact-ROM verification...');
   const current = verifyCurrent(context, { profile });

@@ -97,13 +97,34 @@ function runTests(model = loadAcceptedModel()) {
     slice.vramEndExclusive, slice.bytes, slice.executable, slice.placementKind, slice.loadSlabId],
   ['.ob64.r0789', 0x3DDC0, 0x3F1B0, 0x800AD9C0, 0x800AEDB0, 5104, false,
     'non-descriptor-load-slab', 'boot-initialized-data-0003ddc0']);
-  assert.deepStrictEqual(model.counts, { assemblyOwners: 6184, dataOwners: 1058, splitOwners: 17,
+  assert.deepStrictEqual(model.counts, { assemblyOwners: 6184, dataOwners: 1058, splitOwners: 19,
     rspRows: 13, fixedOverlayNonExecutableRanges: 4, nonDescriptorLoadSlabs: 30 });
-  // Snapshot includes Q7's two tail splits and generated ordinal/phdr shifts.
+  // Two registered ASM edge cuts add output slices, preserving all physical rows.
+  assert.deepStrictEqual(model.rows.filter(row => row.retainedPadding).map(row => row.index), [58, 2351]);
+  for (const index of [58, 2351]) {
+    const owner = model.rows[index];
+    assert.strictEqual(owner.slices.length, 2);
+    assert.strictEqual(owner.slices.reduce((bytes, slice) => bytes + slice.bytes, 0), owner.bytes);
+    assert.strictEqual(owner.slices.filter(slice => slice.retainedPaddingId).length, 1);
+    assert(owner.slices.every(slice => slice.executable && slice.nonExecutableRangeId === null));
+  }
+  // Snapshot includes both edge cuts and their generated ordinal/phdr shifts.
   // Preserve every physical row, other slice (including743/790), reservation and29 slabs.
   const digest = value => sha256Buffer(Buffer.from(JSON.stringify(value)));
-  assert.strictEqual(digest(model.slices.filter(s => s.rowIndex !== 789)), '8897472E14020BB65D6CD7EBBD1716F503C2232D52F7E662D8E739605A4D873B');
-  assert.strictEqual(digest(model.rows.map(({ slices, ...metadata }) => metadata)), '4F5EE5011B086824ED4256B53BCD214106AE1D38392A3029788C667383E2E315');
+  assert.strictEqual(digest(model.slices.filter(s => s.rowIndex !== 789)), '4E69CA03CEFDCF78B970359E9DC610930BFA71C05C7F20B79BB69DBCCEA308A5');
+  // Reverse only the two reviewed derived cuts to compare every legacy slice.
+  // This is a test projection, not a generated count or production-layout reset.
+  const priorSlices = model.rows.flatMap(owner => owner.retainedPadding ? [{
+    ...owner.slices[0], sliceIndex: 0, sliceCount: 1,
+    sectionName: '.ob64.r' + String(owner.index).padStart(4, '0'),
+    romEndExclusive: owner.romEndExclusive, bytes: owner.bytes,
+    vramEndExclusive: owner.slices.at(-1).vramEndExclusive,
+  }] : owner.slices).map(({ retainedPaddingId, ...slice }, ordinal) => ({
+    ...slice, ordinal, phdrName: 'p' + String(ordinal).padStart(5, '0'),
+  }));
+  assert.strictEqual(digest(priorSlices.filter(slice => slice.rowIndex !== 789)),
+    '8897472E14020BB65D6CD7EBBD1716F503C2232D52F7E662D8E739605A4D873B');
+  assert.strictEqual(digest(model.rows.map(({ slices, retainedPadding, ...metadata }) => metadata)), '4F5EE5011B086824ED4256B53BCD214106AE1D38392A3029788C667383E2E315');
   assert.strictEqual(digest(model.overlays), 'C699993FF5DB3D8A075BC2EBC22DEBA4FDDD9B8E6F7E257960DFD37E92BAD016');
   assert.strictEqual(digest(model.nonDescriptorLoadSlabs.slice(0, 29)), 'DD0C8A896DCBB5DEFEBF6463700FB79715479E74F9F9A599F9FE82C2AAF52695');
   return { originalByteAndMappingNegativeControls: rejected };

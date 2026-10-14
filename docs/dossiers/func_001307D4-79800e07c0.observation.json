@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "79800E07C0FA3F11FE4D9C68A7FAE22363C685211018B84C25DDB31AEF27BD9F",
+  "observationId": "756ADEDAEB12078DFD9F6281EBECF0260070026550EB54D83D94E7B5F4FDA6EE",
+  "symbol": "func_001307D4",
+  "authored": {
+    "context": "Inactive ASM owner1307D4..130C2C, complete1112-byte logical/physical body, descriptor7 runtime801DC094..801DC4EC. Pinned KMC/GNU2.6 compiler contract11. Full native output checked against all278 fallback words. Expected relocation census and isolated linking are unavailable for this inactive target. Historical observation preserved unchanged during complete Q2 integration. This publication binds the same source to the newly admitted target model; the original compiler11 result remains historical, not a fresh native check. Original parent/related IDs remain in the authenticated original authored file/import receipt referenced below. Placement sources retain their historical BBC function spelling; canonical BC0 is separately compiled and verified.",
+    "effects": [
+      "register-allocation",
+      "operand-order",
+      "lifetime-reuse",
+      "delay-slot-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5EFC33B6E3438200C88BE6EDE957260904889DACE262AE45BDE79501731D8541",
+      "sourceSha256": "9192AF85983591769475C3B35C9FE2B91A8A056A11331074A57674359A1E5A91"
+    },
+    "label": "Q2 caller: complete native body alignment before linked integration",
+    "observedEffect": "Final native object is1112bytes/278instructions/frame96, mechanicallyPURE_C, with58 emitted relocation sites and58 raw differences at those sites. Every other fallback word aligns; opcode/register/stack/branch-polarity/memory-width difference counters are0. Source15 had only two additional commuted ADDU operands; grouping in16 removes them. Shared counter15 fixes search a1/v1 without disturbing initial loops; firstUnit reuse13 fixes a0/v1 reset loop. Separate source07/08 induction forms demonstrate extra join/skip jumps, while for/continue09 preserves retail skip and JAL delay increments.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/q2-placement-261013/watch-1307D4-19.json",
+        "sha256": "6EC2A407D7DB1D92CC10852897D61C6B77E6DBDB4A63B1004F622048E8F31036"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/watch-1307D4-16.json",
+        "sha256": "45B88F4033C60E808E42C914C8FE4D28B05E94FF8A59D63DB7EFF0C74C361E52"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/func_001307D4.15.c",
+        "sha256": "7D84CB54741D5D4DB470C7AFE7FA578DDAB4BF5406EDD87DB974A08A464ED662"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/func_001307D4.13.c",
+        "sha256": "CF6AC6FAF151C410B48173C92466C4AF335A42A850ACA1320A7A21FF6D343B66"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/func_001307D4.07.c",
+        "sha256": "CD76D7603E2D2376887F4D9177F99AECC2208051BEAEBCDD512C98A22ACF5B77"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/func_001307D4.08.c",
+        "sha256": "AB4E38631187EA263E88670D68ACC87306BF49E572FA75F2B412A60E17EA4820"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/matching-consult-1307D4-output.txt",
+        "sha256": "4B6650F31A14361C974352047281C4D5821D21E9F08021D1710148A1D8C606A7"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/rom-entry-evidence.json",
+        "sha256": "8E2ACE0879DF6545E95553EF5EA8C7203DFCD53D16189DBE5D62C4204598F846"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/caller-best.observation-authored.json",
+        "sha256": "68546EA2877DA590208A79D436F27B08C2B63EDB0E325B6E156CD1762A13D97A"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/caller-best-import.json",
+        "sha256": "A6ACCCD4C1DD9A3921512924D1F05CA6C25C5D4F5A3E063B50D1B91095064F7F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Symbolic-object diagnostics only: expected relocation identity, exact linked addresses/bytes and full-ROM acceptance are unproved. Q2's coupled logical120BC0 body still requires Director-approved structural prefix admission and marker disposition. Complete-wave production integration and one final combined verifier remain mandatory; no target is accepted by this record.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Final source adds explanations and consistent indentation to source16. Source16 groups the index expression as (record+i)[2] rather than record[i+2], restoring operand order atROM130A88/130AC8. Earlier experiments established a shared reset/search counter, firstUnit reused in the reset loop and the real later default call, explicit masks before table initialization, scalar D801951F0, separate stage lifetimes/nested guards and natural for/continue placement iteration."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5472,
+      "sha256": "5EFC33B6E3438200C88BE6EDE957260904889DACE262AE45BDE79501731D8541"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9192AF85983591769475C3B35C9FE2B91A8A056A11331074A57674359A1E5A91"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_001307D4-79800e07c0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

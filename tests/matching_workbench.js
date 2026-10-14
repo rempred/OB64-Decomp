@@ -1246,7 +1246,7 @@ async function acceptedModelTests() {
   const workbench = loadWorkbenchModel();
   await require('./matching_group_consumers').run(workbench);
   await require('./matching_split_tail_selection').run(workbench);
-  assert(workbench.modelManifest.targetModelContract === 6, 'target-model contract drift');
+  assert(workbench.modelManifest.targetModelContract === 7, 'target-model contract drift');
   assert(JSON.stringify(workbench.modelManifest.conventionalBuild) === JSON.stringify({
     path: 'config/phase7/conventional-build.json',
     sha256: sha256File(PHASE7_CONFIG_PATH),
@@ -1258,8 +1258,26 @@ async function acceptedModelTests() {
     row.primaryClass === 'code' && row.part && row.slices.length === 1 && row.slices[0].executable
   ));
   assert(workbench.targets.length === expectedPhysicalHeadCount(executableCodeRows, workbench.logicalRegistry.bodies)
-    + workbench.targets.filter(target => target.selectionKind === 'executable-prefix').length,
-    'workbench target census does not equal physical heads minus validated logical continuations');
+    + workbench.targets.filter(target => target.selectionKind === 'executable-prefix').length
+    + workbench.targets.filter(target => target.selectionKind === 'registered-padding-producer').length,
+    'workbench target census does not equal physical heads minus validated logical continuations plus admitted split producers');
+  const edgeRows = workbench.model.rows.filter(row => row.retainedPadding);
+  const edgeTargets = workbench.targets.filter(target => target.selectionKind === 'registered-padding-producer');
+  assert(edgeRows.length === 2 && edgeTargets.length === edgeRows.length, 'registered complete producer census');
+  for (const row of edgeRows) {
+    const matches = edgeTargets.filter(target => target.rowIndex === row.index);
+    assert(matches.length === 1, 'one admitted complete producer per unchanged physical owner');
+    const target = matches[0], body = row.slices.find(slice => !slice.retainedPaddingId);
+    const retained = row.slices.find(slice => slice.retainedPaddingId);
+    assert(target.logicalCoverageComplete && target.romStart === body.romStart && target.romEndExclusive === body.romEndExclusive
+      && target.bytes === body.bytes && target.logicalFunctions.reduce((sum, fn) => sum + fn.bytes, 0) === body.bytes,
+      'admitted producer must cover every complete body and exclude retained ASM');
+    assert(!workbench.targets.some(candidate => candidate.romStart >= retained.romStart && candidate.romStart < retained.romEndExclusive),
+      'retained ASM padding must not enter matching target census');
+    for (let address = retained.romStart; address < retained.romEndExclusive; address += 4) {
+      expectError(/does not resolve/, () => resolveTarget(workbench, 'func_' + address.toString(16).toUpperCase().padStart(8, '0')));
+    }
+  }
   const prefixedTargets = workbench.targets.filter((target) => target.symbolByteOffset !== 0);
   assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length
       === workbench.targets.length - prefixedTargets.length

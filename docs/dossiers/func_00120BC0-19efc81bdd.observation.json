@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "19EFC81BDDA52847E1F547BE62D9A8AD10AC7154D1068AB6C95DE78F28E0660A",
+  "observationId": "60535D6A61DE73F316C9E4E72E807310A7335EE1C517D2B9C18CE3A4C792C3E8",
+  "symbol": "func_00120BC0",
+  "authored": {
+    "context": "Inactive ASM owner120BBC, supported private logical-body selection120BC0..120CF0, historical diagnostic symbol120BBC. Pinned KMC/GNU2.6 native-mnemonic compiler contract11. Full304-byte body checked against fallback. No expected relocation census or isolated link is available. Historical observation preserved unchanged during complete Q2 integration. This publication binds the same source to the newly admitted target model; the original compiler11 result remains historical, not a fresh native check. Original parent/related IDs remain in the authenticated original authored file/import receipt referenced below. Placement sources retain their historical BBC function spelling; canonical BC0 is separately compiled and verified.",
+    "effects": [
+      "store-order",
+      "field-reload",
+      "global-load-hoisting",
+      "unresolved-relocations"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DFF0152E9EDE71340D8E4F129C51C7656544033B8159B34F61E8F884DD7B00C4",
+      "sourceSha256": "AF5E4739E88855ED5533E8D6C961C37E1EBC49997C6B535BAD4CFB6907993380"
+    },
+    "label": "Q2 placement body: native instruction alignment before production prefix admission",
+    "observedEffect": "Native source06 emits304bytes/76instructions/frame32. Private comparison score98.75 reports nine raw instruction differences at the nine actual relocation sites; remaining native instruction words align by inspection. This improves source05's96.71 and twelve raw differences by restoring the three-store ordering. PURE_C is the mechanical report class.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/q2-placement-261013/watch-120BC0-06.json",
+        "sha256": "368BE70C0E78D4030CC5403F95ECFB96958080ECE37A3D3C1BB999BC77E8F2EF"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/watch-120BC0-05.json",
+        "sha256": "DF033CDD87CD1D2B373DDF1CC3974BDCC4CB9C24987CE018F54C4FE874EA580D"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/placement.05.c",
+        "sha256": "402052AFC0BD25CDBE5498D99FD842AF9A81613EE4315681577DE43660E3DCDE"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/inspect-120BC0.json",
+        "sha256": "9A855AED12A1703B02A5ABC7FEEF676B288CB45E5CD9B4BA50AAA263A2F1CF25"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/rom-entry-evidence.json",
+        "sha256": "8E2ACE0879DF6545E95553EF5EA8C7203DFCD53D16189DBE5D62C4204598F846"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/placement-best.observation-authored.json",
+        "sha256": "3B1E7F6CF43E5749A726F52A1B604A6E0BD080D424611A1CCB2E6EAF4B9634AC"
+      },
+      {
+        "path": "build/matching/q2-placement-261013/placement-best-import.json",
+        "sha256": "4EE16050B7FE98A2DEADB60713B6FFDF1B9364FB7236CEEC2397412B63271F5F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Symbolic-object evidence only; rawRelocationMaskedExact and diagnosticExactBytes are false/unavailable. Prefix4bytes remains original ASM and needs separate structural admission. Expected relocation evidence, linked exact-body/full-owner proof and final complete Q2 wave acceptance remain outstanding; second member is still nonmatching.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Relative to source05, place the two0.75f stores before the flag-bit1 store, retaining earlier home-tile copy. The preceding source sequence established typed-member copies after tile computation, array views of the four global floats to avoid premature hoisting, and scoped volatile final flag read to retain its explicit reload."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1558,
+      "sha256": "DFF0152E9EDE71340D8E4F129C51C7656544033B8159B34F61E8F884DD7B00C4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "AF5E4739E88855ED5533E8D6C961C37E1EBC49997C6B535BAD4CFB6907993380"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-14-func_00120BC0-19efc81bdd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

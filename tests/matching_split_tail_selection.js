@@ -26,7 +26,7 @@ async function run(workbench = loadWorkbenchModel()) {
   const authority = loadActiveTargetModel();
   const shapes = [['func_00119454', 4324, 8], ['func_00127154', 1748, 8],
     ['func_002013D0', 84, 12], ['func_0020FC7C', 320, 4], ['func_0021C8DC', 140, 8]];
-  assert.equal(workbench.modelManifest.targetModelContract, 6);
+  assert.equal(workbench.modelManifest.targetModelContract, 7);
   assert.deepEqual(workbench.modelManifest.multiOwnerConfig, authority.multiOwnerConfigIdentity);
   const selected = workbench.targets.filter(target => target.selectionKind === 'executable-prefix');
   assert.deepEqual(selected.map(target => target.symbol).sort(), shapes.map(([symbol]) => symbol).sort());

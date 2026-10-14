@@ -15,9 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7259,
-    "splitOwners": 17,
+    "linkSlices": 7261,
+    "splitOwners": 19,
     "overlayReservations": 19,
+    "retainedPaddingCuts": 2,
     "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
@@ -50,6 +51,50 @@
       "overlaySection": "text",
       "romStart": 1156408,
       "romEndExclusive": 1156416
+    }
+  ],
+  "retainedPaddingCuts": [
+    {
+      "id": "registered-row58-terminal",
+      "rowIndex": 58,
+      "romStart": 26840,
+      "romEndExclusive": 26848,
+      "edge": "terminal",
+      "sourceSha256": "59C9C72EF37287D5B2814AF55636FB803B1041342A2A006EBF8EA38F2E1FF33D",
+      "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "compilerFunctions": [
+        {
+          "symbol": "func_000065E4",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        },
+        {
+          "symbol": "func_00006724",
+          "binding": "LOCAL",
+          "entryEvidence": "fixed-address-call"
+        },
+        {
+          "symbol": "func_00006830",
+          "binding": "LOCAL",
+          "entryEvidence": "internal-call-only"
+        }
+      ]
+    },
+    {
+      "id": "registered-row2351-leading",
+      "rowIndex": 2351,
+      "romStart": 1182652,
+      "romEndExclusive": 1182656,
+      "edge": "leading",
+      "sourceSha256": "ABB7CD02C14D08061E2CC6D3E9FFBF87B6BD328D2B569EDADCAB1C63F3210660",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00120BC0",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
     }
   ],
   "nonDescriptorLoadSlabs": [

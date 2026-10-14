@@ -287,6 +287,89 @@ function targetTextOwners(target) {
   }];
 }
 
+function edgeInterfaceSymbols(phase8) {
+  return [...new Set([...Object.keys(phase8.linkSymbols || {}), ...phase8.targets.flatMap(target =>
+    [...(target.expectedRelocations || []).map(r=>r.symbol), ...(target.auxiliarySections || []).flatMap(a=>(a.expectedRelocations || []).map(r=>r.symbol))])])];
+}
+function edgePadding(target) { return target.row?.retainedPadding ? require('./phase7_conventional').retainedPaddingSlices(target.row) : null; }
+
+// Authenticated literal fallback only: no relocation is silently removed with a cut.
+function verifyEdgeFallback(target, elf, interfaces = []) {
+  const edge = edgePadding(target);
+  if (!edge) return null;
+  if (elf.sections.some(s => [4,9].includes(s.type) && s.size)) fail('retained padding fallback has relocations');
+  const body=elf.sections.filter(s=>s.name===edge.body.sectionName), kept=elf.sections.filter(s=>s.name===edge.retained.sectionName);
+  if(body.length!==1||kept.length!==1||body[0].size!==edge.body.bytes||kept[0].size!==edge.retained.bytes)fail('retained padding fallback section census');
+  const functions = new Set(target.compilerTextFunctions.map(fn=>fn.symbol));
+  const physical=elf.symbols.filter(s=>s.name===target.row.part.name);
+  const originalSymbolSlice=target.row.slices.find(s=>target.row.romStart+target.row.part.symbolByteOffset>=s.romStart&&target.row.romStart+target.row.part.symbolByteOffset<s.romEndExclusive);
+  const physicalSection=elf.sections.find(s=>s.name===originalSymbolSlice?.sectionName);
+  if(physical.length!==1||physical[0].binding!==1||physical[0].symbolType!==2||physical[0].size!==0||physical[0].visibility!==0
+      ||physical[0].sectionIndex!==physicalSection?.index||physical[0].value!==target.row.romStart+target.row.part.symbolByteOffset-originalSymbolSlice.romStart)fail('retained padding physical symbol drift');
+  const omitted=[];
+  for(const sym of elf.symbols.filter(s=>s.sectionIndex===body[0].index)) {
+    if(sym.symbolType===3&&!sym.name&&sym.value===0&&sym.size===0&&sym.binding===0&&sym.visibility===0)continue;
+    if(functions.has(sym.name)) {
+      const fn=target.compilerTextFunctions.find(fn=>fn.symbol===sym.name);
+      if(sym.value!==fn.offsetNumber||sym.size!==0||sym.visibility!==0 || (sym.name===target.row.part.name ? sym.binding!==1||sym.symbolType!==2 : sym.binding!==0||![0,1].includes(sym.symbolType)))fail('retained padding original body marker drift');
+      continue;
+    }
+    // The existing source splitter creates this untyped entry, not a callable.
+    const sliceMarker='__ob64_row_'+String(target.row.index).padStart(4,'0')+'_slice_'+edge.body.sliceIndex;
+    if(sym.name===sliceMarker&&sym.binding===1&&[0,1].includes(sym.symbolType)&&sym.value===0&&sym.size===0&&sym.visibility===0)continue;
+    if(sym.binding!==0||![0,1].includes(sym.symbolType)||sym.size!==0||sym.visibility!==0||sym.value<0||sym.value>=body[0].size
+        ||interfaces.includes(sym.name))fail('retained padding referenced or significant original symbol');
+    omitted.push({name:sym.name,value:sym.value,binding:sym.binding,symbolType:sym.symbolType,size:sym.size,visibility:sym.visibility});
+  }
+  return omitted;
+}
+function verifyEdgePhysicalOwner(target, fallback, pruned, cObject, linked, baserom, interfaces = []) {
+  const edge=edgePadding(target); if(!edge)return null;
+  const omitted=verifyEdgeFallback(target,fallback,interfaces), chunks=[];
+  for(const slice of target.row.slices) {
+    const section=(elf)=>{const found=elf.sections.filter(s=>s.name===slice.sectionName);if(found.length!==1||found[0].size!==slice.bytes||found[0].type!==1||found[0].flags!==6)fail('retained padding physical section shape');return found[0];};
+    const originalSection=section(fallback), linkedSection=section(linked);
+    // Reconstruct the same full slice mapping required by the generic verifier.
+    const loads=linked.programHeaders.filter(h=>h.type===1 && h.vaddr===slice.vramStart
+      && h.paddr===slice.romStart && h.fileSize===slice.bytes && h.memorySize===slice.bytes);
+    if(linkedSection.address!==slice.vramStart || loads.length!==1 || loads[0].flags!==5
+        || loads[0].offset!==linkedSection.offset
+        || loads[0].offset+loads[0].fileSize>linked.buffer.length)fail('retained padding physical load mapping');
+    const containing=linked.programHeaders.filter(h=>h.type===1 && h.fileSize>0
+      && h.offset<linkedSection.offset+linkedSection.size && linkedSection.offset<h.offset+h.fileSize);
+    if(containing.length!==1 || containing[0]!==loads[0])fail('retained padding physical load containment');
+    const original=Buffer.from(elfSectionBytes(fallback,originalSection)), result=Buffer.from(elfSectionBytes(linked,linkedSection));
+    if(!original.equals(result)||!result.equals(baserom.subarray(slice.romStart,slice.romEndExclusive)))fail('retained padding complete physical bytes');
+    const keeper=slice.retainedPaddingId?pruned:cObject, forbidden=slice.retainedPaddingId?cObject:pruned;
+    const keptSection=section(keeper);
+    if(forbidden.sections.some(s=>s.name===slice.sectionName))fail('retained padding mixed section custody');
+    if(slice.retainedPaddingId) {
+      if(!Buffer.from(elfSectionBytes(pruned,keptSection)).equals(original))fail('retained padding pruned payload drift');
+      // Literal fallback admission rejects relocations throughout this chunk.
+      // Objcopy may renumber sections/symbols, but must conserve retained semantics.
+      if(pruned.sections.some(s=>[4,9].includes(s.type)&&s.size))fail('retained padding pruned relocations');
+      const census=(elf,sh)=>elf.symbols.filter(s=>s.sectionIndex===sh.index).map(s=>({
+        name:s.name,value:s.value,size:s.size,binding:s.binding,symbolType:s.symbolType,visibility:s.visibility,
+      })).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));
+      if(!sameJson(census(fallback,originalSection),census(pruned,keptSection)))fail('retained padding pruned symbol provenance');
+    }
+    chunks.push(result);
+  }
+  const expected=baserom.subarray(target.row.romStart,target.row.romEndExclusive), bytes=Buffer.concat(chunks);
+  if(!bytes.equals(expected)||bytes.length!==target.row.bytes)fail('retained padding full owner union');
+  const physical=linked.symbols.filter(s=>s.name===target.row.part.name&&s.sectionIndex!==0);
+  const physicalAddress=target.row.slices[0].vramStart+target.row.part.symbolByteOffset;
+  if(physical.length!==1||physical[0].value!==physicalAddress||physical[0].binding!==1||physical[0].symbolType!==2||physical[0].visibility!==0
+      ||physical[0].size!==(target.symbol===target.row.part.name?primaryCompilerFunctionBytes(target):0))fail('retained padding linked physical interface');
+  const stem='__ob64_r'+String(target.row.index).padStart(4,'0');
+  for(const [suffix,value] of Object.entries({rom_start:target.row.romStart,rom_end:target.row.romEndExclusive,vram_start:target.row.slices[0].vramStart,vram_end:target.row.slices.at(-1).vramEndExclusive})) {
+    const matches=linked.symbols.filter(s=>s.name===stem+'_'+suffix);
+    if(matches.length!==1||matches[0].value!==value||matches[0].binding!==1)fail('retained padding envelope interface');
+  }
+  return {rowIndex:target.row.index,bytes:target.row.bytes,romStart:target.row.romStart,romEndExclusive:target.row.romEndExclusive,
+    originalAssembly:target.originalAssembly,originalAssemblySha256:target.originalAssemblySha256,sha256:sha256Buffer(bytes),rawBytesExact:true,
+    retainedPadding:edge.record,omittedLocalSymbols:omitted};
+}
 function targetRetainedAssemblySlices(target) {
   const ownersByRow = new Map();
   for (const owner of targetTextOwners(target)) {
@@ -319,7 +402,8 @@ function targetRetainedAssemblySlices(target) {
     const replacedSections = new Set(owners.map((owner) => owner.sectionName));
     for (const slice of row.slices) {
       if (replacedSections.has(slice.sectionName)) continue;
-      if (slice.executable !== false || !Number.isInteger(slice.bytes) || slice.bytes <= 0
+      const edge = edgePadding(target);
+      if ((slice.executable !== false && (!edge || slice.sectionName !== edge.retained.sectionName)) || !Number.isInteger(slice.bytes) || slice.bytes <= 0
           || slice.romEndExclusive - slice.romStart !== slice.bytes
           || slice.vramEndExclusive - slice.vramStart !== slice.bytes) {
         fail('target retained assembly slice is malformed: ' + target.symbol + ' ' + slice.sectionName);
@@ -334,7 +418,8 @@ function targetRetainedAssemblySlices(target) {
         vramStartNumber: slice.vramStart,
         vramEndNumber: slice.vramEndExclusive,
         bytes: slice.bytes,
-        executable: false,
+        executable: slice.executable,
+        ...(slice.retainedPaddingId ? { retainedPaddingId: slice.retainedPaddingId } : {}),
         originalAssembly: row.part.file,
         originalAssemblySha256: row.part.sha256,
         row,
@@ -1174,9 +1259,10 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
           fail('original fallback target bytes drift: ' + target.symbol + ' ' + textOwner.sectionName);
         }
         const ownerSymbols = originalElf.symbols.filter((symbol) => symbol.name === textOwner.symbol);
-        if (ownerSymbols.length !== 1 || ownerSymbols[0].value !== 0 || ownerSymbols[0].size !== 0
+        if (edgePadding(target)) verifyEdgeFallback(target, originalElf, edgeInterfaceSymbols(phase8));
+        if (!edgePadding(target) && (ownerSymbols.length !== 1 || ownerSymbols[0].value !== 0 || ownerSymbols[0].size !== 0
             || ownerSymbols[0].binding !== 1 || ownerSymbols[0].symbolType !== 2
-            || ownerSymbols[0].sectionIndex !== matches[0].index) {
+            || ownerSymbols[0].sectionIndex !== matches[0].index)) {
           fail('original fallback target symbol drift: ' + target.symbol + ' ' + textOwner.symbol);
         }
         originalTargets.push({ target, textOwner, section: matches[0], bytes: originalBytes });
@@ -1242,7 +1328,8 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
 
     const objcopyArgs = [];
     for (const owner of originalTargets) {
-      objcopyArgs.push('--remove-section=' + owner.textOwner.sectionName, '--strip-symbol=' + owner.textOwner.symbol);
+      objcopyArgs.push('--remove-section=' + owner.textOwner.sectionName);
+      if (!edgePadding(owner.target) || owner.target.symbol === owner.textOwner.symbol) objcopyArgs.push('--strip-symbol=' + owner.textOwner.symbol);
     }
     for (const owner of originalAuxiliaryOwners) {
       objcopyArgs.push('--remove-section=' + owner.auxiliary.outputSection);
@@ -1253,7 +1340,7 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
       if (prunedElf.sections.some((section) => section.name === owner.textOwner.sectionName)) {
         fail('target section survived fallback pruning: ' + owner.target.symbol + ' ' + owner.textOwner.sectionName);
       }
-      if (prunedElf.symbols.some((symbol) => symbol.name === owner.textOwner.symbol)) {
+      if ((!edgePadding(owner.target) || owner.target.symbol === owner.textOwner.symbol) && prunedElf.symbols.some((symbol) => symbol.name === owner.textOwner.symbol)) {
         fail('target symbol survived fallback pruning: ' + owner.target.symbol + ' ' + owner.textOwner.symbol);
       }
     }
@@ -2893,6 +2980,7 @@ const ACCEPTED_LAYOUT_SLICE_STRUCTURAL_FIELDS = [
   'executable',
   'executableRangeId',
   'nonExecutableRangeId',
+  'retainedPaddingId',
 ];
 
 function sameAcceptedLayoutSliceStructure(layoutSlice, acceptedSlice, expectedInputKind) {
@@ -3173,6 +3261,14 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
     if (linkerText.split(selector).length !== 2) fail('retained interior linker selector drift');
     linkerText = linkerText.replace(selector, inputs.join('\n'));
   }
+  for (const target of phase8.targets.filter(t=>edgePadding(t))) {
+    for(const slice of target.row.slices){
+      const selector='    *('+slice.sectionName+')';
+      if(linkerText.split(selector).length!==2)fail('retained padding linker selector census');
+      const owner=slice.retainedPaddingId?'objects/assembly/chunk_'+String(target.chunkIndex).padStart(3,'0')+'.o':compilationGroups.objectPath(target);
+      linkerText=linkerText.replace(selector,'    '+owner+'('+slice.sectionName+')');
+    }
+  }
   verifySharedAuxiliaryScript(phase8, linkerText);
   return linkerText + (aliasText.length ? '\n' + aliasText.join('\n') + '\n' : '');
 }
@@ -3387,7 +3483,19 @@ function escapeRegex(value) {
   return value.replace(/[.*+?^$\\{}()|[\]\\]/g, '\\$&');
 }
 
+function verifyEdgeMap(target, mapText) {
+  if(!edgePadding(target))return;
+  const view=typeof mapText==='string'?preparedLink.prepareMap(mapText):mapText;
+  for(const slice of target.row.slices) {
+    const block=preparedLink.mapBlock(view,slice.sectionName);
+    if(!block||block.some(line=>/\*fill\*|\bfill\b/i.test(line)))fail('retained padding map fill/section');
+    const records=block.map(line=>/^\s+(\.[A-Za-z0-9_.]+)\s+(?:0x)?([0-9A-Fa-f]+)\s+(?:0x)?([0-9A-Fa-f]+)\s+.*?\s(objects[\/][^\s(]+)/.exec(line)).filter(Boolean);
+    const owner=slice.retainedPaddingId?'objects/assembly/chunk_'+String(target.chunkIndex).padStart(3,'0')+'.o':compilationGroups.objectPath(target);
+    if(records.length!==1||records[0][1]!==slice.sectionName||parseInt(records[0][2],16)!==slice.vramStart||parseInt(records[0][3],16)!==slice.bytes||records[0][4]!==owner)fail('retained padding map sole contribution');
+  }
+}
 function verifyTargetMapOwner(target, mapText) {
+  verifyEdgeMap(target,mapText);
   if (target.atomicText) return atomic.mapEvidence(target, mapText);
   const mapView = typeof mapText === 'string' ? preparedLink.prepareMap(mapText) : mapText;
   const expectedOwner = compilationGroups.objectPath(target);
@@ -3647,6 +3755,12 @@ function generatedLinkerSelectors(script) {
 function verifySharedAuxiliaryScript(phase8, script) {
   if (typeof script !== 'string') fail('shared auxiliary linker script is missing');
   const inputSelectors = generatedLinkerSelectors(script);
+  for(const target of phase8.targets.filter(t=>edgePadding(t))){
+    for(const slice of target.row.slices){
+      const owner=slice.retainedPaddingId?'objects/assembly/chunk_'+String(target.chunkIndex).padStart(3,'0')+'.o':compilationGroups.objectPath(target);
+      if(!sameJson(inputSelectors.filter(s=>s.pattern===slice.sectionName),[{owner,pattern:slice.sectionName}]))fail('retained padding recorded selector drift');
+    }
+  }
   for (const members of validateAuxiliaryOwnerGroups(phase8.targets, phase8.model).values()) {
     if (!orderedAuxiliaryGroup(members)) continue;
     const auxiliary = members[0].auxiliary;
@@ -3672,9 +3786,25 @@ function verifySharedAuxiliaryScript(phase8, script) {
   }
 }
 
+function verifyRecordedEdgePadding(phase8, output, verification, context = null) {
+  if(!phase8.targets.some(t=>edgePadding(t)))return;
+  const linked=context?.elf || parseElfFile(path.join(output,'phase8.elf'));
+  const rom=context?.baserom || loadCanonicalBaserom(phase8);
+  const map=fs.readFileSync(path.join(output,'phase8.map'),'utf8');
+  const script=fs.readFileSync(path.join(output,'linker','phase8.ld'),'utf8');
+  verifySharedAuxiliaryScript(phase8,script);
+  for(const target of phase8.targets.filter(t=>edgePadding(t))){
+    const name='chunk_'+String(target.chunkIndex).padStart(3,'0')+'.o';
+    const fresh=verifyEdgePhysicalOwner(target,parseElfFile(path.join(output,'comparison/original',name)),parseElfFile(path.join(output,'objects/assembly',name)),
+      parseElfFile(path.join(output,compilationGroups.objectPath(target))),linked,rom,edgeInterfaceSymbols(phase8));
+    verifyEdgeMap(target,map);
+    const recorded=verification?.targets?.filter(r=>r.symbol===target.symbol);
+    if(recorded?.length!==1||!sameJson(recorded[0].physicalOwnerEvidence,fresh))fail('recorded retained padding physical proof drift');
+  }
+}
 function verifyRecordedSharedAuxiliaryScript(phase8, output) {
   const groups = validateAuxiliaryOwnerGroups(phase8.targets, phase8.model);
-  if ([...groups.values()].some(orderedAuxiliaryGroup)) {
+  if ([...groups.values()].some(orderedAuxiliaryGroup) || phase8.targets.some(t=>edgePadding(t))) {
     verifySharedAuxiliaryScript(phase8, fs.readFileSync(path.join(output, 'linker', 'phase8.ld'), 'utf8'));
   }
 }
@@ -4000,7 +4130,7 @@ function verifyPhase8Output(phase8, options) {
       }
       const prunedElf = parseElfFile(record.prunedObject);
       if (prunedElf.sections.some((section) => section.name === owner.sectionName)
-          || prunedElf.symbols.some((symbol) => symbol.name === owner.symbol)) {
+          || ((!edgePadding(target) || target.symbol === owner.symbol) && prunedElf.symbols.some((symbol) => symbol.name === owner.symbol))) {
         fail('original assembly fallback remains a linked target owner: ' + target.symbol + ' ' + owner.sectionName);
       }
       return {
@@ -4034,8 +4164,8 @@ function verifyPhase8Output(phase8, options) {
       const cSections = cElf.sections.filter((section) => section.name === retained.sectionName);
       if (fallbackSections.length !== 1 || prunedSections.length !== 1
           || linkedSections.length !== 1 || cSections.length !== 0
-          || fallbackSections[0].type !== 1 || fallbackSections[0].flags !== 2
-          || prunedSections[0].type !== 1 || prunedSections[0].flags !== 2
+          || fallbackSections[0].type !== 1 || fallbackSections[0].flags !== (retained.executable ? 6 : 2)
+          || prunedSections[0].type !== 1 || prunedSections[0].flags !== (retained.executable ? 6 : 2)
           || fallbackSections[0].size !== retained.bytes || prunedSections[0].size !== retained.bytes) {
         fail('retained assembly slice object ownership drift: ' + target.symbol + ' ' + retained.sectionName);
       }
@@ -4064,7 +4194,8 @@ function verifyPhase8Output(phase8, options) {
         vramStart: retained.vramStartNumber,
         vramEndExclusive: retained.vramEndNumber,
         bytes: retained.bytes,
-        executable: false,
+        executable: retained.executable,
+        ...(retained.retainedPaddingId ? { retainedPaddingId: retained.retainedPaddingId } : {}),
         originalAssembly: retained.originalAssembly,
         originalAssemblySha256: retained.originalAssemblySha256,
         linkedOwner: mapRecord.linkedOwner,
@@ -4279,6 +4410,7 @@ function verifyPhase8Output(phase8, options) {
       mapContribution: mapOwner.contribution,
       owners: ownerResults,
       retainedAssemblySlices: retainedAssemblyResults,
+      ...(edgePadding(target) ? { physicalOwnerEvidence: verifyEdgePhysicalOwner(target, parseElfFile(ownerFiles[0].fallbackObject), parseElfFile(ownerFiles[0].prunedObject), cElf, elf, canonicalBaserom, edgeInterfaceSymbols(phase8)) } : {}),
       relocations,
       auxiliarySections: auxiliaryResults,
       sourceObjectEvidence: sourceObjectTarget,
@@ -4361,6 +4493,7 @@ function validateRecordedPhase8Build(phase8, options) {
     fail('current Phase 8 verification result did not pass');
   }
   verifyRecordedSharedAuxiliaryScript(phase8, output);
+  verifyRecordedEdgePadding(phase8, output, verification);
   if (typeof options.compilerSha256 !== 'string' || buildReport.compiler.sha256 !== options.compilerSha256) {
     fail('recorded KMC compiler identity drift');
   }
@@ -4648,6 +4781,7 @@ module.exports = {
   sha256File,
   summarizeTargetComparison,
   targetAsmDifferMaxLines,
+  verifyEdgeFallback, verifyEdgePhysicalOwner, verifyEdgeMap, verifyRecordedEdgePadding,
   targetRetainedAssemblySlices,
   targetTextOwners,
   validateRecordedPhase8Build,

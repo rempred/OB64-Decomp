@@ -129,6 +129,22 @@ At minimum verify:
   sizes, and one-section load mapping; and
 - stale build, verification, current-state, proof, or audit schemas reject.
 
+### Registered edge-padding composition
+
+The registered-padding suites exercise unchanged physical owners with separate
+complete C and retained original-ASM RX slices. Verify exact registry/source/hash
+binding, honest slice/split-owner counts, complete body coverage including return
+delay slots, GLOBAL/LOCAL compiler bindings and rejection of padding as a target.
+Neither an execution carve nor partial native-padding retention is implied.
+
+Require sole per-slice ownership, exact selectors/no fill, conserved GLOBAL and
+envelope interfaces, bounded unused-local-symbol omission, unchanged C bytes and
+relocations, and independent full-row reconstruction. Recorded builds and CURRENT
+must reconstruct the full-row proof and reject absent/stale ownership fields and
+changed scripts/maps/fallback artifacts. Existing read-only retained-slice and
+ordinary multi-function guards remain mandatory. Tooling acceptance never
+activates a source target or accepts an unfinished matching wave.
+
 ### Baseline build
 
 - the accepted assembly/data baseline links;

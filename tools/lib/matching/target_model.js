@@ -127,6 +127,28 @@ function continuationPartStem(name) {
 
 // Select code bytes only; the complete original row remains the ASM fallback.
 // The caller supplies the authenticated model AND its live multi-owner registry.
+function retainedPaddingSelection(authority, row, baserom = null, requestedSymbol = null) {
+  if (!row?.retainedPadding) return null;
+  if (!authority?.model || !(authority.multiOwnerContracts instanceof Map) || !authority.multiOwnerConfigIdentity
+      || [...authority.multiOwnerContracts.values()].some(c=>c.rows.some(r=>r.index===row.index))) throw new Error('retained padding producer requires standalone accepted membership');
+  baserom ||= authority.baserom || loadBaserom(authority.model);
+  const registry=logical.loadRegistry(authority.model,baserom);
+  const edge=logical.assertRetainedPaddingProducer(registry,row);
+  const symbol=edge.bodies[0].symbol;
+  if(requestedSymbol!==null&&requestedSymbol!==symbol)throw new Error('retained padding cannot select a padding or partial-body entry');
+  const body=edge.body, hash=s=>sha256Buffer(baserom.subarray(s.romStart,s.romEndExclusive));
+  return {symbol,selectionKind:'registered-padding-producer',entryEvidence:'registered-complete-producer',
+    primaryId:row.primaryId,rowIndex:row.index,romStart:body.romStart,romEndExclusive:body.romEndExclusive,bytes:body.bytes,
+    vramStart:body.vramStart,vramEndExclusive:body.vramEndExclusive,entryVram:body.vramStart,symbolByteOffset:0,
+    sectionName:body.sectionName,placementKind:body.placementKind,overlayDescriptorId:body.overlayDescriptorId,loadSlabId:body.loadSlabId,
+    originalAssembly:row.part.file,originalAssemblySha256:row.part.sha256,
+    logicalFunctions:edge.bodies.map((b,i)=>({symbol:b.symbol,binding:edge.record.compilerFunctions[i].binding,romStart:b.romStart,romEndExclusive:b.romEndExclusive,offset:b.romStart-body.romStart,bytes:b.romEndExclusive-b.romStart,evidence:b.evidence,fragments:b.fragments})),
+    logicalCoverage:logical.coverage(registry,body.romStart,body.romEndExclusive,baserom),logicalCoverageComplete:true,
+    originalOwner:{schemaVersion:1,rowIndex:row.index,primaryId:row.primaryId,chunkIndex:row.part.chunkIndex,
+      acceptedModelSha256:digest({config:authority.model.config,inputs:authority.model.inputFiles,multiOwnerConfig:authority.multiOwnerConfigIdentity}),
+      symbol:row.part.name,romStart:row.romStart,romEndExclusive:row.romEndExclusive,bytes:row.bytes,originalAssembly:row.part.file,originalAssemblySha256:row.part.sha256,
+      expectedBytesSha256:hash(row),comparedSection:body.sectionName,slices:row.slices.map(s=>({...s,expectedBytesSha256:hash(s),comparisonRole:s.retainedPaddingId?'retained-original-assembly':'compared-complete-producer'}))}};
+}
 function executablePrefixSelection(authority, row, baserom = null, requestedSymbol = row?.part?.name) {
   const model = authority?.model;
   if (!model || !(authority.multiOwnerContracts instanceof Map) || !authority.multiOwnerConfigIdentity)
@@ -218,10 +240,21 @@ function authenticatedSplitLogicalBody(authority, target) {
 }
 
 function assertExecutablePrefixSelection(authority, target) {
-  const claimsPrefix = target?.selectionKind === 'executable-prefix' || target?.originalOwner !== undefined
+  const claimsPrefix = ['executable-prefix','registered-padding-producer'].includes(target?.selectionKind) || target?.originalOwner !== undefined
     || /^\.ob64\.r[0-9]+\.s[0-9]+$/.test(target?.sectionName || '');
   if (!authority?.model) {
     if (claimsPrefix) throw new Error('executable-prefix selection requires an authenticated live model');
+    return;
+  }
+  const edgeRow=authority.model.rows.find(row=>row.retainedPadding && row.index===target?.rowIndex);
+  if(edgeRow){
+    // Existing complete logical-body research selections remain diagnostic only.
+    if (authenticatedSplitLogicalBody(authority, target)) return;
+    const selected=retainedPaddingSelection(authority,edgeRow,authority.baserom||loadBaserom(authority.model),target.symbol);
+    for(const [key,value] of Object.entries(selected))if(canonicalJson(target[key])!==canonicalJson(value))throw new Error('retained padding selection identity drift: '+key);
+    if(target.requestedSymbol!==undefined&&target.requestedSymbol.toLowerCase()!==selected.symbol.toLowerCase())throw new Error('retained padding requested partial entry');
+    if(!Buffer.isBuffer(target.expectedBytes)||!target.expectedBytes.equals((authority.baserom||loadBaserom(authority.model)).subarray(selected.romStart,selected.romEndExclusive))
+       ||target.expectedBytesSha256!==sha256Buffer(target.expectedBytes)||authority.modelId&&target.modelId!==authority.modelId)throw new Error('retained padding comparison identity');
     return;
   }
   const splitHint = authority.model.rows.some(value => value.slices.length > 1
@@ -263,20 +296,20 @@ function assertExecutablePrefixSelection(authority, target) {
 }
 
 function executablePrefixComparisonScope(target) {
-  if (target.selectionKind !== 'executable-prefix') return null;
-  return { kind: 'executable-prefix', entryEvidence: target.entryEvidence, sectionName: target.sectionName,
+  if (!['executable-prefix','registered-padding-producer'].includes(target.selectionKind)) return null;
+  return { kind: target.selectionKind, entryEvidence: target.entryEvidence, sectionName: target.sectionName,
     romStart: target.romStart, romEndExclusive: target.romEndExclusive, bytes: target.bytes,
     expectedBytesSha256: target.expectedBytesSha256, originalOwner: target.originalOwner,
     fullOriginalOwnerCompared: false };
 }
 
 function originalOwnerComparison(target) {
-  return target.selectionKind === 'executable-prefix'
+  return ['executable-prefix','registered-padding-producer'].includes(target.selectionKind)
     ? { available: false, reason: 'retained original ASM is outside the scratch comparison' } : null;
 }
 
 function assertExecutablePrefixReportScope(target, record) {
-  if (target.selectionKind === 'executable-prefix'
+  if (['executable-prefix','registered-padding-producer'].includes(target.selectionKind)
       && (canonicalJson(record?.comparisonScope) !== canonicalJson(executablePrefixComparisonScope(target))
         || canonicalJson(record?.originalOwnerComparison) !== canonicalJson(originalOwnerComparison(target))))
     throw new Error('cached executable-prefix comparison scope drift');
@@ -323,7 +356,7 @@ function loadWorkbenchModel(options = {}) {
   const activeBySymbol = new Map(activeModel.targets.map(target => [target.symbol.toLowerCase(), target]));
   const modelManifest = {
     schemaVersion: 1,
-    targetModelContract: 6,
+    targetModelContract: 7,
     multiOwnerConfig: activeModel.multiOwnerConfigIdentity,
     logicalFunctionRegistry: logicalRegistry.identity,
     logicalFunctionSemantics: [__filename, require.resolve('../logical_functions'), require.resolve('../text_contract')].map(file => ({
@@ -341,18 +374,18 @@ function loadWorkbenchModel(options = {}) {
   const modelId = digest(modelManifest);
   const compositeRows = compositeFunctionRows(model);
   const prefixes = new Map(model.rows.filter(row => row.slices.length > 1).map(row =>
-    [row.index, executablePrefixSelection(activeModel, row, baserom)]).filter(([, value]) => value));
+    [row.index, row.retainedPadding ? retainedPaddingSelection(activeModel,row,baserom) : executablePrefixSelection(activeModel, row, baserom)]).filter(([, value]) => value));
   let targets = model.rows
     .filter((row) => prefixes.has(row.index) || row.primaryClass === 'code' && row.part && row.slices.length === 1 && row.slices[0].executable)
     .filter((row) => !compositeRows.consumedRows.has(row.index))
     .map((row) => {
-      const slice = row.slices[0];
+      const slice = prefixes.has(row.index) ? row.slices.find(s=>s.sectionName===prefixes.get(row.index).sectionName) : row.slices[0];
       const continuation = compositeRows.continuations.get(row.index) || null;
       const continuationSlice = continuation ? continuation.slices[0] : null;
       const symbol = continuation
         ? `func_${continuationPartStem(continuation.part.name).slice(5).toUpperCase()}`
         : row.part.name;
-      const romStart = continuation ? row.romStart + row.part.symbolByteOffset : row.romStart;
+      const romStart = continuation ? row.romStart + row.part.symbolByteOffset : prefixes.has(row.index) ? slice.romStart : row.romStart;
       const romEndExclusive = continuation ? continuation.romEndExclusive : prefixes.has(row.index) ? slice.romEndExclusive : row.romEndExclusive;
       const bytes = romEndExclusive - romStart;
       const expected = baserom ? Buffer.from(baserom.subarray(romStart, romEndExclusive)) : null;
@@ -441,6 +474,7 @@ function loadWorkbenchModel(options = {}) {
   }
   for (const target of targets) {
     const relevant = logicalRegistry.bodies.filter(body => body.romStart < target.romEndExclusive && body.romEndExclusive > target.romStart);
+    if (target.selectionKind === 'registered-padding-producer') continue;
     if (target.selectionKind === 'executable-prefix' && relevant.length) throw new Error('executable-prefix selection overlaps logical-function metadata');
     if (relevant.length) {
       target.logicalCoverage = logical.coverage(logicalRegistry, target.romStart, target.romEndExclusive, baserom);
@@ -561,7 +595,7 @@ function publicTarget(target) {
 }
 
 module.exports = {
-  executablePrefixSelection, assertExecutablePrefixSelection, executablePrefixComparisonScope, originalOwnerComparison,
+  retainedPaddingSelection, executablePrefixSelection, assertExecutablePrefixSelection, executablePrefixComparisonScope, originalOwnerComparison,
   assertExecutablePrefixReportScope,
   historicalSymbols,
   LIVE_TARGET_FIELDS, assertScratchCapability, isActiveTarget, producerView, scratchCapability,

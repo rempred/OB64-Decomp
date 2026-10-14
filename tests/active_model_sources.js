@@ -130,7 +130,7 @@ assert.equal(atomicReadSite(unknownAtomicStack), 'other');
 const sortedReads = rows => rows.map(row => JSON.stringify(row)).sort();
 const assertAtomicReads = (actual, expected) => assert.deepEqual(sortedReads(actual), sortedReads(expected),
   'atomic authentication path/site/count census');
-const atomicReads = [], interiorReads = [];
+const atomicReads = [], interiorReads = [], initialReads = [];
 const read = fs.readFileSync, readSites = {}, assemblyPrefix = path.join(p7.ROOT, 'asm/original/rev0') + path.sep;
 const bootClearSource = path.join(p7.ROOT, 'asm/original/rev0/boot/boot_entry_clear_bss.s');
 let prepared;
@@ -143,6 +143,7 @@ try {
       const atomicSite = atomicReadSite(stack);
       if (atomicSite && atomicSite !== 'other') atomicReads.push({ site: atomicSite, file: path.resolve(file) });
       const site = sourceReadSite(stack, bootProof);
+      if (site === 'initialAcceptedModel') initialReads.push(path.resolve(file));
       if (Object.hasOwn(interiorReadChains, site)) interiorReads.push({ site, file: path.resolve(file) });
       readSites[site] = (readSites[site] || 0) + 1;
     }
@@ -158,6 +159,8 @@ try {
     { path: row.part.file, sha256: row.part.sha256 }])).values()].sort((a, b) => a.path.localeCompare(b.path));
   assert.deepEqual(identities, expected);
   assert.equal(readSites.initialAcceptedModel, prepared.model.parts.length);
+  assert.deepEqual(initialReads.sort(), prepared.model.parts.map(part => path.join(p7.ROOT, part.file)).sort(),
+    'initial authenticated read must visit each exact physical source once, including retained-padding owners');
   assert.equal(readSites.bootInitializedDataProof, 1, 'independent boot-clear source authentication');
   assert.equal(readSites.finalSourceSweep, identities.length);
   assert.equal(readSites.cachedAssemblyText || 0, 0); assert.equal(readSites.logicalActivation || 0, 0);
@@ -235,6 +238,19 @@ try {
   };
   assert.throws(() => active.finishActiveTargetModelSources(changed), /source changed/); mutations.push('source bytes');
 } finally { fs.readFileSync = read; }
+// Reusing an initial retained-padding capture must not waive the final bracket.
+for (const row of prepared.model.rows.filter(row => row.retainedPadding)) {
+  const value = active.loadActiveTargetModelForContext(), retainedFile = path.join(p7.ROOT, row.part.file);
+  try {
+    fs.readFileSync = function (file, ...args) {
+      const bytes = read.call(this, file, ...args);
+      if (path.resolve(String(file)) !== retainedFile) return bytes;
+      const copy = Buffer.from(bytes); copy[0] ^= 1; return copy;
+    };
+    assert.throws(() => active.finishActiveTargetModelSources(value), /source changed/);
+    mutations.push('retained source changed after capture: ' + row.index);
+  } finally { fs.readFileSync = read; }
+}
 const missing = active.loadActiveTargetModelForContext(), stat = fs.statSync;
 try {
   fs.statSync = function(file, ...args) {
