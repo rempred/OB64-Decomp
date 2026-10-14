@@ -35,6 +35,7 @@ const {
 const { splitRelocatableTextSection } = require('./elf_text_split');
 
 const CACHE_SCHEMA_VERSION = 4;
+const physicalInterface=target=>require('./logical_functions').physicalInterface(target);
 const DEFAULT_CACHE_ROOT = path.join(ROOT, 'build', 'diff-object-cache');
 const SAFE_SYMBOL = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
 const SHA256 = /^[0-9A-F]{64}$/;
@@ -416,7 +417,7 @@ function createCacheKeyMaterial(options) {
         executable: executableIdentity(assembler, 'assembler'),
         flags: [...assemblerFlags],
         input: target.nativeTextTail || target.compilationGroup ? 'untouched-compiler-assembly' : 'adjusted-assembly',
-        output: target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1 ? 'assembler-object' : 'source-object',
+        output: physicalInterface(target) || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1 ? 'assembler-object' : 'source-object',
       },
       textSplit: Boolean(target.compilationGroup) || targetTextOwners(target).length > 1,
       auxiliarySourceObjectPrefixSelection: (target.auxiliarySections || [])
@@ -444,7 +445,7 @@ function artifactSpecifications(target) {
     { name: 'adjusted.s', destination: `generated/c/${symbol}.s` },
     { name: 'source-object.o', destination: `objects/c/${symbol}.source-object.o` },
   ];
-  if (target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1) {
+  if (physicalInterface(target) || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1) {
     specs.push({ name: 'assembler-object.o', destination: `objects/c/${symbol}.assembler-object.o` });
   }
   if (auxiliaryProjection.composed(target.compilationGroup)) specs.push({ name: 'text-projected.o', destination: `objects/c/${symbol}.text-projected.o` });
@@ -676,6 +677,7 @@ function inspectCapturedTargetArtifacts(options, snapshot) {
   }
 
   let splitResult = null;
+  if(physicalInterface(target) && !require('./phase8_matching_c').projectPhysicalInterface(bytesByName['assembler-object.o'],target).buffer.equals(bytesByName['source-object.o']))fail('physical interface cache reconstruction');
   if (target.auxiliaryProjection && !(target.atomicText ? atomic : auxiliaryProjection).project(bytesByName['assembler-object.o'], target).buffer.equals(bytesByName['source-object.o'])) fail('projected source-object bytes drift');
   if (!target.atomicText && targetTextOwners(target).length > 1) {
     splitResult = splitRelocatableTextSection(
@@ -754,8 +756,8 @@ function inspectCapturedTargetArtifacts(options, snapshot) {
     objectSha256: objectEvidence.artifacts.strippedObject.sha256,
     proofObjectRelative: `objects/c/${target.symbol}.source-object.o`,
     proofObjectSha256: objectEvidence.artifacts.rawObject.sha256,
-    assemblerObjectRelative: target.auxiliaryProjection || splitResult ? `objects/c/${target.symbol}.assembler-object.o` : null,
-    assemblerObjectSha256: target.auxiliaryProjection || splitResult ? objectEvidence.artifacts.unsplitAssemblerObject.sha256 : null,
+    assemblerObjectRelative: physicalInterface(target) || target.auxiliaryProjection || splitResult ? `objects/c/${target.symbol}.assembler-object.o` : null,
+    assemblerObjectSha256: physicalInterface(target) || target.auxiliaryProjection || splitResult ? objectEvidence.artifacts.unsplitAssemblerObject.sha256 : null,
     compilerAssemblyRelative: `generated/c/${target.symbol}.compiler.s`,
     compilerAssemblySha256: objectEvidence.artifacts.compilerAssembly.sha256,
     linkedAssemblyRelative: `generated/c/${target.symbol}.s`,

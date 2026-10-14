@@ -626,3 +626,58 @@ function projectNativeTextOwners(input, requestedOwners, admission = null) {
     relocationSections: owners.map(owner => ({ sectionName: '.rel' + owner.sectionName,
       entries: groups.get(owner.sectionName).length / REL_BYTES })) };
 }
+// Append only: preserve existing file offsets and byte ranges, including opaque metadata.
+function appendPhysicalInterface(input, descriptor) {
+  const parsed=parseRelocatable(input);
+  if(!descriptor || descriptor.schemaVersion!==1 || descriptor.kind!=='registered-primary-physical-interface'
+      || !SAFE_SYMBOL.test(descriptor.symbol) || descriptor.symbol===descriptor.primary || descriptor.offset!==0 || descriptor.bytes!==0
+      || descriptor.binding!==STB_GLOBAL || descriptor.symbolType!==STT_FUNC || descriptor.visibility!==0)fail('physical interface descriptor');
+  const sections=parsed.sections;
+  // Only pinned-native payload/ancillary tables whose symbol-index semantics are
+  // handled here. REL is the only supported consumer of the appended SYMTAB.
+  const supportedTypes=new Set([0,1,SHT_SYMTAB,3,7,SHT_NOBITS,SHT_REL,0x70000006]);
+  for(const s of sections){
+    if(!supportedTypes.has(s.type) || (s.type===0 && s.index!==0)
+        || (![SHT_SYMTAB,SHT_REL].includes(s.type) && (s.link!==0 || s.info!==0))
+        || (s.type===0x70000006 && (s.size!==24 || s.entrySize!==1 || s.flags!==2))
+        || (s.type===7 && (s.flags!==0 || s.entrySize!==0)))fail('physical interface unsupported section shape');
+  }
+  const tabs=sections.filter(s=>s.type===SHT_SYMTAB);
+  if(tabs.length!==1)fail('physical interface sole SYMTAB required');
+  const tab=tabs[0],str=sections[tab.link];
+  if(tab.entrySize!==SYMBOL_BYTES || tab.size%SYMBOL_BYTES || !str || str.type!==3 || str.index===parsed.shstrIndex
+      || sections.some(s=>s.index!==tab.index&&s.link===str.index))fail('physical interface exclusive symbol STRtab required');
+  const shnames=sectionBytes(input,sections[parsed.shstrIndex]);
+  const bodies=sections.filter(s=>readCString(shnames,s.nameOffset)===descriptor.sectionName);
+  if(bodies.length!==1 || bodies[0].type!==1 || bodies[0].flags!==6 || bodies[0].address!==0)fail('physical interface body section');
+  const body=bodies[0],strings=sectionBytes(input,str),symbols=sectionBytes(input,tab),count=tab.size/SYMBOL_BYTES;
+  if(tab.info<1||tab.info>count||strings[0]!==0)fail('physical interface symbol boundary');
+  if(count<1 || symbols.subarray(0,SYMBOL_BYTES).some(b=>b!==0))fail('physical interface null symbol');
+  const ranges=sections.filter(s=>s.index!==0&&s.type!==SHT_NOBITS&&s.size>0).map(s=>({start:s.offset,end:s.offset+s.size}));
+  ranges.push({start:0,end:ELF_HEADER_BYTES},{start:parsed.sectionOffset,end:parsed.sectionOffset+parsed.sectionCount*SECTION_HEADER_BYTES});
+  ranges.sort((a,b)=>a.start-b.start);for(let i=1;i<ranges.length;i++)if(ranges[i].start<ranges[i-1].end)fail('physical interface overlapping native ranges');
+  let primary=0;
+  for(let i=0;i<count;i++){
+    const o=i*SYMBOL_BYTES,name=readCString(strings,symbols.readUInt32BE(o)),binding=symbols[o+12]>>>4;
+    if((i<tab.info)!==(binding===0)||binding>2)fail('physical interface local/global boundary');
+    if(name===descriptor.symbol)fail('physical interface native symbol collision');
+    if(name===descriptor.primary){primary++;if(symbols.readUInt32BE(o+4)!==0||symbols.readUInt32BE(o+8)<=0||symbols[o+12]!==0x12||symbols[o+13]!==0||symbols.readUInt16BE(o+14)!==body.index)fail('physical interface native primary');}
+  }
+  if(primary!==1)fail('physical interface native primary census');
+  for(const rel of sections.filter(s=>s.type===SHT_REL)){
+    if(rel.link!==tab.index||rel.entrySize!==REL_BYTES||rel.size%REL_BYTES||sections[rel.info]?.type!==1)fail('physical interface REL contract');
+    const data=sectionBytes(input,rel);for(let o=0;o<data.length;o+=REL_BYTES)if(data.readUInt32BE(o+4)>>>8>=count)fail('physical interface REL symbol index');
+  }
+  const record=Buffer.alloc(SYMBOL_BYTES);record.writeUInt32BE(strings.length,0);record[12]=0x12;record.writeUInt16BE(body.index,14);
+  const symOffset=alignUp(input.length,Math.max(4,tab.alignment||1)),symBytes=Buffer.concat([symbols,record]);
+  const strOffset=alignUp(symOffset+symBytes.length,str.alignment||1),strBytes=Buffer.concat([strings,Buffer.from(descriptor.symbol+'\0')]);
+  const output=Buffer.alloc(strOffset+strBytes.length);input.copy(output);symBytes.copy(output,symOffset);strBytes.copy(output,strOffset);
+  for(const [s,offset,size]of [[tab,symOffset,symBytes.length],[str,strOffset,strBytes.length]]){const h=parsed.sectionOffset+s.index*SECTION_HEADER_BYTES;output.writeUInt32BE(offset,h+16);output.writeUInt32BE(size,h+20);}
+  const rebuilt=parseRelocatable(output);
+  for(const s of sections){const got=rebuilt.sections[s.index];if(s.index!==tab.index&&s.index!==str.index&&!sectionBytes(output,got).equals(sectionBytes(input,s)))fail('physical interface payload conservation');}
+  // All original bytes except the four required sh_offset/sh_size words survive.
+  const restored=Buffer.from(output.subarray(0,input.length));for(const s of [tab,str]){const h=parsed.sectionOffset+s.index*SECTION_HEADER_BYTES;input.copy(restored,h+16,h+16,h+24);}
+  if(!restored.equals(input))fail('physical interface original file conservation');
+  return {buffer:output,nativeSymbolCount:count,interfaceSymbolIndex:count};
+}
+module.exports.appendPhysicalInterface=appendPhysicalInterface;

@@ -146,6 +146,41 @@ function loadRegistry(model, baserom, config = JSON.parse(fs.readFileSync(CONFIG
   return registry;
 }
 
+const interfaceRows = new WeakMap();
+function bindPhysicalInterfaces(targets, registry, linkSymbols) {
+  for (const target of targets.filter(t => t.row?.retainedPadding)) {
+    const bound = assertRetainedPaddingProducer(registry, target.row, target.symbol, target.compilerTextFunctions);
+    const physicalOffset = target.row.romStart + target.row.part.symbolByteOffset;
+    if (bound.record.edge === 'terminal' && physicalOffset !== bound.body.romStart) fail('physical interface is not the producer entry');
+    if (physicalOffset !== bound.body.romStart || target.row.part.name === target.symbol) continue;
+    if (target.compilerTextFunctions.some(f => f.symbol === target.row.part.name)
+        || Object.hasOwn(linkSymbols, target.row.part.name) || targets.some(t => t !== target && t.compilerTextFunctions.some(f => f.symbol === target.row.part.name))) fail('physical interface collision');
+    const descriptor = {schemaVersion:1,kind:'registered-primary-physical-interface',rowIndex:target.row.index,
+      symbol:target.row.part.name,primary:target.symbol,sectionName:bound.body.sectionName,offset:0,bytes:0,
+      binding:1,symbolType:2,visibility:0,originalAssembly:target.row.part.file,originalAssemblySha256:target.row.part.sha256};
+    interfaceRows.set(target.row,{registry,row:JSON.stringify(target.row),descriptor});
+    target.physicalInterface = {...descriptor};
+  }
+}
+function physicalInterface(target) {
+  if (!target.physicalInterface) {
+    // Workbench selections have no compilerTextFunctions and remain native-only.
+    // A complete producer's structural shape still requires admission when its
+    // row was copied and therefore no longer carries WeakMap authority.
+    if(target.compilerTextFunctions){
+      const edge=target.row?.retainedPadding ? require('./phase7_conventional').retainedPaddingSlices(target.row) : null;
+      if(interfaceRows.has(target.row) || (edge && target.row.part.name!==target.symbol
+          && target.row.romStart+target.row.part.symbolByteOffset===edge.body.romStart))fail('physical interface descriptor missing');
+    }
+    return null;
+  }
+  const state=interfaceRows.get(target.row);
+  if (!state || state.row!==JSON.stringify(target.row) || JSON.stringify(state.descriptor)!==JSON.stringify(target.physicalInterface)) fail('physical interface authority drift');
+  assertRetainedPaddingProducer(state.registry,target.row,target.symbol,target.compilerTextFunctions);
+  if(target.sectionName!==state.descriptor.sectionName || target.symbol!==state.descriptor.primary) fail('physical interface producer drift');
+  return {...state.descriptor};
+}
+
 function assertRetainedPaddingProducer(registry, row, symbol = null, functions = null) {
   const edge = require('./phase7_conventional').retainedPaddingSlices(row);
   if (!edge) return null;
@@ -322,4 +357,4 @@ function assertAtomicOwnerBody(registry, symbol, rows) {
   return { registryIdentity: { ...registry.identity }, body: JSON.parse(JSON.stringify(body)) };
 }
 
-module.exports = { assertRetainedPaddingProducer, assertAtomicOwnerBody, assertNativeGroupBodies, CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };
+module.exports = { bindPhysicalInterfaces, physicalInterface, assertRetainedPaddingProducer, assertAtomicOwnerBody, assertNativeGroupBodies, CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };

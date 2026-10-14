@@ -309,3 +309,9 @@ The registered shared-bundle suite supplies native positives and adversarial
 controls. Isolated real-source evidence remains diagnostic; production acceptance
 requires the changed-input heavyweight audit, independent review and ordinary
 complete-wave source/ownership/relocation/target-byte/full-ROM gates.
+
+### Derived zero-width physical interface
+
+An admitted complete registered-padding producer may preserve a differently named original physical GLOBAL FUNC/default/size-zero entry at primary offset zero through deterministic metadata-only derivation. The immutable native assembler artifact retains its literal compiler function/REL census. The derived source object appends exactly one separately authenticated interface symbol; it is not another native function or additional C bytes. Only symbol/string table copies are appended, preserving old indices, REL bytes, section names and payload positions. No source annotation, extra owner or linker alias is permitted.
+
+Text contract version2 mode `native-with-derived-physical-interface` and object evidence16 require the native artifact, exact rederivation, explicit native versus derived censuses and fresh/recorded/CURRENT/cache checks. Full retained ASM/body ownership and original physical metadata remain mandatory. The pinned PURE_C production-path fixture and on-disk falsifiers accompany independent review and the changed-input structural audit; they do not accept a matching wave by themselves.

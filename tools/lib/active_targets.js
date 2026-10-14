@@ -1752,6 +1752,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
     return target;
   });
 
+  logicalSupport.bindPhysicalInterfaces(targets, logicalRegistry, reviewedLinkage.linkSymbols);
   groupSupport.bind(compilationGroups, targets, { model, baserom, logicalRegistry, linkSymbols: reviewedLinkage.linkSymbols });
   require('./atomic_owner_union').assertCensus(targets);
   require('./atomic_owner_union').outputModel(model, targets);
@@ -1858,5 +1859,6 @@ module.exports = {
   validateToolchainPin,
   verifyRowSymbolSourceCache,
 };
+
 
 

@@ -291,6 +291,22 @@ function edgeInterfaceSymbols(phase8) {
   return [...new Set([...Object.keys(phase8.linkSymbols || {}), ...phase8.targets.flatMap(target =>
     [...(target.expectedRelocations || []).map(r=>r.symbol), ...(target.auxiliarySections || []).flatMap(a=>(a.expectedRelocations || []).map(r=>r.symbol))])])];
 }
+function physicalInterface(target) { return require('./logical_functions').physicalInterface(target); }
+function verifyPhysicalInterface(elf, target, linked=false) {
+  const d=physicalInterface(target);if(!d)return null;
+  const sections=elf.sections.filter(s=>s.name===d.sectionName),symbols=elf.symbols.filter(s=>s.name===d.symbol);
+  if(sections.length!==1||symbols.length!==1||symbols[0].sectionIndex!==sections[0].index
+      ||symbols[0].value!==(linked?target.vramStartNumber:0)||symbols[0].size!==0||symbols[0].binding!==1||symbols[0].symbolType!==2||symbols[0].visibility!==0)fail('derived physical interface metadata');
+  return symbols[0];
+}
+function projectPhysicalInterface(buffer,target) {
+  const d=physicalInterface(target);if(!d)fail('physical interface derivation not admitted');
+  const elf=require('./phase7_conventional').parseElf32BigEndian(buffer),section=elf.sections.find(s=>s.name===target.sectionName);
+  verifyCompilerTextFunctions(elf,target,section,false,true);
+  const result=require('./elf_text_split').appendPhysicalInterface(buffer,d);
+  verifyPhysicalInterface(require('./phase7_conventional').parseElf32BigEndian(result.buffer),target);
+  return result;
+}
 function edgePadding(target) { return target.row?.retainedPadding ? require('./phase7_conventional').retainedPaddingSlices(target.row) : null; }
 
 // Authenticated literal fallback only: no relocation is silently removed with a cut.
@@ -314,6 +330,7 @@ function verifyEdgeFallback(target, elf, interfaces = []) {
       if(sym.value!==fn.offsetNumber||sym.size!==0||sym.visibility!==0 || (sym.name===target.row.part.name ? sym.binding!==1||sym.symbolType!==2 : sym.binding!==0||![0,1].includes(sym.symbolType)))fail('retained padding original body marker drift');
       continue;
     }
+    if(sym===physical[0]) continue; // Exact independently authenticated physical interface, not an omitted LOCAL.
     // The existing source splitter creates this untyped entry, not a callable.
     const sliceMarker='__ob64_row_'+String(target.row.index).padStart(4,'0')+'_slice_'+edge.body.sliceIndex;
     if(sym.name===sliceMarker&&sym.binding===1&&[0,1].includes(sym.symbolType)&&sym.value===0&&sym.size===0&&sym.visibility===0)continue;
@@ -326,6 +343,10 @@ function verifyEdgeFallback(target, elf, interfaces = []) {
 function verifyEdgePhysicalOwner(target, fallback, pruned, cObject, linked, baserom, interfaces = []) {
   const edge=edgePadding(target); if(!edge)return null;
   const omitted=verifyEdgeFallback(target,fallback,interfaces), chunks=[];
+  if(physicalInterface(target)) {
+    verifyPhysicalInterface(cObject,target);verifyPhysicalInterface(linked,target,true);
+    if(pruned.symbols.some(s=>s.name===target.row.part.name))fail('removed physical interface survived pruning');
+  }
   for(const slice of target.row.slices) {
     const section=(elf)=>{const found=elf.sections.filter(s=>s.name===slice.sectionName);if(found.length!==1||found[0].size!==slice.bytes||found[0].type!==1||found[0].flags!==6)fail('retained padding physical section shape');return found[0];};
     const originalSection=section(fallback), linkedSection=section(linked);
@@ -368,7 +389,7 @@ function verifyEdgePhysicalOwner(target, fallback, pruned, cObject, linked, base
   }
   return {rowIndex:target.row.index,bytes:target.row.bytes,romStart:target.row.romStart,romEndExclusive:target.row.romEndExclusive,
     originalAssembly:target.originalAssembly,originalAssemblySha256:target.originalAssemblySha256,sha256:sha256Buffer(bytes),rawBytesExact:true,
-    retainedPadding:edge.record,omittedLocalSymbols:omitted};
+    retainedPadding:edge.record,omittedLocalSymbols:omitted,...(physicalInterface(target)?{physicalInterface:physicalInterface(target)}:{})};
 }
 function targetRetainedAssemblySlices(target) {
   const ownersByRow = new Map();
@@ -1329,7 +1350,7 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
     const objcopyArgs = [];
     for (const owner of originalTargets) {
       objcopyArgs.push('--remove-section=' + owner.textOwner.sectionName);
-      if (!edgePadding(owner.target) || owner.target.symbol === owner.textOwner.symbol) objcopyArgs.push('--strip-symbol=' + owner.textOwner.symbol);
+      if (!edgePadding(owner.target) || owner.target.symbol === owner.textOwner.symbol || Boolean(physicalInterface(owner.target))) objcopyArgs.push('--strip-symbol=' + owner.textOwner.symbol);
     }
     for (const owner of originalAuxiliaryOwners) {
       objcopyArgs.push('--remove-section=' + owner.auxiliary.outputSection);
@@ -1340,7 +1361,7 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
       if (prunedElf.sections.some((section) => section.name === owner.textOwner.sectionName)) {
         fail('target section survived fallback pruning: ' + owner.target.symbol + ' ' + owner.textOwner.sectionName);
       }
-      if ((!edgePadding(owner.target) || owner.target.symbol === owner.textOwner.symbol) && prunedElf.symbols.some((symbol) => symbol.name === owner.textOwner.symbol)) {
+      if ((!edgePadding(owner.target) || owner.target.symbol === owner.textOwner.symbol || Boolean(physicalInterface(owner.target))) && prunedElf.symbols.some((symbol) => symbol.name === owner.textOwner.symbol)) {
         fail('target symbol survived fallback pruning: ' + owner.target.symbol + ' ' + owner.textOwner.symbol);
       }
     }
@@ -1654,7 +1675,7 @@ function expectedCompilerTextFunctionEvidence(target, linked = false) {
   }));
 }
 
-function verifyCompilerTextFunctions(elf, target, section, linked = false) {
+function verifyCompilerTextFunctions(elf, target, section, linked = false, nativeInterface = false) {
   if (target.atomicText) { atomic.checkFunctions(elf, target, linked); return expectedCompilerTextFunctionEvidence(target, linked); }
   if (!section || !Array.isArray(target.compilerTextFunctions) || target.compilerTextFunctions.length === 0) {
     fail('compiler text-function verification metadata is malformed: ' + target.symbol);
@@ -1663,6 +1684,10 @@ function verifyCompilerTextFunctions(elf, target, section, linked = false) {
   const owners = targetTextOwners(target);
   let sections = [section];
   const boundarySymbols = new Set();
+  if(physicalInterface(target)) {
+    if(nativeInterface) { if(elf.symbols.some(s=>s.name===physicalInterface(target).symbol))fail('native object contains physical interface'); }
+    else boundarySymbols.add(verifyPhysicalInterface(elf,target,linked));
+  }
   if (owners.length > 1) {
     primaryCompilerFunctionBytes(target); // Authenticate both complete partitions.
     sections = owners.map(owner => {
@@ -1872,7 +1897,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   const linkedAssembly = path.join(generatedRoot, target.symbol + '.s');
   const objectFile = path.join(objectRoot, target.symbol + '.o');
   const proofObjectFile = path.join(objectRoot, target.symbol + '.source-object.o');
-  const assemblerObjectFile = target.auxiliaryProjection || targetTextOwners(target).length > 1
+  const assemblerObjectFile = physicalInterface(target) || target.auxiliaryProjection || targetTextOwners(target).length > 1
     ? path.join(objectRoot, target.symbol + '.assembler-object.o')
     : proofObjectFile;
   const sourceRelative = safeRelative(target.source, 'target source');
@@ -1907,6 +1932,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   ], { cwd: output });
 
   let splitResult = null;
+  if(physicalInterface(target)) fs.writeFileSync(proofObjectFile,projectPhysicalInterface(fs.readFileSync(assemblerObjectFile),target).buffer);
   if (target.auxiliaryProjection) {
     fs.writeFileSync(proofObjectFile, (target.atomicText ? atomic : auxiliaryProjection).project(fs.readFileSync(assemblerObjectFile), target).buffer);
   }
@@ -2096,8 +2122,8 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     objectSha256: sha256File(objectFile),
     proofObjectRelative: compilationGroups.objectPath(target, '.source-object.o'),
     proofObjectSha256: sha256File(proofObjectFile),
-    assemblerObjectRelative: target.auxiliaryProjection || splitResult ? compilationGroups.objectPath(target, '.assembler-object.o') : null,
-    assemblerObjectSha256: target.auxiliaryProjection || splitResult ? sha256File(assemblerObjectFile) : null,
+    assemblerObjectRelative: physicalInterface(target) || target.auxiliaryProjection || splitResult ? compilationGroups.objectPath(target, '.assembler-object.o') : null,
+    assemblerObjectSha256: physicalInterface(target) || target.auxiliaryProjection || splitResult ? sha256File(assemblerObjectFile) : null,
     compilerAssemblyRelative: compilationGroups.assemblyPath(target),
     compilerAssemblySha256: sha256File(compilerAssembly),
     linkedAssemblyRelative: compilationGroups.assemblyPath(target, '.s'),
@@ -2161,7 +2187,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   const sectionArtifact = fileIdentity(output, sectionRelative, 'section-adjusted assembly');
   const objectArtifact = fileIdentity(output, objectRelative, 'matching C object');
   const linkedObjectArtifact = fileIdentity(output, linkedObjectRelative, 'linked matching C object');
-  const assemblerRelative = target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1
+  const assemblerRelative = physicalInterface(target) || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1
     ? compilationGroups.objectPath(target, '.assembler-object.o')
     : null;
   const assemblerArtifact = assemblerRelative
@@ -2177,7 +2203,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   }
 
   if (assemblerArtifact) {
-    const reproduced = target.auxiliaryProjection ? (target.atomicText ? atomic : auxiliaryProjection).project(
+    const reproduced = physicalInterface(target) ? projectPhysicalInterface(fs.readFileSync(resolveRelative(output,assemblerRelative,'native interface assembler object')),target) : target.auxiliaryProjection ? (target.atomicText ? atomic : auxiliaryProjection).project(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'native auxiliary assembler object')), target)
       : target.compilationGroup ? compilationGroups.project(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'native assembler object')), target.compilationGroup)
@@ -2384,6 +2410,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
         : sourceObjectPrefixSelections > 0
           ? basePermittedAdjustment + '; authenticate the complete aligned auxiliary source-object section and select only its declared zero-offset prefix for linkage'
           : basePermittedAdjustment,
+      ...(physicalInterface(target)?{physicalInterfaceDerivation:1}:{}),
       auxiliarySectionCount: auxiliaryProofs.length,
       ...(target.auxiliaryProjection ? { auxiliaryProjection: true } : {}),
       ...(sourceObjectPrefixSelections > 0 ? { sourceObjectPrefixSelections } : {}),
@@ -3794,6 +3821,7 @@ function verifyRecordedEdgePadding(phase8, output, verification, context = null)
   const script=fs.readFileSync(path.join(output,'linker','phase8.ld'),'utf8');
   verifySharedAuxiliaryScript(phase8,script);
   for(const target of phase8.targets.filter(t=>edgePadding(t))){
+    if(physicalInterface(target)) textContract.deriveObjectEvidence(target,output);
     const name='chunk_'+String(target.chunkIndex).padStart(3,'0')+'.o';
     const fresh=verifyEdgePhysicalOwner(target,parseElfFile(path.join(output,'comparison/original',name)),parseElfFile(path.join(output,'objects/assembly',name)),
       parseElfFile(path.join(output,compilationGroups.objectPath(target))),linked,rom,edgeInterfaceSymbols(phase8));
@@ -4130,7 +4158,7 @@ function verifyPhase8Output(phase8, options) {
       }
       const prunedElf = parseElfFile(record.prunedObject);
       if (prunedElf.sections.some((section) => section.name === owner.sectionName)
-          || ((!edgePadding(target) || target.symbol === owner.symbol) && prunedElf.symbols.some((symbol) => symbol.name === owner.symbol))) {
+          || ((!edgePadding(target) || target.symbol === owner.symbol || Boolean(physicalInterface(target))) && prunedElf.symbols.some((symbol) => symbol.name === owner.symbol))) {
         fail('original assembly fallback remains a linked target owner: ' + target.symbol + ' ' + owner.sectionName);
       }
       return {
@@ -4781,7 +4809,7 @@ module.exports = {
   sha256File,
   summarizeTargetComparison,
   targetAsmDifferMaxLines,
-  verifyEdgeFallback, verifyEdgePhysicalOwner, verifyEdgeMap, verifyRecordedEdgePadding,
+  physicalInterface, projectPhysicalInterface, verifyPhysicalInterface, verifyEdgeFallback, verifyEdgePhysicalOwner, verifyEdgeMap, verifyRecordedEdgePadding,
   targetRetainedAssemblySlices,
   targetTextOwners,
   validateRecordedPhase8Build,

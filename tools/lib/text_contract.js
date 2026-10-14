@@ -4,13 +4,14 @@ const preparedLink = require('./prepared_link_view');
 
 const fs = require('fs');
 const path = require('path');
-const { parseElfFile, parseElf32BigEndian, elfSectionBytes, sha256Buffer } = require('./phase7_conventional');
+const { parseElfFile, parseElf32BigEndian, elfSectionBytes, sha256Buffer, sha256File } = require('./phase7_conventional');
 
 const NATIVE_SYMBOL = 'func_00204A70';
 const TAIL_SHA256 = 'DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119';
 const NATIVE_SHAPE = Object.freeze({ type: 1, flags: 6, alignment: 16, bytes: 1136 });
 let objectMemo = null;
 const derivedInputs = new WeakMap();
+const physicalInterface = target => require('./logical_functions').physicalInterface(target);
 const artifactSnapshots = new WeakMap();
 function freezeEvidence(value) {
   if (!value || typeof value !== 'object' || Buffer.isBuffer(value)) return value;
@@ -47,7 +48,7 @@ function withObjectArtifactSnapshot(target, root, artifactFiles, callback) {
     assemblerInput: 'generated/c/' + symbol + '.s',
     rawObject: 'objects/c/' + symbol + '.source-object.o',
     strippedObject: 'objects/c/' + symbol + '.o',
-    unsplitAssemblerObject: target.auxiliaryProjection || textOwners(target).length > 1
+    unsplitAssemblerObject: physicalInterface(target) || target.auxiliaryProjection || textOwners(target).length > 1
       ? 'objects/c/' + symbol + '.assembler-object.o' : null,
   };
   const artifacts = {}, buffers = {};
@@ -127,7 +128,8 @@ function resolveTextContract(target) {
     fail('native descriptor does not bind the accepted owner');
   }
   return {
-    schemaVersion: 1, mode: native ? 'native-text-tail' : 'section-assigned',
+    schemaVersion: physicalInterface(target) ? 2 : 1, mode: physicalInterface(target) ? 'native-with-derived-physical-interface' : native ? 'native-text-tail' : 'section-assigned',
+    ...(physicalInterface(target)?{physicalInterface:{...physicalInterface(target),implementationSha256:sha256File(require.resolve('./elf_text_split'))}}:{}),
     owners: owners.map((owner) => ({
       rowIndex: owner.rowIndex, primaryId: owner.primaryId, logicalOffset: owner.logicalOffset,
       inputSection: native ? native.inputSection : owner.sectionName, outputSection: owner.sectionName,
@@ -354,7 +356,7 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const contract = resolveTextContract(target), native = Boolean(target.nativeTextTail);
   // Projection also authenticates retained model bindings; leave that uncommon
   // path fresh rather than memoizing a partial projection/model contract.
-  const memoKey = objectMemo && !target.auxiliaryProjection
+  const memoKey = objectMemo && !physicalInterface(target) && !target.auxiliaryProjection
     ? hash({ target: require('./diff_object_cache').projectTargetContract(target), contract, artifacts }) : null;
   if (memoKey && objectMemo.has(memoKey)) return objectMemo.get(memoKey);
   const { adjustSectionAssembly, relocationRecords, rawRelocationRecords } = require('./phase8_matching_c');
@@ -366,6 +368,18 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
       || sha256Buffer(input) !== artifacts.assemblerInput.sha256
       || sha256Buffer(raw.buffer) !== artifacts.rawObject.sha256
       || sha256Buffer(stripped.buffer) !== artifacts.strippedObject.sha256) fail('object inputs changed during derivation');
+  let physicalEvidence = null;
+  if(physicalInterface(target)) {
+    if(!buffers.unsplitAssemblerObject || !artifacts.unsplitAssemblerObject)fail('native physical-interface artifact missing');
+    const nativeElf=parseElf32BigEndian(buffers.unsplitAssemblerObject);
+    const result=require('./phase8_matching_c').projectPhysicalInterface(buffers.unsplitAssemblerObject,target);
+    if(!result.buffer.equals(buffers.rawObject))fail('physical interface deterministic reconstruction');
+    require('./phase8_matching_c').verifyPhysicalInterface(stripped,target);
+    physicalEvidence={schemaVersion:1,kind:'append-only-physical-interface',descriptor:contract.physicalInterface,
+      nativeObjectSha256:artifacts.unsplitAssemblerObject.sha256,derivedObjectSha256:artifacts.rawObject.sha256,
+      nativeFunctions:functionCensus(nativeElf,nativeElf.sections.filter(s=>s.name===target.sectionName)),
+      nativeRelocations:rawRelocationRecords(nativeElf),nativeSymbolCount:result.nativeSymbolCount,interfaceSymbolIndex:result.interfaceSymbolIndex};
+  }
   let projectionEvidence = null;
   if (target.auxiliaryProjection) {
     const result = target.atomicText ? require('./atomic_owner_union').project(buffers.unsplitAssemblerObject, target)
@@ -386,8 +400,9 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const loadSections = new Set([...contract.owners.map((owner) => '.rel' + owner.inputSection), ...(target.auxiliarySections || []).map((section) => '.rel' + section.outputSection)]);
   const tail = tailEvidence(contract, rawOwners, normalizedRelocations);
   tailEvidence(contract, strippedOwners, normalizedRelocations);
-  const evidence = { schemaVersion: target.atomicText ? 11 : projectionEvidence ? (projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
+  const evidence = { schemaVersion: physicalEvidence ? 16 : target.atomicText ? 11 : projectionEvidence ? (projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
     ...(target.atomicText ? {atomicUnion:require('./atomic_owner_union').evidence(target,buffers,artifacts,files)} : {}),
+    ...(physicalEvidence ? {physicalInterface:physicalEvidence,rawObjectRole:'derived-physical-interface',nativeArtifactRole:'unsplitAssemblerObject'} : {}),
     ...(projectionEvidence ? { auxiliaryProjection: projectionEvidence } : {}), textContractSha256: hash(contract), artifacts,
     rawOwners: rawOwners.map((r) => r.record), strippedOwners: strippedOwners.map((r) => r.record), rawFunctions, strippedFunctions,
     rawRelocations: rawRelocations.filter((r) => loadSections.has(r.section)), normalizedRelocations,
@@ -445,6 +460,7 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
       loadIndex: loads[0].index, expectedSha256: sha256Buffer(retail), rawBytesExact: record.bytes.equals(retail) };
   });
   const functions = functionCensus(elf, records.map((record) => record.section), true);
+  if(physicalInterface(target)) require('./phase8_matching_c').verifyCompilerTextFunctions(elf,target,records[0].section,true);
   if ((target.nativeTextTail || target.compilationGroup) && !same(functions, contract.compilerTextFunctions)) fail('linked native function census');
   const tail = tailEvidence(contract, records, objectEvidence.normalizedRelocations);
   if (tail && !records[0].bytes.subarray(tail.offset).equals(canonicalBaserom.subarray(target.romStartNumber + tail.offset, target.romEndNumber))) fail('linked retail tail mismatch');
@@ -500,3 +516,4 @@ module.exports = { NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SHA256, exactKeys, same, ha
   normalizeNativeTextTail, resolveTextContract, resolveWorkbenchActiveTarget, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,
   linkContext, finishLinkContext: preparedLink.finishLinkContext, ownerEvidence, functionCensus, tailEvidence, nativeObjectAllocationEvidence, nativeLinkedAllocationEvidence,
   deriveObjectEvidence, deriveLinkEvidence, recordsForTarget, validateRecords };
+

@@ -1294,6 +1294,10 @@
     {
       "symbol": "func_00130E60",
       "source": "src/lib/func_00130E60.c"
+    },
+    {
+      "symbol": "func_000065E4",
+      "source": "src/boot/boot_resource_table_mask_apply.c"
     }
   ]
 }
