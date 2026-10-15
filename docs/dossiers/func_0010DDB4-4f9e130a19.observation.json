@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4F9E130A19CBD1FF7C0379FDC41A6734BA80DFF61354853FF993C4C8906073F9",
+  "observationId": "6065CECEC6CD4FE5ACC66E471F649C10C1FD8C4ED8DFE00956398817095CF781",
+  "symbol": "func_0010DDB4",
+  "authored": {
+    "context": "Compare the baseline source with the same real address calculations represented as distinct source phases in cases11 and2D.",
+    "effects": [
+      "source-form",
+      "compiler-intermediate",
+      "scheduling",
+      "register-allocation",
+      "extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FD3FA987CFE8089062FB3CB0C57EFBCA977CAEA87F24CD3C163F49D3BA831297",
+      "sourceSha256": "6FE569D95A3D318FCF5BE884DECF3A1C30158C0C6C1FB16C88342BD858E5EECE"
+    },
+    "label": "DDB4 frame: separate real address and later loaded-value phases",
+    "observedEffect": "The two eliminated addresses retain distinct standalone SI USE homes instead of sharing later allocated values. Frame/vars progress152/64 to160/72 and168/80. Each step changes only20 prefix/epilogue frame immediates, preserving all other body/table bytes; case15 scheduling remains.",
+    "parentCandidateId": "5EE5ECA1841C9DBBDEC9DA7522F272276478C94437DF1BDD5338FD33981E9D31",
+    "references": [
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-actual-slot-address-phase-probe.json",
+        "sha256": "6509D582C06F7BF02C93B3103AB0F2BC35AA99EDD6783C974255ED2E02462CE5"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-actual-slot-address-phase-probe-census.json",
+        "sha256": "CC816D36E6205BD1A802BDC3D0DBF008665365BFAECBB2C3EF33292BC3121C07"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-actual-slot-address-phase-watch.json",
+        "sha256": "0A45611C56579335A9D2D2B187462B7B7957B2496B0954716B9EE7A413C3A21C"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-actual-slot-address-phase-case-alignment.json",
+        "sha256": "E5217101603E61B73D20218FF31F25591D9F87E6193786374027A3ABA3479B3B"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-actual-slot-address-phase-reservations.json",
+        "sha256": "85F25D75D13F217918C2990FBF5BACAECB8C00C489B65B019902F506CB25F73D"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-actual-slot-address-phase-accepted-section-change-census.json",
+        "sha256": "4141FC6FE06530F81330798EDCA75AC455B701FBA1C6C2CC94C66FC2E0DEE6CE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Case15 still needs its five-word rotation and retail register coalescing. Native frame equality does not establish linked ownership or whole-ROM acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Separate the actual case11 integer field address from its later flags/message value, then the actual case2D slot address from the loaded object pointer. All phases feed existing operations; no synthetic object, consumer, volatile pressure or added executable work is used."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 53011,
+      "sha256": "FD3FA987CFE8089062FB3CB0C57EFBCA977CAEA87F24CD3C163F49D3BA831297"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6FE569D95A3D318FCF5BE884DECF3A1C30158C0C6C1FB16C88342BD858E5EECE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-15-func_0010DDB4-4f9e130a19.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

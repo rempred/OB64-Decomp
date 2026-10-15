@@ -240,3 +240,12 @@ docs/dossiers/func_0010B6A4-c01881fea0.observation.json -text whitespace=cr-at-e
 docs/archive/matching-c-candidates/2026-10-14-func_001390F0-7730f8e5a1.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
 docs/dossiers/func_001390F0-7730f8e5a1.md -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
 docs/dossiers/func_001390F0-7730f8e5a1.observation.json -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+
+# Preserve the independently reviewed Q6 tooling postimages byte-for-byte.
+tools/lib/active_targets.js -text whitespace=cr-at-eol
+tests/retained_auxiliary_composition.js -text whitespace=cr-at-eol
+src/lib/func_0010ddb4.c -text whitespace=-blank-at-eol,-blank-at-eof
+config/phase7/conventional-build.json -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-15-func_0010DDB4-5ee5eca184.c -text whitespace=-blank-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-15-func_0010DDB4-4f9e130a19.c -text whitespace=-blank-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-15-func_0010DDB4-777e9bf9c6.c -text whitespace=-blank-at-eol,-blank-at-eof

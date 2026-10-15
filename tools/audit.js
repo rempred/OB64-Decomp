@@ -104,6 +104,7 @@ function runAudit(args, profile) {
   measure(profile, 'registered-padding', () => require('../tests/registered_padding').main());
   measure(profile, 'registered-padding-native', () => require('../tests/registered_padding_native').main());
   measure(profile, 'registered-padding-scratch', () => require('../tests/registered_padding_scratch').main());
+  measure(profile, 'retained-auxiliary-composition', () => require('../tests/retained_auxiliary_composition').main());
   measure(profile, 'physical-interface', () => require('../tests/physical_interface').main());
   const func002861C8Structure = measure(profile, 'func002861c8-structure', () => verifyFunc002861C8Structure({ runMutations: true }));
   console.log('Running CURRENT ownership and exact-ROM verification...');

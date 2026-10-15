@@ -1289,6 +1289,40 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   });
 }
 
+// Compose two existing custody proofs only for a complete sole GLOBAL body and
+// a whole pointer-only table. Original terminal ASM never becomes compiler bytes.
+function validateRetainedAuxiliaryComposition(target) {
+  if (!target.row?.retainedPadding || !target.auxiliarySections.length) return;
+  const edge = require('./phase7_conventional').retainedPaddingSlices(target.row);
+  const functions = target.compilerTextFunctions;
+  const auxiliary = target.auxiliarySections[0];
+  const table = target.model.rows.find(row => row.index === auxiliary.ownerRowIndex);
+  const slice = table?.slices?.find(s => s.sectionName === auxiliary.outputSection);
+  if (target.compilationGroup || target.compilationGroupId || target.multiOwner || target.multiOwnerContract
+      || target.atomicText || target.nativeTextTail || target.auxiliaryProjection
+      || edge.record.edge !== 'terminal' || target.symbol !== target.row.part.name
+      || functions.length !== 1 || functions[0].symbol !== target.symbol
+      || functions[0].binding !== 'GLOBAL' || functions[0].offsetNumber !== 0
+      || functions[0].bytes !== edge.body.bytes || target.bytes !== edge.body.bytes
+      || target.auxiliarySections.length !== 1 || !table || table.slices.length !== 1
+      || edge.body.placementKind !== 'overlay' || slice?.placementKind !== 'overlay'
+      || edge.body.overlayDescriptorId === null || slice.overlayDescriptorId !== edge.body.overlayDescriptorId
+      || !auxiliaryPlacementPair(target.model, edge.body, slice)
+      || auxiliary.romStartNumber !== table.romStart || auxiliary.romEndNumber !== table.romEndExclusive
+      || auxiliary.vramStartNumber !== slice.vramStart || auxiliary.vramEndNumber !== slice.vramEndExclusive
+      || auxiliary.bytes !== table.bytes || auxiliary.preservedPrefix || auxiliary.preservedTail
+      || auxiliary.preservedInteriorBefore || auxiliary.sourceObjectPrefix || auxiliary.compilerOccurrences
+      || auxiliary.trailingPaddingBytes !== 0 || auxiliary.entryBytes !== auxiliary.bytes
+      || auxiliary.expectedRelocations.length * 4 !== auxiliary.bytes
+      || auxiliary.expectedRelocations.some((r, i) => r.type !== 'R_MIPS_32'
+        || parseNumber(r.offset, 'table offset') !== i * 4
+        || parseNumber(r.addend, 'table destination') % 4 !== 0
+        || parseNumber(r.addend, 'table destination') < 0
+        || parseNumber(r.addend, 'table destination') + 4 > target.bytes)) {
+    fail('retained padding ordinary auxiliary composition drift');
+  }
+}
+
 function validateAuxiliaryOwnerGroups(targets, model) {
   if (!model || !Array.isArray(model.rows) || !model.config
       || !Array.isArray(model.nonDescriptorLoadSlabs)) fail('shared auxiliary accepted model is required');
@@ -1631,7 +1665,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       fail(`active target is not an accepted executable assembly owner census: ${entry.symbol}`);
     }
     if (row.retainedPadding && (group || acceptedOwners.contract || relocationContract.nativeTextTail || relocationContract.atomicText
-        || relocationContract.auxiliaryProjection || relocationContract.auxiliarySections.length)) fail('retained padding incompatible producer mode');
+        || relocationContract.auxiliaryProjection)) fail('retained padding incompatible producer mode');
     const firstOwner = owners[0];
     const lastOwner = owners[owners.length - 1];
     const slice = row.slices.find((candidate) => candidate.sectionName === firstOwner.sectionName);
@@ -1715,6 +1749,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       target,
       relocationContract.auxiliarySections,
     );
+    validateRetainedAuxiliaryComposition(target);
     if (target.auxiliaryProjection) target.auxiliaryProjectionRetained = auxiliaryProjection.retainedBindings(target, model, baserom, assemblySource);
     const comparisons = legacyTarget ? [
       assertEquivalent(entry.symbol, 'primaryId', target.primaryId, legacyTarget.primaryId),
@@ -1854,6 +1889,7 @@ module.exports = {
   selectRelocationContract,
   validateLinkageConfig,
   validateAuxiliaryOwnerGroups,
+  validateRetainedAuxiliaryComposition,
   validateMultiOwnerConfig,
   validateNoActiveLinkSymbolShadows,
   validateToolchainPin,

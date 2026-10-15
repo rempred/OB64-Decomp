@@ -1886,6 +1886,7 @@ function validateTargetClassifications(phase8, sourcePolicy) {
 }
 
 function compileTarget(phase8, target, output, compiler, assembler, objcopy, options = {}) {
+  require('./active_targets').validateRetainedAuxiliaryComposition(target);
   if (target.compilationGroup) return compilationGroups.compile(phase8, target, output, compiler, assembler, objcopy, options);
   const enforceAcceptedContract = options.enforceAcceptedContract !== false;
   const acceptedAuxiliarySections = target.auxiliarySections || [];
@@ -2168,6 +2169,7 @@ function fileIdentity(output, relative, label) {
 }
 
 function deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, sharedLinkContext = null) {
+  require('./active_targets').validateRetainedAuxiliaryComposition(target);
   if (sharedLinkContext && (sharedLinkContext.elf !== linkedElf || sharedLinkContext.canonicalBaserom !== canonicalBaserom)) fail('shared source proof link inputs differ');
   validateTargetClassification(target, classification);
   if (target.atomicText) atomic.registerClassification(target,classification);
@@ -3300,6 +3302,13 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
       linkerText=linkerText.replace(selector,'    '+owner+'('+slice.sectionName+')');
     }
   }
+  for (const target of phase8.targets.filter(t => edgePadding(t) && t.auxiliarySections.length)) {
+    require('./active_targets').validateRetainedAuxiliaryComposition(target);
+    const section = target.auxiliarySections[0].outputSection;
+    const selector = '    *(' + section + ')';
+    if (linkerText.split(selector).length !== 2) fail('retained auxiliary linker selector census');
+    linkerText = linkerText.replace(selector, '    ' + compilationGroups.objectPath(target) + '(' + section + ')');
+  }
   verifySharedAuxiliaryScript(phase8, linkerText);
   return linkerText + (aliasText.length ? '\n' + aliasText.join('\n') + '\n' : '');
 }
@@ -3787,6 +3796,11 @@ function verifySharedAuxiliaryScript(phase8, script) {
   if (typeof script !== 'string') fail('shared auxiliary linker script is missing');
   const inputSelectors = generatedLinkerSelectors(script);
   for(const target of phase8.targets.filter(t=>edgePadding(t))){
+    require('./active_targets').validateRetainedAuxiliaryComposition(target);
+    for (const auxiliary of target.auxiliarySections) {
+      const owner = compilationGroups.objectPath(target), pattern = auxiliary.outputSection;
+      if (!sameJson(inputSelectors.filter(s => s.pattern === pattern), [{owner, pattern}])) fail('retained auxiliary recorded selector drift');
+    }
     for(const slice of target.row.slices){
       const owner=slice.retainedPaddingId?'objects/assembly/chunk_'+String(target.chunkIndex).padStart(3,'0')+'.o':compilationGroups.objectPath(target);
       if(!sameJson(inputSelectors.filter(s=>s.pattern===slice.sectionName),[{owner,pattern:slice.sectionName}]))fail('retained padding recorded selector drift');

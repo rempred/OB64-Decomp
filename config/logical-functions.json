@@ -99,6 +99,12 @@
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
     },
     {
+      "romStart": 1114460,
+      "romEndExclusive": 1114464,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Reviewed original terminal ASM word after JR ra and its ADDIU sp delay slot. Bounded static reference/interface checks preserve numeric placement and original fallback; no native compiler-padding or runtime-deadness claim. See docs/audit/2026-10-15-q6-retained-edge-table.md."
+    },
+    {
       "romStart": 1160228,
       "romEndExclusive": 1160240,
       "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
@@ -3253,6 +3259,33 @@
           "sha256": "0941FD7CD03E493BC1CA4C242BFF00EB019077DC5ADB07C79196F2894D608F6F"
         }
       ]
+    },
+    {
+      "symbol": "func_0010DDB4",
+      "aliases": [],
+      "romStart": 1105332,
+      "romEndExclusive": 1114460,
+      "expectedBytesSha256": "7F21E79AAFEA6C2804DB0AEFAF748C63CED1E4F468B573EDA80326D501DD2C08",
+      "fragments": [
+        {
+          "rowIndex": 2287,
+          "romStart": 1105332,
+          "romEndExclusive": 1114460,
+          "ownerOffset": 0,
+          "bytes": 9128,
+          "vramStart": 2149291636,
+          "sectionName": ".ob64.r2287.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0010DDB4.s",
+          "sha256": "0E9F377D78A56ED7844EE98998A5C17A1818A3F9EE0C74BA1998F1BF415F0E65"
+        }
+      ],
+      "evidence": {
+        "status": "supplemental-reviewed-body",
+        "rationale": "Complete reviewed DDB4 body includes its original two-word preamble and DDBC interior. Terminal original ASM word remains separately conserved; no native-padding origin or runtime-deadness claim. See docs/audit/2026-10-15-q6-retained-edge-table.md."
+      }
     },
     {
       "symbol": "func_0011B344",

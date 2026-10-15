@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5EE5ECA1841C9DBBDEC9DA7522F272276478C94437DF1BDD5338FD33981E9D31",
+  "observationId": "D0343EF04335DB55F6F936D367539E25F2AB5DCF6E87FE6D53D47730E1352C25",
+  "symbol": "func_0010DDB4",
+  "authored": {
+    "context": "The same function already has exact case02 and case2D instruction ordering; the remaining frame and case15 scheduling differ.",
+    "effects": [
+      "source-form",
+      "compiler-intermediate",
+      "scheduling",
+      "register-allocation",
+      "extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F6CE4DC1BDC1B81D6E046BBEBB2703F153BBEE8EE09C104749AD082325C52F03",
+      "sourceSha256": "E5602E1C37042EB44D47F1A522000258AB9AC4913985EA8EABA10655AF83E6FF"
+    },
+    "label": "DDB4 baseline: real return handle, pointer-word dependence and late negative-offset fold",
+    "observedEffect": "The indexed halfword MEM/s and fixed existing pointer-word MEM/s retain the F500 dependency while allowing the message halfword store to move. The separate NEG/MINUS survives CSE, then COMBINE cancels it to base-plus-index using the original pseudo. Case2D reaches96/96 diagnostic skeleton words; frame remains152.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-negative-offset-inplace-shift-probe.json",
+        "sha256": "D4743BC52C9DC754ECA02E2278CD72E2228559CE8971A9859BD4764E94B7C06B"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-negative-offset-inplace-shift-probe-census.json",
+        "sha256": "06BD37F84B13CFCBD2C4C537AAE939CDA67C3D348766B376C3EB34A5A7CD4FFA"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-negative-offset-inplace-shift-watch.json",
+        "sha256": "DC53D705C92B7B9AB5F14F33833EABF6285E2EC1A05646F749C239C395065C14"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-negative-offset-inplace-shift-case-alignment.json",
+        "sha256": "EF2069882556F0BF9BFA434EC49DA329B82512223FCB555A8A1B6104C565CD43"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-negative-offset-inplace-shift-reservations.json",
+        "sha256": "F6C6CCC2916C9D4CA1C77F4DC333B2FEE115EF3D03EB26A7427EEE2516EEB898"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-negative-offset-inplace-shift-accepted-section-change-census.json",
+        "sha256": "BC3EA5A2BA28DA25E16950237204E628AFD534D6CEB152A5FDC25F28A7704DC8"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case2d-subtract-real-negative-offset-observation.json",
+        "sha256": "1743BCE0624102A30FCF12EE5A7D6F285B7DC60A1113864FCEB0D8A7E5F474F7"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/consult-selective-dependence-positive-and-subtract-offset-answer.txt",
+        "sha256": "71942D032BC2F3FCAD68A6E4CD9CD21563055533A421C14B0ACD28B5EFC6185B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Frame must still reach168 and case15 must regain retail scheduling/register roles. This source is a compiler counterpoint, not a linked/full-ROM acceptance claim.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the actual case02 helper return handle, the existing four-byte pointer-word view, and the two-stage unsigned negative offset: in-place shift, negate, then base minus negative offset. These operate on real consumed values and introduce no extra storage or fake pressure."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 52795,
+      "sha256": "F6CE4DC1BDC1B81D6E046BBEBB2703F153BBEE8EE09C104749AD082325C52F03"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E5602E1C37042EB44D47F1A522000258AB9AC4913985EA8EABA10655AF83E6FF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-15-func_0010DDB4-5ee5eca184.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

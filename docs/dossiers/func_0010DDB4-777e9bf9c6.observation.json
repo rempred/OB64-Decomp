@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "777E9BF9C60A22E6EA755766FAD19F26F1B709D726A922FE04938FB27944BE0B",
+  "observationId": "80CEAB546280849340E8294B9C55159B660C46E959EB671BA1CC4667C0E03C13",
+  "symbol": "func_0010DDB4",
+  "authored": {
+    "context": "The preceding frame-exact source still has case15 scheduling/register differences. The final source also documents the earlier source mechanisms next to the C.",
+    "effects": [
+      "source-form",
+      "compiler-intermediate",
+      "scheduling",
+      "register-allocation",
+      "extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "90A6546B0C5036A6C50FA69A72E4F912C277FD0D59FF1B6AB4D2B53A5CE88EE2",
+      "sourceSha256": "5D7442379D6596E57723B58B327F3FD512A49B445AD101132D1955B92579782B"
+    },
+    "label": "DDB4 complete source: actual mask-chain scheduling and readable workarounds",
+    "observedEffect": "Mask-chain priorities propagate and local allocation coalesces the retail V0 roles. Exactly five body words rotate; all other body/table bytes remain unchanged. The final source and predecessor81D79F94 have identical expanded input/native object: one GLOBAL FUNC9128, frame168/vars80;1286 nonrelocated words exact without control masks and996 actual relocation words equal in opcode/register fields; all52 ordered R32 table addends agree. The installed canonical fixture separately proves exact linked body/table/originalASM4 and all four real relocation additions.",
+    "parentCandidateId": "4F9E130A19CBD1FF7C0379FDC41A6734BA80DFF61354853FF993C4C8906073F9",
+    "references": [
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-complete-readable-pure-c-watch.json",
+        "sha256": "B2AA2174CA3376AD1495B0B719E73BC88992ED9DA64562929DACEF8C12247FAD"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-complete-readable-pure-c-case-alignment.json",
+        "sha256": "2C935F1F96A3ADC1552109ED8E84C95D3FAD4CFB974CFA25D8FDB580416FC00C"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case15-actual-mask-chain-values-probe.json",
+        "sha256": "64226A3FFA2C3E996CA84471684BABA15D1300C740D2AA2FDDBBD6428E98ECDE"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/resume-case15-actual-mask-chain-values-probe-census.json",
+        "sha256": "5FD3AA904462A02C072E5A439F04B4D31BB53F90B4155411147C2F9301D057C6"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/complete-body-native-handoff-census.json",
+        "sha256": "353734AAF8E0095D30C590C67E9CC50B170ED41A48109E06AA4D9C3B178D1F87"
+      },
+      {
+        "path": "build/matching/q6-ddb4-261014/i-vzvqdj/result.json",
+        "sha256": "E7E19E2BDCF82D56F464C1948D71231CDAE428962ED3DDF58F9F353DAFE46B5A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The preserved source pairs demonstrate source-dependent compiler behavior under their recorded context, not a universal compiler law. Matching acceptance is established separately by the one composed canonical audit and its fresh-source/whole-ROM report; the four-byte original ASM suffix never counts as C or native padding.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Expose every real case15 mask-chain result once: loaded header, first AND~4, second AND~0x200, final OR0x21. The comment-only final polish explains actual return joins, selective existing-word views, unsigned late folding and distinct address phases."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 53218,
+      "sha256": "90A6546B0C5036A6C50FA69A72E4F912C277FD0D59FF1B6AB4D2B53A5CE88EE2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5D7442379D6596E57723B58B327F3FD512A49B445AD101132D1955B92579782B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-15-func_0010DDB4-777e9bf9c6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

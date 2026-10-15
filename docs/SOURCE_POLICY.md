@@ -344,6 +344,20 @@ fallback and numeric address/bytes remain. No ELF-symbol injection or renaming o
 a native compiler function is permitted. Numeric/runtime references are not
 inferred absent from a lack of ELF relocations.
 
+A terminal retained-ASM edge may compose with exactly one ordinary compiler table
+when the sole complete GLOBAL C body uses the original physical entry name and
+both owners use the same accepted overlay descriptor. The table must cover one
+whole read-only original row with ordered R_MIPS_32 pointers strictly inside the
+C body. Leading edges, LOCAL or additional functions, derived interfaces, groups,
+unions, native tails, projection, multiple tables, and partial/shared auxiliary
+rows remain excluded. Existing independent text-edge and auxiliary proofs compose;
+no new native-padding or compiler-origin claim is made. All three contributions
+use explicit object-path selectors. Only C body and ordinary auxiliary bytes count
+as replacements; the original terminal edge remains ASM. Run
+`node tests/retained_auxiliary_composition.js` for the unrelated native switch,
+source nonmatch, cache and rejection controls. Tooling fixtures do not activate a
+producer or replace the complete-wave and structural acceptance gates.
+
 ## Compilation groups
 
 A compilation group is one C producer for several existing function targets. The version-1 registry is `config/matching-c-compilation-groups.json`. A grouped target uses `{ "symbol": "func_XXXXXXXX", "compilationGroup": "group_id" }` instead of a standalone source record. A separately assigned source wave must activate all group members together; registry activation alone does not establish completed-wave matching acceptance.

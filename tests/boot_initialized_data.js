@@ -97,22 +97,23 @@ function runTests(model = loadAcceptedModel()) {
     slice.vramEndExclusive, slice.bytes, slice.executable, slice.placementKind, slice.loadSlabId],
   ['.ob64.r0789', 0x3DDC0, 0x3F1B0, 0x800AD9C0, 0x800AEDB0, 5104, false,
     'non-descriptor-load-slab', 'boot-initialized-data-0003ddc0']);
-  assert.deepStrictEqual(model.counts, { assemblyOwners: 6184, dataOwners: 1058, splitOwners: 19,
+  assert.deepStrictEqual(model.counts, { assemblyOwners: 6184, dataOwners: 1058, splitOwners: 21,
     rspRows: 13, fixedOverlayNonExecutableRanges: 4, nonDescriptorLoadSlabs: 30 });
-  // Two registered ASM edge cuts add output slices, preserving all physical rows.
-  assert.deepStrictEqual(model.rows.filter(row => row.retainedPadding).map(row => row.index), [58, 2351]);
-  for (const index of [58, 2351]) {
+  // Four registered ASM edge cuts add output slices, preserving all physical rows.
+  assert.deepStrictEqual(model.rows.filter(row => row.retainedPadding).map(row => row.index), [58, 2287, 2327, 2351]);
+  for (const index of [58, 2287, 2327, 2351]) {
     const owner = model.rows[index];
     assert.strictEqual(owner.slices.length, 2);
     assert.strictEqual(owner.slices.reduce((bytes, slice) => bytes + slice.bytes, 0), owner.bytes);
     assert.strictEqual(owner.slices.filter(slice => slice.retainedPaddingId).length, 1);
     assert(owner.slices.every(slice => slice.executable && slice.nonExecutableRangeId === null));
   }
-  // Snapshot includes both edge cuts and their generated ordinal/phdr shifts.
+  // Q6 adds only row2287's9128/4 split after accepted Q4 and ordinal/phdr shifts.
+  // See docs/audit/2026-10-15-q6-retained-edge-table.md; physical owners are unchanged.
   // Preserve every physical row, other slice (including743/790), reservation and29 slabs.
   const digest = value => sha256Buffer(Buffer.from(JSON.stringify(value)));
-  assert.strictEqual(digest(model.slices.filter(s => s.rowIndex !== 789)), '4E69CA03CEFDCF78B970359E9DC610930BFA71C05C7F20B79BB69DBCCEA308A5');
-  // Reverse only the two reviewed derived cuts to compare every legacy slice.
+  assert.strictEqual(digest(model.slices.filter(s => s.rowIndex !== 789)), 'D58C3DB6C5729D8AC71630F14D7B5E34FD5EE25D141BA48E81D347C0D7C44BF8');
+  // Reverse only the four reviewed derived cuts to compare every legacy slice.
   // This is a test projection, not a generated count or production-layout reset.
   const priorSlices = model.rows.flatMap(owner => owner.retainedPadding ? [{
     ...owner.slices[0], sliceIndex: 0, sliceCount: 1,

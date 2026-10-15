@@ -15,10 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7262,
-    "splitOwners": 20,
+    "linkSlices": 7263,
+    "splitOwners": 21,
     "overlayReservations": 19,
-    "retainedPaddingCuts": 3,
+    "retainedPaddingCuts": 4,
     "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
@@ -107,6 +107,22 @@
       "compilerFunctions": [
         {
           "symbol": "func_0011B344",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row2287-terminal",
+      "rowIndex": 2287,
+      "romStart": 1114460,
+      "romEndExclusive": 1114464,
+      "edge": "terminal",
+      "sourceSha256": "0E9F377D78A56ED7844EE98998A5C17A1818A3F9EE0C74BA1998F1BF415F0E65",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_0010DDB4",
           "binding": "GLOBAL",
           "entryEvidence": "owner"
         }
@@ -404,9 +420,27 @@
   },
   "binutils": {
     "version": "GNU Binutils 2.6",
-    "assemblerFlags": ["-G", "0", "-mips3", "-mabi=32", "-V", "-EB"],
-    "compilerAssemblerFlags": ["-G", "0", "-mips3", "-mabi=32", "-force-n64align", "-EB"],
-    "linkerFlags": ["-EB", "-m", "elf32bmip"],
+    "assemblerFlags": [
+      "-G",
+      "0",
+      "-mips3",
+      "-mabi=32",
+      "-V",
+      "-EB"
+    ],
+    "compilerAssemblerFlags": [
+      "-G",
+      "0",
+      "-mips3",
+      "-mabi=32",
+      "-force-n64align",
+      "-EB"
+    ],
+    "linkerFlags": [
+      "-EB",
+      "-m",
+      "elf32bmip"
+    ],
     "tools": {
       "mips-kmc-elf-as.exe": "0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938",
       "mips-kmc-elf-ld.exe": "48944635BC840256BC2FBA86D2701A4CA59B2424B924AC8B9F4853D4E1DA609F",

@@ -1,0 +1,37 @@
+# Q6 retained original edge and complete compiler table
+
+Status: composed structural audit and complete Q6 matching-wave gates passed on October15. The complete9,128-byte DDB4 body is matching `PURE_C`; its original four-byte suffix remains ASM. Ownership release remains the Director's coordination decision.
+
+The reviewed generic composition admits one complete registered GLOBAL C body with a separate original terminal ASM edge and exactly one complete ordinary read-only pointer table. It preserves all physical rows, placement predicates and fallback custody. Groups, unions, projections, native tails, secondary/LOCAL compiler bodies, derived interfaces, split/shared tables, writable/injected data and retained auxiliary fragments remain excluded. The compiler and section assignment do not synthesize or rewrite payload bytes.
+
+For DDB4, original r2287 remains ROM `0x0010DDB4..0x00110160`,9132 bytes in descriptor7/chunk16. C owns `0x0010DDB4..0x0011015C`,9128 bytes including the original two-word preamble and DDBC interior instructions. Original chunk16 retains the literal four-byte suffix. The same compiler object owns complete r2557, ROM `0x00142950..0x00142A20`,208 bytes in descriptor7/chunk20. Its52 actual R_MIPS_32 entries target37 body destinations. The suffix remains ASM, without a native-padding or runtime-deadness claim; table accounting follows existing auxiliary rules.
+
+The original DDBC marker is LOCAL/STT_OBJECT/default/size0 at offset8. Bounded static symbolic/reference checks and existing omission guards establish the supported interface closure; they do not establish absence of every computed indirect reference. GLOBAL/FUNC/referenced DDBC variants reject. D450/D484 remain separate, unconverted conditional candidates.
+
+The actual996 text relocation records preserve all992 prior normalized records and add only the table HI16/LO16 fields at offsets0x628/0x630 and D_801951B0 HI16/LO16 fields at0xD6C/0xD70. Compiler `.rodata` is the relocation identity; `.ob64.r2557` is its placement output section. Signed-low link equations and all four linked words must equal retail. Missing native relocations cannot be supplied by the linker.
+
+The fourth registered cut changes only r2287's derived9128/4 slices and deterministic following ordinal/phdr numbers. Reversing that cut deeply reproduces every pre-Q6 slice. All physical metadata, overlays, slabs and collapsed legacy invariants remain unchanged. The precise boot-test delta is splitOwners20→21, ordered cuts58/2327/2351→58/2287/2327/2351 and current-slice digestCC288E2C→D58C3DB6. Legacy physical/overlay/slab hashes and rejection assertions are retained.
+
+## Independent review and installed evidence
+
+Director-authorized [proposal](../../build/director-resume-20261015/q6-producer-path/plan.md) C34F7A2F and [paired Sol/Claude agreement](../../build/matching/q6-ddb4-261014/producer-plan-agreement.md)4FB690F5 precede installation. [Independent review](../../build/director-resume-20261015/q6-retained-aux-review/review.md)44D0FB81 passed exact primary patch02D5D28A and Q4 test supplement6E48C59D, six postimages. Existing cuts58/2351/2327 and27 ordinary auxiliary targets were independently reconstructed before activation. Original body/table/tail mutation and excluded-combination controls remain mandatory.
+
+The [production integration derivation](../../build/matching/q6-ddb4-261014/installation/production-integration-derivation.json) and exact structural patchF9271531 record the source-bound production configuration and separate Q6 boot delta. [Independent integration review](../../build/director-resume-20261015/q6-retained-aux-review/integration-review.md) passed all four exact postimages and independently reproduced the prior model, actual relocation delta and all52 ordered table destinations. Original legacy configuration and minimal target registry remain unchanged. Source SHA256 is `5D7442379D6596E57723B58B327F3FD512A49B445AD101132D1955B92579782B`, candidateB0CA515C/native263405BE. All five handed-off artifacts remain bound by [native census353734AA](../../build/matching/q6-ddb4-261014/complete-body-native-handoff-census.json). Exact-path Git attributes preserve the reviewed mixed-ending tooling postimages and inherited source whitespace without changing any verified bytes.
+
+The installed canonical fixture freshly assembles chunks16/20, invokes compileTarget/copyPhase7Objects and the pinned linker, and proves exact body/table/physical-row bytes, sole explicit C/ASM selectors, unchanged other allocated sections, DDBC closure, source/recorded proofs and cold/warm cache. It passes24 rejection controls. The unrelated PURE_C switch fixture passes22 controls including a real changed-instruction nonmatch. Installed boot/active_targets and Q4 regressions pass. Detailed logs remain ignored under `build/matching/q6-ddb4-261014/installation/`.
+
+Useful compiler evidence is preserved through the shared research commands as two bounded source pairs: [real dependencies and late unsigned folding](../dossiers/func_0010DDB4-5ee5eca184.md), [separate actual address phases and frame homes](../dossiers/func_0010DDB4-4f9e130a19.md), and [the final actual mask-chain schedule](../dossiers/func_0010DDB4-777e9bf9c6.md). Their source/context/report identities remain explicit; those observations do not independently establish canonical acceptance or a universal compiler rule.
+
+## Final composed audit
+
+The single changed-input `node tools/audit.js --profile` completed `AUDIT PASS`, including normal exact-ROM verification and independent fresh compilation of every active source. There was no redundant preceding build or following unchanged verifier. All earlier active replacements remain exact. Seven additional installed projection/ownership/CURRENT/cache suites passed; the boot, active-target, Q4, native canonical and unrelated native-switch checks also passed. Generated reports own changing global counts.
+
+- CURRENT: `DA39A6C878FB06EB6360312536328E8424C9CB2D7B3C8C3EAFC374F925030386`.
+- Structural baseline: `4EA40AEB129210E7869FFA05EB42AA214D4D4E020D2E6E5CCA2E39DA8FBC228F`.
+- Audit report SHA256: `159F2071B6971911594EA13A6403286FED92239C64B5FB2A78782D6C5128D72C`.
+- Normal verification SHA256: `74C1E4644F869B04925D6758DF391CE3FCD65367DB2C2A85DB04083D850CC473`.
+- Fresh compilation SHA256: `E3B40BE5471C1512BFC9CB66593D1C8B18E7CAD4BA21DA3C602728EF8ED33033`.
+- Source-policy report SHA256: `A4134E02A1EF398BDFE4AFB18CB63B3B340CBB6CF92C96AC10E2D29CF26065DB`.
+- Complete rebuilt ROM:41,943,040 bytes, byte-identical to the canonical normalized Rev0 baserom, SHA256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+[Final proof](../../build/matching/q6-ddb4-261014/installation/final-proof.json), SHA256 `5258A28011CCE7356F308E318487B267239DA7EFF6334814D688C4263466672B`, binds the completed reports, installed reviewed inputs and actual ROM bytes. Mechanical class is `PURE_C`; authored source remains5D744237 and expanded input90A6546B. Sole linked body/table owner is `objects/c/func_0010DDB4.o`. Body9,128 bytes has linked hash `7F21E79AAFEA6C2804DB0AEFAF748C63CED1E4F468B573EDA80326D501DD2C08` and996 actual text relocations. Table208 bytes has linked hash `CBD4A5F3E004A546E1F0452F265BC1B287168E1B6EC2076648A1AC29FA85DDD8` and52 actual relocations. Original ASM suffix4 remains solely `objects/assembly/chunk_016.o`; the independent full9,132-byte physical-owner proof and original fallback pass. No generated proof report or ROM binary is tracked.
