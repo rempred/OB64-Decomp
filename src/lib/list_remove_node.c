@@ -1,29 +1,17 @@
-typedef struct ListNode {
-    struct ListNode *next;
-} ListNode;
+/* Pointer-to-link traversal follows ROM25000..25034; native tail is preserved. */
+typedef struct Thread Thread;
+struct Thread { Thread *next; };
 
-asm(
-    ".macro move rd,rs\n"
-    "addu \\rd,\\rs,$0\n"
-    ".endm\n");
-
-void func_00025000(ListNode **head, ListNode *target)
+void func_00025000(Thread **head, Thread *thread)
 {
-    ListNode **cursor;
-    ListNode *current;
-
-    cursor = head;
-    current = *cursor;
+    Thread **link = head;
+    Thread *current = *link;
     while (current != 0) {
-        if (current == target) {
-            *cursor = current->next;
+        if (current == thread) {
+            *link = current->next;
             return;
         }
-        cursor = &current->next;
-        current = *cursor;
+        link = &current->next;
+        current = *link;
     }
 }
-
-asm(
-    ".align 4\n"
-    ".size func_00025000,64\n");

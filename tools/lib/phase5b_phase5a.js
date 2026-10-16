@@ -30,6 +30,7 @@ const CUMULATIVE_FILES = ROW585_FILES.map((row) => row.path === 'full-rom-primar
 
 const ACCEPTED_PROFILE = {
   name: 'accepted',
+  rowClasses: Object.freeze({"565":"data","566":"data","567":"code","585":"data"}),
   logicalSha256: '13BB110109C6DAE45157572DB5AC95DD233AB41C8639901302ED593AAB862EF2',
   productManifestSha256: '5C3128F206FFB019E0F43948C5334039C62DA439B73C85BC0AEEBFD2312E3393',
   primaryLedgerSha256: '8A5473D596DBD961426A853440C798F9585F38C46A96E4ABA9DD073C52A2FABB',
@@ -38,6 +39,7 @@ const ACCEPTED_PROFILE = {
 
 const ROW585_PROFILE = {
   name: 'row585-code-successor',
+  rowClasses: Object.freeze({"565":"data","566":"data","567":"code","585":"code"}),
   logicalSha256: '7CDACEAC4C84D508FB03C252212C376A084153677233F2756A777DA527E1D42E',
   productManifestSha256: '64762581B888A8F6F14548F0E59DFE3358FCD2DB90FE6B3D1B902E577AFEBE68',
   primaryLedgerSha256: '85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF',
@@ -46,13 +48,27 @@ const ROW585_PROFILE = {
 
 const CUMULATIVE_PROFILE = {
   name: 'row565-row585-code-cumulative-successor',
+  rowClasses: Object.freeze({"565":"code","566":"data","567":"code","585":"code"}),
   logicalSha256: '02E621C81403C5EF7CC65EC29EF2ABF01B1ABA2755BB9B45801E94D6D4221BA6',
   productManifestSha256: 'F004C4C09D611671935BD0D7927D514EAC1E05C347FBB271A523C424AFDB1D04',
   primaryLedgerSha256: '4C76602C42BB287A520EDC71D5A597FF94D8F3066E49EEFBF2502087AE452BBE',
   files: CUMULATIVE_FILES,
 };
 
-const EXPECTED_PROFILES = Object.freeze({ accepted: ACCEPTED_PROFILE, successor: ROW585_PROFILE, cumulative: CUMULATIVE_PROFILE });
+const ROW566_FILES = CUMULATIVE_FILES.map((row) => row.path === 'full-rom-primary-ledger.jsonl'
+  ? { ...row, sha256: '999CEDFCBA772C3D57BE6D2D0302A520B2E99458A6DCF9EFCF83E5BA384E388D' }
+  : row);
+
+const ROW566_PROFILE = {
+  name: 'row565-row566-row585-code-cumulative-successor',
+  rowClasses: Object.freeze({ 565: 'code', 566: 'code', 567: 'code', 585: 'code' }),
+  logicalSha256: 'E3CC7C3979988F621A4C620403A26CCAFE6786CFE13D3DF5088F0DC4AC66914D',
+  productManifestSha256: '21919E82453488B0A31BE9C4BE19CC9A32D70FECB3B4D84442C5C0E5DEBBF81E',
+  primaryLedgerSha256: '999CEDFCBA772C3D57BE6D2D0302A520B2E99458A6DCF9EFCF83E5BA384E388D',
+  files: ROW566_FILES,
+};
+
+const EXPECTED_PROFILES = Object.freeze({ accepted: ACCEPTED_PROFILE, successor: ROW585_PROFILE, cumulative: CUMULATIVE_PROFILE, row566: ROW566_PROFILE });
 const EXPECTED_FILES = ACCEPTED_FILES.map((row) => row.path);
 const ROW585 = Object.freeze({
   index: 585,
@@ -82,7 +98,34 @@ const ROW565 = Object.freeze({
   ambiguous: false,
   source_manifest_index: 1,
 });
-const ORIGINAL_ROW_CLASS = 'data';
+const ROW566 = Object.freeze({
+  "ambiguous": false,
+  "bytes": 144,
+  "id": "primary:e86c1af8d23fa92724c2",
+  "index": 566,
+  "owner_kind": "tracked-assembly-part",
+  "owner_path": "asm/original/rev0/lib/list_remove.s",
+  "owner_sha256": "AFCF157A30AC7FD5E531957C3C3C3B86CE9B68F1FCEC9C00DA77A2661FC54D87",
+  "primary_class": "data",
+  "rom_end_exclusive": 148192,
+  "rom_start": 148048,
+  "source_form": "original_mips",
+  "source_manifest_index": 1
+});
+const ROW567 = Object.freeze({
+  "ambiguous": false,
+  "bytes": 8,
+  "id": "primary:f0e191e48712efdfb452",
+  "index": 567,
+  "owner_kind": "tracked-assembly-part",
+  "owner_path": "asm/original/rev0/lib/func_000242e0.s",
+  "owner_sha256": "9195C6309A41F17741C8F9C7A4164486962287E32E90CBF06D059A99B7B28AAC",
+  "primary_class": "code",
+  "rom_end_exclusive": 148200,
+  "rom_start": 148192,
+  "source_form": "original_mips",
+  "source_manifest_index": 1
+});
 const PRESERVED_FIELDS = Object.freeze([
   'rom_start',
   'rom_end_exclusive',
@@ -116,7 +159,7 @@ function equalJson(left, right) {
 }
 
 function profileFor(manifest, manifestSha256) {
-  return [ACCEPTED_PROFILE, ROW585_PROFILE, CUMULATIVE_PROFILE].find((profile) => (
+  return Object.values(EXPECTED_PROFILES).find((profile) => (
     manifestSha256 === profile.productManifestSha256
     && manifest.logical_sha256 === profile.logicalSha256
   )) || null;
@@ -134,12 +177,9 @@ function verifyPrimaryRows(product, profile) {
     }
     return row;
   };
-  const row565Class = profile === CUMULATIVE_PROFILE ? ROW565.primary_class : ORIGINAL_ROW_CLASS;
-  const row585Class = profile === ACCEPTED_PROFILE ? ORIGINAL_ROW_CLASS : ROW585.primary_class;
-  return {
-    row565: verifyRow(ROW565, row565Class),
-    row585: verifyRow(ROW585, row585Class),
-  };
+  return Object.fromEntries([ROW565, ROW566, ROW567, ROW585].map((expected) => [
+    `row${expected.index}`, verifyRow(expected, profile.rowClasses[expected.index]),
+  ]));
 }
 
 function verifyPhase5aProduct(product) {
@@ -179,6 +219,8 @@ function verifyPhase5aProduct(product) {
     fileCount: manifest.files.length,
     files: manifest.files,
     row565: primaryRows.row565,
+    row566: primaryRows.row566,
+    row567: primaryRows.row567,
     row585: primaryRows.row585,
   };
 }
@@ -187,6 +229,8 @@ module.exports = {
   EXPECTED_FILES,
   EXPECTED_PROFILES,
   ROW565,
+  ROW566,
+  ROW567,
   ROW585,
   SUCCESSOR_ROW: ROW585,
   verifyPhase5aProduct,

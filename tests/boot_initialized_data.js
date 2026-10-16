@@ -97,23 +97,29 @@ function runTests(model = loadAcceptedModel()) {
     slice.vramEndExclusive, slice.bytes, slice.executable, slice.placementKind, slice.loadSlabId],
   ['.ob64.r0789', 0x3DDC0, 0x3F1B0, 0x800AD9C0, 0x800AEDB0, 5104, false,
     'non-descriptor-load-slab', 'boot-initialized-data-0003ddc0']);
-  assert.deepStrictEqual(model.counts, { assemblyOwners: 6184, dataOwners: 1058, splitOwners: 24,
+  assert.deepStrictEqual(model.counts, { assemblyOwners: 6184, dataOwners: 1058, splitOwners: 25,
     rspRows: 13, fixedOverlayNonExecutableRanges: 4, nonDescriptorLoadSlabs: 30 });
-  // Seven registered ASM edge cuts add output slices, preserving all physical rows.
-  assert.deepStrictEqual(model.rows.filter(row => row.retainedPadding).map(row => row.index), [58, 554, 555, 556, 2287, 2327, 2351]);
-  for (const index of [58, 554, 555, 556, 2287, 2327, 2351]) {
+  // Eight registered ASM edge cuts add output slices, preserving all physical rows.
+  assert.deepStrictEqual(model.rows.filter(row => row.retainedPadding).map(row => row.index), [58, 554, 555, 556, 581, 2287, 2327, 2351]);
+  for (const index of [58, 554, 555, 556, 581, 2287, 2327, 2351]) {
     const owner = model.rows[index];
     assert.strictEqual(owner.slices.length, 2);
     assert.strictEqual(owner.slices.reduce((bytes, slice) => bytes + slice.bytes, 0), owner.bytes);
     assert.strictEqual(owner.slices.filter(slice => slice.retainedPaddingId).length, 1);
     assert(owner.slices.every(slice => slice.executable && slice.nonExecutableRangeId === null));
   }
-  // L1 adds only rows554/555/556 terminal12-byte cuts after accepted Q6.
+  // L1 adds rows554/555/556 terminal12-byte cuts; row581 adds an eight-byte cut.
   // Physical owners are unchanged; each added cut contributes one slice and ordinal/phdr shifts.
   // Preserve every physical row, other slice (including743/790), reservation and29 slabs.
   const digest = value => sha256Buffer(Buffer.from(JSON.stringify(value)));
-  assert.strictEqual(digest(model.slices.filter(s => s.rowIndex !== 789)), '37F0CD984BF9D797B3665C0598458212052CEE300B249EF4CBCA57EE0962D5E5');
-  // Reverse only the seven reviewed derived cuts to compare every legacy slice.
+  // Keep the predecessor check and the exact independently reviewed row566
+  // successor separate. This test does not classify or repair any owner.
+  const row566Successor = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json']
+    === 'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204';
+  assert.strictEqual(digest(model.slices.filter(s => s.rowIndex !== 789)), row566Successor
+    ? 'F5E4B7AB19AA0FDB97C2E013DA8CE6E6E49C3132E9C625916EBCC61C47C68D37'
+    : '37F0CD984BF9D797B3665C0598458212052CEE300B249EF4CBCA57EE0962D5E5');
+  // Reverse only the eight reviewed derived cuts to compare every legacy slice.
   // This is a test projection, not a generated count or production-layout reset.
   const priorSlices = model.rows.flatMap(owner => owner.retainedPadding ? [{
     ...owner.slices[0], sliceIndex: 0, sliceCount: 1,
@@ -124,8 +130,11 @@ function runTests(model = loadAcceptedModel()) {
     ...slice, ordinal, phdrName: 'p' + String(ordinal).padStart(5, '0'),
   }));
   assert.strictEqual(digest(priorSlices.filter(slice => slice.rowIndex !== 789)),
-    '8897472E14020BB65D6CD7EBBD1716F503C2232D52F7E662D8E739605A4D873B');
-  assert.strictEqual(digest(model.rows.map(({ slices, retainedPadding, ...metadata }) => metadata)), '4F5EE5011B086824ED4256B53BCD214106AE1D38392A3029788C667383E2E315');
+    row566Successor ? '6B459839D42684025BA9B9C919EFDD9480D56AD2DAAD2A49476E89E8023B9EFE'
+      : '8897472E14020BB65D6CD7EBBD1716F503C2232D52F7E662D8E739605A4D873B');
+  assert.strictEqual(digest(model.rows.map(({ slices, retainedPadding, ...metadata }) => metadata)), row566Successor
+    ? 'A83A62A26E54CD29A50AAF0FE6286867CD34E5B62AE43D49CC0316C6499076C2'
+    : '4F5EE5011B086824ED4256B53BCD214106AE1D38392A3029788C667383E2E315');
   assert.strictEqual(digest(model.overlays), 'C699993FF5DB3D8A075BC2EBC22DEBA4FDDD9B8E6F7E257960DFD37E92BAD016');
   assert.strictEqual(digest(model.nonDescriptorLoadSlabs.slice(0, 29)), 'DD0C8A896DCBB5DEFEBF6463700FB79715479E74F9F9A599F9FE82C2AAF52695');
   return { originalByteAndMappingNegativeControls: rejected };
@@ -224,8 +233,70 @@ function runAuxiliaryTests(model = loadAcceptedModel()) {
   return { auxiliaryNegativeControls: rejected };
 }
 
+function runSharedChunkTests() {
+  const active = require('../tools/lib/active_targets');
+  const context = active.loadActiveTargetModel(), model = context.model;
+  const rom = fs.readFileSync(path.join(ROOT, 'build/baserom.us_rev0.z64'));
+  const config = JSON.parse(fs.readFileSync(active.LINKAGE_CONFIG_PATH));
+  const row = model.rows[789], slice = row.slices[0];
+  const hex = n => '0x' + n.toString(16).toUpperCase().padStart(8, '0');
+  const retained = (start, end, suffix) => ({ inputSection: '.ob64.r0789.' + suffix,
+    sectionType: 'SHT_PROGBITS', sectionFlags: ['SHF_ALLOC'], alignment: 1,
+    romStart: hex(start), romEndExclusive: hex(end), vramStart: hex(slice.vramStart + start - row.romStart),
+    vramEndExclusive: hex(slice.vramStart + end - row.romStart), bytes: end - start,
+    expectedSha256: sha256Buffer(rom.subarray(start, end)), ownerOriginalAssembly: row.part.file,
+    ownerOriginalAssemblySha256: row.part.sha256 });
+  const resolve = (target, contract) => active.resolveAuxiliarySectionContracts(model, rom, target,
+    active.normalizeAuxiliarySectionContracts([contract], target.symbol, 'shared boot fixture'));
+  // Recover the complete three-fragment baseline independently of scheduler activation.
+  const decoders = ['boot_command_stream_dispatch', 'boot_resource_tag_record_decode', 'boot_resource_op_dispatch'].map(symbol => {
+    const source = context.targets.find(t => t.symbol === symbol);
+    const contract = structuredClone(config.targets.find(t => t.symbol === symbol).auxiliarySections[0]);
+    if (symbol === 'boot_resource_op_dispatch') contract.preservedTail = retained(0x3E70C, row.romEndExclusive, 'tail');
+    return { ...source, auxiliarySections: resolve(source, contract) };
+  }).sort((a, b) => a.auxiliarySections[0].romStartNumber - b.auxiliarySections[0].romStartNumber);
+  active.validateAuxiliaryOwnerGroups(decoders, model);
+  const resolved = active.resolveAcceptedRows(model, 'func_000248ac'), owner = resolved.owners[0];
+  const target = { ...owner, symbol: 'func_000248ac', row: resolved.rows[0], textOwners: resolved.owners };
+  const raw = Buffer.alloc(32), rels = Array.from({ length: 7 }, (_, i) => {
+    const addend = rom.readUInt32BE(0x3EDF0 + i * 4) - owner.vramStartNumber;
+    raw.writeUInt32BE(addend, i * 4);
+    return { offset: hex(i * 4), type: 'R_MIPS_32', symbol: '.text', addend: hex(addend), section: '.rel.rodata' };
+  });
+  const table = { kind: 'switch-table', compilerSection: '.rodata', outputSection: '.ob64.r0789',
+    sectionType: 'SHT_PROGBITS', sectionFlags: ['SHF_ALLOC'], alignment: 8,
+    romStart: hex(0x3EDF0), romEndExclusive: hex(0x3EE10), vramStart: hex(0x800AE9F0), vramEndExclusive: hex(0x800AEA10),
+    bytes: 32, entries: 7, expectedObjectSha256: sha256Buffer(raw),
+    expectedLinkedSha256: sha256Buffer(rom.subarray(0x3EDF0, 0x3EE10)), trailingPaddingBytes: 4,
+    expectedTrailingPaddingSha256: sha256Buffer(Buffer.alloc(4)), expectedRelocations: rels,
+    preservedInteriorBefore: { ...retained(0x3E70C, 0x3EDF0, 'interior_0003E70C'), expectedRelocations: [] },
+    preservedTail: retained(0x3EE10, row.romEndExclusive, 'tail') };
+  target.auxiliarySections = resolve(target, table);
+  const previous = config.targets.find(t => t.symbol === 'boot_resource_op_dispatch').auxiliarySections[0];
+  const contributors = decoders.map(t => ({ ...t, auxiliarySections: t.symbol === 'boot_resource_op_dispatch'
+    ? resolve(t, { ...previous, preservedTail: null }) : structuredClone(t.auxiliarySections) })).concat(target);
+  assert.deepStrictEqual(contributors.map(t => t.chunkIndex), [0, 0, 0, 2]);
+  const check = () => active.validateAuxiliaryOwnerGroups(contributors, model);
+  check(); let rejected = 0;
+  function mutate(object, key, value) {
+    check(); const before = object[key]; object[key] = value;
+    try { assert.throws(check); rejected++; } finally { object[key] = before; }
+    check();
+  }
+  mutate(model, 'bootInitializedDataProof', { ...model.bootInitializedDataProof });
+  mutate(target.textOwners[0], 'chunkIndex', 0);
+  mutate(target.auxiliarySections[0], 'ownerOriginalAssemblySha256', '0'.repeat(64));
+  mutate(contributors[2].auxiliarySections[0], 'ownerTailBytes', 1);
+  mutate(target.auxiliarySections[0].preservedInteriorBefore, 'romStartNumber', 0x3E708);
+  const slab = model.nonDescriptorLoadSlabs.find(s => s.kind === 'boot-initialized-data');
+  mutate(slab, 'kind', 'loader-dma');
+  assert.throws(() => active.validateAuxiliaryOwnerGroups([...contributors].reverse(), model)); rejected++;
+  check(); active.validateAuxiliaryOwnerGroups(decoders, model);
+  return { sharedBootChunks: 'pass', sharedBootNegativeControls: rejected };
+}
+
 if (require.main === module) {
   const model = loadAcceptedModel();
-  console.log(JSON.stringify({ ...runTests(model), ...runAuxiliaryTests(model) }));
+  console.log(JSON.stringify({ ...runTests(model), ...runAuxiliaryTests(model), ...runSharedChunkTests() }));
 }
-module.exports = { runTests, runAuxiliaryTests };
+module.exports = { runTests, runAuxiliaryTests, runSharedChunkTests };

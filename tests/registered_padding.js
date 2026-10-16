@@ -4,9 +4,33 @@ const p7=require('../tools/lib/phase7_conventional'),logical=require('../tools/l
 const active=require('../tools/lib/active_targets'),p8=require('../tools/lib/phase8_matching_c'),workbench=require('../tools/lib/matching/target_model');
 const {validateLogicalFunctionCensus}=require('../tools/lib/matching/compiler');
 const clone=v=>JSON.parse(JSON.stringify(v));
+function row581Controls(model,registry,rom){
+ const row=model.rows[581],edge=p7.retainedPaddingSlices(row);
+ assert.equal(row.bytes,240);assert.equal(edge.body.bytes,232);assert.equal(edge.retained.bytes,8);
+ assert.equal(edge.body.sectionName,'.ob64.r0581.s0');
+ const functions=[{symbol:'func_00024C60',offsetNumber:0,bytes:208,binding:'GLOBAL',entryEvidence:'owner'},
+   {symbol:'func_00024D30',offsetNumber:208,bytes:24,binding:'LOCAL',entryEvidence:'fixed-address-call'}];
+ const validate=()=>logical.assertRetainedPaddingProducer(registry,row,'func_00024C60',functions);validate();let controls=0;
+ const reject=fn=>{assert.throws(fn);controls++;validate();};
+ reject(()=>logical.assertRetainedPaddingProducer(registry,row,'func_00024c60',functions));
+ for(const change of [f=>f[1].binding='GLOBAL',f=>f[1].bytes=32,f=>f.push({...f[1],symbol:'padding',offsetNumber:232,bytes:8})]){
+  const f=clone(functions);change(f);reject(()=>logical.assertRetainedPaddingProducer(registry,row,'func_00024C60',f));
+ }
+ const target={symbol:'func_00024C60',row,compilerTextFunctions:functions};
+ reject(()=>active.validateNoActiveLinkSymbolShadows([target],{func_00024C60:0x80094860}));
+ reject(()=>logical.bindPhysicalInterfaces([target],registry,{func_00024c60:0x80094860}));
+ const stale=JSON.parse(fs.readFileSync(logical.CONFIG_PATH));
+ for(const body of stale.bodies.filter(b=>b.romStart>=row.romStart&&b.romEndExclusive<=row.romEndExclusive))for(const f of body.fragments)f.sectionName='.ob64.r0581';
+ reject(()=>logical.loadRegistry(model,rom,stale));
+ for(const change of [c=>c.romStart-=4,c=>c.expectedSha256='0'.repeat(64)]){
+  const cfg=clone(model.config),cut=cfg.retainedPaddingCuts.find(c=>c.rowIndex===581);change(cut);
+  reject(()=>p7.validateRetainedPaddingCuts(cfg,model.semantic.rows,model.parts));
+ }
+ return controls;
+}
 function main(){
  const model=p7.loadAcceptedModel(),rom=fs.readFileSync(path.join(p7.ROOT,'build/baserom.us_rev0.z64'));
- const registry=logical.loadRegistry(model,rom);let controls=0;
+ const registry=logical.loadRegistry(model,rom);let controls=row581Controls(model,registry,rom);
  const reject=(fn,pattern=/retained padding|fragment|placement|coverage|entry/)=>{assert.throws(fn,pattern);controls++;};
  for(const index of [58,2327,2351]){
   const row=model.rows[index],edge=p7.retainedPaddingSlices(row),binding=logical.assertRetainedPaddingProducer(registry,row);
@@ -61,6 +85,6 @@ function main(){
  delete layout.owners.find(r=>r.index===58).slices[1].retainedPaddingId;
  reject(()=>p7.verifyLayoutAgainstModel(model,layout),/slice drift/);
  const legacy=[{name:'ordinary',value:0,size:8,binding:1,visibility:0,symbolType:2}];assert.equal(validateLogicalFunctionCensus(legacy,[{symbol:'ordinary'}],8),8);
- console.log(JSON.stringify({status:'pass',controls,rows:[58,2327,2351],native:false}));return {controls};
+ console.log(JSON.stringify({status:'pass',controls,rows:[58,581,2327,2351],native:false}));return {controls};
 }
-if(require.main===module)main();module.exports={main};
+if(require.main===module)main();module.exports={main,row581Controls};

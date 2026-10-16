@@ -4075,10 +4075,6 @@
       "address": "0x800AF300"
     },
     {
-      "name": "func_00024C60",
-      "address": "0x80094860"
-    },
-    {
       "name": "func_00024E20",
       "address": "0x80094A20"
     },
@@ -6473,6 +6469,178 @@
     {
       "name": "D_800ABAE0",
       "address": "0x800ABAE0"
+    },
+    {
+      "name": "os_virtual_to_physical_000254e0",
+      "address": "0x800950E0"
+    },
+    {
+      "name": "D_800AA760",
+      "address": "0x800AA760"
+    },
+    {
+      "name": "__osDisableInt",
+      "address": "0x800996D0"
+    },
+    {
+      "name": "__osEventStateTab",
+      "address": "0x800E8218"
+    },
+    {
+      "name": "__osRestoreInt",
+      "address": "0x80099740"
+    },
+    {
+      "name": "__osShutdown",
+      "address": "0x800ABACC"
+    },
+    {
+      "name": "__osActiveQueue",
+      "address": "0x800AA79C"
+    },
+    {
+      "name": "__osCleanupThread",
+      "address": "0x800996B8"
+    },
+    {
+      "name": "__osDequeueThread",
+      "address": "0x80094C00"
+    },
+    {
+      "name": "__osEnqueueThread",
+      "address": "0x800994E4"
+    },
+    {
+      "name": "__osRunQueue",
+      "address": "0x800AA798"
+    },
+    {
+      "name": "__osDispatchThread",
+      "address": "0x8009953C"
+    },
+    {
+      "name": "__osBaseCounter",
+      "address": "0x800C4814"
+    },
+    {
+      "name": "__osCurrentTime",
+      "address": "0x800C4C40"
+    },
+    {
+      "name": "osGetCount",
+      "address": "0x8009A6E0"
+    },
+    {
+      "name": "__osInsertTimer",
+      "address": "0x80094FD0"
+    },
+    {
+      "name": "__osSetTimerIntr",
+      "address": "0x80094F70"
+    },
+    {
+      "name": "__osTimerList",
+      "address": "0x800AA7B0"
+    },
+    {
+      "name": "__osSetCompare",
+      "address": "0x8009A700"
+    },
+    {
+      "name": "__osTimerCounter",
+      "address": "0x800E7A10"
+    },
+    {
+      "name": "__osViIntrCount",
+      "address": "0x800C4BA8"
+    },
+    {
+      "name": "__osSpSetPc",
+      "address": "0x8009A770"
+    },
+    {
+      "name": "__OSGlobalIntMask",
+      "address": "0x800ABAD0"
+    },
+    {
+      "name": "D_800AA774",
+      "address": "0x800AA774"
+    },
+    {
+      "name": "D_800AA778",
+      "address": "0x800AA778"
+    },
+    {
+      "name": "D_800AA77C",
+      "address": "0x800AA77C"
+    },
+    {
+      "name": "osCreateThread",
+      "address": "0x80094860"
+    },
+    {
+      "name": "osCreateViManager",
+      "address": "0x80095220"
+    },
+    {
+      "name": "osDpSetNextBuffer",
+      "address": "0x8009A630"
+    },
+    {
+      "name": "osSetEventMesg",
+      "address": "0x80093940"
+    },
+    {
+      "name": "osSetIntMask",
+      "address": "0x8008B820"
+    },
+    {
+      "name": "osSpTaskLoad",
+      "address": "0x80093A00"
+    },
+    {
+      "name": "osSpTaskStartGo",
+      "address": "0x80093C0C"
+    },
+    {
+      "name": "osSpTaskYield",
+      "address": "0x80093C40"
+    },
+    {
+      "name": "osSpTaskYielded",
+      "address": "0x80093C60"
+    },
+    {
+      "name": "osViBlack",
+      "address": "0x80095B30"
+    },
+    {
+      "name": "osViGetCurrentFramebuffer",
+      "address": "0x800951A0"
+    },
+    {
+      "name": "osViGetNextFramebuffer",
+      "address": "0x800951E0"
+    },
+    {
+      "name": "osViModeTable",
+      "address": "0x800AA7E0"
+    },
+    {
+      "name": "osViSetEvent",
+      "address": "0x80095560"
+    },
+    {
+      "name": "osViSetMode",
+      "address": "0x800955C0"
+    },
+    {
+      "name": "osViSwapBuffer",
+      "address": "0x800957D0"
+    },
+    {
+      "name": "osWritebackDCacheAll",
+      "address": "0x800901C0"
     }
   ],
   "targets": [
@@ -16371,10 +16539,6 @@
     },
     {
       "symbol": "func_00012434",
-      "expectedRelocations": []
-    },
-    {
-      "symbol": "func_000242e0",
       "expectedRelocations": []
     },
     {
@@ -89680,22 +89844,7 @@
           "entries": 9,
           "expectedObjectSha256": "2B6D3BB52FCAEF46139C9AE34EA827EDDC83B7AACBEDF977614FCBE59799F2A8",
           "expectedLinkedSha256": "A804295DCAFC0F2C0B6AF0204E7127FECB14B347A46599CDD4B5E381DB737E19",
-          "preservedTail": {
-            "inputSection": ".ob64.r0789.tail",
-            "sectionType": "SHT_PROGBITS",
-            "sectionFlags": [
-              "SHF_ALLOC"
-            ],
-            "alignment": 1,
-            "romStart": "0x0003E70C",
-            "romEndExclusive": "0x0003F1B0",
-            "vramStart": "0x800AE30C",
-            "vramEndExclusive": "0x800AEDB0",
-            "bytes": 2724,
-            "expectedSha256": "118E6134C5D9FECEFA2BB8EF092377819EE30BF3E07B889C84AC3FB7A2E01442",
-            "ownerOriginalAssembly": "asm/original/rev0/lib/rsp_ucode_s2dexd.s",
-            "ownerOriginalAssemblySha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E"
-          },
+          "preservedTail": null,
           "compilerOccurrences": [
             {
               "label": ".L14",
@@ -131313,6 +131462,1180 @@
           "bytes": 4,
           "fillByte": 0,
           "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "os_virtual_to_physical",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000034",
+          "type": "R_MIPS_26",
+          "symbol": "os_virtual_to_physical_000254e0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000003C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 524,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0524",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "functionBytes": 84,
+        "tail": {
+          "ownerRowIndex": 524,
+          "offset": 84,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00023d40",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000020",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000002C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osEventStateTab",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000030",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osEventStateTab",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000004C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osShutdown",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000050",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osShutdown",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000005C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800AA760",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000060",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800AA760",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000074",
+          "type": "R_MIPS_26",
+          "symbol": "osSendMesg",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000080",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800AA760",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000084",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800AA760",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 558,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0558",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 176
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 176
+        },
+        "functionBytes": 172,
+        "tail": {
+          "ownerRowIndex": 558,
+          "offset": 172,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00024C60",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000014",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osCleanupThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000018",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osCleanupThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000009C",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A4",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osActiveQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A8",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osActiveQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B0",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osActiveQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B4",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osActiveQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B8",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D8",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000DC",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        }
+      ],
+      "compilerTextFunctions": [
+        {
+          "symbol": "func_00024C60",
+          "offset": "0x00000000",
+          "bytes": 208,
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        },
+        {
+          "symbol": "func_00024D30",
+          "offset": "0x000000D0",
+          "bytes": 24,
+          "binding": "LOCAL",
+          "entryEvidence": "fixed-address-call"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00024d50",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000018",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000028",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000002C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000003C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000060",
+          "type": "R_MIPS_26",
+          "symbol": "__osDequeueThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000006C",
+          "type": "R_MIPS_26",
+          "symbol": "__osEnqueueThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000074",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000078",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000007C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000080",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000009C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A0",
+          "type": "R_MIPS_26",
+          "symbol": "__osEnqueueAndYield",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A4",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A8",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 582,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0582",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 208
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 208
+        },
+        "functionBytes": 200,
+        "tail": {
+          "ownerRowIndex": 582,
+          "offset": 200,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00024e20",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000014",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000003C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000044",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000058",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000005C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000074",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000078",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_26",
+          "symbol": "__osEnqueueThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000094",
+          "type": "R_MIPS_26",
+          "symbol": "__osPopThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A4",
+          "type": "R_MIPS_26",
+          "symbol": "__osEnqueueThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000AC",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B0",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000BC",
+          "type": "R_MIPS_26",
+          "symbol": "__osDispatchThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000C4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000CC",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D0",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000EC",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F0",
+          "type": "R_MIPS_26",
+          "symbol": "__osEnqueueAndYield",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F4",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F8",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 583,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0583",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 288
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 288
+        },
+        "functionBytes": 280,
+        "tail": {
+          "ownerRowIndex": 583,
+          "offset": 280,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00024f40",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000010",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000048",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000005C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000064",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000068",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000074",
+          "type": "R_MIPS_26",
+          "symbol": "__osEnqueueAndYield",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000007C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000090",
+          "type": "R_MIPS_26",
+          "symbol": "__osDequeueThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000098",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 584,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0584",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 192
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 192
+        },
+        "functionBytes": 180,
+        "tail": {
+          "ownerRowIndex": 584,
+          "offset": 180,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00025000",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000018",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 585,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0585",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 52,
+        "tail": {
+          "ownerRowIndex": 585,
+          "offset": 52,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00025040",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000008",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000010",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000014",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000018",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000001C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000028",
+          "type": "R_MIPS_26",
+          "symbol": "__osEnqueueAndYield",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000030",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 586,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0586",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "functionBytes": 72,
+        "tail": {
+          "ownerRowIndex": 586,
+          "offset": 72,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00025090",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000018",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000020",
+          "type": "R_MIPS_26",
+          "symbol": "osGetCount",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000028",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osBaseCounter",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000002C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osBaseCounter",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000030",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osCurrentTime",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000034",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osCurrentTime",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000038",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osCurrentTime",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000003C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osCurrentTime",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000044",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 587,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0587",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 144
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 144
+        },
+        "functionBytes": 132,
+        "tail": {
+          "ownerRowIndex": 587,
+          "offset": 132,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00025120",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000000",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osCurrentTime",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000004",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osCurrentTime",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000008",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osCurrentTime",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000010",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osCurrentTime",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 588,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0588",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "functionBytes": 20,
+        "tail": {
+          "ownerRowIndex": 588,
+          "offset": 20,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00025140",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000058",
+          "type": "R_MIPS_26",
+          "symbol": "__osInsertTimer",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000060",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osTimerList",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000064",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osTimerList",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000078",
+          "type": "R_MIPS_26",
+          "symbol": "__osSetTimerIntr",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 589,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0589",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "functionBytes": 148,
+        "tail": {
+          "ownerRowIndex": 589,
+          "offset": 148,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00028430",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000008",
+          "type": "R_MIPS_26",
+          "symbol": "__osSpSetPc",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 632,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0632",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "functionBytes": 28,
+        "tail": {
+          "ownerRowIndex": 632,
+          "offset": 28,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "osSetGlobalIntMask",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000000C",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000014",
+          "type": "R_MIPS_HI16",
+          "symbol": "__OSGlobalIntMask",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000018",
+          "type": "R_MIPS_LO16",
+          "symbol": "__OSGlobalIntMask",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000020",
+          "type": "R_MIPS_HI16",
+          "symbol": "__OSGlobalIntMask",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000024",
+          "type": "R_MIPS_LO16",
+          "symbol": "__OSGlobalIntMask",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000028",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "osResetGlobalIntMask",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000000C",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000014",
+          "type": "R_MIPS_HI16",
+          "symbol": "__OSGlobalIntMask",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000018",
+          "type": "R_MIPS_LO16",
+          "symbol": "__OSGlobalIntMask",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000028",
+          "type": "R_MIPS_HI16",
+          "symbol": "__OSGlobalIntMask",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000002C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__OSGlobalIntMask",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000030",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 660,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0660",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "functionBytes": 72,
+        "tail": {
+          "ownerRowIndex": 660,
+          "offset": 72,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_0002adc0",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000010",
+          "type": "R_MIPS_26",
+          "symbol": "__osDisableInt",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000020",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000024",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000028",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_26",
+          "symbol": "__osDequeueThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000048",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osActiveQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000004C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osActiveQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000005C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osActiveQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000060",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000064",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osActiveQueue",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000006C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A4",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A8",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osRunningThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B4",
+          "type": "R_MIPS_26",
+          "symbol": "__osDispatchThread",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000BC",
+          "type": "R_MIPS_26",
+          "symbol": "__osRestoreInt",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 684,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0684",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 224
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 224
+        },
+        "functionBytes": 216,
+        "tail": {
+          "ownerRowIndex": 684,
+          "offset": 216,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
           "origin": "native-assembler-section-alignment"
         }
       }

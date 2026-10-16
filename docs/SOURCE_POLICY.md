@@ -95,8 +95,11 @@ A noninitial fragment may declare its immediately preceding original-ASM interva
 Multiple interiors require separate contracts, with exact original-source identity, bytes, ROM/RAM placement, and explicit empty relocation evidence.
 Accepted placement pairing, alignment and compiler-occurrence restrictions still apply.
 Shared rows require explicit accepted-model context and authentic complete text/data owners.
-Different contributor archive chunks are allowed only in one uniquely accepted non-descriptor
-`loader-dma` slab, with model/config identity, containment and exact ROM/RAM equations.
+Different contributor archive chunks require one uniquely accepted non-descriptor
+`loader-dma` slab with model/config identity, containment and exact ROM/RAM equations, or,
+for ordinary fragments, one uniquely authenticated boot-initialized data slab with every
+complete contributor passing the existing boot text/data pairing check against the actual owner.
+The latter does not extend bundle admission.
 Actual archive chunk identities remain unchanged. Missing context, forged ownership and
 unsupported cross-chunk placement modes reject. Existing same-chunk cases retain their pairing rules.
 Every multi-member row uses explicit full-path C/ASM selectors and exact map order, including
@@ -387,3 +390,16 @@ unchanged. The exact symbol-index mapping and retail placement equation are
 independently reproduced. This is an ELF representation permission, not an
 assembler escape or a source classification exception. No source-authored extra
 symbol, new owner, fabricated padding or additional matching-C bytes is admitted.
+
+### GLOBAL owner-functions with a shared readonly fragment
+
+The distinct `native-text-owner-functions-readonly-fragment-projection` mode preserves the
+complete GLOBAL function census and physical-owner partition, including multiple bodies in one
+owner. Its single ordinary readonly fragment names both the attributed function and containing
+member. Native producer-relative table addends, function-local destinations/references, same-function
+HI16/LO16 pairing and complete assembler/object grammar are authenticated without rewriting compiler
+output. No writable storage or uncontracted section is admitted. Raw, text-projected, projected and
+stripped evidence must replay independently; legacy modes cannot satisfy the new proof schema.
+Shared-row retained ASM remains separately conserved and contributes no matching-C bytes.
+This representation changes no source-class rule: only mechanically classified PURE_C with sole
+linked ownership, exact target bytes and completed full-ROM verification counts as matching C.

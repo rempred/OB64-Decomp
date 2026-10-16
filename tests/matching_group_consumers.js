@@ -36,7 +36,23 @@ async function run(workbench) {
   }
   const separatelyLoaded = require('../tools/lib/active_targets').loadActiveTargetModel().targets;
   const aliases = members.filter(member => resolveWorkbenchActiveTarget(groupedActive,member).symbol !== member.symbol);
-  assert.equal(aliases.length,5,'numeric canonical primaries retain five physical aliases');
+  // Exact physical/canonical pairs from the accepted owner and group registries.
+  // The standalone row581 physical interface is not a compilation-group alias.
+  const expectedAliases = [
+    [48, 'boot_resource_probe_id_check_materialize', 'func_00005760', 'boot_resource_checksum_chain'],
+    [49, 'boot_resource_probe_indexed_record_check', 'func_0000581C', 'boot_resource_checksum_chain'],
+    [50, 'boot_resource_probe_large_record_check', 'func_00005978', 'boot_resource_checksum_chain'],
+    [51, 'boot_resource_probe_small_record_check', 'func_00005A88', 'boot_resource_checksum_chain'],
+    [55, 'boot_resource_probe_record_checksum_signature', 'func_00005D9C', 'boot_resource_checksum_chain'],
+    [565, 'list_insert_head_000241f8', 'func_000241f8', 'thread_scheduler_000240b0'],
+    [566, 'list_remove', 'func_00024250', 'thread_scheduler_000240b0'],
+    [573, 'func_000246c0', 'func_000246C0', 'thread_scheduler_000240b0'],
+  ];
+  const actualAliases = aliases.map(member => {
+    const active = resolveWorkbenchActiveTarget(groupedActive, member);
+    return [member.rowIndex, member.symbol, active.symbol, active.compilationGroup.id];
+  }).sort((a, b) => a[0] - b[0]);
+  assert.deepEqual(actualAliases, expectedAliases, 'complete physical/canonical group alias census');
   for(const target of aliases){const active=resolveWorkbenchActiveTarget(groupedActive,target);
     assert.equal(resolveWorkbenchActiveTarget(groupedActive,{symbol:target.symbol}),active);
     assert.equal(resolveWorkbenchActiveTarget([], {symbol:target.symbol}),null);

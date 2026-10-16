@@ -262,7 +262,7 @@ function assemblerInput(compilerBytes, target, adjust, options = {}) {
     return auxiliaryProjection.assembly(compilerBytes, target, adjust);
   }
   if (target.compilationGroup) {
-    if (auxiliaryProjection.composed(target.compilationGroup)) {
+    if (require("./compilation_groups").readonlyProducer(target.compilationGroup)) {
       if (options.allowAuxiliaryReadOnlySections || options.legalizeCop1BinaryInstructions) fail('composed group scratch allowance');
       auxiliaryProjection.groupGrammar(compilerBytes, target.compilationGroup, adjust);
       return Buffer.from(compilerBytes);
@@ -573,7 +573,7 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
     ...(target.retainedLiteralReferences || target.compilationGroup?.retainedLiteralReferences ? {retainedLiteralReferences:literals.linkedEvidence(target.compilationGroup?literals.groupTarget(target.compilationGroup):target,root,context,objectEvidence)} : {}),
     ...(target.atomicText ? { atomicPhysicalOwners: require('./atomic_owner_union').physicalEvidence(target,elf,true),
       atomicLinkedCensus: auxiliaryProjection.completeObjectCensus(elf) } : {}),
-    ...(require('./compilation_groups').functionMode(target.compilationGroup)
+    ...(require('./compilation_groups').functionOwners(target.compilationGroup)
       ? { fixedBindings: require('./compilation_groups').verifyFixedBindings(target, elf) } : {}), ...(allocation ? { allocation } : {}),
     ...(target.auxiliaryProjection || auxiliaryProjection.composed(target.compilationGroup) ? { auxiliaryProjectionRetained: auxiliaryProjection.linkedEvidence(target, root, context) } : {}), textContractSha256: hash(contract), owners, mapContributions, functions,
     relocations, nonRelocationWordsUnchanged: unchangedWords, tail, fullOwnerExact: owners.every((owner) => owner.rawBytesExact) };

@@ -201,14 +201,41 @@ try {
       assert.throws(() => expectedInteriorReads(prepared), /interior bound/);
     } finally { bound[field] = original; }
   }
-  // Standalone bindings are read once per target; a composed group binds once at member zero.
-  const expectedRetainedProjectionReads = prepared.targets.reduce((count, target) => {
-    const bindings = target.auxiliaryProjection ? target.auxiliaryProjectionRetained
-      : target.groupMemberIndex === 0 && target.compilationGroup?.auxiliary
-        ? target.compilationGroup.auxiliary.retained : [];
+  // Projection bindings belong to standalone projections and composed groups.
+  // Ordinary shared-row fragments retain ASM through their row contracts instead.
+  function retainedProjectionBindings(target) {
+    const projection = require('../tools/lib/auxiliary_projection');
+    let bindings = [];
+    if (target.auxiliaryProjection) bindings = target.auxiliaryProjectionRetained;
+    else if (target.groupMemberIndex === 0 && target.compilationGroup?.auxiliary) {
+      const group = target.compilationGroup;
+      if (projection.composed(group)) bindings = group.auxiliary.retained;
+      else {
+        assert(projection.fragmentMode(group), 'unknown auxiliary producer in source-read census');
+        assert.deepEqual(Object.keys(group.auxiliary).sort(), ['alignmentDirectives', 'compilerLabel', 'sections']);
+        projection.fragmentContract(group);
+      }
+    }
     assert(Array.isArray(bindings), 'returned retained-projection binding census');
-    return count + bindings.length;
-  }, 0);
+    return bindings;
+  }
+  const expectedRetainedProjectionReads = prepared.targets.reduce((count, target) =>
+    count + retainedProjectionBindings(target).length, 0);
+  const fragment = prepared.targets.find(target => target.groupMemberIndex === 0
+    && require('../tools/lib/auxiliary_projection').fragmentMode(target.compilationGroup));
+  assert(fragment, 'nonvacuous ordinary-fragment source-read control');
+  for (const auxiliary of [{ ...fragment.compilationGroup.auxiliary, retained: [] },
+    { ...fragment.compilationGroup.auxiliary, projection: {} }]) {
+    assert.throws(() => retainedProjectionBindings({ ...fragment,
+      compilationGroup: { ...fragment.compilationGroup, auxiliary } }));
+  }
+  assert.throws(() => retainedProjectionBindings({ ...fragment,
+    compilationGroup: { ...fragment.compilationGroup, mode: 'unknown' } }));
+  const composed = prepared.targets.find(target => target.groupMemberIndex === 0
+    && require('../tools/lib/auxiliary_projection').composed(target.compilationGroup));
+  assert(composed, 'nonvacuous composed source-read control');
+  for (const retained of [undefined, null, {}]) assert.throws(() => retainedProjectionBindings({ ...composed,
+    compilationGroup: { ...composed.compilationGroup, auxiliary: { ...composed.compilationGroup.auxiliary, retained } } }));
   assert.equal(readSites.retainedProjection || 0, expectedRetainedProjectionReads,
     'non-authentication retained-projection source reads');
   assert.equal(readSites.other || 0, 0, 'unclassified assembly source reread');

@@ -5,9 +5,9 @@ rom:
   profile: us-rev0
   size: 0x02800000
 semantic_source: config/splat/us_rev0.semantic.json
-accepted_phase5a_product_sha256: 02E621C81403C5EF7CC65EC29EF2ABF01B1ABA2755BB9B45801E94D6D4221BA6
-accepted_phase5a_product_manifest_sha256: F004C4C09D611671935BD0D7927D514EAC1E05C347FBB271A523C424AFDB1D04
-accepted_phase5a_primary_ledger_sha256: 4C76602C42BB287A520EDC71D5A597FF94D8F3066E49EEFBF2502087AE452BBE
+accepted_phase5a_product_sha256: E3CC7C3979988F621A4C620403A26CCAFE6786CFE13D3DF5088F0DC4AC66914D
+accepted_phase5a_product_manifest_sha256: 21919E82453488B0A31BE9C4BE19CC9A32D70FECB3B4D84442C5C0E5DEBBF81E
+accepted_phase5a_primary_ledger_sha256: 999CEDFCBA772C3D57BE6D2D0302A520B2E99458A6DCF9EFCF83E5BA384E388D
 accepted_phase4_overlay_config_sha256: AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B
 primary_row_count: 7242
 unresolved_function_candidate_count: 6154
@@ -6266,9 +6266,9 @@ segments:
     rom_end: 0x00024250
   - index: 566
     primary_id: primary:e86c1af8d23fa92724c2
-    name: p0566_data_original_mips_00024250_000242e0
+    name: p0566_code_original_mips_00024250_000242e0
     source_class: original_mips
-    primary_class: data
+    primary_class: code
     owner_kind: tracked-assembly-part
     processor_class: cpu-or-non-cpu
     ambiguous: false

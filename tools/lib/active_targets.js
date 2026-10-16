@@ -634,12 +634,12 @@ function validateLinkageConfig(linkage, expectedProfile) {
 function validateNoActiveLinkSymbolShadows(targets, linkSymbols, assemblySource = null) {
   const groups = require('./compilation_groups'), defined = new Map();
   for (const target of targets) {
-    const functions = groups.functionMode(target.compilationGroup) ? target.compilerTextFunctions : [{ symbol: target.symbol, binding: 'GLOBAL', offsetNumber: 0 }];
+    const functions = groups.functionOwners(target.compilationGroup) ? target.compilerTextFunctions : [{ symbol: target.symbol, binding: 'GLOBAL', offsetNumber: 0 }];
     for (const fn of functions.filter(fn => fn.binding === 'GLOBAL')) {
       if (defined.has(fn.symbol)) fail('duplicate active GLOBAL function definition: ' + fn.symbol);
       defined.set(fn.symbol, target);
       if (!Object.prototype.hasOwnProperty.call(linkSymbols, fn.symbol)) continue;
-      if (!groups.functionMode(target.compilationGroup)) fail('shared absolute link symbol shadows active target: ' + fn.symbol);
+      if (!groups.functionOwners(target.compilationGroup)) fail('shared absolute link symbol shadows active target: ' + fn.symbol);
       groups.authenticateFunctions(target.compilationGroup, assemblySource);
       const record = target.compilationGroup.fixedBindings.find(r => r.symbol === fn.symbol);
       if (!record || record.kind !== 'native-global' || record.ownerRowIndex !== target.rowIndex
@@ -1067,8 +1067,10 @@ function auxiliaryPlacementPair(model, targetSlice, auxiliarySlice) {
 
 function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
-  const group = auxiliaryProjection.composed(target.compilationGroup) ? target.compilationGroup : null;
-  const attribution = group && group.functions.find(value => value.symbol === target.symbol);
+  const fragment = auxiliaryProjection.fragmentMode(target.compilationGroup);
+  const group = auxiliaryProjection.composed(target.compilationGroup) || fragment ? target.compilationGroup : null;
+  const attribution = group && group.functions.find(value => value.symbol === (fragment ? contracts[0]?.functionSymbol : target.symbol));
+  if (fragment) { auxiliaryProjection.fragmentContract(group); if (contracts.length !== 1 || contracts[0].memberSymbol !== target.symbol || !group.members.find(m=>m.symbol===target.symbol)?.functionSymbols.includes(contracts[0].functionSymbol)) fail("fragment resolver attribution"); }
   if (group && (!attribution || (!auxiliaryProjection.bundle(group) && contracts.some(contract => contract.memberSymbol !== target.symbol)))) fail('group auxiliary attribution mismatch');
   const referenceStart = group ? attribution.offset : 0;
   const referenceEnd = group ? attribution.offset + attribution.bytes : target.bytes;
@@ -1179,7 +1181,7 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
       const occurrence=auxiliaryProjection.bundle(group) && auxiliaryProjection.groupOccurrences(group).find(o=>o.outputSection===contract.outputSection
         && offset>=o.rowOffset && offset+4<=o.rowOffset+o.bytes);
       const attributed=occurrence && group.functions.find(f=>f.symbol===occurrence.memberSymbol);
-      if (!isEntry || (auxiliaryProjection.bundle(group) && addend % 4) || addend < (attributed ? attributed.offset : referenceStart) || addend + 4 > (attributed ? attributed.offset+attributed.bytes : referenceEnd)) {
+      if (!isEntry || ((auxiliaryProjection.bundle(group) || fragment) && addend % 4) || addend < (attributed ? attributed.offset : referenceStart) || addend + 4 > (attributed ? attributed.offset+attributed.bytes : referenceEnd)) {
         fail(`auxiliary local-label relocation is outside its accepted text owner: ${target.symbol} ${contract.outputSection}`);
       }
       objectBytes.writeUInt32BE(addend >>> 0, offset);
@@ -1431,11 +1433,15 @@ function validateAuxiliaryOwnerGroups(targets, model) {
     outputOwners.set(first.outputSection, first.ownerRowIndex);
     const chunks = new Set(members.flatMap(({ target }) => target.textOwners.map(owner => owner.chunkIndex)));
     if (chunks.size > 1) {
-      // Archive chunks are immutable ownership. Only an authenticated loader-DMA slab
-      // proves the new cross-chunk case; equal labels or addresses alone do not.
+      // Keep archive identities immutable. Loader-DMA or the authenticated boot
+      // image must prove every contribution; equal addresses alone do not.
       const slabs = validateNonDescriptorLoadSlabs(model.config, model.overlays);
       if (!sameJson(slabs, model.nonDescriptorLoadSlabs)) fail('shared auxiliary load-slab model/config drift');
       const allSlices = members.flatMap(({ target, auxiliary }) => [...textSlices.get(target), ownerSlices.get(auxiliary)]);
+      const bootMatches = slabs.filter(slab => slab.id === ownerSlices.get(first)?.loadSlabId);
+      const bootPair = bootMatches.length === 1 && bootMatches[0].kind === 'boot-initialized-data'
+        && members.every(({target,auxiliary}) => textSlices.get(target).every(text => bootData.isAuxiliaryPair(model,text,ownerSlices.get(auxiliary))));
+      if (!bootPair) {
       const matches = slabs.filter(slab => slab.id === allSlices[0].loadSlabId);
       if (matches.length !== 1 || matches[0].kind !== 'loader-dma') fail('shared auxiliary cross-chunk load slab is unsupported');
       const slab = matches[0];
@@ -1447,6 +1453,7 @@ function validateAuxiliaryOwnerGroups(targets, model) {
           || slice.vramStart !== slab.vramStart + slice.romStart - slab.romStart
           || slice.vramEndExclusive !== slab.vramStart + slice.romEndExclusive - slab.romStart)) {
         fail('shared auxiliary cross-chunk placement drift');
+      }
       }
     }
     if (members.some(({ auxiliary }) => (
@@ -1524,6 +1531,7 @@ function validateAuxiliaryOwnerGroups(targets, model) {
       fail(`shared auxiliary fragments and tail do not exactly cover accepted owner: ${first.outputSection}`);
     }
   }
+  require("./compilation_groups").finishFragmentBindings(targets);
   return groups;
 }
 

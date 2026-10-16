@@ -948,3 +948,29 @@ Strict verification recreates group artifacts and retains separate member proofs
 The deferred historical storage pilot is not authorized by consultation cutover. Its old
 Mail-based operator-GO protocol cannot be used after cutover; a separately scoped, reviewed
 native authorization correction is required before any pilot execution.
+
+### GLOBAL owner-functions with an ordinary readonly fragment
+
+The distinct compilation-group mode `native-text-owner-functions-readonly-fragment-projection`
+admits a complete GLOBAL function producer across complete physical owners, including multiple
+functions in one owner, with one ordinary shared-row switch-table fragment. Its auxiliary envelope
+names the actual `functionSymbol` and containing `memberSymbol`, compiler table label and
+alignment directives. Every table destination and text reference must belong to that function.
+The complete logical registry, owner/function partitions, native relocation order and cross-function
+HI16/LO16 guards remain mandatory. Activate the complete producer together, with no duplicate
+standalone provider. This mode does not change legacy owner-functions, composed whole-row,
+standalone LOCAL-entry or bundle contracts.
+
+Compiler assembly remains unchanged. Preserve raw, text-projected, projected and stripped objects,
+their complete section/symbol/relocation censuses and deterministic projections. New-mode evidence
+uses text schema12, object schema20 and composition schema7; replay authenticates all artifacts,
+implementation identity, source-policy input, exact linked map/relocations and ordinary retained-row
+custody. Cache hits require the same text-projected intermediate as direct compilation.
+
+Ordinary shared-row contributors from different archive chunks may pair through one uniquely
+authenticated boot-initialized data slab only when the existing boot pairing predicate accepts
+every complete contributing text slice against the actual auxiliary owner. Accepted source/chunk
+identities and model/config agreement remain required. Existing loader-DMA admission and bundle
+rules retain their separate contracts. Replacing an old final table requires removing its tail and
+proving the new interior/final tail; rebuild retained-literal evidence against the resulting interval
+without changing original-ASM literal payloads or their configuration.

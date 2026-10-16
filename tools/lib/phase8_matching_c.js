@@ -1816,7 +1816,7 @@ function relocationRecords(elf, target) {
 }
 
 function auxiliaryRelocationRecords(elf, target, auxiliary) {
-  const auxiliaryTextOwners = auxiliaryProjection.composed(target.compilationGroup)
+  const auxiliaryTextOwners = compilationGroups.readonlyProducer(target.compilationGroup)
     ? target.compilationGroup.owners.map(owner => ({ ...owner, logicalOffset: owner.groupOffset })) : atomic.objectOwners(target);
   const targetSections = auxiliaryTextOwners.map((owner) => {
     const matches = elf.sections.filter((section) => section.name === owner.sectionName);
@@ -2406,7 +2406,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   });
   const ancillary = allRelocations.filter((record) => !loadRelocationSections.has(record.section)
     && !(target.compilationGroup && target.compilationGroup.owners.some(owner => record.section === '.rel' + owner.sectionName))
-    && !(auxiliaryProjection.composed(target.compilationGroup) && target.compilationGroup.auxiliary.sections.some(section => record.section === '.rel' + section.outputSection)));
+    && !(compilationGroups.readonlyProducer(target.compilationGroup) && target.compilationGroup.auxiliary.sections.some(section => record.section === '.rel' + section.outputSection)));
   const basePermittedAdjustment = auxiliaryProofs.length === 0
     ? 'replace the sole .text directive with the accepted target section directive'
     : auxiliaryProofs.some((auxiliary) => Array.isArray(auxiliary.compilerOccurrences))
@@ -3220,7 +3220,7 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
     if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(symbol)) fail('unsafe Phase 8 link alias: ' + symbol);
     const numericValue = parseNumber(value, 'link alias ' + symbol);
     if (aliases.has(symbol) && aliases.get(symbol) !== numericValue) fail('Phase 8 link alias value drift: ' + symbol);
-    const providers = phase8.targets.filter(target => compilationGroups.functionMode(target.compilationGroup)
+    const providers = phase8.targets.filter(target => compilationGroups.functionOwners(target.compilationGroup)
       && target.compilerTextFunctions.some(fn => fn.symbol === symbol && fn.binding === 'GLOBAL'));
     if (providers.length) {
       if (providers.length !== 1) fail('duplicate native fixed alias provider');

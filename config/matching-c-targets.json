@@ -178,7 +178,7 @@
     },
     {
       "symbol": "func_000241f8",
-      "source": "src/lib/list_insert_head_000241f8.c"
+      "compilationGroup": "thread_scheduler_000240b0"
     },
     {
       "symbol": "func_0025CB60",
@@ -282,7 +282,7 @@
     },
     {
       "symbol": "func_000242e0",
-      "source": "src/lib/func_000242e0.c"
+      "compilationGroup": "thread_scheduler_000240b0"
     },
     {
       "symbol": "func_00042714",
@@ -3695,6 +3695,122 @@
     {
       "symbol": "guRotate",
       "compilationGroup": "library_l2_rotate"
+    },
+    {
+      "symbol": "os_virtual_to_physical",
+      "source": "src/lib/os_virtual_to_physical.c"
+    },
+    {
+      "symbol": "func_00023d40",
+      "source": "src/lib/func_00023d40.c"
+    },
+    {
+      "symbol": "func_00024C60",
+      "source": "src/lib/func_00024c60.c"
+    },
+    {
+      "symbol": "func_00024d50",
+      "source": "src/lib/func_00024d50.c"
+    },
+    {
+      "symbol": "func_00024e20",
+      "source": "src/lib/func_00024e20.c"
+    },
+    {
+      "symbol": "func_00024f40",
+      "source": "src/lib/func_00024f40.c"
+    },
+    {
+      "symbol": "func_00025040",
+      "source": "src/lib/func_00025040.c"
+    },
+    {
+      "symbol": "func_00025090",
+      "source": "src/lib/func_00025090.c"
+    },
+    {
+      "symbol": "func_00025120",
+      "source": "src/lib/func_00025120.c"
+    },
+    {
+      "symbol": "func_00025140",
+      "source": "src/lib/func_00025140.c"
+    },
+    {
+      "symbol": "func_000251e0",
+      "compilationGroup": "timer_intr_000251e0"
+    },
+    {
+      "symbol": "func_00025234",
+      "compilationGroup": "timer_intr_000251e0"
+    },
+    {
+      "symbol": "func_00025370",
+      "compilationGroup": "timer_intr_000251e0"
+    },
+    {
+      "symbol": "func_000253d0",
+      "compilationGroup": "timer_intr_000251e0"
+    },
+    {
+      "symbol": "func_00028430",
+      "source": "src/lib/func_00028430.c"
+    },
+    {
+      "symbol": "osSetGlobalIntMask",
+      "source": "src/lib/os_set_global_int_mask_00029b60.c"
+    },
+    {
+      "symbol": "osResetGlobalIntMask",
+      "source": "src/lib/os_reset_global_int_mask_00029ba0.c"
+    },
+    {
+      "symbol": "func_0002adc0",
+      "source": "src/lib/func_0002adc0.c"
+    },
+    {
+      "symbol": "func_000240b0",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_00024250",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_000242e8",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_000243ec",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_000244ec",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_000245dc",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_0002466c",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_000246C0",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_000247a4",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_00024874",
+      "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_000248ac",
+      "compilationGroup": "thread_scheduler_000240b0"
     }
   ]
 }

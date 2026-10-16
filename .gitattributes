@@ -280,3 +280,8 @@ src/lib/mtxcatl_00028740.c -text whitespace=cr-at-eol
 src/lib/mtxxfml_000287c0.c -text whitespace=cr-at-eol
 src/lib/mtxxfmf_00028850.c -text whitespace=cr-at-eol
 src/lib/rotate_00028900.c -text whitespace=cr-at-eol
+
+# Preserve the reviewed L3 scheduler and configuration input bytes.
+src/lib/thread_scheduler_000240b0.c -text whitespace=cr-at-eol
+config/matching-c-targets.json -text
+config/matching-c-linkage.json -text

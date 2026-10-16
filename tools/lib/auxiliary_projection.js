@@ -27,6 +27,7 @@ function entryBytes(segment, auxiliaries) {
 }
 function rowBundle(group) { return ['native-text-readonly-owner-projection','native-text-readonly-interior-run-projection'].includes(group?.mode) && group.auxiliary?.projection?.schemaVersion === 5; }
 function groupContract(group) {
+  if (fragmentMode(group)) return fragmentContract(group);
   if (rowBundle(group)) return bundleContract(group);
   if (!composed(group) || group.auxiliary?.projection?.schemaVersion !== 1) fail('group projection requires version 1');
   if (singleOwner(group)) require('./compilation_groups').singleOwnerContract(group);
@@ -47,7 +48,7 @@ function memberSections(group, symbol) {
   return group.auxiliary.sections.filter(section => (rowBundle(group) ? payloads(group.auxiliary.projection).find(row => row.outputSection === section.outputSection).occurrences[0].memberSymbol : section.memberSymbol) === symbol);
 }
 function assertMemberSections(target) {
-  if (composed(target.compilationGroup) && !same(target.auxiliarySections, memberSections(target.compilationGroup, target.symbol))) fail('group auxiliary attribution census');
+  if ((composed(target.compilationGroup) || fragmentMode(target.compilationGroup)) && !same(target.auxiliarySections, memberSections(target.compilationGroup, target.symbol))) fail('group auxiliary attribution census');
 }
 function normalize(contract, auxiliaries) {
   return normalizeContract(contract, auxiliaries, 2);
@@ -577,6 +578,17 @@ function assertCompleteGroupRows(group) {
   }
 }
 function groupGrammar(compiler, group, adjust) {
+  if (fragmentMode(group)) {
+    const c = fragmentContract(group), a = group.auxiliary.sections[0];
+    adjust(compiler, group.owners[0].sectionName, { auxiliarySections: [{ compilerSection: '.rodata', outputSection: c.segments[0].outputSection, bytes: c.bytes, entries: a.entries }] });
+    const blocks = [...compiler.toString('utf8').matchAll(/^[ \t]*\.section[ \t]+\.rodata[^\r\n]*\r?\n([\s\S]*?)^[ \t]*\.text[ \t]*$/gm)];
+    if (blocks.length !== 1) fail('fragment compiler section census');
+    const lines = blocks[0][1].split(/\r?\n/).map(s=>s.trim()).filter(s=>s && !s.startsWith('#'));
+    const expected = [...group.auxiliary.alignmentDirectives.map(n=>'.align '+n), group.auxiliary.compilerLabel+':'];
+    if (!same(lines.slice(0,expected.length).map(s=>s.replace(/\s+/g,' ')),expected)
+        || lines.length !== expected.length+a.entries || lines.slice(expected.length).some(s=>!/^\.word[ \t]+\.L[0-9]+$/.test(s))) fail('fragment compiler table grammar');
+    return;
+  }
   if (!composed(group)) fail('missing composed producer mode');
   const contract = groupContract(group);
   require('./compilation_groups').interiorGrammar(compiler, group);
@@ -599,12 +611,12 @@ function groupReadonlyNames(group, stage) {
   return ['raw', 'text-projected'].includes(stage) ? ['.rodata'] : group.auxiliary.sections.map(value => value.outputSection);
 }
 function groupCensus(elf, group, stage) {
-  if (!composed(group)) fail('missing composed producer');
+  if (!composed(group) && !fragmentMode(group)) fail('missing composed producer');
   const contract = groupContract(group);
-  assertCompleteGroupRows(group);
+  if (!fragmentMode(group)) assertCompleteGroupRows(group);
   if (contract.bytes > elf.buffer.length) fail('group read-only footprint exceeds object');
   const zeroSegments = contract.segments.filter(value => value.kind === 'zero');
-  if (!Array.isArray(group.auxiliary.retained) || group.auxiliary.retained.length !== zeroSegments.length) fail('group retained binding census');
+  if (!fragmentMode(group) && (!Array.isArray(group.auxiliary.retained) || group.auxiliary.retained.length !== zeroSegments.length)) fail('group retained binding census');
   for (const [index, zero] of zeroSegments.entries()) {
     const record = group.auxiliary.retained[index];
     if (!record || Object.entries(zero).some(([key, value]) => !same(record[key], value))
@@ -631,7 +643,7 @@ function groupCensus(elf, group, stage) {
     Buffer.from(elfSectionBytes(elf, section)).copy(rawBytes, native ? 0 : tables[index].offset);
   }
   if (hash(rawBytes) !== contract.expectedObjectSha256) fail('group native read-only identity');
-  for (const segment of rowBundle(group) ? bundlePadding(group) : contract.segments.filter(value => value.kind === 'zero')) {
+  for (const segment of fragmentMode(group) ? [{ offset: group.auxiliary.sections[0].entries * 4, bytes: group.auxiliary.sections[0].trailingPaddingBytes || 0 }] : rowBundle(group) ? bundlePadding(group) : contract.segments.filter(value => value.kind === 'zero')) {
     if (!rawBytes.subarray(segment.offset, segment.offset + segment.bytes).every(byte => byte === 0)) fail('group native padding');
   }
   const roAnchor = roSections[0];
@@ -655,7 +667,7 @@ function groupCensus(elf, group, stage) {
     places.add(offset);
     const word = rawBytes.readUInt32BE(offset);
     const auxiliary = group.auxiliary.sections.find(value => value.outputSection === table.outputSection);
-    const attributed = group.functions.find(value => value.symbol === (rowBundle(group) ? table.memberSymbol : auxiliary.memberSymbol));
+    const attributed = group.functions.find(value => value.symbol === (fragmentMode(group) ? auxiliary.functionSymbol : rowBundle(group) ? table.memberSymbol : auxiliary.memberSymbol));
     if (word % 4) fail('group table instruction destination alignment');
     if (word < attributed.offset || word + 4 > attributed.offset + attributed.bytes) fail('group table target outside attributed function');
     const expected = auxiliary.expectedRelocations.find(value => Number(value.offset) === offset - tables.find(row => row.outputSection === table.outputSection).offset);
@@ -681,7 +693,7 @@ function groupCensus(elf, group, stage) {
     const destination = elf.sections[relocation.symbol.sectionIndex], destinationOffset = textOffset(destination);
     if (destination?.index === roAnchor.index) {
       const table = occurrences.find(table => addend >= table.offset && addend + 4 <= table.offset + table.bytes);
-      const attributed = table && (rowBundle(group) ? table.memberSymbol : group.auxiliary.sections.find(section => section.outputSection === table.outputSection).memberSymbol);
+      const attributed = table && (fragmentMode(group) ? group.auxiliary.sections[0].functionSymbol : rowBundle(group) ? table.memberSymbol : group.auxiliary.sections.find(section => section.outputSection === table.outputSection).memberSymbol);
       if (relocation.symbol !== anchorSymbol || !table || group.functions[sourceMember(relocation)]?.symbol !== attributed) fail('group auxiliary reference attribution/padding');
       references.push({ ownerOffset: textOffset(relocation.owner), place: relocation.place, type: relocation.type, addend });
     } else if (destinationOffset !== null) {
@@ -739,9 +751,10 @@ function projectGroupReadonly(input, group) {
   const parsed = elfTools.parseRelocatable(input), source = parsed.sections.find(section => section.name === '.rodata');
   const rels = parsed.sections.filter(section => section.type === 9 && section.info === source.index);
   if (rels.length !== 1 || rels[0].name !== '.rel.rodata') fail('group read-only relocation section');
-  const relocation = rels[0], tables = payloads(group.auxiliary.projection);
+  const projection = groupContract(group);
+  const relocation = rels[0], tables = payloads(projection);
   const owners = tables.map(table => ({ sectionName: table.outputSection, bytes: table.bytes,
-    logicalOffset: table.offset, logicalEnd: table.offset + table.bytes, alignment: group.auxiliary.projection.alignment }));
+    logicalOffset: table.offset, logicalEnd: table.offset + table.bytes, alignment: projection.alignment }));
   if (owners.some(owner => parsed.sections.some(section => section.name === owner.sectionName))) fail('group duplicate projected destination');
   const grouped = new Map(owners.map(owner => [owner.sectionName, []]));
   for (let offset = 0; offset < relocation.size; offset += 8) {
@@ -773,6 +786,7 @@ Object.assign(module.exports, { singleOwner, composed, groupContract, memberSect
 // Version 5 is group-only. Physical rows and callable occurrence attribution
 // are independent partitions. Older standalone and composed schemas are unchanged.
 function groupOccurrences(group) {
+  if (fragmentMode(group)) { const c = fragmentContract(group), a = group.auxiliary.sections[0]; return [{ ...c.segments[0], bytes: a.entries * 4, memberSymbol: a.memberSymbol, functionSymbol: a.functionSymbol }]; }
   return payloads(group.auxiliary.projection).flatMap(row => rowBundle(group)
     ? row.occurrences.map(o => ({ ...o, outputSection: row.outputSection, rowOffset: o.offset - row.offset })) : [row]);
 }
@@ -938,3 +952,27 @@ module.exports.validateOccurrenceObject=validateOccurrenceObject;
 module.exports.validateOccurrenceProof=validateOccurrenceProof;
 
 
+
+const fragmentMode = group => group?.mode === 'native-text-owner-functions-readonly-fragment-projection';
+function fragmentContract(group) {
+  if (!fragmentMode(group) || !keys(group.auxiliary, ['sections','compilerLabel','alignmentDirectives'])
+      || !Array.isArray(group.auxiliary.sections) || group.auxiliary.sections.length !== 1
+      || !/^\.L[0-9]+$/.test(group.auxiliary.compilerLabel)
+      || !Array.isArray(group.auxiliary.alignmentDirectives)
+      || !same(group.auxiliary.alignmentDirectives, [Math.log2(group.auxiliary.sections[0]?.alignment),2])) fail('fragment auxiliary envelope');
+  const a = group.auxiliary.sections[0], members = group.members.filter(m => m.symbol === a.memberSymbol), functions = group.functions.filter(f => f.symbol === a.functionSymbol);
+  if (members.length !== 1 || functions.length !== 1 || !members[0].functionSymbols?.includes(a.functionSymbol)
+      || functions[0].binding !== 1 || a.kind !== 'switch-table' || a.compilerSection !== '.rodata'
+      || a.sectionType !== 'SHT_PROGBITS' || !same(a.sectionFlags,['SHF_ALLOC']) || !alignment(a.alignment)
+      || !integer(a.entries,1) || a.bytes !== a.entries*4+(a.trailingPaddingBytes||0)) fail('fragment function/member attribution');
+  return { bytes:a.bytes, alignment:a.alignment, expectedObjectSha256:a.expectedObjectSha256,
+    segments:[{kind:'payload',offset:0,bytes:a.bytes,outputSection:a.outputSection,label:group.auxiliary.compilerLabel,alignmentDirectives:group.auxiliary.alignmentDirectives}] };
+}
+function normalizeFragment(group) {
+  fragmentContract(group);
+  return group.auxiliary.sections.map(({memberSymbol,functionSymbol,...section}) => {
+    if (Object.hasOwn(section,'compilerOccurrences') || Object.hasOwn(section,'sourceObjectPrefix')) fail('fragment requires one ordinary complete compiler table');
+    return {...require('./active_targets').normalizeAuxiliarySectionContracts([section],group.id,'fragment auxiliary')[0],memberSymbol,functionSymbol };
+  });
+}
+Object.assign(module.exports,{fragmentMode,fragmentContract,normalizeFragment});

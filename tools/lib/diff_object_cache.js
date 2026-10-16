@@ -449,7 +449,7 @@ function artifactSpecifications(target) {
   if (physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1) {
     specs.push({ name: 'assembler-object.o', destination: `objects/c/${symbol}.assembler-object.o` });
   }
-  if (auxiliaryProjection.composed(target.compilationGroup)) specs.push({ name: 'text-projected.o', destination: `objects/c/${symbol}.text-projected.o` });
+  if (compilationGroups.readonlyProducer(target.compilationGroup)) specs.push({ name: 'text-projected.o', destination: `objects/c/${symbol}.text-projected.o` });
   if(target.retainedLiteralReferences||target.compilationGroup?.retainedLiteralReferences)specs.push({name:'literal-projected.o',destination:`objects/c/${symbol}.literal-projected.o`},{name:'strip-intermediate.o',destination:`objects/c/${symbol}.strip-intermediate.o`});
   specs.push({ name: 'final.o', destination: `objects/c/${symbol}.o` });
   return specs;
@@ -626,7 +626,7 @@ const ARTIFACT_ROLES = Object.freeze({
 function inspectCompiledTargetArtifacts(options) {
   if (options.target.compilationGroup) {
     const files = options.files;
-    if ((auxiliaryProjection.composed(options.target.compilationGroup)||options.target.compilationGroup.retainedLiteralReferences)
+    if ((compilationGroups.readonlyProducer(options.target.compilationGroup)||options.target.compilationGroup.retainedLiteralReferences)
         && (!files || !sameStringSet(Object.keys(files), artifactSpecifications(options.target).map(spec => spec.name)))) {
       fail('composed group artifact census');
     }
@@ -637,7 +637,7 @@ function inspectCompiledTargetArtifacts(options) {
       assemblerInput: files['adjusted.s'], rawObject: files['source-object.o'],
       strippedObject: files['final.o'], unsplitAssemblerObject: files['assembler-object.o'],
       ...(options.target.compilationGroup.retainedLiteralReferences?{literalProjectedObject:files['literal-projected.o'],stripIntermediateObject:files['strip-intermediate.o']}:{}),
-      ...(auxiliaryProjection.composed(options.target.compilationGroup) ? { textProjectedObject: files['text-projected.o'] } : {}),
+      ...(compilationGroups.readonlyProducer(options.target.compilationGroup) ? { textProjectedObject: files['text-projected.o'] } : {}),
     });
     const input = fs.readFileSync(files['compilation-input.c']);
     if (!input.equals(compilationInputBytes(classification))) fail('group cache compilation input drift');

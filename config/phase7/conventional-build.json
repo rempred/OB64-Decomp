@@ -15,10 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7266,
-    "splitOwners": 24,
+    "linkSlices": 7267,
+    "splitOwners": 25,
     "overlayReservations": 19,
-    "retainedPaddingCuts": 7,
+    "retainedPaddingCuts": 8,
     "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
@@ -173,6 +173,27 @@
           "symbol": "osRecvMesg",
           "binding": "GLOBAL",
           "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row581-terminal",
+      "rowIndex": 581,
+      "romStart": 150856,
+      "romEndExclusive": 150864,
+      "edge": "terminal",
+      "sourceSha256": "55952F60D9717D30387C99850FFE5B29116E590C607EB1AC68AF0B1D80BC08DA",
+      "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00024C60",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        },
+        {
+          "symbol": "func_00024D30",
+          "binding": "LOCAL",
+          "entryEvidence": "fixed-address-call"
         }
       ]
     }
@@ -437,10 +458,10 @@
     "asm/original/rev0/manifest.json": "2726E93A0CF0668C0779825DABF1D19633CC48EE95206AE2E6D154B94A079B93",
     "config/roms/us_rev0.json": "5E9183D5DF1D87D83EEC70E7DCA4BE3F859059B85FF192B8E1317F38B60D0331",
     "config/overlays/us_rev0.json": "AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B",
-    "config/segments/rev0.yaml": "9161DC47F890BB55A44A7B487F2D8AA34BD20080E311F6A247657A1EDAF75856",
-    "config/splat/us_rev0.semantic.json": "6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1",
-    "config/splat/us_rev0.overlay-linker-inputs.json": "180068DFF9AD5AC4B75450E7248955CE3E57F00187675B75B38808A240F2CFA2",
-    "config/splat/us_rev0.yaml": "4A06310B83005E8F6F2986A6CD00B51083F7D6F002F4A7E670B41CCF4D8FFE67",
+    "config/segments/rev0.yaml": "2BB9548022A86BE64400D759B0C78BF2772E667A64FBFA31F3F46719FB30C129",
+    "config/splat/us_rev0.semantic.json": "BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204",
+    "config/splat/us_rev0.overlay-linker-inputs.json": "341F19DA26D4A8F64F1D1F309E4EC47D968746E1B911916052BF64254976AFA0",
+    "config/splat/us_rev0.yaml": "BF017686991ABCFF432A0FF016454BEF82BF1DD924E55963E378C1AEEB6F53C1",
     "config/splat/splat64-0.34.0.lock.json": "FF1669083684AD936B3679C2C8EC6EB4664045D78B88C24CDFAEEB0068B2EB87",
     "config/splat/splat64-0.34.0.provenance.json": "E7F0F6C06DEB58D3C899F39169DDCAD14C56B3CBC3E8EA546886C8A780BC2EFF",
     "config/toolchain.json": "EC642F5AEB318853BE699010E3B2BB43F186EE13C9761B5DB4A668A1BE9D0015",

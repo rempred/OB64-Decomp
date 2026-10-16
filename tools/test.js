@@ -23,6 +23,7 @@ const ROUTINE_TESTS = [
   ['active-model-sources', 'tests/active_model_sources.js'],
   ['compilation-groups', 'tests/compilation_groups.js'],
   ['owner-function-groups', 'tests/owner_function_groups.js'],
+  ['owner-function-readonly-fragments', 'tests/owner_function_readonly_fragments.js'],
   ['auxiliary-interior', 'tests/auxiliary_interior.js'],
   ['auxiliary-projection', 'tests/auxiliary_projection.js'],
   ['auxiliary-occurrence-projection', 'tests/auxiliary_occurrence_projection.js'],

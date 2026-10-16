@@ -111,7 +111,7 @@ At minimum verify:
   ownership through a unique read-only input section rather than `.data` or `.bss`;
 - C switch-table fragments and explicit retained original-ASM intervals completely cover their accepted auxiliary row in address order;
 - shared auxiliary rows re-resolve every complete text/data owner against explicit accepted-model context, retaining actual archive chunk and source identities;
-- cross-chunk contributors share one unique accepted non-descriptor `loader-dma` slab, with model/config agreement, containment and both placement equations; missing context, forged chunks and unsupported cross-chunk placement modes reject;
+- cross-chunk contributors share one unique accepted non-descriptor `loader-dma` slab, with model/config agreement, containment and both placement equations; ordinary fragments may instead use one uniquely authenticated boot-initialized data slab only when every complete contributor passes the existing boot pairing check against the actual auxiliary owner; bundle admission is unchanged, and missing context, forged chunks and unsupported placement modes reject;
 - every multi-member auxiliary row has explicit full-path C/ASM linker selectors and exact map contribution order, including rows without interiors and reversed manifest/response-file order; recorded-script checks reject residual wildcards independently of byte equality;
 - auxiliary coverage removes the original row contribution once, retains its authenticated fallback, and leaves no gap, overlap, or duplicate tail;
 - only the first auxiliary fragment may retain an exterior prefix, and only the final fragment may retain the exterior tail;
@@ -351,3 +351,22 @@ sole per-slice ownership, independent fresh compilation and complete-ROM gates.
 ## Retained compiler literals and native single-owner tails
 
 Declared retained literal references require complete source/native/projected/stripped evidence, unchanged instruction and relocation records, exact literal payload equality, and unique existing original-ASM storage in an accepted boot-initialized slab. The compiler duplicate section is omitted only after these proofs. Final linkable anchors are LOCAL NOTYPE ABS; pinned strip normalization is independently reproduced before its one-byte type correction. Group pair sets remain within one existing owner and retain full merged relocation order. Native single-owner tail schema2 keeps the complete original text, function and minimal zero-tail census; schema1 pins remain unchanged. Neither mechanism changes source policy, permits writable literal storage, or establishes matching acceptance without fresh compilation, exact full ROM and the complete-wave structural audit.
+
+### GLOBAL owner-functions and ordinary readonly fragments
+
+For `native-text-owner-functions-readonly-fragment-projection`, audit the complete GLOBAL
+function/physical-owner partitions, including every body in a multi-function owner, all-member
+activation and absence of duplicate standalone providers. Require one ordinary table explicitly
+attributed to its actual function and containing owner; all references/destinations stay within
+that function. Preserve native HI16/LO16 ordering and cross-function rejection.
+
+Require untouched compiler assembly, complete object grammar/censuses, deterministic raw to
+text-projected to projected to stripped replay, and independent exact linked evidence for every
+owner. Text schema12, object schema20 and composition schema7 authenticate current implementation,
+source-policy input and all intermediates. Exercise missing/extra/stale/tampered cache artifacts,
+legacy-schema rejection, attribution/relocation/padding mutations and fixed-provider collisions.
+Prove the complete shared auxiliary row, map order and original retained bytes. A former final
+fragment has no tail after a later fragment is admitted. Rebuild every affected retained-literal
+binding against the new containing interval/model while preserving literal bytes and configuration.
+Private fixture evidence does not replace fresh compilation, changed-input structural audit,
+canonical complete-ROM/ownership/source-class gates or independent installed-code review.
