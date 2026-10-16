@@ -19,6 +19,7 @@ const ROUTINE_TESTS = [
   ['local-tools', 'tests/local_tools.js'],
   ['active-targets', 'tests/active_targets.js'],
   ['registered-fixed-entry', 'tests/registered_fixed_entry.js'],
+  ['retained-literal-contract', 'tests/retained_literal_contract.js'],
   ['active-model-sources', 'tests/active_model_sources.js'],
   ['compilation-groups', 'tests/compilation_groups.js'],
   ['owner-function-groups', 'tests/owner_function_groups.js'],

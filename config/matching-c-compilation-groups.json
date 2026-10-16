@@ -14000,6 +14000,1335 @@
           ]
         }
       }
+    },
+    {
+      "id": "library_l2_lookathil",
+      "source": "src/lib/lookathil_00021450.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00021450",
+          "ownerRowIndex": 530
+        },
+        {
+          "symbol": "func_00021dd4",
+          "ownerRowIndex": 531
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 2656,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "DEE0D26D4343B5CAC46C6EF29EEA98294444F7A0179FCA2FE1AAF8A51009BC92"
+      },
+      "functions": [
+        {
+          "symbol": "func_00021450",
+          "offset": 0,
+          "bytes": 2436,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00021dd4",
+          "offset": 2436,
+          "bytes": 212,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 2648,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 104,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 204,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 216,
+          "type": 5,
+          "symbol": "D_800AE910",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 220,
+          "type": 6,
+          "symbol": "D_800AE910",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3558866944
+        },
+        {
+          "offset": 416,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 424,
+          "type": 5,
+          "symbol": "D_800AE918",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 428,
+          "type": 6,
+          "symbol": "D_800AE918",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3560570880
+        },
+        {
+          "offset": 624,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 732,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 880,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 892,
+          "type": 5,
+          "symbol": "D_800AE920",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 896,
+          "type": 6,
+          "symbol": "D_800AE920",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3558866944
+        },
+        {
+          "offset": 1120,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218018
+        },
+        {
+          "offset": 1224,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1232,
+          "type": 5,
+          "symbol": "D_800AE928",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 1236,
+          "type": 6,
+          "symbol": "D_800AE928",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3560570880
+        },
+        {
+          "offset": 1376,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1388,
+          "type": 5,
+          "symbol": "D_800AE930",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 1392,
+          "type": 6,
+          "symbol": "D_800AE930",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3558866944
+        },
+        {
+          "offset": 1616,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218142
+        },
+        {
+          "offset": 1776,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218175
+        },
+        {
+          "offset": 1848,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218193
+        },
+        {
+          "offset": 1916,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218210
+        },
+        {
+          "offset": 1988,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218228
+        },
+        {
+          "offset": 2060,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218247
+        },
+        {
+          "offset": 2596,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326592
+        },
+        {
+          "offset": 2608,
+          "type": 4,
+          "symbol": "guMtxF2L",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "library_l2_ortho",
+      "source": "src/lib/ortho_000224a0.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_000224a0",
+          "ownerRowIndex": 534
+        },
+        {
+          "symbol": "func_000225d0",
+          "ownerRowIndex": 535
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 640,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "4B0ABB34EA599C5732F894F3CFE3783896A5F1202F5FE9E85D2DDDA1619FFF20"
+      },
+      "functions": [
+        {
+          "symbol": "func_000224a0",
+          "offset": 0,
+          "bytes": 304,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_000225d0",
+          "offset": 304,
+          "bytes": 332,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 636,
+        "bytes": 4,
+        "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 68,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 384,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 580,
+          "type": 4,
+          "symbol": "guMtxF2L",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "library_l2_position",
+      "source": "src/lib/position_00022aa0.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00022aa0",
+          "ownerRowIndex": 538
+        },
+        {
+          "symbol": "func_00022c78",
+          "ownerRowIndex": 539
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 960,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "924B5D7FD6FD155DD7F8954F9898A1B41B9418A9A0BB012F0B624E1C16FCEE79"
+      },
+      "functions": [
+        {
+          "symbol": "func_00022aa0",
+          "offset": 0,
+          "bytes": 472,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00022c78",
+          "offset": 472,
+          "bytes": 480,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 952,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 0,
+          "type": 5,
+          "symbol": "D_800AA730",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 4,
+          "type": 6,
+          "symbol": "D_800AA730",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 80,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 96,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 108,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 120,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 132,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 144,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 472,
+          "type": 5,
+          "symbol": "D_800AA730",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 476,
+          "type": 6,
+          "symbol": "D_800AA730",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 560,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 572,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 584,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 596,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 612,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 628,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 900,
+          "type": 4,
+          "symbol": "guMtxF2L",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "library_l2_rotaterpy",
+      "source": "src/lib/rotaterpy_00022e90.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00022e90",
+          "ownerRowIndex": 541
+        },
+        {
+          "symbol": "func_00023018",
+          "ownerRowIndex": 542
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 800,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "B788603AAF852858AF9E96A1EC53786E5AD7E64B12F3E8ECE50F45FDB4BE712F"
+      },
+      "functions": [
+        {
+          "symbol": "func_00022e90",
+          "offset": 0,
+          "bytes": 392,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00023018",
+          "offset": 392,
+          "bytes": 396,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 788,
+        "bytes": 12,
+        "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 0,
+          "type": 5,
+          "symbol": "D_800AA750",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 4,
+          "type": 6,
+          "symbol": "D_800AA750",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 76,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 92,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 104,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 116,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 128,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 140,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 152,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 392,
+          "type": 5,
+          "symbol": "D_800AA750",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 396,
+          "type": 6,
+          "symbol": "D_800AA750",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 476,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 488,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 500,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 512,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 528,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 544,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 560,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 736,
+          "type": 4,
+          "symbol": "guMtxF2L",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "library_l2_rotate",
+      "source": "src/lib/rotate_00028900.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00028900",
+          "ownerRowIndex": 638
+        },
+        {
+          "symbol": "guRotate",
+          "ownerRowIndex": 639
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 736,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "818CA8C7814ED967DF727419E6E5CF036AA3EC6587D4E4015D29D79951A54E33"
+      },
+      "functions": [
+        {
+          "symbol": "func_00028900",
+          "offset": 0,
+          "bytes": 352,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "guRotate",
+          "offset": 352,
+          "bytes": 376,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 728,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 60,
+          "type": 4,
+          "symbol": "guNormalize",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 68,
+          "type": 5,
+          "symbol": "D_800ABAE0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 72,
+          "type": 6,
+          "symbol": "D_800ABAE0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 80,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 92,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 160,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 424,
+          "type": 4,
+          "symbol": "guNormalize",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 432,
+          "type": 5,
+          "symbol": "D_800ABAE0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 436,
+          "type": 6,
+          "symbol": "D_800ABAE0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 444,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 456,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 528,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 676,
+          "type": 4,
+          "symbol": "guMtxF2L",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "library_l2_lookatref",
+      "source": "src/lib/lookatref_00021eb0.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00021eb0",
+          "ownerRowIndex": 532
+        },
+        {
+          "symbol": "func_00022428",
+          "ownerRowIndex": 533
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 1520,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "769F714CC7CE5658155FF5228F6278425EEC6B0784F71572E159ABBA8874CD6A"
+      },
+      "functions": [
+        {
+          "symbol": "func_00021eb0",
+          "offset": 0,
+          "bytes": 1400,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00022428",
+          "offset": 1400,
+          "bytes": 108,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 1508,
+        "bytes": 12,
+        "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 104,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 232,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 244,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 248,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 3558866944
+        },
+        {
+          "offset": 424,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 432,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 436,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 2352349192
+        },
+        {
+          "offset": 440,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 2352414732
+        },
+        {
+          "offset": 600,
+          "type": 4,
+          "symbol": "sqrtf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 696,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217905
+        },
+        {
+          "offset": 764,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217922
+        },
+        {
+          "offset": 832,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217939
+        },
+        {
+          "offset": 900,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217956
+        },
+        {
+          "offset": 968,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217973
+        },
+        {
+          "offset": 1040,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217992
+        },
+        {
+          "offset": 1472,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326592
+        },
+        {
+          "offset": 1484,
+          "type": 4,
+          "symbol": "guMtxF2L",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ],
+      "retainedLiteralReferences": {
+        "schemaVersion": 1,
+        "compilerSection": ".rodata",
+        "bytes": 16,
+        "alignment": 16,
+        "expectedPayloadSha256": "E75FC878EB75F0737F7B1083F115366CCC159A9F8BD5358C2C79110D9BDEF00B",
+        "ownerRowIndex": 789,
+        "romStart": 257344
+      }
+    },
+    {
+      "id": "library_l2_perspective",
+      "source": "src/lib/perspective_00022720.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00022720",
+          "ownerRowIndex": 536
+        },
+        {
+          "symbol": "func_000228d0",
+          "ownerRowIndex": 537
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 896,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "F6981EBA7FB93E61217519A8B2918A082C77EC6F019C8EA7127F4F9BC64803C6"
+      },
+      "functions": [
+        {
+          "symbol": "func_00022720",
+          "offset": 0,
+          "bytes": 432,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_000228d0",
+          "offset": 432,
+          "bytes": 456,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 888,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 64,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 72,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 76,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 3558998016
+        },
+        {
+          "offset": 104,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 116,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 256,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 260,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 3558866952
+        },
+        {
+          "offset": 288,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 292,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 3558866960
+        },
+        {
+          "offset": 300,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 304,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 3558866968
+        },
+        {
+          "offset": 340,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217820
+        },
+        {
+          "offset": 504,
+          "type": 4,
+          "symbol": "guMtxIdentF",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 512,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 516,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 3558866976
+        },
+        {
+          "offset": 544,
+          "type": 4,
+          "symbol": "func_00020bf0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 556,
+          "type": 4,
+          "symbol": "sinf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 696,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 700,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 3558866984
+        },
+        {
+          "offset": 728,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 732,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 3558866992
+        },
+        {
+          "offset": 740,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 744,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 3558867000
+        },
+        {
+          "offset": 780,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217930
+        },
+        {
+          "offset": 836,
+          "type": 4,
+          "symbol": "guMtxF2L",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ],
+      "retainedLiteralReferences": {
+        "schemaVersion": 1,
+        "compilerSection": ".rodata",
+        "bytes": 64,
+        "alignment": 16,
+        "expectedPayloadSha256": "062F233EFD962CCD45ABF10816428919F2810B00A354E276858F5F483B3D083B",
+        "ownerRowIndex": 789,
+        "romStart": 257360
+      }
     }
   ]
 }

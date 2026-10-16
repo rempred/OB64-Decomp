@@ -10,6 +10,7 @@ const textContract = require('./text_contract');
 const preparedLink = require('./prepared_link_view');
 const { targetStage } = require('./verification_profile');
 const auxiliaryProjection = require('./auxiliary_projection');
+const literals = require('./retained_literal_references');
 const compilationGroups = require('./compilation_groups');
 const atomic = require('./atomic_owner_union');
 const {
@@ -1925,7 +1926,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   const linkedAssembly = path.join(generatedRoot, target.symbol + '.s');
   const objectFile = path.join(objectRoot, target.symbol + '.o');
   const proofObjectFile = path.join(objectRoot, target.symbol + '.source-object.o');
-  const assemblerObjectFile = physicalInterface(target) || target.auxiliaryProjection || targetTextOwners(target).length > 1
+  const assemblerObjectFile = physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || targetTextOwners(target).length > 1
     ? path.join(objectRoot, target.symbol + '.assembler-object.o')
     : proofObjectFile;
   const sourceRelative = safeRelative(target.source, 'target source');
@@ -1960,11 +1961,18 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   ], { cwd: output });
 
   let splitResult = null;
+  let literalProjection = null;
+  if (target.retainedLiteralReferences) {
+    literalProjection = literals.projectComplete(fs.readFileSync(assemblerObjectFile), target);
+    fs.writeFileSync(path.join(objectRoot, target.symbol + '.literal-projected.o'), literalProjection.referenceProjected);
+    fs.writeFileSync(proofObjectFile, literalProjection.buffer);
+    splitResult = literalProjection.splitResult || null;
+  }
   if(physicalInterface(target)) fs.writeFileSync(proofObjectFile,projectPhysicalInterface(fs.readFileSync(assemblerObjectFile),target).buffer);
   if (target.auxiliaryProjection) {
     fs.writeFileSync(proofObjectFile, (target.atomicText ? atomic : auxiliaryProjection).project(fs.readFileSync(assemblerObjectFile), target).buffer);
   }
-  if (!target.atomicText && targetTextOwners(target).length > 1) {
+  if (!target.retainedLiteralReferences && !target.atomicText && targetTextOwners(target).length > 1) {
     splitResult = splitRelocatableTextSection(
       fs.readFileSync(assemblerObjectFile),
       target.sectionName,
@@ -2081,8 +2089,12 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     '--remove-section=.comment',
     '--remove-section=.note',
     normalizePath(path.relative(output, proofObjectFile)),
-    normalizePath(path.relative(output, objectFile)),
+    normalizePath(path.relative(output, target.retainedLiteralReferences ? path.join(objectRoot, target.symbol + '.strip-intermediate.o') : objectFile)),
   ], { cwd: output });
+  if (target.retainedLiteralReferences) {
+    const intermediate = fs.readFileSync(path.join(objectRoot, target.symbol + '.strip-intermediate.o'));
+    fs.writeFileSync(objectFile, literals.correctStrip(fs.readFileSync(proofObjectFile), intermediate, target, literalProjection.evidence).buffer);
+  }
   if (acceptedAuxiliarySections.some((auxiliary) => auxiliary.sourceObjectPrefix)) {
     const selection = selectAuxiliarySourceObjectPrefixes(fs.readFileSync(objectFile), target);
     if (selection.selections.length !== acceptedAuxiliarySections.filter((auxiliary) => (
@@ -2150,8 +2162,8 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     objectSha256: sha256File(objectFile),
     proofObjectRelative: compilationGroups.objectPath(target, '.source-object.o'),
     proofObjectSha256: sha256File(proofObjectFile),
-    assemblerObjectRelative: physicalInterface(target) || target.auxiliaryProjection || splitResult ? compilationGroups.objectPath(target, '.assembler-object.o') : null,
-    assemblerObjectSha256: physicalInterface(target) || target.auxiliaryProjection || splitResult ? sha256File(assemblerObjectFile) : null,
+    assemblerObjectRelative: physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || splitResult ? compilationGroups.objectPath(target, '.assembler-object.o') : null,
+    assemblerObjectSha256: physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || splitResult ? sha256File(assemblerObjectFile) : null,
     compilerAssemblyRelative: compilationGroups.assemblyPath(target),
     compilerAssemblySha256: sha256File(compilerAssembly),
     linkedAssemblyRelative: compilationGroups.assemblyPath(target, '.s'),
@@ -2216,7 +2228,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   const sectionArtifact = fileIdentity(output, sectionRelative, 'section-adjusted assembly');
   const objectArtifact = fileIdentity(output, objectRelative, 'matching C object');
   const linkedObjectArtifact = fileIdentity(output, linkedObjectRelative, 'linked matching C object');
-  const assemblerRelative = physicalInterface(target) || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1
+  const assemblerRelative = physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1
     ? compilationGroups.objectPath(target, '.assembler-object.o')
     : null;
   const assemblerArtifact = assemblerRelative
@@ -2232,7 +2244,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   }
 
   if (assemblerArtifact) {
-    const reproduced = physicalInterface(target) ? projectPhysicalInterface(fs.readFileSync(resolveRelative(output,assemblerRelative,'native interface assembler object')),target) : target.auxiliaryProjection ? (target.atomicText ? atomic : auxiliaryProjection).project(
+    const reproduced = target.retainedLiteralReferences ? literals.projectComplete(fs.readFileSync(resolveRelative(output, assemblerRelative, 'literal native object')), target) : physicalInterface(target) ? projectPhysicalInterface(fs.readFileSync(resolveRelative(output,assemblerRelative,'native interface assembler object')),target) : target.auxiliaryProjection ? (target.atomicText ? atomic : auxiliaryProjection).project(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'native auxiliary assembler object')), target)
       : target.compilationGroup ? compilationGroups.project(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'native assembler object')), target.compilationGroup)
@@ -2408,6 +2420,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     kind: 'ob64-source-to-object-load-evidence',
     target: {
       ...(target.auxiliaryProjection ? { auxiliaryProjection: target.auxiliaryProjection } : {}),
+      ...(target.retainedLiteralReferences ? { retainedLiteralReferences: target.retainedLiteralReferences } : {}),
       symbol: target.symbol,
       sectionName: target.sectionName,
       ownerSections: targetTextOwners(target).map((owner) => owner.sectionName),
@@ -2573,6 +2586,7 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
   compilationGroups.validateComposedProof(actual);
 
   atomic.validateProof(actual);
+  literals.validateProof(actual);
   const projected = actual.target.auxiliaryProjection;
   const projectionEvidence = actual.objectEvidence.auxiliaryProjection;
   if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || [4, 6, 8, 17].includes(actual.objectEvidence.schemaVersion)) {

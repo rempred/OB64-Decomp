@@ -263,6 +263,7 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       'tools/lib/auxiliary_interior.js',
       'tools/lib/auxiliary_projection.js',
       'tools/lib/text_contract.js',
+      'tools/lib/retained_literal_references.js',
       'tools/lib/prepared_link_view.js',
       'tools/lib/elf_text_split.js',
       'tools/lib/atomic_owner_union.js',

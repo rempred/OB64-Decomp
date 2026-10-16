@@ -1,5 +1,6 @@
 'use strict';
 const auxiliaryProjection = require('./auxiliary_projection');
+const literals = require('./retained_literal_references');
 const preparedLink = require('./prepared_link_view');
 
 const fs = require('fs');
@@ -48,9 +49,10 @@ function withObjectArtifactSnapshot(target, root, artifactFiles, callback) {
     assemblerInput: 'generated/c/' + symbol + '.s',
     rawObject: 'objects/c/' + symbol + '.source-object.o',
     strippedObject: 'objects/c/' + symbol + '.o',
-    unsplitAssemblerObject: physicalInterface(target) || target.auxiliaryProjection || textOwners(target).length > 1
+    unsplitAssemblerObject: physicalInterface(target) || target.auxiliaryProjection || target.retainedLiteralReferences || textOwners(target).length > 1
       ? 'objects/c/' + symbol + '.assembler-object.o' : null,
   };
+  if(target.retainedLiteralReferences){paths.literalProjectedObject='objects/c/'+symbol+'.literal-projected.o';paths.stripIntermediateObject='objects/c/'+symbol+'.strip-intermediate.o';}
   const artifacts = {}, buffers = {};
   const { confinedArtifactContents } = require('./current_workflow');
   for (const [role, relative] of Object.entries(paths)) {
@@ -96,6 +98,19 @@ function nativeDescriptor() {
 function normalizeNativeTextTail(value, symbol) {
   if (value === undefined) return null;
   const expected = nativeDescriptor();
+  if (value?.schemaVersion === 2) {
+    const bytes=value.inputShape?.bytes,body=value.functionBytes,tail=value.tail;
+    if(!exactKeys(value,Object.keys(expected))||!exactKeys(value.inputShape,Object.keys(NATIVE_SHAPE))
+      ||!exactKeys(value.outputShape,Object.keys(NATIVE_SHAPE))||!exactKeys(tail,Object.keys(expected.tail))
+      ||!Number.isSafeInteger(value.ownerRowIndex)||value.ownerRowIndex<0||value.inputSection!=='.text'
+      ||value.outputSection!=='.ob64.r'+String(value.ownerRowIndex).padStart(4,'0')
+      ||!Number.isSafeInteger(body)||body<=0||body%4||!Number.isSafeInteger(bytes)||bytes!==Math.ceil(body/16)*16
+      ||![4,8,12].includes(bytes-body)||!same(value.inputShape,{type:1,flags:6,alignment:16,bytes})
+      ||!same(value.outputShape,value.inputShape)
+      ||!same(tail,{ownerRowIndex:value.ownerRowIndex,offset:body,bytes:bytes-body,fillByte:0,
+        sha256:sha256Buffer(Buffer.alloc(bytes-body)),origin:'native-assembler-section-alignment'}))fail('malformed native schema2 descriptor');
+    return structuredClone(value);
+  }
   if (symbol !== NATIVE_SYMBOL || !exactKeys(value, Object.keys(expected))
       || !exactKeys(value.inputShape, Object.keys(NATIVE_SHAPE))
       || !exactKeys(value.outputShape, Object.keys(NATIVE_SHAPE))
@@ -117,7 +132,7 @@ function resolveTextContract(target) {
   if (target.compilationGroup) return require('./compilation_groups').contract(target);
   const native = target.nativeTextTail ? normalizeNativeTextTail(target.nativeTextTail, target.symbol) : null;
   const owners = textOwners(target);
-  if (native && (owners.length !== 1 || target.rowIndex !== 3806 || target.sectionName !== native.outputSection
+  if (native?.schemaVersion === 1 && (owners.length !== 1 || target.rowIndex !== 3806 || target.sectionName !== native.outputSection
       || target.bytes !== 1136 || target.romStartNumber !== 0x204A70 || target.romEndNumber !== 0x204EE0
       || target.vramStartNumber !== 0x801C15E0 || (target.auxiliarySections || []).length !== 0
       || owners[0].rowIndex !== 3806 || owners[0].bytes !== 1136 || owners[0].logicalOffset !== 0
@@ -127,8 +142,24 @@ function resolveTextContract(target) {
       || target.expectedTextSha256 !== '0720D5C20E46D217D6F4E8003699170F64C505364375AF6FC6B6E9F05C77D4F4')) {
     fail('native descriptor does not bind the accepted owner');
   }
+  if(native?.schemaVersion===2){
+    const row=target.model?.rows.find(r=>r.index===native.ownerRowIndex),owner=owners[0],slice=row?.slices?.[0];
+    if(!row||target.row!==row||row.retainedPadding||row.slices.length!==1||!slice.executable
+      ||owners.length!==1||target.compilationGroup||target.atomicText||target.auxiliaryProjection||physicalInterface(target)
+      ||target.multiOwnerContract||(target.auxiliarySections||[]).length||target.rowIndex!==row.index
+      ||owner.rowIndex!==row.index||owner.logicalOffset!==0||target.primaryId!==row.primaryId
+      ||target.sectionName!==slice.sectionName||native.outputSection!==slice.sectionName
+      ||target.bytes!==row.bytes||owner.bytes!==row.bytes||native.inputShape.bytes!==row.bytes
+      ||target.romStartNumber!==row.romStart||target.romEndNumber!==row.romEndExclusive
+      ||target.vramStartNumber!==slice.vramStart||owner.vramStartNumber!==slice.vramStart
+      ||owner.romStartNumber!==row.romStart||owner.romEndNumber!==row.romEndExclusive
+      ||owner.sectionName!==slice.sectionName||target.originalAssemblySha256!==row.part?.sha256
+      ||owner.originalAssemblySha256!==row.part?.sha256)fail('native schema2 accepted owner binding');
+  }
   return {
-    schemaVersion: physicalInterface(target) ? 2 : 1, mode: physicalInterface(target) ? 'native-with-derived-physical-interface' : native ? 'native-text-tail' : 'section-assigned',
+    ...(native?.schemaVersion===2 ? {nativeTextTailSchemaVersion:2} : {}),
+    ...(target.retainedLiteralReferences ? {retainedLiteralReferences:target.retainedLiteralReferences,retainedLiteralBinding:target.retainedLiteralBinding,literalImplementationSha256:sha256File(require.resolve('./retained_literal_references'))} : {}),
+    schemaVersion: target.retainedLiteralReferences ? 3 : physicalInterface(target) ? 2 : 1, mode: physicalInterface(target) ? 'native-with-derived-physical-interface' : native ? 'native-text-tail' : 'section-assigned',
     ...(physicalInterface(target)?{physicalInterface:{...physicalInterface(target),implementationSha256:sha256File(require.resolve('./elf_text_split'))}}:{}),
     owners: owners.map((owner) => ({
       rowIndex: owner.rowIndex, primaryId: owner.primaryId, logicalOffset: owner.logicalOffset,
@@ -140,7 +171,7 @@ function resolveTextContract(target) {
       expectedInputShape: { type: 1, flags: 6, alignment: native ? 16 : null, bytes: owner.bytes },
       expectedOutputShape: { type: 1, flags: 6, alignment: native ? 16 : null, bytes: owner.bytes },
     })),
-    compilerTextFunctions: native ? [{ symbol: target.symbol, offset: 0, bytes: 1132, binding: 1, symbolType: 2, visibility: 0 }]
+    compilerTextFunctions: native ? [{ symbol: target.symbol, offset: 0, bytes: native.functionBytes, binding: 1, symbolType: 2, visibility: 0 }]
       : (target.compilerTextFunctions || []).map((record) => ({
         symbol: record.symbol, offset: record.offsetNumber, bytes: record.bytes,
         binding: record.binding === 'LOCAL' ? 0 : 1, symbolType: 2, visibility: 0,
@@ -300,6 +331,51 @@ function nativeObjectAllocationEvidence(elf, allowReginfo = true) {
   return { commonSymbols, writableSections: writableSections.map(section => ({ sectionName: section.name, ...shape(section) })) };
 }
 
+// Schema2 admits a complete native function plus only its assembler alignment.
+// Run against every object stage; the literal raw stage has its own allocation
+// contract, but never receives an exception to this text/function census.
+function nativeSingleOwnerCensus(elf,target){
+  if(target.nativeTextTail?.schemaVersion!==2)return null;
+  const d=target.nativeTextTail,text=elf.sections.filter(s=>s.name==='.text');
+  if(text.length!==1)fail('native schema2 text census');const section=text[0];
+  if(!same(shape(section),d.inputShape)||section.address)fail('native schema2 text shape');
+  const functions=functionCensus(elf,[section]);
+  if(elf.symbols.filter(s=>s.symbolType===2).length!==1||!same(functions,[{symbol:target.symbol,offset:0,bytes:d.functionBytes,binding:1,symbolType:2,visibility:0}]))fail('native schema2 function census');
+  let markers=0;
+  for(const s of elf.symbols.filter(s=>s.sectionIndex===section.index)){
+    if(s.symbolType===2)continue;
+    const marker=s.name==='gcc2_compiled.'&&s.symbolType===1&&s.binding===0&&s.value===0&&s.size===0&&s.visibility===0;
+    if(marker){markers++;continue;}
+    if(s.symbolType!==3||s.name!==''||s.binding||s.value||s.size||s.visibility)fail('native schema2 unexpected text symbol');
+  }
+  if(markers!==1||elf.symbols.filter(s=>s.name==='gcc2_compiled.').length!==1)fail('native schema2 compiler marker');
+  const bytes=Buffer.from(elfSectionBytes(elf,section)),pending=new Map(),relocations=[];
+  for(const r of elf.sections.filter(s=>s.type===9||s.type===4)){
+    if(r.type!==9||r.entrySize!==8||r.size%8)fail('native schema2 REL shape');
+    for(let i=0;i<r.size;i+=8){const off=elf.buffer.readUInt32BE(r.offset+i),info=elf.buffer.readUInt32BE(r.offset+i+4),type=info&255;
+      const sym=elf.symbols.find(s=>s.symbolTableIndex===r.link&&s.symbolIndex===(info>>>8)),owner=elf.sections[r.info];
+      if(!sym||!owner||off%4||off+4>owner.size)fail('native schema2 REL bounds');
+      if(owner.index===section.index&&off+4>d.functionBytes)fail('native schema2 tail relocation');
+      if(sym.sectionIndex!==section.index)continue;
+      const word=elf.buffer.readUInt32BE(owner.offset+off),key=r.index+':'+(info>>>8);
+      const check=addend=>{const dest=(sym.value+addend)>>>0;if(dest%4||dest+4>d.functionBytes)fail('native schema2 reference outside function');};
+      if(type===4)check((word&0x03ffffff)*4);
+      else if(type===2)check(word);
+      else if(type===5){if(!pending.has(key))pending.set(key,[]);pending.get(key).push(word);}
+      else if(type===6){if(!pending.has(key))fail('native schema2 unpaired text LO');for(const hi of pending.get(key))check((((hi&65535)<<16)+(word<<16>>16))>>>0);pending.delete(key);}
+      else fail('native schema2 unsupported text reference');
+      relocations.push({section:r.name,offset:off,type});
+    }
+  }
+  if(pending.size)fail('native schema2 unpaired text HI');
+  for(let off=0;off<d.functionBytes;off+=4){const word=bytes.readUInt32BE(off),op=word>>>26;
+    if([1,4,5,6,7,20,21,22,23].includes(op)||([16,17,18].includes(op)&&((word>>>21)&31)===8)){const dest=off+4+(word<<16>>16)*4;if(dest<0||dest+4>d.functionBytes)fail('native schema2 branch outside function');}
+  }
+  if(!bytes.subarray(d.functionBytes).equals(Buffer.alloc(d.tail.bytes)))fail('native schema2 nonzero tail');
+  return {schemaVersion:2,functions,textSha256:sha256Buffer(bytes),tail:{...d.tail},textReferences:relocations};
+}
+
+
 function nativeLinkedAllocationEvidence(target, elf, mapText) {
   const model = require('./atomic_owner_union').outputModel(target.model);
   if (!model || !Array.isArray(model.slices) || !Array.isArray(model.overlays)) fail('native linked allocation model missing');
@@ -356,7 +432,7 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const contract = resolveTextContract(target), native = Boolean(target.nativeTextTail);
   // Projection also authenticates retained model bindings; leave that uncommon
   // path fresh rather than memoizing a partial projection/model contract.
-  const memoKey = objectMemo && !physicalInterface(target) && !target.auxiliaryProjection
+  const memoKey = objectMemo && !physicalInterface(target) && !target.auxiliaryProjection && !target.retainedLiteralReferences
     ? hash({ target: require('./diff_object_cache').projectTargetContract(target), contract, artifacts }) : null;
   if (memoKey && objectMemo.has(memoKey)) return objectMemo.get(memoKey);
   const { adjustSectionAssembly, relocationRecords, rawRelocationRecords } = require('./phase8_matching_c');
@@ -380,6 +456,11 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
       nativeFunctions:functionCensus(nativeElf,nativeElf.sections.filter(s=>s.name===target.sectionName)),
       nativeRelocations:rawRelocationRecords(nativeElf),nativeSymbolCount:result.nativeSymbolCount,interfaceSymbolIndex:result.interfaceSymbolIndex};
   }
+  let literalEvidence=null;
+  if(target.retainedLiteralReferences){
+    literalEvidence=literals.derive(target,null,{native:files.unsplitAssemblerObject,reference:files.literalProjectedObject,source:files.rawObject,intermediate:files.stripIntermediateObject,final:files.strippedObject});
+    for(const [role,bytes] of Object.entries(buffers))if(!fs.readFileSync(files[role]).equals(bytes))fail('literal snapshot input changed');
+  }
   let projectionEvidence = null;
   if (target.auxiliaryProjection) {
     const result = target.atomicText ? require('./atomic_owner_union').project(buffers.unsplitAssemblerObject, target)
@@ -388,6 +469,7 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
     projectionEvidence = result.evidence;
   }
   const allocation = native ? { raw: nativeObjectAllocationEvidence(raw), stripped: nativeObjectAllocationEvidence(stripped, false) } : null;
+  const nativeSingleOwner = native && target.nativeTextTail.schemaVersion===2 ? {raw:nativeSingleOwnerCensus(raw,target),stripped:nativeSingleOwnerCensus(stripped,target)} : null;
   const rawOwners = ownerEvidence(raw, contract), strippedOwners = ownerEvidence(stripped, contract);
   if (!same(rawOwners.map((r) => r.record), strippedOwners.map((r) => r.record))) fail('ancillary removal changed owners');
   const rawFunctions = functionCensus(raw, rawOwners.map((r) => r.section)), strippedFunctions = functionCensus(stripped, strippedOwners.map((r) => r.section));
@@ -400,8 +482,10 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const loadSections = new Set([...contract.owners.map((owner) => '.rel' + owner.inputSection), ...(target.auxiliarySections || []).map((section) => '.rel' + section.outputSection)]);
   const tail = tailEvidence(contract, rawOwners, normalizedRelocations);
   tailEvidence(contract, strippedOwners, normalizedRelocations);
-  const evidence = { schemaVersion: physicalEvidence ? 16 : target.atomicText ? 11 : projectionEvidence ? (projectionEvidence.schemaVersion === 6 ? 17 : projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
+  const evidence = { schemaVersion: literalEvidence ? 18 : physicalEvidence ? 16 : target.atomicText ? 11 : projectionEvidence ? (projectionEvidence.schemaVersion === 6 ? 17 : projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
     ...(target.atomicText ? {atomicUnion:require('./atomic_owner_union').evidence(target,buffers,artifacts,files)} : {}),
+    ...(nativeSingleOwner ? {nativeSingleOwner} : {}),
+    ...(literalEvidence ? {retainedLiteralReferences:literalEvidence} : {}),
     ...(physicalEvidence ? {physicalInterface:physicalEvidence,rawObjectRole:'derived-physical-interface',nativeArtifactRole:'unsplitAssemblerObject'} : {}),
     ...(projectionEvidence ? { auxiliaryProjection: projectionEvidence } : {}), textContractSha256: hash(contract), artifacts,
     rawOwners: rawOwners.map((r) => r.record), strippedOwners: strippedOwners.map((r) => r.record), rawFunctions, strippedFunctions,
@@ -486,6 +570,7 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
       expectedWord: retailBytes.readUInt32BE(offset), linkedWordExact: linkedBytes.readUInt32BE(offset) === retailBytes.readUInt32BE(offset) };
   });
   const result = { schemaVersion: target.nativeTextTail ? 2 : 1,
+    ...(target.retainedLiteralReferences || target.compilationGroup?.retainedLiteralReferences ? {retainedLiteralReferences:literals.linkedEvidence(target.compilationGroup?literals.groupTarget(target.compilationGroup):target,root,context,objectEvidence)} : {}),
     ...(target.atomicText ? { atomicPhysicalOwners: require('./atomic_owner_union').physicalEvidence(target,elf,true),
       atomicLinkedCensus: auxiliaryProjection.completeObjectCensus(elf) } : {}),
     ...(require('./compilation_groups').functionMode(target.compilationGroup)
@@ -511,7 +596,7 @@ function validateRecords(record, expected, label) {
   }
 }
 
-module.exports = { NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SHA256, exactKeys, same, hash, nativeDescriptor,
+module.exports = { nativeSingleOwnerCensus, NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SHA256, exactKeys, same, hash, nativeDescriptor,
   withObjectEvidenceMemo, objectInputs,
   withObjectArtifactSnapshot, objectArtifactBytes, deriveObjectEvidenceFromSnapshot,
   normalizeNativeTextTail, resolveTextContract, resolveWorkbenchActiveTarget, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,

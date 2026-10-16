@@ -4,7 +4,10 @@
   "targets": [
     {
       "symbol": "func_002A0EF0",
-      "ownerRows": [5366, 5367],
+      "ownerRows": [
+        5366,
+        5367
+      ],
       "romStart": "0x002A0EF0",
       "romEndExclusive": "0x002A135C",
       "vramStart": "0x802316C0",
@@ -13,7 +16,10 @@
     },
     {
       "symbol": "func_0021D374",
-      "ownerRows": [4047, 4048],
+      "ownerRows": [
+        4047,
+        4048
+      ],
       "romStart": "0x0021D374",
       "romEndExclusive": "0x0021D450",
       "vramStart": "0x801DA0A4",
@@ -67,6 +73,18 @@
       "vramStart": "0x801DC720",
       "vramEndExclusive": "0x801DC910",
       "expectedTextSha256": "561D5F8131F3AB21312AECA28E057687B4599424E7507A0FC1D94636861CFF65"
+    },
+    {
+      "symbol": "func_00020d40",
+      "ownerRows": [
+        527,
+        528
+      ],
+      "romStart": "0x00020D40",
+      "romEndExclusive": "0x000210C0",
+      "vramStart": "0x80090940",
+      "vramEndExclusive": "0x80090CC0",
+      "expectedTextSha256": "2090419948D5E918C90A20D8AF02EA85BAE42AB4E52B26E78659C279BE8E748A"
     }
   ]
 }

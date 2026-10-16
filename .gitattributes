@@ -259,3 +259,24 @@ tests/single_owner_auxiliary_projection.js -text whitespace=cr-at-eol
 tests/registered_padding_aliases.js -text whitespace=cr-at-eol
 tools/lib/logical_functions.js -text whitespace=cr-at-eol
 src/lib/osCreateMesgQueue.c -text whitespace=cr-at-eol,-blank-at-eof
+
+# Preserve the independently reviewed L2 source and tooling bytes.
+tests/retained_literal_contract.js -text whitespace=cr-at-eol
+tools/lib/diff_object_cache.js -text whitespace=cr-at-eol
+tools/lib/elf_text_split.js -text whitespace=cr-at-eol
+tools/lib/retained_literal_references.js -text whitespace=cr-at-eol
+src/lib/cosf_00020bf0.c -text whitespace=cr-at-eol
+src/lib/lookat_f_00020d40.c -text whitespace=cr-at-eol
+src/lib/lookat_000210c0.c -text whitespace=cr-at-eol
+src/lib/lookathil_00021450.c -text whitespace=cr-at-eol,-blank-at-eof
+src/lib/lookatref_00021eb0.c -text whitespace=cr-at-eol
+src/lib/ortho_000224a0.c -text whitespace=cr-at-eol
+src/lib/perspective_00022720.c -text whitespace=cr-at-eol,-blank-at-eof
+src/lib/position_00022aa0.c -text whitespace=cr-at-eol
+src/lib/random_00022e60.c -text whitespace=cr-at-eol
+src/lib/rotaterpy_00022e90.c -text whitespace=cr-at-eol
+src/lib/sinf_000231b0.c -text whitespace=cr-at-eol
+src/lib/mtxcatl_00028740.c -text whitespace=cr-at-eol
+src/lib/mtxxfml_000287c0.c -text whitespace=cr-at-eol
+src/lib/mtxxfmf_00028850.c -text whitespace=cr-at-eol
+src/lib/rotate_00028900.c -text whitespace=cr-at-eol

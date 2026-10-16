@@ -1,5 +1,6 @@
 'use strict';
 const auxiliaryProjection = require('./auxiliary_projection');
+const literals = require('./retained_literal_references');
 const bootData = require('./boot_initialized_data');
 
 const fs = require('fs');
@@ -46,7 +47,7 @@ function exactKeys(value, expected) {
     && sameJson(Object.keys(value).sort(), [...expected].sort());
 }
 
-function normalizeRelocationRecords(records, targetSymbol, label) {
+function normalizeRelocationRecords(records, targetSymbol, label, literalContract = null) {
   if (!Array.isArray(records)) fail(`${label} is not an array`);
   const offsets = new Set();
   let previousOffset = -1;
@@ -55,7 +56,7 @@ function normalizeRelocationRecords(records, targetSymbol, label) {
         || typeof record.offset !== 'string' || !/^0x[0-9A-F]{8}$/.test(record.offset)
         || Number.parseInt(record.offset.slice(2), 16) % 4 !== 0
         || !LOAD_RELOCATION_TYPES.has(record.type)
-        || typeof record.symbol !== 'string' || !SAFE_LINK_SYMBOL.test(record.symbol)
+        || typeof record.symbol !== 'string' || (!SAFE_LINK_SYMBOL.test(record.symbol) && !(literalContract && record.symbol === '' && ['R_MIPS_HI16','R_MIPS_LO16'].includes(record.type)))
         || record.section !== '.rel.text') {
       fail(`${label} record ${index} is malformed`);
     }
@@ -585,6 +586,7 @@ function validateLinkageConfig(linkage, expectedProfile) {
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'compilerTextFunctions') ? ['compilerTextFunctions'] : []),
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliarySections') ? ['auxiliarySections'] : []),
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'nativeTextTail') ? ['nativeTextTail'] : []),
+      ...(entry && Object.prototype.hasOwnProperty.call(entry, 'retainedLiteralReferences') ? ['retainedLiteralReferences'] : []),
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliaryProjection') ? ['auxiliaryProjection'] : []),
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'atomicText') ? ['atomicText'] : []),
     ];
@@ -594,6 +596,7 @@ function validateLinkageConfig(linkage, expectedProfile) {
     }
     const key = entry.symbol.toLowerCase();
     if (targets.has(key)) fail(`matching-C linkage target is duplicated: ${entry.symbol}`);
+    const literalContract = literals.normalize(entry.retainedLiteralReferences);
     const nativeTextTail = normalizeNativeTextTail(entry.nativeTextTail, entry.symbol);
     const atomicText = require('./atomic_owner_union').normalize(entry.atomicText);
     if (nativeTextTail && (entry.compilerTextFunctions !== undefined || entry.auxiliarySections !== undefined)) {
@@ -609,11 +612,13 @@ function validateLinkageConfig(linkage, expectedProfile) {
       ...(projection ? { auxiliaryProjection: projection } : {}),
       ...(atomicText ? { atomicText } : {}),
       symbol: entry.symbol,
+      ...(literalContract ? { retainedLiteralReferences: literalContract } : {}),
       nativeTextTail,
       expectedRelocations: normalizeRelocationRecords(
         entry.expectedRelocations,
         entry.symbol,
         `matching-C linkage target ${entry.symbol}`,
+        literalContract,
       ),
       compilerTextFunctions: normalizeCompilerTextFunctions(
         entry.compilerTextFunctions,
@@ -656,6 +661,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
     // the frozen legacy list remains fallback evidence, not a second current contract.
     return {
       expectedRelocations: canonicalTarget.expectedRelocations,
+      ...(canonicalTarget.retainedLiteralReferences ? { retainedLiteralReferences: canonicalTarget.retainedLiteralReferences } : {}),
       compilerTextFunctions: canonicalTarget.compilerTextFunctions,
       nativeTextTail: canonicalTarget.nativeTextTail,
       auxiliarySections: canonicalTarget.auxiliarySections,
@@ -850,7 +856,7 @@ function resolveCompilerTextFunctions(target, records) {
     resolveTextContract(target);
     if (records.length !== 0) fail('native text cannot have additional compiler functions');
     return [{ symbol: target.symbol, offset: '0x00000000', offsetNumber: 0,
-      bytes: 1132, binding: 'GLOBAL', entryEvidence: 'owner' }];
+      bytes: target.nativeTextTail.functionBytes, binding: 'GLOBAL', entryEvidence: 'owner' }];
   }
   const resolved = records.length === 0 ? [{
     symbol: target.symbol,
@@ -1776,6 +1782,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       descriptorRawSha256: descriptor ? descriptor.rawSha256 : null,
       expectedTextSha256,
       expectedRelocations: relocationContract.expectedRelocations,
+      ...(relocationContract.retainedLiteralReferences ? { retainedLiteralReferences: relocationContract.retainedLiteralReferences } : {}),
       nativeTextTail: relocationContract.nativeTextTail || null,
       compilerTextFunctionsExplicit: Boolean(relocationContract.nativeTextTail) || relocationContract.compilerTextFunctions.length > 0,
       compilerTextFunctions: [],
@@ -1880,6 +1887,10 @@ function loadActiveTargetModelInternal(options, deferFinish) {
     }
   }
   validateAuxiliaryOwnerGroups(targets, model);
+  for (const target of targets) literals.bind(target, targets, model, baserom, assemblySource);
+  literals.bindGroups(targets,model,baserom,assemblySource);
+  const literalIntervals = [...targets.filter(t => t.retainedLiteralReferences).map(t => t.retainedLiteralReferences),...[...new Set(targets.map(t=>t.compilationGroup).filter(g=>g?.retainedLiteralReferences))].map(g=>g.retainedLiteralReferences)].sort((a,b) => a.romStart-b.romStart);
+  for (let i=1;i<literalIntervals.length;i++) if(literalIntervals[i].romStart < literalIntervals[i-1].romStart+literalIntervals[i-1].bytes) fail('overlapping retained literal bindings');
   auxiliaryProjection.validateCensus(targets, assemblySource);
   const phase8 = {
     config: { ...minimal, compiler: legacy.compiler },

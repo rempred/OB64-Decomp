@@ -1,4 +1,5 @@
 'use strict';
+const literals = require('./retained_literal_references');
 
 // Compilation producers own artifacts; members retain accepted function ownership.
 const fs = require('fs');
@@ -126,13 +127,14 @@ function normalizeAuxiliary(group) {
 function validateNativeRelocationOrder(group) {
   if (!Array.isArray(group.relocations) || !Array.isArray(group.functions) || !group.functions.length) fail('relocation census');
   const end = group.functions.at(-1).offset + group.functions.at(-1).bytes;
+  const literalSets=literals.registryGroups(group),literalFirstLos=new Set(literalSets.filter(s=>s.los.length===2).map(s=>s.los[0]));
   const places = new Set(), pending = new Map();
   let previousOwner = -1, previousFunction = -1;
   for (const relocation of group.relocations) {
     requireKeys(relocation, ['offset', 'type', 'symbol', 'symbolValue', 'symbolSection', 'word'], 'relocation');
     if (!integer(relocation.offset) || relocation.offset % 4 || places.has(relocation.offset) || relocation.offset + 4 > end
         || ![4, 5, 6].includes(relocation.type) || typeof relocation.symbol !== 'string' || !SAFE_SYMBOL.test(relocation.symbol)
-        || !integer(relocation.symbolValue) || !['.text', 'UND', 'ABS', ...(auxiliary.composed(group) ? ['.rodata'] : [])].includes(relocation.symbolSection)
+        || !integer(relocation.symbolValue) || !['.text', 'UND', 'ABS', ...(auxiliary.composed(group)||group.retainedLiteralReferences ? ['.rodata'] : [])].includes(relocation.symbolSection)
         || !integer(relocation.word) || relocation.word > 0xffffffff) fail('relocation contract or duplicate place');
     places.add(relocation.offset);
     const fnIndex = group.functions.findIndex(fn => relocation.offset >= fn.offset && relocation.offset + 4 <= fn.offset + fn.bytes);
@@ -159,7 +161,7 @@ function validateNativeRelocationOrder(group) {
         const destination = relocation.symbolValue + addend;
         if (destination % 4 || !group.functions.some(fn => destination >= fn.offset && destination + 4 <= fn.offset + fn.bytes)) fail('native function HI/LO reference into tail/outside body');
       }
-      pending.delete(key);
+      if(!literalFirstLos.has(relocation.offset))pending.delete(key);
     }
   }
   if (pending.size) fail('native relocation has unmatched HI16');
@@ -170,7 +172,7 @@ function registry(config, profile) {
   const ids = new Set(), symbols = new Set(), sources = new Set();
   for (const group of config.groups) {
     requireKeys(group, ['id', 'source', 'mode', 'members', 'text', 'functions', 'tail', 'relocations',
-      ...(auxiliary.composed(group) ? ['auxiliary'] : []), ...(interior(group) ? ['interiorRun'] : [])], 'producer');
+      ...(group.retainedLiteralReferences ? ['retainedLiteralReferences'] : []), ...(auxiliary.composed(group) ? ['auxiliary'] : []), ...(interior(group) ? ['interiorRun'] : [])], 'producer');
     if(interior(group)) interiorContract(group);
     if (auxiliary.composed(group)) {
       requireKeys(group.auxiliary, ['sections', 'projection'], 'auxiliary producer');
@@ -207,6 +209,7 @@ function registry(config, profile) {
     if (group.tail.offset !== end || !integer(group.tail.bytes) || group.tail.bytes !== Math.ceil(end / group.text.alignment) * group.text.alignment - end
         || end + group.tail.bytes !== group.text.bytes || group.tail.origin !== (interior(group) ? 'native-subset-artifact' : 'native-assembler-section-alignment')
         || group.tail.sha256 !== sha256Buffer(Buffer.alloc(group.tail.bytes))) fail('native tail contract');
+    if(group.retainedLiteralReferences)literals.registryGroups(group);
     validateNativeRelocationOrder(group);
   }
   return config.groups;
@@ -295,13 +298,14 @@ function relocations(elf) {
   }
   return result;
 }
-function allocation(elf, group, stage) {
+function allocation(elf, group, stage, literalStage = null) {
   const names = new Set();
   for (const sec of elf.sections) { if (sec.name && names.has(sec.name)) fail('duplicate section'); names.add(sec.name); }
   const projected = stage !== 'raw', stripped = stage === 'stripped';
   const textNames = projected ? group.owners.map(owner => owner.sectionName) : ['.text'];
   const roNames = auxiliary.composed(group) ? auxiliary.groupReadonlyNames(group, stage) : [];
   for (const sec of elf.sections.filter(value => value.flags & (auxiliary.singleOwner(group) ? 7 : 3))) {
+    if(literalStage&&stage==='raw'&&sec.name==='.rodata'&&sec.index===literalStage.proof.raw.sections.find(s=>s.name==='.rodata').index)continue;
     if (textNames.includes(sec.name) || roNames.includes(sec.name)) continue;
     if (sec.name === '.reginfo' && !stripped) continue;
     if (['.data', '.bss'].includes(sec.name) && sec.size === 0 && sec.flags === 3 && sec.address === 0
@@ -320,7 +324,7 @@ function allocation(elf, group, stage) {
       || relocations(elf).some(rel => rel.symbol.sectionIndex === reg.index)) fail('reginfo relocation reference');
   return { ...REGINFO, sha256: sha256Buffer(elfSectionBytes(elf, reg)) };
 }
-function census(elf, group, stage) {
+function census(elf, group, stage, literalStage = null) {
   const raw = stage === 'raw';
   const sections = raw ? [section(elf, '.text')] : group.owners.map(owner => section(elf, owner.sectionName));
   const all = [];
@@ -356,6 +360,10 @@ function census(elf, group, stage) {
   const records = relocations(elf).filter(rel => sections.some(sec => sec.index === rel.owner.index)).map(rel => {
     const ownerOffset = offsetOf(rel.owner), offset = ownerOffset + rel.place;
     if (![4, 5, 6].includes(rel.type) || rel.place % 4 || rel.place + 4 > rel.owner.size || offset + 4 > group.tail.offset) fail('load relocation place/type');
+    if(literalStage&&literalStage.places.has(offset)){
+      if(rel.symbol.symbolIndex!==literalStage.anchor.symbolIndex||rel.symbol.symbolTableIndex!==literalStage.anchor.symbolTableIndex)fail('group literal reference anchor drift');
+      return {offset,type:rel.type,symbol:'.rodata',symbolValue:0,symbolSection:'.rodata',word:bytes.readUInt32BE(offset)};
+    }
     const destination = elf.sections[rel.symbol.sectionIndex];
     const destOffset = destination && offsetOf(destination);
     const roAnchor = auxiliary.composed(group) && destination?.name === auxiliary.groupReadonlyNames(group, stage)[0];
@@ -375,14 +383,17 @@ function validateObject(elf, group, stage) {
   validateNativeRelocationOrder(group);
   if (![...['raw', 'projected', 'stripped'], ...(auxiliary.composed(group) ? ['text-projected'] : [])].includes(stage) || elf.header.type !== 1 || elf.header.machine !== 8
       || elf.header.entry !== 0 || elf.header.phoff !== 0 || elf.header.phnum !== 0) fail('relocatable object header/stage');
+  const literalStage=group.retainedLiteralReferences?literals.groupStage(elf.buffer,group,stage):null;
   return { schemaVersion: 1, stage, groupSha256: hash(group), objectFlags: elf.header.flags,
-    metadata: allocation(elf, group, stage), ...census(elf, group, stage),
+    metadata: allocation(elf, group, stage, literalStage), ...census(elf, group, stage, literalStage),
+    ...(literalStage?{retainedLiteralCensus:literals.census(elf.buffer)}:{}),
     ...(interior(group) ? { interiorText: interiorObject(elf,group,stage) } : {}),
     ...(auxiliary.composed(group) ? { auxiliary: auxiliary.groupCensus(elf, group, stage), completeCensus: auxiliary.completeObjectCensus(elf) } : functionMode(group) ? { completeCensus: auxiliary.completeObjectCensus(elf) } : {}) };
 }
 function project(input, group) {
   const raw = parseBuffer(input), rawEvidence = validateObject(raw, group, 'raw');
-  const result = projectNativeTextOwners(interior(group) ? trimInterior(input,group) : input, group.owners.map(owner => ({ sectionName: owner.sectionName, bytes: owner.bytes })),
+  const literalProjection=group.retainedLiteralReferences?literals.groupProject(input,group):null;
+  const result = literalProjection || projectNativeTextOwners(interior(group) ? trimInterior(input,group) : input, group.owners.map(owner => ({ sectionName: owner.sectionName, bytes: owner.bytes })),
     auxiliary.singleOwner(group) ? group.mode : null);
   if (auxiliary.composed(group)) {
     const intermediate = validateObject(parseBuffer(result.buffer), group, 'text-projected');
@@ -421,7 +432,7 @@ function contract(target) {
   auxiliary.assertMemberSections(target);
   const tc = require('./text_contract'), group = target.compilationGroup, owner = group.owners[target.groupMemberIndex];
   const ordinary = tc.resolveTextContract({ ...target, compilationGroup: null });
-  return { ...ordinary, schemaVersion: interior(group) ? 9 : auxiliary.bundle(group) ? 8 : auxiliary.singleOwner(group) ? 6 : functionMode(group) ? 5 : auxiliary.composed(group) ? 4 : 2,
+  return { ...ordinary, ...(group.retainedLiteralReferences?{retainedLiteralReferences:group.retainedLiteralReferences,retainedLiteralBinding:group.retainedLiteralBinding,literalImplementationSha256:require('./phase7_conventional').sha256File(require.resolve('./retained_literal_references'))}:{}), schemaVersion: interior(group) ? 9 : auxiliary.bundle(group) ? 8 : auxiliary.singleOwner(group) ? 6 : functionMode(group) ? 5 : auxiliary.composed(group) ? 4 : 2,
     ...(functionMode(group) || auxiliary.singleOwner(group) ? { tail: target.groupMemberIndex === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null } : {}), mode: group.mode, producer: group,
     memberIndex: target.groupMemberIndex,
     ...(auxiliary.bundle(group) ? { memberOccurrences: auxiliary.groupOccurrences(group).filter(o=>o.memberSymbol===target.symbol) } : {}),
@@ -437,6 +448,7 @@ function evidence(target, root, files = null) {
     compilerAssembly: artifact('compilerAssembly', assemblyPath(target)), assemblerInput: artifact('assemblerInput', assemblyPath(target, '.s')),
     rawObject: artifact('rawObject', objectPath(target, '.source-object.o')), strippedObject: artifact('strippedObject', objectPath(target)),
     unsplitAssemblerObject: artifact('unsplitAssemblerObject', objectPath(target, '.assembler-object.o')),
+    ...(group.retainedLiteralReferences ? {literalProjectedObject:artifact('literalProjectedObject',objectPath(target,'.literal-projected.o')),stripIntermediateObject:artifact('stripIntermediateObject',objectPath(target,'.strip-intermediate.o'))}:{}),
     ...(auxiliary.composed(group) ? { textProjectedObject: artifact('textProjectedObject', objectPath(target, '.text-projected.o')) } : {}) };
   const read = role => fs.readFileSync(files ? files[role] : path.join(root, artifacts[role].path));
   const compiler = read('compilerAssembly');
@@ -456,6 +468,7 @@ function evidence(target, root, files = null) {
   if (!same(stages.raw.metadata, stages.projected.metadata)) fail('projection metadata drift');
   // Independently inspect both objects in addition to deterministic writer replay.
   if (!reproduction.buffer.equals(projected.buffer)) fail('projection is not reproducible');
+  const literalEvidence=group.retainedLiteralReferences?literals.derive(literals.groupTarget(group),root,{native:files?files.unsplitAssemblerObject:path.join(root,artifacts.unsplitAssemblerObject.path),reference:files?files.literalProjectedObject:path.join(root,artifacts.literalProjectedObject.path),source:files?files.rawObject:path.join(root,artifacts.rawObject.path),intermediate:files?files.stripIntermediateObject:path.join(root,artifacts.stripIntermediateObject.path),final:files?files.strippedObject:path.join(root,artifacts.strippedObject.path)}):null;
   const memberContract = contract(target), rawOwners = tc.ownerEvidence(projected, memberContract), strippedOwners = tc.ownerEvidence(stripped, memberContract);
   if (!same(rawOwners.map(value => value.record), strippedOwners.map(value => value.record))) fail('strip changed owner');
   const normalizedRelocations = memberRelocations(target, projected);
@@ -464,7 +477,7 @@ function evidence(target, root, files = null) {
   const strippedFunctions = tc.functionCensus(stripped, strippedOwners.map(value => value.section));
   if (!same(rawFunctions, strippedFunctions)) fail('strip changed member functions');
   const rawRelocations = require('./phase8_matching_c').rawRelocationRecords(projected);
-  return { schemaVersion: interior(group) ? 13 : auxiliary.bundle(group) ? 12 : auxiliary.singleOwner(group) ? 10 : functionMode(group) ? 9 : auxiliary.composed(group) ? 7 : 3,
+  return { ...(literalEvidence?{retainedLiteralReferences:literalEvidence}:{}), schemaVersion: literalEvidence?19:interior(group) ? 13 : auxiliary.bundle(group) ? 12 : auxiliary.singleOwner(group) ? 10 : functionMode(group) ? 9 : auxiliary.composed(group) ? 7 : 3,
     ...(auxiliary.composed(group) ? { composition: { schemaVersion: interior(group) ? 6 : auxiliary.bundle(group) ? 5 : auxiliary.singleOwner(group) ? 3 : 2, groupSha256: hash(group),
       nativeObjectSha256: sha256Buffer(native.buffer), textProjectedObjectSha256: sha256Buffer(reproduction.intermediate),
       projectedObjectSha256: sha256Buffer(projected.buffer), strippedObjectSha256: sha256Buffer(stripped.buffer),
@@ -510,7 +523,9 @@ function compile(phase8, target, output, compiler, assembler, objcopy, options) 
     const projection = project(fs.readFileSync(rawFile), target.compilationGroup);
     fs.writeFileSync(projectedFile, projection.buffer, { flag: 'wx' });
     if (auxiliary.composed(target.compilationGroup)) fs.writeFileSync(path.join(output, objectPath(target, '.text-projected.o')), projection.intermediate, { flag: 'wx' });
-    p7.run(objcopy, ['--remove-section=.reginfo', '--remove-section=.pdr', '--remove-section=.comment', '--remove-section=.note', projectedFile, finalFile], { cwd: output });
+    const stripFile=target.compilationGroup.retainedLiteralReferences?path.join(output,objectPath(target,'.strip-intermediate.o')):finalFile;
+    p7.run(objcopy, ['--remove-section=.reginfo', '--remove-section=.pdr', '--remove-section=.comment', '--remove-section=.note', projectedFile, stripFile], { cwd: output });
+    if(target.compilationGroup.retainedLiteralReferences){fs.writeFileSync(path.join(output,objectPath(target,'.literal-projected.o')),projection.referenceProjected,{flag:'wx'});fs.writeFileSync(finalFile,literals.correctStrip(projection.buffer,fs.readFileSync(stripFile),literals.groupTarget(target.compilationGroup),projection.evidence).buffer,{flag:'wx'});}
     evidence(target, output);
     compiledProducers.set(key, identity);
   }

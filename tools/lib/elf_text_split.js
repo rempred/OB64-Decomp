@@ -208,10 +208,11 @@ function ownerForOffset(owners, offset, allowEnd = false) {
   fail(`text-relative offset is outside the owner census: 0x${offset.toString(16)}`);
 }
 
-function splitRelocations(bytes, owners) {
+function splitRelocations(bytes, owners, literalGroups = []) {
   if (bytes.length % REL_BYTES !== 0) fail('text relocation section size is malformed');
   const grouped = new Map(owners.map((owner) => [owner.sectionName, []]));
   const pendingHi16 = new Map();
+  const sharedFirstLos = new Set(literalGroups.filter(g => g.los.length === 2).map(g => g.los[0]));
   // GNU 2.6 may emit HI16, its delay-slot LO16, then an earlier R_MIPS_26.
   // Relocation order is semantic: retain the native subsequence for each owner.
   const places = new Set();
@@ -233,7 +234,7 @@ function splitRelocations(bytes, owners) {
       if (pending.length === 0 || pending.some((sectionName) => sectionName !== owner.sectionName)) {
         fail('R_MIPS_HI16/R_MIPS_LO16 pairing crosses an accepted owner boundary');
       }
-      pendingHi16.delete(symbolIndex);
+      if (!sharedFirstLos.has(relocationOffset)) pendingHi16.delete(symbolIndex);
     }
     const record = Buffer.alloc(REL_BYTES);
     record.writeUInt32BE(relocationOffset - owner.logicalOffset, 0);
@@ -505,7 +506,8 @@ function serialize(input, parsed, sectionList, shstrIndex) {
   return output;
 }
 
-function splitRelocatableTextSection(input, sourceSectionName, requestedOwners, compilerFunctions = null) {
+function splitRelocatableTextSection(input, sourceSectionName, requestedOwners, compilerFunctions = null, literalContext = null) {
+  const literalGroups = literalContext ? require('./retained_literal_references').validateSplit(input, requestedOwners, literalContext) : [];
   if (typeof sourceSectionName !== 'string' || !OUTPUT_SECTION.test(sourceSectionName)) {
     fail('source section name is malformed');
   }
@@ -535,7 +537,7 @@ function splitRelocatableTextSection(input, sourceSectionName, requestedOwners, 
     fail('source text relocation section shape is malformed');
   }
   const relocationGroups = relocation
-    ? splitRelocations(sectionBytes(input, relocation), owners)
+    ? splitRelocations(sectionBytes(input, relocation), owners, literalGroups)
     : new Map(owners.map((owner) => [owner.sectionName, Buffer.alloc(0)]));
   const sectionList = buildSectionList(parsed, input, source, relocation, owners, relocationGroups);
   rewriteSymbolTables(sectionList, source, owners);
@@ -580,7 +582,8 @@ module.exports = {
 
 // Separate from the legacy continuation contract: compiler public symbols already
 // exist and must retain their sizes. Only ELF placement metadata is projected.
-function projectNativeTextOwners(input, requestedOwners, admission = null) {
+function projectNativeTextOwners(input, requestedOwners, admission = null, literalContext = null) {
+  const literalGroups=literalContext?require('./retained_literal_references').validateSplit(input,requestedOwners,literalContext):[];
   if (admission !== null && admission !== 'native-text-readonly-single-owner-projection') fail('native owner admission');
   const parsed = parseRelocatable(input);
   const matches = parsed.sections.filter(section => section.name === '.text');
@@ -612,7 +615,7 @@ function projectNativeTextOwners(input, requestedOwners, admission = null) {
       }
     }
   }
-  const groups = relocation ? splitRelocations(sectionBytes(input, relocation), owners)
+  const groups = relocation ? splitRelocations(sectionBytes(input, relocation), owners, literalGroups)
     : new Map(owners.map(owner => [owner.sectionName, Buffer.alloc(0)]));
   const list = buildSectionList(parsed, input, source, relocation, owners, groups);
   rewriteSymbolTables(list, source, owners);

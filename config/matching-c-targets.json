@@ -8,592 +8,2350 @@
     "buildProvenanceSha256": "86299428600F428E032CC2219C1D26EEDD38FF0F436805B0E87FDE1D3EDF910F"
   },
   "targets": [
-    { "symbol": "func_0012E9F4", "source": "src/lib/func_0012E9F4.c" },
-    { "symbol": "func_0012E968", "source": "src/lib/func_0012E968.c" },
-    { "symbol": "func_00040f88", "source": "src/lib/func_00040f88.c" },
-    { "symbol": "func_0019B26C", "source": "src/lib/func_0019B26C.c" },
-    { "symbol": "func_0019B21C", "source": "src/lib/func_0019B21C.c" },
-    { "symbol": "func_0019BD14", "source": "src/lib/func_0019BD14.c" },
-    { "symbol": "func_0019BE40", "source": "src/lib/func_0019BE40.c" },
-    { "symbol": "func_0012967C", "source": "src/lib/func_0012967C.c" },
-    { "symbol": "func_00128E80", "source": "src/lib/func_00128E80.c" },
-    { "symbol": "func_001291B4", "source": "src/lib/func_001291B4.c" },
-    { "symbol": "func_00129068", "source": "src/lib/func_00129068.c" },
-    { "symbol": "func_0020FC7C", "source": "src/lib/func_0020FC7C.c" },
-    { "symbol": "func_0020C908", "source": "src/lib/func_0020C908.c" },
-    { "symbol": "func_0020D590", "source": "src/lib/func_0020D590.c" },
-    { "symbol": "func_00210930", "source": "src/lib/func_00210930.c" },
-    { "symbol": "func_0021062C", "source": "src/lib/func_0021062C.c" },
-    { "symbol": "func_0021088C", "source": "src/lib/func_0021088C.c" },
-    { "symbol": "func_0020CBDC", "source": "src/lib/func_0020CBDC.c" },
-    { "symbol": "func_001F0E64", "source": "src/lib/func_001F0E64.c" },
-    { "symbol": "func_001F3C00", "source": "src/lib/func_001F3C00.c" },
-    { "symbol": "func_001F1218", "source": "src/lib/func_001F1218.c" },
-    { "symbol": "func_001F197C", "source": "src/lib/func_001F197C.c" },
-    { "symbol": "func_000E5938", "source": "src/overlays/descriptor_02/func_000E5938.c" },
-    { "symbol": "func_0000B33C", "source": "src/boot/boot_resource_pool_acquire_release.c" },
-    { "symbol": "func_00007688", "source": "src/boot/boot_state_slot_flagged_dispatch_lookup.c" },
-    { "symbol": "func_0000BC8C", "source": "src/boot/boot_resource_record_resolve_load.c" },
-    { "symbol": "func_00269470", "source": "src/overlays/descriptor_12/func_00269470.c" },
-    { "symbol": "func_0026B360", "source": "src/overlays/descriptor_12/func_0026B360.c" },
-    { "symbol": "func_0026B820", "source": "src/overlays/descriptor_12/func_0026B820.c" },
-    { "symbol": "func_00003798", "source": "src/boot/boot_resource_state_reset.c" },
-    { "symbol": "func_0000A1F8", "source": "src/boot/boot_resource_node_recursive_payload_clear.c" },
-    { "symbol": "func_0002CBCC", "source": "src/lib/rand.c" },
-    { "symbol": "func_0025C8A4", "source": "src/lib/func_0025C8A4.c" },
-    { "symbol": "func_00008564", "source": "src/boot/boot_state_slot_payload_copy_free.c" },
-    { "symbol": "func_00023970", "source": "src/lib/osCreateMesgQueue.c" },
-    { "symbol": "func_0002CB80", "source": "src/lib/hypotf.c" },
-    { "symbol": "func_0025CAF0", "source": "src/lib/func_0025CAF0.c" },
-    { "symbol": "func_00025000", "source": "src/lib/list_remove_node.c" },
-    { "symbol": "func_0000D994", "source": "src/boot/boot_decode_huffman_reset_state.c" },
-    { "symbol": "func_0002CD70", "source": "src/lib/memset_0002cd70.c" },
-    { "symbol": "func_0025DAB0", "source": "src/lib/func_0025DAB0.c" },
-    { "symbol": "func_00269798", "source": "src/lib/func_00269798.c" },
-    { "symbol": "func_000241f8", "source": "src/lib/list_insert_head_000241f8.c" },
-    { "symbol": "func_0025CB60", "source": "src/lib/func_0025CB60.c" },
-    { "symbol": "func_0025EFC8", "source": "src/lib/func_0025EFC8.c" },
-    { "symbol": "func_0002DE10", "source": "src/lib/mod_s64_tail.c" },
-    { "symbol": "func_0000B030", "source": "src/boot/boot_resource_lzss_load_entry.c" },
-    { "symbol": "func_0011B344", "source": "src/lib/func_0011B344.c" },
-    { "symbol": "func_00007600", "source": "src/boot/boot_state_slot_target_peer_record_dispatch.c" },
-    { "symbol": "func_0024DA10", "source": "src/lib/func_0024DA10.c" },
-    { "symbol": "func_0015DF10", "source": "src/lib/func_0015DF10.c" },
-    { "symbol": "func_0000B29C", "source": "src/boot/boot_resource_archive_load_one.c" },
-    { "symbol": "func_0024E490", "source": "src/lib/func_0024E490.c" },
-    { "symbol": "func_000071C8", "source": "src/boot/boot_state_slot_queue_service_gate.c" },
-    { "symbol": "func_00009EFC", "source": "src/boot/boot_resource_node_lzss_context_materialize.c" },
-    { "symbol": "func_0019554C", "source": "src/lib/func_0019554C.c" },
-    { "symbol": "func_00195410", "source": "src/lib/func_00195410.c" },
-    { "symbol": "func_001957D0", "source": "src/lib/func_001957D0.c" },
-    { "symbol": "func_001960A8", "source": "src/lib/func_001960A8.c" },
-    { "symbol": "func_00105CC0", "source": "src/lib/func_00105CC0.c" },
-    { "symbol": "func_0004501C", "source": "src/lib/func_0004501C.c" },
-    { "symbol": "memcpy_bytewise", "source": "src/boot/memcpy_bytewise.c" },
-    { "symbol": "func_000135a0", "source": "src/lib/func_000135a0.c" },
-    { "symbol": "func_000490ec", "source": "src/lib/func_000490ec.c" },
-    { "symbol": "boot_state_slot_noop_return_tail", "source": "src/boot/boot_state_slot_noop_return_tail.c" },
-    { "symbol": "func_00012400", "source": "src/lib/func_00012400.c" },
-    { "symbol": "func_0001242c", "source": "src/lib/func_0001242c.c" },
-    { "symbol": "func_00012434", "source": "src/lib/func_00012434.c" },
-    { "symbol": "func_000242e0", "source": "src/lib/func_000242e0.c" },
-    { "symbol": "func_00042714", "source": "src/lib/func_00042714.c" },
-    { "symbol": "func_00046334", "source": "src/lib/func_00046334.c" },
-    { "symbol": "func_000496ac", "source": "src/lib/func_000496ac.c" },
-    { "symbol": "func_000497ac", "source": "src/lib/func_000497ac.c" },
-    { "symbol": "func_000497b4", "source": "src/lib/func_000497b4.c" },
-    { "symbol": "func_0004e82c", "source": "src/lib/func_0004e82c.c" },
-    { "symbol": "func_0004ef10", "source": "src/lib/func_0004ef10.c" },
-    { "symbol": "func_0004ef50", "source": "src/lib/func_0004ef50.c" },
-    { "symbol": "func_0004ef58", "source": "src/lib/func_0004ef58.c" },
-    { "symbol": "func_0005192c", "source": "src/lib/func_0005192c.c" },
-    { "symbol": "func_0005aff0", "source": "src/lib/func_0005aff0.c" },
-    { "symbol": "func_0005aff8", "source": "src/lib/func_0005aff8.c" },
-    { "symbol": "func_0005b000", "source": "src/lib/func_0005b000.c" },
-    { "symbol": "func_0007dc00", "source": "src/lib/func_0007dc00.c" },
-    { "symbol": "func_000eacfc", "source": "src/lib/func_000eacfc.c" },
-    { "symbol": "func_000F3154", "source": "src/lib/func_000F3154.c" },
-    { "symbol": "func_00100078", "source": "src/lib/func_00100078.c" },
-    { "symbol": "func_00128E78", "source": "src/lib/func_00128E78.c" },
-    { "symbol": "func_00145DC8", "source": "src/lib/func_00145DC8.c" },
-    { "symbol": "func_00145DD0", "source": "src/lib/func_00145DD0.c" },
-    { "symbol": "func_001497D0", "source": "src/lib/func_001497D0.c" },
-    { "symbol": "func_00204EE0", "compilationGroup": "combat_pose_metadata" },
-    { "symbol": "func_00204F24", "compilationGroup": "combat_pose_metadata" },
-    { "symbol": "func_00204F2C", "compilationGroup": "combat_pose_metadata" },
-    { "symbol": "func_00204F34", "compilationGroup": "combat_pose_metadata" },
-    { "symbol": "func_002050AC", "compilationGroup": "combat_pose_metadata" },
-    { "symbol": "func_00205220", "source": "src/lib/func_00205220.c" },
-    { "symbol": "func_00205228", "source": "src/lib/func_00205228.c" },
-    { "symbol": "func_0023B234", "source": "src/lib/func_0023B234.c" },
-    { "symbol": "func_0023B23C", "source": "src/lib/func_0023B23C.c" },
-    { "symbol": "func_0023B244", "source": "src/lib/func_0023B244.c" },
-    { "symbol": "func_0024B3BC", "source": "src/lib/func_0024B3BC.c" },
-    { "symbol": "func_0025F770", "source": "src/lib/func_0025F770.c" },
-    { "symbol": "func_0025F798", "source": "src/lib/func_0025F798.c" },
-    { "symbol": "func_0025F7C0", "source": "src/lib/func_0025F7C0.c" },
-    { "symbol": "func_0025F7F0", "source": "src/lib/func_0025F7F0.c" },
-    { "symbol": "func_0025F7F8", "source": "src/lib/func_0025F7F8.c" },
-    { "symbol": "func_00275DBC", "source": "src/lib/func_00275DBC.c" },
-    { "symbol": "func_00275ED8", "source": "src/lib/func_00275ED8.c" },
-    { "symbol": "func_00279A50", "source": "src/lib/func_00279A50.c" },
-    { "symbol": "func_00279A58", "source": "src/lib/func_00279A58.c" },
-    { "symbol": "func_002803B8", "source": "src/lib/func_002803B8.c" },
-    { "symbol": "func_00280B34", "source": "src/lib/func_00280B34.c" },
-    { "symbol": "func_00280B3C", "source": "src/lib/func_00280B3C.c" },
-    { "symbol": "func_0028364C", "source": "src/lib/func_0028364C.c" },
-    { "symbol": "func_00283740", "source": "src/lib/func_00283740.c" },
-    { "symbol": "set_dl_cursor", "source": "src/boot/set_dl_cursor.c" },
-    { "symbol": "func_0001223c", "source": "src/lib/func_0001223c.c" },
-    { "symbol": "func_00012408", "source": "src/lib/func_00012408.c" },
-    { "symbol": "func_00012414", "source": "src/lib/func_00012414.c" },
-    { "symbol": "func_00012420", "source": "src/lib/func_00012420.c" },
-    { "symbol": "func_0001243c", "source": "src/lib/func_0001243c.c" },
-    { "symbol": "func_00012524", "source": "src/lib/func_00012524.c" },
-    { "symbol": "func_000143fc", "source": "src/lib/func_000143fc.c" },
-    { "symbol": "func_00014808", "source": "src/lib/func_00014808.c" },
-    { "symbol": "func_00014824", "source": "src/lib/func_00014824.c" },
-    { "symbol": "func_00014960", "source": "src/lib/func_00014960.c" },
-    { "symbol": "func_0001497c", "source": "src/lib/func_0001497c.c" },
-    { "symbol": "func_00014a00", "source": "src/lib/func_00014a00.c" },
-    { "symbol": "func_00014d64", "source": "src/lib/func_00014d64.c" },
-    { "symbol": "func_00015a20", "source": "src/lib/func_00015a20.c" },
-    { "symbol": "set_byte_800f918d", "source": "src/lib/set_byte_800f918d.c" },
-    { "symbol": "get_byte_800f918c", "source": "src/lib/get_byte_800f918c.c" },
-    { "symbol": "srand", "source": "src/lib/srand.c" },
-    { "symbol": "func_00042c30", "source": "src/lib/func_00042c30.c" },
-    { "symbol": "func_00042c50", "source": "src/lib/func_00042c50.c" },
-    { "symbol": "func_000484b4", "source": "src/lib/func_000484b4.c" },
-    { "symbol": "func_00050614", "source": "src/lib/func_00050614.c" },
-    { "symbol": "func_0005c184", "source": "src/lib/func_0005c184.c" },
-    { "symbol": "func_000bbad0", "source": "src/lib/func_000bbad0.c" },
-    { "symbol": "func_00145DD8", "source": "src/lib/func_00145DD8.c" },
-    { "symbol": "func_00145DF8", "source": "src/lib/func_00145DF8.c" },
-    { "symbol": "func_0016D698", "source": "src/lib/func_0016D698.c" },
-    { "symbol": "func_00171F10", "source": "src/lib/func_00171F10.c" },
-    { "symbol": "func_001820A4", "source": "src/lib/func_001820A4.c" },
-    { "symbol": "func_001A404C", "source": "src/lib/func_001A404C.c" },
-    { "symbol": "func_001F8D88", "source": "src/lib/func_001F8D88.c" },
-    { "symbol": "func_001F8DC4", "source": "src/lib/func_001F8DC4.c" },
-    { "symbol": "func_001F8DD0", "source": "src/lib/func_001F8DD0.c" },
-    { "symbol": "func_00200474", "source": "src/lib/func_00200474.c" },
-    { "symbol": "func_00205794", "source": "src/lib/func_00205794.c" },
-    { "symbol": "func_0020BF8C", "source": "src/lib/func_0020BF8C.c" },
-    { "symbol": "func_0020BF98", "source": "src/lib/func_0020BF98.c" },
-    { "symbol": "func_0020C3A8", "source": "src/lib/func_0020C3A8.c" },
-    { "symbol": "func_00260264", "source": "src/lib/func_00260264.c" },
-    { "symbol": "func_00275E5C", "source": "src/lib/func_00275E5C.c" },
-    { "symbol": "func_0027CFC8", "source": "src/lib/func_0027CFC8.c" },
-    { "symbol": "func_002836A4", "source": "src/lib/func_002836A4.c" },
-    { "symbol": "func_002836B0", "source": "src/lib/func_002836B0.c" },
-    { "symbol": "func_002836BC", "source": "src/lib/func_002836BC.c" },
-    { "symbol": "func_0028a8b8", "source": "src/lib/func_0028a8b8.c" },
-    { "symbol": "func_002A053C", "source": "src/lib/func_002A053C.c" },
-    { "symbol": "func_002AB4FC", "source": "src/lib/func_002AB4FC.c" },
-    { "symbol": "func_00014730", "source": "src/lib/func_00014730.c" },
-    { "symbol": "func_00014770", "source": "src/lib/func_00014770.c" },
-    { "symbol": "func_00014780", "source": "src/lib/func_00014780.c" },
-    { "symbol": "func_00014790", "source": "src/lib/func_00014790.c" },
-    { "symbol": "func_000147f8", "source": "src/lib/func_000147f8.c" },
-    { "symbol": "func_00014814", "source": "src/lib/func_00014814.c" },
-    { "symbol": "func_0001496c", "source": "src/lib/func_0001496c.c" },
-    { "symbol": "func_00014a84", "source": "src/lib/func_00014a84.c" },
-    { "symbol": "func_00014b84", "source": "src/lib/func_00014b84.c" },
-    { "symbol": "func_00014ca0", "source": "src/lib/func_00014ca0.c" },
-    { "symbol": "func_00018630", "source": "src/lib/func_00018630.c" },
-    { "symbol": "func_0001a050", "source": "src/lib/func_0001a050.c" },
-    { "symbol": "func_0004624c", "source": "src/lib/func_0004624c.c" },
-    { "symbol": "func_00046270", "source": "src/lib/func_00046270.c" },
-    { "symbol": "func_00046280", "source": "src/lib/func_00046280.c" },
-    { "symbol": "func_00046314", "source": "src/lib/func_00046314.c" },
-    { "symbol": "func_00046324", "source": "src/lib/func_00046324.c" },
-    { "symbol": "func_00049a30", "source": "src/lib/func_00049a30.c" },
-    { "symbol": "func_00049a40", "source": "src/lib/func_00049a40.c" },
-    { "symbol": "func_00049a50", "source": "src/lib/func_00049a50.c" },
-    { "symbol": "func_00050604", "source": "src/lib/func_00050604.c" },
-    { "symbol": "func_00074728", "source": "src/lib/func_00074728.c" },
-    { "symbol": "func_00074738", "source": "src/lib/func_00074738.c" },
-    { "symbol": "func_000b3438", "source": "src/lib/func_000b3438.c" },
-    { "symbol": "func_000bb9e4", "source": "src/lib/func_000bb9e4.c" },
-    { "symbol": "func_000fb82c", "source": "src/lib/func_000fb82c.c" },
-    { "symbol": "func_00147FA8", "source": "src/lib/func_00147FA8.c" },
-    { "symbol": "func_001BF530", "source": "src/lib/func_001BF530.c" },
-    { "symbol": "func_001F0F5C", "source": "src/lib/func_001F0F5C.c" },
-    { "symbol": "func_0020BF6C", "source": "src/lib/func_0020BF6C.c" },
-    { "symbol": "func_0020BF7C", "source": "src/lib/func_0020BF7C.c" },
-    { "symbol": "func_0020D434", "source": "src/lib/func_0020D434.c" },
-    { "symbol": "func_00239B74", "source": "src/lib/func_00239B74.c" },
-    { "symbol": "func_00239B84", "source": "src/lib/func_00239B84.c" },
-    { "symbol": "func_0025F73C", "source": "src/lib/func_0025F73C.c" },
-    { "symbol": "func_00262830", "source": "src/lib/func_00262830.c" },
-    { "symbol": "func_00262C44", "source": "src/lib/func_00262C44.c" },
-    { "symbol": "func_00262C54", "source": "src/lib/func_00262C54.c" },
-    { "symbol": "func_00275E3C", "source": "src/lib/func_00275E3C.c" },
-    { "symbol": "func_00275E4C", "source": "src/lib/func_00275E4C.c" },
-    { "symbol": "func_00283654", "source": "src/lib/func_00283654.c" },
-    { "symbol": "func_00283694", "source": "src/lib/func_00283694.c" },
-    { "symbol": "func_002907E8", "source": "src/lib/func_002907E8.c" },
-    { "symbol": "func_00290810", "source": "src/lib/func_00290810.c" },
-    { "symbol": "func_002A05DC", "source": "src/lib/func_002A05DC.c" },
-    { "symbol": "func_0001499c", "source": "src/lib/func_0001499c.c" },
-    { "symbol": "func_0001f2a4", "source": "src/lib/func_0001f2a4.c" },
-    { "symbol": "func_00014614", "source": "src/lib/func_00014614.c" },
-    { "symbol": "func_00014988", "source": "src/lib/func_00014988.c" },
-    { "symbol": "func_000149b0", "source": "src/lib/func_000149b0.c" },
-    { "symbol": "func_00014a0c", "source": "src/lib/func_00014a0c.c" },
-    { "symbol": "__osPopThread", "source": "src/lib/__osPopThread.c" },
-    { "symbol": "func_0004649c", "source": "src/lib/func_0004649c.c" },
-    { "symbol": "func_000464ac", "source": "src/lib/func_000464ac.c" },
-    { "symbol": "func_00046238", "source": "src/lib/func_00046238.c" },
-    { "symbol": "func_0004625c", "source": "src/lib/func_0004625c.c" },
-    { "symbol": "func_000464bc", "source": "src/lib/func_000464bc.c" },
-    { "symbol": "func_0004650c", "source": "src/lib/func_0004650c.c" },
-    { "symbol": "func_00046520", "source": "src/lib/func_00046520.c" },
-    { "symbol": "func_00046534", "source": "src/lib/func_00046534.c" },
-    { "symbol": "func_00046568", "source": "src/lib/func_00046568.c" },
-    { "symbol": "func_0004657c", "source": "src/lib/func_0004657c.c" },
-    { "symbol": "func_00046590", "source": "src/lib/func_00046590.c" },
-    { "symbol": "func_000465dc", "source": "src/lib/func_000465dc.c" },
-    { "symbol": "func_000465f0", "source": "src/lib/func_000465f0.c" },
-    { "symbol": "func_00046604", "source": "src/lib/func_00046604.c" },
-    { "symbol": "func_00046618", "source": "src/lib/func_00046618.c" },
-    { "symbol": "func_0004662c", "source": "src/lib/func_0004662c.c" },
-    { "symbol": "func_00046640", "source": "src/lib/func_00046640.c" },
-    { "symbol": "func_0004e434", "source": "src/lib/func_0004e434.c" },
-    { "symbol": "func_00090e40", "source": "src/lib/func_00090e40.c" },
-    { "symbol": "func_000fd258", "source": "src/lib/func_000fd258.c" },
-    { "symbol": "func_000FDC7C", "source": "src/lib/func_000FDC7C.c" },
-    { "symbol": "func_000FDEF8", "source": "src/lib/func_000FDEF8.c" },
-    { "symbol": "func_000FE2C8", "source": "src/lib/func_000FE2C8.c" },
-    { "symbol": "func_0010037c", "source": "src/lib/func_0010037c.c" },
-    { "symbol": "func_00100390", "source": "src/lib/func_00100390.c" },
-    { "symbol": "func_001003a4", "source": "src/lib/func_001003a4.c" },
-    { "symbol": "func_001003b8", "source": "src/lib/func_001003b8.c" },
-    { "symbol": "func_00127E98", "source": "src/lib/func_00127E98.c" },
-    { "symbol": "func_0012896C", "source": "src/lib/func_0012896C.c" },
-    { "symbol": "func_00145DE4", "source": "src/lib/func_00145DE4.c" },
-    { "symbol": "func_00145E04", "source": "src/lib/func_00145E04.c" },
-    { "symbol": "func_00175B48", "source": "src/lib/func_00175B48.c" },
-    { "symbol": "func_001BB11C", "source": "src/lib/func_001BB11C.c" },
-    { "symbol": "func_001BBF94", "source": "src/lib/func_001BBF94.c" },
-    { "symbol": "func_0020BFE4", "source": "src/lib/func_0020BFE4.c" },
-    { "symbol": "func_0023F224", "source": "src/lib/func_0023F224.c" },
-    { "symbol": "func_00275D8C", "source": "src/lib/func_00275D8C.c" },
-    { "symbol": "func_002AD420", "source": "src/lib/func_002AD420.c" },
-    { "symbol": "func_002B1014", "source": "src/lib/func_002B1014.c" },
-    { "symbol": "func_002B4FA0", "source": "src/lib/func_002B4FA0.c" },
-    { "symbol": "func_00015f0c", "source": "src/lib/func_00015f0c.c" },
-    { "symbol": "func_00018dd4", "source": "src/lib/func_00018dd4.c" },
-    { "symbol": "func_000201c8", "source": "src/lib/func_000201c8.c" },
-    { "symbol": "func_00044340", "source": "src/lib/func_00044340.c" },
-    { "symbol": "func_00044358", "source": "src/lib/func_00044358.c" },
-    { "symbol": "func_00045480", "source": "src/lib/func_00045480.c" },
-    { "symbol": "func_00045498", "source": "src/lib/func_00045498.c" },
-    { "symbol": "func_000454b0", "source": "src/lib/func_000454b0.c" },
-    { "symbol": "func_000454c8", "source": "src/lib/func_000454c8.c" },
-    { "symbol": "func_00045514", "source": "src/lib/func_00045514.c" },
-    { "symbol": "func_0004552c", "source": "src/lib/func_0004552c.c" },
-    { "symbol": "func_00045544", "source": "src/lib/func_00045544.c" },
-    { "symbol": "func_0004573c", "source": "src/lib/func_0004573c.c" },
-    { "symbol": "func_00045754", "source": "src/lib/func_00045754.c" },
-    { "symbol": "func_0004576c", "source": "src/lib/func_0004576c.c" },
-    { "symbol": "func_00045784", "source": "src/lib/func_00045784.c" },
-    { "symbol": "func_0004579c", "source": "src/lib/func_0004579c.c" },
-    { "symbol": "func_000457b4", "source": "src/lib/func_000457b4.c" },
-    { "symbol": "func_000457cc", "source": "src/lib/func_000457cc.c" },
-    { "symbol": "func_000fb83c", "source": "src/lib/func_000fb83c.c" },
-    { "symbol": "func_00201538", "source": "src/lib/func_00201538.c" },
-    { "symbol": "func_00205748", "source": "src/lib/func_00205748.c" },
-    { "symbol": "func_0023F20C", "source": "src/lib/func_0023F20C.c" },
-    { "symbol": "func_0023F760", "source": "src/lib/func_0023F760.c" },
-    { "symbol": "func_00240EB0", "source": "src/lib/func_00240EB0.c" },
-    { "symbol": "func_0026241C", "source": "src/lib/func_0026241C.c" },
-    { "symbol": "func_002907F8", "source": "src/lib/func_002907F8.c" },
-    { "symbol": "func_00013410", "source": "src/lib/func_00013410.c" },
-    { "symbol": "func_000457e4", "source": "src/lib/func_000457e4.c" },
-    { "symbol": "func_00045840", "source": "src/lib/func_00045840.c" },
-    { "symbol": "func_0004585c", "source": "src/lib/func_0004585c.c" },
-    { "symbol": "func_000458b8", "source": "src/lib/func_000458b8.c" },
-    { "symbol": "func_000458d4", "source": "src/lib/func_000458d4.c" },
-    { "symbol": "func_000460b8", "source": "src/lib/func_000460b8.c" },
-    { "symbol": "func_000460d4", "source": "src/lib/func_000460d4.c" },
-    { "symbol": "func_000460f0", "source": "src/lib/func_000460f0.c" },
-    { "symbol": "func_0004610c", "source": "src/lib/func_0004610c.c" },
-    { "symbol": "func_00046128", "source": "src/lib/func_00046128.c" },
-    { "symbol": "func_00046358", "source": "src/lib/func_00046358.c" },
-    { "symbol": "func_000465a4", "source": "src/lib/func_000465a4.c" },
-    { "symbol": "func_000fd23c", "source": "src/lib/func_000fd23c.c" },
-    { "symbol": "func_001A1424", "source": "src/lib/func_001A1424.c" },
-    { "symbol": "func_00201550", "source": "src/lib/func_00201550.c" },
-    { "symbol": "func_0020BF34", "source": "src/lib/func_0020BF34.c" },
-    { "symbol": "func_0020BF50", "source": "src/lib/func_0020BF50.c" },
-    { "symbol": "func_0023B650", "source": "src/lib/func_0023B650.c" },
-    { "symbol": "func_002623C4", "source": "src/lib/func_002623C4.c" },
-    { "symbol": "func_00262840", "source": "src/lib/func_00262840.c" },
-    { "symbol": "func_00262C64", "source": "src/lib/func_00262C64.c" },
-    { "symbol": "func_00275DA0", "source": "src/lib/func_00275DA0.c" },
-    { "symbol": "func_0027CFAC", "source": "src/lib/func_0027CFAC.c" },
-    { "symbol": "func_0027F75C", "source": "src/lib/func_0027F75C.c" },
-    { "symbol": "func_00283B50", "source": "src/lib/func_00283B50.c" },
-    { "symbol": "func_0001438c", "source": "src/lib/func_0001438c.c" },
-    { "symbol": "func_000453e0", "source": "src/lib/func_000453e0.c" },
-    { "symbol": "func_00045400", "source": "src/lib/func_00045400.c" },
-    { "symbol": "func_00045420", "source": "src/lib/func_00045420.c" },
-    { "symbol": "func_00045440", "source": "src/lib/func_00045440.c" },
-    { "symbol": "func_00045460", "source": "src/lib/func_00045460.c" },
-    { "symbol": "func_00045800", "source": "src/lib/func_00045800.c" },
-    { "symbol": "func_00045820", "source": "src/lib/func_00045820.c" },
-    { "symbol": "func_00045878", "source": "src/lib/func_00045878.c" },
-    { "symbol": "func_00045898", "source": "src/lib/func_00045898.c" },
-    { "symbol": "func_00046218", "source": "src/lib/func_00046218.c" },
-    { "symbol": "func_00046290", "source": "src/lib/func_00046290.c" },
-    { "symbol": "func_000462b0", "source": "src/lib/func_000462b0.c" },
-    { "symbol": "func_000463b8", "source": "src/lib/func_000463b8.c" },
-    { "symbol": "func_000F3E90", "source": "src/lib/func_000F3E90.c" },
-    { "symbol": "func_00201B6C", "source": "src/lib/func_00201B6C.c" },
-    { "symbol": "func_00201B8C", "source": "src/lib/func_00201B8C.c" },
-    { "symbol": "func_00262308", "source": "src/lib/func_00262308.c" },
-    { "symbol": "func_00283B30", "source": "src/lib/func_00283B30.c" },
-    { "symbol": "func_00289D04", "source": "src/lib/func_00289D04.c" },
-    { "symbol": "strlen", "source": "src/lib/strlen.c" },
-    { "symbol": "func_00046144", "source": "src/lib/func_00046144.c" },
-    { "symbol": "func_00046168", "source": "src/lib/func_00046168.c" },
-    { "symbol": "func_0004618c", "source": "src/lib/func_0004618c.c" },
-    { "symbol": "func_000461b0", "source": "src/lib/func_000461b0.c" },
-    { "symbol": "func_000461d4", "source": "src/lib/func_000461d4.c" },
-    { "symbol": "func_000462d0", "source": "src/lib/func_000462d0.c" },
-    { "symbol": "func_000b34a0", "source": "src/lib/func_000b34a0.c" },
-    { "symbol": "func_000b47d8", "source": "src/lib/func_000b47d8.c" },
-    { "symbol": "func_0013466C", "source": "src/lib/func_0013466C.c" },
-    { "symbol": "func_00145D18", "source": "src/lib/func_00145D18.c" },
-    { "symbol": "func_001F0F6C", "source": "src/lib/func_001F0F6C.c" },
-    { "symbol": "func_001F102C", "source": "src/lib/func_001F102C.c" },
-    { "symbol": "func_000143dc", "source": "src/lib/func_000143dc.c" },
-    { "symbol": "func_00014628", "source": "src/lib/func_00014628.c" },
-    { "symbol": "func_0012E950", "source": "src/lib/func_0012E950.c" },
-    { "symbol": "func_00146094", "source": "src/lib/func_00146094.c" },
-    { "symbol": "func_00201B18", "source": "src/lib/func_00201B18.c" },
-    { "symbol": "func_0029C19C", "source": "src/lib/func_0029C19C.c" },
-    { "symbol": "func_000118c4", "source": "src/lib/func_000118c4.c" },
-    { "symbol": "func_00014c64", "source": "src/lib/func_00014c64.c" },
-    { "symbol": "func_00018e84", "source": "src/lib/func_00018e84.c" },
-    { "symbol": "func_00020274", "source": "src/lib/func_00020274.c" },
-    { "symbol": "func_000202bc", "source": "src/lib/func_000202bc.c" },
-    { "symbol": "func_000454e0", "source": "src/lib/func_000454e0.c" },
-    { "symbol": "func_000463d8", "source": "src/lib/func_000463d8.c" },
-    { "symbol": "func_00046404", "source": "src/lib/func_00046404.c" },
-    { "symbol": "func_00046430", "source": "src/lib/func_00046430.c" },
-    { "symbol": "func_00048abc", "source": "src/lib/func_00048abc.c" },
-    { "symbol": "func_0004c7d4", "source": "src/lib/func_0004c7d4.c" },
-    { "symbol": "func_0004f254", "source": "src/lib/func_0004f254.c" },
-    { "symbol": "func_0005a030", "source": "src/lib/func_0005a030.c" },
-    { "symbol": "func_0005c110", "source": "src/lib/func_0005c110.c" },
-    { "symbol": "func_00072f10", "source": "src/lib/func_00072f10.c" },
-    { "symbol": "func_00072f3c", "source": "src/lib/func_00072f3c.c" },
-    { "symbol": "func_000740e4", "source": "src/lib/func_000740e4.c" },
-    { "symbol": "func_00074110", "source": "src/lib/func_00074110.c" },
-    { "symbol": "func_0007d960", "source": "src/lib/func_0007d960.c" },
-    { "symbol": "func_0007d994", "source": "src/lib/func_0007d994.c" },
-    { "symbol": "func_00099b1c", "source": "src/lib/func_00099b1c.c" },
-    { "symbol": "func_0009ed1c", "source": "src/lib/func_0009ed1c.c" },
-    { "symbol": "func_000a00f0", "source": "src/lib/func_000a00f0.c" },
-    { "symbol": "func_000E6620", "source": "src/lib/func_000E6620.c" },
-    { "symbol": "func_000F8480", "source": "src/lib/func_000F8480.c" },
-    { "symbol": "func_000FDC4C", "source": "src/lib/func_000FDC4C.c" },
-    { "symbol": "func_000FE290", "source": "src/lib/func_000FE290.c" },
-    { "symbol": "func_000b34c4", "source": "src/lib/func_000b34c4.c" },
-    { "symbol": "func_000b876c", "source": "src/lib/func_000b876c.c" },
-    { "symbol": "func_000bba9c", "source": "src/lib/func_000bba9c.c" },
-    { "symbol": "func_000ba8a8", "source": "src/lib/func_000ba8a8.c" },
-    { "symbol": "func_000ba918", "source": "src/lib/func_000ba918.c" },
-    { "symbol": "func_000bb3d8", "source": "src/lib/func_000bb3d8.c" },
-    { "symbol": "func_000bbd50", "source": "src/lib/func_000bbd50.c" },
-    { "symbol": "func_000bbd80", "source": "src/lib/func_000bbd80.c" },
-    { "symbol": "func_000bc684", "source": "src/lib/func_000bc684.c" },
-    { "symbol": "func_000bc984", "source": "src/lib/func_000bc984.c" },
-    { "symbol": "func_000bcee4", "source": "src/lib/func_000bcee4.c" },
-    { "symbol": "func_000bec90", "source": "src/lib/func_000bec90.c" },
-    { "symbol": "func_000bd154", "source": "src/lib/func_000bd154.c" },
-    { "symbol": "func_000bd26c", "source": "src/lib/func_000bd26c.c" },
-    { "symbol": "func_000bf248", "source": "src/lib/func_000bf248.c" },
-    { "symbol": "func_000bf458", "source": "src/lib/func_000bf458.c" },
-    { "symbol": "func_000bf9c8", "source": "src/lib/func_000bf9c8.c" },
-    { "symbol": "func_000bfebc", "source": "src/lib/func_000bfebc.c" },
-    { "symbol": "func_000c37ec", "source": "src/lib/func_000c37ec.c" },
-    { "symbol": "func_000c4a40", "source": "src/lib/func_000c4a40.c" },
-    { "symbol": "func_000c6bec", "source": "src/lib/func_000c6bec.c" },
-    { "symbol": "func_000c91a0", "source": "src/lib/func_000c91a0.c" },
-    { "symbol": "func_00044130", "source": "src/lib/func_00044130.c" },
-    { "symbol": "func_00044aa4", "source": "src/lib/func_00044aa4.c" },
-    { "symbol": "func_000bd318", "source": "src/lib/func_000bd318.c" },
-    { "symbol": "func_000ecabc", "source": "src/lib/func_000ecabc.c" },
-    { "symbol": "func_000ecb58", "source": "src/lib/func_000ecb58.c" },
-    { "symbol": "func_00100298", "source": "src/lib/func_00100298.c" },
-    { "symbol": "func_00130794", "source": "src/lib/func_00130794.c" },
-    { "symbol": "func_00145C14", "source": "src/lib/func_00145C14.c" },
-    { "symbol": "func_00147FB8", "source": "src/lib/func_00147FB8.c" },
-    { "symbol": "func_00157F2C", "source": "src/lib/func_00157F2C.c" },
-    { "symbol": "func_001F10F0", "source": "src/lib/func_001F10F0.c" },
-    { "symbol": "func_001FF830", "source": "src/lib/func_001FF830.c" },
-    { "symbol": "func_001FF868", "source": "src/lib/func_001FF868.c" },
-    { "symbol": "func_0020236C", "source": "src/lib/func_0020236C.c" },
-    { "symbol": "func_00205720", "source": "src/lib/func_00205720.c" },
-    { "symbol": "func_00208D80", "source": "src/lib/func_00208D80.c" },
-    { "symbol": "func_0020C180", "source": "src/lib/func_0020C180.c" },
-    { "symbol": "func_0020C364", "source": "src/lib/func_0020C364.c" },
-    { "symbol": "func_00210464", "source": "src/lib/func_00210464.c" },
-    { "symbol": "func_0023B680", "source": "src/lib/func_0023B680.c" },
-    { "symbol": "func_0024BD60", "source": "src/lib/func_0024BD60.c" },
-    { "symbol": "func_0024BD8C", "source": "src/lib/func_0024BD8C.c" },
-    { "symbol": "func_0024BDBC", "source": "src/lib/func_0024BDBC.c" },
-    { "symbol": "func_0024BDEC", "source": "src/lib/func_0024BDEC.c" },
-    { "symbol": "func_0024BEA0", "source": "src/lib/func_0024BEA0.c" },
-    { "symbol": "func_0024BECC", "source": "src/lib/func_0024BECC.c" },
-    { "symbol": "func_0024C7A4", "source": "src/lib/func_0024C7A4.c" },
-    { "symbol": "func_002623E0", "source": "src/lib/func_002623E0.c" },
-    { "symbol": "func_002628E4", "source": "src/lib/func_002628E4.c" },
-    { "symbol": "func_002993C0", "source": "src/lib/func_002993C0.c" },
-    { "symbol": "func_0029BA30", "source": "src/lib/func_0029BA30.c" },
-    { "symbol": "func_0029BA58", "source": "src/lib/func_0029BA58.c" },
-    { "symbol": "func_002A91E4", "source": "src/lib/func_002A91E4.c" },
-    { "symbol": "func_002AB558", "source": "src/lib/func_002AB558.c" },
-    { "symbol": "func_002B5044", "source": "src/lib/func_002B5044.c" },
-    { "symbol": "func_002a3310", "source": "src/lib/func_002a3310.c" },
-    { "symbol": "func_000bf228", "source": "src/lib/func_000bf228.c" },
-    { "symbol": "func_000415fc", "source": "src/lib/func_000415fc.c" },
-    { "symbol": "func_00041638", "source": "src/lib/func_00041638.c" },
-    { "symbol": "func_00043100", "source": "src/lib/func_00043100.c" },
-    { "symbol": "func_00043154", "source": "src/lib/func_00043154.c" },
-    { "symbol": "func_000431a8", "source": "src/lib/func_000431a8.c" },
-    { "symbol": "func_000431fc", "source": "src/lib/func_000431fc.c" },
-    { "symbol": "func_00043250", "source": "src/lib/func_00043250.c" },
-    { "symbol": "func_000432a4", "source": "src/lib/func_000432a4.c" },
-    { "symbol": "func_000432f8", "source": "src/lib/func_000432f8.c" },
-    { "symbol": "func_0004334c", "source": "src/lib/func_0004334c.c" },
-    { "symbol": "func_000433a0", "source": "src/lib/func_000433a0.c" },
-    { "symbol": "func_000433f4", "source": "src/lib/func_000433f4.c" },
-    { "symbol": "func_00043448", "source": "src/lib/func_00043448.c" },
-    { "symbol": "func_0004349c", "source": "src/lib/func_0004349c.c" },
-    { "symbol": "func_000434f0", "source": "src/lib/func_000434f0.c" },
-    { "symbol": "func_00043544", "source": "src/lib/func_00043544.c" },
-    { "symbol": "func_00043598", "source": "src/lib/func_00043598.c" },
-    { "symbol": "func_000435ec", "source": "src/lib/func_000435ec.c" },
-    { "symbol": "func_00043640", "source": "src/lib/func_00043640.c" },
-    { "symbol": "func_00043694", "source": "src/lib/func_00043694.c" },
-    { "symbol": "func_000436e8", "source": "src/lib/func_000436e8.c" },
-    { "symbol": "func_0004373c", "source": "src/lib/func_0004373c.c" },
-    { "symbol": "func_00043790", "source": "src/lib/func_00043790.c" },
-    { "symbol": "func_000437e4", "source": "src/lib/func_000437e4.c" },
-    { "symbol": "func_00043838", "source": "src/lib/func_00043838.c" },
-    { "symbol": "func_0004388c", "source": "src/lib/func_0004388c.c" },
-    { "symbol": "func_000438e0", "source": "src/lib/func_000438e0.c" },
-    { "symbol": "func_00043934", "source": "src/lib/func_00043934.c" },
-    { "symbol": "func_00043988", "source": "src/lib/func_00043988.c" },
-    { "symbol": "func_000439dc", "source": "src/lib/func_000439dc.c" },
-    { "symbol": "func_00043a30", "source": "src/lib/func_00043a30.c" },
-    { "symbol": "func_00043a84", "source": "src/lib/func_00043a84.c" },
-    { "symbol": "func_00043ad8", "source": "src/lib/func_00043ad8.c" },
-    { "symbol": "func_00043b2c", "source": "src/lib/func_00043b2c.c" },
-    { "symbol": "func_00043b80", "source": "src/lib/func_00043b80.c" },
-    { "symbol": "func_00043bd4", "source": "src/lib/func_00043bd4.c" },
-    { "symbol": "func_00043c20", "source": "src/lib/func_00043c20.c" },
-    { "symbol": "func_00043c74", "source": "src/lib/func_00043c74.c" },
-    { "symbol": "func_00043cc8", "source": "src/lib/func_00043cc8.c" },
-    { "symbol": "func_00043d1c", "source": "src/lib/func_00043d1c.c" },
-    { "symbol": "func_00043d70", "source": "src/lib/func_00043d70.c" },
-    { "symbol": "func_00043dc4", "source": "src/lib/func_00043dc4.c" },
-    { "symbol": "func_00043e18", "source": "src/lib/func_00043e18.c" },
-    { "symbol": "func_00043e88", "source": "src/lib/func_00043e88.c" },
-    { "symbol": "func_00043edc", "source": "src/lib/func_00043edc.c" },
-    { "symbol": "func_00043f30", "source": "src/lib/func_00043f30.c" },
-    { "symbol": "func_00043f84", "source": "src/lib/func_00043f84.c" },
-    { "symbol": "func_00043fd8", "source": "src/lib/func_00043fd8.c" },
-    { "symbol": "func_00044040", "source": "src/lib/func_00044040.c" },
-    { "symbol": "func_00044074", "source": "src/lib/func_00044074.c" },
-    { "symbol": "func_000440dc", "source": "src/lib/func_000440dc.c" },
-    { "symbol": "func_00044238", "source": "src/lib/func_00044238.c" },
-    { "symbol": "func_00044370", "source": "src/lib/func_00044370.c" },
-    { "symbol": "func_0004440c", "source": "src/lib/func_0004440c.c" },
-    { "symbol": "func_00045df4", "source": "src/lib/func_00045df4.c" },
-    { "symbol": "func_00044934", "source": "src/lib/func_00044934.c" },
-    { "symbol": "func_000449ec", "source": "src/lib/func_000449ec.c" },
-    { "symbol": "func_000d0150", "source": "src/lib/func_000d0150.c" },
-    { "symbol": "func_0010DDB4", "source": "src/lib/func_0010ddb4.c" },
-    { "symbol": "func_0012FBB8", "source": "src/lib/func_0012fbb8.c" },
-    { "symbol": "func_001390F0", "source": "src/lib/func_001390f0.c" },
-    { "symbol": "strcat", "source": "src/lib/strcat.c" },
-    { "symbol": "func_00284210", "source": "src/lib/func_00284210.c" },
-    { "symbol": "func_002841CC", "source": "src/lib/func_002841CC.c" },
-    { "symbol": "func_00284150", "source": "src/lib/func_00284150.c" },
-    { "symbol": "func_00284184", "source": "src/lib/func_00284184.c" },
-    { "symbol": "func_0028422C", "source": "src/lib/func_0028422C.c" },
-    { "symbol": "func_0020BFF8", "source": "src/lib/func_0020BFF8.c" },
-    { "symbol": "func_0020C478", "source": "src/lib/func_0020C478.c" },
-    { "symbol": "func_0029DF04", "source": "src/lib/func_0029DF04.c" },
-    { "symbol": "func_002A0804", "source": "src/lib/func_002A0804.c" },
-    { "symbol": "func_0004e800", "source": "src/lib/func_0004e800.c" },
-    { "symbol": "func_0004820c", "source": "src/lib/func_0004820c.c" },
-    { "symbol": "func_001FFA8C", "source": "src/lib/func_001FFA8C.c" },
-    { "symbol": "func_001F2134", "source": "src/lib/func_001F2134.c" },
-    { "symbol": "func_002AE4DC", "source": "src/lib/func_002AE4DC.c" },
-    { "symbol": "func_0006947c", "source": "src/lib/func_0006947c.c" },
-    { "symbol": "func_0004813C", "source": "src/lib/func_0004813c.c" },
-    { "symbol": "func_00047a94", "source": "src/lib/func_00047a94.c" },
-    { "symbol": "func_0029D790", "source": "src/lib/func_0029D790.c" },
-    { "symbol": "func_00283FA8", "source": "src/lib/func_00283FA8.c" },
-    { "symbol": "func_002ABFD4", "source": "src/lib/func_002ABFD4.c" },
-    { "symbol": "func_002A08C0", "source": "src/lib/func_002A08C0.c" },
-    { "symbol": "func_002A0680", "source": "src/lib/func_002A0680.c" },
-    { "symbol": "func_0004ed60", "source": "src/lib/func_0004ED60.c" },
-    { "symbol": "func_00067fa8", "source": "src/lib/func_00067FA8.c" },
-    { "symbol": "func_002B0D30", "source": "src/lib/func_002B0D30.c" },
-    { "symbol": "func_00283E14", "source": "src/lib/func_00283E14.c" },
-    { "symbol": "func_002861C8", "source": "src/lib/func_002861C8.c" },
-    { "symbol": "func_002827EC", "source": "src/lib/func_002827EC.c" },
-    { "symbol": "func_002A05EC", "source": "src/lib/func_002A05EC.c" },
-    { "symbol": "func_002a3198", "source": "src/lib/func_002a3198.c" },
-    { "symbol": "func_002A0B14", "source": "src/lib/func_002A0B14.c" },
-    { "symbol": "func_002A13EC", "source": "src/lib/func_002A13EC.c" },
-    { "symbol": "func_0021D1CC", "source": "src/battle/func_0021D1CC.c" },
-    { "symbol": "func_0021D200", "source": "src/battle/func_0021D200.c" },
-    { "symbol": "func_0021D230", "source": "src/battle/func_0021D230.c" },
-    { "symbol": "func_0021D25C", "source": "src/battle/func_0021D25C.c" },
-    { "symbol": "func_0021D28C", "source": "src/battle/func_0021D28C.c" },
-    { "symbol": "func_0021D2C0", "source": "src/battle/func_0021D2C0.c" },
-    { "symbol": "func_0021D2F8", "source": "src/battle/func_0021D2F8.c" },
-    { "symbol": "func_0021D334", "source": "src/battle/func_0021D334.c" },
-    { "symbol": "func_0021CA18", "source": "src/battle/func_0021CA18.c" },
-    { "symbol": "func_0021CB30", "source": "src/battle/func_0021CB30.c" },
-    { "symbol": "func_0021C8DC", "source": "src/battle/func_0021C8DC.c" },
-    { "symbol": "func_0021C970", "source": "src/battle/func_0021C970.c" },
-    { "symbol": "func_0021CA88", "source": "src/battle/func_0021CA88.c" },
-    { "symbol": "func_0021D374", "source": "src/battle/func_0021D374.c" },
-    { "symbol": "func_0021CBC4", "source": "src/battle/func_0021CBC4.c" },
-    { "symbol": "func_001F34B0", "source": "src/lib/func_001F34B0.c" },
-    { "symbol": "func_001F3540", "source": "src/lib/func_001F3540.c" },
-    { "symbol": "func_001F309C", "source": "src/lib/func_001F309C.c" },
-    { "symbol": "func_001FFE80", "source": "src/lib/func_001FFE80.c" },
-    { "symbol": "func_00201108", "source": "src/lib/func_00201108.c" },
-    { "symbol": "func_002013D0", "source": "src/lib/func_002013D0.c" },
-    { "symbol": "func_002158E4", "source": "src/battle/func_002158E4.c" },
-    { "symbol": "func_002159D0", "source": "src/battle/func_002159D0.c" },
-    { "symbol": "func_00215CF0", "source": "src/battle/func_00215CF0.c" },
-    { "symbol": "func_00217BA8", "source": "src/battle/func_00217BA8.c" },
-    { "symbol": "func_0021C3B0", "source": "src/battle/func_0021C3B0.c" },
-    { "symbol": "func_002224F4", "source": "src/battle/func_002224F4.c" },
-    { "symbol": "func_0021824C", "source": "src/battle/func_0021824C.c" },
-    { "symbol": "func_0021B770", "source": "src/battle/func_0021B770.c" },
-    { "symbol": "func_0021B0A0", "source": "src/battle/func_0021B0A0.c" },
-    { "symbol": "func_00218B58", "source": "src/battle/func_00218B58.c" },
-    { "symbol": "func_0021840C", "source": "src/battle/func_0021840C.c" },
-    { "symbol": "func_0020156C", "source": "src/lib/func_0020156C.c" },
-    { "symbol": "func_00201584", "source": "src/lib/func_00201584.c" },
-    { "symbol": "func_002015C8", "source": "src/lib/func_002015C8.c" },
-    { "symbol": "func_0020161C", "source": "src/lib/func_0020161C.c" },
-    { "symbol": "func_00201670", "source": "src/lib/func_00201670.c" },
-    { "symbol": "func_002016F4", "source": "src/lib/func_002016F4.c" },
-    { "symbol": "func_00201778", "source": "src/lib/func_00201778.c" },
-    { "symbol": "func_00201798", "source": "src/lib/func_00201798.c" },
-    { "symbol": "func_00201838", "source": "src/lib/func_00201838.c" },
-    { "symbol": "func_001F114C", "source": "src/lib/func_001F114C.c" },
-    { "symbol": "func_00208DC8", "source": "src/lib/func_00208DC8.c" },
-    { "symbol": "func_0020F3D4", "source": "src/lib/func_0020F3D4.c" },
-    { "symbol": "func_00201D24", "source": "src/lib/func_00201D24.c" },
-    { "symbol": "func_00201D8C", "source": "src/lib/func_00201D8C.c" },
-    { "symbol": "func_00201E08", "source": "src/lib/func_00201E08.c" },
-    { "symbol": "func_00201E38", "source": "src/lib/func_00201E38.c" },
-    { "symbol": "func_00201E9C", "source": "src/lib/func_00201E9C.c" },
-    { "symbol": "func_00201BAC", "source": "src/lib/func_00201BAC.c" },
-    { "symbol": "func_002043C4", "source": "src/lib/func_002043C4.c" },
-    { "symbol": "func_00202198", "source": "src/lib/func_00202198.c" },
-    { "symbol": "func_00202258", "source": "src/lib/func_00202258.c" },
-    { "symbol": "func_002032B8", "source": "src/lib/func_002032B8.c" },
-    { "symbol": "func_00203414", "source": "src/lib/func_00203414.c" },
-    { "symbol": "func_00203570", "source": "src/lib/func_00203570.c" },
-    { "symbol": "func_00203030", "source": "src/lib/func_00203030.c" },
-    { "symbol": "func_002043E0", "source": "src/lib/func_002043E0.c" },
-    { "symbol": "func_00203664", "source": "src/lib/func_00203664.c" },
-    { "symbol": "func_00204A70", "source": "src/lib/func_00204A70.c" },
+    {
+      "symbol": "func_0012E9F4",
+      "source": "src/lib/func_0012E9F4.c"
+    },
+    {
+      "symbol": "func_0012E968",
+      "source": "src/lib/func_0012E968.c"
+    },
+    {
+      "symbol": "func_00040f88",
+      "source": "src/lib/func_00040f88.c"
+    },
+    {
+      "symbol": "func_0019B26C",
+      "source": "src/lib/func_0019B26C.c"
+    },
+    {
+      "symbol": "func_0019B21C",
+      "source": "src/lib/func_0019B21C.c"
+    },
+    {
+      "symbol": "func_0019BD14",
+      "source": "src/lib/func_0019BD14.c"
+    },
+    {
+      "symbol": "func_0019BE40",
+      "source": "src/lib/func_0019BE40.c"
+    },
+    {
+      "symbol": "func_0012967C",
+      "source": "src/lib/func_0012967C.c"
+    },
+    {
+      "symbol": "func_00128E80",
+      "source": "src/lib/func_00128E80.c"
+    },
+    {
+      "symbol": "func_001291B4",
+      "source": "src/lib/func_001291B4.c"
+    },
+    {
+      "symbol": "func_00129068",
+      "source": "src/lib/func_00129068.c"
+    },
+    {
+      "symbol": "func_0020FC7C",
+      "source": "src/lib/func_0020FC7C.c"
+    },
+    {
+      "symbol": "func_0020C908",
+      "source": "src/lib/func_0020C908.c"
+    },
+    {
+      "symbol": "func_0020D590",
+      "source": "src/lib/func_0020D590.c"
+    },
+    {
+      "symbol": "func_00210930",
+      "source": "src/lib/func_00210930.c"
+    },
+    {
+      "symbol": "func_0021062C",
+      "source": "src/lib/func_0021062C.c"
+    },
+    {
+      "symbol": "func_0021088C",
+      "source": "src/lib/func_0021088C.c"
+    },
+    {
+      "symbol": "func_0020CBDC",
+      "source": "src/lib/func_0020CBDC.c"
+    },
+    {
+      "symbol": "func_001F0E64",
+      "source": "src/lib/func_001F0E64.c"
+    },
+    {
+      "symbol": "func_001F3C00",
+      "source": "src/lib/func_001F3C00.c"
+    },
+    {
+      "symbol": "func_001F1218",
+      "source": "src/lib/func_001F1218.c"
+    },
+    {
+      "symbol": "func_001F197C",
+      "source": "src/lib/func_001F197C.c"
+    },
+    {
+      "symbol": "func_000E5938",
+      "source": "src/overlays/descriptor_02/func_000E5938.c"
+    },
+    {
+      "symbol": "func_0000B33C",
+      "source": "src/boot/boot_resource_pool_acquire_release.c"
+    },
+    {
+      "symbol": "func_00007688",
+      "source": "src/boot/boot_state_slot_flagged_dispatch_lookup.c"
+    },
+    {
+      "symbol": "func_0000BC8C",
+      "source": "src/boot/boot_resource_record_resolve_load.c"
+    },
+    {
+      "symbol": "func_00269470",
+      "source": "src/overlays/descriptor_12/func_00269470.c"
+    },
+    {
+      "symbol": "func_0026B360",
+      "source": "src/overlays/descriptor_12/func_0026B360.c"
+    },
+    {
+      "symbol": "func_0026B820",
+      "source": "src/overlays/descriptor_12/func_0026B820.c"
+    },
+    {
+      "symbol": "func_00003798",
+      "source": "src/boot/boot_resource_state_reset.c"
+    },
+    {
+      "symbol": "func_0000A1F8",
+      "source": "src/boot/boot_resource_node_recursive_payload_clear.c"
+    },
+    {
+      "symbol": "func_0002CBCC",
+      "source": "src/lib/rand.c"
+    },
+    {
+      "symbol": "func_0025C8A4",
+      "source": "src/lib/func_0025C8A4.c"
+    },
+    {
+      "symbol": "func_00008564",
+      "source": "src/boot/boot_state_slot_payload_copy_free.c"
+    },
+    {
+      "symbol": "func_00023970",
+      "source": "src/lib/osCreateMesgQueue.c"
+    },
+    {
+      "symbol": "func_0002CB80",
+      "source": "src/lib/hypotf.c"
+    },
+    {
+      "symbol": "func_0025CAF0",
+      "source": "src/lib/func_0025CAF0.c"
+    },
+    {
+      "symbol": "func_00025000",
+      "source": "src/lib/list_remove_node.c"
+    },
+    {
+      "symbol": "func_0000D994",
+      "source": "src/boot/boot_decode_huffman_reset_state.c"
+    },
+    {
+      "symbol": "func_0002CD70",
+      "source": "src/lib/memset_0002cd70.c"
+    },
+    {
+      "symbol": "func_0025DAB0",
+      "source": "src/lib/func_0025DAB0.c"
+    },
+    {
+      "symbol": "func_00269798",
+      "source": "src/lib/func_00269798.c"
+    },
+    {
+      "symbol": "func_000241f8",
+      "source": "src/lib/list_insert_head_000241f8.c"
+    },
+    {
+      "symbol": "func_0025CB60",
+      "source": "src/lib/func_0025CB60.c"
+    },
+    {
+      "symbol": "func_0025EFC8",
+      "source": "src/lib/func_0025EFC8.c"
+    },
+    {
+      "symbol": "func_0002DE10",
+      "source": "src/lib/mod_s64_tail.c"
+    },
+    {
+      "symbol": "func_0000B030",
+      "source": "src/boot/boot_resource_lzss_load_entry.c"
+    },
+    {
+      "symbol": "func_0011B344",
+      "source": "src/lib/func_0011B344.c"
+    },
+    {
+      "symbol": "func_00007600",
+      "source": "src/boot/boot_state_slot_target_peer_record_dispatch.c"
+    },
+    {
+      "symbol": "func_0024DA10",
+      "source": "src/lib/func_0024DA10.c"
+    },
+    {
+      "symbol": "func_0015DF10",
+      "source": "src/lib/func_0015DF10.c"
+    },
+    {
+      "symbol": "func_0000B29C",
+      "source": "src/boot/boot_resource_archive_load_one.c"
+    },
+    {
+      "symbol": "func_0024E490",
+      "source": "src/lib/func_0024E490.c"
+    },
+    {
+      "symbol": "func_000071C8",
+      "source": "src/boot/boot_state_slot_queue_service_gate.c"
+    },
+    {
+      "symbol": "func_00009EFC",
+      "source": "src/boot/boot_resource_node_lzss_context_materialize.c"
+    },
+    {
+      "symbol": "func_0019554C",
+      "source": "src/lib/func_0019554C.c"
+    },
+    {
+      "symbol": "func_00195410",
+      "source": "src/lib/func_00195410.c"
+    },
+    {
+      "symbol": "func_001957D0",
+      "source": "src/lib/func_001957D0.c"
+    },
+    {
+      "symbol": "func_001960A8",
+      "source": "src/lib/func_001960A8.c"
+    },
+    {
+      "symbol": "func_00105CC0",
+      "source": "src/lib/func_00105CC0.c"
+    },
+    {
+      "symbol": "func_0004501C",
+      "source": "src/lib/func_0004501C.c"
+    },
+    {
+      "symbol": "memcpy_bytewise",
+      "source": "src/boot/memcpy_bytewise.c"
+    },
+    {
+      "symbol": "func_000135a0",
+      "source": "src/lib/func_000135a0.c"
+    },
+    {
+      "symbol": "func_000490ec",
+      "source": "src/lib/func_000490ec.c"
+    },
+    {
+      "symbol": "boot_state_slot_noop_return_tail",
+      "source": "src/boot/boot_state_slot_noop_return_tail.c"
+    },
+    {
+      "symbol": "func_00012400",
+      "source": "src/lib/func_00012400.c"
+    },
+    {
+      "symbol": "func_0001242c",
+      "source": "src/lib/func_0001242c.c"
+    },
+    {
+      "symbol": "func_00012434",
+      "source": "src/lib/func_00012434.c"
+    },
+    {
+      "symbol": "func_000242e0",
+      "source": "src/lib/func_000242e0.c"
+    },
+    {
+      "symbol": "func_00042714",
+      "source": "src/lib/func_00042714.c"
+    },
+    {
+      "symbol": "func_00046334",
+      "source": "src/lib/func_00046334.c"
+    },
+    {
+      "symbol": "func_000496ac",
+      "source": "src/lib/func_000496ac.c"
+    },
+    {
+      "symbol": "func_000497ac",
+      "source": "src/lib/func_000497ac.c"
+    },
+    {
+      "symbol": "func_000497b4",
+      "source": "src/lib/func_000497b4.c"
+    },
+    {
+      "symbol": "func_0004e82c",
+      "source": "src/lib/func_0004e82c.c"
+    },
+    {
+      "symbol": "func_0004ef10",
+      "source": "src/lib/func_0004ef10.c"
+    },
+    {
+      "symbol": "func_0004ef50",
+      "source": "src/lib/func_0004ef50.c"
+    },
+    {
+      "symbol": "func_0004ef58",
+      "source": "src/lib/func_0004ef58.c"
+    },
+    {
+      "symbol": "func_0005192c",
+      "source": "src/lib/func_0005192c.c"
+    },
+    {
+      "symbol": "func_0005aff0",
+      "source": "src/lib/func_0005aff0.c"
+    },
+    {
+      "symbol": "func_0005aff8",
+      "source": "src/lib/func_0005aff8.c"
+    },
+    {
+      "symbol": "func_0005b000",
+      "source": "src/lib/func_0005b000.c"
+    },
+    {
+      "symbol": "func_0007dc00",
+      "source": "src/lib/func_0007dc00.c"
+    },
+    {
+      "symbol": "func_000eacfc",
+      "source": "src/lib/func_000eacfc.c"
+    },
+    {
+      "symbol": "func_000F3154",
+      "source": "src/lib/func_000F3154.c"
+    },
+    {
+      "symbol": "func_00100078",
+      "source": "src/lib/func_00100078.c"
+    },
+    {
+      "symbol": "func_00128E78",
+      "source": "src/lib/func_00128E78.c"
+    },
+    {
+      "symbol": "func_00145DC8",
+      "source": "src/lib/func_00145DC8.c"
+    },
+    {
+      "symbol": "func_00145DD0",
+      "source": "src/lib/func_00145DD0.c"
+    },
+    {
+      "symbol": "func_001497D0",
+      "source": "src/lib/func_001497D0.c"
+    },
+    {
+      "symbol": "func_00204EE0",
+      "compilationGroup": "combat_pose_metadata"
+    },
+    {
+      "symbol": "func_00204F24",
+      "compilationGroup": "combat_pose_metadata"
+    },
+    {
+      "symbol": "func_00204F2C",
+      "compilationGroup": "combat_pose_metadata"
+    },
+    {
+      "symbol": "func_00204F34",
+      "compilationGroup": "combat_pose_metadata"
+    },
+    {
+      "symbol": "func_002050AC",
+      "compilationGroup": "combat_pose_metadata"
+    },
+    {
+      "symbol": "func_00205220",
+      "source": "src/lib/func_00205220.c"
+    },
+    {
+      "symbol": "func_00205228",
+      "source": "src/lib/func_00205228.c"
+    },
+    {
+      "symbol": "func_0023B234",
+      "source": "src/lib/func_0023B234.c"
+    },
+    {
+      "symbol": "func_0023B23C",
+      "source": "src/lib/func_0023B23C.c"
+    },
+    {
+      "symbol": "func_0023B244",
+      "source": "src/lib/func_0023B244.c"
+    },
+    {
+      "symbol": "func_0024B3BC",
+      "source": "src/lib/func_0024B3BC.c"
+    },
+    {
+      "symbol": "func_0025F770",
+      "source": "src/lib/func_0025F770.c"
+    },
+    {
+      "symbol": "func_0025F798",
+      "source": "src/lib/func_0025F798.c"
+    },
+    {
+      "symbol": "func_0025F7C0",
+      "source": "src/lib/func_0025F7C0.c"
+    },
+    {
+      "symbol": "func_0025F7F0",
+      "source": "src/lib/func_0025F7F0.c"
+    },
+    {
+      "symbol": "func_0025F7F8",
+      "source": "src/lib/func_0025F7F8.c"
+    },
+    {
+      "symbol": "func_00275DBC",
+      "source": "src/lib/func_00275DBC.c"
+    },
+    {
+      "symbol": "func_00275ED8",
+      "source": "src/lib/func_00275ED8.c"
+    },
+    {
+      "symbol": "func_00279A50",
+      "source": "src/lib/func_00279A50.c"
+    },
+    {
+      "symbol": "func_00279A58",
+      "source": "src/lib/func_00279A58.c"
+    },
+    {
+      "symbol": "func_002803B8",
+      "source": "src/lib/func_002803B8.c"
+    },
+    {
+      "symbol": "func_00280B34",
+      "source": "src/lib/func_00280B34.c"
+    },
+    {
+      "symbol": "func_00280B3C",
+      "source": "src/lib/func_00280B3C.c"
+    },
+    {
+      "symbol": "func_0028364C",
+      "source": "src/lib/func_0028364C.c"
+    },
+    {
+      "symbol": "func_00283740",
+      "source": "src/lib/func_00283740.c"
+    },
+    {
+      "symbol": "set_dl_cursor",
+      "source": "src/boot/set_dl_cursor.c"
+    },
+    {
+      "symbol": "func_0001223c",
+      "source": "src/lib/func_0001223c.c"
+    },
+    {
+      "symbol": "func_00012408",
+      "source": "src/lib/func_00012408.c"
+    },
+    {
+      "symbol": "func_00012414",
+      "source": "src/lib/func_00012414.c"
+    },
+    {
+      "symbol": "func_00012420",
+      "source": "src/lib/func_00012420.c"
+    },
+    {
+      "symbol": "func_0001243c",
+      "source": "src/lib/func_0001243c.c"
+    },
+    {
+      "symbol": "func_00012524",
+      "source": "src/lib/func_00012524.c"
+    },
+    {
+      "symbol": "func_000143fc",
+      "source": "src/lib/func_000143fc.c"
+    },
+    {
+      "symbol": "func_00014808",
+      "source": "src/lib/func_00014808.c"
+    },
+    {
+      "symbol": "func_00014824",
+      "source": "src/lib/func_00014824.c"
+    },
+    {
+      "symbol": "func_00014960",
+      "source": "src/lib/func_00014960.c"
+    },
+    {
+      "symbol": "func_0001497c",
+      "source": "src/lib/func_0001497c.c"
+    },
+    {
+      "symbol": "func_00014a00",
+      "source": "src/lib/func_00014a00.c"
+    },
+    {
+      "symbol": "func_00014d64",
+      "source": "src/lib/func_00014d64.c"
+    },
+    {
+      "symbol": "func_00015a20",
+      "source": "src/lib/func_00015a20.c"
+    },
+    {
+      "symbol": "set_byte_800f918d",
+      "source": "src/lib/set_byte_800f918d.c"
+    },
+    {
+      "symbol": "get_byte_800f918c",
+      "source": "src/lib/get_byte_800f918c.c"
+    },
+    {
+      "symbol": "srand",
+      "source": "src/lib/srand.c"
+    },
+    {
+      "symbol": "func_00042c30",
+      "source": "src/lib/func_00042c30.c"
+    },
+    {
+      "symbol": "func_00042c50",
+      "source": "src/lib/func_00042c50.c"
+    },
+    {
+      "symbol": "func_000484b4",
+      "source": "src/lib/func_000484b4.c"
+    },
+    {
+      "symbol": "func_00050614",
+      "source": "src/lib/func_00050614.c"
+    },
+    {
+      "symbol": "func_0005c184",
+      "source": "src/lib/func_0005c184.c"
+    },
+    {
+      "symbol": "func_000bbad0",
+      "source": "src/lib/func_000bbad0.c"
+    },
+    {
+      "symbol": "func_00145DD8",
+      "source": "src/lib/func_00145DD8.c"
+    },
+    {
+      "symbol": "func_00145DF8",
+      "source": "src/lib/func_00145DF8.c"
+    },
+    {
+      "symbol": "func_0016D698",
+      "source": "src/lib/func_0016D698.c"
+    },
+    {
+      "symbol": "func_00171F10",
+      "source": "src/lib/func_00171F10.c"
+    },
+    {
+      "symbol": "func_001820A4",
+      "source": "src/lib/func_001820A4.c"
+    },
+    {
+      "symbol": "func_001A404C",
+      "source": "src/lib/func_001A404C.c"
+    },
+    {
+      "symbol": "func_001F8D88",
+      "source": "src/lib/func_001F8D88.c"
+    },
+    {
+      "symbol": "func_001F8DC4",
+      "source": "src/lib/func_001F8DC4.c"
+    },
+    {
+      "symbol": "func_001F8DD0",
+      "source": "src/lib/func_001F8DD0.c"
+    },
+    {
+      "symbol": "func_00200474",
+      "source": "src/lib/func_00200474.c"
+    },
+    {
+      "symbol": "func_00205794",
+      "source": "src/lib/func_00205794.c"
+    },
+    {
+      "symbol": "func_0020BF8C",
+      "source": "src/lib/func_0020BF8C.c"
+    },
+    {
+      "symbol": "func_0020BF98",
+      "source": "src/lib/func_0020BF98.c"
+    },
+    {
+      "symbol": "func_0020C3A8",
+      "source": "src/lib/func_0020C3A8.c"
+    },
+    {
+      "symbol": "func_00260264",
+      "source": "src/lib/func_00260264.c"
+    },
+    {
+      "symbol": "func_00275E5C",
+      "source": "src/lib/func_00275E5C.c"
+    },
+    {
+      "symbol": "func_0027CFC8",
+      "source": "src/lib/func_0027CFC8.c"
+    },
+    {
+      "symbol": "func_002836A4",
+      "source": "src/lib/func_002836A4.c"
+    },
+    {
+      "symbol": "func_002836B0",
+      "source": "src/lib/func_002836B0.c"
+    },
+    {
+      "symbol": "func_002836BC",
+      "source": "src/lib/func_002836BC.c"
+    },
+    {
+      "symbol": "func_0028a8b8",
+      "source": "src/lib/func_0028a8b8.c"
+    },
+    {
+      "symbol": "func_002A053C",
+      "source": "src/lib/func_002A053C.c"
+    },
+    {
+      "symbol": "func_002AB4FC",
+      "source": "src/lib/func_002AB4FC.c"
+    },
+    {
+      "symbol": "func_00014730",
+      "source": "src/lib/func_00014730.c"
+    },
+    {
+      "symbol": "func_00014770",
+      "source": "src/lib/func_00014770.c"
+    },
+    {
+      "symbol": "func_00014780",
+      "source": "src/lib/func_00014780.c"
+    },
+    {
+      "symbol": "func_00014790",
+      "source": "src/lib/func_00014790.c"
+    },
+    {
+      "symbol": "func_000147f8",
+      "source": "src/lib/func_000147f8.c"
+    },
+    {
+      "symbol": "func_00014814",
+      "source": "src/lib/func_00014814.c"
+    },
+    {
+      "symbol": "func_0001496c",
+      "source": "src/lib/func_0001496c.c"
+    },
+    {
+      "symbol": "func_00014a84",
+      "source": "src/lib/func_00014a84.c"
+    },
+    {
+      "symbol": "func_00014b84",
+      "source": "src/lib/func_00014b84.c"
+    },
+    {
+      "symbol": "func_00014ca0",
+      "source": "src/lib/func_00014ca0.c"
+    },
+    {
+      "symbol": "func_00018630",
+      "source": "src/lib/func_00018630.c"
+    },
+    {
+      "symbol": "func_0001a050",
+      "source": "src/lib/func_0001a050.c"
+    },
+    {
+      "symbol": "func_0004624c",
+      "source": "src/lib/func_0004624c.c"
+    },
+    {
+      "symbol": "func_00046270",
+      "source": "src/lib/func_00046270.c"
+    },
+    {
+      "symbol": "func_00046280",
+      "source": "src/lib/func_00046280.c"
+    },
+    {
+      "symbol": "func_00046314",
+      "source": "src/lib/func_00046314.c"
+    },
+    {
+      "symbol": "func_00046324",
+      "source": "src/lib/func_00046324.c"
+    },
+    {
+      "symbol": "func_00049a30",
+      "source": "src/lib/func_00049a30.c"
+    },
+    {
+      "symbol": "func_00049a40",
+      "source": "src/lib/func_00049a40.c"
+    },
+    {
+      "symbol": "func_00049a50",
+      "source": "src/lib/func_00049a50.c"
+    },
+    {
+      "symbol": "func_00050604",
+      "source": "src/lib/func_00050604.c"
+    },
+    {
+      "symbol": "func_00074728",
+      "source": "src/lib/func_00074728.c"
+    },
+    {
+      "symbol": "func_00074738",
+      "source": "src/lib/func_00074738.c"
+    },
+    {
+      "symbol": "func_000b3438",
+      "source": "src/lib/func_000b3438.c"
+    },
+    {
+      "symbol": "func_000bb9e4",
+      "source": "src/lib/func_000bb9e4.c"
+    },
+    {
+      "symbol": "func_000fb82c",
+      "source": "src/lib/func_000fb82c.c"
+    },
+    {
+      "symbol": "func_00147FA8",
+      "source": "src/lib/func_00147FA8.c"
+    },
+    {
+      "symbol": "func_001BF530",
+      "source": "src/lib/func_001BF530.c"
+    },
+    {
+      "symbol": "func_001F0F5C",
+      "source": "src/lib/func_001F0F5C.c"
+    },
+    {
+      "symbol": "func_0020BF6C",
+      "source": "src/lib/func_0020BF6C.c"
+    },
+    {
+      "symbol": "func_0020BF7C",
+      "source": "src/lib/func_0020BF7C.c"
+    },
+    {
+      "symbol": "func_0020D434",
+      "source": "src/lib/func_0020D434.c"
+    },
+    {
+      "symbol": "func_00239B74",
+      "source": "src/lib/func_00239B74.c"
+    },
+    {
+      "symbol": "func_00239B84",
+      "source": "src/lib/func_00239B84.c"
+    },
+    {
+      "symbol": "func_0025F73C",
+      "source": "src/lib/func_0025F73C.c"
+    },
+    {
+      "symbol": "func_00262830",
+      "source": "src/lib/func_00262830.c"
+    },
+    {
+      "symbol": "func_00262C44",
+      "source": "src/lib/func_00262C44.c"
+    },
+    {
+      "symbol": "func_00262C54",
+      "source": "src/lib/func_00262C54.c"
+    },
+    {
+      "symbol": "func_00275E3C",
+      "source": "src/lib/func_00275E3C.c"
+    },
+    {
+      "symbol": "func_00275E4C",
+      "source": "src/lib/func_00275E4C.c"
+    },
+    {
+      "symbol": "func_00283654",
+      "source": "src/lib/func_00283654.c"
+    },
+    {
+      "symbol": "func_00283694",
+      "source": "src/lib/func_00283694.c"
+    },
+    {
+      "symbol": "func_002907E8",
+      "source": "src/lib/func_002907E8.c"
+    },
+    {
+      "symbol": "func_00290810",
+      "source": "src/lib/func_00290810.c"
+    },
+    {
+      "symbol": "func_002A05DC",
+      "source": "src/lib/func_002A05DC.c"
+    },
+    {
+      "symbol": "func_0001499c",
+      "source": "src/lib/func_0001499c.c"
+    },
+    {
+      "symbol": "func_0001f2a4",
+      "source": "src/lib/func_0001f2a4.c"
+    },
+    {
+      "symbol": "func_00014614",
+      "source": "src/lib/func_00014614.c"
+    },
+    {
+      "symbol": "func_00014988",
+      "source": "src/lib/func_00014988.c"
+    },
+    {
+      "symbol": "func_000149b0",
+      "source": "src/lib/func_000149b0.c"
+    },
+    {
+      "symbol": "func_00014a0c",
+      "source": "src/lib/func_00014a0c.c"
+    },
+    {
+      "symbol": "__osPopThread",
+      "source": "src/lib/__osPopThread.c"
+    },
+    {
+      "symbol": "func_0004649c",
+      "source": "src/lib/func_0004649c.c"
+    },
+    {
+      "symbol": "func_000464ac",
+      "source": "src/lib/func_000464ac.c"
+    },
+    {
+      "symbol": "func_00046238",
+      "source": "src/lib/func_00046238.c"
+    },
+    {
+      "symbol": "func_0004625c",
+      "source": "src/lib/func_0004625c.c"
+    },
+    {
+      "symbol": "func_000464bc",
+      "source": "src/lib/func_000464bc.c"
+    },
+    {
+      "symbol": "func_0004650c",
+      "source": "src/lib/func_0004650c.c"
+    },
+    {
+      "symbol": "func_00046520",
+      "source": "src/lib/func_00046520.c"
+    },
+    {
+      "symbol": "func_00046534",
+      "source": "src/lib/func_00046534.c"
+    },
+    {
+      "symbol": "func_00046568",
+      "source": "src/lib/func_00046568.c"
+    },
+    {
+      "symbol": "func_0004657c",
+      "source": "src/lib/func_0004657c.c"
+    },
+    {
+      "symbol": "func_00046590",
+      "source": "src/lib/func_00046590.c"
+    },
+    {
+      "symbol": "func_000465dc",
+      "source": "src/lib/func_000465dc.c"
+    },
+    {
+      "symbol": "func_000465f0",
+      "source": "src/lib/func_000465f0.c"
+    },
+    {
+      "symbol": "func_00046604",
+      "source": "src/lib/func_00046604.c"
+    },
+    {
+      "symbol": "func_00046618",
+      "source": "src/lib/func_00046618.c"
+    },
+    {
+      "symbol": "func_0004662c",
+      "source": "src/lib/func_0004662c.c"
+    },
+    {
+      "symbol": "func_00046640",
+      "source": "src/lib/func_00046640.c"
+    },
+    {
+      "symbol": "func_0004e434",
+      "source": "src/lib/func_0004e434.c"
+    },
+    {
+      "symbol": "func_00090e40",
+      "source": "src/lib/func_00090e40.c"
+    },
+    {
+      "symbol": "func_000fd258",
+      "source": "src/lib/func_000fd258.c"
+    },
+    {
+      "symbol": "func_000FDC7C",
+      "source": "src/lib/func_000FDC7C.c"
+    },
+    {
+      "symbol": "func_000FDEF8",
+      "source": "src/lib/func_000FDEF8.c"
+    },
+    {
+      "symbol": "func_000FE2C8",
+      "source": "src/lib/func_000FE2C8.c"
+    },
+    {
+      "symbol": "func_0010037c",
+      "source": "src/lib/func_0010037c.c"
+    },
+    {
+      "symbol": "func_00100390",
+      "source": "src/lib/func_00100390.c"
+    },
+    {
+      "symbol": "func_001003a4",
+      "source": "src/lib/func_001003a4.c"
+    },
+    {
+      "symbol": "func_001003b8",
+      "source": "src/lib/func_001003b8.c"
+    },
+    {
+      "symbol": "func_00127E98",
+      "source": "src/lib/func_00127E98.c"
+    },
+    {
+      "symbol": "func_0012896C",
+      "source": "src/lib/func_0012896C.c"
+    },
+    {
+      "symbol": "func_00145DE4",
+      "source": "src/lib/func_00145DE4.c"
+    },
+    {
+      "symbol": "func_00145E04",
+      "source": "src/lib/func_00145E04.c"
+    },
+    {
+      "symbol": "func_00175B48",
+      "source": "src/lib/func_00175B48.c"
+    },
+    {
+      "symbol": "func_001BB11C",
+      "source": "src/lib/func_001BB11C.c"
+    },
+    {
+      "symbol": "func_001BBF94",
+      "source": "src/lib/func_001BBF94.c"
+    },
+    {
+      "symbol": "func_0020BFE4",
+      "source": "src/lib/func_0020BFE4.c"
+    },
+    {
+      "symbol": "func_0023F224",
+      "source": "src/lib/func_0023F224.c"
+    },
+    {
+      "symbol": "func_00275D8C",
+      "source": "src/lib/func_00275D8C.c"
+    },
+    {
+      "symbol": "func_002AD420",
+      "source": "src/lib/func_002AD420.c"
+    },
+    {
+      "symbol": "func_002B1014",
+      "source": "src/lib/func_002B1014.c"
+    },
+    {
+      "symbol": "func_002B4FA0",
+      "source": "src/lib/func_002B4FA0.c"
+    },
+    {
+      "symbol": "func_00015f0c",
+      "source": "src/lib/func_00015f0c.c"
+    },
+    {
+      "symbol": "func_00018dd4",
+      "source": "src/lib/func_00018dd4.c"
+    },
+    {
+      "symbol": "func_000201c8",
+      "source": "src/lib/func_000201c8.c"
+    },
+    {
+      "symbol": "func_00044340",
+      "source": "src/lib/func_00044340.c"
+    },
+    {
+      "symbol": "func_00044358",
+      "source": "src/lib/func_00044358.c"
+    },
+    {
+      "symbol": "func_00045480",
+      "source": "src/lib/func_00045480.c"
+    },
+    {
+      "symbol": "func_00045498",
+      "source": "src/lib/func_00045498.c"
+    },
+    {
+      "symbol": "func_000454b0",
+      "source": "src/lib/func_000454b0.c"
+    },
+    {
+      "symbol": "func_000454c8",
+      "source": "src/lib/func_000454c8.c"
+    },
+    {
+      "symbol": "func_00045514",
+      "source": "src/lib/func_00045514.c"
+    },
+    {
+      "symbol": "func_0004552c",
+      "source": "src/lib/func_0004552c.c"
+    },
+    {
+      "symbol": "func_00045544",
+      "source": "src/lib/func_00045544.c"
+    },
+    {
+      "symbol": "func_0004573c",
+      "source": "src/lib/func_0004573c.c"
+    },
+    {
+      "symbol": "func_00045754",
+      "source": "src/lib/func_00045754.c"
+    },
+    {
+      "symbol": "func_0004576c",
+      "source": "src/lib/func_0004576c.c"
+    },
+    {
+      "symbol": "func_00045784",
+      "source": "src/lib/func_00045784.c"
+    },
+    {
+      "symbol": "func_0004579c",
+      "source": "src/lib/func_0004579c.c"
+    },
+    {
+      "symbol": "func_000457b4",
+      "source": "src/lib/func_000457b4.c"
+    },
+    {
+      "symbol": "func_000457cc",
+      "source": "src/lib/func_000457cc.c"
+    },
+    {
+      "symbol": "func_000fb83c",
+      "source": "src/lib/func_000fb83c.c"
+    },
+    {
+      "symbol": "func_00201538",
+      "source": "src/lib/func_00201538.c"
+    },
+    {
+      "symbol": "func_00205748",
+      "source": "src/lib/func_00205748.c"
+    },
+    {
+      "symbol": "func_0023F20C",
+      "source": "src/lib/func_0023F20C.c"
+    },
+    {
+      "symbol": "func_0023F760",
+      "source": "src/lib/func_0023F760.c"
+    },
+    {
+      "symbol": "func_00240EB0",
+      "source": "src/lib/func_00240EB0.c"
+    },
+    {
+      "symbol": "func_0026241C",
+      "source": "src/lib/func_0026241C.c"
+    },
+    {
+      "symbol": "func_002907F8",
+      "source": "src/lib/func_002907F8.c"
+    },
+    {
+      "symbol": "func_00013410",
+      "source": "src/lib/func_00013410.c"
+    },
+    {
+      "symbol": "func_000457e4",
+      "source": "src/lib/func_000457e4.c"
+    },
+    {
+      "symbol": "func_00045840",
+      "source": "src/lib/func_00045840.c"
+    },
+    {
+      "symbol": "func_0004585c",
+      "source": "src/lib/func_0004585c.c"
+    },
+    {
+      "symbol": "func_000458b8",
+      "source": "src/lib/func_000458b8.c"
+    },
+    {
+      "symbol": "func_000458d4",
+      "source": "src/lib/func_000458d4.c"
+    },
+    {
+      "symbol": "func_000460b8",
+      "source": "src/lib/func_000460b8.c"
+    },
+    {
+      "symbol": "func_000460d4",
+      "source": "src/lib/func_000460d4.c"
+    },
+    {
+      "symbol": "func_000460f0",
+      "source": "src/lib/func_000460f0.c"
+    },
+    {
+      "symbol": "func_0004610c",
+      "source": "src/lib/func_0004610c.c"
+    },
+    {
+      "symbol": "func_00046128",
+      "source": "src/lib/func_00046128.c"
+    },
+    {
+      "symbol": "func_00046358",
+      "source": "src/lib/func_00046358.c"
+    },
+    {
+      "symbol": "func_000465a4",
+      "source": "src/lib/func_000465a4.c"
+    },
+    {
+      "symbol": "func_000fd23c",
+      "source": "src/lib/func_000fd23c.c"
+    },
+    {
+      "symbol": "func_001A1424",
+      "source": "src/lib/func_001A1424.c"
+    },
+    {
+      "symbol": "func_00201550",
+      "source": "src/lib/func_00201550.c"
+    },
+    {
+      "symbol": "func_0020BF34",
+      "source": "src/lib/func_0020BF34.c"
+    },
+    {
+      "symbol": "func_0020BF50",
+      "source": "src/lib/func_0020BF50.c"
+    },
+    {
+      "symbol": "func_0023B650",
+      "source": "src/lib/func_0023B650.c"
+    },
+    {
+      "symbol": "func_002623C4",
+      "source": "src/lib/func_002623C4.c"
+    },
+    {
+      "symbol": "func_00262840",
+      "source": "src/lib/func_00262840.c"
+    },
+    {
+      "symbol": "func_00262C64",
+      "source": "src/lib/func_00262C64.c"
+    },
+    {
+      "symbol": "func_00275DA0",
+      "source": "src/lib/func_00275DA0.c"
+    },
+    {
+      "symbol": "func_0027CFAC",
+      "source": "src/lib/func_0027CFAC.c"
+    },
+    {
+      "symbol": "func_0027F75C",
+      "source": "src/lib/func_0027F75C.c"
+    },
+    {
+      "symbol": "func_00283B50",
+      "source": "src/lib/func_00283B50.c"
+    },
+    {
+      "symbol": "func_0001438c",
+      "source": "src/lib/func_0001438c.c"
+    },
+    {
+      "symbol": "func_000453e0",
+      "source": "src/lib/func_000453e0.c"
+    },
+    {
+      "symbol": "func_00045400",
+      "source": "src/lib/func_00045400.c"
+    },
+    {
+      "symbol": "func_00045420",
+      "source": "src/lib/func_00045420.c"
+    },
+    {
+      "symbol": "func_00045440",
+      "source": "src/lib/func_00045440.c"
+    },
+    {
+      "symbol": "func_00045460",
+      "source": "src/lib/func_00045460.c"
+    },
+    {
+      "symbol": "func_00045800",
+      "source": "src/lib/func_00045800.c"
+    },
+    {
+      "symbol": "func_00045820",
+      "source": "src/lib/func_00045820.c"
+    },
+    {
+      "symbol": "func_00045878",
+      "source": "src/lib/func_00045878.c"
+    },
+    {
+      "symbol": "func_00045898",
+      "source": "src/lib/func_00045898.c"
+    },
+    {
+      "symbol": "func_00046218",
+      "source": "src/lib/func_00046218.c"
+    },
+    {
+      "symbol": "func_00046290",
+      "source": "src/lib/func_00046290.c"
+    },
+    {
+      "symbol": "func_000462b0",
+      "source": "src/lib/func_000462b0.c"
+    },
+    {
+      "symbol": "func_000463b8",
+      "source": "src/lib/func_000463b8.c"
+    },
+    {
+      "symbol": "func_000F3E90",
+      "source": "src/lib/func_000F3E90.c"
+    },
+    {
+      "symbol": "func_00201B6C",
+      "source": "src/lib/func_00201B6C.c"
+    },
+    {
+      "symbol": "func_00201B8C",
+      "source": "src/lib/func_00201B8C.c"
+    },
+    {
+      "symbol": "func_00262308",
+      "source": "src/lib/func_00262308.c"
+    },
+    {
+      "symbol": "func_00283B30",
+      "source": "src/lib/func_00283B30.c"
+    },
+    {
+      "symbol": "func_00289D04",
+      "source": "src/lib/func_00289D04.c"
+    },
+    {
+      "symbol": "strlen",
+      "source": "src/lib/strlen.c"
+    },
+    {
+      "symbol": "func_00046144",
+      "source": "src/lib/func_00046144.c"
+    },
+    {
+      "symbol": "func_00046168",
+      "source": "src/lib/func_00046168.c"
+    },
+    {
+      "symbol": "func_0004618c",
+      "source": "src/lib/func_0004618c.c"
+    },
+    {
+      "symbol": "func_000461b0",
+      "source": "src/lib/func_000461b0.c"
+    },
+    {
+      "symbol": "func_000461d4",
+      "source": "src/lib/func_000461d4.c"
+    },
+    {
+      "symbol": "func_000462d0",
+      "source": "src/lib/func_000462d0.c"
+    },
+    {
+      "symbol": "func_000b34a0",
+      "source": "src/lib/func_000b34a0.c"
+    },
+    {
+      "symbol": "func_000b47d8",
+      "source": "src/lib/func_000b47d8.c"
+    },
+    {
+      "symbol": "func_0013466C",
+      "source": "src/lib/func_0013466C.c"
+    },
+    {
+      "symbol": "func_00145D18",
+      "source": "src/lib/func_00145D18.c"
+    },
+    {
+      "symbol": "func_001F0F6C",
+      "source": "src/lib/func_001F0F6C.c"
+    },
+    {
+      "symbol": "func_001F102C",
+      "source": "src/lib/func_001F102C.c"
+    },
+    {
+      "symbol": "func_000143dc",
+      "source": "src/lib/func_000143dc.c"
+    },
+    {
+      "symbol": "func_00014628",
+      "source": "src/lib/func_00014628.c"
+    },
+    {
+      "symbol": "func_0012E950",
+      "source": "src/lib/func_0012E950.c"
+    },
+    {
+      "symbol": "func_00146094",
+      "source": "src/lib/func_00146094.c"
+    },
+    {
+      "symbol": "func_00201B18",
+      "source": "src/lib/func_00201B18.c"
+    },
+    {
+      "symbol": "func_0029C19C",
+      "source": "src/lib/func_0029C19C.c"
+    },
+    {
+      "symbol": "func_000118c4",
+      "source": "src/lib/func_000118c4.c"
+    },
+    {
+      "symbol": "func_00014c64",
+      "source": "src/lib/func_00014c64.c"
+    },
+    {
+      "symbol": "func_00018e84",
+      "source": "src/lib/func_00018e84.c"
+    },
+    {
+      "symbol": "func_00020274",
+      "source": "src/lib/func_00020274.c"
+    },
+    {
+      "symbol": "func_000202bc",
+      "source": "src/lib/func_000202bc.c"
+    },
+    {
+      "symbol": "func_000454e0",
+      "source": "src/lib/func_000454e0.c"
+    },
+    {
+      "symbol": "func_000463d8",
+      "source": "src/lib/func_000463d8.c"
+    },
+    {
+      "symbol": "func_00046404",
+      "source": "src/lib/func_00046404.c"
+    },
+    {
+      "symbol": "func_00046430",
+      "source": "src/lib/func_00046430.c"
+    },
+    {
+      "symbol": "func_00048abc",
+      "source": "src/lib/func_00048abc.c"
+    },
+    {
+      "symbol": "func_0004c7d4",
+      "source": "src/lib/func_0004c7d4.c"
+    },
+    {
+      "symbol": "func_0004f254",
+      "source": "src/lib/func_0004f254.c"
+    },
+    {
+      "symbol": "func_0005a030",
+      "source": "src/lib/func_0005a030.c"
+    },
+    {
+      "symbol": "func_0005c110",
+      "source": "src/lib/func_0005c110.c"
+    },
+    {
+      "symbol": "func_00072f10",
+      "source": "src/lib/func_00072f10.c"
+    },
+    {
+      "symbol": "func_00072f3c",
+      "source": "src/lib/func_00072f3c.c"
+    },
+    {
+      "symbol": "func_000740e4",
+      "source": "src/lib/func_000740e4.c"
+    },
+    {
+      "symbol": "func_00074110",
+      "source": "src/lib/func_00074110.c"
+    },
+    {
+      "symbol": "func_0007d960",
+      "source": "src/lib/func_0007d960.c"
+    },
+    {
+      "symbol": "func_0007d994",
+      "source": "src/lib/func_0007d994.c"
+    },
+    {
+      "symbol": "func_00099b1c",
+      "source": "src/lib/func_00099b1c.c"
+    },
+    {
+      "symbol": "func_0009ed1c",
+      "source": "src/lib/func_0009ed1c.c"
+    },
+    {
+      "symbol": "func_000a00f0",
+      "source": "src/lib/func_000a00f0.c"
+    },
+    {
+      "symbol": "func_000E6620",
+      "source": "src/lib/func_000E6620.c"
+    },
+    {
+      "symbol": "func_000F8480",
+      "source": "src/lib/func_000F8480.c"
+    },
+    {
+      "symbol": "func_000FDC4C",
+      "source": "src/lib/func_000FDC4C.c"
+    },
+    {
+      "symbol": "func_000FE290",
+      "source": "src/lib/func_000FE290.c"
+    },
+    {
+      "symbol": "func_000b34c4",
+      "source": "src/lib/func_000b34c4.c"
+    },
+    {
+      "symbol": "func_000b876c",
+      "source": "src/lib/func_000b876c.c"
+    },
+    {
+      "symbol": "func_000bba9c",
+      "source": "src/lib/func_000bba9c.c"
+    },
+    {
+      "symbol": "func_000ba8a8",
+      "source": "src/lib/func_000ba8a8.c"
+    },
+    {
+      "symbol": "func_000ba918",
+      "source": "src/lib/func_000ba918.c"
+    },
+    {
+      "symbol": "func_000bb3d8",
+      "source": "src/lib/func_000bb3d8.c"
+    },
+    {
+      "symbol": "func_000bbd50",
+      "source": "src/lib/func_000bbd50.c"
+    },
+    {
+      "symbol": "func_000bbd80",
+      "source": "src/lib/func_000bbd80.c"
+    },
+    {
+      "symbol": "func_000bc684",
+      "source": "src/lib/func_000bc684.c"
+    },
+    {
+      "symbol": "func_000bc984",
+      "source": "src/lib/func_000bc984.c"
+    },
+    {
+      "symbol": "func_000bcee4",
+      "source": "src/lib/func_000bcee4.c"
+    },
+    {
+      "symbol": "func_000bec90",
+      "source": "src/lib/func_000bec90.c"
+    },
+    {
+      "symbol": "func_000bd154",
+      "source": "src/lib/func_000bd154.c"
+    },
+    {
+      "symbol": "func_000bd26c",
+      "source": "src/lib/func_000bd26c.c"
+    },
+    {
+      "symbol": "func_000bf248",
+      "source": "src/lib/func_000bf248.c"
+    },
+    {
+      "symbol": "func_000bf458",
+      "source": "src/lib/func_000bf458.c"
+    },
+    {
+      "symbol": "func_000bf9c8",
+      "source": "src/lib/func_000bf9c8.c"
+    },
+    {
+      "symbol": "func_000bfebc",
+      "source": "src/lib/func_000bfebc.c"
+    },
+    {
+      "symbol": "func_000c37ec",
+      "source": "src/lib/func_000c37ec.c"
+    },
+    {
+      "symbol": "func_000c4a40",
+      "source": "src/lib/func_000c4a40.c"
+    },
+    {
+      "symbol": "func_000c6bec",
+      "source": "src/lib/func_000c6bec.c"
+    },
+    {
+      "symbol": "func_000c91a0",
+      "source": "src/lib/func_000c91a0.c"
+    },
+    {
+      "symbol": "func_00044130",
+      "source": "src/lib/func_00044130.c"
+    },
+    {
+      "symbol": "func_00044aa4",
+      "source": "src/lib/func_00044aa4.c"
+    },
+    {
+      "symbol": "func_000bd318",
+      "source": "src/lib/func_000bd318.c"
+    },
+    {
+      "symbol": "func_000ecabc",
+      "source": "src/lib/func_000ecabc.c"
+    },
+    {
+      "symbol": "func_000ecb58",
+      "source": "src/lib/func_000ecb58.c"
+    },
+    {
+      "symbol": "func_00100298",
+      "source": "src/lib/func_00100298.c"
+    },
+    {
+      "symbol": "func_00130794",
+      "source": "src/lib/func_00130794.c"
+    },
+    {
+      "symbol": "func_00145C14",
+      "source": "src/lib/func_00145C14.c"
+    },
+    {
+      "symbol": "func_00147FB8",
+      "source": "src/lib/func_00147FB8.c"
+    },
+    {
+      "symbol": "func_00157F2C",
+      "source": "src/lib/func_00157F2C.c"
+    },
+    {
+      "symbol": "func_001F10F0",
+      "source": "src/lib/func_001F10F0.c"
+    },
+    {
+      "symbol": "func_001FF830",
+      "source": "src/lib/func_001FF830.c"
+    },
+    {
+      "symbol": "func_001FF868",
+      "source": "src/lib/func_001FF868.c"
+    },
+    {
+      "symbol": "func_0020236C",
+      "source": "src/lib/func_0020236C.c"
+    },
+    {
+      "symbol": "func_00205720",
+      "source": "src/lib/func_00205720.c"
+    },
+    {
+      "symbol": "func_00208D80",
+      "source": "src/lib/func_00208D80.c"
+    },
+    {
+      "symbol": "func_0020C180",
+      "source": "src/lib/func_0020C180.c"
+    },
+    {
+      "symbol": "func_0020C364",
+      "source": "src/lib/func_0020C364.c"
+    },
+    {
+      "symbol": "func_00210464",
+      "source": "src/lib/func_00210464.c"
+    },
+    {
+      "symbol": "func_0023B680",
+      "source": "src/lib/func_0023B680.c"
+    },
+    {
+      "symbol": "func_0024BD60",
+      "source": "src/lib/func_0024BD60.c"
+    },
+    {
+      "symbol": "func_0024BD8C",
+      "source": "src/lib/func_0024BD8C.c"
+    },
+    {
+      "symbol": "func_0024BDBC",
+      "source": "src/lib/func_0024BDBC.c"
+    },
+    {
+      "symbol": "func_0024BDEC",
+      "source": "src/lib/func_0024BDEC.c"
+    },
+    {
+      "symbol": "func_0024BEA0",
+      "source": "src/lib/func_0024BEA0.c"
+    },
+    {
+      "symbol": "func_0024BECC",
+      "source": "src/lib/func_0024BECC.c"
+    },
+    {
+      "symbol": "func_0024C7A4",
+      "source": "src/lib/func_0024C7A4.c"
+    },
+    {
+      "symbol": "func_002623E0",
+      "source": "src/lib/func_002623E0.c"
+    },
+    {
+      "symbol": "func_002628E4",
+      "source": "src/lib/func_002628E4.c"
+    },
+    {
+      "symbol": "func_002993C0",
+      "source": "src/lib/func_002993C0.c"
+    },
+    {
+      "symbol": "func_0029BA30",
+      "source": "src/lib/func_0029BA30.c"
+    },
+    {
+      "symbol": "func_0029BA58",
+      "source": "src/lib/func_0029BA58.c"
+    },
+    {
+      "symbol": "func_002A91E4",
+      "source": "src/lib/func_002A91E4.c"
+    },
+    {
+      "symbol": "func_002AB558",
+      "source": "src/lib/func_002AB558.c"
+    },
+    {
+      "symbol": "func_002B5044",
+      "source": "src/lib/func_002B5044.c"
+    },
+    {
+      "symbol": "func_002a3310",
+      "source": "src/lib/func_002a3310.c"
+    },
+    {
+      "symbol": "func_000bf228",
+      "source": "src/lib/func_000bf228.c"
+    },
+    {
+      "symbol": "func_000415fc",
+      "source": "src/lib/func_000415fc.c"
+    },
+    {
+      "symbol": "func_00041638",
+      "source": "src/lib/func_00041638.c"
+    },
+    {
+      "symbol": "func_00043100",
+      "source": "src/lib/func_00043100.c"
+    },
+    {
+      "symbol": "func_00043154",
+      "source": "src/lib/func_00043154.c"
+    },
+    {
+      "symbol": "func_000431a8",
+      "source": "src/lib/func_000431a8.c"
+    },
+    {
+      "symbol": "func_000431fc",
+      "source": "src/lib/func_000431fc.c"
+    },
+    {
+      "symbol": "func_00043250",
+      "source": "src/lib/func_00043250.c"
+    },
+    {
+      "symbol": "func_000432a4",
+      "source": "src/lib/func_000432a4.c"
+    },
+    {
+      "symbol": "func_000432f8",
+      "source": "src/lib/func_000432f8.c"
+    },
+    {
+      "symbol": "func_0004334c",
+      "source": "src/lib/func_0004334c.c"
+    },
+    {
+      "symbol": "func_000433a0",
+      "source": "src/lib/func_000433a0.c"
+    },
+    {
+      "symbol": "func_000433f4",
+      "source": "src/lib/func_000433f4.c"
+    },
+    {
+      "symbol": "func_00043448",
+      "source": "src/lib/func_00043448.c"
+    },
+    {
+      "symbol": "func_0004349c",
+      "source": "src/lib/func_0004349c.c"
+    },
+    {
+      "symbol": "func_000434f0",
+      "source": "src/lib/func_000434f0.c"
+    },
+    {
+      "symbol": "func_00043544",
+      "source": "src/lib/func_00043544.c"
+    },
+    {
+      "symbol": "func_00043598",
+      "source": "src/lib/func_00043598.c"
+    },
+    {
+      "symbol": "func_000435ec",
+      "source": "src/lib/func_000435ec.c"
+    },
+    {
+      "symbol": "func_00043640",
+      "source": "src/lib/func_00043640.c"
+    },
+    {
+      "symbol": "func_00043694",
+      "source": "src/lib/func_00043694.c"
+    },
+    {
+      "symbol": "func_000436e8",
+      "source": "src/lib/func_000436e8.c"
+    },
+    {
+      "symbol": "func_0004373c",
+      "source": "src/lib/func_0004373c.c"
+    },
+    {
+      "symbol": "func_00043790",
+      "source": "src/lib/func_00043790.c"
+    },
+    {
+      "symbol": "func_000437e4",
+      "source": "src/lib/func_000437e4.c"
+    },
+    {
+      "symbol": "func_00043838",
+      "source": "src/lib/func_00043838.c"
+    },
+    {
+      "symbol": "func_0004388c",
+      "source": "src/lib/func_0004388c.c"
+    },
+    {
+      "symbol": "func_000438e0",
+      "source": "src/lib/func_000438e0.c"
+    },
+    {
+      "symbol": "func_00043934",
+      "source": "src/lib/func_00043934.c"
+    },
+    {
+      "symbol": "func_00043988",
+      "source": "src/lib/func_00043988.c"
+    },
+    {
+      "symbol": "func_000439dc",
+      "source": "src/lib/func_000439dc.c"
+    },
+    {
+      "symbol": "func_00043a30",
+      "source": "src/lib/func_00043a30.c"
+    },
+    {
+      "symbol": "func_00043a84",
+      "source": "src/lib/func_00043a84.c"
+    },
+    {
+      "symbol": "func_00043ad8",
+      "source": "src/lib/func_00043ad8.c"
+    },
+    {
+      "symbol": "func_00043b2c",
+      "source": "src/lib/func_00043b2c.c"
+    },
+    {
+      "symbol": "func_00043b80",
+      "source": "src/lib/func_00043b80.c"
+    },
+    {
+      "symbol": "func_00043bd4",
+      "source": "src/lib/func_00043bd4.c"
+    },
+    {
+      "symbol": "func_00043c20",
+      "source": "src/lib/func_00043c20.c"
+    },
+    {
+      "symbol": "func_00043c74",
+      "source": "src/lib/func_00043c74.c"
+    },
+    {
+      "symbol": "func_00043cc8",
+      "source": "src/lib/func_00043cc8.c"
+    },
+    {
+      "symbol": "func_00043d1c",
+      "source": "src/lib/func_00043d1c.c"
+    },
+    {
+      "symbol": "func_00043d70",
+      "source": "src/lib/func_00043d70.c"
+    },
+    {
+      "symbol": "func_00043dc4",
+      "source": "src/lib/func_00043dc4.c"
+    },
+    {
+      "symbol": "func_00043e18",
+      "source": "src/lib/func_00043e18.c"
+    },
+    {
+      "symbol": "func_00043e88",
+      "source": "src/lib/func_00043e88.c"
+    },
+    {
+      "symbol": "func_00043edc",
+      "source": "src/lib/func_00043edc.c"
+    },
+    {
+      "symbol": "func_00043f30",
+      "source": "src/lib/func_00043f30.c"
+    },
+    {
+      "symbol": "func_00043f84",
+      "source": "src/lib/func_00043f84.c"
+    },
+    {
+      "symbol": "func_00043fd8",
+      "source": "src/lib/func_00043fd8.c"
+    },
+    {
+      "symbol": "func_00044040",
+      "source": "src/lib/func_00044040.c"
+    },
+    {
+      "symbol": "func_00044074",
+      "source": "src/lib/func_00044074.c"
+    },
+    {
+      "symbol": "func_000440dc",
+      "source": "src/lib/func_000440dc.c"
+    },
+    {
+      "symbol": "func_00044238",
+      "source": "src/lib/func_00044238.c"
+    },
+    {
+      "symbol": "func_00044370",
+      "source": "src/lib/func_00044370.c"
+    },
+    {
+      "symbol": "func_0004440c",
+      "source": "src/lib/func_0004440c.c"
+    },
+    {
+      "symbol": "func_00045df4",
+      "source": "src/lib/func_00045df4.c"
+    },
+    {
+      "symbol": "func_00044934",
+      "source": "src/lib/func_00044934.c"
+    },
+    {
+      "symbol": "func_000449ec",
+      "source": "src/lib/func_000449ec.c"
+    },
+    {
+      "symbol": "func_000d0150",
+      "source": "src/lib/func_000d0150.c"
+    },
+    {
+      "symbol": "func_0010DDB4",
+      "source": "src/lib/func_0010ddb4.c"
+    },
+    {
+      "symbol": "func_0012FBB8",
+      "source": "src/lib/func_0012fbb8.c"
+    },
+    {
+      "symbol": "func_001390F0",
+      "source": "src/lib/func_001390f0.c"
+    },
+    {
+      "symbol": "strcat",
+      "source": "src/lib/strcat.c"
+    },
+    {
+      "symbol": "func_00284210",
+      "source": "src/lib/func_00284210.c"
+    },
+    {
+      "symbol": "func_002841CC",
+      "source": "src/lib/func_002841CC.c"
+    },
+    {
+      "symbol": "func_00284150",
+      "source": "src/lib/func_00284150.c"
+    },
+    {
+      "symbol": "func_00284184",
+      "source": "src/lib/func_00284184.c"
+    },
+    {
+      "symbol": "func_0028422C",
+      "source": "src/lib/func_0028422C.c"
+    },
+    {
+      "symbol": "func_0020BFF8",
+      "source": "src/lib/func_0020BFF8.c"
+    },
+    {
+      "symbol": "func_0020C478",
+      "source": "src/lib/func_0020C478.c"
+    },
+    {
+      "symbol": "func_0029DF04",
+      "source": "src/lib/func_0029DF04.c"
+    },
+    {
+      "symbol": "func_002A0804",
+      "source": "src/lib/func_002A0804.c"
+    },
+    {
+      "symbol": "func_0004e800",
+      "source": "src/lib/func_0004e800.c"
+    },
+    {
+      "symbol": "func_0004820c",
+      "source": "src/lib/func_0004820c.c"
+    },
+    {
+      "symbol": "func_001FFA8C",
+      "source": "src/lib/func_001FFA8C.c"
+    },
+    {
+      "symbol": "func_001F2134",
+      "source": "src/lib/func_001F2134.c"
+    },
+    {
+      "symbol": "func_002AE4DC",
+      "source": "src/lib/func_002AE4DC.c"
+    },
+    {
+      "symbol": "func_0006947c",
+      "source": "src/lib/func_0006947c.c"
+    },
+    {
+      "symbol": "func_0004813C",
+      "source": "src/lib/func_0004813c.c"
+    },
+    {
+      "symbol": "func_00047a94",
+      "source": "src/lib/func_00047a94.c"
+    },
+    {
+      "symbol": "func_0029D790",
+      "source": "src/lib/func_0029D790.c"
+    },
+    {
+      "symbol": "func_00283FA8",
+      "source": "src/lib/func_00283FA8.c"
+    },
+    {
+      "symbol": "func_002ABFD4",
+      "source": "src/lib/func_002ABFD4.c"
+    },
+    {
+      "symbol": "func_002A08C0",
+      "source": "src/lib/func_002A08C0.c"
+    },
+    {
+      "symbol": "func_002A0680",
+      "source": "src/lib/func_002A0680.c"
+    },
+    {
+      "symbol": "func_0004ed60",
+      "source": "src/lib/func_0004ED60.c"
+    },
+    {
+      "symbol": "func_00067fa8",
+      "source": "src/lib/func_00067FA8.c"
+    },
+    {
+      "symbol": "func_002B0D30",
+      "source": "src/lib/func_002B0D30.c"
+    },
+    {
+      "symbol": "func_00283E14",
+      "source": "src/lib/func_00283E14.c"
+    },
+    {
+      "symbol": "func_002861C8",
+      "source": "src/lib/func_002861C8.c"
+    },
+    {
+      "symbol": "func_002827EC",
+      "source": "src/lib/func_002827EC.c"
+    },
+    {
+      "symbol": "func_002A05EC",
+      "source": "src/lib/func_002A05EC.c"
+    },
+    {
+      "symbol": "func_002a3198",
+      "source": "src/lib/func_002a3198.c"
+    },
+    {
+      "symbol": "func_002A0B14",
+      "source": "src/lib/func_002A0B14.c"
+    },
+    {
+      "symbol": "func_002A13EC",
+      "source": "src/lib/func_002A13EC.c"
+    },
+    {
+      "symbol": "func_0021D1CC",
+      "source": "src/battle/func_0021D1CC.c"
+    },
+    {
+      "symbol": "func_0021D200",
+      "source": "src/battle/func_0021D200.c"
+    },
+    {
+      "symbol": "func_0021D230",
+      "source": "src/battle/func_0021D230.c"
+    },
+    {
+      "symbol": "func_0021D25C",
+      "source": "src/battle/func_0021D25C.c"
+    },
+    {
+      "symbol": "func_0021D28C",
+      "source": "src/battle/func_0021D28C.c"
+    },
+    {
+      "symbol": "func_0021D2C0",
+      "source": "src/battle/func_0021D2C0.c"
+    },
+    {
+      "symbol": "func_0021D2F8",
+      "source": "src/battle/func_0021D2F8.c"
+    },
+    {
+      "symbol": "func_0021D334",
+      "source": "src/battle/func_0021D334.c"
+    },
+    {
+      "symbol": "func_0021CA18",
+      "source": "src/battle/func_0021CA18.c"
+    },
+    {
+      "symbol": "func_0021CB30",
+      "source": "src/battle/func_0021CB30.c"
+    },
+    {
+      "symbol": "func_0021C8DC",
+      "source": "src/battle/func_0021C8DC.c"
+    },
+    {
+      "symbol": "func_0021C970",
+      "source": "src/battle/func_0021C970.c"
+    },
+    {
+      "symbol": "func_0021CA88",
+      "source": "src/battle/func_0021CA88.c"
+    },
+    {
+      "symbol": "func_0021D374",
+      "source": "src/battle/func_0021D374.c"
+    },
+    {
+      "symbol": "func_0021CBC4",
+      "source": "src/battle/func_0021CBC4.c"
+    },
+    {
+      "symbol": "func_001F34B0",
+      "source": "src/lib/func_001F34B0.c"
+    },
+    {
+      "symbol": "func_001F3540",
+      "source": "src/lib/func_001F3540.c"
+    },
+    {
+      "symbol": "func_001F309C",
+      "source": "src/lib/func_001F309C.c"
+    },
+    {
+      "symbol": "func_001FFE80",
+      "source": "src/lib/func_001FFE80.c"
+    },
+    {
+      "symbol": "func_00201108",
+      "source": "src/lib/func_00201108.c"
+    },
+    {
+      "symbol": "func_002013D0",
+      "source": "src/lib/func_002013D0.c"
+    },
+    {
+      "symbol": "func_002158E4",
+      "source": "src/battle/func_002158E4.c"
+    },
+    {
+      "symbol": "func_002159D0",
+      "source": "src/battle/func_002159D0.c"
+    },
+    {
+      "symbol": "func_00215CF0",
+      "source": "src/battle/func_00215CF0.c"
+    },
+    {
+      "symbol": "func_00217BA8",
+      "source": "src/battle/func_00217BA8.c"
+    },
+    {
+      "symbol": "func_0021C3B0",
+      "source": "src/battle/func_0021C3B0.c"
+    },
+    {
+      "symbol": "func_002224F4",
+      "source": "src/battle/func_002224F4.c"
+    },
+    {
+      "symbol": "func_0021824C",
+      "source": "src/battle/func_0021824C.c"
+    },
+    {
+      "symbol": "func_0021B770",
+      "source": "src/battle/func_0021B770.c"
+    },
+    {
+      "symbol": "func_0021B0A0",
+      "source": "src/battle/func_0021B0A0.c"
+    },
+    {
+      "symbol": "func_00218B58",
+      "source": "src/battle/func_00218B58.c"
+    },
+    {
+      "symbol": "func_0021840C",
+      "source": "src/battle/func_0021840C.c"
+    },
+    {
+      "symbol": "func_0020156C",
+      "source": "src/lib/func_0020156C.c"
+    },
+    {
+      "symbol": "func_00201584",
+      "source": "src/lib/func_00201584.c"
+    },
+    {
+      "symbol": "func_002015C8",
+      "source": "src/lib/func_002015C8.c"
+    },
+    {
+      "symbol": "func_0020161C",
+      "source": "src/lib/func_0020161C.c"
+    },
+    {
+      "symbol": "func_00201670",
+      "source": "src/lib/func_00201670.c"
+    },
+    {
+      "symbol": "func_002016F4",
+      "source": "src/lib/func_002016F4.c"
+    },
+    {
+      "symbol": "func_00201778",
+      "source": "src/lib/func_00201778.c"
+    },
+    {
+      "symbol": "func_00201798",
+      "source": "src/lib/func_00201798.c"
+    },
+    {
+      "symbol": "func_00201838",
+      "source": "src/lib/func_00201838.c"
+    },
+    {
+      "symbol": "func_001F114C",
+      "source": "src/lib/func_001F114C.c"
+    },
+    {
+      "symbol": "func_00208DC8",
+      "source": "src/lib/func_00208DC8.c"
+    },
+    {
+      "symbol": "func_0020F3D4",
+      "source": "src/lib/func_0020F3D4.c"
+    },
+    {
+      "symbol": "func_00201D24",
+      "source": "src/lib/func_00201D24.c"
+    },
+    {
+      "symbol": "func_00201D8C",
+      "source": "src/lib/func_00201D8C.c"
+    },
+    {
+      "symbol": "func_00201E08",
+      "source": "src/lib/func_00201E08.c"
+    },
+    {
+      "symbol": "func_00201E38",
+      "source": "src/lib/func_00201E38.c"
+    },
+    {
+      "symbol": "func_00201E9C",
+      "source": "src/lib/func_00201E9C.c"
+    },
+    {
+      "symbol": "func_00201BAC",
+      "source": "src/lib/func_00201BAC.c"
+    },
+    {
+      "symbol": "func_002043C4",
+      "source": "src/lib/func_002043C4.c"
+    },
+    {
+      "symbol": "func_00202198",
+      "source": "src/lib/func_00202198.c"
+    },
+    {
+      "symbol": "func_00202258",
+      "source": "src/lib/func_00202258.c"
+    },
+    {
+      "symbol": "func_002032B8",
+      "source": "src/lib/func_002032B8.c"
+    },
+    {
+      "symbol": "func_00203414",
+      "source": "src/lib/func_00203414.c"
+    },
+    {
+      "symbol": "func_00203570",
+      "source": "src/lib/func_00203570.c"
+    },
+    {
+      "symbol": "func_00203030",
+      "source": "src/lib/func_00203030.c"
+    },
+    {
+      "symbol": "func_002043E0",
+      "source": "src/lib/func_002043E0.c"
+    },
+    {
+      "symbol": "func_00203664",
+      "source": "src/lib/func_00203664.c"
+    },
+    {
+      "symbol": "func_00204A70",
+      "source": "src/lib/func_00204A70.c"
+    },
     {
       "symbol": "func_00205608",
       "source": "src/lib/func_00205608.c"
@@ -798,106 +2556,394 @@
       "symbol": "func_001EA40C",
       "source": "src/lib/func_001EA40C.c"
     },
-    {"symbol":"func_0000C990","source":"third_party/lha/ob64/copyfile.c"},
-    {"symbol":"func_0000CB4C","source":"third_party/lha/ob64/read_pt_len.c"},
-    {"symbol":"func_0000CEB8","source":"third_party/lha/ob64/read_c_len.c"},
-    {"symbol":"func_0000D248","source":"third_party/lha/ob64/decode_c_st1.c"},
-    {"symbol":"func_0000D600","source":"third_party/lha/ob64/decode_p_st1.c"},
-    {"symbol":"boot_decode_huffman_tree_reconstruct","source":"third_party/lha/ob64/start_c_dyn.c"},
-    {"symbol":"boot_decode_huffman_tree_init","source":"third_party/lha/ob64/decode_start_dyn.c"},
-    {"symbol":"boot_decode_huffman_tree_update","source":"third_party/lha/ob64/reconst.c"},
-    {"symbol":"boot_decode_huffman_tree_update_entry","source":"third_party/lha/ob64/make_new_node.c"},
-    {"symbol":"boot_decode_huffman_symbol","source":"third_party/lha/ob64/decode_dyn.c"},
-    {"symbol":"boot_decode_build_huffman_table","source":"third_party/lha/ob64/make_table.c"},
-    {"symbol":"boot_decode_huffman_init","source":"third_party/lha/ob64/decode_start_st0.c"},
-    {"symbol":"boot_decode_huffman_build_litlen_table","source":"third_party/lha/ob64/read_tree_c.c"},
-    {"symbol":"boot_decode_huffman_build_dist_table","source":"third_party/lha/ob64/decode_start_fix.c"},
-    {"symbol":"boot_decode_huffman_codelengths","source":"third_party/lha/ob64/decode_c_st0.c"},
-    {"symbol":"boot_decode_canonical_huffman_symbol","source":"third_party/lha/ob64/decode_p_st0.c"},
-    {"symbol":"func_0000F5A0","source":"third_party/lha/ob64/decode_lzs.c"},
-    {"symbol":"func_0000F618","source":"third_party/lha/ob64/decode_lz5.c"},
-    {"symbol":"func_0000F734","source":"third_party/lha/ob64/decode_start_lz5.c"},
-    {"symbol":"func_0000C310","source":"third_party/lha/ob64/decode.c"},
-    {"symbol":"func_0000C778","source":"third_party/lha/ob64/crcio.c"},
-    {"symbol":"boot_bitstream_descriptor_decode","source":"src/boot/boot_bitstream_descriptor_decode.c"},
-    {"symbol":"boot_bitstream_cursor_helpers","source":"src/boot/boot_bitstream_cursor_helpers.c"},
-    {"symbol":"func_000ead04","source":"src/lib/func_000ead04.c"},
-    {"symbol":"func_002B4D58","source":"src/lib/func_002B4D58.c"},
-    {"symbol":"func_002ACF08","source":"src/lib/func_002ACF08.c"},
-    {"symbol":"func_002ABB3C","source":"src/lib/func_002ABB3C.c"},
-    {"symbol":"func_002ACA3C","source":"src/lib/func_002ACA3C.c"},
-    { "symbol": "func_000E6D90", "source": "src/lib/func_000E6D90.c" },
-    { "symbol": "func_000E5968", "source": "src/lib/func_000E5968.c" },
-    { "symbol": "func_00284288", "source": "src/lib/func_00284288.c" },
-    { "symbol": "func_0021B438", "source": "src/battle/func_0021B438.c" },
-    { "symbol": "func_0021B894", "source": "src/battle/func_0021B894.c" },
-    { "symbol": "func_0012E8EC", "source": "src/lib/func_0012E8EC.c" },
-    { "symbol": "func_0012E7E8", "source": "src/lib/func_0012E7E8.c" },
-    { "symbol": "func_0012F010", "source": "src/lib/func_0012F010.c" },
-    { "symbol": "func_0012ECDC", "source": "src/lib/func_0012ECDC.c" },
-    { "symbol": "func_0012F530", "source": "src/lib/func_0012F530.c" },
-    { "symbol": "func_0012F140", "source": "src/lib/func_0012F140.c" },
-    { "symbol": "func_00120CF0", "source": "src/lib/func_00120CF0.c" },
-    { "symbol": "func_00121724", "source": "src/lib/func_00121724.c" },
-    { "symbol": "func_00121DA8", "source": "src/lib/func_00121DA8.c" },
-    { "symbol": "func_00121F38", "source": "src/lib/func_00121F38.c" },
-    { "symbol": "func_00123458", "source": "src/lib/func_00123458.c" },
-    { "symbol": "func_001237F0", "source": "src/lib/func_001237F0.c" },
-    { "symbol": "func_0012DA10", "source": "src/lib/func_0012DA10.c" },
-    { "symbol": "func_0012DB2C", "source": "src/lib/func_0012DB2C.c" },
-    { "symbol": "func_0012A828", "source": "src/lib/func_0012A828.c" },
-    { "symbol": "func_0012F8C0", "source": "src/lib/func_0012F8C0.c" },
-    { "symbol": "func_00128980", "source": "src/lib/func_00128980.c" },
-    { "symbol": "func_0012FB64", "source": "src/lib/func_0012FB64.c" },
-    { "symbol": "func_0012A050", "source": "src/lib/func_0012A050.c" },
-    { "symbol": "func_00128D50", "source": "src/lib/func_00128D50.c" },
-    { "symbol": "func_00128DDC", "source": "src/lib/func_00128DDC.c" },
-    { "symbol": "func_00128BF4", "source": "src/lib/func_00128BF4.c" },
-    { "symbol": "func_00127EAC", "source": "src/lib/func_00127EAC.c" },
-    { "symbol": "func_001289BC", "source": "src/lib/func_001289BC.c" },
-    { "symbol": "func_00128AD0", "source": "src/lib/func_00128AD0.c" },
-    { "symbol": "func_00128050", "source": "src/lib/func_00128050.c" },
-    { "symbol": "func_0012B1C4", "source": "src/lib/func_0012B1C4.c" },
-    { "symbol": "func_0012D6FC", "source": "src/lib/func_0012D6FC.c" },
-    {"symbol":"func_00107D60","compilationGroup":"movement_107d60_107e38"},
-    { "symbol": "func_0011AB74", "source": "src/lib/func_0011AB74.c" },
-    { "symbol": "func_00125298", "source": "src/lib/func_00125298.c" },
-    { "symbol": "func_00126D24", "source": "src/lib/func_00126D24.c" },
-    { "symbol": "func_001305B4", "source": "src/lib/func_001305B4.c" },
-    { "symbol": "func_00118D0C", "source": "src/lib/func_00118D0C.c" },
-    { "symbol": "func_0012D170", "source": "src/lib/func_0012D170.c" },
+    {
+      "symbol": "func_0000C990",
+      "source": "third_party/lha/ob64/copyfile.c"
+    },
+    {
+      "symbol": "func_0000CB4C",
+      "source": "third_party/lha/ob64/read_pt_len.c"
+    },
+    {
+      "symbol": "func_0000CEB8",
+      "source": "third_party/lha/ob64/read_c_len.c"
+    },
+    {
+      "symbol": "func_0000D248",
+      "source": "third_party/lha/ob64/decode_c_st1.c"
+    },
+    {
+      "symbol": "func_0000D600",
+      "source": "third_party/lha/ob64/decode_p_st1.c"
+    },
+    {
+      "symbol": "boot_decode_huffman_tree_reconstruct",
+      "source": "third_party/lha/ob64/start_c_dyn.c"
+    },
+    {
+      "symbol": "boot_decode_huffman_tree_init",
+      "source": "third_party/lha/ob64/decode_start_dyn.c"
+    },
+    {
+      "symbol": "boot_decode_huffman_tree_update",
+      "source": "third_party/lha/ob64/reconst.c"
+    },
+    {
+      "symbol": "boot_decode_huffman_tree_update_entry",
+      "source": "third_party/lha/ob64/make_new_node.c"
+    },
+    {
+      "symbol": "boot_decode_huffman_symbol",
+      "source": "third_party/lha/ob64/decode_dyn.c"
+    },
+    {
+      "symbol": "boot_decode_build_huffman_table",
+      "source": "third_party/lha/ob64/make_table.c"
+    },
+    {
+      "symbol": "boot_decode_huffman_init",
+      "source": "third_party/lha/ob64/decode_start_st0.c"
+    },
+    {
+      "symbol": "boot_decode_huffman_build_litlen_table",
+      "source": "third_party/lha/ob64/read_tree_c.c"
+    },
+    {
+      "symbol": "boot_decode_huffman_build_dist_table",
+      "source": "third_party/lha/ob64/decode_start_fix.c"
+    },
+    {
+      "symbol": "boot_decode_huffman_codelengths",
+      "source": "third_party/lha/ob64/decode_c_st0.c"
+    },
+    {
+      "symbol": "boot_decode_canonical_huffman_symbol",
+      "source": "third_party/lha/ob64/decode_p_st0.c"
+    },
+    {
+      "symbol": "func_0000F5A0",
+      "source": "third_party/lha/ob64/decode_lzs.c"
+    },
+    {
+      "symbol": "func_0000F618",
+      "source": "third_party/lha/ob64/decode_lz5.c"
+    },
+    {
+      "symbol": "func_0000F734",
+      "source": "third_party/lha/ob64/decode_start_lz5.c"
+    },
+    {
+      "symbol": "func_0000C310",
+      "source": "third_party/lha/ob64/decode.c"
+    },
+    {
+      "symbol": "func_0000C778",
+      "source": "third_party/lha/ob64/crcio.c"
+    },
+    {
+      "symbol": "boot_bitstream_descriptor_decode",
+      "source": "src/boot/boot_bitstream_descriptor_decode.c"
+    },
+    {
+      "symbol": "boot_bitstream_cursor_helpers",
+      "source": "src/boot/boot_bitstream_cursor_helpers.c"
+    },
+    {
+      "symbol": "func_000ead04",
+      "source": "src/lib/func_000ead04.c"
+    },
+    {
+      "symbol": "func_002B4D58",
+      "source": "src/lib/func_002B4D58.c"
+    },
+    {
+      "symbol": "func_002ACF08",
+      "source": "src/lib/func_002ACF08.c"
+    },
+    {
+      "symbol": "func_002ABB3C",
+      "source": "src/lib/func_002ABB3C.c"
+    },
+    {
+      "symbol": "func_002ACA3C",
+      "source": "src/lib/func_002ACA3C.c"
+    },
+    {
+      "symbol": "func_000E6D90",
+      "source": "src/lib/func_000E6D90.c"
+    },
+    {
+      "symbol": "func_000E5968",
+      "source": "src/lib/func_000E5968.c"
+    },
+    {
+      "symbol": "func_00284288",
+      "source": "src/lib/func_00284288.c"
+    },
+    {
+      "symbol": "func_0021B438",
+      "source": "src/battle/func_0021B438.c"
+    },
+    {
+      "symbol": "func_0021B894",
+      "source": "src/battle/func_0021B894.c"
+    },
+    {
+      "symbol": "func_0012E8EC",
+      "source": "src/lib/func_0012E8EC.c"
+    },
+    {
+      "symbol": "func_0012E7E8",
+      "source": "src/lib/func_0012E7E8.c"
+    },
+    {
+      "symbol": "func_0012F010",
+      "source": "src/lib/func_0012F010.c"
+    },
+    {
+      "symbol": "func_0012ECDC",
+      "source": "src/lib/func_0012ECDC.c"
+    },
+    {
+      "symbol": "func_0012F530",
+      "source": "src/lib/func_0012F530.c"
+    },
+    {
+      "symbol": "func_0012F140",
+      "source": "src/lib/func_0012F140.c"
+    },
+    {
+      "symbol": "func_00120CF0",
+      "source": "src/lib/func_00120CF0.c"
+    },
+    {
+      "symbol": "func_00121724",
+      "source": "src/lib/func_00121724.c"
+    },
+    {
+      "symbol": "func_00121DA8",
+      "source": "src/lib/func_00121DA8.c"
+    },
+    {
+      "symbol": "func_00121F38",
+      "source": "src/lib/func_00121F38.c"
+    },
+    {
+      "symbol": "func_00123458",
+      "source": "src/lib/func_00123458.c"
+    },
+    {
+      "symbol": "func_001237F0",
+      "source": "src/lib/func_001237F0.c"
+    },
+    {
+      "symbol": "func_0012DA10",
+      "source": "src/lib/func_0012DA10.c"
+    },
+    {
+      "symbol": "func_0012DB2C",
+      "source": "src/lib/func_0012DB2C.c"
+    },
+    {
+      "symbol": "func_0012A828",
+      "source": "src/lib/func_0012A828.c"
+    },
+    {
+      "symbol": "func_0012F8C0",
+      "source": "src/lib/func_0012F8C0.c"
+    },
+    {
+      "symbol": "func_00128980",
+      "source": "src/lib/func_00128980.c"
+    },
+    {
+      "symbol": "func_0012FB64",
+      "source": "src/lib/func_0012FB64.c"
+    },
+    {
+      "symbol": "func_0012A050",
+      "source": "src/lib/func_0012A050.c"
+    },
+    {
+      "symbol": "func_00128D50",
+      "source": "src/lib/func_00128D50.c"
+    },
+    {
+      "symbol": "func_00128DDC",
+      "source": "src/lib/func_00128DDC.c"
+    },
+    {
+      "symbol": "func_00128BF4",
+      "source": "src/lib/func_00128BF4.c"
+    },
+    {
+      "symbol": "func_00127EAC",
+      "source": "src/lib/func_00127EAC.c"
+    },
+    {
+      "symbol": "func_001289BC",
+      "source": "src/lib/func_001289BC.c"
+    },
+    {
+      "symbol": "func_00128AD0",
+      "source": "src/lib/func_00128AD0.c"
+    },
+    {
+      "symbol": "func_00128050",
+      "source": "src/lib/func_00128050.c"
+    },
+    {
+      "symbol": "func_0012B1C4",
+      "source": "src/lib/func_0012B1C4.c"
+    },
+    {
+      "symbol": "func_0012D6FC",
+      "source": "src/lib/func_0012D6FC.c"
+    },
+    {
+      "symbol": "func_00107D60",
+      "compilationGroup": "movement_107d60_107e38"
+    },
+    {
+      "symbol": "func_0011AB74",
+      "source": "src/lib/func_0011AB74.c"
+    },
+    {
+      "symbol": "func_00125298",
+      "source": "src/lib/func_00125298.c"
+    },
+    {
+      "symbol": "func_00126D24",
+      "source": "src/lib/func_00126D24.c"
+    },
+    {
+      "symbol": "func_001305B4",
+      "source": "src/lib/func_001305B4.c"
+    },
+    {
+      "symbol": "func_00118D0C",
+      "source": "src/lib/func_00118D0C.c"
+    },
+    {
+      "symbol": "func_0012D170",
+      "source": "src/lib/func_0012D170.c"
+    },
     {
       "symbol": "func_00126770",
       "source": "src/lib/func_00126770.c"
     },
-    { "symbol": "func_00131480", "source": "src/lib/func_00131480.c" },
-    { "symbol": "func_00131388", "source": "src/lib/func_00131388.c" },
-    { "symbol": "func_00123E38", "source": "src/lib/func_00123E38.c" },
-    { "symbol": "func_00124520", "compilationGroup": "squad_supply_end" },
-    { "symbol": "func_00124328", "source": "src/lib/func_00124328.c" },
-    { "symbol": "func_00124018", "source": "src/lib/func_00124018.c" },
-    { "symbol": "func_0012A958", "source": "src/lib/func_0012A958.c" },
-    { "symbol": "func_0014F300", "source": "src/lib/func_0014F300.c" },
-    { "symbol": "func_0012469C", "compilationGroup": "squad_supply_end" },
-    { "symbol": "func_00124B98", "compilationGroup": "squad_supply_end" },
-    { "symbol": "func_00129268", "source": "src/lib/func_00129268.c" },
-    { "symbol": "func_0022B06C", "source": "src/battle/func_0022B06C.c" },
-    { "symbol": "func_0022D14C", "source": "src/battle/func_0022D14C.c" },
-    { "symbol": "func_0022EF50", "source": "src/battle/func_0022EF50.c" },
-    { "symbol": "func_0022257C", "source": "src/battle/func_0022257C.c" },
-    { "symbol": "func_00222604", "source": "src/battle/func_00222604.c" },
-    { "symbol": "func_0022A280", "source": "src/battle/func_0022A280.c" },
-    { "symbol": "func_0022A414", "source": "src/battle/func_0022A414.c" },
-    { "symbol": "func_0022A4E0", "source": "src/battle/func_0022A4E0.c" },
-    { "symbol": "func_0022A7B8", "source": "src/battle/func_0022A7B8.c" },
-    { "symbol": "func_0022A964", "source": "src/battle/func_0022A964.c" },
-    { "symbol": "func_0022ADFC", "source": "src/battle/func_0022ADFC.c" },
-    { "symbol": "func_0022BFF8", "source": "src/battle/func_0022BFF8.c" },
-    { "symbol": "func_0022C78C", "source": "src/battle/func_0022C78C.c" },
-    { "symbol": "func_0022EC08", "source": "src/battle/func_0022EC08.c" },
-    { "symbol": "func_0022EDD4", "source": "src/battle/func_0022EDD4.c" },
-    { "symbol": "func_0022F2BC", "source": "src/battle/func_0022F2BC.c" },
-    { "symbol": "func_0023A5EC", "source": "src/lib/func_0023A5EC.c" },
+    {
+      "symbol": "func_00131480",
+      "source": "src/lib/func_00131480.c"
+    },
+    {
+      "symbol": "func_00131388",
+      "source": "src/lib/func_00131388.c"
+    },
+    {
+      "symbol": "func_00123E38",
+      "source": "src/lib/func_00123E38.c"
+    },
+    {
+      "symbol": "func_00124520",
+      "compilationGroup": "squad_supply_end"
+    },
+    {
+      "symbol": "func_00124328",
+      "source": "src/lib/func_00124328.c"
+    },
+    {
+      "symbol": "func_00124018",
+      "source": "src/lib/func_00124018.c"
+    },
+    {
+      "symbol": "func_0012A958",
+      "source": "src/lib/func_0012A958.c"
+    },
+    {
+      "symbol": "func_0014F300",
+      "source": "src/lib/func_0014F300.c"
+    },
+    {
+      "symbol": "func_0012469C",
+      "compilationGroup": "squad_supply_end"
+    },
+    {
+      "symbol": "func_00124B98",
+      "compilationGroup": "squad_supply_end"
+    },
+    {
+      "symbol": "func_00129268",
+      "source": "src/lib/func_00129268.c"
+    },
+    {
+      "symbol": "func_0022B06C",
+      "source": "src/battle/func_0022B06C.c"
+    },
+    {
+      "symbol": "func_0022D14C",
+      "source": "src/battle/func_0022D14C.c"
+    },
+    {
+      "symbol": "func_0022EF50",
+      "source": "src/battle/func_0022EF50.c"
+    },
+    {
+      "symbol": "func_0022257C",
+      "source": "src/battle/func_0022257C.c"
+    },
+    {
+      "symbol": "func_00222604",
+      "source": "src/battle/func_00222604.c"
+    },
+    {
+      "symbol": "func_0022A280",
+      "source": "src/battle/func_0022A280.c"
+    },
+    {
+      "symbol": "func_0022A414",
+      "source": "src/battle/func_0022A414.c"
+    },
+    {
+      "symbol": "func_0022A4E0",
+      "source": "src/battle/func_0022A4E0.c"
+    },
+    {
+      "symbol": "func_0022A7B8",
+      "source": "src/battle/func_0022A7B8.c"
+    },
+    {
+      "symbol": "func_0022A964",
+      "source": "src/battle/func_0022A964.c"
+    },
+    {
+      "symbol": "func_0022ADFC",
+      "source": "src/battle/func_0022ADFC.c"
+    },
+    {
+      "symbol": "func_0022BFF8",
+      "source": "src/battle/func_0022BFF8.c"
+    },
+    {
+      "symbol": "func_0022C78C",
+      "source": "src/battle/func_0022C78C.c"
+    },
+    {
+      "symbol": "func_0022EC08",
+      "source": "src/battle/func_0022EC08.c"
+    },
+    {
+      "symbol": "func_0022EDD4",
+      "source": "src/battle/func_0022EDD4.c"
+    },
+    {
+      "symbol": "func_0022F2BC",
+      "source": "src/battle/func_0022F2BC.c"
+    },
+    {
+      "symbol": "func_0023A5EC",
+      "source": "src/lib/func_0023A5EC.c"
+    },
     {
       "symbol": "func_00249A14",
       "source": "src/lib/func_00249A14.c"
@@ -1070,27 +3116,90 @@
       "symbol": "boot_lzss_decompress",
       "source": "src/boot/boot_lzss_decompress.c"
     },
-    {"symbol":"func_001989C4","source":"src/lib/func_001989C4.c"},
-    {"symbol":"func_001994B4","source":"src/lib/func_001994B4.c"},
-    {"symbol":"func_0019A1AC","source":"src/lib/func_0019A1AC.c"},
-    {"symbol":"func_0019A294","source":"src/lib/func_0019A294.c"},
-    {"symbol":"func_0019AA04","source":"src/lib/func_0019AA04.c"},
-    {"symbol":"func_0019AB44","source":"src/lib/func_0019AB44.c"},
-    {"symbol":"func_0019ADF0","source":"src/lib/func_0019ADF0.c"},
-    {"symbol":"func_0019AF78","source":"src/lib/func_0019AF78.c"},
-    {"symbol":"func_0019B4C4","source":"src/lib/func_0019B4C4.c"},
-    {"symbol":"func_0019B63C","source":"src/lib/func_0019B63C.c"},
-    {"symbol":"func_0019B710","source":"src/lib/func_0019B710.c"},
-    {"symbol":"func_0019BAB4","source":"src/lib/func_0019BAB4.c"},
-    {"symbol":"func_0019BAE4","source":"src/lib/func_0019BAE4.c"},
-    {"symbol":"func_0019BDD4","source":"src/lib/func_0019BDD4.c"},
-    {"symbol":"boot_resource_probe_dispatch_prepare","source":"src/boot/boot_resource_probe_dispatch_prepare.c"},
-    {"symbol":"boot_resource_probe_dispatch_apply","source":"src/boot/boot_resource_probe_dispatch_apply.c"},
-    {"symbol":"boot_resource_probe_dispatch_result_build","source":"src/boot/boot_resource_probe_dispatch_result_build.c"},
-    {"symbol":"boot_resource_probe_global_buffer_copy","source":"src/boot/boot_resource_probe_global_buffer_copy.c"},
-    {"symbol":"boot_resource_probe_chunk_callback_walk","source":"src/boot/boot_resource_probe_chunk_callback_walk.c"},
-    {"symbol":"boot_resource_probe_global_cleanup","source":"src/boot/boot_resource_probe_global_cleanup.c"},
-    {"symbol":"boot_resource_probe_global_buffer_dual_callback_apply","source":"src/boot/boot_resource_probe_global_buffer_dual_callback_apply.c"},
+    {
+      "symbol": "func_001989C4",
+      "source": "src/lib/func_001989C4.c"
+    },
+    {
+      "symbol": "func_001994B4",
+      "source": "src/lib/func_001994B4.c"
+    },
+    {
+      "symbol": "func_0019A1AC",
+      "source": "src/lib/func_0019A1AC.c"
+    },
+    {
+      "symbol": "func_0019A294",
+      "source": "src/lib/func_0019A294.c"
+    },
+    {
+      "symbol": "func_0019AA04",
+      "source": "src/lib/func_0019AA04.c"
+    },
+    {
+      "symbol": "func_0019AB44",
+      "source": "src/lib/func_0019AB44.c"
+    },
+    {
+      "symbol": "func_0019ADF0",
+      "source": "src/lib/func_0019ADF0.c"
+    },
+    {
+      "symbol": "func_0019AF78",
+      "source": "src/lib/func_0019AF78.c"
+    },
+    {
+      "symbol": "func_0019B4C4",
+      "source": "src/lib/func_0019B4C4.c"
+    },
+    {
+      "symbol": "func_0019B63C",
+      "source": "src/lib/func_0019B63C.c"
+    },
+    {
+      "symbol": "func_0019B710",
+      "source": "src/lib/func_0019B710.c"
+    },
+    {
+      "symbol": "func_0019BAB4",
+      "source": "src/lib/func_0019BAB4.c"
+    },
+    {
+      "symbol": "func_0019BAE4",
+      "source": "src/lib/func_0019BAE4.c"
+    },
+    {
+      "symbol": "func_0019BDD4",
+      "source": "src/lib/func_0019BDD4.c"
+    },
+    {
+      "symbol": "boot_resource_probe_dispatch_prepare",
+      "source": "src/boot/boot_resource_probe_dispatch_prepare.c"
+    },
+    {
+      "symbol": "boot_resource_probe_dispatch_apply",
+      "source": "src/boot/boot_resource_probe_dispatch_apply.c"
+    },
+    {
+      "symbol": "boot_resource_probe_dispatch_result_build",
+      "source": "src/boot/boot_resource_probe_dispatch_result_build.c"
+    },
+    {
+      "symbol": "boot_resource_probe_global_buffer_copy",
+      "source": "src/boot/boot_resource_probe_global_buffer_copy.c"
+    },
+    {
+      "symbol": "boot_resource_probe_chunk_callback_walk",
+      "source": "src/boot/boot_resource_probe_chunk_callback_walk.c"
+    },
+    {
+      "symbol": "boot_resource_probe_global_cleanup",
+      "source": "src/boot/boot_resource_probe_global_cleanup.c"
+    },
+    {
+      "symbol": "boot_resource_probe_global_buffer_dual_callback_apply",
+      "source": "src/boot/boot_resource_probe_global_buffer_dual_callback_apply.c"
+    },
     {
       "symbol": "resource_ptr_validate",
       "source": "src/lib/resource_ptr_validate.c"
@@ -1231,58 +3340,202 @@
       "symbol": "func_0021EBBC",
       "source": "src/battle/func_0021EBBC.c"
     },
-    { "symbol": "func_0022B1F4", "source": "src/battle/func_0022B1F4.c" },
+    {
+      "symbol": "func_0022B1F4",
+      "source": "src/battle/func_0022B1F4.c"
+    },
     {
       "symbol": "func_00195D9C",
       "source": "src/lib/func_00195D9C.c"
     },
-    {"symbol":"func_00107E38","compilationGroup":"movement_107d60_107e38"},
-    {"symbol":"func_00125460","compilationGroup":"movement_125460_125f84"},
-    {"symbol":"func_00125F84","compilationGroup":"movement_125460_125f84"},
-    {"symbol":"func_00131828","source":"src/lib/func_00131828.c"},
-    {"symbol":"func_0011AECC","source":"src/lib/func_0011AECC.c"},
-    {"symbol":"func_0012B440","source":"src/lib/func_0012B440.c"},
-    {"symbol":"func_0012BC64","source":"src/lib/func_0012BC64.c"},
-    {"symbol":"func_0012C788","source":"src/lib/func_0012C788.c"},
-    {"symbol":"func_0022F580","source":"src/battle/func_0022F580.c"},
-    {"symbol":"func_00230A9C","source":"src/battle/func_00230A9C.c"},
-    {"symbol":"func_002317C8","source":"src/battle/func_002317C8.c"},
-    {"symbol":"func_00231CC0","source":"src/battle/func_00231CC0.c"},
-    {"symbol":"func_00232280","source":"src/battle/func_00232280.c"},
-    {"symbol":"func_00232458","source":"src/battle/func_00232458.c"},
-    {"symbol":"func_00232D7C","source":"src/battle/func_00232D7C.c"},
-    {"symbol":"func_00108AA0","compilationGroup":"func_00108aa0_group"},
-    {"symbol":"func_00108C1C","compilationGroup":"func_00108aa0_group"},
-    {"symbol":"func_001094BC","compilationGroup":"func_00108aa0_group"},
-    {"symbol":"func_00109A48","compilationGroup":"func_00108aa0_group"},
-    {"symbol":"func_00109C04","compilationGroup":"func_00108aa0_group"},
-    {"symbol":"func_00109C3C","compilationGroup":"func_00108aa0_group"},
-    {"symbol":"func_0010A128","compilationGroup":"func_00108aa0_group"},
-    {"symbol":"func_0010A718","compilationGroup":"func_00108aa0_group"},
-    {"symbol":"func_0010ADB8","compilationGroup":"func_00108aa0_group"},
-    {"symbol":"func_0004d634","source":"src/lib/func_0004d634.c"},
-    {"symbol":"func_0004da84","source":"src/lib/func_0004da84.c"},
-    {"symbol":"func_0004e1c4","source":"src/lib/func_0004e1c4.c"},
-    {"symbol":"func_0023A3A0","source":"src/lib/func_0023a3a0.c"},
-    {"symbol":"func_002488D0","source":"src/lib/func_002488d0.c"},
-    {"symbol":"func_00249290","source":"src/lib/func_00249290.c"},
-    {"symbol":"func_00127830","source":"src/lib/func_00127830.c"},
-    {"symbol":"func_00130D74","source":"src/lib/func_00130d74.c"},
-    {"symbol":"func_0013109C","source":"src/lib/func_0013109c.c"},
-    {"symbol":"func_0013C060","source":"src/lib/func_0013c060.c"},
-    {"symbol":"func_00101DDC","source":"src/lib/func_00101ddc.c"},
-    {"symbol":"func_00118E44","source":"src/lib/func_00118e44.c"},
-    {"symbol":"func_001191CC","source":"src/lib/func_001191cc.c"},
-    {"symbol":"func_00119454","source":"src/lib/func_00119454.c"},
-    {"symbol":"func_0011BB4C","source":"src/lib/func_0011bb4c.c"},
-    {"symbol":"func_0011D8D4","source":"src/lib/func_0011d8d4.c"},
-    {"symbol":"func_00127154","source":"src/lib/func_00127154.c"},
-    {"symbol":"func_00129978","source":"src/lib/func_00129978.c"},
-    {"symbol":"func_0012FE58","source":"src/lib/func_0012fe58.c"},
-    {"symbol":"func_0013A3D8","source":"src/lib/func_0013a3d8.c"},
-    {"symbol":"func_0013A558","compilationGroup":"q1_terrain_policy"},
-    {"symbol":"func_0013AA40","compilationGroup":"q1_terrain_policy"},
-    {"symbol":"func_0013B350","compilationGroup":"q1_terrain_policy"},
+    {
+      "symbol": "func_00107E38",
+      "compilationGroup": "movement_107d60_107e38"
+    },
+    {
+      "symbol": "func_00125460",
+      "compilationGroup": "movement_125460_125f84"
+    },
+    {
+      "symbol": "func_00125F84",
+      "compilationGroup": "movement_125460_125f84"
+    },
+    {
+      "symbol": "func_00131828",
+      "source": "src/lib/func_00131828.c"
+    },
+    {
+      "symbol": "func_0011AECC",
+      "source": "src/lib/func_0011AECC.c"
+    },
+    {
+      "symbol": "func_0012B440",
+      "source": "src/lib/func_0012B440.c"
+    },
+    {
+      "symbol": "func_0012BC64",
+      "source": "src/lib/func_0012BC64.c"
+    },
+    {
+      "symbol": "func_0012C788",
+      "source": "src/lib/func_0012C788.c"
+    },
+    {
+      "symbol": "func_0022F580",
+      "source": "src/battle/func_0022F580.c"
+    },
+    {
+      "symbol": "func_00230A9C",
+      "source": "src/battle/func_00230A9C.c"
+    },
+    {
+      "symbol": "func_002317C8",
+      "source": "src/battle/func_002317C8.c"
+    },
+    {
+      "symbol": "func_00231CC0",
+      "source": "src/battle/func_00231CC0.c"
+    },
+    {
+      "symbol": "func_00232280",
+      "source": "src/battle/func_00232280.c"
+    },
+    {
+      "symbol": "func_00232458",
+      "source": "src/battle/func_00232458.c"
+    },
+    {
+      "symbol": "func_00232D7C",
+      "source": "src/battle/func_00232D7C.c"
+    },
+    {
+      "symbol": "func_00108AA0",
+      "compilationGroup": "func_00108aa0_group"
+    },
+    {
+      "symbol": "func_00108C1C",
+      "compilationGroup": "func_00108aa0_group"
+    },
+    {
+      "symbol": "func_001094BC",
+      "compilationGroup": "func_00108aa0_group"
+    },
+    {
+      "symbol": "func_00109A48",
+      "compilationGroup": "func_00108aa0_group"
+    },
+    {
+      "symbol": "func_00109C04",
+      "compilationGroup": "func_00108aa0_group"
+    },
+    {
+      "symbol": "func_00109C3C",
+      "compilationGroup": "func_00108aa0_group"
+    },
+    {
+      "symbol": "func_0010A128",
+      "compilationGroup": "func_00108aa0_group"
+    },
+    {
+      "symbol": "func_0010A718",
+      "compilationGroup": "func_00108aa0_group"
+    },
+    {
+      "symbol": "func_0010ADB8",
+      "compilationGroup": "func_00108aa0_group"
+    },
+    {
+      "symbol": "func_0004d634",
+      "source": "src/lib/func_0004d634.c"
+    },
+    {
+      "symbol": "func_0004da84",
+      "source": "src/lib/func_0004da84.c"
+    },
+    {
+      "symbol": "func_0004e1c4",
+      "source": "src/lib/func_0004e1c4.c"
+    },
+    {
+      "symbol": "func_0023A3A0",
+      "source": "src/lib/func_0023a3a0.c"
+    },
+    {
+      "symbol": "func_002488D0",
+      "source": "src/lib/func_002488d0.c"
+    },
+    {
+      "symbol": "func_00249290",
+      "source": "src/lib/func_00249290.c"
+    },
+    {
+      "symbol": "func_00127830",
+      "source": "src/lib/func_00127830.c"
+    },
+    {
+      "symbol": "func_00130D74",
+      "source": "src/lib/func_00130d74.c"
+    },
+    {
+      "symbol": "func_0013109C",
+      "source": "src/lib/func_0013109c.c"
+    },
+    {
+      "symbol": "func_0013C060",
+      "source": "src/lib/func_0013c060.c"
+    },
+    {
+      "symbol": "func_00101DDC",
+      "source": "src/lib/func_00101ddc.c"
+    },
+    {
+      "symbol": "func_00118E44",
+      "source": "src/lib/func_00118e44.c"
+    },
+    {
+      "symbol": "func_001191CC",
+      "source": "src/lib/func_001191cc.c"
+    },
+    {
+      "symbol": "func_00119454",
+      "source": "src/lib/func_00119454.c"
+    },
+    {
+      "symbol": "func_0011BB4C",
+      "source": "src/lib/func_0011bb4c.c"
+    },
+    {
+      "symbol": "func_0011D8D4",
+      "source": "src/lib/func_0011d8d4.c"
+    },
+    {
+      "symbol": "func_00127154",
+      "source": "src/lib/func_00127154.c"
+    },
+    {
+      "symbol": "func_00129978",
+      "source": "src/lib/func_00129978.c"
+    },
+    {
+      "symbol": "func_0012FE58",
+      "source": "src/lib/func_0012fe58.c"
+    },
+    {
+      "symbol": "func_0013A3D8",
+      "source": "src/lib/func_0013a3d8.c"
+    },
+    {
+      "symbol": "func_0013A558",
+      "compilationGroup": "q1_terrain_policy"
+    },
+    {
+      "symbol": "func_0013AA40",
+      "compilationGroup": "q1_terrain_policy"
+    },
+    {
+      "symbol": "func_0013B350",
+      "compilationGroup": "q1_terrain_policy"
+    },
     {
       "symbol": "func_00120BC0",
       "source": "src/lib/func_00120BC0.c"
@@ -1299,19 +3552,149 @@
       "symbol": "func_000065E4",
       "source": "src/boot/boot_resource_table_mask_apply.c"
     },
-    {"symbol":"func_00102FA0","source":"src/lib/func_00102fa0.c"},
-    {"symbol":"func_0010B040","source":"src/lib/func_0010b040.c"},
-    {"symbol":"func_0010B46C","source":"src/lib/func_0010b46c.c"},
-    {"symbol":"func_0010B598","source":"src/lib/func_0010b598.c"},
-    {"symbol":"func_0010B6A4","source":"src/lib/func_0010b6a4.c"},
-    {"symbol":"func_0010BA0C","source":"src/lib/func_0010ba0c.c"},
-    {"symbol":"func_0010BB2C","source":"src/lib/func_0010bb2c.c"},
-    {"symbol":"func_0010BC4C","source":"src/lib/func_0010bc4c.c"},
-    {"symbol":"func_0010C1A8","source":"src/lib/func_0010c1a8.c"},
-    { "symbol": "boot_byte_copy_aligned_leaf", "source": "src/boot/boot_byte_copy_aligned_leaf.c" },
-    { "symbol": "boot_byte_fill_aligned_leaf", "source": "src/boot/boot_byte_fill_aligned_leaf.c" },
-    { "symbol": "osJamMesg", "source": "src/lib/osJamMesg.c" },
-    { "symbol": "osRecvMesg", "source": "src/lib/osRecvMesg.c" },
-    { "symbol": "osSendMesg", "source": "src/lib/osSendMesg.c" }
+    {
+      "symbol": "func_00102FA0",
+      "source": "src/lib/func_00102fa0.c"
+    },
+    {
+      "symbol": "func_0010B040",
+      "source": "src/lib/func_0010b040.c"
+    },
+    {
+      "symbol": "func_0010B46C",
+      "source": "src/lib/func_0010b46c.c"
+    },
+    {
+      "symbol": "func_0010B598",
+      "source": "src/lib/func_0010b598.c"
+    },
+    {
+      "symbol": "func_0010B6A4",
+      "source": "src/lib/func_0010b6a4.c"
+    },
+    {
+      "symbol": "func_0010BA0C",
+      "source": "src/lib/func_0010ba0c.c"
+    },
+    {
+      "symbol": "func_0010BB2C",
+      "source": "src/lib/func_0010bb2c.c"
+    },
+    {
+      "symbol": "func_0010BC4C",
+      "source": "src/lib/func_0010bc4c.c"
+    },
+    {
+      "symbol": "func_0010C1A8",
+      "source": "src/lib/func_0010c1a8.c"
+    },
+    {
+      "symbol": "boot_byte_copy_aligned_leaf",
+      "source": "src/boot/boot_byte_copy_aligned_leaf.c"
+    },
+    {
+      "symbol": "boot_byte_fill_aligned_leaf",
+      "source": "src/boot/boot_byte_fill_aligned_leaf.c"
+    },
+    {
+      "symbol": "osJamMesg",
+      "source": "src/lib/osJamMesg.c"
+    },
+    {
+      "symbol": "osRecvMesg",
+      "source": "src/lib/osRecvMesg.c"
+    },
+    {
+      "symbol": "osSendMesg",
+      "source": "src/lib/osSendMesg.c"
+    },
+    {
+      "symbol": "func_00020bf0",
+      "source": "src/lib/cosf_00020bf0.c"
+    },
+    {
+      "symbol": "func_00020d40",
+      "source": "src/lib/lookat_f_00020d40.c"
+    },
+    {
+      "symbol": "func_000210c0",
+      "source": "src/lib/lookat_000210c0.c"
+    },
+    {
+      "symbol": "func_00021450",
+      "compilationGroup": "library_l2_lookathil"
+    },
+    {
+      "symbol": "func_00021dd4",
+      "compilationGroup": "library_l2_lookathil"
+    },
+    {
+      "symbol": "func_00021eb0",
+      "compilationGroup": "library_l2_lookatref"
+    },
+    {
+      "symbol": "func_00022428",
+      "compilationGroup": "library_l2_lookatref"
+    },
+    {
+      "symbol": "func_000224a0",
+      "compilationGroup": "library_l2_ortho"
+    },
+    {
+      "symbol": "func_000225d0",
+      "compilationGroup": "library_l2_ortho"
+    },
+    {
+      "symbol": "func_00022720",
+      "compilationGroup": "library_l2_perspective"
+    },
+    {
+      "symbol": "func_000228d0",
+      "compilationGroup": "library_l2_perspective"
+    },
+    {
+      "symbol": "func_00022aa0",
+      "compilationGroup": "library_l2_position"
+    },
+    {
+      "symbol": "func_00022c78",
+      "compilationGroup": "library_l2_position"
+    },
+    {
+      "symbol": "func_00022e60",
+      "source": "src/lib/random_00022e60.c"
+    },
+    {
+      "symbol": "func_00022e90",
+      "compilationGroup": "library_l2_rotaterpy"
+    },
+    {
+      "symbol": "func_00023018",
+      "compilationGroup": "library_l2_rotaterpy"
+    },
+    {
+      "symbol": "sinf",
+      "source": "src/lib/sinf_000231b0.c"
+    },
+    {
+      "symbol": "func_00028740",
+      "source": "src/lib/mtxcatl_00028740.c"
+    },
+    {
+      "symbol": "func_000287c0",
+      "source": "src/lib/mtxxfml_000287c0.c"
+    },
+    {
+      "symbol": "mtx_apply_vec3",
+      "source": "src/lib/mtxxfmf_00028850.c"
+    },
+    {
+      "symbol": "func_00028900",
+      "compilationGroup": "library_l2_rotate"
+    },
+    {
+      "symbol": "guRotate",
+      "compilationGroup": "library_l2_rotate"
+    }
   ]
 }

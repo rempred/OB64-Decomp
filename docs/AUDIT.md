@@ -347,3 +347,7 @@ Run `node tests/registered_padding_legacy.js` for authority and malformed-input
 controls. Preserve unchanged baseline compatibility (including existing split
 records), actual whole-row bytes, physical interfaces, selected-body proof,
 sole per-slice ownership, independent fresh compilation and complete-ROM gates.
+
+## Retained compiler literals and native single-owner tails
+
+Declared retained literal references require complete source/native/projected/stripped evidence, unchanged instruction and relocation records, exact literal payload equality, and unique existing original-ASM storage in an accepted boot-initialized slab. The compiler duplicate section is omitted only after these proofs. Final linkable anchors are LOCAL NOTYPE ABS; pinned strip normalization is independently reproduced before its one-byte type correction. Group pair sets remain within one existing owner and retain full merged relocation order. Native single-owner tail schema2 keeps the complete original text, function and minimal zero-tail census; schema1 pins remain unchanged. Neither mechanism changes source policy, permits writable literal storage, or establishes matching acceptance without fresh compilation, exact full ROM and the complete-wave structural audit.

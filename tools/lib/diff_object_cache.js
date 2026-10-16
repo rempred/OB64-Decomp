@@ -64,6 +64,7 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/lib/phase8_matching_c.js',
   'tools/lib/source_policy.js',
   'tools/lib/text_contract.js',
+  'tools/lib/retained_literal_references.js',
   'tools/lib/prepared_link_view.js',
   'tools/lib/verification_profile.js',
 ]);
@@ -417,7 +418,7 @@ function createCacheKeyMaterial(options) {
         executable: executableIdentity(assembler, 'assembler'),
         flags: [...assemblerFlags],
         input: target.nativeTextTail || target.compilationGroup ? 'untouched-compiler-assembly' : 'adjusted-assembly',
-        output: physicalInterface(target) || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1 ? 'assembler-object' : 'source-object',
+        output: physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1 ? 'assembler-object' : 'source-object',
       },
       textSplit: Boolean(target.compilationGroup) || targetTextOwners(target).length > 1,
       auxiliarySourceObjectPrefixSelection: (target.auxiliarySections || [])
@@ -445,10 +446,11 @@ function artifactSpecifications(target) {
     { name: 'adjusted.s', destination: `generated/c/${symbol}.s` },
     { name: 'source-object.o', destination: `objects/c/${symbol}.source-object.o` },
   ];
-  if (physicalInterface(target) || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1) {
+  if (physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1) {
     specs.push({ name: 'assembler-object.o', destination: `objects/c/${symbol}.assembler-object.o` });
   }
   if (auxiliaryProjection.composed(target.compilationGroup)) specs.push({ name: 'text-projected.o', destination: `objects/c/${symbol}.text-projected.o` });
+  if(target.retainedLiteralReferences||target.compilationGroup?.retainedLiteralReferences)specs.push({name:'literal-projected.o',destination:`objects/c/${symbol}.literal-projected.o`},{name:'strip-intermediate.o',destination:`objects/c/${symbol}.strip-intermediate.o`});
   specs.push({ name: 'final.o', destination: `objects/c/${symbol}.o` });
   return specs;
 }
@@ -619,11 +621,12 @@ const EXPECTED_ARTIFACT_IDENTITIES = Symbol('expected-artifact-identities');
 const ARTIFACT_ROLES = Object.freeze({
   'compilation-input.c': 'compilationInput', 'compiler.s': 'compilerAssembly', 'adjusted.s': 'assemblerInput',
   'source-object.o': 'rawObject', 'final.o': 'strippedObject', 'assembler-object.o': 'unsplitAssemblerObject',
+  'literal-projected.o':'literalProjectedObject','strip-intermediate.o':'stripIntermediateObject',
 });
 function inspectCompiledTargetArtifacts(options) {
   if (options.target.compilationGroup) {
     const files = options.files;
-    if (auxiliaryProjection.composed(options.target.compilationGroup)
+    if ((auxiliaryProjection.composed(options.target.compilationGroup)||options.target.compilationGroup.retainedLiteralReferences)
         && (!files || !sameStringSet(Object.keys(files), artifactSpecifications(options.target).map(spec => spec.name)))) {
       fail('composed group artifact census');
     }
@@ -633,6 +636,7 @@ function inspectCompiledTargetArtifacts(options) {
       compilationInput: files['compilation-input.c'], compilerAssembly: files['compiler.s'],
       assemblerInput: files['adjusted.s'], rawObject: files['source-object.o'],
       strippedObject: files['final.o'], unsplitAssemblerObject: files['assembler-object.o'],
+      ...(options.target.compilationGroup.retainedLiteralReferences?{literalProjectedObject:files['literal-projected.o'],stripIntermediateObject:files['strip-intermediate.o']}:{}),
       ...(auxiliaryProjection.composed(options.target.compilationGroup) ? { textProjectedObject: files['text-projected.o'] } : {}),
     });
     const input = fs.readFileSync(files['compilation-input.c']);
@@ -677,9 +681,11 @@ function inspectCapturedTargetArtifacts(options, snapshot) {
   }
 
   let splitResult = null;
+  if(target.retainedLiteralReferences){const projected=require('./retained_literal_references').projectComplete(bytesByName['assembler-object.o'],target);
+    if(!projected.referenceProjected.equals(bytesByName['literal-projected.o'])||!projected.buffer.equals(bytesByName['source-object.o']))fail('literal cache reconstruction');splitResult=projected.splitResult;}
   if(physicalInterface(target) && !require('./phase8_matching_c').projectPhysicalInterface(bytesByName['assembler-object.o'],target).buffer.equals(bytesByName['source-object.o']))fail('physical interface cache reconstruction');
   if (target.auxiliaryProjection && !(target.atomicText ? atomic : auxiliaryProjection).project(bytesByName['assembler-object.o'], target).buffer.equals(bytesByName['source-object.o'])) fail('projected source-object bytes drift');
-  if (!target.atomicText && targetTextOwners(target).length > 1) {
+  if (!target.retainedLiteralReferences && !target.atomicText && targetTextOwners(target).length > 1) {
     splitResult = splitRelocatableTextSection(
       bytesByName['assembler-object.o'],
       target.sectionName,
@@ -756,8 +762,8 @@ function inspectCapturedTargetArtifacts(options, snapshot) {
     objectSha256: objectEvidence.artifacts.strippedObject.sha256,
     proofObjectRelative: `objects/c/${target.symbol}.source-object.o`,
     proofObjectSha256: objectEvidence.artifacts.rawObject.sha256,
-    assemblerObjectRelative: physicalInterface(target) || target.auxiliaryProjection || splitResult ? `objects/c/${target.symbol}.assembler-object.o` : null,
-    assemblerObjectSha256: physicalInterface(target) || target.auxiliaryProjection || splitResult ? objectEvidence.artifacts.unsplitAssemblerObject.sha256 : null,
+    assemblerObjectRelative: physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || splitResult ? `objects/c/${target.symbol}.assembler-object.o` : null,
+    assemblerObjectSha256: physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || splitResult ? objectEvidence.artifacts.unsplitAssemblerObject.sha256 : null,
     compilerAssemblyRelative: `generated/c/${target.symbol}.compiler.s`,
     compilerAssemblySha256: objectEvidence.artifacts.compilerAssembly.sha256,
     linkedAssemblyRelative: `generated/c/${target.symbol}.s`,
