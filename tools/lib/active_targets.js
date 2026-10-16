@@ -1067,10 +1067,11 @@ function auxiliaryPlacementPair(model, targetSlice, auxiliarySlice) {
 
 function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
-  const fragment = auxiliaryProjection.fragmentMode(target.compilationGroup);
+  const singleFragment = auxiliaryProjection.singleFragment(target.compilationGroup);
+  const fragment = auxiliaryProjection.fragmentMode(target.compilationGroup) || singleFragment;
   const group = auxiliaryProjection.composed(target.compilationGroup) || fragment ? target.compilationGroup : null;
   const attribution = group && group.functions.find(value => value.symbol === (fragment ? contracts[0]?.functionSymbol : target.symbol));
-  if (fragment) { auxiliaryProjection.fragmentContract(group); if (contracts.length !== 1 || contracts[0].memberSymbol !== target.symbol || !group.members.find(m=>m.symbol===target.symbol)?.functionSymbols.includes(contracts[0].functionSymbol)) fail("fragment resolver attribution"); }
+  if (fragment) { auxiliaryProjection.groupContract(group); if (contracts.length !== 1 || contracts[0].memberSymbol !== target.symbol || (singleFragment ? contracts[0].functionSymbol !== target.symbol : !group.members.find(m=>m.symbol===target.symbol)?.functionSymbols.includes(contracts[0].functionSymbol))) fail("fragment resolver attribution"); }
   if (group && (!attribution || (!auxiliaryProjection.bundle(group) && contracts.some(contract => contract.memberSymbol !== target.symbol)))) fail('group auxiliary attribution mismatch');
   const referenceStart = group ? attribution.offset : 0;
   const referenceEnd = group ? attribution.offset + attribution.bytes : target.bytes;
@@ -1532,6 +1533,7 @@ function validateAuxiliaryOwnerGroups(targets, model) {
     }
   }
   require("./compilation_groups").finishFragmentBindings(targets);
+  require("./compilation_groups").finishSingleFragmentBindings(targets);
   return groups;
 }
 

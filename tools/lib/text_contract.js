@@ -573,8 +573,8 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
     ...(target.retainedLiteralReferences || target.compilationGroup?.retainedLiteralReferences ? {retainedLiteralReferences:literals.linkedEvidence(target.compilationGroup?literals.groupTarget(target.compilationGroup):target,root,context,objectEvidence)} : {}),
     ...(target.atomicText ? { atomicPhysicalOwners: require('./atomic_owner_union').physicalEvidence(target,elf,true),
       atomicLinkedCensus: auxiliaryProjection.completeObjectCensus(elf) } : {}),
-    ...(require('./compilation_groups').functionOwners(target.compilationGroup)
-      ? { fixedBindings: require('./compilation_groups').verifyFixedBindings(target, elf) } : {}), ...(allocation ? { allocation } : {}),
+    ...(require('./compilation_groups').hasFixedBindingEvidence(target.compilationGroup)
+      ? { fixedBindings: require('./compilation_groups').verifyFixedBindingEvidence(target, elf) } : {}), ...(allocation ? { allocation } : {}),
     ...(target.auxiliaryProjection || auxiliaryProjection.composed(target.compilationGroup) ? { auxiliaryProjectionRetained: auxiliaryProjection.linkedEvidence(target, root, context) } : {}), textContractSha256: hash(contract), owners, mapContributions, functions,
     relocations, nonRelocationWordsUnchanged: unchangedWords, tail, fullOwnerExact: owners.every((owner) => owner.rawBytesExact) };
   for (const record of Object.values(objectEvidence.artifacts).filter(Boolean)) {

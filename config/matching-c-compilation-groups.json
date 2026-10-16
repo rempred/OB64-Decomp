@@ -16613,18 +16613,18 @@
             "expectedObjectSha256": "8DD70BD632A0B51F7E5ECCAE1D9F6B763FEC2E00C8B6AC382D4C7AEA4A756710",
             "expectedLinkedSha256": "EA441D08583B423AB47BB70BCD55D186033F3492D875A3493CB87443E97E3AD1",
             "preservedInteriorBefore": {
-              "inputSection": ".ob64.r0789.interior_0003E70C",
+              "inputSection": ".ob64.r0789.interior_0003EAAC",
               "sectionType": "SHT_PROGBITS",
               "sectionFlags": [
                 "SHF_ALLOC"
               ],
               "alignment": 1,
-              "romStart": "0x0003E70C",
+              "romStart": "0x0003EAAC",
               "romEndExclusive": "0x0003EDF0",
-              "vramStart": "0x800AE30C",
+              "vramStart": "0x800AE6AC",
               "vramEndExclusive": "0x800AE9F0",
-              "bytes": 1764,
-              "expectedSha256": "D1DC96D0AD447759D2BE1F53D71108DDB0FB0FD6B804C7FA93D8D9FA0FD32DC0",
+              "bytes": 836,
+              "expectedSha256": "E0AEC03EEDF6BFB0426522990BC252AC4E4E62B4B4C1950AB6DD187ABD4DB998",
               "ownerOriginalAssembly": "asm/original/rev0/lib/rsp_ucode_s2dexd.s",
               "ownerOriginalAssemblySha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E",
               "expectedRelocations": []
@@ -16705,6 +16705,2234 @@
           3,
           2
         ]
+      }
+    },
+    {
+      "id": "lib_l5_piacs_0001c670",
+      "source": "src/lib/access_pi.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_0001c670",
+          "ownerRowIndex": 450
+        },
+        {
+          "symbol": "func_0001c6c4",
+          "ownerRowIndex": 451
+        },
+        {
+          "symbol": "func_0001c730",
+          "ownerRowIndex": 452
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 240,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "A273811A7F1C58386B5C3E89F63BC51881A46CD4D32B2811619C15196B53EA63"
+      },
+      "functions": [
+        {
+          "symbol": "func_0001c670",
+          "offset": 0,
+          "bytes": 84,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0001c6c4",
+          "offset": 84,
+          "bytes": 108,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0001c730",
+          "offset": 192,
+          "bytes": 40,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 232,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 12,
+          "type": 5,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007681536
+        },
+        {
+          "offset": 16,
+          "type": 6,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 638582784
+        },
+        {
+          "offset": 24,
+          "type": 5,
+          "symbol": "D_800C3550",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 28,
+          "type": 6,
+          "symbol": "D_800C3550",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 36,
+          "type": 5,
+          "symbol": "D_800AA440",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 40,
+          "type": 6,
+          "symbol": "D_800AA440",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 44,
+          "type": 4,
+          "symbol": "osCreateMesgQueue",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 60,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 84,
+          "type": 5,
+          "symbol": "D_800AA440",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 88,
+          "type": 6,
+          "symbol": "D_800AA440",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 108,
+          "type": 5,
+          "symbol": "D_800AA440",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 112,
+          "type": 6,
+          "symbol": "D_800AA440",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 116,
+          "type": 5,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 120,
+          "type": 6,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 124,
+          "type": 5,
+          "symbol": "D_800C3550",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 128,
+          "type": 6,
+          "symbol": "D_800C3550",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 132,
+          "type": 4,
+          "symbol": "osCreateMesgQueue",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 140,
+          "type": 5,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 144,
+          "type": 6,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 152,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 160,
+          "type": 5,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 164,
+          "type": 6,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 172,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 200,
+          "type": 5,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 204,
+          "type": 6,
+          "symbol": "D_800C4CC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 212,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "lib_l5_sptask_00023e00",
+      "source": "src/lib/sptask.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00023e00",
+          "ownerRowIndex": 560
+        },
+        {
+          "symbol": "func_0002400c",
+          "ownerRowIndex": 561
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 576,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "F873F46896304FF8B1E86B69B755524EF4861A9AF13591E4376309E032629E7B"
+      },
+      "functions": [
+        {
+          "symbol": "func_00023e00",
+          "offset": 0,
+          "bytes": 524,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0002400c",
+          "offset": 524,
+          "bytes": 44,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 568,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 16,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007747072
+        },
+        {
+          "offset": 20,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 640745472
+        },
+        {
+          "offset": 32,
+          "type": 4,
+          "symbol": "bcopy",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 40,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 44,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357461008
+        },
+        {
+          "offset": 56,
+          "type": 4,
+          "symbol": "osVirtualToPhysical",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 64,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 68,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909392
+        },
+        {
+          "offset": 72,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 76,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357461016
+        },
+        {
+          "offset": 88,
+          "type": 4,
+          "symbol": "osVirtualToPhysical",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 96,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 100,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909400
+        },
+        {
+          "offset": 104,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 108,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357461024
+        },
+        {
+          "offset": 120,
+          "type": 4,
+          "symbol": "osVirtualToPhysical",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 128,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 132,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909408
+        },
+        {
+          "offset": 136,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 140,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357461032
+        },
+        {
+          "offset": 152,
+          "type": 4,
+          "symbol": "osVirtualToPhysical",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 160,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 164,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909416
+        },
+        {
+          "offset": 168,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 172,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357461036
+        },
+        {
+          "offset": 184,
+          "type": 4,
+          "symbol": "osVirtualToPhysical",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 192,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 196,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909420
+        },
+        {
+          "offset": 200,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 204,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357461040
+        },
+        {
+          "offset": 216,
+          "type": 4,
+          "symbol": "osVirtualToPhysical",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 224,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 228,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909424
+        },
+        {
+          "offset": 232,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 236,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2357461048
+        },
+        {
+          "offset": 248,
+          "type": 4,
+          "symbol": "osVirtualToPhysical",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 256,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 260,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909432
+        },
+        {
+          "offset": 264,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 268,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135620
+        },
+        {
+          "offset": 284,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 288,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135672
+        },
+        {
+          "offset": 292,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006829568
+        },
+        {
+          "offset": 296,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2355298364
+        },
+        {
+          "offset": 300,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 304,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909400
+        },
+        {
+          "offset": 308,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 312,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887974940
+        },
+        {
+          "offset": 332,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 336,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135620
+        },
+        {
+          "offset": 368,
+          "type": 5,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 372,
+          "type": 6,
+          "symbol": "D_800C3560",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909392
+        },
+        {
+          "offset": 380,
+          "type": 4,
+          "symbol": "osWritebackDCache",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 388,
+          "type": 4,
+          "symbol": "__osSpSetStatus",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 404,
+          "type": 4,
+          "symbol": "__osSpSetPc",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 440,
+          "type": 4,
+          "symbol": "__osSpRawStartDma",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 456,
+          "type": 4,
+          "symbol": "__osSpDeviceBusy",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 488,
+          "type": 4,
+          "symbol": "__osSpRawStartDma",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 532,
+          "type": 4,
+          "symbol": "__osSpDeviceBusy",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 548,
+          "type": 4,
+          "symbol": "__osSpSetStatus",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "lib_l5_piacs_00024b70",
+      "source": "src/lib/access_si.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00024b70",
+          "ownerRowIndex": 578
+        },
+        {
+          "symbol": "func_00024bc4",
+          "ownerRowIndex": 579
+        },
+        {
+          "symbol": "func_00024c30",
+          "ownerRowIndex": 580
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 240,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "A273811A7F1C58386B5C3E89F63BC51881A46CD4D32B2811619C15196B53EA63"
+      },
+      "functions": [
+        {
+          "symbol": "func_00024b70",
+          "offset": 0,
+          "bytes": 84,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00024bc4",
+          "offset": 84,
+          "bytes": 108,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00024c30",
+          "offset": 192,
+          "bytes": 40,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 232,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 12,
+          "type": 5,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007681536
+        },
+        {
+          "offset": 16,
+          "type": 6,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 638582784
+        },
+        {
+          "offset": 24,
+          "type": 5,
+          "symbol": "D_800C35A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 28,
+          "type": 6,
+          "symbol": "D_800C35A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 36,
+          "type": 5,
+          "symbol": "D_800AA780",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 40,
+          "type": 6,
+          "symbol": "D_800AA780",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 44,
+          "type": 4,
+          "symbol": "osCreateMesgQueue",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 60,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 84,
+          "type": 5,
+          "symbol": "D_800AA780",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 88,
+          "type": 6,
+          "symbol": "D_800AA780",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 108,
+          "type": 5,
+          "symbol": "D_800AA780",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 112,
+          "type": 6,
+          "symbol": "D_800AA780",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 116,
+          "type": 5,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 120,
+          "type": 6,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 124,
+          "type": 5,
+          "symbol": "D_800C35A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 128,
+          "type": 6,
+          "symbol": "D_800C35A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 132,
+          "type": 4,
+          "symbol": "osCreateMesgQueue",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 140,
+          "type": 5,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 144,
+          "type": 6,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 152,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 160,
+          "type": 5,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 164,
+          "type": 6,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 172,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 200,
+          "type": 5,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 204,
+          "type": 6,
+          "symbol": "D_800E9BC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 212,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "lib_l5_vimgr_00025620",
+      "source": "src/lib/vimgr.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00025620",
+          "ownerRowIndex": 597
+        },
+        {
+          "symbol": "func_000257c0",
+          "ownerRowIndex": 598
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 832,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "34A3B83E96F3C13F8FAD39B721E85A202AE752D4C33E6AAC65503E984CA4CB1D"
+      },
+      "functions": [
+        {
+          "symbol": "func_00025620",
+          "offset": 0,
+          "bytes": 416,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_000257c0",
+          "offset": 416,
+          "bytes": 408,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 824,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 8,
+          "type": 5,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007943680
+        },
+        {
+          "offset": 12,
+          "type": 6,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 647233536
+        },
+        {
+          "offset": 48,
+          "type": 4,
+          "symbol": "__osTimerServicesInit",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 56,
+          "type": 5,
+          "symbol": "D_800C4770",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007878144
+        },
+        {
+          "offset": 60,
+          "type": 6,
+          "symbol": "D_800C4770",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 645070848
+        },
+        {
+          "offset": 68,
+          "type": 5,
+          "symbol": "D_800C4788",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 72,
+          "type": 6,
+          "symbol": "D_800C4788",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 76,
+          "type": 5,
+          "symbol": "__additional_scanline",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 80,
+          "type": 6,
+          "symbol": "__additional_scanline",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887778304
+        },
+        {
+          "offset": 84,
+          "type": 4,
+          "symbol": "osCreateMesgQueue",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 96,
+          "type": 5,
+          "symbol": "D_800C47A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007026176
+        },
+        {
+          "offset": 100,
+          "type": 6,
+          "symbol": "D_800C47A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 616955904
+        },
+        {
+          "offset": 108,
+          "type": 5,
+          "symbol": "D_800C47B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007681536
+        },
+        {
+          "offset": 112,
+          "type": 6,
+          "symbol": "D_800C47B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 638582784
+        },
+        {
+          "offset": 124,
+          "type": 5,
+          "symbol": "D_800C47A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 128,
+          "type": 6,
+          "symbol": "D_800C47A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686451714
+        },
+        {
+          "offset": 132,
+          "type": 5,
+          "symbol": "D_800C47A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 136,
+          "type": 6,
+          "symbol": "D_800C47A0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887778308
+        },
+        {
+          "offset": 144,
+          "type": 5,
+          "symbol": "D_800C47B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 148,
+          "type": 6,
+          "symbol": "D_800C47B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686451714
+        },
+        {
+          "offset": 152,
+          "type": 5,
+          "symbol": "D_800C47B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 156,
+          "type": 6,
+          "symbol": "D_800C47B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887778308
+        },
+        {
+          "offset": 160,
+          "type": 4,
+          "symbol": "osSetEventMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 176,
+          "type": 4,
+          "symbol": "osSetEventMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 184,
+          "type": 4,
+          "symbol": "osGetThreadPri",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 216,
+          "type": 4,
+          "symbol": "osSetThreadPri",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 224,
+          "type": 4,
+          "symbol": "__osDisableInt",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 232,
+          "type": 5,
+          "symbol": "D_800C35B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007681536
+        },
+        {
+          "offset": 236,
+          "type": 6,
+          "symbol": "D_800C35B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 638582784
+        },
+        {
+          "offset": 248,
+          "type": 5,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 1007026176
+        },
+        {
+          "offset": 252,
+          "type": 6,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 616956320
+        },
+        {
+          "offset": 264,
+          "type": 5,
+          "symbol": "D_800C3770",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006829568
+        },
+        {
+          "offset": 268,
+          "type": 6,
+          "symbol": "D_800C3770",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 610471936
+        },
+        {
+          "offset": 284,
+          "type": 5,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 288,
+          "type": 6,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2888826884
+        },
+        {
+          "offset": 292,
+          "type": 5,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 296,
+          "type": 6,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2889023496
+        },
+        {
+          "offset": 300,
+          "type": 5,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 304,
+          "type": 6,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2889023500
+        },
+        {
+          "offset": 308,
+          "type": 5,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 312,
+          "type": 6,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887778320
+        },
+        {
+          "offset": 316,
+          "type": 5,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 320,
+          "type": 6,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887778324
+        },
+        {
+          "offset": 324,
+          "type": 5,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 328,
+          "type": 6,
+          "symbol": "D_800AA7C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887778328
+        },
+        {
+          "offset": 332,
+          "type": 4,
+          "symbol": "osCreateThread",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 340,
+          "type": 4,
+          "symbol": "__osViInit",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 348,
+          "type": 4,
+          "symbol": "osStartThread",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 356,
+          "type": 4,
+          "symbol": "__osRestoreInt",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 376,
+          "type": 4,
+          "symbol": "osSetThreadPri",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 448,
+          "type": 4,
+          "symbol": "__osViGetCurrentContext",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 460,
+          "type": 5,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 464,
+          "type": 6,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2753691648
+        },
+        {
+          "offset": 480,
+          "type": 5,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 484,
+          "type": 6,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2753691648
+        },
+        {
+          "offset": 508,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 540,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217853
+        },
+        {
+          "offset": 548,
+          "type": 4,
+          "symbol": "__osViSwapContext",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 556,
+          "type": 5,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 560,
+          "type": 6,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2487353344
+        },
+        {
+          "offset": 568,
+          "type": 5,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 572,
+          "type": 6,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2753691648
+        },
+        {
+          "offset": 588,
+          "type": 4,
+          "symbol": "__osViGetCurrentContext",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 612,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 624,
+          "type": 5,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 628,
+          "type": 6,
+          "symbol": "D_800C35B0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2753691648
+        },
+        {
+          "offset": 632,
+          "type": 5,
+          "symbol": "__osViIntrCount",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 636,
+          "type": 6,
+          "symbol": "__osViIntrCount",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 644,
+          "type": 5,
+          "symbol": "__osViIntrCount",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 652,
+          "type": 6,
+          "symbol": "__osViIntrCount",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 656,
+          "type": 4,
+          "symbol": "osGetCount",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 676,
+          "type": 5,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 680,
+          "type": 6,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 684,
+          "type": 5,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 688,
+          "type": 6,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887974916
+        },
+        {
+          "offset": 692,
+          "type": 5,
+          "symbol": "__osBaseCounter",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007681536
+        },
+        {
+          "offset": 700,
+          "type": 6,
+          "symbol": "__osBaseCounter",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2383413248
+        },
+        {
+          "offset": 696,
+          "type": 4,
+          "symbol": "osGetCount",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 704,
+          "type": 5,
+          "symbol": "__osBaseCounter",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 708,
+          "type": 6,
+          "symbol": "__osBaseCounter",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 716,
+          "type": 5,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 720,
+          "type": 6,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 724,
+          "type": 5,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006829568
+        },
+        {
+          "offset": 728,
+          "type": 6,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2355298308
+        },
+        {
+          "offset": 756,
+          "type": 5,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 760,
+          "type": 6,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 764,
+          "type": 5,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 772,
+          "type": 6,
+          "symbol": "__osCurrentTime",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887974916
+        },
+        {
+          "offset": 768,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217853
+        },
+        {
+          "offset": 776,
+          "type": 4,
+          "symbol": "__osTimerInterrupt",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 784,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217853
+        }
+      ]
+    },
+    {
+      "id": "lib_l5_devmgr",
+      "source": "src/lib/func_0001c2b0.c",
+      "mode": "native-text-single-owner-readonly-fragment-projection",
+      "members": [
+        {
+          "symbol": "func_0001c2b0",
+          "ownerRowIndex": 449
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 960,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "ADB116DDCB9ACD082DCE1B8C35AB5B1305E88413471571A668CADD5977CBDED5"
+      },
+      "functions": [
+        {
+          "symbol": "func_0001c2b0",
+          "offset": 0,
+          "bytes": 952,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 952,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 56,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 204,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 216,
+          "type": 4,
+          "symbol": "__osResetGlobalIntMask",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 248,
+          "type": 4,
+          "symbol": "__osEPiRawWriteIo",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 264,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 336,
+          "type": 4,
+          "symbol": "__osEPiRawWriteIo",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 360,
+          "type": 4,
+          "symbol": "__osEPiRawWriteIo",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 384,
+          "type": 4,
+          "symbol": "__osEPiRawReadIo",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 432,
+          "type": 4,
+          "symbol": "__osEPiRawWriteIo",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 464,
+          "type": 4,
+          "symbol": "__osSetGlobalIntMask",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 480,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 524,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 552,
+          "type": 4,
+          "symbol": "osYieldThread",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 560,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217740
+        },
+        {
+          "offset": 592,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 600,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 2351038464
+        },
+        {
+          "offset": 620,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 656,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217942
+        },
+        {
+          "offset": 672,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 708,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217942
+        },
+        {
+          "offset": 724,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 768,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217942
+        },
+        {
+          "offset": 784,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 828,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217942
+        },
+        {
+          "offset": 844,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 868,
+          "type": 4,
+          "symbol": "osRecvMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 884,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 900,
+          "type": 4,
+          "symbol": "osSendMesg",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 908,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217740
+        }
+      ],
+      "auxiliary": {
+        "sections": [
+          {
+            "memberSymbol": "func_0001c2b0",
+            "functionSymbol": "func_0001c2b0",
+            "kind": "switch-table",
+            "compilerSection": ".rodata",
+            "outputSection": ".ob64.r0789",
+            "sectionType": "SHT_PROGBITS",
+            "sectionFlags": [
+              "SHF_ALLOC"
+            ],
+            "alignment": 8,
+            "romStart": "0x0003EA90",
+            "romEndExclusive": "0x0003EAAC",
+            "vramStart": "0x800AE690",
+            "vramEndExclusive": "0x800AE6AC",
+            "bytes": 28,
+            "entries": 7,
+            "expectedObjectSha256": "0E725A3F91F0A5DFA1AD9E9C353473A94253BF5147FFA519005E3DBEBC29A31F",
+            "expectedLinkedSha256": "E051D507C1A1E2BE774223ECF6607E0ACBB85E2FB24A1A7325F6D826999EE158",
+            "preservedTail": null,
+            "preservedInteriorBefore": {
+              "inputSection": ".ob64.r0789.interior_0003E70C",
+              "sectionType": "SHT_PROGBITS",
+              "sectionFlags": [
+                "SHF_ALLOC"
+              ],
+              "alignment": 1,
+              "romStart": "0x0003E70C",
+              "romEndExclusive": "0x0003EA90",
+              "vramStart": "0x800AE30C",
+              "vramEndExclusive": "0x800AE690",
+              "bytes": 900,
+              "expectedSha256": "7BFC7EE6A67A1E72B612AC4CD5656DFFF0339ED5D7E64603F6B71BF32C876815",
+              "ownerOriginalAssembly": "asm/original/rev0/lib/rsp_ucode_s2dexd.s",
+              "ownerOriginalAssemblySha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E",
+              "expectedRelocations": []
+            },
+            "expectedRelocations": [
+              {
+                "offset": "0x00000000",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000344",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000004",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000264",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000008",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000298",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000000C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000354",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000010",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000354",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000014",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000002CC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000018",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000308",
+                "section": ".rel.rodata"
+              }
+            ]
+          }
+        ],
+        "compilerLabel": ".L21",
+        "alignmentDirectives": [
+          3,
+          2
+        ],
+        "nativeSection": {
+          "section": ".rodata",
+          "type": 1,
+          "flags": 2,
+          "alignment": 8,
+          "bytes": 32,
+          "sha256": "0D8002E14162E6CB0C9520495F10414B276718C156ABFE38253432DE6EF23178",
+          "link": 0,
+          "info": 0,
+          "entrySize": 0,
+          "terminalAlignment": {
+            "offset": 28,
+            "bytes": 4,
+            "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+            "origin": "native-assembler-section-alignment"
+          }
+        }
       }
     }
   ]

@@ -27,6 +27,7 @@ function entryBytes(segment, auxiliaries) {
 }
 function rowBundle(group) { return ['native-text-readonly-owner-projection','native-text-readonly-interior-run-projection'].includes(group?.mode) && group.auxiliary?.projection?.schemaVersion === 5; }
 function groupContract(group) {
+  if (singleFragment(group)) return singleFragmentContract(group);
   if (fragmentMode(group)) return fragmentContract(group);
   if (rowBundle(group)) return bundleContract(group);
   if (!composed(group) || group.auxiliary?.projection?.schemaVersion !== 1) fail('group projection requires version 1');
@@ -48,7 +49,7 @@ function memberSections(group, symbol) {
   return group.auxiliary.sections.filter(section => (rowBundle(group) ? payloads(group.auxiliary.projection).find(row => row.outputSection === section.outputSection).occurrences[0].memberSymbol : section.memberSymbol) === symbol);
 }
 function assertMemberSections(target) {
-  if ((composed(target.compilationGroup) || fragmentMode(target.compilationGroup)) && !same(target.auxiliarySections, memberSections(target.compilationGroup, target.symbol))) fail('group auxiliary attribution census');
+  if ((composed(target.compilationGroup) || fragmentLike(target.compilationGroup)) && !same(target.auxiliarySections, memberSections(target.compilationGroup, target.symbol))) fail('group auxiliary attribution census');
 }
 function normalize(contract, auxiliaries) {
   return normalizeContract(contract, auxiliaries, 2);
@@ -578,8 +579,8 @@ function assertCompleteGroupRows(group) {
   }
 }
 function groupGrammar(compiler, group, adjust) {
-  if (fragmentMode(group)) {
-    const c = fragmentContract(group), a = group.auxiliary.sections[0];
+  if (fragmentLike(group)) {
+    const c = groupContract(group), a = group.auxiliary.sections[0];
     adjust(compiler, group.owners[0].sectionName, { auxiliarySections: [{ compilerSection: '.rodata', outputSection: c.segments[0].outputSection, bytes: c.bytes, entries: a.entries }] });
     const blocks = [...compiler.toString('utf8').matchAll(/^[ \t]*\.section[ \t]+\.rodata[^\r\n]*\r?\n([\s\S]*?)^[ \t]*\.text[ \t]*$/gm)];
     if (blocks.length !== 1) fail('fragment compiler section census');
@@ -611,12 +612,12 @@ function groupReadonlyNames(group, stage) {
   return ['raw', 'text-projected'].includes(stage) ? ['.rodata'] : group.auxiliary.sections.map(value => value.outputSection);
 }
 function groupCensus(elf, group, stage) {
-  if (!composed(group) && !fragmentMode(group)) fail('missing composed producer');
+  if (!composed(group) && !fragmentLike(group)) fail('missing composed producer');
   const contract = groupContract(group);
-  if (!fragmentMode(group)) assertCompleteGroupRows(group);
+  if (!fragmentLike(group)) assertCompleteGroupRows(group);
   if (contract.bytes > elf.buffer.length) fail('group read-only footprint exceeds object');
   const zeroSegments = contract.segments.filter(value => value.kind === 'zero');
-  if (!fragmentMode(group) && (!Array.isArray(group.auxiliary.retained) || group.auxiliary.retained.length !== zeroSegments.length)) fail('group retained binding census');
+  if (!fragmentLike(group) && (!Array.isArray(group.auxiliary.retained) || group.auxiliary.retained.length !== zeroSegments.length)) fail('group retained binding census');
   for (const [index, zero] of zeroSegments.entries()) {
     const record = group.auxiliary.retained[index];
     if (!record || Object.entries(zero).some(([key, value]) => !same(record[key], value))
@@ -638,12 +639,13 @@ function groupCensus(elf, group, stage) {
   const rawBytes = Buffer.alloc(contract.bytes);
   for (const [index, section] of roSections.entries()) {
     const bytes = native ? contract.bytes : tables[index].bytes;
+    if (singleFragment(group) && (section.link || section.info || section.entrySize)) fail("single fragment readonly header");
     if (section.type !== 1 || section.flags !== 2 || section.address !== 0 || section.size !== bytes
         || section.alignment !== contract.alignment) fail('group read-only shape');
     Buffer.from(elfSectionBytes(elf, section)).copy(rawBytes, native ? 0 : tables[index].offset);
   }
   if (hash(rawBytes) !== contract.expectedObjectSha256) fail('group native read-only identity');
-  for (const segment of fragmentMode(group) ? [{ offset: group.auxiliary.sections[0].entries * 4, bytes: group.auxiliary.sections[0].trailingPaddingBytes || 0 }] : rowBundle(group) ? bundlePadding(group) : contract.segments.filter(value => value.kind === 'zero')) {
+  for (const segment of fragmentLike(group) ? [{ offset: group.auxiliary.sections[0].entries * 4, bytes: singleFragment(group) ? group.auxiliary.nativeSection.terminalAlignment.bytes : group.auxiliary.sections[0].trailingPaddingBytes || 0 }] : rowBundle(group) ? bundlePadding(group) : contract.segments.filter(value => value.kind === 'zero')) {
     if (!rawBytes.subarray(segment.offset, segment.offset + segment.bytes).every(byte => byte === 0)) fail('group native padding');
   }
   const roAnchor = roSections[0];
@@ -667,7 +669,7 @@ function groupCensus(elf, group, stage) {
     places.add(offset);
     const word = rawBytes.readUInt32BE(offset);
     const auxiliary = group.auxiliary.sections.find(value => value.outputSection === table.outputSection);
-    const attributed = group.functions.find(value => value.symbol === (fragmentMode(group) ? auxiliary.functionSymbol : rowBundle(group) ? table.memberSymbol : auxiliary.memberSymbol));
+    const attributed = group.functions.find(value => value.symbol === (fragmentLike(group) ? auxiliary.functionSymbol : rowBundle(group) ? table.memberSymbol : auxiliary.memberSymbol));
     if (word % 4) fail('group table instruction destination alignment');
     if (word < attributed.offset || word + 4 > attributed.offset + attributed.bytes) fail('group table target outside attributed function');
     const expected = auxiliary.expectedRelocations.find(value => Number(value.offset) === offset - tables.find(row => row.outputSection === table.outputSection).offset);
@@ -683,6 +685,7 @@ function groupCensus(elf, group, stage) {
   const marker = elf.symbols.filter(symbol => symbol.name === 'gcc2_compiled.');
   if (marker.length !== 1 || marker[0].symbolType !== 1 || marker[0].binding || marker[0].value || marker[0].size
       || marker[0].visibility || marker[0].sectionIndex !== textAnchor?.index) fail('group compiler marker');
+  if (singleFragment(group) && !same(tableRelocations.map(r=>r.offset), Array.from({length:group.auxiliary.sections[0].entries},(_,i)=>i*4))) fail("single fragment serialized table REL order");
   const pending = new Map();
   const sourceMember = relocation => {
     const start = textOffset(relocation.owner);
@@ -693,8 +696,8 @@ function groupCensus(elf, group, stage) {
     const destination = elf.sections[relocation.symbol.sectionIndex], destinationOffset = textOffset(destination);
     if (destination?.index === roAnchor.index) {
       const table = occurrences.find(table => addend >= table.offset && addend + 4 <= table.offset + table.bytes);
-      const attributed = table && (fragmentMode(group) ? group.auxiliary.sections[0].functionSymbol : rowBundle(group) ? table.memberSymbol : group.auxiliary.sections.find(section => section.outputSection === table.outputSection).memberSymbol);
-      if (relocation.symbol !== anchorSymbol || !table || group.functions[sourceMember(relocation)]?.symbol !== attributed) fail('group auxiliary reference attribution/padding');
+      const attributed = table && (fragmentLike(group) ? group.auxiliary.sections[0].functionSymbol : rowBundle(group) ? table.memberSymbol : group.auxiliary.sections.find(section => section.outputSection === table.outputSection).memberSymbol);
+      if (relocation.symbol !== anchorSymbol || !table || singleFragment(group) && addend % 4 || group.functions[sourceMember(relocation)]?.symbol !== attributed) fail('group auxiliary reference attribution/padding');
       references.push({ ownerOffset: textOffset(relocation.owner), place: relocation.place, type: relocation.type, addend });
     } else if (destinationOffset !== null) {
       const targetOffset = destinationOffset + relocation.symbol.value + addend;
@@ -786,7 +789,7 @@ Object.assign(module.exports, { singleOwner, composed, groupContract, memberSect
 // Version 5 is group-only. Physical rows and callable occurrence attribution
 // are independent partitions. Older standalone and composed schemas are unchanged.
 function groupOccurrences(group) {
-  if (fragmentMode(group)) { const c = fragmentContract(group), a = group.auxiliary.sections[0]; return [{ ...c.segments[0], bytes: a.entries * 4, memberSymbol: a.memberSymbol, functionSymbol: a.functionSymbol }]; }
+  if (fragmentLike(group)) { const c = groupContract(group), a = group.auxiliary.sections[0]; return [{ ...c.segments[0], bytes: a.entries * 4, memberSymbol: a.memberSymbol, functionSymbol: a.functionSymbol }]; }
   return payloads(group.auxiliary.projection).flatMap(row => rowBundle(group)
     ? row.occurrences.map(o => ({ ...o, outputSection: row.outputSection, rowOffset: o.offset - row.offset })) : [row]);
 }
@@ -976,3 +979,35 @@ function normalizeFragment(group) {
   });
 }
 Object.assign(module.exports,{fragmentMode,fragmentContract,normalizeFragment});
+
+// Complete single native owner with a projected table prefix. This is neither
+// the multi-owner fragment contract nor a complete-data-row composition.
+const singleFragment = group => group?.mode === 'native-text-single-owner-readonly-fragment-projection';
+const fragmentLike = group => fragmentMode(group) || singleFragment(group);
+function singleFragmentContract(group) {
+  if (!singleFragment(group)) fail('single fragment mode');
+  require('./compilation_groups').singleOwnerContract(group);
+  const a=group.auxiliary;
+  if(!keys(a,['sections','compilerLabel','alignmentDirectives','nativeSection']) || !Array.isArray(a.sections) || a.sections.length!==1
+      || !/^\.L[0-9]+$/.test(a.compilerLabel)) fail('single fragment auxiliary envelope');
+  const s=a.sections[0],n=a.nativeSection,t=n?.terminalAlignment;
+  if(s.memberSymbol!==group.members[0].symbol || s.functionSymbol!==group.functions[0].symbol
+      ||s.kind!=='switch-table'||s.compilerSection!=='.rodata'||s.sectionType!=='SHT_PROGBITS'||!same(s.sectionFlags,['SHF_ALLOC'])
+      ||!alignment(s.alignment)||!integer(s.entries,1)||s.bytes!==s.entries*4||s.trailingPaddingBytes
+      ||Object.hasOwn(s,'sourceObjectPrefix')||Object.hasOwn(s,'compilerOccurrences')
+      ||!same(a.alignmentDirectives,[Math.log2(s.alignment),2])) fail('single fragment attribution/table');
+  if(!keys(n,['section','type','flags','alignment','bytes','sha256','link','info','entrySize','terminalAlignment'])
+      ||n.section!=='.rodata'||n.type!==1||n.flags!==2||n.alignment!==s.alignment||n.link!==0||n.info!==0||n.entrySize!==0
+      ||!SHA.test(n.sha256)||!integer(n.bytes,4)
+      ||!keys(t,['offset','bytes','sha256','origin'])||t.origin!=='native-assembler-section-alignment'
+      ||t.offset!==s.bytes||!integer(t.bytes,1)||t.bytes!==Math.ceil(s.bytes/s.alignment)*s.alignment-s.bytes
+      ||n.bytes!==s.bytes+t.bytes||t.sha256!==hash(Buffer.alloc(t.bytes))) fail('single fragment native padding/header');
+  return {bytes:n.bytes,alignment:n.alignment,expectedObjectSha256:n.sha256,
+    segments:[{kind:'payload',offset:0,bytes:s.bytes,outputSection:s.outputSection,label:a.compilerLabel,alignmentDirectives:a.alignmentDirectives}]};
+}
+function normalizeSingleFragment(group) {
+  singleFragmentContract(group);
+  return group.auxiliary.sections.map(({memberSymbol,functionSymbol,...s})=>({
+    ...require('./active_targets').normalizeAuxiliarySectionContracts([s],group.id,'single fragment auxiliary')[0],memberSymbol,functionSymbol}));
+}
+Object.assign(module.exports,{singleFragment,singleFragmentContract,normalizeSingleFragment});

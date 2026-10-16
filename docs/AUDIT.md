@@ -370,3 +370,36 @@ fragment has no tail after a later fragment is admitted. Rebuild every affected 
 binding against the new containing interval/model while preserving literal bytes and configuration.
 Private fixture evidence does not replace fresh compilation, changed-input structural audit,
 canonical complete-ROM/ownership/source-class gates or independent installed-code review.
+
+### Single-owner shared-table native projection
+
+For `native-text-single-owner-readonly-fragment-projection`, require one complete
+accepted physical text owner, one original-name GLOBAL function, its exact minimal
+native zero tail, and one attributed switch table. Authenticate both original ASM
+owners, the unchanged no-cut logical registry, linkage identities and ordinary
+text/data pairing, including actual boot-initialized slab equations when applicable.
+Reject same-name fixed/native collisions; prove the native GLOBAL and each
+aligned body-interior ABS alias separately in linked evidence.
+
+Text/object/composition schemas15/23/9 identify this admission together with its
+mode. Route any occurrence of these discriminators to the strict new validator;
+crossed schemas reject. Require fresh multi-file implementation identity and
+canonical-context recovery without caller-supplied authority or recursive fallback.
+Shared-row index assignment must re-key the genuine binding while conserving all
+other fields and the complete ordered row fingerprint.
+
+Replay immutable raw, text-projected, table-projected and stripped artifacts.
+Require exact native/projected read-only headers, including zero link/info/entrySize;
+positive minimal omitted zero padding; complete symbols/anchors; serialized table
+REL order and unchanged words/addends; and no definitions, places or references
+into omitted bytes or text padding. Reconstruct the complete shared row with exact
+full-path selectors and retained original ASM. Changed retained intervals invalidate
+the affected scheduler/literal proofs and caches even when their C/table bytes are
+unchanged. Exercise canonical boot pairing, unique retained literal custody, cache
+and self-compared proof mutation controls, and unrelated real native nonmatches.
+
+`tests/owner_function_readonly_fragments.js` includes the distinct schema and
+actual-object controls. Tooling fixtures are diagnostic; independent tooling review,
+changed-input structural audit and the complete wave's canonical matching gates
+remain necessary. Old function-owner logical rules and whole-row composition modes
+retain their existing semantics.

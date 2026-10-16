@@ -584,7 +584,7 @@ module.exports = {
 // exist and must retain their sizes. Only ELF placement metadata is projected.
 function projectNativeTextOwners(input, requestedOwners, admission = null, literalContext = null) {
   const literalGroups=literalContext?require('./retained_literal_references').validateSplit(input,requestedOwners,literalContext):[];
-  if (admission !== null && admission !== 'native-text-readonly-single-owner-projection') fail('native owner admission');
+  if (admission !== null && admission !== 'native-text-readonly-single-owner-projection' && admission !== 'native-text-single-owner-readonly-fragment-projection') fail('native owner admission');
   const parsed = parseRelocatable(input);
   const matches = parsed.sections.filter(section => section.name === '.text');
   if (matches.length !== 1) fail('native text section census');

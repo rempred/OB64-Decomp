@@ -16,7 +16,9 @@ const FUNCTIONS_MODE = 'native-text-owner-functions-projection';
 const functionMode = group => group?.mode === FUNCTIONS_MODE;
 const fragmentMode = group => group?.mode === 'native-text-owner-functions-readonly-fragment-projection';
 const functionOwners = group => functionMode(group) || fragmentMode(group);
-const readonlyProducer = group => auxiliary.composed(group) || fragmentMode(group);
+const singleFragment = group => auxiliary.singleFragment(group);
+const fragmentLike = group => fragmentMode(group) || singleFragment(group);
+const readonlyProducer = group => auxiliary.composed(group) || fragmentLike(group);
 const functionContexts = new Map();
 const interiorContexts = new Map();
 const interior = group => group?.mode === 'native-text-readonly-interior-run-projection';
@@ -87,7 +89,7 @@ function power(value) { return integer(value, 4) && value <= 0x10000 && (value &
 // Validate the new admission independently of registry loading: object, proof
 // and cache entry points may receive serialized, already-bound contracts.
 function singleOwnerContract(group) {
-  if (!auxiliary.singleOwner(group) || !Array.isArray(group.members) || group.members.length !== 1
+  if (!(auxiliary.singleOwner(group) || singleFragment(group)) || !Array.isArray(group.members) || group.members.length !== 1
       || !Array.isArray(group.functions) || group.functions.length !== 1) fail('single-owner member/function census');
   const member = group.members[0], fn = group.functions[0], text = group.text, tail = group.tail;
   requireKeys(member, ['symbol', 'ownerRowIndex'], 'single-owner member');
@@ -120,6 +122,7 @@ function assemblyPath(target, suffix = '.compiler.s') { return 'generated/c/' + 
 function members(phase8, target) { return target.compilationGroup
   ? target.compilationGroup.members.map(member => phase8.targets.find(candidate => candidate.symbol === member.symbol)) : [target]; }
 function normalizeAuxiliary(group) {
+  if (singleFragment(group)) return auxiliary.normalizeSingleFragment(group);
   if (fragmentMode(group)) return auxiliary.normalizeFragment(group);
   auxiliary.groupContract(group);
   const contracts = group.auxiliary.sections.map(({ memberSymbol, ...section }) => section);
@@ -177,10 +180,10 @@ function registry(config, profile) {
   for (const group of config.groups) {
     requireKeys(group, ['id', 'source', 'mode', 'members', 'text', 'functions', 'tail', 'relocations',
       ...(group.retainedLiteralReferences ? ['retainedLiteralReferences'] : []), ...(readonlyProducer(group) ? ['auxiliary'] : []), ...(interior(group) ? ['interiorRun'] : [])], 'producer');
-    if (fragmentMode(group) && group.retainedLiteralReferences) fail('fragment cannot combine retained literal mode');
+    if (fragmentLike(group) && group.retainedLiteralReferences) fail('fragment cannot combine retained literal mode');
     if(interior(group)) interiorContract(group);
     if (readonlyProducer(group)) {
-      requireKeys(group.auxiliary, fragmentMode(group) ? ['sections', 'compilerLabel', 'alignmentDirectives'] : ['sections', 'projection'], 'auxiliary producer');
+      requireKeys(group.auxiliary, singleFragment(group) ? ['sections','compilerLabel','alignmentDirectives','nativeSection'] : fragmentMode(group) ? ['sections', 'compilerLabel', 'alignmentDirectives'] : ['sections', 'projection'], 'auxiliary producer');
       const sections = normalizeAuxiliary(group);
       auxiliary.groupContract({ ...group, auxiliary: { ...group.auxiliary, sections } });
     }
@@ -188,7 +191,7 @@ function registry(config, profile) {
         || typeof group.source !== 'string' || !group.source.endsWith('.c') || sources.has(group.source)
         || path.isAbsolute(group.source) || group.source.includes('\\') || group.source.split('/').some(part => !part || part === '.' || part === '..')) fail('producer identity');
     ids.add(group.id); sources.add(group.source);
-    if (!Array.isArray(group.members) || (auxiliary.singleOwner(group) ? group.members.length !== 1 : group.members.length < 2) || !Array.isArray(group.functions)
+    if (!Array.isArray(group.members) || ((auxiliary.singleOwner(group) || singleFragment(group)) ? group.members.length !== 1 : group.members.length < 2) || !Array.isArray(group.functions)
         || (functionOwners(group) ? group.functions.length < group.members.length : group.functions.length !== group.members.length)) fail('member/function census');
     requireKeys(group.text, ['section', 'bytes', 'alignment', 'type', 'flags', 'sha256'], 'native text');
     if (group.text.section !== '.text' || group.text.type !== 1 || group.text.flags !== 6
@@ -215,6 +218,7 @@ function registry(config, profile) {
         || end + group.tail.bytes !== group.text.bytes || group.tail.origin !== (interior(group) ? 'native-subset-artifact' : 'native-assembler-section-alignment')
         || group.tail.sha256 !== sha256Buffer(Buffer.alloc(group.tail.bytes))) fail('native tail contract');
     if(group.retainedLiteralReferences)literals.registryGroups(group);
+    if(singleFragment(group)) singleOwnerContract(group);
     validateNativeRelocationOrder(group);
   }
   return config.groups;
@@ -276,12 +280,13 @@ function bind(groups, targets, context = {}) {
       normalized.auxiliary.sections = normalized.auxiliary.sections.flatMap(section => active.resolveAuxiliarySectionContracts(
         context.model, context.baserom, selected.find(target => auxiliary.bundle(normalized) ? auxiliary.memberSections(normalized,target.symbol).some(s=>s.outputSection===section.outputSection) : target.symbol === section.memberSymbol), [section]));
       for (const member of selected) member.auxiliarySections = auxiliary.memberSections(normalized, member.symbol);
-      if (!fragmentMode(group)) {
+      if (!fragmentLike(group)) {
         auxiliary.assertCompleteGroupRows(normalized);
         normalized.auxiliary.retained = auxiliary.retainedBindings(first, context.model, context.baserom);
       }
       if(interior(group)) bindInterior(normalized, context.model, context.baserom);
     }
+    if (singleFragment(group)) bindSingleFragmentContext(normalized, selected[0], context);
     if (fragmentMode(group)) {
       const logical = require('./logical_functions');
       const registry = context.logicalRegistry || logical.loadRegistry(context.model, context.baserom);
@@ -318,7 +323,7 @@ function allocation(elf, group, stage, literalStage = null) {
   const projected = stage !== 'raw', stripped = stage === 'stripped';
   const textNames = projected ? group.owners.map(owner => owner.sectionName) : ['.text'];
   const roNames = readonlyProducer(group) ? auxiliary.groupReadonlyNames(group, stage) : [];
-  if (fragmentMode(group)) {
+  if (fragmentLike(group)) {
     const nullSections = elf.sections.filter(sec => sec.name === '' || sec.type === 0);
     if (nullSections.length !== 1 || nullSections[0].index !== 0 || nullSections[0].name !== ''
         || ['nameOffset', 'type', 'flags', 'address', 'offset', 'size', 'link', 'info', 'alignment', 'entrySize']
@@ -337,7 +342,7 @@ function allocation(elf, group, stage, literalStage = null) {
           || sec.flags !== 0 || sec.address !== 0) fail('fragment uncontracted object section: ' + sec.name);
     }
   }
-  for (const sec of elf.sections.filter(value => value.flags & (auxiliary.singleOwner(group) ? 7 : 3))) {
+  for (const sec of elf.sections.filter(value => value.flags & ((auxiliary.singleOwner(group) || singleFragment(group)) ? 7 : 3))) {
     if(literalStage&&stage==='raw'&&sec.name==='.rodata'&&sec.index===literalStage.proof.raw.sections.find(s=>s.name==='.rodata').index)continue;
     if (textNames.includes(sec.name) || roNames.includes(sec.name)) continue;
     if (sec.name === '.reginfo' && !stripped) continue;
@@ -412,6 +417,7 @@ function census(elf, group, stage, literalStage = null) {
 function validateObject(elf, group, stage) {
   auxiliaryMode(group);
   authenticateFunctions(group);
+  if(singleFragment(group)) authenticateSingleFragment(group);
   if(interior(group)) authenticateInterior(group);
   validateNativeRelocationOrder(group);
   if (![...['raw', 'projected', 'stripped'], ...(readonlyProducer(group) ? ['text-projected'] : [])].includes(stage) || elf.header.type !== 1 || elf.header.machine !== 8
@@ -427,7 +433,7 @@ function project(input, group) {
   const raw = parseBuffer(input), rawEvidence = validateObject(raw, group, 'raw');
   const literalProjection=group.retainedLiteralReferences?literals.groupProject(input,group):null;
   const result = literalProjection || projectNativeTextOwners(interior(group) ? trimInterior(input,group) : input, group.owners.map(owner => ({ sectionName: owner.sectionName, bytes: owner.bytes })),
-    auxiliary.singleOwner(group) ? group.mode : null);
+    (auxiliary.singleOwner(group) || singleFragment(group)) ? group.mode : null);
   if (readonlyProducer(group)) {
     const intermediate = validateObject(parseBuffer(result.buffer), group, 'text-projected');
     if (!same(rawEvidence.metadata, intermediate.metadata)) fail('text projection changed reginfo');
@@ -462,11 +468,12 @@ function expectedMemberRelocations(target) {
 }
 function contract(target) {
   auxiliaryMode(target.compilationGroup);
+  if(singleFragment(target.compilationGroup)) authenticateSingleFragment(target.compilationGroup);
   auxiliary.assertMemberSections(target);
   const tc = require('./text_contract'), group = target.compilationGroup, owner = group.owners[target.groupMemberIndex];
   const ordinary = tc.resolveTextContract({ ...target, compilationGroup: null });
-  return { ...ordinary, ...(group.retainedLiteralReferences?{retainedLiteralReferences:group.retainedLiteralReferences,retainedLiteralBinding:group.retainedLiteralBinding,literalImplementationSha256:require('./phase7_conventional').sha256File(require.resolve('./retained_literal_references'))}:{}), schemaVersion: fragmentMode(group) ? 12 : interior(group) ? 9 : auxiliary.bundle(group) ? 8 : auxiliary.singleOwner(group) ? 6 : functionOwners(group) ? 5 : readonlyProducer(group) ? 4 : 2,
-    ...(functionOwners(group) || auxiliary.singleOwner(group) ? { tail: target.groupMemberIndex === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null } : {}), mode: group.mode, producer: group,
+  return { ...ordinary, ...(group.retainedLiteralReferences?{retainedLiteralReferences:group.retainedLiteralReferences,retainedLiteralBinding:group.retainedLiteralBinding,literalImplementationSha256:require('./phase7_conventional').sha256File(require.resolve('./retained_literal_references'))}:{}), schemaVersion: singleFragment(group) ? 15 : fragmentMode(group) ? 12 : interior(group) ? 9 : auxiliary.bundle(group) ? 8 : auxiliary.singleOwner(group) ? 6 : functionOwners(group) ? 5 : readonlyProducer(group) ? 4 : 2,
+    ...(functionOwners(group) || auxiliary.singleOwner(group) || singleFragment(group) ? { tail: target.groupMemberIndex === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null } : {}), mode: group.mode, producer: group,
     memberIndex: target.groupMemberIndex,
     ...(auxiliary.bundle(group) ? { memberOccurrences: auxiliary.groupOccurrences(group).filter(o=>o.memberSymbol===target.symbol) } : {}),
     owners: ordinary.owners.map(value => ({ ...value,
@@ -510,11 +517,12 @@ function evidence(target, root, files = null) {
   const strippedFunctions = tc.functionCensus(stripped, strippedOwners.map(value => value.section));
   if (!same(rawFunctions, strippedFunctions)) fail('strip changed member functions');
   const rawRelocations = require('./phase8_matching_c').rawRelocationRecords(projected);
-  return { ...(literalEvidence?{retainedLiteralReferences:literalEvidence}:{}), schemaVersion: fragmentMode(group)?20:literalEvidence?19:interior(group) ? 13 : auxiliary.bundle(group) ? 12 : auxiliary.singleOwner(group) ? 10 : functionOwners(group) ? 9 : readonlyProducer(group) ? 7 : 3,
-    ...(readonlyProducer(group) ? { composition: { schemaVersion: fragmentMode(group) ? 7 : interior(group) ? 6 : auxiliary.bundle(group) ? 5 : auxiliary.singleOwner(group) ? 3 : 2, groupSha256: hash(group),
+  return { ...(literalEvidence?{retainedLiteralReferences:literalEvidence}:{}), schemaVersion: singleFragment(group)?23:fragmentMode(group)?20:literalEvidence?19:interior(group) ? 13 : auxiliary.bundle(group) ? 12 : auxiliary.singleOwner(group) ? 10 : functionOwners(group) ? 9 : readonlyProducer(group) ? 7 : 3,
+    ...(readonlyProducer(group) ? { composition: { schemaVersion: singleFragment(group) ? 9 : fragmentMode(group) ? 7 : interior(group) ? 6 : auxiliary.bundle(group) ? 5 : auxiliary.singleOwner(group) ? 3 : 2, groupSha256: hash(group),
       nativeObjectSha256: sha256Buffer(native.buffer), textProjectedObjectSha256: sha256Buffer(reproduction.intermediate),
       projectedObjectSha256: sha256Buffer(projected.buffer), strippedObjectSha256: sha256Buffer(stripped.buffer),
       implementationSha256: require('./phase7_conventional').sha256File(require.resolve('./auxiliary_projection')),
+      ...(singleFragment(group) ? { singleFragmentImplementationSha256: singleFragmentImplementationIdentity() } : {}),
       ...(fragmentMode(group) ? { fragmentImplementationSha256: fragmentImplementationIdentity() } : {}),
       auxiliaryContract: group.auxiliary,
       conservedTextProjection: auxiliary.conservedOutsideReadonly(parseBuffer(reproduction.intermediate), group),
@@ -525,7 +533,7 @@ function evidence(target, root, files = null) {
     discardedAncillaryRelocations: rawRelocations.filter(value => !group.owners.some(owner => value.section === '.rel' + owner.sectionName)
       && !(readonlyProducer(group) && group.auxiliary.sections.some(section => value.section === '.rel' + section.outputSection))),
     tail: target.groupMemberIndex === group.members.length - 1 && !interior(group) ? group.tail : null,
-    assemblyMode: fragmentMode(group) ? 'untouched-native-text-owner-functions-readonly-fragment-projection' : interior(group) ? 'untouched-native-text-readonly-interior-run-projection' : auxiliary.singleOwner(group) ? 'untouched-native-text-readonly-single-owner-projection' : functionOwners(group) ? 'untouched-native-text-owner-functions-projection' : readonlyProducer(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
+    assemblyMode: singleFragment(group) ? 'untouched-native-text-single-owner-readonly-fragment-projection' : fragmentMode(group) ? 'untouched-native-text-owner-functions-readonly-fragment-projection' : interior(group) ? 'untouched-native-text-readonly-interior-run-projection' : auxiliary.singleOwner(group) ? 'untouched-native-text-readonly-single-owner-projection' : functionOwners(group) ? 'untouched-native-text-owner-functions-projection' : readonlyProducer(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
 }
 const compiledProducers = new Map();
 function compile(phase8, target, output, compiler, assembler, objcopy, options) {
@@ -587,7 +595,7 @@ function compiledMember(target, output, classification, files = null) {
         target.symbol + ' ' + section.outputSection + ' group member auxiliary');
       return { compilerSection: section.compilerSection, outputSection: section.outputSection, bytes: value.selectedBytes.length,
         sha256: sha256Buffer(value.selectedBytes), alignment: value.section.alignment, flags: value.section.flags,
-        relocations: value.relocations, ...value.padding, retainedInteriorBefore: fragmentMode(target.compilationGroup) ? require("./auxiliary_interior").projectInterior(section) : null,
+        relocations: value.relocations, ...value.padding, retainedInteriorBefore: fragmentLike(target.compilationGroup) ? require("./auxiliary_interior").projectInterior(section) : null,
         ...(compilerOccurrences === null ? {} : { compilerOccurrences }) };
     }) };
 }
@@ -635,6 +643,7 @@ Object.assign(module.exports, { collapseManifest, manifestMembers });
 const bundleProofContexts = new Map();
 const bundleArtifactIdentities = new Set();
 function registerBundleProofContext(phase8, target, output, classification, rom, proof) {
+  if(singleFragment(target.compilationGroup)) { singleFragmentProofContexts.set(hash(proof.objectEvidence.artifacts)+":"+target.symbol,{phase8,target,output:path.resolve(output),classification,rom:Buffer.from(rom)}); return; }
   if (fragmentMode(target.compilationGroup)) {
     fragmentProofContexts.set(hash(proof.objectEvidence.artifacts) + ":" + target.symbol, { phase8, target, output: path.resolve(output), classification, rom: Buffer.from(rom) });
     return;
@@ -666,6 +675,7 @@ function validateBundleProofArtifacts(proof) {
 Object.assign(module.exports, { registerBundleProofContext, validateBundleProofArtifacts });
 
 function validateComposedProof(proof) {
+  if(singleFragmentProofSelected(proof)) return validateSingleFragmentProof(proof);
   if (fragmentMode(proof.textContract?.producer)) return validateFragmentProof(proof);
   validateBundleProofArtifacts(proof);
   const object = proof.objectEvidence, text = proof.textContract;
@@ -791,7 +801,7 @@ function validateComposedStage(stage, group, artifact) {
   const roOffset = name => nativeRO ? (name === '.rodata' ? 0 : undefined) : tables.find(t => t.outputSection === name)?.offset;
   const textNames = raw ? ['.text'] : group.owners.map(o => o.sectionName);
   const roNames = nativeRO ? ['.rodata'] : tables.map(t => t.outputSection);
-  for (const s of c.sections.filter(s => s.flags & (auxiliary.singleOwner(group) ? 7 : 3))) {
+  for (const s of c.sections.filter(s => s.flags & ((auxiliary.singleOwner(group) || singleFragment(group)) ? 7 : 3))) {
     if (textNames.includes(s.name) || roNames.includes(s.name) || (s.name === '.reginfo' && stage.stage !== 'stripped')) continue;
     if (['.data', '.bss'].includes(s.name) && !s.size && s.flags === 3 && !s.address && s.alignment === 16
         && s.type === (s.name === '.data' ? 1 : 8)) continue;
@@ -921,6 +931,7 @@ Object.assign(module.exports, { functionMode, fragmentMode, functionOwners, read
 // Distinct v5/v9 evidence for the owner/function mode. A self-compared report
 // still needs current authenticated group context and complete stage censuses.
 function validateFunctionGroupProof(proof) {
+  if(singleFragmentProofSelected(proof)) return validateSingleFragmentProof(proof);
   if (fragmentMode(proof.textContract?.producer) || proof.textContract?.schemaVersion === 12 || proof.objectEvidence?.schemaVersion === 20) return validateFragmentProof(proof);
   const group = proof.textContract?.producer, object = proof.objectEvidence;
   if (!functionMode(group) && object?.schemaVersion !== 9 && proof.textContract?.schemaVersion !== 5) return;
@@ -1230,3 +1241,115 @@ function validateFragmentProof(proof) {
   if (!same(fresh, proof)) fail('fragment proof differs from independent artifact/link reconstruction');
 }
 Object.assign(module.exports, { validateFragmentProof, finishFragmentBindings });
+
+// Authority is loaded from this checkout, never a serialized proof's model.
+const singleFragmentContexts=new Map(), singleFragmentBindings=new WeakMap(), singleFragmentProofContexts=new Map();
+let recoveringSingleFragment=false;
+function singleFragmentImplementationIdentity(){
+  const p=require('./phase7_conventional');
+  return hash(['compilation_groups','auxiliary_projection','active_targets','elf_text_split','text_contract','phase8_matching_c',
+    'logical_functions','boot_initialized_data','auxiliary_interior','retained_literal_references','source_policy']
+    .map(name=>({name,sha256:p.sha256File(require.resolve('./'+name))})));
+}
+function singleFragmentUnordered(group){return hash({...group,auxiliary:{...group.auxiliary,sections:group.auxiliary.sections.map(({ownerFragmentIndex,ownerFragmentCount,...a})=>a)}});}
+function singleFragmentLogical(registry,row,group,aliases){
+  const overlap=r=>r.romStart<row.romEndExclusive&&r.romEndExclusive>row.romStart;
+  const names=new Set([group.functions[0].symbol,...aliases.map(a=>a.symbol)].map(s=>s.toLowerCase()));
+  if(registry.bodies.some(overlap)||registry.padding.some(overlap)||registry.unavailableBodies.some(overlap)
+      ||registry.bodies.some(b=>[b.symbol,...b.aliases].some(s=>names.has(s.toLowerCase())))
+      ||registry.preservedProductionEnvelopes.some(e=>names.has(e.symbol.toLowerCase())||e.fragments.some(f=>f.rowIndex===row.index||overlap(f))))
+    fail('single fragment logical conflict');
+}
+function singleFragmentAliases(group,symbols){
+  const f=group.functions[0];
+  if(Object.keys(symbols).some(n=>n.toLowerCase()===f.symbol.toLowerCase()))fail('single fragment same-name fixed/native collision');
+  return Object.entries(symbols).filter(([,v])=>Number(v)>=group.vramStart&&Number(v)<group.vramStart+group.text.bytes)
+    .map(([symbol,value])=>{const address=Number(value),offset=address-group.vramStart;
+      if(offset%4||offset<0||offset>=f.bytes)fail('single fragment fixed alias outside body');
+      return {symbol,address,kind:'fixed-address',ownerRowIndex:group.members[0].ownerRowIndex,sectionName:group.owners[0].sectionName,ownerOffset:offset};
+    }).sort((a,b)=>a.symbol.localeCompare(b.symbol));
+}
+function singleFragmentCanonical(group){
+  const p=require('./phase7_conventional'),logical=require('./logical_functions'),active=require('./active_targets');
+  const model=p.loadAcceptedModel(),rom=fs.readFileSync(path.join(ROOT,'build/baserom.us_rev0.z64'));
+  if(p.sha256Buffer(rom)!==model.config.rom.sha256)fail('single fragment ROM identity');
+  const row=model.rows.find(r=>r.index===group.members[0].ownerRowIndex),data=model.rows.find(r=>r.slices.some(s=>s.sectionName===group.auxiliary.sections[0].outputSection));
+  if(!row||!data||row.slices.length!==1||data.slices.length!==1||row.retainedPadding||row.ambiguous!==false||row.primaryClass!=='code')fail('single fragment accepted owner');
+  const owner=group.owners[0],slice=row.slices[0],a=group.auxiliary.sections[0];
+  if(owner.rowIndex!==row.index||owner.sectionName!==slice.sectionName||owner.bytes!==row.bytes||owner.romStartNumber!==row.romStart
+      ||owner.romEndNumber!==row.romEndExclusive||owner.vramStartNumber!==slice.vramStart||owner.vramEndNumber!==slice.vramEndExclusive
+      ||owner.originalAssembly!==row.part.file||owner.originalAssemblySha256!==row.part.sha256||owner.chunkIndex!==row.part.chunkIndex
+      ||a.ownerRowIndex!==data.index||a.ownerOriginalAssembly!==data.part.file||a.ownerOriginalAssemblySha256!==data.part.sha256)fail('single fragment physical source binding');
+  for(const r of [row,data]){const b=fs.readFileSync(path.join(ROOT,r.part.file));
+    if(p.sha256Buffer(b)!==r.part.sha256||!require('./word_asm').assembleWordAsmText(b.toString('utf8')).bytes.equals(rom.subarray(r.romStart,r.romEndExclusive)))fail('single fragment original ASM bytes');}
+  const saved=JSON.parse(fs.readFileSync(CONFIG_PATH,'utf8')).groups.filter(g=>g.id===group.id);
+  if(saved.length!==1)fail('single fragment current registry group');
+  registry({schemaVersion:1,profile:model.config.profile,groups:saved},model.config.profile);
+  for(const k of ['id','source','mode','members','text','functions','tail','relocations'])if(!same(saved[0][k],group[k]))fail('single fragment registry drift');
+  for(const k of ['compilerLabel','alignmentDirectives','nativeSection'])if(!same(saved[0].auxiliary[k],group.auxiliary[k]))fail('single fragment auxiliary registry drift');
+  const selected=normalizeAuxiliary(saved[0])[0];for(const [k,v]of Object.entries(selected))if(!same(a[k],v))fail('single fragment normalized auxiliary drift');
+  const linkage=JSON.parse(fs.readFileSync(active.LINKAGE_CONFIG_PATH,'utf8')),symbols=Object.fromEntries(linkage.symbols.map(s=>[s.name,s.address]));
+  const aliases=singleFragmentAliases(group,symbols),reg=logical.loadRegistry(model,rom);
+  singleFragmentLogical(reg,row,group,aliases);
+  logical.assertActivationCompatible(reg,group.members[0].symbol,[row]);
+  const target={symbol:group.members[0].symbol,row,sectionName:slice.sectionName,textOwners:[{...owner,row}],compilationGroup:group,
+    bytes:row.bytes,romStartNumber:row.romStart,vramStartNumber:slice.vramStart};
+  const resolved=active.resolveAuxiliarySectionContracts(model,rom,target,normalizeAuxiliary(saved[0]));
+  for(const [k,v]of Object.entries(resolved[0]))if(!['ownerFragmentIndex','ownerFragmentCount'].includes(k)&&!same(a[k],v))fail('single fragment accepted auxiliary pairing');
+  const paths=['config/phase7/conventional-build.json','config/splat/us_rev0.semantic.json','config/splat/us_rev0.overlay-linker-inputs.json',
+    'asm/original/rev0/manifest.json','config/roms/us_rev0.json','config/logical-functions.json','config/matching-c-linkage.json','config/matching-c-compilation-groups.json','config/matching-c-targets.json',row.part.file,data.part.file];
+  return {identity:{inputs:paths.map(file=>({path:file,sha256:p.sha256File(path.join(ROOT,file))})),rows:[row,data],logical:reg.identity,aliases},aliases};
+}
+function bindSingleFragmentContext(group){
+  const c=singleFragmentCanonical(group);group.singleFragmentBinding=c.identity;group.fixedBindings=c.aliases;
+  group.singleFragmentImplementationSha256=singleFragmentImplementationIdentity();
+  const context={unordered:singleFragmentUnordered(group),identity:hash(group.singleFragmentBinding),implementation:group.singleFragmentImplementationSha256,finished:false};
+  singleFragmentBindings.set(group,context);singleFragmentContexts.set(hash(group),context);
+}
+function authenticateSingleFragment(group){
+  auxiliary.singleFragmentContract(group);
+  let c=singleFragmentContexts.get(hash(group));
+  if(!c){if(recoveringSingleFragment)fail('single fragment reentrant authority recovery');recoveringSingleFragment=true;
+    try{require('./active_targets').loadActiveTargetModel();}finally{recoveringSingleFragment=false;}
+    c=singleFragmentContexts.get(hash(group));}
+  if(!c||!c.finished||c.identity!==hash(group.singleFragmentBinding)||c.implementation!==singleFragmentImplementationIdentity()
+      ||group.singleFragmentImplementationSha256!==c.implementation)fail('single fragment context/implementation authority');
+  const row=group.auxiliary.sections[0].outputSection;
+  if(hash(c.targets.flatMap(t=>(t.auxiliarySections||[]).filter(a=>a.outputSection===row).map(a=>({symbol:t.symbol,auxiliary:a}))))!==c.rowFingerprint)fail('single fragment shared-row binding drift');
+  const p=require('./phase7_conventional');
+  for(const f of group.singleFragmentBinding.inputs)if(p.sha256File(path.join(ROOT,f.path))!==f.sha256)fail('single fragment binding input drift');
+  if(!same(group.fixedBindings,group.singleFragmentBinding.aliases))fail('single fragment fixed binding drift');
+}
+function finishSingleFragmentBindings(targets){
+  for(const group of new Set(targets.map(t=>t.compilationGroup).filter(singleFragment))){const c=singleFragmentBindings.get(group);
+    if(!c||singleFragmentUnordered(group)!==c.unordered)fail('single fragment unauthorized shared-row change');
+    const row=group.auxiliary.sections[0].outputSection;
+    const fingerprint=hash(targets.flatMap(t=>(t.auxiliarySections||[]).filter(a=>a.outputSection===row).map(a=>({symbol:t.symbol,auxiliary:a}))));
+    if(c.finished&&c.rowFingerprint!==fingerprint)fail('single fragment shared-row fingerprint drift');
+    c.finished=true;c.rowFingerprint=fingerprint;c.targets=targets;singleFragmentContexts.set(hash(group),c);
+  }
+}
+function hasFixedBindingEvidence(group){return functionOwners(group)||singleFragment(group);}
+function verifySingleFragmentFixedBindings(target,elf){
+  const g=target.compilationGroup;authenticateSingleFragment(g);const f=g.functions[0],native=elf.symbols.filter(s=>s.name===f.symbol);
+  if(native.length!==1||native[0].binding!==1||native[0].symbolType!==2||native[0].visibility||native[0].value!==g.vramStart
+      ||native[0].size!==f.bytes||elf.sections[native[0].sectionIndex]?.name!==g.owners[0].sectionName)fail('single fragment linked native identity');
+  const aliases=g.fixedBindings.map(r=>{const ss=elf.symbols.filter(s=>s.name===r.symbol);if(ss.length!==1||ss[0].value!==r.address||ss[0].sectionIndex!==0xfff1||ss[0].binding!==1||![0,1].includes(ss[0].symbolType)||ss[0].size!==0||ss[0].visibility!==0)fail('single fragment linked ABS alias');return {...r,binding:ss[0].binding,symbolType:ss[0].symbolType,size:ss[0].size,visibility:ss[0].visibility,definedSection:'ABS'};});
+  return {native:{symbol:f.symbol,address:native[0].value,bytes:f.bytes,binding:1,symbolType:2,visibility:0,definedSection:g.owners[0].sectionName},aliases};
+}
+function verifyFixedBindingEvidence(target,elf){return singleFragment(target.compilationGroup)?verifySingleFragmentFixedBindings(target,elf):verifyFixedBindings(target,elf);}
+function singleFragmentProofSelected(p){return singleFragment(p.textContract?.producer)||p.textContract?.schemaVersion===15||p.objectEvidence?.schemaVersion===23||p.objectEvidence?.composition?.schemaVersion===9;}
+function validateSingleFragmentProof(proof){
+  const g=proof.textContract?.producer,o=proof.objectEvidence;
+  if(!singleFragment(g)||proof.textContract.schemaVersion!==15||o?.schemaVersion!==23||o.composition?.schemaVersion!==9||proof.textContract.mode!==g.mode
+      ||o.assemblyMode!=='untouched-native-text-single-owner-readonly-fragment-projection'||o.compilerAssemblyRewritten!==false
+      ||o.composition.singleFragmentImplementationSha256!==singleFragmentImplementationIdentity())fail('single fragment proof schema/implementation');
+  authenticateSingleFragment(g);
+  const c=singleFragmentProofContexts.get(hash(o.artifacts)+':'+proof.target?.symbol);
+  if(!c||!same(contract(c.target),proof.textContract))fail('single fragment proof lacks fresh authority');
+  require('./source_policy').verifyClassificationInputs(c.classification);
+  const fresh=require('./phase8_matching_c').deriveSourceObjectProof(c.phase8,c.target,c.output,c.classification,parseElfFile(path.join(c.output,'phase8.elf')),c.rom).proof;
+  if(!same(fresh,proof))fail('single fragment proof differs from fresh artifact/link reconstruction');
+}
+Object.assign(module.exports,{singleFragment,bindSingleFragmentContext,authenticateSingleFragment,finishSingleFragmentBindings,
+  hasFixedBindingEvidence,verifyFixedBindingEvidence,verifySingleFragmentFixedBindings,validateSingleFragmentProof});

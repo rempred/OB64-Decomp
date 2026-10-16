@@ -285,3 +285,19 @@ src/lib/rotate_00028900.c -text whitespace=cr-at-eol
 src/lib/thread_scheduler_000240b0.c -text whitespace=cr-at-eol
 config/matching-c-targets.json -text
 config/matching-c-linkage.json -text
+
+# Preserve the independently reviewed L5 source and tooling bytes.
+tools/lib/compilation_groups.js -text whitespace=cr-at-eol
+tests/owner_function_readonly_fragments.js -text whitespace=cr-at-eol
+src/lib/func_0001be50.c -text whitespace=cr-at-eol
+src/lib/func_0001c0e0.c -text whitespace=cr-at-eol
+src/lib/func_0001c130.c -text whitespace=cr-at-eol
+src/lib/func_0001c2b0.c -text whitespace=cr-at-eol
+src/lib/func_00024060.c -text whitespace=cr-at-eol
+src/lib/vimgr.c -text whitespace=cr-at-eol
+src/lib/os_vi_swap_context.c -text whitespace=cr-at-eol
+src/lib/func_00029cc0.c -text whitespace=cr-at-eol
+src/lib/osEPiRawReadIo.c -text whitespace=cr-at-eol
+src/lib/osEPiRawWriteIo.c -text whitespace=cr-at-eol
+src/lib/func_00029fc0.c -text whitespace=cr-at-eol
+src/lib/__osSpSetPc.c -text whitespace=cr-at-eol

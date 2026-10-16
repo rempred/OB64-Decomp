@@ -403,3 +403,29 @@ stripped evidence must replay independently; legacy modes cannot satisfy the new
 Shared-row retained ASM remains separately conserved and contributes no matching-C bytes.
 This representation changes no source-class rule: only mechanically classified PURE_C with sole
 linked ownership, exact target bytes and completed full-ROM verification counts as matching C.
+
+## Single native owner with a shared read-only fragment
+
+`native-text-single-owner-readonly-fragment-projection` admits one complete physical
+owner containing its original-name GLOBAL function and minimal native alignment
+tail, plus one compiler switch table in an accepted read-only row. This mode is
+separate from multi-owner function groups and complete-data-row compositions.
+Its deliberately narrow logical admission requires no overlapping registered body,
+padding, unavailable coverage or preserved envelope; registered native/alias name
+conflicts reject. Original text/data sources, placement and current logical/linkage
+identities are authenticated at binding and replay.
+
+The untouched native read-only section contains the table followed by a positive,
+minimal zero alignment suffix. Only the table is projected. The full native object,
+table, omitted zeros, symbols and serialized relocations remain authenticated;
+named, relocated or referenced omitted bytes reject. The omitted compiler bytes
+are check-only and do not count as matching C. Equal retail zeros belong to their
+independently conserved original-ASM interval. An already aligned table is outside
+this admission. The older fragment mode still permits its explicitly contracted
+padding to be linked; its semantics do not change.
+
+The native GLOBAL remains section-defined. Different-name fixed aliases must be
+aligned addresses inside its body and remain ABS; a same-name fixed/native record
+rejects. Source policy is unchanged. Full text ownership, shared-row ordering and
+retained-ASM evidence, fresh source/object/link proof and exact complete-ROM gates
+remain required before any matching wave is accepted.

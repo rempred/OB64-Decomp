@@ -3809,8 +3809,188 @@
       "compilationGroup": "thread_scheduler_000240b0"
     },
     {
+      "symbol": "func_0001c2b0",
+      "compilationGroup": "lib_l5_devmgr"
+    },
+    {
       "symbol": "func_000248ac",
       "compilationGroup": "thread_scheduler_000240b0"
+    },
+    {
+      "symbol": "func_0001bcc0",
+      "source": "src/lib/func_0001bcc0.c"
+    },
+    {
+      "symbol": "func_0001be50",
+      "source": "src/lib/func_0001be50.c"
+    },
+    {
+      "symbol": "func_0001c040",
+      "source": "src/lib/func_0001c040.c"
+    },
+    {
+      "symbol": "func_0001c0e0",
+      "source": "src/lib/func_0001c0e0.c"
+    },
+    {
+      "symbol": "func_0001c130",
+      "source": "src/lib/func_0001c130.c"
+    },
+    {
+      "symbol": "func_0001c670",
+      "compilationGroup": "lib_l5_piacs_0001c670"
+    },
+    {
+      "symbol": "func_0001c6c4",
+      "compilationGroup": "lib_l5_piacs_0001c670"
+    },
+    {
+      "symbol": "func_0001c730",
+      "compilationGroup": "lib_l5_piacs_0001c670"
+    },
+    {
+      "symbol": "func_0001c760",
+      "source": "src/lib/func_0001c760.c"
+    },
+    {
+      "symbol": "func_0001c830",
+      "source": "src/lib/func_0001c830.c"
+    },
+    {
+      "symbol": "ai_set_next_buffer",
+      "source": "src/lib/ai_set_next_buffer.c"
+    },
+    {
+      "symbol": "func_00023e00",
+      "compilationGroup": "lib_l5_sptask_00023e00"
+    },
+    {
+      "symbol": "func_0002400c",
+      "compilationGroup": "lib_l5_sptask_00023e00"
+    },
+    {
+      "symbol": "func_00024040",
+      "source": "src/lib/func_00024040.c"
+    },
+    {
+      "symbol": "func_00024060",
+      "source": "src/lib/func_00024060.c"
+    },
+    {
+      "symbol": "osi_raw_start_dma",
+      "source": "src/lib/osi_raw_start_dma.c"
+    },
+    {
+      "symbol": "func_00024b70",
+      "compilationGroup": "lib_l5_piacs_00024b70"
+    },
+    {
+      "symbol": "func_00024bc4",
+      "compilationGroup": "lib_l5_piacs_00024b70"
+    },
+    {
+      "symbol": "func_00024c30",
+      "compilationGroup": "lib_l5_piacs_00024b70"
+    },
+    {
+      "symbol": "func_000255a0",
+      "source": "src/lib/func_000255a0.c"
+    },
+    {
+      "symbol": "func_000255e0",
+      "source": "src/lib/func_000255e0.c"
+    },
+    {
+      "symbol": "func_00025620",
+      "compilationGroup": "lib_l5_vimgr_00025620"
+    },
+    {
+      "symbol": "func_000257c0",
+      "compilationGroup": "lib_l5_vimgr_00025620"
+    },
+    {
+      "symbol": "func_00025960",
+      "source": "src/lib/func_00025960.c"
+    },
+    {
+      "symbol": "func_000259c0",
+      "source": "src/lib/func_000259c0.c"
+    },
+    {
+      "symbol": "func_00025a10",
+      "source": "src/lib/func_00025a10.c"
+    },
+    {
+      "symbol": "func_00025b80",
+      "source": "src/lib/func_00025b80.c"
+    },
+    {
+      "symbol": "func_00025bd0",
+      "source": "src/lib/func_00025bd0.c"
+    },
+    {
+      "symbol": "os_vi_swap_context",
+      "source": "src/lib/os_vi_swap_context.c"
+    },
+    {
+      "symbol": "func_00025f30",
+      "source": "src/lib/func_00025f30.c"
+    },
+    {
+      "symbol": "osEPiRawStartDma",
+      "source": "src/lib/osEPiRawStartDma.c"
+    },
+    {
+      "symbol": "func_00029cc0",
+      "source": "src/lib/func_00029cc0.c"
+    },
+    {
+      "symbol": "osEPiRawReadIo",
+      "source": "src/lib/osEPiRawReadIo.c"
+    },
+    {
+      "symbol": "osEPiRawWriteIo",
+      "source": "src/lib/osEPiRawWriteIo.c"
+    },
+    {
+      "symbol": "func_00029fc0",
+      "source": "src/lib/func_00029fc0.c"
+    },
+    {
+      "symbol": "func_0002aa30",
+      "source": "src/lib/func_0002aa30.c"
+    },
+    {
+      "symbol": "__osSpDeviceBusy",
+      "source": "src/lib/__osSpDeviceBusy.c"
+    },
+    {
+      "symbol": "__osSpSetPc",
+      "source": "src/lib/__osSpSetPc.c"
+    },
+    {
+      "symbol": "__osSpRawStartDma",
+      "source": "src/lib/__osSpRawStartDma.c"
+    },
+    {
+      "symbol": "func_0002ac30",
+      "source": "src/lib/func_0002ac30.c"
+    },
+    {
+      "symbol": "func_0002ac80",
+      "source": "src/lib/func_0002ac80.c"
+    },
+    {
+      "symbol": "func_0002af50",
+      "source": "src/lib/func_0002af50.c"
+    },
+    {
+      "symbol": "read_vi_current_field",
+      "source": "src/lib/read_vi_current_field.c"
+    },
+    {
+      "symbol": "read_si_status_busy",
+      "source": "src/lib/read_si_status_busy.c"
     }
   ]
 }
