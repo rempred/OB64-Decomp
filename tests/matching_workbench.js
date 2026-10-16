@@ -1244,6 +1244,7 @@ async function acceptedModelTests() {
   assert(expectedPhysicalHeadCount(censusRows, censusBodies) === 3,
     'overlapping continuation and alias evidence double-counted a consumed physical row');
   const workbench = loadWorkbenchModel();
+  require('./registered_padding_aliases').run(workbench);
   await require('./matching_group_consumers').run(workbench);
   await require('./matching_split_tail_selection').run(workbench);
   assert(workbench.modelManifest.targetModelContract === 7, 'target-model contract drift');
@@ -1263,7 +1264,9 @@ async function acceptedModelTests() {
     'workbench target census does not equal physical heads minus validated logical continuations plus admitted split producers');
   const edgeRows = workbench.model.rows.filter(row => row.retainedPadding);
   const edgeTargets = workbench.targets.filter(target => target.selectionKind === 'registered-padding-producer');
-  assert(edgeRows.length === 2 && edgeTargets.length === edgeRows.length, 'registered complete producer census');
+  const rowSet=values=>values.map(value=>value.rowIndex??value.index).sort((a,b)=>a-b);
+  assert(JSON.stringify(rowSet(edgeRows))===JSON.stringify(rowSet(workbench.model.config.retainedPaddingCuts))
+    &&JSON.stringify(rowSet(edgeTargets))===JSON.stringify(rowSet(edgeRows)), 'registered complete producer row-set census');
   for (const row of edgeRows) {
     const matches = edgeTargets.filter(target => target.rowIndex === row.index);
     assert(matches.length === 1, 'one admitted complete producer per unchanged physical owner');

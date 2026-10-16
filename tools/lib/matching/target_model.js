@@ -346,6 +346,31 @@ function compositeFunctionRows(model) {
   return { continuations, consumedRows };
 }
 
+// Preserve the stronger complete-producer contract when its one whole primary
+// body also carries historical lookup names. Alias requests remain primary-only.
+function applyRegisteredAliasCorrection(authority, targets, registry, body) {
+  const names=[body.symbol,...body.aliases].map(s=>s.toLowerCase());
+  const related=targets.filter(t=>t.row?.retainedPadding && (
+    body.romStart<t.row.romEndExclusive&&body.romEndExclusive>t.row.romStart
+    ||names.includes(t.symbol.toLowerCase())||names.some(n=>(t.logicalAliases||[]).some(a=>a.toLowerCase()===n))));
+  if(!related.length)return false;
+  if(related.length!==1||!registry.bodies.includes(body))throw new Error('registered alias ownership/registry conflict');
+  const target=related[0];
+  if(authority.model?.rows.find(row=>row.index===target.rowIndex)!==target.row)throw new Error('registered alias live owner identity drift');
+  const bound=logical.assertRetainedPaddingProducer(registry,target.row,target.symbol);
+  const selected=retainedPaddingSelection(authority,target.row,authority.baserom,target.symbol);
+  if(Object.entries(selected).some(([key,value])=>canonicalJson(target[key])!==canonicalJson(value)))throw new Error('registered alias selection identity drift');
+  if(bound.bodies.length!==1||bound.record.compilerFunctions.length!==1||body.symbol!==target.symbol
+    ||body.romStart!==target.romStart||body.romEndExclusive!==target.romEndExclusive
+    ||body.fragments.length!==1||body.fragments[0].rowIndex!==target.rowIndex
+    ||body.fragments[0].sectionName!==target.sectionName||body.fragments[0].ownerOffset!==target.romStart-target.row.romStart
+    ||canonicalJson(body)!==canonicalJson(bound.bodies[0])
+    ||targets.some(t=>t!==target&&t.romStart<body.romEndExclusive&&t.romEndExclusive>body.romStart))throw new Error('registered alias must preserve one complete primary body');
+  for(const other of targets)if(other!==target&&[other.symbol,...(other.logicalAliases||[])].some(name=>names.includes(name.toLowerCase())))throw new Error('registered alias symbol collision');
+  target.logicalAliases=[body.symbol,...body.aliases];
+  return true;
+}
+
 function loadWorkbenchModel(options = {}) {
   const config = readJson(CONFIG_PATH);
   if (config.schemaVersion !== 1 || config.databaseSchemaVersion !== 2) throw new Error('matching workbench configuration schema drift');
@@ -438,9 +463,13 @@ function loadWorkbenchModel(options = {}) {
     });
   // Preserve owner/history names. Complete logical bodies crossing physical
   // cuts are explicitly scratch selections, never new linker owners.
-  const corrections = logicalRegistry.bodies.filter(body => body.aliases.length);
+  // Reference-only intake keeps its public registry and expected bytes unbound.
+  // Selection corrections still require the same authenticated registry/body pair.
+  const correctionRegistry = baserom ? logicalRegistry : logical.loadRegistry(model, loadBaserom(model));
+  const corrections = correctionRegistry.bodies.filter(body => body.aliases.length);
   const consumed = new Set();
   for (const body of corrections) {
+    if(applyRegisteredAliasCorrection({...activeModel,baserom},targets,correctionRegistry,body))continue;
     const selected = targets.find(target => target.romStart === body.romStart)
       || targets.find(target => body.aliases.some(alias => alias.toLowerCase() === target.symbol.toLowerCase()));
     if (!selected) throw new Error(`logical correction has no historical target: ${body.symbol}`);
@@ -474,7 +503,11 @@ function loadWorkbenchModel(options = {}) {
   }
   for (const target of targets) {
     const relevant = logicalRegistry.bodies.filter(body => body.romStart < target.romEndExclusive && body.romEndExclusive > target.romStart);
-    if (target.selectionKind === 'registered-padding-producer') continue;
+    if (target.selectionKind === 'registered-padding-producer') {
+      const metadata=Object.fromEntries(Object.entries(target).filter(([key])=>![...LIVE_TARGET_FIELDS,'expectedBytes','row','targetId','modelId','expectedBytesSha256'].includes(key)));
+      target.targetId=digest({modelId,metadata,expectedBytesSha256:target.expectedBytesSha256});
+      continue;
+    }
     if (target.selectionKind === 'executable-prefix' && relevant.length) throw new Error('executable-prefix selection overlaps logical-function metadata');
     if (relevant.length) {
       target.logicalCoverage = logical.coverage(logicalRegistry, target.romStart, target.romEndExclusive, baserom);
@@ -595,7 +628,7 @@ function publicTarget(target) {
 }
 
 module.exports = {
-  retainedPaddingSelection, executablePrefixSelection, assertExecutablePrefixSelection, executablePrefixComparisonScope, originalOwnerComparison,
+  applyRegisteredAliasCorrection, retainedPaddingSelection, executablePrefixSelection, assertExecutablePrefixSelection, executablePrefixComparisonScope, originalOwnerComparison,
   assertExecutablePrefixReportScope,
   historicalSymbols,
   LIVE_TARGET_FIELDS, assertScratchCapability, isActiveTarget, producerView, scratchCapability,

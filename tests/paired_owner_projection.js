@@ -13,6 +13,8 @@ const verifiedCompiler=p8.verifyCompiler(context,local.compiler),tools=assertToo
 fs.mkdirSync(path.join(ROOT,'build/tests'),{recursive:true});
 const root=fs.mkdtempSync(path.join(ROOT,'build/tests/paired-owner-projection-'));
 const retail=fs.readFileSync(path.join(ROOT,'build/baserom.us_rev0.z64'));
+const externalRegistry=require('../tools/lib/logical_functions').loadRegistry(context.model,retail);
+const {resolveExternalEntry}=require('./accepted_external_entry');
 const report=[];
 function compile(dir,source,symbol,name='native'){
  const file=path.join(dir,name+'.c');fs.writeFileSync(file,source);
@@ -65,7 +67,7 @@ function exercise(spec){
    const literal=/^(?:func|D)_(8[0-9A-Fa-f]{7})$/.exec(symbol.name);
    if(literal)address=parseInt(literal[1],16);
    else if(symbol.name==='external_call'&&!spec.fixture)address=0x80001234;
-   else {const row=active.resolveAcceptedRow(context.model,symbol.name);assert.equal(row.slices.length,1);address=row.slices[0].vramStart;}
+   else address=resolveExternalEntry(context,externalRegistry,symbol.name);
   }
   assignments.set(symbol.name,typeof address==='string'?parseInt(address,16):address);
  }

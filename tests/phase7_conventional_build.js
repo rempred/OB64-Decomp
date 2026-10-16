@@ -245,8 +245,8 @@ function main() {
   }
   assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 30, 'accepted load-slab count drift');
   assert.strictEqual(model.counts.fixedOverlayNonExecutableRanges, 4, 'accepted fixed-overlay non-executable-range count drift');
-  assert.strictEqual(model.slices.length, 7259, 'accepted link-slice count drift');
-  assert.strictEqual(model.counts.splitOwners, 17, 'accepted split-owner count drift');
+  assert.strictEqual(model.slices.length, 7266, 'accepted link-slice count drift');
+  assert.strictEqual(model.counts.splitOwners, 24, 'accepted split-owner count drift');
   assert.strictEqual(model.overlays.length, 19, 'fixed-descriptor count drift');
   assert.deepStrictEqual(model.fixedOverlayNonExecutableRanges, [{
     id: 'func-0020fc7c-retained-tail', overlayDescriptorId: 10, overlaySection: 'text',

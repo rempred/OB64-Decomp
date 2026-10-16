@@ -1,25 +1,23 @@
-typedef unsigned int u32;
+/* Layout and stores independently derived from the Rev 0 queue routines. */
+typedef struct MessageThread MessageThread;
+typedef struct MessageQueue {
+    MessageThread *receive_waiters;
+    MessageThread *send_waiters;
+    int valid_count;
+    int first;
+    int capacity;
+    void **messages;
+} MessageQueue;
 
-typedef struct OSMesgQueue {
-    void *thread_queue_00;
-    void *thread_queue_04;
-    void *message_buffer_08;
-    u32 valid_count_0C;
-    u32 first_message_10;
-    void *message_buffer_14;
-} OSMesgQueue;
+extern MessageThread g_os_thread_queue_sentinel;
 
-extern char g_os_thread_queue_sentinel[];
-
-void func_00023970(OSMesgQueue *queue, void *message, u32 count)
+void func_00023970(MessageQueue *queue, void **messages, int capacity)
 {
-    queue->thread_queue_00 = g_os_thread_queue_sentinel;
-    queue->thread_queue_04 = g_os_thread_queue_sentinel;
-    queue->message_buffer_08 = (void *)0;
-    queue->valid_count_0C = 0;
-    queue->first_message_10 = count;
-    queue->message_buffer_14 = message;
+    queue->receive_waiters = &g_os_thread_queue_sentinel;
+    queue->send_waiters = &g_os_thread_queue_sentinel;
+    queue->valid_count = 0;
+    queue->first = 0;
+    queue->capacity = capacity;
+    queue->messages = messages;
 }
 
-asm(".space 12");
-asm(".size func_00023970, 48");

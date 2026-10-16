@@ -749,6 +749,17 @@ function verifyRowSymbolSourceCache(cache) {
 }
 
 const preparedModelSources = new WeakMap();
+// One-shot binding permission is created only after canonical model validation.
+// Exported consumers can check it, but cannot register cloned or rebuilt models.
+const fixedEntryBindingOrigins = new WeakMap();
+function consumeFixedEntryBindingOrigin(phase8, registry) {
+  const state = fixedEntryBindingOrigins.get(phase8);
+  if (!state || state.registry !== registry || state.targets !== phase8.targets
+      || state.model !== phase8.model || state.linkSymbols !== phase8.linkSymbols) {
+    fail('fixed entry canonical loader authority missing');
+  }
+  fixedEntryBindingOrigins.delete(phase8);
+}
 const rowSymbolIndexes = new WeakMap();
 function completeAssemblySourceCensus(model, cache) {
   if (!(cache instanceof Map) || !Array.isArray(model.parts) || !Array.isArray(model.rows)) fail('accepted assembly source census is malformed');
@@ -1516,6 +1527,51 @@ function assertEquivalent(symbol, field, derived, legacy) {
   return { field, derived, legacy, equivalent };
 }
 
+// Compare a registered terminal composition with its frozen complete owner.
+// The target itself remains the C body used by all compilation/link checks.
+function legacyComparisonView(target, legacy, registry, baserom, assemblySource) {
+  // Historical split-body records keep their original strict comparisons.
+  // They never enter (or fall back from) this unsplit whole-owner path.
+  if (!legacy || !target.row.retainedPadding || /[.]s[0-9]+$/.test(legacy.sectionName)) return { target, composition: null };
+  const bad = message => fail('legacy retained-padding composition: ' + message);
+  if (target.model.rows.find(row => row.index === target.row.index) !== target.row
+      || target.rows.length !== 1 || target.rows[0] !== target.row || target.textOwners.length !== 1
+      || target.multiOwner || target.multiOwnerContract || target.compilationGroupId || target.compilationGroup
+      || target.relocationContractSource !== 'canonical' || target.auxiliarySections.length
+      || target.auxiliaryProjection || target.atomicText || target.nativeTextTail) bad('unsupported producer mode');
+  const bound = require('./logical_functions').assertRetainedPaddingProducer(
+    registry, target.row, target.symbol, target.compilerTextFunctions);
+  if (!bound || bound.record.edge !== 'terminal' || !sameJson(bound.registryIdentity, registry.identity)) bad('terminal registry authority');
+  const row = target.row, body = bound.body, retained = bound.retained;
+  // This is the unsplit branch of phase7_conventional.sectionName; baseline
+  // tests bind it to every actual unsplit row instead of trusting legacy text.
+  const sectionName = '.ob64.r' + String(row.index).padStart(4, '0');
+  if (legacy.sectionName !== sectionName) bad('legacy owner is not unsplit');
+  if (target.romStartNumber !== body.romStart || target.romEndNumber !== body.romEndExclusive
+      || target.vramStartNumber !== body.vramStart || target.vramEndNumber !== body.vramEndExclusive
+      || target.bytes !== body.bytes || target.sectionName !== body.sectionName
+      || target.expectedTextSha256 !== sha256Buffer(baserom.subarray(body.romStart, body.romEndExclusive))) bad('selected body drift');
+  const source = assemblySource(row.part.file, row.part.sha256);
+  if (sha256Buffer(Buffer.from(source)) !== row.part.sha256) bad('original source identity');
+  const words = source.split(/\r?\n/).filter(line => /^\s*\/\*\s*0x[0-9a-f]{8}\s+0x[0-9a-f]{8}\s+0x[0-9a-f]{8}\s*\*\/\s*\.word\s+/i.test(line))
+    .map(line => Number(/\.word\s+(0x[0-9a-f]+)/i.exec(line)?.[1]));
+  if (words.length * 4 !== row.bytes || words.some(word => !Number.isInteger(word))) bad('original word census');
+  const original = Buffer.alloc(row.bytes); words.forEach((word, i) => original.writeUInt32BE(word >>> 0, i * 4));
+  if (!original.equals(baserom.subarray(row.romStart, row.romEndExclusive))) bad('original whole-owner bytes');
+  const interval = slice => ({ romStart: slice.romStart, romEndExclusive: slice.romEndExclusive,
+    vramStart: slice.vramStart, vramEndExclusive: slice.vramEndExclusive, bytes: slice.bytes,
+    sectionName: slice.sectionName, expectedSha256: sha256Buffer(baserom.subarray(slice.romStart, slice.romEndExclusive)) });
+  const view = { ...target, romStartNumber: row.romStart, romEndNumber: row.romEndExclusive,
+    vramStartNumber: body.vramStart, vramEndNumber: retained.vramEndExclusive,
+    bytes: row.bytes, sectionName, expectedTextSha256: sha256Buffer(original) };
+  return { target: view, composition: { kind: 'registered-terminal-complete-owner',
+    registryIdentity: { ...bound.registryIdentity }, cutId: bound.record.id,
+    originalOwner: { ...interval({ ...body, romStart: row.romStart, romEndExclusive: row.romEndExclusive,
+      vramEndExclusive: retained.vramEndExclusive, bytes: row.bytes, sectionName }),
+      originalAssembly: row.part.file, originalAssemblySha256: row.part.sha256 },
+    body: interval(body), retainedAssembly: interval(retained) } };
+}
+
 function validateToolchainPin(pin) {
   if (!pin || typeof pin !== 'object' || Array.isArray(pin)
       || !sameJson(Object.keys(pin).sort(), ['buildProvenance', 'buildProvenanceSha256', 'manifest', 'manifestSha256'])
@@ -1751,24 +1807,26 @@ function loadActiveTargetModelInternal(options, deferFinish) {
     );
     validateRetainedAuxiliaryComposition(target);
     if (target.auxiliaryProjection) target.auxiliaryProjectionRetained = auxiliaryProjection.retainedBindings(target, model, baserom, assemblySource);
+    const legacyView = legacyComparisonView(target, legacyTarget, logicalRegistry, baserom, assemblySource);
     const comparisons = legacyTarget ? [
-      assertEquivalent(entry.symbol, 'primaryId', target.primaryId, legacyTarget.primaryId),
-      assertEquivalent(entry.symbol, 'rowIndex', target.rowIndex, legacyTarget.rowIndex),
-      assertEquivalent(entry.symbol, 'chunkIndex', target.chunkIndex, legacyTarget.chunkIndex),
-      assertEquivalent(entry.symbol, 'originalAssembly', target.originalAssembly, legacyTarget.originalAssembly),
-      assertEquivalent(entry.symbol, 'originalAssemblySha256', target.originalAssemblySha256, legacyTarget.originalAssemblySha256),
-      assertEquivalent(entry.symbol, 'romStart', target.romStartNumber, parseNumber(legacyTarget.romStart, 'legacy ROM start')),
-      assertEquivalent(entry.symbol, 'romEndExclusive', target.romEndNumber, parseNumber(legacyTarget.romEndExclusive, 'legacy ROM end')),
-      assertEquivalent(entry.symbol, 'vramStart', target.vramStartNumber, parseNumber(legacyTarget.vramStart, 'legacy VRAM start')),
-      assertEquivalent(entry.symbol, 'bytes', target.bytes, legacyTarget.bytes),
-      assertEquivalent(entry.symbol, 'sectionName', target.sectionName, legacyTarget.sectionName),
-      assertEquivalent(entry.symbol, 'overlayDescriptorId', target.overlayDescriptorId, legacyTarget.overlayDescriptorId),
-      assertEquivalent(entry.symbol, 'descriptorRawSha256', target.descriptorRawSha256, legacyTarget.descriptorRawSha256),
-      assertEquivalent(entry.symbol, 'expectedTextSha256', target.expectedTextSha256, legacyTarget.expectedTextSha256),
+      assertEquivalent(entry.symbol, 'primaryId', legacyView.target.primaryId, legacyTarget.primaryId),
+      assertEquivalent(entry.symbol, 'rowIndex', legacyView.target.rowIndex, legacyTarget.rowIndex),
+      assertEquivalent(entry.symbol, 'chunkIndex', legacyView.target.chunkIndex, legacyTarget.chunkIndex),
+      assertEquivalent(entry.symbol, 'originalAssembly', legacyView.target.originalAssembly, legacyTarget.originalAssembly),
+      assertEquivalent(entry.symbol, 'originalAssemblySha256', legacyView.target.originalAssemblySha256, legacyTarget.originalAssemblySha256),
+      assertEquivalent(entry.symbol, 'romStart', legacyView.target.romStartNumber, parseNumber(legacyTarget.romStart, 'legacy ROM start')),
+      assertEquivalent(entry.symbol, 'romEndExclusive', legacyView.target.romEndNumber, parseNumber(legacyTarget.romEndExclusive, 'legacy ROM end')),
+      assertEquivalent(entry.symbol, 'vramStart', legacyView.target.vramStartNumber, parseNumber(legacyTarget.vramStart, 'legacy VRAM start')),
+      assertEquivalent(entry.symbol, 'bytes', legacyView.target.bytes, legacyTarget.bytes),
+      assertEquivalent(entry.symbol, 'sectionName', legacyView.target.sectionName, legacyTarget.sectionName),
+      assertEquivalent(entry.symbol, 'overlayDescriptorId', legacyView.target.overlayDescriptorId, legacyTarget.overlayDescriptorId),
+      assertEquivalent(entry.symbol, 'descriptorRawSha256', legacyView.target.descriptorRawSha256, legacyTarget.descriptorRawSha256),
+      assertEquivalent(entry.symbol, 'expectedTextSha256', legacyView.target.expectedTextSha256, legacyTarget.expectedTextSha256),
     ] : [];
     compatibility.push({
       symbol: entry.symbol,
       legacyRecord: Boolean(legacyTarget),
+      ...(legacyView.composition ? { legacyOwnerComposition: legacyView.composition } : {}),
       comparisons,
       sourceHashAtMigrationEquivalent: legacyTarget ? target.sourceSha256 === legacyTarget.sourceSha256 : null,
       relocationContractSource: relocationContract.source,
@@ -1853,6 +1911,8 @@ function loadActiveTargetModelInternal(options, deferFinish) {
     targets,
     target: targets[0],
   };
+  fixedEntryBindingOrigins.set(phase8, { registry: logicalRegistry, targets, model, linkSymbols: reviewedLinkage.linkSymbols });
+  logicalSupport.bindFixedEntryInterfaces(phase8,logicalRegistry,assemblySource);
   preparedModelSources.set(phase8, { model, cache: rowSymbolSourceCache,
     modelSha256: sha256Buffer(Buffer.from(JSON.stringify(model))) });
   if (!deferFinish) finishActiveTargetModelSources(phase8);
@@ -1865,6 +1925,8 @@ function loadActiveTargetModel(options = {}) { return loadActiveTargetModelInter
 function loadActiveTargetModelForContext(options = {}) { return loadActiveTargetModelInternal(options, true); }
 
 module.exports = {
+  consumeFixedEntryBindingOrigin,
+  legacyComparisonView,
   CONFIG_PATH,
   LINKAGE_CONFIG_PATH,
   LEGACY_CONFIG_PATH,

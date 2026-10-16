@@ -1909,7 +1909,19 @@
     {"name":"s102_c_icache_end","address":"0x802172B0"},
     {"name":"s102_c_icache_start","address":"0x80214F80"},
     {"name":"s102_c_rom_end","address":"0x001977E0"},
-    {"name":"s102_c_rom_start","address":"0x00195410"}
+    {"name":"s102_c_rom_start","address":"0x00195410"},
+    {
+      "name": "__osRunningThread",
+      "address": "0x800AA7A0"
+    },
+    {
+      "name": "__osEnqueueAndYield",
+      "address": "0x800993DC"
+    },
+    {
+      "name": "osStartThread",
+      "address": "0x80094A20"
+    }
   ],
   "targets": [
     {
@@ -82014,6 +82026,215 @@
             "expectedTrailingPaddingSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
             "discardedTerminalAlignment": true
           }
+        }
+      ]
+    },
+    {
+      "symbol": "boot_byte_copy_aligned_leaf",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000044",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        }
+      ]
+    },
+    {
+      "symbol": "boot_byte_fill_aligned_leaf",
+      "expectedRelocations": []
+    },
+    {
+      "symbol": "func_00023970",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000000",
+          "section": ".rel.text",
+          "symbol": "g_os_thread_queue_sentinel",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000004",
+          "section": ".rel.text",
+          "symbol": "g_os_thread_queue_sentinel",
+          "type": "R_MIPS_LO16"
+        }
+      ]
+    },
+    {
+      "symbol": "osJamMesg",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000028",
+          "section": ".rel.text",
+          "symbol": "__osDisableInt",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000054",
+          "section": ".rel.text",
+          "symbol": "__osRestoreInt",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000005C",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000064",
+          "section": ".rel.text",
+          "symbol": "__osRunningThread",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000068",
+          "section": ".rel.text",
+          "symbol": "__osRunningThread",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000006C",
+          "section": ".rel.text",
+          "symbol": "__osEnqueueAndYield",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000F4",
+          "section": ".rel.text",
+          "symbol": "__osPopThread",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000FC",
+          "section": ".rel.text",
+          "symbol": "osStartThread",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000104",
+          "section": ".rel.text",
+          "symbol": "__osRestoreInt",
+          "type": "R_MIPS_26"
+        }
+      ]
+    },
+    {
+      "symbol": "osRecvMesg",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000024",
+          "section": ".rel.text",
+          "symbol": "__osDisableInt",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000044",
+          "section": ".rel.text",
+          "symbol": "__osRestoreInt",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000004C",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000054",
+          "section": ".rel.text",
+          "symbol": "__osRunningThread",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000058",
+          "section": ".rel.text",
+          "symbol": "__osRunningThread",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000005C",
+          "section": ".rel.text",
+          "symbol": "__osEnqueueAndYield",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000E8",
+          "section": ".rel.text",
+          "symbol": "__osPopThread",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000F0",
+          "section": ".rel.text",
+          "symbol": "osStartThread",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000F8",
+          "section": ".rel.text",
+          "symbol": "__osRestoreInt",
+          "type": "R_MIPS_26"
+        }
+      ]
+    },
+    {
+      "symbol": "osSendMesg",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000028",
+          "section": ".rel.text",
+          "symbol": "__osDisableInt",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000054",
+          "section": ".rel.text",
+          "symbol": "__osRestoreInt",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000005C",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000064",
+          "section": ".rel.text",
+          "symbol": "__osRunningThread",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000068",
+          "section": ".rel.text",
+          "symbol": "__osRunningThread",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000006C",
+          "section": ".rel.text",
+          "symbol": "__osEnqueueAndYield",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000F0",
+          "section": ".rel.text",
+          "symbol": "__osPopThread",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000F8",
+          "section": ".rel.text",
+          "symbol": "osStartThread",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000100",
+          "section": ".rel.text",
+          "symbol": "__osRestoreInt",
+          "type": "R_MIPS_26"
         }
       ]
     }

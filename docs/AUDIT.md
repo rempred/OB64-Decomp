@@ -331,3 +331,19 @@ agree. Existing schemas retain rejection. Run the registered real-native
 occurrence suite, independent review, installed canonical-caller checks and the
 changed-input baseline/current structural audit. Tooling success alone neither
 activates a source producer nor accepts its unfinished complete matching wave.
+
+### Frozen legacy owners with registered terminal padding
+
+An authenticated terminal registered-padding producer may compare its complete
+physical owner against an unsplit frozen legacy record. All thirteen identity,
+placement and hash comparisons remain mandatory; the current C target stays the
+complete selected body. Separate compatibility evidence records the whole owner,
+C body and retained original-ASM tail. The view requires canonical relocation
+metadata, one row/owner and no group, auxiliary or other composed producer mode.
+Existing split legacy records retain ordinary exact comparisons; they do not
+enter this whole-owner path. No comparison failure is retried under another mode.
+
+Run `node tests/registered_padding_legacy.js` for authority and malformed-input
+controls. Preserve unchanged baseline compatibility (including existing split
+records), actual whole-row bytes, physical interfaces, selected-body proof,
+sole per-slice ownership, independent fresh compilation and complete-ROM gates.

@@ -358,3 +358,61 @@ function assertAtomicOwnerBody(registry, symbol, rows) {
 }
 
 module.exports = { bindPhysicalInterfaces, physicalInterface, assertRetainedPaddingProducer, assertAtomicOwnerBody, assertNativeGroupBodies, CONFIG_PATH, intersections, loadRegistry, coverage, assertReviewedLocalBodies, assertActivationCompatible };
+
+// A fixed external interface is separate from the original LOCAL label that
+// happens to mark the same entry. Only the loaded canonical model can bind it.
+const fixedEntryAuthorities=new WeakMap(), fixedEntryNames=new Set(), fixedEntryOwnerIdentities=new Set();
+const fixedEntryIdentity=target=>JSON.stringify({symbol:target.symbol,source:target.source,sourceSha256:target.sourceSha256,
+  rowIndex:target.rowIndex,sectionName:target.sectionName,bytes:target.bytes,romStartNumber:target.romStartNumber,
+  romEndNumber:target.romEndNumber,vramStartNumber:target.vramStartNumber,compilerTextFunctions:target.compilerTextFunctions});
+function bindFixedEntryInterfaces(phase8,registry,readSource){
+  require('./active_targets').consumeFixedEntryBindingOrigin(phase8,registry);
+  const linkage=JSON.stringify(phase8.linkSymbols),linkageIdentity=Object.freeze({...phase8.linkageConfigIdentity});
+  for(const target of phase8.targets.filter(t=>t.row?.retainedPadding)){
+    const row=target.row,edge=assertRetainedPaddingProducer(registry,row,target.symbol,target.compilerTextFunctions);
+    if(edge.record.edge!=='terminal'||row.part.symbolByteOffset!==0||row.romStart!==edge.body.romStart
+      ||target.romStartNumber!==edge.body.romStart||target.vramStartNumber!==edge.body.vramStart
+      ||target.compilerTextFunctions[0].offsetNumber!==0||target.compilerTextFunctions[0].binding!=='GLOBAL')continue;
+    const source=readSource(row.part.file,row.part.sha256),original=require('./word_asm').assembleWordAsmText(source).bytes;
+    if(sha256Buffer(Buffer.from(source))!==row.part.sha256||original.length!==row.bytes)fail('fixed entry original source identity');
+    const forbidden=new Set([target.symbol,row.part.name,...target.compilerTextFunctions.map(f=>f.symbol),...row.slices.map(s=>'__ob64_row_'+String(row.index).padStart(4,'0')+'_slice_'+s.sliceIndex)]);
+    const records=[];
+    for(const [name,value] of Object.entries(phase8.linkSymbols)){
+      const address=Number(value);if(address!==edge.body.vramStart||forbidden.has(name))continue;
+      const labels=[...source.matchAll(/^([A-Za-z_.$][A-Za-z0-9_.$]*):\s*$/gm)].filter(m=>m[1]===name);
+      if(!labels.length)continue;
+      if(labels.length!==1||require('./word_asm').assembleWordAsmText(source.slice(0,labels[0].index)).bytes.length!==0)fail('fixed entry source label is not unique primary entry');
+      if(phase8.targets.some(t=>t.compilerTextFunctions.some(f=>f.symbol===name))
+        ||phase8.compilationGroups.some(g=>g.fixedBindings?.some(b=>b.symbol===name&&b.kind==='native-global')))fail('fixed entry competing compiler provider');
+      fixedEntryNames.add(name);
+      records.push(Object.freeze({name,address,rowIndex:row.index,bodySection:edge.body.sectionName,
+        primary:target.symbol,physical:row.part.name,originalAssembly:row.part.file,originalAssemblySha256:row.part.sha256,
+        linkageIdentity,linkedMetadata:Object.freeze({binding:1,symbolType:1,visibility:0,size:0,sectionIndex:0xfff1})}));
+    }
+    if(records.length){fixedEntryOwnerIdentities.add(row.index+':'+row.part.sha256);fixedEntryAuthorities.set(target,Object.freeze({phase8,model:phase8.model,targets:phase8.targets,linkSymbols:phase8.linkSymbols,linkageConfigIdentity:phase8.linkageConfigIdentity,modelConfigIdentity:JSON.stringify(phase8.model.config),groups:phase8.compilationGroups,groupIdentity:JSON.stringify(phase8.compilationGroups),row,registry,
+      rowIdentity:JSON.stringify(row),targetIdentity:fixedEntryIdentity(target),linkage,linkageIdentity,records:Object.freeze(records)}));}
+  }
+}
+function fixedEntryInterface(target,name){
+  const state=fixedEntryAuthorities.get(target);
+  if(!state){if(fixedEntryNames.has(name))fail('fixed entry live target authority missing');return null;}
+  const record=state.records.find(r=>r.name===name);if(!record)return null;
+  if(state.phase8.model!==state.model||target.model!==state.model||state.phase8.targets!==state.targets||!state.phase8.targets.includes(target)
+    ||state.phase8.linkSymbols!==state.linkSymbols||state.phase8.linkageConfigIdentity!==state.linkageConfigIdentity||JSON.stringify(state.model.config)!==state.modelConfigIdentity
+    ||state.model.rows.find(r=>r.index===target.rowIndex)!==state.row||target.row!==state.row
+    ||state.phase8.compilationGroups!==state.groups||JSON.stringify(state.phase8.compilationGroups)!==state.groupIdentity
+    ||JSON.stringify(target.row)!==state.rowIdentity||fixedEntryIdentity(target)!==state.targetIdentity
+    ||JSON.stringify(state.phase8.linkSymbols)!==state.linkage
+    ||JSON.stringify(state.phase8.linkageConfigIdentity)!==JSON.stringify(state.linkageIdentity)
+    ||sha256File(path.join(ROOT,state.linkageIdentity.path))!==state.linkageIdentity.sha256
+    ||sha256File(path.join(ROOT,record.originalAssembly))!==record.originalAssemblySha256)fail('fixed entry stale binding authority');
+  assertRetainedPaddingProducer(state.registry,target.row,target.symbol,target.compilerTextFunctions);
+  if(state.phase8.targets.some(t=>t.compilerTextFunctions.some(f=>f.symbol===name)))fail('fixed entry competing compiler definition');
+  return record;
+}
+function fixedEntryInterfaces(target){
+  const state=fixedEntryAuthorities.get(target);
+  if(!state){if(target.row?.retainedPadding&&fixedEntryOwnerIdentities.has(target.row.index+':'+target.row.part.sha256))fail('fixed entry copied/missing target authority');return [];}
+  return state.records.map(record=>fixedEntryInterface(target,record.name));
+}
+Object.assign(module.exports,{bindFixedEntryInterfaces,fixedEntryInterface,fixedEntryInterfaces});

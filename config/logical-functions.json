@@ -63,6 +63,24 @@
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
     },
     {
+      "romStart": 145812,
+      "romEndExclusive": 145824,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "L1 complete return/delay followed by twelve original zero bytes; retained executable original ASM under registered terminal edge. No native-origin or universal-unreachability claim."
+    },
+    {
+      "romStart": 146132,
+      "romEndExclusive": 146144,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "L1 complete return/delay followed by twelve original zero bytes; retained executable original ASM under registered terminal edge. No native-origin or universal-unreachability claim."
+    },
+    {
+      "romStart": 146436,
+      "romEndExclusive": 146448,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "L1 complete return/delay followed by twelve original zero bytes; retained executable original ASM under registered terminal edge. No native-origin or universal-unreachability claim."
+    },
+    {
       "romStart": 150856,
       "romEndExclusive": 150864,
       "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
@@ -2441,6 +2459,96 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_0002035c.s",
           "sha256": "613FA3ED4E9CE3BF6DAAA462117DAA139A9728CAEEC10D82BA7C6649A35E9BD1"
+        }
+      ]
+    },
+    {
+      "romStart": 145776,
+      "romEndExclusive": 145812,
+      "evidence": {
+        "caseId": "library-l1-row554",
+        "status": "known-entry-or-ownership",
+        "rationale": "Existing accepted physical entry and original aliases; complete ROM body closes at JR ra plus its delay slot. Independently reconstructed C has the exact complete instruction body modulo actual unresolved relocations. Original twelve zero terminal bytes remain separately retained executable ASM; no deadness or compiler-padding-origin claim."
+      },
+      "symbol": "func_00023970",
+      "aliases": [
+        "osCreateMesgQueue"
+      ],
+      "expectedBytesSha256": "3539F2EF4E066CAFFCA6022E83E109E702957114DBA183D0C30C718FB2CF5314",
+      "fragments": [
+        {
+          "rowIndex": 554,
+          "romStart": 145776,
+          "romEndExclusive": 145812,
+          "ownerOffset": 0,
+          "bytes": 36,
+          "vramStart": 2148087152,
+          "sectionName": ".ob64.r0554.s0",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/osCreateMesgQueue.s",
+          "sha256": "B07EBA870ACDCD8C6EFC72CC07891650030E51635B8998A70A1BCE861237FC1E"
+        }
+      ]
+    },
+    {
+      "romStart": 145824,
+      "romEndExclusive": 146132,
+      "evidence": {
+        "caseId": "library-l1-row555",
+        "status": "known-entry-or-ownership",
+        "rationale": "Existing accepted physical entry and original aliases; complete ROM body closes at JR ra plus its delay slot. Independently reconstructed C has the exact complete instruction body modulo actual unresolved relocations. Original twelve zero terminal bytes remain separately retained executable ASM; no deadness or compiler-padding-origin claim."
+      },
+      "symbol": "osJamMesg",
+      "aliases": [
+        "func_000239A0"
+      ],
+      "expectedBytesSha256": "86501EF01D9F720C4C99C9A212403671513AFED6CC7A17B841471D908A9686ED",
+      "fragments": [
+        {
+          "rowIndex": 555,
+          "romStart": 145824,
+          "romEndExclusive": 146132,
+          "ownerOffset": 0,
+          "bytes": 308,
+          "vramStart": 2148087200,
+          "sectionName": ".ob64.r0555.s0",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/osJamMesg.s",
+          "sha256": "BE597DCC88FB9B182EB597F83CB15317EF8E614AF9893AA9B9AF12E8EF9554CB"
+        }
+      ]
+    },
+    {
+      "romStart": 146144,
+      "romEndExclusive": 146436,
+      "evidence": {
+        "caseId": "library-l1-row556",
+        "status": "known-entry-or-ownership",
+        "rationale": "Existing accepted physical entry and original aliases; complete ROM body closes at JR ra plus its delay slot. Independently reconstructed C has the exact complete instruction body modulo actual unresolved relocations. Original twelve zero terminal bytes remain separately retained executable ASM; no deadness or compiler-padding-origin claim."
+      },
+      "symbol": "osRecvMesg",
+      "aliases": [
+        "func_00023AE0"
+      ],
+      "expectedBytesSha256": "44F441328AC7270FFBA5E2135D25A1AD525AC7073774B43105BF611BC9BFD01A",
+      "fragments": [
+        {
+          "rowIndex": 556,
+          "romStart": 146144,
+          "romEndExclusive": 146436,
+          "ownerOffset": 0,
+          "bytes": 292,
+          "vramStart": 2148087520,
+          "sectionName": ".ob64.r0556.s0",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/osRecvMesg.s",
+          "sha256": "7A0348D3C787FF3F5B8EF6772CC9143D54BBC0BECC44A4007716D877ACC7B029"
         }
       ]
     },

@@ -1307,6 +1307,11 @@
     {"symbol":"func_0010BA0C","source":"src/lib/func_0010ba0c.c"},
     {"symbol":"func_0010BB2C","source":"src/lib/func_0010bb2c.c"},
     {"symbol":"func_0010BC4C","source":"src/lib/func_0010bc4c.c"},
-    {"symbol":"func_0010C1A8","source":"src/lib/func_0010c1a8.c"}
+    {"symbol":"func_0010C1A8","source":"src/lib/func_0010c1a8.c"},
+    { "symbol": "boot_byte_copy_aligned_leaf", "source": "src/boot/boot_byte_copy_aligned_leaf.c" },
+    { "symbol": "boot_byte_fill_aligned_leaf", "source": "src/boot/boot_byte_fill_aligned_leaf.c" },
+    { "symbol": "osJamMesg", "source": "src/lib/osJamMesg.c" },
+    { "symbol": "osRecvMesg", "source": "src/lib/osRecvMesg.c" },
+    { "symbol": "osSendMesg", "source": "src/lib/osSendMesg.c" }
   ]
 }

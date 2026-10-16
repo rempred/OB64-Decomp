@@ -310,6 +310,23 @@ function projectPhysicalInterface(buffer,target) {
 function edgePadding(target) { return target.row?.retainedPadding ? require('./phase7_conventional').retainedPaddingSlices(target.row) : null; }
 
 // Authenticated literal fallback only: no relocation is silently removed with a cut.
+function edgeFixedReferenceRecords(target,elf){
+  const records=[],body=edgePadding(target)?.body;if(!body)return records;
+  const expected=require('./logical_functions').fixedEntryInterfaces(target);
+  if(expected.length){const parsed=parseElf32BigEndian(elf.buffer);if(!sameJson(parsed.header,elf.header)||!sameJson(parsed.sections,elf.sections)||!sameJson(parsed.symbols,elf.symbols))fail('fixed entry original native census drift');}
+  for(const symbol of elf.symbols.filter(s=>elf.sections[s.sectionIndex]?.name===body.sectionName)){
+    const binding=require('./logical_functions').fixedEntryInterface(target,symbol.name);if(!binding)continue;
+    const section=elf.sections[symbol.sectionIndex];
+    if(elf.symbols.filter(s=>s.name===symbol.name).length!==1||!section||section.name!==body.sectionName
+      ||symbol.binding!==0||![0,1].includes(symbol.symbolType)||symbol.value!==0||symbol.size!==0||symbol.visibility!==0)fail('fixed entry original marker census');
+    const source=fs.readFileSync(path.join(ROOT,binding.originalAssembly),'utf8'),original=require('./word_asm').assembleWordAsmText(source).bytes;
+    const pieces=target.row.slices.map(slice=>{const matches=elf.sections.filter(s=>s.name===slice.sectionName);if(matches.length!==1||matches[0].size!==slice.bytes)fail('fixed entry complete original section census');return Buffer.from(elfSectionBytes(elf,matches[0]));});
+    if(!Buffer.concat(pieces).equals(original))fail('fixed entry original physical bytes');
+    records.push({binding,originalMarker:{name:symbol.name,value:symbol.value,size:symbol.size,binding:symbol.binding,symbolType:symbol.symbolType,visibility:symbol.visibility,sectionName:section.name}});
+  }
+  if(records.length!==expected.length)fail('fixed entry original marker missing');
+  return records;
+}
 function verifyEdgeFallback(target, elf, interfaces = []) {
   const edge = edgePadding(target);
   if (!edge) return null;
@@ -322,6 +339,7 @@ function verifyEdgeFallback(target, elf, interfaces = []) {
   const physicalSection=elf.sections.find(s=>s.name===originalSymbolSlice?.sectionName);
   if(physical.length!==1||physical[0].binding!==1||physical[0].symbolType!==2||physical[0].size!==0||physical[0].visibility!==0
       ||physical[0].sectionIndex!==physicalSection?.index||physical[0].value!==target.row.romStart+target.row.part.symbolByteOffset-originalSymbolSlice.romStart)fail('retained padding physical symbol drift');
+  const fixedReferences=edgeFixedReferenceRecords(target,elf);
   const omitted=[];
   for(const sym of elf.symbols.filter(s=>s.sectionIndex===body[0].index)) {
     if(sym.symbolType===3&&!sym.name&&sym.value===0&&sym.size===0&&sym.binding===0&&sym.visibility===0)continue;
@@ -331,6 +349,7 @@ function verifyEdgeFallback(target, elf, interfaces = []) {
       continue;
     }
     if(sym===physical[0]) continue; // Exact independently authenticated physical interface, not an omitted LOCAL.
+    if(fixedReferences.some(record=>record.originalMarker.name===sym.name))continue;
     // The existing source splitter creates this untyped entry, not a callable.
     const sliceMarker='__ob64_row_'+String(target.row.index).padStart(4,'0')+'_slice_'+edge.body.sliceIndex;
     if(sym.name===sliceMarker&&sym.binding===1&&[0,1].includes(sym.symbolType)&&sym.value===0&&sym.size===0&&sym.visibility===0)continue;
@@ -387,7 +406,14 @@ function verifyEdgePhysicalOwner(target, fallback, pruned, cObject, linked, base
     const matches=linked.symbols.filter(s=>s.name===stem+'_'+suffix);
     if(matches.length!==1||matches[0].value!==value||matches[0].binding!==1)fail('retained padding envelope interface');
   }
-  return {rowIndex:target.row.index,bytes:target.row.bytes,romStart:target.row.romStart,romEndExclusive:target.row.romEndExclusive,
+  const fixedEntryReferences=edgeFixedReferenceRecords(target,fallback).map(record=>{
+    const d=record.binding,name=d.name,matches=linked.symbols.filter(s=>s.name===name);
+    const parsed=parseElf32BigEndian(linked.buffer);if(!sameJson(parsed.symbols,linked.symbols)||!sameJson(parsed.sections,linked.sections))fail('fixed entry linked native census drift');
+    if(pruned.symbols.some(s=>s.name===name)||cObject.symbols.some(s=>s.name===name)
+      ||matches.length!==1||matches[0].value!==d.address||Object.entries(d.linkedMetadata).some(([key,value])=>matches[0][key]!==value))fail('fixed entry linked ABS custody');
+    return {...record,originalLocalRemoved:true,externalNameServedBy:'existing-canonical-fixed-ABS',linkedAlias:{name,value:matches[0].value,...d.linkedMetadata}};
+  });
+  return {...(fixedEntryReferences.length?{fixedEntryReferences}:{}),rowIndex:target.row.index,bytes:target.row.bytes,romStart:target.row.romStart,romEndExclusive:target.row.romEndExclusive,
     originalAssembly:target.originalAssembly,originalAssemblySha256:target.originalAssemblySha256,sha256:sha256Buffer(bytes),rawBytesExact:true,
     retainedPadding:edge.record,omittedLocalSymbols:omitted,...(physicalInterface(target)?{physicalInterface:physicalInterface(target)}:{})};
 }

@@ -15,10 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7263,
-    "splitOwners": 21,
+    "linkSlices": 7266,
+    "splitOwners": 24,
     "overlayReservations": 19,
-    "retainedPaddingCuts": 4,
+    "retainedPaddingCuts": 7,
     "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
@@ -123,6 +123,54 @@
       "compilerFunctions": [
         {
           "symbol": "func_0010DDB4",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "library-l1-row554-terminal",
+      "rowIndex": 554,
+      "romStart": 145812,
+      "romEndExclusive": 145824,
+      "edge": "terminal",
+      "sourceSha256": "B07EBA870ACDCD8C6EFC72CC07891650030E51635B8998A70A1BCE861237FC1E",
+      "expectedSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00023970",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "library-l1-row555-terminal",
+      "rowIndex": 555,
+      "romStart": 146132,
+      "romEndExclusive": 146144,
+      "edge": "terminal",
+      "sourceSha256": "BE597DCC88FB9B182EB597F83CB15317EF8E614AF9893AA9B9AF12E8EF9554CB",
+      "expectedSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "compilerFunctions": [
+        {
+          "symbol": "osJamMesg",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "library-l1-row556-terminal",
+      "rowIndex": 556,
+      "romStart": 146436,
+      "romEndExclusive": 146448,
+      "edge": "terminal",
+      "sourceSha256": "7A0348D3C787FF3F5B8EF6772CC9143D54BBC0BECC44A4007716D877ACC7B029",
+      "expectedSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "compilerFunctions": [
+        {
+          "symbol": "osRecvMesg",
           "binding": "GLOBAL",
           "entryEvidence": "owner"
         }

@@ -18,6 +18,7 @@ const ROUTINE_TESTS = [
   ['current-metadata-reuse', 'tests/current_metadata_reuse.js'],
   ['local-tools', 'tests/local_tools.js'],
   ['active-targets', 'tests/active_targets.js'],
+  ['registered-fixed-entry', 'tests/registered_fixed_entry.js'],
   ['active-model-sources', 'tests/active_model_sources.js'],
   ['compilation-groups', 'tests/compilation_groups.js'],
   ['owner-function-groups', 'tests/owner_function_groups.js'],
