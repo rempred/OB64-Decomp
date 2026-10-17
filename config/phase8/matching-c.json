@@ -1019,8 +1019,7 @@
         "func_00023AE0": "0x800936E0",
         "func_0000A510": "0x8007A110",
         "func_00023C10": "0x80093810",
-        "g_boot_resource_lzss_error_anchor": "0x800B0000",
-        "func_00023940": "0x80093540"
+        "g_boot_resource_lzss_error_anchor": "0x800B0000"
       },
       "expectedRelocations": [
         {
@@ -1361,7 +1360,6 @@
         "g_func_001957D0_record_error": "0x802172E4",
         "g_func_001957D0_slot_error": "0x8021730C",
         "func_00023780": "0x80093380",
-        "func_00023940": "0x80093540",
         "func_001957D0_finalize": "0x801D4928"
       },
       "expectedRelocations": [

@@ -325,3 +325,6 @@ tools/build_phase8_matching_c.js -text whitespace=cr-at-eol
 tools/lib/current_workflow.js -text whitespace=cr-at-eol
 tools/lib/matching/diagnostic_link.js -text whitespace=cr-at-eol
 tools/verify_phase8_matching_c.js -text whitespace=cr-at-eol
+
+# Preserve the verified L7 floating formatter source bytes.
+src/lib/xldtob_0002bcc0.c -text whitespace=cr-at-eol

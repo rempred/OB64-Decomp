@@ -1318,7 +1318,7 @@
     },
     {
       "symbol": "strlen",
-      "source": "src/lib/strlen.c"
+      "compilationGroup": "library_l7_string"
     },
     {
       "symbol": "func_00046144",
@@ -4187,6 +4187,70 @@
     {
       "symbol": "func_0001ea6c",
       "compilationGroup": "audio_env_0001de40"
+    },
+    {
+      "symbol": "strchr",
+      "compilationGroup": "library_l7_string"
+    },
+    {
+      "symbol": "memcpy_00023884",
+      "compilationGroup": "library_l7_string"
+    },
+    {
+      "symbol": "sprintf",
+      "compilationGroup": "library_l7_sprintf"
+    },
+    {
+      "symbol": "mempcpy",
+      "compilationGroup": "library_l7_sprintf"
+    },
+    {
+      "symbol": "func_00023940",
+      "compilationGroup": "library_l7_syncprintf"
+    },
+    {
+      "symbol": "func_00023954",
+      "compilationGroup": "library_l7_syncprintf"
+    },
+    {
+      "symbol": "func_0002c790",
+      "compilationGroup": "library_l7_ldiv"
+    },
+    {
+      "symbol": "func_0002c814",
+      "compilationGroup": "library_l7_ldiv"
+    },
+    {
+      "symbol": "func_00028450",
+      "compilationGroup": "library_l7_initialize"
+    },
+    {
+      "symbol": "read_pi_registers",
+      "compilationGroup": "library_l7_initialize"
+    },
+    {
+      "symbol": "func_0002ba70",
+      "source": "src/lib/xlitob_0002ba70.c"
+    },
+    {
+      "symbol": "_Printf",
+      "compilationGroup": "library_l7_xprintf"
+    },
+    {
+      "symbol": "func_0002a560",
+      "compilationGroup": "library_l7_xprintf"
+    },
+    {
+      "symbol": "func_0002bcc0",
+      "compilationGroup": "library_l7_xldtob"
+    },
+    {
+      "symbol": "func_0002c10c",
+      "compilationGroup": "library_l7_xldtob"
+    },
+    {
+      "symbol": "func_0002c1a4",
+      "compilationGroup": "library_l7_xldtob"
     }
   ]
 }

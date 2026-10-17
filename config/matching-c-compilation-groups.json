@@ -16629,22 +16629,7 @@
               "ownerOriginalAssemblySha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E",
               "expectedRelocations": []
             },
-            "preservedTail": {
-              "inputSection": ".ob64.r0789.tail",
-              "sectionType": "SHT_PROGBITS",
-              "sectionFlags": [
-                "SHF_ALLOC"
-              ],
-              "alignment": 1,
-              "romStart": "0x0003EE10",
-              "romEndExclusive": "0x0003F1B0",
-              "vramStart": "0x800AEA10",
-              "vramEndExclusive": "0x800AEDB0",
-              "bytes": 928,
-              "expectedSha256": "DDC57F476C56E0948BF778A50AEBFC526DE6025BC5682275191D30A6E37C4AB1",
-              "ownerOriginalAssembly": "asm/original/rev0/lib/rsp_ucode_s2dexd.s",
-              "ownerOriginalAssemblySha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E"
-            },
+            "preservedTail": null,
             "expectedRelocations": [
               {
                 "offset": "0x00000000",
@@ -22722,6 +22707,2182 @@
           }
         }
       }
+    },
+    {
+      "id": "library_l7_string",
+      "source": "src/lib/string_00023820.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "strchr",
+          "ownerRowIndex": 547
+        },
+        {
+          "symbol": "strlen",
+          "ownerRowIndex": 548
+        },
+        {
+          "symbol": "memcpy_00023884",
+          "ownerRowIndex": 549
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 144,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "BEFDA674F833EE84153F702483253CA9DA28BF7CA473BB3170B8500B5F0485AB"
+      },
+      "functions": [
+        {
+          "symbol": "strchr",
+          "offset": 0,
+          "bytes": 64,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "strlen",
+          "offset": 64,
+          "bytes": 36,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "memcpy_00023884",
+          "offset": 100,
+          "bytes": 40,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 140,
+        "bytes": 4,
+        "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 32,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217742
+        }
+      ]
+    },
+    {
+      "id": "library_l7_sprintf",
+      "source": "src/lib/sprintf_000238b0.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "sprintf",
+          "ownerRowIndex": 550
+        },
+        {
+          "symbol": "mempcpy",
+          "ownerRowIndex": 551
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 144,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "60D41E97FE6432212EA93B525E1DD1DD932D4333499412D2C0A685FE2D2ECD89"
+      },
+      "functions": [
+        {
+          "symbol": "sprintf",
+          "offset": 0,
+          "bytes": 88,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "mempcpy",
+          "offset": 88,
+          "bytes": 52,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 140,
+        "bytes": 4,
+        "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 28,
+          "type": 5,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 1006895104
+        },
+        {
+          "offset": 32,
+          "type": 6,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 612630616
+        },
+        {
+          "offset": 44,
+          "type": 4,
+          "symbol": "_Printf",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 108,
+          "type": 4,
+          "symbol": "memcpy_00023884",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "library_l7_syncprintf",
+      "source": "src/lib/syncprintf_00023940.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00023940",
+          "ownerRowIndex": 552
+        },
+        {
+          "symbol": "func_00023954",
+          "ownerRowIndex": 553
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 48,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "03D0A9E7CFA713742321005EDBE8EF70D7ED1838C49AFB9289D9C4CD6F11129E"
+      },
+      "functions": [
+        {
+          "symbol": "func_00023940",
+          "offset": 0,
+          "bytes": 20,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00023954",
+          "offset": 20,
+          "bytes": 20,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 40,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": []
+    },
+    {
+      "id": "library_l7_ldiv",
+      "source": "src/lib/ldiv_0002c790.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_0002c790",
+          "ownerRowIndex": 701
+        },
+        {
+          "symbol": "func_0002c814",
+          "ownerRowIndex": 702
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 448,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "80C679B8533294DBFB5E73D9BBFCB2C83275F8A1809F4A7A2C2BD07CAC6945CA"
+      },
+      "functions": [
+        {
+          "symbol": "func_0002c790",
+          "offset": 0,
+          "bytes": 132,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0002c814",
+          "offset": 132,
+          "bytes": 308,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 440,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 192,
+          "type": 4,
+          "symbol": "__divdi3",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ]
+    },
+    {
+      "id": "library_l7_initialize",
+      "source": "src/lib/initialize_00028450.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00028450",
+          "ownerRowIndex": 633
+        },
+        {
+          "symbol": "read_pi_registers",
+          "ownerRowIndex": 634
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 752,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "855B40A9FDD8730881C27914A5EE9B7EDA7085BBA113462136BD89CA1561BD30"
+      },
+      "functions": [
+        {
+          "symbol": "func_00028450",
+          "offset": 0,
+          "bytes": 560,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "read_pi_registers",
+          "offset": 560,
+          "bytes": 184,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 744,
+        "bytes": 8,
+        "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 12,
+          "type": 5,
+          "symbol": "D_800E82C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 20,
+          "type": 6,
+          "symbol": "D_800E82C0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 16,
+          "type": 4,
+          "symbol": "__osGetSR",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 28,
+          "type": 4,
+          "symbol": "__osSetSR",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 40,
+          "type": 4,
+          "symbol": "__osSetFpcCsr",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 48,
+          "type": 4,
+          "symbol": "__osSetWatchLo",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 64,
+          "type": 4,
+          "symbol": "func_0002AC30",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 92,
+          "type": 4,
+          "symbol": "func_0002AC80",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 108,
+          "type": 5,
+          "symbol": "osException_vector",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 112,
+          "type": 6,
+          "symbol": "osException_vector",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 608305152
+        },
+        {
+          "offset": 276,
+          "type": 4,
+          "symbol": "os_writeback_dcache",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 288,
+          "type": 4,
+          "symbol": "os_inval_icache",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 296,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326732
+        },
+        {
+          "offset": 304,
+          "type": 4,
+          "symbol": "func_8009AB00",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 312,
+          "type": 4,
+          "symbol": "osMapTLBRdb",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 320,
+          "type": 5,
+          "symbol": "D_800ABAC0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 324,
+          "type": 6,
+          "symbol": "D_800ABAC0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 328,
+          "type": 5,
+          "symbol": "D_800ABAC0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006829568
+        },
+        {
+          "offset": 332,
+          "type": 6,
+          "symbol": "D_800ABAC0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2355298308
+        },
+        {
+          "offset": 372,
+          "type": 4,
+          "symbol": "__udivdi3",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 388,
+          "type": 5,
+          "symbol": "D_800ABAC0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 392,
+          "type": 6,
+          "symbol": "D_800ABAC0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 396,
+          "type": 5,
+          "symbol": "D_800ABAC0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 404,
+          "type": 6,
+          "symbol": "D_800ABAC0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887974916
+        },
+        {
+          "offset": 408,
+          "type": 5,
+          "symbol": "D_8000031C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 412,
+          "type": 6,
+          "symbol": "D_8000031C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 416,
+          "type": 4,
+          "symbol": "func_80093380",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 444,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217846
+        },
+        {
+          "offset": 460,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217846
+        },
+        {
+          "offset": 472,
+          "type": 5,
+          "symbol": "D_800ABAC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 480,
+          "type": 6,
+          "symbol": "D_800ABAC8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2887909376
+        },
+        {
+          "offset": 476,
+          "type": 4,
+          "symbol": "osGetCause",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 496,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217852
+        },
+        {
+          "offset": 660,
+          "type": 5,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 664,
+          "type": 6,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686582788
+        },
+        {
+          "offset": 668,
+          "type": 5,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 672,
+          "type": 6,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686582788
+        },
+        {
+          "offset": 676,
+          "type": 5,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 680,
+          "type": 6,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686779397
+        },
+        {
+          "offset": 684,
+          "type": 5,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 688,
+          "type": 6,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686844936
+        },
+        {
+          "offset": 692,
+          "type": 5,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 696,
+          "type": 6,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686910470
+        },
+        {
+          "offset": 700,
+          "type": 5,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 704,
+          "type": 6,
+          "symbol": "__Dom1SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686976007
+        },
+        {
+          "offset": 708,
+          "type": 5,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 712,
+          "type": 6,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2687041541
+        },
+        {
+          "offset": 716,
+          "type": 5,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 720,
+          "type": 6,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686713864
+        },
+        {
+          "offset": 724,
+          "type": 5,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 728,
+          "type": 6,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2686648326
+        },
+        {
+          "offset": 732,
+          "type": 5,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 740,
+          "type": 6,
+          "symbol": "__Dom2SpeedParam",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2687107079
+        }
+      ]
+    },
+    {
+      "id": "library_l7_xprintf",
+      "source": "src/lib/xprintf_00029fe0.c",
+      "mode": "native-text-owner-functions-readonly-fragment-projection",
+      "members": [
+        {
+          "symbol": "_Printf",
+          "ownerRowIndex": 666,
+          "functionSymbols": [
+            "_Printf"
+          ]
+        },
+        {
+          "symbol": "func_0002a560",
+          "ownerRowIndex": 667,
+          "functionSymbols": [
+            "func_0002a560"
+          ]
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 2640,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "8333BCE75E628B98ECB2FD72FDA9B6BB4C6B85BEFDEED5CCA161481B8135F3CE"
+      },
+      "functions": [
+        {
+          "symbol": "_Printf",
+          "offset": 0,
+          "bytes": 1408,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0002a560",
+          "offset": 1408,
+          "bytes": 1232,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 2640,
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 28,
+          "type": 5,
+          "symbol": "D_800AEA80",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1008009216
+        },
+        {
+          "offset": 32,
+          "type": 6,
+          "symbol": "D_800AEA80",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 649396224
+        },
+        {
+          "offset": 68,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217749
+        },
+        {
+          "offset": 164,
+          "type": 5,
+          "symbol": "D_800AEA88",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007681536
+        },
+        {
+          "offset": 168,
+          "type": 6,
+          "symbol": "D_800AEA88",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 638582784
+        },
+        {
+          "offset": 176,
+          "type": 4,
+          "symbol": "strchr",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 216,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217771
+        },
+        {
+          "offset": 296,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217826
+        },
+        {
+          "offset": 408,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217869
+        },
+        {
+          "offset": 468,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217869
+        },
+        {
+          "offset": 568,
+          "type": 5,
+          "symbol": "D_800AEAA0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 572,
+          "type": 6,
+          "symbol": "D_800AEAA0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 576,
+          "type": 4,
+          "symbol": "strchr",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 592,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217879
+        },
+        {
+          "offset": 660,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326944
+        },
+        {
+          "offset": 776,
+          "type": 5,
+          "symbol": "D_800ABB20",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 780,
+          "type": 6,
+          "symbol": "D_800ABB20",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 916,
+          "type": 5,
+          "symbol": "D_800ABB44",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 920,
+          "type": 6,
+          "symbol": "D_800ABB44",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 1060,
+          "type": 5,
+          "symbol": "D_800ABB44",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1064,
+          "type": 6,
+          "symbol": "D_800ABB44",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 1208,
+          "type": 5,
+          "symbol": "D_800ABB44",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1212,
+          "type": 6,
+          "symbol": "D_800ABB44",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 1312,
+          "type": 5,
+          "symbol": "D_800ABB20",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006960640
+        },
+        {
+          "offset": 1316,
+          "type": 6,
+          "symbol": "D_800ABB20",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 614793216
+        },
+        {
+          "offset": 1360,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217743
+        },
+        {
+          "offset": 1484,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 1492,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 2351038464
+        },
+        {
+          "offset": 1548,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218384
+        },
+        {
+          "offset": 1604,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218140
+        },
+        {
+          "offset": 1728,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218179
+        },
+        {
+          "offset": 1768,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218179
+        },
+        {
+          "offset": 1804,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218242
+        },
+        {
+          "offset": 1860,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218204
+        },
+        {
+          "offset": 1932,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218216
+        },
+        {
+          "offset": 2076,
+          "type": 4,
+          "symbol": "func_0002ba70",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2084,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218384
+        },
+        {
+          "offset": 2156,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218286
+        },
+        {
+          "offset": 2196,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218286
+        },
+        {
+          "offset": 2256,
+          "type": 4,
+          "symbol": "func_0002bcc0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2264,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218384
+        },
+        {
+          "offset": 2320,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218384
+        },
+        {
+          "offset": 2384,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218384
+        },
+        {
+          "offset": 2424,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218384
+        },
+        {
+          "offset": 2492,
+          "type": 4,
+          "symbol": "func_0002ba70",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2500,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218384
+        },
+        {
+          "offset": 2536,
+          "type": 4,
+          "symbol": "strlen",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2568,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218384
+        },
+        {
+          "offset": 2596,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218384
+        }
+      ],
+      "auxiliary": {
+        "sections": [
+          {
+            "kind": "switch-table",
+            "compilerSection": ".rodata",
+            "outputSection": ".ob64.r0789",
+            "sectionType": "SHT_PROGBITS",
+            "sectionFlags": [
+              "SHF_ALLOC"
+            ],
+            "alignment": 8,
+            "romStart": "0x0003EEA8",
+            "romEndExclusive": "0x0003EFF8",
+            "vramStart": "0x800AEAA8",
+            "vramEndExclusive": "0x800AEBF8",
+            "bytes": 336,
+            "entries": 84,
+            "expectedObjectSha256": "13865BAB061868E06514D75AD447560CA94FD6E1380CEDA9C8AF30E9C5F2D4E3",
+            "expectedLinkedSha256": "A7F5CF31C4ABF3F348D99B779B7A02BC9FE1FD35C7D1ECF9A3A0A6B3B7A91CA5",
+            "preservedInteriorBefore": {
+              "inputSection": ".ob64.r0789.interior_0003EE10",
+              "sectionType": "SHT_PROGBITS",
+              "sectionFlags": [
+                "SHF_ALLOC"
+              ],
+              "alignment": 1,
+              "romStart": "0x0003EE10",
+              "romEndExclusive": "0x0003EEA8",
+              "vramStart": "0x800AEA10",
+              "vramEndExclusive": "0x800AEAA8",
+              "bytes": 152,
+              "expectedSha256": "BC733E420A6DBBC4286537908A92209F910AD6E1F340D6F753199E93420DA736",
+              "ownerOriginalAssembly": "asm/original/rev0/lib/rsp_ucode_s2dexd.s",
+              "ownerOriginalAssemblySha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E",
+              "expectedRelocations": []
+            },
+            "preservedTail": {
+              "inputSection": ".ob64.r0789.tail",
+              "sectionType": "SHT_PROGBITS",
+              "sectionFlags": [
+                "SHF_ALLOC"
+              ],
+              "alignment": 1,
+              "romStart": "0x0003EFF8",
+              "romEndExclusive": "0x0003F1B0",
+              "vramStart": "0x800AEBF8",
+              "vramEndExclusive": "0x800AEDB0",
+              "bytes": 440,
+              "expectedSha256": "CE579BC4D54E7225744D09E116EB05751735CD88BFC60F5EFAC9239A7FE54EC6",
+              "ownerOriginalAssembly": "asm/original/rev0/lib/rsp_ucode_s2dexd.s",
+              "ownerOriginalAssemblySha256": "F4D7201033C94E1B9F13109EE240E44DF73D3E9C745EEF7FC50289B34759552E"
+            },
+            "expectedRelocations": [
+              {
+                "offset": "0x00000000",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A10",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000004",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000008",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000000C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000010",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000014",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000018",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000001C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000020",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000024",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000028",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000002C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000030",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000034",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000038",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000003C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000040",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000044",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000048",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000004C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000050",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000054",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000058",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000005C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000060",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000064",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000068",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000006C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000070",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000074",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000078",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000007C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000080",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x0000082C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000084",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000088",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x0000082C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000008C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000090",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000094",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000098",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000009C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000A0",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000A4",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000A8",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000AC",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000B0",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000B4",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000B8",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000BC",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000C0",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000C4",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000C8",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000CC",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000714",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000D0",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000D4",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000D8",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000DC",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000E0",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000E4",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000E8",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000EC",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000F0",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000F4",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000F8",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005E0",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x000000FC",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000614",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000100",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x0000082C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000104",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x0000082C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000108",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x0000082C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000010C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000110",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000614",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000114",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000118",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000011C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000120",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000124",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000008E0",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000128",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000714",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000012C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000980",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000130",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000134",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000138",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000009CC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000013C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000140",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000714",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000144",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000148",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000A2C",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000014C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000714",
+                "section": ".rel.rodata"
+              }
+            ],
+            "memberSymbol": "func_0002a560",
+            "functionSymbol": "func_0002a560"
+          }
+        ],
+        "compilerLabel": ".L162",
+        "alignmentDirectives": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "id": "library_l7_xldtob",
+      "source": "src/lib/xldtob_0002bcc0.c",
+      "mode": "native-text-owner-projection",
+      "members": [
+        {
+          "symbol": "func_0002bcc0",
+          "ownerRowIndex": 696
+        },
+        {
+          "symbol": "func_0002c10c",
+          "ownerRowIndex": 697
+        },
+        {
+          "symbol": "func_0002c1a4",
+          "ownerRowIndex": 698
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 2704,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "BC5D763F711265D371EB9D882426D0814A56D7F9C2A52678BEEE99770FDDAE14"
+      },
+      "functions": [
+        {
+          "symbol": "func_0002bcc0",
+          "offset": 0,
+          "bytes": 1100,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0002c10c",
+          "offset": 1100,
+          "bytes": 152,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0002c1a4",
+          "offset": 1252,
+          "bytes": 1448,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 2700,
+        "bytes": 4,
+        "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 68,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217758
+        },
+        {
+          "offset": 128,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326867
+        },
+        {
+          "offset": 152,
+          "type": 5,
+          "symbol": "D_800AEC4C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007026176
+        },
+        {
+          "offset": 156,
+          "type": 6,
+          "symbol": "D_800AEC4C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 616955904
+        },
+        {
+          "offset": 172,
+          "type": 5,
+          "symbol": "D_800AEC48",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007026176
+        },
+        {
+          "offset": 176,
+          "type": 6,
+          "symbol": "D_800AEC48",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 616955904
+        },
+        {
+          "offset": 204,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217991
+        },
+        {
+          "offset": 220,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217982
+        },
+        {
+          "offset": 352,
+          "type": 5,
+          "symbol": "D_800AEC00",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 356,
+          "type": 6,
+          "symbol": "D_800AEC00",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 388,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217846
+        },
+        {
+          "offset": 404,
+          "type": 5,
+          "symbol": "D_800AEC50",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 408,
+          "type": 6,
+          "symbol": "D_800AEC50",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3558998016
+        },
+        {
+          "offset": 432,
+          "type": 5,
+          "symbol": "D_800AEC00",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 436,
+          "type": 6,
+          "symbol": "D_800AEC00",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 540,
+          "type": 5,
+          "symbol": "D_800AEC58",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 544,
+          "type": 6,
+          "symbol": "D_800AEC58",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3560308736
+        },
+        {
+          "offset": 648,
+          "type": 4,
+          "symbol": "func_0002c790",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 684,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217903
+        },
+        {
+          "offset": 708,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217866
+        },
+        {
+          "offset": 820,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217940
+        },
+        {
+          "offset": 1044,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326905
+        },
+        {
+          "offset": 1184,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218039
+        },
+        {
+          "offset": 1216,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218039
+        },
+        {
+          "offset": 1232,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218039
+        },
+        {
+          "offset": 1320,
+          "type": 5,
+          "symbol": "D_800AEC60",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007812608
+        },
+        {
+          "offset": 1324,
+          "type": 6,
+          "symbol": "D_800AEC60",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 642908160
+        },
+        {
+          "offset": 1680,
+          "type": 4,
+          "symbol": "memcpy_00023884",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1696,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218375
+        },
+        {
+          "offset": 1732,
+          "type": 4,
+          "symbol": "memcpy_00023884",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1820,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218375
+        },
+        {
+          "offset": 1840,
+          "type": 4,
+          "symbol": "memcpy_00023884",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1968,
+          "type": 4,
+          "symbol": "memcpy_00023884",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1996,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218375
+        },
+        {
+          "offset": 2232,
+          "type": 4,
+          "symbol": "memcpy_00023884",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2300,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218309
+        }
+      ]
     }
   ]
 }

@@ -2127,10 +2127,6 @@
       "address": "0x80093380"
     },
     {
-      "name": "func_00023940",
-      "address": "0x80093540"
-    },
-    {
       "name": "func_00093540",
       "address": "0x80093540"
     },
@@ -7009,6 +7005,134 @@
     {
       "name": "__freeParam",
       "address": "0x8008FDC8"
+    },
+    {
+      "name": "__divdi3",
+      "address": "0x8009D880"
+    },
+    {
+      "name": "D_8000031C",
+      "address": "0x8000031C"
+    },
+    {
+      "name": "D_800ABAC0",
+      "address": "0x800ABAC0"
+    },
+    {
+      "name": "D_800E82C0",
+      "address": "0x800E82C0"
+    },
+    {
+      "name": "__Dom1SpeedParam",
+      "address": "0x800C4CE8"
+    },
+    {
+      "name": "__Dom2SpeedParam",
+      "address": "0x800C4A60"
+    },
+    {
+      "name": "__osGetSR",
+      "address": "0x8009A6F0"
+    },
+    {
+      "name": "__osSetFpcCsr",
+      "address": "0x8009A710"
+    },
+    {
+      "name": "__osSetSR",
+      "address": "0x8009A720"
+    },
+    {
+      "name": "__osSetWatchLo",
+      "address": "0x8009A730"
+    },
+    {
+      "name": "__udivdi3",
+      "address": "0x8009D9F0"
+    },
+    {
+      "name": "func_0002AC30",
+      "address": "0x8009A830"
+    },
+    {
+      "name": "func_0002AC80",
+      "address": "0x8009A880"
+    },
+    {
+      "name": "func_8009AB00",
+      "address": "0x8009AB00"
+    },
+    {
+      "name": "osException_vector",
+      "address": "0x80098D60"
+    },
+    {
+      "name": "osGetCause",
+      "address": "0x8009A6D0"
+    },
+    {
+      "name": "osMapTLBRdb",
+      "address": "0x8009AAA0"
+    },
+    {
+      "name": "os_writeback_dcache",
+      "address": "0x80090140"
+    },
+    {
+      "name": "D_800ABC30",
+      "address": "0x800ABC30"
+    },
+    {
+      "name": "D_800ABC44",
+      "address": "0x800ABC44"
+    },
+    {
+      "name": "__umoddi3",
+      "address": "0x8009DA10"
+    },
+    {
+      "name": "D_800ABB20",
+      "address": "0x800ABB20"
+    },
+    {
+      "name": "D_800ABB44",
+      "address": "0x800ABB44"
+    },
+    {
+      "name": "D_800AEA80",
+      "address": "0x800AEA80"
+    },
+    {
+      "name": "D_800AEA88",
+      "address": "0x800AEA88"
+    },
+    {
+      "name": "D_800AEAA0",
+      "address": "0x800AEAA0"
+    },
+    {
+      "name": "D_800AEC00",
+      "address": "0x800AEC00"
+    },
+    {
+      "name": "D_800AEC48",
+      "address": "0x800AEC48"
+    },
+    {
+      "name": "D_800AEC4C",
+      "address": "0x800AEC4C"
+    },
+    {
+      "name": "D_800AEC50",
+      "address": "0x800AEC50"
+    },
+    {
+      "name": "D_800AEC58",
+      "address": "0x800AEC58"
+    },
+    {
+      "name": "D_800AEC60",
+      "address": "0x800AEC60"
     }
   ],
   "targets": [
@@ -17911,10 +18035,6 @@
     },
     {
       "symbol": "func_00289D04",
-      "expectedRelocations": []
-    },
-    {
-      "symbol": "strlen",
       "expectedRelocations": []
     },
     {
@@ -135654,6 +135774,71 @@
           "origin": "native-assembler-section-alignment"
         }
       }
+    },
+    {
+      "symbol": "func_0002ba70",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000010",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800ABC30",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000014",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800ABC30",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000044",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800ABC44",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000048",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800ABC44",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F8",
+          "type": "R_MIPS_26",
+          "symbol": "__umoddi3",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000118",
+          "type": "R_MIPS_26",
+          "symbol": "__udivdi3",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000178",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002c814",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001A8",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001C4",
+          "type": "R_MIPS_26",
+          "symbol": "memcpy_00023884",
+          "section": ".rel.text"
+        }
+      ]
     }
   ]
 }

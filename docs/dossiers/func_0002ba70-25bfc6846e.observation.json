@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "25BFC6846E6BBDFFBA54F70335B571DAEFB2F192757EC462660E44CFBE111735",
+  "observationId": "AA0510578A87399D8D2BA22B115D9ECEB71E48F3E844AD7271DC7BC4433E61A3",
+  "symbol": "func_0002ba70",
+  "authored": {
+    "context": "Complete standalone func_0002ba70 producer under the unchanged authenticated legacy O2 profile; retail native text592 bytes. These source-bound observations come from the L7 private whole-native reports.",
+    "effects": [
+      "instruction-order",
+      "source-representation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0A0CA87B76671BB0E3BAF8FBC9E270918358D4E30D6B74250CBA98008F2924AF",
+      "sourceSha256": "127B441ABB5B8B6CE53A8FFB3D1AC534EEDDECBC07609E667A377EABE5DEF328"
+    },
+    "label": "late-index-address-addition",
+    "observedEffect": "Private full native592B with two differing bytes in the one ADDU at native offset0x12C; base/magnitude/index use the retail saved-register homes.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l7-261016/xlitob-late-index.c",
+        "sha256": "127B441ABB5B8B6CE53A8FFB3D1AC534EEDDECBC07609E667A377EABE5DEF328"
+      },
+      {
+        "path": "build/matching/lib-l7-261016/research.md",
+        "sha256": "5681F99260294B4F3DA30B1F9DE13D870EBBAD94E1F56A5347264B02EF48E6F4"
+      },
+      {
+        "path": "build/matching/lib-l7-261016/xlitob-integer-address-first/result.json",
+        "sha256": "07710788AFEE5E7B6662A83F0D6B64EEAB6B66B7DF35DF800524DD7768095B67"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l7-integration/preflight.json",
+        "sha256": "BA90B2D607D41C4EB604819701FFA72C5C0D74AEF9E450CC4AA09B148BEBB1E4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This observation authenticates source context and records a private native comparison; canonical whole-wave ownership, relocation and ROM acceptance are recorded separately.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the meaningful index24 initialization after magnitude loading; retain normal pointer addition for the write cursor."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1775,
+      "sha256": "0A0CA87B76671BB0E3BAF8FBC9E270918358D4E30D6B74250CBA98008F2924AF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "127B441ABB5B8B6CE53A8FFB3D1AC534EEDDECBC07609E667A377EABE5DEF328"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_0002ba70-25bfc6846e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
