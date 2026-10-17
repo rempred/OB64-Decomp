@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DC648153F159480527F3EABA2DAF900DA1538EBC7F65030E9B45C70EE6889D66",
+  "observationId": "55FFE0CDFC46E45F2A20B4C1CDDB3983BD3B6CBFF2AC4C20D00F4F0E447C0E90",
+  "symbol": "func_00027c8c",
+  "authored": {
+    "context": "Current diagnostic projection of complete seven-body contpfs producer2692+12tail2704. Six earlier bodies are privately ready; canonical whole-producer relocations/placement/bytes and complete41-entry L6 acceptance remain pending. The full9-word-source probe242B1255 has all seven exports and retail frames, no residual inline helper calls, and inode assembly equal to selected DC648153 after label renumbering.",
+    "effects": [
+      "source-representation",
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "07BD02EB0CBA41B1CB66BD8B338977F3D848620586D0766440ABCA59651FEFE6",
+      "sourceSha256": "CFE1015BF8BCB9424346F55E8FB2F44E7BCA60B6DB43DAD26AF11AA93E58BC20"
+    },
+    "label": "shared-io-cursor-inline-sum-order-and-scoped-bank-offsets",
+    "observedEffect": "Baseline E31CBF1B is PURE_C816/frame80/149 nonrelocation word differences. Shared cursor0EE689C4 restores824/frame80/29 and retail recomputation/S2-state/S1-block. Word sum initialized first retains exported5DD07DB4 raw-exact52/frame8; together with fallback counter-before-cursor initialization ECAF2015 leaves19 differences and makes first inline exact. Third-call scoped length632AA768 fixes its length/counter homes, leaving14. Explicit scoped fallback bank offsetsDC648153 remove both fallback setup rotations, leaving9: second-inline setup3 and third-inline pointer/accumulator homes6. Third-result1D7A06A1 does not change14; second-lengthF610628F and separate-pointer helper64E59E03 do not change9. Saved-object inspections mask only actual R26/HI16/LO16 encoded fields; no expected relocation/link evidence is available.",
+    "parentCandidateId": "ECAF201553BF5C75017BF9BE5562F4E05F86AC9087AB284C597C9B1DE53993CE",
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-inode-fallback-offset.c",
+        "sha256": "F48229CE65645AB808E61E23DC07ACEABBCF103209765606A08B4BE53B599394"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-inode-shared-cursor-order.c",
+        "sha256": "1ABA02044739B158D9CF754CFD679C53E1DA3996D2AE9BEEEC9747562CB25F72"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027540-word-sum-first-nonrel.json",
+        "sha256": "40A1813CB0FC98948C54C5E2F2F23DC63062AD0947DE88AA5789D127562789F9"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-shared-block-nonrel.json",
+        "sha256": "6EF1DBCC294872FA7DF9D95AE2D0262A479FF3FD2D09F372D9FFF5D0DF83BC2A"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-shared-cursor-order-nonrel.json",
+        "sha256": "B284CFB7B3BAA0FAB547BBAAB14239C50280B3FF939E9A45A6C21FEBD7EFB325"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-third-length-nonrel.json",
+        "sha256": "456F1E7DC22293A223999D154D6D4F503B488F520204A2040928BFFFFA1EDBA0"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-fallback-offset-nonrel.json",
+        "sha256": "DC80E50E33E3CB381DBDA6775E909098A492435AEE31F2C4C5FC3F48B30CD129"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-third-result-nonrel.json",
+        "sha256": "C9E3E7D49A4173ABCB61DF6581C977097CCC500A558F1DB3ECDA095E9EA85FFB"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-second-length-nonrel.json",
+        "sha256": "F7BA27FA848CBB72E7A99AE3C2E11E5AB344910C6630306688CFB1ADC4AF388E"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-sum-separate-pointer-nonrel.json",
+        "sha256": "C8DE8424D83B03F3011322945E9DE4AF581941EBC8DE088A2C561D283287C36F"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-inode-fallback-offset-full-probe-census.json",
+        "sha256": "EB66E4A6B5D8EC62E58EBB37A5EF458FEB4C7C73C1A9A3BDA43AB276CA3F7A80"
+      }
+    ],
+    "relatedCandidateIds": [
+      "E31CBF1B5E0411B36DFA892F980CBB6B35EF635FCF7DC94D8D19EF874D51616C",
+      "0EE689C4B036C434B8280A42B0F212E42E33711FE7B9F8B1CC77E5A9946710BF",
+      "632AA768038947C8FCA0E0834513795E85F2123896B9D751E9B382BDB6716632",
+      "1D7A06A10309882A561D73FCD87E05B523E20185EB64110B249A4586414851FD",
+      "F610628F2330BCB18F5B5C796955211C5C478DEFBC066F9DA9F5EB1CA0CECFB9",
+      "64E59E0343DE96B2B6F589EBAF8A0F6434B79FE1B977607D87B5622C90E3BC38"
+    ],
+    "remainingFailure": "Nine inode words still differ. Full contpfs native2704/original12-byte tail, final canonical relocation/ownership/placement/bytes and complete L6 full-ROM gates remain pending. Private diagnostics are not matching-C acceptance. These observations are source-context specific; exact allocation mechanisms beyond the dumps remain hypotheses.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use one function-scope block pointer across all three I/O loops: recompute it in the main loop, advance it in fallback loops. Keep int-counter declaration before unsigned-int accumulator, but initialize sum before counter. Give the third checksum a scoped byte-count initializer, and each fallback loop a scoped bankOffset computed before assigning the block cursor."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5215,
+      "sha256": "07BD02EB0CBA41B1CB66BD8B338977F3D848620586D0766440ABCA59651FEFE6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CFE1015BF8BCB9424346F55E8FB2F44E7BCA60B6DB43DAD26AF11AA93E58BC20"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00027c8c-dc648153f1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

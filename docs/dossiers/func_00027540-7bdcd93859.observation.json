@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7BDCD93859C0BAFB7751F738766C91BA45F31C2AF114A681794D6F490EB1C23E",
+  "observationId": "4BB09CDEF58978FAA0A5DEE068687A441F147E2171137850B8189A21D132C5CF",
+  "symbol": "func_00027540",
+  "authored": {
+    "context": "Complete contpfs seven-body producer2692+12tail2704. Exact out-of-line byte sum52 and checksum68 are preserved; refreshed full producer probeE16F7C08 is PURE_C, emits all7 in accepted order with retail frames, and retains helper inlining.",
+    "effects": [
+      "source-representation",
+      "instruction-order",
+      "stack-frame"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D88A63AE26E755A3ECD41C150B53E84B3D9B1C0D3E2F37FF015D2EA4BCB708FC",
+      "sourceSha256": "3A04F9570AF295C8F6F6D7E532613DBB649A71FEC09B1E10EBEDEF3DBE67451E"
+    },
+    "label": "word-accumulator-counter-first-declaration-restores-zero-order-and-register-homes",
+    "observedEffect": "Exact standalone watch7BDCD93859C0BAFB7751F738766C91BA45F31C2AF114A681794D6F490EB1C23E is PURE_C52/frame8, all words equal with no relocation masking; saved-object inspectionFA533665. The earlier u16 scalar52/frame8 has two zero-initialization words swapped; u32 accumulator declared before counter remains52/frame8 but changes six words through counter/accumulator register-home exchange. Counter declared first restores retail V1 counter/A2 accumulator and both initial zero positions. Refreshed full-source probeE16F7C08 retains the same emitted helper instructions and all body coverage. The old compiler mechanism remains a source-bound inference, not a universal declaration-order rule.",
+    "parentCandidateId": "7ED9AC146813CB47C6DB1B3BBC39720D1A8F3071170F997500E50D5A801FF5F4",
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-sum-word-index-first.c",
+        "sha256": "48DD2EBEC3CDCAF3F4F9063BF11623474ABD60852FAC412A308CC71C525F09F9"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027540-sum-word-index-first-watch.json",
+        "sha256": "516D5AB8C47FDE23368BCC5D16BB1DECE7F9DCE075F465EE07E27C24B8590D7D"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027540-sum-word-index-first-nonrel.json",
+        "sha256": "FA533665749446545EFB9CADE412FDECAEBCDD3CE1DAB10AAD61E99CE68CE96F"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027540-sum-scalar.c",
+        "sha256": "EC0EBC89263BCB690A2AEA83CA22C10F94B46A42BC3424AA9BA56CC47764D394"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027540-sum-scalar-nonrel.json",
+        "sha256": "8C48D9DEE3F3A895E05E54AA3AE64CF2B58C41902E406ED575436192CA4F662B"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027540-sum-word.c",
+        "sha256": "DB2CAF6E5C2A02D2169E3CD6AECE318DEA3443E2657DD71497F4C190D9A28E22"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027540-sum-word-nonrel.json",
+        "sha256": "03EDF014B4AFFBC09B049AFCFF2519B610CEA345B29275A5DE0F2E3A9D6FF336"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-sum-word-index-first-l7-probe.json",
+        "sha256": "C86B4B1D0ED4C6ED904931CAE1F8EA809940B2BDBC120DFD1BFAC6AABE3DC32E"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-sum-word-index-first-l7-probe-census.json",
+        "sha256": "2D368A08506F5CFD3B181CE8575D9663D71D803E06D7BC174392F89D60ABACF6"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EA5116C22279771AB45D4BB69774EEC353AF7BB1CF2C4C7071ECDFC02112067A"
+    ],
+    "remainingFailure": "Other contpfs bodies, complete native2704 including original12-byte terminal padding, actual expected relocation/linkage contracts and full L6 canonical gates remain pending. No canonical matching acceptance claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a u32 accumulator and declare the int counter before it. Retain counter=0 then sum=0 and the pointer/increment for loop. The u16 scalar source is the parent; the u32 accumulator-before-counter form is a discriminating intermediate."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2080,
+      "sha256": "D88A63AE26E755A3ECD41C150B53E84B3D9B1C0D3E2F37FF015D2EA4BCB708FC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3A04F9570AF295C8F6F6D7E532613DBB649A71FEC09B1E10EBEDEF3DBE67451E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00027540-7bdcd93859.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

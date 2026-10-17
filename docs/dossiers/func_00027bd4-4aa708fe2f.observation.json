@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4AA708FE2F3632FDABDF7735344A63D78793BDE9CB66EB80EFF968459AD86715",
+  "observationId": "7FBBA3E15BF10ABF377D08815B237809D99F99880E689E9D49AA82E5E5CF1201",
+  "symbol": "func_00027bd4",
+  "authored": {
+    "context": "Diagnostic projection of complete contpfs seven-body producer2692+12tail2704. The bank-selection retry is unchanged. Current full source contpfs-changed-header-read-guard.c preserves the six body-ready functions; inode and complete canonical gates remain unfinished.",
+    "effects": [
+      "source-representation",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CB64CC78065AE220C43BB157F59B157E8910B2C3DCAE424F441CE9AAA0847AC2",
+      "sourceSha256": "2DF5D9F3268E49C2394C2A1131D485B07CB7A3CD995EF0221E6A1B7B18FA4D27"
+    },
+    "label": "explicit-first-read-error-guard-preserves-retry-control-flow",
+    "observedEffect": "Initial6E6B5934 is PURE_C176/frame56 with23 nonrelocation word differences. Read-error guard4AA708FE restores retail184/frame56 and0 nonrelocation word differences (inspection39354876). Both variants retain the same external calls; current candidate emits5 actual R_MIPS_26 relocations. The observed difference is a source-bound control-flow result, not a general optimizer rule.",
+    "parentCandidateId": "6E6B59341A878638D2A60C657682EA50A78D1CD23914DD8B6ED6BF5E94D17078",
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-repair-ready.c",
+        "sha256": "9BB4B389A3740C1480E55C755A6B6456B3DDBFA07D3DABC90C229A799D16A7D5"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-changed-header-read-guard.c",
+        "sha256": "8A3BF865967569CE0C33665DBA2B48D9D6A52225AAFED75F2FDF4B3E47222F7F"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027bd4-refreshed.c",
+        "sha256": "031F84537C7F6B3B86B10DD74F10CE4DDCB088E2D7EB31DE5456B00D2D59B9E9"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027bd4-refreshed-watch.json",
+        "sha256": "475D1553835EA02D1EDE0B45E39A63047C6039396ACBEC9F4D10AC061D89B24E"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027bd4-refreshed-nonrel.json",
+        "sha256": "4622C5546E0EC8C00E782F81EA42395E953C39DEA3D38D750A084914387B8957"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027bd4-read-guard-watch.json",
+        "sha256": "E61407D555C12773506FE77C52107283BE9BEDF1767AD6C25AAAB01B70FDB199"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027bd4-read-guard-nonrel.json",
+        "sha256": "39354876E2768F8222EF4A092FFC0A3F0AB80F009A194E43E7624BB5F1B9D5FA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Expected relocation/linkage, whole native contpfs2704/original12-byte tail and complete L6 canonical gates remain pending. No matching acceptance is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Put the retry and non-retry error return inside an explicit if(result!=0) guard after the first block read, instead of testing result==2 followed by a shared error check."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3155,
+      "sha256": "CB64CC78065AE220C43BB157F59B157E8910B2C3DCAE424F441CE9AAA0847AC2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2DF5D9F3268E49C2394C2A1131D485B07CB7A3CD995EF0221E6A1B7B18FA4D27"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00027bd4-4aa708fe2f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

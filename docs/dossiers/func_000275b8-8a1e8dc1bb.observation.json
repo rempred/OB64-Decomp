@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8A1E8DC1BB5236686B2C01ABC77885D7B573706548A350860CF2C115411AD4AC",
+  "observationId": "A4185904B126EA0F772D9FE9EB8BB1A57DD2AA963A19696708610EDD4C30591E",
+  "symbol": "func_000275b8",
+  "authored": {
+    "context": "Diagnostic projection of the complete contpfs seven-body producer2692+12tail2704, preserving both inline helpers. Full-source readiness is contpfs-repair-ready.c; remaining four large bodies and native whole-producer/canonical gates are unfinished.",
+    "effects": [
+      "source-representation",
+      "control-flow",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E5378A99EE7DBC6147398FCA9AB57A728101FC3EDC261F563252E8DEBE617748",
+      "sourceSha256": "85FF9C8187F0BB081D6591912EDB3B9CAED0F60BC539BBEE9A6C5B3E4202CFED"
+    },
+    "label": "post-tested-bank-probe-and-materialized-boolean-first-header-flag",
+    "observedEffect": "Refreshed baseline0F89B4ED is PURE_C760/frame128 with157 nonrelocation word differences. Post-tested scanD45EFE1A restores748/frame128 with8 differences around a branch-based flag assignment. Explicit comparison temporary8767C5FA removes that branch, leaving7 ordering/OR-destination differences. Boolean-first OR plus field18-first source store8A1E8DC1 is PURE_C748/frame128 with0 nonrelocation word differences (inspection3BE47767). It emits13 actual R_MIPS_26 relocations; expected relocation/link evidence remains unavailable privately.",
+    "parentCandidateId": "8767C5FA54211757A31B2E07144DE075487BC4BB923A367EA80139588EB2149B",
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-repair-bank-do.c",
+        "sha256": "F5DEA4BCC1807C30A09A7226D4700B6F9F8A19E8B48F2AB929E9CBAB743E16D2"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-repair-bank-flag.c",
+        "sha256": "F39BB460FFF28359426623B272CB4A5651DB6BF487536F2AE103B7F589CF39AC"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-repair-flag-first.c",
+        "sha256": "503C1C5D4F5912571AB8F2A270B64AC47DD84CA470C8278221E665F2D9F978DF"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-repair-ready.c",
+        "sha256": "9BB4B389A3740C1480E55C755A6B6456B3DDBFA07D3DABC90C229A799D16A7D5"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_000275b8-refreshed-nonrel.json",
+        "sha256": "CD3F1254C12CADA3BB1EA4A5D4A84C2625A15F012F4890402154E38D61E98628"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_000275b8-bank-do-nonrel.json",
+        "sha256": "C0E53A51F4BC277055F53F9A9FFC737D49F7734C82C9B908A6B48B08B5DEC836"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_000275b8-bank-flag-nonrel.json",
+        "sha256": "F4F7164FF4420E1F4AE0ACFFB0A4F08BD58EBFB89A8CAA74EA47266A1DBD9563"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_000275b8-flag-first-watch.json",
+        "sha256": "6A845D99A11F324ECEAAA8B1B180BBDA3D21C66C306A2F3E2E39FB3E2B007C1A"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_000275b8-flag-first-nonrel.json",
+        "sha256": "3BE4776713662D1244BA09C8ABE7A016DE4E5BD4035E6D60DCA5B177A0F2C1B2"
+      }
+    ],
+    "relatedCandidateIds": [
+      "0F89B4ED49779F936E0E15E5F1CC6C6C50CDDBE6C9419B6BB30BAD0B2693EC14",
+      "D45EFE1AABAB3586CE09EB96AB1E533CE6F54FFE1B09524442E392A670DD5917"
+    ],
+    "remainingFailure": "Expected relocation contract, whole contpfs native2704/original12-byte tail, other four contpfs bodies and complete L6 canonical gates remain pending. These are body diagnostics, not matching acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace the counted bank for loop with do/while(++bank<62). Materialize bank>0 in an int temporary, put that value first in the OR, and assign field18 before the neighboring field1a byte."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5149,
+      "sha256": "E5378A99EE7DBC6147398FCA9AB57A728101FC3EDC261F563252E8DEBE617748"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "85FF9C8187F0BB081D6591912EDB3B9CAED0F60BC539BBEE9A6C5B3E4202CFED"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_000275b8-8a1e8dc1bb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

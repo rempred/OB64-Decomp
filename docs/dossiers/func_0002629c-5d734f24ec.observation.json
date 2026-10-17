@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5D734F24EC963E218D468631C15123E51EE823F70CAE153512D2FF26E6AF1F0C",
+  "observationId": "60D32B4BB3D16872D843BDBAFFC75AFD51A5E96D09FDAEAB9F8719811FBE77EA",
+  "symbol": "func_0002629c",
+  "authored": {
+    "context": "Complete280-byte helper body within coupled allocation1072physical producer; parentD2CBCA2E has4 register-only word differences. Main780/frame664 ready55171C2D and full original12-byte tail preserved. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C3CADBF9707DEEE4A88DCF7432AA54C893F18487D744849F122248318E541D72",
+      "sourceSha256": "D2E0720D1189C1F7DB04841D94D890832A4044E5BD51938F29942605CC64620F"
+    },
+    "label": "shared-first-current-snapshot-crosses-measured-allocation-cost-boundary",
+    "observedEffect": "Supported watch5D734F24/PURE_C280/body raw relocation-masked exact; saved-body inspection0FE34193 finds0 differences outside only2 actual R26 operand fields. Complete-source final probe7286B23D classifies annotated full two-function source PURE_C. It measures firstPage83 flow2refs/live29 and lreg2/live27 versus prior2/live26, constant107 remains3/live40. Greg now orders107 before83, assigningconstantT4/snapshotT5. Final machine snapshot remains in retail branch delay slot. Both full body extents remain780+280; no original-source or universal allocator claim.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeclearpage-chain-snapshot-watch.json",
+        "sha256": "ECE64734FC53DDD756850DBA8EDE31F76B14F0EEB00B5F98E7648ECC597FF0EE"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeclearpage-chain-snapshot-nonrel.json",
+        "sha256": "0FE34193C39B00FBDE39115AD7D571910F0EB7BC432AFD16827A8E891C724E94"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeclearpage-link-pointer.c",
+        "sha256": "177F48CB40683C465AF2BEA77688A8D3B62DA2D975AC9BE2C4B4F271EBF8BE32"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeclearpage-link-pointer-nonrel.json",
+        "sha256": "B22AD68EC92722DBBC38C35D38F0F6600FC726CAFC796116753E38D582CA79AB"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-ready.c",
+        "sha256": "26DE966AA4C3659B7A7E9BB4A3A79E047E0E6987345DBA4B387D588BA41D8B8A"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-ready-probe.json",
+        "sha256": "1ACCD3D5E39EB4B4014E98F881EA11B83E5B87ABE3329FAEFA9A6F58C6AA7C7C"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-node-fields-link-pointer-probe.json",
+        "sha256": "C64DDC865D47F9063459663F7AEB281DAF7EF35C84D1A3ECF7C8B59AD2E684A8"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeclearpage-explicit-loop-init.c",
+        "sha256": "A52C309D9F9FC359DF23869D397CB330956B719A904EDE84DE4534A6560C9100"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeclearpage-explicit-loop-init-nonrel.json",
+        "sha256": "2D1439395B005FF84AE41F024DD8B094E52048820F0471DF459742A529BD3619"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeclearpage-guarded-do.c",
+        "sha256": "1451875F7BA478CD915337217ED596EBC3574437F138348A7AC94DAE639486F6"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeclearpage-guarded-do-nonrel.json",
+        "sha256": "425FA21D6A1D28A2799F67284FF1F2EEA4FE26BA80AA0681860230EC0592571B"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/allocation-cse-followup-consultation.json",
+        "sha256": "85303E8B9C5D3397262114F2F56E47738F43922BD13FA6219944AC9D9261D4F0"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeclearpage-chain-snapshot-claims.json",
+        "sha256": "896824D9D50B0520E1D21BEB4E47304E0DEA6FE3A39083FA3CFFD04904C56F4C"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Expected relocation/isolated-link contract unavailable for inactive ASM selection. Full native object producer1072 extent/original12-byte tail, canonical ownership/placement/relocation/target bytes and full completed-L6 ROM gates remain pending. Private body readiness is not acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace current=i;firstPage=current with the semantically identical shared assignment current=firstPage=i. Keep early result return, both named write pointers and all control/memory operations unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2580,
+      "sha256": "C3CADBF9707DEEE4A88DCF7432AA54C893F18487D744849F122248318E541D72"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D2E0720D1189C1F7DB04841D94D890832A4044E5BD51938F29942605CC64620F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_0002629c-5d734f24ec.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

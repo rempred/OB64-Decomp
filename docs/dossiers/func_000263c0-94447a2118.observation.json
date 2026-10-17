@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "94447A21181968947496CAC0837FD95D908B46A4542D20B945694F6CF1417823",
+  "observationId": "2FB998083D05EF4B238886EEE2CF39D9E0DADA0932A698FC052585F900808F28",
+  "symbol": "func_000263c0",
+  "authored": {
+    "context": "Complete deletion main428 plus helper104/original12 tail. Initial main44B20186 emitted424/frame352 with32 body differences, all in final block layout or consequent branch displacements; first0x140 bytes otherwise agree. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "control-flow",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "33216F51A2CA957DD530B132C344CBD01E03BC72DF784DB4A7A4DFCB75A9DDB3",
+      "sourceSha256": "15511673196715F41508BB8902FBEA1EF44965A8CC901E5BFF9B12574D3F3155"
+    },
+    "label": "shared-final-result-preserves-deletion-success-error-layout",
+    "observedEffect": "Supported watch94447A21/PURE_C428/frame352/rawRelocationMaskedExact=true. Saved-body inspection382CC237 finds0 differences outside actual R26 operand fields. Final success block precedes constant3 and jumps over it to the shared epilogue, exactly retail. 10 actual R26 records retained.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeletefile-main-initial.c",
+        "sha256": "1D99154FB25896001EAA64C74C2633D759CB14E94E0ED3E7F0EABB9DB8ABFC30"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeletefile-main-initial-watch.json",
+        "sha256": "1117F7A1450F0D1CC73BBDFF9850CBC7C25EBE586DABCE33C8F299EBA84F765D"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeletefile-main-initial-nonrel.json",
+        "sha256": "EF91521EAF306822AEF881ACD49A74E5CDCF16E569ABF38EAF52954FC284FF24"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeletefile-main-shared-result-watch.json",
+        "sha256": "22662CC7CF58E9D327025C16D8B35DCC2F0D813D33E52CADB600D3FF8EB638DF"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeletefile-main-shared-result-nonrel.json",
+        "sha256": "382CC237911AB71F13B284CE66C07787C177C571C5D456A938EB891B55DE9CA3"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeletefile-old-node.c",
+        "sha256": "777686F8004B6C35AE79CD22D8E7C28C25ED4C399DF49FE87A838652E737F03E"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeletefile-intake.txt",
+        "sha256": "93F89167AED06624F74D672376EEE84E5D6FB242F06A162FF727C5912C301DD8"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreleasepages-intake.txt",
+        "sha256": "C742B0F7658F6744AD0BB78B3F81947F3F18BA6C528239C11BAD9DD93F4624A2"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeletefile-main-shared-result-claims.json",
+        "sha256": "BA7ADB532A7CF4BABAAB90CDB79387DCCDEF310FA1E045782C0A08E53C9834E8"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Coupled helper initial4221BDFC is92/frame8 versus104/frame0, old-node scalar snapshot control pending. Expected relocation contract/isolated link unavailable. Full native544 producer with12 tail, canonical ownership/link/bytes and completed L6 ROM gates remain pending.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Assign the final directory-write result in the bank-valid arm and constant3 in the other arm, then return the shared result. Replace success/error early returns only; lookup, chain traversal and field types unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3266,
+      "sha256": "33216F51A2CA957DD530B132C344CBD01E03BC72DF784DB4A7A4DFCB75A9DDB3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "15511673196715F41508BB8902FBEA1EF44965A8CC901E5BFF9B12574D3F3155"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_000263c0-94447a2118.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

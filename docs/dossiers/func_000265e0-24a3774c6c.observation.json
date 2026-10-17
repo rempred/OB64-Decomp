@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "24A3774C6C875FFEA9CE417E2B5D7283B3CA0970BCBBAFB54D8630042551CACA",
+  "observationId": "CAAAFA7A47D8B967038CA05B756906F4E71961A4B0F8BC0EEAC2E72F3D14C2C9",
+  "symbol": "func_000265e0",
+  "authored": {
+    "context": "Full1088-byte func_000265e0 physical owner under CURRENT2C136FC3, same pinned compiler and private root. Parent B56F9CD1 source78190104 is retained. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BBB54FF9A8EDD9AF579CC0ABF1C40BAE93855198C8112D5A1D622E8DC2CEEF0B",
+      "sourceSha256": "5D688792CC4CF64F3BE035C78F0570F14C2D79391734753BB29EA022A51510D4"
+    },
+    "label": "separate-byte-and-block-offset-restores-a3-division-and-delay-store",
+    "observedEffect": "Private watch24A3774C compiles PURE_C1088/frame352 with rawRelocationMaskedExact=true. Read-only actual-R26-operand-masked inspection finds zero differences across the full1088-byte body. All five prior words now equal retail: move a3,s1; bgez a3; bank-byte store in delay slot; addiu a3,a3,31; sra s1,a3,5.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsreadwritefile-block-offset-local-watch.json",
+        "sha256": "6EE5AA3438F461147229B6A0E913075478313D0DECE6CA5444D5FC1E64B6E983"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreadwritefile-block-offset-local-nonrel.json",
+        "sha256": "59BF7EC9A3D770159649EDFEA649A7B6B0D73A6893027424FF2CBA6D8F1ABD81"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreadwritefile-block-count-first.c",
+        "sha256": "781901044592FB1B9F7ABB06A3C9AE7FD256A344CD8E887A79240EEFD933D474"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreadwritefile-best-probe.json",
+        "sha256": "A1B7A220EF7492536321AD081FCB0464B39C83C6EDE366FEBE24F4B1089E303B"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreadwritefile-explicit-bias-nonrel.json",
+        "sha256": "983BE1E8A24FCB6C29FDEA27B0442E827C9080ADC937E887DE38DDC429A6C166"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreadwritefile-block-offset-local-claims.json",
+        "sha256": "40D90117F677BB0119DBE86B95FC6412FD8B7AEDAFE3F00BB41DA235AAFFC835"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "All16 actual R_MIPS_26 records are retained. Expected relocation records and isolated linked comparison remain unavailable for inactive ASM target. Private object evidence is diagnostic; actual native producer, target link and complete-wave ROM acceptance remain pending.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Introduce a separate int blockOffset local assigned offset/32, then use that local for skip traversal and subsequent block addressing. Leave the original byte-offset parameter unmodified. Keep bank=255 before conversion and blocks=size/32 before cursor=data."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4966,
+      "sha256": "BBB54FF9A8EDD9AF579CC0ABF1C40BAE93855198C8112D5A1D622E8DC2CEEF0B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5D688792CC4CF64F3BE035C78F0570F14C2D79391734753BB29EA022A51510D4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_000265e0-24a3774c6c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

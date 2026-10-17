@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "ED13090EDABB8325B5CB87B3632938BC81AAA428FF197F9A2687E87FE84C199E",
+  "observationId": "0C214C0234BAF12022D091097A967223C35EB165CCBC61EB13B4C43F9C06D7C8",
+  "symbol": "func_0002b070",
+  "authored": {
+    "context": "Final1120-byte main in complete1824-byte checker producer. Both helper bodies344/360 already privately ready. Native body diagnostics remain separate from canonical whole-wave acceptance.",
+    "effects": [
+      "source-representation",
+      "control-flow",
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C0EEF96B3D44D9B4A624AAEB85512D7632BE4821F4937D1EB828E4358CA901FC",
+      "sourceSha256": "EBBA7874A5E4011809F028DBEAF090F42F80971884307C844FFA1FDA23AE4DAF"
+    },
+    "label": "checker-scalar-fields-shared-index-and-next-node-snapshot",
+    "observedEffect": "Initial1128/frame1184/214 nonrelocation differences. Entry guards1136/155; shared byte bank unchanged. Counter after successful write1132/154 restores first-directory schedule. Scalar start1124/128 removes a separate pointer. Scalar bulk copy1136/113 then shared index1136/80 improve later allocation. Explicit next-node snapshot restores1120/frame1184 and retail register homes, leaving3 words at the second-directory conditional. Positive validity condition ED13090E is PURE_C1120/frame1184 with zero nonrelocation differences; actual R26 remain.",
+    "parentCandidateId": "944B411E7B825D1E89098A63437B3672AB4826340EEC2833DA0479BAA73D589D",
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b070-initial-nonrel.json",
+        "sha256": "B91E13725AE9014C1F7C03831F6C8D7FD5FFCFF729E5418FD8BE1C63BF2C961A"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b070-entry-guards-nonrel.json",
+        "sha256": "C7B0C934C0F2FEE3BEF7AD48E2841FDBA23FA9230953120BCD56C89820A653F6"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b070-shared-bank-nonrel.json",
+        "sha256": "3A9083A19CB348C97AE3F1E9FD05507391DD42AB1EA24F0571C88AF3D6F4CB42"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b070-count-after-write-nonrel.json",
+        "sha256": "66C1673C29DDA629DC6755F7E46392AF94DFE626A521346C9F6ECAD0CFA397B2"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b070-scalar-start-nonrel.json",
+        "sha256": "0CC3D099FF61D0F7E39FA4A82FCF9F5D8D0C5AA40AC1F40983A7DF2686452D82"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b070-scalar-copy-nonrel.json",
+        "sha256": "E147D7D1A7E00D696F08369D41775D8177D52BD0EA22896B08944A9C50615144"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b070-shared-index-nonrel.json",
+        "sha256": "FF2F99EF46633B1E0D4A5ECBB4C7D749906C11776201B38270A96060C3ED9AC9"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b070-next-snapshot-nonrel.json",
+        "sha256": "0E38DAABE59438D3821080609A04A3C19EA1FDAA0957E83176BE236D002FDDD6"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b070-valid-start-nonrel.json",
+        "sha256": "7ED87E4C2690AD4711881D9FE2BFE43192605964C9948A3F8426D727BE683D5C"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfschecker-ready.c",
+        "sha256": "FF920690ADD984FF47BDEC6DAC25E5F2E57DA9887E7F9BD2D863C7702034C55F"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-initial-coverage.json",
+        "sha256": "482960C3C048D389178EE9B15C4877A4A55E328E596C8F72A096200D70CC5308"
+      }
+    ],
+    "relatedCandidateIds": [
+      "C864F212B01483FB8BD93F356CB826B1687BE50936E46F4DCAA49B5BABA76211",
+      "E8FEC0E28CD67C26EC582D2775E41BC70D2BA4BD490004DC2849514C509458A8",
+      "B118F9458E69B236EC4C3FE3DB8FA76C31B1CD7439EA074E78CE0BB399828ACB",
+      "36A7A6AB7912AB6105EF2B064013D43EFD96D28EDD6A045443937F8FCC0758B7",
+      "506F2CF9CA14809BB6E35019692594A2841B527F70A445E9E990D1F9A54510ED",
+      "BBD47B46DFDC6DFFB9B710B4C7BEC134B9676C6F6D8199A4A1CEDA06E3D9EC38",
+      "B1217DFC14B6FB33D804864B6A4400EA17F34206831A6EBDB9EBB4DBA6CBFE1F"
+    ],
+    "remainingFailure": "Complete native producer/tail/relocations, sole C ownership/placement/target bytes, and complete41-entry L6 full-ROM verification remain pending. No behavioral naming claims.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express entry guards explicitly; count a directory write only after its error return; copy directory node scalar fields; reuse the directory index in bulk table loops; snapshot the next union once before updating table and directory starts; express the valid-start condition positively."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5791,
+      "sha256": "C0EEF96B3D44D9B4A624AAEB85512D7632BE4821F4937D1EB828E4358CA901FC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EBBA7874A5E4011809F028DBEAF090F42F80971884307C844FFA1FDA23AE4DAF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_0002b070-ed13090eda.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

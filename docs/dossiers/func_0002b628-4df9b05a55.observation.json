@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4DF9B05A55BECBD2386466B1630CDF497C4FCE97383479BC800C0E5B2D39BCEE",
+  "observationId": "7F185BD550FC213EB7DE5593C770503AC3A46CA6A2F4F8BD364F5DA8760D9299",
+  "symbol": "func_0002b628",
+  "authored": {
+    "context": "Final360-byte helper of complete three-body checker1120+344+360=1824. Accepted physical owner includes its initial SRA before stack prologue. Full initial producer probeD1AFF8C1 has all three required bodies/retail frames. Initialization helper is privately exact; main remains unfinished.",
+    "effects": [
+      "source-representation",
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BDF0F21B0810AB3F7FD60914B3CAF4E35CE0A21C3538FF52FCAD5DEC13A7704C",
+      "sourceSha256": "178F1D4E1E093D35FC4BE6C092DF88E323030AE4844CE9B34AFA54A27474458F"
+    },
+    "label": "two-byte-union-entry-and-shared-pre-call-bank-value",
+    "observedEffect": "Initial full probeD1AFF8C1 already emits the required entry SRA and frame64; its helper maps scratch toS2/bank toS1 and shifts the map byte by a mask derived from the raw bank. Flow records bank13 uses/63 instructions versus scratch11/74. New shared pre-call bank source83FADEEB yields candidate4DF9B05A PURE_C360/frame64 with0 nonrelocation differences (inspectionAE74E709), including retail scratchS1/bankS2 and map shift using widenedA3. Actual R26 is retained; expected relocation/link proof remains unavailable privately. Reduction of raw-counter allocation priority is a source-bound inference, not a universal compiler rule.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfschecker-initial.c",
+        "sha256": "9499543F23CB2F7F1C4733F6FFD2EDD8D00C303DC118A0D7E160F86E5094CCA7"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfschecker-count-bank-index.c",
+        "sha256": "83FADEEBBC7CB2D7601844E0A2911292BC3124A71FC9042D380FF59C46F895E7"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfschecker-helpers-ready.c",
+        "sha256": "95A5714FF731CADBFA798BC2F74263C40EB5252CC06DFDE14A0A81B600826DB6"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-initial-coverage.json",
+        "sha256": "482960C3C048D389178EE9B15C4877A4A55E328E596C8F72A096200D70CC5308"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-initial-full-probe.json",
+        "sha256": "C69F79E5B721AEEA3CA6157A1F1206F874984750B5A3153106436EA94CFF26E6"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-initial-full-probe-census.json",
+        "sha256": "DA4449FA4910FABB098B46544BD6F9EC5D653DE7FF153703A9F6BCCDAE79CCA2"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-analysis-packet-census.json",
+        "sha256": "42A7EDF8A33ADFC1705F30F5FF39D91904BA95BCFC4FC6BAE038DDB34A265F3C"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b628-bank-index-watch.json",
+        "sha256": "4B87A96821AFCCC9AD5B3A6AC3128BF99E690977F9E6D9623F8DEF5ADF37F878"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b628-bank-index-nonrel.json",
+        "sha256": "AE74E7097BB0AC14F6C9EB342FA5383BD8B8D0ECF8DE2071739F40D229B5DF2D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Main1120 remains unfinished. Complete checker native1824, canonical relocation/ownership/placement/bytes and complete41-entry L6 full-ROM gates are pending. This observation does not prove unique original types/source or matching-C acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Pass Node as the observed two-byte union by value, preserving caller/callee aggregate ABI. Widen the byte bank once per iteration for pre-call start/conditions/map-bit shift/call; retain the original byte counter for the cache store after the call and loop update."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2526,
+      "sha256": "BDF0F21B0810AB3F7FD60914B3CAF4E35CE0A21C3538FF52FCAD5DEC13A7704C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "178F1D4E1E093D35FC4BE6C092DF88E323030AE4844CE9B34AFA54A27474458F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_0002b628-4df9b05a55.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

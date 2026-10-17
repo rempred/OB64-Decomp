@@ -328,3 +328,11 @@ tools/verify_phase8_matching_c.js -text whitespace=cr-at-eol
 
 # Preserve the verified L7 floating formatter source bytes.
 src/lib/xldtob_0002bcc0.c -text whitespace=cr-at-eol
+
+# L6 verified sources retain their recorded mixed line endings byte for byte.
+src/lib/pfsreadwritefile_000265e0.c -text whitespace=cr-at-eol
+src/lib/pfsisplug_0002b790.c -text whitespace=cr-at-eol
+
+# Immutable L6 research captures preserve authenticated mixed line endings.
+docs/archive/matching-c-candidates/2026-10-17-func_000265e0-24a3774c6c.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-10-17-func_0002b90c-79edf01553.c -text whitespace=cr-at-eol

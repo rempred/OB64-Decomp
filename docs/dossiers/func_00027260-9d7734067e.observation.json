@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9D7734067EEA50CE587884FD3A737663AD99A32C9095436E5DCFBF1B061FEC0F",
+  "observationId": "81C482F4785FDE227CE22314BC4C9FFEC12E33B4CA121361F41C2D42E445CAC1",
+  "symbol": "func_00027260",
+  "authored": {
+    "context": "One88-byte guard-wrapper body in accepted96-byte physical owner617; standalone inactive-ASM workbench does not provide linked diagnostics or the8 native alignment zeros. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "branch-delay-slot",
+      "body-ready"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A9E81407400398EC656EE24F0D8E0DFF6961B6C0213EF8E45459879A901BB449",
+      "sourceSha256": "BDEA56BC6B93D7EECFA5CC7BED0ADADCE482EA912FD17BC6B0C7F8E71F73DACB"
+    },
+    "label": "else-default-enables-retail-likely-branch",
+    "observedEffect": "The pinned PURE_C compile now emits retail beql with result5 in its annulled delay slot and no argument-restore move before the helper call. The entire88-byte body has zero opcode/register/stack/width differences; only the unresolved R_MIPS_26 word differs. Physical comparison additionally lacks2 trailing zero words. Initial-result counterexample remains recoverable.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsrepairid-else-result-watch.json",
+        "sha256": "EE742C4672A9611094615125690CABBAF00599403CD71788BC2B34B93DB2D1A6"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsrepairid-watch.json",
+        "sha256": "02E9FBD5C6D6E852B7183393F700D9B3CA7B0B70D453B9C65476C06825433477"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsrepairid-initial-result.c",
+        "sha256": "7BA2EFE73D4B1B00CD31227A5CB84F946FEB8C98A46D488CB8430548CDBC4EED"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00027260.s",
+        "sha256": "5D83F0C5CCCABE494944F1F7C80977D76490E7F2CAFCD012C85D881B6D752E2B"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsrepairid-observation.json",
+        "sha256": "D418406FD6203482A9AAF89C7ACC28C3D5744B4BA38DED9F1E9ED2E715D221AF"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual call REL is available; expected accepted REL contract and isolated linked diagnostic are unavailable. Full96-byte native owner and complete-wave canonical gates remain pending. This observation does not establish matching acceptance or justify changing any boundary.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Assign default result5 only in the mask-clear else branch, instead of initializing it before the mask test. Preserve helper call and success-only bit4 clear."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 346,
+      "sha256": "A9E81407400398EC656EE24F0D8E0DFF6961B6C0213EF8E45459879A901BB449"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "BDEA56BC6B93D7EECFA5CC7BED0ADADCE482EA912FD17BC6B0C7F8E71F73DACB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00027260-9d7734067e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

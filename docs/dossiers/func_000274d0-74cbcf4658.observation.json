@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "74CBCF4658A762B4AABB61FE20D17502A10FED509B0452A3B53096924D595FCA",
+  "observationId": "56D018E60EA32959EB77EA35CA8FEFC365C87A2A85C386519278C227501505A7",
+  "symbol": "func_000274d0",
+  "authored": {
+    "context": "Accepted physical owner621 spans112 bytes; full disassembly and intake identify a100-byte function followed by12 zero alignment bytes. The inactive ASM target's standalone workbench compares only the100-byte emitted function. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "body-ready",
+      "native-alignment-tail"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FDEDF1CCC5B7D380B736DA595FDB31F32B44155822E50DD91C91BDF6FA016C8F",
+      "sourceSha256": "2B74A9A20EEDE672EDBDF115628D93EF8856CEDFEA1854F708575F4D2E594F48"
+    },
+    "label": "bank-select-body-ready-native-tail-pending",
+    "observedEffect": "First pinned PURE_C compile has the retail100-byte instruction sequence and frame72, saved registers, descending loop and likely-branch store. The only aligned word difference is the unresolved R_MIPS_26 call at offset0x40; three expected-only words are the physical owner's trailing zeros. Zero opcode/register/stack/width differences.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsselectbank-watch.json",
+        "sha256": "3385BA682E66AC712FCF132129880DCE8BA2178E49C607786361FF7AA35C9E80"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsselectbank-intake.json",
+        "sha256": "DFCCA9B80C21DDF2EE6967944D61808A7B988AA4A7B381CCADE4FDC017533184"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000274d0.s",
+        "sha256": "489C4F0D2A8716AE094A1380BD11C35DB44CC81654D3697702D03688F4B605C7"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsselectbank-observation.json",
+        "sha256": "BF3376AF5EDDAF569DE5CBDF992ADA950E060E5EA1511409FFC8480740407CDC"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "No accepted expected-relocation contract or isolated linked diagnostic is available for this inactive owner. The new standalone artifact does not establish all112 native bytes. Use the existing full-native owner representation and canonical complete-wave gates; do not pad C, change the physical boundary or invent relocation acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently reconstruct the descending32-byte bank buffer fill, write call and success-only byte0x65 update from the complete ROM disassembly. Keep uncertain state fields neutral."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 614,
+      "sha256": "FDEDF1CCC5B7D380B736DA595FDB31F32B44155822E50DD91C91BDF6FA016C8F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2B74A9A20EEDE672EDBDF115628D93EF8856CEDFEA1854F708575F4D2E594F48"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_000274d0-74cbcf4658.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3FE935B64CA8F8F14AB6A967DFA3D735AF20AD76C8BAC993C0DA4DCE3757D0B0",
+  "observationId": "BF16ED0C0B79927B885294E4CB6142CE42EB027594887867A851B751789F84C0",
+  "symbol": "func_00027c8c",
+  "authored": {
+    "context": "Diagnostic inode projection from complete seven-body contpfs-ready.c, SHA54E360E5. Full producer probeE6CCAD2E contains all seven exports/retail frames and each body equals its saved exact private diagnostic after label renumbering; no residual inline-helper calls. Full native/tail and complete41-entry canonical L6 gates remain pending.",
+    "effects": [
+      "source-representation",
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "95982F8E2C68E99BAC78D7381A220DE19560FE80EBDFC06806AAD5820D7F6D69",
+      "sourceSha256": "29FC9CB7E9B66086323689108699FFF7A6CE3EAAE6AD2FBC4136C5E1ABE484B3"
+    },
+    "label": "explicit-read-checksum-temporaries-and-offset-first-pointer-additions",
+    "observedEffect": "From DC648153 PURE_C824/frame80/9 nonrelocation differences, explicit third walkC371B238 fixes its pointer/accumulator homes, leaving4: second-inline setup3 plus third addition operand order. Explicit second walk plus offset-first third pointer1B39FA39 leaves only second addition operand order. Applying the same offset-first arithmetic there yields3FE935B6 PURE_C824/frame80/0 nonrelocation differences (inspection9F9A43A7). The exported sum definition is unchanged from raw-exact5DD07DB4. Only actual R26/HI16/LO16 encoded fields are masked; this does not establish expected relocations or linked exactness.",
+    "parentCandidateId": "DC648153F159480527F3EABA2DAF900DA1538EBC7F65030E9B45C70EE6889D66",
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-ready.c",
+        "sha256": "54E360E50B24120F28B3684D7C372443DD19F9BDC832A15A1A874E18C5C361DB"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-inode-third-explicit-sum.c",
+        "sha256": "1719E5BC3959772A94B012D43EB264DCD665B3DCBEFC21BB86F759185D543758"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-inode-two-explicit-sums.c",
+        "sha256": "56F026970CB62E7399440DC8F3007F4CAD67A5E9ABC3BEB2F70DAFEBC17D3647"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-fallback-offset-nonrel.json",
+        "sha256": "DC80E50E33E3CB381DBDA6775E909098A492435AEE31F2C4C5FC3F48B30CD129"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-third-explicit-sum-nonrel.json",
+        "sha256": "CB2678AB8FA930C19C81C19D4E9F890C04990482ABD3D2B67AF03D2F0EBB8C18"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-two-explicit-sums-nonrel.json",
+        "sha256": "6C0E29EB725B5961C53EB00C5AE066FE33374B6957A35E28754476AB36DE8731"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-ready-watch.json",
+        "sha256": "1C5C37CB0BB04508BABDBF7D056D1071957EFFFD586C9EECEE799AC45655A430"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027c8c-ready-nonrel.json",
+        "sha256": "9F9A43A714D019C622327FCFD82A399CE0FAD7FC81333AF88C4D560735B1AC3C"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-func_00027540-word-sum-first-nonrel.json",
+        "sha256": "40A1813CB0FC98948C54C5E2F2F23DC63062AD0947DE88AA5789D127562789F9"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-inode-order-consultation.json",
+        "sha256": "D3691E23D6DBC1B646F6814882D265F831D6CC48DD077A694E133181F9D024CA"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/contpfs-readiness.json",
+        "sha256": "82798062254691F8482F2B61AFA60FD683E1DD7A5E8FCC69FC2DDE85B902AA81"
+      }
+    ],
+    "relatedCandidateIds": [
+      "C371B2384A23F1B1A1BD2F37DDE48BCAEF7EBDEB7D46DCC7D0B46D8D1A374D2C",
+      "1B39FA3947EDF16B3196EB53091B8E238BF62C3F6E8AA218E5F4521C14CA90A0"
+    ],
+    "remainingFailure": "Complete producer native2704/original12-byte tail, canonical source ownership/relocations/placement/target bytes and complete L6 full-ROM verification remain pending. Private diagnostics are not matching-C acceptance. Explicit loops retain the low-byte arithmetic of the helper use; no broader behavioral naming is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Write both read-path checksum walks as explicit local C loops, keeping separate count/index/accumulator/data declarations and initialization. Use offset-first 32-bit integer pointer arithmetic for their starting addresses. Retain shared block cursor and explicit scoped bank offsets in fallback I/O loops."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5766,
+      "sha256": "95982F8E2C68E99BAC78D7381A220DE19560FE80EBDFC06806AAD5820D7F6D69"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "29FC9CB7E9B66086323689108699FFF7A6CE3EAAE6AD2FBC4136C5E1ABE484B3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00027c8c-3fe935b64c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

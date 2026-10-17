@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3E053C6AA0D93B373112C2E351B86344536C4B67024481FB0EFC15115545D4A2",
+  "observationId": "A0C9067CA339D99B5C6A222C8698101C104484B600F97B6CB9EF651E9A62F1E8",
+  "symbol": "func_00026e90",
+  "authored": {
+    "context": "Complete single256-byte body and physical owner614; fresh private intake has no prior observations. Source derived from full retail disassembly, with neutral field names. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "body-ready"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8AFBE0C648528ACA18EBD92A10D99CDD92AA0DC7DB7327534BF569914244782C",
+      "sourceSha256": "D86C7CF4B095E15A4C3F7F08E0F144576432D4E2487E246CDDF52AEB22F47949"
+    },
+    "label": "natural-directory-count-body-ready",
+    "observedEffect": "Pinned PURE_C compile covers all256 bytes and reproduces every nonrelocation field, including80-byte frame, five saved-register assignments, loop schedule and boolean count. Raw relocation-masked equality is true. Actual five R_MIPS_26 records occur at0x38/0x40/0x5c/0x8c/0xd8; the first is the section-relative common-exit jump.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsnumfiles-watch.json",
+        "sha256": "6A6F657DC010D0E88F7C548A0E57FC9F907DB6E4EA748A62110753F18FA60F4D"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsnumfiles-intake.json",
+        "sha256": "B585C9326FFD4532745290A16B9FF01F757C70F969346155EDA026A964A91348"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00026e90.s",
+        "sha256": "B4780CB1AFC0877959CA82E1315A221A6FBC4282AE97E336882E9D26C21A1FBA"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsnumfiles-observation.json",
+        "sha256": "3A910CD2D225535822331A0C8B35441B93FEB4A74F425E3F8BDA8A09FE4999E7"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Expected relocation evidence and inactive-ASM isolated linked diagnostic are unavailable. Five relocation-bearing words differ in the raw object. This is a provisional symbolic-object result, not full linked-byte or complete-ROM acceptance; canonical full-wave checks remain required.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "First structured C candidate implements the mask1 guard, ID check, optional bank-zero selection,32-byte entry reads, field04/field00 counting, output stores and final status call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1573,
+      "sha256": "8AFBE0C648528ACA18EBD92A10D99CDD92AA0DC7DB7327534BF569914244782C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D86C7CF4B095E15A4C3F7F08E0F144576432D4E2487E246CDDF52AEB22F47949"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00026e90-3e053c6aa0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

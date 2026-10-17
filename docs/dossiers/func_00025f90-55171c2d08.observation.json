@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "55171C2D084288FA6FD31598887CD710479CCDDE4434A7C368828C3D461E18E6",
+  "observationId": "FAC198EA9211E73F362E5CFC700E6AF1564D7A11F9D4F64E41D4C21AB11883B4",
+  "symbol": "func_00025f90",
+  "authored": {
+    "context": "Main780-byte body of complete allocation two-body producer1072physical. Baseline EB81683E94EBE57E had784/frame656/111 differences. Original ASM unchanged; complete source6331DA58 includes selected helper4 and remains private. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "register-allocation",
+      "frame-size",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BC3622BA9957326D80869E8F917BAAEBB22A379649487CA648C9E8DD3D905BC8",
+      "sourceSha256": "0938F992702BB956FED1390A3D056D38849A27A2A63F05A57975472210555996"
+    },
+    "label": "node-byte-fields-retain-real-partial-update-lifetime-and-restore-main-body",
+    "observedEffect": "Supported watch55171C2D classifies PURE_C780/frame664 with rawRelocationMaskedExact=true. Saved native-body inspection56ED8E50 has0 differences across all195 original words after masking only actual R26 operands;16 actual relocations retained. Full-producer probe12EAB4F9 has firstNode90 flow5weighted refs versus3 in scalar A1; greg allocates90 before75 toS8. Parameter75 now ordinary stack spill at0x25c, frame664 and final packed OR exactly retail. Low/high scalar split and signed16 split retain784/frame656 nonmatch; Node scalar-member pack alone also111 differences. No original-source or universal allocator claim.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-main-node-fields-watch.json",
+        "sha256": "CEDBA926662DCB4239223735091482F00E1DCF76A62A0D948313EAEB1DBF5295"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-main-node-fields-nonrel.json",
+        "sha256": "56ED8E502CFE5E279CEEDED56EAEE7C025DFC17D8AB90B44AB1E4E61988A64BE"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-main-low-first.c",
+        "sha256": "94EBE57E6D85B6BC58753E18429CED9ECCBEC7EAB42FB2F37D6F623F9B8D2C91"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-main-low-first-nonrel.json",
+        "sha256": "C548FAB395D54E0D73EEE739031702BBFDCA530B192FF561552EF2740976B5C9"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-main-scalar-node-member.c",
+        "sha256": "5CB93F881436DC5BBA3F9984386356C882AEACDEDA5BAA9840AD07EE8AE0892D"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-main-scalar-node-member-nonrel.json",
+        "sha256": "DC5BD110B2754D65CB08793F652407F6D32B8017B8C44B505D885F8945300A0F"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-main-signed-compose-bank.c",
+        "sha256": "26B94943C62ED165B4D0BE536E1820D94CE25D54AC2163C9B4C3A4B9144BBF4F"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-main-signed-compose-bank-nonrel.json",
+        "sha256": "EB21ED246E7142FA655202085EAC966618E9723FEFF4BF9A2F54D2918761B098"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-node-fields-link-pointer.c",
+        "sha256": "6331DA58C0C4874A79CEE84271F1D7D176E33D698D5727737DAEA433590CB9D9"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-node-fields-link-pointer-probe.json",
+        "sha256": "C64DDC865D47F9063459663F7AEB281DAF7EF35C84D1A3ECF7C8B59AD2E684A8"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/allocation-register-consultation.json",
+        "sha256": "36964E81AC9AF26B484EAEABEC7C858A745A17AF23B665929C27CDE1D72B6EB7"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsallocatefile-main-node-fields-claims.json",
+        "sha256": "A9C13F2842461A48BFCA881D9E29D6A7BA73C60DD345115E7E936A37F3A2904F"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Expected relocation records/isolated link remain unavailable for inactive target. Helper in complete source has4 body register differences. Native whole-producer assembly/alignment/padding, canonical C ownership/placement/relocations/bytes and complete L6 full-ROM verification remain pending; private body evidence is not acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Represent firstNode as existing two-byte Node union. Assign bytes.byte00=bank and bytes.byte01=first in the real first-chain case, then transfer value to entry.field06.value. Keep all operations, loops, parameter types and control flow unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4214,
+      "sha256": "BC3622BA9957326D80869E8F917BAAEBB22A379649487CA648C9E8DD3D905BC8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0938F992702BB956FED1390A3D056D38849A27A2A63F05A57975472210555996"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00025f90-55171c2d08.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

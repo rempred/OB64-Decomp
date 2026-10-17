@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0BFDC6D43CA4D8FFDC61083CCC53948F2B2B1CE103FCBE0656E417642BD4C339",
+  "observationId": "247B83B172E8503BBD609BB913AF4B322AA8E788C2D11BEA149336EC779C1470",
+  "symbol": "func_0002b4d0",
+  "authored": {
+    "context": "Initialization helper diagnostic from a complete three-body checker draft1120+344+360=1824. Full initial probeD1AFF8C1 has all three exports/retail frames and the final helper union argument emits its required opening SRA. Main/final-helper matching and final whole-producer/canonical L6 gates remain pending.",
+    "effects": [
+      "source-representation",
+      "register-allocation",
+      "instruction-order",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D50C8FC77F5412BCAD1E3AE3EF3FCE4CC5CC16AEFC45FAE25A36E2A02BC30646",
+      "sourceSha256": "5824DCACA59FB4570AB6918D9DD5BFC3F12013A574E36A9CED4E2712076375F9"
+    },
+    "label": "widened-bank-byte-view-and-two-step-map-index",
+    "observedEffect": "Initial63323054 is PURE_C328/frame304/82 nonrelocation differences. Widened bankE55547DD restores the expected saved-register set at336. Walking clear cursorA3787264 gives340/48. Using raw byte bank for both scan operands65E72295 loses the saved temporary (332/82); clear-address324080D0 independently restores the displacement/order but retains that allocation regression. Mixed raw comparison/widened shift2FDAA80C restores344/22 while swapping state/counter registers. Casting the widened bank back to unsigned char in the comparison39E9803C restores retail allocation/branch form,344/5. Two-step map index0BFDC6D4 is PURE_C344/frame304 with0 nonrelocation differences (inspectionFDE14D3C), actual R26 retained; expected relocation/link evidence remains unavailable privately.",
+    "parentCandidateId": "39E9803CFE9B8EB9C05ADB9CEB292F50B02D3106637A9DC4511E39C54EDBC852",
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfschecker-initial.c",
+        "sha256": "9499543F23CB2F7F1C4733F6FFD2EDD8D00C303DC118A0D7E160F86E5094CCA7"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfschecker-init-ready.c",
+        "sha256": "F78C3DDC78C9BCFAC2D552CB5D373696BBE9901F3A9918155F9440D6E8AE7E9A"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfschecker-init-map-index.c",
+        "sha256": "3A755D64C60FB5816E52243B9A79AB614999B0E693C5A8D62BCA4DFADDD2720E"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-initial-coverage.json",
+        "sha256": "482960C3C048D389178EE9B15C4877A4A55E328E596C8F72A096200D70CC5308"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-initial-full-probe-census.json",
+        "sha256": "DA4449FA4910FABB098B46544BD6F9EC5D653DE7FF153703A9F6BCCDAE79CCA2"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b4d0-initial-nonrel.json",
+        "sha256": "C66C0A74DF5090FCD0AF6DB67D648DE80F8933C2440E2267137BDA29B3129C12"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b4d0-clear-cursor-nonrel.json",
+        "sha256": "B4D9F5A3F8566CEF218E9D30E252B4995F19324FEE16AECAE72C1912BA6F9FBF"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b4d0-bank-byte-use-nonrel.json",
+        "sha256": "41B83084BB6506840B612DAC9FA7339D827EACDF39A118DC6382BA05AD6F435B"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b4d0-mixed-bank-nonrel.json",
+        "sha256": "C7EB9AD82BE79349F9B03CFF7543A3234DAE092450B0D6E196FC025B6E3F304A"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b4d0-cast-bank-index-nonrel.json",
+        "sha256": "478198DBA13998D59031FBB289F8BCFE3E1B5816993AD608460B727C34763637"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/checker-func_0002b4d0-map-index-nonrel.json",
+        "sha256": "FDE14D3CCBBD479E89E5826F3BB2A7BB3EE2FA9DEC77D444C968571F73DEB73D"
+      }
+    ],
+    "relatedCandidateIds": [
+      "63323054D70A72ED2F74E57D667073F4C38A40ADAF7F9E29153EDBAAD320D97E",
+      "E55547DD50383F52F9A7312B68C88370FBAA94A6FE725AD735CF2B51DFA46221",
+      "A378726415F9C0FFE5ABEB357AD6F506DFC009CD77B3D654752EB697C95C4875",
+      "65E72295CDB5A0605886D86C182CB1603C7C786612D910FBAAB7EFEC9B67F29E",
+      "2FDAA80C8DE7D5AA5B0D423DE05783EB4CDED867502955E2D6854ADA83DB8947"
+    ],
+    "remainingFailure": "Main1120 and final helper360 are unfinished. Complete checker native1824, canonical relocation/ownership/placement/bytes and complete41-entry L6 full-ROM gates remain pending. Body diagnostics and source annotations do not establish matching-C acceptance or broader semantics.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep an explicit widened bank value across the inode call, but compare the scanned high byte through its unsigned-char view. Clear the map backwards with a 32-bit address cursor retaining the known field displacement. Compute the map index first from the low bits, then add the high-byte contribution before the byte OR/store."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2684,
+      "sha256": "D50C8FC77F5412BCAD1E3AE3EF3FCE4CC5CC16AEFC45FAE25A36E2A02BC30646"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5824DCACA59FB4570AB6918D9DD5BFC3F12013A574E36A9CED4E2712076375F9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_0002b4d0-0bfdc6d43c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -4251,6 +4251,170 @@
     {
       "symbol": "func_0002c1a4",
       "compilationGroup": "library_l7_xldtob"
+    },
+    {
+      "symbol": "func_000205f0",
+      "compilationGroup": "library_l6_contquery"
+    },
+    {
+      "symbol": "func_00020670",
+      "compilationGroup": "library_l6_contquery"
+    },
+    {
+      "symbol": "func_00020690",
+      "compilationGroup": "library_l6_contreaddata"
+    },
+    {
+      "symbol": "func_00020718",
+      "compilationGroup": "library_l6_contreaddata"
+    },
+    {
+      "symbol": "func_000207b4",
+      "compilationGroup": "library_l6_contreaddata"
+    },
+    {
+      "symbol": "func_00020870",
+      "compilationGroup": "library_l6_controller"
+    },
+    {
+      "symbol": "func_00020a0c",
+      "compilationGroup": "library_l6_controller"
+    },
+    {
+      "symbol": "func_00020ac0",
+      "compilationGroup": "library_l6_controller"
+    },
+    {
+      "symbol": "func_00025f90",
+      "compilationGroup": "library_l6_pfsallocatefile"
+    },
+    {
+      "symbol": "func_0002629c",
+      "compilationGroup": "library_l6_pfsallocatefile"
+    },
+    {
+      "symbol": "func_000263c0",
+      "compilationGroup": "library_l6_pfsdeletefile"
+    },
+    {
+      "symbol": "func_0002656c",
+      "compilationGroup": "library_l6_pfsdeletefile"
+    },
+    {
+      "symbol": "func_000265e0",
+      "source": "src/lib/pfsreadwritefile_000265e0.c"
+    },
+    {
+      "symbol": "func_00026a20",
+      "source": "src/lib/pfsfilestate_00026a20.c"
+    },
+    {
+      "symbol": "func_00026bc0",
+      "source": "src/lib/pfssearchfile_00026bc0.c"
+    },
+    {
+      "symbol": "func_00026d80",
+      "source": "src/lib/pfsfreeblocks_00026d80.c"
+    },
+    {
+      "symbol": "func_00026e90",
+      "source": "src/lib/pfsnumfiles_00026e90.c"
+    },
+    {
+      "symbol": "func_00026f90",
+      "compilationGroup": "library_l6_pfsinitpak"
+    },
+    {
+      "symbol": "func_00027188",
+      "compilationGroup": "library_l6_pfsinitpak"
+    },
+    {
+      "symbol": "func_00027260",
+      "source": "src/lib/pfsrepairid_00027260.c"
+    },
+    {
+      "symbol": "func_000272c0",
+      "compilationGroup": "library_l6_pfsgetstatus"
+    },
+    {
+      "symbol": "func_000273b0",
+      "compilationGroup": "library_l6_pfsgetstatus"
+    },
+    {
+      "symbol": "func_00027444",
+      "compilationGroup": "library_l6_pfsgetstatus"
+    },
+    {
+      "symbol": "func_000274d0",
+      "source": "src/lib/pfsselectbank_000274d0.c"
+    },
+    {
+      "symbol": "func_00027540",
+      "compilationGroup": "library_l6_contpfs"
+    },
+    {
+      "symbol": "func_00027574",
+      "compilationGroup": "library_l6_contpfs"
+    },
+    {
+      "symbol": "func_000275b8",
+      "compilationGroup": "library_l6_contpfs"
+    },
+    {
+      "symbol": "func_000278a4",
+      "compilationGroup": "library_l6_contpfs"
+    },
+    {
+      "symbol": "func_00027a08",
+      "compilationGroup": "library_l6_contpfs"
+    },
+    {
+      "symbol": "func_00027bd4",
+      "compilationGroup": "library_l6_contpfs"
+    },
+    {
+      "symbol": "func_00027c8c",
+      "compilationGroup": "library_l6_contpfs"
+    },
+    {
+      "symbol": "func_00027fd0",
+      "source": "src/lib/contramread_00027fd0.c"
+    },
+    {
+      "symbol": "func_000281c0",
+      "source": "src/lib/contramwrite_000281c0.c"
+    },
+    {
+      "symbol": "func_0002acd0",
+      "compilationGroup": "library_l6_crc"
+    },
+    {
+      "symbol": "func_0002ad3c",
+      "compilationGroup": "library_l6_crc"
+    },
+    {
+      "symbol": "func_0002b070",
+      "compilationGroup": "library_l6_pfschecker"
+    },
+    {
+      "symbol": "func_0002b4d0",
+      "compilationGroup": "library_l6_pfschecker"
+    },
+    {
+      "symbol": "func_0002b628",
+      "compilationGroup": "library_l6_pfschecker"
+    },
+    {
+      "symbol": "func_0002b790",
+      "compilationGroup": "library_l6_pfsisplug"
+    },
+    {
+      "symbol": "func_0002b90c",
+      "compilationGroup": "library_l6_pfsisplug"
+    },
+    {
+      "symbol": "func_0002b9b0",
+      "compilationGroup": "library_l6_pfsisplug"
     }
   ]
 }

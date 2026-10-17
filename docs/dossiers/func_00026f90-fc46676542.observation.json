@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FC466765422186EC027FFD95880A4F869A9700C3BB0BB2BDD8FF9293FEE8057F",
+  "observationId": "3804040D5CB14E32B2462F8191D9B2E18C989C6AC615C9A8D6DE97EB1A2C7E0D",
+  "symbol": "func_00026f90",
+  "authored": {
+    "context": "Main504/helper204/original12tail720 physical. InitialCA7C5B86 and state-bank61F9F140 emit508/frame112/85differences. Adjacent bank first-use04156CE1 removes extra load,504/64differences. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EFB4F0051BFD77D250DCDE7DC3A784D7802E466A229FBACD482AD0D0BEA515C7",
+      "sourceSha256": "8B8337380DE1E935A811D3E4CDBC068C9006628B76AA065EB5E571DF52C47C39"
+    },
+    "label": "success-path-header-selection-preserves-global-address-allocation",
+    "observedEffect": "WatchFC466765 PURE_C504/frame112/body masked0; inspectionB9D1FB99. Full annotated producer probe AFEDC45655AEF2ED0F5F79CF551E93A1B889CF73FA55DE576F5538AA99ECC252 PURE_C; both assembly blocks equivalent to exact body snapshots after local-label renumbering. Prior probeDE8068BA has local repaired-address94 in hardS0, blocking result78; final probe has94 in global allocation with result78S0/state73S1/active77+address94+queue72S2. Early destination selectionCD4B043A and safe argument sequencing CFCAB9A3/852D9F55 restore registers but leave3 setup-order differences; fixed-input C643BB63 replaces old pointer move with stack-address calculation. No extra semantic mechanism claimed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsinitpak-main-success-destination-watch.json",
+        "sha256": "C0E6DC28AC5AFC754E2753D0C3127E8DFB517D4F47D16FD91FD079A6D3C8CEC7"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsinitpak-main-success-destination-nonrel.json",
+        "sha256": "B9D1FB992BB6AFC54CCA97128B093A0462B252AC9A14C68BD7226575AF844965"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsinitpak-main-adjacent-bank-probe.json",
+        "sha256": "A026C31CBA1DA7E48AFC6BDCF3D5637469BCC85AE6000124604EC84ACDDD468B"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsinitpak-ready.c",
+        "sha256": "5FE2CECDF51F14E9D36DE46ECA03BDDBBF9BD60EB2941E3DF137CB57BD7286EF"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsinitpak-ready-probe.json",
+        "sha256": "818D6FD557E77932B4A0E58FABC2F776355BA2A0E213A4253AE23592AA13D2CA"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsinitpak-active-before-call-hypothesis.json",
+        "sha256": "90886DC1061BCC824A43E98D0B22C637375D0A8DAF966E7A87F75AB869CBAB97"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsinitpak-analysis-packet.json",
+        "sha256": "71122E4DAC0EE2A3E3A7AC7E0DAE9F4D07D6732E09AD26329B3755E12129C58E"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsinitpak-main-success-destination-claims.json",
+        "sha256": "2EA71F03D33B270E15B92BA39A50613721BAAA43A955DD7B581F7E7F7B55C3AC"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private body readiness only. Full native720/original12-tail custody, expected relocation contract, linked C ownership/placement/bytes and complete L6 ROM gates remain pending.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep first state bank-byte use immediately after its assignment; select active=&repaired only after the repair-error return. Call still receives original active and &repaired. Structured successful-path state transition preserves the address through the status branch."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3435,
+      "sha256": "EFB4F0051BFD77D250DCDE7DC3A784D7802E466A229FBACD482AD0D0BEA515C7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8B8337380DE1E935A811D3E4CDBC068C9006628B76AA065EB5E571DF52C47C39"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00026f90-fc46676542.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

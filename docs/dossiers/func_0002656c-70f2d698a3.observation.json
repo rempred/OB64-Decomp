@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "70F2D698A34EF55BC7FEA62D0B669098A4D8469F133FDB08DE09C933B387AA9A",
+  "observationId": "90E9D8B055EB7E7483698933D36C73CB9B33A847F729FA8BF947C2B0DF0A2FB3",
+  "symbol": "func_0002656c",
+  "authored": {
+    "context": "Deletion helper104 with original12 tail; coupled main428 is separately body-exact94447A21. Initial aggregate92/frame8 reused a link address; explicit old-node D94F27EB restores read/write sequence but emits108/frame8. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "stack-frame",
+      "instruction-order",
+      "register-allocation",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0A3C1644BCF2E94AAF92906724FC68B279A3B39CFE04C330B6CE9E12D9D9CC64",
+      "sourceSha256": "78FA48494956DD154ECAEBCD714BC126AA8620C68CFAA5CFC871B06D53A98E31"
+    },
+    "label": "scalar-old-node-and-late-bank-truncation",
+    "observedEffect": "Bank-truncate watch70F2D698 PURE_C104/frame0; saved-body inspection3131A0A5 has0 differences and no actual relocations. Removes dead aggregate slots and both premature/redundant bank masks. Retail branch-likely output-store delay restored. Register-node control863EFB86 unchanged108/frame8; scalar with byte parameter9C243C27 frame0 but108 with extra normalization. Those results remain preserved.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsreleasepages-old-node.c",
+        "sha256": "C3A0B9F0D5B133A697AA87B9E2B7D66D4141FC1BD34DFADF6635FC1C94ECC287"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreleasepages-old-node-nonrel.json",
+        "sha256": "DBF3500F2A239A5D85601E09493BB4358ED92975430FF4B93A8F4907279E2028"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreleasepages-register-nodes-nonrel.json",
+        "sha256": "B1E6BC7BE636DB93329E83B96BD37AB975DAD7FF826C778F614F0081723C028A"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreleasepages-scalar-init-nonrel.json",
+        "sha256": "5931B4F2244F806C956BEA0FD1CB24CEE81E58859967F30546F207B672D0CBB5"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreleasepages-bank-truncate-watch.json",
+        "sha256": "F2D2178DCD687649A8BD3E0E7357D4541EEF02CC3CFEDCA35544EB03D3D8D1B8"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreleasepages-bank-truncate-nonrel.json",
+        "sha256": "3131A0A565572AEE4271426747AA885DC98F5B89F84F98542332BE5CFBBB301E"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsdeletefile-ready.c",
+        "sha256": "8832EC7DFC7C5C5D926A2BC6FC7527219C29A1618628AADE49B66FCA32CD1D9D"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreleasepages-intake.txt",
+        "sha256": "C742B0F7658F6744AD0BB78B3F81947F3F18BA6C528239C11BAD9DD93F4624A2"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreleasepages-bank-truncate-claims.json",
+        "sha256": "CF57DC9C1FAD4DD723970E0B4980F649948B288DF440024CD5784F0AE2BCD9DF"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Full native544 producer/original12 tail, expected relocation contracts and canonical ownership/placement/linked bytes/full-wave ROM remain pending. Full two-function probe of annotated ready source next.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use unsigned-short current/previous scalars, keep old node across the next-node read, write through a base-first Node pointer, and truncate the bank at its comparison instead of the integer parameter entry. Full ready source casts bank to unsigned for defined packing."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1978,
+      "sha256": "0A3C1644BCF2E94AAF92906724FC68B279A3B39CFE04C330B6CE9E12D9D9CC64"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "78FA48494956DD154ECAEBCD714BC126AA8620C68CFAA5CFC871B06D53A98E31"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_0002656c-70f2d698a3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

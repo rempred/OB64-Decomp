@@ -7133,6 +7133,102 @@
     {
       "name": "D_800AEC60",
       "address": "0x800AEC60"
+    },
+    {
+      "name": "__osSiGetAccess",
+      "address": "0x800947C4"
+    },
+    {
+      "name": "__osContLastCmd",
+      "address": "0x800E79A8"
+    },
+    {
+      "name": "__osPackRequestData",
+      "address": "0x800906C0"
+    },
+    {
+      "name": "__osContPifRam",
+      "address": "0x800C4A20"
+    },
+    {
+      "name": "__osSiRawStartDma",
+      "address": "0x800946C0"
+    },
+    {
+      "name": "__osSiRelAccess",
+      "address": "0x80094830"
+    },
+    {
+      "name": "__osContGetInitData",
+      "address": "0x8009060C"
+    },
+    {
+      "name": "__osMaxControllers",
+      "address": "0x800C4C1C"
+    },
+    {
+      "name": "__osContinitialized",
+      "address": "0x800AA720"
+    },
+    {
+      "name": "osGetTime",
+      "address": "0x80094C90"
+    },
+    {
+      "name": "osSetTimer",
+      "address": "0x80094D40"
+    },
+    {
+      "name": "__osSiCreateAccessQueue",
+      "address": "0x80094770"
+    },
+    {
+      "name": "__osEepromTimerQ",
+      "address": "0x800E99D0"
+    },
+    {
+      "name": "__osEepromTimerMsg",
+      "address": "0x800E79B8"
+    },
+    {
+      "name": "__osPfsInodeCacheBank",
+      "address": "0x800ABAA4"
+    },
+    {
+      "name": "__osPfsPifRam",
+      "address": "0x800E86C0"
+    },
+    {
+      "name": "func_0002aae0",
+      "address": "0x8009A6E0"
+    },
+    {
+      "name": "D_800ABAA4",
+      "address": "0x800ABAA4"
+    },
+    {
+      "name": "D_800ABAA0",
+      "address": "0x800ABAA0"
+    },
+    {
+      "name": "D_800E8110",
+      "address": "0x800E8110"
+    },
+    {
+      "name": "__osPfsLastChannel",
+      "address": "0x800ABAB0"
+    },
+    {
+      "name": "__osContAddressCrc",
+      "address": "0x8009A8D0"
+    },
+    {
+      "name": "__osContDataCrc",
+      "address": "0x8009A93C"
+    },
+    {
+      "name": "__osPfsGetStatus",
+      "address": "0x80096EC0"
     }
   ],
   "targets": [
@@ -135836,6 +135932,771 @@
           "offset": "0x000001C4",
           "type": "R_MIPS_26",
           "symbol": "memcpy_00023884",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_000265e0",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000080",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027bd4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A0",
+          "type": "R_MIPS_26",
+          "symbol": "func_000274d0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000C8",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027fd0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000148",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000168",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001BC",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027c8c",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000028C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027c8c",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000318",
+          "type": "R_MIPS_26",
+          "symbol": "func_000274d0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000350",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027fd0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000358",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000036C",
+          "type": "R_MIPS_26",
+          "symbol": "func_000281c0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003BC",
+          "type": "R_MIPS_26",
+          "symbol": "func_000274d0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003E8",
+          "type": "R_MIPS_26",
+          "symbol": "func_000281c0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003FC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000404",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000410",
+          "type": "R_MIPS_26",
+          "symbol": "func_000272c0",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00026a20",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000054",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027bd4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_26",
+          "symbol": "func_000274d0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000094",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027fd0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000BC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F8",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027c8c",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000118",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000014C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00023460",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000015C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00023460",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000168",
+          "type": "R_MIPS_26",
+          "symbol": "func_000272c0",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 611,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0611",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 416
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 416
+        },
+        "functionBytes": 404,
+        "tail": {
+          "ownerRowIndex": 611,
+          "offset": 404,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00026bc0",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000050",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027bd4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000008C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027fd0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A4",
+          "type": "R_MIPS_26",
+          "symbol": "func_000272c0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000150",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000158",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000160",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 612,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0612",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 448
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 448
+        },
+        "functionBytes": 440,
+        "tail": {
+          "ownerRowIndex": 612,
+          "offset": 440,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00026d80",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000038",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027bd4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000074",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027c8c",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 613,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0613",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 272
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 272
+        },
+        "functionBytes": 268,
+        "tail": {
+          "ownerRowIndex": 613,
+          "offset": 268,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00026e90",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000038",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027bd4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000005C",
+          "type": "R_MIPS_26",
+          "symbol": "func_000274d0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000008C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027fd0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_000272c0",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00027260",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000020",
+          "type": "R_MIPS_26",
+          "symbol": "func_00027a08",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 617,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0617",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "functionBytes": 88,
+        "tail": {
+          "ownerRowIndex": 617,
+          "offset": 88,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_000274d0",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_26",
+          "symbol": "func_000281c0",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 621,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0621",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 112
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 112
+        },
+        "functionBytes": 100,
+        "tail": {
+          "ownerRowIndex": 621,
+          "offset": 100,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00027fd0",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000003C",
+          "type": "R_MIPS_26",
+          "symbol": "__osSiGetAccess",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000050",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000054",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000005C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osContLastCmd",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000060",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osContLastCmd",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000064",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000006C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsLastChannel",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000074",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsLastChannel",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000080",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osContLastCmd",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000084",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osContLastCmd",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsLastChannel",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000008C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsLastChannel",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B0",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B4",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E8",
+          "type": "R_MIPS_26",
+          "symbol": "__osContAddressCrc",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000100",
+          "type": "R_MIPS_26",
+          "symbol": "__osSiRawStartDma",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000110",
+          "type": "R_MIPS_26",
+          "symbol": "osRecvMesg",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000011C",
+          "type": "R_MIPS_26",
+          "symbol": "__osSiRawStartDma",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000012C",
+          "type": "R_MIPS_26",
+          "symbol": "osRecvMesg",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000014C",
+          "type": "R_MIPS_26",
+          "symbol": "__osContDataCrc",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000164",
+          "type": "R_MIPS_26",
+          "symbol": "__osPfsGetStatus",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000178",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000188",
+          "type": "R_MIPS_26",
+          "symbol": "bcopy",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000190",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001AC",
+          "type": "R_MIPS_26",
+          "symbol": "__osSiRelAccess",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 629,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0629",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 496
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 496
+        },
+        "functionBytes": 488,
+        "tail": {
+          "ownerRowIndex": 629,
+          "offset": 488,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_000281c0",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000064",
+          "type": "R_MIPS_26",
+          "symbol": "__osSiGetAccess",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000078",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osContLastCmd",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000007C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osContLastCmd",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000080",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000008C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsLastChannel",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000090",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsLastChannel",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000009C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osContLastCmd",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A0",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osContLastCmd",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A4",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsLastChannel",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A8",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsLastChannel",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000CC",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D0",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000108",
+          "type": "R_MIPS_26",
+          "symbol": "__osContAddressCrc",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000124",
+          "type": "R_MIPS_26",
+          "symbol": "bcopy",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000012C",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000130",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000134",
+          "type": "R_MIPS_26",
+          "symbol": "__osSiRawStartDma",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000013C",
+          "type": "R_MIPS_26",
+          "symbol": "__osContDataCrc",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000150",
+          "type": "R_MIPS_26",
+          "symbol": "osRecvMesg",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000158",
+          "type": "R_MIPS_HI16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000015C",
+          "type": "R_MIPS_LO16",
+          "symbol": "__osPfsPifRam",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000160",
+          "type": "R_MIPS_26",
+          "symbol": "__osSiRawStartDma",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000170",
+          "type": "R_MIPS_26",
+          "symbol": "osRecvMesg",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000019C",
+          "type": "R_MIPS_26",
+          "symbol": "__osPfsGetStatus",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001C8",
+          "type": "R_MIPS_26",
+          "symbol": "__osSiRelAccess",
           "section": ".rel.text"
         }
       ]

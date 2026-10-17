@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "79EDF01553CD2940AE647F80A0D24108745A62EB4CDFEDBFCA633B49956C0865",
+  "observationId": "C1E19791B249D8295A7E8C16265C56E97B295E3DC0D09004225B2716FC5F33AE",
+  "symbol": "func_0002b90c",
+  "authored": {
+    "context": "Complete three-body pfsisplug producer is retained in this source. New supported native watch/probe compiled only its standalone164-byte request body from pfsreq-lastcmd-first.c. Main380/decode180 source bodies are unchanged from the prior complete-producer best; a fresh combined-producer check and canonical wave gates remain pending. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "scheduling-or-block-order",
+      "relocation-mask-compatible"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B414B9305FBEBECCD837E3F7AB8A407F9D50A23663B3D3F9151D8A017965CBA9",
+      "sourceSha256": "49DD93F5EE44732EC6573CFC0A676DD2CF9E91DD3055533E450E752578D02F88"
+    },
+    "label": "lastcmd-first-restores-retail-request-schedule",
+    "observedEffect": "Pinned compiler emits the retail164-byte instruction sequence: correct initial count-load/PIF-address order, frame16, blez and v0 backedge reload. Supported watch reports rawRelocationMaskedExact true; all10 differing words are relocation-bearing immediate fields, with zero opcode/register/branch/stack/width differences. Schedule1 ends with UID109 count load chosen after pointer12 at T-18, placing the load first; schedule2 retains the retail store order. Probe and ordinary assembly are identical except file/comment metadata.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsreq-lastcmd-first-watch.json",
+        "sha256": "891E0A4B27475FB0D3E0B74E9B066EAE6C8E51DF37190EE86B955087AA1E2FAC"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreq-lastcmd-first-probe.json",
+        "sha256": "5D623EC96CF156DF795A3E16C8142D71AFEC696722538A88D75C92081F78309F"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreq-lastcmd-first-pass-effects.json",
+        "sha256": "BCFFED0728F2171BED8E5147988ACEB75F139B1BDE798721B420495C8179A172"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsisplug-wide-limit-legacy/result.json",
+        "sha256": "2A17AA7D5D25C0305BC18E1198435F35E6C76DBEC5E73F0E0077EE090DFAC227"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsreq-lastcmd-first-observation.json",
+        "sha256": "9D057C7029796A549D1C9B6876A6729385B5A2EC4C86F9A869989CC32F20C3D7"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM target has no accepted expected-relocation contract or isolated linked diagnostic in the private workbench. No raw/linked/whole-producer exactness or canonical acceptance is claimed for this new full source. Preserve old wide-limit4-byte complete-producer diagnostic and check all three bodies together at the complete-wave canonical integration.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move __osContLastCmd = command before __osPfsPifRam.status = 1, leaving packet stores and loop structure unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2916,
+      "sha256": "B414B9305FBEBECCD837E3F7AB8A407F9D50A23663B3D3F9151D8A017965CBA9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "49DD93F5EE44732EC6573CFC0A676DD2CF9E91DD3055533E450E752578D02F88"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_0002b90c-79edf01553.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

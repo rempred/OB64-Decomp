@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "34F81F76BCFE24A73A798B1FCEF66BF7CD8EAC2DC337F1BE42AF23282DC1FD6C",
+  "observationId": "DF8DDA3A002DEA83CF12FDCCCEB4613C5771B701271AEF915082233CCED1BA42",
+  "symbol": "func_00026bc0",
+  "authored": {
+    "context": "Fresh intake has no observations. Full retail disassembly contains one440-byte body and8 trailing zero bytes in accepted448-byte physical owner612. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "body-ready",
+      "native-alignment-tail"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A365F3565ADCD44ED563ED515048F00815D9E93656998780783019BEA232ABC5",
+      "sourceSha256": "64E6E2D26C0D47AE35412030A9286F020D3471E5B5968917920991EFCFA7ECC3"
+    },
+    "label": "natural-directory-search-body-ready",
+    "observedEffect": "Pinned PURE_C compile reproduces all440 body bytes outside six actual R_MIPS_26 operands. Frame96, saved registers, pointer induction, mismatch break blocks and return-result copies agree. Zero opcode/register/stack/width differences; two expected-only words are the native8-byte zero tail.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfssearchfile-watch.json",
+        "sha256": "0C699023851DF64ED663FDF1FB9A545AC264BF0A1BF6C4E78F81212FA7BA6CC2"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfssearchfile-intake.json",
+        "sha256": "957D981CD8E88EBF8F5452F940791E163DA4C0DD50455E0433DA35E7C8682BDD"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00026bc0.s",
+        "sha256": "15EBC80B89CF4605B89BF8A5AA69CCCCD33C00594A42144101E5E660430ABE7E"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfssearchfile-observation.json",
+        "sha256": "3D2E41E617D4DD4AB268580C2885DE77F065C1BFCAF3356BF4BE3C812790D4AB"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Expected accepted relocation evidence and isolated linked diagnostics are unavailable for the inactive ASM owner. The standalone result is not native full-owner, linked-byte or complete-ROM acceptance. Preserve its448-byte owner and check native alignment and actual linking at complete-wave integration.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "First structured C candidate follows mask1 and ID guards, a status-checked directory scan, company/game comparisons, optional16/4-byte comparisons with an explicit different flag, and success/failure output-index writes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2183,
+      "sha256": "A365F3565ADCD44ED563ED515048F00815D9E93656998780783019BEA232ABC5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "64E6E2D26C0D47AE35412030A9286F020D3471E5B5968917920991EFCFA7ECC3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00026bc0-34f81f76bc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

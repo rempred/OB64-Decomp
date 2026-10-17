@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8E53E0014745FC73B6CE175891C2A4ABE734572D58853BB9B54F8EC21EBDB13D",
+  "observationId": "1407447F9EC49D8A97CC4AC222A092940C8C49A1B0C3B3B3D82FE85AD730CF19",
+  "symbol": "func_00026d80",
+  "authored": {
+    "context": "Single268-byte body in accepted272-byte physical owner613, with4 trailing native zero bytes. Both candidates use the same256-byte table, bank type, calls and structured loops. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "register-allocation",
+      "body-ready",
+      "native-alignment-tail"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "301C572DA400FE38E9FE2F8395A15DB3139DE19855EC8C9E4824E8428C5B785B",
+      "sourceSha256": "40219E996F6D1AA3C55E66EA415E606F9F0E35BF45A38EAC0E94DCD8FF049408"
+    },
+    "label": "separate-start-restores-index-copy",
+    "observedEffect": "The PURE_C function grows264 to268 bytes, introduces the retail move A0,V0 and assigns A0 to the index and V3 to the table cursor. All268 body bytes now match outside the three actual R_MIPS_26 operands at0x38/0x40/0x74. Frame304, bank loop, pointer stride and count sequence agree; zero opcode/register/stack/width differences remain. The physical-owner comparison also lacks its one trailing zero word.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsfreeblocks-watch.json",
+        "sha256": "86037376FDA5C3082A1981DD8BC6C0BA540C4531C42AFF9F50DA6231917841A6"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsfreeblocks-separate-start-watch.json",
+        "sha256": "4ABA133130BB3D2C36F468AAFCBFF0FE5FE3848F18CFCE652374629136619843"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsfreeblocks-inline-start.c",
+        "sha256": "58BECE38636FFDC1BC7673991BE56AB5B2944B8BBA9BF9CFB9C9D8B9DD162498"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00026d80.s",
+        "sha256": "259AAEC84D88B340749E7824BF371B9962BE752DC80C6E05CD1D7C99D57A25D0"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsfreeblocks-observation.json",
+        "sha256": "4841D4214331B4CB75727FA1113D22ADE8E1604E2515F90EC0E2B57952BAFB00"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Actual relocation records are present, expected accepted relocation evidence and inactive-ASM linked diagnostics are unavailable. This standalone result does not establish the272-byte native owner or complete-ROM acceptance. Preserve original boundaries and native tail, and check these at complete-wave canonical integration.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the conditional bank-dependent starting index in a separate int start, then initialize block=start in the inner for-loop. The preserved counterexample puts the conditional expression directly in the for initializer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1048,
+      "sha256": "301C572DA400FE38E9FE2F8395A15DB3139DE19855EC8C9E4824E8428C5B785B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "40219E996F6D1AA3C55E66EA415E606F9F0E35BF45A38EAC0E94DCD8FF049408"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00026d80-8e53e00147.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

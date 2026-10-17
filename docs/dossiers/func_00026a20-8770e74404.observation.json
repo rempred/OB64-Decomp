@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8770E744045EAB01FC759E32E74A385F1A6CF2BB3D7896DBFDA53C94A66DCDA3",
+  "observationId": "C6F95C4C2B076A1D0DA36D29E97C3D679127086BE67233CB2F8EC84D7BC07B03",
+  "symbol": "func_00026a20",
+  "authored": {
+    "context": "Complete404-byte function in accepted416-byte physical owner611;12 terminal zero bytes belong to native alignment. The node union exposes a halfword and its two big-endian byte fields, matching the observed extraction widths. Historical experiment reimported under the accepted L7 context; current complete-producer diagnostics are separately bound by the L6 integration preflight. No new compile or matching acceptance is claimed by this reimport. Parent and related IDs in the original authored record belong to historical target models; they are retained in that referenced record and are not asserted as current-target relations.",
+    "effects": [
+      "loop-shape",
+      "register-allocation",
+      "branch-delay-slot",
+      "body-ready",
+      "native-alignment-tail"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5E91BD6C593DDE037DF07664AAE6958D473AAE87AB3A341BFC8A362BE148CF14",
+      "sourceSha256": "439AF00BE24DE17B272D9678A890A9E19AE0C599C8446A178CC83B4138D85355"
+    },
+    "label": "structured-loop-with-explicit-exit-retains-head",
+    "observedEffect": "Compared with the392-byte direct-goto counterexample, the pinned PURE_C compile emits404 bytes, restores336-byte frame and the saved S5 table base, and keeps the exit test at the loop head. All404 body bytes agree outside nine emitted R_MIPS_26 operands, including the return5 and loop-back section-relative jumps. Zero opcode/register/stack/width differences remain. The physical comparison additionally lacks the12-byte zero tail.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/lib-l6-261016/pfsfilestate-for-goto-watch.json",
+        "sha256": "7D07CB48EA349CA249A39535F368246C29F75FAC8077C52A4EF76473C4D8C2AE"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsfilestate-union-goto-watch.json",
+        "sha256": "8375BEB96D25EE1BAE763B71B39FF3892C23A35CF7A472F4A2DFFF7CD56AF884"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsfilestate-union-goto.c",
+        "sha256": "B5C751B3B1719742DC3B366B9344B992C3ECD9F10BC11692163998C9D473AD34"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsfilestate-guard-bank-int.c",
+        "sha256": "4C3A42567483C306776A404D30292C3941E3AF8489A7CEAD648F5814A9B0B4CB"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsfilestate-union-nested-exit.c",
+        "sha256": "369A8D4AC440A41BEF516AA965F0F4CED779A8908ED4783C031E046A88E94686"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00026a20.s",
+        "sha256": "D042FF6C518AD4F3A0884800A4F7F60456B6105A569233D52FD5E6F1B0468F6F"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/pfsfilestate-observation.json",
+        "sha256": "D1822C780D732B58801F78E5042E598FC14F1DDC0ACCB112A5D34679349FF63B"
+      },
+      {
+        "path": "build/matching/lib-l6-261016/l6-integration/preflight.json",
+        "sha256": "C77CDD3DC608180AFF07E18F67B31D7561872173F5C1B1A5FC80EA6720E9078F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Expected accepted relocation evidence and isolated linked diagnostics remain unavailable for this inactive ASM owner. Full416-byte native output, linked bytes and complete-ROM acceptance must be checked during complete-wave canonical integration. Raw relocation-masked equality over the physical owner is false because the standalone function excludes its tail.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Wrap the preserved union/byte-bank-cache goto-cycle body in for(;;), retaining an explicit goto to the after-loop terminal check and replacing the direct backward goto with the loop backedge. Separately preserved trials establish the useful field50-first range guard and the failure of a nested terminal check that hoists a live constant."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2956,
+      "sha256": "5E91BD6C593DDE037DF07664AAE6958D473AAE87AB3A341BFC8A362BE148CF14"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "439AF00BE24DE17B272D9678A890A9E19AE0C599C8446A178CC83B4138D85355"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-17-func_00026a20-8770e74404.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
