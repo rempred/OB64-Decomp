@@ -2545,8 +2545,9 @@ function writeSourceObjectProofs(phase8, options) {
     const derived = deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, nativeContext);
     const proofRelative = 'generated/c/' + target.symbol + '.source-object-proof.json';
     const proofFile = resolveRelative(output, proofRelative, 'source-to-object proof');
+    textContract.validateRecords(derived.proof, { textContract: compiled.textContract, objectEvidence: compiled.objectEvidence }, 'compile/proof equality');
     fs.writeFileSync(proofFile, derived.proofBytes);
-    const record = { path: proofRelative, bytes: derived.proofBytes.length, sha256: sha256Buffer(derived.proofBytes), proof: derived.proof };
+    const record = { path: proofRelative, bytes: derived.proofBytes.length, sha256: sha256Buffer(derived.proofBytes) };
     proofs.set(target.symbol, record);
     compiled.sourceObjectProofRelative = record.path;
     compiled.sourceObjectProofBytes = record.bytes;
@@ -2700,15 +2701,12 @@ function verifySourceObjectProofs(phase8, options) {
     const proofRelative = 'generated/c/' + target.symbol + '.source-object-proof.json';
     const proofFile = resolveRelative(output, proofRelative, 'source-to-object proof');
     if (!fs.existsSync(proofFile)) fail('source-to-object proof is missing: ' + target.symbol);
-    try {
-      validateSourceObjectProofBytes(fs.readFileSync(proofFile), derived.proofBytes);
-    } catch (error) {
-      fail(error.message + ': ' + target.symbol);
-    }
+    const descriptor = { path: proofRelative, bytes: derived.proofBytes.length, sha256: sha256Buffer(derived.proofBytes) };
+    textContract.withSourceObjectProof(output, target, { ...derived.proof.target, proof: descriptor }, (proof, bytes) => {
+      validateSourceObjectProofBytes(bytes, derived.proofBytes);
+      textContract.validateRecords(proof, { textContract: derived.proof.textContract, objectEvidence: derived.proof.objectEvidence, linkEvidence: derived.proof.linkEvidence }, 'derived proof');
+    });
     records.push({
-      textContract: derived.proof.textContract,
-      objectEvidence: derived.proof.objectEvidence,
-      linkEvidence: derived.proof.linkEvidence,
       symbol: target.symbol,
       sourceClass: classification.class,
       sourcePolicyDigest: classification.digest,
@@ -4471,8 +4469,11 @@ function verifyPhase8Output(phase8, options) {
     const sourceObjectTarget = sourceObjectEvidence.targets.find((record) => record.symbol === target.symbol);
     if (!sourceObjectTarget) fail('verified source-to-object target record is missing: ' + target.symbol);
 
+    textContract.withSourceObjectProof(output, target, sourceObjectTarget, proof => {
+      textContract.validateRecords(proof, representation, 'verification/proof equality');
+    });
     targetResults.push({
-      ...representation,
+      representationSha256: textContract.representationDigest(representation),
       symbol: target.symbol,
       source: target.source,
       originalAssemblyFallback: target.originalAssembly,
@@ -4519,7 +4520,7 @@ function verifyPhase8Output(phase8, options) {
     linkContext: textLinkContext,
   })));
   const verification = {
-    schemaVersion: 5,
+    schemaVersion: 6,
     status: 'pass',
     counts: {
       primaryRows: phase8.model.rows.length,
@@ -4572,10 +4573,11 @@ function validateRecordedPhase8Build(phase8, options) {
   if (!sameJson(buildReport?.acceptedInputs?.logicalFunctionConfig, phase8.logicalFunctionConfigIdentity)) fail('recorded logical function registry drift');
   if (!sameJson(buildReport?.acceptedInputs?.compilationGroupConfig, phase8.groupConfigIdentity)) fail('recorded compilation group registry drift');
   const verification = options.verification;
-  if (!buildReport || buildReport.schemaVersion !== 6 || buildReport.status !== 'pass') {
+  if (!buildReport || buildReport.schemaVersion !== 7 || buildReport.status !== 'pass'
+      || buildReport.verification?.schemaVersion !== 6 || buildReport.verification.status !== 'pass') {
     fail('recorded Phase 8 build report did not pass');
   }
-  if (!verification || verification.schemaVersion !== 5 || verification.status !== 'pass') {
+  if (!verification || verification.schemaVersion !== 6 || verification.status !== 'pass') {
     fail('current Phase 8 verification result did not pass');
   }
   verifyRecordedSharedAuxiliaryScript(phase8, output);
@@ -4625,9 +4627,14 @@ function validateRecordedPhase8Build(phase8, options) {
   }
   for (const target of phase8.targets) {
     const source = recordedSources.find((record) => record.path === target.source);
-    const replacement = recordedTargets.find((record) => record.symbol === target.symbol);
-    textContract.validateRecords(replacement, textContract.recordsForTarget(target, output, textLinkContext), 'build report');
-    const verifiedTarget = verification.targets.find((record) => record.symbol === target.symbol);
+    const { replacement, verified: embeddedVerified } = textContract.buildTargetRecords(buildReport, target, phase8.targets.length);
+    const representation = textContract.recordsForTarget(target, output, textLinkContext);
+    textContract.withSourceObjectProof(output, target, replacement, proof => {
+      textContract.validateRecords(proof, representation, 'build report');
+      if (embeddedVerified.representationSha256 !== textContract.representationDigest(representation)) fail('recorded independent representation digest drift');
+    });
+    const verifiedTarget = textContract.uniqueReportTarget(verification.targets, target.symbol, phase8.targets.length);
+    if (verifiedTarget.representationSha256 !== textContract.representationDigest(representation)) fail('current independent representation digest drift');
     const expectedInteriors = interiorRecords([target]).map((record) => ({ ...record,
       binarySha256: sha256File(path.join(output, record.binaryRelative)),
       objectSha256: sha256File(path.join(output, record.objectRelative)) }));
@@ -4823,7 +4830,7 @@ function validateRecordedPhase8Build(phase8, options) {
     fail('recorded Phase 8 asm-differ proof drift');
   }
   textContract.finishLinkContext(textLinkContext);
-  return { schemaVersion: 5, status: 'pass' };
+  return { schemaVersion: 6, status: 'pass' };
 }
 
 function pathIndependentRuntime(runtime) {

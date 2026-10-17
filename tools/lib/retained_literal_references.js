@@ -10,15 +10,16 @@ const frozen = value => { if(value && typeof value==='object'){Object.values(val
 function normalize(value) {
   if (value === undefined) return null;
   const keys=['schemaVersion','compilerSection','bytes','alignment','expectedPayloadSha256','ownerRowIndex','romStart'];
-  if (!value || !same(Object.keys(value).sort(),keys.sort()) || value.schemaVersion!==1 || value.compilerSection!=='.rodata'
-      || ![16,64].includes(value.bytes) || value.alignment!==16 || !/^[A-F0-9]{64}$/.test(value.expectedPayloadSha256)
+  if (!value || !same(Object.keys(value).sort(),keys.sort()) || ![1,2].includes(value.schemaVersion) || value.compilerSection!=='.rodata'
+      || !(value.schemaVersion===2?value.bytes===32:[16,64].includes(value.bytes)) || value.alignment!==16 || !/^[A-F0-9]{64}$/.test(value.expectedPayloadSha256)
       || !Number.isSafeInteger(value.ownerRowIndex) || value.ownerRowIndex<0 || !Number.isSafeInteger(value.romStart)
       || value.romStart<0 || value.romStart%16) bad('contract schema');
   return {...value};
 }
 function bind(target, allTargets, model, rom, readSource) {
   const c=normalize(target.retainedLiteralReferences); if(!c)return;
-  if(c.bytes!==16&&!target.literalGroup)bad('standalone literal size');
+  if((c.bytes!==16||c.schemaVersion!==1)&&!target.literalGroup)bad('standalone literal size');
+  if(c.schemaVersion===2&&!require('./compilation_groups').literalRun(target.literalGroup))bad('literal run mode required');
   if(target.literalGroup&&groupTargets.get(target.literalGroup)!==target)bad('literal group binding authority');
   if(rom.length!==model.config.rom.bytes||hash(rom)!==model.config.rom.sha256)bad('ROM identity');
   if(target.compilationGroup || target.compilationGroupId || target.auxiliaryProjection || target.atomicText
@@ -58,6 +59,7 @@ function bind(target, allTargets, model, rom, readSource) {
 function binding(target){
   const b=bindings.get(target);if(!b||b.contract!==digest(target.retainedLiteralReferences)
     || !same(b.evidence,target.retainedLiteralBinding)||b.evidence.sourceHash!==target.sourceSha256)bad('binding authority');
+  if(require('./compilation_groups').literalRun(target.literalGroup))require('./compilation_groups').authenticateLiteralRun(target.literalGroup);
   const c=b.evidence.contract,row=b.model.rows.find(r=>r.index===c.ownerRowIndex),slab=b.model.nonDescriptorLoadSlabs.find(s=>s.id===row?.slices[0]?.loadSlabId),aux=b.allTargets.flatMap(t=>t.auxiliarySections||[]).filter(a=>a.outputSection===row?.slices[0]?.sectionName);
   if(target.model!==b.model||digest({slab,row,aux})!==b.evidence.modelIdentity||hash(b.rom)!==b.model.config.rom.sha256
     ||sha256File(path.join(ROOT,b.evidence.ownerSource))!==b.evidence.ownerHash
@@ -110,7 +112,9 @@ function project(input,target){
   if(coverage.some(v=>v!==1))bad('unexplained literal bytes');
   const output=Buffer.from(input),at=e.sections[a.symbolTableIndex].offset+a.symbolIndex*16;
   output.writeUInt32BE(b.evidence.base,at+4);output[at+12]=0;output.writeUInt16BE(0xfff1,at+14);output.fill(0,literal.headerOffset,literal.headerOffset+40);
-  const proof=frozen({binding:b.evidence,raw:census(input),projected:census(output),anchorIndex:a.symbolIndex,anchorTable:a.symbolTableIndex,textHash:hash(input.subarray(text.offset,text.offset+text.size)),groups});
+  const run=require('./compilation_groups').literalRun(target.literalGroup);
+  if(run){const g=target.literalGroup;require('./compilation_groups').authenticateLiteralRun(g);if(text.size!==g.text.bytes||hash(input.subarray(text.offset,text.offset+text.size))!==g.text.sha256||!input.subarray(text.offset+g.tail.offset,text.offset+text.size).equals(Buffer.alloc(4)))bad('literal run native text');require('./compilation_groups').literalRunBranchCensus(input.subarray(text.offset,text.offset+text.size),g);output.writeUInt32BE(g.tail.offset,text.headerOffset+20);output.writeUInt32BE(4,text.headerOffset+32);runNative.set(g,Buffer.from(input));}
+  const proof=frozen({binding:b.evidence,raw:census(input),projected:census(output),anchorIndex:a.symbolIndex,anchorTable:a.symbolTableIndex,textHash:hash(input.subarray(text.offset,text.offset+(run?target.literalGroup.tail.offset:text.size))),groups});
   const token=Object.freeze({});projections.set(token,{hash:hash(output),proof,target});return {buffer:output,evidence:proof,token};
 }
 function splitAuthority(input,owners,projection){
@@ -163,6 +167,7 @@ function correctStrip(pre,intermediate,target,proof){
     kind:r.symbol.symbolIndex===before.anchor.symbolIndex&&r.symbol.symbolTableIndex===before.anchor.symbolTableIndex?'literal':r.symbol.symbolType});
   const expected=before.records.map(semantic),actual=after.records.map(r=>({...semantic(r),kind:r.symbol.symbolIndex===after.anchor.symbolIndex&&r.symbol.symbolTableIndex===after.anchor.symbolTableIndex?'literal':r.symbol.symbolType}));
   if(!same(expected,actual))bad('stripping changed ordinary/literal references');
+  if(require('./compilation_groups').literalRun(target.literalGroup))literalRunStripCensus(before.e,after.e,target,1);
   const output=Buffer.from(intermediate),at=after.e.sections[after.anchor.symbolTableIndex].offset+after.anchor.symbolIndex*16+12;
   if(output[at]!==1)bad('unexpected strip anchor byte');output[at]=0;stageAnchor(output,target,proof,0);
   return {buffer:output,evidence:{intermediate:census(intermediate),final:census(output),correction:{fileOffset:at,old:1,new:0,symbolTableIndex:after.anchor.symbolTableIndex,symbolIndex:after.anchor.symbolIndex},
@@ -193,14 +198,15 @@ function derive(target,root,files=null){
   for(const role of Object.keys(paths))if(!fs.readFileSync(get(role)).equals(bytes[role]))bad('artifact changed during derivation');
   const corrected=correctStrip(bytes.source,bytes.intermediate,target,p.evidence);if(!corrected.buffer.equals(bytes.final))bad('final anchor rederivation');
   const artifacts=Object.fromEntries(Object.keys(paths).map(role=>[role,{path:paths[role],bytes:bytes[role].length,sha256:hash(bytes[role])}]));
-  return {schemaVersion:1,...(nativeCensus?{nativeSingleOwner:nativeCensus}:{}),binding:target.retainedLiteralBinding,projection:p.evidence,strip:corrected.evidence,artifacts,implementationSha256:sha256File(__filename)};
+  return {schemaVersion:require('./compilation_groups').literalRun(target.literalGroup)?2:1,...(nativeCensus?{nativeSingleOwner:nativeCensus}:{}),binding:target.retainedLiteralBinding,projection:p.evidence,strip:corrected.evidence,artifacts,implementationSha256:sha256File(__filename)};
 }
 Object.assign(module.exports,{projectComplete,correctStrip,stageAnchor,derive});
 
 function validateProof(proof){
   const group=proof?.textContract?.producer,contract=proof?.target?.retainedLiteralReferences||group?.retainedLiteralReferences,evidence=proof?.objectEvidence?.retainedLiteralReferences;
-  if(!contract&&!evidence&&![18,19].includes(proof?.objectEvidence?.schemaVersion))return;
-  if(!contract||!evidence||proof.objectEvidence.schemaVersion!==(group?19:18)||evidence.schemaVersion!==1
+  if(!contract&&!evidence&&![18,19,22].includes(proof?.objectEvidence?.schemaVersion))return;
+  const run=require('./compilation_groups').literalRun(group);
+  if(!contract||!evidence||proof.objectEvidence.schemaVersion!==(run?22:group?19:18)||evidence.schemaVersion!==(run?2:1)||(!run&&(contract.schemaVersion!==1||group?.retainedNativeAlignment))
     ||!same(normalize(contract),evidence.binding?.contract)||!same(contract,proof.textContract?.retainedLiteralReferences)
     ||!same(evidence.binding,proof.textContract?.retainedLiteralBinding)
     ||evidence.binding.sourceHash!==proof.target.sourceSha256
@@ -222,7 +228,10 @@ function validateProof(proof){
 }
 module.exports.validateProof=validateProof;
 function linkedEvidence(target,root,context,objectEvidence){
-  const b=binding(target),c=b.evidence.contract,p=b.evidence.partition,row=b.model.rows.find(r=>r.index===c.ownerRowIndex),slice=row.slices[0],elf=context.elf;
+  const b=binding(target);return linkedBoundEvidence(target,root,context,objectEvidence,b,b.evidence.contract,b.evidence.partition);
+}
+function linkedBoundEvidence(target,root,context,objectEvidence,b,c,p){
+  const row=b.model.rows.find(r=>r.index===c.ownerRowIndex),slice=row.slices[0],elf=context.elf;
   const sections=elf.sections.filter(s=>s.name===slice.sectionName);if(sections.length!==1)bad('linked retained section census');const s=sections[0];
   if(s.type!==1||s.flags!==2||s.address!==slice.vramStart||s.size!==row.bytes
     ||!elf.buffer.subarray(s.offset,s.offset+s.size).equals(b.rom.subarray(row.romStart,row.romEndExclusive)))bad('linked retained row bytes');
@@ -263,7 +272,8 @@ module.exports.linkedEvidence=linkedEvidence;
 function registryGroups(group){
   if(!group.retainedLiteralReferences)return [];
   const c=normalize(group.retainedLiteralReferences);
-  if(group.mode!=='native-text-owner-projection'||group.members.length!==2||group.functions.length!==2||group.auxiliary||group.interiorRun)bad('literal group mode');
+  const run=require('./compilation_groups').literalRun(group);
+  if((run?(c.schemaVersion!==2||group.members.length<2||group.functions.length!==group.members.length):(c.schemaVersion!==1||group.mode!=='native-text-owner-projection'||group.members.length!==2||group.functions.length!==2))||group.auxiliary||group.interiorRun)bad('literal group mode');
   const refs=group.relocations.map((r,index)=>({...r,index})).filter(r=>r.symbolSection==='.rodata'),sets=[],coverage=Buffer.alloc(c.bytes);
   for(let i=0;i<refs.length;){const hi=refs[i++],lo=refs[i++];
     if(!lo||hi.type!==5||lo.type!==6||hi.symbol!=='.rodata'||lo.symbol!=='.rodata'||hi.symbolValue||lo.symbolValue
@@ -288,14 +298,70 @@ function bindGroups(targets,model,rom,readSource){
     group.retainedLiteralBinding=structuredClone(producer.retainedLiteralBinding);groupIdentities.set(group,digest(group));
   }
 }
-function groupTarget(group){const target=groupTargets.get(group);if(!target||target.literalGroup!==group||groupIdentities.get(group)!==digest(group)||!same(group.retainedLiteralBinding,target.retainedLiteralBinding))bad('group literal authority');const b=binding(target);for(const member of group.members){const matches=b.allTargets.filter(t=>t.symbol===member.symbol&&t.compilationGroup===group);if(matches.length!==1||matches[0].sourceSha256!==target.sourceSha256||matches[0].source!==group.source)bad('group source binding changed');}return target;}
+function groupTarget(group){require('./compilation_groups').authenticateLiteralRun(group);const target=groupTargets.get(group);if(!target||target.literalGroup!==group||groupIdentities.get(group)!==digest(group)||!same(group.retainedLiteralBinding,target.retainedLiteralBinding))bad('group literal authority');const b=binding(target);for(const member of group.members){const matches=b.allTargets.filter(t=>t.symbol===member.symbol&&t.compilationGroup===group);if(matches.length!==1||matches[0].sourceSha256!==target.sourceSha256||matches[0].source!==group.source)bad('group source binding changed');}return target;}
 function groupProject(input,group){const result=projectComplete(input,groupTarget(group));groupProofs.set(group,result.evidence);return result;}
 function groupStage(input,group,stage){
   const target=groupTarget(group);let proof,anchor;
   if(stage==='raw'){const projected=project(input,target);proof=projected.evidence;groupProofs.set(group,proof);anchor={symbolIndex:proof.anchorIndex,symbolTableIndex:proof.anchorTable};}
-  else {proof=groupProofs.get(group);if(!proof)bad('group stage missing native authority');anchor=stageAnchor(input,target,proof,0).anchor;}
+  else {proof=groupProofs.get(group);if(!proof)bad('group stage missing native authority');if(require('./compilation_groups').literalRun(group)){const native=runNative.get(group);if(!native)bad('literal run native authority');const expected=projectComplete(native,target).buffer;if(stage==='projected'&&!expected.equals(input))bad('literal run split replay');if(stage==='stripped')literalRunStripCensus(parse(expected),parse(input),target,0);}anchor=stageAnchor(input,target,proof,0).anchor;}
   const expected=registryGroups(group),actual=proof.groups.map(g=>({hi:g.hi,los:g.los}));
   if(!same(expected.map(g=>({hi:g.hi,los:g.los})),actual))bad('group native pair registry drift');
   return {proof,anchor,places:new Set(proof.groups.flatMap(g=>[g.hi,...g.los]))};
 }
 Object.assign(module.exports,{registryGroups,bindGroups,groupTarget,groupProject,groupStage});
+
+
+const mixedBindings=new WeakMap();
+function bindMixed(group,targets,model,rom){
+  const aux=require('./auxiliary_projection'),c=aux.mixedContract(group),table=group.auxiliary.sections[0];
+  if(hash(rom)!==model.config.rom.sha256||rom.length!==model.config.rom.bytes)bad('mixed ROM identity');
+  const row=model.rows.find(r=>r.index===table.ownerRowIndex),slice=row?.slices?.[0];
+  if(!row?.part||row.inputKind!=='tracked-assembly'||row.slices.length!==1||slice.executable||slice.placementKind!=='non-descriptor-load-slab')bad('mixed retained row');
+  const slabs=model.nonDescriptorLoadSlabs.filter(s=>s.id===slice.loadSlabId&&s.kind==='boot-initialized-data');if(slabs.length!==1)bad('mixed boot storage');
+  const base=table.vramStartNumber-c.native.tableOffset,romStart=table.romStartNumber-c.native.tableOffset,end=romStart+c.native.bytes;
+  if(romStart<row.romStart||end>row.romEndExclusive||romStart<slabs[0].romStart||end>slabs[0].romEndExclusive||base%16
+    ||base!==slice.vramStart+romStart-row.romStart||base!==slabs[0].vramStart+romStart-slabs[0].romStart)bad('mixed storage equation');
+  const source=fs.readFileSync(path.join(ROOT,row.part.file));if(hash(source)!==row.part.sha256)bad('mixed original source hash');
+  const original=assembleWordAsmText(source.toString()).bytes;if(original.length!==row.bytes||!original.equals(rom.subarray(row.romStart,row.romEndExclusive)))bad('mixed original source bytes');
+  const owners=targets.flatMap(t=>t.auxiliarySections||[]).filter(a=>a.outputSection===slice.sectionName);
+  if(targets.some(t=>t.textOwners.some(o=>o.rowIndex===row.index)))bad('mixed text-owned storage');
+  const retained=c.intervals.filter(s=>s.kind!=='table').map(s=>{const start=romStart+s.offset,finish=start+s.bytes;
+    if(owners.some(a=>start<a.romEndNumber&&finish>a.romStartNumber))bad('mixed C-owned retained interval');
+    const parts=owners.flatMap(a=>[a.preservedPrefix,a.preservedTail,a.preservedInteriorBefore].filter(Boolean)).filter(p=>start>=p.romStartNumber&&finish<=p.romEndNumber);
+    if(parts.length!==1)bad('mixed unique retained partition');const p=parts[0];
+    if(p.ownerOriginalAssembly!==row.part.file||p.ownerOriginalAssemblySha256!==row.part.sha256||p.vramStartNumber+start-p.romStartNumber!==base+s.offset
+      ||hash(rom.subarray(p.romStartNumber,p.romEndNumber))!==p.expectedSha256||hash(rom.subarray(start,finish))!==s.expectedSha256)bad('mixed retained source/partition');
+    return{...s,romStart:start,vramStart:base+s.offset,partition:structuredClone(p)};
+  });
+  const members=targets.filter(t=>t.compilationGroup===group);if(members.length!==group.members.length||new Set(members.map(t=>t.sourceSha256)).size!==1||members.some(t=>t.source!==group.source))bad('mixed source membership');
+  const evidence=frozen({base,romStart,ownerRowIndex:row.index,ownerSource:row.part.file,ownerHash:row.part.sha256,sourceHash:members[0].sourceSha256,retained,modelIdentity:digest({row,slab:slabs[0],owners})});
+  mixedBindings.set(group,{evidence,rom,model,allTargets:targets,identity:digest(group)});return evidence;
+}
+function mixedBinding(group){const b=mixedBindings.get(group);if(!b||b.identity!==digest(group)||hash(b.rom)!==b.model.config.rom.sha256)bad('mixed binding authority');
+  const row=b.model.rows.find(r=>r.index===b.evidence.ownerRowIndex),slab=b.model.nonDescriptorLoadSlabs.find(s=>s.id===row?.slices[0]?.loadSlabId),owners=b.allTargets.flatMap(t=>t.auxiliarySections||[]).filter(a=>a.outputSection===row?.slices[0]?.sectionName);
+  if(digest({row,slab,owners})!==b.evidence.modelIdentity||sha256File(path.join(ROOT,b.evidence.ownerSource))!==b.evidence.ownerHash||sha256File(path.join(ROOT,group.source))!==b.evidence.sourceHash
+    ||b.allTargets.filter(t=>t.compilationGroup===group).length!==group.members.length)bad('mixed changed binding input');return b;}
+function mixedLinkedEvidence(target,root,context,objectEvidence){const group=target.compilationGroup,b=mixedBinding(group),sets=require('./auxiliary_projection').mixedReferenceSets(group),producer={...target,textOwners:group.owners.map(o=>({...o,logicalOffset:o.groupOffset}))};
+  const groups=sets.map(s=>({hi:s.hi,los:[s.lo],records:[s.hi,s.lo].map(place=>({...group.relocations.find(r=>r.offset===place),place}))}));
+  const partitions=[...new Map(b.evidence.retained.map(s=>[digest(s.partition),s.partition])).values()];
+  return{schemaVersion:1,binding:b.evidence,partitions:partitions.map(p=>linkedBoundEvidence(producer,root,context,{retainedLiteralReferences:{projection:{groups}}},b,{ownerRowIndex:b.evidence.ownerRowIndex},p))};
+}
+Object.assign(module.exports,{bindMixed,mixedBinding,mixedLinkedEvidence});
+
+const runNative=new WeakMap();
+function literalRunStripCensus(before,after,target,anchorType){
+  const base=binding(target).evidence.base,removed=new Set(['.reginfo','.pdr','.note','.comment']),cg=require('./compilation_groups');
+  const name=(e,s)=>s.sectionIndex===0?'UND':s.sectionIndex===0xfff1?'ABS':e.sections[s.sectionIndex]?.name;
+  const key=(e,s)=>({name:s.name,value:s.value,size:s.size,binding:s.binding,type:s.sectionIndex===0xfff1&&s.value===base?0:s.symbolType,visibility:s.visibility,section:name(e,s)});
+  const abs=after.symbols.filter(s=>s.sectionIndex===0xfff1&&s.value===base);if(abs.length!==1||abs[0].symbolType!==anchorType)bad('literal run strip anchor');
+  const mapped=new Set(),mapping=[];for(const s of before.symbols){if(removed.has(name(before,s))){if(cg.relocations(before).some(r=>r.symbol===s))bad('literal run removed referenced metadata');mapping.push({oldIndex:s.symbolIndex,newIndex:null});continue;}const hit=after.symbols.filter(t=>same(key(before,s),key(after,t)));if(hit.length!==1||mapped.has(hit[0].symbolIndex))bad('literal run symbol mapping');mapped.add(hit[0].symbolIndex);mapping.push({oldIndex:s.symbolIndex,newIndex:hit[0].symbolIndex});}
+  const added=after.symbols.filter(s=>!mapped.has(s.symbolIndex)),expected=['.symtab',...target.literalGroup.owners.slice(1).map(o=>o.sectionName)];
+  if(!same(added.map(s=>name(after,s)),expected))bad('literal run generated section symbol census');
+  for(const s of added)if(s.name||s.binding||s.symbolType!==3||s.value||s.size||s.visibility||cg.relocations(after).some(r=>r.symbol===s))bad('literal run generated symbol reference/shape');
+  const rel=(e,r)=>({owner:r.owner.name,place:r.place,type:r.type,symbol:key(e,r.symbol),word:e.buffer.readUInt32BE(r.owner.offset+r.place)});if(!same(cg.relocations(before).map(r=>rel(before,r)),cg.relocations(after).map(r=>rel(after,r))))bad('literal run strip REL conservation');
+  const sections=before.sections.filter(s=>s.index&&s.type!==0&&!removed.has(s.name)&&!['.symtab','.strtab','.shstrtab'].includes(s.name));
+  if(!same(after.sections.filter(s=>s.index&&s.type!==0&&!['.symtab','.strtab','.shstrtab'].includes(s.name)).map(s=>s.name).sort(),sections.map(s=>s.name).sort()))bad('literal run strip section census');
+  for(const s of sections){const t=after.sections.find(t=>t.name===s.name);for(const k of ['type','flags','address','size','alignment','entrySize'])if(t[k]!==s[k])bad('literal run strip section shape');if(s.type!==9&&!before.buffer.subarray(s.offset,s.offset+s.size).equals(after.buffer.subarray(t.offset,t.offset+t.size)))bad('literal run strip payload');}
+  return{mapping,added:added.map(s=>({...s,section:name(after,s)}))};
+}
+module.exports.literalRunStripCensus=literalRunStripCensus;

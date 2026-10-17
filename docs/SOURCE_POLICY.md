@@ -404,6 +404,10 @@ Shared-row retained ASM remains separately conserved and contributes no matching
 This representation changes no source-class rule: only mechanically classified PURE_C with sole
 linked ownership, exact target bytes and completed full-ROM verification counts as matching C.
 
+### Mixed native readonly producers
+
+The strict mixed readonly producer representation preserves immutable compiler assembly and native payload words. Its metadata derivatives select only the authenticated switch-table interval for C ownership and bind references to literal/zero storage retained from original ASM. Those retained bytes receive no matching-C credit. This representation does not change PURE_C classification requirements or permit source-level assembly injection; exact target ownership and the complete-ROM gates remain required.
+
 ## Single native owner with a shared read-only fragment
 
 `native-text-single-owner-readonly-fragment-projection` admits one complete physical

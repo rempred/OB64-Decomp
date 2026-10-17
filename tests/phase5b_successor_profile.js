@@ -72,6 +72,11 @@ const row566Reproduction = optionalValue('--row566-reproduction-root');
 if (Boolean(row566) !== Boolean(row566Reproduction) || (row566 && !cumulative)) {
   throw new Error('Row566 profile requires both roots and the cumulative profile');
 }
+const l4 = optionalValue('--l4-root');
+const l4Reproduction = optionalValue('--l4-reproduction-root');
+if (Boolean(l4) !== Boolean(l4Reproduction) || (l4 && !row566)) {
+  throw new Error('L4 profile requires both roots and row566 profile');
+}
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'ob64-phase5b-successor-profile-'));
 try {
   const acceptedResult = verifyPhase5aProduct(accepted);
@@ -242,6 +247,59 @@ try {
       const manifest = JSON.parse(fs.readFileSync(file, 'utf8')); manifest.extra = true;
       fs.writeFileSync(file, JSON.stringify(manifest, null, 2) + '\n');
     }, 'row566-unknown-manifest-field', { refreshManifest: false });
+  }
+
+  const l4Classes = (result) => [476, 496, 497].map((i) => result['row' + i].primary_class);
+  for (const oldResult of [acceptedResult, successorResult, cumulativeResult, row566 && verifyPhase5aProduct(row566)].filter(Boolean)) {
+    assert.deepStrictEqual(l4Classes(oldResult), ['data', 'data', 'data']);
+  }
+  if (l4) {
+    const fifth = verifyPhase5aProduct(l4);
+    const repeated = verifyPhase5aProduct(l4Reproduction);
+    assert.strictEqual(fifth.profile, 'row476-row496-row497-row565-row566-row585-code-cumulative-successor');
+    assert.deepStrictEqual(l4Classes(fifth), ['code', 'code', 'code']);
+    assert.deepStrictEqual(classes(fifth), ['code', 'code', 'code', 'code']);
+    assert.deepStrictEqual(fifth, repeated);
+    const fourth = verifyPhase5aProduct(row566);
+    assert.deepStrictEqual(fifth.files.filter((r, i) => JSON.stringify(r) !== JSON.stringify(fourth.files[i])).map(r => r.path), ['full-rom-primary-ledger.jsonl']);
+    const mutateRow = (root, index, field, value) => {
+      const file = path.join(root, 'full-rom-primary-ledger.jsonl');
+      const lines = fs.readFileSync(file, 'utf8').trim().split(/\r?\n/);
+      const row = JSON.parse(lines[index]); row[field] = value;
+      lines[index] = JSON.stringify(row); fs.writeFileSync(file, lines.join('\n') + '\n');
+    };
+    for (const index of [476, 496, 497]) {
+      const mutations = { primary_class: 'data', id: 'primary:forged', index: 9999,
+        rom_start: 0, rom_end_exclusive: 4, bytes: 4, owner_path: 'forged.s',
+        owner_sha256: '0'.repeat(64), source_form: 'forged', owner_kind: 'forged',
+        ambiguous: true, source_manifest_index: 2 };
+      for (const [field, value] of Object.entries(mutations)) {
+        rejects(l4, root => mutateRow(root, index, field, value), 'l4-forged-' + index + '-' + field);
+      }
+    }
+    for (const index of [475, 477, 494, 495, 498, 565, 566, 567, 585]) {
+      rejects(l4, root => mutateRow(root, index, 'primary_class', 'data'), 'l4-neighbor-' + index);
+    }
+    rejects(l4, root => {
+      const file = path.join(root, 'full-rom-primary-ledger.jsonl');
+      fs.appendFileSync(file, fs.readFileSync(file, 'utf8').split(/\r?\n/)[497] + '\n');
+    }, 'l4-duplicate-row');
+    rejects(l4, root => {
+      const file = path.join(root, 'full-rom-primary-ledger.jsonl');
+      const lines = fs.readFileSync(file, 'utf8').trim().split(/\r?\n/);
+      lines.splice(476, 1); fs.writeFileSync(file, lines.join('\n') + '\n');
+    }, 'l4-missing-row');
+    for (const mode of ['duplicate-file', 'missing-file', 'unknown-key', 'stale-hash']) {
+      rejects(l4, root => {
+        const file = path.join(root, 'verification/product-manifest.json');
+        const manifest = JSON.parse(fs.readFileSync(file, 'utf8'));
+        if (mode === 'duplicate-file') manifest.files[0] = manifest.files[1];
+        if (mode === 'missing-file') manifest.files.pop();
+        if (mode === 'unknown-key') manifest.extra = true;
+        if (mode === 'stale-hash') manifest.files[3].sha256 = fourth.primaryLedgerSha256;
+        fs.writeFileSync(file, JSON.stringify(manifest, null, 2) + '\n');
+      }, 'l4-' + mode, { refreshManifest: false });
+    }
   }
 
   console.log('phase5b_successor_profile: PASS');

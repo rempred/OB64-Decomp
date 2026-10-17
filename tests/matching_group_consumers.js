@@ -44,6 +44,8 @@ async function run(workbench) {
     [50, 'boot_resource_probe_large_record_check', 'func_00005978', 'boot_resource_checksum_chain'],
     [51, 'boot_resource_probe_small_record_check', 'func_00005A88', 'boot_resource_checksum_chain'],
     [55, 'boot_resource_probe_record_checksum_signature', 'func_00005D9C', 'boot_resource_checksum_chain'],
+    [494, 'func_0001fba8', 'func_0001fba0', 'audio_sl_0001fba0'],
+    [495, 'func_0001fbd4', 'func_0001fbcc', 'audio_sl_0001fba0'],
     [565, 'list_insert_head_000241f8', 'func_000241f8', 'thread_scheduler_000240b0'],
     [566, 'list_remove', 'func_00024250', 'thread_scheduler_000240b0'],
     [573, 'func_000246c0', 'func_000246C0', 'thread_scheduler_000240b0'],
@@ -54,6 +56,13 @@ async function run(workbench) {
   }).sort((a, b) => a[0] - b[0]);
   assert.deepEqual(actualAliases, expectedAliases, 'complete physical/canonical group alias census');
   for(const target of aliases){const active=resolveWorkbenchActiveTarget(groupedActive,target);
+    // These physical names predate the accepted eight-byte preamble fold-forward.
+    // The historical interior label must not replace the complete owner's entry.
+    if ([494, 495].includes(target.rowIndex)) {
+      assert.equal(target.symbolByteOffset, 0);
+      assert.throws(() => resolveWorkbenchActiveTarget(groupedActive, { symbol: target.symbol,
+        romStart: target.romStart + 8, vramStart: target.vramStart + 8 }), /supplied group identity drift/);
+    }
     assert.equal(resolveWorkbenchActiveTarget(groupedActive,{symbol:target.symbol}),active);
     assert.equal(resolveWorkbenchActiveTarget([], {symbol:target.symbol}),null);
     assert.equal(resolveWorkbenchActiveTarget([...groupedActive,...separatelyLoaded],{symbol:target.symbol}),active);

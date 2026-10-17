@@ -192,9 +192,11 @@ function loadDiagnosticEnvironment(session, options = {}) {
           const expectedElf = buildReport?.verification?.outputs?.elf;
           const verifiedElf = verification?.verification?.outputs?.elf;
           const acceptedControls = acceptedControlArtifacts(output, buildReport);
-          if (buildReport.schemaVersion !== 6 || buildReport.status !== 'pass'
-              || verification.schemaVersion !== 5 || verification.status !== 'pass'
-              || verification.verification?.status !== 'pass'
+          if (buildReport.schemaVersion !== 7 || buildReport.status !== 'pass'
+              || verification.schemaVersion !== 6 || verification.status !== 'pass'
+              || verification.verification?.schemaVersion !== 6 || verification.verification?.status !== 'pass'
+              || !textContract.same(verification.buildReport, { bytes: fs.statSync(buildReportFile).size, sha256: buildReportSha256 })
+              || !textContract.same(current.state.buildReport, verification.buildReport)
               || !expectedElf || !verifiedElf
               || expectedElf.sha256 !== acceptedElfSha256
               || verifiedElf.sha256 !== acceptedElfSha256
@@ -458,7 +460,10 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
       throw new Error('accepted control object lacks authenticated SHA-256 provenance');
     }
     const linkContext = textContract.linkContext(environment.output, fs.readFileSync(session.context.baserom.path), environment.acceptedElf);
-    textContract.validateRecords(replacement, textContract.recordsForTarget(activeMatches[0], environment.output, linkContext), 'diagnostic accepted control');
+    const representation = textContract.recordsForTarget(activeMatches[0], environment.output, linkContext);
+    textContract.withSourceObjectProof(environment.output, activeMatches[0], replacement, proof => {
+      textContract.validateRecords(proof, representation, 'diagnostic accepted control');
+    });
     const sourceObjectFile = resolveContained(environment.output, replacement.sourceObject, 'accepted source object');
     const control = objectEvidence(sourceObjectFile, target, {
       objectSha256: replacement.sourceObjectSha256,

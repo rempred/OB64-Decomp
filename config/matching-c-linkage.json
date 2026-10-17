@@ -6893,6 +6893,122 @@
     {
       "name": "osViModePalLan1",
       "address": "0x800ABBE0"
+    },
+    {
+      "name": "data_800AA710",
+      "address": "0x800AA710"
+    },
+    {
+      "name": "func_00020360",
+      "address": "0x8008FF60"
+    },
+    {
+      "name": "data_800AA460",
+      "address": "0x800AA460"
+    },
+    {
+      "name": "data_800AA4C8",
+      "address": "0x800AA4C8"
+    },
+    {
+      "name": "data_800AA550",
+      "address": "0x800AA550"
+    },
+    {
+      "name": "data_800AA578",
+      "address": "0x800AA578"
+    },
+    {
+      "name": "data_800AA5A0",
+      "address": "0x800AA5A0"
+    },
+    {
+      "name": "data_800AA5C8",
+      "address": "0x800AA5C8"
+    },
+    {
+      "name": "alHeapDBAlloc",
+      "address": "0x8008F890"
+    },
+    {
+      "name": "alSaveNew",
+      "address": "0x8008CDD8"
+    },
+    {
+      "name": "alAuxBusNew",
+      "address": "0x8008CD20"
+    },
+    {
+      "name": "alMainBusNew",
+      "address": "0x8008CD7C"
+    },
+    {
+      "name": "alSynAllocFX",
+      "address": "0x8008FF70"
+    },
+    {
+      "name": "alMainBusParam",
+      "address": "0x8008E850"
+    },
+    {
+      "name": "alLink",
+      "address": "0x8008F7FC"
+    },
+    {
+      "name": "alLoadNew",
+      "address": "0x8008CBE4"
+    },
+    {
+      "name": "alLoadParam",
+      "address": "0x8008D600"
+    },
+    {
+      "name": "alResampleNew",
+      "address": "0x8008CC94"
+    },
+    {
+      "name": "alResampleParam",
+      "address": "0x8008EA6C"
+    },
+    {
+      "name": "alEnvmixerNew",
+      "address": "0x8008CB2C"
+    },
+    {
+      "name": "alEnvmixerParam",
+      "address": "0x8008DF40"
+    },
+    {
+      "name": "alAuxBusParam",
+      "address": "0x8008DA0C"
+    },
+    {
+      "name": "alSaveParam",
+      "address": "0x8008F778"
+    },
+    {
+      "name": "alGlobals",
+      "address": "0x800AA710"
+    },
+    {
+      "name": "alUnlink",
+      "address": "0x8008F81C"
+    },
+    {
+      "name": "_init_lpfilter",
+      "address": "0x8008C5F0"
+    },
+    {
+      "name": "powerTable",
+      "address": "0x800AA5F0"
+    },
+    {
+      "name": "_freePVoice",
+      "address": "0x8008FE34"
+    },
+    {
+      "name": "__freeParam",
+      "address": "0x8008FDC8"
     }
   ],
   "targets": [
@@ -17330,10 +17446,6 @@
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0001f2a4",
-      "expectedRelocations": []
-    },
-    {
       "symbol": "func_00014614",
       "expectedRelocations": []
     },
@@ -17519,10 +17631,6 @@
     },
     {
       "symbol": "func_00018dd4",
-      "expectedRelocations": []
-    },
-    {
-      "symbol": "func_000201c8",
       "expectedRelocations": []
     },
     {
@@ -17891,14 +17999,6 @@
     },
     {
       "symbol": "func_00018e84",
-      "expectedRelocations": []
-    },
-    {
-      "symbol": "func_00020274",
-      "expectedRelocations": []
-    },
-    {
-      "symbol": "func_000202bc",
       "expectedRelocations": []
     },
     {
@@ -135370,6 +135470,187 @@
           "bytes": 8,
           "fillByte": 0,
           "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_0001eaf0",
+      "expectedRelocations": [],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 479,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0479",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "functionBytes": 28,
+        "tail": {
+          "ownerRowIndex": 479,
+          "offset": 28,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_0001fc50",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000014",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 498,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0498",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 52,
+        "tail": {
+          "ownerRowIndex": 498,
+          "offset": 52,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "bump_alloc",
+      "expectedRelocations": [],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 499,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0499",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "functionBytes": 72,
+        "tail": {
+          "ownerRowIndex": 499,
+          "offset": 72,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "mem_byte_copy",
+      "expectedRelocations": [],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 500,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0500",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 52,
+        "tail": {
+          "ownerRowIndex": 500,
+          "offset": 52,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
+    },
+    {
+      "symbol": "func_00020370",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_26",
+          "symbol": "func_0001ca94",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000054",
+          "type": "R_MIPS_26",
+          "symbol": "func_0001f2a4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000006C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0001ec50",
+          "section": ".rel.text"
+        }
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 511,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0511",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "functionBytes": 148,
+        "tail": {
+          "ownerRowIndex": 511,
+          "offset": 148,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
           "origin": "native-assembler-section-alignment"
         }
       }

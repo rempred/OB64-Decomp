@@ -451,6 +451,7 @@ function artifactSpecifications(target) {
   }
   if (compilationGroups.readonlyProducer(target.compilationGroup)) specs.push({ name: 'text-projected.o', destination: `objects/c/${symbol}.text-projected.o` });
   if(target.retainedLiteralReferences||target.compilationGroup?.retainedLiteralReferences)specs.push({name:'literal-projected.o',destination:`objects/c/${symbol}.literal-projected.o`},{name:'strip-intermediate.o',destination:`objects/c/${symbol}.strip-intermediate.o`});
+  if(compilationGroups.mixedMode(target.compilationGroup))specs.push({name:'mixed-projected.o',destination:`objects/c/${symbol}.mixed-projected.o`},{name:'strip-intermediate.o',destination:`objects/c/${symbol}.strip-intermediate.o`});
   specs.push({ name: 'final.o', destination: `objects/c/${symbol}.o` });
   return specs;
 }
@@ -621,9 +622,11 @@ const EXPECTED_ARTIFACT_IDENTITIES = Symbol('expected-artifact-identities');
 const ARTIFACT_ROLES = Object.freeze({
   'compilation-input.c': 'compilationInput', 'compiler.s': 'compilerAssembly', 'adjusted.s': 'assemblerInput',
   'source-object.o': 'rawObject', 'final.o': 'strippedObject', 'assembler-object.o': 'unsplitAssemblerObject',
+  'mixed-projected.o':'mixedProjectedObject',
   'literal-projected.o':'literalProjectedObject','strip-intermediate.o':'stripIntermediateObject',
 });
 function inspectCompiledTargetArtifacts(options) {
+  compilationGroups.authenticateLiteralRun(options.target.compilationGroup);
   if (options.target.compilationGroup) {
     const files = options.files;
     if ((compilationGroups.readonlyProducer(options.target.compilationGroup)||options.target.compilationGroup.retainedLiteralReferences)
@@ -636,6 +639,7 @@ function inspectCompiledTargetArtifacts(options) {
       compilationInput: files['compilation-input.c'], compilerAssembly: files['compiler.s'],
       assemblerInput: files['adjusted.s'], rawObject: files['source-object.o'],
       strippedObject: files['final.o'], unsplitAssemblerObject: files['assembler-object.o'],
+      ...(compilationGroups.mixedMode(options.target.compilationGroup)?{mixedProjectedObject:files['mixed-projected.o'],stripIntermediateObject:files['strip-intermediate.o']}:{}),
       ...(options.target.compilationGroup.retainedLiteralReferences?{literalProjectedObject:files['literal-projected.o'],stripIntermediateObject:files['strip-intermediate.o']}:{}),
       ...(compilationGroups.readonlyProducer(options.target.compilationGroup) ? { textProjectedObject: files['text-projected.o'] } : {}),
     });

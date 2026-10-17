@@ -15,10 +15,11 @@ const SHA = /^[0-9A-F]{64}$/;
 const FUNCTIONS_MODE = 'native-text-owner-functions-projection';
 const functionMode = group => group?.mode === FUNCTIONS_MODE;
 const fragmentMode = group => group?.mode === 'native-text-owner-functions-readonly-fragment-projection';
-const functionOwners = group => functionMode(group) || fragmentMode(group);
+const mixedMode = group => auxiliary.mixedMode(group);
+const fragmentLike = group => fragmentMode(group) || mixedMode(group);
+const functionOwners = group => functionMode(group) || fragmentLike(group);
 const singleFragment = group => auxiliary.singleFragment(group);
-const fragmentLike = group => fragmentMode(group) || singleFragment(group);
-const readonlyProducer = group => auxiliary.composed(group) || fragmentLike(group);
+const readonlyProducer = group => auxiliary.composed(group) || fragmentLike(group) || singleFragment(group);
 const functionContexts = new Map();
 const interiorContexts = new Map();
 const interior = group => group?.mode === 'native-text-readonly-interior-run-projection';
@@ -67,8 +68,8 @@ function fixedBindingRecords(group, symbols) {
 }
 function verifyFixedBindings(target, elf) {
   const group = target.compilationGroup;
-  if (!functionOwners(group)) return null;
-  authenticateFunctions(group);
+  if (!functionOwners(group) && !literalRun(group)) return null;
+  authenticateFunctions(group); authenticateLiteralRun(group);
   const evidence = [];
   for (const record of group.fixedBindings) {
     const matches = elf.symbols.filter(s => s.name === record.symbol);
@@ -115,15 +116,16 @@ function singleOwnerContract(group) {
 function auxiliaryMode(group) {
   if (readonlyProducer(group) || Object.prototype.hasOwnProperty.call(group, 'auxiliary')) auxiliary.groupContract(group);
 }
-function alignment(group, offset) { let value = interior(group) ? 4 : group.text.alignment; while (offset % value) value /= 2; return value; }
+function alignment(group, offset) { let value = (interior(group)||literalRun(group)) ? 4 : group.text.alignment; while (offset % value) value /= 2; return value; }
 function stem(target) { return target.compilationGroup ? 'groups/' + target.compilationGroup.id : target.symbol; }
 function objectPath(target, suffix = '.o') { return 'objects/c/' + stem(target) + suffix; }
 function assemblyPath(target, suffix = '.compiler.s') { return 'generated/c/' + stem(target) + suffix; }
 function members(phase8, target) { return target.compilationGroup
   ? target.compilationGroup.members.map(member => phase8.targets.find(candidate => candidate.symbol === member.symbol)) : [target]; }
 function normalizeAuxiliary(group) {
+  if(mixedMode(group))return auxiliary.normalizeMixed(group);
   if (singleFragment(group)) return auxiliary.normalizeSingleFragment(group);
-  if (fragmentMode(group)) return auxiliary.normalizeFragment(group);
+  if (fragmentLike(group)) return auxiliary.normalizeFragment(group);
   auxiliary.groupContract(group);
   const contracts = group.auxiliary.sections.map(({ memberSymbol, ...section }) => section);
   return require('./active_targets').normalizeAuxiliarySectionContracts(contracts, group.id, 'group auxiliary', group.auxiliary.projection, group)
@@ -148,7 +150,7 @@ function validateNativeRelocationOrder(group) {
     const owner = functionOwners(group) ? memberIndexAt(group, relocation.offset) : fnIndex;
     if (functionOwners(group) && (fnIndex < 0 || fnIndex < previousFunction)) fail('native relocation function interleaving');
     previousFunction = fnIndex;
-    if (functionOwners(group) && relocation.symbolSection === '.text' && relocation.type === 4) {
+    if ((functionOwners(group)||literalRun(group)) && relocation.symbolSection === '.text' && relocation.type === 4) {
       const destination = relocation.symbolValue + (relocation.word & 0x03ffffff) * 4;
       if (destination % 4 || !group.functions.some(fn => destination >= fn.offset && destination + 4 <= fn.offset + fn.bytes)) fail('native function reference into tail/outside body');
     }
@@ -163,7 +165,7 @@ function validateNativeRelocationOrder(group) {
       if (!high?.length) fail('native LO16 without pending HI16');
       if (high.some(value => value.owner !== owner)) fail('native cross-owner HI16/LO16 pair');
       if (functionOwners(group) && high.some(value => value.fnIndex !== fnIndex)) fail('native cross-function HI16/LO16 pair');
-      if (functionOwners(group) && relocation.symbolSection === '.text') for (const entry of high) {
+      if ((functionOwners(group)||literalRun(group)) && relocation.symbolSection === '.text') for (const entry of high) {
         const low = relocation.word & 65535, addend = (((entry.word & 65535) << 16) + (low & 32768 ? low - 65536 : low)) >>> 0;
         const destination = relocation.symbolValue + addend;
         if (destination % 4 || !group.functions.some(fn => destination >= fn.offset && destination + 4 <= fn.offset + fn.bytes)) fail('native function HI/LO reference into tail/outside body');
@@ -179,15 +181,16 @@ function registry(config, profile) {
   const ids = new Set(), symbols = new Set(), sources = new Set();
   for (const group of config.groups) {
     requireKeys(group, ['id', 'source', 'mode', 'members', 'text', 'functions', 'tail', 'relocations',
-      ...(group.retainedLiteralReferences ? ['retainedLiteralReferences'] : []), ...(readonlyProducer(group) ? ['auxiliary'] : []), ...(interior(group) ? ['interiorRun'] : [])], 'producer');
-    if (fragmentLike(group) && group.retainedLiteralReferences) fail('fragment cannot combine retained literal mode');
+      ...(group.retainedLiteralReferences ? ['retainedLiteralReferences'] : []), ...(readonlyProducer(group) ? ['auxiliary'] : []), ...(interior(group) ? ['interiorRun'] : []), ...(literalRun(group)?['retainedNativeAlignment']:[])], 'producer');
+    if ((fragmentLike(group) || singleFragment(group)) && group.retainedLiteralReferences) fail('fragment cannot combine retained literal mode');
     if(interior(group)) interiorContract(group);
+    if(literalRun(group))literalRunContract(group);
     if (readonlyProducer(group)) {
-      requireKeys(group.auxiliary, singleFragment(group) ? ['sections','compilerLabel','alignmentDirectives','nativeSection'] : fragmentMode(group) ? ['sections', 'compilerLabel', 'alignmentDirectives'] : ['sections', 'projection'], 'auxiliary producer');
+      requireKeys(group.auxiliary, singleFragment(group) ? ['sections','compilerLabel','alignmentDirectives','nativeSection'] : mixedMode(group) ? ['sections','compilerLabel','alignmentDirectives','mixed'] : fragmentLike(group) ? ['sections', 'compilerLabel', 'alignmentDirectives'] : ['sections', 'projection'], 'auxiliary producer');
       const sections = normalizeAuxiliary(group);
       auxiliary.groupContract({ ...group, auxiliary: { ...group.auxiliary, sections } });
     }
-    if (!SAFE_ID.test(group.id) || ids.has(group.id) || (!readonlyProducer(group) && !functionOwners(group) && group.mode !== 'native-text-owner-projection')
+    if (!SAFE_ID.test(group.id) || ids.has(group.id) || (!readonlyProducer(group) && !functionOwners(group) && !literalRun(group) && group.mode !== 'native-text-owner-projection')
         || typeof group.source !== 'string' || !group.source.endsWith('.c') || sources.has(group.source)
         || path.isAbsolute(group.source) || group.source.includes('\\') || group.source.split('/').some(part => !part || part === '.' || part === '..')) fail('producer identity');
     ids.add(group.id); sources.add(group.source);
@@ -220,6 +223,7 @@ function registry(config, profile) {
     if(group.retainedLiteralReferences)literals.registryGroups(group);
     if(singleFragment(group)) singleOwnerContract(group);
     validateNativeRelocationOrder(group);
+    if(mixedMode(group))auxiliary.mixedReferenceSets(group);
   }
   return config.groups;
 }
@@ -248,14 +252,14 @@ function bind(groups, targets, context = {}) {
           || !same(placement(target), placement(first))
           || target.overlayDescriptorId !== first.overlayDescriptorId || target.descriptorRawSha256 !== first.descriptorRawSha256
           || memberFunctions(group, index)[0].offset !== offset
-          || target.bytes !== memberFunctions(group, index).reduce((n, f) => n + f.bytes, 0) + (index === selected.length - 1 && !interior(group) ? group.tail.bytes : 0)) fail('member placement/extent');
+          || target.bytes !== memberFunctions(group, index).reduce((n, f) => n + f.bytes, 0) + (index === selected.length - 1 && !interior(group) && !literalRun(group) ? group.tail.bytes : 0)) fail('member placement/extent');
       assigned.add(target.symbol);
       const owner = { ...target.textOwners[0], groupOffset: offset, alignment: alignment(group, offset) };
       delete owner.row;
       offset += target.bytes;
       return owner;
     });
-    if (offset !== (interior(group) ? group.tail.offset : group.text.bytes)) fail('group extent');
+    if (offset !== ((interior(group)||literalRun(group)) ? group.tail.offset : group.text.bytes)) fail('group extent');
     const normalized = { ...group, owners, romStart: first.romStartNumber, vramStart: first.vramStartNumber };
     for (const [index, target] of selected.entries()) {
       target.compilationGroup = normalized;
@@ -274,23 +278,24 @@ function bind(groups, targets, context = {}) {
       normalized.fixedBindings = fixedBindingRecords(normalized, context.linkSymbols || {});
       functionContexts.set(hash(normalized), { groupIdentity: hash(normalized), registry: logicalRegistry, rows: selected.map(t => t.row) });
     }
+    if(literalRun(group))bindLiteralRun(normalized,context,targets);
     if (readonlyProducer(group)) {
       const active = require('./active_targets');
       normalized.auxiliary = { ...group.auxiliary, sections: normalizeAuxiliary(normalized) };
       normalized.auxiliary.sections = normalized.auxiliary.sections.flatMap(section => active.resolveAuxiliarySectionContracts(
         context.model, context.baserom, selected.find(target => auxiliary.bundle(normalized) ? auxiliary.memberSections(normalized,target.symbol).some(s=>s.outputSection===section.outputSection) : target.symbol === section.memberSymbol), [section]));
       for (const member of selected) member.auxiliarySections = auxiliary.memberSections(normalized, member.symbol);
-      if (!fragmentLike(group)) {
+      if (!fragmentLike(group) && !singleFragment(group)) {
         auxiliary.assertCompleteGroupRows(normalized);
         normalized.auxiliary.retained = auxiliary.retainedBindings(first, context.model, context.baserom);
       }
       if(interior(group)) bindInterior(normalized, context.model, context.baserom);
     }
     if (singleFragment(group)) bindSingleFragmentContext(normalized, selected[0], context);
-    if (fragmentMode(group)) {
+    if (fragmentLike(group)) {
       const logical = require('./logical_functions');
       const registry = context.logicalRegistry || logical.loadRegistry(context.model, context.baserom);
-      const binding = { groupIdentity: hash(normalized), registry, rows: selected.map(t => t.row) };
+      const binding = { groupIdentity: hash(normalized), registry, rows: selected.map(t => t.row), model: context.model, baserom: context.baserom };
       functionContexts.set(hash(normalized), binding);
       fragmentBindingContexts.set(normalized, { identity: fragmentUnorderedIdentity(normalized), context: binding });
     }
@@ -318,12 +323,13 @@ function relocations(elf) {
   return result;
 }
 function allocation(elf, group, stage, literalStage = null) {
+  if(mixedMode(group))auxiliary.assertMixedStage(elf,group,stage,literalStage);
   const names = new Set();
   for (const sec of elf.sections) { if (sec.name && names.has(sec.name)) fail('duplicate section'); names.add(sec.name); }
   const projected = stage !== 'raw', stripped = stage === 'stripped';
   const textNames = projected ? group.owners.map(owner => owner.sectionName) : ['.text'];
   const roNames = readonlyProducer(group) ? auxiliary.groupReadonlyNames(group, stage) : [];
-  if (fragmentLike(group)) {
+  if (fragmentLike(group) || singleFragment(group)) {
     const nullSections = elf.sections.filter(sec => sec.name === '' || sec.type === 0);
     if (nullSections.length !== 1 || nullSections[0].index !== 0 || nullSections[0].name !== ''
         || ['nameOffset', 'type', 'flags', 'address', 'offset', 'size', 'link', 'info', 'alignment', 'entrySize']
@@ -373,8 +379,9 @@ function census(elf, group, stage, literalStage = null) {
     all.push(elfSectionBytes(elf, sec));
   }
   const bytes = Buffer.concat(all);
-  if (sha256Buffer(bytes) !== (interior(group) && !raw ? group.interiorRun.expectedProjectedTextSha256 : group.text.sha256)) fail('raw text hash');
-  if ((!interior(group) || raw) && !bytes.subarray(group.tail.offset).equals(Buffer.alloc(group.tail.bytes))) fail('native tail bytes');
+  if (sha256Buffer(bytes) !== (literalRun(group)&&!raw?literalStage.proof.textHash:interior(group) && !raw ? group.interiorRun.expectedProjectedTextSha256 : group.text.sha256)) fail('raw text hash');
+  if (((!interior(group)&&!literalRun(group)) || raw) && !bytes.subarray(group.tail.offset).equals(Buffer.alloc(group.tail.bytes))) fail('native tail bytes');
+  const branchDestinations=literalRun(group)?literalRunBranchCensus(bytes,group):null;
   const offsetOf = sec => raw ? (sec.name === '.text' ? 0 : undefined)
     : group.owners.find(owner => owner.sectionName === sec.name)?.groupOffset;
   const functions = elf.symbols.filter(symbol => symbol.symbolType === 2).map(symbol => {
@@ -385,6 +392,7 @@ function census(elf, group, stage, literalStage = null) {
   }).sort((a, b) => a.offset - b.offset || a.symbol.localeCompare(b.symbol));
   if (!same(functions, group.functions)) fail('complete function census');
   for (const symbol of elf.symbols) {
+    if(literalRun(group)&&symbol.sectionIndex===0xfff1&&symbol.value>=group.vramStart+group.tail.offset&&symbol.value<group.vramStart+group.text.bytes)fail('literal run absolute symbol into omitted native suffix');
     const sec = elf.sections[symbol.sectionIndex];
     const compilerMarker = symbol.name === 'gcc2_compiled.' && symbol.symbolType === 1 && symbol.binding === 0
       && symbol.visibility === 0 && symbol.size === 0 && symbol.value === 0 && sec?.index === sections[0].index;
@@ -412,17 +420,17 @@ function census(elf, group, stage, literalStage = null) {
       symbolValue: rel.symbol.value + (destOffset || 0), symbolSection, word: bytes.readUInt32BE(offset) };
   });
   if (!same(records, group.relocations)) fail('complete load relocation census');
-  return { bytes: bytes.length, sha256: sha256Buffer(bytes), functions, relocations: records };
+  return { bytes: bytes.length, sha256: sha256Buffer(bytes), functions, relocations: records, ...(branchDestinations?{branchDestinations}:{}) };
 }
 function validateObject(elf, group, stage) {
   auxiliaryMode(group);
-  authenticateFunctions(group);
+  authenticateFunctions(group); authenticateLiteralRun(group);
   if(singleFragment(group)) authenticateSingleFragment(group);
   if(interior(group)) authenticateInterior(group);
   validateNativeRelocationOrder(group);
   if (![...['raw', 'projected', 'stripped'], ...(readonlyProducer(group) ? ['text-projected'] : [])].includes(stage) || elf.header.type !== 1 || elf.header.machine !== 8
       || elf.header.entry !== 0 || elf.header.phoff !== 0 || elf.header.phnum !== 0) fail('relocatable object header/stage');
-  const literalStage=group.retainedLiteralReferences?literals.groupStage(elf.buffer,group,stage):null;
+  const literalStage=mixedMode(group)?auxiliary.mixedStage(elf,group,stage):group.retainedLiteralReferences?literals.groupStage(elf.buffer,group,stage):null;
   return { schemaVersion: 1, stage, groupSha256: hash(group), objectFlags: elf.header.flags,
     metadata: allocation(elf, group, stage, literalStage), ...census(elf, group, stage, literalStage),
     ...(literalStage?{retainedLiteralCensus:literals.census(elf.buffer)}:{}),
@@ -431,6 +439,7 @@ function validateObject(elf, group, stage) {
 }
 function project(input, group) {
   const raw = parseBuffer(input), rawEvidence = validateObject(raw, group, 'raw');
+  if(mixedMode(group)){const result=auxiliary.mixedProject(input,group);validateObject(parseBuffer(result.intermediate),group,'text-projected');validateObject(parseBuffer(result.buffer),group,'projected');return result;}
   const literalProjection=group.retainedLiteralReferences?literals.groupProject(input,group):null;
   const result = literalProjection || projectNativeTextOwners(interior(group) ? trimInterior(input,group) : input, group.owners.map(owner => ({ sectionName: owner.sectionName, bytes: owner.bytes })),
     (auxiliary.singleOwner(group) || singleFragment(group)) ? group.mode : null);
@@ -472,8 +481,8 @@ function contract(target) {
   auxiliary.assertMemberSections(target);
   const tc = require('./text_contract'), group = target.compilationGroup, owner = group.owners[target.groupMemberIndex];
   const ordinary = tc.resolveTextContract({ ...target, compilationGroup: null });
-  return { ...ordinary, ...(group.retainedLiteralReferences?{retainedLiteralReferences:group.retainedLiteralReferences,retainedLiteralBinding:group.retainedLiteralBinding,literalImplementationSha256:require('./phase7_conventional').sha256File(require.resolve('./retained_literal_references'))}:{}), schemaVersion: singleFragment(group) ? 15 : fragmentMode(group) ? 12 : interior(group) ? 9 : auxiliary.bundle(group) ? 8 : auxiliary.singleOwner(group) ? 6 : functionOwners(group) ? 5 : readonlyProducer(group) ? 4 : 2,
-    ...(functionOwners(group) || auxiliary.singleOwner(group) || singleFragment(group) ? { tail: target.groupMemberIndex === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null } : {}), mode: group.mode, producer: group,
+  return { ...ordinary, ...(group.retainedLiteralReferences?{retainedLiteralReferences:group.retainedLiteralReferences,retainedLiteralBinding:group.retainedLiteralBinding,literalImplementationSha256:require('./phase7_conventional').sha256File(require.resolve('./retained_literal_references'))}:{}), schemaVersion: singleFragment(group)?15:literalRun(group)?14:mixedMode(group) ? 13 : fragmentLike(group) ? 12 : interior(group) ? 9 : auxiliary.bundle(group) ? 8 : auxiliary.singleOwner(group) ? 6 : functionOwners(group) ? 5 : readonlyProducer(group) ? 4 : 2,
+    ...(literalRun(group)?{tail:null}:{}), ...(functionOwners(group) || auxiliary.singleOwner(group) || singleFragment(group) ? { tail: target.groupMemberIndex === group.members.length - 1 ? { ...group.tail, offset: group.tail.offset - owner.groupOffset } : null } : {}), mode: group.mode, producer: group,
     memberIndex: target.groupMemberIndex,
     ...(auxiliary.bundle(group) ? { memberOccurrences: auxiliary.groupOccurrences(group).filter(o=>o.memberSymbol===target.symbol) } : {}),
     owners: ordinary.owners.map(value => ({ ...value,
@@ -488,6 +497,7 @@ function evidence(target, root, files = null) {
     compilerAssembly: artifact('compilerAssembly', assemblyPath(target)), assemblerInput: artifact('assemblerInput', assemblyPath(target, '.s')),
     rawObject: artifact('rawObject', objectPath(target, '.source-object.o')), strippedObject: artifact('strippedObject', objectPath(target)),
     unsplitAssemblerObject: artifact('unsplitAssemblerObject', objectPath(target, '.assembler-object.o')),
+    ...(mixedMode(group)?{mixedProjectedObject:artifact('mixedProjectedObject',objectPath(target,'.mixed-projected.o')),stripIntermediateObject:artifact('stripIntermediateObject',objectPath(target,'.strip-intermediate.o'))}:{}),
     ...(group.retainedLiteralReferences ? {literalProjectedObject:artifact('literalProjectedObject',objectPath(target,'.literal-projected.o')),stripIntermediateObject:artifact('stripIntermediateObject',objectPath(target,'.strip-intermediate.o'))}:{}),
     ...(readonlyProducer(group) ? { textProjectedObject: artifact('textProjectedObject', objectPath(target, '.text-projected.o')) } : {}) };
   const read = role => fs.readFileSync(files ? files[role] : path.join(root, artifacts[role].path));
@@ -498,6 +508,7 @@ function evidence(target, root, files = null) {
   const native = parseBuffer(read('unsplitAssemblerObject')), projected = parseBuffer(read('rawObject')), stripped = parseBuffer(read('strippedObject'));
   const reproduction = project(native.buffer, group);
   if (readonlyProducer(group) && !reproduction.intermediate.equals(read('textProjectedObject'))) fail('intermediate text projection is not reproducible');
+  if(mixedMode(group)&&!reproduction.mixedIntermediate.equals(read('mixedProjectedObject')))fail('mixed metadata projection is not reproducible');
   const stages = { raw: validateObject(native, group, 'raw'),
     ...(readonlyProducer(group) ? { textProjected: validateObject(parseBuffer(reproduction.intermediate), group, 'text-projected') } : {}), projected: validateObject(projected, group, 'projected'),
     stripped: validateObject(stripped, group, 'stripped') };
@@ -509,6 +520,7 @@ function evidence(target, root, files = null) {
   // Independently inspect both objects in addition to deterministic writer replay.
   if (!reproduction.buffer.equals(projected.buffer)) fail('projection is not reproducible');
   const literalEvidence=group.retainedLiteralReferences?literals.derive(literals.groupTarget(group),root,{native:files?files.unsplitAssemblerObject:path.join(root,artifacts.unsplitAssemblerObject.path),reference:files?files.literalProjectedObject:path.join(root,artifacts.literalProjectedObject.path),source:files?files.rawObject:path.join(root,artifacts.rawObject.path),intermediate:files?files.stripIntermediateObject:path.join(root,artifacts.stripIntermediateObject.path),final:files?files.strippedObject:path.join(root,artifacts.strippedObject.path)}):null;
+  const mixedEvidence=mixedMode(group)?auxiliary.mixedDerive(target,root,Object.fromEntries(Object.keys(artifacts).map(role=>[role,files?files[role]:path.join(root,artifacts[role].path)]))):null;
   const memberContract = contract(target), rawOwners = tc.ownerEvidence(projected, memberContract), strippedOwners = tc.ownerEvidence(stripped, memberContract);
   if (!same(rawOwners.map(value => value.record), strippedOwners.map(value => value.record))) fail('strip changed owner');
   const normalizedRelocations = memberRelocations(target, projected);
@@ -517,13 +529,13 @@ function evidence(target, root, files = null) {
   const strippedFunctions = tc.functionCensus(stripped, strippedOwners.map(value => value.section));
   if (!same(rawFunctions, strippedFunctions)) fail('strip changed member functions');
   const rawRelocations = require('./phase8_matching_c').rawRelocationRecords(projected);
-  return { ...(literalEvidence?{retainedLiteralReferences:literalEvidence}:{}), schemaVersion: singleFragment(group)?23:fragmentMode(group)?20:literalEvidence?19:interior(group) ? 13 : auxiliary.bundle(group) ? 12 : auxiliary.singleOwner(group) ? 10 : functionOwners(group) ? 9 : readonlyProducer(group) ? 7 : 3,
-    ...(readonlyProducer(group) ? { composition: { schemaVersion: singleFragment(group) ? 9 : fragmentMode(group) ? 7 : interior(group) ? 6 : auxiliary.bundle(group) ? 5 : auxiliary.singleOwner(group) ? 3 : 2, groupSha256: hash(group),
+  return { ...(mixedEvidence?{mixedReadonly:mixedEvidence}:{}), ...(literalEvidence?{retainedLiteralReferences:literalEvidence}:{}), schemaVersion: singleFragment(group)?23:literalRun(group)?22:mixedMode(group)?21:fragmentLike(group)?20:literalEvidence?19:interior(group) ? 13 : auxiliary.bundle(group) ? 12 : auxiliary.singleOwner(group) ? 10 : functionOwners(group) ? 9 : readonlyProducer(group) ? 7 : 3,
+    ...(readonlyProducer(group) ? { composition: { schemaVersion: singleFragment(group)?9:mixedMode(group) ? 8 : fragmentLike(group) ? 7 : interior(group) ? 6 : auxiliary.bundle(group) ? 5 : auxiliary.singleOwner(group) ? 3 : 2, groupSha256: hash(group),
       nativeObjectSha256: sha256Buffer(native.buffer), textProjectedObjectSha256: sha256Buffer(reproduction.intermediate),
       projectedObjectSha256: sha256Buffer(projected.buffer), strippedObjectSha256: sha256Buffer(stripped.buffer),
       implementationSha256: require('./phase7_conventional').sha256File(require.resolve('./auxiliary_projection')),
       ...(singleFragment(group) ? { singleFragmentImplementationSha256: singleFragmentImplementationIdentity() } : {}),
-      ...(fragmentMode(group) ? { fragmentImplementationSha256: fragmentImplementationIdentity() } : {}),
+      ...(fragmentLike(group) ? { fragmentImplementationSha256: fragmentImplementationIdentity() } : {}),
       auxiliaryContract: group.auxiliary,
       conservedTextProjection: auxiliary.conservedOutsideReadonly(parseBuffer(reproduction.intermediate), group),
       conservedFinalProjection: auxiliary.conservedOutsideReadonly(projected, group) } } : {}), textContractSha256: hash(memberContract), artifacts, producerStages: stages,
@@ -532,8 +544,8 @@ function evidence(target, root, files = null) {
     rawRelocations: rawRelocations.filter(value => value.section === '.rel' + target.sectionName),
     discardedAncillaryRelocations: rawRelocations.filter(value => !group.owners.some(owner => value.section === '.rel' + owner.sectionName)
       && !(readonlyProducer(group) && group.auxiliary.sections.some(section => value.section === '.rel' + section.outputSection))),
-    tail: target.groupMemberIndex === group.members.length - 1 && !interior(group) ? group.tail : null,
-    assemblyMode: singleFragment(group) ? 'untouched-native-text-single-owner-readonly-fragment-projection' : fragmentMode(group) ? 'untouched-native-text-owner-functions-readonly-fragment-projection' : interior(group) ? 'untouched-native-text-readonly-interior-run-projection' : auxiliary.singleOwner(group) ? 'untouched-native-text-readonly-single-owner-projection' : functionOwners(group) ? 'untouched-native-text-owner-functions-projection' : readonlyProducer(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
+    tail: target.groupMemberIndex === group.members.length - 1 && !interior(group) && !literalRun(group) ? group.tail : null,
+    assemblyMode: singleFragment(group)?'untouched-native-text-single-owner-readonly-fragment-projection':literalRun(group)?'untouched-native-text-owner-retained-literal-run-projection':mixedMode(group) ? 'untouched-native-text-owner-functions-mixed-readonly-fragment-projection' : fragmentLike(group) ? 'untouched-native-text-owner-functions-readonly-fragment-projection' : interior(group) ? 'untouched-native-text-readonly-interior-run-projection' : auxiliary.singleOwner(group) ? 'untouched-native-text-readonly-single-owner-projection' : functionOwners(group) ? 'untouched-native-text-owner-functions-projection' : readonlyProducer(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
 }
 const compiledProducers = new Map();
 function compile(phase8, target, output, compiler, assembler, objcopy, options) {
@@ -565,8 +577,9 @@ function compile(phase8, target, output, compiler, assembler, objcopy, options) 
     const projection = project(fs.readFileSync(rawFile), target.compilationGroup);
     fs.writeFileSync(projectedFile, projection.buffer, { flag: 'wx' });
     if (readonlyProducer(target.compilationGroup)) fs.writeFileSync(path.join(output, objectPath(target, '.text-projected.o')), projection.intermediate, { flag: 'wx' });
-    const stripFile=target.compilationGroup.retainedLiteralReferences?path.join(output,objectPath(target,'.strip-intermediate.o')):finalFile;
+    const stripFile=(target.compilationGroup.retainedLiteralReferences||mixedMode(target.compilationGroup))?path.join(output,objectPath(target,'.strip-intermediate.o')):finalFile;
     p7.run(objcopy, ['--remove-section=.reginfo', '--remove-section=.pdr', '--remove-section=.comment', '--remove-section=.note', projectedFile, stripFile], { cwd: output });
+    if(mixedMode(target.compilationGroup)){fs.writeFileSync(path.join(output,objectPath(target,'.mixed-projected.o')),projection.mixedIntermediate,{flag:'wx'});fs.writeFileSync(finalFile,auxiliary.correctMixedStrip(projection.buffer,fs.readFileSync(stripFile),target.compilationGroup).buffer,{flag:'wx'});}
     if(target.compilationGroup.retainedLiteralReferences){fs.writeFileSync(path.join(output,objectPath(target,'.literal-projected.o')),projection.referenceProjected,{flag:'wx'});fs.writeFileSync(finalFile,literals.correctStrip(projection.buffer,fs.readFileSync(stripFile),literals.groupTarget(target.compilationGroup),projection.evidence).buffer,{flag:'wx'});}
     evidence(target, output);
     compiledProducers.set(key, identity);
@@ -595,7 +608,7 @@ function compiledMember(target, output, classification, files = null) {
         target.symbol + ' ' + section.outputSection + ' group member auxiliary');
       return { compilerSection: section.compilerSection, outputSection: section.outputSection, bytes: value.selectedBytes.length,
         sha256: sha256Buffer(value.selectedBytes), alignment: value.section.alignment, flags: value.section.flags,
-        relocations: value.relocations, ...value.padding, retainedInteriorBefore: fragmentLike(target.compilationGroup) ? require("./auxiliary_interior").projectInterior(section) : null,
+        relocations: value.relocations, ...value.padding, retainedInteriorBefore: (fragmentLike(target.compilationGroup) || singleFragment(target.compilationGroup)) ? require("./auxiliary_interior").projectInterior(section) : null,
         ...(compilerOccurrences === null ? {} : { compilerOccurrences }) };
     }) };
 }
@@ -644,7 +657,7 @@ const bundleProofContexts = new Map();
 const bundleArtifactIdentities = new Set();
 function registerBundleProofContext(phase8, target, output, classification, rom, proof) {
   if(singleFragment(target.compilationGroup)) { singleFragmentProofContexts.set(hash(proof.objectEvidence.artifacts)+":"+target.symbol,{phase8,target,output:path.resolve(output),classification,rom:Buffer.from(rom)}); return; }
-  if (fragmentMode(target.compilationGroup)) {
+  if (fragmentLike(target.compilationGroup)||literalRun(target.compilationGroup)) {
     fragmentProofContexts.set(hash(proof.objectEvidence.artifacts) + ":" + target.symbol, { phase8, target, output: path.resolve(output), classification, rom: Buffer.from(rom) });
     return;
   }
@@ -676,7 +689,7 @@ Object.assign(module.exports, { registerBundleProofContext, validateBundleProofA
 
 function validateComposedProof(proof) {
   if(singleFragmentProofSelected(proof)) return validateSingleFragmentProof(proof);
-  if (fragmentMode(proof.textContract?.producer)) return validateFragmentProof(proof);
+  if (fragmentLike(proof.textContract?.producer)) return validateFragmentProof(proof);
   validateBundleProofArtifacts(proof);
   const object = proof.objectEvidence, text = proof.textContract;
   if (text?.producer) auxiliaryMode(text.producer);
@@ -926,13 +939,14 @@ function validateComposedStage(stage, group, artifact) {
 }
 Object.assign(module.exports, { validateComposedProof, singleOwnerContract });
 
-Object.assign(module.exports, { functionMode, fragmentMode, functionOwners, readonlyProducer, memberFunctions, authenticateFunctions, fixedBindingRecords, verifyFixedBindings });
+Object.assign(module.exports, { functionMode, fragmentMode, mixedMode, fragmentLike, functionOwners, readonlyProducer, memberFunctions, authenticateFunctions, fixedBindingRecords, verifyFixedBindings });
 
 // Distinct v5/v9 evidence for the owner/function mode. A self-compared report
 // still needs current authenticated group context and complete stage censuses.
 function validateFunctionGroupProof(proof) {
   if(singleFragmentProofSelected(proof)) return validateSingleFragmentProof(proof);
-  if (fragmentMode(proof.textContract?.producer) || proof.textContract?.schemaVersion === 12 || proof.objectEvidence?.schemaVersion === 20) return validateFragmentProof(proof);
+  if(literalRun(proof.textContract?.producer)||proof.textContract?.schemaVersion===14||proof.objectEvidence?.schemaVersion===22)return validateLiteralRunProof(proof);
+  if (fragmentLike(proof.textContract?.producer) || [12,13].includes(proof.textContract?.schemaVersion) || [20,21].includes(proof.objectEvidence?.schemaVersion)) return validateFragmentProof(proof);
   const group = proof.textContract?.producer, object = proof.objectEvidence;
   if (!functionMode(group) && object?.schemaVersion !== 9 && proof.textContract?.schemaVersion !== 5) return;
   if (!functionMode(group) || proof.textContract.schemaVersion !== 5 || object?.schemaVersion !== 9
@@ -1219,21 +1233,22 @@ function fragmentUnorderedIdentity(group) {
   return hash({ ...group, auxiliary: { ...group.auxiliary, sections: group.auxiliary.sections.map(({ownerFragmentIndex,ownerFragmentCount,...a})=>a) } });
 }
 function finishFragmentBindings(targets) {
-  for (const group of new Set(targets.map(t=>t.compilationGroup).filter(fragmentMode))) {
+  for (const group of new Set(targets.map(t=>t.compilationGroup).filter(fragmentLike))) {
     const bound = fragmentBindingContexts.get(group);
     if (!bound || fragmentUnorderedIdentity(group) !== bound.identity) fail('fragment shared-row binding changed');
+    if(mixedMode(group))literals.bindMixed(group,targets,bound.context.model,bound.context.baserom);
     functionContexts.set(hash(group), { ...bound.context, groupIdentity: hash(group) });
   }
 }
 function validateFragmentProof(proof) {
   const group = proof.textContract?.producer, object = proof.objectEvidence;
-  if (!fragmentMode(group) || proof.textContract.schemaVersion !== 12 || object?.schemaVersion !== 20
-      || object.composition?.schemaVersion !== 7 || proof.textContract.mode !== group.mode
-      || object.assemblyMode !== 'untouched-native-text-owner-functions-readonly-fragment-projection'
+  if (!fragmentLike(group) || proof.textContract.schemaVersion !== (mixedMode(group)?13:12) || object?.schemaVersion !== (mixedMode(group)?21:20)
+      || object.composition?.schemaVersion !== (mixedMode(group)?8:7) || proof.textContract.mode !== group.mode
+      || object.assemblyMode !== (mixedMode(group)?'untouched-native-text-owner-functions-mixed-readonly-fragment-projection':'untouched-native-text-owner-functions-readonly-fragment-projection')
       || object.compilerAssemblyRewritten !== false) fail('fragment proof schema');
-  authenticateFunctions(group); auxiliary.fragmentContract(group); validateNativeRelocationOrder(group);
+  authenticateFunctions(group); auxiliary.groupContract(group); validateNativeRelocationOrder(group);
   const key = hash(object.artifacts) + ':' + proof.target?.symbol, context = fragmentProofContexts.get(key);
-  if (!context || !fragmentMode(context.target.compilationGroup)
+  if (!context || !fragmentLike(context.target.compilationGroup)
       || !same(contract(context.target), proof.textContract)) fail('fragment proof lacks fresh authenticated context');
   require('./source_policy').verifyClassificationInputs(context.classification);
   const fresh = require('./phase8_matching_c').deriveSourceObjectProof(context.phase8, context.target,
@@ -1241,6 +1256,109 @@ function validateFragmentProof(proof) {
   if (!same(fresh, proof)) fail('fragment proof differs from independent artifact/link reconstruction');
 }
 Object.assign(module.exports, { validateFragmentProof, finishFragmentBindings });
+
+const literalRun = group => group?.mode === 'native-text-owner-retained-literal-run-projection';
+const literalRunContexts = new Map();
+function literalRunIdentity(group){const {logicalBinding,retainedNeighborBinding,fixedBindings,fixedBindingIdentity,retainedLiteralBinding,...rest}=group;return hash(rest);}
+function literalRunContract(group){
+  if(!literalRun(group)||group.retainedLiteralReferences?.schemaVersion!==2||group.retainedLiteralReferences.bytes!==32
+    ||group.text.alignment!==16||group.tail.bytes!==4||group.tail.origin!=='native-assembler-section-alignment'
+    ||group.tail.offset+4!==group.text.bytes||group.text.bytes!==Math.ceil(group.tail.offset/16)*16
+    ||group.tail.offset!==group.functions.reduce((n,f)=>n+f.bytes,0))fail('literal run native extent/origin');
+  requireKeys(group.retainedNativeAlignment,['ownerRowIndex','romStart','romEndExclusive','expectedSha256'],'retained native alignment');
+  const d=group.retainedNativeAlignment;if(!integer(d.ownerRowIndex)||!integer(d.romStart)||d.romEndExclusive!==d.romStart+4||d.expectedSha256!==sha256Buffer(Buffer.alloc(4)))fail('literal run retained padding');
+}
+function literalRunBindings(group,context){
+  literalRunContract(group);const {model,baserom:rom,targets}=context,p7=require('./phase7_conventional'),logical=require('./logical_functions');
+  if(p7.sha256Buffer(rom)!==model.config.rom.sha256)fail('literal run ROM drift');
+  const registry=logical.loadRegistry(model,rom),rows=group.members.map(m=>model.rows.find(r=>r.index===m.ownerRowIndex));
+  if(rows.some((r,i)=>!r?.part||r.romStart!==group.romStart+group.functions[i].offset||r.bytes!==group.functions[i].bytes))fail('literal run whole owned rows');
+  const adapter={functions:group.functions,members:group.members.map(m=>({...m,functionSymbols:[m.symbol]})),tail:{bytes:0,sha256:sha256Buffer(Buffer.alloc(0))}};
+  const logicalBinding=logical.assertNativeGroupBodies(registry,rows,adapter),d=group.retainedNativeAlignment,row=model.rows.find(r=>r.index===d.ownerRowIndex),slice=row?.slices?.[0];
+  if(!row?.part||row.inputKind!=='tracked-assembly'||row.slices.length!==1||!slice.executable||row.romStart!==d.romStart
+    ||d.romStart!==group.romStart+group.tail.offset||d.romEndExclusive>row.romEndExclusive||row.romStart!==rows.at(-1).romEndExclusive
+    ||slice.vramStart!==group.vramStart+group.tail.offset||slice.placementKind!==rows[0].slices[0].placementKind
+    ||slice.loadSlabId!==rows[0].slices[0].loadSlabId||slice.overlayDescriptorId!==rows[0].slices[0].overlayDescriptorId)fail('literal run neighbor identity');
+  const pads=registry.padding.filter(p=>p.romStart<d.romEndExclusive&&p.romEndExclusive>d.romStart);
+  if(pads.length!==1||pads[0].romStart!==d.romStart||pads[0].romEndExclusive!==d.romEndExclusive||pads[0].expectedBytesSha256!==d.expectedSha256)fail('literal run neighbor padding binding');
+  if(targets.some(t=>t.textOwners.some(o=>o.rowIndex===row.index||o.romStartNumber<row.romEndExclusive&&o.romEndNumber>row.romStart)
+    ||(t.auxiliarySections||[]).some(a=>a.ownerRowIndex===row.index||a.romStartNumber<row.romEndExclusive&&a.romEndNumber>row.romStart)))fail('literal run selected neighbor');
+  for(const r of [...rows,row])if(p7.sha256File(path.join(ROOT,r.part.file))!==r.part.sha256)fail('literal run original source drift');
+  const original=require('./word_asm').assembleWordAsmText(fs.readFileSync(path.join(ROOT,row.part.file),'utf8')).bytes;
+  if(original.length!==row.bytes||!original.equals(rom.subarray(row.romStart,row.romEndExclusive))||sha256Buffer(original.subarray(0,4))!==d.expectedSha256)fail('literal run original neighbor bytes');
+  return{logicalBinding,retainedNeighborBinding:{registryIdentity:registry.identity,rowIndex:row.index,romStart:row.romStart,romEndExclusive:row.romEndExclusive,vramStart:slice.vramStart,section:slice.sectionName,source:row.part.file,sourceSha256:row.part.sha256,objectRelative:'objects/assembly/chunk_'+String(row.part.chunkIndex).padStart(3,'0')+'.o',bytesSha256:sha256Buffer(original),padding:pads[0]}};
+}
+function bindLiteralRun(group,context,targets){
+  const ctx={...context,targets};Object.assign(group,literalRunBindings(group,ctx));
+  group.fixedBindingIdentity={path:'config/matching-c-linkage.json',sha256:require('./phase7_conventional').sha256File(require('./active_targets').LINKAGE_CONFIG_PATH)};
+  group.fixedBindings=fixedBindingRecords(group,context.linkSymbols||{});literalRunContexts.set(literalRunIdentity(group),ctx);
+}
+function authenticateLiteralRun(group){
+  if(!literalRun(group))return null;const id=literalRunIdentity(group);let ctx=literalRunContexts.get(id);
+  if(!ctx){require('./active_targets').loadActiveTargetModel();ctx=literalRunContexts.get(id);}if(!ctx)fail('literal run missing authenticated context');
+  const bound=literalRunBindings(group,ctx);if(!same(bound.logicalBinding,group.logicalBinding)||!same(bound.retainedNeighborBinding,group.retainedNeighborBinding)
+    ||require('./phase7_conventional').sha256File(require('./active_targets').LINKAGE_CONFIG_PATH)!==group.fixedBindingIdentity.sha256
+    ||!same(fixedBindingRecords(group,ctx.linkSymbols||{}),group.fixedBindings))fail('literal run binding drift');return ctx;
+}
+function finishLiteralRunBindings(targets){for(const group of new Set(targets.map(t=>t.compilationGroup).filter(literalRun))){const ctx=authenticateLiteralRun(group);ctx.targets=targets;authenticateLiteralRun(group);}}
+function literalRunLinkedEvidence(target,root,context){
+  const group=target.compilationGroup,ctx=authenticateLiteralRun(group),b=group.retainedNeighborBinding,elf=context.elf,ss=elf.sections.filter(s=>s.name===b.section);
+  if(ss.length!==1||ss[0].type!==1||ss[0].flags!==6||ss[0].address!==b.vramStart||ss[0].size!==b.romEndExclusive-b.romStart||sha256Buffer(elfSectionBytes(elf,ss[0]))!==b.bytesSha256)fail('literal run linked original neighbor');
+  const input=parseElfFile(path.join(root,b.objectRelative)),parts=input.sections.filter(s=>s.name===b.section);
+  if(parts.length!==1||sha256Buffer(elfSectionBytes(input,parts[0]))!==b.bytesSha256||relocations(input).some(r=>r.owner===parts[0]))fail('literal run neighbor original object');
+  const lines=context.mapText.split(/\r?\n/),heads=lines.map((l,i)=>l.startsWith(b.section+' ')?i:-1).filter(i=>i>=0);if(heads.length!==1)fail('literal run neighbor map heading');
+  let end=heads[0]+1;while(end<lines.length&&!/^(?:\.[A-Za-z0-9_.]+|\/DISCARD\/)\s/.test(lines[end]))end++;
+  const block=lines.slice(heads[0]+1,end),contributions=block.map(l=>{const m=/^\s+(\.[\w.]+)\s+(?:0x)?([0-9a-f]+)\s+(?:0x)?([0-9a-f]+)\s+[0-9a-f]+\s+2\*\*\d+\s+elf32-bigmips\s+(\S+)\(overhead \d+ bytes\)$/i.exec(l);return m?{section:m[1],address:parseInt(m[2],16),bytes:parseInt(m[3],16),object:m[4].replace(/\\/g,'/')}:null;}).filter(Boolean);
+  if(contributions.length!==1||contributions[0].section!==b.section||contributions[0].address!==b.vramStart||contributions[0].bytes!==ss[0].size||contributions[0].object!==b.objectRelative||block.some(l=>/\*fill\*/.test(l)))fail('literal run neighbor sole ASM map custody');
+  const loads=elf.programHeaders.filter(p=>p.type===1&&p.vaddr===b.vramStart&&p.paddr===b.romStart&&p.fileSize===ss[0].size&&p.memorySize===ss[0].size&&p.flags===5);if(loads.length!==1||loads[0].offset!==ss[0].offset)fail('literal run neighbor load');
+  const linkedText=Buffer.concat(group.owners.map(owner=>{const parts=elf.sections.filter(s=>s.name===owner.sectionName);if(parts.length!==1||parts[0].address!==owner.vramStartNumber||parts[0].size!==owner.bytes)fail('literal run linked static text shape');return Buffer.from(elfSectionBytes(elf,parts[0]));}));
+  const staticDestinations=literalRunBranchCensus(linkedText,group,true);
+  return{binding:b,staticDestinations,contribution:contributions[0],objectSha256:require('./phase7_conventional').sha256File(path.join(root,b.objectRelative)),loadIndex:loads[0].index};
+}
+function validateLiteralRunProof(proof){
+  const group=proof.textContract?.producer,object=proof.objectEvidence;
+  if(!literalRun(group)||proof.textContract.schemaVersion!==14||object?.schemaVersion!==22||object.assemblyMode!=='untouched-native-text-owner-retained-literal-run-projection'||object.tail!==null||proof.textContract.tail!==null||proof.linkEvidence.tail!==null)fail('literal run proof schema');
+  authenticateLiteralRun(group);const key=hash(object.artifacts)+':'+proof.target?.symbol,ctx=fragmentProofContexts.get(key);
+  if(!ctx||!literalRun(ctx.target.compilationGroup)||!same(contract(ctx.target),proof.textContract))fail('literal run proof lacks fresh context');
+  require('./source_policy').verifyClassificationInputs(ctx.classification);
+  const fresh=require('./phase8_matching_c').deriveSourceObjectProof(ctx.phase8,ctx.target,ctx.output,ctx.classification,parseElfFile(path.join(ctx.output,'phase8.elf')),ctx.rom).proof;
+  if(!same(fresh,proof))fail('literal run proof differs from reconstruction');
+}
+Object.assign(module.exports,{literalRun,authenticateLiteralRun,finishLiteralRunBindings,literalRunLinkedEvidence,validateLiteralRunProof});
+
+// Finite static destinations only: encoded branches, J/JAL with the actual
+// placement and REL semantics, and the existing serialized HI16/LO16 pairs.
+// Indirect control flow and ordinary owned/external destinations remain valid.
+function literalRunBranchCensus(bytes,group,linked=false){
+  literalRunContract(group);if(!Buffer.isBuffer(bytes)||![group.tail.offset,group.text.bytes].includes(bytes.length))fail('literal run branch census extent');
+  const entries=[],records=group.relocations||[],context=literalRunContexts.get(literalRunIdentity(group));
+  const placement=()=>{if(!integer(group.vramStart)||group.vramStart>0xffffffff)fail('literal run static placement');return group.vramStart;};
+  const rejectOffset=(from,to,kind)=>{if(to!==null&&to>=group.tail.offset&&to<group.text.bytes)fail('literal run '+kind+' into omitted native suffix');entries.push({from,to,...(kind==='branch'?{}:{kind})});};
+  const symbolAddress=r=>{
+    if(r.symbolSection==='.text')return placement()+r.symbolValue;
+    if(r.symbolSection==='ABS')return r.symbolValue;
+    if(r.symbolSection==='.rodata')return Number.isInteger(group.retainedLiteralBinding?.base)?group.retainedLiteralBinding.base+r.symbolValue:null;
+    if(r.symbolSection==='UND'){const value=context?.linkSymbols?.[r.symbol];return value===undefined?null:Number(value);}
+    fail('literal run static relocation section');
+  };
+  for(let pc=0;pc<group.tail.offset;pc+=4){const word=bytes.readUInt32BE(pc),op=word>>>26,rs=word>>>21&31,rt=word>>>16&31;
+    if([4,5,6,7,20,21,22,23].includes(op)||op===1&&[0,1,2,3,16,17,18,19].includes(rt)||[16,17,18,19].includes(op)&&rs===8&&rt<=3){
+      rejectOffset(pc,pc+4+(word<<16>>16)*4,'branch');
+    }else if(op===2||op===3){
+      const at=records.filter(r=>r.offset===pc);let address;
+      if(!linked&&at.length){if(at.length!==1||at[0].type!==4)fail('literal run direct jump relocation');const S=symbolAddress(at[0]);address=S===null?null:(S+(word&0x3ffffff)*4)>>>0;}
+      else address=((((placement()+pc+4)>>>0)&0xf0000000)>>>0)+(word&0x3ffffff)*4;
+      rejectOffset(pc,address===null?null:address-placement(),op===2?'J':'JAL');
+    }
+  }
+  const firstLiteralLos=new Set((records.some(r=>r.symbolSection==='.rodata')?literals.registryGroups(group):[]).filter(s=>s.los.length===2).map(s=>s.los[0]));
+  const pending=new Map();for(const r of records){const key=JSON.stringify([r.symbolSection,r.symbol,r.symbolValue]);
+    if(r.type===5){if(!pending.has(key))pending.set(key,[]);pending.get(key).push(r);}
+    else if(r.type===6){for(const hi of pending.get(key)||[]){const addend=(((bytes.readUInt32BE(hi.offset)&65535)*65536)+(bytes.readUInt32BE(r.offset)<<16>>16))>>>0,S=linked?0:symbolAddress(r),address=S===null?null:(S+addend)>>>0;rejectOffset(hi.offset,address===null?null:address-placement(),'HI16/LO16');}if(!firstLiteralLos.has(r.offset))pending.delete(key);}
+  }
+  return entries;
+}
+module.exports.literalRunBranchCensus=literalRunBranchCensus;
 
 // Authority is loaded from this checkout, never a serialized proof's model.
 const singleFragmentContexts=new Map(), singleFragmentBindings=new WeakMap(), singleFragmentProofContexts=new Map();
@@ -1329,7 +1447,7 @@ function finishSingleFragmentBindings(targets){
     c.finished=true;c.rowFingerprint=fingerprint;c.targets=targets;singleFragmentContexts.set(hash(group),c);
   }
 }
-function hasFixedBindingEvidence(group){return functionOwners(group)||singleFragment(group);}
+function hasFixedBindingEvidence(group){return functionOwners(group)||literalRun(group)||singleFragment(group);}
 function verifySingleFragmentFixedBindings(target,elf){
   const g=target.compilationGroup;authenticateSingleFragment(g);const f=g.functions[0],native=elf.symbols.filter(s=>s.name===f.symbol);
   if(native.length!==1||native[0].binding!==1||native[0].symbolType!==2||native[0].visibility||native[0].value!==g.vramStart

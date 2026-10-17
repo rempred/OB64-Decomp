@@ -22,6 +22,16 @@ function value(flag) {
   return path.resolve(process.argv[index + 1]);
 }
 
+function selectClassCanaries(targets) {
+  const pure = targets.find((target) => target.symbol === 'func_000E5938');
+  const hybrid = targets.find((target) => target.symbol === 'func_0002CD70');
+  if (!pure || pure.class !== SOURCE_CLASSES.PURE_C) throw new Error('known pure-C exact target was not classified PURE_C');
+  if (!hybrid || hybrid.class !== SOURCE_CLASSES.HYBRID_C) throw new Error('known inline-assembly exact target was not classified HYBRID_C');
+  if (!pureRequirementVerdict([pure], true).pass) throw new Error('PURE_C exact target failed --require-pure policy');
+  if (pureRequirementVerdict([hybrid], true).pass) throw new Error('HYBRID_C exact target passed --require-pure policy');
+  return { pure, hybrid };
+}
+
 function main() {
   const output = value('--output');
   const phase8 = loadPhase8Model();
@@ -35,12 +45,22 @@ function main() {
   if (JSON.stringify(firstDigests) !== JSON.stringify(secondDigests)) throw new Error('retrospective source classification is not deterministic');
   if (first.counts.UNKNOWN !== 0 || first.counts.ASM !== 0) throw new Error('active target classifications contain UNKNOWN or ASM');
 
-  const pure = first.targets.find((target) => target.symbol === 'func_000E5938');
-  const hybrid = first.targets.find((target) => target.symbol === 'func_0000B33C');
-  if (!pure || pure.class !== SOURCE_CLASSES.PURE_C) throw new Error('known pure-C exact target was not classified PURE_C');
-  if (!hybrid || hybrid.class !== SOURCE_CLASSES.HYBRID_C) throw new Error('known inline-assembly exact target was not classified HYBRID_C');
-  if (!pureRequirementVerdict([pure], true).pass) throw new Error('PURE_C exact target failed --require-pure policy');
-  if (pureRequirementVerdict([hybrid], true).pass) throw new Error('HYBRID_C exact target passed --require-pure policy');
+  const { pure, hybrid } = selectClassCanaries(first.targets);
+  const classControls = [];
+  for (const [name, mutate] of [
+    ['missing pure', targets => targets.filter(target => target.symbol !== pure.symbol)],
+    ['missing hybrid', targets => targets.filter(target => target.symbol !== hybrid.symbol)],
+    ['pure substituted for hybrid', targets => targets.map(target => target.symbol === hybrid.symbol ? { ...target, class: SOURCE_CLASSES.PURE_C } : target)],
+    ['hybrid substituted for pure', targets => targets.map(target => target.symbol === pure.symbol ? { ...target, class: SOURCE_CLASSES.HYBRID_C } : target)],
+    ['unknown hybrid', targets => targets.map(target => target.symbol === hybrid.symbol ? { ...target, class: SOURCE_CLASSES.UNKNOWN } : target)],
+    ['unknown pure', targets => targets.map(target => target.symbol === pure.symbol ? { ...target, class: SOURCE_CLASSES.UNKNOWN } : target)],
+  ]) {
+    const changed = mutate(clone(first.targets));
+    if (JSON.stringify(changed) === JSON.stringify(first.targets)) throw new Error('class control was a no-op');
+    require('assert').throws(() => selectClassCanaries(changed), /known (pure-C|inline-assembly) exact target was not classified/);
+    selectClassCanaries(first.targets);
+    classControls.push(name);
+  }
 
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -117,7 +137,8 @@ function main() {
 
   const context = prepareContext();
   const reusable = {
-    schemaVersion: 5,
+    schemaVersion: 6,
+    buildReport: { bytes: fs.statSync(path.join(output, 'build-report.json')).size, sha256: require('../tools/lib/phase7_conventional').sha256File(path.join(output, 'build-report.json')) },
     fingerprint: context.currentFingerprint,
     baselineFingerprint: context.baselineFingerprint,
     output,
@@ -134,6 +155,7 @@ function main() {
     deterministicClassification: true,
     pureExactAccepted: { symbol: pure.symbol, class: pure.class, bytes: pure.bytes },
     hybridExactRejectedByRequirePure: { symbol: hybrid.symbol, class: hybrid.class, bytes: hybrid.bytes },
+    classControls,
     counts: first.counts,
     bytes: first.bytes,
     rejectedWorkflowMutations: mutations,

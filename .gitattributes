@@ -301,3 +301,27 @@ src/lib/osEPiRawReadIo.c -text whitespace=cr-at-eol
 src/lib/osEPiRawWriteIo.c -text whitespace=cr-at-eol
 src/lib/func_00029fc0.c -text whitespace=cr-at-eol
 src/lib/__osSpSetPc.c -text whitespace=cr-at-eol
+
+# Preserve exact reviewed L4 source and tooling bytes.
+docs/WORKFLOW.md -text whitespace=cr-at-eol
+src/lib/audio_driver_0001c9f0.c -text whitespace=cr-at-eol
+src/lib/audio_env_0001de40.c -text whitespace=cr-at-eol
+src/lib/audio_load_0001d220.c -text whitespace=cr-at-eol
+src/lib/audio_mainbus_0001eb10.c -text whitespace=cr-at-eol
+src/lib/audio_resample_0001ec80.c -text whitespace=cr-at-eol
+src/lib/audio_reverb_0001ef30.c -text whitespace=cr-at-eol
+src/lib/audio_save_0001fad0.c -text whitespace=cr-at-eol
+src/lib/audio_sl_0001fba0.c -text whitespace=cr-at-eol
+src/lib/audio_synthesizer_0001fd20.c -text whitespace=cr-at-eol
+tests/compilation_input_confinement.js -text whitespace=cr-at-eol
+tests/current_metadata_reuse.js -text whitespace=cr-at-eol
+tests/current_verified_companions.js -text whitespace=cr-at-eol
+tests/mixed_readonly_group.js -text whitespace=cr-at-eol
+tests/phase5b_successor_profile.js -text whitespace=cr-at-eol
+tests/phase8_matching_c.js -text whitespace=cr-at-eol
+tests/workflow_acceptance.js -text whitespace=cr-at-eol
+tools/audit.js -text whitespace=cr-at-eol
+tools/build_phase8_matching_c.js -text whitespace=cr-at-eol
+tools/lib/current_workflow.js -text whitespace=cr-at-eol
+tools/lib/matching/diagnostic_link.js -text whitespace=cr-at-eol
+tools/verify_phase8_matching_c.js -text whitespace=cr-at-eol

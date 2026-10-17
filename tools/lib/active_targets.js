@@ -634,12 +634,12 @@ function validateLinkageConfig(linkage, expectedProfile) {
 function validateNoActiveLinkSymbolShadows(targets, linkSymbols, assemblySource = null) {
   const groups = require('./compilation_groups'), defined = new Map();
   for (const target of targets) {
-    const functions = groups.functionOwners(target.compilationGroup) ? target.compilerTextFunctions : [{ symbol: target.symbol, binding: 'GLOBAL', offsetNumber: 0 }];
+    const functions = (groups.functionOwners(target.compilationGroup)||groups.literalRun(target.compilationGroup)) ? target.compilerTextFunctions : [{ symbol: target.symbol, binding: 'GLOBAL', offsetNumber: 0 }];
     for (const fn of functions.filter(fn => fn.binding === 'GLOBAL')) {
       if (defined.has(fn.symbol)) fail('duplicate active GLOBAL function definition: ' + fn.symbol);
       defined.set(fn.symbol, target);
       if (!Object.prototype.hasOwnProperty.call(linkSymbols, fn.symbol)) continue;
-      if (!groups.functionOwners(target.compilationGroup)) fail('shared absolute link symbol shadows active target: ' + fn.symbol);
+      if (!(groups.functionOwners(target.compilationGroup)||groups.literalRun(target.compilationGroup))) fail('shared absolute link symbol shadows active target: ' + fn.symbol);
       groups.authenticateFunctions(target.compilationGroup, assemblySource);
       const record = target.compilationGroup.fixedBindings.find(r => r.symbol === fn.symbol);
       if (!record || record.kind !== 'native-global' || record.ownerRowIndex !== target.rowIndex
@@ -1068,7 +1068,7 @@ function auxiliaryPlacementPair(model, targetSlice, auxiliarySlice) {
 function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
   const singleFragment = auxiliaryProjection.singleFragment(target.compilationGroup);
-  const fragment = auxiliaryProjection.fragmentMode(target.compilationGroup) || singleFragment;
+  const fragment = auxiliaryProjection.fragmentMode(target.compilationGroup) || auxiliaryProjection.mixedMode(target.compilationGroup) || singleFragment;
   const group = auxiliaryProjection.composed(target.compilationGroup) || fragment ? target.compilationGroup : null;
   const attribution = group && group.functions.find(value => value.symbol === (fragment ? contracts[0]?.functionSymbol : target.symbol));
   if (fragment) { auxiliaryProjection.groupContract(group); if (contracts.length !== 1 || contracts[0].memberSymbol !== target.symbol || (singleFragment ? contracts[0].functionSymbol !== target.symbol : !group.members.find(m=>m.symbol===target.symbol)?.functionSymbols.includes(contracts[0].functionSymbol))) fail("fragment resolver attribution"); }
@@ -1898,6 +1898,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
   }
   validateAuxiliaryOwnerGroups(targets, model);
   for (const target of targets) literals.bind(target, targets, model, baserom, assemblySource);
+  require("./compilation_groups").finishLiteralRunBindings(targets);
   literals.bindGroups(targets,model,baserom,assemblySource);
   const literalIntervals = [...targets.filter(t => t.retainedLiteralReferences).map(t => t.retainedLiteralReferences),...[...new Set(targets.map(t=>t.compilationGroup).filter(g=>g?.retainedLiteralReferences))].map(g=>g.retainedLiteralReferences)].sort((a,b) => a.romStart-b.romStart);
   for (let i=1;i<literalIntervals.length;i++) if(literalIntervals[i].romStart < literalIntervals[i-1].romStart+literalIntervals[i-1].bytes) fail('overlapping retained literal bindings');

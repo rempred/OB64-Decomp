@@ -974,3 +974,37 @@ identities and model/config agreement remain required. Existing loader-DMA admis
 rules retain their separate contracts. Replacing an old final table requires removing its tail and
 proving the new interior/final tail; rebuild retained-literal evidence against the resulting interval
 without changing original-ASM literal payloads or their configuration.
+
+### Mixed native readonly producers
+
+A complete GLOBAL owner-function producer may use the strict `native-text-owner-functions-mixed-readonly-fragment-projection` contract when its immutable native readonly section mixes one function-attributed switch table with referenced double literals and minimal terminal alignment zeros. The native flags-1, alignment-16 envelope is permitted only by the complete mixed proof; ordinary readonly and retained-literal modes keep their existing rules. Keep native, mixed-metadata, text-projected, source-object, strip-intermediate and corrected final objects distinct. Native assembly, instruction words, table words and encoded addends stay unchanged. Only the selected table contributes C data; each literal and zero interval must remain in authenticated original ASM under the current shared-row partitions. Tooling admission is not matching acceptance.
+
+### Complete literal runs and allocated mixed readonly producers
+
+The explicit `native-text-owner-retained-literal-run-projection` contract preserves
+one complete native producer and every complete physical C owner. Its raw text
+includes exactly four native alignment bytes beyond the owned run. Those bytes
+must already belong to the adjacent original ASM owner and its authenticated
+logical-padding record. The original neighbor remains wholly linked as ASM; this
+is an outside-owner omission, not function truncation. Native, projected, split,
+stripped, cached and linked evidence distinguish raw extent, owned extent and
+whole-neighbor custody. Fresh logical-registry binding is required at proof and
+cache validation. Older producer modes retain their existing tail rules.
+
+Mixed readonly schema 2 admits an allocated, nonwritable native readonly section
+with alignment16, one table at offset0, exact scalar slots and optional bounded
+64-byte initializer. Only the table becomes C-owned. The isolated table uses
+alignment8, authenticated against the compiler's unchanged `.align 3`/`.align 2`
+directives; the aggregate native section remains alignment16. This composes with
+the existing equal-alignment shared-owner rule. Scalars, initializer, interior
+zero bytes and neighboring original data stay ASM-owned. Schema1 remains its
+existing nonallocated literal-first contract.
+
+Initializer permission is restricted to the pinned compiler's finite leaf-copy
+shape and ABI: exact source/end/destination and four load/store roles, one bounded
+backedge, complete relocation/entry census, and no outside-window operand use or
+write of either live pointer. Calls, indirect/external transfers, reserved
+encodings, control in delay slots, terminal fall-through and alternate terminal
+delay entry reject. Internal control flow remains supported. This is neither a
+semantic proof nor general pointer escape, CFG or stack-safety analysis. The
+restriction applies only to the initializer-containing function.

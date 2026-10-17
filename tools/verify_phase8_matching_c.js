@@ -2,17 +2,16 @@
 'use strict';
 
 const fs = require('fs');
+const textContract = require('./lib/text_contract');
 const path = require('path');
 const { withVerificationProfile, measure } = require('./lib/verification_profile');
 const {
   fail,
   loadPhase8Model,
-  readJson,
   validateRecordedPhase8Build,
   verifyCompiler,
   verifyPhase8Output,
   verifyRuntimeTools,
-  writeJson,
 } = require('./lib/phase8_matching_c');
 
 function usage() {
@@ -56,15 +55,16 @@ function runVerification(profile) {
     objdump: runtime.tools['mips-kmc-elf-objdump.exe'].path,
     objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'].path,
   }));
-  const buildReport = readJson(buildReportFile);
+  const { report: buildReport, identity: buildReportIdentity } = textContract.readCompactReport(options.output);
   measure(profile, 'validate-recorded-build', () => validateRecordedPhase8Build(phase8, {
     output: options.output,
     buildReport,
     verification,
     compilerSha256: compiler.sha256,
   }));
-  const result = { schemaVersion: 5, status: 'pass', output: '.', verification };
-  if (reportFile) writeJson(reportFile, result);
+  if (!textContract.same(textContract.readCompactReport(options.output).identity, buildReportIdentity)) fail('build report changed during verification');
+  const result = { schemaVersion: 6, status: 'pass', output: '.', buildReport: buildReportIdentity, verification };
+  if (reportFile) textContract.publishCompactReport(reportFile, result);
   console.log(`Phase 8 matching C verification: PASS (${verification.outputs.rom.sha256})`);
 }
 

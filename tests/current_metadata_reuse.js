@@ -36,19 +36,20 @@ function fixture(accepted = null) {
   for (const symbol of accepted ? accepted.targets.map(t => t.symbol) : ['one', 'two', 'three']) {
     const source = `src/${symbol}.c`, input = write(source, `int ${symbol}(void) { return 1; }\n`), sourceSha256 = hash(Buffer.from('authored:' + symbol));
     const original = accepted?.targets.find(t => t.symbol === symbol);
-    const target = { ...original, symbol, source, sourceSha256, bytes: original?.bytes || 4 }; phase8.targets.push(target);
-    policy.targets.push({ symbol, source, sourceSha256, class: 'PURE_C', compilationInput: { bytes: input.bytes, sha256: input.sha256 } });
-    const representation = { textContract: { symbol, bytes: 4 }, objectEvidence: { symbol, owner: 'original' }, linkEvidence: { fullOwnerExact: true } };
+    const target = { sectionName: '.fixture.' + symbol, ...original, symbol, source, sourceSha256, bytes: original?.bytes || 4 }; phase8.targets.push(target);
+    policy.targets.push({ symbol, source, sourceSha256, class: 'PURE_C', digest: 'D'.repeat(64), compilationInput: { bytes: input.bytes, sha256: input.sha256 } });
+    const representation = { textContract: actualText.resolveTextContract(target), objectEvidence: { symbol, owner: 'original' }, linkEvidence: { fullOwnerExact: true } };
     representations.set(symbol, representation);
     const compiler = write(`objects/${symbol}.compiler.s`, 'compiler:' + symbol), linked = write(`objects/${symbol}.linked.s`, 'linked:' + symbol), object = write(`objects/${symbol}.o`, 'object:' + symbol), raw = write(`objects/${symbol}.raw.o`, 'raw:' + symbol);
-    const proof = write(`proofs/${symbol}.json`, { schemaVersion: 4, ...representation });
-    replacements.push({ ...target, sourceClass: 'PURE_C', compilerAssembly: compiler.path, compilerAssemblySha256: compiler.sha256,
+    const proof = write(`generated/c/${symbol}.source-object-proof.json`, { schemaVersion: 4, kind: 'ob64-source-to-object-load-evidence', target: { symbol, source, sourceSha256, sectionName: target.sectionName, ownerSections: (target.textOwners || [{sectionName:target.sectionName}]).map(o=>o.sectionName), sourceClass: 'PURE_C', sourcePolicyDigest: 'D'.repeat(64), compilationInput: {bytes:input.bytes,sha256:input.sha256} }, ...representation });
+    replacements.push({ ...target, sourceClass: 'PURE_C', sourcePolicyDigest: 'D'.repeat(64), compilerAssembly: compiler.path, compilerAssemblySha256: compiler.sha256,
       linkedAssembly: linked.path, linkedAssemblySha256: linked.sha256, cObject: object.path, cObjectSha256: object.sha256,
-      assemblerObject: raw.path, assemblerObjectSha256: raw.sha256, sourceObjectProof: proof, compilationInput: input, ...representation });
+      assemblerObject: raw.path, assemblerObjectSha256: raw.sha256, sourceObjectProof: proof, compilationInput: input });
     layout.phase8MatchingCTargets.push({ symbol, ...representation });
     manifest.linkedObjects.push({ ...object, ownerKind: 'matching-c-target', targetSymbol: symbol, ...representation });
   }
-  const report = { schemaVersion: 6, status: 'pass', acceptedInputs: { logicalFunctionConfig: phase8.logicalFunctionConfigIdentity }, targetReplacements: replacements };
+  const evidence = { targets: replacements.map(t => ({ symbol:t.symbol,sourceClass:t.sourceClass,sourcePolicyDigest:t.sourcePolicyDigest,compilationInput:{bytes:t.compilationInput.bytes,sha256:t.compilationInput.sha256},proof:t.sourceObjectProof })) };
+  const report = { schemaVersion: 7, status: 'pass', acceptedInputs: { logicalFunctionConfig: phase8.logicalFunctionConfigIdentity }, targetReplacements: replacements, sourceObjectEvidence:evidence, verification:{schemaVersion:6,status:'pass',sourceObjectEvidence:evidence,targets:replacements.map((t,i)=>({symbol:t.symbol,source:t.source,sectionName:t.sectionName,sourceObjectEvidence:evidence.targets[i],representationSha256:actualText.representationDigest(representations.get(t.symbol))}))} };
   const save = () => { write('build-report.json', report); write('layout.json', layout); write('objects/manifest.json', manifest); };
   save(); return { root, phase8, policy, replacements, layout, manifest, report, representations, write, save };
 }
@@ -73,6 +74,7 @@ function run(f, { onTarget, onFinish, linkedExact = true } = {}) {
     './auxiliary_interior': { interiorRecords: () => [] },
     './phase8_matching_c': { ...actualPhase8, loadCanonicalBaserom: () => Buffer.alloc(4) },
     './text_contract': {
+      ...actualText,
       linkContext: () => ({ mapText: fs.readFileSync(path.join(f.root, 'phase8.map'), 'utf8') }), finishLinkContext() { onFinish?.(f); },
       recordsForTarget(target) { counters.targets.push(target.symbol); onTarget?.(target, f); return { ...f.representations.get(target.symbol), linkEvidence: { fullOwnerExact: linkedExact } }; },
       validateRecords(record, expected, label) { counters.validations.push(label); return actualText.validateRecords(record, expected, label); },
@@ -88,8 +90,8 @@ test('supported positive CURRENT preserves every target gate while parsing/proje
   const f = fixture(), current = run(f);
   assert.equal(current.result, true);
   assert.deepEqual(current.counters.targets, ['one', 'two', 'three']);
-  assert.deepEqual(current.counters.validations, Array.from({length:3}, () => ['CURRENT', 'CURRENT proof', 'CURRENT layout', 'CURRENT manifest']).flat());
-  assert.equal(current.counters.validations.length, 12);
+  assert.deepEqual(current.counters.validations, Array.from({length:3}, () => ['CURRENT proof', 'CURRENT layout', 'CURRENT manifest']).flat());
+  assert.equal(current.counters.validations.length, 9);
   assert.equal(current.counters.layoutParses, 1); assert.equal(current.counters.manifestParses, 1); assert.equal(current.counters.projections, 1);
   // Initial snapshot plus final authentication read; no per-target metadata reads.
   assert.equal(current.counters.layoutReads, 2); assert.equal(current.counters.manifestReads, 2);
@@ -117,8 +119,8 @@ test('missing, duplicate and reordered record outcomes preserve existing first-m
 
 test('full-owner, proof, artifacts and compilation-input rejection gates remain unchanged', () => {
   for (const [label, mutate] of [
-    ['proof representation', f => f.write('proofs/one.json', { schemaVersion: 4, ...f.representations.get('two') })],
-    ['proof schema', f => f.write('proofs/one.json', { schemaVersion: 3, ...f.representations.get('one') })],
+    ['proof representation', f => f.write('generated/c/one.source-object-proof.json', { schemaVersion: 4, ...f.representations.get('two') })],
+    ['proof schema', f => f.write('generated/c/one.source-object-proof.json', { schemaVersion: 3, ...f.representations.get('one') })],
     ['compiler assembly', f => f.write('objects/one.compiler.s', 'bad')],
     ['linked assembly', f => f.write('objects/one.linked.s', 'bad')],
     ['object', f => f.write('objects/one.o', 'bad')],
@@ -235,4 +237,55 @@ test('shared auxiliary CURRENT reuse requires authentic model, explicit recorded
     f.write('linker/phase8.ld', f.script.replace('  /DISCARD/ :', `  .unused 0 : { ${selector} }\n  /DISCARD/ :`));
     assert.equal(run(f).result, false, 'residual selector: ' + selector);
   }
+});
+
+test('compact proof authentication rejects self-consistent substitutions and mixed report forms', () => {
+  const f = fixture(), record = f.replacements[0], target = f.phase8.targets[0];
+  const file = path.join(f.root, record.sourceObjectProof.path), original = fs.readFileSync(file);
+  const resolve = () => actualText.withSourceObjectProof(f.root, target, record, () => {});
+  resolve();
+  for (const [label, mutate] of [
+    ['symbol', p => p.target.symbol = 'other'], ['source', p => p.target.source = 'src/other.c'],
+    ['source hash', p => p.target.sourceSha256 = '0'.repeat(64)], ['class', p => p.target.sourceClass = 'HYBRID_C'],
+    ['policy', p => p.target.sourcePolicyDigest = '0'.repeat(64)], ['input', p => p.target.compilationInput.bytes++],
+    ['owner', p => p.target.ownerSections = ['other']], ['schema', p => p.schemaVersion = 3],
+    ['kind', p => p.kind = 'other'], ['contract', p => p.textContract.owners[0].bytes++],
+  ]) {
+    const forged = JSON.parse(original); mutate(forged);
+    record.sourceObjectProof = f.write(record.sourceObjectProof.path, forged);
+    assert.throws(resolve, undefined, label);
+    fs.writeFileSync(file, original); record.sourceObjectProof = { path: path.relative(f.root, file).replace(/\\/g, '/'), bytes: original.length, sha256: hash(original) }; resolve();
+  }
+  assert.throws(() => actualText.withSourceObjectProof(f.root, target, record, proof => proof));
+  for (const key of ['textContract', 'objectEvidence', 'linkEvidence']) {
+    record[key] = {}; assert.throws(resolve); delete record[key]; resolve();
+  }
+  for (const mutate of [r => r.proof = r.sourceObjectProof, r => r.representationSha256 = '0'.repeat(64), r => r.freshRepresentationSha256 = '0'.repeat(64)]) {
+    const changed = clone(record); mutate(changed);
+    assert.throws(() => actualText.withSourceObjectProof(f.root, target, changed, () => {}));
+  }
+});
+
+test('compact companions preserve own-derived digests and actual build byte binding', () => {
+  const f = fixture(), workflow = realRequire('./current_workflow');
+  const buildIdentity = actualText.readCompactReport(f.root).identity;
+  const fresh = { schemaVersion: 6, status: 'pass', buildReport: buildIdentity, targets: f.replacements.map(r => ({ symbol: r.symbol, source: r.source, sourceSha256: r.sourceSha256, sourceClass: r.sourceClass, sourcePolicyDigest: r.sourcePolicyDigest, compilationInput: r.compilationInput, sourceObjectProof: r.sourceObjectProof, freshRepresentationSha256: actualText.representationDigest(f.representations.get(r.symbol), false) })) };
+  const verified = { schemaVersion: 6, status: 'pass', output: '.', buildReport: buildIdentity, verification: f.report.verification };
+  const validate = (a=f.report,b=fresh,c=verified) => workflow.validateVerifiedCompanions(a,b,c,f.root,f.phase8);
+  validate();
+  for (const [label, mutate] of [
+    ['crossed build', v => v.fresh.buildReport.sha256 = '0'.repeat(64)],
+    ['fresh source path', v => v.fresh.targets[0].source = 'src/other.c'],
+    ['fresh digest', v => v.fresh.targets[0].freshRepresentationSha256 = '0'.repeat(64)],
+    ['verification digest', v => v.verified.verification.targets[0].representationSha256 = '0'.repeat(64)],
+    ['missing', v => v.fresh.targets.pop()], ['duplicate', v => v.fresh.targets[1] = v.fresh.targets[0]],
+    ['extra', v => v.fresh.targets.push(v.fresh.targets[0])], ['unknown', v => v.verified.schemaVersion = 99],
+    ['inline', v => v.fresh.targets[0].objectEvidence = {}],
+  ]) {
+    const v = clone({build:f.report,fresh,verified}); mutate(v);
+    assert.throws(() => validate(v.build,v.fresh,v.verified), undefined, label); validate();
+  }
+  // A companion published before the others/state cannot cross the old build binding.
+  fs.appendFileSync(path.join(f.root, 'build-report.json'), ' ');
+  assert.throws(() => validate()); f.save(); validate();
 });

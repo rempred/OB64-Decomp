@@ -5,9 +5,9 @@ rom:
   profile: us-rev0
   size: 0x02800000
 semantic_source: config/splat/us_rev0.semantic.json
-accepted_phase5a_product_sha256: E3CC7C3979988F621A4C620403A26CCAFE6786CFE13D3DF5088F0DC4AC66914D
-accepted_phase5a_product_manifest_sha256: 21919E82453488B0A31BE9C4BE19CC9A32D70FECB3B4D84442C5C0E5DEBBF81E
-accepted_phase5a_primary_ledger_sha256: 999CEDFCBA772C3D57BE6D2D0302A520B2E99458A6DCF9EFCF83E5BA384E388D
+accepted_phase5a_product_sha256: 1F52A38EF6EDEC813B6D549C82787BD901EC446762CA931396F9AC926CA80D61
+accepted_phase5a_product_manifest_sha256: 43BBBBF2BA2FBDD87DC9F6B6EC4BAAE638EA41A378843E031D3962D5D5FF719B
+accepted_phase5a_primary_ledger_sha256: F74D3200293FD15DC12AB717C4E1163085461957DA71506F25EC849D6D9A3887
 accepted_phase4_overlay_config_sha256: AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B
 primary_row_count: 7242
 unresolved_function_candidate_count: 6154
@@ -5276,9 +5276,9 @@ segments:
     rom_end: 0x0001E7C8
   - index: 476
     primary_id: primary:d689e52d1c0283fc6847
-    name: p0476_data_original_mips_0001e7c8_0001e7ec
+    name: p0476_code_original_mips_0001e7c8_0001e7ec
     source_class: original_mips
-    primary_class: data
+    primary_class: code
     owner_kind: tracked-assembly-part
     processor_class: cpu-or-non-cpu
     ambiguous: false
@@ -5496,9 +5496,9 @@ segments:
     rom_end: 0x0001FBFC
   - index: 496
     primary_id: primary:70c037009f285b0342f9
-    name: p0496_data_original_mips_0001fbfc_0001fc1c
+    name: p0496_code_original_mips_0001fbfc_0001fc1c
     source_class: original_mips
-    primary_class: data
+    primary_class: code
     owner_kind: tracked-assembly-part
     processor_class: cpu-or-non-cpu
     ambiguous: false
@@ -5507,9 +5507,9 @@ segments:
     rom_end: 0x0001FC1C
   - index: 497
     primary_id: primary:21a6ddb4ae86f25177b1
-    name: p0497_data_original_mips_0001fc1c_0001fc50
+    name: p0497_code_original_mips_0001fc1c_0001fc50
     source_class: original_mips
-    primary_class: data
+    primary_class: code
     owner_kind: tracked-assembly-part
     processor_class: cpu-or-non-cpu
     ambiguous: false

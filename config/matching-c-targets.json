@@ -842,7 +842,7 @@
     },
     {
       "symbol": "func_0001f2a4",
-      "source": "src/lib/func_0001f2a4.c"
+      "compilationGroup": "audio_reverb_0001ef30"
     },
     {
       "symbol": "func_00014614",
@@ -1034,7 +1034,7 @@
     },
     {
       "symbol": "func_000201c8",
-      "source": "src/lib/func_000201c8.c"
+      "compilationGroup": "audio_synthesizer_0001fd20"
     },
     {
       "symbol": "func_00044340",
@@ -1406,11 +1406,11 @@
     },
     {
       "symbol": "func_00020274",
-      "source": "src/lib/func_00020274.c"
+      "compilationGroup": "audio_synthesizer_0001fd20"
     },
     {
       "symbol": "func_000202bc",
-      "source": "src/lib/func_000202bc.c"
+      "compilationGroup": "audio_synthesizer_0001fd20"
     },
     {
       "symbol": "func_000454e0",
@@ -3813,6 +3813,22 @@
       "compilationGroup": "lib_l5_devmgr"
     },
     {
+      "symbol": "func_0001ca94",
+      "compilationGroup": "audio_drvrnew_0001c9f0"
+    },
+    {
+      "symbol": "func_0001de40",
+      "compilationGroup": "audio_env_0001de40"
+    },
+    {
+      "symbol": "func_0001ee6c",
+      "compilationGroup": "audio_resample_0001ec80"
+    },
+    {
+      "symbol": "func_0001f2b8",
+      "compilationGroup": "audio_reverb_0001ef30"
+    },
+    {
       "symbol": "func_000248ac",
       "compilationGroup": "thread_scheduler_000240b0"
     },
@@ -3991,6 +4007,186 @@
     {
       "symbol": "read_si_status_busy",
       "source": "src/lib/read_si_status_busy.c"
+    },
+    {
+      "symbol": "func_0001eaf0",
+      "source": "src/lib/func_0001eaf0.c"
+    },
+    {
+      "symbol": "func_0001fc50",
+      "source": "src/lib/func_0001fc50.c"
+    },
+    {
+      "symbol": "bump_alloc",
+      "source": "src/lib/bump_alloc.c"
+    },
+    {
+      "symbol": "mem_byte_copy",
+      "source": "src/lib/mem_byte_copy.c"
+    },
+    {
+      "symbol": "func_0001dd30",
+      "compilationGroup": "audio_auxbus_0001dd30"
+    },
+    {
+      "symbol": "func_0001de0c",
+      "compilationGroup": "audio_auxbus_0001dd30"
+    },
+    {
+      "symbol": "func_0001eb10",
+      "compilationGroup": "audio_mainbus_0001eb10"
+    },
+    {
+      "symbol": "func_0001ec50",
+      "compilationGroup": "audio_mainbus_0001eb10"
+    },
+    {
+      "symbol": "func_0001fad0",
+      "compilationGroup": "audio_save_0001fad0"
+    },
+    {
+      "symbol": "func_0001fb78",
+      "compilationGroup": "audio_save_0001fad0"
+    },
+    {
+      "symbol": "func_0001fba0",
+      "compilationGroup": "audio_sl_0001fba0"
+    },
+    {
+      "symbol": "func_0001fbcc",
+      "compilationGroup": "audio_sl_0001fba0"
+    },
+    {
+      "symbol": "list_insert_head",
+      "compilationGroup": "audio_sl_0001fba0"
+    },
+    {
+      "symbol": "list_unlink",
+      "compilationGroup": "audio_sl_0001fba0"
+    },
+    {
+      "symbol": "func_00020370",
+      "source": "src/lib/func_00020370.c"
+    },
+    {
+      "symbol": "func_0001d220",
+      "compilationGroup": "audio_load_0001d220"
+    },
+    {
+      "symbol": "func_0001d664",
+      "compilationGroup": "audio_load_0001d220"
+    },
+    {
+      "symbol": "func_0001da00",
+      "compilationGroup": "audio_load_0001d220"
+    },
+    {
+      "symbol": "func_0001dbac",
+      "compilationGroup": "audio_load_0001d220"
+    },
+    {
+      "symbol": "func_0001c9f0",
+      "compilationGroup": "audio_drvrnew_0001c9f0"
+    },
+    {
+      "symbol": "func_0001cf2c",
+      "compilationGroup": "audio_drvrnew_0001c9f0"
+    },
+    {
+      "symbol": "func_0001cfe4",
+      "compilationGroup": "audio_drvrnew_0001c9f0"
+    },
+    {
+      "symbol": "func_0001d094",
+      "compilationGroup": "audio_drvrnew_0001c9f0"
+    },
+    {
+      "symbol": "func_0001d120",
+      "compilationGroup": "audio_drvrnew_0001c9f0"
+    },
+    {
+      "symbol": "func_0001d17c",
+      "compilationGroup": "audio_drvrnew_0001c9f0"
+    },
+    {
+      "symbol": "func_0001d1d8",
+      "compilationGroup": "audio_drvrnew_0001c9f0"
+    },
+    {
+      "symbol": "func_0001ec80",
+      "compilationGroup": "audio_resample_0001ec80"
+    },
+    {
+      "symbol": "func_0001fd20",
+      "compilationGroup": "audio_synthesizer_0001fd20"
+    },
+    {
+      "symbol": "func_0001ffec",
+      "compilationGroup": "audio_synthesizer_0001fd20"
+    },
+    {
+      "symbol": "func_0002019c",
+      "compilationGroup": "audio_synthesizer_0001fd20"
+    },
+    {
+      "symbol": "func_000201e0",
+      "compilationGroup": "audio_synthesizer_0001fd20"
+    },
+    {
+      "symbol": "func_00020234",
+      "compilationGroup": "audio_synthesizer_0001fd20"
+    },
+    {
+      "symbol": "func_00020308",
+      "compilationGroup": "audio_synthesizer_0001fd20"
+    },
+    {
+      "symbol": "func_0001ef30",
+      "compilationGroup": "audio_reverb_0001ef30"
+    },
+    {
+      "symbol": "func_0001f4a8",
+      "compilationGroup": "audio_reverb_0001ef30"
+    },
+    {
+      "symbol": "func_0001f6c0",
+      "compilationGroup": "audio_reverb_0001ef30"
+    },
+    {
+      "symbol": "func_0001f830",
+      "compilationGroup": "audio_reverb_0001ef30"
+    },
+    {
+      "symbol": "func_0001f9a0",
+      "compilationGroup": "audio_reverb_0001ef30"
+    },
+    {
+      "symbol": "func_0001fa3c",
+      "compilationGroup": "audio_reverb_0001ef30"
+    },
+    {
+      "symbol": "func_0001e340",
+      "compilationGroup": "audio_env_0001de40"
+    },
+    {
+      "symbol": "func_0001e414",
+      "compilationGroup": "audio_env_0001de40"
+    },
+    {
+      "symbol": "func_0001e6e8",
+      "compilationGroup": "audio_env_0001de40"
+    },
+    {
+      "symbol": "float_ldexp_d",
+      "compilationGroup": "audio_env_0001de40"
+    },
+    {
+      "symbol": "func_0001e7ec",
+      "compilationGroup": "audio_env_0001de40"
+    },
+    {
+      "symbol": "func_0001ea6c",
+      "compilationGroup": "audio_env_0001de40"
     }
   ]
 }

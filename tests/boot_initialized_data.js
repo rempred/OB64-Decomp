@@ -112,32 +112,70 @@ function runTests(model = loadAcceptedModel()) {
   // Physical owners are unchanged; each added cut contributes one slice and ordinal/phdr shifts.
   // Preserve every physical row, other slice (including743/790), reservation and29 slabs.
   const digest = value => sha256Buffer(Buffer.from(JSON.stringify(value)));
-  // Keep the predecessor check and the exact independently reviewed row566
-  // successor separate. This test does not classify or repair any owner.
-  const row566Successor = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json']
-    === 'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204';
-  assert.strictEqual(digest(model.slices.filter(s => s.rowIndex !== 789)), row566Successor
-    ? 'F5E4B7AB19AA0FDB97C2E013DA8CE6E6E49C3132E9C625916EBCC61C47C68D37'
-    : '37F0CD984BF9D797B3665C0598458212052CEE300B249EF4CBCA57EE0962D5E5');
-  // Reverse only the eight reviewed derived cuts to compare every legacy slice.
-  // This is a test projection, not a generated count or production-layout reset.
-  const priorSlices = model.rows.flatMap(owner => owner.retainedPadding ? [{
-    ...owner.slices[0], sliceIndex: 0, sliceCount: 1,
-    sectionName: '.ob64.r' + String(owner.index).padStart(4, '0'),
-    romEndExclusive: owner.romEndExclusive, bytes: owner.bytes,
-    vramEndExclusive: owner.slices.at(-1).vramEndExclusive,
-  }] : owner.slices).map(({ retainedPaddingId, ...slice }, ordinal) => ({
-    ...slice, ordinal, phdrName: 'p' + String(ordinal).padStart(5, '0'),
-  }));
-  assert.strictEqual(digest(priorSlices.filter(slice => slice.rowIndex !== 789)),
-    row566Successor ? '6B459839D42684025BA9B9C919EFDD9480D56AD2DAAD2A49476E89E8023B9EFE'
-      : '8897472E14020BB65D6CD7EBBD1716F503C2232D52F7E662D8E739605A4D873B');
-  assert.strictEqual(digest(model.rows.map(({ slices, retainedPadding, ...metadata }) => metadata)), row566Successor
-    ? 'A83A62A26E54CD29A50AAF0FE6286867CD34E5B62AE43D49CC0316C6499076C2'
-    : '4F5EE5011B086824ED4256B53BCD214106AE1D38392A3029788C667383E2E315');
+  // Exact reviewed profiles; no unknown-identity fallback.
+  function checkProfile() {
+    const identity = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json'];
+    assert.ok([
+      '6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1',
+      'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204',
+      'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68',
+    ].includes(identity), 'unknown boot-test semantic identity: ' + identity);
+    const l4Successor = identity === 'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68';
+    const row566Successor = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json']
+      === 'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204';
+    assert.strictEqual(digest(model.slices.filter(s => s.rowIndex !== 789)), l4Successor
+      ? 'C87A8AB0AEE83724B56E525178E0F5B27100F837877C7A9238E99BD8953816F9' : row566Successor
+      ? 'F5E4B7AB19AA0FDB97C2E013DA8CE6E6E49C3132E9C625916EBCC61C47C68D37'
+      : '37F0CD984BF9D797B3665C0598458212052CEE300B249EF4CBCA57EE0962D5E5');
+    // Reverse only the eight reviewed derived cuts to compare every legacy slice.
+    // This is a test projection, not a generated count or production-layout reset.
+    const priorSlices = model.rows.flatMap(owner => owner.retainedPadding ? [{
+      ...owner.slices[0], sliceIndex: 0, sliceCount: 1,
+      sectionName: '.ob64.r' + String(owner.index).padStart(4, '0'),
+      romEndExclusive: owner.romEndExclusive, bytes: owner.bytes,
+      vramEndExclusive: owner.slices.at(-1).vramEndExclusive,
+    }] : owner.slices).map(({ retainedPaddingId, ...slice }, ordinal) => ({
+      ...slice, ordinal, phdrName: 'p' + String(ordinal).padStart(5, '0'),
+    }));
+    assert.strictEqual(digest(priorSlices.filter(slice => slice.rowIndex !== 789)),
+      l4Successor ? '2EFCE6BCEC2234F5555C396AD6CE621A04659523E1B33F670BB3FB14A1D4DAA5' : row566Successor ? '6B459839D42684025BA9B9C919EFDD9480D56AD2DAAD2A49476E89E8023B9EFE'
+        : '8897472E14020BB65D6CD7EBBD1716F503C2232D52F7E662D8E739605A4D873B');
+    assert.strictEqual(digest(model.rows.map(({ slices, retainedPadding, ...metadata }) => metadata)), l4Successor
+      ? '6915B2433009A1E6E0DDF57DB571BB9D37621A7A486985A7C9D5CC124076C385' : row566Successor
+      ? 'A83A62A26E54CD29A50AAF0FE6286867CD34E5B62AE43D49CC0316C6499076C2'
+      : '4F5EE5011B086824ED4256B53BCD214106AE1D38392A3029788C667383E2E315');
+  }
+  checkProfile();
+  let profileNegativeControls = 0;
+  function profileMutation(object, key, value) {
+    checkProfile(); const previous = object[key]; object[key] = value;
+    try { assert.throws(checkProfile); profileNegativeControls++; }
+    finally { object[key] = previous; }
+    checkProfile();
+  }
+  const identityKey = 'config/splat/us_rev0.semantic.json';
+  for (const identity of ['0'.repeat(64),
+    '6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1',
+    'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204',
+    'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68']) {
+    if (identity !== model.config.acceptedInputSha256[identityKey])
+      profileMutation(model.config.acceptedInputSha256, identityKey, identity);
+  }
+  for (const index of [476, 496, 497]) {
+    const owner = model.rows[index], part = owner.slices[0];
+    const successor = owner.primaryClass === 'code';
+    profileMutation(owner, 'primaryClass', successor ? 'data' : 'code');
+    profileMutation(owner, 'name', owner.name.replace(successor ? '_code_' : '_data_', successor ? '_data_' : '_code_'));
+    profileMutation(part, 'executable', !part.executable);
+    profileMutation(part, 'ownerName', part.ownerName.replace(successor ? '_code_' : '_data_', successor ? '_data_' : '_code_'));
+  }
+  profileMutation(model.rows[476], 'processorClass', 'unexpected');
+  profileMutation(model.rows[476].slices[0], 'vramStart', model.rows[476].slices[0].vramStart + 4);
+  for (const index of [475, 477, 495, 498, 1000])
+    profileMutation(model.rows[index], 'primaryClass', 'unexpected');
   assert.strictEqual(digest(model.overlays), 'C699993FF5DB3D8A075BC2EBC22DEBA4FDDD9B8E6F7E257960DFD37E92BAD016');
   assert.strictEqual(digest(model.nonDescriptorLoadSlabs.slice(0, 29)), 'DD0C8A896DCBB5DEFEBF6463700FB79715479E74F9F9A599F9FE82C2AAF52695');
-  return { originalByteAndMappingNegativeControls: rejected };
+  return { originalByteAndMappingNegativeControls: rejected, profileNegativeControls };
 }
 
 function runAuxiliaryTests(model = loadAcceptedModel()) {

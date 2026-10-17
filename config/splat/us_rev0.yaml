@@ -1926,7 +1926,7 @@ segments:
     type: bin
     start: 0x0001E6E8
     end: 0x0001E7C8
-  - name: p0476_data_original_mips_0001e7c8_0001e7ec
+  - name: p0476_code_original_mips_0001e7c8_0001e7ec
     type: bin
     start: 0x0001E7C8
     end: 0x0001E7EC
@@ -2006,11 +2006,11 @@ segments:
     type: bin
     start: 0x0001FBCC
     end: 0x0001FBFC
-  - name: p0496_data_original_mips_0001fbfc_0001fc1c
+  - name: p0496_code_original_mips_0001fbfc_0001fc1c
     type: bin
     start: 0x0001FBFC
     end: 0x0001FC1C
-  - name: p0497_data_original_mips_0001fc1c_0001fc50
+  - name: p0497_code_original_mips_0001fc1c_0001fc50
     type: bin
     start: 0x0001FC1C
     end: 0x0001FC50

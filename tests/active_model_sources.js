@@ -66,9 +66,49 @@ function interiorReadSite(stack) {
   return frames.some(value => ['interiorOriginal', 'interiorBinding'].includes(value?.[0])
     && value[1] === path.join(p7.ROOT, 'tools/lib/compilation_groups.js')) ? 'other' : null;
 }
+const singleTail = [['singleFragmentCanonical', 'compilation_groups.js'],
+  ['bindSingleFragmentContext', 'compilation_groups.js'], ['bind', 'compilation_groups.js'],
+  ['loadActiveTargetModelInternal', 'active_targets.js']];
+const literalBindTail = [['literalRunBindings', 'compilation_groups.js'], ['bindLiteralRun', 'compilation_groups.js'],
+  ['bind', 'compilation_groups.js'], ['loadActiveTargetModelInternal', 'active_targets.js']];
+const literalFinishTail = [['literalRunBindings', 'compilation_groups.js'], ['authenticateLiteralRun', 'compilation_groups.js'],
+  ['finishLiteralRunBindings', 'compilation_groups.js'], ['loadActiveTargetModelInternal', 'active_targets.js']];
+const registryRead = [['sha256File', 'phase7_conventional.js'], ['', 'logical_functions.js'],
+  ['Array.map', '<anonymous>'], ['loadRegistry', 'logical_functions.js']];
+const authorityReadChains = {
+  initialAcceptedModel: [['loadAcceptedModel', 'phase7_conventional.js'], ['loadActiveTargetModelInternal', 'active_targets.js']],
+  bootInitializedDataProof: [['loadProof', 'boot_initialized_data.js'], ['loadAcceptedModel', 'phase7_conventional.js'],
+    ['loadActiveTargetModelInternal', 'active_targets.js']],
+  singleBoot: [['loadProof', 'boot_initialized_data.js'], ['loadAcceptedModel', 'phase7_conventional.js'], ...singleTail],
+  singleModel: [['loadAcceptedModel', 'phase7_conventional.js'], ...singleTail],
+  singleOriginal: singleTail,
+  singleRegistry: [...registryRead, ...singleTail],
+  singleActivation: [['assertActivationCompatible', 'logical_functions.js'], ...singleTail],
+  singlePair: [['sha256File', 'phase7_conventional.js'], ['', 'active_targets.js'], ['Array.map', '<anonymous>'],
+    ['resolveAuxiliarySectionContracts', 'active_targets.js'], ...singleTail],
+  singleIdentity: [['sha256File', 'phase7_conventional.js'], ['', 'compilation_groups.js'], ['Array.map', '<anonymous>'], ...singleTail],
+  literalBindRegistry: [...registryRead, ...literalBindTail],
+  literalBindHash: [['sha256File', 'phase7_conventional.js'], ...literalBindTail],
+  literalBindOriginal: literalBindTail,
+  literalFinishRegistry: [...registryRead, ...literalFinishTail],
+  literalFinishHash: [['sha256File', 'phase7_conventional.js'], ...literalFinishTail],
+  literalFinishOriginal: literalFinishTail,
+  mixedOriginal: [['bindMixed', 'retained_literal_references.js'], ['finishFragmentBindings', 'compilation_groups.js'],
+    ['validateAuxiliaryOwnerGroups', 'active_targets.js'], ['loadActiveTargetModelInternal', 'active_targets.js']],
+};
+function authorityReadSite(stack) {
+  const frames = readFrames(stack);
+  if (frames.length >= 60) return 'other';
+  for (const [site, chain] of Object.entries(authorityReadChains)) {
+    if (chain.every(([name, file], i) => frames[i + 1]?.[0] === name
+      && frames[i + 1]?.[1] === (file === '<anonymous>' ? file : path.join(p7.ROOT, 'tools/lib', file)))) return site;
+  }
+  return frames.some(frame => ['singleFragmentCanonical', 'bindSingleFragmentContext', 'literalRunBindings',
+    'bindLiteralRun', 'authenticateLiteralRun', 'finishLiteralRunBindings', 'bindMixed', 'loadProof', 'loadAcceptedModel'].includes(frame?.[0])
+    || frame?.[1] === path.join(p7.ROOT, 'tools/lib/boot_initialized_data.js')) ? 'other' : null;
+}
 function sourceReadSite(stack, bootProof) {
-  return atomicReadSite(stack) || interiorReadSite(stack) || (bootProof ? 'bootInitializedDataProof'
-    : stack.includes('at loadAcceptedModel ') ? 'initialAcceptedModel'
+  return authorityReadSite(stack) || atomicReadSite(stack) || interiorReadSite(stack) || (bootProof ? 'other'
     : stack.includes('at verifyRowSymbolSourceCache ') ? 'finalSourceSweep'
     : stack.includes('at cachedAssemblyText ') ? 'cachedAssemblyText'
     : stack.includes('at Object.assertActivationCompatible ') ? 'logicalActivation'
@@ -78,6 +118,19 @@ const syntheticStack = chain => 'Error\n    at fs.readFileSync (test.js:1:1)\n' 
   file === '<anonymous>' ? `    at ${name} (<anonymous>)`
     : name ? `    at ${name} (${path.join(p7.ROOT, 'tools/lib', file)}:1:1)`
       : `    at ${path.join(p7.ROOT, 'tools/lib', file)}:1:1`).join('\n');
+for (const [site, chain] of Object.entries(authorityReadChains)) {
+  assert.equal(sourceReadSite(syntheticStack(chain)), site);
+  for (let i = 0; i < chain.length; i++) for (const replacement of [[chain[i][0], 'wrong-module.js'], ['wrongOwner', chain[i][1]]]) {
+    const wrong = chain.map((frame, j) => j === i ? replacement : frame);
+    assert.equal(sourceReadSite(syntheticStack(wrong)), 'other', 'exact authority function/module chain');
+  }
+  for (let end = 0; end < chain.length; end++)
+    assert.equal(sourceReadSite(syntheticStack(chain.slice(0, end))), 'other', 'incomplete authority chain');
+  assert.equal(sourceReadSite(syntheticStack([...chain, ...Array.from({ length: 60 }, () => ['caller', 'active_targets.js'])])),
+    'other', 'bounded stack must reject truncation');
+  assert.equal(sourceReadSite(syntheticStack([['unexpected', 'compilation_groups.js'], ...chain,
+    ['loadAcceptedModel', 'phase7_conventional.js']])), 'other', 'authority cannot hide behind generic fallback');
+}
 for (const [site, chain] of Object.entries(interiorReadChains)) {
   assert.equal(sourceReadSite(syntheticStack(chain)), site);
   for (let i = 0; i < chain.length; i++) {
@@ -130,11 +183,66 @@ assert.equal(atomicReadSite(unknownAtomicStack), 'other');
 const sortedReads = rows => rows.map(row => JSON.stringify(row)).sort();
 const assertAtomicReads = (actual, expected) => assert.deepEqual(sortedReads(actual), sortedReads(expected),
   'atomic authentication path/site/count census');
-const atomicReads = [], interiorReads = [], initialReads = [];
+// Snapshot registry bytes before interception; expectation derivation must not add source reads.
+const registryBytes = fs.readFileSync(path.join(p7.ROOT, 'config/logical-functions.json'));
+const registryConfig = JSON.parse(registryBytes);
+const registryIdentity = { path: 'config/logical-functions.json', bytes: registryBytes.length, sha256: p7.sha256Buffer(registryBytes) };
+function expectedAuthorityReads(context) {
+  const result = [], groups = [...new Set(context.targets.map(t => t.compilationGroup).filter(Boolean))];
+  const groupTools = require('../tools/lib/compilation_groups');
+  const rowFile = index => {
+    const rows = context.model.rows.filter(r => r.index === index); assert.equal(rows.length, 1);
+    const part = rows[0].part; assert(part);
+    assert.equal(context.model.parts.filter(p => p.file === part.file && p.sha256 === part.sha256).length, 1);
+    return path.join(p7.ROOT, part.file);
+  };
+  const registryFiles = registryConfig.bodies.flatMap(body => body.fragments.map(fragment => {
+    assert.equal(rowFile(fragment.rowIndex), path.join(p7.ROOT, fragment.file));
+    assert.equal(context.model.rows[fragment.rowIndex].part.sha256, fragment.sha256);
+    return path.join(p7.ROOT, fragment.file);
+  }));
+  const add = (site, files, times = 1) => { for (let i = 0; i < times; i++) for (const file of files) result.push({ site, file }); };
+  add('bootInitializedDataProof', [bootClearSource]);
+  add('initialAcceptedModel', context.model.parts.map(p => path.join(p7.ROOT, p.file)));
+  for (const group of groups) {
+    if (groupTools.singleFragment(group)) {
+      const binding = group.singleFragmentBinding; assert.deepEqual(binding.logical, registryIdentity);
+      const owner = rowFile(group.members[0].ownerRowIndex), data = rowFile(group.auxiliary.sections[0].ownerRowIndex);
+      for (const row of binding.rows) assert.deepEqual(row, context.model.rows[row.index]);
+      add('singleBoot', [bootClearSource]); add('singleModel', context.model.parts.map(p => path.join(p7.ROOT, p.file)));
+      add('singleOriginal', [owner, data]); add('singleActivation', [owner]); add('singleRegistry', registryFiles);
+      add('singlePair', [data]);
+      const inputs = binding.inputs.filter(f => f.path.startsWith('asm/original/rev0/') && f.path.endsWith('.s'));
+      assert.deepEqual(inputs.map(f => path.join(p7.ROOT, f.path)), [owner, data]);
+      for (const input of inputs) assert.equal(input.sha256, context.model.parts.find(p => p.file === input.path).sha256);
+      add('singleIdentity', [owner, data]);
+    }
+    if (group.mode === 'native-text-owner-retained-literal-run-projection') {
+      const binding = group.retainedNeighborBinding; assert.deepEqual(binding.registryIdentity, registryIdentity);
+      const neighbor = rowFile(binding.rowIndex);
+      assert.equal(neighbor, path.join(p7.ROOT, binding.source));
+      assert.equal(binding.sourceSha256, context.model.rows[binding.rowIndex].part.sha256);
+      const files = [...group.members.map(m => rowFile(m.ownerRowIndex)), neighbor];
+      for (const [prefix, times] of [['literalBind', 1], ['literalFinish', 2]]) {
+        add(prefix + 'Registry', registryFiles, times); add(prefix + 'Hash', files, times); add(prefix + 'Original', [neighbor], times);
+      }
+    }
+    if (group.mode === 'native-text-owner-functions-mixed-readonly-fragment-projection') {
+      const section = group.auxiliary.sections[0], file = rowFile(section.ownerRowIndex);
+      assert.equal(file, path.join(p7.ROOT, section.ownerOriginalAssembly));
+      assert.equal(section.ownerOriginalAssemblySha256, context.model.rows[section.ownerRowIndex].part.sha256);
+      add('mixedOriginal', [file]);
+    }
+  }
+  return result;
+}
+const atomicReads = [], interiorReads = [], initialReads = [], authorityReads = [];
 const read = fs.readFileSync, readSites = {}, assemblyPrefix = path.join(p7.ROOT, 'asm/original/rev0') + path.sep;
 const bootClearSource = path.join(p7.ROOT, 'asm/original/rev0/boot/boot_entry_clear_bss.s');
 let prepared;
+const stackTraceLimit = Error.stackTraceLimit;
 try {
+  Error.stackTraceLimit = 60;
   fs.readFileSync = function (file, ...args) {
     if (typeof file === 'string' && path.resolve(file).startsWith(assemblyPrefix) && file.endsWith('.s')) {
       const stack = new Error().stack;
@@ -143,6 +251,7 @@ try {
       const atomicSite = atomicReadSite(stack);
       if (atomicSite && atomicSite !== 'other') atomicReads.push({ site: atomicSite, file: path.resolve(file) });
       const site = sourceReadSite(stack, bootProof);
+      if (Object.hasOwn(authorityReadChains, site)) authorityReads.push({ site, file: path.resolve(file) });
       if (site === 'initialAcceptedModel') initialReads.push(path.resolve(file));
       if (Object.hasOwn(interiorReadChains, site)) interiorReads.push({ site, file: path.resolve(file) });
       readSites[site] = (readSites[site] || 0) + 1;
@@ -162,6 +271,30 @@ try {
   assert.deepEqual(initialReads.sort(), prepared.model.parts.map(part => path.join(p7.ROOT, part.file)).sort(),
     'initial authenticated read must visit each exact physical source once, including retained-padding owners');
   assert.equal(readSites.bootInitializedDataProof, 1, 'independent boot-clear source authentication');
+  const expectedAuthority = expectedAuthorityReads(prepared);
+  const checkAuthority = rows => assert.deepEqual(sortedReads(rows), sortedReads(expectedAuthority), 'authority path/site/count census');
+  checkAuthority(authorityReads);
+  for (const site of new Set(expectedAuthority.map(r => r.site))) {
+    const first = expectedAuthority.find(r => r.site === site), index = expectedAuthority.indexOf(first);
+    const remaining = expectedAuthority.filter((_, i) => i !== index);
+    for (const changed of [remaining, [...expectedAuthority, first],
+      [...remaining, { ...first, file: assemblyPrefix + 'wrong.s' }],
+      [...remaining, { ...first, site: 'wrong' }]]) { checkAuthority(authorityReads); assert.throws(() => checkAuthority(changed)); checkAuthority(authorityReads); }
+  }
+  assert.throws(() => checkAuthority([...authorityReads, ...authorityReads.filter(r => r.site === 'singleModel')]));
+  for (const group of new Set(prepared.targets.map(t => t.compilationGroup).filter(Boolean))) {
+    const records = group.singleFragmentBinding ? [[group.singleFragmentBinding.logical, 'sha256'],
+      ...group.singleFragmentBinding.inputs.filter(f => f.path.endsWith('.s')).flatMap(f => [[f, 'path'], [f, 'sha256']])]
+      : group.retainedNeighborBinding ? [[group.retainedNeighborBinding.registryIdentity, 'sha256'],
+        [group.retainedNeighborBinding, 'source'], [group.retainedNeighborBinding, 'sourceSha256']]
+        : group.mode === 'native-text-owner-functions-mixed-readonly-fragment-projection'
+          ? [[group.auxiliary.sections[0], 'ownerOriginalAssembly'], [group.auxiliary.sections[0], 'ownerOriginalAssemblySha256']] : [];
+    for (const [record, field] of records) {
+      checkAuthority(expectedAuthorityReads(prepared)); const previous = record[field]; record[field] = 'wrong';
+      try { assert.throws(() => expectedAuthorityReads(prepared)); } finally { record[field] = previous; }
+      checkAuthority(expectedAuthorityReads(prepared));
+    }
+  }
   assert.equal(readSites.finalSourceSweep, identities.length);
   assert.equal(readSites.cachedAssemblyText || 0, 0); assert.equal(readSites.logicalActivation || 0, 0);
   const expectedAtomicReads = prepared.targets.filter(target => target.atomicText).flatMap(target => {
@@ -211,9 +344,13 @@ try {
       const group = target.compilationGroup;
       if (projection.composed(group)) bindings = group.auxiliary.retained;
       else {
-        assert(projection.fragmentMode(group), 'unknown auxiliary producer in source-read census');
-        assert.deepEqual(Object.keys(group.auxiliary).sort(), ['alignmentDirectives', 'compilerLabel', 'sections']);
-        projection.fragmentContract(group);
+        if (projection.singleFragment(group)) projection.singleFragmentContract(group);
+        else if (group.mode === 'native-text-owner-functions-mixed-readonly-fragment-projection') projection.mixedContract(group);
+        else {
+          assert(projection.fragmentMode(group), 'unknown auxiliary producer in source-read census');
+          assert.deepEqual(Object.keys(group.auxiliary).sort(), ['alignmentDirectives', 'compilerLabel', 'sections']);
+          projection.fragmentContract(group);
+        }
       }
     }
     assert(Array.isArray(bindings), 'returned retained-projection binding census');
@@ -231,6 +368,15 @@ try {
   }
   assert.throws(() => retainedProjectionBindings({ ...fragment,
     compilationGroup: { ...fragment.compilationGroup, mode: 'unknown' } }));
+  for (const target of prepared.targets.filter(t => t.groupMemberIndex === 0
+    && (require('../tools/lib/auxiliary_projection').singleFragment(t.compilationGroup)
+      || t.compilationGroup?.mode === 'native-text-owner-functions-mixed-readonly-fragment-projection'))) {
+    assert.deepEqual(retainedProjectionBindings(target), []);
+    for (const auxiliary of [{ ...target.compilationGroup.auxiliary, retained: [] },
+      { ...target.compilationGroup.auxiliary, projection: {} }, { ...target.compilationGroup.auxiliary, nativeSection: {} }])
+      assert.throws(() => retainedProjectionBindings({ ...target, compilationGroup: { ...target.compilationGroup, auxiliary } }));
+    assert.throws(() => retainedProjectionBindings({ ...target, compilationGroup: { ...target.compilationGroup, mode: 'unknown' } }));
+  }
   const composed = prepared.targets.find(target => target.groupMemberIndex === 0
     && require('../tools/lib/auxiliary_projection').composed(target.compilationGroup));
   assert(composed, 'nonvacuous composed source-read control');
@@ -244,7 +390,7 @@ try {
   for (const target of selected) assert.equal(active.resolveAcceptedRow(prepared.model, target.symbol, cache).index, target.row);
   assert.throws(() => active.finishActiveTargetModelSources(prepared), /already finished/);
   assert.throws(() => active.finishActiveTargetModelSources({ ...prepared }), /missing/);
-} finally { fs.readFileSync = read; }
+} finally { fs.readFileSync = read; Error.stackTraceLimit = stackTraceLimit; }
 const mutations = [];
 for (const [name, mutate] of [
   ['model identity', value => { value.model = { ...value.model }; }],

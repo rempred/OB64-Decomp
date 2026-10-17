@@ -27,6 +27,7 @@ function entryBytes(segment, auxiliaries) {
 }
 function rowBundle(group) { return ['native-text-readonly-owner-projection','native-text-readonly-interior-run-projection'].includes(group?.mode) && group.auxiliary?.projection?.schemaVersion === 5; }
 function groupContract(group) {
+  if (mixedMode(group)) return mixedContract(group);
   if (singleFragment(group)) return singleFragmentContract(group);
   if (fragmentMode(group)) return fragmentContract(group);
   if (rowBundle(group)) return bundleContract(group);
@@ -49,7 +50,7 @@ function memberSections(group, symbol) {
   return group.auxiliary.sections.filter(section => (rowBundle(group) ? payloads(group.auxiliary.projection).find(row => row.outputSection === section.outputSection).occurrences[0].memberSymbol : section.memberSymbol) === symbol);
 }
 function assertMemberSections(target) {
-  if ((composed(target.compilationGroup) || fragmentLike(target.compilationGroup)) && !same(target.auxiliarySections, memberSections(target.compilationGroup, target.symbol))) fail('group auxiliary attribution census');
+  if ((composed(target.compilationGroup) || fragmentLike(target.compilationGroup) || mixedMode(target.compilationGroup)) && !same(target.auxiliarySections, memberSections(target.compilationGroup, target.symbol))) fail('group auxiliary attribution census');
 }
 function normalize(contract, auxiliaries) {
   return normalizeContract(contract, auxiliaries, 2);
@@ -579,6 +580,7 @@ function assertCompleteGroupRows(group) {
   }
 }
 function groupGrammar(compiler, group, adjust) {
+  if (mixedMode(group)) { mixedContract(group); if(group.auxiliary.mixed.schemaVersion===2&&group.auxiliary.mixed.initializer)return mixedInitializerGrammar(compiler,group); return groupGrammar(compiler, {...group,mode:'native-text-owner-functions-readonly-fragment-projection',auxiliary:{sections:group.auxiliary.sections,compilerLabel:group.auxiliary.compilerLabel,alignmentDirectives:group.auxiliary.alignmentDirectives}},adjust); }
   if (fragmentLike(group)) {
     const c = groupContract(group), a = group.auxiliary.sections[0];
     adjust(compiler, group.owners[0].sectionName, { auxiliarySections: [{ compilerSection: '.rodata', outputSection: c.segments[0].outputSection, bytes: c.bytes, entries: a.entries }] });
@@ -612,6 +614,7 @@ function groupReadonlyNames(group, stage) {
   return ['raw', 'text-projected'].includes(stage) ? ['.rodata'] : group.auxiliary.sections.map(value => value.outputSection);
 }
 function groupCensus(elf, group, stage) {
+  if(mixedMode(group)){const s=mixedStage(elf,group,stage);return {schemaVersion:1,mixed:s.proof,stageCensus:completeObjectCensus(elf)};}
   if (!composed(group) && !fragmentLike(group)) fail('missing composed producer');
   const contract = groupContract(group);
   if (!fragmentLike(group)) assertCompleteGroupRows(group);
@@ -789,6 +792,7 @@ Object.assign(module.exports, { singleOwner, composed, groupContract, memberSect
 // Version 5 is group-only. Physical rows and callable occurrence attribution
 // are independent partitions. Older standalone and composed schemas are unchanged.
 function groupOccurrences(group) {
+  if(mixedMode(group)){const a=group.auxiliary.sections[0],c=mixedContract(group);return [{...c.segments[0],offset:c.native.tableOffset,bytes:a.bytes,memberSymbol:a.memberSymbol,functionSymbol:a.functionSymbol}];}
   if (fragmentLike(group)) { const c = groupContract(group), a = group.auxiliary.sections[0]; return [{ ...c.segments[0], bytes: a.entries * 4, memberSymbol: a.memberSymbol, functionSymbol: a.functionSymbol }]; }
   return payloads(group.auxiliary.projection).flatMap(row => rowBundle(group)
     ? row.occurrences.map(o => ({ ...o, outputSection: row.outputSection, rowOffset: o.offset - row.offset })) : [row]);
@@ -979,6 +983,275 @@ function normalizeFragment(group) {
   });
 }
 Object.assign(module.exports,{fragmentMode,fragmentContract,normalizeFragment});
+
+
+// A separate, finite mixed native representation. Neither ordinary fragments nor
+// retained-literal schemas acquire this flags/anchor permission.
+const mixedMode = group => group?.mode === 'native-text-owner-functions-mixed-readonly-fragment-projection';
+function mixedContract(group) {
+  const a=group?.auxiliary,m=a?.mixed,v2=m?.schemaVersion===2;
+  if(!mixedMode(group)||!keys(a,['sections','compilerLabel','alignmentDirectives','mixed'])
+    ||!keys(m,['schemaVersion','bytes','alignment','flags','expectedNativeSha256','tableOffset','literals','zero',...(v2?['initializer']:[])])
+    ||![1,2].includes(m.schemaVersion)||m.flags!==(v2?2:1)||m.alignment!==16||!integer(m.bytes,16)||m.bytes%16
+    ||!SHA.test(m.expectedNativeSha256)||!integer(m.tableOffset,v2?0:8)||m.tableOffset%8||(v2&&m.tableOffset!==0)
+    ||!Array.isArray(m.literals)||!m.literals.length)fail('mixed auxiliary envelope');
+  const ordinary=fragmentContract({...group,mode:'native-text-owner-functions-readonly-fragment-projection',auxiliary:{sections:a.sections,compilerLabel:a.compilerLabel,alignmentDirectives:a.alignmentDirectives}}),table=a.sections[0];
+  if(table.trailingPaddingBytes||table.sourceObjectPrefix||table.compilerOccurrences||table.alignment!==8||table.bytes!==table.entries*4)fail('mixed table extent/alignment');
+  const segments=[{kind:'table',offset:m.tableOffset,bytes:table.bytes}];
+  for(const slot of m.literals){if(!keys(slot,['offset','expectedSha256'])||!integer(slot.offset)||slot.offset%8||!SHA.test(slot.expectedSha256))fail('mixed literal schema');segments.push({...slot,kind:'literal',bytes:8});}
+  if(m.zero!==null){if(!keys(m.zero,['offset','bytes','expectedSha256'])||!integer(m.zero.offset)||!integer(m.zero.bytes,4)||m.zero.bytes%4||m.zero.bytes>=16||m.zero.expectedSha256!==hash(Buffer.alloc(m.zero.bytes)))fail('mixed zero schema');segments.push({...m.zero,kind:'zero'});}
+  if(v2&&m.initializer!==null){const i=m.initializer;if(!keys(i,['offset','bytes','expectedSha256'])||!integer(i.offset)||i.offset%8||i.bytes!==64||!SHA.test(i.expectedSha256))fail('mixed initializer schema');segments.push({...i,kind:'initializer'});}
+  segments.sort((x,y)=>x.offset-y.offset);let end=0;for(const seg of segments){if(seg.offset!==end||seg.offset+seg.bytes>m.bytes)fail('mixed interval tiling');end+=seg.bytes;}
+  if(end!==m.bytes)fail('mixed native extent');
+  if(v2){if(segments[0].kind!=='table'||(table.bytes%8===4?(!m.zero||m.zero.offset!==table.bytes||m.zero.bytes!==4):m.zero!==null))fail('mixed allocated table gap');
+    if(m.initializer){const i=segments.findIndex(s=>s.kind==='initializer');if(segments[i-1]?.kind!=='literal'||segments[i+1]?.kind!=='literal')fail('mixed initializer between scalars');}
+  }else if(segments[0].kind!=='literal'||segments[0].offset!==0||(m.zero&&segments.at(-1).kind!=='zero')||m.bytes!==Math.ceil((m.zero?m.zero.offset:m.bytes)/16)*16)fail('mixed native layout');
+  if(!same(m.literals.map(s=>s.offset),[...m.literals.map(s=>s.offset)].sort((x,y)=>x-y)))fail('mixed literal order');
+  return{...ordinary,native:m,intervals:segments};
+}
+function normalizeMixed(group){mixedContract(group);return group.auxiliary.sections.map(({memberSymbol,functionSymbol,...s})=>({...require('./active_targets').normalizeAuxiliarySectionContracts([s],group.id,'mixed auxiliary')[0],memberSymbol,functionSymbol}));}
+function mixedReferenceSets(group){
+  const c=mixedContract(group),refs=group.relocations.map((r,i)=>({...r,index:i})).filter(r=>r.symbolSection==='.rodata'),sets=[],used=new Set();
+  for(let i=0;i<refs.length;i+=2){const hi=refs[i],lo=refs[i+1];
+    if(!lo||hi.type!==5||lo.type!==6||hi.symbol!=='.rodata'||lo.symbol!=='.rodata'||hi.symbolValue||lo.symbolValue||lo.index!==hi.index+1)fail('mixed reference pair grammar/order');
+    const addend=(((hi.word&65535)<<16)+(lo.word<<16>>16))>>>0,slot=c.native.literals.find(s=>s.offset===addend),table=addend===c.native.tableOffset,initializer=c.native.schemaVersion===2&&c.native.initializer?.offset===addend;
+    if(Number(Boolean(slot))+Number(table)+Number(Boolean(initializer))!==1||lo.offset!==hi.offset+(table?8:4))fail('mixed reference role');
+    if(initializer){const reg=hi.word>>>16&31;if(hi.word>>>26!==15||(hi.word>>>21&31)!==0||lo.word>>>26!==9||(lo.word>>>21&31)!==reg||(lo.word>>>16&31)!==reg)fail('mixed initializer reference');}
+    else if(hi.word>>>16!==0x3c01||((lo.word>>>21)&31)!==1||lo.word>>>26!==(table?35:53))fail('mixed reference role/grammar');
+    const fn=group.functions.filter(f=>hi.offset>=f.offset&&lo.offset+4<=f.offset+f.bytes);
+    if(fn.length!==1||(table&&fn[0].symbol!==group.auxiliary.sections[0].functionSymbol))fail('mixed reference function attribution');
+    if(used.has(addend))fail('mixed duplicate reference set');used.add(addend);sets.push({hi:hi.offset,lo:lo.offset,kind:table?'table':initializer?'initializer':'literal',addend,functionSymbol:fn[0].symbol});
+  }
+  if(sets.length!==c.native.literals.length+1+(c.native.initializer?1:0)||!used.has(c.native.tableOffset)||c.native.literals.some(s=>!used.has(s.offset))||(c.native.initializer&&!used.has(c.native.initializer.offset)))fail('mixed full reference census');return sets;
+}
+
+const mixedRaw = new WeakMap();
+function mixedRawEvidence(elf,group){
+  const c=mixedContract(group),binding=require('./retained_literal_references').mixedBinding(group),ro=elf.sections.filter(s=>s.name==='.rodata'),text=elf.sections.filter(s=>s.name==='.text');
+  if(ro.length!==1||text.length!==1)fail('mixed native section census');const r=ro[0];
+  if(r.type!==1||r.flags!==c.native.flags||r.address||r.alignment!==16||r.size!==c.native.bytes)fail('mixed native readonly shape');
+  const raw=Buffer.from(elfSectionBytes(elf,r));if(hash(raw)!==c.native.expectedNativeSha256)fail('mixed native payload hash');
+  const anchors=elf.symbols.filter(s=>s.sectionIndex===r.index);if(anchors.length!==1)fail('mixed extra/named symbol');const anchor=anchors[0];
+  if(anchor.name||anchor.symbolType!==3||anchor.binding||anchor.value||anchor.size||anchor.visibility)fail('mixed raw section anchor');
+  for(const s of c.intervals.filter(s=>s.kind!=='table'))if(hash(raw.subarray(s.offset,s.offset+s.bytes))!==s.expectedSha256)fail('mixed literal/zero payload');
+  const table=group.auxiliary.sections[0],payload=raw.subarray(c.native.tableOffset,c.native.tableOffset+table.bytes);if(hash(payload)!==table.expectedObjectSha256)fail('mixed table object bytes');
+  const rels=require('./compilation_groups').relocations(elf),rr=rels.filter(q=>q.owner.index===r.index),textAnchor=elf.symbols.filter(s=>s.sectionIndex===text[0].index&&s.symbolType===3);
+  if(textAnchor.length!==1||rr.length!==table.entries)fail('mixed table REL census');
+  rr.forEach((q,i)=>{const expected=table.expectedRelocations[i],off=c.native.tableOffset+i*4;
+    if(q.place!==off||q.type!==2||q.symbol!==textAnchor[0]||q.symbol.value||q.symbol.name||q.symbol.binding||q.symbol.size||q.symbol.visibility
+      ||Number(expected.offset)!==i*4||expected.type!=='R_MIPS_32'||expected.symbol!=='.text'||expected.section!=='.rel.rodata'||Number(expected.addend)!==raw.readUInt32BE(off))fail('mixed serialized table REL');
+    const fn=group.functions.find(f=>f.symbol===table.functionSymbol),addend=raw.readUInt32BE(off);if(addend%4||addend<fn.offset||addend+4>fn.offset+fn.bytes)fail('mixed table destination');
+  });
+  const sets=mixedReferenceSets(group),incoming=rels.filter(q=>q.symbol===anchor),expectedPlaces=sets.flatMap(s=>[s.hi,s.lo]);
+  if(incoming.length!==expectedPlaces.length||incoming.some((q,i)=>q.owner.index!==text[0].index||q.place!==expectedPlaces[i]||q.type!==(i%2?6:5)))fail('mixed incoming REL census');
+  const txt=Buffer.from(elfSectionBytes(elf,text[0]));for(const s of sets){
+    if(s.kind==='table'&&txt.readUInt32BE(s.hi+4)!==0x00220821)fail('mixed dispatch ADDU grammar');
+    const hi=txt.readUInt32BE(s.hi),lo=txt.readUInt32BE(s.lo),originalHi=binding.rom.readUInt32BE(group.romStart+s.hi),originalLo=binding.rom.readUInt32BE(group.romStart+s.lo);
+    if((hi>>>16)!==(originalHi>>>16)||(lo>>>16)!==(originalLo>>>16)||((((originalHi&65535)<<16)+(originalLo<<16>>16))>>>0)!==binding.evidence.base+s.addend)fail('mixed original reference equation');
+  }
+  const initializers=sets.filter(s=>s.kind==='initializer').map(s=>initializerUseEvidence(elf,group,s));
+  const evidence={binding:binding.evidence,sets,...(c.native.schemaVersion===2?{initializers}:{}),raw:completeObjectCensus(elf),anchor:{symbolIndex:anchor.symbolIndex,symbolTableIndex:anchor.symbolTableIndex},tableRelocations:rr.map(q=>({place:q.place,type:q.type,symbolIndex:q.symbol.symbolIndex,word:raw.readUInt32BE(q.place)}))};
+  mixedRaw.set(group,{input:Buffer.from(elf.buffer),identity:hash(Buffer.from(JSON.stringify(group))),evidence});return evidence;
+}
+function mixedAuthority(group){const r=mixedRaw.get(group);require('./retained_literal_references').mixedBinding(group);if(!r||r.identity!==hash(Buffer.from(JSON.stringify(group))))fail('mixed native authority');return r;}
+function mixedMetadata(input,group){
+  const elf=parseElf32BigEndian(input),e=mixedRawEvidence(elf,group),c=mixedContract(group),ro=elf.sections.find(s=>s.name==='.rodata'),rel=elf.sections.filter(s=>[4,9].includes(s.type)&&s.info===ro.index);
+  if(rel.length!==1||rel[0].name!=='.rel.rodata'||rel[0].type!==9||rel[0].entrySize!==8)fail('mixed REL section shape');
+  const output=Buffer.from(input),at=elf.sections[e.anchor.symbolTableIndex].offset+e.anchor.symbolIndex*16;
+  output.writeUInt32BE(e.binding.base,at+4);output[at+12]=0;output.writeUInt16BE(0xfff1,at+14);
+  output.writeUInt32BE(2,ro.headerOffset+8);output.writeUInt32BE(ro.offset+c.native.tableOffset,ro.headerOffset+16);output.writeUInt32BE(group.auxiliary.sections[0].bytes,ro.headerOffset+20);output.writeUInt32BE(group.auxiliary.sections[0].alignment,ro.headerOffset+32);
+  for(let i=0;i<rel[0].size;i+=8)output.writeUInt32BE(input.readUInt32BE(rel[0].offset+i)-c.native.tableOffset,rel[0].offset+i);
+  return{buffer:output,evidence:e};
+}
+function mixedProject(input,group){
+  const metadata=mixedMetadata(input,group),text=elfTools.projectNativeTextOwners(metadata.buffer,group.owners.map(o=>({sectionName:o.sectionName,bytes:o.bytes})));
+  // Only section names change after the existing text projection. No symbol,
+  // payload, relocation, or header value is recreated by a lossy external tool.
+  const parsed=elfTools.parseRelocatable(text.buffer),list={sections:parsed.sections.map(s=>({...s,data:Buffer.from(elfTools.sectionBytes(text.buffer,s))})),oldToNew:new Map(parsed.sections.map(s=>[s.index,s.index]))};
+  const name=group.auxiliary.sections[0].outputSection;list.sections.find(s=>s.name==='.rodata').name=name;list.sections.find(s=>s.name==='.rel.rodata').name='.rel'+name;
+  const shstr=elfTools.rebuildSectionNames(list,parsed.shstrIndex),buffer=elfTools.serialize(text.buffer,parsed,list,shstr);
+  return{buffer,intermediate:text.buffer,mixedIntermediate:metadata.buffer,evidence:metadata.evidence};
+}
+const mixedStageTokens=new WeakMap();
+function mixedStageResult(elf,group,stage,result){mixedStageTokens.set(result,{elf,group,stage,hash:hash(elf.buffer)});return result;}
+function assertMixedStage(elf,group,stage,result){const token=mixedStageTokens.get(result);if(!token||token.elf!==elf||token.group!==group||token.stage!==stage||token.hash!==hash(elf.buffer))fail('mixed allocation requires native proof token');}
+function mixedStage(elf,group,stage){
+  if(stage==='raw'){const evidence=mixedRawEvidence(elf,group);const a=elf.symbols.find(s=>s.symbolIndex===evidence.anchor.symbolIndex&&s.symbolTableIndex===evidence.anchor.symbolTableIndex);return mixedStageResult(elf,group,stage,{proof:evidence,anchor:a,places:new Set(evidence.sets.flatMap(s=>[s.hi,s.lo]))});}
+  const authority=mixedAuthority(group),reproduced=mixedProject(authority.input,group),expected=stage==='text-projected'?reproduced.intermediate:reproduced.buffer;
+  if(stage!=='stripped'&&!elf.buffer.equals(expected))fail('mixed derivative differs from replay');
+  if(stage==='stripped')mixedStripCompare(parseElf32BigEndian(expected),elf,group,0);
+  const anchors=elf.symbols.filter(s=>s.sectionIndex===0xfff1&&s.value===authority.evidence.binding.base);if(anchors.length!==1)fail('mixed stage anchor census');
+  return mixedStageResult(elf,group,stage,{proof:authority.evidence,anchor:anchors[0],places:new Set(authority.evidence.sets.flatMap(s=>[s.hi,s.lo]))});
+}
+function mixedStripCompare(before,after,group,anchorType){
+  const binding=require('./retained_literal_references').mixedBinding(group),sectionName=(e,s)=>s.sectionIndex===0?'UND':s.sectionIndex===0xfff1?'ABS':e.sections[s.sectionIndex]?.name;
+  const key=(e,s)=>({name:s.name,value:s.value,size:s.size,binding:s.binding,type:(s.sectionIndex===0xfff1&&s.value===binding.evidence.base)?0:s.symbolType,visibility:s.visibility,section:sectionName(e,s)});
+  const abs=after.symbols.filter(s=>s.sectionIndex===0xfff1&&s.value===binding.evidence.base);if(abs.length!==1||abs[0].symbolType!==anchorType||abs[0].name||abs[0].binding||abs[0].size||abs[0].visibility)fail('mixed strip anchor');
+  const mapped=new Set(),mapping=[];for(const s of before.symbols){const n=sectionName(before,s);if(['.reginfo','.pdr','.note','.comment'].includes(n)){if(require('./compilation_groups').relocations(before).some(r=>r.symbol===s))fail('mixed stripped referenced metadata');mapping.push({oldIndex:s.symbolIndex,newIndex:null,removedSection:n});continue;}
+    const matches=after.symbols.filter(t=>same(key(before,s),key(after,t)));if(matches.length!==1||mapped.has(matches[0].symbolIndex))fail('mixed strip symbol mapping');mapped.add(matches[0].symbolIndex);mapping.push({oldIndex:s.symbolIndex,newIndex:matches[0].symbolIndex});}
+  const added=after.symbols.filter(s=>!mapped.has(s.symbolIndex)),expectedAdded=['.rel'+group.auxiliary.sections[0].outputSection,...group.owners.slice(1).map(o=>o.sectionName),group.auxiliary.sections[0].outputSection];
+  if(!same(added.map(s=>sectionName(after,s)),expectedAdded))fail('mixed strip generated section census');
+  const afterR=require('./compilation_groups').relocations(after);for(const s of added)if(s.name||s.binding||s.symbolType!==3||s.value||s.size||s.visibility||afterR.some(r=>r.symbol===s))fail('mixed strip generated section symbol');
+  const rel=(e,r)=>({owner:r.owner.name,place:r.place,type:r.type,symbol:key(e,r.symbol),word:e.buffer.readUInt32BE(r.owner.offset+r.place)});
+  if(!same(require('./compilation_groups').relocations(before).map(r=>rel(before,r)),afterR.map(r=>rel(after,r))))fail('mixed strip REL conservation');
+  const removed=new Set(['.reginfo','.pdr','.note','.comment']);const retained=before.sections.filter(s=>s.index&&!removed.has(s.name)&&!['.symtab','.strtab','.shstrtab'].includes(s.name));
+  if(!same(after.sections.filter(s=>s.index&&!['.symtab','.strtab','.shstrtab'].includes(s.name)).map(s=>s.name).sort(),retained.map(s=>s.name).sort()))fail('mixed strip section census');
+  for(const s of retained){const t=after.sections.find(t=>t.name===s.name);for(const k of ['type','flags','address','size','alignment','entrySize'])if(t[k]!==s[k])fail('mixed strip section shape');if(s.type!==9&&!Buffer.from(elfSectionBytes(before,s)).equals(Buffer.from(elfSectionBytes(after,t))))fail('mixed strip payload');}
+  return{mapping,added:added.map(s=>({...s,section:sectionName(after,s)})),anchor:abs[0]};
+}
+function correctMixedStrip(source,intermediate,group){const a=parseElf32BigEndian(source),b=parseElf32BigEndian(intermediate),detail=mixedStripCompare(a,b,group,1),out=Buffer.from(intermediate),at=b.sections[detail.anchor.symbolTableIndex].offset+detail.anchor.symbolIndex*16+12;if(out[at]!==1)fail('mixed correction byte');out[at]=0;mixedStripCompare(a,parseElf32BigEndian(out),group,0);return{buffer:out,evidence:{intermediateSha256:hash(intermediate),finalSha256:hash(out),mapping:detail.mapping,added:detail.added,correction:{fileOffset:at,old:1,new:0}}};}
+Object.assign(module.exports,{mixedMode,mixedContract,normalizeMixed,mixedReferenceSets,mixedRawEvidence,mixedStage,mixedProject,correctMixedStrip,assertMixedStage});
+function mixedDerive(target,root,files){
+  const group=target.compilationGroup,cg=require('./compilation_groups'),p7=require('./phase7_conventional'),source=fs.readFileSync(files.rawObject),intermediate=fs.readFileSync(files.stripIntermediateObject),final=fs.readFileSync(files.strippedObject);
+  const tc=JSON.parse(fs.readFileSync(path.join(ROOT,'config/toolchain.json'),'utf8')),exe=path.resolve(ROOT,tc.localRoot,'bin/mips-kmc-elf-objcopy.exe');
+  if(p7.sha256File(exe)!==target.model.config.binutils.tools['mips-kmc-elf-objcopy.exe'])fail('mixed strip tool identity');
+  const dir=fs.mkdtempSync(path.join(require('os').tmpdir(),'ob64-mix-'));let reproduced;
+  try{const input=path.join(dir,'input.o'),output=path.join(dir,'output.o');fs.writeFileSync(input,source);p7.run(exe,['--remove-section=.reginfo','--remove-section=.pdr','--remove-section=.comment','--remove-section=.note',input,output]);reproduced=fs.readFileSync(output);if(!fs.readFileSync(input).equals(source))fail('mixed replay input changed');}finally{fs.rmSync(dir,{recursive:true,force:true});}
+  if(!reproduced.equals(intermediate)||!fs.readFileSync(files.rawObject).equals(source)||!fs.readFileSync(files.stripIntermediateObject).equals(intermediate)||!fs.readFileSync(files.strippedObject).equals(final))fail('mixed strip intermediate not reproduced');
+  const correction=correctMixedStrip(source,intermediate,group);if(!correction.buffer.equals(final))fail('mixed final strip not reproduced');
+  return{schemaVersion:1,binding:require('./retained_literal_references').mixedBinding(group).evidence,native:mixedAuthority(group).evidence,strip:correction.evidence,implementationSha256:p7.sha256File(__filename)};
+}
+module.exports.mixedDerive=mixedDerive;
+
+// Finite GPR/control census for the initializer-containing function only.
+// This proves the supported pinned-ABI reference shape, not memory safety.
+function initializerInstruction(word) {
+  const op=word>>>26,rs=word>>>21&31,rt=word>>>16&31,rd=word>>>11&31,sa=word>>>6&31,fn=word&63;
+  const requireEncoding=ok=>{if(!ok)fail('initializer reserved/unsupported encoding');};
+  let registers=[],control=null;
+  if(op===0){
+    if([0,2,3].includes(fn)){requireEncoding(rs===0);registers=[rt,rd];}
+    else if([4,6,7,32,33,34,35,36,37,38,39,42,43].includes(fn)){requireEncoding(sa===0);registers=[rs,rt,rd];}
+    else if([16,18].includes(fn)){requireEncoding(rs===0&&rt===0&&sa===0);registers=[rd];}
+    else if([17,19].includes(fn)){requireEncoding(rt===0&&rd===0&&sa===0);registers=[rs];}
+    else if([24,25,26,27].includes(fn)){requireEncoding(rd===0&&sa===0);registers=[rs,rt];}
+    else if(fn===8){requireEncoding(rs===31&&rt===0&&rd===0&&sa===0);registers=[rs];control='return';}
+    else requireEncoding(false);
+  }else if(op===2)control='jump';
+  else if([4,5,20,21].includes(op)){registers=[rs,rt];control='branch';}
+  else if([6,7,22,23].includes(op)){requireEncoding(rt===0);registers=[rs];control='branch';}
+  else if(op===1){requireEncoding([0,1,2,3].includes(rt));registers=[rs];control='branch';}
+  else if([8,9,10,11,12,13,14].includes(op))registers=[rs,rt];
+  else if(op===15){requireEncoding(rs===0);registers=[rt];}
+  else if([32,33,34,35,36,37,38,39,40,41,42,43,46].includes(op))registers=[rs,rt];
+  else if([49,53,57,61].includes(op)){if(op===53||op===61)requireEncoding(rt%2===0);registers=[rs];}
+  else if(op===17){
+    if([0,4].includes(rs)){requireEncoding((word&2047)===0);registers=[rt];}
+    else if(rs===8){requireEncoding(rt<=3);control='branch';}
+    else {
+      requireEncoding([16,17,20,21].includes(rs));
+      if(fn<=3)requireEncoding([16,17].includes(rs));
+      else if(fn>=4&&fn<=15)requireEncoding([16,17].includes(rs)&&rt===0);
+      else if(fn===32)requireEncoding([17,20,21].includes(rs)&&rt===0);
+      else if(fn===33)requireEncoding([16,20,21].includes(rs)&&rt===0);
+      else if([36,37].includes(fn))requireEncoding([16,17].includes(rs)&&rt===0);
+      else if(fn>=48)requireEncoding([16,17].includes(rs)&&sa===0);
+      else requireEncoding(false);
+      // The pinned -mfp32 ABI uses even FPR pairs for double/long operands.
+      if(rs===17||rs===21)requireEncoding(rd%2===0);
+      if(rs===17&&(fn<=3||fn>=48))requireEncoding(rt%2===0);
+      if((rs===17&&fn<=7)||(fn>=8&&fn<=11)||fn===33||fn===37)requireEncoding(sa%2===0);
+    }
+  }else requireEncoding(false);
+  const writesReturnAddress=(op===0&&[0,2,3,4,6,7,16,18,32,33,34,35,36,37,38,39,42,43].includes(fn)&&rd===31)||([8,9,10,11,12,13,14,15,32,33,34,35,36,37,38,39].includes(op)&&rt===31)||(op===17&&rs===0&&rt===31);
+  return{registers,control,writesReturnAddress,unconditional:control==='return'||control==='jump'||op===4&&rs===rt};
+}
+// Incoming destinations are a producer-wide property. This scan deliberately
+// does not apply the initializer leaf's operand/call rules to other functions.
+function initializerIncomingControls(elf,group,text,rels){
+  const bytes=Buffer.from(elfSectionBytes(elf,text)),entries=[];
+  for(let pc=0;pc<text.size;pc+=4){
+    const word=bytes.readUInt32BE(pc),op=word>>>26,rs=word>>>21&31,rt=word>>>16&31;
+    const branch=[4,5,6,7,20,21,22,23].includes(op)
+      ||op===1&&[0,1,2,3,16,17,18,19].includes(rt)
+      ||[16,17,18,19].includes(op)&&rs===8&&rt<=3;
+    const at=rels.filter(r=>r.place===pc);
+    if(branch){
+      // This contract admits no PC16 or other branch relocation semantics.
+      if(at.length)fail('initializer incoming branch relocation');
+      entries.push({from:pc,to:pc+4+(word<<16>>16)*4,kind:'branch'});
+    }else if(op===2||op===3){
+      const addend=(word&0x3ffffff)*4;let to=null;
+      if(at.length){
+        if(at.length!==1||at[0].type!==4)fail('initializer incoming jump relocation');
+        const symbol=at[0].symbol;
+        if(symbol.sectionIndex===text.index)to=symbol.value+addend;
+        else if(symbol.sectionIndex===0xfff1){if(!Number.isInteger(group.vramStart))fail('initializer unbound absolute jump');to=symbol.value+addend-group.vramStart;}
+        else if(symbol.sectionIndex===0){
+          // Authenticated fixed bindings include every linker alias into this
+          // producer; external bindings outside it have no protected offset.
+          const fixed=(group.fixedBindings||[]).filter(r=>r.symbol===symbol.name);
+          if(fixed.length>1)fail('initializer incoming fixed binding ambiguity');
+          if(fixed.length){if(!Number.isInteger(group.vramStart))fail('initializer unbound fixed jump');to=fixed[0].address+addend-group.vramStart;}
+          else if(addend||symbol.value)fail('initializer unresolved incoming jump addend');
+        }else fail('initializer unsupported incoming jump section');
+      }else{
+        if(!Number.isInteger(group.vramStart))fail('initializer unbound direct jump');
+        to=(((group.vramStart+pc+4)&0xf0000000)>>>0)+addend-group.vramStart;
+      }
+      entries.push({from:pc,to,kind:op===2?'jump':'call'});
+    }
+  }
+  return entries;
+}
+function initializerUseEvidence(elf,group,set) {
+  const f=group.functions.find(f=>f.symbol===set.functionSymbol),text=elf.sections.find(s=>s.name==='.text');
+  if(!f||!text||f.bytes<8)fail('initializer complete function');
+  const b=Buffer.from(elfSectionBytes(elf,text)),start=set.hi-4,end=set.hi+56;
+  if(start<f.offset||end>f.offset+f.bytes)fail('initializer window extent');
+  const w=Array.from({length:15},(_,i)=>b.readUInt32BE(start+i*4));
+  const op=x=>x>>>26,rs=x=>x>>>21&31,rt=x=>x>>>16&31,rd=x=>x>>>11&31;
+  const source=rt(w[1]),dest=rd(w[0]),limit=rt(w[3]),temps=w.slice(4,8).map(rt);
+  if([source,limit].some(r=>[0,1,2,3,29,31].includes(r))||new Set([source,dest,limit]).size!==3
+    ||dest===0||dest===29||dest===31||new Set(temps).size!==4||temps.some(r=>[0,29,31,source,dest,limit].includes(r))
+    ||w[0]!==((29<<21)|(dest<<11)|33)||op(w[1])!==15||rs(w[1])!==0
+    ||op(w[2])!==9||rs(w[2])!==source||rt(w[2])!==source||set.lo!==set.hi+4
+    ||op(w[3])!==9||rs(w[3])!==source||(w[3]&65535)!==64
+    ||w[12]!==((9<<26)|(source<<21)|(source<<16)|16)
+    ||w[13]!==((5<<26)|(source<<21)|(limit<<16)|0xfff6)
+    ||w[14]!==((9<<26)|(dest<<21)|(dest<<16)|16))fail('initializer copy roles/window');
+  for(let i=0;i<4;i++)if(w[4+i]!==(((35<<26)>>>0)|(source<<21)|(temps[i]<<16)|i*4)>>>0
+    ||w[8+i]!==(((43<<26)>>>0)|(dest<<21)|(temps[i]<<16)|i*4)>>>0)fail('initializer load/store sequence');
+  const rels=require('./compilation_groups').relocations(elf).filter(r=>r.owner.index===text.index);
+  const inside=rels.filter(r=>r.place>=start&&r.place<end);if(inside.length!==2||inside[0].place!==set.hi||inside[1].place!==set.lo)fail('initializer extra window relocation');
+  const decoded=new Map(),entries=[],controls=[];
+  for(let pc=f.offset;pc<f.offset+f.bytes;pc+=4){const word=b.readUInt32BE(pc),d=initializerInstruction(word);decoded.set(pc,d);if(d.writesReturnAddress)fail('initializer modified return address');
+    if((pc<start||pc>=end)&&d.registers.some(r=>r===source||r===limit))fail('initializer pointer used outside window');
+    if(d.control==='branch')entries.push({from:pc,to:pc+4+(word<<16>>16)*4});
+    if(d.control==='jump'){
+      const r=rels.filter(r=>r.place===pc&&r.type===4);if(r.length!==1||r[0].symbol.sectionIndex!==text.index)fail('initializer external direct transfer');
+      entries.push({from:pc,to:r[0].symbol.value+(word&0x3ffffff)*4});
+    }
+    if(d.control)controls.push(pc);
+  }
+  const terminal=f.offset+f.bytes-8,delay=terminal+4;
+  if(!decoded.get(terminal)?.unconditional||decoded.get(delay)?.control)fail('initializer terminal fallthrough/delay');
+  for(const pc of controls)if(pc+4>=f.offset+f.bytes||decoded.get(pc+4)?.control)fail('initializer control delay');
+  for(const e of entries)if(e.to%4||e.to<f.offset||e.to+4>f.offset+f.bytes||e.to===delay
+    ||e.to>start&&e.to<end&&!(e.from===start+52&&e.to===start+16))fail('initializer alternate/external control entry');
+  const incomingControls=initializerIncomingControls(elf,group,text,rels);
+  for(const entry of incomingControls)if(entry.to===delay||entry.to>start&&entry.to<end
+    &&!(entry.from===start+52&&entry.to===start+16&&entry.kind==='branch'))fail('initializer producer-wide alternate entry');
+  const addressEntries=elf.symbols.filter(s=>s.sectionIndex===text.index&&s.symbolType!==3&&s.name!=='gcc2_compiled.').map(s=>s.value);
+  for(const r of require('./compilation_groups').relocations(elf).filter(r=>r.type===2&&r.symbol.sectionIndex===text.index))addressEntries.push(r.symbol.value+elf.buffer.readUInt32BE(r.owner.offset+r.place));
+  const pending=new Map();for(const r of rels){const key=r.symbol.symbolIndex;if(r.type===5){if(!pending.has(key))pending.set(key,[]);pending.get(key).push(r);}else if(r.type===6){for(const hi of pending.get(key)||[])if(r.symbol.sectionIndex===text.index)addressEntries.push(r.symbol.value+((((elf.buffer.readUInt32BE(hi.owner.offset+hi.place)&65535)<<16)+(elf.buffer.readUInt32BE(r.owner.offset+r.place)<<16>>16))>>>0));pending.delete(key);}}
+  if(addressEntries.some(pc=>pc===delay||pc>start&&pc<end))fail('initializer symbol/address alternate entry');
+  return{functionSymbol:f.symbol,start,end,sourceRegister:source,endRegister:limit,destinationRegister:dest,temporaryRegisters:temps,bytes:64,iterations:4,controls:entries,incomingControls,terminal,delay};
+}
+Object.assign(module.exports,{initializerInstruction,initializerUseEvidence});
+function mixedInitializerGrammar(compiler,group){
+  const c=mixedContract(group);if(c.native.schemaVersion!==2||!c.native.initializer)fail('initializer compiler grammar context');
+  if(!Buffer.isBuffer(compiler))fail('initializer compiler bytes');const source=compiler.toString('utf8');if(!Buffer.from(source).equals(compiler))fail('initializer compiler UTF8');
+  const explicit=[...source.matchAll(/^[ \t]*\.section\b([^\r\n]*)$/gm)],texts=[...source.matchAll(/^[ \t]*\.text[ \t]*\r?$/gm)],broad=source.match(/^[ \t]*\.text\b[^\r\n]*$/gm)||[];
+  const blocks=[...source.matchAll(/^[ \t]*\.section[ \t]+\.rodata[ \t]*\r?\n([\s\S]*?)^[ \t]*\.text[ \t]*\r?$/gm)];
+  if(explicit.length!==2||texts.length!==3||broad.length!==3||blocks.length!==2||/^[ \t]*\.(?:data|bss|rdata|sdata)\b/m.test(source)
+    ||explicit.some((m,i)=>!/^\s+\.rodata\s*$/.test(m[1])||!(texts[i].index<m.index&&m.index<texts[i+1].index)))fail('initializer compiler section census');
+  const lines=block=>block.split(/\r?\n/).map(l=>l.replace(/#.*$/,'').trim().replace(/\s+/g,' ')).filter(Boolean),table=lines(blocks[0][1]),a=group.auxiliary.sections[0];
+  if(!same(table.slice(0,3),['.align 3','.align 2',group.auxiliary.compilerLabel+':'])||table.length!==3+a.entries||table.slice(3).some(l=>!/^\.word \.L[0-9]+$/.test(l)))fail('initializer compiler table grammar');
+  const data=lines(blocks[1][1]);if(data.length!==18||data[0]!=='.align 3'||!/^\.LC[0-9]+:$/.test(data[1]))fail('initializer compiler constant grammar');
+  const bytes=Buffer.alloc(64);data.slice(2).forEach((l,i)=>{const m=/^\.word (0x[0-9a-fA-F]{1,8})$/.exec(l);if(!m)fail('initializer compiler word');bytes.writeUInt32BE(Number(m[1]),i*4);});
+  if(hash(bytes)!==c.native.initializer.expectedSha256)fail('initializer compiler payload identity');
+}
 
 // Complete single native owner with a projected table prefix. This is neither
 // the multi-owner fragment contract nor a complete-data-row composition.

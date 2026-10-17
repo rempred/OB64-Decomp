@@ -208,7 +208,7 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
   }
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   return sha256Value({
-    schemaVersion: 8,
+    schemaVersion: 9,
     baseline,
     compilerSha256: sha256File(localTools.compiler),
     activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json')),
@@ -285,15 +285,15 @@ function completeBaseline(directory) {
 function completeCurrent(directory, phase8, sourcePolicy) {
   const required = ['phase8.elf', 'phase8.elf-report.json', 'phase8.map', 'phase8.us_rev0.z64', 'layout.json', 'build-report.json', 'objects/manifest.json'];
   if (!required.every((relative) => fs.existsSync(path.join(directory, ...relative.split('/'))))) return false;
-  let report;
+  let report, reportIdentity;
   try {
-    report = readJson(path.join(directory, 'build-report.json'));
+    ({ report, identity: reportIdentity } = textContract.readCompactReport(directory));
   } catch (_) {
     return false;
   }
   if (!phase8 || !sourcePolicy || sourcePolicy.schemaVersion !== 2 || sourcePolicy.status !== 'pass'
       || !Array.isArray(sourcePolicy.targets) || sourcePolicy.targets.length !== phase8.targets.length
-      || report.schemaVersion !== 6 || report.status !== 'pass'
+      || report.schemaVersion !== 7 || report.status !== 'pass'
       || !isDeepStrictEqual(report.acceptedInputs?.logicalFunctionConfig, phase8.logicalFunctionConfigIdentity)
       || !Array.isArray(report.targetReplacements) || report.targetReplacements.length !== phase8.targets.length) return false;
   let textLinkContext;
@@ -320,24 +320,25 @@ function completeCurrent(directory, phase8, sourcePolicy) {
     metadataInputs = metadataInputs.map(({ contents, ...identity }) => identity);
   } catch (_) { return false; }
   for (const target of phase8.targets) {
-    const record = report.targetReplacements.find((candidate) => candidate.symbol === target.symbol);
+    let record, verifiedRecord;
+    try { ({ replacement: record, verified: verifiedRecord } = textContract.buildTargetRecords(report, target, phase8.targets.length)); } catch (_) { return false; }
     const policyMatches = sourcePolicy.targets.filter((candidate) => candidate.symbol === target.symbol);
     const identities = record && [
       { path: record.compilerAssembly, sha256: record.compilerAssemblySha256 },
       { path: record.linkedAssembly, sha256: record.linkedAssemblySha256 },
       { path: record.cObject, sha256: record.cObjectSha256 },
       ...(record.assemblerObject ? [{ path: record.assemblerObject, sha256: record.assemblerObjectSha256 }] : []),
-      record.sourceObjectProof,
     ];
     if (!record || record.source !== target.source || record.sourceSha256 !== target.sourceSha256
-        || policyMatches.length !== 1 || record.sourceClass !== policyMatches[0].class) return false;
+        || policyMatches.length !== 1 || record.sourceClass !== policyMatches[0].class
+        || record.sourcePolicyDigest !== policyMatches[0].digest) return false;
     try {
       const representation = textContract.recordsForTarget(target, directory, textLinkContext);
       if (representation.linkEvidence.fullOwnerExact !== true) return false;
-      textContract.validateRecords(record, representation, 'CURRENT');
-      const proof = readJson(path.join(directory, record.sourceObjectProof.path));
-      if (proof.schemaVersion !== 4) return false;
-      textContract.validateRecords(proof, representation, 'CURRENT proof');
+      textContract.withSourceObjectProof(directory, target, record, proof => {
+        textContract.validateRecords(proof, representation, 'CURRENT proof');
+        if (verifiedRecord.representationSha256 !== textContract.representationDigest(proof)) throw new Error('CURRENT representation digest drift');
+      });
       textContract.validateRecords(layout.phase8MatchingCTargets?.find((r) => r.symbol === target.symbol), representation, 'CURRENT layout');
       textContract.validateRecords(manifestMembers.find((r) => r.targetSymbol === target.symbol && r.ownerKind === 'matching-c-target'),
         { textContract: representation.textContract, objectEvidence: representation.objectEvidence }, 'CURRENT manifest');
@@ -366,6 +367,7 @@ function completeCurrent(directory, phase8, sourcePolicy) {
   }
   try {
     textContract.finishLinkContext(textLinkContext);
+    if (!isDeepStrictEqual(reportIdentity, textContract.readCompactReport(directory).identity)) return false;
     for (const expected of metadataInputs) {
       const actual = confinedArtifactIdentity(directory, expected.path, `CURRENT ${expected.path}`);
       if (actual.bytes !== expected.bytes || actual.sha256 !== expected.sha256) return false;
@@ -380,35 +382,45 @@ function retryRoot(preferred) {
   return `${preferred}-retry-${Date.now()}`;
 }
 
-function validateVerifiedCompanions(build, fresh, verified, output) {
-  if (build.schemaVersion !== 6 || build.status !== 'pass' || fresh.schemaVersion !== 5 || fresh.status !== 'pass'
-      || verified.schemaVersion !== 5 || verified.status !== 'pass' || verified.output !== '.'
-      || verified.verification?.schemaVersion !== 5 || verified.verification?.status !== 'pass'
-      || !Array.isArray(build.targetReplacements) || !Array.isArray(fresh.targets)
-      || !Array.isArray(verified.verification.targets) || fresh.targets.length !== build.targetReplacements.length
-      || verified.verification.targets.length !== build.targetReplacements.length) throw new Error('verified companion census or schema drift');
-  for (const target of build.targetReplacements) {
-    const freshMatches = fresh.targets.filter(record => record.symbol === target.symbol);
-    const verifiedMatches = verified.verification.targets.filter(record => record.symbol === target.symbol);
-    if (freshMatches.length !== 1 || verifiedMatches.length !== 1 || target.linkEvidence?.fullOwnerExact !== true
-        || freshMatches[0].sourceClass !== target.sourceClass || freshMatches[0].sourceSha256 !== target.sourceSha256) {
-      throw new Error('verified companion target identity drift');
-    }
-    textContract.validateRecords(freshMatches[0], { textContract: target.textContract, objectEvidence: target.objectEvidence }, 'fresh companion');
-    textContract.validateRecords(verifiedMatches[0], { textContract: target.textContract, objectEvidence: target.objectEvidence,
-      linkEvidence: target.linkEvidence }, 'verification companion');
+function validateVerifiedCompanions(build, fresh, verified, output, phase8) {
+  const actual = textContract.readCompactReport(output);
+  if (!phase8 || !isDeepStrictEqual(build, actual.report)
+      || build.schemaVersion !== 7 || build.status !== 'pass' || fresh.schemaVersion !== 6 || fresh.status !== 'pass'
+      || verified.schemaVersion !== 6 || verified.status !== 'pass' || verified.output !== '.'
+      || verified.verification?.schemaVersion !== 6 || verified.verification.status !== 'pass'
+      || !isDeepStrictEqual(fresh.buildReport, actual.identity) || !isDeepStrictEqual(verified.buildReport, actual.identity)
+      || !isDeepStrictEqual(build.verification, verified.verification)) throw new Error('verified companion schema or build identity drift');
+  for (const target of phase8.targets) {
+    const count = phase8.targets.length;
+    const { replacement, verified: embedded } = textContract.buildTargetRecords(build, target, count);
+    const freshRecord = textContract.uniqueReportTarget(fresh.targets, target.symbol, count);
+    const verifiedRecord = textContract.uniqueReportTarget(verified.verification.targets, target.symbol, count);
+    if (freshRecord.source !== target.source || freshRecord.sourceClass !== replacement.sourceClass || freshRecord.sourceSha256 !== target.sourceSha256
+        || freshRecord.sourcePolicyDigest !== replacement.sourcePolicyDigest
+        || !isDeepStrictEqual(freshRecord.compilationInput, replacement.compilationInput)
+        || !isDeepStrictEqual(textContract.proofDescriptor(freshRecord), textContract.proofDescriptor(replacement))
+        || !isDeepStrictEqual(verifiedRecord, embedded)
+        || typeof freshRecord.freshRepresentationSha256 !== 'string') throw new Error('verified companion target identity drift');
+    textContract.withSourceObjectProof(output, target, replacement, proof => {
+      if (proof.linkEvidence.fullOwnerExact !== true
+          || verifiedRecord.representationSha256 !== textContract.representationDigest(proof)
+          || freshRecord.freshRepresentationSha256 !== textContract.representationDigest(proof, false)) throw new Error('verified companion representation drift');
+    });
   }
 }
 function reusableCurrentState(context, state) {
+  try {
+    if (state?.schemaVersion !== 6 || !isDeepStrictEqual(state.buildReport, textContract.readCompactReport(state.output).identity)) return false;
+  } catch (_) { return false; }
   if (state?.verifiedAt) {
     try {
       for (const [file, expected] of [[state.verificationReport, state.verificationSha256], [state.freshCompilationReport, state.freshCompilationSha256]]) {
-        if (!file || !expected || sha256File(file) !== expected || readJson(file).schemaVersion !== 5 || readJson(file).status !== 'pass') return false;
+        if (!file || !expected || sha256File(file) !== expected || readJson(file).schemaVersion !== 6 || readJson(file).status !== 'pass') return false;
       }
-      validateVerifiedCompanions(readJson(path.join(state.output, 'build-report.json')), readJson(state.freshCompilationReport), readJson(state.verificationReport), state.output);
+      validateVerifiedCompanions(readJson(path.join(state.output, 'build-report.json')), readJson(state.freshCompilationReport), readJson(state.verificationReport), state.output, context.phase8);
     } catch (_) { return false; }
   }
-  return Boolean(state && state.schemaVersion === 5
+  return Boolean(state && state.schemaVersion === 6
     && state.fingerprint === context.currentFingerprint
     && state.baselineFingerprint === context.baselineFingerprint
     && completeCurrent(state.output, context.phase8, context.sourcePolicy));
@@ -527,9 +539,10 @@ function ensureCurrentBuild(context, options = {}) {
     '--compiler', context.localTools.compiler,
     ...runtimeArgs(context.localTools),
   ], 'CURRENT build');
-  const report = readJson(path.join(output, 'build-report.json'));
+  const { report, identity: buildReport } = textContract.readCompactReport(output);
   const state = {
-    schemaVersion: 5,
+    schemaVersion: 6,
+    buildReport,
     fingerprint: context.currentFingerprint,
     baselineFingerprint: context.baselineFingerprint,
     createdAt: new Date().toISOString(),
@@ -541,7 +554,7 @@ function ensureCurrentBuild(context, options = {}) {
       sha256: report.verification.outputs.rom.sha256,
     },
   };
-  writeJson(CURRENT_STATE_PATH, state);
+  textContract.publishCompactReport(CURRENT_STATE_PATH, state);
   return { ...state, baseline, reused: false };
 }
 
@@ -577,8 +590,8 @@ function verifyFreshCompilation(context, build, options = {}) {
   measure(profile, 'fresh-authenticate-compiler', () => verifyCompiler(context.phase8, context.localTools.compiler));
   const sourcePolicy = context.sourcePolicy || classifyTargetSources(context.phase8.targets, { profile });
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
-  const builtReport = readJson(build.report);
-  if (builtReport.schemaVersion !== 6 || !Array.isArray(builtReport.targetReplacements)) {
+  const { report: builtReport, identity: buildReportIdentity } = textContract.readCompactReport(build.output);
+  if (builtReport.schemaVersion !== 7 || !Array.isArray(builtReport.targetReplacements)) {
     throw new Error('CURRENT build report lacks source-to-object provenance');
   }
   const targets = [];
@@ -592,8 +605,11 @@ function verifyFreshCompilation(context, build, options = {}) {
       runtime.tools['mips-kmc-elf-objcopy.exe'].path,
       { classification: classificationBySymbol.get(target.symbol) },
     ));
-    const builtTarget = builtReport.targetReplacements.find((record) => record.symbol === target.symbol);
-    textContract.validateRecords(builtTarget, { textContract: compiled.textContract, objectEvidence: compiled.objectEvidence }, 'fresh compilation');
+    const { replacement: builtTarget } = textContract.buildTargetRecords(builtReport, target, context.phase8.targets.length);
+    const freshRepresentation = { textContract: compiled.textContract, objectEvidence: compiled.objectEvidence };
+    textContract.withSourceObjectProof(build.output, target, builtTarget, proof => {
+      textContract.validateRecords(proof, freshRepresentation, 'fresh compilation');
+    });
     const builtObject = path.join(build.output, compilationGroups.objectPath(target));
     if (!builtTarget || !fs.existsSync(builtObject) || sha256File(builtObject) !== compiled.objectSha256
         || builtTarget.compilerAssemblySha256 !== compiled.compilerAssemblySha256
@@ -616,8 +632,8 @@ function verifyFreshCompilation(context, build, options = {}) {
       return regenerated;
     });
     targets.push({
-      textContract: compiled.textContract,
-      objectEvidence: compiled.objectEvidence,
+      freshRepresentationSha256: textContract.representationDigest(freshRepresentation, false),
+      sourceObjectProof: builtTarget.sourceObjectProof,
       symbol: target.symbol,
       source: target.source,
       sourceSha256: target.sourceSha256,
@@ -634,7 +650,8 @@ function verifyFreshCompilation(context, build, options = {}) {
     });
   }
   const report = {
-    schemaVersion: 5,
+    schemaVersion: 6,
+    buildReport: buildReportIdentity,
     status: 'pass',
     generatedAt: new Date().toISOString(),
     compilerSha256: sha256File(context.localTools.compiler),
@@ -649,7 +666,8 @@ function verifyFreshCompilation(context, build, options = {}) {
     targets,
   };
   const reportFile = path.join(STATE_ROOT, 'fresh-compilation.json');
-  writeJson(reportFile, report);
+  if (!isDeepStrictEqual(textContract.readCompactReport(build.output).identity, buildReportIdentity)) throw new Error('build report changed during fresh compilation');
+  textContract.publishCompactReport(reportFile, report);
   return { report, reportFile };
 }
 
@@ -669,8 +687,13 @@ function verifyCurrent(context, options = {}) {
   const freshCompilation = measure(profile, 'fresh-compilation', () => verifyFreshCompilation(context, build, { profile }));
   const sourcePolicy = measure(profile, 'source-policy-report', () => classifyActiveTargets(context.phase8, context.sourcePolicy));
   const verification = readJson(VERIFICATION_REPORT_PATH);
+  const actualBuild = textContract.readCompactReport(build.output);
+  validateVerifiedCompanions(actualBuild.report, freshCompilation.report, verification, build.output, context.phase8);
+  if (!isDeepStrictEqual(build.buildReport, actualBuild.identity)) throw new Error('build report changed before verified state');
   const state = {
     ...existingState(CURRENT_STATE_PATH),
+    schemaVersion: 6,
+    buildReport: actualBuild.identity,
     verifiedAt: new Date().toISOString(),
     verificationReport: VERIFICATION_REPORT_PATH,
     freshCompilationReport: freshCompilation.reportFile,
@@ -678,7 +701,7 @@ function verifyCurrent(context, options = {}) {
     verificationSha256: sha256File(VERIFICATION_REPORT_PATH),
     sourcePolicyReport: SOURCE_POLICY_REPORT_PATH,
   };
-  writeJson(CURRENT_STATE_PATH, state);
+  textContract.publishCompactReport(CURRENT_STATE_PATH, state);
   return { build, freshCompilation, sourcePolicy, verification };
 }
 
@@ -689,7 +712,7 @@ function currentVerificationState(context) {
   }
   try {
     for (const [file, expected] of [[state.verificationReport, state.verificationSha256], [state.freshCompilationReport, state.freshCompilationSha256]]) {
-      if (!file || !expected || sha256File(file) !== expected || readJson(file).schemaVersion !== 5) return { exact: false, state };
+      if (!file || !expected || sha256File(file) !== expected || readJson(file).schemaVersion !== 6) return { exact: false, state };
     }
   } catch (_) { return { exact: false, state }; }
   const rom = path.join(state.output, 'phase8.us_rev0.z64');

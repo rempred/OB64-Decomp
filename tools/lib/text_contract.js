@@ -570,9 +570,11 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
       expectedWord: retailBytes.readUInt32BE(offset), linkedWordExact: linkedBytes.readUInt32BE(offset) === retailBytes.readUInt32BE(offset) };
   });
   const result = { schemaVersion: target.nativeTextTail ? 2 : 1,
+    ...(auxiliaryProjection.mixedMode(target.compilationGroup)?{mixedReadonly:literals.mixedLinkedEvidence(target,root,context,objectEvidence)}:{}),
     ...(target.retainedLiteralReferences || target.compilationGroup?.retainedLiteralReferences ? {retainedLiteralReferences:literals.linkedEvidence(target.compilationGroup?literals.groupTarget(target.compilationGroup):target,root,context,objectEvidence)} : {}),
     ...(target.atomicText ? { atomicPhysicalOwners: require('./atomic_owner_union').physicalEvidence(target,elf,true),
       atomicLinkedCensus: auxiliaryProjection.completeObjectCensus(elf) } : {}),
+    ...(require('./compilation_groups').literalRun(target.compilationGroup)?{retainedNativeAlignment:require('./compilation_groups').literalRunLinkedEvidence(target,root,context)}:{}),
     ...(require('./compilation_groups').hasFixedBindingEvidence(target.compilationGroup)
       ? { fixedBindings: require('./compilation_groups').verifyFixedBindingEvidence(target, elf) } : {}), ...(allocation ? { allocation } : {}),
     ...(target.auxiliaryProjection || auxiliaryProjection.composed(target.compilationGroup) ? { auxiliaryProjectionRetained: auxiliaryProjection.linkedEvidence(target, root, context) } : {}), textContractSha256: hash(contract), owners, mapContributions, functions,
@@ -596,7 +598,122 @@ function validateRecords(record, expected, label) {
   }
 }
 
+
+// Final reports contain descriptors, never hydrated representation payloads.
+const representationKeys = ['textContract', 'objectEvidence', 'linkEvidence'];
+function representationDigest(record, linked = true) {
+  const keys = representationKeys.slice(0, linked ? 3 : 2);
+  if (!record || keys.some(key => !record[key])) fail('representation subset is incomplete');
+  return hash(Object.fromEntries(keys.map(key => [key, record[key]])));
+}
+function assertCompactRecord(record) {
+  if (!record || representationKeys.some(key => Object.prototype.hasOwnProperty.call(record, key))) {
+    fail('compact report contains inline or missing representation');
+  }
+}
+function uniqueReportTarget(records, symbol, count) {
+  if (!Array.isArray(records) || records.length !== count
+      || new Set(records.map(record => record.symbol)).size !== count) fail('compact target census drift');
+  const matches = records.filter(record => record.symbol === symbol);
+  if (matches.length !== 1) fail('compact target identity drift');
+  assertCompactRecord(matches[0]);
+  return matches[0];
+}
+function buildTargetRecords(build, target, count) {
+  if (build?.schemaVersion !== 7 || build.status !== 'pass'
+      || build.verification?.schemaVersion !== 6 || build.verification.status !== 'pass') fail('compact build schema drift');
+  const replacement = uniqueReportTarget(build.targetReplacements, target.symbol, count);
+  const verified = uniqueReportTarget(build.verification.targets, target.symbol, count);
+  const evidence = uniqueReportTarget(build.sourceObjectEvidence?.targets, target.symbol, count);
+  const embedded = uniqueReportTarget(build.verification.sourceObjectEvidence?.targets, target.symbol, count);
+  assertCompactRecord(verified.sourceObjectEvidence);
+  if (!same(evidence, embedded) || !same(evidence, verified.sourceObjectEvidence)
+      || !same(proofDescriptor(replacement), proofDescriptor(evidence))
+      || verified.source !== target.source || verified.sectionName !== target.sectionName
+      || replacement.sourceClass !== evidence.sourceClass || replacement.sourcePolicyDigest !== evidence.sourcePolicyDigest
+      || !same(replacement.compilationInput, { path: target.source, ...evidence.compilationInput })
+      || typeof verified.representationSha256 !== 'string' || !/^[A-F0-9]{64}$/.test(verified.representationSha256)) fail('compact build target binding drift');
+  return { replacement, verified, evidence };
+}
+function proofDescriptor(record) {
+  assertCompactRecord(record);
+  const descriptors = [record.sourceObjectProof, record.proof, record.sourceObjectEvidence?.proof].filter(value => value !== undefined);
+  if (descriptors.length !== 1) fail('compact proof descriptor census drift');
+  return descriptors[0];
+}
+function withSourceObjectProof(root, target, record, callback) {
+  assertCompactRecord(record);
+  const descriptor = proofDescriptor(record);
+  const expectedPath = 'generated/c/' + target.symbol + '.source-object-proof.json';
+  if (!descriptor || !same(Object.keys(descriptor).sort(), ['bytes', 'path', 'sha256'])
+      || descriptor.path !== expectedPath || !Number.isSafeInteger(descriptor.bytes) || descriptor.bytes <= 0
+      || typeof descriptor.sha256 !== 'string' || !/^[A-F0-9]{64}$/.test(descriptor.sha256)) fail('compact proof descriptor drift');
+  for (const relative of ['generated', 'generated/c']) {
+    const directory = fs.lstatSync(path.join(root, relative));
+    if (!directory.isDirectory() || directory.isSymbolicLink()) fail('source-object proof directory alias');
+  }
+  // Deliberately one confined read: hashing and parsing see the identical buffer.
+  const value = require('./current_workflow').confinedArtifactContents(root, expectedPath, 'source-object proof');
+  if (value.bytes !== descriptor.bytes || value.sha256 !== descriptor.sha256) fail('source-object proof identity drift');
+  let proof;
+  try { proof = JSON.parse(value.contents); } catch (_) { fail('source-object proof JSON drift: ' + target.symbol); }
+  const binding = record.sourceObjectEvidence || record;
+  const identity = proof.target;
+  const input = binding.compilationInput;
+  const expectedInput = input && { bytes: input.bytes, sha256: input.sha256 };
+  if (proof.schemaVersion !== 4 || proof.kind !== 'ob64-source-to-object-load-evidence'
+      || !proof.textContract || !proof.objectEvidence || !proof.linkEvidence
+      || !identity || record.symbol !== target.symbol || identity.symbol !== target.symbol
+      || identity.source !== target.source || identity.sourceSha256 !== target.sourceSha256
+      || identity.sectionName !== target.sectionName
+      || !same(identity.ownerSections, textOwners(target).map(owner => owner.sectionName))
+      || !same(identity.compilationInput, expectedInput)
+      || identity.sourceClass !== binding.sourceClass || identity.sourcePolicyDigest !== binding.sourcePolicyDigest
+      || (record.source !== undefined && record.source !== target.source)
+      || (record.sourceSha256 !== undefined && record.sourceSha256 !== target.sourceSha256)
+      || (input?.path !== undefined && input.path !== target.source)
+      || !['PURE_C', 'HYBRID_C'].includes(identity.sourceClass)
+      || typeof identity.sourcePolicyDigest !== 'string' || !/^[A-F0-9]{64}$/.test(identity.sourcePolicyDigest)
+      || !same(proof.textContract, resolveTextContract(target))) fail('source-object proof model/source binding drift: ' + target.symbol);
+  if (record.representationSha256 !== undefined
+      && record.representationSha256 !== representationDigest(proof, true)) fail('verification representation digest drift');
+  if (record.freshRepresentationSha256 !== undefined
+      && record.freshRepresentationSha256 !== representationDigest(proof, false)) fail('fresh representation digest drift');
+  // Internal synchronous callbacks must not return or retain proof/buffer payloads.
+  // A callback failure is summarized, never returned with its potentially large cause.
+  try {
+    if (callback(proof, value.contents) !== undefined) fail('source-object proof callback returned a value');
+  } catch (_) { fail('source-object proof validation failed: ' + target.symbol); }
+}
+function readCompactReport(root, relative = 'build-report.json') {
+  const value = require('./current_workflow').confinedArtifactContents(root, relative, 'compact report');
+  return { report: JSON.parse(value.contents), identity: { bytes: value.bytes, sha256: value.sha256 } };
+}
+function publishCompactReport(file, value) {
+  let bytes;
+  try { bytes = Buffer.from(JSON.stringify(value, null, 2) + '\n'); }
+  catch (error) {
+    if (error instanceof RangeError) throw new Error('compact report exceeds serialization capacity; no report published');
+    throw error;
+  }
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  const temporary = file + '.tmp-' + process.pid + '-' + require('crypto').randomBytes(12).toString('hex');
+  let fd, owned = false;
+  try {
+    fd = fs.openSync(temporary, 'wx');
+    owned = true;
+    fs.writeFileSync(fd, bytes);
+    fs.fsyncSync(fd);
+    fs.closeSync(fd); fd = undefined;
+    fs.renameSync(temporary, file);
+  } finally {
+    if (fd !== undefined) fs.closeSync(fd);
+    if (owned && fs.existsSync(temporary)) fs.unlinkSync(temporary);
+  }
+}
+
 module.exports = { nativeSingleOwnerCensus, NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SHA256, exactKeys, same, hash, nativeDescriptor,
+  buildTargetRecords, representationDigest, assertCompactRecord, uniqueReportTarget, proofDescriptor, withSourceObjectProof, readCompactReport, publishCompactReport,
   withObjectEvidenceMemo, objectInputs,
   withObjectArtifactSnapshot, objectArtifactBytes, deriveObjectEvidenceFromSnapshot,
   normalizeNativeTextTail, resolveTextContract, resolveWorkbenchActiveTarget, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,

@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const textContract = require('./lib/text_contract');
 const path = require('path');
 const {
   CONFIG_PATH,
@@ -21,7 +22,6 @@ const {
   verifyPhase8Output,
   verifyRuntimeTools,
   writeSourceObjectProofs,
-  writeJson,
   writeLayout,
   writeObjectManifest,
 } = require('./lib/phase8_matching_c');
@@ -162,9 +162,7 @@ function main() {
         bytes: sourceObjectProofs.get(target.symbol).bytes,
         sha256: sourceObjectProofs.get(target.symbol).sha256,
       },
-      textContract: compiledTarget.textContract,
-      objectEvidence: compiledTarget.objectEvidence,
-      linkEvidence: verifiedTarget.linkEvidence,
+
       objectTextSha256: compiledTarget.textSha256,
       objectTextOwners: compiledTarget.textOwners,
       splitContract: compiledTarget.splitContract,
@@ -192,7 +190,7 @@ function main() {
     }
   }
   const report = {
-    schemaVersion: 6,
+    schemaVersion: 7,
     status: 'pass',
     generator: 'tools/build_phase8_matching_c.js',
     acceptedInputs: {
@@ -254,7 +252,7 @@ function main() {
     },
     verification,
   };
-  writeJson(path.join(args.output, 'build-report.json'), report);
+  textContract.publishCompactReport(path.join(args.output, 'build-report.json'), report);
   console.log(`Phase 8 matching C build: PASS (${verification.outputs.rom.sha256})`);
   console.log(`Targets: ${phase8.targets.map((target) => target.symbol).join(', ')}`);
   console.log(`ELF: ${linked.elfFile}`);

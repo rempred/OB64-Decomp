@@ -35,6 +35,8 @@ const {
   validateRecordedPhase8Build,
   validateSourceObjectProofBytes,
   verifyCompilerTextFunctions,
+  physicalInterface,
+  verifyPhysicalInterface,
   verifySourceObjectProofs,
   verifyAuxiliaryLinkedObjectSection,
   verifyAuxiliaryMapOwner,
@@ -441,6 +443,191 @@ function verifySyntheticPrefixExtraction(phase8, output) {
   }
 }
 
+// A surviving physical label is not a surviving C body. Bind the exception to
+// the loaded registry and actual original/pruned/linked retained interval.
+function verifyFallbackExclusion(context) {
+  const { phase8, registry, baserom, target, record, cObject, linkedElf } = context;
+  const { textOwner: owner, replacementOwner, fallback, pruned } = record;
+  const reject = reason => fail(`fallback exclusion ${reason}: ${target.symbol}`);
+  const chunk = String(owner.chunkIndex).padStart(3, '0');
+  if (replacementOwner.fallbackObject !== `comparison/original/chunk_${chunk}.o`
+      || replacementOwner.prunedAssemblyObject !== `objects/assembly/chunk_${chunk}.o`) reject('owner paths');
+  if (pruned.sections.some(section => section.name === owner.sectionName)) reject('body section survived');
+  const names = pruned.symbols.filter(symbol => symbol.name === owner.symbol);
+  const registeredEdge = phase8.model.config.retainedPaddingCuts.some(cut => cut.rowIndex === owner.rowIndex);
+  if (registeredEdge !== Boolean(target.row.retainedPadding)
+      || registeredEdge !== target.row.slices.some(slice => Boolean(slice.retainedPaddingId))) reject('edge registry binding');
+  if (!registeredEdge) {
+    if (names.length) reject('body symbol survived');
+    return 'ordinary';
+  }
+  const owners = targetTextOwners(target), rows = phase8.model.rows.filter(row => row.index === target.row.index);
+  if (owners.length !== 1 || owners[0] !== owner || owner.row !== target.row
+      || rows.length !== 1 || rows[0] !== target.row) reject('row identity');
+  const edge = require('../tools/lib/logical_functions').assertRetainedPaddingProducer(
+    registry, target.row, target.symbol, target.compilerTextFunctions,
+  );
+  if (owner.rowIndex !== target.row.index || owner.sectionName !== edge.body.sectionName
+      || owner.symbol !== target.row.part.name || owner.chunkIndex !== target.row.part.chunkIndex) reject('body binding');
+  const physical = physicalInterface(target); // Lookup/authority errors must reject.
+  if (physical) {
+    if (names.length) reject('interface symbol survived');
+    verifyPhysicalInterface(cObject, target);
+    verifyPhysicalInterface(linkedElf, target, true);
+    return 'interface';
+  }
+  const address = target.row.romStart + target.row.part.symbolByteOffset;
+  const kept = edge.retained, offset = address - kept.romStart;
+  if (target.symbol === owner.symbol || address < kept.romStart || address >= kept.romEndExclusive
+      || address >= edge.body.romStart && address < edge.body.romEndExclusive) {
+    if (names.length) reject('body symbol survived');
+    return 'stripped';
+  }
+  const section = (elf, linked = false) => {
+    const found = elf.sections.filter(value => value.name === kept.sectionName);
+    if (found.length !== 1 || found[0].type !== 1 || found[0].flags !== 6
+        || found[0].size !== kept.bytes || linked && found[0].address !== kept.vramStart) reject('retained section');
+    return found[0];
+  };
+  const originalSection = section(fallback), retainedSection = section(pruned), linkedSection = section(linkedElf, true);
+  if (retainedSection.alignment !== originalSection.alignment) reject('retained alignment');
+  const originalBytes = Buffer.from(elfSectionBytes(fallback, originalSection));
+  const prunedBytes = Buffer.from(elfSectionBytes(pruned, retainedSection));
+  const expectedBytes = baserom.subarray(kept.romStart, kept.romEndExclusive);
+  if (!originalBytes.equals(expectedBytes) || !prunedBytes.equals(expectedBytes)
+      || sha256Buffer(originalBytes) !== edge.record.expectedSha256
+      || sha256Buffer(prunedBytes) !== edge.record.expectedSha256) reject('retained bytes');
+  const label = (elf, keptSection, value) => {
+    const matches = elf.symbols.filter(symbol => symbol.name === owner.symbol);
+    if (matches.length !== 1 || matches[0].sectionIndex !== keptSection.index
+        || matches[0].value !== value || matches[0].size !== 0 || matches[0].binding !== 1
+        || matches[0].symbolType !== 2 || matches[0].visibility !== 0) reject('physical label');
+  };
+  if (!Number.isInteger(offset) || offset < 0 || offset >= kept.bytes) reject('physical offset');
+  label(fallback, originalSection, offset);
+  label(pruned, retainedSection, offset);
+  label(linkedElf, linkedSection, kept.vramStart + offset);
+  const census = (elf, keptSection) => elf.symbols.filter(symbol => symbol.sectionIndex === keptSection.index).map(symbol => ({
+    name: symbol.name, value: symbol.value, size: symbol.size, binding: symbol.binding,
+    symbolType: symbol.symbolType, visibility: symbol.visibility, section: keptSection.name,
+  })).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+  const originalCensus = census(fallback, originalSection), retainedCensus = census(pruned, retainedSection);
+  if (JSON.stringify(originalCensus) !== JSON.stringify(retainedCensus)
+      || retainedCensus.some(symbol => target.compilerTextFunctions.some(fn => fn.symbol === symbol.name))) reject('retained symbol census');
+  return 'retained-label';
+}
+
+function verifyFallbackControls(contexts) {
+  const results = [], retained = contexts.find(c => c.branch === 'retained-label');
+  const ordinary = contexts.find(c => c.branch === 'ordinary');
+  if (!retained || !ordinary) fail('fallback exclusion control branches missing');
+  const check = context => verifyFallbackExclusion(context);
+  const reject = (name, context, pattern, change, changed) => {
+    const altered = change(context);
+    if (!changed(context, altered)) fail(`fallback exclusion mutation was a no-op: ${name}`);
+    results.push(expectRejection(name, pattern, () => check(altered)));
+    if (check(context) !== context.branch) fail('fallback exclusion restored branch drift');
+  };
+  const mutate = (context, role, change) => {
+    const original = role === 'linkedElf' || role === 'cObject' ? context[role] : context.record[role];
+    const bytes = Buffer.from(original.buffer);
+    change(bytes, original);
+    const elf = parseElf32BigEndian(bytes);
+    return role === 'linkedElf' || role === 'cObject' ? { ...context, [role]: elf }
+      : { ...context, record: { ...context.record, [role]: elf } };
+  };
+  const label = (elf, context) => elf.symbols.find(symbol => symbol.name === context.record.textOwner.symbol);
+  const symbolOffset = (elf, symbol) => elf.sections[symbol.symbolTableIndex].offset + symbol.symbolIndex * 16;
+  for (const role of ['fallback', 'pruned', 'linkedElf']) {
+    for (const [field, relative, width, value] of [
+      ['size', 8, 4, 4], ['value', 4, 4, role === 'linkedElf' ? retained.target.row.slices[0].vramEndExclusive : 4],
+      ['binding', 12, 1, 2], ['symbolType', 12, 1, 0x11], ['visibility', 13, 1, 2],
+      ['undefined', 14, 2, 0], ['absolute', 14, 2, 0xFFF1],
+    ]) {
+      const get = c => role === 'linkedElf' ? c.linkedElf : c.record[role];
+      reject(`${role} retained label ${field}`, retained, /fallback exclusion physical label/, c => mutate(c, role, (bytes, elf) => {
+        const at = symbolOffset(elf, label(elf, c)) + relative;
+        if (width === 4) bytes.writeUInt32BE(value, at);
+        else if (width === 2) bytes.writeUInt16BE(value, at);
+        else bytes.writeUInt8(value, at);
+      }), (before, after) => JSON.stringify(label(get(before), before)) !== JSON.stringify(label(get(after), after)));
+    }
+  }
+  for (const role of ['fallback', 'pruned', 'linkedElf']) {
+    const get=c=>role==='linkedElf'?c.linkedElf:c.record[role];
+    for(const kind of ['missing','duplicate','wrong section']) {
+      reject(`${role} retained label ${kind}`,retained,/fallback exclusion physical label/,c=>mutate(c,role,(bytes,elf)=>{
+        const sym=label(elf,c),at=symbolOffset(elf,sym);
+        if(kind==='missing')bytes.writeUInt32BE(0,at);
+        else if(kind==='wrong section')bytes.writeUInt16BE(elf.sections.find(s=>s.index>0&&s.index!==sym.sectionIndex&&s.type===1).index,at+14);
+        else {const other=elf.symbols.find(s=>s.symbolTableIndex===sym.symbolTableIndex&&s.symbolIndex!==sym.symbolIndex&&s.symbolIndex!==0);bytes.copy(bytes,symbolOffset(elf,other),at,at+16);}
+      }),(a,b)=>JSON.stringify(get(a).symbols)!==JSON.stringify(get(b).symbols));
+    }
+  }
+  reject('extra retained symbol',retained,/fallback exclusion retained symbol census/,c=>mutate(c,'pruned',(bytes,elf)=>{
+    const sym=label(elf,c),other=elf.symbols.find(s=>s.name&&s.name!==sym.name&&s.sectionIndex!==sym.sectionIndex&&s.symbolIndex>0);
+    const at=symbolOffset(elf,other);bytes.writeUInt32BE(0,at+4);bytes.writeUInt16BE(sym.sectionIndex,at+14);
+  }),(a,b)=>JSON.stringify(a.record.pruned.symbols)!==JSON.stringify(b.record.pruned.symbols));
+  for(const kind of ['missing','duplicate'])reject(`retained section ${kind}`,retained,/fallback exclusion retained section/,c=>mutate(c,'pruned',(bytes,elf)=>{
+    const sh=elf.sections.find(s=>s.name===c.target.row.slices[0].sectionName);
+    if(kind==='missing')bytes.writeUInt32BE(0,sh.headerOffset);
+    else {const other=elf.sections.find(s=>s.index>0&&s.index!==sh.index&&s.type===1);bytes.writeUInt32BE(sh.nameOffset,other.headerOffset);}
+  }),(a,b)=>JSON.stringify(a.record.pruned.sections)!==JSON.stringify(b.record.pruned.sections));
+
+  reject('extra C-entry label in retained section',retained,/fallback exclusion retained symbol census/,c=>mutate(c,'pruned',(bytes,elf)=>{
+    const sym=label(elf,c),other=elf.symbols.find(s=>/^func_[0-9a-fA-F]{8}$/.test(s.name)&&s.name!==sym.name&&s.sectionIndex!==sym.sectionIndex);
+    const at=symbolOffset(elf,other),strings=elf.sections[elf.sections[other.symbolTableIndex].link];
+    if(other.name.length!==c.target.symbol.length)fail('extra C label fixture extent');
+    bytes.write(c.target.symbol,strings.offset+bytes.readUInt32BE(at),'ascii');
+    bytes.writeUInt32BE(0,at+4);bytes.writeUInt32BE(0,at+8);bytes.writeUInt16BE(sym.sectionIndex,at+14);
+  }),(a,b)=>!a.record.pruned.symbols.some(s=>s.name===a.target.symbol)&&b.record.pruned.symbols.some(s=>s.name===b.target.symbol));
+  reject('extra original body label in retained section',retained,/fallback exclusion retained symbol census/,c=>mutate(c,'fallback',(bytes,elf)=>{
+    const sym=label(elf,c),body=elf.sections.find(s=>s.name===c.record.textOwner.sectionName),other=elf.symbols.find(s=>s.name&&s.sectionIndex===body.index);
+    const at=symbolOffset(elf,other);bytes.writeUInt32BE(0,at+4);bytes.writeUInt16BE(sym.sectionIndex,at+14);
+  }),(a,b)=>JSON.stringify(a.record.fallback.symbols)!==JSON.stringify(b.record.fallback.symbols));
+
+  for (const [field, relative, value] of [['size',20,8],['flags',8,2],['alignment',32,8]]) {
+    reject(`retained section ${field}`, retained, /fallback exclusion retained (section|alignment)/,
+      c => mutate(c,'pruned',(bytes,elf)=>{const sh=elf.sections.find(s=>s.name===c.target.row.slices[0].sectionName);bytes.writeUInt32BE(value,sh.headerOffset+relative);}),
+      (a,b)=>JSON.stringify(a.record.pruned.sections)!==JSON.stringify(b.record.pruned.sections));
+  }
+  for (const role of ['fallback','pruned']) {
+    reject(`${role} retained byte`,retained,/fallback exclusion retained bytes/,
+      c=>mutate(c,role,(bytes,elf)=>{const sh=elf.sections.find(s=>s.name===c.target.row.slices[0].sectionName);bytes[sh.offset]^=1;}),
+      (a,b)=>!a.record[role].buffer.equals(b.record[role].buffer));
+  }
+  for (const [name, transform, pattern] of [
+    ['real original body', c=>({...c,record:{...c.record,pruned:parseElf32BigEndian(Buffer.from(c.record.fallback.buffer))}}), /fallback exclusion body section survived/],
+    ['real original symbol without body section name', c=>{const elf=c.record.fallback;const sh=elf.sections.find(s=>s.name===c.record.textOwner.sectionName);const bytes=Buffer.from(elf.buffer);bytes.writeUInt32BE(0,sh.headerOffset);return {...c,record:{...c.record,pruned:parseElf32BigEndian(bytes)}};}, /fallback exclusion body symbol survived/],
+  ]) reject(name,ordinary,pattern,transform,(a,b)=>!a.record.pruned.buffer.equals(b.record.pruned.buffer));
+  reject('crossed owner path',retained,/fallback exclusion owner paths/,c=>({...c,record:{...c.record,replacementOwner:{...c.record.replacementOwner,fallbackObject:'comparison/original/chunk_000.o'}}}),(a,b)=>a.record.replacementOwner.fallbackObject!==b.record.replacementOwner.fallbackObject);
+  reject('cloned row',retained,/fallback exclusion row identity/,c=>({...c,target:{...c.target,row:JSON.parse(JSON.stringify(c.target.row))}}),(a,b)=>a.target.row!==b.target.row);
+  reject('crossed owner row',retained,/fallback exclusion row identity/,c=>({...c,record:{...c.record,textOwner:{...c.record.textOwner,row:ordinary.target.row}}}),(a,b)=>a.record.textOwner.row!==b.record.textOwner.row);
+  reject('owner count',retained,/fallback exclusion row identity/,c=>({...c,target:{...c.target,textOwners:[...c.target.textOwners,...c.target.textOwners]}}),(a,b)=>a.target.textOwners.length!==b.target.textOwners.length);
+  reject('coherent cloned row and owner',retained,/fallback exclusion row identity/,c=>{const row=JSON.parse(JSON.stringify(c.target.row)),owner={...c.record.textOwner,row};return {...c,target:{...c.target,row,textOwners:[owner]},record:{...c.record,textOwner:owner}};},(a,b)=>a.target.row!==b.target.row);
+  reject('wrong pruned path',retained,/fallback exclusion owner paths/,c=>({...c,record:{...c.record,replacementOwner:{...c.record.replacementOwner,prunedAssemblyObject:'objects/assembly/chunk_000.o'}}}),(a,b)=>a.record.replacementOwner.prunedAssemblyObject!==b.record.replacementOwner.prunedAssemblyObject);
+  for(const c of contexts.filter(c=>c.branch==='interface')) {
+    for(const role of ['cObject','linkedElf'])reject(role+' interface size '+c.target.symbol,c,/derived physical interface metadata/,value=>mutate(value,role,(bytes,elf)=>{
+      bytes.writeUInt32BE(4,symbolOffset(elf,label(elf,value))+8);
+    }),(a,b)=>label(a[role],a).size!==label(b[role],b).size);
+    reject('missing interface descriptor '+c.target.symbol,c,/physical interface descriptor missing/,value=>({...value,target:{...value.target,physicalInterface:undefined}}),(a,b)=>a.target.physicalInterface!==b.target.physicalInterface);
+  }
+  for(const kind of ['missing','duplicate'])reject(kind+' model row',retained,/fallback exclusion row identity/,c=>({...c,phase8:{...c.phase8,model:{...c.phase8.model,rows:kind==='missing'?c.phase8.model.rows.filter(row=>row!==c.target.row):[...c.phase8.model.rows,c.target.row]}}}),(a,b)=>a.phase8.model.rows.length!==b.phase8.model.rows.length);
+  const row=retained.target.row, original=row.retainedPadding.expectedSha256;
+  try { row.retainedPadding.expectedSha256='0'.repeat(64);
+    if(row.retainedPadding.expectedSha256===original)fail('fallback registry mutation no-op');
+    results.push(expectRejection('in-place registry drift',/unchanged ROM-authenticated registry/,()=>check(retained)));
+  } finally { row.retainedPadding.expectedSha256=original; }
+  check(retained);
+  const savedPadding=row.retainedPadding;
+  try { delete row.retainedPadding;
+    if(Object.hasOwn(row,'retainedPadding'))fail('fallback registry deletion no-op');
+    results.push(expectRejection('missing in-place retained authority',/fallback exclusion edge registry binding/,()=>check(retained)));
+  } finally { row.retainedPadding=savedPadding; }
+  check(retained);
+  return results;
+}
+
 function main() {
   if (process.argv.includes('--help') || process.argv.includes('-h')) {
     usage();
@@ -456,8 +643,8 @@ function main() {
   const romBytes = fs.readFileSync(romFile);
   const mapText = fs.readFileSync(mapFile, 'utf8');
   const buildReport = readJson(path.join(output, 'build-report.json'));
-  if (buildReport.schemaVersion !== 6 || buildReport.status !== 'pass'
-      || buildReport.verification.schemaVersion !== 5 || buildReport.verification.status !== 'pass') {
+  if (buildReport.schemaVersion !== 7 || buildReport.status !== 'pass'
+      || buildReport.verification.schemaVersion !== 6 || buildReport.verification.status !== 'pass') {
     fail('Phase 8 source-to-object report schema drift');
   }
   const objectManifest = verifyObjectManifest(output, phase8).manifest;
@@ -514,6 +701,8 @@ function main() {
     ['func_0000B29C', SOURCE_CLASSES.PURE_C],
   ]);
   const targetProofs = [];
+  const fallbackRegistry = require('../tools/lib/logical_functions').loadRegistry(phase8.model, canonicalBaserom);
+  const fallbackBranches = {}, fallbackControlContexts = [];
   for (const target of phase8.targets) {
     const replacement = buildReport.targetReplacements.find((record) => record.symbol === target.symbol);
     const verifiedTarget = buildReport.verification.targets.find((record) => record.symbol === target.symbol);
@@ -545,22 +734,27 @@ function main() {
       const pruned = parseElfFile(path.join(output, ...replacementOwner.prunedAssemblyObject.split('/')));
       return {
         textOwner,
+        replacementOwner,
         fallback,
         pruned,
         fallbackText: sectionBytes(fallback, textOwner.sectionName),
       };
     });
     const fallbackText = Buffer.concat(ownerArtifacts.map((record) => record.fallbackText));
+    for (const record of ownerArtifacts) {
+      const context = { phase8, registry: fallbackRegistry, baserom: canonicalBaserom, target, record, cObject: linkedObject, linkedElf };
+      const branch = verifyFallbackExclusion(context);
+      fallbackBranches[branch] = (fallbackBranches[branch] || 0) + 1;
+      if (target.row.retainedPadding || !fallbackControlContexts.some(value => value.branch === 'ordinary')) {
+        fallbackControlContexts.push({ ...context, branch });
+      }
+    }
     if (!rawComparison.rawBytesExact || !rawComparison.linkedBytes.equals(fallbackText)
         || !sourceText.equals(linkedObjectText) || sourceText.length !== target.bytes
         || JSON.stringify(replacement.compilerTextFunctions) !== JSON.stringify(compilerTextFunctions)
         || JSON.stringify(verifiedTarget.compilerTextFunctions) !== JSON.stringify(linkedCompilerTextFunctions)
         || owner.owners.length !== textOwners.length
-        || owner.owners.some((record) => record.linkedOwner !== replacement.cObject)
-        || ownerArtifacts.some((record) => (
-          record.pruned.sections.some((section) => section.name === record.textOwner.sectionName)
-          || record.pruned.symbols.some((symbol) => symbol.name === record.textOwner.symbol)
-        ))) {
+        || owner.owners.some((record) => record.linkedOwner !== replacement.cObject)) {
       fail(`target byte, owner, or fallback exclusion drift: ${target.symbol}`);
     }
     if (sourceObject.sections.some((section) => section.name === '.pdr')
@@ -771,6 +965,7 @@ function main() {
     fail('asm-differ/raw target comparison drift');
   }
 
+  const fallbackMutations = verifyFallbackControls(fallbackControlContexts);
   const mutations = [];
   mutations.push(expectRejection('ROM padding', /linked ROM size drift/, () => {
     verifyRom(phase8.model, Buffer.concat([romBytes, Buffer.from([0])]));
@@ -1165,6 +1360,8 @@ function main() {
     syntheticPrefixExtraction,
     syntheticSourceObjectPrefixProof,
     targetProofs,
+    fallbackBranches,
+    fallbackMutations,
     mutations,
   }, null, 2));
 }

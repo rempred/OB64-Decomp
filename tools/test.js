@@ -24,6 +24,7 @@ const ROUTINE_TESTS = [
   ['compilation-groups', 'tests/compilation_groups.js'],
   ['owner-function-groups', 'tests/owner_function_groups.js'],
   ['owner-function-readonly-fragments', 'tests/owner_function_readonly_fragments.js'],
+  ['mixed-readonly-group', 'tests/mixed_readonly_group.js'],
   ['auxiliary-interior', 'tests/auxiliary_interior.js'],
   ['auxiliary-projection', 'tests/auxiliary_projection.js'],
   ['auxiliary-occurrence-projection', 'tests/auxiliary_occurrence_projection.js'],

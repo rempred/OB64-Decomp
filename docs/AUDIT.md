@@ -371,6 +371,33 @@ binding against the new containing interval/model while preserving literal bytes
 Private fixture evidence does not replace fresh compilation, changed-input structural audit,
 canonical complete-ROM/ownership/source-class gates or independent installed-code review.
 
+### Mixed native readonly producers
+
+For a mixed readonly owner-function producer, independently reconstruct the native mixed-metadata projection, unchanged text-owner split, pinned ancillary strip and bounded original-anchor type correction. Authenticate the complete raw section/symbol/REL census and explicit strip symbol-index mappings; conserve every R_MIPS_32 table record and encoded word. Validate all incoming literal HI+4/LDC1 and dispatch HI+8/ADDU/LW pairs, same-function attribution, original-address equations and table destination bounds. The original readonly section anchor becomes a uniquely bound local zero-size ABS anchor at the retained first literal; this grants no general ABS or writable-storage exception. Replay every distinct artifact in fresh, recorded and cached paths. Check each retained slot against the current original-source partition and whole-row map custody, including all other contributors. Require same-object exact text and table, unchanged retained original bytes, and the normal structural/full-ROM gates. A lossy text-only link and a separate unallocated raw-data link cannot be combined as proof.
+
+### Additional readonly producer audit evidence
+
+For the complete literal-run mode, audit the immutable raw object, exact complete
+owned-body adapter with internal tail0, four-byte native alignment origin, fresh
+logical registry and entire adjacent original ASM owner. Text/object schemas14/22
+must carry both bindings; old schema19 cannot authorize the new representation.
+Require the complete generated-symbol census, including the literal-only strip
+symbol for `.symtab`, every later text-owner symbol, all REL records and anchor
+index remapping. Test omission0/8/12, altered body extents, stale registry/source,
+selected neighbor custody and missing or tampered pipeline artifacts.
+
+For mixed schema2, authenticate raw flags2/alignment16 separately from projected
+table flags2/alignment8 and unchanged compiler directives[3,2]. Reject projected16
+or4 and raw8; do not weaken shared-owner alignment equality. Prove every table
+entry, scalar slot, optional initializer and zero interval without overlap or
+unaccounted bytes. Require finite initializer operand/control/entry negatives,
+independent native synthetic coverage, source/link reconstruction and cache
+miss/publish/hit/invalidation checks. Actual entire shared C/ASM interval and map
+custody, including protected decoder/L2/scheduler data, must pass. Earlier
+per-object links with projected16 are historical diagnostics, not evidence for
+this corrected contract. Independent exact-code review and canonical structural,
+fresh/recorded/cache/full-ROM acceptance remain separate installation gates.
+
 ### Single-owner shared-table native projection
 
 For `native-text-single-owner-readonly-fragment-projection`, require one complete

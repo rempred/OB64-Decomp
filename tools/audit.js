@@ -156,11 +156,13 @@ function runAudit(args, profile) {
   const squadMigration = validateSquadMigration(context.phase8.targets, current.verification.verification.targets);
   const textRepresentations = sourceObjectEvidence.targets.map((record) => {
     const target = context.phase8.targets.find((entry) => entry.symbol === record.symbol);
-    textContract.validateRecords(record, { textContract: textContract.resolveTextContract(target) }, 'audit');
-    if (!record.objectEvidence || !record.linkEvidence || record.linkEvidence.fullOwnerExact !== true) {
-      throw new Error('audit text representation evidence is incomplete');
-    }
-    return { symbol: target.symbol, mode: record.textContract.mode, textContractSha256: textContract.hash(record.textContract) };
+    let summary;
+    textContract.withSourceObjectProof(current.build.output, target, record, proof => {
+      textContract.validateRecords(proof, { textContract: textContract.resolveTextContract(target) }, 'audit');
+      if (!proof.objectEvidence || proof.linkEvidence?.fullOwnerExact !== true) throw new Error('audit text representation evidence is incomplete');
+      summary = { symbol: target.symbol, mode: proof.textContract.mode, textContractSha256: textContract.hash(proof.textContract) };
+    });
+    return summary;
   });
   const report = {
     schemaVersion: 5,

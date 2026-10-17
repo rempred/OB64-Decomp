@@ -30,7 +30,7 @@ const CUMULATIVE_FILES = ROW585_FILES.map((row) => row.path === 'full-rom-primar
 
 const ACCEPTED_PROFILE = {
   name: 'accepted',
-  rowClasses: Object.freeze({"565":"data","566":"data","567":"code","585":"data"}),
+  rowClasses: Object.freeze({ 476: 'data', 496: 'data', 497: 'data',"565":"data","566":"data","567":"code","585":"data"}),
   logicalSha256: '13BB110109C6DAE45157572DB5AC95DD233AB41C8639901302ED593AAB862EF2',
   productManifestSha256: '5C3128F206FFB019E0F43948C5334039C62DA439B73C85BC0AEEBFD2312E3393',
   primaryLedgerSha256: '8A5473D596DBD961426A853440C798F9585F38C46A96E4ABA9DD073C52A2FABB',
@@ -39,7 +39,7 @@ const ACCEPTED_PROFILE = {
 
 const ROW585_PROFILE = {
   name: 'row585-code-successor',
-  rowClasses: Object.freeze({"565":"data","566":"data","567":"code","585":"code"}),
+  rowClasses: Object.freeze({ 476: 'data', 496: 'data', 497: 'data',"565":"data","566":"data","567":"code","585":"code"}),
   logicalSha256: '7CDACEAC4C84D508FB03C252212C376A084153677233F2756A777DA527E1D42E',
   productManifestSha256: '64762581B888A8F6F14548F0E59DFE3358FCD2DB90FE6B3D1B902E577AFEBE68',
   primaryLedgerSha256: '85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF',
@@ -48,7 +48,7 @@ const ROW585_PROFILE = {
 
 const CUMULATIVE_PROFILE = {
   name: 'row565-row585-code-cumulative-successor',
-  rowClasses: Object.freeze({"565":"code","566":"data","567":"code","585":"code"}),
+  rowClasses: Object.freeze({ 476: 'data', 496: 'data', 497: 'data',"565":"code","566":"data","567":"code","585":"code"}),
   logicalSha256: '02E621C81403C5EF7CC65EC29EF2ABF01B1ABA2755BB9B45801E94D6D4221BA6',
   productManifestSha256: 'F004C4C09D611671935BD0D7927D514EAC1E05C347FBB271A523C424AFDB1D04',
   primaryLedgerSha256: '4C76602C42BB287A520EDC71D5A597FF94D8F3066E49EEFBF2502087AE452BBE',
@@ -61,14 +61,27 @@ const ROW566_FILES = CUMULATIVE_FILES.map((row) => row.path === 'full-rom-primar
 
 const ROW566_PROFILE = {
   name: 'row565-row566-row585-code-cumulative-successor',
-  rowClasses: Object.freeze({ 565: 'code', 566: 'code', 567: 'code', 585: 'code' }),
+  rowClasses: Object.freeze({ 476: 'data', 496: 'data', 497: 'data', 565: 'code', 566: 'code', 567: 'code', 585: 'code' }),
   logicalSha256: 'E3CC7C3979988F621A4C620403A26CCAFE6786CFE13D3DF5088F0DC4AC66914D',
   productManifestSha256: '21919E82453488B0A31BE9C4BE19CC9A32D70FECB3B4D84442C5C0E5DEBBF81E',
   primaryLedgerSha256: '999CEDFCBA772C3D57BE6D2D0302A520B2E99458A6DCF9EFCF83E5BA384E388D',
   files: ROW566_FILES,
 };
 
-const EXPECTED_PROFILES = Object.freeze({ accepted: ACCEPTED_PROFILE, successor: ROW585_PROFILE, cumulative: CUMULATIVE_PROFILE, row566: ROW566_PROFILE });
+const L4_FILES = ROW566_FILES.map((row) => row.path === 'full-rom-primary-ledger.jsonl'
+  ? { ...row, sha256: 'F74D3200293FD15DC12AB717C4E1163085461957DA71506F25EC849D6D9A3887' }
+  : row);
+
+const L4_PROFILE = {
+  name: 'row476-row496-row497-row565-row566-row585-code-cumulative-successor',
+  rowClasses: Object.freeze({ 476: 'code', 496: 'code', 497: 'code', 565: 'code', 566: 'code', 567: 'code', 585: 'code' }),
+  logicalSha256: '1F52A38EF6EDEC813B6D549C82787BD901EC446762CA931396F9AC926CA80D61',
+  productManifestSha256: '43BBBBF2BA2FBDD87DC9F6B6EC4BAAE638EA41A378843E031D3962D5D5FF719B',
+  primaryLedgerSha256: 'F74D3200293FD15DC12AB717C4E1163085461957DA71506F25EC849D6D9A3887',
+  files: L4_FILES,
+};
+
+const EXPECTED_PROFILES = Object.freeze({ accepted: ACCEPTED_PROFILE, successor: ROW585_PROFILE, cumulative: CUMULATIVE_PROFILE, row566: ROW566_PROFILE, l4: L4_PROFILE });
 const EXPECTED_FILES = ACCEPTED_FILES.map((row) => row.path);
 const ROW585 = Object.freeze({
   index: 585,
@@ -126,6 +139,48 @@ const ROW567 = Object.freeze({
   "source_form": "original_mips",
   "source_manifest_index": 1
 });
+const ROW476 = Object.freeze({
+  "ambiguous": false,
+  "bytes": 36,
+  "id": "primary:d689e52d1c0283fc6847",
+  "index": 476,
+  "owner_kind": "tracked-assembly-part",
+  "owner_path": "asm/original/rev0/lib/float_ldexp_d.s",
+  "owner_sha256": "C13B0BB4A24420406E4FEF479FA6A03D624457DFF118C7E0AC27BBAEF1CDAFDE",
+  "primary_class": "data",
+  "rom_end_exclusive": 124908,
+  "rom_start": 124872,
+  "source_form": "original_mips",
+  "source_manifest_index": 1
+});
+const ROW496 = Object.freeze({
+  "ambiguous": false,
+  "bytes": 32,
+  "id": "primary:70c037009f285b0342f9",
+  "index": 496,
+  "owner_kind": "tracked-assembly-part",
+  "owner_path": "asm/original/rev0/lib/list_insert_head.s",
+  "owner_sha256": "7CFB69929ED2FDE2A80F2C748C83BC8A48731D45498C25B97C6FC30CEBDFF40C",
+  "primary_class": "data",
+  "rom_end_exclusive": 130076,
+  "rom_start": 130044,
+  "source_form": "original_mips",
+  "source_manifest_index": 1
+});
+const ROW497 = Object.freeze({
+  "ambiguous": false,
+  "bytes": 52,
+  "id": "primary:21a6ddb4ae86f25177b1",
+  "index": 497,
+  "owner_kind": "tracked-assembly-part",
+  "owner_path": "asm/original/rev0/lib/list_unlink.s",
+  "owner_sha256": "6D934887C222D5B00E2C5A700163888D10F4D921A551FFF8E5A991CE64B6F518",
+  "primary_class": "data",
+  "rom_end_exclusive": 130128,
+  "rom_start": 130076,
+  "source_form": "original_mips",
+  "source_manifest_index": 1
+});
 const PRESERVED_FIELDS = Object.freeze([
   'rom_start',
   'rom_end_exclusive',
@@ -177,7 +232,7 @@ function verifyPrimaryRows(product, profile) {
     }
     return row;
   };
-  return Object.fromEntries([ROW565, ROW566, ROW567, ROW585].map((expected) => [
+  return Object.fromEntries([ROW476, ROW496, ROW497, ROW565, ROW566, ROW567, ROW585].map((expected) => [
     `row${expected.index}`, verifyRow(expected, profile.rowClasses[expected.index]),
   ]));
 }
@@ -218,6 +273,9 @@ function verifyPhase5aProduct(product) {
     primaryLedgerSha256: profile.primaryLedgerSha256,
     fileCount: manifest.files.length,
     files: manifest.files,
+    row476: primaryRows.row476,
+    row496: primaryRows.row496,
+    row497: primaryRows.row497,
     row565: primaryRows.row565,
     row566: primaryRows.row566,
     row567: primaryRows.row567,
@@ -228,6 +286,9 @@ function verifyPhase5aProduct(product) {
 module.exports = {
   EXPECTED_FILES,
   EXPECTED_PROFILES,
+  ROW476,
+  ROW496,
+  ROW497,
   ROW565,
   ROW566,
   ROW567,

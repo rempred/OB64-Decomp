@@ -3,10 +3,10 @@
   "generator": "tools/generate_phase5b_production_config.js",
   "mode": "primary-rom-only-with-explicit-phase4-overlay-reservations",
   "phase4OverlayConfigSha256": "AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B",
-  "phase5aProductSha256": "E3CC7C3979988F621A4C620403A26CCAFE6786CFE13D3DF5088F0DC4AC66914D",
-  "phase5aProductManifestSha256": "21919E82453488B0A31BE9C4BE19CC9A32D70FECB3B4D84442C5C0E5DEBBF81E",
-  "phase5aPrimaryLedgerSha256": "999CEDFCBA772C3D57BE6D2D0302A520B2E99458A6DCF9EFCF83E5BA384E388D",
-  "phase5aProfile": "row565-row566-row585-code-cumulative-successor",
+  "phase5aProductSha256": "1F52A38EF6EDEC813B6D549C82787BD901EC446762CA931396F9AC926CA80D61",
+  "phase5aProductManifestSha256": "43BBBBF2BA2FBDD87DC9F6B6EC4BAAE638EA41A378843E031D3962D5D5FF719B",
+  "phase5aPrimaryLedgerSha256": "F74D3200293FD15DC12AB717C4E1163085461957DA71506F25EC849D6D9A3887",
+  "phase5aProfile": "row476-row496-row497-row565-row566-row585-code-cumulative-successor",
   "splatPrimaryRows": [
     {
       "index": 0,
@@ -3819,7 +3819,7 @@
     {
       "index": 476,
       "primaryId": "primary:d689e52d1c0283fc6847",
-      "name": "p0476_data_original_mips_0001e7c8_0001e7ec",
+      "name": "p0476_code_original_mips_0001e7c8_0001e7ec",
       "romStart": 124872,
       "romEndExclusive": 124908,
       "bytes": 36
@@ -3979,7 +3979,7 @@
     {
       "index": 496,
       "primaryId": "primary:70c037009f285b0342f9",
-      "name": "p0496_data_original_mips_0001fbfc_0001fc1c",
+      "name": "p0496_code_original_mips_0001fbfc_0001fc1c",
       "romStart": 130044,
       "romEndExclusive": 130076,
       "bytes": 32
@@ -3987,7 +3987,7 @@
     {
       "index": 497,
       "primaryId": "primary:21a6ddb4ae86f25177b1",
-      "name": "p0497_data_original_mips_0001fc1c_0001fc50",
+      "name": "p0497_code_original_mips_0001fc1c_0001fc50",
       "romStart": 130076,
       "romEndExclusive": 130128,
       "bytes": 52

@@ -51,6 +51,24 @@
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
     },
     {
+      "romStart": 119324,
+      "romEndExclusive": 119328,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Original row465 returns at ROM1D214 with ADDIUsp delay1D218, followed by four original zero bytes at1D21C. Complete native eight-function producer has a68-byte final body plus4-byte alignment tail in unchanged72-byte physical owner. Bounded whole-ROM aligned direct/pointer/LUI and executable early-boot library branch searches found no entry into1D21C; no runtime-unreachability claim."
+    },
+    {
+      "romStart": 126764,
+      "romEndExclusive": 126768,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Reviewed complete original row483 terminal return/delay followed by native-alignment zero words; bounded reference scan recorded. No runtime unreachability claim."
+    },
+    {
+      "romStart": 129736,
+      "romEndExclusive": 129744,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Reviewed complete original row491 terminal return/delay followed by native-alignment zero words; bounded reference scan recorded. No runtime unreachability claim."
+    },
+    {
       "romStart": 131932,
       "romEndExclusive": 131936,
       "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
