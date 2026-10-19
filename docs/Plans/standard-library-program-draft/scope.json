@@ -1,0 +1,6087 @@
+{
+  "kind": "program-membership-not-acceptance-status",
+  "preparedLocalDate": "2026-10-15",
+  "status": "COMPLETE; all assigned waves accepted October 17, 2026 at source commit 17e07534; scope retained as historical membership",
+  "inputInventory": "build/director-resume-20261015/standard-library-inventory/expanded/functions.json",
+  "inputInventorySha256": "8BEE4617AAD80CA4AA6C85F73F4DCD0868C826A14CD1EA7D16A92552AA5DC7EA",
+  "inputSummarySha256": "D65D8769B0607A18487E692ECA3B3BDED53319244079241432486E10FA25F7E0",
+  "canonicalROMsha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A",
+  "draftBaselineCommit": "5c6ab254bdc020b12eb7ebe080eb906870daa146",
+  "scopeNotes": [
+    "Function entries, physical owners, complete native producers, and padding are distinct. This JSON fixes planned membership, not current progress.",
+    "All 210 not-yet-PURE_C exact C entries are assigned once. Six accepted C companions remain protected and can participate in the same producer without new credit.",
+    "L7 deliberately includes two known nonexact closure companions, for a proposed212-entry goal. They are not represented as solved or easy.",
+    "New exact C reference bytes60588 include828 bytes of native object padding; summed new exact function body bytes59760 exclude padding. Neither is a promise of future canonical matching bytes.",
+    "Scope closure must preserve all physical owners, data dependencies and existing accepted companions. Do not split or drop coupled producers to meet these draft waves."
+  ],
+  "counts": {
+    "exactUnacceptedCEntries": 210,
+    "nonexactClosureCompanions": 2,
+    "proposedNewCEntryGoal": 212,
+    "exactFunctionBodyBytes": 59760,
+    "nonexactClosureBodyBytes": 1968,
+    "proposedNewFunctionBodyBytes": 61728,
+    "exactReferenceTextBytesIncludingPadding": 60588,
+    "protectedAcceptedCEntries": 6,
+    "retainedASMEntrySpans": 44,
+    "retainedASMReferenceBytes": 7296
+  },
+  "waves": [
+    {
+      "id": "L1",
+      "name": "KMC memory and SDK message queues",
+      "prerequisite": "F0 capabilities/provenance/owner closure for this wave; existing ASM callees may remain",
+      "exactEntries": [
+        {
+          "rom": "0x0000A370",
+          "endExclusive": "0x0000A470",
+          "bodyBytes": 256,
+          "candidateNames": [
+            "memcpy"
+          ],
+          "referenceSources": [
+            "libkmc/src/memcpy.c"
+          ],
+          "researchProfiles": [
+            "libkmc-O2",
+            "libkmc-O3"
+          ],
+          "witnessDirectory": "expanded\\objects\\kmc-O2\\memcpy\\proof-0000A370-n0-b100-whole",
+          "physicalOwners": [
+            {
+              "name": "boot_byte_copy_aligned_leaf",
+              "rom": "0x0000A370",
+              "bytes": 256,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0000A470",
+          "endExclusive": "0x0000A510",
+          "bodyBytes": 160,
+          "candidateNames": [
+            "memset"
+          ],
+          "referenceSources": [
+            "libkmc/lib/memset.o",
+            "libkmc/src/memset.c"
+          ],
+          "researchProfiles": [
+            "archive-f6382ef",
+            "libkmc-O",
+            "libkmc-O2",
+            "libkmc-O3"
+          ],
+          "witnessDirectory": "expanded\\objects\\kmc-O2\\memset\\proof-0000A470-n0-bA0-function",
+          "physicalOwners": [
+            {
+              "name": "boot_byte_fill_aligned_leaf",
+              "rom": "0x0000A470",
+              "bytes": 160,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023970",
+          "endExclusive": "0x00023994",
+          "bodyBytes": 36,
+          "candidateNames": [
+            "osCreateMesgQueue"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/createmesgqueue.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\createmesgqueue\\proof-00023970-n0-b30-whole",
+          "physicalOwners": [
+            {
+              "name": "osCreateMesgQueue",
+              "rom": "0x00023970",
+              "bytes": 48,
+              "recordedClass": "HYBRID_C"
+            }
+          ]
+        },
+        {
+          "rom": "0x000239A0",
+          "endExclusive": "0x00023AD4",
+          "bodyBytes": 308,
+          "candidateNames": [
+            "osJamMesg"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/jammesg.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\jammesg\\proof-000239A0-n0-b140-whole",
+          "physicalOwners": [
+            {
+              "name": "osJamMesg",
+              "rom": "0x000239A0",
+              "bytes": 320,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023AE0",
+          "endExclusive": "0x00023C04",
+          "bodyBytes": 292,
+          "candidateNames": [
+            "osRecvMesg"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/recvmesg.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\recvmesg\\proof-00023AE0-n0-b130-whole",
+          "physicalOwners": [
+            {
+              "name": "osRecvMesg",
+              "rom": "0x00023AE0",
+              "bytes": 304,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023C10",
+          "endExclusive": "0x00023D40",
+          "bodyBytes": 304,
+          "candidateNames": [
+            "osSendMesg"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/sendmesg.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\sendmesg\\proof-00023C10-n0-b130-whole",
+          "physicalOwners": [
+            {
+              "name": "osSendMesg",
+              "rom": "0x00023C10",
+              "bytes": 304,
+              "recordedClass": "ASM"
+            }
+          ]
+        }
+      ],
+      "protectedAcceptedCompanions": [],
+      "nonexactClosureCompanions": [],
+      "exactEntryCount": 6,
+      "exactFunctionBodyBytes": 1356,
+      "newCEntryGoal": 6,
+      "newFunctionBodyBytes": 1356
+    },
+    {
+      "id": "L2",
+      "name": "Geometry and matrix C",
+      "prerequisite": "F0 capabilities/provenance/owner closure for this wave; existing ASM callees may remain",
+      "exactEntries": [
+        {
+          "rom": "0x00020BF0",
+          "endExclusive": "0x00020D40",
+          "bodyBytes": 336,
+          "candidateNames": [
+            "__cosf",
+            "cosf",
+            "fcos"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/cosf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\cosf\\proof-00020BF0-n0-b150-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020bf0",
+              "rom": "0x00020BF0",
+              "bytes": 336,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020D40",
+          "endExclusive": "0x000210C0",
+          "bodyBytes": 896,
+          "candidateNames": [
+            "guLookAtF"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/lookat.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\lookat\\proof-00020D40-n0-b380-function",
+          "physicalOwners": [
+            {
+              "name": "func_00020d40",
+              "rom": "0x00020D40",
+              "bytes": 704,
+              "recordedClass": "ASM"
+            },
+            {
+              "name": "func_00020d40_tail",
+              "rom": "0x00021000",
+              "bytes": 192,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000210C0",
+          "endExclusive": "0x00021444",
+          "bodyBytes": 900,
+          "candidateNames": [
+            "guLookAt"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/lookat.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\lookat\\proof-00020D40-n0-b710-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000210c0",
+              "rom": "0x000210C0",
+              "bytes": 912,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00021450",
+          "endExclusive": "0x00021DD4",
+          "bodyBytes": 2436,
+          "candidateNames": [
+            "guLookAtHiliteF"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/lookathil.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\lookathil\\proof-00021450-n0-b984-function",
+          "physicalOwners": [
+            {
+              "name": "func_00021450",
+              "rom": "0x00021450",
+              "bytes": 2436,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00021DD4",
+          "endExclusive": "0x00021EA8",
+          "bodyBytes": 212,
+          "candidateNames": [
+            "guLookAtHilite"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/lookathil.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\lookathil\\proof-00021450-n0-bA60-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00021dd4",
+              "rom": "0x00021DD4",
+              "bytes": 220,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00021EB0",
+          "endExclusive": "0x00022428",
+          "bodyBytes": 1400,
+          "candidateNames": [
+            "guLookAtReflectF"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/lookatref.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\lookatref\\proof-00021EB0-n0-b578-function",
+          "physicalOwners": [
+            {
+              "name": "func_00021eb0",
+              "rom": "0x00021EB0",
+              "bytes": 1400,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00022428",
+          "endExclusive": "0x00022494",
+          "bodyBytes": 108,
+          "candidateNames": [
+            "guLookAtReflect"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/lookatref.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\lookatref\\proof-00021EB0-n0-b5F0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00022428",
+              "rom": "0x00022428",
+              "bytes": 120,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000224A0",
+          "endExclusive": "0x000225D0",
+          "bodyBytes": 304,
+          "candidateNames": [
+            "guOrthoF"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/ortho.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\ortho\\proof-000224A0-n0-b130-function",
+          "physicalOwners": [
+            {
+              "name": "func_000224a0",
+              "rom": "0x000224A0",
+              "bytes": 304,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000225D0",
+          "endExclusive": "0x0002271C",
+          "bodyBytes": 332,
+          "candidateNames": [
+            "guOrtho"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/ortho.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\ortho\\proof-000224A0-n0-b280-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000225d0",
+              "rom": "0x000225D0",
+              "bytes": 336,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00022720",
+          "endExclusive": "0x000228D0",
+          "bodyBytes": 432,
+          "candidateNames": [
+            "guPerspectiveF"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/perspective.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\perspective\\proof-00022720-n0-b1B0-function",
+          "physicalOwners": [
+            {
+              "name": "func_00022720",
+              "rom": "0x00022720",
+              "bytes": 432,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000228D0",
+          "endExclusive": "0x00022A98",
+          "bodyBytes": 456,
+          "candidateNames": [
+            "guPerspective"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/perspective.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\perspective\\proof-00022720-n0-b380-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000228d0",
+              "rom": "0x000228D0",
+              "bytes": 464,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00022AA0",
+          "endExclusive": "0x00022C78",
+          "bodyBytes": 472,
+          "candidateNames": [
+            "guPositionF"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/position.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\position\\proof-00022AA0-n0-b1D8-function",
+          "physicalOwners": [
+            {
+              "name": "func_00022aa0",
+              "rom": "0x00022AA0",
+              "bytes": 472,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00022C78",
+          "endExclusive": "0x00022E58",
+          "bodyBytes": 480,
+          "candidateNames": [
+            "guPosition"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/position.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\position\\proof-00022AA0-n0-b3C0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00022c78",
+              "rom": "0x00022C78",
+              "bytes": 488,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00022E60",
+          "endExclusive": "0x00022E8C",
+          "bodyBytes": 44,
+          "candidateNames": [
+            "guRandom"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/random.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\random\\proof-00022E60-n0-b30-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00022e60",
+              "rom": "0x00022E60",
+              "bytes": 48,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00022E90",
+          "endExclusive": "0x00023018",
+          "bodyBytes": 392,
+          "candidateNames": [
+            "guRotateRPYF"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/rotaterpy.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\rotaterpy\\proof-00022E90-n0-b188-function",
+          "physicalOwners": [
+            {
+              "name": "func_00022e90",
+              "rom": "0x00022E90",
+              "bytes": 392,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023018",
+          "endExclusive": "0x000231A4",
+          "bodyBytes": 396,
+          "candidateNames": [
+            "guRotateRPY"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/rotaterpy.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\rotaterpy\\proof-00022E90-n0-b320-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00023018",
+              "rom": "0x00023018",
+              "bytes": 408,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000231B0",
+          "endExclusive": "0x00023350",
+          "bodyBytes": 416,
+          "candidateNames": [
+            "__sinf",
+            "fsin",
+            "sinf"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/sinf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\sinf\\proof-000231B0-n0-b1A0-whole",
+          "physicalOwners": [
+            {
+              "name": "sinf",
+              "rom": "0x000231B0",
+              "bytes": 416,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00028740",
+          "endExclusive": "0x000287B4",
+          "bodyBytes": 116,
+          "candidateNames": [
+            "guMtxCatL"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/mtxcatl.c",
+            "ultralib/src/mgu/mtxcatl.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\gu\\mtxcatl\\proof-00028740-n0-b74-function",
+          "physicalOwners": [
+            {
+              "name": "func_00028740",
+              "rom": "0x00028740",
+              "bytes": 128,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000287C0",
+          "endExclusive": "0x0002884C",
+          "bodyBytes": 140,
+          "candidateNames": [
+            "guMtxXFML"
+          ],
+          "referenceSources": [
+            "ultralib/src/mgu/mtxxfml.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\mgu\\mtxxfml\\proof-000287C0-n0-b90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000287c0",
+              "rom": "0x000287C0",
+              "bytes": 144,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00028850",
+          "endExclusive": "0x000288FC",
+          "bodyBytes": 172,
+          "candidateNames": [
+            "guMtxXFMF"
+          ],
+          "referenceSources": [
+            "ultralib/src/mgu/mtxxfmf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\mgu\\mtxxfmf\\proof-00028850-n0-bB0-whole",
+          "physicalOwners": [
+            {
+              "name": "mtx_apply_vec3",
+              "rom": "0x00028850",
+              "bytes": 176,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00028900",
+          "endExclusive": "0x00028A60",
+          "bodyBytes": 352,
+          "candidateNames": [
+            "guRotateF"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/rotate.c",
+            "ultralib/src/mgu/rotate.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX-unsigned\\src\\gu\\rotate\\proof-00028900-n0-b160-function",
+          "physicalOwners": [
+            {
+              "name": "func_00028900",
+              "rom": "0x00028900",
+              "bytes": 352,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00028A60",
+          "endExclusive": "0x00028BD8",
+          "bodyBytes": 376,
+          "candidateNames": [
+            "guRotate"
+          ],
+          "referenceSources": [
+            "ultralib/src/gu/rotate.c",
+            "ultralib/src/mgu/rotate.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX-unsigned\\src\\gu\\rotate\\proof-00028900-n0-b2E0-whole",
+          "physicalOwners": [
+            {
+              "name": "guRotate",
+              "rom": "0x00028A60",
+              "bytes": 384,
+              "recordedClass": "ASM"
+            }
+          ]
+        }
+      ],
+      "protectedAcceptedCompanions": [],
+      "nonexactClosureCompanions": [],
+      "exactEntryCount": 22,
+      "exactFunctionBodyBytes": 11168,
+      "newCEntryGoal": 22,
+      "newFunctionBodyBytes": 11168
+    },
+    {
+      "id": "L3",
+      "name": "Threads, timers, events and scheduler",
+      "prerequisite": "F0 capabilities/provenance/owner closure for this wave; existing ASM callees may remain",
+      "exactEntries": [
+        {
+          "rom": "0x00020B80",
+          "endExclusive": "0x00020BD4",
+          "bodyBytes": 84,
+          "candidateNames": [
+            "osVirtualToPhysical"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/virtualtophysical.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\virtualtophysical\\proof-00020B80-n0-b60-whole",
+          "physicalOwners": [
+            {
+              "name": "os_virtual_to_physical",
+              "rom": "0x00020B80",
+              "bytes": 96,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023D40",
+          "endExclusive": "0x00023DEC",
+          "bodyBytes": 172,
+          "candidateNames": [
+            "osSetEventMesg"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/seteventmesg.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\seteventmesg\\proof-00023D40-n0-bB0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00023d40",
+              "rom": "0x00023D40",
+              "bytes": 176,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000240B0",
+          "endExclusive": "0x000241F8",
+          "bodyBytes": 328,
+          "candidateNames": [
+            "osCreateScheduler"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-b148-function",
+          "physicalOwners": [
+            {
+              "name": "func_000240b0",
+              "rom": "0x000240B0",
+              "bytes": 328,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000241F8",
+          "endExclusive": "0x00024250",
+          "bodyBytes": 88,
+          "candidateNames": [
+            "osScAddClient"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "list_insert_head_000241f8",
+              "rom": "0x000241F8",
+              "bytes": 88,
+              "recordedClass": "HYBRID_C"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024250",
+          "endExclusive": "0x000242E0",
+          "bodyBytes": 144,
+          "candidateNames": [
+            "osScRemoveClient"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "list_remove",
+              "rom": "0x00024250",
+              "bytes": 144,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000242E8",
+          "endExclusive": "0x000243EC",
+          "bodyBytes": 260,
+          "candidateNames": [
+            "__scMain"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000242e8",
+              "rom": "0x000242E8",
+              "bytes": 260,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000243EC",
+          "endExclusive": "0x000244EC",
+          "bodyBytes": 256,
+          "candidateNames": [
+            "__scHandleRetrace"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000243ec",
+              "rom": "0x000243EC",
+              "bytes": 256,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000244EC",
+          "endExclusive": "0x000245DC",
+          "bodyBytes": 240,
+          "candidateNames": [
+            "__scHandleRSP"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000244ec",
+              "rom": "0x000244EC",
+              "bytes": 240,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000245DC",
+          "endExclusive": "0x0002466C",
+          "bodyBytes": 144,
+          "candidateNames": [
+            "__scHandleRDP"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000245dc",
+              "rom": "0x000245DC",
+              "bytes": 144,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002466C",
+          "endExclusive": "0x000246C0",
+          "bodyBytes": 84,
+          "candidateNames": [
+            "__scTaskReady"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002466c",
+              "rom": "0x0002466C",
+              "bytes": 84,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000246C0",
+          "endExclusive": "0x0002474C",
+          "bodyBytes": 140,
+          "candidateNames": [
+            "__scTaskComplete"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000246c0",
+              "rom": "0x000246C0",
+              "bytes": 228,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002474C",
+          "endExclusive": "0x000247A4",
+          "bodyBytes": 88,
+          "candidateNames": [
+            "__scAppendList"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000246c0",
+              "rom": "0x000246C0",
+              "bytes": 228,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000247A4",
+          "endExclusive": "0x00024874",
+          "bodyBytes": 208,
+          "candidateNames": [
+            "__scExec"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000247a4",
+              "rom": "0x000247A4",
+              "bytes": 208,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024874",
+          "endExclusive": "0x000248AC",
+          "bodyBytes": 56,
+          "candidateNames": [
+            "__scYield"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024874",
+              "rom": "0x00024874",
+              "bytes": 56,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000248AC",
+          "endExclusive": "0x00024AC0",
+          "bodyBytes": 532,
+          "candidateNames": [
+            "__scSchedule"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000248ac",
+              "rom": "0x000248AC",
+              "bytes": 532,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024C60",
+          "endExclusive": "0x00024D30",
+          "bodyBytes": 208,
+          "candidateNames": [
+            "osCreateThread"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/createthread.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\createthread\\proof-00024C60-n0-bD0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024c60",
+              "rom": "0x00024C60",
+              "bytes": 240,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024D30",
+          "endExclusive": "0x00024D48",
+          "bodyBytes": 24,
+          "candidateNames": [
+            "osGetThreadPri"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/getthreadpri.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\getthreadpri\\proof-00024D30-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024c60",
+              "rom": "0x00024C60",
+              "bytes": 240,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024D50",
+          "endExclusive": "0x00024E18",
+          "bodyBytes": 200,
+          "candidateNames": [
+            "osSetThreadPri"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/setthreadpri.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\setthreadpri\\proof-00024D50-n0-bD0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024d50",
+              "rom": "0x00024D50",
+              "bytes": 208,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024E20",
+          "endExclusive": "0x00024F38",
+          "bodyBytes": 280,
+          "candidateNames": [
+            "osStartThread"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/startthread.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\startthread\\proof-00024E20-n0-b120-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024e20",
+              "rom": "0x00024E20",
+              "bytes": 288,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024F40",
+          "endExclusive": "0x00024FF4",
+          "bodyBytes": 180,
+          "candidateNames": [
+            "osStopThread"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/stopthread.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\stopthread\\proof-00024F40-n0-bC0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024f40",
+              "rom": "0x00024F40",
+              "bytes": 192,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025000",
+          "endExclusive": "0x00025034",
+          "bodyBytes": 52,
+          "candidateNames": [
+            "__osDequeueThread"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/thread.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\thread\\proof-00025000-n0-b40-whole",
+          "physicalOwners": [
+            {
+              "name": "list_remove_node",
+              "rom": "0x00025000",
+              "bytes": 64,
+              "recordedClass": "HYBRID_C"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025040",
+          "endExclusive": "0x00025088",
+          "bodyBytes": 72,
+          "candidateNames": [
+            "osYieldThread"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/yieldthread.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\yieldthread\\proof-00025040-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025040",
+              "rom": "0x00025040",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025090",
+          "endExclusive": "0x00025114",
+          "bodyBytes": 132,
+          "candidateNames": [
+            "osGetTime"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/gettime.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\gettime\\proof-00025090-n0-b90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025090",
+              "rom": "0x00025090",
+              "bytes": 144,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025120",
+          "endExclusive": "0x00025134",
+          "bodyBytes": 20,
+          "candidateNames": [
+            "osSetTime"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/settime.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\settime\\proof-00025120-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025120",
+              "rom": "0x00025120",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025140",
+          "endExclusive": "0x000251D4",
+          "bodyBytes": 148,
+          "candidateNames": [
+            "osSetTimer"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/settimer.c"
+          ],
+          "researchProfiles": [
+            "J"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\settimer\\proof-00025140-n0-bA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025140",
+              "rom": "0x00025140",
+              "bytes": 160,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000251E0",
+          "endExclusive": "0x00025234",
+          "bodyBytes": 84,
+          "candidateNames": [
+            "__osTimerServicesInit"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/timerintr.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\timerintr\\proof-000251E0-n0-b300-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000251e0",
+              "rom": "0x000251E0",
+              "bytes": 84,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025234",
+          "endExclusive": "0x00025370",
+          "bodyBytes": 316,
+          "candidateNames": [
+            "__osTimerInterrupt"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/timerintr.c"
+          ],
+          "researchProfiles": [
+            "J"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\timerintr\\proof-000251E0-n0-b300-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025234",
+              "rom": "0x00025234",
+              "bytes": 316,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025370",
+          "endExclusive": "0x000253D0",
+          "bodyBytes": 96,
+          "candidateNames": [
+            "__osSetTimerIntr"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/timerintr.c"
+          ],
+          "researchProfiles": [
+            "J"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\timerintr\\proof-000251E0-n0-b300-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025370",
+              "rom": "0x00025370",
+              "bytes": 96,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000253D0",
+          "endExclusive": "0x000254D8",
+          "bodyBytes": 264,
+          "candidateNames": [
+            "__osInsertTimer"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/timerintr.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\timerintr\\proof-000251E0-n0-b300-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000253d0",
+              "rom": "0x000253D0",
+              "bytes": 272,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00028430",
+          "endExclusive": "0x0002844C",
+          "bodyBytes": 28,
+          "candidateNames": [
+            "osAfterPreNMI"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/afterprenmi.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\afterprenmi\\proof-00028430-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00028430",
+              "rom": "0x00028430",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00029B60",
+          "endExclusive": "0x00029BA0",
+          "bodyBytes": 64,
+          "candidateNames": [
+            "__osSetGlobalIntMask"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/setglobalintmask.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\setglobalintmask\\proof-00029B60-n0-b40-whole",
+          "physicalOwners": [
+            {
+              "name": "osSetGlobalIntMask",
+              "rom": "0x00029B60",
+              "bytes": 64,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00029BA0",
+          "endExclusive": "0x00029BE8",
+          "bodyBytes": 72,
+          "candidateNames": [
+            "__osResetGlobalIntMask"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/resetglobalintmask.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\resetglobalintmask\\proof-00029BA0-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "osResetGlobalIntMask",
+              "rom": "0x00029BA0",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002ADC0",
+          "endExclusive": "0x0002AE98",
+          "bodyBytes": 216,
+          "candidateNames": [
+            "osDestroyThread"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/destroythread.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\os\\destroythread\\proof-0002ADC0-n0-bE0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002adc0",
+              "rom": "0x0002ADC0",
+              "bytes": 224,
+              "recordedClass": "ASM"
+            }
+          ]
+        }
+      ],
+      "protectedAcceptedCompanions": [
+        {
+          "rom": "0x000242E0",
+          "endExclusive": "0x000242E8",
+          "bodyBytes": 8,
+          "candidateNames": [
+            "osScGetCmdQ"
+          ],
+          "referenceSources": [
+            "ultralib/src/sched/sched.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\sched\\sched\\proof-000240B0-n0-bA10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000242e0",
+              "rom": "0x000242E0",
+              "bytes": 8,
+              "recordedClass": "PURE_C"
+            }
+          ]
+        }
+      ],
+      "nonexactClosureCompanions": [],
+      "exactEntryCount": 33,
+      "exactFunctionBodyBytes": 5280,
+      "newCEntryGoal": 33,
+      "newFunctionBodyBytes": 5280
+    },
+    {
+      "id": "L4",
+      "name": "Audio synthesis and effects",
+      "prerequisite": "F0 capabilities/provenance/owner closure for this wave; existing ASM callees may remain",
+      "exactEntries": [
+        {
+          "rom": "0x0001C9F0",
+          "endExclusive": "0x0001CA94",
+          "bodyBytes": 164,
+          "candidateNames": [
+            "_init_lpfilter"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/drvrnew.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\drvrnew\\proof-0001C9F0-n0-b830-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001c9f0",
+              "rom": "0x0001C9F0",
+              "bytes": 164,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001CA94",
+          "endExclusive": "0x0001CF2C",
+          "bodyBytes": 1176,
+          "candidateNames": [
+            "alFxNew"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/drvrnew.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\drvrnew\\proof-0001C9F0-n0-b830-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001ca94",
+              "rom": "0x0001CA94",
+              "bytes": 1176,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001CF2C",
+          "endExclusive": "0x0001CFE4",
+          "bodyBytes": 184,
+          "candidateNames": [
+            "alEnvmixerNew"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/drvrnew.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\drvrnew\\proof-0001C9F0-n0-b830-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001cf2c",
+              "rom": "0x0001CF2C",
+              "bytes": 184,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001CFE4",
+          "endExclusive": "0x0001D094",
+          "bodyBytes": 176,
+          "candidateNames": [
+            "alLoadNew"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/drvrnew.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\drvrnew\\proof-0001C9F0-n0-b830-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001cfe4",
+              "rom": "0x0001CFE4",
+              "bytes": 176,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001D094",
+          "endExclusive": "0x0001D120",
+          "bodyBytes": 140,
+          "candidateNames": [
+            "alResampleNew"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/drvrnew.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\drvrnew\\proof-0001C9F0-n0-b830-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001d094",
+              "rom": "0x0001D094",
+              "bytes": 140,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001D120",
+          "endExclusive": "0x0001D17C",
+          "bodyBytes": 92,
+          "candidateNames": [
+            "alAuxBusNew"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/drvrnew.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\drvrnew\\proof-0001C9F0-n0-b830-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001d120",
+              "rom": "0x0001D120",
+              "bytes": 92,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001D17C",
+          "endExclusive": "0x0001D1D8",
+          "bodyBytes": 92,
+          "candidateNames": [
+            "alMainBusNew"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/drvrnew.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\drvrnew\\proof-0001C9F0-n0-b830-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001d17c",
+              "rom": "0x0001D17C",
+              "bytes": 92,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001D1D8",
+          "endExclusive": "0x0001D21C",
+          "bodyBytes": 68,
+          "candidateNames": [
+            "alSaveNew"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/drvrnew.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\drvrnew\\proof-0001C9F0-n0-b830-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001d1d8",
+              "rom": "0x0001D1D8",
+              "bytes": 72,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001D220",
+          "endExclusive": "0x0001D664",
+          "bodyBytes": 1092,
+          "candidateNames": [
+            "alAdpcmPull"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/load.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\load\\proof-0001D220-n0-b444-function",
+          "physicalOwners": [
+            {
+              "name": "func_0001d220",
+              "rom": "0x0001D220",
+              "bytes": 1092,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001D664",
+          "endExclusive": "0x0001DA00",
+          "bodyBytes": 924,
+          "candidateNames": [
+            "alRaw16Pull"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/load.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\load\\proof-0001D220-n0-bB10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001d664",
+              "rom": "0x0001D664",
+              "bytes": 924,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001DA00",
+          "endExclusive": "0x0001DBAC",
+          "bodyBytes": 428,
+          "candidateNames": [
+            "alLoadParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/load.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\load\\proof-0001D220-n0-bB10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001da00",
+              "rom": "0x0001DA00",
+              "bytes": 428,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001DBAC",
+          "endExclusive": "0x0001DD24",
+          "bodyBytes": 376,
+          "candidateNames": [
+            "_decodeChunk"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/load.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\load\\proof-0001D220-n0-bB10-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001dbac",
+              "rom": "0x0001DBAC",
+              "bytes": 388,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001DD30",
+          "endExclusive": "0x0001DE0C",
+          "bodyBytes": 220,
+          "candidateNames": [
+            "alAuxBusPull"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/auxbus.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\auxbus\\proof-0001DD30-n0-b110-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001dd30",
+              "rom": "0x0001DD30",
+              "bytes": 220,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001DE0C",
+          "endExclusive": "0x0001DE3C",
+          "bodyBytes": 48,
+          "candidateNames": [
+            "alAuxBusParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/auxbus.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\auxbus\\proof-0001DD30-n0-b110-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001de0c",
+              "rom": "0x0001DE0C",
+              "bytes": 52,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001DE40",
+          "endExclusive": "0x0001E340",
+          "bodyBytes": 1280,
+          "candidateNames": [
+            "alEnvmixerPull"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/env.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\env\\proof-0001DE40-n0-b500-function",
+          "physicalOwners": [
+            {
+              "name": "func_0001de40",
+              "rom": "0x0001DE40",
+              "bytes": 1280,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001E340",
+          "endExclusive": "0x0001E414",
+          "bodyBytes": 212,
+          "candidateNames": [
+            "alEnvmixerParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/env.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\env\\proof-0001DE40-n0-bCB0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001e340",
+              "rom": "0x0001E340",
+              "bytes": 212,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001E414",
+          "endExclusive": "0x0001E6E8",
+          "bodyBytes": 724,
+          "candidateNames": [
+            "_pullSubFrame"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/env.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\env\\proof-0001DE40-n0-bCB0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001e414",
+              "rom": "0x0001E414",
+              "bytes": 724,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001E6E8",
+          "endExclusive": "0x0001E7C8",
+          "bodyBytes": 224,
+          "candidateNames": [
+            "_frexpf"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/env.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\env\\proof-0001DE40-n0-bCB0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001e6e8",
+              "rom": "0x0001E6E8",
+              "bytes": 224,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001E7C8",
+          "endExclusive": "0x0001E7EC",
+          "bodyBytes": 36,
+          "candidateNames": [
+            "_ldexpf"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/env.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\env\\proof-0001DE40-n0-bCB0-whole",
+          "physicalOwners": [
+            {
+              "name": "float_ldexp_d",
+              "rom": "0x0001E7C8",
+              "bytes": 36,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001E7EC",
+          "endExclusive": "0x0001EA6C",
+          "bodyBytes": 640,
+          "candidateNames": [
+            "_getRate"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/env.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\env\\proof-0001DE40-n0-bCB0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001e7ec",
+              "rom": "0x0001E7EC",
+              "bytes": 640,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001EA6C",
+          "endExclusive": "0x0001EAF0",
+          "bodyBytes": 132,
+          "candidateNames": [
+            "_getVol"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/env.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\env\\proof-0001DE40-n0-bCB0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001ea6c",
+              "rom": "0x0001EA6C",
+              "bytes": 132,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001EAF0",
+          "endExclusive": "0x0001EB0C",
+          "bodyBytes": 28,
+          "candidateNames": [
+            "alFilterNew"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/filter.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\filter\\proof-0001EAF0-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001eaf0",
+              "rom": "0x0001EAF0",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001EB10",
+          "endExclusive": "0x0001EC50",
+          "bodyBytes": 320,
+          "candidateNames": [
+            "alMainBusPull"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/mainbus.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\mainbus\\proof-0001EB10-n0-b140-function",
+          "physicalOwners": [
+            {
+              "name": "func_0001eb10",
+              "rom": "0x0001EB10",
+              "bytes": 320,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001EC50",
+          "endExclusive": "0x0001EC80",
+          "bodyBytes": 48,
+          "candidateNames": [
+            "alMainBusParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/mainbus.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\mainbus\\proof-0001EB10-n0-b170-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001ec50",
+              "rom": "0x0001EC50",
+              "bytes": 48,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001EC80",
+          "endExclusive": "0x0001EE6C",
+          "bodyBytes": 492,
+          "candidateNames": [
+            "alResamplePull"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/resample.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\resample\\proof-0001EC80-n0-b1EC-function",
+          "physicalOwners": [
+            {
+              "name": "func_0001ec80",
+              "rom": "0x0001EC80",
+              "bytes": 492,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001EE6C",
+          "endExclusive": "0x0001EF2C",
+          "bodyBytes": 192,
+          "candidateNames": [
+            "alResampleParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/resample.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\resample\\proof-0001EC80-n0-b2B0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001ee6c",
+              "rom": "0x0001EE6C",
+              "bytes": 196,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001EF30",
+          "endExclusive": "0x0001F2A4",
+          "bodyBytes": 884,
+          "candidateNames": [
+            "alFxPull"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/reverb.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\reverb\\proof-0001EF30-n0-b374-function",
+          "physicalOwners": [
+            {
+              "name": "func_0001ef30",
+              "rom": "0x0001EF30",
+              "bytes": 884,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001F2B8",
+          "endExclusive": "0x0001F4A8",
+          "bodyBytes": 496,
+          "candidateNames": [
+            "alFxParamHdl"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/reverb.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\reverb\\proof-0001EF30-n0-bBA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001f2b8",
+              "rom": "0x0001F2B8",
+              "bytes": 496,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001F4A8",
+          "endExclusive": "0x0001F6C0",
+          "bodyBytes": 536,
+          "candidateNames": [
+            "_loadOutputBuffer"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/reverb.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\reverb\\proof-0001EF30-n0-bBA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001f4a8",
+              "rom": "0x0001F4A8",
+              "bytes": 536,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001F6C0",
+          "endExclusive": "0x0001F830",
+          "bodyBytes": 368,
+          "candidateNames": [
+            "_loadBuffer"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/reverb.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\reverb\\proof-0001EF30-n0-bBA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001f6c0",
+              "rom": "0x0001F6C0",
+              "bytes": 368,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001F830",
+          "endExclusive": "0x0001F9A0",
+          "bodyBytes": 368,
+          "candidateNames": [
+            "_saveBuffer"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/reverb.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\reverb\\proof-0001EF30-n0-bBA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001f830",
+              "rom": "0x0001F830",
+              "bytes": 368,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001F9A0",
+          "endExclusive": "0x0001FA3C",
+          "bodyBytes": 156,
+          "candidateNames": [
+            "_filterBuffer"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/reverb.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\reverb\\proof-0001EF30-n0-bBA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001f9a0",
+              "rom": "0x0001F9A0",
+              "bytes": 156,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FA3C",
+          "endExclusive": "0x0001FAC8",
+          "bodyBytes": 140,
+          "candidateNames": [
+            "_doModFunc"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/reverb.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\reverb\\proof-0001EF30-n0-bBA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001fa3c",
+              "rom": "0x0001FA3C",
+              "bytes": 148,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FAD0",
+          "endExclusive": "0x0001FB78",
+          "bodyBytes": 168,
+          "candidateNames": [
+            "alSavePull"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/save.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\save\\proof-0001FAD0-n0-bA8-function",
+          "physicalOwners": [
+            {
+              "name": "func_0001fad0",
+              "rom": "0x0001FAD0",
+              "bytes": 168,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FB78",
+          "endExclusive": "0x0001FBA0",
+          "bodyBytes": 40,
+          "candidateNames": [
+            "alSaveParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/save.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\save\\proof-0001FAD0-n0-bD0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001fb78",
+              "rom": "0x0001FB78",
+              "bytes": 40,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FBA0",
+          "endExclusive": "0x0001FBCC",
+          "bodyBytes": 44,
+          "candidateNames": [
+            "alInit"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/sl.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\sl\\proof-0001FBA0-n0-b2C-function",
+          "physicalOwners": [
+            {
+              "name": "func_0001fba8",
+              "rom": "0x0001FBA0",
+              "bytes": 44,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FBCC",
+          "endExclusive": "0x0001FBFC",
+          "bodyBytes": 48,
+          "candidateNames": [
+            "alClose"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/sl.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\sl\\proof-0001FBA0-n0-bB0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001fbd4",
+              "rom": "0x0001FBCC",
+              "bytes": 48,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FBFC",
+          "endExclusive": "0x0001FC1C",
+          "bodyBytes": 32,
+          "candidateNames": [
+            "alLink"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/sl.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\sl\\proof-0001FBA0-n0-bB0-whole",
+          "physicalOwners": [
+            {
+              "name": "list_insert_head",
+              "rom": "0x0001FBFC",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FC1C",
+          "endExclusive": "0x0001FC4C",
+          "bodyBytes": 48,
+          "candidateNames": [
+            "alUnlink"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/sl.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\sl\\proof-0001FBA0-n0-bB0-whole",
+          "physicalOwners": [
+            {
+              "name": "list_unlink",
+              "rom": "0x0001FC1C",
+              "bytes": 52,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FC50",
+          "endExclusive": "0x0001FC84",
+          "bodyBytes": 52,
+          "candidateNames": [
+            "alHeapInit"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/heapinit.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\heapinit\\proof-0001FC50-n0-b40-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001fc50",
+              "rom": "0x0001FC50",
+              "bytes": 64,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FC90",
+          "endExclusive": "0x0001FCD8",
+          "bodyBytes": 72,
+          "candidateNames": [
+            "alHeapDBAlloc"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/heapalloc.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\heapalloc\\proof-0001FC90-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "bump_alloc",
+              "rom": "0x0001FC90",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FCE0",
+          "endExclusive": "0x0001FD14",
+          "bodyBytes": 52,
+          "candidateNames": [
+            "alCopy"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/copy.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\copy\\proof-0001FCE0-n0-b40-whole",
+          "physicalOwners": [
+            {
+              "name": "mem_byte_copy",
+              "rom": "0x0001FCE0",
+              "bytes": 64,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FD20",
+          "endExclusive": "0x0001FFEC",
+          "bodyBytes": 716,
+          "candidateNames": [
+            "alSynNew"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synthesizer.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synthesizer\\proof-0001FD20-n0-b2CC-function",
+          "physicalOwners": [
+            {
+              "name": "func_0001fd20",
+              "rom": "0x0001FD20",
+              "bytes": 716,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001FFEC",
+          "endExclusive": "0x0002019C",
+          "bodyBytes": 432,
+          "candidateNames": [
+            "alAudioFrame"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synthesizer.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synthesizer\\proof-0001FD20-n0-b640-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001ffec",
+              "rom": "0x0001FFEC",
+              "bytes": 432,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002019C",
+          "endExclusive": "0x000201C8",
+          "bodyBytes": 44,
+          "candidateNames": [
+            "__allocParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synthesizer.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synthesizer\\proof-0001FD20-n0-b640-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002019c",
+              "rom": "0x0002019C",
+              "bytes": 44,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000201E0",
+          "endExclusive": "0x00020234",
+          "bodyBytes": 84,
+          "candidateNames": [
+            "_collectPVoices"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synthesizer.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synthesizer\\proof-0001FD20-n0-b640-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000201e0",
+              "rom": "0x000201E0",
+              "bytes": 84,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020234",
+          "endExclusive": "0x00020274",
+          "bodyBytes": 64,
+          "candidateNames": [
+            "_freePVoice"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synthesizer.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synthesizer\\proof-0001FD20-n0-b640-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020234",
+              "rom": "0x00020234",
+              "bytes": 64,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020308",
+          "endExclusive": "0x0002035C",
+          "bodyBytes": 84,
+          "candidateNames": [
+            "__nextSampleTime"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synthesizer.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synthesizer\\proof-0001FD20-n0-b640-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020308",
+              "rom": "0x00020308",
+              "bytes": 84,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020370",
+          "endExclusive": "0x00020404",
+          "bodyBytes": 148,
+          "candidateNames": [
+            "alSynAllocFX"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synallocfx.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synallocfx\\proof-00020370-n0-bA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020370",
+              "rom": "0x00020370",
+              "bytes": 160,
+              "recordedClass": "ASM"
+            }
+          ]
+        }
+      ],
+      "protectedAcceptedCompanions": [
+        {
+          "rom": "0x0001F2A4",
+          "endExclusive": "0x0001F2B8",
+          "bodyBytes": 20,
+          "candidateNames": [
+            "alFxParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/reverb.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\reverb\\proof-0001EF30-n0-bBA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001f2a4",
+              "rom": "0x0001F2A4",
+              "bytes": 20,
+              "recordedClass": "PURE_C"
+            }
+          ]
+        },
+        {
+          "rom": "0x000201C8",
+          "endExclusive": "0x000201E0",
+          "bodyBytes": 24,
+          "candidateNames": [
+            "__freeParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synthesizer.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synthesizer\\proof-0001FD20-n0-b640-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000201c8",
+              "rom": "0x000201C8",
+              "bytes": 24,
+              "recordedClass": "PURE_C"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020274",
+          "endExclusive": "0x000202BC",
+          "bodyBytes": 72,
+          "candidateNames": [
+            "_timeToSamplesNoRound"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synthesizer.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synthesizer\\proof-0001FD20-n0-b640-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020274",
+              "rom": "0x00020274",
+              "bytes": 72,
+              "recordedClass": "PURE_C"
+            }
+          ]
+        },
+        {
+          "rom": "0x000202BC",
+          "endExclusive": "0x00020308",
+          "bodyBytes": 76,
+          "candidateNames": [
+            "_timeToSamples"
+          ],
+          "referenceSources": [
+            "ultralib/src/audio/synthesizer.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\audio\\synthesizer\\proof-0001FD20-n0-b640-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000202bc",
+              "rom": "0x000202BC",
+              "bytes": 76,
+              "recordedClass": "PURE_C"
+            }
+          ]
+        }
+      ],
+      "nonexactClosureCompanions": [],
+      "exactEntryCount": 49,
+      "exactFunctionBodyBytes": 14584,
+      "newCEntryGoal": 49,
+      "newFunctionBodyBytes": 14584
+    },
+    {
+      "id": "L5",
+      "name": "DMA, device managers, video and SP services",
+      "prerequisite": "F0 capabilities/provenance/owner closure for this wave; existing ASM callees may remain",
+      "exactEntries": [
+        {
+          "rom": "0x0001BCC0",
+          "endExclusive": "0x0001BE50",
+          "bodyBytes": 400,
+          "candidateNames": [
+            "osCreatePiManager"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pimgr.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pimgr\\proof-0001BCC0-n0-b190-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001bcc0",
+              "rom": "0x0001BCC0",
+              "bytes": 400,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001BE50",
+          "endExclusive": "0x0001C03C",
+          "bodyBytes": 492,
+          "candidateNames": [
+            "__osEPiRawStartDma"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/epirawdma.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\epirawdma\\proof-0001BE50-n0-b1F0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001be50",
+              "rom": "0x0001BE50",
+              "bytes": 496,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C040",
+          "endExclusive": "0x0001C0D4",
+          "bodyBytes": 148,
+          "candidateNames": [
+            "osEPiStartDma"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/epidma.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\epidma\\proof-0001C040-n0-bA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001c040",
+              "rom": "0x0001C040",
+              "bytes": 160,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C0E0",
+          "endExclusive": "0x0001C124",
+          "bodyBytes": 68,
+          "candidateNames": [
+            "osEPiLinkHandle"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/epilinkhandle.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\epilinkhandle\\proof-0001C0E0-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001c0e0",
+              "rom": "0x0001C0E0",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C130",
+          "endExclusive": "0x0001C2A8",
+          "bodyBytes": 376,
+          "candidateNames": [
+            "osCartRomInit"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/cartrominit.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\cartrominit\\proof-0001C130-n0-b180-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001c130",
+              "rom": "0x0001C130",
+              "bytes": 384,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C2B0",
+          "endExclusive": "0x0001C668",
+          "bodyBytes": 952,
+          "candidateNames": [
+            "__osDevMgrMain"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/devmgr.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\devmgr\\proof-0001C2B0-n0-b3C0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001c2b0",
+              "rom": "0x0001C2B0",
+              "bytes": 960,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C670",
+          "endExclusive": "0x0001C6C4",
+          "bodyBytes": 84,
+          "candidateNames": [
+            "__osPiCreateAccessQueue",
+            "__osSiCreateAccessQueue"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/piacs.c",
+            "ultralib/src/io/siacs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\piacs\\proof-0001C670-n0-b54-function",
+          "physicalOwners": [
+            {
+              "name": "func_0001c670",
+              "rom": "0x0001C670",
+              "bytes": 84,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C6C4",
+          "endExclusive": "0x0001C730",
+          "bodyBytes": 108,
+          "candidateNames": [
+            "__osPiGetAccess",
+            "__osSiGetAccess"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/piacs.c",
+            "ultralib/src/io/siacs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\piacs\\proof-0001C670-n0-bF0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001c6c4",
+              "rom": "0x0001C6C4",
+              "bytes": 108,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C730",
+          "endExclusive": "0x0001C758",
+          "bodyBytes": 40,
+          "candidateNames": [
+            "__osPiRelAccess",
+            "__osSiRelAccess"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/piacs.c",
+            "ultralib/src/io/siacs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\piacs\\proof-0001C670-n0-bF0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001c730",
+              "rom": "0x0001C730",
+              "bytes": 48,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C760",
+          "endExclusive": "0x0001C808",
+          "bodyBytes": 168,
+          "candidateNames": [
+            "osPiStartDma"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pidma.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pidma\\proof-0001C760-n0-bB0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001c760",
+              "rom": "0x0001C760",
+              "bytes": 176,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C830",
+          "endExclusive": "0x0001C948",
+          "bodyBytes": 280,
+          "candidateNames": [
+            "osAiSetFrequency"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/aisetfreq.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\aisetfreq\\proof-0001C830-n0-b120-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0001c830",
+              "rom": "0x0001C830",
+              "bytes": 288,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0001C950",
+          "endExclusive": "0x0001C9E4",
+          "bodyBytes": 148,
+          "candidateNames": [
+            "osAiSetNextBuffer"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/aisetnextbuf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\aisetnextbuf\\proof-0001C950-n0-bA0-whole",
+          "physicalOwners": [
+            {
+              "name": "ai_set_next_buffer",
+              "rom": "0x0001C950",
+              "bytes": 160,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023E00",
+          "endExclusive": "0x0002400C",
+          "bodyBytes": 524,
+          "candidateNames": [
+            "osSpTaskLoad"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/sptask.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\sptask\\proof-00023E00-n0-b20C-function",
+          "physicalOwners": [
+            {
+              "name": "func_00023e00",
+              "rom": "0x00023E00",
+              "bytes": 524,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002400C",
+          "endExclusive": "0x00024038",
+          "bodyBytes": 44,
+          "candidateNames": [
+            "osSpTaskStartGo"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/sptask.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\sptask\\proof-00023E00-n0-b240-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002400c",
+              "rom": "0x0002400C",
+              "bytes": 52,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024040",
+          "endExclusive": "0x0002405C",
+          "bodyBytes": 28,
+          "candidateNames": [
+            "osSpTaskYield"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/sptaskyield.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\sptaskyield\\proof-00024040-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024040",
+              "rom": "0x00024040",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024060",
+          "endExclusive": "0x000240AC",
+          "bodyBytes": 76,
+          "candidateNames": [
+            "osSpTaskYielded"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/sptaskyielded.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\sptaskyielded\\proof-00024060-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024060",
+              "rom": "0x00024060",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024AC0",
+          "endExclusive": "0x00024B64",
+          "bodyBytes": 164,
+          "candidateNames": [
+            "__osSiRawStartDma"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/sirawdma.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\sirawdma\\proof-00024AC0-n0-bB0-whole",
+          "physicalOwners": [
+            {
+              "name": "osi_raw_start_dma",
+              "rom": "0x00024AC0",
+              "bytes": 176,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024B70",
+          "endExclusive": "0x00024BC4",
+          "bodyBytes": 84,
+          "candidateNames": [
+            "__osPiCreateAccessQueue",
+            "__osSiCreateAccessQueue"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/piacs.c",
+            "ultralib/src/io/siacs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\piacs\\proof-00024B70-n0-b54-function",
+          "physicalOwners": [
+            {
+              "name": "func_00024b70",
+              "rom": "0x00024B70",
+              "bytes": 84,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024BC4",
+          "endExclusive": "0x00024C30",
+          "bodyBytes": 108,
+          "candidateNames": [
+            "__osPiGetAccess",
+            "__osSiGetAccess"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/piacs.c",
+            "ultralib/src/io/siacs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\piacs\\proof-00024B70-n0-bF0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024bc4",
+              "rom": "0x00024BC4",
+              "bytes": 108,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00024C30",
+          "endExclusive": "0x00024C58",
+          "bodyBytes": 40,
+          "candidateNames": [
+            "__osPiRelAccess",
+            "__osSiRelAccess"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/piacs.c",
+            "ultralib/src/io/siacs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\piacs\\proof-00024B70-n0-bF0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00024c30",
+              "rom": "0x00024C30",
+              "bytes": 48,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000255A0",
+          "endExclusive": "0x000255D8",
+          "bodyBytes": 56,
+          "candidateNames": [
+            "osViGetCurrentFramebuffer",
+            "osViGetNextFramebuffer"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/vigetcurrframebuf.c",
+            "ultralib/src/io/vigetnextframebuf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\vigetcurrframebuf\\proof-000255A0-n0-b40-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000255a0",
+              "rom": "0x000255A0",
+              "bytes": 64,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000255E0",
+          "endExclusive": "0x00025618",
+          "bodyBytes": 56,
+          "candidateNames": [
+            "osViGetCurrentFramebuffer",
+            "osViGetNextFramebuffer"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/vigetcurrframebuf.c",
+            "ultralib/src/io/vigetnextframebuf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\vigetcurrframebuf\\proof-000255E0-n0-b40-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000255e0",
+              "rom": "0x000255E0",
+              "bytes": 64,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025620",
+          "endExclusive": "0x000257C0",
+          "bodyBytes": 416,
+          "candidateNames": [
+            "osCreateViManager"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/vimgr.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\vimgr\\proof-00025620-n0-b1A0-function",
+          "physicalOwners": [
+            {
+              "name": "func_00025620",
+              "rom": "0x00025620",
+              "bytes": 416,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000257C0",
+          "endExclusive": "0x00025958",
+          "bodyBytes": 408,
+          "candidateNames": [
+            "viMgrMain"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/vimgr.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\vimgr\\proof-00025620-n0-b340-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000257c0",
+              "rom": "0x000257C0",
+              "bytes": 416,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025960",
+          "endExclusive": "0x000259B8",
+          "bodyBytes": 88,
+          "candidateNames": [
+            "osViSetEvent"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/visetevent.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\visetevent\\proof-00025960-n0-b60-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025960",
+              "rom": "0x00025960",
+              "bytes": 96,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000259C0",
+          "endExclusive": "0x00025A0C",
+          "bodyBytes": 76,
+          "candidateNames": [
+            "osViSetMode"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/visetmode.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\visetmode\\proof-000259C0-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000259c0",
+              "rom": "0x000259C0",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025A10",
+          "endExclusive": "0x00025B74",
+          "bodyBytes": 356,
+          "candidateNames": [
+            "osViSetSpecialFeatures"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/visetspecial.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\visetspecial\\proof-00025A10-n0-b170-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025a10",
+              "rom": "0x00025A10",
+              "bytes": 368,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025B80",
+          "endExclusive": "0x00025BC4",
+          "bodyBytes": 68,
+          "candidateNames": [
+            "osViSetYScale"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/visetyscale.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\visetyscale\\proof-00025B80-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025b80",
+              "rom": "0x00025B80",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025BD0",
+          "endExclusive": "0x00025C14",
+          "bodyBytes": 68,
+          "candidateNames": [
+            "osViSwapBuffer"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/viswapbuf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\viswapbuf\\proof-00025BD0-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025bd0",
+              "rom": "0x00025BD0",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025C20",
+          "endExclusive": "0x00025F28",
+          "bodyBytes": 776,
+          "candidateNames": [
+            "__osViSwapContext"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/viswapcontext.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\viswapcontext\\proof-00025C20-n0-b310-whole",
+          "physicalOwners": [
+            {
+              "name": "os_vi_swap_context",
+              "rom": "0x00025C20",
+              "bytes": 784,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025F30",
+          "endExclusive": "0x00025F8C",
+          "bodyBytes": 92,
+          "candidateNames": [
+            "osViBlack"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/viblack.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\viblack\\proof-00025F30-n0-b60-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00025f30",
+              "rom": "0x00025F30",
+              "bytes": 96,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00029BF0",
+          "endExclusive": "0x00029CC0",
+          "bodyBytes": 208,
+          "candidateNames": [
+            "__osPiRawStartDma"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pirawdma.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pirawdma\\proof-00029BF0-n0-bD0-whole",
+          "physicalOwners": [
+            {
+              "name": "osEPiRawStartDma",
+              "rom": "0x00029BF0",
+              "bytes": 208,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00029CC0",
+          "endExclusive": "0x00029CE0",
+          "bodyBytes": 32,
+          "candidateNames": [
+            "osPiGetCmdQueue"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pigetcmdq.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pigetcmdq\\proof-00029CC0-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00029cc0",
+              "rom": "0x00029CC0",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00029CE0",
+          "endExclusive": "0x00029E48",
+          "bodyBytes": 360,
+          "candidateNames": [
+            "__osEPiRawReadIo"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/epirawread.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\epirawread\\proof-00029CE0-n0-b170-whole",
+          "physicalOwners": [
+            {
+              "name": "osEPiRawReadIo",
+              "rom": "0x00029CE0",
+              "bytes": 368,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00029E50",
+          "endExclusive": "0x00029FB4",
+          "bodyBytes": 356,
+          "candidateNames": [
+            "__osEPiRawWriteIo"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/epirawwrite.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\epirawwrite\\proof-00029E50-n0-b170-whole",
+          "physicalOwners": [
+            {
+              "name": "osEPiRawWriteIo",
+              "rom": "0x00029E50",
+              "bytes": 368,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00029FC0",
+          "endExclusive": "0x00029FD4",
+          "bodyBytes": 20,
+          "candidateNames": [
+            "__osAiDeviceBusy"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/ai.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\ai\\proof-00029FC0-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00029fc0",
+              "rom": "0x00029FC0",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002AA30",
+          "endExclusive": "0x0002AAC8",
+          "bodyBytes": 152,
+          "candidateNames": [
+            "osDpSetNextBuffer"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/dpsetnextbuf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\dpsetnextbuf\\proof-0002AA30-n0-bA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002aa30",
+              "rom": "0x0002AA30",
+              "bytes": 160,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002AB40",
+          "endExclusive": "0x0002AB58",
+          "bodyBytes": 24,
+          "candidateNames": [
+            "__osSpDeviceBusy"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/sp.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\sp\\proof-0002AB40-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "__osSpDeviceBusy",
+              "rom": "0x0002AB40",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002AB70",
+          "endExclusive": "0x0002ABA0",
+          "bodyBytes": 48,
+          "candidateNames": [
+            "__osSpSetPc"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/spsetpc.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\spsetpc\\proof-0002AB70-n0-b30-whole",
+          "physicalOwners": [
+            {
+              "name": "__osSpSetPc",
+              "rom": "0x0002AB70",
+              "bytes": 48,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002ABA0",
+          "endExclusive": "0x0002AC2C",
+          "bodyBytes": 140,
+          "candidateNames": [
+            "__osSpRawStartDma"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/sprawdma.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\sprawdma\\proof-0002ABA0-n0-b90-whole",
+          "physicalOwners": [
+            {
+              "name": "__osSpRawStartDma",
+              "rom": "0x0002ABA0",
+              "bytes": 144,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002AC30",
+          "endExclusive": "0x0002AC7C",
+          "bodyBytes": 76,
+          "candidateNames": [
+            "__osSiRawReadIo",
+            "__osSpRawReadIo"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/sirawread.c",
+            "ultralib/src/io/sprawread.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\sirawread\\proof-0002AC30-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002ac30",
+              "rom": "0x0002AC30",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002AC80",
+          "endExclusive": "0x0002ACC8",
+          "bodyBytes": 72,
+          "candidateNames": [
+            "__osSiRawWriteIo",
+            "__osSpRawWriteIo"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/sirawwrite.c",
+            "ultralib/src/io/sprawwrite.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\sirawwrite\\proof-0002AC80-n0-b50-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002ac80",
+              "rom": "0x0002AC80",
+              "bytes": 80,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002AF50",
+          "endExclusive": "0x0002B054",
+          "bodyBytes": 260,
+          "candidateNames": [
+            "__osViInit"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/vi.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\vi\\proof-0002AF50-n0-b110-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002af50",
+              "rom": "0x0002AF50",
+              "bytes": 272,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002C750",
+          "endExclusive": "0x0002C768",
+          "bodyBytes": 24,
+          "candidateNames": [
+            "__osDpDeviceBusy"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/dp.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\dp\\proof-0002C750-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "read_vi_current_field",
+              "rom": "0x0002C750",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002C770",
+          "endExclusive": "0x0002C788",
+          "bodyBytes": 24,
+          "candidateNames": [
+            "__osSiDeviceBusy"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/si.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\si\\proof-0002C770-n0-b20-whole",
+          "physicalOwners": [
+            {
+              "name": "read_si_status_busy",
+              "rom": "0x0002C770",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        }
+      ],
+      "protectedAcceptedCompanions": [],
+      "nonexactClosureCompanions": [],
+      "exactEntryCount": 45,
+      "exactFunctionBodyBytes": 8588,
+      "newCEntryGoal": 45,
+      "newFunctionBodyBytes": 8588
+    },
+    {
+      "id": "L6",
+      "name": "Controllers, controller paks and CRC",
+      "prerequisite": "F0 capabilities/provenance/owner closure for this wave; existing ASM callees may remain",
+      "exactEntries": [
+        {
+          "rom": "0x000205F0",
+          "endExclusive": "0x00020670",
+          "bodyBytes": 128,
+          "candidateNames": [
+            "osContStartQuery"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contquery.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contquery\\proof-000205F0-n0-b80-function",
+          "physicalOwners": [
+            {
+              "name": "func_000205f0",
+              "rom": "0x000205F0",
+              "bytes": 128,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020670",
+          "endExclusive": "0x00020690",
+          "bodyBytes": 32,
+          "candidateNames": [
+            "osContGetQuery"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contquery.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contquery\\proof-000205F0-n0-bA0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020670",
+              "rom": "0x00020670",
+              "bytes": 32,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020690",
+          "endExclusive": "0x00020718",
+          "bodyBytes": 136,
+          "candidateNames": [
+            "osContStartReadData"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contreaddata.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contreaddata\\proof-00020690-n0-b1E0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020690",
+              "rom": "0x00020690",
+              "bytes": 136,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020718",
+          "endExclusive": "0x000207B4",
+          "bodyBytes": 156,
+          "candidateNames": [
+            "osContGetReadData"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contreaddata.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contreaddata\\proof-00020690-n0-b1E0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020718",
+              "rom": "0x00020718",
+              "bytes": 156,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000207B4",
+          "endExclusive": "0x0002086C",
+          "bodyBytes": 184,
+          "candidateNames": [
+            "__osPackReadData"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contreaddata.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contreaddata\\proof-00020690-n0-b1E0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000207b4",
+              "rom": "0x000207B4",
+              "bytes": 188,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020870",
+          "endExclusive": "0x00020A0C",
+          "bodyBytes": 412,
+          "candidateNames": [
+            "osContInit"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/controller.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\controller\\proof-00020870-n0-b19C-function",
+          "physicalOwners": [
+            {
+              "name": "func_00020870",
+              "rom": "0x00020870",
+              "bytes": 412,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020A0C",
+          "endExclusive": "0x00020AC0",
+          "bodyBytes": 180,
+          "candidateNames": [
+            "__osContGetInitData"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/controller.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\controller\\proof-00020870-n0-b310-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020a0c",
+              "rom": "0x00020A0C",
+              "bytes": 180,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00020AC0",
+          "endExclusive": "0x00020B7C",
+          "bodyBytes": 188,
+          "candidateNames": [
+            "__osPackRequestData"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/controller.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\controller\\proof-00020870-n0-b310-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00020ac0",
+              "rom": "0x00020AC0",
+              "bytes": 192,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00025F90",
+          "endExclusive": "0x0002629C",
+          "bodyBytes": 780,
+          "candidateNames": [
+            "osPfsAllocateFile"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsallocatefile.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsallocatefile\\proof-00025F90-n0-b30C-function",
+          "physicalOwners": [
+            {
+              "name": "func_00025f90",
+              "rom": "0x00025F90",
+              "bytes": 780,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002629C",
+          "endExclusive": "0x000263B4",
+          "bodyBytes": 280,
+          "candidateNames": [
+            "__osPfsDeclearPage"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsallocatefile.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsallocatefile\\proof-00025F90-n0-b430-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002629c",
+              "rom": "0x0002629C",
+              "bytes": 292,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000263C0",
+          "endExclusive": "0x0002656C",
+          "bodyBytes": 428,
+          "candidateNames": [
+            "osPfsDeleteFile"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsdeletefile.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsdeletefile\\proof-000263C0-n0-b1AC-function",
+          "physicalOwners": [
+            {
+              "name": "func_000263c0",
+              "rom": "0x000263C0",
+              "bytes": 428,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002656C",
+          "endExclusive": "0x000265D4",
+          "bodyBytes": 104,
+          "candidateNames": [
+            "__osPfsReleasePages"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsdeletefile.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsdeletefile\\proof-000263C0-n0-b220-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002656c",
+              "rom": "0x0002656C",
+              "bytes": 116,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000265E0",
+          "endExclusive": "0x00026A20",
+          "bodyBytes": 1088,
+          "candidateNames": [
+            "osPfsReadWriteFile"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsreadwritefile.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsreadwritefile\\proof-000265E0-n0-b440-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000265e0",
+              "rom": "0x000265E0",
+              "bytes": 1088,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00026A20",
+          "endExclusive": "0x00026BB4",
+          "bodyBytes": 404,
+          "candidateNames": [
+            "osPfsFileState"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsfilestate.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsfilestate\\proof-00026A20-n0-b1A0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00026a20",
+              "rom": "0x00026A20",
+              "bytes": 416,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00026BC0",
+          "endExclusive": "0x00026D78",
+          "bodyBytes": 440,
+          "candidateNames": [
+            "osPfsFindFile"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfssearchfile.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfssearchfile\\proof-00026BC0-n0-b1C0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00026bc0",
+              "rom": "0x00026BC0",
+              "bytes": 448,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00026D80",
+          "endExclusive": "0x00026E8C",
+          "bodyBytes": 268,
+          "candidateNames": [
+            "osPfsFreeBlocks"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsfreeblocks.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsfreeblocks\\proof-00026D80-n0-b110-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00026d80",
+              "rom": "0x00026D80",
+              "bytes": 272,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00026E90",
+          "endExclusive": "0x00026F90",
+          "bodyBytes": 256,
+          "candidateNames": [
+            "osPfsNumFiles"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsnumfiles.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsnumfiles\\proof-00026E90-n0-b100-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00026e90",
+              "rom": "0x00026E90",
+              "bytes": 256,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00026F90",
+          "endExclusive": "0x00027188",
+          "bodyBytes": 504,
+          "candidateNames": [
+            "osPfsInitPak"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsinitpak.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsinitpak\\proof-00026F90-n0-b1F8-function",
+          "physicalOwners": [
+            {
+              "name": "func_00026f90",
+              "rom": "0x00026F90",
+              "bytes": 504,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00027188",
+          "endExclusive": "0x00027254",
+          "bodyBytes": 204,
+          "candidateNames": [
+            "__osPfsCheckRamArea"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsinitpak.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsinitpak\\proof-00026F90-n0-b2D0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00027188",
+              "rom": "0x00027188",
+              "bytes": 216,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00027260",
+          "endExclusive": "0x000272B8",
+          "bodyBytes": 88,
+          "candidateNames": [
+            "osPfsRepairId"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsrepairid.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsrepairid\\proof-00027260-n0-b60-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00027260",
+              "rom": "0x00027260",
+              "bytes": 96,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000272C0",
+          "endExclusive": "0x000273B0",
+          "bodyBytes": 240,
+          "candidateNames": [
+            "__osPfsGetStatus"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsgetstatus.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsgetstatus\\proof-000272C0-n0-b210-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000272c0",
+              "rom": "0x000272C0",
+              "bytes": 240,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000273B0",
+          "endExclusive": "0x00027444",
+          "bodyBytes": 148,
+          "candidateNames": [
+            "__osPfsRequestOneChannel"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsgetstatus.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsgetstatus\\proof-000272C0-n0-b210-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000273b0",
+              "rom": "0x000273B0",
+              "bytes": 148,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00027444",
+          "endExclusive": "0x000274C4",
+          "bodyBytes": 128,
+          "candidateNames": [
+            "__osPfsGetOneChannelData"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsgetstatus.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsgetstatus\\proof-000272C0-n0-b210-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00027444",
+              "rom": "0x00027444",
+              "bytes": 140,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000274D0",
+          "endExclusive": "0x00027534",
+          "bodyBytes": 100,
+          "candidateNames": [
+            "__osPfsSelectBank"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsselectbank.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsselectbank\\proof-000274D0-n0-b70-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000274d0",
+              "rom": "0x000274D0",
+              "bytes": 112,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00027540",
+          "endExclusive": "0x00027574",
+          "bodyBytes": 52,
+          "candidateNames": [
+            "__osSumcalc"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contpfs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contpfs\\proof-00027540-n0-b34-function",
+          "physicalOwners": [
+            {
+              "name": "func_00027540",
+              "rom": "0x00027540",
+              "bytes": 52,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00027574",
+          "endExclusive": "0x000275B8",
+          "bodyBytes": 68,
+          "candidateNames": [
+            "__osIdCheckSum"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contpfs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contpfs\\proof-00027540-n0-bA90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00027574",
+              "rom": "0x00027574",
+              "bytes": 68,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000275B8",
+          "endExclusive": "0x000278A4",
+          "bodyBytes": 748,
+          "candidateNames": [
+            "__osRepairPackId"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contpfs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contpfs\\proof-00027540-n0-bA90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000275b8",
+              "rom": "0x000275B8",
+              "bytes": 748,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000278A4",
+          "endExclusive": "0x00027A08",
+          "bodyBytes": 356,
+          "candidateNames": [
+            "__osCheckPackId"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contpfs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contpfs\\proof-00027540-n0-bA90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000278a4",
+              "rom": "0x000278A4",
+              "bytes": 356,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00027A08",
+          "endExclusive": "0x00027BD4",
+          "bodyBytes": 460,
+          "candidateNames": [
+            "__osGetId"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contpfs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contpfs\\proof-00027540-n0-bA90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00027a08",
+              "rom": "0x00027A08",
+              "bytes": 460,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00027BD4",
+          "endExclusive": "0x00027C8C",
+          "bodyBytes": 184,
+          "candidateNames": [
+            "__osCheckId"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contpfs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contpfs\\proof-00027540-n0-bA90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00027bd4",
+              "rom": "0x00027BD4",
+              "bytes": 184,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00027C8C",
+          "endExclusive": "0x00027FC4",
+          "bodyBytes": 824,
+          "candidateNames": [
+            "__osPfsRWInode"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contpfs.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contpfs\\proof-00027540-n0-bA90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00027c8c",
+              "rom": "0x00027C8C",
+              "bytes": 836,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00027FD0",
+          "endExclusive": "0x000281B8",
+          "bodyBytes": 488,
+          "candidateNames": [
+            "__osContRamRead"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contramread.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contramread\\proof-00027FD0-n0-b1F0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00027fd0",
+              "rom": "0x00027FD0",
+              "bytes": 496,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000281C0",
+          "endExclusive": "0x000283C4",
+          "bodyBytes": 516,
+          "candidateNames": [
+            "__osContRamWrite"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/contramwrite.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\contramwrite\\proof-000281C0-n0-b210-whole",
+          "physicalOwners": [
+            {
+              "name": "func_000281c0",
+              "rom": "0x000281C0",
+              "bytes": 516,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002ACD0",
+          "endExclusive": "0x0002AD3C",
+          "bodyBytes": 108,
+          "candidateNames": [
+            "__osContAddressCrc"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/crc.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\crc\\proof-0002ACD0-n0-b6C-function",
+          "physicalOwners": [
+            {
+              "name": "func_0002acd0",
+              "rom": "0x0002ACD0",
+              "bytes": 108,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002AD3C",
+          "endExclusive": "0x0002ADB8",
+          "bodyBytes": 124,
+          "candidateNames": [
+            "__osContDataCrc"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/crc.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\crc\\proof-0002ACD0-n0-bF0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002ad3c",
+              "rom": "0x0002AD3C",
+              "bytes": 132,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002B070",
+          "endExclusive": "0x0002B4D0",
+          "bodyBytes": 1120,
+          "candidateNames": [
+            "osPfsChecker"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfschecker.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfschecker\\proof-0002B070-n0-b460-function",
+          "physicalOwners": [
+            {
+              "name": "func_0002b070",
+              "rom": "0x0002B070",
+              "bytes": 1120,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002B4D0",
+          "endExclusive": "0x0002B628",
+          "bodyBytes": 344,
+          "candidateNames": [
+            "corrupted_init"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfschecker.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfschecker\\proof-0002B070-n0-b720-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002b4d0",
+              "rom": "0x0002B4D0",
+              "bytes": 344,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002B628",
+          "endExclusive": "0x0002B790",
+          "bodyBytes": 360,
+          "candidateNames": [
+            "corrupted"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfschecker.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfschecker\\proof-0002B070-n0-b720-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002b628",
+              "rom": "0x0002B628",
+              "bytes": 360,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002B790",
+          "endExclusive": "0x0002B90C",
+          "bodyBytes": 380,
+          "candidateNames": [
+            "osPfsIsPlug"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsisplug.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsisplug\\proof-0002B790-n0-b17C-function",
+          "physicalOwners": [
+            {
+              "name": "func_0002b790",
+              "rom": "0x0002B790",
+              "bytes": 380,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002B90C",
+          "endExclusive": "0x0002B9B0",
+          "bodyBytes": 164,
+          "candidateNames": [
+            "__osPfsRequestData"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsisplug.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsisplug\\proof-0002B790-n0-b2E0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002b90c",
+              "rom": "0x0002B90C",
+              "bytes": 164,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002B9B0",
+          "endExclusive": "0x0002BA64",
+          "bodyBytes": 180,
+          "candidateNames": [
+            "__osPfsGetInitData"
+          ],
+          "referenceSources": [
+            "ultralib/src/io/pfsisplug.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\io\\pfsisplug\\proof-0002B790-n0-b2E0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002b9b0",
+              "rom": "0x0002B9B0",
+              "bytes": 192,
+              "recordedClass": "ASM"
+            }
+          ]
+        }
+      ],
+      "protectedAcceptedCompanions": [],
+      "nonexactClosureCompanions": [],
+      "exactEntryCount": 41,
+      "exactFunctionBodyBytes": 13352,
+      "newCEntryGoal": 41,
+      "newFunctionBodyBytes": 13352
+    },
+    {
+      "id": "L7",
+      "name": "Formatting, C runtime and initialization closure",
+      "prerequisite": "F0 capabilities/provenance/owner closure for this wave; existing ASM callees may remain",
+      "exactEntries": [
+        {
+          "rom": "0x00023820",
+          "endExclusive": "0x00023860",
+          "bodyBytes": 64,
+          "candidateNames": [
+            "strchr"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/string.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX\\src\\libc\\string\\proof-00023820-n0-b40-function",
+          "physicalOwners": [
+            {
+              "name": "strchr",
+              "rom": "0x00023820",
+              "bytes": 64,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023884",
+          "endExclusive": "0x000238AC",
+          "bodyBytes": 40,
+          "candidateNames": [
+            "memcpy"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/string.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX\\src\\libc\\string\\proof-00023820-n0-b90-whole",
+          "physicalOwners": [
+            {
+              "name": "memcpy_00023884",
+              "rom": "0x00023884",
+              "bytes": 44,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x000238B0",
+          "endExclusive": "0x00023908",
+          "bodyBytes": 88,
+          "candidateNames": [
+            "sprintf"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/sprintf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\libc\\sprintf\\proof-000238B0-n0-b58-function",
+          "physicalOwners": [
+            {
+              "name": "sprintf",
+              "rom": "0x000238B0",
+              "bytes": 88,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023908",
+          "endExclusive": "0x0002393C",
+          "bodyBytes": 52,
+          "candidateNames": [
+            "proutSprintf"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/sprintf.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\libc\\sprintf\\proof-000238B0-n0-b90-whole",
+          "physicalOwners": [
+            {
+              "name": "mempcpy",
+              "rom": "0x00023908",
+              "bytes": 56,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023940",
+          "endExclusive": "0x00023954",
+          "bodyBytes": 20,
+          "candidateNames": [
+            "osSyncPrintf"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/syncprintf.c"
+          ],
+          "researchProfiles": [
+            "J"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\libc\\syncprintf\\proof-00023940-n0-b30-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00023940",
+              "rom": "0x00023940",
+              "bytes": 20,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00023954",
+          "endExclusive": "0x00023968",
+          "bodyBytes": 20,
+          "candidateNames": [
+            "rmonPrintf"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/syncprintf.c"
+          ],
+          "researchProfiles": [
+            "J"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\libc\\syncprintf\\proof-00023940-n0-b30-whole",
+          "physicalOwners": [
+            {
+              "name": "func_00023954",
+              "rom": "0x00023954",
+              "bytes": 28,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x00028680",
+          "endExclusive": "0x00028738",
+          "bodyBytes": 184,
+          "candidateNames": [
+            "__createSpeedParam"
+          ],
+          "referenceSources": [
+            "ultralib/src/os/initialize.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX-unsigned\\src\\os\\initialize\\proof-00028680-n0-bB8-function",
+          "physicalOwners": [
+            {
+              "name": "read_pi_registers",
+              "rom": "0x00028680",
+              "bytes": 192,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002A560",
+          "endExclusive": "0x0002AA30",
+          "bodyBytes": 1232,
+          "candidateNames": [
+            "_Putfld"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/xprintf.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX\\src\\libc\\xprintf\\proof-0002A560-n580-b4D0-function",
+          "physicalOwners": [
+            {
+              "name": "func_0002a560",
+              "rom": "0x0002A560",
+              "bytes": 1232,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002BA70",
+          "endExclusive": "0x0002BCC0",
+          "bodyBytes": 592,
+          "candidateNames": [
+            "_Litob"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/xlitob.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX\\src\\libc\\xlitob\\proof-0002BA70-n0-b250-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002ba70",
+              "rom": "0x0002BA70",
+              "bytes": 592,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002BCC0",
+          "endExclusive": "0x0002C10C",
+          "bodyBytes": 1100,
+          "candidateNames": [
+            "_Ldtob"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/xldtob.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX\\src\\libc\\xldtob\\proof-0002BCC0-n0-b44C-function",
+          "physicalOwners": [
+            {
+              "name": "func_0002bcc0",
+              "rom": "0x0002BCC0",
+              "bytes": 1100,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002C10C",
+          "endExclusive": "0x0002C1A4",
+          "bodyBytes": 152,
+          "candidateNames": [
+            "_Ldunscale"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/xldtob.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX\\src\\libc\\xldtob\\proof-0002BCC0-n0-bA90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002c10c",
+              "rom": "0x0002C10C",
+              "bytes": 152,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002C1A4",
+          "endExclusive": "0x0002C74C",
+          "bodyBytes": 1448,
+          "candidateNames": [
+            "_Genld"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/xldtob.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX\\src\\libc\\xldtob\\proof-0002BCC0-n0-bA90-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002c1a4",
+              "rom": "0x0002C1A4",
+              "bytes": 1452,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002C790",
+          "endExclusive": "0x0002C814",
+          "bodyBytes": 132,
+          "candidateNames": [
+            "ldiv"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/ldiv.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\libc\\ldiv\\proof-0002C790-n0-b1C0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002c790",
+              "rom": "0x0002C790",
+              "bytes": 132,
+              "recordedClass": "ASM"
+            }
+          ]
+        },
+        {
+          "rom": "0x0002C814",
+          "endExclusive": "0x0002C948",
+          "bodyBytes": 308,
+          "candidateNames": [
+            "lldiv"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/ldiv.c"
+          ],
+          "researchProfiles": [
+            "J",
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\J-F3DEX\\src\\libc\\ldiv\\proof-0002C790-n0-b1C0-whole",
+          "physicalOwners": [
+            {
+              "name": "func_0002c814",
+              "rom": "0x0002C814",
+              "bytes": 316,
+              "recordedClass": "ASM"
+            }
+          ]
+        }
+      ],
+      "protectedAcceptedCompanions": [
+        {
+          "rom": "0x00023860",
+          "endExclusive": "0x00023884",
+          "bodyBytes": 36,
+          "candidateNames": [
+            "strlen"
+          ],
+          "referenceSources": [
+            "ultralib/src/libc/string.c"
+          ],
+          "researchProfiles": [
+            "K",
+            "L"
+          ],
+          "witnessDirectory": "expanded\\objects\\K-F3DEX\\src\\libc\\string\\proof-00023820-n0-b90-whole",
+          "physicalOwners": [
+            {
+              "name": "strlen",
+              "rom": "0x00023860",
+              "bytes": 36,
+              "recordedClass": "PURE_C"
+            }
+          ]
+        }
+      ],
+      "nonexactClosureCompanions": [
+        {
+          "rom": "0x00028450",
+          "bodyBytes": 560,
+          "candidateName": "osInitialize",
+          "physicalOwner": "func_00028450",
+          "reason": "Complete initialization source family with __createSpeedParam; WatchLo insertion relative to J remains nonexact.",
+          "expectedFinalClass": "PURE_C",
+          "researchExact": false
+        },
+        {
+          "rom": "0x00029FE0",
+          "bodyBytes": 1408,
+          "candidateName": "_Printf",
+          "physicalOwner": "_Printf",
+          "reason": "Complete printf producer with exact _Putfld; compiler/source residue remains nonexact.",
+          "expectedFinalClass": "PURE_C",
+          "researchExact": false
+        }
+      ],
+      "exactEntryCount": 14,
+      "exactFunctionBodyBytes": 5432,
+      "newCEntryGoal": 16,
+      "newFunctionBodyBytes": 7400
+    }
+  ],
+  "retainedASM": [
+    {
+      "rom": "0x0001BC20",
+      "bytes": 160,
+      "names": [
+        "osSetIntMask"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/setintmask.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00020410",
+      "bytes": 176,
+      "names": [
+        "osInvalDCache"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/invaldcache.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x000204C0",
+      "bytes": 128,
+      "names": [
+        "osInvalICache"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/invalicache.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00020540",
+      "bytes": 128,
+      "names": [
+        "osWritebackDCache"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/writebackdcache.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x000205C0",
+      "bytes": 48,
+      "names": [
+        "osWritebackDCacheAll"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/writebackdcacheall.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00023350",
+      "bytes": 272,
+      "names": [
+        "bcmp"
+      ],
+      "referenceSources": [
+        "ultralib/src/libc/bcmp.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00023460",
+      "bytes": 800,
+      "names": [
+        "bcopy"
+      ],
+      "referenceSources": [
+        "ultralib/src/libc/bcopy.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00023780",
+      "bytes": 160,
+      "names": [
+        "bzero"
+      ],
+      "referenceSources": [
+        "ultralib/src/libc/bzero.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x000254E0",
+      "bytes": 192,
+      "names": [
+        "__osProbeTLB"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/probetlb.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00028BE0",
+      "bytes": 96,
+      "names": [
+        "guMtxIdent"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/mtxident.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00028C40",
+      "bytes": 96,
+      "names": [
+        "guMtxIdentF"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/mtxidentf.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00028CA0",
+      "bytes": 128,
+      "names": [
+        "guMtxF2L"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/mtxf2l.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00028D20",
+      "bytes": 128,
+      "names": [
+        "guMtxL2F"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/mtxl2f.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00028DA0",
+      "bytes": 256,
+      "names": [
+        "guMtxCatF"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/mtxcatf.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00028EA0",
+      "bytes": 192,
+      "names": [
+        "guScale"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/scale.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00028F60",
+      "bytes": 96,
+      "names": [
+        "guScaleF"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/scalef.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00028FC0",
+      "bytes": 96,
+      "names": [
+        "guNormalize"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/normalize.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00029020",
+      "bytes": 224,
+      "names": [
+        "guTranslate"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/translate.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00029100",
+      "bytes": 96,
+      "names": [
+        "guTranslateF"
+      ],
+      "referenceSources": [
+        "ultralib/src/mgu/translatef.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00029160",
+      "bytes": 16,
+      "names": [
+        "__osExceptionPreamble"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/exceptasm.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00029170",
+      "bytes": 1404,
+      "names": [
+        "__osException"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/exceptasm.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x000296EC",
+      "bytes": 188,
+      "names": [
+        "send_mesg"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/exceptasm.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x000297A8",
+      "bytes": 52,
+      "names": [
+        "handle_CpU"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/exceptasm.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x000297DC",
+      "bytes": 264,
+      "names": [
+        "__osEnqueueAndYield"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/exceptasm.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x000298E4",
+      "bytes": 72,
+      "names": [
+        "__osEnqueueThread"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/exceptasm.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002992C",
+      "bytes": 16,
+      "names": [
+        "__osPopThread"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/exceptasm.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002993C",
+      "bytes": 380,
+      "names": [
+        "__osDispatchThread"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/exceptasm.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00029AB8",
+      "bytes": 24,
+      "names": [
+        "__osCleanupThread"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/exceptasm.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00029AD0",
+      "bytes": 112,
+      "names": [
+        "__osDisableInt"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/interrupt.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x00029B40",
+      "bytes": 32,
+      "names": [
+        "__osRestoreInt"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/interrupt.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002AAD0",
+      "bytes": 16,
+      "names": [
+        "os-getcause"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/getcause.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002AAE0",
+      "bytes": 16,
+      "names": [
+        "os-getcount"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/getcount.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002AAF0",
+      "bytes": 16,
+      "names": [
+        "os-getsr"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/getsr.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002AB00",
+      "bytes": 16,
+      "names": [
+        "os-setcompare"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/setcompare.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002AB10",
+      "bytes": 16,
+      "names": [
+        "os-setfpccsr"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/setfpccsr.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002AB20",
+      "bytes": 16,
+      "names": [
+        "os-setsr"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/setsr.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002AB30",
+      "bytes": 16,
+      "names": [
+        "os-setwatchlo"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/setwatchlo.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002AEA0",
+      "bytes": 96,
+      "names": [
+        "osMapTLBRdb"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/maptlbrdb.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002AF00",
+      "bytes": 80,
+      "names": [
+        "osUnmapTLBAll"
+      ],
+      "referenceSources": [
+        "ultralib/src/os/unmaptlball.s"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002DA80",
+      "bytes": 512,
+      "names": [
+        "__muldi3"
+      ],
+      "referenceSources": [
+        "libkmc/lib/mmuldi3.o"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002DC80",
+      "bytes": 176,
+      "names": [
+        "__divdi3"
+      ],
+      "referenceSources": [
+        "libkmc/lib/mmuldi3.o"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002DD30",
+      "bytes": 192,
+      "names": [
+        "__moddi3"
+      ],
+      "referenceSources": [
+        "libkmc/lib/mmuldi3.o"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002DDF0",
+      "bytes": 32,
+      "names": [
+        "__udivdi3"
+      ],
+      "referenceSources": [
+        "libkmc/lib/mmuldi3.o"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    },
+    {
+      "rom": "0x0002DE10",
+      "bytes": 64,
+      "names": [
+        "__umoddi3"
+      ],
+      "referenceSources": [
+        "libkmc/lib/mmuldi3.o"
+      ],
+      "disposition": "Keep existing accepted assembly; no PURE_C conversion assigned"
+    }
+  ],
+  "knownStructuralConflicts": [
+    {
+      "romStart": 124872,
+      "romEndExclusive": 124908,
+      "sectionName": ".ob64.r0476",
+      "exactOverlapBytes": 36
+    },
+    {
+      "romStart": 130044,
+      "romEndExclusive": 130076,
+      "sectionName": ".ob64.r0496",
+      "exactOverlapBytes": 32
+    },
+    {
+      "romStart": 130076,
+      "romEndExclusive": 130128,
+      "sectionName": ".ob64.r0497",
+      "exactOverlapBytes": 52
+    },
+    {
+      "romStart": 148048,
+      "romEndExclusive": 148192,
+      "sectionName": ".ob64.r0566",
+      "exactOverlapBytes": 144
+    },
+    {
+      "romStart": 164804,
+      "romEndExclusive": 164912,
+      "sectionName": ".ob64.r0631",
+      "exactOverlapBytes": 12
+    },
+    {
+      "romStart": 167872,
+      "romEndExclusive": 167968,
+      "sectionName": ".ob64.r0647",
+      "exactOverlapBytes": 96
+    }
+  ],
+  "excluded": [
+    "Existing accepted LHa adaptation14272B",
+    "IPL3",
+    "RSP microcode and external runtime modifications",
+    "Remaining unclassified library candidates",
+    "Other completed/cutscene programs"
+  ]
+}

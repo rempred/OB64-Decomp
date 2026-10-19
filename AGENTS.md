@@ -52,7 +52,8 @@ program history, lane history, promotion history, or archived research chronolog
 
 ### 1. Normal matching work
 
-New matching-source workers use Sol 6.1 Extra High (`gpt-6.1-sol`, reasoning `xhigh`).
+Matching-source workers run in top-level Codex threads using Sol 6.1 Extra High
+(`gpt-6.1-sol`, reasoning `xhigh`). Subagents are for bounded research, tooling and review.
 After a worker's complete assigned wave passes normal acceptance, the Director starts its next
 wave with a fresh worker and fresh conversation, preserving useful knowledge and releasing the
 outgoing worker's ownership first. Maintain two matching workers on disjoint complete waves
@@ -78,7 +79,7 @@ under the agreement, audit and review requirements below.
 Never use scheduled tasks or heartbeat automations for this program. Use the existing
 native thread watcher scripts for event-driven continuity. After accepted consultation setup,
 this decomp program uses native Codex collaboration/thread messaging, not Agent Mail.
-Every assigned internal worker, including tooling, research and review helpers, needs
+Every assigned top-level source worker and internal tooling, research or review helper needs
 its own verified native thread stop/attention route and tested native message route to
 the exact current Director thread. A completion recorded in chat history alone is not
 proof that an idle Director will wake. Verify actual delivery, preserve retry/deduplication state, and register
@@ -98,8 +99,8 @@ decisions and confirm their wakeup routes. A production drain does not suspend t
 tooling/review handoff needed to release it. See the operational checklist in
 [Director event continuity](docs/WORKFLOW.md#director-event-continuity).
 
-Use internal agents unless Joe assigns a top-level worker. Preserve Joe's assigned top-level role
-on resumption and replacement; this default does not authorize converting it into a subagent.
+Preserve the source worker's top-level role on resumption and replacement; do not convert
+a matching assignment into a subagent task.
 Top-level candidate workers report to and are monitored by the Director; do not place them
 under the production writer or send that writer routine progress messages. Work on `main`
 with one production source/build writer.

@@ -2,6 +2,21 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Standard-library program complete — October 17
+
+The assigned [library program](Plans/standard-library-program-draft/PROGRAM.md) is complete.
+All seven complete waves passed their applicable acceptance gates; the final combined
+state is recorded at `17e07534`. The [final L6 verification record](audit/2026-10-17-library-l6.md)
+binds the exact-ROM, source-policy, recorded reconstruction and independent fresh-compilation evidence.
+Generated status remains authoritative for changing repository-wide counts.
+
+All library source ownership is released and its native watcher routes are retired.
+There is no active assignment in this program. The [Director cursor](Plans/cursors/director.md)
+records closure. Grouped research export remains a documented optional tooling limitation,
+with its source evidence preserved; it is not unfinished matching or an assigned follow-on.
+The cutscene program remains a draft. No new work, branch/worktree, push, cleanup,
+scheduled task or Agent Mail is authorized by this completion.
+
 ## Tonight's matching advice (October 7–8, Joe's request)
 
 The Director includes the four tips below in every new matching worker's initial
@@ -22,7 +37,7 @@ tomorrow using the existing experiment records.
 
 ## Current independent waves (Joe's direction, 2026-10-03 local)
 
-**October 14 current continuation:** Astra accepted complete Q4 and its reviewed retained-edge admission at CURRENT `09BEE16B`: PURE_C 224 plus original RX ASM 12/full 236, six relocations, original interfaces, fresh source proof and exact full retail ROM. Its [final handoff](../build/matching/s3-scenario-261014/q4-integration/final-handoff.md) binds reports and process closure. Q4 and its helpers are released and retired. Complete S1 is accepted/recorded `8d32de0b`, Q3 `3c2d0e57`; all prior waves and coupled data remain protected. Top-level S3 `01a138c9-6939-7d91-b064-d323f5643465` owns the complete ten-member requester wave and sole production role. Fresh top-level Q6 `01a138fe-0c30-71e1-9648-0fbb5d02e2ba` is active privately on complete DDB4, preserving its body/tail/table and conditional producer study. Native integration drain is released; unchanged-input Git/docs recording does not hold either worker. The [current roster](Plans/remaining-program-scope-20261011.md) preserves every remaining gate. Released workers stay stopped. No push or scope expansion is authorized.
+**October 15 program complete:** Astra accepted the final complete Q6 DDB4 wave at `main` commit `5c6ab254bdc020b12eb7ebe080eb906870daa146`, CURRENT `DA39A6C8`. The [structural audit record](audit/2026-10-15-q6-retained-edge-table.md) and [final proof](../build/matching/q6-ddb4-261014/installation/final-proof.json) establish `PURE_C`, sole C ownership, actual relocation and table equality, independent fresh compilation and exact retail ROM. The original four-byte ASM suffix remains separately owned; D450/D484 remain unconverted conditional evidence. All earlier accepted waves are preserved. Q6 and its tooling helper are accepted and all ownership is released; retired workers remain stopped. There is no next matching assignment in this program. Joe explicitly keeps the [cutscene program](Plans/cutscene-program-draft/PROGRAM.md) as a draft; do not dispatch V1 or expand scope without his direction. Nothing was pushed. The [Director cursor](Plans/cursors/director.md) records closure and retained evidence.
 
 **Historical scheduling below is reference only; the current continuation and Director cursor supersede its worker/queue states.**
 

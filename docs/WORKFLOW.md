@@ -452,6 +452,10 @@ same reliable continuation coverage as top-level source workers.
    its turn so the stop/attention monitor is a fallback. A failed send is reported through
    the other verified native route and the saved handoff; it is not a reason to wait silently. The Director
    checks the monitored stop against actual cursor/process state and reads its handoff.
+   A ready implementation or review package is actionable even when other assigned work
+   remains. If collaboration delivery alone cannot wake the idle Director and the stop
+   watcher is the verified wakeup route, end immediately after that handoff before starting
+   another patch. The Director dispatches review and resumes independent work promptly.
 4. Before yielding an autonomous coordination turn, handle received completions and
    decisions, or name their concrete owner/dependency/release condition. Confirm every
    still-assigned helper has a live route. Do not infer that all work should be idle from
@@ -675,7 +679,7 @@ checkpoint receipts, frozen accepted trees, or separate review packages.
 
 ### 8. Start the next wave with a fresh worker
 
-Maintain two matching workers on disjoint complete waves from the existing assigned program,
+Maintain two top-level matching workers on disjoint complete waves from the existing assigned program,
 with one production writer and private candidate ownership for the other. The Director owns
 finding the next complete dependency-ready assignment whenever a slot opens; do that work
 immediately, using an explicitly assigned retrieval helper when useful. An unrelated unfinished
@@ -686,8 +690,9 @@ second assignment is genuinely blocked, record the exact dependency, owner and r
 in the existing cursor; do not manufacture activity or expand the program to fill a slot.
 
 After normal acceptance of the complete assigned wave, the Director starts a fresh matching
-worker using `gpt-6.1-sol` with reasoning `xhigh`. Retain the current top-level/private-worker
-arrangement and single production writer. Do not fork the outgoing conversation's full history.
+top-level worker using `gpt-6.1-sol` with reasoning `xhigh`. Preserve one production writer
+and the other worker's private candidate ownership. Use subagents for bounded research,
+tooling and review. Do not fork the outgoing conversation's full history.
 Release its source/private-root ownership before reuse, stop its retired watchers, and attach
 the replacement's own native message and stop monitoring without copying delivery state. A private
 candidate packet alone is not wave acceptance; coordinate its normal production integration
