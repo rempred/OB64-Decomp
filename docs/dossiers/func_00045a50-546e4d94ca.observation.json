@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "546E4D94CA7B43E9A6169E91015B76CEC881BAC89954EFB2DBDC161A7B9FA792",
+  "observationId": "58371D9F7730A414DE498B37F6014C7FA5E8CE92E2BE158A085BA941DF30E1FF",
+  "symbol": "func_00045a50",
+  "authored": {
+    "context": "The complete four-slot spellbook selector uses narrow item-ID parameters, three ordered early returns and a final conditional result. Numeric-address controls retain a common table base and an eight-byte frame. Existing source and linkage already declare D_8018C410 as a byte array with 32-byte stride.",
+    "effects": [
+      "address-construction",
+      "stack-frame",
+      "relocation-bearing-data-reference"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DA8888C43287C03471FF410B8E32A6FCA5C11D7ACF0B2C450302EC3CBA9A648D",
+      "sourceSha256": "45D5B4CD062209ED491B9A4BFCD5D719D37BFCBEB7CBE256B77AE8D7DEA0A33A"
+    },
+    "label": "registered-table-symbol-removes-base-reuse-and-frame",
+    "observedEffect": "The symbol form is frameless and emits the complete 144-byte retail sequence apart from its four HI16/LO16 data-reference pairs and three internal R_MIPS_26 operands. A probe of the numeric control shows first CSE merging the initial per-slot base constants. Address spelling, inline byte access and tail-return controls did not remove its frame; a reset-pointer intermediate removed base reuse but retained the frame.",
+    "parentCandidateId": "E45C85F2B755255A5EE8657B1CAA15D2AEA40C5D3FCE4077831AABAF2ECC4B8F",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-26-func_00045a50-e45c85f2b7.c",
+        "sha256": "9CE651E0EDB8A347C26A7D802E9A5462DAEA77A5A3042144EEBB3A9DBF19813C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00045a50.s",
+        "sha256": "3C6297A4145D89DE51F6145A824602F85061B19A5FD698ED0A9386B894BB15F1"
+      },
+      {
+        "path": "src/lib/func_0019B1B0.c",
+        "sha256": "92A165FC649997ECAFE341347F4E9E778B84532FC6D692269D99EA05412BA1FD"
+      },
+      {
+        "path": "src/lib/func_0019B800.c",
+        "sha256": "CC4406C209DA7310DD2E78741025F1B883C901B706ECBB6645E55378AB6F96BA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private evidence is symbolic-object only for this inactive ASM owner. Canonical linking must establish the existing symbol binding, exact target bytes and relocation contract, followed by whole-wave verification. The experiment does not establish original source spelling.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace the numeric table address expressions with the existing D_8018C410[item][0] declaration; preserve the tests, slot order and return structure."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 431,
+      "sha256": "DA8888C43287C03471FF410B8E32A6FCA5C11D7ACF0B2C450302EC3CBA9A648D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "45D5B4CD062209ED491B9A4BFCD5D719D37BFCBEB7CBE256B77AE8D7DEA0A33A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-26-func_00045a50-546e4d94ca.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

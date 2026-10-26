@@ -4415,6 +4415,18 @@
     {
       "symbol": "func_0002b9b0",
       "compilationGroup": "library_l6_pfsisplug"
+    },
+    {
+      "symbol": "func_000458f0",
+      "source": "src/lib/func_000458f0.c"
+    },
+    {
+      "symbol": "func_00045934",
+      "source": "src/lib/func_00045934.c"
+    },
+    {
+      "symbol": "func_00045a50",
+      "source": "src/lib/func_00045a50.c"
     }
   ]
 }

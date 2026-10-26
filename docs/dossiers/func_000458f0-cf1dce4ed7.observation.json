@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CF1DCE4ED716C7F780866E0E13A94B1E6493A1B9156765091D1ADF636BC4E28E",
+  "observationId": "B4E5EEFC9F53B96DDF96CCFCD09952D2857053A40F357B4E846572A22E8B8857",
+  "symbol": "func_000458f0",
+  "authored": {
+    "context": "One complete 68-byte leaf owner, numeric byte-table access, pinned KMC GCC 2.7.2 production flags. The control source returns one combined logical expression.",
+    "effects": [
+      "branch-structure",
+      "text-extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "22B6BEE10AB994B8735C707620924DA3AC727B67E01F40CE37D1D0A466340561",
+      "sourceSha256": "F54E30CFA92D900798E0CFBEA6333F00D4F6D75234FB3675780F5FDBC5B4AA32"
+    },
+    "label": "explicit-returns-restore-classifier-branch-chain",
+    "observedEffect": "The control emits 52 bytes; the explicit-return form emits the full 68-byte retail branch sequence. Its only raw difference is the internal R_MIPS_26 jump operand at offset 0x30.",
+    "parentCandidateId": "5711AB45D5EAB75942678A6239ADE1B7D4BA594314E46293434E6458CF75641C",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-26-func_000458f0-5711ab45d5.c",
+        "sha256": "C97362A0142B7B80D1884EC290252B7EB62626901DBB09CE626E7C12F5F22765"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000458f0.s",
+        "sha256": "F4FF6F6418DA876FC3C1A5725A042C29F3B2A925387E4E0633E51A38AD60BFF3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The inactive ASM owner has no private linked diagnostic or expected relocation identity. Canonical linked and complete-wave acceptance are still required at observation time.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace the combined logical return with separate returns for nonzero types below 14 and type 24, followed by zero fallback."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 273,
+      "sha256": "22B6BEE10AB994B8735C707620924DA3AC727B67E01F40CE37D1D0A466340561"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F54E30CFA92D900798E0CFBEA6333F00D4F6D75234FB3675780F5FDBC5B4AA32"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-26-func_000458f0-cf1dce4ed7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
