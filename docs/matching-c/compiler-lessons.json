@@ -184,12 +184,14 @@
         "constant-or-immediate-construction",
         "opcode-or-expression"
       ],
-      "applicability": "In D14C, direct member indexing equals the local-address form and avoids a shared-cursor copy. Separate comparison-operand pairs change quotient/remainder allocation and reciprocal scheduling. The comparison cases retain artificial filter references and require replay without them; the indexing controls use a clean nonmatching context. Preserve real layout, operands, consumers and ordering. These distinct source pairs establish neither original C nor a universal allocation recipe.",
+      "applicability": "In accepted 42e64, one signed index for record/saved arrays repairs the register swap left by explicit cursors (9E3E9E99 vs 2FB666E6). D14C indexing avoids a shared-cursor copy; comparison-operand pairs alter quotient/remainder allocation and scheduling. Those comparison cases retain artificial filter references and need replay without them. Preserve actual layout, operands, consumers and order. These source pairs do not prove original C or a universal allocation rule.",
       "note": "docs/dossiers/func_0022D14C-8ea0dea85a.md#source-context",
       "references": [
         "docs/dossiers/func_0022D14C-31a3b1c0ac.md",
         "docs/dossiers/func_0022D14C-7cb96be950.md",
-        "docs/dossiers/func_0022D14C-b1139cbd5d.md"
+        "docs/dossiers/func_0022D14C-b1139cbd5d.md",
+        "docs/dossiers/func_00042e64-9e3e9e99a9.md",
+        "docs/dossiers/func_00042e64-2fb666e621.md"
       ],
       "observations": [
         {
@@ -201,8 +203,8 @@
           "path": "docs/dossiers/func_0022D14C-8ea0dea85a.observation.json"
         },
         {
-          "symbol": "func_0022D14C",
-          "path": "docs/dossiers/func_0022D14C-7cb96be950.observation.json"
+          "symbol": "func_00042e64",
+          "path": "docs/dossiers/func_00042e64-9e3e9e99a9.observation.json"
         }
       ]
     },
@@ -369,12 +371,13 @@
     {
       "id": "aggregate-stack-counterexample",
       "symptoms": ["stack-layout-or-offset-family"],
-      "applicability": "Check ABI entry stores before inferring locals. KMC legacy ellipsis/next-argument traversal preserves pre-frame stores; an extra cursor word skips an argument despite unchanged extent. In the command dispatcher, an early first-word local moves the root load behind frame setup and adds four bytes; direct lookup restores its 28-byte prefix and 652-byte owner. Preserve real consumption. These source-context pairs and the nonmatching aggregate example are leads; final wave proof remains separate.",
+      "applicability": "Check ABI entry stores before inferring locals; preserve real argument consumption. Dispatcher first-word locals disturb its prefix. D2 50918's 16-byte cursor carrier plus nonnegative-first store reproduces the 56-byte frame and bltzl; the scalar-cursor control has a 48-byte frame and bgezl. Read both source contexts: carrier bytes are uninterpreted, not recovered parser fields, and simultaneous changes do not isolate one cause. Final wave proof remains separate.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#stack-layout-and-aggregate-locals",
-      "references": ["docs/dossiers/func-0006d7d8.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-b09cfeade4.md", "docs/Plans/task-logs/sol-resource-cleanup-dispatch-wave-20261005.md", "docs/dossiers/boot_command_stream_dispatch-3b698b0d4a.md", "docs/dossiers/boot_command_stream_dispatch-f396a978e7.md"],
+      "references": ["docs/dossiers/func-0006d7d8.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.md", "docs/dossiers/boot_command_stream_resource_node_dispatch-b09cfeade4.md", "docs/Plans/task-logs/sol-resource-cleanup-dispatch-wave-20261005.md", "docs/dossiers/func_00050918-3919bb35d7.md", "docs/dossiers/func_00050918-d8b253a9c5.md"],
       "observations": [
         {"symbol": "boot_command_stream_resource_node_dispatch", "path": "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.observation.json"},
-        {"symbol": "boot_command_stream_resource_node_dispatch", "path": "docs/dossiers/boot_command_stream_resource_node_dispatch-b09cfeade4.observation.json"}
+        {"symbol": "boot_command_stream_resource_node_dispatch", "path": "docs/dossiers/boot_command_stream_resource_node_dispatch-b09cfeade4.observation.json"},
+        {"symbol": "func_00050918", "path": "docs/dossiers/func_00050918-3919bb35d7.observation.json"}
       ]
     },
     {

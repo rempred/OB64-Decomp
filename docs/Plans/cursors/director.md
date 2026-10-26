@@ -1,47 +1,55 @@
-# Director / Astra — equipment selection E1 COMPLETE
+# Director / Astra — descriptor serialization closed
 
-The [complete E1 wave](../equipment-selection-decomp-plan.md) is accepted and closed
-on October 26, 2026. Source commit `a3a8a4a325cc1a37078c7daf6d6100b078022f24` on main
-contains exactly the 16 assigned source/config/cursor/research files. No push.
-No active worker, pending decision, drain or next wave remains. The cutscene program
-stays a draft; do not restart retired workers or expand the program.
+[Program](../descriptor-serialization-program.md) accepted under the explicitly
+revised outcome on October 26. Both complete waves are committed on main and
+ownership is released. No active worker/helper or pending approval remains.
+Encoder PURE_C conversion and unknown-tail semantics remain unresolved; any future
+work needs a fresh assignment. Cutscenes remain draft. Nothing was pushed.
 
-## Acceptance and retained evidence
+## Accepted outcome
 
-All three assigned functions, owners 946–948 and 496 bytes, pass PURE_C, sole C
-ownership, placement, actual relocations, linked bytes, full-ROM equality and
-independent fresh compilation. Their canonical diffs and the one whole-wave verifier
-pass. No unchanged build/verifier was repeated for Director intake.
+D2: `5eb22b4d`, both record converters PURE_C. D1: `f7c5091e`, four PURE_C
+wrappers and encoder HYBRID_C exact. Encoder receives zero matching-C credit.
+All assigned physical owners remain whole; original ASM is retained as reference.
+Encoder keeps its original sixteen bytes without a new logical/semantic claim;
+43000 uses reviewed schema2 native alignment. No tool/pin/guard/header change.
 
-Proof: `build/accepted-builds/equipment-e1/`. Director rehashed all 16,865 core archive
-files with zero mismatches, compared current canonical inputs with accepted snapshots,
-checked the three final policy/fresh-compilation entries and source commit scope.
-Build-report SHA256 `89CC273310357EE157A586AE2B2F4953DD4EDD83E3C938FCECDB7EC51DE08D4B`;
-ROM `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
-`completion.json`, `archive-copy.json` and `director-acceptance.json` retain details.
-Useful classifier and table-symbol source pairs are linked by the existing compiler
-lesson index; its unchanged schema/limits pass loader validation.
+Combined CURRENT `88F9BA72`; complete Rev0 ROM SHA:
+`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+D1 structural/adversarial audit, canonical verification and independent fresh
+compilation passed at 18:20:50 UTC. Exact target bytes, sole owners and all 112
+relocations passed; no compiler-assembly rewrite. Independent admission review
+conditions were verified before acceptance. See
+[the audit record](../../audit/2026-10-26-descriptor-d1-integration.md).
 
-## Cleanup and restored tools
+Ignored local Phase5A default was corrected from stale L3 to authenticated existing
+L4 after every semantic identity pin matched. Initial failure evidence is archived;
+no structural product or semantic pin changed.
 
-Both E1 scratch roots are absent: `build/matching/equip-e1` and
-`C:/Users/Joe/.codex/ob64-equip-e1`. Removed 4,066,369,390 bytes; retained core archive
-808,969,350 bytes. No-follow censuses and protected-file comparisons passed. Director
-independently rechecked the pinned tools and normalized ROM after cleanup; the worker's
-post-cleanup Binutils/word-assembly smoke tests passed. Both restored bundles are real
-directories. Use pinned `.toolchains/node-v24.13.1-win-x64/node.exe` for future native
-work. Recovery evidence remains under `build/setup-recovery-20261025/`.
+## Proof and cleanup
 
-## Released ownership and retired route
+`build/accepted-builds/descriptor-d1/completion.json` SHA `FA710A53` records closeout.
+Director independently rehashed all 34,049 archive files (875,198,648 bytes),
+fourteen tool/ROM identities, seven live/archive reports, supplemental cleanup
+proof, live ROM and shared database: zero mismatches. Earlier D2 archive was also
+independently rehashed in full. Selected source pairs and lessons are preserved.
 
-Top-level Sol worker `01a175d4-d085-72e2-aa79-2234e756ec63`, **Sol — equipment selection E1**,
-is complete and idle. Its native final handoff and stop alert reached Director
-`01a1284c-9b2b-7561-8a81-36ca34387ef8`. Route
-`C:/Users/Joe/.local/share/codex-thread-monitors/equipment-e1-top-to-director/` retired
-through its stop flag; PID 12724 exited, status stopped, no pending/error. Preserve
-its retry/dedup history. The bounded watcher reviewer is complete.
+D1 safe cleanup freed 5,513,299,838 bytes. Its private root, exact owned snapshots,
+comparison runs and obsolete cache generations are absent. Whole live CURRENT,
+fresh proof and baseline remain. Shared history/database, E1/D2/library archives,
+tools, ROMs and editor are protected. Post-cleanup assembler/binutils smoke checks pass.
 
-Muse Wonder Full/xhigh session `0b07eba3-4030-4764-984b-1d48040a0bcb` remains preserved,
-with consultation evidence in the accepted archive. No Agent Mail or scheduled tasks.
-Earlier game/library programs remain closed; protect the prior library accepted archive
-and unrelated native-rebuild/editor worktree. No second wave is authorized.
+## Retired ownership and routes
+
+D1 `01a1784a-f78c-7d53-8554-ca053e278092` completed and explicitly released ownership.
+D2 `01a1784a-edbb-70f0-aad7-3c0244ad242f` remains retired. Never resume either worker.
+Their native routes are under
+`C:/Users/Joe/.local/share/codex-thread-monitors/descriptor-d1-top-to-director`
+and sibling `descriptor-d2-top-to-director`; stop flags preserve retry/dedup state.
+D1 final stop alert reached this Director; both watchers report stopped, and D1's
+PID24972 exited. Retry/dedup state is preserved with no pending delivery/error.
+All internal reviewers are complete. No scheduled tasks or Agent Mail.
+
+Muse D1 lifetime UUID `f6f49ba0-ab52-4434-9f63-ea240b7fee52` is retained with
+subscription consultation provenance. No consultant or native operation is pending.
+These coordination records close the revised program; no new wave is authorized.

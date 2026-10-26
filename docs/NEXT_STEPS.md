@@ -2,6 +2,21 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Descriptor and record serialization — revised program complete October 26
+
+Joe authorized the [family program](Plans/descriptor-serialization-program.md).
+D2 is accepted, committed as `5eb22b4d`, cleaned and retired. D1's complete
+five-owner integration passed structural audit, fresh compilation and full-ROM
+verification at CURRENT `88F9BA72`. Astra accepted the revised result: four
+PURE_C wrappers and one HYBRID_C exact encoder. The encoder earns no matching-C
+credit; its pure-C objective and unknown sixteen-byte tail remain unresolved.
+No new tooling, logical-body claim or weakened guard was introduced. D1 is
+committed at `f7c5091e`, its complete proof archive was independently rehashed,
+and safe cleanup removed 5.13 GiB. Both workers released ownership and are retired.
+Live CURRENT/fresh/baseline and earlier accepted evidence remain protected. No push
+or follow-on wave is assigned; future encoder PURE_C work needs a fresh assignment.
+Current ownership and precise scope are in the [Director cursor](Plans/cursors/director.md).
+
 ## Equipment selection E1 — complete October 26
 
 The [complete E1 wave](Plans/equipment-selection-decomp-plan.md) is accepted on main
@@ -9,7 +24,8 @@ at `a3a8a4a3`: all assigned functions are PURE_C and the complete ROM is exact.
 Final proof is preserved in `build/accepted-builds/equipment-e1`; both E1 scratch
 roots were removed and protected tools/evidence checked unchanged. The worker and
 native route are retired. The [Director cursor](Plans/cursors/director.md) records
-closure. No next wave or push is assigned; the cutscene program remains a draft.
+closure. The descriptor family is separately authorized above. No push is assigned;
+the cutscene program remains a draft.
 ## Standard-library program complete — October 17
 
 The assigned [library program](Plans/standard-library-program-draft/PROGRAM.md) is complete.
