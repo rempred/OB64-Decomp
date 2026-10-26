@@ -4427,6 +4427,14 @@
     {
       "symbol": "func_00045a50",
       "source": "src/lib/func_00045a50.c"
+    },
+    {
+      "symbol": "func_00050918",
+      "source": "src/lib/func_00050918.c"
+    },
+    {
+      "symbol": "func_000509f4",
+      "source": "src/lib/func_000509f4.c"
     }
   ]
 }
