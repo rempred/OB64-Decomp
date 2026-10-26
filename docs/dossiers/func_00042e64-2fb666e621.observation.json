@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2FB666E6215AA8EC7E258CBD4655FACF99B88D1D160581EEBD1CC75FC4BC30FD",
+  "observationId": "90CA7D1006B2354A6055E810FBDD9311593F862503996BE9EB0D4633633052E4",
+  "symbol": "func_00042e64",
+  "authored": {
+    "context": "The descriptor wrapper saves and restores one hundred sixteen-byte prefixes from fifty-six-byte records. This historical private candidate used separate record and saved-pointer cursors.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9CF1294C543C2170701CCE49FEB37AAB19D57405F1ED477EE53A6E4308334BFE",
+      "sourceSha256": "C65336F23B3B1041D4B3AD00B492B9CFBDB82D253BF290CE6F30B8E17A22BBFA"
+    },
+    "label": "explicit-loop-pointer-updates",
+    "observedEffect": "The recorded private comparison emitted the complete 260-byte body with no opcode, stack-offset or extent differences, but nine register-field differences remained among twenty-three differing aligned instructions. The first loop exchanged the record and saved-cursor registers relative to retail.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00042e64.s",
+        "sha256": "E1AF6225F2D754DE121B33D9C4A1284569ADFFDFD97B8661829E28EB1CCEDA31"
+      },
+      {
+        "path": "docs/audit/2026-10-26-descriptor-d1-integration.md",
+        "sha256": "8E98EBE55336882FBD07D6CD80E02CAB110071C3370141E35765F7513B36479C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This source was not the accepted match. Its historical symbolic-object comparison did not establish exact linked addresses or full-ROM acceptance. The indexed successor repaired the remaining register allocation.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Put the first loop's pointer advances in the for update and keep pointer side effects outside the copy, transform and release calls."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1234,
+      "sha256": "9CF1294C543C2170701CCE49FEB37AAB19D57405F1ED477EE53A6E4308334BFE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C65336F23B3B1041D4B3AD00B492B9CFBDB82D253BF290CE6F30B8E17A22BBFA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-26-func_00042e64-2fb666e621.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

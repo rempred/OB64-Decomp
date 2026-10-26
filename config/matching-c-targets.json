@@ -4435,6 +4435,26 @@
     {
       "symbol": "func_000509f4",
       "source": "src/lib/func_000509f4.c"
+    },
+    {
+      "symbol": "boot_bitstream_descriptor_encode",
+      "source": "src/boot/boot_bitstream_descriptor_encode.c"
+    },
+    {
+      "symbol": "func_00042dc4",
+      "source": "src/lib/func_00042dc4.c"
+    },
+    {
+      "symbol": "func_00042e64",
+      "source": "src/lib/func_00042e64.c"
+    },
+    {
+      "symbol": "func_00042f68",
+      "source": "src/lib/func_00042f68.c"
+    },
+    {
+      "symbol": "func_00043000",
+      "source": "src/lib/func_00043000.c"
     }
   ]
 }
