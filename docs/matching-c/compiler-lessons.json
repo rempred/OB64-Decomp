@@ -380,12 +380,12 @@
     {
       "id": "conditional-expression-shape",
       "symptoms": ["branch-polarity", "load-store-width-or-signedness", "opcode-or-expression"],
-      "applicability": "Use evidenced widths and real control paths together. BC8C retains a repeated guard through first CSE; moving its byte clear restores the delay shape. Q5 narrows the actual accumulator to u16 and uses default-first average selection, restoring the signed quotient copy and full580-byte match. The wide default-first control omits the copy; narrow ternary restores it but remains588 bytes. Read exact source pairs; these outcomes do not prove original C or universal compiler behavior.",
+      "applicability": "Use evidenced widths and real control paths. E1 458F0's separate ordered returns restore the complete 68-byte branch sequence; the combined boolean control emits 52 bytes. BC8C retains a repeated guard through CSE; moving its clear restores the delay shape. Q5's narrow accumulator and default-first selection restore the quotient copy; wide and ternary controls differ. Read the source pairs; these effects do not identify original C or a universal rule.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#conditionals-and-control-flow-shape",
-      "references": ["docs/dossiers/func-000135a0.md", "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.md", "docs/dossiers/boot_resource_record_resolve_load-ec8f738aab.md", "docs/dossiers/func_0012FBB8-3f52fef7ce.md", "docs/dossiers/func_0012FBB8-e035a7f118.md", "docs/dossiers/func_0012FBB8-3a1a7ffcec.md"],
+      "references": ["docs/dossiers/func_000458f0-cf1dce4ed7.md", "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.md", "docs/dossiers/boot_resource_record_resolve_load-ec8f738aab.md", "docs/dossiers/func_0012FBB8-3f52fef7ce.md", "docs/dossiers/func_0012FBB8-e035a7f118.md", "docs/dossiers/func_0012FBB8-3a1a7ffcec.md"],
       "observations": [
         {"symbol": "boot_resource_record_resolve_load", "path": "docs/dossiers/boot_resource_record_resolve_load-9cea8ddc48.observation.json"},
-        {"symbol": "boot_resource_record_resolve_load", "path": "docs/dossiers/boot_resource_record_resolve_load-ec8f738aab.observation.json"},
+        {"symbol": "func_000458f0", "path": "docs/dossiers/func_000458f0-cf1dce4ed7.observation.json"},
         {"symbol": "func_0012FBB8", "path": "docs/dossiers/func_0012FBB8-3f52fef7ce.observation.json"}
       ]
     },
@@ -411,11 +411,11 @@
     {
       "id": "symbol-address-construction",
       "symptoms": ["constant-or-immediate-construction", "register-allocation", "stack-layout-or-offset-family"],
-      "applicability": "Evidenced symbols can change address reuse. 2215D0's real-phase word form changes reference priority; D14C's direct-callee form preserves native bytes. The historical 4D634 source example shows distinct cache/DMA declarations changing call-crossing address reuse; its pre-Q7 config is archived. Read source pairs and qualified observations. Preserve actual addresses, values and signatures; no invented symbols or universal allocation rule. Current whole-wave acceptance is separate.",
+      "applicability": "Evidenced symbols can change address reuse. E1 45A50's existing D_8018C410[][32] symbol removes numeric-base reuse and the unwanted frame; numeric and reset-pointer controls differ. 2215D0's real-phase word form changes reference priority; D14C preserves native bytes. Historical 4D634 has archived pre-Q7 context. Read source pairs; preserve actual addresses, values and signatures. Never invent symbols or assume a universal allocation rule. Whole-wave acceptance is separate.",
       "note": "docs/KMC_GCC_MATCHING_NOTES.md#evidence-backed-symbols-instead-of-numeric-pointers",
-      "references": ["docs/dossiers/func_0002def4-ef1d77993b.md", "docs/dossiers/func_0002def4-d0e15208f4.md", "docs/dossiers/func_0004d634-308b580d67.md", "docs/dossiers/func_002215D0-233d92db9b.md", "docs/dossiers/func_002215D0-d685d8db29.md", "docs/dossiers/func_0022D14C-b30d1b5dd4.md"],
+      "references": ["docs/dossiers/func_00045a50-546e4d94ca.md", "docs/dossiers/func_0002def4-d0e15208f4.md", "docs/dossiers/func_0004d634-308b580d67.md", "docs/dossiers/func_002215D0-233d92db9b.md", "docs/dossiers/func_002215D0-d685d8db29.md", "docs/dossiers/func_0022D14C-b30d1b5dd4.md"],
       "observations": [
-        {"symbol": "func_0004d634", "path": "docs/dossiers/func_0004d634-308b580d67.observation.json"},
+        {"symbol": "func_00045a50", "path": "docs/dossiers/func_00045a50-546e4d94ca.observation.json"},
         {"symbol": "func_002215D0", "path": "docs/dossiers/func_002215D0-233d92db9b.observation.json"},
         {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-b30d1b5dd4.observation.json"}
       ]

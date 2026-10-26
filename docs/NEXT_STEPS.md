@@ -2,6 +2,14 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Equipment selection E1 — complete October 26
+
+The [complete E1 wave](Plans/equipment-selection-decomp-plan.md) is accepted on main
+at `a3a8a4a3`: all assigned functions are PURE_C and the complete ROM is exact.
+Final proof is preserved in `build/accepted-builds/equipment-e1`; both E1 scratch
+roots were removed and protected tools/evidence checked unchanged. The worker and
+native route are retired. The [Director cursor](Plans/cursors/director.md) records
+closure. No next wave or push is assigned; the cutscene program remains a draft.
 ## Standard-library program complete — October 17
 
 The assigned [library program](Plans/standard-library-program-draft/PROGRAM.md) is complete.

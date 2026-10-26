@@ -313,6 +313,18 @@ Record the completed wave on `main`; verify changed combined integration inputs.
 No Highway, Lane, Lease, Checkpoint, frozen-tree, promotion-receipt, or handoff protocol is
 required.
 
+## Safe cleanup of scratch and worktrees
+
+Before recursive deletion or `git worktree remove`, inspect the approved root, its
+ancestors and every descendant without traversing reparse points. A root-only check
+is insufficient. Junctions, symlinks and mount points are references, never disposable
+contents; their targets do not inherit cleanup authorization. Do not give a subtree
+containing such links to a recursive remover. Detach only the link with a verified
+nonrecursive operation, or stop that cleanup. Protect shared `.toolchains`, configured
+compiler/runtime roots, ROM inputs and accepted evidence wherever links reach them.
+Authenticate affected shared tools before and after cleanup, preserve required source
+and proof, and follow [the cleanup procedure](docs/WORKFLOW.md#safe-filesystem-cleanup).
+
 ## Clean-Room Boundary
 
 Keep the existing clean-room separation from external personal/unlicensed decomp source.

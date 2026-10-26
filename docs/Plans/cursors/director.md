@@ -1,25 +1,47 @@
-# Director / Astra — standard-library program COMPLETE
+# Director / Astra — equipment selection E1 COMPLETE
 
-The assigned program is complete and accepted on October 17, 2026. There are no active workers, pending decisions, native drains or further waves. Do not resume completed workers or start the separate cutscene draft.
+The [complete E1 wave](../equipment-selection-decomp-plan.md) is accepted and closed
+on October 26, 2026. Source commit `a3a8a4a325cc1a37078c7daf6d6100b078022f24` on main
+contains exactly the 16 assigned source/config/cursor/research files. No push.
+No active worker, pending decision, drain or next wave remains. The cutscene program
+stays a draft; do not restart retired workers or expand the program.
 
-## Final acceptance
+## Acceptance and retained evidence
 
-Final source commit: `17e07534b545d4c4d5c246961b4e71e1dd164627` on main, parent `5862cfaaf11155ae6076aee368c34187a5bb0a74`. [Program](../standard-library-program-draft/PROGRAM.md), [fixed membership](../standard-library-program-draft/scope.json), [final verification note](../../audit/2026-10-17-library-l6.md).
+All three assigned functions, owners 946–948 and 496 bytes, pass PURE_C, sole C
+ownership, placement, actual relocations, linked bytes, full-ROM equality and
+independent fresh compilation. Their canonical diffs and the one whole-wave verifier
+pass. No unchanged build/verifier was repeated for Director intake.
 
-Director reconciled all seven waves against the final canonical report: all 212 assigned new function entries and six protected companions are PURE_C and byte-exact in their complete C producers. The two L3 interior entries at ROM 0x2474C and 0x24D30 are authenticated compiler function entries inside their accepted physical owners, not missing targets. Source-level names and broad semantic conclusions remain separate from matching acceptance.
+Proof: `build/accepted-builds/equipment-e1/`. Director rehashed all 16,865 core archive
+files with zero mismatches, compared current canonical inputs with accepted snapshots,
+checked the three final policy/fresh-compilation entries and source commit scope.
+Build-report SHA256 `89CC273310357EE157A586AE2B2F4953DD4EDD83E3C938FCECDB7EC51DE08D4B`;
+ROM `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+`completion.json`, `archive-copy.json` and `director-acceptance.json` retain details.
+Useful classifier and table-symbol source pairs are linked by the existing compiler
+lesson index; its unchanged schema/limits pass loader validation.
 
-Final L6 covers all 41 entries, 20 producers and 13,352 logical body bytes. Completion `build/matching/lib-l6-261016/l6-integration/completion.json` hash 65C14303 binds its evidence. Director authenticated the 89-path commit scope, 24 canonical input hashes, 41 raw source/capture blobs, all producer objects, prior critical outputs, final reports and actual full-ROM hash. All canonical gates and independent fresh compilation passed. No verifier repeat was needed.
+## Cleanup and restored tools
 
-CURRENT `171A02BF4899C1E710A9F6EFE56B8C6110AFAA04171E953E1A2CB27535A3434A`; baseline E33F571D; recorded 8745BEC0; fresh 7E638AF7; build 9C0CB2DE; retail ROM 571E8339. Saved source policy E0482C37 is authoritative for that run. Final status regenerated only its generatedAt timestamp; Director compared every other field equal. Generated final status reports 1,057 PURE_C functions, 45 HYBRID_C, 5,066 remaining assembly owners, UNKNOWN zero and retail EXACT. The ROM as a whole is not fully decompiled.
+Both E1 scratch roots are absent: `build/matching/equip-e1` and
+`C:/Users/Joe/.codex/ob64-equip-e1`. Removed 4,066,369,390 bytes; retained core archive
+808,969,350 bytes. No-follow censuses and protected-file comparisons passed. Director
+independently rechecked the pinned tools and normalized ROM after cleanup; the worker's
+post-cleanup Binutils/word-assembly smoke tests passed. Both restored bundles are real
+directories. Use pinned `.toolchains/node-v24.13.1-win-x64/node.exe` for future native
+work. Recovery evidence remains under `build/setup-recovery-20261025/`.
 
-## Released ownership
+## Released ownership and retired route
 
-Final L6 worker `01a145ab-1869-7bd2-ae07-f4784b3a4fcf` is accepted and released. Its native route library-l6-top-to-director, PID 146252, stopped with process absent and no pending/error. L7 route 40644 and all prior assigned source/tooling/review routes remain retired. Preserve their cursors, native retry/dedup histories, sources and evidence. SilentCrane/Muse remain unchanged.
+Top-level Sol worker `01a175d4-d085-72e2-aa79-2234e756ec63`, **Sol — equipment selection E1**,
+is complete and idle. Its native final handoff and stop alert reached Director
+`01a1284c-9b2b-7561-8a81-36ca34387ef8`. Route
+`C:/Users/Joe/.local/share/codex-thread-monitors/equipment-e1-top-to-director/` retired
+through its stop flag; PID 12724 exited, status stopped, no pending/error. Preserve
+its retry/dedup history. The bounded watcher reviewer is complete.
 
-Claude lifetime 95107f19-f749-4de9-9eec-bff5c51e39a2 remains ready with no pending attempt; do not replace or restart it. No scheduled tasks or Agent Mail were introduced.
-
-## Preserved limits
-
-Grouped research export remains an explicitly deferred optional tooling capability, not unfinished matching or a follow-on assignment. Evidence and explanatory source comments remain preserved. Supported observations were published; the existing compiler-lesson index now links the useful L6 width/declaration examples and passes its loader validation without expanding its schema or limits.
-
-Joe authorized pushing the accepted program on October 19, 2026. The seven wave commits end at `17e07534`; closure documentation accompanies them. Canonical inputs, preserved reports and the exact rebuilt ROM were rechecked unchanged before publication. Unrelated scratch/research work stays local. No cleanup, branch/worktree, new task or program expansion is included. The cutscene program remains a draft.
+Muse Wonder Full/xhigh session `0b07eba3-4030-4764-984b-1d48040a0bcb` remains preserved,
+with consultation evidence in the accepted archive. No Agent Mail or scheduled tasks.
+Earlier game/library programs remain closed; protect the prior library accepted archive
+and unrelated native-rebuild/editor worktree. No second wave is authorized.

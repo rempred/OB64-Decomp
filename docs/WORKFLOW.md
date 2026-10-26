@@ -61,6 +61,36 @@ complete dependency closure, remains untouched. The Director owns the next revie
 historical dry-run and operator-apply decision after this stage; inspection does not
 authorize cleanup of workbench/probes, accepted proofs, compiler sources or fixtures.
 
+### Safe filesystem cleanup
+
+Apply this to scratch cleanup and authorized worktree removal, including Git's own
+recursive removal. Stop commands using the selected root first; preserve best source,
+required research and accepted proof before deleting their only copy.
+
+1. Verify the exact absolute deletion root is inside the user-authorized scope. Inspect
+   its ancestors, the root itself and the complete subtree with an explicit directory
+   walk that **does not descend into reparse points**. Record every junction, symlink or
+   mount point and its target. An incomplete or unreadable census blocks that cleanup.
+2. Protect shared tools and inputs regardless of where the link lives: repository
+   `.toolchains`, configured compiler/PowerShell/Python/runtime roots, baseroms and
+   accepted-build archives. Capture the existing pinned identities of any shared tools
+   reachable from the subtree. A disposable checkout does not make its link targets
+   disposable.
+3. Never pass a subtree containing reparse points to `Remove-Item -Recurse`,
+   `git worktree remove`, or another recursive remover. Detach each link itself with a
+   verified nonrecursive link-removal operation and confirm its target remains intact;
+   otherwise leave the subtree alone and report the specific blocker. Do not compose
+   deletion across shells or traverse links to calculate removal paths.
+4. Repeat the no-follow census immediately before deletion; abort if links, root identity
+   or active users changed. Delete only the validated literal path in one shell. Check
+   the requested root is gone and protected targets still exist with unchanged pinned
+   hashes. Run the affected setup/smoke check before declaring cleanup complete. Do not
+   fix a failed post-check by changing toolchain pins.
+
+This is an execution check, not a new evidence protocol: retain the concise result in
+the existing cursor or cleanup report. Keep wave scratch bounded during matching and
+remove it after accepted output has been copied and hash-checked.
+
 ## The short path
 
 Use the agent guide's worker assignments on `main`, with one production source/build writer.
