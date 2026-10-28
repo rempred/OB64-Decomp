@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "80D593ED8CC72B59F7168A982F50D5971D96C916C6C55A214B88EF78AB4F27C4",
+  "observationId": "239622890EE533F5977A5B1FB96D99D44E81E9291EE6EC2901614B86C2A0CA3B",
+  "symbol": "func_0024EA70",
+  "authored": {
+    "context": "Complete one-body Fireball child, ROM 0024EA70..0024EE08, 920 bytes. Initial source 342A34BE compiles PURE_C944/frame64 with all seven message cases and all21 calls. The multiply-by-ternary expression branches, and the separate field update/test reloads the object/value.",
+    "effects": [
+      "opcode-or-expression",
+      "scheduling-or-block-order",
+      "length"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "73951CC7669FE1E763890615E04DA960E2EA227AA5935D2B6F14B9D4DBE9564E",
+      "sourceSha256": "58F4DF53C20B740B766E927608F27781ECDD3A33F6A9F7BDD3C4D2A7AA9A21B2"
+    },
+    "label": "fireball-child-parity-multiplier-and-single-object-phase",
+    "observedEffect": "80D593ED is mechanically PURE_C920/frame64 with rawRelocationMaskedExact=true and all actual relocations retained. Intermediate2CE3722B emits924: the signed remainder/parity block matches outside relocations, but the zero store reloads the object. The local-object successor removes that final extra load and restores complete body agreement. This is a source-bound compiler effect, not proof of original source spelling.",
+    "parentCandidateId": "2CE3722BA221A1819FA35EA47A7F6B2A8A0F07327F38BA9B8D0976B55570266F",
+    "references": [
+      {
+        "path": "build/matching/ae-p01/ea70-first-watch.json",
+        "sha256": "AB544C436897642200D8E19EF42FE4214E6BC9EE65BA51BF387044A87729F5A7"
+      },
+      {
+        "path": "build/matching/ae-p01/ea70-parity-value-test.json",
+        "sha256": "8E9802DC8838955DACEF3EFD8251A87F37D20607803171959746C8C885C0272C"
+      },
+      {
+        "path": "build/matching/ae-p01/ea70-local-object.json",
+        "sha256": "71C9C30005468C2D78C4B4476A99F1B663546050E4AF0DD63FD96034B096D4DC"
+      }
+    ],
+    "relatedCandidateIds": [
+      "342A34BEEB63D1758D675EA17DCA134DC29AF34D66C1E271F45B9A9434480277"
+    ],
+    "remainingFailure": "Inactive ASM target provides symbolic-object evidence only. Canonical binding of the four external argument arrays and the original double storage, actual production relocations, sole C ownership, placement, exact linked bytes and one final complete-P01 full-ROM verification remain required. The referenced double remains existing external storage, not new C-owned data.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the parity sign as the ordinary integer expression -((remainder & 1) == 0) | 1, then multiply the signed16 remainder. Compare the result of the actual float compound assignment directly. In the final phase, retain the loaded object in its own local for both field stores, while preserving the later state-object reload for the call."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 4282,
+      "sha256": "73951CC7669FE1E763890615E04DA960E2EA227AA5935D2B6F14B9D4DBE9564E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "58F4DF53C20B740B766E927608F27781ECDD3A33F6A9F7BDD3C4D2A7AA9A21B2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_0024EA70-80d593ed8c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

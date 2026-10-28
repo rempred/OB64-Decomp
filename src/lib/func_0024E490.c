@@ -8,7 +8,7 @@ asm(".macro move dst,src\n"
     ".endm\n");
 
 extern void func_001F7344(u32 value, void *workspace, u32 flags);
-extern void func_001F85C0(void *workspace, const u8 *record);
+extern void *func_001F85C0(void *workspace, const u8 *record);
 
 void func_0024E490(u32 value, const u8 *records, u32 count)
 {

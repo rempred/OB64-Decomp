@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "199072F698B1CA08C02486F4120AED36B1605BE10D3D77901109BB91FFC305CE",
+  "observationId": "2FF2C396F0F94A3BA5FDC2FB432EE5F79459D123C30945E5BE521194CF9FEC2F",
+  "symbol": "func_002532A8",
+  "authored": {
+    "context": "0DC0054D is PURE_C872/frame80; all six nonrelocation differences are context-store/shared-byte-load initialization ordering. Full fallthrough, signed-halfword remainder and update body already agree.",
+    "effects": [
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "262691446D73BF171B7EC84F5C126D401A6661344AB018CB1C85F954B4441A9E",
+      "sourceSha256": "6BC29B291DB3AC59C0E0051522FD9197BC9A2B48BB86F0F67D35B9FC8077B750"
+    },
+    "label": "curve-child-first-context-store-transfer",
+    "observedEffect": "199072F6 remains PURE_C872/frame80 and rawRelocationMaskedExact becomes true. The scalar store restores V0 reuse and initialization ordering in this additional concrete context.",
+    "parentCandidateId": "0DC0054D521D80E59E5F84B3CEC1CB968C9CF104B66A5D319C1AF08A6672C219",
+    "references": [
+      {
+        "path": "build/matching/ae-p01/532a8-first-watch.json",
+        "sha256": "E1DEB2BAD8B43A5D77090927861DA3B7735951075CE44AD69F98DDB58A6F329B"
+      },
+      {
+        "path": "build/matching/ae-p01/532a8-scalar-store.json",
+        "sha256": "04C235AD81C027CF59B3DBD86ECE7BD6078B26AE7CF7F5EEAADB0FF43FAAE42E"
+      },
+      {
+        "path": "build/matching/ae-p01/ee08-observation.json",
+        "sha256": "FB500A4C2009B644943BAB493771DFA8886CFB1EF96D94FE4F31279C0C6672DB"
+      },
+      {
+        "path": "build/matching/ae-p01/f730-observation.json",
+        "sha256": "398C8AACF0593ED04190DC3E5143DE6C1BB66885906075EB5775FF46EB60771C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Canonical aliases, ownership, placement, linked target bytes and complete-wave ROM verifier remain pending.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Apply the measured EE08/F730 scalar first-member store to the actual initial u8-pointer field; keep every access and expression otherwise unchanged."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 4462,
+      "sha256": "262691446D73BF171B7EC84F5C126D401A6661344AB018CB1C85F954B4441A9E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6BC29B291DB3AC59C0E0051522FD9197BC9A2B48BB86F0F67D35B9FC8077B750"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_002532A8-199072f698.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

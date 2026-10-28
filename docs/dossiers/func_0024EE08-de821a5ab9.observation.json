@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DE821A5AB983FA2ADBE6A1D5F71A3D82CFF60A76BACA7637C48773A4A4E9FA79",
+  "observationId": "8B7EB86C5DB5CCD3C92CF09E5334B118F0A2A1E9C1AE284BDDEE994D00E16D01",
+  "symbol": "func_0024EE08",
+  "authored": {
+    "context": "Complete one-body Fireball root, ROM 0024EE08..0024EF74, 364 bytes. Initial literal-address source A88116F8 emits all 364 bytes with eight nonrelocation word differences. Named-address control 79754195 fixes address construction and retains the four reordered load/store words.",
+    "effects": [
+      "scheduling-or-block-order",
+      "constant-or-immediate-construction"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "5F15F1E7E60585961D9B2AF2C12A38AF230758521E64E348F3BD638CFB9A3D93",
+      "sourceSha256": "8A1400352F7673FE70F6F8AE5DE710A9B9A91329465D2EEBBC14F64CB3A3B9B4"
+    },
+    "label": "fireball-root-scalar-first-member-and-symbolic-addresses",
+    "observedEffect": "DE821A5A is mechanically PURE_C, complete native text 364 bytes, frame24, rawRelocationMaskedExact=true. The scalar store restores retail store-before-global-pointer-load ordering and V0 reuse; named addresses produce the retail LUI/ADDIU rather than literal LUI/ORI pairs. Symbolic CFG is equal; all actual relocations are retained in the supported report. This does not identify original C spelling or a universal alias rule.",
+    "parentCandidateId": "797541955BED13422C1AD2FA2E303796656F858550D540541568B0AE9FEFB973",
+    "references": [
+      {
+        "path": "build/matching/ae-p01/ee08-first-watch.json",
+        "sha256": "6F8188B6801B266E6A039195C9CEB75C5B5960608FA26B86663BBD1FCD7EC727"
+      },
+      {
+        "path": "build/matching/ae-p01/ee08-symbol-views.json",
+        "sha256": "5DAE1CBFE01CFB3AD18A8DA0F5AB1CF33ADAC6870B641B1F236F11505CAE44BC"
+      },
+      {
+        "path": "build/matching/ae-p01/ee08-scalar-store.json",
+        "sha256": "13B3D097C1F8A22F1BCF1B75390D2300C8301183D714D4031F4D9F76A7797B09"
+      }
+    ],
+    "relatedCandidateIds": [
+      "A88116F8CA9AE23416891759453BDA7A11E2A3CCAD16E0AA43E8D72AD86850E2"
+    ],
+    "remainingFailure": "Inactive ASM target supplies symbolic-object evidence only: authenticated private linked comparison and full-owner evidence are unavailable. Correct aliases, actual production relocations, sole C ownership, placement, exact linked bytes and final complete-P01 full-ROM verification remain required during coordinated integration.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use extern address bindings for the shared context views and the two fixed argument arrays. Compared with 79754195, write the genuine first pointer field through the scalar u8** view at offset zero, preserving all operations and source order."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1825,
+      "sha256": "5F15F1E7E60585961D9B2AF2C12A38AF230758521E64E348F3BD638CFB9A3D93"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8A1400352F7673FE70F6F8AE5DE710A9B9A91329465D2EEBBC14F64CB3A3B9B4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_0024EE08-de821a5ab9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

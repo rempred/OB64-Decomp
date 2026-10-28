@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BD99324B2CEC43CAC9F7DAB895DCC0167688FDEEEEB61C01BF70594A68FC801A",
+  "observationId": "303BF903B14103D4D14C2B41D2E1EBC83DD76B5C47B326C981FA8038AA1B1DF1",
+  "symbol": "func_00253AB4",
+  "authored": {
+    "context": "Initial6FAC3046 is PURE_C612/frame32. One shared s16 index serves both the no-call count phase and the emission phase with calls; only nine count-phase register-role words differ, using S0 instead of expected A4.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "79698F8DABC08CA2F8C6A466C98FFC5B978DF65329FBDFA3D6F1CF529A91CE93",
+      "sourceSha256": "D625F06C42DBF7BA1ACA947626F78D2B55CCF2B46A28FAE1FBE867DCC39F5CFB"
+    },
+    "label": "independent-phase-loop-locals",
+    "observedEffect": "BD99324B stays PURE_C612/frame32 and rawRelocationMaskedExact becomes true. The count phase now uses A4 and the call-containing phase retains S0; separate source lifetimes resolve the measured sharing effect in this context.",
+    "parentCandidateId": "6FAC304617F5B4077B3AFD3DBCA5B791C29C5D999B373C76DD76FD2B21D8AFC9",
+    "references": [
+      {
+        "path": "build/matching/ae-p01/53ab4-first-watch.json",
+        "sha256": "84C55B3CD7E7AE9104AD85C35BBFA0D95A55CDB96A09DDF49EDF96469F81E288"
+      },
+      {
+        "path": "build/matching/ae-p01/53ab4-phase-indices.json",
+        "sha256": "B5B664A289464D38076A9811935CD89601E8799F5EFA83D23C406DE2D8C9C283"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Canonical linking/ownership/bindings and the complete-wave ROM verifier remain pending.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Give each case its own s16 local: count for the first list scan and index for the later emission scan. Keep all loop tests, increments, memory accesses and calls unchanged."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2571,
+      "sha256": "79698F8DABC08CA2F8C6A466C98FFC5B978DF65329FBDFA3D6F1CF529A91CE93"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D625F06C42DBF7BA1ACA947626F78D2B55CCF2B46A28FAE1FBE867DCC39F5CFB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_00253AB4-bd99324b2c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

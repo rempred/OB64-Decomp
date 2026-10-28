@@ -336,3 +336,6 @@ src/lib/pfsisplug_0002b790.c -text whitespace=cr-at-eol
 # Immutable L6 research captures preserve authenticated mixed line endings.
 docs/archive/matching-c-candidates/2026-10-17-func_000265e0-24a3774c6c.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-10-17-func_0002b90c-79edf01553.c -text whitespace=cr-at-eol
+
+# P01 verified source retains its recorded mixed line endings byte for byte.
+src/lib/func_002526CC.c -text whitespace=cr-at-eol

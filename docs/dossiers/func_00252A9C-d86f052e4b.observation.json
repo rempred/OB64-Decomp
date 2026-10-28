@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D86F052E4B8D2B039AECF985D0BD4EF20037471EF9A59F2216ED35CEFFF25F8C",
+  "observationId": "964D7141A3228EDAB9A1D333165F2840047E6E106F8FB84AD66E58377DFD6157",
+  "symbol": "func_00252A9C",
+  "authored": {
+    "context": "func_00252A9C initial6BC11EA2 emits PURE_C700/frame72, lacking the retained object-position pointer. Explicit position local after the initialized basis vector yields4D6A09DF, PURE_C712/frame80, leaving only the swapped LH(counter44)/ADDIU(stack-basis-address) pair at160/164. A first-counter snapshot1FB9D250 changes no bytes.",
+    "effects": [
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "118B1956F2CD58756BC8784587E6F309BF54A149674FD43E00D376C6C178C71A",
+      "sourceSha256": "2494CA8B6A1E74A4229E505917FB73E735F416D3F990882F9AF0BE0D453602B2"
+    },
+    "label": "position-pointer-lifetime-and-declaration-order",
+    "observedEffect": "D86F052E is PURE_C712/frame80 with rawRelocationMaskedExact=true. Moving only that declaration from after the aggregate initializer to before it reverses the remaining pair to retail order. Both source forms retain the same real field pointer across calls; this is a context-specific declaration-order effect, not proof of original source or general scheduling mechanism.",
+    "parentCandidateId": "4D6A09DFD5F3E873D9BC386B0C076F282C0FFC1D1ADB3254ED453AAE348B0021",
+    "references": [
+      {
+        "path": "build/matching/ae-p01/52a9c-first-watch.json",
+        "sha256": "255ED0697D67062C9FAB39A2F66402AF20D4D0BBC1BE44B624368C5B6FB67C0C"
+      },
+      {
+        "path": "build/matching/ae-p01/52a9c-local-position.json",
+        "sha256": "CCB6C684D849DF4E964BA8AD12A20DC9EE295758700C54D48102CCC3DBC1484D"
+      },
+      {
+        "path": "build/matching/ae-p01/52a9c-counter-snapshot.json",
+        "sha256": "EDEAE822A65C17F08B56FF2A7631B6FA3BAE85B895C2EB64CA4F222A7C4B7B0F"
+      },
+      {
+        "path": "build/matching/ae-p01/52a9c-position-before-basis.json",
+        "sha256": "0DE412EF84AC37F8D23B350E63AE3F5444F296B7676764B6E445E49164F166DF"
+      }
+    ],
+    "relatedCandidateIds": [
+      "6BC11EA2090E65B0E63BBCCE3BDDD5E21CCCE0D525C7D0CA47C6C14C8B39F794",
+      "1FB9D250E210F4534EA5F4C7D2021875ED2321A0E5DF7D9C1AB8B04708398087"
+    ],
+    "remainingFailure": "Inactive ASM private diagnostics remain symbolic-object only. Canonical linking, ownership, placement, real bindings and one final complete-P01 ROM verifier remain pending.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Initialize the actual object-position pointer immediately after the object local, before the output and initialized basis vector declarations; use that pointer for the real alternating emission call. Remove the ineffective counter snapshot."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 3960,
+      "sha256": "118B1956F2CD58756BC8784587E6F309BF54A149674FD43E00D376C6C178C71A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2494CA8B6A1E74A4229E505917FB73E735F416D3F990882F9AF0BE0D453602B2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_00252A9C-d86f052e4b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

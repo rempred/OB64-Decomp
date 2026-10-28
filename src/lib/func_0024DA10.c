@@ -10,12 +10,12 @@ typedef struct Func0024DA10Scratch {
 } Func0024DA10Scratch;
 
 extern void func_001F7344(u32 value, Func0024DA10Scratch *scratch, u32 flags);
-extern void func_001F85C0(Func0024DA10Scratch *scratch, void *argument);
+extern void *func_001F85C0(Func0024DA10Scratch *scratch, void *argument);
 
-void func_0024DA10(u32 value, void *argument)
+void *func_0024DA10(u32 value, void *argument)
 {
     Func0024DA10Scratch scratch;
 
     func_001F7344(value & 0xFF, &scratch, ((u8 *)argument)[2] & 0xF0);
-    func_001F85C0(&scratch, argument);
+    return func_001F85C0(&scratch, argument);
 }

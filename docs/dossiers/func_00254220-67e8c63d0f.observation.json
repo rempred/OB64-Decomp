@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "67E8C63D0FE577BDD3DB09A97D1701441A74AF41C45F4F8A75BCF282FCF046D1",
+  "observationId": "768C32F2716CB2E2353544C1613AE95742A12AA0AF9F3F6AC946AC9DFB6D23D8",
+  "symbol": "func_00254220",
+  "authored": {
+    "context": "After ternary integer absolute expressions recover the retail abs registers,5BAAD8A4 is PURE_C1264/frame64. All three placement/update phases and cleanup agree after offset alignment; selection reuses the s32 flag as case1 comparator and omits the result move. Extracting the same selection into staticinline helper7B7839CC changes no emitted byte.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "9197A6CE0194DDFBEAAD422B2C62E58C1F681D0DB72AD2BB94038BB931305B25",
+      "sourceSha256": "C62A8EA83A22201A1BEC0A180BE5C5E78DE223DEBC5859FA67A25A2CF788C64C"
+    },
+    "label": "selection-halfword-validity-result",
+    "observedEffect": "67E8C63D is PURE_C1272/frame64 with rawRelocationMaskedExact=true. The halfword flag restores distinct comparator/validity constants, the result move and exact selection join. Compiler output has only the target .ent and object text is exactly1272 bytes; there is no separate helper body. Inline extraction alone did not establish the original source shape or a helper boundary.",
+    "parentCandidateId": "7B7839CCE44E255EFDC010F4D43D6F3E08720D184296931F51EF984D8890EFA8",
+    "references": [
+      {
+        "path": "build/matching/ae-p01/54220-absolute-expression.json",
+        "sha256": "02B06C58913BA969F88F33C66581E3C10606D5B13FB80C7B2C81F43613CBE748"
+      },
+      {
+        "path": "build/matching/ae-p01/54220-inline-selector.json",
+        "sha256": "A9747DDC013A84AC41D80192EC5F7A35D010306DD73F6C8F2B5013AE043896FB"
+      },
+      {
+        "path": "build/matching/ae-p01/54220-halfword-valid.json",
+        "sha256": "88107FE85BAE1396F0FE02E00423D8C366014A1E8D4F1AC26C38E125E5330903"
+      },
+      {
+        "path": "build/consultants/attack-p01-muse/003-answer.txt",
+        "sha256": "30DBD9B775087A2077B6ED605D3E08DC9E5BA0811D7EA0E1F292B49CB3CE54C5"
+      }
+    ],
+    "relatedCandidateIds": [
+      "5BAAD8A4960C2A4C1BAE43E0857843C837EE9B8BD31B17FB1BD9D6F651A94DF6"
+    ],
+    "remainingFailure": "Inactive ASM private diagnostics remain symbolic-object only. Canonical linking, bindings, ownership, placement and one final complete-wave ROM verifier remain required. Keep a short comment on the measured flag-width/selection effect when production writer integrates this source.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Change only the helper-local validity flag froms32 tos16, preserving its0/1 assignments, switch/default side effects, s32 return and the caller's conditional message choice."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 5075,
+      "sha256": "9197A6CE0194DDFBEAAD422B2C62E58C1F681D0DB72AD2BB94038BB931305B25"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C62A8EA83A22201A1BEC0A180BE5C5E78DE223DEBC5859FA67A25A2CF788C64C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_00254220-67e8c63d0f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
