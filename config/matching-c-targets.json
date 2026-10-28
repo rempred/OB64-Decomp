@@ -4555,6 +4555,46 @@
     {
       "symbol": "func_002548AC",
       "source": "src/lib/func_002548AC.c"
+    },
+    {
+      "symbol": "func_002502DC",
+      "source": "src/lib/func_002502DC.c"
+    },
+    {
+      "symbol": "func_002504C4",
+      "source": "src/lib/func_002504C4.c"
+    },
+    {
+      "symbol": "func_00251FF8",
+      "source": "src/lib/func_00251FF8.c"
+    },
+    {
+      "symbol": "func_002528B8",
+      "source": "src/lib/func_002528B8.c"
+    },
+    {
+      "symbol": "func_002530C4",
+      "source": "src/lib/func_002530C4.c"
+    },
+    {
+      "symbol": "func_0025402C",
+      "source": "src/lib/func_0025402C.c"
+    },
+    {
+      "symbol": "func_00254D50",
+      "source": "src/lib/func_00254D50.c"
+    },
+    {
+      "symbol": "func_002557C4",
+      "source": "src/lib/func_002557C4.c"
+    },
+    {
+      "symbol": "func_00256128",
+      "source": "src/lib/func_00256128.c"
+    },
+    {
+      "symbol": "func_0025630C",
+      "source": "src/lib/func_0025630C.c"
     }
   ]
 }

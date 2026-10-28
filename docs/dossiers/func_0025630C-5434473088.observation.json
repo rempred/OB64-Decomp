@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5434473088D00A176B86D1314DEE899B4387718B1D02659939070D9256DB7609",
+  "observationId": "C2556173AA2E606F5FD9829CD4570BBD26757786A97A20415BD7561EE6E111C0",
+  "symbol": "func_0025630C",
+  "authored": {
+    "context": "Fresh research import for the approved 252-byte C body at ROM25630C..256408 within unchanged physical row4522 ROM25630C..256410. Historical candidate201BCD6E553777393848D4203DEB38079A903738D9648206E6376C7A463CA2F9 and observation6760E2AC401A147DA7FE0D5C0C212C1C8943B0E0A76182416C6E0136B004F440 used the former260-byte target identity B6A1C59AAAB86226A6828F99D581FFD07E1027C895CE858E1FEF3D9AC3704160. Those identities are historical diagnostics, not current-body comparison records.",
+    "effects": [
+      "body-coverage",
+      "retained-terminal-assembly"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "2555CCEA4A8DA58E2B51B96499DF6AEB6FCDC9634D7FADC2A8F9759020E045C1",
+      "sourceSha256": "79B22F6F541CF2982A772E3D2E1B110783DFB1ACA8258B74EB8CC002AE29D5DE"
+    },
+    "label": "complete-body-with-original-executable-suffix",
+    "observedEffect": "The exact same source SHA79B22F6F541CF2982A772E3D2E1B110783DFB1ACA8258B74EB8CC002AE29D5DE historically emitted one PURE_C252/frame24 compiler function. The252-byte prefix had no differences outside actual relocation operands; separate binding review authenticated all21 operand addresses. The old full260-byte comparison correctly failed because two original zero words remained beyond the complete return delay. Independent review admitted C252 plus original executable ASM8 using unchanged generic tooling. This fresh import does not compile or establish linked acceptance.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p03/5630c-initial.json",
+        "sha256": "4D6B490E28840BD10B8EAFC17208AFF7DA75BCE413CD204C31FAE3525DF13877"
+      },
+      {
+        "path": "build/matching/ae-p03/5630c-coverage-review.json",
+        "sha256": "BAA8888BD873F728A646004A68E9700DB0304033C8091FCA3AFF1E277A12EE97"
+      },
+      {
+        "path": "build/matching/ae-p03/original-coverage.json",
+        "sha256": "BEDF7532FA4A60987FABF37927CCA153E51F744BC370EB994737FA84228D34F8"
+      },
+      {
+        "path": "build/matching/ae-p03/binding-review.json",
+        "sha256": "32AA9A10E52D12546DF51D0E39DFDA78CD858E0D39BF005D208919AE35057E13"
+      },
+      {
+        "path": "build/matching/ae-p03/5630c-import.json",
+        "sha256": "ADBD0399A21038790CA694C9AF4ACB273241604ACD8E98C5C77FEDFBCF418CFD"
+      },
+      {
+        "path": "build/research/attack-p03-terminal-review/REVIEW.md",
+        "sha256": "13C3AE0FA892F89C56CAEF71169B0675A8FC60D912B493AC638B0210B5E0E2FB"
+      },
+      {
+        "path": "build/research/attack-p03-terminal-admission/evidence.json",
+        "sha256": "CACCEBD9C2ECFDA78C32A5B0B07A0F41D968DF4A21876F7B03833BC4C27B8CC8"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Whole-wave canonical source/object/link, placement, relocation, full physical260-byte reconstruction, fresh compilation and exact complete-ROM acceptance must come from the separate P03 production audit. Unknown runtime/indirect/encoded references remain unknown; no original compiler-padding provenance or universal suffix-unreachability claim is made.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently reconstruct all six dispatch cases, byte-state initialization, presentation phases, scheduling and the complete return in ordinary C. Preserve the original eight executable suffix bytes through the separately reviewed existing registered-edge contract, without inventing C operations."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1073,
+      "sha256": "2555CCEA4A8DA58E2B51B96499DF6AEB6FCDC9634D7FADC2A8F9759020E045C1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "79B22F6F541CF2982A772E3D2E1B110783DFB1ACA8258B74EB8CC002AE29D5DE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_0025630C-5434473088.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
