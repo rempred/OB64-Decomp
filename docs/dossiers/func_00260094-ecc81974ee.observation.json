@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "ECC81974EEA329BB690C43748B7EBF12B17A4DDC1E358FA468F7C81841B53035",
+  "observationId": "FD2904E7C3D6E42EBF496792781AA9A84E6004735C2B01D816A7D0161652DE10",
+  "symbol": "func_00260094",
+  "authored": {
+    "context": "The complete 84-byte native candidate has three nonrelocation immediate differences: record base +14 and store offsets +8/+0 instead of retail +12 and +10/+2.",
+    "effects": [
+      "instruction-selection",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "7D47BB929498AD3C6BA87487115FA74E7E3E8808842D93DBE552789BDB2D4D8D",
+      "sourceSha256": "9319B558675651F76D11C5964943E58C4C061428D958EF926CB19718470509FC"
+    },
+    "label": "postincrement-baseline",
+    "observedEffect": "This baseline does not agree. The later second-store postincrement source changes the setup/store offsets and schedules the advance in the branch delay slot.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e01/func_00260094-base-index.json",
+        "sha256": "91EEE01E7431FC93A70AB3B7282031EA25AF70346D7DEAF36B66E038AE71E2CC"
+      },
+      {
+        "path": "build/matching/ae-e01/runs/7DD86B479A197A2526B2C1291644750BB206E3F6D24976CF763152EDF725DB86/workbench-report.json",
+        "sha256": "25208A30A855A04B9986B28BC0EDF8B1042B9E15D8F51BEE873BA76E17BC6A5A"
+      },
+      {
+        "path": "docs/audit/2026-10-28-attack-e01-integration.md",
+        "sha256": "DC552EBC8EFC0A0CF0C158E211BA198EEEE523824D36199471A0AE1F49654FBD"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Three historical nonrelocation instruction immediates differ. This current-context import is uncompiled research, not canonical acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain the separate record-advance loop step as the baseline for the second-store postincrement experiment."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 531,
+      "sha256": "7D47BB929498AD3C6BA87487115FA74E7E3E8808842D93DBE552789BDB2D4D8D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9319B558675651F76D11C5964943E58C4C061428D958EF926CB19718470509FC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_00260094-ecc81974ee.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

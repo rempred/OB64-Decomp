@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "578119D5C4B379E4467436863FD2A3BF4768866680B940CDA9A98A689D163384",
+  "observationId": "10832FEECE5E6F91A6EC8C60F4CAAF83608BF76471AF6130A3EEBFF195386767",
+  "symbol": "func_0025FEB4",
+  "authored": {
+    "context": "The complete480-byte body writes three common bytes at D_801CEAAC/D_801CEAAD/D_801CEAAE before the non-mode1 selector switch. The saved Kuna hypothesis omits those writes; the m2c hypothesis retains them.",
+    "effects": [
+      "target-coverage",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "B55CB3E82C64B2A354C07F1E675F5DCE4FAB3529936E2C64D379CAF64100A369",
+      "sourceSha256": "980548949B815C23CC7A18F1DBBAC3843059CF97CFD3E10049C63372FDCFE096"
+    },
+    "label": "common-byte-write-coverage",
+    "observedEffect": "The retained hand-authored producer covers both branches, all common writes, selector-specific writes, interpolation and completion state. Native comparison covers all480 bytes using actual relocation masks. The omission belongs to the saved Kuna output and is not generalized to every generator.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e01/func_0025FEB4-first.json",
+        "sha256": "2A914380E8F7DD09883232D07BAA12DBDCF6EBEE2BDFAF6C8EBD53E3A708A7FE"
+      },
+      {
+        "path": "build/matching/ae-e01/runs/FD00CB0C9E60D053745745C780C3A3A00D592CBD956FBCB7E5195E9DCDA3F70E/workbench-report.json",
+        "sha256": "12AB7FE4DC8ED0F12316F5A144EF426045C03A3379A1F43CB74DC64BE1F2508E"
+      },
+      {
+        "path": "build/matching/ae-e01/analysis/func_0025FEB4-49DE9E787518EC3B9C054D071E76AA8B06907142C5CB8A331983A539D9ED3C41/kuna/code.c",
+        "sha256": "13B907170DF6C092D470EB87EEC7EC6E5DAA65B669865EF4F29E7008B2C9F4B5"
+      },
+      {
+        "path": "build/matching/ae-e01/analysis/func_0025FEB4-49DE9E787518EC3B9C054D071E76AA8B06907142C5CB8A331983A539D9ED3C41/m2c/code.c",
+        "sha256": "9673C4F03488F6ADBCC403E70A9C0E64E9526A6C50DC8681219B6699C4FAF20B"
+      },
+      {
+        "path": "build/matching/ae-e01/analysis/func_0025FEB4-49DE9E787518EC3B9C054D071E76AA8B06907142C5CB8A331983A539D9ED3C41/input.s",
+        "sha256": "77F95790C3A4062985D82965A9DD8557A69C056657EA407AB599813E6848FA9C"
+      },
+      {
+        "path": "docs/audit/2026-10-28-attack-e01-integration.md",
+        "sha256": "DC552EBC8EFC0A0CF0C158E211BA198EEEE523824D36199471A0AE1F49654FBD"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This import is uncompiled research. Matching acceptance comes separately from the E01 audit. The generator hypothesis is preserved as a counterexample, not a compiled matching source.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reconcile both generator hypotheses with the full original assembly and restore the three common byte writes before code-generation tuning."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1698,
+      "sha256": "B55CB3E82C64B2A354C07F1E675F5DCE4FAB3529936E2C64D379CAF64100A369"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "980548949B815C23CC7A18F1DBBAC3843059CF97CFD3E10049C63372FDCFE096"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_0025FEB4-578119d5c4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

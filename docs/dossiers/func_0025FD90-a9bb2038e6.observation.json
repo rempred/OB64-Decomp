@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A9BB2038E6C5C4E65B8C94F47B3504622E804F86CAA827BB622833D56019248E",
+  "observationId": "7AF419F7635192ACF8A85DE0B1013B76AA360C0EAB9F46C5C85F456438EC1218",
+  "symbol": "func_0025FD90",
+  "authored": {
+    "context": "The first source and this source both have one shared s32 loop counter; no staging aggregate was added.",
+    "effects": [
+      "stack-layout-or-offset-family",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "98F1C81D6ECF806879317E79F786BAB4153ECC0286560A167C56F36F64D00750",
+      "sourceSha256": "4994059418DDE4F7CE9D749BFB9FADA67082EB3D1F5E6C1371B899170B1A05EA"
+    },
+    "label": "scalar-frame-best",
+    "observedEffect": "Historical native output has the complete188-byte body, frame8 without stack data accesses and the retail load/counter order after masking its one actual internal R_MIPS_26. The branch-local-counter intermediate also has frame8 but the copy counter uses v1. Muse004 claimed no ordinary scalar source could explain the frame; the native source pair contradicts that claim. Its aggregate suggestions were not adopted.",
+    "parentCandidateId": "A95A31392E27E29C82291352202E5CB2ECA696EEBE7F81C203D423F5AE955D88",
+    "references": [
+      {
+        "path": "build/matching/ae-e01/func_0025FD90-shared-counter.json",
+        "sha256": "661C49C5A7AE98F3279CF31F0057B2A7316DC8606FD4BE0756078B0522C54756"
+      },
+      {
+        "path": "build/matching/ae-e01/runs/36345D81FB14B46F60360B777B8A9F28410AEEBE6B939B709A902706615D83EA/workbench-report.json",
+        "sha256": "26887C54BC9169E7F745148B180642A8BCB9F3FC60559E3B5B56147594963546"
+      },
+      {
+        "path": "build/matching/ae-e01/func_0025FD90-expression.json",
+        "sha256": "E600D3F46B3BB53587D65A420527F32F0AD6DF6BB41084F4565D3CB496E27375"
+      },
+      {
+        "path": "build/consultants/attack-e01-muse/004-resolution.txt",
+        "sha256": "77A015A1133BEF08114115D14E53E7E2EC989C70FDC7EFF464C3A66B89EC939E"
+      },
+      {
+        "path": "docs/audit/2026-10-28-attack-e01-integration.md",
+        "sha256": "DC552EBC8EFC0A0CF0C158E211BA198EEEE523824D36199471A0AE1F49654FBD"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This current-context research import is uncompiled. Canonical acceptance is established separately by the E01 audit, not by the import. The complete compiler mechanism and original expression are not proved.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Remove the named initial-value local and write the repeated-read interpolation expression directly."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 512,
+      "sha256": "98F1C81D6ECF806879317E79F786BAB4153ECC0286560A167C56F36F64D00750"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4994059418DDE4F7CE9D749BFB9FADA67082EB3D1F5E6C1371B899170B1A05EA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_0025FD90-a9bb2038e6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
