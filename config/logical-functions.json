@@ -177,6 +177,18 @@
       "evidence": "Complete original body ROM 0x0025630C..0x00256408 includes JR ra at 0x00256400 and stack-restoring delay at 0x00256404. The following two zero words remain executable original ASM through 0x00256410; the original-name GLOBAL native function covers all 252 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
     },
     {
+      "romStart": 2491420,
+      "romEndExclusive": 2491424,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original JR ra at ROM 0x00260414 and ADDIU sp delay slot at 0x00260418 precede one zero word. Retained executable original ASM under registered terminal edge; complete original-name GLOBAL native function is 48 bytes. Numeric/runtime reference absence and native padding origin are not claimed."
+    },
+    {
+      "romStart": 2504332,
+      "romEndExclusive": 2504336,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original body includes preamble ROM 0x00263400/0x00263404 and JR ra at 0x00263684 with stack-restore delay slot at 0x00263688. Only the following zero word remains executable original ASM under registered terminal edge; original-name GLOBAL native function covers all 652 preceding bytes. Numeric/runtime reference absence and native padding origin are not claimed."
+    },
+    {
       "romStart": 2622676,
       "romEndExclusive": 2622688,
       "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
@@ -4572,6 +4584,34 @@
       ]
     },
     {
+      "romStart": 2491372,
+      "romEndExclusive": 2491420,
+      "evidence": {
+        "caseId": "attack-e01-row4646-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original JR ra at ROM 0x00260414 and ADDIU sp delay slot at 0x00260418 precede one zero word. Retained executable original ASM under registered terminal edge; complete original-name GLOBAL native function is 48 bytes. Numeric/runtime reference absence and native padding origin are not claimed."
+      },
+      "symbol": "func_002603EC",
+      "aliases": [],
+      "expectedBytesSha256": "E7B1455DB76F45002BB07AD78B3DA0AA1943F157FACBCEA80DB800AAAF8DB882",
+      "fragments": [
+        {
+          "rowIndex": 4646,
+          "romStart": 2491372,
+          "romEndExclusive": 2491420,
+          "ownerOffset": 0,
+          "bytes": 48,
+          "vramStart": 2149627964,
+          "sectionName": ".ob64.r4646.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_002603EC.s",
+          "sha256": "408C79CD395E7366BE7482360D8E2AD5C4291C3BE909A4F166D036D412A637CB"
+        }
+      ]
+    },
+    {
       "romStart": 2497828,
       "romEndExclusive": 2497916,
       "evidence": {
@@ -4612,6 +4652,34 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_00261D60.s",
           "sha256": "DED3AE6140E03375E8D84DFF361B84DFE62C3CDE27E8784541EC5E5532CF4DA6"
+        }
+      ]
+    },
+    {
+      "romStart": 2503680,
+      "romEndExclusive": 2504332,
+      "evidence": {
+        "caseId": "attack-e01-row4723-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original body includes preamble ROM 0x00263400/0x00263404 and JR ra at 0x00263684 with stack-restore delay slot at 0x00263688. Only the following zero word remains executable original ASM under registered terminal edge; original-name GLOBAL native function covers all 652 preceding bytes. Numeric/runtime reference absence and native padding origin are not claimed."
+      },
+      "symbol": "func_00263400",
+      "aliases": [],
+      "expectedBytesSha256": "A3DC799B490F1EB6F2E3C281D3E495A6033AD2E0B6A015921F4FA083D5AE77D4",
+      "fragments": [
+        {
+          "rowIndex": 4723,
+          "romStart": 2503680,
+          "romEndExclusive": 2504332,
+          "ownerOffset": 0,
+          "bytes": 652,
+          "vramStart": 2149640272,
+          "sectionName": ".ob64.r4723.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00263400.s",
+          "sha256": "04292A1F0D3F737139CC5EE7AD1399ED07129F17639E7773FDF0A3FC6B15B9AF"
         }
       ]
     },
