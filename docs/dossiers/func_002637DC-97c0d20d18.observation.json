@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "97C0D20D18B444097AA2CDDB9476A7AB344F6C9FFEAE2F99E947A98E6EFB846E",
+  "observationId": "BD70FE3BF396034698D9E71180D4471249134175DFDFC2BB96E19600FEDF1D08",
+  "symbol": "func_002637DC",
+  "authored": {
+    "context": "Complete search/depletion/pop/load/failure behavior in physical244-byte owner; expected callable body240 followed by original executable zero word4.",
+    "effects": [
+      "inline-lifetimes",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "2FB2F40DD9F7859216C3CBD27DDED2D5042DFC57E0927B386FFEE1C5659A36D0",
+      "sourceSha256": "309A21605F872FA688BF94F7E8200F2EED698F49FB3D0FA6AA8FCF62A5211CB2"
+    },
+    "label": "direct-free-list-pop",
+    "observedEffect": "PURE_C232, one function/section232,14 actual relocations. Direct form omits retail argument copy A2=A0 and new-address copy S0=V3; all operations remain represented. Separate pointer, store order, word formal, nested assignment and plain register controls did not restore them. Named savedCode/limit emitted228, removing the end copy.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e02/watch-002637DC-v1.json",
+        "sha256": "6F3C2C551B27342261A22168470519059A0BB4C6110F97EB6582A694479265E5"
+      },
+      {
+        "path": "build/consultants/attack-e02-muse/009-answer.txt",
+        "sha256": "ED074FC2BE9736BD7BECEBF4EC95987219AB08A94C8F190CC9305872AD599D5B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Eight callable-body bytes plus original4 suffix absent; allocation/argument lifetime differs. No canonical acceptance or general hypothesis elimination.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Write depletion spin, free-entry address, next-head assignment directly after the search in one function."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1134,
+      "sha256": "2FB2F40DD9F7859216C3CBD27DDED2D5042DFC57E0927B386FFEE1C5659A36D0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "309A21605F872FA688BF94F7E8200F2EED698F49FB3D0FA6AA8FCF62A5211CB2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_002637DC-97c0d20d18.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

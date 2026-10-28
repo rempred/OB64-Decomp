@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FC0875EB89CC9452FDFB57159F29604FADA3ABB1727209A82DD9CA6A1D116B0F",
+  "observationId": "195E85B9750475FF3646CF40DD456C00EFD811A8EFD76FA5C7CC9115DAAB1C47",
+  "symbol": "func_0026372C",
+  "authored": {
+    "context": "Complete176-byte typed16-entry counter/release loop, same operations and loop update.",
+    "effects": [
+      "induction-addressing",
+      "store-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "51EAE46259250910BF9FCBD092239B7112EDC42C11670BFF7245AC1B3F393CEA",
+      "sourceSha256": "2546902ECDAB26BBE0C5EBEDF4B007D6C7A57AF17C083C315CFBD444DD75AB1D"
+    },
+    "label": "link-store-after-payload-clears",
+    "observedEffect": "PURE_C176 with11 actual relocations. Additional induction address is entry+12, so field displacements differ from retail entry+8; no missing operation or extra native extent.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e02/watch-0026372C-v1.json",
+        "sha256": "D2290531DF559E3C49C985A67A6FF8DB758F17D5D9047CDB4F005CF36329172A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Six instruction differences beyond actual relocation operands remain; no canonical acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Clear code02,key04,data08 before assigning next0C from the head."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 859,
+      "sha256": "51EAE46259250910BF9FCBD092239B7112EDC42C11670BFF7245AC1B3F393CEA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2546902ECDAB26BBE0C5EBEDF4B007D6C7A57AF17C083C315CFBD444DD75AB1D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_0026372C-fc0875eb89.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

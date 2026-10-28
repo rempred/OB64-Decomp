@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B3F5B9CE860091B325632F9265C7B83E7A164A127F7FDCC4C029A94B7BE53159",
+  "observationId": "51154027AE38645CABB9A9C857D82F38A89B942585C4B531219A51396F883121",
+  "symbol": "func_00261608",
+  "authored": {
+    "context": "Complete424-byte switch4/7/8, explicit shared cache and registration tails, code4-only allocation spin, default spin, distinct textual cached_done and normal done labels.",
+    "effects": [
+      "control-flow",
+      "return-value-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "1651B656B63610757F8978AD6BE5F2A3A4A43B5CED9D15E6B69BA51BC89F7351",
+      "sourceSha256": "B29142E663227C783767A43A0EBAF356B91E14757E294FF2DE8F0C06C650E00C"
+    },
+    "label": "shared-returns-distinct-cached-result",
+    "observedEffect": "PURE_C native424 with18 actual relocations has complete relocation-masked agreement. Zero opcode/register/width/length differences. The two moveV0S0 return paths remain distinct and the normal return precedes the default spin.",
+    "parentCandidateId": "B786B4E50F17E2752F9CE3067471BCC680C3EA9DAEE02EF3757F8276A553ED62",
+    "references": [
+      {
+        "path": "build/matching/ae-e02/watch-00261608-v13.json",
+        "sha256": "AFE2295ECC60D4D09DA09470058E128CF695E5F49CC0481FA208CA6408BA8ADF"
+      },
+      {
+        "path": "build/matching/ae-e02/watch-00261608-v12.json",
+        "sha256": "CD3CEDACC69284F762CC2594AF8E0EC441369A0DDADE040C67C9F330396FA4A5"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object evidence only. Canonical provider/relocation/ownership/placement/target bytes and complete30 structural/fresh/full-ROM gates remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Give the cached path its own cachedResult local, assign data to it after B44, then return cachedResult at the after-switch cached_done label. Keep the normal done return before default. Add a measured-workaround comment."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2637,
+      "sha256": "1651B656B63610757F8978AD6BE5F2A3A4A43B5CED9D15E6B69BA51BC89F7351"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B29142E663227C783767A43A0EBAF356B91E14757E294FF2DE8F0C06C650E00C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_00261608-b3f5b9ce86.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

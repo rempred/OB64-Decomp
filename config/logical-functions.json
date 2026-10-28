@@ -183,10 +183,28 @@
       "evidence": "Complete original JR ra at ROM 0x00260414 and ADDIU sp delay slot at 0x00260418 precede one zero word. Retained executable original ASM under registered terminal edge; complete original-name GLOBAL native function is 48 bytes. Numeric/runtime reference absence and native padding origin are not claimed."
     },
     {
+      "romStart": 2493848,
+      "romEndExclusive": 2493856,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Complete original body ROM 0x00260CE0..0x00260D98 includes JR ra at 0x00260D90 and stack-restoring delay at 0x00260D94. The following two zero words remain executable original ASM through 0x00260DA0; the original-name GLOBAL native function covers all 184 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
+    },
+    {
+      "romStart": 2497668,
+      "romEndExclusive": 2497680,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Complete original body ROM 0x00261BD4..0x00261C84 includes JR ra at 0x00261C7C and stack-restoring delay at 0x00261C80. The following three zero words remain executable original ASM through 0x00261C90. Complete original-name GLOBAL native func_00261BD4 covers all 176 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
+    },
+    {
       "romStart": 2504332,
       "romEndExclusive": 2504336,
       "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
       "evidence": "Complete original body includes preamble ROM 0x00263400/0x00263404 and JR ra at 0x00263684 with stack-restore delay slot at 0x00263688. Only the following zero word remains executable original ASM under registered terminal edge; original-name GLOBAL native function covers all 652 preceding bytes. Numeric/runtime reference absence and native padding origin are not claimed."
+    },
+    {
+      "romStart": 2504908,
+      "romEndExclusive": 2504912,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original body ROM 0x002637DC..0x002638CC includes JR ra at 0x002638C4 and stack-restoring delay at 0x002638C8. The following zero word remains executable original ASM through 0x002638D0. Complete original-name GLOBAL native func_002637DC covers all 240 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
     },
     {
       "romStart": 2622676,
@@ -4612,6 +4630,62 @@
       ]
     },
     {
+      "romStart": 2493664,
+      "romEndExclusive": 2493848,
+      "evidence": {
+        "caseId": "attack-e02-row4656-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original body ROM 0x00260CE0..0x00260D98 includes JR ra at 0x00260D90 and stack-restoring delay at 0x00260D94. The following two zero words remain executable original ASM through 0x00260DA0; the original-name GLOBAL native function covers all 184 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
+      },
+      "symbol": "func_00260CE0",
+      "aliases": [],
+      "expectedBytesSha256": "B461CFBCC38F2AF3242CD4A529C2B882E3E126053C3BD2B1A2C005CD375F5A21",
+      "fragments": [
+        {
+          "rowIndex": 4656,
+          "romStart": 2493664,
+          "romEndExclusive": 2493848,
+          "ownerOffset": 0,
+          "bytes": 184,
+          "vramStart": 2149630256,
+          "sectionName": ".ob64.r4656.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00260CE0.s",
+          "sha256": "8DFEE405B38D4841DD345FB75016C4B9387A1ACD1DE012B7D503A7A7194BCB4C"
+        }
+      ]
+    },
+    {
+      "romStart": 2497492,
+      "romEndExclusive": 2497668,
+      "evidence": {
+        "caseId": "attack-e02-row4673-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original body ROM 0x00261BD4..0x00261C84 includes JR ra at 0x00261C7C and stack-restoring delay at 0x00261C80. The following three zero words remain executable original ASM through 0x00261C90. Complete original-name GLOBAL native func_00261BD4 covers all 176 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
+      },
+      "symbol": "func_00261BD4",
+      "aliases": [],
+      "expectedBytesSha256": "1BDB4E4E755B15744ED168DC02FB7F2E5C03C07E456D2AB5FB993C831825EE57",
+      "fragments": [
+        {
+          "rowIndex": 4673,
+          "romStart": 2497492,
+          "romEndExclusive": 2497668,
+          "ownerOffset": 0,
+          "bytes": 176,
+          "vramStart": 2149634084,
+          "sectionName": ".ob64.r4673.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00261BD4.s",
+          "sha256": "FB60A503D6E24A28BAA2E61BDC1460BD7BE3A3FF7EEB58D741DE7866C5564FC4"
+        }
+      ]
+    },
+    {
       "romStart": 2497828,
       "romEndExclusive": 2497916,
       "evidence": {
@@ -4680,6 +4754,34 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_00263400.s",
           "sha256": "04292A1F0D3F737139CC5EE7AD1399ED07129F17639E7773FDF0A3FC6B15B9AF"
+        }
+      ]
+    },
+    {
+      "romStart": 2504668,
+      "romEndExclusive": 2504908,
+      "evidence": {
+        "caseId": "attack-e02-row4727-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original body ROM 0x002637DC..0x002638CC includes JR ra at 0x002638C4 and stack-restoring delay at 0x002638C8. The following zero word remains executable original ASM through 0x002638D0. Complete original-name GLOBAL native func_002637DC covers all 240 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
+      },
+      "symbol": "func_002637DC",
+      "aliases": [],
+      "expectedBytesSha256": "5112377861A4E20A8C2C835719CDF72290866CD9AAF86C8776303545C386B39E",
+      "fragments": [
+        {
+          "rowIndex": 4727,
+          "romStart": 2504668,
+          "romEndExclusive": 2504908,
+          "ownerOffset": 0,
+          "bytes": 240,
+          "vramStart": 2149641260,
+          "sectionName": ".ob64.r4727.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_002637DC.s",
+          "sha256": "37762FB1B2D79675D37000B61973BF79CC1C9707408C07BCE75B5C757AF483FC"
         }
       ]
     },

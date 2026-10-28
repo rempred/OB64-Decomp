@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8AA6130FE902DDCDCD2FBC22B202B050E3EAFBC487B5E1AF861361728781870A",
+  "observationId": "5CF2D79B4DB6D30A1E153E4F8BBFA1EF7B59C8DB753C5156283749A125668D5D",
+  "symbol": "func_002637DC",
+  "authored": {
+    "context": "Complete search/depletion/pop/load/failure behavior in physical244-byte owner; expected callable body240 followed by original executable zero word4.",
+    "effects": [
+      "inline-lifetimes",
+      "body-coverage",
+      "original-terminal-edge"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "65E534FBBA3FC3367CC1F5075532A34F71E907184878956FD81E6959999D30B9",
+      "sourceSha256": "394D8072A46AF74F178071AF4CB2C41D9ED9E55E7C7946D75B9608D9F6DE2FDB"
+    },
+    "label": "inline-free-list-pop-separate-copies",
+    "observedEffect": "PURE_C240, one GLOBAL/default function and section240/alignment4/no native tail. Both retail argument and address copies are restored, with complete callable-body relocation-masked agreement and14 actual relocations. Original4-byte executable suffix still causes full244 comparison to reject one expected-only word.",
+    "parentCandidateId": "97C0D20D18B444097AA2CDDB9476A7AB344F6C9FFEAE2F99E947A98E6EFB846E",
+    "references": [
+      {
+        "path": "build/matching/ae-e02/watch-002637DC-v9.json",
+        "sha256": "D7FEE9CABD12A83EC65F9D601144F30F9F3FC05D9F8AADE4C5F2136B7B78345E"
+      },
+      {
+        "path": "build/matching/ae-e02/watch-002637DC-v8.json",
+        "sha256": "40BE5B32933F0A21014FAAE0758807FFE75F71E8B1A794B68DB299B7778CFCFC"
+      },
+      {
+        "path": "build/matching/ae-e02/coverage-002637DC.json",
+        "sha256": "1E8BD9429671FF49EC7E39B730C10D9D0E2A08A15D51A16770630EC77A101890"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Needs separate Director structural disposition/strict registered terminal-edge admission, installed ordinary providers/all14 real relocations/full244 original ASM custody and whole30 structural/fresh/full-ROM gates. No compiler-padding provenance/reference-absence/runtime-unreachability claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move only the depletion check/address selection/head-pop/return into a static inline helper, assign its return to the same search entry, and retain the original counter/code/key/load stores. Document the measured result."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1282,
+      "sha256": "65E534FBBA3FC3367CC1F5075532A34F71E907184878956FD81E6959999D30B9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "394D8072A46AF74F178071AF4CB2C41D9ED9E55E7C7946D75B9608D9F6DE2FDB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_002637DC-8aa6130fe9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

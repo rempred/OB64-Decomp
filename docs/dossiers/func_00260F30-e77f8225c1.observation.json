@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E77F8225C12730488D38142D8C6FA870F6AAAA5646C35E471E8AC2E10AD6EFFB",
+  "observationId": "8AA309B6A547FC8CE7CFD1457CC1772AA901B163DD5FA5039B3CCEC3F1883D19",
+  "symbol": "func_00260F30",
+  "authored": {
+    "context": "Complete364-byte F30 body spans head208 plus tail156; conditional decode then allocation/copy uses the same saved registers.",
+    "effects": [
+      "control-flow",
+      "block-layout"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "8D9577FBF4012CE5B13CA483DDD41DC61AE6C9F5A4B3A7F6B53D2F5AE2E1A7F7",
+      "sourceSha256": "13CE3C524A82E77CBEB8CDC962BFDE26601B161EB4F1011B9558A539A8AA8823"
+    },
+    "label": "cross-file-copy-tail-before-explicit-join",
+    "observedEffect": "PURE_C native356 is eight bytes short. The argument-failure loop moves after the copy path; the unconditional jump/delay from decode completion to the common copy is absent. Full364 expected body was compared, not just the head208.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e02/watch-00260F30-v1.json",
+        "sha256": "392D878A72001D5D71FA3A3F4554821051A89940B0F39F08C2A5A214788DB616"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Compiled nonmatch: native356 versus364; relocated prefix and branch/layout differences remain.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the final allocation/copy inside the successful argument block, immediately after the conditional decode."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1728,
+      "sha256": "8D9577FBF4012CE5B13CA483DDD41DC61AE6C9F5A4B3A7F6B53D2F5AE2E1A7F7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "13CE3C524A82E77CBEB8CDC962BFDE26601B161EB4F1011B9558A539A8AA8823"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_00260F30-e77f8225c1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

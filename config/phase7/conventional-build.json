@@ -15,10 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7270,
-    "splitOwners": 28,
+    "linkSlices": 7273,
+    "splitOwners": 31,
     "overlayReservations": 19,
-    "retainedPaddingCuts": 11,
+    "retainedPaddingCuts": 14,
     "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
@@ -240,6 +240,54 @@
       "compilerFunctions": [
         {
           "symbol": "func_0025630C",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4656-terminal",
+      "rowIndex": 4656,
+      "romStart": 2493848,
+      "romEndExclusive": 2493856,
+      "edge": "terminal",
+      "sourceSha256": "8DFEE405B38D4841DD345FB75016C4B9387A1ACD1DE012B7D503A7A7194BCB4C",
+      "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00260CE0",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4673-terminal",
+      "rowIndex": 4673,
+      "romStart": 2497668,
+      "romEndExclusive": 2497680,
+      "edge": "terminal",
+      "sourceSha256": "FB60A503D6E24A28BAA2E61BDC1460BD7BE3A3FF7EEB58D741DE7866C5564FC4",
+      "expectedSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00261BD4",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4727-terminal",
+      "rowIndex": 4727,
+      "romStart": 2504908,
+      "romEndExclusive": 2504912,
+      "edge": "terminal",
+      "sourceSha256": "37762FB1B2D79675D37000B61973BF79CC1C9707408C07BCE75B5C757AF483FC",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_002637DC",
           "binding": "GLOBAL",
           "entryEvidence": "owner"
         }

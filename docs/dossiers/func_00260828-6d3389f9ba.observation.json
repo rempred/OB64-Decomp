@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6D3389F9BA2321B47D297161D593033D4AFD401DA79A5FA96FE3DA9372273078",
+  "observationId": "FA745027D4CFCA6EC72AC4F7F09015C52C732C0353648E1A63DF4287743B1254",
+  "symbol": "func_00260828",
+  "authored": {
+    "context": "Complete multi-key resource search; ringLength initialized before the first branch, lower pointer and counters reused across phases, compound-block return macro, final index grouped before pointer addition.",
+    "effects": [
+      "register-allocation",
+      "argument-count-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "1E0C26EEB40BC7008FC953DA404E8C05C4542098E60DF3CC96191D531D18AC15",
+      "sourceSha256": "B52CF9E02F337946088BE5E5A187A8533C5D1364DE7AF170E12F87DC171286C4"
+    },
+    "label": "typed-search-argument-reused-after-code-capture",
+    "observedEffect": "PURE_C native740 has complete relocation-masked agreement using51 actual relocations. The argument stays inA0, the ring bound is copied toT0 in the initial branch delay slot, and the extra move disappears. All four table-check/return branches and complete tail remain present.",
+    "parentCandidateId": "AF89964100B355C6DCA3D075D1E22FCF95F6D11F03C44F1F3C88D2F2C8CA7700",
+    "references": [
+      {
+        "path": "build/matching/ae-e02/watch-00260828-v5.json",
+        "sha256": "3B2E86CD1F33FA72AD5F8901306772DDCC43AFFF4A1BAD58FA1B246BD8506A5A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object diagnostics only; complete30-target canonical linked ownership, relocation, target-byte and exact-ROM gates remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Capture the incoming low16 bits into codeLow for table comparisons, then reuse the incoming SI word for D_80220CA0 and the real pointer-bound calculations. Rename that argument value and explain the measured workaround."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2885,
+      "sha256": "1E0C26EEB40BC7008FC953DA404E8C05C4542098E60DF3CC96191D531D18AC15"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B52CF9E02F337946088BE5E5A187A8533C5D1364DE7AF170E12F87DC171286C4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_00260828-6d3389f9ba.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

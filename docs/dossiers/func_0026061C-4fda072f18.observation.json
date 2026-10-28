@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4FDA072F182E0CF66F10F887735195CEEBDF090A506CC710E62AD615E4C11A9D",
+  "observationId": "9359548F9A1F7A5A9093170EE0504DF4ABB1BE377CE611F9CA20AE90DD71F482",
+  "symbol": "func_0026061C",
+  "authored": {
+    "context": "Complete524-byte resource search with shared ring/table pointer, reused counters/flags, grouped final index, and named capacity. This source differs from the compound-block successor only in the return macro wrapper and explanatory comment.",
+    "effects": [
+      "register-allocation",
+      "loop-note-weighting"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "5BCAF02EA061E5180F48F987B3A724D23DB3F5BDF51BDFB68A6EB42F8F51E235",
+      "sourceSha256": "252642F2727BE045478382BE6BCE35A6F7E1EA68438BE2B3CD7566F4E5000FBE"
+    },
+    "label": "return-macro-do-while-zero-baseline",
+    "observedEffect": "PURE_C native524 has12 register-field differences after51 emitted relocation operands are masked: key usesT3 and capacityT2. Authenticated same-source flow has key pseudo72:11 weighted refs/live57; capacity80:13/live52. Global allocation orders80 before72, assigning10 then11.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e02/watch-0026061C-v8.json",
+        "sha256": "5A22390A0DAD37970ED76B6E986A647F7484CD5162008381E493D302D68B07AA"
+      },
+      {
+        "path": "build/matching/ae-e02/probe-0026061C-v8.json",
+        "sha256": "DDB0AB5F38BB9879EB79A85F22A855FF03CFA54D546B59030ECD74D71C56E8FC"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Key/capacity exchange remains; inactiveASM supplies symbolic-object diagnostics only, with final linked/ownership/full-ROM gates required.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain do { ... } while (0) around the return-only cache macro."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2334,
+      "sha256": "5BCAF02EA061E5180F48F987B3A724D23DB3F5BDF51BDFB68A6EB42F8F51E235"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "252642F2727BE045478382BE6BCE35A6F7E1EA68438BE2B3CD7566F4E5000FBE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-28-func_0026061C-4fda072f18.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
