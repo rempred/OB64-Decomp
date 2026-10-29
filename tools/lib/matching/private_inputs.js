@@ -65,6 +65,11 @@ function capturePrivateInputs(options = {}) {
         records[`tool:${name}`] = {path: resolved, ...fileIdentity(resolved)};
       };
       const local = read('config/local-tools.json'), policy = read('config/source-policy.json');
+      const current = read('build/current/state.json');
+      if (current.verifiedAt) {
+        pin('current-verification', current.verificationReport);
+        pin('current-fresh-lineage', current.freshCompilationReport);
+      }
       pin('compiler', local.compiler);
       pin('preprocessor', policy.preprocessor.path);
       pin('compiler-manifest', policy.matchingCompiler.manifest);

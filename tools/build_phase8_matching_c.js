@@ -19,7 +19,8 @@ const {
   sha256File,
   verifyCompiler,
   verifyPhase7Input,
-  verifyPhase8Output,
+  compareLinkedTargetBytes,
+  loadCanonicalBaserom,
   verifyRuntimeTools,
   writeSourceObjectProofs,
   writeLayout,
@@ -29,6 +30,8 @@ const {
   POLICY_CONFIG_PATH,
   classifyTargetSources,
 } = require('./lib/source_policy');
+const { parseElfFile, sha256Buffer } = require('./lib/phase7_conventional');
+const { withVerificationProfile, measure, targetStage } = require('./lib/verification_profile');
 
 function usage() {
   console.log('Usage: node tools/build_phase8_matching_c.js --output <empty-external-dir> --phase7-output <verified-phase7-dir> --compiler <accepted-cc1.exe> --splat-python <python.exe> --splat-split <split.py> --asm-differ <checkout> [--powershell-runtime-root <pinned-windows-runtime>]');
@@ -56,24 +59,27 @@ function parseArgs() {
   };
 }
 
-function main() {
+function main(profile) {
   const args = parseArgs();
   assertBuildLocations(args.output, args.phase7Output);
-  const phase8 = loadPhase8Model();
-  const runtime = verifyRuntimeTools(phase8.model, args);
-  const compiler = verifyCompiler(phase8, args.compiler);
-  const phase7 = verifyPhase7Input(phase8, args.phase7Output);
-  const sourcePolicy = classifyTargetSources(phase8.targets);
+  const phase8 = measure(profile, 'build-load-model', () => loadPhase8Model());
+  return textContract.withEvidenceProfile(profile, () => require('./lib/compilation_groups').withProducerEvidence(() => construct(phase8, args, profile)));
+}
+function construct(phase8, args, profile) {
+  const runtime = measure(profile, 'build-runtime', () => verifyRuntimeTools(phase8.model, args));
+  const compiler = measure(profile, 'build-compiler-identity', () => verifyCompiler(phase8, args.compiler));
+  const phase7 = measure(profile, 'build-baseline-authentication', () => verifyPhase7Input(phase8, args.phase7Output));
+  const sourcePolicy = measure(profile, 'build-classification', () => classifyTargetSources(phase8.targets));
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
-  const replacement = copyPhase7Objects(
+  const replacement = measure(profile, 'build-copy-prune', () => copyPhase7Objects(
     phase8,
     phase7,
     args.output,
     runtime.tools['mips-kmc-elf-objcopy.exe'].path,
-  );
+  ));
   const compiled = new Map();
   for (const target of phase8.targets) {
-    compiled.set(target.symbol, compileTarget(
+    compiled.set(target.symbol, measure(profile, targetStage('build-compile', target.symbol), () => compileTarget(
       phase8,
       target,
       args.output,
@@ -81,30 +87,24 @@ function main() {
       runtime.tools['mips-kmc-elf-as.exe'].path,
       runtime.tools['mips-kmc-elf-objcopy.exe'].path,
       { classification: classificationBySymbol.get(target.symbol) },
-    ));
+    )));
   }
-  const objectManifest = writeObjectManifest(
+  const objectManifest = measure(profile, 'build-object-manifest', () => writeObjectManifest(
     args.output,
     replacement.linkedObjects,
     phase8,
     replacement.replacements,
     compiled,
-  );
-  const linked = linkPhase8(phase8, args.output, objectManifest, runtime.tools);
-  writeLayout(phase8, phase7, args.output, replacement.replacements);
-  const sourceObjectProofs = writeSourceObjectProofs(phase8, {
+  ));
+  const linked = measure(profile, 'build-link-extract', () => linkPhase8(phase8, args.output, objectManifest, runtime.tools));
+  measure(profile, 'build-layout', () => writeLayout(phase8, phase7, args.output, replacement.replacements));
+  const sourceObjectProofs = measure(profile, 'build-proofs', () => writeSourceObjectProofs(phase8, {
     output: args.output,
     compiled,
     sourcePolicy,
-  });
-  const verification = verifyPhase8Output(phase8, {
-    output: args.output,
-    asmDifferRoot: args.asmDifferRoot,
-    splatPython: args.splatPython,
-    objdump: runtime.tools['mips-kmc-elf-objdump.exe'].path,
-    objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'].path,
-    replacements: replacement.replacements,
-  });
+  }));
+  const linkedElf = parseElfFile(linked.elfFile);
+  const baserom = loadCanonicalBaserom(phase8);
 
   const targetReplacements = phase8.targets.map((target) => {
     const compiledTarget = compiled.get(target.symbol);
@@ -127,7 +127,7 @@ function main() {
         preservedTargetChunkSections: ownerReplacement.preservedTargetChunkSections,
       };
     });
-    const verifiedTarget = verification.targets.find((item) => item.symbol === target.symbol);
+    const linkedTarget = compareLinkedTargetBytes(target, linkedElf, baserom);
     return {
       symbol: target.symbol,
       rowIndex: target.rowIndex,
@@ -166,7 +166,7 @@ function main() {
       objectTextSha256: compiledTarget.textSha256,
       objectTextOwners: compiledTarget.textOwners,
       splitContract: compiledTarget.splitContract,
-      linkedTextSha256: verifiedTarget.textSha256,
+      linkedTextSha256: linkedTarget.linkedTargetSha256,
       compilerTextFunctions: compiledTarget.compilerTextFunctions,
       relocations: compiledTarget.relocations,
       auxiliarySections: compiledTarget.auxiliarySections,
@@ -190,8 +190,8 @@ function main() {
     }
   }
   const report = {
-    schemaVersion: 7,
-    status: 'pass',
+    schemaVersion: 8,
+    status: 'constructed',
     generator: 'tools/build_phase8_matching_c.js',
     acceptedInputs: {
       logicalFunctionConfig: phase8.logicalFunctionConfigIdentity,
@@ -237,7 +237,6 @@ function main() {
       bytes: sourcePolicy.bytes,
       targets: sourcePolicy.targets,
     },
-    sourceObjectEvidence: verification.sourceObjectEvidence,
     basePhase7: phase7.identity,
     targetReplacements,
     objects: {
@@ -250,14 +249,19 @@ function main() {
       responseSha256: sha256File(linked.responseFile),
       elfReportSha256: sha256File(linked.elfReportFile),
     },
-    verification,
+    outputs: Object.fromEntries([
+      ['elf', 'phase8.elf'], ['map', 'phase8.map'], ['rom', 'phase8.us_rev0.z64'],
+      ['layout', 'layout.json'], ['elfReport', 'phase8.elf-report.json'], ['objectManifest', 'objects/manifest.json'],
+    ].map(([name, relative]) => [name, { bytes: fs.statSync(path.join(args.output, relative)).size, sha256: sha256File(path.join(args.output, relative)) }])),
   };
   textContract.publishCompactReport(path.join(args.output, 'build-report.json'), report);
-  console.log(`Phase 8 matching C build: PASS (${verification.outputs.rom.sha256})`);
+  console.log(`Construction report SHA-256: ${sha256Buffer(Buffer.from(JSON.stringify(report, null, 2) + '\n'))}`);
+  console.log(`Phase 8 construction: BUILT / UNVERIFIED (${report.outputs.rom.sha256})`);
   console.log(`Targets: ${phase8.targets.map((target) => target.symbol).join(', ')}`);
   console.log(`ELF: ${linked.elfFile}`);
   console.log(`Map: ${linked.mapFile}`);
   console.log(`ROM: ${linked.romFile}`);
 }
 
-main();
+if (require.main === module) withVerificationProfile(process.argv.includes('--profile'), 'build-phase8', main);
+module.exports = { construct };

@@ -1095,6 +1095,13 @@ function assertBuildPathSeparation(output, phase7Output) {
 
 function assertBuildLocations(output, phase7Output) {
   assertBuildPathSeparation(output, phase7Output);
+  for (let current = path.resolve(output); ; current = path.dirname(current)) {
+    if (fs.existsSync(current)) {
+      const stat = fs.lstatSync(current);
+      if (!stat.isDirectory() || stat.isSymbolicLink()) fail('fresh build path is not a regular directory');
+    }
+    if (path.dirname(current) === current) break;
+  }
   if (fs.existsSync(output) && fs.readdirSync(output).length !== 0) fail('Phase 8 build output must be absent or empty');
   ensureDir(output);
 }
@@ -1929,6 +1936,9 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   const assemblerObjectFile = physicalInterface(target) || target.retainedLiteralReferences || target.auxiliaryProjection || targetTextOwners(target).length > 1
     ? path.join(objectRoot, target.symbol + '.assembler-object.o')
     : proofObjectFile;
+  for (const file of new Set([compilerAssembly, linkedAssembly, objectFile, proofObjectFile, assemblerObjectFile])) {
+    if (fs.existsSync(file)) fail('fresh compiler output already exists: ' + target.symbol);
+  }
   const sourceRelative = safeRelative(target.source, 'target source');
   const compilerInputFile = resolveRelative(output, sourceRelative, 'compiler input');
   ensureDir(path.dirname(compilerInputFile));
@@ -2206,7 +2216,18 @@ function fileIdentity(output, relative, label) {
   };
 }
 
+let activeIndependentProof = null;
 function deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, sharedLinkContext = null) {
+  const active = activeIndependentProof;
+  if (active && active.phase8 === phase8 && active.target === target && path.resolve(output) === active.output
+      && classification.digest === active.classificationDigest) {
+    // Only an independently derived in-flight proof can seed this scope. A
+    // validator may request reconstruction again, but cannot supply its authority.
+    return { proof: JSON.parse(active.bytes), proofBytes: Buffer.from(active.bytes) };
+  }
+  return deriveSourceObjectProofUncached(phase8, target, output, classification, linkedElf, canonicalBaserom, sharedLinkContext);
+}
+function deriveSourceObjectProofUncached(phase8, target, output, classification, linkedElf, canonicalBaserom, sharedLinkContext = null) {
   require('./active_targets').validateRetainedAuxiliaryComposition(target);
   if (sharedLinkContext && (sharedLinkContext.elf !== linkedElf || sharedLinkContext.canonicalBaserom !== canonicalBaserom)) fail('shared source proof link inputs differ');
   validateTargetClassification(target, classification);
@@ -2687,6 +2708,8 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
   return actual;
 }
 
+const verifiedSourceProofs = new WeakMap();
+const verifiedOutputs = new WeakMap();
 function verifySourceObjectProofs(phase8, options) {
   const output = path.resolve(options.output);
   const sourcePolicy = classifyTargetSources(phase8.targets, { profile: options.profile });
@@ -2695,18 +2718,31 @@ function verifySourceObjectProofs(phase8, options) {
   const canonicalBaserom = options.canonicalBaserom || loadCanonicalBaserom(phase8);
   const proofLinkContext = options.linkContext || textContract.linkContext(output, canonicalBaserom, linkedElf);
   const records = [];
+  const representations = new Map();
+  const layout = readJson(path.join(output, 'layout.json'));
+  const members = compilationGroups.manifestMembers(readJson(path.join(output, 'objects/manifest.json')).linkedObjects, phase8);
   for (const target of phase8.targets) {
     const classification = classificationBySymbol.get(target.symbol);
     const derive = () => deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, proofLinkContext);
     const derived = options.profile ? options.profile.measure(targetStage('source-proof', target.symbol), derive) : derive();
+    const representation = { textContract: derived.proof.textContract, objectEvidence: derived.proof.objectEvidence, linkEvidence: derived.proof.linkEvidence };
+    textContract.validateRecords(layout.phase8MatchingCTargets?.find(record => record.symbol === target.symbol), representation, 'layout');
+    textContract.validateRecords(members.find(record => record.targetSymbol === target.symbol && record.ownerKind === 'matching-c-target'),
+      { textContract: representation.textContract, objectEvidence: representation.objectEvidence }, 'manifest');
+    representations.set(target.symbol, { representationSha256: textContract.representationDigest(representation),
+      objectRepresentationSha256: textContract.representationDigest(representation, false) });
     const proofRelative = 'generated/c/' + target.symbol + '.source-object-proof.json';
     const proofFile = resolveRelative(output, proofRelative, 'source-to-object proof');
     if (!fs.existsSync(proofFile)) fail('source-to-object proof is missing: ' + target.symbol);
     const descriptor = { path: proofRelative, bytes: derived.proofBytes.length, sha256: sha256Buffer(derived.proofBytes) };
-    textContract.withSourceObjectProof(output, target, { ...derived.proof.target, proof: descriptor }, (proof, bytes) => {
-      validateSourceObjectProofBytes(bytes, derived.proofBytes);
-      textContract.validateRecords(proof, { textContract: derived.proof.textContract, objectEvidence: derived.proof.objectEvidence, linkEvidence: derived.proof.linkEvidence }, 'derived proof');
-    });
+    if (activeIndependentProof) fail('nested independent proof scope');
+    activeIndependentProof = { phase8, target, output, classificationDigest: classification.digest, bytes: Buffer.from(derived.proofBytes) };
+    try {
+      textContract.withSourceObjectProof(output, target, { ...derived.proof.target, proof: descriptor }, (proof, bytes) => {
+        validateSourceObjectProofBytes(bytes, derived.proofBytes);
+        textContract.validateRecords(proof, representation, 'derived proof');
+      });
+    } finally { activeIndependentProof = null; }
     records.push({
       symbol: target.symbol,
       sourceClass: classification.class,
@@ -2726,7 +2762,7 @@ function verifySourceObjectProofs(phase8, options) {
     });
   }
   if (!options.linkContext) textContract.finishLinkContext(proofLinkContext);
-  return {
+  const result = {
     identity: phase8.toolchain.identity,
     sourcePolicy: {
       config: { path: normalizePath(path.relative(ROOT, POLICY_CONFIG_PATH)), sha256: sha256File(POLICY_CONFIG_PATH) },
@@ -2746,6 +2782,8 @@ function verifySourceObjectProofs(phase8, options) {
     },
     targets: records,
   };
+  verifiedSourceProofs.set(result, { phase8, output, representations });
+  return result;
 }
 
 function writeObjectManifest(output, linkedObjects, phase8, replacements, compiledBySymbol) {
@@ -3921,12 +3959,14 @@ function verifyInteriorGroupMapOwners(phase8, mapText) {
   }
 }
 
-function verifyObjectManifest(output, phase8) {
+function verifyObjectManifest(output, phase8, sourceProofs = null) {
   const manifestFile = path.join(output, 'objects', 'manifest.json');
   if (!fs.existsSync(manifestFile)) fail('Phase 8 object manifest is missing');
   const manifest = readJson(manifestFile);
   const memberObjects = compilationGroups.manifestMembers(manifest.linkedObjects, phase8);
-  for (const target of phase8.targets) {
+  const proofScope = verifiedSourceProofs.get(sourceProofs);
+  if (sourceProofs && (!proofScope || proofScope.phase8 !== phase8 || proofScope.output !== path.resolve(output))) fail('manifest source proof scope is foreign');
+  for (const target of proofScope ? [] : phase8.targets) {
     const record = memberObjects.find((entry) => entry.targetSymbol === target.symbol && entry.ownerKind === 'matching-c-target');
     textContract.validateRecords(record, textContract.recordsForTarget(target, output), 'manifest');
   }
@@ -4058,7 +4098,32 @@ function phase8VerificationModel(phase8) {
 }
 
 function verifyPhase8Output(phase8, options) {
-  return textContract.withEvidenceProfile(options.profile, () => verifyPhase8OutputProfiled(phase8, options));
+  return textContract.withEvidenceProfile(options.profile, () => compilationGroups.withProducerEvidence(() => verifyPhase8OutputProfiled(phase8, options)));
+}
+// Bind the actual linked file payload to the extracted image. Hashing an image
+// alone cannot establish which ELF supplied it. Existing owner checks remain.
+function verifyElfRomBinding(model, elf, rom) {
+  if (!Buffer.isBuffer(rom) || rom.length !== model.config.rom.bytes) fail('ELF/ROM image size drift');
+  let end = 0;
+  const slices = [...model.slices].sort((a, b) => a.romStart - b.romStart);
+  if (elf.programHeaders.filter(header => header.type === 1 && header.fileSize > 0).length !== slices.length) fail('ELF/ROM unexpected load payload');
+  for (const slice of slices) {
+    if (slice.romStart !== end || !Number.isSafeInteger(slice.bytes) || slice.bytes <= 0) fail('ELF/ROM coverage gap or overlap');
+    const sections = elf.sections.filter(section => section.name === slice.sectionName);
+    const loads = elf.programHeaders.filter(header => header.type === 1 && header.paddr === slice.romStart
+      && header.vaddr === slice.vramStart && header.fileSize === slice.bytes && header.memorySize === slice.bytes);
+    if (sections.length !== 1 || loads.length !== 1) fail('ELF/ROM slice mapping is ambiguous');
+    const section = sections[0], load = loads[0];
+    if (section.type !== 1 || section.size !== slice.bytes || section.address !== slice.vramStart
+        || !(section.flags & 2) || Boolean(section.flags & 4) !== Boolean(slice.executable) || load.flags !== (slice.executable ? 5 : 4)
+        || section.offset !== load.offset || section.offset < 0 || section.offset + section.size > elf.buffer.length
+        || !elf.buffer.subarray(section.offset, section.offset + section.size).equals(rom.subarray(end, end + slice.bytes))) {
+      fail('ELF/ROM payload differs: ' + slice.sectionName);
+    }
+    end += slice.bytes;
+  }
+  if (end !== rom.length) fail('ELF/ROM coverage is incomplete');
+  return { schemaVersion: 1, status: 'pass', bytes: end, slices: slices.length };
 }
 function verifyPhase8OutputProfiled(phase8, options) {
   const measure = options.profile ? options.profile.measure : (_name, callback) => callback();
@@ -4082,7 +4147,10 @@ function verifyPhase8OutputProfiled(phase8, options) {
   verifyRecordedSharedAuxiliaryScript(phase8, output);
   verifyInteriorGroupMapOwners(phase8, mapText);
   const mapResult = verifyMap(outputModel, mapText);
-  const romResult = measure('verify-rom', () => verifyRom(phase8.model, fs.readFileSync(files.rom)));
+  const romBytes = fs.readFileSync(files.rom);
+  if (!romBytes.equals(canonicalBaserom)) fail('complete ROM bytes differ from canonical baserom');
+  const elfRomBinding = measure('verify-elf-rom-binding', () => verifyElfRomBinding(outputModel, elf, romBytes));
+  const romResult = measure('verify-rom', () => verifyRom(phase8.model, romBytes));
   const sourceObjectEvidence = measure('verify-source-object-proofs', () => verifySourceObjectProofs(phase8,
     { output, linkedElf: elf, canonicalBaserom, linkContext: textLinkContext, profile: options.profile }));
   const replacements = options.replacements || new Map([...targetsByChunk(phase8).entries()].map(([chunkIndex, chunkTargets]) => [chunkIndex, {
@@ -4149,10 +4217,10 @@ function verifyPhase8OutputProfiled(phase8, options) {
     }))),
   }]));
   const targetResults = [];
-  const textLayout = readJson(files.layout);
+  const proofScope = verifiedSourceProofs.get(sourceObjectEvidence);
+  if (!proofScope || proofScope.phase8 !== phase8 || proofScope.output !== output) fail('verified source proof scope missing');
   for (const target of phase8.targets) {
-    const representation = textContract.recordsForTarget(target, output, textLinkContext);
-    textContract.validateRecords(textLayout.phase8MatchingCTargets?.find((record) => record.symbol === target.symbol), representation, 'layout');
+    const representation = proofScope.representations.get(target.symbol);
     const cObject = path.join(output, compilationGroups.objectPath(target));
     const ownerFiles = targetTextOwners(target).map((owner) => {
       const replacement = replacements.get(owner.chunkIndex);
@@ -4473,11 +4541,8 @@ function verifyPhase8OutputProfiled(phase8, options) {
     const sourceObjectTarget = sourceObjectEvidence.targets.find((record) => record.symbol === target.symbol);
     if (!sourceObjectTarget) fail('verified source-to-object target record is missing: ' + target.symbol);
 
-    textContract.withSourceObjectProof(output, target, sourceObjectTarget, proof => {
-      textContract.validateRecords(proof, representation, 'verification/proof equality');
-    });
     targetResults.push({
-      representationSha256: textContract.representationDigest(representation),
+      representationSha256: representation.representationSha256,
       symbol: target.symbol,
       source: target.source,
       originalAssemblyFallback: target.originalAssembly,
@@ -4510,11 +4575,11 @@ function verifyPhase8OutputProfiled(phase8, options) {
 
   const layout = readJson(files.layout);
   verifyPhase8Layout(phase8, layout, replacements);
-  const objectManifest = verifyObjectManifest(output, phase8);
+  const objectManifest = verifyObjectManifest(output, phase8, sourceObjectEvidence);
   for (const target of phase8.targets.filter(t=>t.atomicText)) atomic.verifyInputReferences(target,
     readJson(path.join(output,'objects/manifest.json')).linkedObjects.map(record=>resolveRelative(output,record.path,'atomic verified input object')),
     path.join(output,compilationGroups.objectPath(target)));
-  const asmDiffer = phase8.targets.map((target) => measure(targetStage('verify-target', target.symbol), () => runTargetAsmDiffer(phase8, target, {
+  const asmDiffer = options.decodedDiagnostics === true ? phase8.targets.map((target) => measure(targetStage('verify-target', target.symbol), () => runTargetAsmDiffer(phase8, target, {
     output,
     asmDifferRoot: options.asmDifferRoot,
     python: options.splatPython,
@@ -4522,9 +4587,9 @@ function verifyPhase8OutputProfiled(phase8, options) {
     objcopy: options.objcopy,
     canonicalBaserom,
     linkContext: textLinkContext,
-  })));
+  }))) : null;
   const verification = {
-    schemaVersion: 6,
+    schemaVersion: 7,
     status: 'pass',
     counts: {
       primaryRows: phase8.model.rows.length,
@@ -4565,9 +4630,13 @@ function verifyPhase8OutputProfiled(phase8, options) {
       originalAssemblyTargetsNotLinked: true,
       originalAssemblyAuxiliaryTablesNotLinked: true,
     },
-    asmDiffer,
+    elfRomBinding,
+    decodedDiagnostics: asmDiffer === null
+      ? { status: 'not-run', reason: 'raw-exact-with-elf-rom-binding' }
+      : { status: 'pass', targets: asmDiffer },
   };
   measure('verify-linked-view-final-identity', () => textContract.finishLinkContext(textLinkContext));
+  verifiedOutputs.set(verification, { output, proofScope });
   return verification;
 }
 
@@ -4580,11 +4649,13 @@ function validateRecordedPhase8BuildProfiled(phase8, options) {
   if (!sameJson(buildReport?.acceptedInputs?.logicalFunctionConfig, phase8.logicalFunctionConfigIdentity)) fail('recorded logical function registry drift');
   if (!sameJson(buildReport?.acceptedInputs?.compilationGroupConfig, phase8.groupConfigIdentity)) fail('recorded compilation group registry drift');
   const verification = options.verification;
-  if (!buildReport || buildReport.schemaVersion !== 7 || buildReport.status !== 'pass'
-      || buildReport.verification?.schemaVersion !== 6 || buildReport.verification.status !== 'pass') {
+  const construction = buildReport?.schemaVersion === 8 && buildReport.status === 'constructed';
+  if (!(construction || buildReport?.schemaVersion === 7 && buildReport.status === 'pass'
+      && buildReport.verification?.schemaVersion === 6 && buildReport.verification.status === 'pass')
+      || construction && (buildReport.verification !== undefined || buildReport.sourceObjectEvidence !== undefined)) {
     fail('recorded Phase 8 build report did not pass');
   }
-  if (!verification || verification.schemaVersion !== 6 || verification.status !== 'pass') {
+  if (!verification || verification.schemaVersion !== 7 || verification.status !== 'pass') {
     fail('current Phase 8 verification result did not pass');
   }
   verifyRecordedSharedAuxiliaryScript(phase8, output);
@@ -4592,6 +4663,8 @@ function validateRecordedPhase8BuildProfiled(phase8, options) {
   if (typeof options.compilerSha256 !== 'string' || buildReport.compiler.sha256 !== options.compilerSha256) {
     fail('recorded KMC compiler identity drift');
   }
+  if (options.compiler && !sameJson(buildReport.compiler, { ...options.compiler, usedToBuildTarget: true })) fail('recorded compiler invocation contract drift');
+  if (options.runtime && !sameJson(buildReport.runtime, pathIndependentRuntime(options.runtime))) fail('recorded runtime identity drift');
   const recordedToolchain = buildReport.acceptedInputs && buildReport.acceptedInputs.gnuBinutils26;
   const recordedLinkage = buildReport.acceptedInputs && buildReport.acceptedInputs.linkageConfig;
   const recordedMultiOwner = buildReport.acceptedInputs && buildReport.acceptedInputs.multiOwnerConfig;
@@ -4613,13 +4686,14 @@ function validateRecordedPhase8BuildProfiled(phase8, options) {
       || recordedPolicy.path !== normalizePath(path.relative(ROOT, POLICY_CONFIG_PATH))
       || recordedPolicy.bytes !== fs.statSync(POLICY_CONFIG_PATH).size
       || recordedPolicy.sha256 !== sha256File(POLICY_CONFIG_PATH)
-      || JSON.stringify(buildReport.sourceObjectEvidence) !== JSON.stringify(verification.sourceObjectEvidence)) {
+      || !construction && JSON.stringify(buildReport.sourceObjectEvidence) !== JSON.stringify(verification.sourceObjectEvidence)) {
     fail('recorded toolchain, linkage contract, or source-to-object evidence drift');
   }
   const recordedSources = buildReport.acceptedInputs && buildReport.acceptedInputs.cSources;
   const recordedDependencies = buildReport.acceptedInputs && buildReport.acceptedInputs.cDependencies;
   const recordedTargets = buildReport.targetReplacements;
-  const textLinkContext = textContract.linkContext(output, loadCanonicalBaserom(phase8));
+  const independent = verifiedOutputs.get(verification);
+  if (!independent || independent.proofScope.phase8 !== phase8 || independent.output !== output) fail('recorded build requires independent verification from this invocation');
   if (!Array.isArray(recordedSources) || recordedSources.length !== phase8.targets.length
       || !Array.isArray(recordedDependencies)
       || !Array.isArray(recordedTargets) || recordedTargets.length !== phase8.targets.length) {
@@ -4634,14 +4708,24 @@ function validateRecordedPhase8BuildProfiled(phase8, options) {
   }
   for (const target of phase8.targets) {
     const source = recordedSources.find((record) => record.path === target.source);
-    const { replacement, verified: embeddedVerified } = textContract.buildTargetRecords(buildReport, target, phase8.targets.length);
-    const representation = textContract.recordsForTarget(target, output, textLinkContext);
-    textContract.withSourceObjectProof(output, target, replacement, proof => {
-      textContract.validateRecords(proof, representation, 'build report');
-      if (embeddedVerified.representationSha256 !== textContract.representationDigest(representation)) fail('recorded independent representation digest drift');
-    });
+    const { replacement, verified: embeddedVerified } = textContract.buildTargetRecords(buildReport, target, phase8.targets.length,
+      construction ? verification : buildReport.verification);
+    const representation = independent.proofScope.representations.get(target.symbol);
+    if (embeddedVerified.representationSha256 !== representation.representationSha256) fail('recorded independent representation digest drift');
     const verifiedTarget = textContract.uniqueReportTarget(verification.targets, target.symbol, phase8.targets.length);
-    if (verifiedTarget.representationSha256 !== textContract.representationDigest(representation)) fail('current independent representation digest drift');
+    if (verifiedTarget.representationSha256 !== representation.representationSha256) fail('current independent representation digest drift');
+    textContract.withSourceObjectProof(output, target, verifiedTarget.sourceObjectEvidence, proof => {
+      for (const [pathField, hashField, artifact] of [
+        ['sourceObject', 'sourceObjectSha256', proof.artifacts.object],
+        ['cObject', 'cObjectSha256', proof.artifacts.linkedObjectAfterAncillaryRemoval],
+        ['compilerAssembly', 'compilerAssemblySha256', proof.artifacts.compilerAssembly],
+        ['linkedAssembly', 'linkedAssemblySha256', proof.artifacts.sectionAdjustedAssembly],
+      ]) if (replacement[pathField] !== artifact.path || replacement[hashField] !== artifact.sha256) fail('recorded producer artifact drift');
+      if (replacement.objectTextSha256 !== proof.finalObject.textSha256
+          || !sameJson(replacement.objectTextOwners, proof.finalObject.textOwners)
+          || !sameJson(replacement.relocations, proof.finalObject.loadRelevantRelocationsNormalized)
+          || replacement.linkedTextSha256 !== verifiedTarget.textSha256) fail('recorded producer text or relocation drift');
+    });
     const expectedInteriors = interiorRecords([target]).map((record) => ({ ...record,
       binarySha256: sha256File(path.join(output, record.binaryRelative)),
       objectSha256: sha256File(path.join(output, record.objectRelative)) }));
@@ -4822,22 +4906,19 @@ function validateRecordedPhase8BuildProfiled(phase8, options) {
     }
   }
   for (const name of ['elf', 'map', 'rom', 'layout', 'elfReport', 'objectManifest']) {
-    if (!buildReport.verification.outputs[name]
-        || buildReport.verification.outputs[name].sha256 !== verification.outputs[name].sha256) {
+    const outputs = construction ? buildReport.outputs : buildReport.verification.outputs;
+    if (!outputs[name] || outputs[name].sha256 !== verification.outputs[name].sha256
+        || outputs[name].bytes !== verification.outputs[name].bytes) {
       fail(`recorded Phase 8 ${name} identity drift`);
     }
   }
-  if (buildReport.verification.outputs.codeRegionSha256 !== verification.outputs.codeRegionSha256) {
+  if (!construction && buildReport.verification.outputs.codeRegionSha256 !== verification.outputs.codeRegionSha256) {
     fail('recorded Phase 8 code-region identity drift');
   }
-  if (JSON.stringify(buildReport.verification.targets) !== JSON.stringify(verification.targets)) {
+  if (!construction && JSON.stringify(buildReport.verification.targets) !== JSON.stringify(verification.targets)) {
     fail('recorded Phase 8 target proof drift');
   }
-  if (JSON.stringify(buildReport.verification.asmDiffer) !== JSON.stringify(verification.asmDiffer)) {
-    fail('recorded Phase 8 asm-differ proof drift');
-  }
-  textContract.finishLinkContext(textLinkContext);
-  return { schemaVersion: 6, status: 'pass' };
+  return { schemaVersion: 7, status: 'pass' };
 }
 
 function pathIndependentRuntime(runtime) {
@@ -4850,6 +4931,7 @@ function pathIndependentRuntime(runtime) {
 }
 
 module.exports = {
+  verifyElfRomBinding,
   deriveSourceObjectProof,
   CONFIG_PATH,
   LINKAGE_CONFIG_PATH,

@@ -168,7 +168,8 @@ function openInputSet(manifestFile, options = {}) {
       const state = read('build/current/state.json'), accepted = manifest.accepted;
       if (!directories.has(key(state.output || root)) || directories.get(key(state.output)).storage !== 'reference') fail('accepted output reference census missing');
       inputs.resolve(state.output);
-      if (state.schemaVersion !== 6 || !state.verifiedAt || state.fingerprint !== accepted.fingerprint
+      if (![6, 7].includes(state.schemaVersion) || state.schemaVersion === 7 && state.status !== 'verified'
+          || !state.verifiedAt || state.fingerprint !== accepted.fingerprint
           || state.baselineFingerprint !== accepted.baselineFingerprint || state.output !== accepted.output
           || JSON.stringify(state.buildReport) !== JSON.stringify(accepted.buildReport)
           || state.verificationSha256 !== accepted.verificationSha256 || state.freshCompilationSha256 !== accepted.freshCompilationSha256) fail('accepted state binding drift');
@@ -244,7 +245,10 @@ function captureInputSet(output) {
   }
   for (const directory of ['config', 'src', 'include', 'docs/dossiers', 'docs/matching-c', 'docs/archive/matching-c-candidates']) enroll(path.join(ROOT, directory), 'copy');
   for (const target of prepared.phase8.targets) if (!files.has(key(path.resolve(ROOT, target.source)))) enroll(path.dirname(path.resolve(ROOT, target.source)), 'copy');
-  for (const file of ['build/current/state.json', 'build/current/baseline-state.json', state.verificationReport, state.freshCompilationReport]) enroll(path.resolve(ROOT, file), 'copy');
+  for (const file of ['build/current/state.json', 'build/current/baseline-state.json', state.verificationReport, state.freshCompilationReport]) {
+    const absolute = path.resolve(ROOT, file);
+    enroll(absolute, shown(absolute) ? 'copy' : 'reference');
+  }
   for (const directory of ['asm/original/rev0', 'tools/lib']) enroll(path.join(ROOT, directory), 'reference');
   for (const file of ['store.py','schema.sql','private_guard.py']) enroll(path.join(ROOT,'tools/matching_workbench',file),'reference');
   for (const name of fs.readdirSync(path.join(ROOT, 'tools'))) if (/\.(js|py)$/.test(name)) enroll(path.join(ROOT, 'tools', name), 'reference');

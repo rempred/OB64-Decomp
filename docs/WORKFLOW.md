@@ -679,7 +679,8 @@ After every assigned wave target is ready, run the complete verifier once:
 node tools/verify.js
 ```
 
-The verifier builds CURRENT when needed, independently classifies sources, and then:
+For changed inputs the verifier launches one fresh build in an empty output directory,
+independently classifies sources, and then:
 
 1. authenticates the baserom and pinned toolchain;
 2. resolves the accepted structural owner uniquely;
@@ -690,14 +691,28 @@ The verifier builds CURRENT when needed, independently classifies sources, and t
 7. compares the final linked target bytes with the baserom; and
 8. compares the complete rebuilt ROM byte-for-byte with the baserom.
 
+The independently checked source/object/link lineage, ELF-file-to-ROM payload binding,
+complete linker-input census and final input/output seals establish freshness without a
+second compiler pass. Construction reports are unverified; only the verified companions
+and final CURRENT state establish acceptance. `tools/build.js` produces construction and
+does not publish acceptance. Decoded instruction comparisons remain development/mismatch
+diagnostics; ordinary success records that they were not run, without inventing a score.
+
+Build/status consumers may report unchanged accepted state without claiming a fresh run.
+An actual verification request launches the fresh chain; saved companions cannot mint its
+freshness. Use `node tools/verify.js --fresh --profile` for an explicit fresh-build measurement. Measure the whole
+normal command, including preparation, build, independent checks and publication; never
+report a reuse hit as a fresh build. The engineering goal is under five minutes. Initial
+missing-baseline setup and the structural audit are separate costs, not omitted from their
+own reported totals.
+
 Confirm every assigned wave target is present and `PURE_C` in this run's
 authoritative source-policy report. Use that same report and final ownership,
 placement, relocation, target-byte, and complete-ROM evidence for all wave members.
 The normal complete command reports `RESULT: EXACT BASELINE`; that result alone
 does not establish the requested source class of every wave member.
 
-Do not loop `verify.js --target` over wave members. Each call repeats full-ROM
-verification and fresh compilation of all active C replacements.
+Do not loop `verify.js --target` over wave members. One final report covers the complete wave.
 Do not use global `--require-pure` when the accepted baseline contains legitimate hybrids.
 For a standalone one-function wave, `verify.js --target <symbol> --require-pure`
 can replace the one final command; it must not be followed by a duplicate full verifier.

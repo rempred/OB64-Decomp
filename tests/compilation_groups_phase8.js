@@ -7,8 +7,10 @@ const {prepareContext,ensureBaseline}=require('../tools/lib/current_workflow');
 const {resolveAcceptedRow}=require('../tools/lib/active_targets');
 const {classifyTargetSources}=require('../tools/lib/source_policy');
 const {prepareCompilerSession}=require('../tools/lib/matching/compiler');
+const {withVerificationProfile,targetStage}=require('../tools/lib/verification_profile');
 function main(){
- const context=prepareContext(),baseline=ensureBaseline(context),session=prepareCompilerSession({context});
+ const context=prepareContext(),baselineIndex=process.argv.indexOf('--phase7-output');
+ const baseline=baselineIndex<0?ensureBaseline(context):{phase7Output:path.resolve(process.argv[baselineIndex+1])},session=prepareCompilerSession({context});
  const evidenceRoot=path.join(p7.ROOT,'build/compilation-groups-implementation-r1');fs.mkdirSync(evidenceRoot,{recursive:true});
  const root=fs.mkdtempSync(path.join(evidenceRoot,'pose-'));
  const workRoot='C:/Users/Joe/.codex/ob64-compilation-groups-implementation-20260906-r1';fs.mkdirSync(workRoot,{recursive:true});
@@ -41,20 +43,39 @@ function main(){
  const phase8={...context.phase8,targets:active,target:targets[0],compilationGroups:[group],compatibility:[]};
  for(const target of active)target.nativeEmptyBssObjects=[g.objectPath(art),g.objectPath(targets[0])];
  const policy=classifyTargetSources(active);assert.equal(policy.counts.PURE_C,6);
- const phase7=p8.verifyPhase7Input(phase8,baseline.phase7Output),runtime=session.runtime;
- const replacement=p8.copyPhase7Objects(phase8,phase7,output,runtime.tools['mips-kmc-elf-objcopy.exe'].path);
- const compiled=new Map(active.map((target,index)=>[target.symbol,p8.compileTarget(phase8,target,output,context.localTools.compiler,
-  runtime.tools['mips-kmc-elf-as.exe'].path,runtime.tools['mips-kmc-elf-objcopy.exe'].path,{classification:policy.targets[index]})]));
- const manifest=p8.writeObjectManifest(output,replacement.linkedObjects,phase8,replacement.replacements,compiled);
+ const runtime=session.runtime;
+ const profileMessages=[];
+ withVerificationProfile(true,'native-construction-fixture',profile=>tc.withEvidenceProfile(profile,()=>g.withProducerEvidence(()=>
+  require('../tools/build_phase8_matching_c').construct(phase8,{...context.localTools,output,phase7Output:baseline.phase7Output},profile))),
+  {log:message=>{profileMessages.push(message);console.log(message);}});
+ const profileFile=profileMessages.find(message=>message.startsWith('Timing profile: '))?.slice('Timing profile: '.length);
+ assert(profileFile,'profile-enabled construction did not publish a profile');
+ const profileReport=JSON.parse(fs.readFileSync(profileFile));assert.equal(profileReport.status,'pass');
+ for(const target of active){const stages=profileReport.stages.filter(stage=>stage.name===targetStage('build-compile',target.symbol));
+  assert.equal(stages.length,1);assert.equal(stages[0].count,1);assert.equal(stages[0].failures,0);}
+ const manifest=JSON.parse(fs.readFileSync(path.join(output,'objects/manifest.json')));
  assert.equal(manifest.linkedObjects.filter(record=>record.ownerKind==='matching-c-group').length,1);
- p8.linkPhase8(phase8,output,manifest,runtime.tools);
- p8.writeLayout(phase8,phase7,output,replacement.replacements);
- p8.writeSourceObjectProofs(phase8,{output,compiled,sourcePolicy:policy});
  const verification=p8.verifyPhase8Output(phase8,{output,asmDifferRoot:context.localTools.asmDifferRoot,splatPython:context.localTools.splatPython,
-  objdump:runtime.tools['mips-kmc-elf-objdump.exe'].path,objcopy:runtime.tools['mips-kmc-elf-objcopy.exe'].path,replacements:replacement.replacements});
+  objdump:runtime.tools['mips-kmc-elf-objdump.exe'].path,objcopy:runtime.tools['mips-kmc-elf-objcopy.exe'].path});
+ const buildReport=JSON.parse(fs.readFileSync(path.join(output,'build-report.json')));
+ assert.equal(buildReport.schemaVersion,8);assert.equal(buildReport.status,'constructed');assert.equal(buildReport.verification,undefined);
+ p8.validateRecordedPhase8Build(phase8,{output,buildReport,verification,compilerSha256:buildReport.compiler.sha256});
+ assert.throws(()=>p8.validateRecordedPhase8Build(phase8,{output,buildReport,verification:structuredClone(verification),compilerSha256:buildReport.compiler.sha256}),/independent verification/);
+ const rejectMutation=(relative,change,pattern)=>{const file=path.join(output,relative),before=fs.readFileSync(file);
+  try{fs.writeFileSync(file,change(Buffer.from(before)));assert.throws(()=>p8.verifyPhase8Output(phase8,{output}),pattern);}
+  finally{fs.writeFileSync(file,before);}};
+ const elf=p7.parseElfFile(path.join(output,'phase8.elf')),section=elf.sections.find(s=>s.name===art.sectionName);
+ rejectMutation('phase8.elf',bytes=>{bytes[section.offset]^=1;return bytes;},/ELF\/ROM payload differs/);
+ rejectMutation('phase8.map',bytes=>{const text=bytes.toString();assert(text.includes(g.objectPath(art)+'(.text)'));
+  return text.split('\n').map(line=>line.includes('(.text)')||line.includes('(overhead ')?line.replaceAll(g.objectPath(art),'comparison/original/chunk_'+String(art.chunkIndex).padStart(3,'0')+'.o'):line).join('\n');},/map|owner|contribution/i);
+ rejectMutation(art.source,bytes=>Buffer.concat([bytes,Buffer.from('\n')]),/compiled translation-unit|compilation input|identity/i);
+ const stale=fs.mkdtempSync(path.join(workRoot,'stale-')),staleObject=path.join(stale,g.objectPath(art));fs.mkdirSync(path.dirname(staleObject),{recursive:true});fs.writeFileSync(staleObject,'old object');
+ assert.throws(()=>p8.compileTarget(phase8,art,stale,context.localTools.compiler,runtime.tools['mips-kmc-elf-as.exe'].path,runtime.tools['mips-kmc-elf-objcopy.exe'].path,{classification:policy.targets[0]}),/fresh compiler output already exists/);
  assert(fs.readFileSync(path.join(output,'phase8.us_rev0.z64')).equals(rom));
  assert.equal(verification.targets.length,6);
- const result={status:'pass',output,sourceClass:policy.counts,targets:verification.targets.map(t=>({symbol:t.symbol,bytes:t.bytes})),producerObjects:1};
+ const result={status:'pass',output,sourceClass:policy.counts,targets:verification.targets.map(t=>({symbol:t.symbol,bytes:t.bytes})),producerObjects:1,
+  rejected:['saved verification authority','old ROM/wrong ELF','ASM fallback map custody','compiler input drift','stale object in fresh output'],
+  constructionProfile:{path:profileFile,totalMs:profileReport.totalMs,compileStages:active.map(target=>targetStage('build-compile',target.symbol))}};
  fs.writeFileSync(path.join(root,'report.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));
 }
 main();

@@ -629,13 +629,14 @@ function uniqueReportTarget(records, symbol, count) {
   assertCompactRecord(matches[0]);
   return matches[0];
 }
-function buildTargetRecords(build, target, count) {
-  if (build?.schemaVersion !== 7 || build.status !== 'pass'
-      || build.verification?.schemaVersion !== 6 || build.verification.status !== 'pass') fail('compact build schema drift');
+function buildTargetRecords(build, target, count, verification = build?.verification) {
+  const construction = build?.schemaVersion === 8 && build.status === 'constructed';
+  if (!(construction || build?.schemaVersion === 7 && build.status === 'pass')
+      || verification?.schemaVersion !== (construction ? 7 : 6) || verification.status !== 'pass') fail('compact build schema drift');
   const replacement = uniqueReportTarget(build.targetReplacements, target.symbol, count);
-  const verified = uniqueReportTarget(build.verification.targets, target.symbol, count);
-  const evidence = uniqueReportTarget(build.sourceObjectEvidence?.targets, target.symbol, count);
-  const embedded = uniqueReportTarget(build.verification.sourceObjectEvidence?.targets, target.symbol, count);
+  const verified = uniqueReportTarget(verification.targets, target.symbol, count);
+  const evidence = uniqueReportTarget((construction ? verification.sourceObjectEvidence : build.sourceObjectEvidence)?.targets, target.symbol, count);
+  const embedded = uniqueReportTarget(verification.sourceObjectEvidence?.targets, target.symbol, count);
   assertCompactRecord(verified.sourceObjectEvidence);
   if (!same(evidence, embedded) || !same(evidence, verified.sourceObjectEvidence)
       || !same(proofDescriptor(replacement), proofDescriptor(evidence))
@@ -702,6 +703,16 @@ function readCompactReport(root, relative = 'build-report.json') {
   const value = require('./current_workflow').confinedArtifactContents(root, relative, 'compact report');
   return { report: JSON.parse(value.contents), identity: { bytes: value.bytes, sha256: value.sha256 } };
 }
+// Read adapter for comparison tools. This does not rewrite construction or
+// change its status; new reports require both genuinely bound companions.
+function readVerifiedBuildView(root, phase8) {
+  const { report } = readCompactReport(root);
+  if (report.schemaVersion !== 8) return report;
+  const verified = readCompactReport(root, 'verification.json').report;
+  const fresh = readCompactReport(root, 'fresh-compilation.json').report;
+  require('./current_workflow').validateVerifiedCompanions(report, fresh, verified, root, phase8);
+  return { ...report, verification: verified.verification, sourceObjectEvidence: verified.verification.sourceObjectEvidence };
+}
 function publishCompactReport(file, value) {
   let bytes;
   try { bytes = Buffer.from(JSON.stringify(value, null, 2) + '\n'); }
@@ -726,8 +737,9 @@ function publishCompactReport(file, value) {
 }
 
 module.exports = { nativeSingleOwnerCensus, NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SHA256, exactKeys, same, hash, nativeDescriptor,
+  readVerifiedBuildView,
   buildTargetRecords, representationDigest, assertCompactRecord, uniqueReportTarget, proofDescriptor, withSourceObjectProof, readCompactReport, publishCompactReport,
-  withObjectEvidenceMemo, withEvidenceProfile, objectInputs,
+  withObjectEvidenceMemo, withEvidenceProfile, measureEvidence, objectInputs,
   withObjectArtifactSnapshot, objectArtifactBytes, deriveObjectEvidenceFromSnapshot,
   normalizeNativeTextTail, resolveTextContract, resolveWorkbenchActiveTarget, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,
   linkContext, finishLinkContext: preparedLink.finishLinkContext, ownerEvidence, functionCensus, tailEvidence, nativeObjectAllocationEvidence, nativeLinkedAllocationEvidence,

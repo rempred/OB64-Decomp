@@ -289,3 +289,71 @@ test('compact companions preserve own-derived digests and actual build byte bind
   fs.appendFileSync(path.join(f.root, 'build-report.json'), ' ');
   assert.throws(() => validate()); f.save(); validate();
 });
+
+test('construction requires bound verification and honest single-build lineage', () => {
+  const f = fixture(), workflow = realRequire('./current_workflow');
+  f.phase8.model = { config: { rom: { bytes: 4 } } };
+  const verification = { ...f.report.verification, schemaVersion: 7,
+    elfRomBinding: { schemaVersion: 1, status: 'pass', bytes: 4, slices: 1 },
+    decodedDiagnostics: { status: 'not-run', reason: 'raw-exact-with-elf-rom-binding' } };
+  delete f.report.verification; delete f.report.sourceObjectEvidence;
+  Object.assign(f.report, { schemaVersion: 8, status: 'constructed', compiler: { sha256: 'C'.repeat(64) }, objects: { manifest: { path: 'objects/manifest.json', sha256: 'A'.repeat(64) } } });
+  f.save();
+  assert.equal(run(f).result, false, 'construction alone became CURRENT');
+  assert.throws(() => actualText.buildTargetRecords(f.report, f.phase8.targets[0], 3));
+  const buildReport = actualText.readCompactReport(f.root).identity;
+  const verified = { schemaVersion: 7, status: 'pass', output: '.', buildReport, verification };
+  f.write('verification.json', verified);
+  assert.equal(run(f).result, true);
+  const fresh = { schemaVersion: 7, status: 'pass', mode: 'single-isolated-build', buildReport,
+    emptyOutputAtLaunch: true, inputFingerprint: '1'.repeat(64), baselineFingerprint: '2'.repeat(64), outputSealSha256: '3'.repeat(64),
+    compilerSha256: f.report.compiler.sha256, linkerInputs: f.report.objects.manifest, producers: 3,
+    targets: f.replacements.map(r => ({ symbol: r.symbol, source: r.source, sourceSha256: r.sourceSha256,
+      sourceClass: r.sourceClass, sourcePolicyDigest: r.sourcePolicyDigest, compilationInput: r.compilationInput,
+      sourceObjectProof: r.sourceObjectProof, freshRepresentationSha256: actualText.representationDigest(f.representations.get(r.symbol), false) })) };
+  const validate = value => workflow.validateVerifiedCompanions(value.build, value.fresh, value.verified, f.root, f.phase8);
+  const good = { build: f.report, fresh, verified }; validate(good);
+  for (const [name, change] of [
+    ['fresh mode', v => v.fresh.mode = 'reused'], ['empty output', v => v.fresh.emptyOutputAtLaunch = false],
+    ['producer census', v => v.fresh.producers++], ['missing seal', v => delete v.fresh.outputSealSha256],
+    ['compiler drift', v => v.fresh.compilerSha256 = '0'.repeat(64)],
+    ['linker input drift', v => v.fresh.linkerInputs.sha256 = '0'.repeat(64)],
+    ['missing binding', v => delete v.verified.verification.elfRomBinding],
+    ['decoded coercion', v => v.verified.verification.decodedDiagnostics = { status: 'pass', score: 0 }],
+    ['stale object proof', v => v.fresh.targets[0].freshRepresentationSha256 = '0'.repeat(64)],
+  ]) {
+    const value = clone(good); change(value); assert.throws(() => validate(value), undefined, name); validate(good);
+  }
+  const seal = workflow.outputSeal(f.root);
+  f.write('objects/one.o', 'stale-object');
+  assert.notDeepEqual(workflow.outputSeal(f.root), seal);
+});
+
+test('whole-image binding rejects old exact ROM beside changed ELF and malformed coverage', () => {
+  const rom = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8]);
+  const model = { config: { rom: { bytes: 8 } }, slices: [0, 1].map(i => ({ sectionName: '.part' + i, romStart: i * 4, vramStart: 0x80000000 + i * 4, bytes: 4, executable: i === 0 })) };
+  const makeElf = () => ({ buffer: Buffer.concat([Buffer.alloc(16), rom]),
+    sections: model.slices.map(s => ({ name: s.sectionName, type: 1, flags: s.executable ? 6 : 2, offset: 16 + s.romStart, address: s.vramStart, size: s.bytes })),
+    programHeaders: model.slices.map(s => ({ type: 1, offset: 16 + s.romStart, paddr: s.romStart, vaddr: s.vramStart, fileSize: s.bytes, memorySize: s.bytes, flags: s.executable ? 5 : 4 })) });
+  assert.equal(actualPhase8.verifyElfRomBinding(model, makeElf(), rom).bytes, 8);
+  for (const [name, mutate] of [
+    ['old ROM/wrong ELF', e => { e.buffer[16] ^= 1; }], ['wrong load offset', e => e.programHeaders[0].offset++],
+    ['wrong ROM mapping', e => e.programHeaders[0].paddr++], ['extra payload', e => e.programHeaders.push({ ...e.programHeaders[0] })],
+    ['NOBITS payload', e => e.sections[1].type = 8], ['missing section', e => e.sections.pop()],
+  ]) { const elf = makeElf(); mutate(elf); assert.throws(() => actualPhase8.verifyElfRomBinding(model, elf, rom), undefined, name); }
+  const overlap = clone(model); overlap.slices[1].romStart = 0;
+  assert.throws(() => actualPhase8.verifyElfRomBinding(overlap, makeElf(), rom));
+});
+
+test('executing child report identity cannot be replaced by a saved report', () => {
+  const f = fixture(), workflow = realRequire('./current_workflow');
+  const report = { schemaVersion: 8, status: 'constructed', source: 'actual execution' };
+  const bytes = Buffer.from(JSON.stringify(report, null, 2) + '\n'), expected = hash(bytes);
+  actualText.publishCompactReport(path.join(f.root, 'receipt-test.json'), report);
+  const execution = { stdout: `Construction report SHA-256: ${expected}\n` };
+  assert.equal(workflow.executionReportSha256(execution, 'Construction'), actualText.readCompactReport(f.root, 'receipt-test.json').identity.sha256);
+  f.write('receipt-test.json', { ...report, source: 'saved stale execution' });
+  assert.notEqual(workflow.executionReportSha256(execution, 'Construction'), actualText.readCompactReport(f.root, 'receipt-test.json').identity.sha256);
+  assert.throws(() => workflow.executionReportSha256({ stdout: '' }, 'Construction'));
+  assert.throws(() => workflow.executionReportSha256({ stdout: execution.stdout + execution.stdout }, 'Construction'));
+});

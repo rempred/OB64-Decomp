@@ -9,16 +9,17 @@ const {
 } = require('./lib/current_workflow');
 
 function usage() {
-  console.log('Usage: node tools/verify.js [--target <symbol>] [--require-pure] [--profile]');
+  console.log('Usage: node tools/verify.js [--target <symbol>] [--require-pure] [--profile] [--fresh]');
 }
 
 function parseArgs(argv) {
-  const result = { help: false, requirePure: false, target: null, profile: false };
+  const result = { help: false, requirePure: false, target: null, profile: false, forceFresh: false };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--help' || arg === '-h') result.help = true;
     else if (arg === '--require-pure') result.requirePure = true;
     else if (arg === '--profile' && !result.profile) result.profile = true;
+    else if (arg === '--fresh' && !result.forceFresh) result.forceFresh = true;
     else if (arg === '--target') {
       if (result.target || !argv[index + 1] || argv[index + 1].startsWith('--')) throw new Error('invalid --target argument');
       result.target = argv[++index];
@@ -60,7 +61,8 @@ function runVerification(args, profile) {
   if (args.target && !context.phase8.targets.some((target) => target.symbol.toLowerCase() === args.target.toLowerCase())) {
     throw new Error(`target does not resolve uniquely: ${args.target}`);
   }
-  const result = verifyCurrent(context, { profile, onStep: (message) => console.log(`${message}...`) });
+  const result = verifyCurrent(context, { profile, forceFresh: args.forceFresh, onStep: (message) => console.log(`${message}...`) });
+  printLine('Acceptance execution ', 'ONE FRESH BUILD');
   const policyInvalid = result.sourcePolicy.counts.UNKNOWN > 0 || result.sourcePolicy.counts.ASM > 0;
   const selected = selectPolicyTargets(result.sourcePolicy, args.target);
   const pureVerdict = pureRequirementVerdict(selected, args.requirePure);

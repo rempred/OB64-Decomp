@@ -139,6 +139,18 @@ function main() {
     assert.equal(hit.cache.status,'hit');assert(same(miss.compiled,hit.compiled));
     assert(same(g.compiledMember(targets[1],hitOutput,classifications.targets[1]),g.compiledMember(targets[1],missOutput,classifications.targets[1])));
     const target=targets[0],groupEvidence=tcEvidence(target,productionOutput);
+    g.withProducerEvidence(() => {
+      const first=tcEvidence(target,productionOutput);
+      assert(same(first,groupEvidence));
+      first.producerStages.raw.objectFlags ^= 1;
+      assert(same(tcEvidence(target,productionOutput),groupEvidence),'returned records poisoned producer reuse');
+      for(const member of targets) assert(same(tcEvidence(member,productionOutput),tcEvidence(member,productionOutput)));
+    });
+    const sealedFile=path.join(productionOutput,groupEvidence.artifacts.compilerAssembly.path),sealedBytes=fs.readFileSync(sealedFile);
+    try {
+      assert.throws(()=>g.withProducerEvidence(()=>{tcEvidence(target,productionOutput);fs.appendFileSync(sealedFile,'\n');}),/producer artifact changed/);
+      rejections++;
+    } finally {fs.writeFileSync(sealedFile,sealedBytes);}
     for(const key of ['raw','projected','stripped']) {
       const forged=structuredClone(groupEvidence);delete forged.producerStages[key];
       assert.throws(()=>require('../tools/lib/text_contract').validateRecords({objectEvidence:forged},{objectEvidence:groupEvidence},'group fixture'));rejections++;

@@ -117,10 +117,11 @@ function b894OccurrenceEvidence(report) {
 }
 
 function verifyRecordedCompilerOccurrenceEquality(phase8, output, buildReport) {
-  if (!phase8.targets.some((target) => target.symbol === 'func_0021B894')) {
+  if (buildReport.schemaVersion === 8 || !phase8.targets.some((target) => target.symbol === 'func_0021B894')) {
     // Exercise the same production comparison without promoting an unfinished
     // source merely to populate its historical recorded-build canary.
-    const expected = [0, 1].map((index) => ({ label: `.L${index}`, bytes: 8,
+    const expected = buildReport.schemaVersion === 8 && phase8.targets.some(target => target.symbol === 'func_0021B894')
+      ? b894OccurrenceEvidence(buildReport).verified.compilerOccurrences : [0, 1].map((index) => ({ label: `.L${index}`, bytes: 8,
       linkedSha256: String(index).repeat(64), rawLinkedBytesExact: true,
       loadRelevantRelocationsNormalized: [0, 4].map((offset) => ({
         offset, type: 'R_MIPS_32', symbol: '.text', addend: offset + index * 8,
@@ -142,7 +143,7 @@ function verifyRecordedCompilerOccurrenceEquality(phase8, output, buildReport) {
       if (sameCompilerOccurrenceEvidence(value, expected)) fail(`compiler-occurrence ${name} drift accepted`);
       return { name, status: 'rejected' };
     });
-    return { scope: 'isolated production comparator; no B894 activation',
+    return { scope: 'isolated production comparator; uses bound B894 records when available',
       equivalentObjectKeyOrder: 'accepted', mutations };
   }
   const validate = (report) => validateRecordedPhase8Build(phase8, {
@@ -642,9 +643,10 @@ function main() {
   const linkedElf = parseElfFile(elfFile);
   const romBytes = fs.readFileSync(romFile);
   const mapText = fs.readFileSync(mapFile, 'utf8');
-  const buildReport = readJson(path.join(output, 'build-report.json'));
-  if (buildReport.schemaVersion !== 7 || buildReport.status !== 'pass'
-      || buildReport.verification.schemaVersion !== 6 || buildReport.verification.status !== 'pass') {
+  const buildReport = textContract.readVerifiedBuildView(output, phase8);
+  if (!(buildReport.schemaVersion === 7 && buildReport.status === 'pass' && buildReport.verification.schemaVersion === 6
+      || buildReport.schemaVersion === 8 && buildReport.status === 'constructed' && buildReport.verification.schemaVersion === 7)
+      || buildReport.verification.status !== 'pass') {
     fail('Phase 8 source-to-object report schema drift');
   }
   const objectManifest = verifyObjectManifest(output, phase8).manifest;
@@ -961,9 +963,11 @@ function main() {
   if (![...gnu26RegressionClasses.keys()].every((symbol) => targetProofs.some((record) => record.symbol === symbol))) {
     fail('GNU 2.6 regression target census was not exercised');
   }
-  if (!buildReport.verification.asmDiffer.every((record) => record.exact && record.rawBytesExact && record.asmDifferPairwiseExact)) {
-    fail('asm-differ/raw target comparison drift');
-  }
+  if (buildReport.schemaVersion === 8) {
+    if (!textContract.same(buildReport.verification.decodedDiagnostics, { status: 'not-run', reason: 'raw-exact-with-elf-rom-binding' })
+        || buildReport.verification.elfRomBinding.status !== 'pass'
+        || !buildReport.verification.targets.every(record => record.rawBytesExact)) fail('raw target/image binding drift');
+  } else if (!buildReport.verification.asmDiffer.every((record) => record.exact && record.rawBytesExact && record.asmDifferPairwiseExact)) fail('legacy asm-differ/raw target comparison drift');
 
   const fallbackMutations = verifyFallbackControls(fallbackControlContexts);
   const mutations = [];

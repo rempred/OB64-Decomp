@@ -60,14 +60,14 @@ function main() {
   const rightBuildFile = path.join(rightRoot, 'build-report.json');
   const leftVerificationFile = path.join(leftRoot, 'verification.json');
   const rightVerificationFile = path.join(rightRoot, 'verification.json');
-  const leftBuild = readJson(leftBuildFile);
-  const rightBuild = readJson(rightBuildFile);
+  const model = loadPhase8Model();
+  const leftBuild = textContract.readVerifiedBuildView(leftRoot, model);
+  const rightBuild = textContract.readVerifiedBuildView(rightRoot, model);
   const leftVerification = readJson(leftVerificationFile);
   const rightVerification = readJson(rightVerificationFile);
-  for (const valueToCheck of [leftBuild, rightBuild, leftVerification, rightVerification]) {
-    if (valueToCheck.schemaVersion !== 5 || valueToCheck.status !== 'pass') fail('Phase 8 reproducibility input did not pass');
-  }
-  const model = loadPhase8Model();
+  for (const build of [leftBuild, rightBuild]) if (!([5, 7].includes(build.schemaVersion) && build.status === 'pass'
+    || build.schemaVersion === 8 && build.status === 'constructed')) fail('Phase 8 reproducibility input did not pass');
+  for (const verified of [leftVerification, rightVerification]) if (![5, 6, 7].includes(verified.schemaVersion) || verified.status !== 'pass') fail('Phase 8 reproducibility verification did not pass');
   const baserom = loadCanonicalBaserom(model);
   for (const [root, build] of [[leftRoot, leftBuild], [rightRoot, rightBuild]]) {
     const linkContext = textContract.linkContext(root, baserom);
@@ -75,7 +75,9 @@ function main() {
     for (const target of model.targets) {
       const matches = build.targetReplacements.filter((record) => record.symbol === target.symbol);
       if (matches.length !== 1) fail('reproducibility target does not resolve uniquely');
-      textContract.validateRecords(matches[0], textContract.recordsForTarget(target, root, linkContext), 'reproducibility');
+      const representation = textContract.recordsForTarget(target, root, linkContext);
+      if (build.schemaVersion >= 7) textContract.withSourceObjectProof(root, target, matches[0], proof => textContract.validateRecords(proof, representation, 'reproducibility'));
+      else textContract.validateRecords(matches[0], representation, 'reproducibility');
     }
     textContract.finishLinkContext(linkContext);
   }
@@ -110,7 +112,7 @@ function main() {
     verificationReportSha256: sha256File(leftVerificationFile),
     outputs: leftBuild.verification.outputs,
     targets: leftBuild.verification.targets,
-    asmDiffer: leftBuild.verification.asmDiffer,
+    decodedDiagnostics: leftBuild.verification.decodedDiagnostics || { status: 'legacy-recorded', targets: leftBuild.verification.asmDiffer },
   };
   if (reportFile) writeJson(reportFile, result);
   console.log(`Phase 8 reproducibility comparison: PASS (${result.buildReportSha256})`);

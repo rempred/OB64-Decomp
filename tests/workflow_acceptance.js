@@ -36,6 +36,7 @@ function main() {
   const output = value('--output');
   const phase8 = loadPhase8Model();
   const report = JSON.parse(fs.readFileSync(path.join(output, 'build-report.json'), 'utf8'));
+  if (report.schemaVersion === 8) return verifyConstructionAcceptance(phase8, output, report);
   if (report.status !== 'pass' || !report.verification.preservation.fullRomExact) throw new Error('test input is not an accepted exact build');
 
   const first = classifyActiveTargets(phase8);
@@ -161,6 +162,27 @@ function main() {
     rejectedWorkflowMutations: mutations,
     staleCurrentFingerprintRejected: true,
   }, null, 2));
+}
+
+function verifyConstructionAcceptance(phase8, output, report) {
+  const assert = require('assert/strict'), tc = require('../tools/lib/text_contract'), p8 = require('../tools/lib/phase8_matching_c');
+  const view = tc.readVerifiedBuildView(output, phase8);
+  assert.equal(view.verification.preservation.fullRomExact, true);
+  const verification = p8.verifyPhase8Output(phase8, { output });
+  const validate = buildReport => validateRecordedPhase8Build(phase8, { output, buildReport, verification, compilerSha256: report.compiler.sha256 });
+  validate(report);
+  const controls = [];
+  for (const [name, mutate] of [
+    ['construction masquerades as accepted', r => r.status = 'pass'],
+    ['embedded self-compared verification', r => r.verification = verification],
+    ['source class drift', r => r.targetReplacements[0].sourceClass = 'UNKNOWN'],
+    ['object hash drift', r => r.targetReplacements[0].cObjectSha256 = '0'.repeat(64)],
+    ['compiler input drift', r => r.targetReplacements[0].compilationInput.sha256 = '0'.repeat(64)],
+    ['source census drift', r => r.acceptedInputs.cSources.pop()],
+    ['output drift', r => r.outputs.rom.sha256 = '0'.repeat(64)],
+  ]) { const changed = structuredClone(report); mutate(changed); assert.throws(() => validate(changed), undefined, name); controls.push(name); }
+  assert.throws(() => validateRecordedPhase8Build(phase8, { output, buildReport: report, verification: structuredClone(verification), compilerSha256: report.compiler.sha256 }), /independent verification/);
+  console.log(JSON.stringify({ status: 'pass', construction: true, independentlyVerified: true, controls }, null, 2));
 }
 
 main();

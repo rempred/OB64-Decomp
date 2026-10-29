@@ -71,22 +71,24 @@ function main(argv = process.argv.slice(2)) {
   const phase8 = loadPhase8Model();
   const canonicalRomSha256 = phase8.model.config.rom.sha256;
   const oldState = readJson(oldStateFile);
-  const oldReport = readJson(path.join(oldRoot, 'build-report.json'));
-  const newReport = readJson(path.join(newRoot, 'build-report.json'));
+  const oldReport = textContract.readVerifiedBuildView(oldRoot, phase8);
+  const newReport = textContract.readVerifiedBuildView(newRoot, phase8);
   const historical = argv.includes('--historical-v3-v4');
-  const oldSchema = historical ? 3 : 5;
-  const newSchema = historical ? 4 : 5;
-  if (oldState.schemaVersion !== oldSchema || oldState.output !== oldRoot || !oldState.verifiedAt
+  const oldSchema = historical ? 3 : oldReport.schemaVersion;
+  const newSchema = historical ? 4 : newReport.schemaVersion;
+  const verificationSchema = schema => schema === 8 ? 7 : schema === 7 ? 6 : schema;
+  if (!historical && (![5, 7, 8].includes(oldSchema) || ![5, 7, 8].includes(newSchema))) fail('unsupported comparison report schema');
+  if (oldState.schemaVersion !== verificationSchema(oldSchema) || oldState.output !== oldRoot || !oldState.verifiedAt
       || oldState.rom?.sha256 !== canonicalRomSha256
       || path.resolve(oldState.report) !== path.join(oldRoot, 'build-report.json')) {
     fail('old accepted CURRENT state is not authenticated');
   }
-  if (oldReport.schemaVersion !== oldSchema || oldReport.status !== 'pass'
-      || oldReport.verification?.schemaVersion !== oldSchema || oldReport.verification.status !== 'pass') {
+  if (oldReport.schemaVersion !== oldSchema || oldReport.status !== (oldSchema === 8 ? 'constructed' : 'pass')
+      || oldReport.verification?.schemaVersion !== verificationSchema(oldSchema) || oldReport.verification.status !== 'pass') {
     fail('old accepted build report is not a passing schema-v3 CURRENT build');
   }
-  if (newReport.schemaVersion !== newSchema || newReport.status !== 'pass'
-      || newReport.verification?.schemaVersion !== newSchema || newReport.verification.status !== 'pass') {
+  if (newReport.schemaVersion !== newSchema || newReport.status !== (newSchema === 8 ? 'constructed' : 'pass')
+      || newReport.verification?.schemaVersion !== verificationSchema(newSchema) || newReport.verification.status !== 'pass') {
     fail('new build report is not a passing authenticated-input build');
   }
   if (!sameJson(oldReport.compiler.compileFlags, newReport.compiler.compileFlags)
@@ -124,7 +126,7 @@ function main(argv = process.argv.slice(2)) {
   const newTextContext = historical ? null : textContract.linkContext(newRoot, baserom);
   if (!historical) {
     for (const [field, file] of [['freshCompilationSha256', oldState.freshCompilationReport], ['verificationSha256', oldState.verificationReport]]) {
-      if (!oldState[field] || oldState[field] !== sha256File(file) || readJson(file).schemaVersion !== 5 || readJson(file).status !== 'pass') fail('old verified state evidence drift');
+      if (!oldState[field] || oldState[field] !== sha256File(file) || readJson(file).schemaVersion !== verificationSchema(oldSchema) || readJson(file).status !== 'pass') fail('old verified state evidence drift');
     }
   }
   const targets = [];
@@ -144,8 +146,11 @@ function main(argv = process.argv.slice(2)) {
       fail(`header-free target provenance or linked outcome differs: ${target.symbol}`);
     }
     if (!historical) {
-      textContract.validateRecords(oldTarget, textContract.recordsForTarget(target, oldRoot, oldTextContext), 'old header comparison');
-      textContract.validateRecords(newTarget, textContract.recordsForTarget(target, newRoot, newTextContext), 'new header comparison');
+      for (const [root, record, schema, context] of [[oldRoot, oldTarget, oldSchema, oldTextContext], [newRoot, newTarget, newSchema, newTextContext]]) {
+        const representation = textContract.recordsForTarget(target, root, context);
+        if (schema >= 7) textContract.withSourceObjectProof(root, target, record, proof => textContract.validateRecords(proof, representation, 'header comparison'));
+        else textContract.validateRecords(record, representation, 'header comparison');
+      }
       if (oldState.buildReportSha256 !== undefined && oldState.buildReportSha256 !== sha256File(path.join(oldRoot, 'build-report.json'))) fail('old state build identity drift');
     }
     const compilerAssembly = compareArtifact(
@@ -199,7 +204,7 @@ function main(argv = process.argv.slice(2)) {
   }
   const report = {
     schemaVersion: historical ? 1 : 2,
-    mode: historical ? 'historical-v3-v4' : 'current-v5-v5',
+    mode: historical ? 'historical-v3-v4' : `current-v${oldSchema}-v${newSchema}`,
     status: 'pass',
     kind: 'ob64-header-free-authenticated-compilation-input-compatibility',
     oldAccepted: {

@@ -15,7 +15,7 @@ validateVerifiedCompanions(build, fresh, verified, state.output, phase8);
 const rejections = [];
 for (const [name, change, expectedError] of [
   ['fresh representation digest drift', value => { value.fresh.targets[0].freshRepresentationSha256 = '0'.repeat(64); }, /^text contract: source-object proof validation failed: /],
-  ['verification copy identity drift', value => { value.verified.verification.targets[0].representationSha256 = '0'.repeat(64); }, /^verified companion schema or build identity drift$/],
+  ['verification copy identity drift', value => { value.verified.verification.targets[0].representationSha256 = '0'.repeat(64); }, /^(verified companion schema or build identity drift|text contract: source-object proof validation failed: )/],
   ['build copy identity drift', value => { value.build.targetReplacements[0].linkEvidence = { fullOwnerExact: false }; }, /^verified companion schema or build identity drift$/],
   ['fresh source class', value => { value.fresh.targets[0].sourceClass = 'UNKNOWN'; }, /^verified companion target identity drift$/],
   ['missing fresh target', value => { value.fresh.targets.pop(); }, /^text contract: compact target census drift$/],

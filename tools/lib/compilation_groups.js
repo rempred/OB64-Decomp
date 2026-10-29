@@ -23,6 +23,31 @@ const singleFragment = group => auxiliary.singleFragment(group);
 const readonlyProducer = group => auxiliary.composed(group) || fragmentLike(group) || singleFragment(group);
 const functionContexts = new Map();
 const interiorContexts = new Map();
+let producerEvidenceScope = null;
+function withProducerEvidence(callback) {
+  if (producerEvidenceScope) return callback();
+  const scope = { authenticated: new Map(), producer: null };
+  producerEvidenceScope = scope;
+  try {
+    const result = callback();
+    finishProducer(scope.producer);
+    // Bypass the memo for the closing authentication sweep.
+    producerEvidenceScope = null;
+    for (const { identity, group, authenticate } of scope.authenticated.values()) {
+      if (hash(group) !== identity) fail('group mutated during evidence scope');
+      authenticate(group);
+    }
+    return result;
+  } finally { producerEvidenceScope = null; }
+}
+function finishProducer(producer) {
+  if (!producer) return;
+  const tc = require('./text_contract');
+  for (const [file, expected] of producer.files) {
+    const actual = tc.artifact(path.dirname(file), path.basename(file));
+    if (actual.bytes !== expected.bytes || actual.sha256 !== expected.sha256) fail('producer artifact changed during evidence scope');
+  }
+}
 const interior = group => group?.mode === 'native-text-readonly-interior-run-projection';
 function memberFunctions(group, index) { return functionOwners(group)
   ? group.members[index].functionSymbols.map(name => group.functions.find(fn => fn.symbol === name)) : [group.functions[index]]; }
@@ -33,6 +58,7 @@ function memberIndexAt(group, offset) {
 function authenticateFunctions(group, assemblySource = null) {
   if (!functionOwners(group)) return;
   const key = hash(group);
+  if (!assemblySource && producerEvidenceScope?.authenticated.has('functions:' + key)) return;
   let context = functionContexts.get(key);
   if (!context) {
     // Fresh proof/cache readers recover canonical authenticated context. They do
@@ -54,6 +80,7 @@ function authenticateFunctions(group, assemblySource = null) {
     if (assemblySource) assemblySource(row.part.file, row.part.sha256);
     else if (p7.sha256File(path.join(ROOT, row.part.file)) !== row.part.sha256) fail('native group original source drift');
   }
+  if (!assemblySource && producerEvidenceScope) producerEvidenceScope.authenticated.set('functions:' + key, { identity: key, group, authenticate: authenticateFunctions });
 }
 function fixedBindingRecords(group, symbols) {
   const result = [];
@@ -505,12 +532,16 @@ function evidence(target, root, files = null) {
     ...(group.retainedLiteralReferences ? {literalProjectedObject:artifact('literalProjectedObject',objectPath(target,'.literal-projected.o')),stripIntermediateObject:artifact('stripIntermediateObject',objectPath(target,'.strip-intermediate.o'))}:{}),
     ...(readonlyProducer(group) ? { textProjectedObject: artifact('textProjectedObject', objectPath(target, '.text-projected.o')) } : {}) };
   const read = role => fs.readFileSync(files ? files[role] : path.join(root, artifacts[role].path));
+  const producerKey = hash({ group, artifacts, root: root ? path.resolve(root) : null, files });
+  let shared = producerEvidenceScope?.producer;
+  if (!shared || shared.key !== producerKey) {
+    if (producerEvidenceScope) finishProducer(shared);
   const compiler = read('compilerAssembly');
   if (!compiler.equals(read('assemblerInput'))) fail('compiler assembly was rewritten');
   if (readonlyProducer(group)) auxiliary.groupGrammar(compiler, group, require('./phase8_matching_c').adjustSectionAssembly);
   else require('./phase8_matching_c').adjustSectionAssembly(compiler, target.sectionName, {});
   const native = parseBuffer(read('unsplitAssemblerObject')), projected = parseBuffer(read('rawObject')), stripped = parseBuffer(read('strippedObject'));
-  const reproduction = project(native.buffer, group);
+  const reproduction = tc.measureEvidence('evidence.group-projection', () => project(native.buffer, group));
   if (readonlyProducer(group) && !reproduction.intermediate.equals(read('textProjectedObject'))) fail('intermediate text projection is not reproducible');
   if(mixedMode(group)&&!reproduction.mixedIntermediate.equals(read('mixedProjectedObject')))fail('mixed metadata projection is not reproducible');
   const stages = { raw: validateObject(native, group, 'raw'),
@@ -525,6 +556,11 @@ function evidence(target, root, files = null) {
   if (!reproduction.buffer.equals(projected.buffer)) fail('projection is not reproducible');
   const literalEvidence=group.retainedLiteralReferences?literals.derive(literals.groupTarget(group),root,{native:files?files.unsplitAssemblerObject:path.join(root,artifacts.unsplitAssemblerObject.path),reference:files?files.literalProjectedObject:path.join(root,artifacts.literalProjectedObject.path),source:files?files.rawObject:path.join(root,artifacts.rawObject.path),intermediate:files?files.stripIntermediateObject:path.join(root,artifacts.stripIntermediateObject.path),final:files?files.strippedObject:path.join(root,artifacts.strippedObject.path)}):null;
   const mixedEvidence=mixedMode(group)?auxiliary.mixedDerive(target,root,Object.fromEntries(Object.keys(artifacts).map(role=>[role,files?files[role]:path.join(root,artifacts[role].path)]))):null;
+    shared = { key: producerKey, files: Object.entries(artifacts).map(([role, record]) =>
+      [files ? files[role] : path.join(root, record.path), record]), value: { compiler, native, projected, stripped, reproduction, stages, literalEvidence, mixedEvidence } };
+    if (producerEvidenceScope) producerEvidenceScope.producer = shared;
+  }
+  const { compiler, native, projected, stripped, reproduction, stages, literalEvidence, mixedEvidence } = shared.value;
   const memberContract = contract(target), rawOwners = tc.ownerEvidence(projected, memberContract), strippedOwners = tc.ownerEvidence(stripped, memberContract);
   if (!same(rawOwners.map(value => value.record), strippedOwners.map(value => value.record))) fail('strip changed owner');
   const normalizedRelocations = memberRelocations(target, projected);
@@ -533,7 +569,7 @@ function evidence(target, root, files = null) {
   const strippedFunctions = tc.functionCensus(stripped, strippedOwners.map(value => value.section));
   if (!same(rawFunctions, strippedFunctions)) fail('strip changed member functions');
   const rawRelocations = require('./phase8_matching_c').rawRelocationRecords(projected);
-  return { ...(mixedEvidence?{mixedReadonly:mixedEvidence}:{}), ...(literalEvidence?{retainedLiteralReferences:literalEvidence}:{}), schemaVersion: singleFragment(group)?23:literalRun(group)?22:mixedMode(group)?21:fragmentLike(group)?20:literalEvidence?19:interior(group) ? 13 : auxiliary.bundle(group) ? 12 : auxiliary.singleOwner(group) ? 10 : functionOwners(group) ? 9 : readonlyProducer(group) ? 7 : 3,
+  return { ...(mixedEvidence?{mixedReadonly:structuredClone(mixedEvidence)}:{}), ...(literalEvidence?{retainedLiteralReferences:structuredClone(literalEvidence)}:{}), schemaVersion: singleFragment(group)?23:literalRun(group)?22:mixedMode(group)?21:fragmentLike(group)?20:literalEvidence?19:interior(group) ? 13 : auxiliary.bundle(group) ? 12 : auxiliary.singleOwner(group) ? 10 : functionOwners(group) ? 9 : readonlyProducer(group) ? 7 : 3,
     ...(readonlyProducer(group) ? { composition: { schemaVersion: singleFragment(group)?9:mixedMode(group) ? 8 : fragmentLike(group) ? 7 : interior(group) ? 6 : auxiliary.bundle(group) ? 5 : auxiliary.singleOwner(group) ? 3 : 2, groupSha256: hash(group),
       nativeObjectSha256: sha256Buffer(native.buffer), textProjectedObjectSha256: sha256Buffer(reproduction.intermediate),
       projectedObjectSha256: sha256Buffer(projected.buffer), strippedObjectSha256: sha256Buffer(stripped.buffer),
@@ -542,7 +578,7 @@ function evidence(target, root, files = null) {
       ...(fragmentLike(group) ? { fragmentImplementationSha256: fragmentImplementationIdentity() } : {}),
       auxiliaryContract: group.auxiliary,
       conservedTextProjection: auxiliary.conservedOutsideReadonly(parseBuffer(reproduction.intermediate), group),
-      conservedFinalProjection: auxiliary.conservedOutsideReadonly(projected, group) } } : {}), textContractSha256: hash(memberContract), artifacts, producerStages: stages,
+      conservedFinalProjection: auxiliary.conservedOutsideReadonly(projected, group) } } : {}), textContractSha256: hash(memberContract), artifacts, producerStages: structuredClone(stages),
     rawOwners: rawOwners.map(value => value.record), strippedOwners: strippedOwners.map(value => value.record),
     rawFunctions, strippedFunctions, normalizedRelocations,
     rawRelocations: rawRelocations.filter(value => value.section === '.rel' + target.sectionName),
@@ -1119,10 +1155,13 @@ function bindInterior(group,model,rom) {
   interiorContexts.set(hash({ ...group, auxiliary: undefined }),{model,rom:Buffer.from(rom)});
 }
 function authenticateInterior(group) {
+  const key='interior:'+hash(group);
+  if(producerEvidenceScope?.authenticated.has(key))return;
   interiorContract(group);
   let c=interiorContexts.get(hash({ ...group, auxiliary: undefined }));
   if(!c) {require('./active_targets').loadActiveTargetModel();c=interiorContexts.get(hash({ ...group, auxiliary: undefined }));}
   if(!c||!same(interiorBinding(group,c.model,c.rom),group.interiorRun.binding)) fail('interior accepted context/binding drift');
+  if(producerEvidenceScope)producerEvidenceScope.authenticated.set(key,{identity:hash(group),group,authenticate:authenticateInterior});
 }
 function interiorGrammar(compiler,group) {
   if(!interior(group))return;
@@ -1298,12 +1337,16 @@ function bindLiteralRun(group,context,targets){
   group.fixedBindings=fixedBindingRecords(group,context.linkSymbols||{});literalRunContexts.set(literalRunIdentity(group),ctx);
 }
 function authenticateLiteralRun(group){
-  if(!literalRun(group))return null;const id=literalRunIdentity(group);let ctx=literalRunContexts.get(id);
+  if(!literalRun(group))return null;const key='literal:'+hash(group);
+  if(producerEvidenceScope?.authenticated.has(key))return producerEvidenceScope.authenticated.get(key).context;
+  const id=literalRunIdentity(group);let ctx=literalRunContexts.get(id);
   if(!ctx){require('./active_targets').loadActiveTargetModel();ctx=literalRunContexts.get(id);}if(!ctx)fail('literal run missing authenticated context');
   if(inputSet.context(group)&&inputSet.context(group)!==inputSet.context(ctx.model))fail('literal run input context changed');
-  const bound=literalRunBindings(group,ctx);if(!same(bound.logicalBinding,group.logicalBinding)||!same(bound.retainedNeighborBinding,group.retainedNeighborBinding)
+  const bound=require('./text_contract').measureEvidence('evidence.group-literal-binding',()=>literalRunBindings(group,ctx));if(!same(bound.logicalBinding,group.logicalBinding)||!same(bound.retainedNeighborBinding,group.retainedNeighborBinding)
     ||require('./phase7_conventional').sha256File(require('./active_targets').LINKAGE_CONFIG_PATH,inputSet.context(ctx.model))!==group.fixedBindingIdentity.sha256
-    ||!same(fixedBindingRecords(group,ctx.linkSymbols||{}),group.fixedBindings))fail('literal run binding drift');return ctx;
+    ||!same(fixedBindingRecords(group,ctx.linkSymbols||{}),group.fixedBindings))fail('literal run binding drift');
+  if(producerEvidenceScope)producerEvidenceScope.authenticated.set(key,{identity:hash(group),group,authenticate:authenticateLiteralRun,context:ctx});
+  return ctx;
 }
 function finishLiteralRunBindings(targets){for(const group of new Set(targets.map(t=>t.compilationGroup).filter(literalRun))){const ctx=authenticateLiteralRun(group);ctx.targets=targets;authenticateLiteralRun(group);}}
 function literalRunLinkedEvidence(target,root,context){
@@ -1430,6 +1473,8 @@ function bindSingleFragmentContext(group){
   singleFragmentBindings.set(group,context);singleFragmentContexts.set(hash(group),context);
 }
 function authenticateSingleFragment(group){
+  const key='single:'+hash(group);
+  if(producerEvidenceScope?.authenticated.has(key))return;
   auxiliary.singleFragmentContract(group);
   let c=singleFragmentContexts.get(hash(group));
   if(!c){if(recoveringSingleFragment)fail('single fragment reentrant authority recovery');recoveringSingleFragment=true;
@@ -1443,6 +1488,7 @@ function authenticateSingleFragment(group){
   const p=require('./phase7_conventional');
   for(const f of group.singleFragmentBinding.inputs)if(p.sha256File(path.join(ROOT,f.path),c.inputs)!==f.sha256)fail('single fragment binding input drift');
   if(!same(group.fixedBindings,group.singleFragmentBinding.aliases))fail('single fragment fixed binding drift');
+  if(producerEvidenceScope)producerEvidenceScope.authenticated.set(key,{identity:hash(group),group,authenticate:authenticateSingleFragment});
 }
 function finishSingleFragmentBindings(targets){
   for(const group of new Set(targets.map(t=>t.compilationGroup).filter(singleFragment))){const c=singleFragmentBindings.get(group);
@@ -1477,3 +1523,5 @@ function validateSingleFragmentProof(proof){
 }
 Object.assign(module.exports,{singleFragment,bindSingleFragmentContext,authenticateSingleFragment,finishSingleFragmentBindings,
   hasFixedBindingEvidence,verifyFixedBindingEvidence,verifySingleFragmentFixedBindings,validateSingleFragmentProof});
+
+Object.assign(module.exports, { withProducerEvidence });

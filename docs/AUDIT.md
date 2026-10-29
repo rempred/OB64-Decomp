@@ -55,6 +55,23 @@ The audit is not required merely because:
 
 Normal matching uses `node tools/verify.js`.
 
+### Single fresh-build acceptance contract
+
+Construction schema8/status `constructed` is not acceptance. CURRENT schema7/status
+`verified` binds verification7 and fresh-lineage7 (`single-isolated-build`) to the exact
+construction bytes. The executing controller must launch an empty confined output with
+fresh C producers; disk reports cannot confer that authority. Independent inspection
+authenticates current source policy, compiler-input/assembly/object/projection lineage,
+exclusive C custody, actual relocations and retained coverage. Every loadable file slice
+must equal its mapped ROM slice, with complete image coverage, followed by exact retail
+ROM equality. Closing input/output seals must reject changes before publication.
+
+This replaces the second compiler pass only for that proven fresh chain. Legacy evidence
+remains readable under its original schema; it is never upgraded by relabeling. Decoded
+comparison is diagnostic rather than ordinary acceptance. Relevant native/decoded fixtures
+remain part of structural-change review. The changed-tooling audit includes one fresh
+normal acceptance run and reports its timing separately from the heavier structural work.
+
 ---
 
 ## Required Structural Checks

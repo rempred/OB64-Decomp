@@ -8,6 +8,7 @@ const { withVerificationProfile, measure } = require('./lib/verification_profile
 const { resolveLocalTools } = require('./lib/local_tools');
 const {
   prepareContext,
+  ensureBaseline,
   runNode,
   verifyCurrent,
   writeJson,
@@ -108,8 +109,9 @@ function runAudit(args, profile) {
   measure(profile, 'retained-auxiliary-composition', () => require('../tests/retained_auxiliary_composition').main());
   measure(profile, 'physical-interface', () => require('../tests/physical_interface').main());
   const func002861C8Structure = measure(profile, 'func002861c8-structure', () => verifyFunc002861C8Structure({ runMutations: true }));
+  measure(profile, 'baseline-setup', () => ensureBaseline(context));
   console.log('Running CURRENT ownership and exact-ROM verification...');
-  const current = verifyCurrent(context, { profile });
+  const current = measure(profile, 'normal-fresh-acceptance', () => verifyCurrent(prepareContext({ profile }), { profile, forceFresh: true }));
   const sourceObjectEvidence = current.verification.verification.sourceObjectEvidence;
   if (!sourceObjectEvidence
       || sourceObjectEvidence.identity.sourceCommit !== '54514ded39ceb32165a125ddba04ca5b551773a2'
@@ -171,7 +173,7 @@ function runAudit(args, profile) {
     status: 'pass',
     completedAt: new Date().toISOString(),
     structuralReport: 'build/setup/verify-setup-report.json',
-    currentVerificationReport: 'build/current/verification.json',
+    currentVerificationReport: path.join(current.build.output, 'verification.json'),
     romSha256: current.verification.verification.outputs.rom.sha256,
     sourcePolicyCounts: current.sourcePolicy.counts,
     gnuBinutils26: {

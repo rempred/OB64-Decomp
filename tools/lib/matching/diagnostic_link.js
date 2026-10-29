@@ -193,12 +193,13 @@ function loadDiagnosticEnvironment(session, options = {}) {
           const verificationSha256 = sha256File(verificationFile);
           const buildReport = readJson(buildReportFile);
           const verification = readJson(verificationFile);
-          const expectedElf = buildReport?.verification?.outputs?.elf;
+          const construction = buildReport.schemaVersion === 8 && buildReport.status === 'constructed';
+          const expectedElf = construction ? buildReport.outputs?.elf : buildReport?.verification?.outputs?.elf;
           const verifiedElf = verification?.verification?.outputs?.elf;
           const acceptedControls = acceptedControlArtifacts(output, buildReport);
-          if (buildReport.schemaVersion !== 7 || buildReport.status !== 'pass'
-              || verification.schemaVersion !== 6 || verification.status !== 'pass'
-              || verification.verification?.schemaVersion !== 6 || verification.verification?.status !== 'pass'
+          if (!(construction || buildReport.schemaVersion === 7 && buildReport.status === 'pass')
+              || verification.schemaVersion !== (construction ? 7 : 6) || verification.status !== 'pass'
+              || verification.verification?.schemaVersion !== (construction ? 7 : 6) || verification.verification?.status !== 'pass'
               || !textContract.same(verification.buildReport, { bytes: fs.statSync(buildReportFile).size, sha256: buildReportSha256 })
               || !textContract.same(current.state.buildReport, verification.buildReport)
               || !expectedElf || !verifiedElf
