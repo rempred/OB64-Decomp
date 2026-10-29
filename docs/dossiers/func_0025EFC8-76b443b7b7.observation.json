@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "76B443B7B7A730701FC1C038EF316D6D1747D4B1A2D8B2BF99F8E0B52C6689E0",
+  "observationId": "961F5133E35F0DE1082FA017C93DEBE6D1DE15DB64B82DFB61D29984A67A9E50",
+  "symbol": "func_0025EFC8",
+  "authored": {
+    "context": "E04 integration reconciles the normalizer public signature to a shared void-pointer declaration while retaining its three-float local layout.",
+    "effects": [
+      "parameter-lifetime",
+      "callee-saved-copy",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "30D57A351A7F45142F78C8E0547A43079BBD6BCD10CCF9699E6E459198911181",
+      "sourceSha256": "74992D9E979466FED7DE737DD458209E36F0C250E84DA2743B26488949818F90"
+    },
+    "label": "local-vector-alias-delays-save",
+    "observedEffect": "The pinned native compiler delays the callee-saved pointer copy into the square-root branch delay slot. The canonical linked 144-byte function differs in 39 bytes across 14 words; source remains PURE_C and its one sqrtf relocation still matches.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/integration/attack-effects/e04/efc8-first-diff.json",
+        "sha256": "0E576BD3E7DD30B783765D80C5EADAEF32EF9D37E1751CFFCC13F6E109CEAF77"
+      },
+      {
+        "path": "build/integration/attack-effects/e04/efc8-pointer-reconciliation.json",
+        "sha256": "99748CCACD214A3C2AA88A499F23116FE7461ECBAF8D64444F27019C37F634A0"
+      },
+      {
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "path": "build/matching/ae-e04/func_0025EFC8.c",
+        "sha256": "4E659FA0C99F5444093A371E70105E1A24D753D420423E917CFDBC149F0DE1EE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This integration candidate is not exact and is not selected; the original source-bound typed-parameter candidate remains recoverable.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change the typed vector parameter to void *vectorView and initialize a local E04Vec3 *vector from it; preserve the normalization expressions."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 2513,
+      "sha256": "30D57A351A7F45142F78C8E0547A43079BBD6BCD10CCF9699E6E459198911181"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "74992D9E979466FED7DE737DD458209E36F0C250E84DA2743B26488949818F90"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-29-func_0025EFC8-76b443b7b7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,3 +1,4 @@
+#include "game/effect_math_e04.h"
 #include "common/types.h"
 
 typedef struct {
@@ -24,8 +25,6 @@ void func_00022720(float matrix[4][4], u16 *normalization, float fovy,
                    float aspect, float near, float far, float scale);
 void func_00020d40(float matrix[4][4], float ex, float ey, float ez,
                    float ax, float ay, float az, float ux, float uy, float uz);
-void func_0025EEF8(E01Vec3 *left, E01Vec3 *right, E01Vec3 *result);
-void func_0025EFC8(E01Vec3 *vector);
 
 void func_0025F800(void)
 {

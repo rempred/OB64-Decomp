@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8DA87F5F4774E9B3191F1F5864B3C9E4C4D8AAC19EF78C59CE17F63E42E6DAD8",
+  "observationId": "DFD79AFCAFD964D2B2E48DB404BE17C9B0A068E3CA3C302F52D017A1DF7C4E27",
+  "symbol": "func_0026C310",
+  "authored": {
+    "context": "Complete232-byte C310 target at80217760..80217848 under immutable mi2. The independently reconstructed C230 source supplies the same normalization/two-crosses/identity/flat-copy sequence; applicability was checked against both complete bodies. The failed same-scope spelling remains recoverable.",
+    "effects": [
+      "local-lifetime",
+      "stack-frame",
+      "register-allocation",
+      "scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C8C115405E88CD8201EFCBDE5EF5263D247F9CA8306A8AEC8E9CD541BB595347",
+      "sourceSha256": "A8EE204A27757192DCA352726D20E2D147D5911FF2E6A562129934330E1F8794"
+    },
+    "label": "inline-basis-body-restores-temporary-scope-allocation",
+    "observedEffect": "Historical mi2 watch02 1B27FDED/run6EBE362B emitted PURE_C/full232/frame88 and the target two saved GPRs. Every non-relocation word matches. Four actual R26 sites44/6C/7C/84 name EFC8/EEF8/EEF8/28C40 and correspond to accepted map8020A418/8020A348/8020A348/80098840. Full body and return delay are covered. The scope/inlining formulation explains a useful source experiment; it does not prove original source identity or a universal compiler rule.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0026C310.s",
+        "sha256": "F16A5854F8C481E8F240A33B33D9A45483C72F85631CBF3C58031B5CBC3EFBC0"
+      },
+      {
+        "path": "build/matching/ae-e04/26c310-watch-02-mi2.json",
+        "sha256": "1B27FDEDD3A8CAC5C8966717AC5563CEF9C082076F1FBB6D4A295E80C667916F"
+      },
+      {
+        "path": "build/matching/ae-e04/26c310-separate-assignments.c",
+        "sha256": "674AB0B17DED756D204F48C2F2976B4A77879D7AA6ABC06225CBEC5349AEC2FA"
+      },
+      {
+        "path": "build/matching/ae-e04/26c310-watch-01-mi2.json",
+        "sha256": "FD9D3D2D6DCD4AE934F231F449D34E20F5300C62B404B8F64E8B71ECB67C06C3"
+      },
+      {
+        "path": "build/matching/ae-e04/func_0026C230.c",
+        "sha256": "7FD782C96F7AF349DBF0D6D1D6C643FA569680644E458688DD55EC25BE732ED3"
+      },
+      {
+        "path": "build/matching/ae-e04/26c230-watch-01-mi2.json",
+        "sha256": "F6AF78D13F4E7F07E847297BB844A92CF2DC3EAF8ECA2937A1F52BA8F1E73C63"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM ownership leaves symbolic-object/masked diagnostics only. Actual canonical relocation/provider binding, sole C ownership/placement, linked target bytes and complete E04 full-ROM acceptance remain required together.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Place the C230 basis construction and copy in an explicit static inline C helper, and call it with a separately negated local Vec3 from the public C310 wrapper."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1084,
+      "sha256": "C8C115405E88CD8201EFCBDE5EF5263D247F9CA8306A8AEC8E9CD541BB595347"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A8EE204A27757192DCA352726D20E2D147D5911FF2E6A562129934330E1F8794"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-29-func_0026C310-8da87f5f47.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

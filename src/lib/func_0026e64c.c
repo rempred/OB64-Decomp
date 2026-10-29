@@ -1,3 +1,4 @@
+#include "game/effect_math_e04.h"
 #include "game/effect_callbacks_p02.h"
 
 typedef struct P02Vec3 { float x, y, z; } P02Vec3;
@@ -37,22 +38,11 @@ extern void *func_00001330(u32);
 extern P02RenderE64C *func_0026BF74(s32);
 extern void func_00262830(s32);
 extern s16 func_0024BCE8(u8);
-extern void func_0026C230(void *, void *);
-extern void func_0025F150(void *, P02Vec3 *);
 extern void func_0024E9BC(s32, u8, s32);
 extern void func_00262C94(P02RenderE64C *, s32, s32);
 extern void func_0026241C(P02RenderE64C *, s32, s32);
 extern void *func_0020C478(u32);
-extern void func_0026C7C4(void *, P02Vec3 *);
-extern float func_0025EF78(P02Vec3 *);
-extern void func_0025EEF8(P02Vec3 *, P02Vec3 *, P02Vec3 *);
-extern void func_0025EE90(P02Vec3 *, float, P02Vec3 *);
-extern void func_0025EFC8(P02Vec3 *);
-extern void func_0026C9CC(s32, float *, float *, float *);
-extern float func_0026CBDC(float, s32, float *, float *, float *);
-extern void func_0025F058(void *, void *);
 extern P02RenderE64C *func_00269798(s32), *func_0026a45c(s32);
-extern void func_0026C55C(void *, void *);
 extern void func_0020BDCC(s16, s32);
 extern void func_002623C4(P02RenderE64C *);
 extern u8 *p01_context_80220F68;

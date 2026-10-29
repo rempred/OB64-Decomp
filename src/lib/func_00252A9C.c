@@ -1,3 +1,4 @@
+#include "game/effect_math_e04.h"
 #include "common/types.h"
 
 typedef struct P01Vec3 {
@@ -46,9 +47,6 @@ extern void func_0024CBC8(void *, s16, float, s32);
 extern P01PositionObject *func_0024D180(P01Vec3 *, void *);
 extern void func_0024E9BC(s32, u8, s32);
 extern void func_0025DB00(u8 *, void *);
-extern float func_0026CBDC(float, s32, float *, float *, float *);
-extern void func_0025EE90(P01Vec3 *, float, P01Vec3 *);
-extern void func_0026CCB4(float, float, float, s32);
 extern void func_0024CD40(P01TrailState *);
 
 s32 func_00252A9C(u16 message, P01TrailState *state)

@@ -1,27 +1,23 @@
+#include "game/effect_math_e04.h"
+
 typedef struct {
     float x;
     float y;
     float z;
-} Func0025EFC8Vec3;
+} E04Vec3;
 
-asm(".macro move dst,src\n"
-    "addu \\dst,\\src,$0\n"
-    ".endm\n");
+extern float sqrtf(float);
 
-void func_0025EFC8(Func0025EFC8Vec3 *vector)
+void func_0025EFC8(void *vector)
 {
-    float magnitude;
-    register float inverse asm("$f2");
+    float inverse;
 
-    magnitude = __builtin_sqrtf(
-        vector->x * vector->x
-        + vector->y * vector->y
-        + vector->z * vector->z);
-    inverse = 1.0f;
-    asm("nop");
-    inverse = inverse / magnitude;
-
-    vector->x = vector->x * inverse;
-    vector->y = vector->y * inverse;
-    vector->z = vector->z * inverse;
+    /* Use the parameter directly: a local pointer copy changes KMC's save
+     * scheduling around the possible sqrtf call. */
+    inverse = 1.0f / __builtin_sqrtf(((E04Vec3 *)vector)->x * ((E04Vec3 *)vector)->x
+                                  + ((E04Vec3 *)vector)->y * ((E04Vec3 *)vector)->y
+                                  + ((E04Vec3 *)vector)->z * ((E04Vec3 *)vector)->z);
+    ((E04Vec3 *)vector)->x *= inverse;
+    ((E04Vec3 *)vector)->y *= inverse;
+    ((E04Vec3 *)vector)->z *= inverse;
 }

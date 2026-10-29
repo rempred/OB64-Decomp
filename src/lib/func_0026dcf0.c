@@ -1,3 +1,4 @@
+#include "game/effect_math_e04.h"
 #include "game/effect_callbacks_p02.h"
 
 typedef struct P02Vec3 { float x, y, z; } P02Vec3;
@@ -30,21 +31,11 @@ extern void func_00023780(void *, s32);
 extern P02RenderDCF0 *func_0026BF74(s32);
 extern void func_00262830(s32);
 extern s16 func_0024BCE8(u8);
-extern void func_0026C834(u32, void *);
-extern float func_0025EF78(P02Vec3 *);
-extern void func_0025EE90(P02Vec3 *, float, P02Vec3 *);
-extern void func_0026C230(void *, void *);
-extern void func_0025F080(P02Vec3 *, void *, void *);
-extern void func_0025F150(void *, P02Vec3 *);
 extern void func_0026241C(P02RenderDCF0 *, s32, s32);
 extern void func_0024E9BC(s32, u8, s32);
-extern void func_0025F058(void *, void *);
 extern void func_002623C4(P02RenderDCF0 *);
 extern void *func_0020C478(u32);
-extern void func_0026C7C4(void *, P02Vec3 *);
 extern P02RenderDCF0 *func_00269798(s32), *func_0026a45c(s32);
-extern void func_0026C684(void *, void *);
-extern void func_0026C3F8(void *);
 extern void func_0020BDCC(s16, s32);
 extern u8 *p01_context_80220F68;
 extern u8 D_800EB290[], D_800EB240[];
@@ -112,7 +103,7 @@ s32 func_0026dcf0(u16 message, P02StateDCF0 *state)
         else
             state->value_18.x = -75.0f;
         zero = state->value_18.y = state->value_18.z = 0.0f;
-        func_0026C834((void *)state->value_28, &position);
+        func_0026C834((u32)state->value_28, &position);
         state->value_00.x = position.x - state->value_18.x;
         state->value_00.y = position.y - state->value_18.y;
         state->value_00.z = position.z - state->value_18.z;

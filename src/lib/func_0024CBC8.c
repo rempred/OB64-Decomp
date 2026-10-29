@@ -1,3 +1,4 @@
+#include "game/effect_math_e04.h"
 #include "common/types.h"
 
 typedef struct P01Vec3 {
@@ -21,10 +22,7 @@ typedef struct P01CurveState {
     float *value_40;
 } P01CurveState;
 
-extern float func_0025EF78(P01Vec3 *);
-extern void func_0025EFC8(P01Vec3 *);
 extern void *func_00001330(u32);
-extern void func_0026C9CC(s32, float *, float *, float *);
 
 void func_0024CBC8(void *stateMemory, s16 count, float scale, s32 flags)
 {

@@ -177,6 +177,12 @@
       "evidence": "Complete original body ROM 0x0025630C..0x00256408 includes JR ra at 0x00256400 and stack-restoring delay at 0x00256404. The following two zero words remain executable original ASM through 0x00256410; the original-name GLOBAL native function covers all 252 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
     },
     {
+      "romStart": 2488296,
+      "romEndExclusive": 2488304,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Complete original body ROM 0x0025F7C8..0x0025F7E8 includes JR ra at 0x0025F7E0 and stack-restoring delay at 0x0025F7E4. Two following zero words remain executable original ASM through 0x0025F7F0. Complete original-name GLOBAL native func_0025F7C8 covers all 32 preceding bytes. No native-padding provenance or numeric/runtime absence claim."
+    },
+    {
       "romStart": 2491420,
       "romEndExclusive": 2491424,
       "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
@@ -205,6 +211,12 @@
       "romEndExclusive": 2504912,
       "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
       "evidence": "Complete original body ROM 0x002637DC..0x002638CC includes JR ra at 0x002638C4 and stack-restoring delay at 0x002638C8. The following zero word remains executable original ASM through 0x002638D0. Complete original-name GLOBAL native func_002637DC covers all 240 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
+    },
+    {
+      "romStart": 2542824,
+      "romEndExclusive": 2542832,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Complete original callable body ROM 0x0026CCB4..0x0026CCE8 includes JR ra at 0x0026CCE0 and its halfword-store delay at 0x0026CCE4. The two following zero words remain executable original ASM through 0x0026CCF0. Complete original-name GLOBAL func_0026CCB4 covers the preceding 52 bytes under ordinary section assignment. No native-padding provenance, original-source identity or numeric/runtime absence claim."
     },
     {
       "romStart": 2545516,
@@ -4626,6 +4638,34 @@
       ]
     },
     {
+      "romStart": 2488264,
+      "romEndExclusive": 2488296,
+      "evidence": {
+        "caseId": "attack-e04-row4629-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original body ROM 0x0025F7C8..0x0025F7E8 includes JR ra at 0x0025F7E0 and stack-restoring delay at 0x0025F7E4. Two following zero words remain executable original ASM through 0x0025F7F0. Complete original-name GLOBAL native func_0025F7C8 covers all 32 preceding bytes. No native-padding provenance or numeric/runtime absence claim."
+      },
+      "symbol": "func_0025F7C8",
+      "aliases": [],
+      "expectedBytesSha256": "9313F3D91A4AF6B89161C7AA861C1A79F919E3E642E7732C8B4E402BEE1BC9B5",
+      "fragments": [
+        {
+          "rowIndex": 4629,
+          "romStart": 2488264,
+          "romEndExclusive": 2488296,
+          "ownerOffset": 0,
+          "bytes": 32,
+          "vramStart": 2149624856,
+          "sectionName": ".ob64.r4629.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0025F7C8.s",
+          "sha256": "C8435FDA518E9EDE98310FF2E214DF323DBACA276C1C3EDCBEE8988D9A37C615"
+        }
+      ]
+    },
+    {
       "romStart": 2491372,
       "romEndExclusive": 2491420,
       "evidence": {
@@ -4922,6 +4962,34 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_00267994.s",
           "sha256": "420180964A23E5306FDD49EB119855A21663AC8D94A74E127456B87F26635A86"
+        }
+      ]
+    },
+    {
+      "romStart": 2542772,
+      "romEndExclusive": 2542824,
+      "evidence": {
+        "caseId": "attack-e04-row4861-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original callable body ROM 0x0026CCB4..0x0026CCE8 includes JR ra at 0x0026CCE0 and its halfword-store delay at 0x0026CCE4. The two following zero words remain executable original ASM through 0x0026CCF0. Complete original-name GLOBAL func_0026CCB4 covers the preceding 52 bytes under ordinary section assignment. No native-padding provenance, original-source identity or numeric/runtime absence claim."
+      },
+      "symbol": "func_0026CCB4",
+      "aliases": [],
+      "expectedBytesSha256": "1ADED22B208ABB33B19EC1A2FF920D4D883B530B1E2DD3C61B6C02294F1499F8",
+      "fragments": [
+        {
+          "rowIndex": 4861,
+          "romStart": 2542772,
+          "romEndExclusive": 2542824,
+          "ownerOffset": 0,
+          "bytes": 52,
+          "vramStart": 2149679364,
+          "sectionName": ".ob64.r4861.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0026CCB4.s",
+          "sha256": "F07C2AFF69E8F1B4DF659BE1F80B01E11E2C5F645EDFB0424D562A348A726E35"
         }
       ]
     },

@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E11E2B186C9DB13E00D097FE5723B2F8676DA9A617E0D25A3625C09A97AB2AEE",
+  "observationId": "183E7B018FFAC9646B5FC5A917FFB96CF2A6E37E29B7D8670AC46133238B290F",
+  "symbol": "func_0025EFC8",
+  "authored": {
+    "context": "The shared void-pointer interface was compatible, but initializing a second local pointer changed the native normalizer prologue and square-root branch scheduling.",
+    "effects": [
+      "parameter-lifetime",
+      "callee-saved-copy",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "B4D16C716EF382E89618B35CE29EAFF6F1DFF7DFF8C76F3C5CA2AFF4340C3F57",
+      "sourceSha256": "D9AFEB8208138CEB0C6948D1D8D8CB92B4081D47F63D2DDD2C35E241B3C25101"
+    },
+    "label": "direct-parameter-restores-save",
+    "observedEffect": "Fresh pinned native text reproduces the original source-bound 144-byte candidate. The corrected canonical linked diff has zero byte or instruction differences, mechanical PURE_C, and the unchanged R_MIPS_26 at 0x44 to sqrtf. The other 65 affected targets passed the preceding combined linked check and their sources are unchanged.",
+    "parentCandidateId": "76B443B7B7A730701FC1C038EF316D6D1747D4B1A2D8B2BF99F8E0B52C6689E0",
+    "references": [
+      {
+        "path": "build/integration/attack-effects/e04/efc8-before-pointer-reconciliation.c",
+        "sha256": "74992D9E979466FED7DE737DD458209E36F0C250E84DA2743B26488949818F90"
+      },
+      {
+        "path": "build/integration/attack-effects/e04/efc8-first-diff.json",
+        "sha256": "0E576BD3E7DD30B783765D80C5EADAEF32EF9D37E1751CFFCC13F6E109CEAF77"
+      },
+      {
+        "path": "build/integration/attack-effects/e04/efc8-corrected-diff.json",
+        "sha256": "ED20F8066279004D3614683EF2FB004CEA640DAAD356FB4641B473F3BADEDF4D"
+      },
+      {
+        "path": "build/integration/attack-effects/e04/efc8-pointer-reconciliation.json",
+        "sha256": "99748CCACD214A3C2AA88A499F23116FE7461ECBAF8D64444F27019C37F634A0"
+      },
+      {
+        "path": "build/integration/attack-effects/e04/focused-summary.json",
+        "sha256": "D52C3B8F9A16850CAFBD3C10D2EC51D7A41E995676043673E6DDD77DF2186CDD"
+      },
+      {
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "relatedCandidateIds": [
+      "76B443B7B7A730701FC1C038EF316D6D1747D4B1A2D8B2BF99F8E0B52C6689E0"
+    ],
+    "remainingFailure": "No remaining linked mismatch in the corrected target. These diagnostic observations do not establish original source spelling; final complete-wave acceptance is recorded separately.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the public void *vector parameter as the live pointer and cast that parameter at the three-float field accesses, without introducing a local pointer copy."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 2580,
+      "sha256": "B4D16C716EF382E89618B35CE29EAFF6F1DFF7DFF8C76F3C5CA2AFF4340C3F57"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D9AFEB8208138CEB0C6948D1D8D8CB92B4081D47F63D2DDD2C35E241B3C25101"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-29-func_0025EFC8-e11e2b186c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

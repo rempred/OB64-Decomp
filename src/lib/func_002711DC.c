@@ -1,3 +1,4 @@
+#include "game/effect_math_e04.h"
 #include "game/effect_callbacks_p02.h"
 
 typedef struct P02Vec2711DC { float x, y, z; } P02Vec2711DC;
@@ -36,17 +37,7 @@ extern P02Render2711DC *func_0026BF74(s32), *func_0026abc8(s32);
 extern void func_0026241C(P02Render2711DC *, s32, s32);
 extern void func_00262830(s32);
 extern s16 func_0024BCE8(u8);
-extern float func_0025EF78(P02Vec2711DC *);
-extern void func_0025EE90(P02Vec2711DC *, float, P02Vec2711DC *);
-extern void func_0025EEF8(P02Vec2711DC *, P02Vec2711DC *, P02Vec2711DC *);
-extern void func_0025EFC8(P02Vec2711DC *);
-extern void func_0026C9CC(s32, float *, float *, float *);
-extern float func_0026CBDC(float, s32, float *, float *, float *);
-extern void func_0026C230(void *, void *);
-extern void func_0025F150(void *, P02Vec2711DC *);
-extern void func_0026C834(u32, void *);
 extern void func_0024E9BC(s32, u8, s32);
-extern void func_0025F058(void *, void *);
 extern void func_002623C4(P02Render2711DC *);
 extern u8 *p01_context_80220F68;
 extern u8 D_800EB290[];
