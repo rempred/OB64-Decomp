@@ -25,7 +25,7 @@ test('real compileCandidate publication boundary rejects shared drift on fresh a
       Buffer, path, Date, JSON, MATCHING_ROOT: 'private',
       executablePrefixComparisonScope, originalOwnerComparison,
       fs: { readFileSync: () => Buffer.from(text) },
-      require: () => ({ regular: x => x, assertPrivateClassification() {}, equalExpandedInputs() {} }),
+      require: name => name === './input_set' ? require('../tools/lib/matching/input_set') : ({ regular: x => x, assertPrivateClassification() {}, equalExpandedInputs() {} }),
       assertScratchEnvironment() {}, assertScratchCapability() {}, recordCandidate: () => ({ candidate, sourceFile: 'source.c' }),
       textContract: { bindWorkbenchTarget: (_session, value) => value },
       relative: x => x, classifySource: () => ({ ...classification }), verifyClassificationInputs() {}, compilationInputBytes: () => Buffer.from(text),

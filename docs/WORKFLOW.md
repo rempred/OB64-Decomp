@@ -818,6 +818,30 @@ node tools/match.js probe func_002158E4 --source build/matching/actorhelper/cand
 
 Read current intake, the full disassembly and required-body coverage before tuning. Private source,
 observations, database, snapshots, compiler/probe outputs and reports stay in that assigned root.
+
+For private checks that must continue during ordinary canonical integration, the production owner can
+capture a currently verified input set with `node tools/match.js capture-inputs --output build/inputs-v1`
+(the destination must be new). Capture authenticates existing CURRENT and companions; it does not build
+or repair them. Mutable configuration, active source/include and research data are copied once.
+Tools, original assembly/raw data, normalized ROM and the versioned accepted output remain authenticated
+references. Preserve those references while a worker uses the set.
+
+Add `--inputs build/inputs-v1/manifest.json` to guarded `intake`, `watch --source`, or `probe --source`.
+No other command/flag branch supports selected inputs, including `best`, `history`, `preserve`,
+`probe --candidate`, and `--research-compiler`. The actual selected reads, dependency identities,
+directory membership, accepted proof and physical set identity are authenticated. A missing/drifted
+required selected input aborts; an uncaptured historical research reference is explicitly unavailable.
+There is no fallback to live mutable bytes. Location-sensitive preprocessing must still agree with
+accepted inputs and authored/snapshot expansion. Results include the selected input-set identity and
+remain private diagnostics, never acceptance.
+
+The Director records each active manifest in existing cursors. Refresh one worker explicitly after
+draining that root, retain its best source/old evidence, and preserve the previous input set until all
+users release it. Snapshot capture/selection adds no per-function full-ROM verification or new scheduler.
+An archive alone does not keep published research references readable. Retain their needed files at
+resolvable paths, or deliberately migrate them with the existing research mechanisms and validate the
+current curated-reference closure before removing the old paths. Retained historical evidence does
+not resume its former worker or make that root active scratch.
 Supported commands are `intake`, `watch`, `classify`, `compare`, `inspect`, `history`, `best`,
 `observations`, `import`, `preserve` and `probe`; other commands reject `--scratch-root`. Preserve is
 an explicit tracked publication operation reserved to the production writer by assignment, not an
@@ -862,14 +886,17 @@ Null/unavailable evidence cannot become an exactness claim. Even an exact isolat
 
 Use an available authenticated private linked comparison for the early linked-diff development check.
 Do not pause sibling workers for an ordinary provisional candidate or require a canonical activation
-after each function. Keep canonical inputs stable while both workers iterate, then batch the production
+after each function. Keep live canonical inputs stable for checks without `--inputs`, then batch the production
 focused checks into the complete-wave integration period. Where private linked/full-owner evidence is
 unavailable (including inactive ASM or unsupported grouped/auxiliary owners), report the partial verdict
 honestly and arrange the necessary canonical check before relying on the missing evidence; batch those
 exceptions where practical. Raw/masked equality never substitutes for linked bytes or full-owner coverage.
 
 For combined integration or a necessary shared tooling/header/configuration change, the Director stops
-new shared-input commands and drains those in flight before the production writer changes shared inputs.
+new live-input commands and drains those in flight before the production writer changes their inputs.
+Explicit selected-input checks can continue through ordinary source/header/configuration integration and
+canonical verification. Changes to their referenced tools, original inputs or accepted outputs still
+require an affected-user drain; preserve those references until the selected set is released.
 Workers may continue private edits and reasoning. Unexpected shared-input drift rejects the check;
 refresh affected context and retry after the inputs stabilize. No automatic rebase or unchanged
 acceptance repeat is needed. A shared-input failure is not evidence that the candidate C failed.
@@ -877,7 +904,7 @@ acceptance repeat is needed. A shared-input failure is not evidence that the can
 Integrate candidates sequentially and check their actual production source/include context with the
 normal focused diff. After every member of the original assigned wave is ready, run the normal final
 verifier once on the combined result, without a preceding redundant build. Private native commands
-remain stopped throughout that verifier. Unsupported grouped/auxiliary scratch targets stay serial;
+using live inputs remain stopped throughout that verifier. Unsupported grouped/auxiliary scratch targets stay serial;
 do not invent missing relocation expectations or controls to make a target eligible.
 
 An unrelated unfinished wave does not delay a complete, dependency-ready wave. The Director schedules

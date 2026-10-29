@@ -1,4 +1,5 @@
 'use strict';
+const inputSet = require('./matching/input_set');
 
 const childProcess = require('child_process');
 const crypto = require('crypto');
@@ -61,8 +62,8 @@ function validPinnedExecutable(record, requireDriverProgram = false) {
     && (!requireDriverProgram || (typeof record.driverProgram === 'string' && /^[A-Za-z0-9_.+-]+$/.test(record.driverProgram)));
 }
 
-function loadPolicyConfig() {
-  const config = readJson(POLICY_CONFIG_PATH);
+function loadPolicyConfig(inputs) {
+  const config = readJson(inputSet.resolve(inputs, POLICY_CONFIG_PATH));
   const preprocessor = config.preprocessor;
   const requiredExecutables = preprocessor && preprocessor.requiredExecutables;
   if (config.schemaVersion !== 3 || !config.matchingCompiler || !preprocessor
@@ -126,7 +127,7 @@ function preprocessorIdentity(preprocessor) {
     version: preprocessor.version,
     executables: preprocessor.executables.map((record) => ({ ...record })),
     flags: [...preprocessor.flags],
-    includeDirectories: preprocessor.includeDirectories.map((directory) => displayPath(directory)),
+    includeDirectories: preprocessor.includeDirectories.map((directory) => inputSet.context(preprocessor)?.logicalDirectory(directory) || displayPath(directory)),
     dependencyMode: preprocessor.dependencyMode,
     dependencyRoot: '.',
     dependencyTarget: preprocessor.dependencyTarget,
@@ -134,8 +135,9 @@ function preprocessorIdentity(preprocessor) {
   };
 }
 
-function resolvePreprocessor(config = loadPolicyConfig()) {
-  const compilerManifest = path.resolve(ROOT, config.matchingCompiler.manifest);
+function resolvePreprocessor(config, inputs) {
+  if (config === undefined) config = loadPolicyConfig(inputs);
+  const compilerManifest = inputSet.resolve(inputs, path.resolve(ROOT, config.matchingCompiler.manifest));
   if (!fs.existsSync(compilerManifest) || sha256File(compilerManifest) !== config.matchingCompiler.manifestSha256) {
     throw new Error('source-policy matching compiler manifest drift');
   }
@@ -184,17 +186,17 @@ function resolvePreprocessor(config = loadPolicyConfig()) {
   if (!sameExecutablePath(dependencyRoot, realRoot)) {
     throw new Error('source-policy dependency root drift');
   }
-  const includeDirectories = config.preprocessor.includeDirectories.map((item) => path.resolve(ROOT, item));
+  const includeDirectories = config.preprocessor.includeDirectories.map((item) => inputSet.resolve(inputs, path.resolve(ROOT, item)));
   for (const directory of includeDirectories) {
     if (!fs.existsSync(directory) || !fs.statSync(directory).isDirectory()) {
       throw new Error(`source-policy include directory is missing: ${directory}`);
     }
-    const relative = path.relative(realRoot, fs.realpathSync.native(directory));
+    const relative = inputs ? inputs.logicalDirectory(directory) : path.relative(realRoot, fs.realpathSync.native(directory));
     if (!relative || relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
       throw new Error(`source-policy include directory escapes the repository: ${directory}`);
     }
   }
-  return {
+  return inputSet.bind({
     path: driver.absolutePath,
     sha256: driver.identity.sha256,
     version,
@@ -209,15 +211,15 @@ function resolvePreprocessor(config = loadPolicyConfig()) {
     dependencyTarget: config.preprocessor.dependencyTarget,
     configIdentity: {
       path: displayPath(POLICY_CONFIG_PATH),
-      bytes: fs.statSync(POLICY_CONFIG_PATH).size,
-      sha256: sha256File(POLICY_CONFIG_PATH),
+      bytes: fs.statSync(inputSet.resolve(inputs, POLICY_CONFIG_PATH)).size,
+      sha256: sha256File(inputSet.resolve(inputs, POLICY_CONFIG_PATH)),
     },
     matchingCompiler: {
       executableSha256: compiler.compiler.executableSha256,
       manifestSha256: config.matchingCompiler.manifestSha256,
       preprocessingMode: config.matchingCompiler.preprocessingMode,
     },
-  };
+  }, inputs);
 }
 
 function isIdentifierStart(char) {
@@ -487,12 +489,13 @@ function parseDependencyFile(text, expectedTarget) {
   return tokens;
 }
 
-function dependencyIdentities(dependencyPaths, sourceFile) {
+function dependencyIdentities(dependencyPaths, sourceFile, inputs) {
   const records = [];
   const seen = new Set();
   for (const dependency of dependencyPaths) {
     const resolved = path.isAbsolute(dependency) ? path.resolve(dependency) : path.resolve(ROOT, dependency);
-    const record = regularRepositoryFile(resolved, 'source-policy dependency');
+    const record = inputs ? { identity: { path: inputs.logical(resolved), ...inputSet.identity(resolved) } }
+      : regularRepositoryFile(resolved, 'source-policy dependency');
     const key = record.identity.path.toLowerCase();
     if (seen.has(key)) {
       throw new Error(`source-policy dependency identity is duplicated: ${record.identity.path}`);
@@ -500,7 +503,7 @@ function dependencyIdentities(dependencyPaths, sourceFile) {
     seen.add(key);
     records.push(record.identity);
   }
-  const sourceRelative = repositoryRelative(sourceFile, 'source-policy source');
+  const sourceRelative = inputs ? inputs.logical(sourceFile) : repositoryRelative(sourceFile, 'source-policy source');
   if (!seen.has(sourceRelative.toLowerCase())) {
     throw new Error('source-policy dependency list omits the authored source');
   }
@@ -518,12 +521,15 @@ function safeTemporaryDirectory(prefix) {
 }
 
 function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = [], options = {}) {
+  const inputs = inputSet.context(preprocessor);
   let source;
   try {
     source = profileMeasure(options, 'source-policy.source-precheck', () => (
-      regularRepositoryFile(sourceFile, 'source-policy source')
+      inputs ? { file: inputs.source(sourceFile), identity: { path: inputs.logical(inputs.source(sourceFile)), ...inputSet.identity(inputs.source(sourceFile)) } }
+        : regularRepositoryFile(sourceFile, 'source-policy source')
     ));
   } catch (error) {
+    inputSet.rethrow(error, inputs);
     return { ok: false, error: error.message, args: [] };
   }
   const includeDirectories = [path.dirname(source.file), ...preprocessor.includeDirectories, ...extraIncludeDirectories]
@@ -532,6 +538,7 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
   try {
     normalizedIncludeDirectories = profileMeasure(options, 'source-policy.include-authentication', () => (
       [...new Set(includeDirectories.map((directory) => {
+        if (inputs) { inputs.logicalDirectory(directory); return directory; }
         const relative = repositoryRelative(directory, 'source-policy include directory');
         if (!fs.existsSync(directory) || !fs.lstatSync(directory).isDirectory() || fs.lstatSync(directory).isSymbolicLink()) {
           throw new Error(`source-policy include directory is not a regular directory: ${directory}`);
@@ -546,6 +553,7 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
       }))]
     ));
   } catch (error) {
+    inputSet.rethrow(error, inputs);
     return { ok: false, error: error.message, args: [] };
   }
   const scratch = profileMeasure(options, 'source-policy.workspace-create', () => (
@@ -557,7 +565,7 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
     '-MD', '-MF', dependencyFile,
     '-MT', preprocessor.dependencyTarget,
     ...normalizedIncludeDirectories.flatMap((item) => ['-I', item]),
-    source.identity.path,
+    inputs ? source.file : source.identity.path,
   ];
   try {
     const result = profileMeasure(options, 'source-policy.preprocessor', () => (
@@ -586,7 +594,7 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
       parseDependencyFile(fs.readFileSync(dependencyFile, 'utf8'), preprocessor.dependencyTarget)
     ));
     const dependencies = profileMeasure(options, 'source-policy.dependency-authentication', () => (
-      dependencyIdentities(dependencyPaths, source.file)
+      dependencyIdentities(dependencyPaths, source.file, inputs)
     ));
     const sourceUnchanged = profileMeasure(options, 'source-policy.source-postcheck', () => {
       const currentSource = dependencies.find((record) => record.path.toLowerCase() === source.identity.path.toLowerCase());
@@ -604,6 +612,7 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
       dependencies,
     };
   } catch (error) {
+    inputSet.rethrow(error, inputs);
     return { ok: false, error: error.message, args };
   } finally {
     profileMeasure(options, 'source-policy.workspace-cleanup', () => {
@@ -636,12 +645,13 @@ function compilationInputBytes(classification) {
   return Buffer.from(bytes);
 }
 
-function verifyRecordedInput(record, label) {
+function verifyRecordedInput(record, label, inputs) {
   if (!record || typeof record.path !== 'string' || !Number.isInteger(record.bytes) || record.bytes < 0
       || typeof record.sha256 !== 'string' || !SHA256.test(record.sha256)) {
     throw new Error(`${label} identity is malformed`);
   }
-  const actual = regularRepositoryFile(path.join(ROOT, ...record.path.split('/')), label).identity;
+  const file = path.join(ROOT, ...record.path.split('/'));
+  const actual = inputs ? { path: record.path, ...inputSet.identity(inputs.source(file)) } : regularRepositoryFile(file, label).identity;
   if (actual.path !== record.path || actual.bytes !== record.bytes || actual.sha256 !== record.sha256) {
     throw new Error(`${label} identity drift: ${record.path}`);
   }
@@ -663,13 +673,13 @@ function verifyClassificationInputs(classification, options = {}) {
     path: classification.source,
     bytes: classification.sourceBytes,
     sha256: classification.sourceSha256,
-  }, 'authored source');
+  }, 'authored source', options.inputs || inputSet.context(classification));
   const seen = new Set([classification.source.toLowerCase()]);
   for (const dependency of classification.dependencies) {
     if (seen.has(String(dependency && dependency.path).toLowerCase())) {
       throw new Error('source-policy dependency identity is duplicated');
     }
-    verifyRecordedInput(dependency, 'source dependency');
+    verifyRecordedInput(dependency, 'source dependency', options.inputs || inputSet.context(classification));
     seen.add(dependency.path.toLowerCase());
   }
   if (options.requireBytes !== false) compilationInputBytes(classification);
@@ -694,6 +704,8 @@ function resultDigest(result) {
 
 function classifySource(source, options = {}) {
   const sourceFile = path.resolve(options.root || ROOT, source);
+  const inputs = options.inputs || inputSet.context(options.preprocessor);
+  const readSource = () => inputs ? inputs.source(sourceFile) : sourceFile;
   const shownSource = displayPath(sourceFile);
   const extension = path.extname(sourceFile).toLowerCase();
   if (['.s', '.asm'].includes(extension)) {
@@ -707,7 +719,7 @@ function classifySource(source, options = {}) {
     return result;
   }
   const sourceExists = profileMeasure(options, 'source-policy.source-existence', () => (
-    fs.existsSync(sourceFile) && fs.statSync(sourceFile).isFile()
+    fs.existsSync(readSource()) && fs.statSync(readSource()).isFile()
   ));
   if (!sourceExists) {
     const result = { class: SOURCE_CLASSES.UNKNOWN, source: shownSource, reasons: [], error: 'source file is missing' };
@@ -717,15 +729,16 @@ function classifySource(source, options = {}) {
 
   let preprocessor;
   try {
-    preprocessor = options.preprocessor || resolvePreprocessor(options.config);
+    preprocessor = options.preprocessor || resolvePreprocessor(options.config, inputs);
   } catch (error) {
+    inputSet.rethrow(error, inputs);
     const result = { class: SOURCE_CLASSES.UNKNOWN, source: shownSource, reasons: [], error: error.message };
     result.digest = resultDigest(result);
     return result;
   }
 
   const authored = profileMeasure(options, 'source-policy.authored-read-hash', () => {
-    const rawBytes = fs.readFileSync(sourceFile);
+    const rawBytes = fs.readFileSync(readSource());
     return {
       rawBytes,
       rawText: rawBytes.toString('utf8'),
@@ -830,14 +843,14 @@ function classifySource(source, options = {}) {
       preprocessor: preprocessorIdentity(preprocessor),
     };
     result.digest = resultDigest(result);
-    return attachCompilationInput(result, preprocessed.bytes);
+    return inputSet.bind(attachCompilationInput(result, preprocessed.bytes), inputs);
   });
 }
 
 function classifyTargetSources(targets, options = {}) {
   if (!Array.isArray(targets) || targets.length === 0) throw new Error('active target source list is missing');
   const preprocessor = profileMeasure(options, 'source-policy.resolve-preprocessor', () => (
-    options.preprocessor || resolvePreprocessor(options.config)
+    options.preprocessor || resolvePreprocessor(options.config, options.inputs)
   ));
   const symbols = new Set();
   const producers = new Map();
@@ -871,7 +884,7 @@ function classifyTargetSources(targets, options = {}) {
     if (classification[COMPILATION_INPUT_BYTES]) {
       attachCompilationInput(record, classification[COMPILATION_INPUT_BYTES]);
     }
-    return record;
+    return inputSet.bind(record, inputSet.context(preprocessor));
   }));
   const { counts, bytes } = profileMeasure(options, 'source-policy.census', () => {
     const resultCounts = {};

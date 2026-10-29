@@ -30,7 +30,7 @@ function fileIdentity(file) {
 
 function capturePrivateInputs(options = {}) {
   const root = path.resolve(options.root || ROOT);
-  const directories = options.directories || ['config', 'include', 'src', 'tools/lib'];
+  const directories = [...(options.directories || ['config', 'include', 'src', 'tools/lib']), ...(options.extraDirectories || [])];
   const files = options.files || ['tools/match.js', 'tools/matching_workbench/store.py',
     'tools/matching_workbench/schema.sql', 'tools/matching_workbench/private_guard.py',
     'build/current/state.json', 'build/current/baseline-state.json',
@@ -94,7 +94,8 @@ function assertPrivateClassification(classification, root = ROOT) {
         || dependency.path.includes('\\') || dependency.path.split('/').includes('..')) {
       throw new Error(`private candidates require approved include/ headers: ${dependency.path}`);
     }
-    regular(path.join(root, dependency.path));
+    const inputs = require('./input_set').context(classification);
+    regular(inputs ? inputs.resolve(path.join(root, dependency.path)) : path.join(root, dependency.path));
   }
 }
 

@@ -1,4 +1,5 @@
 'use strict';
+const inputSet = require('./matching/input_set');
 const literals = require('./retained_literal_references');
 
 // Compilation producers own artifacts; members retain accepted function ownership.
@@ -43,8 +44,10 @@ function authenticateFunctions(group, assemblySource = null) {
   }
   if (!context || context.groupIdentity !== key) fail('native function group context');
   const logical = require('./logical_functions'), p7 = require('./phase7_conventional');
-  if (p7.sha256File(logical.CONFIG_PATH) !== group.logicalBinding.registryIdentity.sha256
-      || p7.sha256File(require('./active_targets').LINKAGE_CONFIG_PATH) !== group.fixedBindingIdentity.sha256) fail('native group registry/linkage inputs changed');
+  const inputs = inputSet.context(context.registry);
+  if (inputSet.context(group) && inputSet.context(group) !== inputs) fail('native group input context changed');
+  if (p7.sha256File(logical.CONFIG_PATH, inputs) !== group.logicalBinding.registryIdentity.sha256
+      || p7.sha256File(require('./active_targets').LINKAGE_CONFIG_PATH, inputs) !== group.fixedBindingIdentity.sha256) fail('native group registry/linkage inputs changed');
   const actual = logical.assertNativeGroupBodies(context.registry, context.rows, group);
   if (!same(actual, group.logicalBinding)) fail('native group logical binding drift');
   for (const row of context.rows) {
@@ -261,6 +264,7 @@ function bind(groups, targets, context = {}) {
     });
     if (offset !== ((interior(group)||literalRun(group)) ? group.tail.offset : group.text.bytes)) fail('group extent');
     const normalized = { ...group, owners, romStart: first.romStartNumber, vramStart: first.vramStartNumber };
+    inputSet.bind(normalized, inputSet.context(context.model));
     for (const [index, target] of selected.entries()) {
       target.compilationGroup = normalized;
       target.groupMemberIndex = index;
@@ -274,7 +278,7 @@ function bind(groups, targets, context = {}) {
       const p7 = require('./phase7_conventional'), logical = require('./logical_functions'), active = require('./active_targets');
       const logicalRegistry = context.logicalRegistry || logical.loadRegistry(context.model, context.baserom);
       normalized.logicalBinding = logical.assertNativeGroupBodies(logicalRegistry, selected.map(t => t.row), normalized);
-      normalized.fixedBindingIdentity = { path: 'config/matching-c-linkage.json', sha256: p7.sha256File(active.LINKAGE_CONFIG_PATH) };
+      normalized.fixedBindingIdentity = { path: 'config/matching-c-linkage.json', sha256: p7.sha256File(active.LINKAGE_CONFIG_PATH, inputSet.context(context.model)) };
       normalized.fixedBindings = fixedBindingRecords(normalized, context.linkSymbols || {});
       functionContexts.set(hash(normalized), { groupIdentity: hash(normalized), registry: logicalRegistry, rows: selected.map(t => t.row) });
     }
@@ -1290,14 +1294,15 @@ function literalRunBindings(group,context){
 }
 function bindLiteralRun(group,context,targets){
   const ctx={...context,targets};Object.assign(group,literalRunBindings(group,ctx));
-  group.fixedBindingIdentity={path:'config/matching-c-linkage.json',sha256:require('./phase7_conventional').sha256File(require('./active_targets').LINKAGE_CONFIG_PATH)};
+  group.fixedBindingIdentity={path:'config/matching-c-linkage.json',sha256:require('./phase7_conventional').sha256File(require('./active_targets').LINKAGE_CONFIG_PATH,inputSet.context(context.model))};
   group.fixedBindings=fixedBindingRecords(group,context.linkSymbols||{});literalRunContexts.set(literalRunIdentity(group),ctx);
 }
 function authenticateLiteralRun(group){
   if(!literalRun(group))return null;const id=literalRunIdentity(group);let ctx=literalRunContexts.get(id);
   if(!ctx){require('./active_targets').loadActiveTargetModel();ctx=literalRunContexts.get(id);}if(!ctx)fail('literal run missing authenticated context');
+  if(inputSet.context(group)&&inputSet.context(group)!==inputSet.context(ctx.model))fail('literal run input context changed');
   const bound=literalRunBindings(group,ctx);if(!same(bound.logicalBinding,group.logicalBinding)||!same(bound.retainedNeighborBinding,group.retainedNeighborBinding)
-    ||require('./phase7_conventional').sha256File(require('./active_targets').LINKAGE_CONFIG_PATH)!==group.fixedBindingIdentity.sha256
+    ||require('./phase7_conventional').sha256File(require('./active_targets').LINKAGE_CONFIG_PATH,inputSet.context(ctx.model))!==group.fixedBindingIdentity.sha256
     ||!same(fixedBindingRecords(group,ctx.linkSymbols||{}),group.fixedBindings))fail('literal run binding drift');return ctx;
 }
 function finishLiteralRunBindings(targets){for(const group of new Set(targets.map(t=>t.compilationGroup).filter(literalRun))){const ctx=authenticateLiteralRun(group);ctx.targets=targets;authenticateLiteralRun(group);}}
@@ -1366,7 +1371,7 @@ let recoveringSingleFragment=false;
 function singleFragmentImplementationIdentity(){
   const p=require('./phase7_conventional');
   return hash(['compilation_groups','auxiliary_projection','active_targets','elf_text_split','text_contract','phase8_matching_c',
-    'logical_functions','boot_initialized_data','auxiliary_interior','retained_literal_references','source_policy']
+    'logical_functions','boot_initialized_data','auxiliary_interior','retained_literal_references','source_policy','matching/input_set']
     .map(name=>({name,sha256:p.sha256File(require.resolve('./'+name))})));
 }
 function singleFragmentUnordered(group){return hash({...group,auxiliary:{...group.auxiliary,sections:group.auxiliary.sections.map(({ownerFragmentIndex,ownerFragmentCount,...a})=>a)}});}
@@ -1389,7 +1394,7 @@ function singleFragmentAliases(group,symbols){
 }
 function singleFragmentCanonical(group){
   const p=require('./phase7_conventional'),logical=require('./logical_functions'),active=require('./active_targets');
-  const model=p.loadAcceptedModel(),rom=fs.readFileSync(path.join(ROOT,'build/baserom.us_rev0.z64'));
+  const inputs=inputSet.context(group),model=p.loadAcceptedModel({inputs}),rom=fs.readFileSync(inputSet.resolve(inputs,path.join(ROOT,'build/baserom.us_rev0.z64')));
   if(p.sha256Buffer(rom)!==model.config.rom.sha256)fail('single fragment ROM identity');
   const row=model.rows.find(r=>r.index===group.members[0].ownerRowIndex),data=model.rows.find(r=>r.slices.some(s=>s.sectionName===group.auxiliary.sections[0].outputSection));
   if(!row||!data||row.slices.length!==1||data.slices.length!==1||row.retainedPadding||row.ambiguous!==false||row.primaryClass!=='code')fail('single fragment accepted owner');
@@ -1400,13 +1405,13 @@ function singleFragmentCanonical(group){
       ||a.ownerRowIndex!==data.index||a.ownerOriginalAssembly!==data.part.file||a.ownerOriginalAssemblySha256!==data.part.sha256)fail('single fragment physical source binding');
   for(const r of [row,data]){const b=fs.readFileSync(path.join(ROOT,r.part.file));
     if(p.sha256Buffer(b)!==r.part.sha256||!require('./word_asm').assembleWordAsmText(b.toString('utf8')).bytes.equals(rom.subarray(r.romStart,r.romEndExclusive)))fail('single fragment original ASM bytes');}
-  const saved=JSON.parse(fs.readFileSync(CONFIG_PATH,'utf8')).groups.filter(g=>g.id===group.id);
+  const saved=JSON.parse(fs.readFileSync(inputSet.resolve(inputs,CONFIG_PATH),'utf8')).groups.filter(g=>g.id===group.id);
   if(saved.length!==1)fail('single fragment current registry group');
   registry({schemaVersion:1,profile:model.config.profile,groups:saved},model.config.profile);
   for(const k of ['id','source','mode','members','text','functions','tail','relocations'])if(!same(saved[0][k],group[k]))fail('single fragment registry drift');
   for(const k of ['compilerLabel','alignmentDirectives','nativeSection'])if(!same(saved[0].auxiliary[k],group.auxiliary[k]))fail('single fragment auxiliary registry drift');
   const selected=normalizeAuxiliary(saved[0])[0];for(const [k,v]of Object.entries(selected))if(!same(a[k],v))fail('single fragment normalized auxiliary drift');
-  const linkage=JSON.parse(fs.readFileSync(active.LINKAGE_CONFIG_PATH,'utf8')),symbols=Object.fromEntries(linkage.symbols.map(s=>[s.name,s.address]));
+  const linkage=JSON.parse(fs.readFileSync(inputSet.resolve(inputs,active.LINKAGE_CONFIG_PATH),'utf8')),symbols=Object.fromEntries(linkage.symbols.map(s=>[s.name,s.address]));
   const aliases=singleFragmentAliases(group,symbols),reg=logical.loadRegistry(model,rom);
   singleFragmentLogical(reg,row,group,aliases);
   logical.assertActivationCompatible(reg,group.members[0].symbol,[row]);
@@ -1416,12 +1421,12 @@ function singleFragmentCanonical(group){
   for(const [k,v]of Object.entries(resolved[0]))if(!['ownerFragmentIndex','ownerFragmentCount'].includes(k)&&!same(a[k],v))fail('single fragment accepted auxiliary pairing');
   const paths=['config/phase7/conventional-build.json','config/splat/us_rev0.semantic.json','config/splat/us_rev0.overlay-linker-inputs.json',
     'asm/original/rev0/manifest.json','config/roms/us_rev0.json','config/logical-functions.json','config/matching-c-linkage.json','config/matching-c-compilation-groups.json','config/matching-c-targets.json',row.part.file,data.part.file];
-  return {identity:{inputs:paths.map(file=>({path:file,sha256:p.sha256File(path.join(ROOT,file))})),rows:[row,data],logical:reg.identity,aliases},aliases};
+  return {identity:{inputs:paths.map(file=>({path:file,sha256:p.sha256File(path.join(ROOT,file),inputs)})),rows:[row,data],logical:reg.identity,aliases},aliases};
 }
 function bindSingleFragmentContext(group){
   const c=singleFragmentCanonical(group);group.singleFragmentBinding=c.identity;group.fixedBindings=c.aliases;
   group.singleFragmentImplementationSha256=singleFragmentImplementationIdentity();
-  const context={unordered:singleFragmentUnordered(group),identity:hash(group.singleFragmentBinding),implementation:group.singleFragmentImplementationSha256,finished:false};
+  const context={unordered:singleFragmentUnordered(group),identity:hash(group.singleFragmentBinding),implementation:group.singleFragmentImplementationSha256,finished:false,inputs:inputSet.context(group)};
   singleFragmentBindings.set(group,context);singleFragmentContexts.set(hash(group),context);
 }
 function authenticateSingleFragment(group){
@@ -1432,10 +1437,11 @@ function authenticateSingleFragment(group){
     c=singleFragmentContexts.get(hash(group));}
   if(!c||!c.finished||c.identity!==hash(group.singleFragmentBinding)||c.implementation!==singleFragmentImplementationIdentity()
       ||group.singleFragmentImplementationSha256!==c.implementation)fail('single fragment context/implementation authority');
+  if(inputSet.context(group)&&inputSet.context(group)!==c.inputs)fail('single fragment input context changed');
   const row=group.auxiliary.sections[0].outputSection;
   if(hash(c.targets.flatMap(t=>(t.auxiliarySections||[]).filter(a=>a.outputSection===row).map(a=>({symbol:t.symbol,auxiliary:a}))))!==c.rowFingerprint)fail('single fragment shared-row binding drift');
   const p=require('./phase7_conventional');
-  for(const f of group.singleFragmentBinding.inputs)if(p.sha256File(path.join(ROOT,f.path))!==f.sha256)fail('single fragment binding input drift');
+  for(const f of group.singleFragmentBinding.inputs)if(p.sha256File(path.join(ROOT,f.path),c.inputs)!==f.sha256)fail('single fragment binding input drift');
   if(!same(group.fixedBindings,group.singleFragmentBinding.aliases))fail('single fragment fixed binding drift');
 }
 function finishSingleFragmentBindings(targets){

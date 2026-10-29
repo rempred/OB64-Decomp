@@ -1103,7 +1103,7 @@ function correctMixedStrip(source,intermediate,group){const a=parseElf32BigEndia
 Object.assign(module.exports,{mixedMode,mixedContract,normalizeMixed,mixedReferenceSets,mixedRawEvidence,mixedStage,mixedProject,correctMixedStrip,assertMixedStage});
 function mixedDerive(target,root,files){
   const group=target.compilationGroup,cg=require('./compilation_groups'),p7=require('./phase7_conventional'),source=fs.readFileSync(files.rawObject),intermediate=fs.readFileSync(files.stripIntermediateObject),final=fs.readFileSync(files.strippedObject);
-  const tc=JSON.parse(fs.readFileSync(path.join(ROOT,'config/toolchain.json'),'utf8')),exe=path.resolve(ROOT,tc.localRoot,'bin/mips-kmc-elf-objcopy.exe');
+  const tc=p7.readJson(path.join(ROOT,'config/toolchain.json'),require('./matching/input_set').context(target.model)),exe=path.resolve(ROOT,tc.localRoot,'bin/mips-kmc-elf-objcopy.exe');
   if(p7.sha256File(exe)!==target.model.config.binutils.tools['mips-kmc-elf-objcopy.exe'])fail('mixed strip tool identity');
   const dir=fs.mkdtempSync(path.join(require('os').tmpdir(),'ob64-mix-'));let reproduced;
   try{const input=path.join(dir,'input.o'),output=path.join(dir,'output.o');fs.writeFileSync(input,source);p7.run(exe,['--remove-section=.reginfo','--remove-section=.pdr','--remove-section=.comment','--remove-section=.note',input,output]);reproduced=fs.readFileSync(output);if(!fs.readFileSync(input).equals(source))fail('mixed replay input changed');}finally{fs.rmSync(dir,{recursive:true,force:true});}

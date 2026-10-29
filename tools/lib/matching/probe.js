@@ -21,7 +21,7 @@ const PASSES = Object.freeze([
 const SCHEMA = 3;
 const IMPLEMENTATIONS = [__filename, path.join(ROOT, 'tools/match.js'),
   path.join(ROOT, 'tools/lib/source_policy.js'), path.join(ROOT, 'tools/lib/matching/target_model.js'),
-  path.join(ROOT, 'tools/lib/matching/scratch_assembly.js')];
+  path.join(ROOT, 'tools/lib/matching/scratch_assembly.js'), path.join(ROOT, 'tools/lib/matching/input_set.js')];
 const portable = file => path.relative(ROOT, file).replace(/\\/g, '/');
 const same = (a, b) => canonicalJson(a) === canonicalJson(b);
 
@@ -153,7 +153,8 @@ function validSourcePolicy(value) {
     error: null, preprocessorIdentity: value.preprocessor }));
 }
 function validIdentity(id) {
-  if (!keys(id, ['schemaVersion', 'targetId', 'symbol', 'sourceOrigin', 'sourcePolicy', 'runtimePreprocessor', 'compiler', 'flags', 'passes', 'implementation'])
+  if (!keys(id, ['schemaVersion', 'targetId', 'symbol', 'sourceOrigin', 'sourcePolicy', 'runtimePreprocessor', 'compiler', 'flags', 'passes', 'implementation'], ['inputSetId'])
+    || id.inputSetId !== undefined && !isHash(id.inputSetId)
     || id.schemaVersion !== SCHEMA || !isHash(id.targetId) || !isText(id.symbol) || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(id.symbol)
     || (id.sourceOrigin !== null && !relativePath(id.sourceOrigin)) || !strings(id.flags, true)
     || !strings(id.passes, true) || !validSourcePolicy(id.sourcePolicy) || !validPreprocessor(id.runtimePreprocessor)
@@ -162,7 +163,7 @@ function validIdentity(id) {
     // Retained probes contain compiler dumps, never assembler output. Preserve
     // their original four-file identities for historical comparisons; new runs
     // bind the scratch environment guard as well and receive a different ID.
-    || !Array.isArray(id.implementation) || ![4, IMPLEMENTATIONS.length].includes(id.implementation.length)) return false;
+    || !Array.isArray(id.implementation) || ![4, 5, IMPLEMENTATIONS.length].includes(id.implementation.length)) return false;
   if (id.implementation.some((record, i) => !keys(record, ['path', 'sha256'])
     || record.path !== portable(IMPLEMENTATIONS[i]) || !isHash(record.sha256))) return false;
   const expectedPreprocessor = id.sourceOrigin !== null && id.sourceOrigin !== id.sourcePolicy.source
@@ -219,6 +220,7 @@ function runProbe(workbench, target, sourceText, options = {}) {
       || !isHash(target.targetId)) throw new Error('compiler probe source or target is malformed');
   const context = options.context || (options.privateWorkspace === true
     ? require('./private_preparation').preparePrivateContext({ ...options, privateTarget: target }) : prepareContext());
+  require('./input_set').assertContext(context, options.inputs);
   assertScratchCapability(workbench, target, context.phase8?.targets);
   if (!strings(context.phase8.config.compiler.compileFlags, true)) throw new Error('probe compiler flags are malformed');
   const passes = selectedPasses(options.passes);
@@ -252,7 +254,7 @@ function runProbe(workbench, target, sourceText, options = {}) {
     }
   };
   authenticateSnapshot();
-  const preprocessor = resolvePreprocessor();
+  const preprocessor = resolvePreprocessor(undefined, options.inputs);
   const runtimePreprocessor = preprocessorIdentity(preprocessor);
   const effectivePreprocessor = !options.sourcePath && sourceOrigin
     ? { ...preprocessor, includeDirectories: [path.join(ROOT, sourceOrigin), ...preprocessor.includeDirectories] }
@@ -264,13 +266,14 @@ function runProbe(workbench, target, sourceText, options = {}) {
   if (classification.sourceSha256 !== digest(bytes)) throw new Error('probe authored source identity drift');
   const input = compilationInputBytes(classification);
   const identity = { schemaVersion: SCHEMA, targetId: target.targetId, symbol: target.symbol,
+    ...(options.inputs ? { inputSetId: options.inputs.id } : {}),
     sourceOrigin, sourcePolicy: JSON.parse(JSON.stringify(classification)), runtimePreprocessor, compiler: compilerIdentity,
     flags, passes: passes.map(p => p.name), implementation: IMPLEMENTATIONS.map(file => ({ path: portable(file), sha256: sha256File(file) })) };
   const authenticateLive = () => {
     if (options.privateWorkspace === true) options.assertPrivateInputs?.();
     authenticateSnapshot();
     verifyClassificationInputs(classification);
-    if (sha256File(compiler) !== compilerIdentity.sha256 || !same(preprocessorIdentity(resolvePreprocessor()), runtimePreprocessor)
+    if (sha256File(compiler) !== compilerIdentity.sha256 || !same(preprocessorIdentity(resolvePreprocessor(undefined, options.inputs)), runtimePreprocessor)
         || identity.implementation.some(record => sha256File(path.join(ROOT, record.path)) !== record.sha256)) throw new Error('probe tool/input closure changed during execution');
   };
   const probeId = digest(identity), directory = path.join(base, probeId), reportFile = path.join(directory, 'probe-report.json');

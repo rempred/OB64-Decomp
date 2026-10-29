@@ -55,8 +55,11 @@ function validateObservation(value) {
   return value;
 }
 function store(options, request) { return (options.storeRequest || requestStore)(request, options.storeOptions || {}); }
-function authenticateReferences(observation) {
-  for(const reference of observation.references) if(sha256File(regular(path.join(ROOT,reference.path)))!==reference.sha256) throw new Error('research report reference identity drift');
+function authenticateReferences(observation, inputs) {
+  for(const reference of observation.references) {
+    const original=path.join(ROOT,reference.path),file=inputs?inputs.research(original):original;
+    if(sha256File(regular(file))!==reference.sha256) throw new Error('research report reference identity drift');
+  }
 }
 function authenticateClassification(classification, observation, expectedPreprocessor) {
   if(!['PURE_C','HYBRID_C'].includes(classification.class)) throw new Error(`research source classification is ${classification.class}`);
@@ -64,7 +67,7 @@ function authenticateClassification(classification, observation, expectedPreproc
   if(classification.sourceSha256!==observation.expected.sourceSha256 || classification.compilationInput.sha256!==observation.expected.expandedSha256
     ||!same(classification.dependencies,observation.expected.dependencies)) throw new Error('research source/expanded/dependency identity drift');
   if(expectedPreprocessor&&!same(classification.preprocessor,expectedPreprocessor))throw new Error('research preprocessor identity drift');
-  authenticateReferences(observation);
+  authenticateReferences(observation,require('./input_set').context(classification));
 }
 function validateRelations(target, observation, options, candidateId) {
   for(const id of new Set([observation.parentCandidateId,...observation.relatedCandidateIds].filter(Boolean))) {

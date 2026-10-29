@@ -4,6 +4,7 @@ const childProcess = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const inputSet = require('./matching/input_set');
 const { isDeepStrictEqual } = require('util');
 const { interiorRecords, buildInteriorObject } = require('./auxiliary_interior');
 const textContract = require('./text_contract');
@@ -157,12 +158,14 @@ function runNode(script, args, label) {
   return { stdout: result.stdout, stderr: result.stderr };
 }
 
-function ensureCanonicalBaserom(localTools) {
-  const config = readJson(path.join(ROOT, 'config', 'phase7', 'conventional-build.json'));
+function ensureCanonicalBaserom(localTools, inputs, readOnly = false) {
+  const config = readJson(inputSet.resolve(inputs, path.join(ROOT, 'config', 'phase7', 'conventional-build.json')));
   const output = path.join(ROOT, 'build', 'baserom.us_rev0.z64');
   if (fs.existsSync(output) && fs.statSync(output).size === config.rom.bytes && sha256File(output) === config.rom.sha256) {
+    if (inputs) inputs.resolve(output);
     return { path: output, bytes: config.rom.bytes, sha256: config.rom.sha256, generated: false };
   }
+  if (inputs || readOnly) throw new Error('read-only preparation requires the authenticated normalized baserom; setup is forbidden');
   const args = [];
   if (localTools.romInput) args.push('--input', localTools.romInput);
   runNode('verify_baserom.js', args, 'baserom normalization');
@@ -172,9 +175,9 @@ function ensureCanonicalBaserom(localTools) {
   return { path: output, bytes: config.rom.bytes, sha256: config.rom.sha256, generated: true };
 }
 
-function hashFiles(relativeFiles) {
+function hashFiles(relativeFiles, inputs) {
   return relativeFiles.map((relative) => {
-    const file = path.join(ROOT, ...relative.split('/'));
+    const file = inputSet.resolve(inputs, path.join(ROOT, ...relative.split('/')));
     if (!fs.existsSync(file)) throw new Error(`workflow implementation file is missing: ${relative}`);
     return { path: relative, sha256: sha256File(file) };
   });
@@ -197,11 +200,13 @@ function baselineFingerprint(phase8, baserom) {
       'tools/lib/phase7_conventional.js',
       'tools/lib/boot_initialized_data.js',
       'tools/lib/word_asm.js',
-    ]),
+      'tools/lib/matching/input_set.js',
+    ], inputSet.context(phase8)),
   });
 }
 
 function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
+  const inputs = inputSet.context(phase8);
   if (!sourcePolicy || sourcePolicy.schemaVersion !== 2 || sourcePolicy.status !== 'pass'
       || !Array.isArray(sourcePolicy.targets) || sourcePolicy.targets.length !== phase8.targets.length) {
     throw new Error('CURRENT fingerprint source-policy census is malformed');
@@ -211,7 +216,7 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
     schemaVersion: 9,
     baseline,
     compilerSha256: sha256File(localTools.compiler),
-    activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json')),
+    activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json'), inputs),
     linkageConfig: phase8.linkageConfigIdentity,
     multiOwnerConfig: phase8.multiOwnerConfigIdentity,
     compilationGroupConfig: phase8.groupConfigIdentity,
@@ -225,7 +230,7 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       })),
     },
     sourcePolicy: {
-      configSha256: sha256File(path.join(ROOT, 'config', 'source-policy.json')),
+      configSha256: sha256File(path.join(ROOT, 'config', 'source-policy.json'), inputs),
       preprocessor: sourcePolicy.preprocessor,
     },
     gnuBinutils26: phase8.toolchain.identity,
@@ -273,7 +278,8 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       'tools/verify.js',
       'tools/lib/verification_profile.js',
       'tools/lib/diff_profile.js',
-    ]),
+      'tools/lib/matching/input_set.js',
+    ], inputs),
   });
 }
 
@@ -409,6 +415,9 @@ function validateVerifiedCompanions(build, fresh, verified, output, phase8) {
   }
 }
 function reusableCurrentState(context, state) {
+  const inputs = inputSet.context(context);
+  const readJson = file => require('./phase7_conventional').readJson(file, inputs);
+  const sha256File = file => require('./phase7_conventional').sha256File(file, inputs);
   try {
     if (state?.schemaVersion !== 6 || !isDeepStrictEqual(state.buildReport, textContract.readCompactReport(state.output).identity)) return false;
   } catch (_) { return false; }
@@ -437,10 +446,12 @@ function runtimeArgs(localTools) {
 
 function prepareContext(options = {}) {
   const profile = options.profile;
-  const localTools = measure(profile, 'prepare.local-tools', () => resolveLocalTools({ audit: options.audit === true }));
-  const baserom = measure(profile, 'prepare.baserom', () => ensureCanonicalBaserom(localTools));
+  const inputs = options.inputs;
+  const localTools = measure(profile, 'prepare.local-tools', () => resolveLocalTools({ audit: options.audit === true, inputs, readOnly: options.readOnly }));
+  const baserom = measure(profile, 'prepare.baserom', () => ensureCanonicalBaserom(localTools, inputs, options.readOnly));
   const phase8 = measure(profile, 'prepare.active-target-model', () => loadActiveTargetModelForContext({
     allowMissingRelocationContracts: options.allowMissingRelocationContracts || [],
+    inputs,
   }));
   // The active model already performs a fresh complete accepted-model load.
   // Use that very object rather than parsing/authenticating a second copy.
@@ -468,7 +479,7 @@ function prepareContext(options = {}) {
   let sourcePolicy, current;
   try {
     sourcePolicy = classifyTargetSources(phase8.targets, {
-      profile: options.profile, preprocess: contextPreprocess?.preprocess || diffPreprocess?.preprocess,
+      profile: options.profile, preprocess: contextPreprocess?.preprocess || diffPreprocess?.preprocess, inputs,
     });
     current = measure(profile, 'prepare.current-fingerprint', () => currentFingerprint(phase8, baseline, localTools, sourcePolicy));
   } finally {
@@ -476,7 +487,7 @@ function prepareContext(options = {}) {
     // Seal their complete inputs before any prepared context escapes, on errors too.
     contextPreprocess?.finish();
   }
-  return {
+  return inputSet.bind({
     baserom,
     baselineFingerprint: baseline,
     currentFingerprint: current,
@@ -485,7 +496,7 @@ function prepareContext(options = {}) {
     phase8,
     sourcePolicy,
     ...(diffPreprocess ? { diffPreprocess } : {}),
-  };
+  }, inputs);
 }
 
 function ensureBaseline(context, options = {}) {
@@ -712,18 +723,23 @@ function verifyCurrent(context, options = {}) {
 }
 
 function currentVerificationState(context) {
-  const state = existingState(CURRENT_STATE_PATH);
+  const inputs = inputSet.context(context);
+  const readJson = file => require('./phase7_conventional').readJson(file, inputs);
+  const sha256File = file => require('./phase7_conventional').sha256File(file, inputs);
+  const state = inputs ? readJson(CURRENT_STATE_PATH) : existingState(CURRENT_STATE_PATH);
   if (!reusableCurrentState(context, state) || !state.verifiedAt) {
+    if (inputs) throw new Error('selected accepted CURRENT/companions are not current for these inputs');
     return { exact: false, state };
   }
   try {
     for (const [file, expected] of [[state.verificationReport, state.verificationSha256], [state.freshCompilationReport, state.freshCompilationSha256]]) {
       if (!file || !expected || sha256File(file) !== expected || readJson(file).schemaVersion !== 6) return { exact: false, state };
     }
-  } catch (_) { return { exact: false, state }; }
+  } catch (error) { inputSet.rethrow(error, inputs); return { exact: false, state }; }
   const rom = path.join(state.output, 'phase8.us_rev0.z64');
   const exact = fs.existsSync(rom) && fs.statSync(rom).size === context.model.config.rom.bytes
     && sha256File(rom) === context.model.config.rom.sha256;
+  if (inputs && !exact) throw new Error('selected accepted ROM is not exact');
   return { exact, state };
 }
 

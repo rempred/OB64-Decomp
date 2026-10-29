@@ -68,7 +68,7 @@ function authenticate(target) {
     if (!accepted) fail('unbound atomic contract');
     context = contexts.get(identity(target));
   }
-  if (!context || p7.sha256File(logical.CONFIG_PATH) !== context.binding.registryIdentity.sha256
+  if (!context || p7.sha256File(logical.CONFIG_PATH, require('./matching/input_set').context(context.registry)) !== context.binding.registryIdentity.sha256
       || !same(logical.assertAtomicOwnerBody(context.registry, context.symbol, context.rows), target.atomicBinding)) fail('logical binding drift');
   for (const fragment of target.atomicBinding.body.fragments)
     if (p7.sha256File(path.join(p7.ROOT, fragment.file)) !== fragment.sha256) fail('original source drift');

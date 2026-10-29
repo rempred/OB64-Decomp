@@ -2,6 +2,7 @@
 // Read-only discovery. Similarity, source classification and research validity are
 // separate from transfer applicability and canonical matching acceptance.
 const fs = require('fs'), path = require('path');
+const inputSet = require('./input_set');
 const { ROOT, sha256File } = require('../phase7_conventional');
 const { resolveTarget, historicalSymbols, scratchCapability } = require('./target_model');
 const { regular, canonicalPath } = require('./research');
@@ -25,16 +26,17 @@ function validateOptions(options = {}) {
   if (options.symptom !== undefined && !SYMPTOMS.includes(options.symptom)) throw new Error(`unknown symptom: ${options.symptom}`);
   return { crossLimit, symptom: options.symptom };
 }
-function catalog(directory) {
+function catalog(directory, inputs) {
+  const mapped = file => inputs ? inputs.research(file) : file;
   const records = [], diagnostics = [];
   try {
-    regular(directory, true);
-    for (const name of fs.readdirSync(directory).filter(n => n.endsWith('.observation.json')).sort()) {
+    regular(mapped(directory), true);
+    for (const name of fs.readdirSync(mapped(directory)).filter(n => n.endsWith('.observation.json')).sort()) {
       const file = path.join(directory, name);
-      try { records.push({ origin: 'archive', metadataPath: relative(file), envelope: JSON.parse(fs.readFileSync(regular(file), 'utf8')) }); }
-      catch (error) { diagnostics.push({ path: relative(file), validity: 'malformed', reason: error.message }); }
+      try { records.push({ origin: 'archive', metadataPath: relative(file), envelope: JSON.parse(fs.readFileSync(regular(mapped(file)), 'utf8')) }); }
+      catch (error) { inputSet.rethrow(error); diagnostics.push({ path: relative(file), validity: 'malformed', reason: error.message }); }
     }
-  } catch (error) { diagnostics.push({ path: relative(directory), validity: 'unavailable', reason: error.message }); }
+  } catch (error) { inputSet.rethrow(error); diagnostics.push({ path: relative(directory), validity: 'unavailable', reason: error.message }); }
   return { records, diagnostics };
 }
 function sourceFor(target) { return target.activeMatchingSource || target.activeMatchingProducer?.source || null; }
@@ -64,21 +66,22 @@ function selectFamilyCandidates(target, targets, records = []) {
 function keys(value, allowed) {
   if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).some(k => !allowed.includes(k))) throw new Error('unsupported lesson index fields');
 }
-function link(value, anchor = false) {
+function link(value, anchor = false, inputs) {
   if (typeof value !== 'string') throw new Error('lesson link must be a path');
   const [file, fragment, extra] = value.split('#');
   if (!canonicalPath(file) || extra !== undefined || (!anchor && fragment !== undefined)) throw new Error('invalid lesson link');
-  const text = fs.readFileSync(regular(path.join(ROOT, file)), 'utf8');
+  const original = path.join(ROOT, file);
+  const text = fs.readFileSync(regular(inputs ? inputs.research(original) : original), 'utf8');
   if (fragment !== undefined) {
     const headings = [...text.matchAll(/^#{1,6}\s+(.+)$/gm)].map(m => m[1].trim().toLowerCase().replace(/[^\p{L}\p{N}_\s-]/gu, '').replace(/\s/g, '-'));
     if (!fragment || !headings.includes(fragment)) throw new Error('lesson anchor is missing');
   }
   return value;
 }
-function loadLessons(file = INDEX) {
+function loadLessons(file = INDEX, inputs) {
   const result = { status: 'available', lessons: [], diagnostics: [] };
   try {
-    const value = JSON.parse(fs.readFileSync(regular(file), 'utf8'));
+    const value = JSON.parse(fs.readFileSync(regular(inputs ? inputs.research(file) : file), 'utf8'));
     keys(value, ['schemaVersion', 'lessons']);
     if (value.schemaVersion !== 1 || !Array.isArray(value.lessons) || value.lessons.length > 30) throw new Error('unsupported lesson index');
     const seen = new Set();
@@ -88,9 +91,9 @@ function loadLessons(file = INDEX) {
       seen.add(row.id);
       if (!Array.isArray(row.symptoms) || !row.symptoms.length || row.symptoms.some(s => !SYMPTOMS.includes(s)) || new Set(row.symptoms).size !== row.symptoms.length) throw new Error('unknown or duplicate lesson symptom');
       if (typeof row.applicability !== 'string' || !row.applicability.trim() || row.applicability.length > 500) throw new Error('invalid lesson applicability');
-      link(row.note, true);
+      link(row.note, true, inputs);
       if (!Array.isArray(row.references) || row.references.length > 6 || !Array.isArray(row.observations) || row.observations.length > 3) throw new Error('invalid lesson references');
-      row.references.forEach(p => link(p));
+      row.references.forEach(p => link(p, false, inputs));
       for (const ref of row.observations) {
         keys(ref, ['symbol', 'path']);
         if (typeof ref.symbol !== 'string' || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(ref.symbol) || !canonicalPath(ref.path) || !ref.path.endsWith('.observation.json')) throw new Error('invalid lesson observation reference');
@@ -99,6 +102,7 @@ function loadLessons(file = INDEX) {
       result.lessons.push(row);
     }
   } catch (error) {
+    inputSet.rethrow(error);
     result.status = 'unavailable'; result.lessons = [];
     result.diagnostics.push({ path: relative(file), validity: 'malformed', reason: error.message });
   }
@@ -110,18 +114,19 @@ function applicability(workbench, receiving, donor) {
     : 'Donor evidence applies to its own target only; test any source transfer independently.' };
 }
 function selectKnowledge(workbench, target, options, assess) {
+  const inputs = options.inputs || inputSet.context(workbench), mapped = file => inputs ? inputs.research(file) : file;
   const { crossLimit, symptom } = validateOptions(options), start = Date.now();
   const result = { schemaVersion: 1, status: crossLimit || symptom ? 'available' : 'disabled',
     siblings: [], lessons: [], diagnostics: [], siblingsOmitted: 0, lessonsOmitted: 0,
     timings: { selectionMs: 0, authenticationMs: 0 },
     boundary: 'Source examples and authored research, never accepted proof or transfer equivalence. Cross-target relations do not alter same-target history.' };
   if (!crossLimit && !symptom) return result;
-  const archive = crossLimit ? catalog(options.archiveDirectory || path.join(ROOT, 'docs/dossiers')) : { records: [], diagnostics: [] };
+  const archive = crossLimit ? catalog(options.archiveDirectory || path.join(ROOT, 'docs/dossiers'), inputs) : { records: [], diagnostics: [] };
   result.diagnostics.push(...archive.diagnostics);
   if (crossLimit && !target.expectedBytesSha256) result.diagnostics.push({ validity: 'reference-only', reason: 'Family selection requires canonical target bytes; unavailable without the baserom.' });
   const selected = crossLimit ? selectFamilyCandidates(target, workbench.targets, archive.records) : [];
   result.siblingsOmitted = Math.max(0, selected.length - crossLimit);
-  const index = symptom ? loadLessons(options.indexPath) : { lessons: [], diagnostics: [] };
+  const index = symptom ? loadLessons(options.indexPath, inputs) : { lessons: [], diagnostics: [] };
   result.diagnostics.push(...index.diagnostics);
   const lessons = index.lessons.filter(l => l.symptoms.includes(symptom));
   result.lessonsOmitted = Math.max(0, lessons.length - 3);
@@ -130,11 +135,11 @@ function selectKnowledge(workbench, target, options, assess) {
   function authenticate(ref) {
     try {
       const donor = resolveTarget(workbench, ref.symbol);
-      const envelope = JSON.parse(fs.readFileSync(regular(path.join(ROOT, ref.path)), 'utf8'));
+      const envelope = JSON.parse(fs.readFileSync(regular(mapped(path.join(ROOT, ref.path))), 'utf8'));
       return { ...assess(donor, { origin: 'archive', metadataPath: ref.path, envelope }),
         donorSymbol: donor.symbol, applicability: applicability(workbench, target, donor),
         relationsStatus: 'not-assessed; donor relation claims are not transfer proof' };
-    } catch (error) { return { metadata: ref.path, donorSymbol: ref.symbol, validity: 'unavailable', reason: error.message }; }
+    } catch (error) { inputSet.rethrow(error); return { metadata: ref.path, donorSymbol: ref.symbol, validity: 'unavailable', reason: error.message }; }
   }
   for (const candidate of selected.slice(0, crossLimit)) {
     const donor = candidate.target, source = sourceFor(donor);
@@ -147,11 +152,11 @@ function selectKnowledge(workbench, target, options, assess) {
     if (source) {
       row.kind = 'active-source-example'; row.source = source;
       try {
-        const file = regular(path.join(ROOT, source)), classification = policy.classifySource(file);
+        const file = regular(mapped(path.join(ROOT, source))), classification = policy.classifySource(path.join(ROOT, source), {inputs});
         row.sourceSha256 = sha256File(file); row.sourceClass = classification.class;
         row.validity = classification.class === 'UNKNOWN' ? 'unavailable' : 'source-example';
         if (classification.error) row.reason = classification.error;
-      } catch (error) { row.validity = 'unavailable'; row.reason = error.message; }
+      } catch (error) { inputSet.rethrow(error); row.validity = 'unavailable'; row.reason = error.message; }
       row.acceptance = 'not-assessed';
     } else {
       row.kind = 'preserved-observation';

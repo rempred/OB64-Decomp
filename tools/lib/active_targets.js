@@ -2,6 +2,7 @@
 const auxiliaryProjection = require('./auxiliary_projection');
 const literals = require('./retained_literal_references');
 const bootData = require('./boot_initialized_data');
+const inputSet = require('./matching/input_set');
 
 const fs = require('fs');
 const path = require('path');
@@ -1588,23 +1589,27 @@ function legacyComparisonView(target, legacy, registry, baserom, assemblySource)
     body: interval(body), retainedAssembly: interval(retained) } };
 }
 
-function validateToolchainPin(pin) {
+function validateToolchainPin(pin, inputs) {
   if (!pin || typeof pin !== 'object' || Array.isArray(pin)
       || !sameJson(Object.keys(pin).sort(), ['buildProvenance', 'buildProvenanceSha256', 'manifest', 'manifestSha256'])
       || pin.manifest !== 'config/toolchain.json'
       || pin.buildProvenance !== 'config/gnu-binutils-2.6-build.json'
       || !/^[0-9A-F]{64}$/.test(pin.manifestSha256)
       || !/^[0-9A-F]{64}$/.test(pin.buildProvenanceSha256)
-      || pin.manifestSha256 !== sha256File(TOOLCHAIN_CONFIG_PATH)
-      || pin.buildProvenanceSha256 !== sha256File(TOOLCHAIN_BUILD_PATH)) {
+      || pin.manifestSha256 !== sha256File(TOOLCHAIN_CONFIG_PATH, inputs)
+      || pin.buildProvenanceSha256 !== sha256File(TOOLCHAIN_BUILD_PATH, inputs)) {
     fail('GNU Binutils 2.6 toolchain pin drift');
   }
   return pin;
 }
 
 function loadActiveTargetModelInternal(options, deferFinish) {
+  const inputs = options.inputs;
+  const readJson = file => require('./phase7_conventional').readJson(file, inputs);
+  const sha256File = file => require('./phase7_conventional').sha256File(file, inputs);
+  const readPath = file => inputSet.resolve(inputs, file);
   const rowSymbolSourceCache = new Map();
-  const model = loadAcceptedModel({ onAssemblySource(record) {
+  const model = loadAcceptedModel({ inputs, onAssemblySource(record) {
     const prior = rowSymbolSourceCache.get(record.relative);
     if (prior && (prior.file !== record.file || prior.bytes !== record.bytes || prior.sha256 !== record.sha256 || prior.text !== record.text)) fail('duplicate assembly observer identity drift');
     rowSymbolSourceCache.set(record.relative, record);
@@ -1622,6 +1627,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
   const groupSupport = require('./compilation_groups');
   const groupConfig = readJson(groupSupport.CONFIG_PATH);
   const compilationGroups = groupSupport.registry(groupConfig, model.config.profile);
+  for (const group of compilationGroups) inputSet.bind(group, inputs);
   const legacy = readJson(LEGACY_CONFIG_PATH);
   if (minimal.schemaVersion !== 3 || minimal.profile !== model.config.profile || !Array.isArray(minimal.targets) || minimal.targets.length === 0
       || !minimal.toolchain || typeof minimal.toolchain !== 'object') {
@@ -1645,7 +1651,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
   }
 
   const phase6ManifestFile = resolveRelative(ROOT, legacy.compiler.manifest, 'compiler manifest');
-  if (!fs.existsSync(phase6ManifestFile) || sha256File(phase6ManifestFile) !== legacy.compiler.manifestSha256) {
+  if (!fs.existsSync(readPath(phase6ManifestFile)) || sha256File(phase6ManifestFile) !== legacy.compiler.manifestSha256) {
     fail('accepted compiler manifest drift');
   }
   const phase6Manifest = readJson(phase6ManifestFile);
@@ -1655,7 +1661,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
     fail('matching compiler contract differs from the accepted reproduction contract');
   }
 
-  const toolchainPin = validateToolchainPin(minimal.toolchain);
+  const toolchainPin = validateToolchainPin(minimal.toolchain, inputs);
   const toolchainConfig = readJson(TOOLCHAIN_CONFIG_PATH);
   const toolchainBuild = readJson(TOOLCHAIN_BUILD_PATH);
   if (toolchainConfig.schemaVersion !== 2
@@ -1750,7 +1756,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       }
     }
     const sourceFile = resolveRelative(ROOT, entry.source, 'target source');
-    if (!fs.existsSync(sourceFile) || !fs.statSync(sourceFile).isFile()) fail(`active target source is missing: ${entry.symbol}`);
+    if (!fs.existsSync(readPath(sourceFile)) || !fs.statSync(readPath(sourceFile)).isFile()) fail(`active target source is missing: ${entry.symbol}`);
     for (const owner of acceptedOwners.owners) {
       assemblySource(owner.originalAssembly, owner.originalAssemblySha256);
     }
@@ -1912,17 +1918,17 @@ function loadActiveTargetModelInternal(options, deferFinish) {
     linkageConfig: reviewedLinkage.config,
     linkageConfigIdentity: {
       path: path.relative(ROOT, LINKAGE_CONFIG_PATH).replace(/\\/g, '/'),
-      bytes: fs.statSync(LINKAGE_CONFIG_PATH).size,
+      bytes: fs.statSync(readPath(LINKAGE_CONFIG_PATH)).size,
       sha256: sha256File(LINKAGE_CONFIG_PATH),
     },
     multiOwnerConfig,
     compilationGroups,
     logicalFunctionConfigIdentity: logicalRegistry.identity,
     groupConfigIdentity: { path: path.relative(ROOT, groupSupport.CONFIG_PATH).replace(/\\/g, '/'),
-      bytes: fs.statSync(groupSupport.CONFIG_PATH).size, sha256: sha256File(groupSupport.CONFIG_PATH) },
+      bytes: fs.statSync(readPath(groupSupport.CONFIG_PATH)).size, sha256: sha256File(groupSupport.CONFIG_PATH) },
     multiOwnerConfigIdentity: {
       path: path.relative(ROOT, MULTI_OWNER_CONFIG_PATH).replace(/\\/g, '/'),
-      bytes: fs.statSync(MULTI_OWNER_CONFIG_PATH).size,
+      bytes: fs.statSync(readPath(MULTI_OWNER_CONFIG_PATH)).size,
       sha256: sha256File(MULTI_OWNER_CONFIG_PATH),
     },
     multiOwnerContracts,
@@ -1933,6 +1939,8 @@ function loadActiveTargetModelInternal(options, deferFinish) {
     targets,
     target: targets[0],
   };
+  inputSet.bind(phase8, inputs);
+  for (const target of targets) inputSet.bind(target, inputs);
   fixedEntryBindingOrigins.set(phase8, { registry: logicalRegistry, targets, model, linkSymbols: reviewedLinkage.linkSymbols });
   logicalSupport.bindFixedEntryInterfaces(phase8,logicalRegistry,assemblySource);
   preparedModelSources.set(phase8, { model, cache: rowSymbolSourceCache,

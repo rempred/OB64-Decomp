@@ -84,8 +84,8 @@ function ensureDir(directory) {
   fs.mkdirSync(directory, { recursive: true });
 }
 
-function readJson(file) {
-  return JSON.parse(fs.readFileSync(file, 'utf8'));
+function readJson(file, inputs) {
+  return JSON.parse(fs.readFileSync(require('./matching/input_set').resolve(inputs, file), 'utf8'));
 }
 
 function writeJson(file, value) {
@@ -97,8 +97,8 @@ function sha256Buffer(buffer) {
   return crypto.createHash('sha256').update(buffer).digest('hex').toUpperCase();
 }
 
-function sha256File(file) {
-  return sha256Buffer(fs.readFileSync(file));
+function sha256File(file, inputs) {
+  return sha256Buffer(fs.readFileSync(require('./matching/input_set').resolve(inputs, file)));
 }
 
 function hex(value, width = 8) {
@@ -131,8 +131,8 @@ function run(executable, args, options = {}) {
   return result;
 }
 
-function loadConfig() {
-  const config = readJson(CONFIG_PATH);
+function loadConfig(inputs) {
+  const config = readJson(CONFIG_PATH, inputs);
   if (config.schemaVersion !== 1 || config.profile !== 'us-rev0') fail('Phase 7 configuration schema drift');
   return config;
 }
@@ -377,10 +377,10 @@ function validateFixedOverlayNonExecutableRanges(config, overlays = [], reserved
   return normalized;
 }
 
-function verifyAcceptedInputHashes(config) {
+function verifyAcceptedInputHashes(config, inputs) {
   const records = [];
   for (const [relative, expected] of Object.entries(config.acceptedInputSha256)) {
-    const file = path.join(ROOT, relative.replace(/\//g, path.sep));
+    const file = require('./matching/input_set').resolve(inputs, path.join(ROOT, relative.replace(/\//g, path.sep)));
     if (!fs.existsSync(file) || !fs.statSync(file).isFile()) fail(`accepted input is missing: ${relative}`);
     const actual = sha256File(file);
     if (actual !== expected) fail(`accepted input SHA-256 drift: ${relative}`);
@@ -423,18 +423,19 @@ function expectedAssemblySymbolAddress(row) {
 
 function loadAcceptedModel(options = {}) {
   if (options.onAssemblySource !== undefined && typeof options.onAssemblySource !== 'function') fail('assembly source observer is malformed');
-  const config = loadConfig();
-  const inputFiles = verifyAcceptedInputHashes(config);
-  const semantic = readJson(path.join(ROOT, 'config', 'splat', 'us_rev0.semantic.json'));
-  const linkerInputs = readJson(path.join(ROOT, 'config', 'splat', 'us_rev0.overlay-linker-inputs.json'));
-  const assemblyManifest = readJson(path.join(ROOT, 'asm', 'original', 'rev0', 'manifest.json'));
-  const romProfile = readJson(path.join(ROOT, 'config', 'roms', 'us_rev0.json'));
+  const inputs = options.inputs;
+  const config = loadConfig(inputs);
+  const inputFiles = verifyAcceptedInputHashes(config, inputs);
+  const semantic = readJson(path.join(ROOT, 'config', 'splat', 'us_rev0.semantic.json'), inputs);
+  const linkerInputs = readJson(path.join(ROOT, 'config', 'splat', 'us_rev0.overlay-linker-inputs.json'), inputs);
+  const assemblyManifest = readJson(path.join(ROOT, 'asm', 'original', 'rev0', 'manifest.json'), inputs);
+  const romProfile = readJson(path.join(ROOT, 'config', 'roms', 'us_rev0.json'), inputs);
   const overlays = linkerInputs.overlayReservations;
 
   if (semantic.schemaVersion !== 1 || semantic.rows.length !== config.expected.primaryRows) fail('accepted semantic row count drift');
   if (linkerInputs.schemaVersion !== 1 || linkerInputs.splatPrimaryRows.length !== semantic.rows.length) fail('accepted linker input schema drift');
   if (overlays.length !== config.expected.overlayReservations) fail('accepted overlay reservation count drift');
-  const bootInitializedDataProof = bootData.loadProof(ROOT, config, assemblyManifest);
+  const bootInitializedDataProof = bootData.loadProof(ROOT, config, assemblyManifest, inputs);
   const nonDescriptorLoadSlabs = validateNonDescriptorLoadSlabs(config, overlays);
   const loadSlabRangeIds = nonDescriptorLoadSlabs.flatMap((slab) => [
     ...slab.executableRanges.map((range) => range.id),
@@ -478,7 +479,7 @@ function loadAcceptedModel(options = {}) {
     if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(part.name)) fail(`unsafe tracked assembly symbol: ${part.name}`);
     const sourceFile = path.join(ROOT, part.file.replace(/\//g, path.sep));
     let sourceBuffer;
-    try { sourceBuffer = fs.readFileSync(sourceFile); }
+    try { sourceBuffer = fs.readFileSync(require('./matching/input_set').resolve(inputs, sourceFile)); }
     catch (error) {
       if (error.code === 'ENOENT') fail(`tracked assembly source is missing: ${part.file}`);
       throw error;
@@ -689,7 +690,7 @@ function loadAcceptedModel(options = {}) {
   if (slices.length !== config.expected.linkSlices || splitOwners !== config.expected.splitOwners) fail('accepted link-slice census drift');
   if (rspRows !== config.expected.rspRows) fail('accepted RSP row census drift');
 
-  return {
+  return require('./matching/input_set').bind({
     config,
     inputFiles,
     bootInitializedDataProof,
@@ -712,7 +713,7 @@ function loadAcceptedModel(options = {}) {
       fixedOverlayNonExecutableRanges: fixedOverlayNonExecutableRanges.length,
       nonDescriptorLoadSlabs: nonDescriptorLoadSlabs.length,
     },
-  };
+  }, inputs);
 }
 
 function parseElf32BigEndian(buffer) {
@@ -1055,20 +1056,25 @@ function powerShellEnvironment(runtime, environment = process.env) {
   return result;
 }
 
+function verifyRuntimeExecutables(config, options) {
+  const nodeIdentity = verifyToolFile(process.execPath, config.host.nodeExeSha256, 'Node executable');
+  if (process.version !== config.host.nodeVersion || os.platform() !== config.host.platform || os.release() !== config.host.release || os.arch() !== config.host.architecture) {
+    fail('host runtime identity drift');
+  }
+  const pythonIdentity = verifyToolFile(options.splatPython, config.splat.pythonExeSha256, 'Splat Python executable');
+  return { nodeIdentity, pythonIdentity };
+}
+
 function verifyRuntimeTools(model, options) {
   const config = model.config;
-  const toolchainConfig = readJson(path.join(ROOT, 'config', 'toolchain.json'));
+  const toolchainConfig = readJson(path.join(ROOT, 'config', 'toolchain.json'), require('./matching/input_set').context(model));
   const binRoot = path.resolve(ROOT, toolchainConfig.localRoot, 'bin');
   const tools = {};
   for (const [name, expected] of Object.entries(config.binutils.tools)) {
     const file = path.join(binRoot, name);
     tools[name] = { path: file, ...verifyToolFile(file, expected, name) };
   }
-  const nodeIdentity = verifyToolFile(process.execPath, config.host.nodeExeSha256, 'Node executable');
-  if (process.version !== config.host.nodeVersion || os.platform() !== config.host.platform || os.release() !== config.host.release || os.arch() !== config.host.architecture) {
-    fail('host runtime identity drift');
-  }
-  const pythonIdentity = verifyToolFile(options.splatPython, config.splat.pythonExeSha256, 'Splat Python executable');
+  const { nodeIdentity, pythonIdentity } = verifyRuntimeExecutables(config, options);
   const splitIdentity = verifyToolFile(options.splatSplit, config.splat.splitPySha256, 'Splat split.py');
   const pythonVersion = run(options.splatPython, ['--version']).stdout.trim() || run(options.splatPython, ['--version']).stderr.trim();
   if (pythonVersion !== config.splat.pythonVersion) fail('Splat Python version drift');
@@ -1349,5 +1355,6 @@ module.exports = {
   verifyOutput,
   verifyRom,
   verifyRuntimeTools,
+  verifyRuntimeExecutables,
   writeJson,
 };

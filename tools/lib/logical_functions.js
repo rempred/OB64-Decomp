@@ -4,6 +4,7 @@
 // grants an export or permission to prune a partial assembly owner.
 const fs = require('fs');
 const path = require('path');
+const inputSet = require('./matching/input_set');
 const { ROOT, sha256Buffer, sha256File } = require('./phase7_conventional');
 const CONFIG_PATH = path.join(ROOT, 'config', 'logical-functions.json');
 const fail = message => { throw new Error(`logical function registry: ${message}`); };
@@ -35,7 +36,9 @@ function intersections(model, start, end, padding = false) {
   return result;
 }
 
-function loadRegistry(model, baserom, config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')), assemblySource = null) {
+function loadRegistry(model, baserom, config, assemblySource = null) {
+  const inputs = inputSet.context(model), configPath = inputSet.resolve(inputs, CONFIG_PATH);
+  if (config === undefined) config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
   if (config.schemaVersion !== 1 || config.profile !== model.config.profile || !Array.isArray(config.bodies)
     || !Array.isArray(config.padding) || !Array.isArray(config.preservedProductionEnvelopes)
     || !Array.isArray(config.unavailableBodies)) fail('schema or profile drift');
@@ -121,7 +124,8 @@ function loadRegistry(model, baserom, config = JSON.parse(fs.readFileSync(CONFIG
     unavailableEnd = entry.romEndExclusive;
   }
   const registry = { bodies, aliases, padding, unavailableBodies: config.unavailableBodies, preservedProductionEnvelopes: config.preservedProductionEnvelopes, identity: { path: 'config/logical-functions.json',
-    bytes: fs.statSync(CONFIG_PATH).size, sha256: sha256File(CONFIG_PATH) } };
+    bytes: fs.statSync(configPath).size, sha256: sha256File(configPath) } };
+  inputSet.bind(registry, inputs);
   if (Buffer.isBuffer(baserom) && baserom.length === model.config.rom.bytes
       && sha256Buffer(baserom) === model.config.rom.sha256) {
     authenticatedRegistries.set(registry, { bodies: JSON.stringify(bodies), padding: JSON.stringify(padding), unavailableBodies: JSON.stringify(registry.unavailableBodies),
@@ -404,7 +408,7 @@ function fixedEntryInterface(target,name){
     ||JSON.stringify(target.row)!==state.rowIdentity||fixedEntryIdentity(target)!==state.targetIdentity
     ||JSON.stringify(state.phase8.linkSymbols)!==state.linkage
     ||JSON.stringify(state.phase8.linkageConfigIdentity)!==JSON.stringify(state.linkageIdentity)
-    ||sha256File(path.join(ROOT,state.linkageIdentity.path))!==state.linkageIdentity.sha256
+    ||sha256File(path.join(ROOT,state.linkageIdentity.path),inputSet.context(state.model))!==state.linkageIdentity.sha256
     ||sha256File(path.join(ROOT,record.originalAssembly))!==record.originalAssemblySha256)fail('fixed entry stale binding authority');
   assertRetainedPaddingProducer(state.registry,target.row,target.symbol,target.compilerTextFunctions);
   if(state.phase8.targets.some(t=>t.compilerTextFunctions.some(f=>f.symbol===name)))fail('fixed entry competing compiler definition');

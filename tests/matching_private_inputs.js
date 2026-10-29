@@ -14,6 +14,11 @@ const capture = () => capturePrivateInputs({root:fixture,directories:['include',
 let count = 0;
 function check(name, fn) {fn(); count++; console.log('PASS '+name);}
 check('unchanged shared inputs', ()=>capture().assertUnchanged());
+check('active source directory outside src seals shadow membership',()=>{
+  const directory=path.join(fixture,'third_party/unit');fs.mkdirSync(directory,{recursive:true});fs.writeFileSync(path.join(directory,'a.c'),'int a;');
+  const seal=capturePrivateInputs({root:fixture,directories:[],files:[],extraDirectories:['third_party/unit']});
+  fs.writeFileSync(path.join(directory,'shadow.h'),'int h;');assert.throws(()=>seal.assertUnchanged(),/changed/);
+});
 check('same-size header drift rejects', ()=>{const seal=capture();fs.writeFileSync(path.join(fixture,'include/header.h'),'int b;\n');assert.throws(()=>seal.assertUnchanged(),/changed/);});
 check('same-size config/flag drift rejects', ()=>{const seal=capture();fs.writeFileSync(path.join(fixture,'config/flags.json'),'{"flag":"y"}');assert.throws(()=>seal.assertUnchanged(),/changed/);});
 check('new include shadow rejects', ()=>{const seal=capture();fs.writeFileSync(path.join(fixture,'include/shadow.h'),'int x;');assert.throws(()=>seal.assertUnchanged(),/changed/);});

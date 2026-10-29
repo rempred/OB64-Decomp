@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const policy = require('./source_policy');
+const inputSet = require('./matching/input_set');
 const ROOT = policy.ROOT;
 const SHA = /^[A-F0-9]{64}$/;
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase();
@@ -78,12 +79,15 @@ function environmentHash(environment) {
   return hash(Buffer.from(json(entries)));
 }
 function createDiffPreprocessCache(options = {}) {
+  const inputs = options.inputs;
+  const physical = file => inputs ? inputs.source(path.resolve(ROOT, file)) : path.resolve(ROOT, file);
+  const dependencies = (files, source) => policy.dependencyIdentities(files.map(physical), physical(source), inputs);
   const fallback = options.preprocessSource || policy.preprocessSource;
-  const resolvePreprocessor = options.resolvePreprocessor || policy.resolvePreprocessor;
+  const resolvePreprocessor = options.resolvePreprocessor || (() => policy.resolvePreprocessor(undefined, inputs));
   const getEnvironment = options.getEnvironment || (() => process.env);
-  const implementationFiles = options.implementationFiles || [__filename, require.resolve('./source_policy')];
+  const implementationFiles = options.implementationFiles || [__filename, require.resolve('./source_policy'), require.resolve('./matching/input_set')];
   const cacheRoot = path.resolve(options.cacheRoot || path.join(ROOT, 'build/cache/diff-preprocess'));
-  const requested = new Set((options.requestedSources || []).map(file => canonicalPath(path.resolve(ROOT, file))));
+  const requested = new Set((options.requestedSources || []).map(file => canonicalPath(physical(file))));
   const tools = new Map(), used = new Map(), roots = new Set(), inventories = new Map();
   const counters = { hits: 0, misses: 0, fresh: 0, requested: 0, ineligible: 0, invalid: 0, published: 0, writeFailures: 0,
     publishSkipped: 0, unpublishable: 0, firstIneligibleReason: null };
@@ -101,9 +105,9 @@ function createDiffPreprocessCache(options = {}) {
     const actual = resolvePreprocessor();
     if (!equal(policy.preprocessorIdentity(actual), identity) || driver !== canonicalPath(actual.path)
         || dependencyRoot !== canonicalPath(actual.dependencyRoot)) fail('preprocessor identity differs from authenticated pins');
-    const configFile = path.resolve(ROOT, preprocessor.configIdentity.path);
+    const configFile = physical(preprocessor.configIdentity.path);
     const config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
-    const manifestFile = path.resolve(ROOT, config.matchingCompiler.manifest);
+    const manifestFile = physical(config.matchingCompiler.manifest);
     const records = [regular(configFile), regular(manifestFile), ...preprocessor.executables.map(record => {
       const current = regular(path.resolve(ROOT, record.path));
       if (current.bytes !== record.bytes || current.sha256 !== record.sha256) fail('preprocessor executable drift');
@@ -115,7 +119,8 @@ function createDiffPreprocessCache(options = {}) {
   }
   function includeRoots(sourceFile, preprocessor, extra) {
     return [...new Set([path.dirname(sourceFile), ...preprocessor.includeDirectories, ...extra].map(file => directory(file)))].map(file => {
-      confined(directory(ROOT), file); roots.add(file); return path.relative(ROOT, file).replace(/\\/g, '/');
+      if (inputs) inputs.logicalDirectory(file); else confined(directory(ROOT), file);
+      roots.add(file); return inputs ? file : path.relative(ROOT, file).replace(/\\/g, '/');
     });
   }
   function inventory(root) {
@@ -140,7 +145,7 @@ function createDiffPreprocessCache(options = {}) {
     function visit(file) {
       const canonical = canonicalPath(file); if (files.has(canonical)) return;
       if (!search.some(root => { const relative = path.relative(root, file); return relative && relative !== '..' && !relative.startsWith('..' + path.sep) && !path.isAbsolute(relative); })) fail('ineligible:closure-outside-roots');
-      const identity = policy.dependencyIdentities([file], file)[0], bytes = fs.readFileSync(file);
+      const identity = dependencies([file], file)[0], bytes = fs.readFileSync(file);
       if (hash(bytes) !== identity.sha256) fail('ineligible:closure-read-drift');
       const parsed = eligibility(bytes); files.set(canonical, identity);
       for (const include of parsed.includes) {
@@ -167,7 +172,7 @@ function createDiffPreprocessCache(options = {}) {
     return pin;
   }
   function input(sourceFile, preprocessor, extra) {
-    const dependencies = policy.dependencyIdentities([sourceFile], sourceFile), source = dependencies[0];
+    const source = dependencies([sourceFile], sourceFile)[0];
     const bytes = fs.readFileSync(sourceFile);
     if (bytes.length !== source.bytes || hash(bytes) !== source.sha256) fail('source changed during read');
     if (!equal(preprocessor.flags, ['-P', '-undef', '-nostdinc'])) fail('ineligible:flags');
@@ -177,7 +182,7 @@ function createDiffPreprocessCache(options = {}) {
     const pin = baseline(preprocessor);
     const includeDirectories = includeRoots(sourceFile, preprocessor, extra);
     return { schemaVersion: 2, tier: parsed.tier, source, sourceFile: canonicalPath(sourceFile), preprocessor: pin.identity,
-      cwd: canonicalPath(ROOT), includeDirectories,
+      cwd: canonicalPath(ROOT), includeDirectories, ...(inputs ? { inputSet: inputs.id, sourceArgument: sourceFile } : {}),
       ...(parsed.tier === 'B' ? closure(sourceFile, includeDirectories) : { closure: [source], inventories: [] }),
       implementation, environmentSha256: environment };
   }
@@ -197,7 +202,7 @@ function createDiffPreprocessCache(options = {}) {
       && equal(args.slice(0, flags.length), flags) && args[flags.length] === '-MD' && args[flags.length + 1] === '-MF'
       && path.isAbsolute(args[flags.length + 2]) && args[flags.length + 3] === '-MT'
       && args[flags.length + 4] === key.preprocessor.dependencyTarget
-      && equal(args.slice(flags.length + 5), [...key.includeDirectories.flatMap(file => ['-I', file]), key.source.path]);
+      && equal(args.slice(flags.length + 5), [...key.includeDirectories.flatMap(file => ['-I', file]), key.sourceArgument || key.source.path]);
   }
   function readEntry(entry, key) {
     directory(cacheRoot); directory(entry); confined(cacheRoot, entry);
@@ -246,14 +251,14 @@ function createDiffPreprocessCache(options = {}) {
     counters.fresh++;
     const result = measure(preprocessOptions, 'fresh', () => fallback(sourceFile, preprocessor, extra, preprocessOptions));
     if (result.ok) {
-      const identities = policy.dependencyIdentities(result.dependencies.map(record => record.path), sourceFile);
+      const identities = dependencies(result.dependencies.map(record => record.path), sourceFile);
       if (!equal(identities, result.dependencies)) fail('fresh dependency identities drift');
-      for (const identity of identities) remember(path.resolve(ROOT, identity.path), identity);
+      for (const identity of identities) remember(physical(identity.path), identity);
     }
     return result;
   }
   function preprocess(sourceFile, preprocessor, extraIncludeDirectories = [], preprocessOptions = {}) {
-    live(); sourceFile = path.resolve(sourceFile);
+    live(); sourceFile = physical(sourceFile);
     if (requested.has(canonicalPath(sourceFile))) { counters.requested++; return fresh(sourceFile, preprocessor, extraIncludeDirectories, preprocessOptions); }
     let key;
     try { key = measure(preprocessOptions, 'input', () => input(sourceFile, preprocessor, extraIncludeDirectories)); }
@@ -274,10 +279,10 @@ function createDiffPreprocessCache(options = {}) {
       if (!result.ok || !Buffer.isBuffer(result.bytes) || !result.bytes.length || result.text !== result.bytes.toString('utf8')
           || !equal(result.source, key.source) || !dependenciesValid(result.dependencies, key) || !resultArgsValid(result.args, key)
           || typeof result.stderr !== 'string') { counters.unpublishable++; return result; }
-      if (!equal(policy.dependencyIdentities([sourceFile], sourceFile), [key.source])) fail('source drift after preprocessing');
+      if (!equal(dependencies([sourceFile], sourceFile), [key.source])) fail('source drift after preprocessing');
       try { measure(preprocessOptions, 'publish', () => publish(entry, key, result)); } catch (_) { counters.writeFailures++; /* Retain independently fresh bytes. */ }
     }
-    for (const identity of key.closure) remember(path.resolve(ROOT, identity.path), identity);
+    for (const identity of key.closure) remember(physical(identity.path), identity);
     return { ...result, bytes: Buffer.from(result.bytes), source: { ...result.source }, dependencies: result.dependencies.map(record => ({ ...record })), args: [...result.args] };
   }
   function finish() {
@@ -286,8 +291,8 @@ function createDiffPreprocessCache(options = {}) {
     if (implementation && !equal(implementationFiles.map(regular), implementation)) fail('implementation drift at finish');
     if (environment && environmentHash(getEnvironment()) !== environment) fail('environment drift at finish');
     for (const value of tools.values()) for (const record of value.records) if (!equal(regular(record.path), record)) fail('tool/configuration drift at finish');
-    for (const [file, identity] of used) if (!equal(policy.dependencyIdentities([file], file), [identity])) fail('source drift at finish');
-    for (const root of roots) { directory(root); confined(directory(ROOT), root); }
+    for (const [file, identity] of used) if (!equal(dependencies([file], file), [identity])) fail('source drift at finish');
+    for (const root of roots) { directory(root); if (inputs) inputs.logicalDirectory(root); else confined(directory(ROOT), root); }
     for (const [root, identity] of inventories) if (!equal(inventory(root), identity)) fail('include tree inventory drift at finish');
   }
   return { preprocess, finish, get stats() { return { ...counters }; } };

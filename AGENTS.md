@@ -143,11 +143,13 @@ wave's full membership, coupled producers and real dependency gates; an unfinish
 does not block candidate work or acceptance of a complete, dependency-ready wave.
 Each private candidate worker edits only its assigned ignored scratch root and uses the supported private workbench
 commands in `docs/WORKFLOW.md`. Different private roots run candidate checks concurrently by default,
-without per-check permission or routine per-function integration pauses. Keep canonical inputs stable
-during candidate iteration and serialize production integration at complete-wave boundaries.
+without per-check permission or routine per-function integration pauses. Keep live canonical inputs stable
+during candidate iteration; explicitly selected immutable inputs may continue through ordinary canonical
+integration. Serialize production integration at complete-wave boundaries.
 The production writer alone changes canonical sources, shared headers,
 configuration and build outputs, integrates candidates and publishes shared research. Drain private
-checks before those shared inputs change or canonical linking/verification begins. A private result
+checks using live inputs before those inputs change or canonical linking/verification begins. Selected-input
+users must drain before their referenced shared tools, original inputs or accepted outputs change. A private result
 is diagnostic evidence, not matching acceptance. Keep coupled producers and their dependencies whole;
 parallel assignment does not reduce the original wave or add per-function full-ROM verification.
 The Director chooses the next dependency-ready complete wave for integration; the production writer
@@ -324,6 +326,9 @@ nonrecursive operation, or stop that cleanup. Protect shared `.toolchains`, conf
 compiler/runtime roots, ROM inputs and accepted evidence wherever links reach them.
 Authenticate affected shared tools before and after cleanup, preserve required source
 and proof, and follow [the cleanup procedure](docs/WORKFLOW.md#safe-filesystem-cleanup).
+An archive alone does not preserve access to published research references. Retain needed files at
+resolvable paths or migrate references through the existing research mechanisms, then validate the
+current curated-reference closure before removing the old paths.
 
 ## Clean-Room Boundary
 

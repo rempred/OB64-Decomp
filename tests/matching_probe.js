@@ -54,6 +54,7 @@ function runUnitTests() {
     '../current_workflow': { writeJson: (file, value) => fs.writeFileSync(file, JSON.stringify(value)), prepareContext() { throw new Error('context was not supplied'); } },
     './target_model': { ...realModel, assertScratchCapability(_w, target) { if (target.group) throw new Error('complete group candidate'); } },
     './compiler': { MATCHING_ROOT: path.join(root, 'cache') },
+    './input_set': require('../tools/lib/matching/input_set'),
     './scratch_assembly': require('../tools/lib/matching/scratch_assembly'),
     '../source_policy': mockedPolicy,
     child_process: { spawnSync(_exe, args, options) {
@@ -83,6 +84,15 @@ function runUnitTests() {
   });
   const first = run();
   test('header changes invalidate identity', () => { fs.writeFileSync(header, '#define VALUE 8\n'); assert.notEqual(run().probeId, first.probeId); });
+  test('selected context mismatch rejects before preprocessing', () => { const n = executions; assert.throws(() => run({ inputs: {} }), /mixed selected input context/); assert.equal(executions, n); });
+  test('physical sets keep distinct probe verdict identities for the same raw target', () => {
+    const inputsA={id:'A'.repeat(64)},inputsB={id:'B'.repeat(64)},api=require('../tools/lib/matching/input_set');
+    const first=run({context:api.bind({...context},inputsA),inputs:inputsA});
+    const second=run({context:api.bind({...context},inputsB),inputs:inputsB});
+    assert.notEqual(first.probeId,second.probeId);assert.notEqual(second.cached,true);
+    assert.equal(first.identity.targetId,second.identity.targetId);
+    assert.equal(first.identity.inputSetId,inputsA.id);assert.equal(second.identity.inputSetId,inputsB.id);
+  });
   test('effective flags invalidate identity', () => { const before = run(); context.phase8.config.compiler.compileFlags = ['-O1']; assert.notEqual(run().probeId, before.probeId); });
   test('preprocessor identity changes invalidate', () => { const before = run(); ppRevision++; assert.notEqual(run().probeId, before.probeId); });
   test('compiler changes invalidate', () => { const before = run(); fs.writeFileSync(compiler, 'changed mock compiler'); assert.notEqual(run().probeId, before.probeId); });

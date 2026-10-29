@@ -34,26 +34,28 @@ function resolveConfiguredPath(value) {
   return path.isAbsolute(value) ? path.resolve(value) : path.resolve(ROOT, value);
 }
 
-function loadLocalConfig() {
+function loadLocalConfig(inputs) {
   const selected = process.env.OB64_LOCAL_TOOLS
     ? path.resolve(process.env.OB64_LOCAL_TOOLS)
     : DEFAULT_CONFIG_PATH;
-  if (!fs.existsSync(selected)) {
+  const physical = require('./matching/input_set').resolve(inputs, selected);
+  if (!fs.existsSync(physical)) {
     throw new Error(`machine-local tool configuration is missing; copy ${EXAMPLE_CONFIG_PATH} to ${DEFAULT_CONFIG_PATH} or set OB64_LOCAL_TOOLS`);
   }
-  const config = readJson(selected);
+  const config = readJson(physical);
   if (!config || config.schemaVersion !== 1) throw new Error(`machine-local tool configuration schema drift: ${selected}`);
   return { config, path: selected };
 }
 
 function resolveLocalTools(options = {}) {
   const audit = options.audit === true;
-  const { config, path: configPath } = loadLocalConfig();
+  const { config, path: configPath } = loadLocalConfig(options.inputs);
   const resolved = { configPath };
   for (const [name, rule] of Object.entries(SETTINGS)) {
     if (rule.auditOnly && !audit) continue;
     const value = process.env[rule.environment] || config[name];
     const candidate = resolveConfiguredPath(value);
+    if (options.inputs && candidate !== options.inputs.manifest.runtime?.[name]) throw new Error(`selected input runtime path differs: ${name}`);
     if (!candidate) {
       if (rule.optional) {
         resolved[name] = null;
@@ -61,7 +63,7 @@ function resolveLocalTools(options = {}) {
       }
       throw new Error(`machine-local setting ${name} is missing (${rule.environment})`);
     }
-    if (rule.create) fs.mkdirSync(candidate, { recursive: true });
+    if (rule.create && !options.inputs && !options.readOnly) fs.mkdirSync(candidate, { recursive: true });
     if (!fs.existsSync(candidate)) throw new Error(`machine-local ${name} does not exist: ${candidate}`);
     const stat = fs.statSync(candidate);
     if (rule.kind === 'file' && !stat.isFile()) throw new Error(`machine-local ${name} is not a file: ${candidate}`);

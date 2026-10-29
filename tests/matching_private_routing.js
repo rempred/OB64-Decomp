@@ -10,7 +10,7 @@ const PRIVATE = path.join(ROOT, 'build', 'matching', 'w1');
 const SOURCE = path.join(PRIVATE, 'candidate.c');
 const workspace = { root: ROOT, matchingRoot: PRIVATE, storeOptions: { database: path.join(PRIVATE, 'workbench.sqlite') }, nativeConcurrency: 'parallel' };
 
-function fixture({ drift = false, guardDrift = false, entryArgs = null } = {}) {
+function fixture({ drift = false, guardDrift = false, selectedDrift = false, entryArgs = null } = {}) {
   const calls = [], output = [], errors = [];
   const record = { candidate: { candidate_id: 'candidate', target_id: 'target', source_text: 'void f(void){}', metadata: { sourcePath: path.relative(ROOT, SOURCE) } }, observations: [], runs: [] };
   const comparison = { rawExactBytes: false, rawRelocationMaskedExact: null, diagnosticExactBytes: null, evidenceMode: 'symbolic-object', diagnostic: { status: 'unavailable', reason: 'inactive owner' }, relocationEvidence: { expected: { available: false }, actual: { available: true, count: 1 } } };
@@ -19,6 +19,8 @@ function fixture({ drift = false, guardDrift = false, entryArgs = null } = {}) {
   const target = { symbol: 'func_80000000', targetId: 'target', expectedBytes: Buffer.alloc(4), vramStart: 0x80000000 };
   const workbench = { targets: [target], modelId: 'model' };
   const log = (name, result) => (...args) => { calls.push({ name, args }); return typeof result === 'function' ? result(...args) : result; };
+  const inputs = { id:'selected-id',manifest:{accepted:{fingerprint:'accepted-fingerprint'},runtime:{splatPython:'selected-python'}},
+    resolve:file=>file,assertUnchanged:log('selectedPostcheck',()=>{if(selectedDrift)throw Error('selected input drift');}) };
   const modules = {
     './lib/phase7_conventional': { ROOT },
     './lib/matching/target_model': { loadWorkbenchModel: log('model', workbench), resolveTarget: () => target, publicTarget: x => x, historicalSymbols: () => [target.symbol], assertScratchCapability: () => {} },
@@ -31,7 +33,8 @@ function fixture({ drift = false, guardDrift = false, entryArgs = null } = {}) {
     './lib/matching/diagnostic_link': { comparisonAlgorithmIdentity: () => 'algorithm', loadDiagnosticEnvironment: () => ({ identity: 'environment' }) },
     './lib/matching/mips_analysis': { targetMetrics: () => ({}), compareMips: log('compare', comparison) },
     './lib/matching/research': { importResearch: log('import', {}), observations: log('observations', []), preserveResearch: log('preserve', {}), captureIdentities: log('capture', {}) },
-    './lib/matching/intake': { loadIntakeModel: () => workbench, presentation: log('intake', {}), formatHuman: () => '' },
+    './lib/matching/intake': { loadIntakeModel: log('intakeModel', workbench), presentation: log('intake', {}), formatHuman: () => '' },
+    './lib/matching/input_set': { openInputSet: log('openInputs',inputs), authenticateRuntime: log('runtimePins', 'selected-python') },
     './lib/matching/knowledge': { validateOptions: x => x },
     './lib/matching/probe': { runProbe: log('probe', { status: 'complete' }), compareProbes: log('probeCompare', {}) },
     './lib/matching/private_inputs': { capturePrivateInputs: log('inputSeal', () => ({ assertUnchanged: log('inputPostcheck', undefined) })) },
@@ -45,10 +48,35 @@ function fixture({ drift = false, guardDrift = false, entryArgs = null } = {}) {
   const module = { exports: {} };
   const requireMock = name => name === 'fs' ? { ...fs, readFileSync: () => '{}' } : name === 'path' ? path : modules[name] || {};
   if (entryArgs) requireMock.main = module;
-  const processMock = { argv: ['node', 'match.js', ...(entryArgs || [])], exitCode: 0 };
+  const processMock = { argv: ['node', 'match.js', ...(entryArgs || [])], env:{}, exitCode: 0 };
   vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'tools/match.js'), 'utf8'), { module, require: requireMock, Buffer, process: processMock, console: { log: x => output.push(x), error: x => errors.push(x) } }, { filename: 'match.js' });
-  return { cli: module.exports, calls, output, errors, process: processMock };
+  return { cli: module.exports, calls, output, errors, inputs, process: processMock };
 }
+
+test('selected intake/watch/probe transport one input set and pinned Python through the guard', async()=>{
+  for(const command of ['intake','watch','probe']){
+    const f=fixture();
+    await f.cli.main([command,'func_80000000','--scratch-root','build/matching/w1','--inputs','manifest.json','--json',...(command==='intake'?[]:['--source',SOURCE])]);
+    assert.equal(f.calls.find(call=>call.name==='guard').args[1].python,'selected-python');
+    assert(f.calls.findIndex(call=>call.name==='runtimePins') < f.calls.findIndex(call=>call.name==='guard'));
+    assert.equal(f.calls.find(call=>call.name===(command==='intake'?'intakeModel':'model')).args[0].inputs,f.inputs);
+    assert.equal(f.calls.some(call=>call.name==='inputSeal'),false);
+    const result=JSON.parse(f.output[0]);assert.equal(result.inputSetId,'selected-id');assert.equal(result.acceptedFingerprint,'accepted-fingerprint');
+    if(command!=='intake'){
+      const options=f.calls.find(call=>call.name===(command==='watch'?'compile':'probe')).args[3];
+      assert.equal(options.inputs,f.inputs);assert.equal(options.storeOptions.python,'selected-python');
+    }
+  }
+});
+test('selected postcheck failure publishes no successful output',async()=>{
+  const f=fixture({selectedDrift:true});
+  await assert.rejects(f.cli.main(['intake','func_80000000','--scratch-root','build/matching/w1','--inputs','manifest.json','--json']),/selected input drift/);
+  assert.equal(f.output.length,0);
+});
+test('selected probe compare is rejected before any model or input IO',async()=>{
+  const f=fixture();await assert.rejects(f.cli.main(['probe','compare','left','right','--source',SOURCE,'--scratch-root','build/matching/w1','--inputs','manifest.json']),/probe comparison is unsupported/);
+  assert.equal(f.calls.length,0);
+});
 
 test('direct CLI startup can query candidates before the module finishes exporting', async () => {
   for (const suffix of [[], ['--scratch-root', 'build/matching/w1']]) {

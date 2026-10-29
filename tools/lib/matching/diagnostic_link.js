@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const textContract = require('../text_contract');
 const path = require('path');
+const inputSet = require('./input_set');
 const {
   ROOT,
   elfSectionBytes,
@@ -32,6 +33,7 @@ const COMPARISON_ALGORITHM_FILES = Object.freeze([
   path.join(__dirname, 'mips_analysis.js'),
   path.join(__dirname, 'compiler.js'),
   path.join(__dirname, 'target_model.js'),
+  path.join(__dirname, 'input_set.js'),
   path.join(__dirname, '..', 'logical_functions.js'),
   path.join(__dirname, '..', 'current_workflow.js'),
   path.join(__dirname, '..', 'phase7_conventional.js'),
@@ -150,6 +152,7 @@ function environmentIdentity(status) {
   return digest({
     schemaVersion: 1,
     currentFingerprint: status.currentFingerprint,
+    ...(status.inputSetId ? { inputSetId: status.inputSetId } : {}),
     available: status.available,
     code: status.code || null,
     acceptedElfSha256: status.acceptedElfSha256 || null,
@@ -160,9 +163,10 @@ function environmentIdentity(status) {
 }
 
 function loadDiagnosticEnvironment(session, options = {}) {
+  const inputs = inputSet.context(session?.context);
   if (options.environment) return options.environment;
   if (session?.[ENVIRONMENT_CACHE]) return session[ENVIRONMENT_CACHE];
-  const base = { currentFingerprint: session?.context?.currentFingerprint || null };
+  const base = { currentFingerprint: session?.context?.currentFingerprint || null, ...(inputs ? { inputSetId: inputs.id } : {}) };
   let result;
   try {
     if (!session?.context || !base.currentFingerprint) {
@@ -178,7 +182,7 @@ function loadDiagnosticEnvironment(session, options = {}) {
       } else {
         const output = path.resolve(current.state.output);
         const buildReportFile = path.join(output, 'build-report.json');
-        const verificationFile = path.resolve(current.state.verificationReport || '');
+        const verificationFile = inputSet.resolve(inputs, path.resolve(current.state.verificationReport || ''));
         const elfFile = path.join(output, 'phase8.elf');
         const provenanceFiles = [buildReportFile, verificationFile, elfFile];
         if (provenanceFiles.some((file) => !fs.existsSync(file) || !fs.statSync(file).isFile())) {
@@ -253,8 +257,10 @@ function loadDiagnosticEnvironment(session, options = {}) {
       }
     }
   } catch (error) {
+    inputSet.rethrow(error, inputs);
     result = unavailable('diagnostic-environment-error', error.message, base);
   }
+  if (inputs && !result.available) inputSet.rethrow(new Error('selected diagnostic environment unavailable: ' + result.code), inputs);
   result.identity = environmentIdentity({ ...base, ...result });
   if (session) session[ENVIRONMENT_CACHE] = result;
   return result;
@@ -497,6 +503,7 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
       control,
     };
   } catch (error) {
+    inputSet.rethrow(error, inputSet.context(session?.context));
     return reject('accepted-control-unavailable', error.message, {
       environmentIdentity: environment.identity,
     });
@@ -947,6 +954,7 @@ function compareCandidateDiagnostic({
       relocations: actualRelocations,
     });
   } catch (error) {
+    inputSet.rethrow(error);
     const code = /unsupported text relocation/.test(error.message)
       ? 'unsupported-relocation'
       : /auxiliary allocated ownership|multi-owner|primary function ownership/.test(error.message)
@@ -978,6 +986,7 @@ function compareCandidateDiagnostic({
       actualRelocations,
     });
   } catch (error) {
+    inputSet.rethrow(error);
     const code = /ambiguous accepted symbol/.test(error.message)
       ? 'ambiguous-symbol'
       : /unresolved accepted symbol/.test(error.message)

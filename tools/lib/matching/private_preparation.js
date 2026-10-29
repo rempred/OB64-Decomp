@@ -15,6 +15,7 @@ function preparePrivateContext(options = {}) {
   const activeSource = target?.activeMatchingSource || target?.activeMatchingProducer?.source;
   const state = options.privatePreparation;
   if (state?.context) {
+    if (require('./input_set').context(state.context) !== options.inputs) throw new Error('private prepared input set changed');
     const sources = state.context.phase8.targets.filter(item => item.symbol.toLowerCase() === target?.symbol?.toLowerCase()).map(item => item.source);
     if (activeSource) sources.push(activeSource);
     if (state.matchingRoot !== workspace.matchingRoot || sources.some(source => !state.requestedSources.includes(source))) throw new Error('private prepared context does not cover requested fresh producer');
@@ -23,14 +24,14 @@ function preparePrivateContext(options = {}) {
   const profile = createDiffProfiler();
   let cache, requestedSources, context;
   try { context = prepareContext({
-    profile,
+    profile, inputs: options.inputs,
     contextPreprocessFactory(targets) {
       const symbolMatches = target ? targets.filter(item => item.symbol.toLowerCase() === target.symbol.toLowerCase()) : [];
       if (symbolMatches.length > 1) throw new Error('private preprocessing target is ambiguous');
       if (activeSource && !targets.some(item => item.source === activeSource)) throw new Error('private preprocessing producer is absent from active model');
       // A group shares the producer source, so every member remains fresh.
       requestedSources = [...new Set([...symbolMatches.map(item => item.source), ...(activeSource ? [activeSource] : [])])];
-      cache = createDiffPreprocessCache({ cacheRoot, requestedSources });
+      cache = createDiffPreprocessCache({ cacheRoot, requestedSources, inputs: options.inputs });
       return {
         preprocess: cache.preprocess,
         finish() {

@@ -1,4 +1,5 @@
 'use strict';
+const inputSet = require('./matching/input_set');
 const fs = require('fs'), path = require('path');
 const { ROOT, fail, sha256Buffer: hash, sha256File, parseElf32BigEndian: parse } = require('./phase7_conventional');
 const { assembleWordAsmText } = require('./word_asm');
@@ -63,7 +64,7 @@ function binding(target){
   const c=b.evidence.contract,row=b.model.rows.find(r=>r.index===c.ownerRowIndex),slab=b.model.nonDescriptorLoadSlabs.find(s=>s.id===row?.slices[0]?.loadSlabId),aux=b.allTargets.flatMap(t=>t.auxiliarySections||[]).filter(a=>a.outputSection===row?.slices[0]?.sectionName);
   if(target.model!==b.model||digest({slab,row,aux})!==b.evidence.modelIdentity||hash(b.rom)!==b.model.config.rom.sha256
     ||sha256File(path.join(ROOT,b.evidence.ownerSource))!==b.evidence.ownerHash
-    ||sha256File(path.join(ROOT,target.source))!==b.evidence.sourceHash
+    ||sha256File(path.join(ROOT,target.source),inputSet.context(b.model))!==b.evidence.sourceHash
     ||b.allTargets.some(t=>t.textOwners.some(o=>o.rowIndex===row.index)))bad('changed binding inputs');
   return b;
 }
@@ -184,7 +185,7 @@ function derive(target,root,files=null){
   if(!p.referenceProjected.equals(bytes.reference)||!p.buffer.equals(bytes.source))bad('projection reconstruction');
   // An independent pinned strip run authenticates the entire intermediate,
   // including symbol/string/section-index changes outside the corrected byte.
-  const toolchain=JSON.parse(fs.readFileSync(path.join(ROOT,'config/toolchain.json'),'utf8')),
+  const toolchain=JSON.parse(fs.readFileSync(inputSet.resolve(inputSet.context(target.model),path.join(ROOT,'config/toolchain.json')),'utf8')),
     exe=path.resolve(ROOT,toolchain.localRoot,'bin/mips-kmc-elf-objcopy.exe'),expected=target.model.config.binutils.tools['mips-kmc-elf-objcopy.exe'];
   if(sha256File(exe)!==expected)bad('strip executable identity');
   // GNU 2.6 cannot reliably open nested cache paths on Windows. Reproduce
@@ -339,7 +340,7 @@ function bindMixed(group,targets,model,rom){
 }
 function mixedBinding(group){const b=mixedBindings.get(group);if(!b||b.identity!==digest(group)||hash(b.rom)!==b.model.config.rom.sha256)bad('mixed binding authority');
   const row=b.model.rows.find(r=>r.index===b.evidence.ownerRowIndex),slab=b.model.nonDescriptorLoadSlabs.find(s=>s.id===row?.slices[0]?.loadSlabId),owners=b.allTargets.flatMap(t=>t.auxiliarySections||[]).filter(a=>a.outputSection===row?.slices[0]?.sectionName);
-  if(digest({row,slab,owners})!==b.evidence.modelIdentity||sha256File(path.join(ROOT,b.evidence.ownerSource))!==b.evidence.ownerHash||sha256File(path.join(ROOT,group.source))!==b.evidence.sourceHash
+  if(digest({row,slab,owners})!==b.evidence.modelIdentity||sha256File(path.join(ROOT,b.evidence.ownerSource))!==b.evidence.ownerHash||sha256File(path.join(ROOT,group.source),inputSet.context(b.model))!==b.evidence.sourceHash
     ||b.allTargets.filter(t=>t.compilationGroup===group).length!==group.members.length)bad('mixed changed binding input');return b;}
 function mixedLinkedEvidence(target,root,context,objectEvidence){const group=target.compilationGroup,b=mixedBinding(group),sets=require('./auxiliary_projection').mixedReferenceSets(group),producer={...target,textOwners:group.owners.map(o=>({...o,logicalOffset:o.groupOffset}))};
   const groups=sets.map(s=>({hi:s.hi,los:[s.lo],records:[s.hi,s.lo].map(place=>({...group.relocations.find(r=>r.offset===place),place}))}));

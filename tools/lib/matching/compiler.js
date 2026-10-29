@@ -130,6 +130,7 @@ function syncTargets(workbench, storeOptions = {}, options = {}) {
 function prepareCompilerSession(options = {}) {
   const context = options.context || (options.privateWorkspace === true
     ? require('./private_preparation').preparePrivateContext(options) : prepareContext());
+  require('./input_set').assertContext(context, options.inputs);
   const runtimeOptions = {
     powershellRuntimeRoot: context.localTools.powershellRuntimeRoot,
     splatPython: context.localTools.splatPython,
@@ -138,7 +139,7 @@ function prepareCompilerSession(options = {}) {
   };
   const runtime = verifyRuntimeTools(context.phase8.model, runtimeOptions);
   verifyCompiler(context.phase8, context.localTools.compiler);
-  const preprocessor = resolvePreprocessor();
+  const preprocessor = resolvePreprocessor(undefined, options.inputs);
   const tool = {
     schemaVersion: 1,
     compilerSha256: sha256File(context.localTools.compiler),
@@ -146,6 +147,7 @@ function prepareCompilerSession(options = {}) {
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessor: preprocessorIdentity(preprocessor),
     workbenchCompilerContract: 12,
+    ...(options.inputs ? { inputSetId: options.inputs.id } : {}),
     scratchAssembly: SCRATCH_ASSEMBLY_POLICY,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
@@ -836,6 +838,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   assertScratchCapability(workbench, target, options.session?.context?.phase8?.targets);
   const storeOptions = options.storeOptions || {};
   const storeRequest = options.storeRequest || requestStore;
+  if (options.session) require('./input_set').assertContext(options.session.context, options.inputs);
   const { candidate, sourceFile } = recordCandidate(workbench, target, sourceText, options);
   const session = options.session || prepareCompilerSession({ ...options, privateTarget: target });
   target = textContract.bindWorkbenchTarget(session, target);
@@ -1004,6 +1007,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       caveat: 'Workbench comparison evidence is diagnostic only; canonical ownership, target bytes, and full-ROM verification remain required.',
     });
   } catch (error) {
+    require('./input_set').rethrow(error);
     compileRecord = {
       runId,
       candidateId: candidate.candidateId,

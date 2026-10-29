@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const inputSet = require('./input_set');
 const { loadActiveTargetModel, resolveAcceptedRow, resolveAcceptedRows } = require('../active_targets');
 const logical = require('../logical_functions');
 const { resolveWorkbenchActiveTarget } = require('../text_contract');
@@ -372,9 +373,11 @@ function applyRegisteredAliasCorrection(authority, targets, registry, body) {
 }
 
 function loadWorkbenchModel(options = {}) {
-  const config = readJson(CONFIG_PATH);
+  const inputs = options.inputs;
+  const config = readJson(inputSet.resolve(inputs, CONFIG_PATH));
   if (config.schemaVersion !== 1 || config.databaseSchemaVersion !== 2) throw new Error('matching workbench configuration schema drift');
-  const activeModel = loadActiveTargetModel();
+  const activeModel = loadActiveTargetModel({inputs});
+  inputs?.authenticate(activeModel);
   const model = activeModel.model;
   const baserom = options.requireBaserom === false ? null : loadBaserom(model);
   const logicalRegistry = logical.loadRegistry(model, baserom);
@@ -384,16 +387,16 @@ function loadWorkbenchModel(options = {}) {
     targetModelContract: 7,
     multiOwnerConfig: activeModel.multiOwnerConfigIdentity,
     logicalFunctionRegistry: logicalRegistry.identity,
-    logicalFunctionSemantics: [__filename, require.resolve('../logical_functions'), require.resolve('../text_contract')].map(file => ({
+    logicalFunctionSemantics: [__filename, require.resolve('../logical_functions'), require.resolve('../text_contract'), require.resolve('./input_set')].map(file => ({
       path: path.relative(ROOT, file).replace(/\\/g, '/'), sha256: sha256File(file),
     })),
     profile: config.profile,
     baserom: { bytes: model.config.rom.bytes, sha256: model.config.rom.sha256 },
     conventionalBuild: {
       path: 'config/phase7/conventional-build.json',
-      sha256: sha256File(PHASE7_CONFIG_PATH),
+      sha256: sha256File(PHASE7_CONFIG_PATH, inputs),
     },
-    semantic: { path: 'config/splat/us_rev0.semantic.json', sha256: sha256File(SEMANTIC_PATH) },
+    semantic: { path: 'config/splat/us_rev0.semantic.json', sha256: sha256File(SEMANTIC_PATH, inputs) },
     acceptedInputs: model.inputFiles,
   };
   const modelId = digest(modelManifest);
@@ -562,9 +565,9 @@ function loadWorkbenchModel(options = {}) {
     logicalTargets.push(target); bySymbol.set(body.symbol.toLowerCase(), target);
   }
   for (const target of targets) target.scratchCompilation = scratchCapability({ activeTargetsBySymbol: activeBySymbol }, target);
-  return { config, model, modelId, modelManifest, baserom, targets, logicalTargets, bySymbol, logicalRegistry,
+  return inputSet.bind({ config, model, modelId, modelManifest, baserom, targets, logicalTargets, bySymbol, logicalRegistry,
     multiOwnerContracts: activeModel.multiOwnerContracts, multiOwnerConfigIdentity: activeModel.multiOwnerConfigIdentity,
-    activeTargetsBySymbol: activeBySymbol };
+    activeTargetsBySymbol: activeBySymbol }, inputs);
 }
 
 function resolveTarget(workbench, symbol) {

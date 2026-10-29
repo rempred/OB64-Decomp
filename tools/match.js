@@ -44,7 +44,7 @@ const { validateOptions: validateKnowledgeOptions } = require('./lib/matching/kn
 const VALUE_OPTIONS = new Set([
   'limit', 'source', 'candidate', 'variant', 'm2c-root', 'set', 'max-size',
   'lane', 'note', 'research-compiler', 'passes', 'jobs', 'case-map', 'source-origin',
-  'scratch-root', 'native-concurrency', 'actual-dispatch', 'actual-body', 'output', 'actual-tail', 'observation', 'effect', 'cross-limit', 'symptom',
+  'scratch-root', 'inputs', 'native-concurrency', 'actual-dispatch', 'actual-body', 'output', 'actual-tail', 'observation', 'effect', 'cross-limit', 'symptom',
 ]);
 const PRIVATE_COMMANDS = new Set(['intake', 'watch', 'classify', 'compare', 'inspect', 'history', 'best', 'observations', 'import', 'preserve', 'probe']);
 const REPEAT_OPTIONS = new Set(['variant', 'actual-tail']);
@@ -66,6 +66,7 @@ function usage() {
   console.log(`Usage: node tools/match.js <command> [arguments]
 
 Core:
+  capture-inputs --output <new ignored build directory>
   doctor [--m2c-root <path>]
   inspect <symbol> [--limit N]
   history <symbol> [--limit N] [--include-details]
@@ -591,6 +592,12 @@ async function main(argv = process.argv.slice(2)) {
   const command = argv[0];
   const parsed = parseArgs(argv.slice(1));
   validatePrivateOptions(command, parsed.options);
+  if (parsed.options.inputs && (parsed.positional.length !== 1 || command === 'probe' && parsed.positional[0] === 'compare')) throw new Error('--inputs requires one target; probe comparison is unsupported');
+  if (command === 'capture-inputs') {
+    if (parsed.positional.length || !parsed.options.output || Object.keys(parsed.options).some(key => !['output', 'json'].includes(key))) throw new Error('capture-inputs requires only --output <new build directory>');
+    print(require('./lib/matching/input_set').captureInputSet(parsed.options.output), parsed.options);
+    return;
+  }
   if (command === 'watch' || (command === 'probe' && parsed.positional[0] !== 'compare')
       || command === 'doctor' || (['prepare', 'sweep'].includes(command) && !parsed.options['no-compile'])) {
     require('./lib/matching/scratch_assembly').assertScratchEnvironment();
@@ -599,10 +606,14 @@ async function main(argv = process.argv.slice(2)) {
   if (!parsed.options['scratch-root']) return executeCommand(command, parsed);
   const { resolvePrivateWorkspace, withPrivateWorkspace, assertPrivateWorkspace } = require('./lib/matching/private_workspace');
   const workspace = resolvePrivateWorkspace({ root: ROOT, scratchRoot: parsed.options['scratch-root'], nativeConcurrency: parsed.options['native-concurrency'] || 'parallel' });
+  const inputs = parsed.options.inputs ? require('./lib/matching/input_set').openInputSet(parsed.options.inputs, { privateRoot: workspace.matchingRoot }) : undefined;
+  const selectedPython = inputs ? require('./lib/matching/input_set').authenticateRuntime(inputs) : undefined;
+  if (inputs && process.env.OB64_MATCH_PYTHON && path.resolve(process.env.OB64_MATCH_PYTHON) !== selectedPython) throw new Error('selected input Python override differs');
+  if (inputs) workspace.storeOptions = { ...workspace.storeOptions, python: selectedPython };
   const outputs = [];
-  await withPrivateWorkspace(workspace, { native: command === 'watch' || (command === 'probe' && parsed.positional[0] !== 'compare') }, async () => {
-    const inputSeal = require('./lib/matching/private_inputs').capturePrivateInputs();
-    await executeCommand(command, parsed, workspace, (value, options) => outputs.push([value, options]), () => inputSeal.assertUnchanged());
+  await withPrivateWorkspace(workspace, { python: selectedPython, native: command === 'watch' || (command === 'probe' && parsed.positional[0] !== 'compare') }, async () => {
+    const inputSeal = inputs || require('./lib/matching/private_inputs').capturePrivateInputs();
+    await executeCommand(command, parsed, workspace, (value, options) => outputs.push([value, options]), () => inputSeal.assertUnchanged(), inputs);
     inputSeal.assertUnchanged();
     assertPrivateWorkspace(workspace);
   });
@@ -612,27 +623,34 @@ async function main(argv = process.argv.slice(2)) {
 }
 
 function validatePrivateOptions(command, options) {
+  if (options.inputs) {
+    if (!options['scratch-root'] || !['intake', 'watch', 'probe'].includes(command)
+        || command !== 'intake' && !options.source) throw new Error('--inputs supports only guarded intake, watch --source and probe --source');
+    const allowed = new Set(['inputs', 'scratch-root', 'native-concurrency', 'json', 'include-details',
+      ...(command === 'intake' ? ['limit', 'cross-limit', 'symptom'] : command === 'watch' ? ['source', 'cross-limit', 'symptom'] : ['source', 'passes'])]);
+    for (const key of Object.keys(options)) if (!allowed.has(key)) throw new Error('--inputs does not support --' + key);
+  }
   if (options['scratch-root'] && !PRIVATE_COMMANDS.has(command)) throw new Error('--scratch-root is unsupported for ' + command);
   if (options['native-concurrency'] && !options['scratch-root']) throw new Error('--native-concurrency requires --scratch-root');
   if (options['native-concurrency'] && !['serial', 'parallel'].includes(options['native-concurrency'])) throw new Error('--native-concurrency must be serial or parallel');
 }
 
-async function executeCommand(command, parsed, workspace = null, emit = print, assertPrivateInputs = undefined) {
+async function executeCommand(command, parsed, workspace = null, emit = print, assertPrivateInputs = undefined, inputs = undefined) {
   const { positional, options } = parsed;
-  const routing = workspace ? { matchingRoot: workspace.matchingRoot, storeOptions: workspace.storeOptions, privateWorkspace: true, privatePreparation: {}, assertPrivateInputs } : {};
+  const routing = workspace ? { matchingRoot: workspace.matchingRoot, storeOptions: workspace.storeOptions, privateWorkspace: true, privatePreparation: {}, assertPrivateInputs, inputs } : {};
   const requestStore = (request) => require('./lib/matching/store').requestStore(request, routing.storeOptions || {});
   const loadCandidateRun = (id) => latestCandidateRun(id, routing.storeOptions, { ...routing, privateWorkbench: workbench });
-  const print = emit;
-  const intakeRouting = workspace ? { database: workspace.storeOptions.database } : {};
+  const print = (value, options) => emit(inputs ? { ...value, inputSetId: inputs.id, acceptedFingerprint: inputs.manifest.accepted.fingerprint } : value, options);
+  const intakeRouting = workspace ? { database: workspace.storeOptions.database, inputs } : {};
   const privateFile = (file) => workspace ? require('./lib/matching/private_workspace').assertPrivatePath(workspace, path.resolve(file), { mustExist: true, regularFile: true }) : path.resolve(file);
   const researchOptions=validateKnowledgeOptions({crossLimit:options['cross-limit']===undefined?0:nonnegativeInteger(options['cross-limit'],'--cross-limit'),
     ...(options.symptom===undefined?{}:{symptom:options.symptom})});
   if(command==='intake'){
     if(positional.length!==1)throw new Error('intake requires one symbol');
-    const model=loadIntakeModel(),target=resolveTarget(model,positional[0]);
+    const model=loadIntakeModel({inputs}),target=resolveTarget(model,positional[0]);
     print(researchPresentation(target.symbol,{workbench:model,limit:numeric(options.limit,'--limit',20),...researchOptions,...intakeRouting}),options);return;
   }
-  const workbench = loadWorkbenchModel();
+  const workbench = loadWorkbenchModel({inputs});
   if (['prepare', 'watch', 'probe', 'import'].includes(command) && positional[0]
       && !(command === 'probe' && positional[0] === 'compare')) {
     assertScratchCapability(workbench, resolveTarget(workbench, positional[0]));

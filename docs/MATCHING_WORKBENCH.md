@@ -1,5 +1,23 @@
 # Optional Matching Workbench
 
+## Explicit accepted inputs for private checks
+
+The production owner may capture an already verified CURRENT with
+`node tools/match.js capture-inputs --output build/inputs-v1`. This creates a new ignored data
+directory and manifest, retaining authenticated references to shared tools, original input and accepted
+build artifacts. It does not build CURRENT, copy a code installation or publish acceptance.
+
+Guarded private `intake`, `watch --source` and `probe --source` accept
+`--inputs build/inputs-v1/manifest.json`. Other selected-input branches are rejected. The selected set
+owns mutable reads and include membership for that whole invocation; shared references must stay intact.
+Ordinary canonical integration may proceed independently. Refresh and release are explicit Director
+actions under [the private workflow](WORKFLOW.md#private-candidate-workers).
+
+Input-set identity participates in private caches and target/comparison/probe provenance. Previous
+results remain historical when a worker selects another set. Missing or changed required inputs abort;
+uncaptured research references remain unavailable. Only the complete wave's current-input canonical
+verification can establish matching acceptance.
+
 See [logical functions and physical owners](LOGICAL_FUNCTIONS.md) for complete
 multi-body preparation, corrected entry aliases, coverage limits, and history identity.
 

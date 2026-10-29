@@ -97,23 +97,152 @@ function runTests(model = loadAcceptedModel()) {
     slice.vramEndExclusive, slice.bytes, slice.executable, slice.placementKind, slice.loadSlabId],
   ['.ob64.r0789', 0x3DDC0, 0x3F1B0, 0x800AD9C0, 0x800AEDB0, 5104, false,
     'non-descriptor-load-slab', 'boot-initialized-data-0003ddc0']);
-  assert.deepStrictEqual(model.counts, { assemblyOwners: 6184, dataOwners: 1058, splitOwners: 25,
+  assert.deepStrictEqual(model.counts, { assemblyOwners: 6184, dataOwners: 1058, splitOwners: 31,
     rspRows: 13, fixedOverlayNonExecutableRanges: 4, nonDescriptorLoadSlabs: 30 });
-  // Eight registered ASM edge cuts add output slices, preserving all physical rows.
-  assert.deepStrictEqual(model.rows.filter(row => row.retainedPadding).map(row => row.index), [58, 554, 555, 556, 581, 2287, 2327, 2351]);
-  for (const index of [58, 554, 555, 556, 581, 2287, 2327, 2351]) {
-    const owner = model.rows[index];
-    assert.strictEqual(owner.slices.length, 2);
-    assert.strictEqual(owner.slices.reduce((bytes, slice) => bytes + slice.bytes, 0), owner.bytes);
-    assert.strictEqual(owner.slices.filter(slice => slice.retainedPaddingId).length, 1);
-    assert(owner.slices.every(slice => slice.executable && slice.nonExecutableRangeId === null));
+  // Frozen E02 authority: commit09bb1810 conventional-build.json SHA4484916D;
+  // accepted layout SHA16A712E0 (full identities/derivation in isolation handoff).
+  const e02Cuts = [
+    {
+      "id": "registered-row4522-terminal",
+      "rowIndex": 4522,
+      "romStart": 2450440,
+      "romEndExclusive": 2450448,
+      "edge": "terminal",
+      "sourceSha256": "AB49E1A8AF39F6E1FD54D63E9B7182A1A2751CAD9F6B5536B39F610746B738CC",
+      "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "compilerFunctions": [
+        {
+          "symbol": "func_0025630C",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4646-terminal",
+      "rowIndex": 4646,
+      "romStart": 2491420,
+      "romEndExclusive": 2491424,
+      "edge": "terminal",
+      "sourceSha256": "408C79CD395E7366BE7482360D8E2AD5C4291C3BE909A4F166D036D412A637CB",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_002603EC",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4656-terminal",
+      "rowIndex": 4656,
+      "romStart": 2493848,
+      "romEndExclusive": 2493856,
+      "edge": "terminal",
+      "sourceSha256": "8DFEE405B38D4841DD345FB75016C4B9387A1ACD1DE012B7D503A7A7194BCB4C",
+      "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00260CE0",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4673-terminal",
+      "rowIndex": 4673,
+      "romStart": 2497668,
+      "romEndExclusive": 2497680,
+      "edge": "terminal",
+      "sourceSha256": "FB60A503D6E24A28BAA2E61BDC1460BD7BE3A3FF7EEB58D741DE7866C5564FC4",
+      "expectedSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00261BD4",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4723-terminal",
+      "rowIndex": 4723,
+      "romStart": 2504332,
+      "romEndExclusive": 2504336,
+      "edge": "terminal",
+      "sourceSha256": "04292A1F0D3F737139CC5EE7AD1399ED07129F17639E7773FDF0A3FC6B15B9AF",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00263400",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4727-terminal",
+      "rowIndex": 4727,
+      "romStart": 2504908,
+      "romEndExclusive": 2504912,
+      "edge": "terminal",
+      "sourceSha256": "37762FB1B2D79675D37000B61973BF79CC1C9707408C07BCE75B5C757AF483FC",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_002637DC",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    }
+  ];
+  const allCutRows = [58, 554, 555, 556, 581, 2287, 2327, 2351, 4522, 4646, 4656, 4673, 4723, 4727];
+  function checkCuts() {
+    assert.deepStrictEqual(model.slices, model.rows.flatMap(owner => owner.slices));
+    for (const [ordinal, part] of model.slices.entries()) {
+      assert.strictEqual(part.ordinal, ordinal);
+      assert.strictEqual(part.phdrName, 'p' + String(ordinal).padStart(5, '0'));
+    }
+    assert.deepStrictEqual(model.rows.filter(owner => owner.retainedPadding).map(owner => owner.index), allCutRows);
+    assert.strictEqual(model.config.retainedPaddingCuts.length, 14);
+    for (const cut of e02Cuts) {
+      const owner = model.rows[cut.rowIndex];
+      assert.deepStrictEqual(model.config.retainedPaddingCuts.find(item => item.rowIndex === cut.rowIndex), cut);
+      assert.deepStrictEqual(owner.retainedPadding, cut);
+      assert.strictEqual(owner.part.file, 'asm/original/rev0/lib/' + cut.compilerFunctions[0].symbol + '.s');
+      assert.strictEqual(owner.part.sha256, cut.sourceSha256);
+      const [body, tail] = owner.slices;
+      assert.strictEqual(body.romStart, owner.romStart);
+      assert.strictEqual(body.romEndExclusive, cut.romStart);
+      assert.strictEqual(body.bytes, cut.romStart - owner.romStart);
+      assert.strictEqual(body.sectionName, '.ob64.r' + owner.index + '.s0');
+      assert.strictEqual(body.sliceIndex, 0);
+      assert.strictEqual(body.sliceCount, 2);
+      assert.deepStrictEqual(tail, { ...body, ordinal: body.ordinal + 1, sliceIndex: 1,
+        sectionName: '.ob64.r' + owner.index + '.s1', phdrName: 'p' + String(body.ordinal + 1).padStart(5, '0'),
+        romStart: cut.romStart, romEndExclusive: cut.romEndExclusive, bytes: cut.romEndExclusive - cut.romStart,
+        vramStart: body.vramEndExclusive, vramEndExclusive: body.vramEndExclusive + cut.romEndExclusive - cut.romStart,
+        retainedPaddingId: cut.id });
+    }
+    for (const index of allCutRows) {
+      const owner = model.rows[index];
+      assert.strictEqual(owner.slices.length, 2);
+      assert.strictEqual(owner.slices.reduce((bytes, part) => bytes + part.bytes, 0), owner.bytes);
+      assert.strictEqual(owner.slices.filter(part => part.retainedPaddingId).length, 1);
+      assert(owner.slices.every(part => part.executable && part.nonExecutableRangeId === null));
+    }
   }
+  checkCuts();
   // L1 adds rows554/555/556 terminal12-byte cuts; row581 adds an eight-byte cut.
   // Physical owners are unchanged; each added cut contributes one slice and ordinal/phdr shifts.
   // Preserve every physical row, other slice (including743/790), reservation and29 slabs.
   const digest = value => sha256Buffer(Buffer.from(JSON.stringify(value)));
   // Exact reviewed profiles; no unknown-identity fallback.
   function checkProfile() {
+    checkCuts();
     const identity = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json'];
     assert.ok([
       '6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1',
@@ -123,11 +252,17 @@ function runTests(model = loadAcceptedModel()) {
     const l4Successor = identity === 'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68';
     const row566Successor = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json']
       === 'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204';
-    assert.strictEqual(digest(model.slices.filter(s => s.rowIndex !== 789)), l4Successor
+    assert.strictEqual(digest(model.rows.flatMap(owner => e02Cuts.some(cut => cut.rowIndex === owner.index) ? [{
+      ...owner.slices[0], sliceIndex: 0, sliceCount: 1,
+      sectionName: '.ob64.r' + String(owner.index).padStart(4, '0'),
+      romEndExclusive: owner.romEndExclusive, bytes: owner.bytes,
+      vramEndExclusive: owner.slices.at(-1).vramEndExclusive,
+    }] : owner.slices).map((part, ordinal) => ({ ...part, ordinal,
+      phdrName: 'p' + String(ordinal).padStart(5, '0') })).filter(part => part.rowIndex !== 789)), l4Successor
       ? 'C87A8AB0AEE83724B56E525178E0F5B27100F837877C7A9238E99BD8953816F9' : row566Successor
       ? 'F5E4B7AB19AA0FDB97C2E013DA8CE6E6E49C3132E9C625916EBCC61C47C68D37'
       : '37F0CD984BF9D797B3665C0598458212052CEE300B249EF4CBCA57EE0962D5E5');
-    // Reverse only the eight reviewed derived cuts to compare every legacy slice.
+    // Reverse all fourteen explicitly checked reviewed derived cuts to compare every legacy slice.
     // This is a test projection, not a generated count or production-layout reset.
     const priorSlices = model.rows.flatMap(owner => owner.retainedPadding ? [{
       ...owner.slices[0], sliceIndex: 0, sliceCount: 1,
@@ -153,6 +288,16 @@ function runTests(model = loadAcceptedModel()) {
     finally { object[key] = previous; }
     checkProfile();
   }
+  for (const cut of e02Cuts) {
+    profileMutation(model.rows[cut.rowIndex], 'retainedPadding', null);
+    profileMutation(model.rows[cut.rowIndex].retainedPadding, 'romStart', cut.romStart + 4);
+    profileMutation(model.rows[cut.rowIndex].slices[1], 'bytes', 0);
+  }
+  profileMutation(model.config, 'retainedPaddingCuts', model.config.retainedPaddingCuts.slice(1));
+  profileMutation(model.config, 'retainedPaddingCuts', [...model.config.retainedPaddingCuts, e02Cuts[0]]);
+  profileMutation(model.rows[1000], 'retainedPadding', e02Cuts[0]);
+  profileMutation(model.rows[4522].slices[0], 'ordinal', 0);
+  profileMutation(model.rows[1000].slices[0], 'phdrName', 'wrong');
   const identityKey = 'config/splat/us_rev0.semantic.json';
   for (const identity of ['0'.repeat(64),
     '6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1',
