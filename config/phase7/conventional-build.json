@@ -15,10 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7273,
-    "splitOwners": 31,
+    "linkSlices": 7277,
+    "splitOwners": 35,
     "overlayReservations": 19,
-    "retainedPaddingCuts": 14,
+    "retainedPaddingCuts": 18,
     "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
@@ -288,6 +288,70 @@
       "compilerFunctions": [
         {
           "symbol": "func_002637DC",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4899-terminal",
+      "rowIndex": 4899,
+      "romStart": 2563620,
+      "romEndExclusive": 2563632,
+      "edge": "terminal",
+      "sourceSha256": "CAFBFA88F153010D104056271A39E5A78E57F4A8AD7A037B230589D488D4EA6D",
+      "expectedSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00271DBC",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4867-terminal",
+      "rowIndex": 4867,
+      "romStart": 2545516,
+      "romEndExclusive": 2545520,
+      "edge": "terminal",
+      "sourceSha256": "B01B289F6A12D6346AE818DA428F40FF51E9A8EF30B8D324CDDB9E21D9E9684F",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_0026d714",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4878-terminal",
+      "rowIndex": 4878,
+      "romStart": 2552276,
+      "romEndExclusive": 2552288,
+      "edge": "terminal",
+      "sourceSha256": "53644A158567B59F6148E2936101750E4414028D6951463FDD4CBD813FABCC15",
+      "expectedSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "compilerFunctions": [
+        {
+          "symbol": "func_0026F12C",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "registered-row4904-terminal",
+      "rowIndex": 4904,
+      "romStart": 2566020,
+      "romEndExclusive": 2566032,
+      "edge": "terminal",
+      "sourceSha256": "2B61D69032136A8C1861BBB6AE81C5461F28DE9E42D143ACD243299A428CEB49",
+      "expectedSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "compilerFunctions": [
+        {
+          "symbol": "func_0027271C",
           "binding": "GLOBAL",
           "entryEvidence": "owner"
         }

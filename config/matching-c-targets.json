@@ -4799,6 +4799,150 @@
     {
       "symbol": "func_002637DC",
       "source": "src/lib/func_002637DC.c"
+    },
+    {
+      "symbol": "func_0026cd1c",
+      "source": "src/lib/func_0026cd1c.c"
+    },
+    {
+      "symbol": "func_0026ce74",
+      "source": "src/lib/func_0026ce74.c"
+    },
+    {
+      "symbol": "func_0026d354",
+      "source": "src/lib/func_0026d354.c"
+    },
+    {
+      "symbol": "func_0026d670",
+      "source": "src/lib/func_0026d670.c"
+    },
+    {
+      "symbol": "func_0026d714",
+      "source": "src/lib/func_0026d714.c"
+    },
+    {
+      "symbol": "func_0026d770",
+      "source": "src/lib/func_0026d770.c"
+    },
+    {
+      "symbol": "func_0026d918",
+      "source": "src/lib/func_0026d918.c"
+    },
+    {
+      "symbol": "func_0026dcf0",
+      "source": "src/lib/func_0026dcf0.c"
+    },
+    {
+      "symbol": "func_0026e20c",
+      "source": "src/lib/func_0026e20c.c"
+    },
+    {
+      "symbol": "func_0026e520",
+      "source": "src/lib/func_0026e520.c"
+    },
+    {
+      "symbol": "func_0026e5c8",
+      "source": "src/lib/func_0026e5c8.c"
+    },
+    {
+      "symbol": "func_0026e64c",
+      "source": "src/lib/func_0026e64c.c"
+    },
+    {
+      "symbol": "func_0026edc0",
+      "source": "src/lib/func_0026edc0.c"
+    },
+    {
+      "symbol": "func_0026ee18",
+      "source": "src/lib/func_0026ee18.c"
+    },
+    {
+      "symbol": "func_0026F12C",
+      "source": "src/lib/func_0026F12C.c"
+    },
+    {
+      "symbol": "func_0026F1E0",
+      "source": "src/lib/func_0026F1E0.c"
+    },
+    {
+      "symbol": "func_0026F548",
+      "source": "src/lib/func_0026F548.c"
+    },
+    {
+      "symbol": "func_0026F578",
+      "source": "src/lib/func_0026F578.c"
+    },
+    {
+      "symbol": "func_0026F7F0",
+      "source": "src/lib/func_0026F7F0.c"
+    },
+    {
+      "symbol": "func_0026F990",
+      "source": "src/lib/func_0026F990.c"
+    },
+    {
+      "symbol": "func_0026FBF0",
+      "source": "src/lib/func_0026FBF0.c"
+    },
+    {
+      "symbol": "func_002702A0",
+      "source": "src/lib/func_002702A0.c"
+    },
+    {
+      "symbol": "func_00270488",
+      "source": "src/lib/func_00270488.c"
+    },
+    {
+      "symbol": "func_002705EC",
+      "source": "src/lib/func_002705EC.c"
+    },
+    {
+      "symbol": "func_00270BF4",
+      "source": "src/lib/func_00270BF4.c"
+    },
+    {
+      "symbol": "func_00270F10",
+      "source": "src/lib/func_00270F10.c"
+    },
+    {
+      "symbol": "func_00270FF0",
+      "source": "src/lib/func_00270FF0.c"
+    },
+    {
+      "symbol": "func_0027109C",
+      "source": "src/lib/func_0027109C.c"
+    },
+    {
+      "symbol": "func_002711DC",
+      "source": "src/lib/func_002711DC.c"
+    },
+    {
+      "symbol": "func_00271A10",
+      "source": "src/lib/func_00271A10.c"
+    },
+    {
+      "symbol": "func_00271D18",
+      "source": "src/lib/func_00271D18.c"
+    },
+    {
+      "symbol": "func_00271DBC",
+      "source": "src/lib/func_00271DBC.c"
+    },
+    {
+      "symbol": "func_00271E5C",
+      "source": "src/lib/func_00271E5C.c"
+    },
+    {
+      "symbol": "func_00272374",
+      "source": "src/lib/func_00272374.c"
+    },
+    {
+      "symbol": "func_0027267C",
+      "source": "src/lib/func_0027267C.c"
+    },
+    {
+      "symbol": "func_0027271C",
+      "source": "src/lib/func_0027271C.c"
     }
   ]
 }

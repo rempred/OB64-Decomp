@@ -207,6 +207,30 @@
       "evidence": "Complete original body ROM 0x002637DC..0x002638CC includes JR ra at 0x002638C4 and stack-restoring delay at 0x002638C8. The following zero word remains executable original ASM through 0x002638D0. Complete original-name GLOBAL native func_002637DC covers all 240 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
     },
     {
+      "romStart": 2545516,
+      "romEndExclusive": 2545520,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original body ROM 0x0026D714..0x0026D76C includes JR ra at 0x0026D764 and stack-restoring delay at 0x0026D768. The following zero word remains executable original ASM through 0x0026D770. Complete native GLOBAL func_0026d714 covers all 88 preceding bytes; original uppercase local entry marker is at the same address. No native padding provenance or numeric/runtime reference absence is claimed."
+    },
+    {
+      "romStart": 2552276,
+      "romEndExclusive": 2552288,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Complete original body ROM 0x0026F12C..0x0026F1D4 includes JR ra at 0x0026F1CC and stack-restoring delay at 0x0026F1D0. The following three zero words remain executable original ASM through 0x0026F1E0. Complete original-name GLOBAL native func_0026F12C covers all 168 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
+    },
+    {
+      "romStart": 2563620,
+      "romEndExclusive": 2563632,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Complete original creator body ROM0x00271DBC..0x00271E24 includes JR ra at0x00271E1C and stack-restoring delay at0x00271E20. Three following zero words remain executable original ASM through0x00271E30. Complete original-name GLOBAL native func_00271DBC covers all104 preceding bytes. No native-padding provenance or exhaustive reference/runtime absence claim."
+    },
+    {
+      "romStart": 2566020,
+      "romEndExclusive": 2566032,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Complete original creator body ROM0x0027271C..0x00272784 includes JR ra at0x0027277C and stack-restoring delay at0x00272780. Three following zero words remain executable original ASM through0x00272790. Complete original-name GLOBAL native func_0027271C covers all104 preceding bytes. No native-padding provenance or exhaustive reference/runtime absence claim."
+    },
+    {
       "romStart": 2622676,
       "romEndExclusive": 2622688,
       "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
@@ -4898,6 +4922,118 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_00267994.s",
           "sha256": "420180964A23E5306FDD49EB119855A21663AC8D94A74E127456B87F26635A86"
+        }
+      ]
+    },
+    {
+      "romStart": 2545428,
+      "romEndExclusive": 2545516,
+      "evidence": {
+        "caseId": "attack-p02-row4867-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original body ROM 0x0026D714..0x0026D76C includes JR ra at 0x0026D764 and stack-restoring delay at 0x0026D768. The following zero word remains executable original ASM through 0x0026D770. Complete native GLOBAL func_0026d714 covers all 88 preceding bytes; original uppercase local entry marker is at the same address. No native padding provenance or numeric/runtime reference absence is claimed."
+      },
+      "symbol": "func_0026d714",
+      "aliases": [],
+      "expectedBytesSha256": "B3EBFAA6C472567C5AE7A9EE1F99AC7BF086CFC6973723AAD12E677427BF39FB",
+      "fragments": [
+        {
+          "rowIndex": 4867,
+          "romStart": 2545428,
+          "romEndExclusive": 2545516,
+          "ownerOffset": 0,
+          "bytes": 88,
+          "vramStart": 2149682020,
+          "sectionName": ".ob64.r4867.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0026d714.s",
+          "sha256": "B01B289F6A12D6346AE818DA428F40FF51E9A8EF30B8D324CDDB9E21D9E9684F"
+        }
+      ]
+    },
+    {
+      "romStart": 2552108,
+      "romEndExclusive": 2552276,
+      "evidence": {
+        "caseId": "attack-p02-row4878-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original body ROM 0x0026F12C..0x0026F1D4 includes JR ra at 0x0026F1CC and stack-restoring delay at 0x0026F1D0. The following three zero words remain executable original ASM through 0x0026F1E0. Complete original-name GLOBAL native func_0026F12C covers all 168 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
+      },
+      "symbol": "func_0026F12C",
+      "aliases": [],
+      "expectedBytesSha256": "451BCE5E6A98DC444BC6CD273C7F0DC58DDFBE2055E7D62089021EF7059BC400",
+      "fragments": [
+        {
+          "rowIndex": 4878,
+          "romStart": 2552108,
+          "romEndExclusive": 2552276,
+          "ownerOffset": 0,
+          "bytes": 168,
+          "vramStart": 2149688700,
+          "sectionName": ".ob64.r4878.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0026F12C.s",
+          "sha256": "53644A158567B59F6148E2936101750E4414028D6951463FDD4CBD813FABCC15"
+        }
+      ]
+    },
+    {
+      "romStart": 2563516,
+      "romEndExclusive": 2563620,
+      "evidence": {
+        "caseId": "attack-p02-row4899-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original creator body ROM0x00271DBC..0x00271E24 includes JR ra at0x00271E1C and stack-restoring delay at0x00271E20. Three following zero words remain executable original ASM through0x00271E30. Complete original-name GLOBAL native func_00271DBC covers all104 preceding bytes. No native-padding provenance or exhaustive reference/runtime absence claim."
+      },
+      "symbol": "func_00271DBC",
+      "aliases": [],
+      "expectedBytesSha256": "92204787201A0E68C24631B561B833959E73B074E7F7D0C3E34F9FB9943F32CB",
+      "fragments": [
+        {
+          "rowIndex": 4899,
+          "romStart": 2563516,
+          "romEndExclusive": 2563620,
+          "ownerOffset": 0,
+          "bytes": 104,
+          "vramStart": 2149700108,
+          "sectionName": ".ob64.r4899.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00271DBC.s",
+          "sha256": "CAFBFA88F153010D104056271A39E5A78E57F4A8AD7A037B230589D488D4EA6D"
+        }
+      ]
+    },
+    {
+      "romStart": 2565916,
+      "romEndExclusive": 2566020,
+      "evidence": {
+        "caseId": "attack-p02-row4904-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original creator body ROM0x0027271C..0x00272784 includes JR ra at0x0027277C and stack-restoring delay at0x00272780. Three following zero words remain executable original ASM through0x00272790. Complete original-name GLOBAL native func_0027271C covers all104 preceding bytes. No native-padding provenance or exhaustive reference/runtime absence claim."
+      },
+      "symbol": "func_0027271C",
+      "aliases": [],
+      "expectedBytesSha256": "E97CDF9DFC4D5BA01BD530261F8B48F433C3D02D1B4F179BB28FBF98AC761962",
+      "fragments": [
+        {
+          "rowIndex": 4904,
+          "romStart": 2565916,
+          "romEndExclusive": 2566020,
+          "ownerOffset": 0,
+          "bytes": 104,
+          "vramStart": 2149702508,
+          "sectionName": ".ob64.r4904.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0027271C.s",
+          "sha256": "2B61D69032136A8C1861BBB6AE81C5461F28DE9E42D143ACD243299A428CEB49"
         }
       ]
     },
