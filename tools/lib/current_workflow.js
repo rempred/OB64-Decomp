@@ -447,17 +447,23 @@ function prepareContext(options = {}) {
   const model = phase8.model;
   const baseline = measure(profile, 'prepare.baseline-fingerprint', () => baselineFingerprint(phase8, baserom));
   if (options.contextPreprocessFactory !== undefined && (typeof options.contextPreprocessFactory !== 'function'
-      || options.diffPreprocessSymbol !== undefined)) throw new Error('context preprocessing hook is invalid or conflicts with diff preprocessing');
+      || options.diffPreprocessSymbol !== undefined || options.diffPreprocessSymbols !== undefined)) throw new Error('context preprocessing hook is invalid or conflicts with diff preprocessing');
   const contextPreprocess = options.contextPreprocessFactory?.(phase8.targets);
   if (options.contextPreprocessFactory && (!contextPreprocess || typeof contextPreprocess.preprocess !== 'function'
       || typeof contextPreprocess.finish !== 'function')) throw new Error('context preprocessing hook requires preprocess and finish');
   let diffPreprocess = null;
-  if (options.diffPreprocessSymbol !== undefined) {
-    const requested = phase8.targets.filter(target => target.symbol.toLowerCase() === String(options.diffPreprocessSymbol).toLowerCase());
-    if (requested.length !== 1) throw new Error('diff preprocessing target does not resolve uniquely');
+  if (options.diffPreprocessSymbol !== undefined || options.diffPreprocessSymbols !== undefined) {
+    if (options.diffPreprocessSymbol !== undefined && options.diffPreprocessSymbols !== undefined) throw new Error('conflicting diff preprocessing targets');
+    const symbols = options.diffPreprocessSymbols || [options.diffPreprocessSymbol];
+    if (!Array.isArray(symbols) || !symbols.length || new Set(symbols.map(s => String(s).toLowerCase())).size !== symbols.length) throw new Error('invalid diff preprocessing targets');
+    const requested = symbols.map(symbol => {
+      const matches = phase8.targets.filter(target => target.symbol.toLowerCase() === String(symbol).toLowerCase());
+      if (matches.length !== 1) throw new Error('diff preprocessing target does not resolve uniquely');
+      return matches[0];
+    });
     // All members of a compilation group share this source; the whole producer
     // therefore stays fresh even when a nonleader member was requested.
-    diffPreprocess = require('./diff_preprocess_cache').createDiffPreprocessCache({ requestedSources: [requested[0].source] });
+    diffPreprocess = require('./diff_preprocess_cache').createDiffPreprocessCache({ requestedSources: [...new Set(requested.map(target => target.source))] });
   }
   let sourcePolicy, current;
   try {

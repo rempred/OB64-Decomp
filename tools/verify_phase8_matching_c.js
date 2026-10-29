@@ -57,6 +57,7 @@ function runVerification(profile) {
   }));
   const { report: buildReport, identity: buildReportIdentity } = textContract.readCompactReport(options.output);
   measure(profile, 'validate-recorded-build', () => validateRecordedPhase8Build(phase8, {
+    profile,
     output: options.output,
     buildReport,
     verification,

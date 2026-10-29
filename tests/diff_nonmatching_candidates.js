@@ -19,7 +19,8 @@ const cases = {
     reject: /undefined reference to [`']D_801D7C78'/, rejectionStage: 'link-phase8' },
 };
 const name = process.argv[2];
-assert(cases[name] && process.argv.length === 3, 'Usage: node tests/diff_nonmatching_candidates.js <unfinished|short|decoded|differing|scenario>');
+const batch = process.argv[3] === '--batch';
+assert(cases[name] && (process.argv.length === 3 || (process.argv.length === 4 && batch)), 'Usage: node tests/diff_nonmatching_candidates.js <unfinished|short|decoded|differing|scenario> [--batch]');
 const item = cases[name];
 const archive = `docs/archive/matching-c-candidates/2026-09-29-${item.symbol}-${item.id}.c`;
 const observation = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/dossiers', `${item.symbol}-${item.id}.observation.json`)));
@@ -67,11 +68,21 @@ active.loadActiveTargetModelForContext = options => {
 const reportPath = path.join(ROOT, 'build/diff', `${item.symbol}.json`);
 const priorReportBytes = fs.existsSync(reportPath) ? fs.readFileSync(reportPath) : null;
 const priorReport = priorReportBytes ? hash(priorReportBytes) : null;
+const buddyPath = path.join(ROOT, 'build/diff/func_00042dc4.json');
+const priorBuddy = batch && fs.existsSync(buddyPath) ? fs.readFileSync(buddyPath) : null;
 if (priorReportBytes) fs.writeFileSync(path.join(output, 'prior-report.json'), priorReportBytes, { flag: 'wx' });
 let result;
 try {
   let report, error;
-  try { report = require('../tools/diff').main(['--profile', item.symbol]); }
+  try {
+    const value = require('../tools/diff').main(['--profile', ...(batch ? ['--batch'] : []), item.symbol, ...(batch ? ['func_00042dc4'] : [])]);
+    if (batch) {
+      assert.equal(value.status, 'complete'); assert.equal(value.allExact, false);
+      assert.equal(value.reports.length, 2);
+      assert.equal(value.reports.find(r => r.symbol === 'func_00042dc4').comparison.exact, true);
+      report = value.reports.find(r => r.symbol === item.symbol);
+    } else report = value;
+  }
   catch (caught) { error = caught; }
   if (item.reject) {
     assert(error && item.reject.test(error.message), `expected candidate rejection, got ${error?.message || 'success'}`);
@@ -100,14 +111,14 @@ try {
     assert.equal(report.relocationContract.matches, item.relocationsMatch !== false);
     if (item.inactive) assert.equal(report.relocationContract.source, 'missing-diff-only');
     if (item.decodedExact !== undefined) assert.equal(report.comparison.asmDifferPairwiseExact, item.decodedExact);
-    assert.equal(report.objectCache.requestedFresh, 1);
+    assert.equal(report.objectCache.requestedFresh, batch ? 2 : 1);
     assert.equal(report.objectCache.entries.find(entry => entry.symbol === item.symbol).status, 'requested-fresh');
     const profiles = fs.readdirSync(path.join(ROOT, 'build/warm-diff-profile'))
       .filter(file => file.startsWith(item.symbol + '-') && file.endsWith(`-${process.pid}.json`))
       .map(file => ({ file, profile: JSON.parse(fs.readFileSync(path.join(ROOT, 'build/warm-diff-profile', file))) }))
       .filter(value => value.profile.metadata.artifacts?.output === report.output);
     assert.equal(profiles.length, 1, 'fixture timing profile is ambiguous');
-    assert.equal(profiles[0].profile.metadata.preprocessCache.requested, 1);
+    assert.equal(profiles[0].profile.metadata.preprocessCache.requested, batch ? 2 : 1);
     result = { status: 'pass', case: name, sourceClass: report.sourceClass, comparison: report.comparison,
       relocationContractMatches: report.relocationContract.matches, objectCache: report.objectCache,
       profile: profiles[0].file, seconds: profiles[0].profile.totalMs / 1000 };
@@ -116,6 +127,10 @@ try {
   active.loadActiveTargetModelForContext = load;
   if (priorReportBytes) fs.writeFileSync(reportPath, priorReportBytes);
   else if (fs.existsSync(reportPath)) fs.unlinkSync(reportPath);
+  if (batch) {
+    if (priorBuddy) fs.writeFileSync(buddyPath, priorBuddy);
+    else if (fs.existsSync(buddyPath)) fs.unlinkSync(buddyPath);
+  }
   if (productionSource) assert.equal(hash(fs.readFileSync(productionSource)), productionHash, 'production source changed during fixture');
   assert(fs.readFileSync(configPath).equals(originalConfig), 'production target configuration changed during fixture');
 }

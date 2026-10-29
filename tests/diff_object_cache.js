@@ -587,7 +587,7 @@ function main() {
 
     const cacheRoot = path.join(scratch, 'cache');
     let runIndex = 0;
-    function runDiff(profile = null, inspect = fakeInspect) {
+    function runDiff(profile = null, inspect = fakeInspect, requestedTargets = null) {
       const output = path.join(scratch, `output-${runIndex++}`);
       fs.mkdirSync(output, { recursive: true });
       const invocations = [];
@@ -597,6 +597,7 @@ function main() {
         ...keyInputs,
         phase8,
         requestedTarget: requested,
+        ...(requestedTargets ? { requestedTargets } : {}),
         output,
         compiler: 'fixture-compiler',
         assemblerPath: 'fixture-assembler',
@@ -632,6 +633,12 @@ function main() {
     assert(warm.inspections.length === 3 && warm.inspections.every(files => files.every(file => file.startsWith(cacheRoot + path.sep))),
       'warm hit artifacts were semantically inspected again after copying');
     assert(canonicalJson([...warm.result.compiled]) === canonicalJson([...cold.result.compiled]), 'warm compiled map differs from cold');
+    const batch = runDiff(null, fakeInspect, [requested, sibling]);
+    assert(batch.result.cache.requestedFresh === 2 && batch.result.cache.compilerInvocations === 2
+      && batch.result.cache.hits === 2 && batch.invocations.every(r => [requested.symbol, sibling.symbol].includes(r.symbol)),
+    'batch must compile every requested producer fresh exactly once with warm siblings');
+    assert(canonicalJson([...batch.result.compiled]) === canonicalJson([...warm.result.compiled]), 'batch and single compiled maps differ');
+    require('assert').throws(() => runDiff(null, fakeInspect, [requested, requested]), /membership/);
     for (const target of phase8.targets) for (const spec of artifactSpecifications(target)) {
       assert(fs.readFileSync(outputArtifactFiles(cold.output, target)[spec.name]).equals(
         fs.readFileSync(outputArtifactFiles(warm.output, target)[spec.name])), 'warm output bytes differ from cold');

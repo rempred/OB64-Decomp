@@ -38,28 +38,31 @@ const {
 } = require('./lib/current_workflow');
 
 function usage() {
-  console.log('Usage: node tools/diff.js [--profile] <symbol>');
+  console.log('Usage: node tools/diff.js [--profile] <symbol> | --batch <symbol> [<symbol> ...]');
 }
 
 function parseArguments(argv) {
   if (!Array.isArray(argv)) throw new Error('diff arguments are malformed');
   if (argv.length === 1 && (argv[0] === '--help' || argv[0] === '-h')) return { command: 'help' };
   let profile = false;
-  let symbol = null;
+  let batch = false;
+  const symbols = [];
   for (const argument of argv) {
     if (argument === '--profile') {
       if (profile) throw new Error('--profile may be specified only once');
       profile = true;
+    } else if (argument === '--batch') {
+      if (batch) throw new Error('--batch may be specified only once');
+      batch = true;
     } else if (typeof argument === 'string' && argument.startsWith('--')) {
       throw new Error(`unknown option: ${argument}`);
-    } else if (symbol !== null) {
-      throw new Error('one target symbol is required');
     } else {
-      symbol = argument;
+      symbols.push(argument);
     }
   }
-  if (typeof symbol !== 'string' || symbol.length === 0) throw new Error('one target symbol is required');
-  return { command: 'diff', profile, symbol };
+  if (!symbols.length || symbols.some(s => typeof s !== 'string' || !s.length) || (!batch && symbols.length !== 1)) throw new Error('one target symbol is required unless --batch is used');
+  if (new Set(symbols.map(s => s.toLowerCase())).size !== symbols.length) throw new Error('duplicate requested target');
+  return batch ? { command: 'diff', profile, batch, symbols, symbol: symbols[0] } : { command: 'diff', profile, symbol: symbols[0] };
 }
 
 function selectTarget(phase8, symbol) {
@@ -69,9 +72,37 @@ function selectTarget(phase8, symbol) {
 }
 
 function prepareContextOptions(symbol, profiler = null) {
-  const options = { allowMissingRelocationContracts: [symbol], diffPreprocessSymbol: symbol };
+  const options = Array.isArray(symbol)
+    ? { allowMissingRelocationContracts: symbol, diffPreprocessSymbols: symbol }
+    : { allowMissingRelocationContracts: [symbol], diffPreprocessSymbol: symbol };
   if (profiler) options.profile = profiler;
   return options;
+}
+
+function batchSelection(phase8, requested) {
+  const groups = [...new Map(phase8.targets.filter(t => t.compilationGroup).map(t =>
+    [t.compilationGroup.id, t.compilationGroup.members.map(m => m.symbol)])).values()];
+  const claimed = new Set(requested.flatMap(t => t.compilationGroup ? t.compilationGroup.members.map(m => m.symbol) : [t.symbol]));
+  const producers = [...new Map(requested.map(t => [t.compilationGroup?.id || t.symbol,
+    t.compilationGroup ? phase8.targets.find(v => v.symbol === t.compilationGroup.members[0].symbol) : t])).values()];
+  if (producers.some(t => !t)) throw new Error('missing requested producer');
+  return { groups, claimed: [...claimed], producers };
+}
+
+function batchBudget(selection, classifications, requested) {
+  const captures = selection.producers.reduce((sum, target) => {
+    const c = classifications.get(target.symbol); return sum + c.sourceBytes + c.compilationInput.bytes;
+  }, 0);
+  // Diagnostic reservation only, not an admission or acceptance size limit.
+  // Allow 1MiB fixed JSON overhead plus 64x input/contract size per requested
+  // member; capture verifies actual serialized reports before writing any.
+  const reports = requested.reduce((sum, target) => sum + 1024 * 1024
+    + 64 * (classifications.get(target.symbol).compilationInput.bytes
+      + Buffer.byteLength(JSON.stringify(require('./lib/diff_object_cache').projectTargetContract(target)))), 0);
+  const config = scratchRetention.settings();
+  // Two report copies (retained and latest), plus bounded manifest/census metadata.
+  if (![captures, reports, config.peakBytes + captures + 3 * reports].every(Number.isSafeInteger)) throw new Error('batch reservation overflow');
+  return { config: { ...config, peakBytes: config.peakBytes + captures + 3 * reports }, reportAllowance: reports, captureBytes: captures };
 }
 
 function comparisonLabel(comparison) {
@@ -253,22 +284,31 @@ function runDiff(argv) {
   let linkContext = null;
   let scratch = null;
   let capturedSource = null;
+  const batchSources = [], reports = [];
+  let requested = [], budget = null;
+  let retainedBatch = null;
+  let batchCaptureAttempted = false;
   let capturedComplete = false;
   let originalError = null;
   if (profiler) profiler.installChildProcessObserver();
 
   try {
     const context = measure('prepare-context', () => prepareContext(
-      prepareContextOptions(parsed.symbol, profiler),
+      prepareContextOptions(parsed.batch ? parsed.symbols : parsed.symbol, profiler),
     ));
-    target = measure('select-target', () => selectTarget(context.phase8, parsed.symbol));
+    requested = measure('select-target', () => (parsed.symbols || [parsed.symbol]).map(symbol => selectTarget(context.phase8, symbol)));
+    target = requested[0];
+    const selection = batchSelection(context.phase8, requested);
+    const classificationBySymbol = new Map(context.sourcePolicy.targets.map((record) => [record.symbol, record]));
+    budget = parsed.batch ? batchBudget(selection, classificationBySymbol, requested) : null;
     if (profiler) profileFile = profileOutputPath(ROOT, target.symbol, profiler.startedAt);
     measure('initialize-output', () => {
       const suffix = `${Date.now()}-${crypto.randomBytes(3).toString('hex')}`;
       const root = path.join(context.localTools.workRoot, 'diff');
       output = path.join(root, `${target.symbol}-${suffix}`);
       assertBuildOutputLocation(output);
-      scratch = scratchRetention.begin({ root, output });
+      scratch = scratchRetention.begin({ root, output, claimedSymbols: selection.claimed, producerGroups: selection.groups,
+        ...(budget ? { config: budget.config } : {}) });
       const accounting = scratchRetention.accounting(root, scratch.config);
       for (const warning of accounting.warnings) console.warn(warning);
     });
@@ -292,8 +332,13 @@ function runDiff(argv) {
       context.localTools.compiler,
     ));
     const sourcePolicy = measure('classify-target-sources', () => context.sourcePolicy);
-    const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
-    capturedSource = scratchRetention.captureSource(scratch, ROOT,
+    if (parsed.batch) {
+      for (const [index, producer] of selection.producers.entries()) {
+        const classification = classificationBySymbol.get(producer.symbol);
+        batchSources.push(scratchRetention.captureBatchSource(scratch, ROOT, classification,
+          compilationInputBytes(classification), index, producer.compilationGroup?.members.map(m => m.symbol) || [producer.symbol]));
+      }
+    } else capturedSource = scratchRetention.captureSource(scratch, ROOT,
       classificationBySymbol.get(target.symbol), compilationInputBytes(classificationBySymbol.get(target.symbol)));
     const phase7 = measure('verify-phase7-input', () => verifyPhase7Input(
       context.phase8,
@@ -309,7 +354,7 @@ function runDiff(argv) {
     scratch.check('before-compile');
     const targetCompilation = measure('compile-diff-targets', () => compileDiffTargets({
       phase8: context.phase8,
-      requestedTarget: target,
+      requestedTargets: requested,
       output,
       compiler: context.localTools.compiler,
       assemblerPath: runtime.tools['mips-kmc-elf-as.exe'].path,
@@ -341,7 +386,8 @@ function runDiff(argv) {
       replacement.replacements,
       { linkContext, compiledBySymbol: compiled },
     ));
-    const comparison = measure('compare-target', () => runTargetAsmDiffer(context.phase8, target, {
+    for (const target of requested) {
+    const comparison = measure(parsed.batch ? 'compare-target-' + target.symbol.toLowerCase().replace(/[^a-z0-9.-]/g, '-') : 'compare-target', () => runTargetAsmDiffer(context.phase8, target, {
       output,
       asmDifferRoot: context.localTools.asmDifferRoot,
       python: context.localTools.splatPython,
@@ -377,11 +423,23 @@ function runDiff(argv) {
       },
       comparison,
     }));
+    reports.push(report);
+    }
     measure('verify-linked-evidence-identity', () => textContract.finishLinkContext(linkContext));
     linkContext = null;
     measure('verify-preprocessing-identity', () => context.diffPreprocess.finish());
+    if (parsed.batch) {
+      batchCaptureAttempted = true;
+      retainedBatch = scratchRetention.captureBatchReport(scratch, batchSources, requested.map(t => t.symbol), reports, budget.reportAllowance);
+      capturedComplete = true;
+    }
+    for (const report of reports) {
+    const target = requested.find(t => t.symbol === report.symbol);
+    const comparison = report.comparison, targetSourcePolicy = classificationBySymbol.get(target.symbol);
+    const candidateRelocations = report.relocationContract.candidate, relocationContractMatches = report.relocationContract.matches;
     const reportFile = path.join(ROOT, 'build', 'diff', `${target.symbol}.json`);
-    measure('write-diff-report', () => scratchRetention.publishLatest(path.dirname(reportFile), target.symbol, report));
+    measure('write-diff-report', () => scratchRetention.publishLatest(path.dirname(reportFile), target.symbol,
+      retainedBatch ? { ...report, diagnosticOnly: true, batch: { manifest: retainedBatch.path, ...retainedBatch.identity, allExact: retainedBatch.manifest.allExact } } : report));
     measure('print-summary', () => printSummary({
       candidateRelocations,
       comparison,
@@ -392,6 +450,12 @@ function runDiff(argv) {
       targetSourcePolicy,
       preprocessCache: context.diffPreprocess.stats,
     }));
+    }
+
+    const report = reports[0], comparison = report.comparison;
+    const relocationContractMatches = report.relocationContract.matches;
+    const targetSourcePolicy = classificationBySymbol.get(target.symbol);
+    const reportFile = path.join(ROOT, 'build', 'diff', `${target.symbol}.json`);
 
     if (profiler) {
       const metadata = measure('profile-metadata', () => profileMetadata({
@@ -409,21 +473,29 @@ function runDiff(argv) {
         targetCompilation,
         targetSourcePolicy,
       }));
-      const timingReport = profiler.finish({ status: 'pass', ...metadata });
+      const timingReport = profiler.finish({ status: 'pass', ...metadata,
+        ...(retainedBatch ? { batch: { requested: requested.map(t => t.symbol), allExact: retainedBatch.manifest.allExact, reservation: budget } } : {}) });
       profileFinished = true;
       writeProfileReport(profileFile, timingReport);
       console.log(`Timing profile .............. ${profileFile}`);
       console.log(`Profiled wall time .......... ${seconds(timingReport.totalMs)} s`);
       console.log(`Child-process wall time ..... ${seconds(timingReport.childProcessMs)} s`);
     }
-    scratchRetention.captureReport(scratch, capturedSource, report);
+    if (!parsed.batch) scratchRetention.captureReport(scratch, capturedSource, report);
     capturedComplete = true;
     const accounting = scratchRetention.accounting(scratch.root, scratch.config);
     console.log(`Retained source/report bytes .. ${accounting.totals.retainedBytes} (measured records; no deletion)`);
     for (const warning of accounting.warnings) console.warn(warning);
-    return report;
+    if (retainedBatch) console.log(`Batch diagnostics complete: ${reports.filter(r => r.comparison.exact).length} exact / ${reports.filter(r => !r.comparison.exact).length} nonmatching; canonical acceptance not established`);
+    return retainedBatch ? { ...retainedBatch.manifest, reports } : report;
   } catch (error) {
     originalError = error;
+    if (parsed.batch) capturedComplete = false;
+    if (parsed.batch && scratch && batchSources.length && !batchCaptureAttempted) {
+      batchCaptureAttempted = true;
+      try { scratchRetention.captureBatchReport(scratch, batchSources, requested.map(t => t.symbol), reports, budget.reportAllowance, error); }
+      catch (captureError) { error.batchCaptureError = captureError.message; }
+    }
     if (profiler && !profileFinished) {
       try {
         const timingReport = profiler.finish({
@@ -466,4 +538,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { comparisonLabel, main, parseArguments, prepareContextOptions, selectTarget };
+module.exports = { comparisonLabel, main, parseArguments, prepareContextOptions, selectTarget, batchSelection, batchBudget };

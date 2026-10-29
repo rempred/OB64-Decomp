@@ -110,10 +110,17 @@ function availableBytes(root) {
 // Append-only claims avoid a check-then-create reservation race. Publish a claim
 // BEFORE checking space; any malformed concurrent claim fails admission closed.
 // Release is a separate immutable record. Crash claims are never reclaimed by age/PID.
-function reservations(root) {
+function symbols(value) {
+  if (!Array.isArray(value) || !value.length || value.some(s => typeof s !== 'string' || !/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(s))) fail('invalid claimed symbols');
+  const normalized = value.map(s => s.toLowerCase()).sort();
+  if (new Set(normalized).size !== normalized.length) fail('duplicate claimed symbols');
+  return normalized;
+}
+function reservations(root, producerGroups = []) {
   plain(root, 'directory');
   let reservedBytes = 0, activeFloorBytes = 0;
   const active = [];
+  const activeClaims = [];
   for (const name of fs.readdirSync(root)) {
     if (!RUN.test(name)) continue;
     const run = path.join(root, name);
@@ -122,9 +129,12 @@ function reservations(root) {
     if (!fs.existsSync(meta)) continue; // Legacy runs are unknown, never cleanup candidates.
     plain(meta, 'directory');
     const claim = JSON.parse(readPlain(path.join(meta, 'claim.json')));
-    if (claim.schemaVersion !== 2 || claim.run !== name || !Number.isSafeInteger(claim.peakBytes) || claim.peakBytes <= 0
+    if (![2, 3].includes(claim.schemaVersion) || claim.run !== name || !Number.isSafeInteger(claim.peakBytes) || claim.peakBytes <= 0
       || !Number.isSafeInteger(claim.floorBytes) || claim.floorBytes <= 0
       || typeof claim.token !== 'string' || !/^[a-f0-9]{32}$/.test(claim.token)) fail(`invalid reservation: ${name}`);
+    let claimed = claim.schemaVersion === 3 ? symbols(claim.claimedSymbols) : [RUN.exec(name)[1].toLowerCase()];
+    if (!claimed.includes(RUN.exec(name)[1].toLowerCase())) fail('reservation basename membership drift');
+    for (const group of producerGroups.map(symbols)) if (group.some(s => claimed.includes(s))) claimed = [...new Set([...claimed, ...group])];
     const releaseFile = path.join(meta, 'release.json');
     if (fs.existsSync(releaseFile)) {
       const release = JSON.parse(readPlain(releaseFile));
@@ -134,14 +144,15 @@ function reservations(root) {
       activeFloorBytes = Math.max(activeFloorBytes, claim.floorBytes);
       if (!Number.isSafeInteger(reservedBytes)) fail('reservation arithmetic overflow');
       active.push(name);
+      activeClaims.push({ run: name, token: claim.token, symbols: claimed });
     }
   }
-  return { active, reservedBytes, activeFloorBytes };
+  return { active, activeClaims, reservedBytes, activeFloorBytes };
 }
 
-function checkSpace(root, config, phase, readSpace = availableBytes) {
+function checkSpace(root, config, phase, readSpace = availableBytes, producerGroups = []) {
   validateSettings(config);
-  const claims = reservations(root);
+  const claims = reservations(root, producerGroups);
   const freeBytes = readSpace(root);
   if (!Number.isSafeInteger(freeBytes) || freeBytes < 0) fail('invalid free-space result');
   // A lower-floor caller cannot spend another active participant's floor.
@@ -151,10 +162,14 @@ function checkSpace(root, config, phase, readSpace = availableBytes) {
   return { phase, freeBytes, requiredBytes, ...claims };
 }
 
-function begin({ root, output, config = settings(), readSpace = availableBytes }) {
+function begin({ root, output, config = settings(), readSpace = availableBytes, claimedSymbols = null, producerGroups = [] }) {
   validateSettings(config);
   root = path.resolve(root); output = contained(root, output);
   if (path.dirname(output) !== root || !RUN.test(path.basename(output))) fail('invalid direct diff run path');
+  const claimed = symbols(claimedSymbols || [RUN.exec(path.basename(output))[1]]);
+  if (!claimed.includes(RUN.exec(path.basename(output))[1].toLowerCase())) fail('requested basename is not claimed');
+  producerGroups = producerGroups.map(symbols);
+  for (const group of producerGroups) if (group.some(s => claimed.includes(s)) && group.some(s => !claimed.includes(s))) fail('incomplete producer claim');
   // Creating the small owned run/claim is the only work before admission.
   plain(path.dirname(root), 'directory');
   if (!fs.existsSync(root)) fs.mkdirSync(root);
@@ -163,16 +178,17 @@ function begin({ root, output, config = settings(), readSpace = availableBytes }
   const meta = path.join(output, META);
   fs.mkdirSync(meta);
   const token = crypto.randomBytes(16).toString('hex');
-  writeNew(meta, 'claim.json', jsonBytes({ schemaVersion: 2, run: path.basename(output), token,
+  writeNew(meta, 'claim.json', jsonBytes({ schemaVersion: 3, claimedSymbols: claimed, run: path.basename(output), token,
     floorBytes: config.floorBytes, peakBytes: config.peakBytes, pid: process.pid, startedAt: new Date().toISOString() }));
   let released = false;
   const handle = {
     root, output, meta, config,
     check(phase) {
       if (released) fail('reservation already released');
-      const result = checkSpace(root, config, phase, readSpace);
-      const symbol = RUN.exec(path.basename(output))[1].toLowerCase();
-      if (result.active.filter(name => RUN.exec(name)[1].toLowerCase() === symbol).length !== 1) fail(`same-symbol active/crashed reservation: ${symbol}`);
+      const result = checkSpace(root, config, phase, readSpace, producerGroups);
+      const own = result.activeClaims.filter(c => c.run === path.basename(output));
+      if (own.length !== 1 || own[0].token !== token || JSON.stringify([...own[0].symbols].sort()) !== JSON.stringify(claimed)) fail('active reservation identity changed');
+      if (result.activeClaims.some(c => c.run !== path.basename(output) && c.symbols.some(s => claimed.includes(s)))) fail('same-symbol active/crashed reservation overlaps requested producer');
       return result;
     },
     release(status) {
@@ -193,28 +209,31 @@ function authenticate(bytes, expected, label) {
   if (!expected || bytes.length !== expected.bytes || hash(bytes) !== expected.sha256) fail(`${label} identity mismatch`);
 }
 
-function captureSource(handle, repository, classification, inputBytes) {
+function captureSource(handle, repository, classification, inputBytes, names = { authored: 'authored.c', input: 'input.c' }) {
   if (!classification || typeof classification.source !== 'string') fail('missing classification');
   const source = contained(repository, path.resolve(repository, classification.source));
   const authored = readPlain(source);
   authenticate(authored, { bytes: classification.sourceBytes, sha256: classification.sourceSha256 }, 'authored source');
   authenticate(inputBytes, classification.compilationInput, 'preprocessed input');
-  const authoredIdentity = writeNew(handle.meta, 'authored.c', authored);
-  const inputIdentity = writeNew(handle.meta, 'input.c', inputBytes);
+  const authoredIdentity = writeNew(handle.meta, names.authored, authored);
+  const inputIdentity = writeNew(handle.meta, names.input, inputBytes);
   return { source: classification.source, sourcePolicyDigest: classification.digest,
     authored: authoredIdentity, input: inputIdentity };
 }
 
-function captureReport(handle, captured, report) {
+function validateCapturedReport(handle, captured, report, names = { authored: 'authored.c', input: 'input.c' }) {
   if (path.resolve(report.output) !== handle.output || report.source !== captured.source
     || report.sourcePolicyDigest !== captured.sourcePolicyDigest) fail('report/source binding mismatch');
-  authenticate(readPlain(path.join(handle.meta, 'authored.c')), captured.authored, 'retained authored source');
-  authenticate(readPlain(path.join(handle.meta, 'input.c')), captured.input, 'retained input');
+  authenticate(readPlain(path.join(handle.meta, names.authored)), captured.authored, 'retained authored source');
+  authenticate(readPlain(path.join(handle.meta, names.input)), captured.input, 'retained input');
   const actual = report.object && report.object.compilationInput;
   if (!actual || actual.path !== captured.source) fail('compiled input path mismatch');
   authenticate(readPlain(contained(handle.output, path.resolve(handle.output, actual.path))), actual, 'actual compiler input');
   if (actual.bytes !== captured.input.bytes || actual.sha256 !== captured.input.sha256
     || report.compilationInput?.bytes !== captured.input.bytes || report.compilationInput?.sha256 !== captured.input.sha256) fail('report input identity mismatch');
+}
+function captureReport(handle, captured, report) {
+  validateCapturedReport(handle, captured, report);
   const reportIdentity = writeNew(handle.meta, 'report.json', jsonBytes(report));
   const snapshot = census(handle.output);
   if (snapshot.issues.length) fail(`incomplete run census: ${snapshot.issues.join('; ')}`);
@@ -229,6 +248,96 @@ function captureReport(handle, captured, report) {
     retainedBytesBeforeSummary: captured.authored.bytes + captured.input.bytes + reportIdentity.bytes + censusIdentity.bytes };
   writeNew(handle.meta, 'summary.json', jsonBytes(summary));
   return summary;
+}
+
+function captureBatchSource(handle, repository, classification, inputBytes, index, members) {
+  if (!Number.isSafeInteger(index) || index < 0) fail('invalid producer ordinal');
+  const names = { authored: `producer-${index}-authored.c`, input: `producer-${index}-input.c` };
+  return { ...captureSource(handle, repository, classification, inputBytes, names), names, members: symbols(members) };
+}
+
+// One immutable diagnostic manifest describes the entire shared output. Failed
+// captures stay protected; they never replace latest per-target reports.
+function captureBatchReport(handle, sources, requested, reports, allowance, error = null) {
+  const requestedSymbols = symbols(requested);
+  if (!Number.isSafeInteger(allowance) || allowance <= 0 || !Array.isArray(sources) || !sources.length) fail('invalid batch retention inputs');
+  const sourceMembers = new Set();
+  for (const source of sources) {
+    for (const name of symbols(source.members)) { if (sourceMembers.has(name)) fail('duplicate retained producer member'); sourceMembers.add(name); }
+    authenticate(readPlain(path.join(handle.meta, source.names.authored)), source.authored, 'retained batch authored source');
+    authenticate(readPlain(path.join(handle.meta, source.names.input)), source.input, 'retained batch input');
+  }
+  if (!error && requestedSymbols.some(s => !sourceMembers.has(s))) fail('missing retained producer');
+  const seen = new Set(), prepared = reports.map((report, index) => {
+    const symbol = String(report.symbol).toLowerCase();
+    if (!requestedSymbols.includes(symbol) || seen.has(symbol)) fail('unexpected or duplicate batch report');
+    seen.add(symbol);
+    const captured = sources.find(s => s.members.includes(symbol));
+    if (!captured) fail('batch report has no captured producer');
+    validateCapturedReport(handle, captured, report, captured.names);
+    const value = { ...report, diagnosticOnly: true, incompleteBatch: Boolean(error), sharedIdentitySealed: !error };
+    return { symbol: report.symbol, name: `target-${index}-report.json`, bytes: jsonBytes(value), exact: report.comparison?.exact === true };
+  });
+  if (!error && seen.size !== requestedSymbols.length) fail('incomplete batch reports');
+  const byteCount = prepared.reduce((n, r) => n + r.bytes.length, 0);
+  if (!Number.isSafeInteger(byteCount) || byteCount > allowance) fail('batch diagnostic report allowance exceeded');
+  handle.check('before-batch-records');
+  const records = prepared.map(r => ({ symbol: r.symbol, path: r.name, exact: r.exact, ...writeNew(handle.meta, r.name, r.bytes) }));
+  const manifest = { schemaVersion: 1, diagnosticOnly: true, status: error ? 'incomplete' : 'complete',
+    requested: requestedSymbols, sources, reports: records, output: handle.output,
+    unavailable: requestedSymbols.filter(s => !seen.has(s)), allExact: !error && records.every(r => r.exact),
+    error: error ? { name: error.name, message: error.message } : null };
+  if (jsonBytes(manifest).length > allowance) fail('batch manifest allowance exceeded');
+  const manifestIdentity = writeNew(handle.meta, 'batch.json', jsonBytes(manifest));
+  const snapshot = census(handle.output);
+  if (snapshot.issues.length) fail('incomplete batch run census');
+  const censusBytes = jsonBytes({ schemaVersion: 1, scope: 'files before census/summary', ...snapshot });
+  if (censusBytes.length + jsonBytes(manifest).length > allowance) fail('batch metadata allowance exceeded');
+  const censusIdentity = writeNew(handle.meta, 'census.json', censusBytes);
+  const files = [...sources.flatMap(s => [s.names.authored, s.names.input]), ...records.map(r => r.path), 'batch.json', 'census.json'];
+  const summary = { schemaVersion: 2, status: error ? 'failed' : 'complete', diagnosticOnly: true, run: path.basename(handle.output),
+    manifest: manifestIdentity, census: censusIdentity, retainedFileAllowlist: [...files, 'summary.json'], deletionEnabled: false,
+    bytesBeforeSummary: snapshot.bytes + censusIdentity.bytes, retainedBytesBeforeSummary: files.reduce((n, f) => n + plain(path.join(handle.meta, f), 'file').size, 0) };
+  writeNew(handle.meta, 'summary.json', jsonBytes(summary));
+  return { manifest, identity: manifestIdentity, path: path.join(handle.meta, 'batch.json') };
+}
+
+function readBatch(run, summary) {
+  const meta = path.join(run, META), bytes = readPlain(path.join(meta, 'batch.json'));
+  authenticate(bytes, summary.manifest, 'batch manifest');
+  const batch = JSON.parse(bytes);
+  if (batch.schemaVersion !== 1 || batch.diagnosticOnly !== true || path.resolve(batch.output) !== run
+      || !['complete', 'incomplete'].includes(batch.status)) fail('invalid retained batch');
+  const requested = symbols(batch.requested), members = new Set();
+  const names = new Set(['batch.json', 'census.json', 'summary.json']);
+  for (const s of batch.sources) {
+    for (const m of symbols(s.members)) { if (members.has(m)) fail('duplicate batch member'); members.add(m); }
+    for (const role of ['authored', 'input']) {
+      const name = s.names[role];
+      if (typeof name !== 'string' || !/^producer-\d+-(authored|input)\.c$/.test(name) || names.has(name)) fail('invalid retained source filename');
+      names.add(name); authenticate(readPlain(path.join(meta, name)), s[role], 'batch source');
+    }
+  }
+  const reported = new Set();
+  for (const r of batch.reports) {
+    const symbol = r.symbol.toLowerCase();
+    if (!requested.includes(symbol) || reported.has(symbol) || !members.has(symbol) || !/^target-\d+-report\.json$/.test(r.path) || names.has(r.path)) fail('invalid batch report membership');
+    reported.add(symbol); names.add(r.path);
+    const bytes = readPlain(path.join(meta, r.path)); authenticate(bytes, r, 'batch report');
+    const report = JSON.parse(bytes), source = batch.sources.find(s => s.members.includes(symbol));
+    if (report.symbol !== r.symbol || report.diagnosticOnly !== true
+        || report.incompleteBatch !== (batch.status === 'incomplete')
+        || report.sharedIdentitySealed !== (batch.status === 'complete')
+        || r.exact !== (report.comparison?.exact === true)) fail('retained batch report binding drift');
+    validateCapturedReport({ output: run, meta }, source, report, source.names);
+  }
+  if (batch.status === 'complete' && reported.size !== requested.length) fail('missing batch reports');
+  if (batch.allExact !== (batch.status === 'complete' && batch.reports.every(r => r.exact))
+      || JSON.stringify(batch.unavailable) !== JSON.stringify(requested.filter(s => !reported.has(s)))
+      || summary.status !== (batch.status === 'complete' ? 'complete' : 'failed')) fail('batch outcome census drift');
+  if (JSON.stringify([...names].sort()) !== JSON.stringify([...summary.retainedFileAllowlist].sort())) fail('batch retained file allowlist drift');
+  authenticate(readPlain(path.join(meta, 'census.json')), summary.census, 'batch census');
+  return batch;
 }
 
 function publishLatest(directory, symbol, report) {
@@ -246,7 +355,13 @@ function publishLatest(directory, symbol, report) {
 
 function retainedBytes(run) {
   let bytes = 0;
-  for (const name of RECORDS) {
+  let records = RECORDS;
+  const summaryFile = path.join(run, META, 'summary.json');
+  if (fs.existsSync(summaryFile)) {
+    const summary = JSON.parse(readPlain(summaryFile));
+    if (summary.schemaVersion === 2) { readBatch(run, summary); records = summary.retainedFileAllowlist; }
+  }
+  for (const name of records) {
     const file = path.join(run, META, name);
     if (fs.existsSync(file)) bytes += plain(file, 'file').size;
   }
@@ -303,6 +418,8 @@ function referenceInputs(inputs) {
 function inventory(root, inputs = {}, config = settings()) {
   plain(root, 'directory');
   const references = referenceInputs(inputs), runs = [], issues = [...references.issues];
+  // Latest member reports protect their common output even when no prose cites it.
+  const latest = path.resolve(__dirname, '../../build/diff');
   for (const name of fs.readdirSync(root)) {
     const run = path.join(root, name), protection = [];
     try {
@@ -313,6 +430,7 @@ function inventory(root, inputs = {}, config = settings()) {
       if (!RUN.test(name)) protection.push('unrecognized run name');
       const meta = path.join(run, META);
       let status = 'unknown';
+      let batch = null;
       if (fs.existsSync(path.join(meta, 'claim.json'))) {
         const claim = JSON.parse(readPlain(path.join(meta, 'claim.json')));
         const releaseFile = path.join(meta, 'release.json');
@@ -323,17 +441,30 @@ function inventory(root, inputs = {}, config = settings()) {
           status = release.status;
           if (status === 'complete') {
             const summary = JSON.parse(readPlain(path.join(meta, 'summary.json')));
-            if (summary.schemaVersion !== 1 || summary.status !== 'complete' || summary.run !== name) fail('invalid completed summary');
+            if (![1, 2].includes(summary.schemaVersion) || summary.status !== 'complete' || summary.run !== name) fail('invalid completed summary');
+            if (summary.schemaVersion === 2) batch = readBatch(run, summary);
+            else {
             authenticate(readPlain(path.join(meta, 'report.json')), summary.report, 'retained report');
             authenticate(readPlain(path.join(meta, 'authored.c')), summary.source.authored, 'retained source');
             authenticate(readPlain(path.join(meta, 'input.c')), summary.source.input, 'retained input');
             authenticate(readPlain(path.join(meta, 'census.json')), summary.census, 'retained census');
+            }
           }
         }
       }
       if (status !== 'complete') protection.push(status);
       if (references.issues.length) protection.push('reference inventory incomplete');
-      const matches = references.texts.filter(item => referenced(name, item.text, run)).map(item => item.file);
+      const aliases = batch ? batch.requested.map(symbol => name.replace(RUN.exec(name)[1], symbol)) : [];
+      const memberReferences = [];
+      try {
+        const memberSymbols = batch ? batch.reports.map(r => r.symbol) : RUN.test(name) ? [RUN.exec(name)[1]] : [];
+        for (const symbol of memberSymbols) {
+          const file = path.join(latest, `${symbol}.json`);
+          if (fs.existsSync(file)) memberReferences.push({ file, text: readPlain(file).toString('utf8') });
+        }
+      } catch (error) { protection.push('latest reference inventory incomplete'); issues.push(error.message); }
+      const matches = [...references.texts, ...memberReferences].filter(item => referenced(name, item.text, run)
+        || aliases.some(alias => referenced(alias, item.text, run))).map(item => item.file);
       if (matches.length) protection.push('referenced: preserve complete dependency closure');
       // Stage one never emits an apply-authorizing candidate, even with no known references.
       protection.push('operator apply not implemented; live/best/pin closure requires later review');
@@ -363,7 +494,7 @@ function accounting(root, config = settings()) {
       const run = path.join(root, name), file = path.join(run, META, 'summary.json');
       if (!fs.existsSync(file)) { unknownRuns++; continue; }
       const bytes = readPlain(file), summary = JSON.parse(bytes);
-      if (summary.schemaVersion !== 1 || summary.run !== name || !Number.isSafeInteger(summary.bytesBeforeSummary)) fail('invalid accounting summary');
+      if (![1, 2].includes(summary.schemaVersion) || summary.run !== name || !Number.isSafeInteger(summary.bytesBeforeSummary)) fail('invalid accounting summary');
       totals.bytes += summary.bytesBeforeSummary + bytes.length;
       totals.retainedBytes += retainedBytes(run);
     } catch (error) { unknownRuns++; issues.push(error.message); }
@@ -373,4 +504,4 @@ function accounting(root, config = settings()) {
 }
 
 module.exports = { DEFAULTS, RECORDS, settings, contained, plain, census, availableBytes, begin,
-  reservations, checkSpace, captureSource, captureReport, publishLatest, accounting, limitWarnings, referenced, inventory };
+  reservations, checkSpace, captureSource, captureReport, captureBatchSource, captureBatchReport, readBatch, publishLatest, accounting, limitWarnings, referenced, inventory };

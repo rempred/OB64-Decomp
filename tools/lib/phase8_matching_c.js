@@ -2697,7 +2697,8 @@ function verifySourceObjectProofs(phase8, options) {
   const records = [];
   for (const target of phase8.targets) {
     const classification = classificationBySymbol.get(target.symbol);
-    const derived = deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, proofLinkContext);
+    const derive = () => deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, proofLinkContext);
+    const derived = options.profile ? options.profile.measure(targetStage('source-proof', target.symbol), derive) : derive();
     const proofRelative = 'generated/c/' + target.symbol + '.source-object-proof.json';
     const proofFile = resolveRelative(output, proofRelative, 'source-to-object proof');
     if (!fs.existsSync(proofFile)) fail('source-to-object proof is missing: ' + target.symbol);
@@ -4057,6 +4058,9 @@ function phase8VerificationModel(phase8) {
 }
 
 function verifyPhase8Output(phase8, options) {
+  return textContract.withEvidenceProfile(options.profile, () => verifyPhase8OutputProfiled(phase8, options));
+}
+function verifyPhase8OutputProfiled(phase8, options) {
   const measure = options.profile ? options.profile.measure : (_name, callback) => callback();
   const output = path.resolve(options.output);
   const files = {
@@ -4568,6 +4572,9 @@ function verifyPhase8Output(phase8, options) {
 }
 
 function validateRecordedPhase8Build(phase8, options) {
+  return textContract.withEvidenceProfile(options.profile, () => validateRecordedPhase8BuildProfiled(phase8, options));
+}
+function validateRecordedPhase8BuildProfiled(phase8, options) {
   const output = path.resolve(options.output);
   const buildReport = options.buildReport;
   if (!sameJson(buildReport?.acceptedInputs?.logicalFunctionConfig, phase8.logicalFunctionConfigIdentity)) fail('recorded logical function registry drift');

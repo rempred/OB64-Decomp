@@ -11,6 +11,15 @@ const NATIVE_SYMBOL = 'func_00204A70';
 const TAIL_SHA256 = 'DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119';
 const NATIVE_SHAPE = Object.freeze({ type: 1, flags: 6, alignment: 16, bytes: 1136 });
 let objectMemo = null;
+let evidenceProfile = null;
+function withEvidenceProfile(profile, callback) {
+  const previous = evidenceProfile;
+  evidenceProfile = profile || previous;
+  try { return callback(); } finally { evidenceProfile = previous; }
+}
+function measureEvidence(name, callback) {
+  return evidenceProfile ? evidenceProfile.measure(name, callback) : callback();
+}
 const derivedInputs = new WeakMap();
 const physicalInterface = target => require('./logical_functions').physicalInterface(target);
 const artifactSnapshots = new WeakMap();
@@ -425,7 +434,8 @@ function nativeLinkedAllocationEvidence(target, elf, mapText) {
 }
 function deriveObjectEvidence(target, root, artifactFiles = null) {
   if (target.compilationGroup) return require('./compilation_groups').evidence(target, root, artifactFiles);
-  return withObjectArtifactSnapshot(target, root, artifactFiles, snapshot => deriveObjectEvidenceFromSnapshot(target, snapshot));
+  return withObjectArtifactSnapshot(target, root, artifactFiles, snapshot =>
+    measureEvidence('evidence.object-derivation', () => deriveObjectEvidenceFromSnapshot(target, snapshot)));
 }
 function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const { artifacts, buffers, files } = capturedArtifacts(snapshot, target);
@@ -588,9 +598,9 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
 }
 
 function recordsForTarget(target, root, baserom) {
-  const objectEvidence = deriveObjectEvidence(target, root);
+  const objectEvidence = measureEvidence('evidence.object-with-authentication', () => deriveObjectEvidence(target, root));
   return { textContract: resolveTextContract(target), objectEvidence,
-    ...(baserom ? { linkEvidence: deriveLinkEvidenceFromObject(target, root, baserom, objectEvidence) } : {}) };
+    ...(baserom ? { linkEvidence: measureEvidence('evidence.link-derivation', () => deriveLinkEvidenceFromObject(target, root, baserom, objectEvidence)) } : {}) };
 }
 function validateRecords(record, expected, label) {
   for (const key of Object.keys(expected)) {
@@ -642,6 +652,9 @@ function proofDescriptor(record) {
   return descriptors[0];
 }
 function withSourceObjectProof(root, target, record, callback) {
+  return measureEvidence('evidence.proof-read-validate', () => readSourceObjectProof(root, target, record, callback));
+}
+function readSourceObjectProof(root, target, record, callback) {
   assertCompactRecord(record);
   const descriptor = proofDescriptor(record);
   const expectedPath = 'generated/c/' + target.symbol + '.source-object-proof.json';
@@ -714,7 +727,7 @@ function publishCompactReport(file, value) {
 
 module.exports = { nativeSingleOwnerCensus, NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SHA256, exactKeys, same, hash, nativeDescriptor,
   buildTargetRecords, representationDigest, assertCompactRecord, uniqueReportTarget, proofDescriptor, withSourceObjectProof, readCompactReport, publishCompactReport,
-  withObjectEvidenceMemo, objectInputs,
+  withObjectEvidenceMemo, withEvidenceProfile, objectInputs,
   withObjectArtifactSnapshot, objectArtifactBytes, deriveObjectEvidenceFromSnapshot,
   normalizeNativeTextTail, resolveTextContract, resolveWorkbenchActiveTarget, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,
   linkContext, finishLinkContext: preparedLink.finishLinkContext, ownerEvidence, functionCensus, tailEvidence, nativeObjectAllocationEvidence, nativeLinkedAllocationEvidence,

@@ -397,6 +397,24 @@ source and expanded bytes; an end-of-run check rejects input drift. The requeste
 producer, including all members of its compilation group, always preprocesses
 and compiles freshly. The summary reports reused and fresh CPP inputs.
 
+When several already prepared candidates need focused diagnostics on the same
+stable inputs, use `node tools/diff.js --batch <symbol> <symbol> ...` (optionally
+`--profile`). Each distinct requested producer preprocesses and compiles once
+fresh; all requested targets share one production link. Group members stay
+together. This does not change assignment ownership or public scratch group
+admission. Single-symbol commands retain their existing behavior.
+
+One batch reserves one shared build plus its additional diagnostic records. Its
+claim covers every requested producer member, rejecting overlap with active or
+crashed single/batch claims. Retention preserves each producer's authored/input
+pair and each requested target's report in one shared output. Any member reference
+protects the entire output; retention still provides no deletion operation.
+Complete nonmatches produce honest per-target diagnostics and `allExact: false`;
+their command completion is not matching acceptance. Compilation, validation or
+final identity failures preserve available partial evidence without replacing
+latest target reports. Latest report publication is per-file, not atomic across
+the batch; each published member references the completed immutable batch manifest.
+
 Cache reuse is a development optimization only. `verify.js` and CURRENT
 verification do not import either cache; they independently perform the fresh
 final recompilation and complete-ROM check at wave completion and remain mandatory.

@@ -67,6 +67,7 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/lib/retained_literal_references.js',
   'tools/lib/prepared_link_view.js',
   'tools/lib/verification_profile.js',
+  'tools/lib/scratch_retention.js',
 ]);
 const ACTIVE_CONFIGURATION_FILES = Object.freeze([
   'config/phase7/conventional-build.json',
@@ -1197,10 +1198,14 @@ function compileDiffTargets(options) {
     classificationBySymbol,
     compile = compileTarget,
   } = options;
+  const requestedTargets = options.requestedTargets || (requestedTarget ? [requestedTarget] : []);
   if (!phase8 || !Array.isArray(phase8.targets) || phase8.targets.length === 0
-      || !requestedTarget || !classificationBySymbol || typeof classificationBySymbol.get !== 'function') {
+      || !Array.isArray(requestedTargets) || !requestedTargets.length || !classificationBySymbol || typeof classificationBySymbol.get !== 'function') {
     fail('diff target compilation inputs are malformed');
   }
+  const requestedSymbols = new Set(requestedTargets.map(t => t.symbol));
+  if (requestedSymbols.size !== requestedTargets.length || requestedTargets.some(t => !phase8.targets.includes(t))) fail('requested target membership drift');
+  const requestedGroups = new Set(requestedTargets.map(t => t.compilationGroup?.id).filter(Boolean));
   const compiled = new Map();
   const entries = [];
   let requestedCount = 0;
@@ -1223,7 +1228,7 @@ function compileDiffTargets(options) {
     const classification = classificationBySymbol.get(target.symbol);
     if (target.compilationGroup) {
       const id = target.compilationGroup.id;
-      if (target.symbol === requestedTarget.symbol) requestedCount++;
+      if (requestedSymbols.has(target.symbol)) requestedCount++;
       if (groupProducers.has(id)) {
         compiled.set(target.symbol, compilationGroups.compiledMember(target, output, classification));
         entries.push({ symbol: target.symbol, status: 'producer-member', key: null, reason: id });
@@ -1233,7 +1238,7 @@ function compileDiffTargets(options) {
         if (!leader || !leader.compilationGroup || leader.compilationGroup.id !== id) fail('missing group cache producer');
         const producerClassification = classificationBySymbol.get(leader.symbol);
         verifySource(target, classification);
-        if (requestedTarget.compilationGroup?.id === id) {
+        if (requestedGroups.has(id)) {
           compile(phase8, leader, output, compiler, assemblerPath, objcopyPath, { classification: producerClassification });
           compilerInvocations++;
           entries.push({ symbol: target.symbol, status: 'requested-fresh', key: null, reason: id });
@@ -1248,7 +1253,7 @@ function compileDiffTargets(options) {
       }
       continue;
     }
-    if (target.symbol === requestedTarget.symbol) {
+    if (requestedSymbols.has(target.symbol)) {
       requestedCount += 1;
       profileMeasure(options, 'object-cache.requested-source-precheck', () => verifySource(target, classification));
       const result = profileMeasure(options, 'object-cache.requested-compile', () => compile(
@@ -1279,8 +1284,8 @@ function compileDiffTargets(options) {
     if (result.cache.status !== 'hit') compilerInvocations += 1;
     entries.push({ symbol: target.symbol, ...result.cache });
   }
-  if (requestedCount !== 1 || compiled.size !== phase8.targets.length) {
-    fail(`requested target compilation census drift: ${requestedTarget.symbol}`);
+  if (requestedCount !== requestedSymbols.size || compiled.size !== phase8.targets.length) {
+    fail('requested target compilation census drift');
   }
   profileMeasure(options, 'object-cache.final-source-sweep', () => {
     for (const target of phase8.targets) verifySource(target, classificationBySymbol.get(target.symbol));
