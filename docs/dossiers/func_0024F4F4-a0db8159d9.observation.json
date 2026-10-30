@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A0DB8159D9AE539B208DEBE61C5BB3BF85079A570151BF114FADBCE471EC935B",
+  "observationId": "2336CBAE50396071CAE53B119C027CAD492A45FCD502FA227B402008CDE307AD",
+  "symbol": "func_0024F4F4",
+  "authored": {
+    "context": "US Rev0 P04 complete-wave evidence. Authored C was independently derived from project ROM/assembly evidence. The archive is a whitespace-only successor whose expanded compiler input/dependencies are authenticated equal to the preserved original; no new code generation was run for publication.",
+    "effects": [
+      "volatile-pointer-address-shape",
+      "terminator-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "7345D8A2208D035901F3C8F3EC3DA98D0CD3B2C1B8AE1644D6C7166C1CED5940",
+      "sourceSha256": "81BB90FF4BB95E5949A2512D2439621280A1DFE1896022B1DE20B998943714D9"
+    },
+    "label": "p04-f4f4-direct",
+    "observedEffect": "Both direct symbolic loads and all later stages agree. Three non-relocation register fields remain different around the guard, cursor copy and sentinel comparison.",
+    "parentCandidateId": "8A42B57A6ADDB4549D941FFB274B194EB364409F9432A879A3201BB020DEF62C",
+    "references": [
+      {
+        "path": "build/matching/ae-p04/f4f4-04.c",
+        "sha256": "7EB8CDD55F93F2C804D44B365B65D0CEFC11BA446C6E51FA7090690321816752"
+      },
+      {
+        "path": "build/matching/ae-p04/f4f4-watch-04.json",
+        "sha256": "34143ABA3A94985B4DCBEFC7D1370172C8D497002F3574FA50F4F99D54153A1B"
+      },
+      {
+        "path": "build/matching/ae-p04/f4f4-notes.md",
+        "sha256": "5B930553D8F328FC95EE2CAB415C47D634E6ADCE4115F5E19A5465F9BACFD605"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/F2A1A1A421A05DEB60DEBCCAFC5526BCD741B996DDDF6F997B68631707B4CBE5/workbench-report.json",
+        "sha256": "3D7CD5B3FE60F985D05402C5A69A2045510151B07C3FD1046859968D313763B7"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/F2A1A1A421A05DEB60DEBCCAFC5526BCD741B996DDDF6F997B68631707B4CBE5/candidate.o",
+        "sha256": "A6AD1986513DAA748EA3FF7D559397869B1D8E1892E3E5DB5074E7305B644C63"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/F2A1A1A421A05DEB60DEBCCAFC5526BCD741B996DDDF6F997B68631707B4CBE5/candidate.compiler.s",
+        "sha256": "34A3507970B6DD0BE9465FD8E17067B5877CE3F6EE81AE5C8E8EE4907775B694"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/F2A1A1A421A05DEB60DEBCCAFC5526BCD741B996DDDF6F997B68631707B4CBE5/candidate.input.c",
+        "sha256": "7345D8A2208D035901F3C8F3EC3DA98D0CD3B2C1B8AE1644D6C7166C1CED5940"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/wave-acceptance.json",
+        "sha256": "2EA2B5655476FABA19DBBC3C009B2ACA7DED05C4967074E5D9750D0FF41EAB8C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The register-allocation control is not exact; the address representation is context-bound, not a semantic volatility claim.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the direct volatile address alias for the same shared pointer and cursor-before-counter source order."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2576,
+      "sha256": "7345D8A2208D035901F3C8F3EC3DA98D0CD3B2C1B8AE1644D6C7166C1CED5940"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "81BB90FF4BB95E5949A2512D2439621280A1DFE1896022B1DE20B998943714D9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-30-func_0024F4F4-a0db8159d9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

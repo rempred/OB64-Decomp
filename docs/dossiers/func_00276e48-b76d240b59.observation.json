@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B76D240B59F62D259455BF58964219D9B3E233888D4543DB9B4753D34B361267",
+  "observationId": "ADAA51FDBF1787D7CA9B5A0984AFF75086A08C199DC5CAEC28A0C61BF0ACA1EB",
+  "symbol": "func_00276e48",
+  "authored": {
+    "context": "US Rev0 P04 complete-wave evidence. Authored C was independently derived from project ROM/assembly evidence. The archive is a whitespace-only successor whose expanded compiler input/dependencies are authenticated equal to the preserved original; no new code generation was run for publication.",
+    "effects": [
+      "provider-interface-reconciliation",
+      "retained-original-terminal-rx"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "90FE45F1C0BA6E555E72F561FED8F3A0E6E5AFDAE40B9DF3DD914EA54C6A130D",
+      "sourceSha256": "65C7D572D338F6C62C35D4377A0E2103DFCD679E2F6EB3A19E5B2249CBFDB55A"
+    },
+    "label": "p04-interfaces-tail",
+    "observedEffect": "Current-source native measurement is body400/native400 with no native suffix, plus original8 RX. Actual32 REL and nine raw local-section J records are independently bound; complete41-target canonical acceptance verifies all bytes and providers.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_00276e48.c",
+        "sha256": "65C7D572D338F6C62C35D4377A0E2103DFCD679E2F6EB3A19E5B2249CBFDB55A"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/r2-native-qualification.json",
+        "sha256": "A618480B89BA57DEEE4968BEFD0916F7F197B6BD6303562E57B54E201BFD9E21"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/tail-admit-p04.stdout.txt",
+        "sha256": "DBC169594F26E4B86D0D5807DCA82F21DCC94D2FE8A3F54D1AFD367129DD687C"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/qualification-blocker.json",
+        "sha256": "435A684601683F3046BDD8CE9FD052CD239D59497F91936FDE7B9343420ECC20"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/integration-contracts.json",
+        "sha256": "69416808FA08E6A26AF3EC8D6FA142F09EDB4C3E102CC68BCC9871C1918F7FCA"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/wave-acceptance.json",
+        "sha256": "2EA2B5655476FABA19DBBC3C009B2ACA7DED05C4967074E5D9750D0FF41EAB8C"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/p04-release.json",
+        "sha256": "FDFA73E17F1C48F284996109D86E21E89604B0E82A0AB805567E5046C8BD3AC9"
+      },
+      {
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      },
+      {
+        "path": "build/research/terminal-entry-identity-review-20261029/local-relocated-control-20261030/r2/review.md",
+        "sha256": "0F80DE6C800ADE88A650D40D9C3815FD647FCCDEBA55663AD6FB93ABB3F746BB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The historical identity/local-control rejections remain evidence. This is the bounded approved case, not permission for arbitrary labels/local references, byte injection, source padding or inferred original padding origin.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reconcile provider declarations through the P04 header, then use reviewed admission derived from the actual unchanged compiler output."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 2355,
+      "sha256": "90FE45F1C0BA6E555E72F561FED8F3A0E6E5AFDAE40B9DF3DD914EA54C6A130D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "65C7D572D338F6C62C35D4377A0E2103DFCD679E2F6EB3A19E5B2249CBFDB55A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-30-func_00276e48-b76d240b59.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

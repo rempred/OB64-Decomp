@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7255C216C00067A649D0F0971E39D7C703F1FE36D46FC5981636ED8FFA5BAA97",
+  "observationId": "9074EC585C0D20FC757A4E52C73DF760FF16F3FEAC8CAD93F1C17FCEB50DCCB6",
+  "symbol": "func_0025786C",
+  "authored": {
+    "context": "US Rev0 P04 complete-wave evidence. Authored C was independently derived from project ROM/assembly evidence. The archive is a whitespace-only successor whose expanded compiler input/dependencies are authenticated equal to the preserved original; no new code generation was run for publication.",
+    "effects": [
+      "timer-call-branch-shape"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "523E690B55E6643E53A5498A3E60C464A72E1F9B051CD5F822653BD29B535A97",
+      "sourceSha256": "CF5DFF40E7603EB255DC4AB394E561A510D3112CABD316F9662B30ED72F01EDF"
+    },
+    "label": "p04-786c-best",
+    "observedEffect": "Ordinary common-tail merging emits one timer JAL while retaining the branch and 15/7 load shape; the full 728-byte raw-masked body agrees. The canonical descendant passed acceptance.",
+    "parentCandidateId": "82A79DA59D6D017324C7E7D3BAC16C1BC7BA81387C5E4332494B68FD07D3E52C",
+    "references": [
+      {
+        "path": "build/matching/ae-p04/func_0025786C.c",
+        "sha256": "CF5DFF40E7603EB255DC4AB394E561A510D3112CABD316F9662B30ED72F01EDF"
+      },
+      {
+        "path": "build/matching/ae-p04/786c-watch-03.json",
+        "sha256": "770DF562411FAB65859BEFE349308AECFB510F4DD184BB4B039E04BAAA442F36"
+      },
+      {
+        "path": "build/matching/ae-p04/786c-notes.md",
+        "sha256": "949073C1803B54534431064DD1D5085ADA30441AEFFE2D11AF8D9D208C896E4E"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/F8894D38E7238860B013643FD406D3651267482E5E83B9D487A42F8B8747623B/workbench-report.json",
+        "sha256": "C6815D5BDB3977E649571C91DAA067B249C719147B1FC32DCEDFBC72203A637B"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/F8894D38E7238860B013643FD406D3651267482E5E83B9D487A42F8B8747623B/candidate.o",
+        "sha256": "4967BC47222B328697A3CFE617FA4F70F70FA222599CC5EF2859D413A94E6594"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/F8894D38E7238860B013643FD406D3651267482E5E83B9D487A42F8B8747623B/candidate.compiler.s",
+        "sha256": "4506EFF113FF560CCD48B86483060AC3A1E7CCB41AC950117E7DEED59EB98E45"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/F8894D38E7238860B013643FD406D3651267482E5E83B9D487A42F8B8747623B/candidate.input.c",
+        "sha256": "523E690B55E6643E53A5498A3E60C464A72E1F9B051CD5F822653BD29B535A97"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/wave-acceptance.json",
+        "sha256": "2EA2B5655476FABA19DBBC3C009B2ACA7DED05C4967074E5D9750D0FF41EAB8C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Context-specific emitted result; no original-syntax or optimizer-pass claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express separate if/else timer call sites with the same second argument."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 3181,
+      "sha256": "523E690B55E6643E53A5498A3E60C464A72E1F9B051CD5F822653BD29B535A97"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CF5DFF40E7603EB255DC4AB394E561A510D3112CABD316F9662B30ED72F01EDF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-30-func_0025786C-7255c216c0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "71F588E050B00456E7EB9A1DCD8D8E2E04C0272ADA60EEC1DF2EC5F8AF1FF1A7",
+  "observationId": "86D25E3FFDEB86A272F7C4C543D09AC7ECC6C2CECC885D71D28F1C79F783A07E",
+  "symbol": "func_0024E8DC",
+  "authored": {
+    "context": "US Rev0 P04 complete-wave evidence. Authored C was independently derived from project ROM/assembly evidence. The archive is a whitespace-only successor whose expanded compiler input/dependencies are authenticated equal to the preserved original; no new code generation was run for publication.",
+    "effects": [
+      "classifier-return-width",
+      "complemented-result-capture"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "673E63F80BDDC9C58443A35542F0B934357C9BBB217F71EE2F280D30298D3872",
+      "sourceSha256": "DE6D39FEDF53733C60735394C3FD61632E34441893405F15917382195162333E"
+    },
+    "label": "p04-e8dc-best",
+    "observedEffect": "One fully inlined 224-byte body preserves the final BNE/default-255 path without a join mask; saved raw-masked bytes agree. The interface-reconciled canonical source passed whole-wave acceptance.",
+    "parentCandidateId": "BF20E13D0FAACCFA9B17129E82D600D951CAC620B59AC959A54432D79720B297",
+    "references": [
+      {
+        "path": "build/matching/ae-p04/func_0024E8DC.c",
+        "sha256": "E343E95ED09511CBE70AD00AE483BE74F038E89A9DF96180DCD0499B65E75D9B"
+      },
+      {
+        "path": "build/matching/ae-p04/e8dc-watch-07.json",
+        "sha256": "63DB3230AD5B20CE3AE2AF11F3ED7A47790F1989D522C8F46AFCC1A29D6D2A92"
+      },
+      {
+        "path": "build/matching/ae-p04/e8dc-notes.md",
+        "sha256": "48050DACC8513E5D359396A5182C86BD71953DE26F40B5025CA33CC92ECCA414"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/FCB74E6E70122BB21225E934337DEF232570C36F63B3AE1F66AD5BD19E4BD6EE/workbench-report.json",
+        "sha256": "CBD13381B2D7869D341DA96BAFCA76AFB728E097F7800395B4F97AA14EAB15D2"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/FCB74E6E70122BB21225E934337DEF232570C36F63B3AE1F66AD5BD19E4BD6EE/candidate.o",
+        "sha256": "84D4BF8B094976E59688B000CAFCB49ED30ACC9374BE6161B6AABD40554F1ECC"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/FCB74E6E70122BB21225E934337DEF232570C36F63B3AE1F66AD5BD19E4BD6EE/candidate.compiler.s",
+        "sha256": "5A79EA38844318847924291BABD9790F7EB5C22950D2D27F09E46F7DE3D438BD"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/FCB74E6E70122BB21225E934337DEF232570C36F63B3AE1F66AD5BD19E4BD6EE/candidate.input.c",
+        "sha256": "673E63F80BDDC9C58443A35542F0B934357C9BBB217F71EE2F280D30298D3872"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/wave-acceptance.json",
+        "sha256": "2EA2B5655476FABA19DBBC3C009B2ACA7DED05C4967074E5D9750D0FF41EAB8C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "22471390F32BF9B6C6C1D7A44EC0D109B721A8719336C964E68F5D5BBB2D60C5"
+    ],
+    "remainingFailure": "Combined source-context observation, not proof that byte return width alone prevents folding or that the original used this helper.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use an inline unsigned-byte result classifier together with the useful complemented-result tail."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 803,
+      "sha256": "673E63F80BDDC9C58443A35542F0B934357C9BBB217F71EE2F280D30298D3872"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DE6D39FEDF53733C60735394C3FD61632E34441893405F15917382195162333E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-30-func_0024E8DC-71f588e050.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BBC4D0BCEEF8423C2FD1509F656D7A2BCA34E856F7912B34026A844783466FE3",
+  "observationId": "DA0CBDCEEC0CB6A3B52153FC7EE7623ADDE1DE32A53A75DCEC63A46B2178FADC",
+  "symbol": "func_0024DD7C",
+  "authored": {
+    "context": "US Rev0 P04 complete-wave evidence. Authored C was independently derived from project ROM/assembly evidence. The archive is a whitespace-only successor whose expanded compiler input/dependencies are authenticated equal to the preserved original; no new code generation was run for publication.",
+    "effects": [
+      "case-local-values",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "1DD8C07F8846843448A35ADDF728CAFC62B5386FF8AE01CD7FDCBF5BC74180A8",
+      "sourceSha256": "606A808522547FA5ADB0951B84186857A5A109A5F2CE8CCF2396D8CC5BDCD47C"
+    },
+    "label": "p04-dd7c-best",
+    "observedEffect": "Full 512-byte body and all 16 actual relocations are preserved; saved raw relocation-masked comparison becomes exact. The reconciled canonical descendant passed complete P04 acceptance.",
+    "parentCandidateId": "AAE2CD027B0791801F50B3B309D4D4EF622EC3119E3421ED15511510E046D449",
+    "references": [
+      {
+        "path": "build/matching/ae-p04/func_0024DD7C.c",
+        "sha256": "B95CD7004E08BF13C52D8DE98614CB11DAC94DF27A05399227EAF0920DB61AEA"
+      },
+      {
+        "path": "build/matching/ae-p04/dd7c-watch-03.json",
+        "sha256": "C8793AA2B55142A1FC36E9AAE05336181C9A8D145D8F876B158638601B512C5E"
+      },
+      {
+        "path": "build/matching/ae-p04/dd7c-notes.md",
+        "sha256": "B7615F608906BEF24A97C01E83207D8E24E898F9FC3628E49A6CDCBD9EE8494A"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/B80064D2A1918971FD3565F54D181AF9FE44017540830BE255B251F848B5A604/workbench-report.json",
+        "sha256": "77A088122043E2374D9906293D2648F82D043DC9E6A020C13E00B62E19F2D8D9"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/B80064D2A1918971FD3565F54D181AF9FE44017540830BE255B251F848B5A604/candidate.o",
+        "sha256": "3D74A9D91BFF4DAC8CF810139E2F8B6DC27D4FDC0DF4CF7EA6858C1DE1D9EF60"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/B80064D2A1918971FD3565F54D181AF9FE44017540830BE255B251F848B5A604/candidate.compiler.s",
+        "sha256": "1D8DEF61C997097D378A572AC0605B5B2F44719A67C274FC5E99DD3621BEB4B5"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/B80064D2A1918971FD3565F54D181AF9FE44017540830BE255B251F848B5A604/candidate.input.c",
+        "sha256": "1DD8C07F8846843448A35ADDF728CAFC62B5386FF8AE01CD7FDCBF5BC74180A8"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/wave-acceptance.json",
+        "sha256": "2EA2B5655476FABA19DBBC3C009B2ACA7DED05C4967074E5D9750D0FF41EAB8C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Context-specific allocation evidence; not proof of original declarations or transfer to another target.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Give each genuine switch arm its own object, flag and signed-value locals."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2915,
+      "sha256": "1DD8C07F8846843448A35ADDF728CAFC62B5386FF8AE01CD7FDCBF5BC74180A8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "606A808522547FA5ADB0951B84186857A5A109A5F2CE8CCF2396D8CC5BDCD47C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-30-func_0024DD7C-bbc4d0bcee.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

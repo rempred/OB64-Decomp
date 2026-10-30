@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "961A6C474CEB880E0785FCDD29DD90A7D4B3E28DC4BFCDC8B39BEE3FE41D0BE6",
+  "observationId": "CE87B6E8AFD5E9323400D35971185C058BF2C437049DA04D2F21882C2BF36F07",
+  "symbol": "func_00255540",
+  "authored": {
+    "context": "US Rev0 P04 complete-wave evidence. Authored C was independently derived from project ROM/assembly evidence. The archive is a whitespace-only successor whose expanded compiler input/dependencies are authenticated equal to the preserved original; no new code generation was run for publication.",
+    "effects": [
+      "table-width-and-signedness",
+      "natural-vector-workspace"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E9D3F5B4614B2C5E2C56505466C425DAFDBEB927E1C7CC7782474709A3A7F571",
+      "sourceSha256": "11C70B8CB3414BA8993D80327A732F03D4641294FF72ED5484C04E64AEA00601"
+    },
+    "label": "p04-table-word",
+    "observedEffect": "The first complete 644-byte candidate matches raw-masked output, including all nine cases, initialization and merged timer tail. Canonical integration passed without padding or source tuning.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p04/func_00255540.c",
+        "sha256": "11C70B8CB3414BA8993D80327A732F03D4641294FF72ED5484C04E64AEA00601"
+      },
+      {
+        "path": "build/matching/ae-p04/5540-watch-01.json",
+        "sha256": "0A3644A03C7BA161B4AFE242C934BF4A55125199E3EFD114CEC66C4183E562F2"
+      },
+      {
+        "path": "build/matching/ae-p04/5540-notes.md",
+        "sha256": "80DCF3A13D0CEFDA185D927DF99A64DFB21331956F4839BE54AD0A1C3B05966B"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/66C93324DD20F49C3DA2B41DC9EA4D9859ABD0AA5BF63C454DAD6B4CF3D0824D/workbench-report.json",
+        "sha256": "0167D7950D1FAFF5B35382D7C6BA1BD56B590CE47B48228D5EEDD524387B2BC9"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/66C93324DD20F49C3DA2B41DC9EA4D9859ABD0AA5BF63C454DAD6B4CF3D0824D/candidate.o",
+        "sha256": "E53FFD6425401AA9A6A28E910D1C180A3BF928F4321A3B79ED9D911A93A9B16F"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/66C93324DD20F49C3DA2B41DC9EA4D9859ABD0AA5BF63C454DAD6B4CF3D0824D/candidate.compiler.s",
+        "sha256": "8CA99B4299A480A6304BCE977F8F51D95E0C3EEA06CABA4414BCE57B83725DF5"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/66C93324DD20F49C3DA2B41DC9EA4D9859ABD0AA5BF63C454DAD6B4CF3D0824D/candidate.input.c",
+        "sha256": "E9D3F5B4614B2C5E2C56505466C425DAFDBEB927E1C7CC7782474709A3A7F571"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/wave-acceptance.json",
+        "sha256": "2EA2B5655476FABA19DBBC3C009B2ACA7DED05C4967074E5D9750D0FF41EAB8C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Does not validate historical comments about absent formatting calls or prove original local-array declarations.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the observed word index table with the old signed-halfword counter comparison and natural vector workspace."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2814,
+      "sha256": "E9D3F5B4614B2C5E2C56505466C425DAFDBEB927E1C7CC7782474709A3A7F571"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "11C70B8CB3414BA8993D80327A732F03D4641294FF72ED5484C04E64AEA00601"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-30-func_00255540-961a6c474c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

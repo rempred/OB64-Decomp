@@ -243,6 +243,12 @@
       "evidence": "Complete original creator body ROM0x0027271C..0x00272784 includes JR ra at0x0027277C and stack-restoring delay at0x00272780. Three following zero words remain executable original ASM through0x00272790. Complete original-name GLOBAL native func_0027271C covers all104 preceding bytes. No native-padding provenance or exhaustive reference/runtime absence claim."
     },
     {
+      "romStart": 2584536,
+      "romEndExclusive": 2584544,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Complete original return and delay slot end at ROM 0x276FD8; 8 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+    },
+    {
       "romStart": 2622676,
       "romEndExclusive": 2622688,
       "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
@@ -5102,6 +5108,34 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_0027271C.s",
           "sha256": "2B61D69032136A8C1861BBB6AE81C5461F28DE9E42D143ACD243299A428CEB49"
+        }
+      ]
+    },
+    {
+      "romStart": 2584136,
+      "romEndExclusive": 2584536,
+      "symbol": "func_00276e48",
+      "aliases": [],
+      "expectedBytesSha256": "237444C36A617AF87BC114ADDD0A09E07C351D502E2018637C5F97FC3A7FBE5E",
+      "evidence": {
+        "caseId": "routine-row4956-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original return and delay slot end at ROM 0x276FD8; 8 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+      },
+      "fragments": [
+        {
+          "rowIndex": 4956,
+          "romStart": 2584136,
+          "romEndExclusive": 2584536,
+          "ownerOffset": 0,
+          "bytes": 400,
+          "vramStart": 2149721784,
+          "sectionName": ".ob64.r4956.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 13,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00276e48.s",
+          "sha256": "E52D0EE3A9BDBC14540AC337E081BD9053ED0BB3F729DBAC1CF6BF8A38C7AE78"
         }
       ]
     },

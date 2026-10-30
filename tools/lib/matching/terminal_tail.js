@@ -70,13 +70,71 @@ function ordinaryInstructionEncoding(info) {
     0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x31, 0x35, 0x37, 0x39, 0x3D, 0x3F].includes(op);
 }
 
-function coverage(bytes, start, actualRelocations = [], ownerBytes = bytes.length) {
+// Derive coverage-only successors from actual ELF bytes. A supplied map, display
+// symbol name, or masked byte comparison is never local-control authority.
+function localJumpEvidence(bytes, start, actualRelocations, object) {
+  if (!object || Object.keys(object).some(k => !['buffer', 'sectionName', 'symbol', 'original', 'assigned'].includes(k))
+      || !Buffer.isBuffer(object.buffer) || !Buffer.isBuffer(object.original) || typeof object.assigned !== 'boolean') fail('local jump object evidence required');
+  const elf = p7.parseElf32BigEndian(object.buffer);
+  const { section, fn, bytes: payload } = census(elf, object.sectionName, object.symbol, object.assigned);
+  if (elf.header.type !== 1 || bytes.length !== fn.size || !payload.subarray(0, fn.size).equals(bytes)
+      || object.original.length < fn.size || !Number.isSafeInteger(start) || start < 0
+      || start + fn.size > 0x100000000) fail('local jump object/body binding');
+  const expected = require('../phase8_matching_c').relocationRecords(elf, { symbol: object.symbol, bytes: fn.size, sectionName: section.name });
+  if (!text.same(expected, actualRelocations)) fail('local jump relocation list disagreement');
+  const edges = [], offsets = new Set();
+  const relSections = elf.sections.filter(s => s.type === 9 || s.type === 4);
+  if (relSections.length > 1) fail('local jump relocation section census');
+  for (const rel of relSections) {
+    const table = elf.sections[rel.link], strings = table && elf.sections[table.link];
+    if (rel.type !== 9 || rel.name !== '.rel' + section.name || rel.info !== section.index || rel.link !== fn.symbolTableIndex
+        || rel.entrySize !== 8 || rel.size % 8 || rel.offset + rel.size > elf.buffer.length
+        || rel.flags !== 0 || rel.address !== 0 || rel.alignment !== 4
+        || table?.type !== 2 || table.entrySize !== 16 || table.size % 16 || table.offset + table.size > elf.buffer.length
+        || strings?.type !== 3 || strings.offset + strings.size > elf.buffer.length) fail('local jump REL/table authority');
+    for (let i = 0; i < rel.size; i += 8) {
+      const offset = elf.buffer.readUInt32BE(rel.offset + i), info = elf.buffer.readUInt32BE(rel.offset + i + 4), type = info & 255;
+      if (offset % 4 || offset + 4 > fn.size || offsets.has(offset)) fail('local jump duplicate or invalid REL site');
+      offsets.add(offset);
+      const symbols = elf.symbols.filter(s => s.symbolTableIndex === rel.link && s.symbolIndex === (info >>> 8));
+      if (symbols.length !== 1) fail('local jump symbol authority');
+      const symbol = symbols[0], word = bytes.readUInt32BE(offset), decoded = instructionInfo(word, start + offset);
+      if (decoded.control && !decoded.call) {
+        const symbolIndex = info >>> 8, symbolOffset = table.offset + symbolIndex * 16;
+        // The shared parser renders an invalid string offset as an empty name.
+        // This narrow unnamed form requires the literal ELF st_name zero.
+        if (symbolIndex >= table.size / 16 || symbolOffset + 16 > table.offset + table.size
+            || symbolOffset + 16 > elf.buffer.length || elf.buffer.readUInt32BE(symbolOffset) !== 0) fail('local jump raw symbol name/bounds authority');
+        if (word >>> 26 !== 2 || type !== 4 || symbol.name !== '' || symbol.binding !== 0 || symbol.symbolType !== 3
+            || symbol.visibility !== 0 || symbol.value !== 0 || symbol.size !== 0 || symbol.sectionIndex !== section.index) fail('unsupported relocated noncall identity');
+        const addend = (word & 0x03FFFFFF) * 4, targetOffset = symbol.value + addend, destination = start + targetOffset;
+        const originalWord = object.original.readUInt32BE(offset), originalTarget = instructionInfo(originalWord, start + offset).target;
+        if (!Number.isSafeInteger(destination) || destination > 0xFFFFFFFF || targetOffset < 0 || targetOffset % 4 || targetOffset >= fn.size
+            || start + offset + 4 > 0xFFFFFFFF || Math.floor(destination / 0x10000000) !== Math.floor((start + offset + 4) / 0x10000000)
+            || originalWord >>> 26 !== 2 || originalTarget !== destination
+            || originalWord !== ((word & 0xFC000000) | ((destination >>> 2) & 0x03FFFFFF)) >>> 0) fail('local jump original destination disagreement');
+        // Numeric section/symbol indices can differ between objects; both have
+        // independently proved the same strict own-section symbol form above.
+        edges.push({ offset, type, word, addend, targetOffset, originalWord });
+      } else if (!object.assigned && section.size === fn.size && symbol.sectionIndex !== 0) {
+        fail('aligned producer with unproven local relocation');
+      }
+    }
+  }
+  return edges.sort((a, b) => a.offset - b.offset);
+}
+
+
+function coverage(bytes, start, actualRelocations = [], ownerBytes = bytes.length, object = null) {
   if (!Buffer.isBuffer(bytes) || bytes.length < 8 || bytes.length % 4
       || bytes.readUInt32BE(bytes.length - 8) !== 0x03E00008) fail('complete return and delay slot required');
+  const edges = object === null ? [] : localJumpEvidence(bytes, start, actualRelocations, object);
+  const proven = new Map(edges.map(edge => [edge.offset, start + edge.targetOffset]));
   const instructions = [], delaySlots = new Set();
   for (let offset = 0; offset < bytes.length; offset += 4) {
     const info = instructionInfo(bytes.readUInt32BE(offset), start + offset);
     if (!ordinaryInstructionEncoding(info)) fail('unsupported instruction encoding');
+    if (proven.has(offset)) info.target = proven.get(offset);
     instructions.push(info);
     if (!info.control) continue;
     if (offset + 8 > bytes.length || instructionInfo(bytes.readUInt32BE(offset + 4), start + offset + 4).control) fail('incomplete or control delay slot');
@@ -97,13 +155,13 @@ function coverage(bytes, start, actualRelocations = [], ownerBytes = bytes.lengt
     info.likely = [20, 21, 22, 23].includes(info.op) || info.op === 1 && [2, 3].includes(info.rt)
       || info.op === 17 && info.rs === 8 && (info.rt & 2) !== 0;
     const relocated = actualRelocations.some(r => Number(r.offset) === offset);
-    if (relocated && !info.call) fail('relocated noncall control');
-    if (!relocated && info.target >= start + bytes.length && info.target < start + ownerBytes) fail('control targets suffix');
+    if (relocated && !info.call && !proven.has(offset)) fail('relocated noncall control');
+    if ((!relocated || proven.has(offset)) && info.target >= start + bytes.length && info.target < start + ownerBytes) fail('control targets suffix');
     if (!info.call && !info.indirect && (info.target < start || info.target >= start + bytes.length)) fail('control escapes complete body');
   }
   for (const [index, info] of instructions.entries()) {
     const relocated = actualRelocations.some(r => Number(r.offset) === index * 4);
-    if (info.control && !info.indirect && !relocated && info.target >= start && info.target < start + bytes.length
+    if (info.control && !info.indirect && (!relocated || proven.has(index * 4)) && info.target >= start && info.target < start + bytes.length
         && delaySlots.has((info.target - start) / 4)) fail('alternate entry into control delay slot');
   }
   // All body words must belong to a reachable instruction or delay slot. This
@@ -123,6 +181,7 @@ function coverage(bytes, start, actualRelocations = [], ownerBytes = bytes.lengt
     if (!info.call && !info.indirect && info.branchTaken !== false) pending.push((info.target - start) / 4);
   }
   if (seen.size !== instructions.length) fail('uncovered body instructions or secondary entry');
+  return edges;
 }
 
 function census(elf, sectionName, symbol, assigned = false) {
@@ -151,6 +210,66 @@ function census(elf, sectionName, symbol, assigned = false) {
   return { section, fn, bytes };
 }
 
+// This fallback is restricted to ROM-address names; it neither selects a row
+// nor creates an alias/provider. Exact-name owners avoid the source-wide scan.
+function originalEntryCode(source) {
+  const code = source.replace(/\/\*[\s\S]*?\*\/|#[^\r\n]*|\/\/[^\r\n]*/g,
+    comment => comment.replace(/[^\r\n]/g, ' '));
+  if (code.includes('/*') || code.includes('*/')) fail('unclosed original entry comment');
+  return code;
+}
+
+function caseVariantEntry(session, target, row, source, original, selected) {
+  const address = name => /^func_([0-9a-fA-F]{8})$/.exec(name || '');
+  const expected = address(target.symbol);
+  if (!expected || Number.parseInt(expected[1], 16) !== row.romStart) fail('original entry is not owner ROM-address identity');
+  const labels = [], globals = [], parsed = [];
+  let textDirectives = 0;
+  for (const line of originalEntryCode(source).split(/\r?\n/).map(s => s.trim()).filter(Boolean)) {
+    let match;
+    if (line === '.text' && !labels.length && !parsed.length && !textDirectives++) continue;
+    if (/^\.set\s+(?:noat|noreorder)$/.test(line) && !labels.length && !parsed.length) continue;
+    if ((match = /^\.globl\s+([A-Za-z_.$][A-Za-z0-9_.$]*)$/.exec(line)) && !parsed.length) { globals.push(match[1]); continue; }
+    if ((match = /^([A-Za-z_.$][A-Za-z0-9_.$]*):$/.exec(line))) { labels.push({ name: match[1], offset: parsed.length * 4 }); continue; }
+    if ((match = /^\.word\s+(0x[0-9a-fA-F]{1,8})$/.exec(line))) { parsed.push(Number(match[1])); continue; }
+    fail('unsupported original entry grammar');
+  }
+  const label = labels[0], spelling = address(label?.name);
+  if (textDirectives !== 1 || labels.length !== 1 || label.offset !== 0 || !spelling
+      || label.name === target.symbol || spelling[1].toLowerCase() !== expected[1].toLowerCase()
+      || globals.length > 1 || globals.some(name => name !== label.name)) fail('extra or nonprimary original entry');
+  const bytes = Buffer.alloc(parsed.length * 4); parsed.forEach((word, i) => bytes.writeUInt32BE(word, i * 4));
+  if (!bytes.equals(original) || !require('../word_asm').assembleWordAsmText(source).bytes.equals(original)) fail('original entry word census');
+  const sameAddressName = name => { const match = address(name); return match && match[1].toLowerCase() === expected[1].toLowerCase(); };
+  const phase8 = session.context.phase8;
+  for (const other of phase8.model.rows) {
+    if (other === row) continue;
+    if (other.romStart === row.romStart || sameAddressName(other.part?.name)) fail('original entry owner collision');
+    if (!other.part) continue;
+    // Read only the accepted model's source census, using this invocation's
+    // selected-input reader. Never discover files or trust another overlay's RAM.
+    const buffer = fs.readFileSync(inputs.resolve(selected, path.join(p7.ROOT, other.part.file)));
+    if (buffer.length !== other.part.textBytes || p7.sha256Buffer(buffer) !== other.part.sha256) fail('original entry collision source drift');
+    const code = originalEntryCode(buffer.toString());
+    // Conservatively reject any un-commented occurrence, including aliases or
+    // comma-separated globals. The fallback does not interpret other owners'
+    // assembler expressions to distinguish a definition from a reference.
+    const names = code.match(/[A-Za-z_.$][A-Za-z0-9_.$]*/g) || [];
+    if (names.some(sameAddressName)) fail('original entry source collision or reference');
+  }
+  let intendedProviders = 0;
+  for (const producer of phase8.targets) {
+    const intended = producer.symbol === target.symbol && producer.romStartNumber === row.romStart && producer.romEndNumber === row.romEndExclusive;
+    if (intended && ++intendedProviders > 1) fail('original entry duplicate provider');
+    if (sameAddressName(producer.symbol) && !intended
+        || (producer.compilerTextFunctions || []).some(fn => sameAddressName(fn.symbol) && (!intended || fn.symbol !== target.symbol))) fail('original entry producer collision');
+  }
+  for (const group of phase8.compilationGroups || []) {
+    if ((group.fixedBindings || []).some(binding => sameAddressName(binding.symbol))) fail('original entry group collision');
+  }
+}
+
+
 function originalOwner(session, target, bodyBytes) {
   const model = session.context.phase8.model;
   const matches = model.rows.filter(r => r.part?.name === target.symbol);
@@ -172,13 +291,14 @@ function originalOwner(session, target, bodyBytes) {
   const selected = inputs.context(session.context);
   const source = fs.readFileSync(inputs.resolve(selected, path.join(p7.ROOT, row.part.file)));
   if (p7.sha256Buffer(source) !== row.part.sha256) fail('original assembly identity drift');
-  if (!text.same(active.assemblySymbolNames(source.toString()), [target.symbol])) fail('extra original entry or label');
+  const exactEntry = text.same(active.assemblySymbolNames(source.toString()), [target.symbol]);
   const words = [...source.toString().matchAll(/\.word\s+(0x[0-9a-f]+)/ig)].map(m => Number(m[1]));
   if (words.length * 4 !== row.bytes) fail('complete original word census');
   const original = Buffer.alloc(row.bytes); words.forEach((w, i) => original.writeUInt32BE(w >>> 0, i * 4));
   const rom = fs.readFileSync(inputs.resolve(selected, session.context.baserom.path));
   p7.verifyRom(model, rom);
   if (!original.equals(rom.subarray(row.romStart, row.romEndExclusive))) fail('original full owner differs from ROM');
+  if (!exactEntry) caseVariantEntry(session, target, row, source.toString(), original, selected);
   terminalSuffix(original, bodyBytes);
   const config = p7.readJson(path.join(p7.ROOT, CONFIGS[1]), selected);
   logical.loadRegistry(model, rom, config);
@@ -202,16 +322,18 @@ function inspect({ session, target, classification, artifactDir }) {
   if (classification.class !== 'PURE_C') fail('PURE_C required');
   policy.verifyClassificationInputs(classification);
   const p8 = require('../phase8_matching_c');
-  const assigned = census(p7.parseElfFile(path.join(artifactDir, 'candidate.o')), target.sectionName, target.symbol, true);
+  const assignedElf = p7.parseElfFile(path.join(artifactDir, 'candidate.o'));
+  const assigned = census(assignedElf, target.sectionName, target.symbol, true);
   const owner = originalOwner(session, target, assigned.fn.size);
-  const relocations = p8.relocationRecords(p7.parseElfFile(path.join(artifactDir, 'candidate.o')), { symbol: target.symbol, bytes: assigned.fn.size, sectionName: target.sectionName });
+  const relocations = p8.relocationRecords(assignedElf, { symbol: target.symbol, bytes: assigned.fn.size, sectionName: target.sectionName });
   if (relocations.some(r => !['R_MIPS_26', 'R_MIPS_HI16', 'R_MIPS_LO16'].includes(r.type)
       || Number(r.offset) % 4 || Number(r.offset) < 0 || Number(r.offset) + 4 > assigned.fn.size)) fail('unsupported actual relocation');
   const comparison = compareMips(owner.original.subarray(0, assigned.fn.size), assigned.bytes, {
     start: owner.row.slices[0].vramStart, actualRelocations: relocations, expectedRelocationsAvailable: false,
   });
   if (!comparison.relocationMaskedExact) fail('ordinary body mismatch');
-  coverage(assigned.bytes, owner.row.slices[0].vramStart, relocations, owner.row.bytes);
+  const localJumps = coverage(assigned.bytes, owner.row.slices[0].vramStart, relocations, owner.row.bytes,
+    { buffer: assignedElf.buffer, sectionName: target.sectionName, symbol: target.symbol, original: owner.original, assigned: true });
   const assemblyFile = path.join(artifactDir, 'candidate.compiler.s');
   const assembly = fs.readFileSync(assemblyFile);
   // Validate production grammar, but assemble the unmodified compiler bytes.
@@ -226,6 +348,9 @@ function inspect({ session, target, classification, artifactDir }) {
   if (allNativeRelocations.some(r => r.section !== '.rel.text')) fail('unsupported nontext relocation');
   if (native.fn.size !== assigned.fn.size || !native.bytes.subarray(0, native.fn.size).equals(assigned.bytes)
       || !text.same(nativeRelocations, relocations)) fail('native/assigned body or REL disagreement');
+  const nativeLocalJumps = coverage(native.bytes.subarray(0, native.fn.size), owner.row.slices[0].vramStart, nativeRelocations, owner.row.bytes,
+    { buffer: elf.buffer, sectionName: '.text', symbol: target.symbol, original: owner.original, assigned: false });
+  if (!text.same(nativeLocalJumps, localJumps)) fail('native/assigned local jump disagreement');
   // The existing schema2 census also checks native references and branch bounds.
   const nativeShape = { ...owner.row, slices: owner.row.slices };
   let nativeTextTail = null;
@@ -241,7 +366,8 @@ function inspect({ session, target, classification, artifactDir }) {
     const d = descriptor(nativeRow, native.fn.size, native);
     text.nativeSingleOwnerCensus(elf, { symbol: target.symbol, nativeTextTail: d });
   }
-  if (native.bytes.length === native.fn.size && allNativeRelocations.some(r => r.symbolSectionIndex !== 0)) fail('aligned producer with local relocation needs separate handling');
+  // Zero-native-tail defined references were individually checked above; only
+  // the independently reproved own-section J records can satisfy that census.
   policy.verifyClassificationInputs(classification);
   const artifact = file => ({ path: path.relative(p7.ROOT, file).replace(/\\/g, '/'), sha256: p7.sha256File(file), bytes: fs.statSync(file).size });
   return { ...owner, symbol: target.symbol, nativeTextTail, relocations,

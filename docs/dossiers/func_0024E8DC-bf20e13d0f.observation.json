@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BF20E13D0FAACCFA9B17129E82D600D951CAC620B59AC959A54432D79720B297",
+  "observationId": "385692F851B26A3C73388ED80D07C2103D714E3CD03BFA831088A15A06213BFA",
+  "symbol": "func_0024E8DC",
+  "authored": {
+    "context": "US Rev0 P04 complete-wave evidence. Authored C was independently derived from project ROM/assembly evidence. The archive is a whitespace-only successor whose expanded compiler input/dependencies are authenticated equal to the preserved original; no new code generation was run for publication.",
+    "effects": [
+      "classifier-return-width",
+      "complemented-result-capture"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "BFBBA2AA72B8CC1FFABF58A0ADAE6342FE9FC32F60551F89AB663C6162EF18B4",
+      "sourceSha256": "B2CFD159342FF81DA82BBE16E3DDE4E9CB62629006B727BB441636F0BB801DD2"
+    },
+    "label": "p04-e8dc-tail",
+    "observedEffect": "The 228-byte control has the target post-callback NOR/SLL/counter-load/SRL/ADD order and registers, while the last classifier choice remains branchless.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p04/e8dc-06.c",
+        "sha256": "0EC8DC5E16CB6B8CAE167EE8449FE3DB639EC77B9E4B34180D082973F6579EA2"
+      },
+      {
+        "path": "build/matching/ae-p04/e8dc-watch-06.json",
+        "sha256": "F2DA9280FA2B6AD75382A67D40E4BA7CE14C4FE2BA1E336BBB82409D71CE3016"
+      },
+      {
+        "path": "build/matching/ae-p04/e8dc-notes.md",
+        "sha256": "48050DACC8513E5D359396A5182C86BD71953DE26F40B5025CA33CC92ECCA414"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/65FAFB3EE8C1E371EB6548D00973BE7B1864C02FD073DFF3BAE7FCCED139E581/workbench-report.json",
+        "sha256": "DE26EC8E7B33A91900963B311C7C98B1B177BBD85953C9AF14C05DDBF364833B"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/65FAFB3EE8C1E371EB6548D00973BE7B1864C02FD073DFF3BAE7FCCED139E581/candidate.o",
+        "sha256": "C9D0601D878DCBB181AEFB90244938ADC23E8BCB7629F393A999EB236D1930D8"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/65FAFB3EE8C1E371EB6548D00973BE7B1864C02FD073DFF3BAE7FCCED139E581/candidate.compiler.s",
+        "sha256": "06A22F38FDF21226660DFCF826AAFC5E136A710B691943B1D39DBAFC04774B56"
+      },
+      {
+        "path": "build/matching/ae-p04/runs/65FAFB3EE8C1E371EB6548D00973BE7B1864C02FD073DFF3BAE7FCCED139E581/candidate.input.c",
+        "sha256": "BFBBA2AA72B8CC1FFABF58A0ADAE6342FE9FC32F60551F89AB663C6162EF18B4"
+      },
+      {
+        "path": "build/integration/attack-effects/p04/wave-acceptance.json",
+        "sha256": "2EA2B5655476FABA19DBBC3C009B2ACA7DED05C4967074E5D9750D0FF41EAB8C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Useful intermediate tail only; the full control is not exact and does not isolate return width.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture the complemented callback result before the later shift/add; retain the word-local classifier."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 856,
+      "sha256": "BFBBA2AA72B8CC1FFABF58A0ADAE6342FE9FC32F60551F89AB663C6162EF18B4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B2CFD159342FF81DA82BBE16E3DDE4E9CB62629006B727BB441636F0BB801DD2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-30-func_0024E8DC-bf20e13d0f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
