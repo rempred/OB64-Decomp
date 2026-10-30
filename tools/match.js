@@ -72,6 +72,7 @@ Core:
   history <symbol> [--limit N] [--include-details]
   best <symbol> [--limit N] [--include-details]
   watch <symbol> --source <candidate.c>
+  tail-admit <symbol>... [--apply]  Integrator-only provisional current-source registration
   classify <candidate-id> [--include-details] [--include-source]
   compare <candidate-id> <candidate-id>
   case-cfg <candidate-id> --case-map <map.json> --actual-dispatch <offset> --actual-body <offset>
@@ -139,7 +140,7 @@ function parseArgs(argv) {
         options[name] = value;
       }
     } else if ([
-      'json', 'no-context', 'with-context', 'no-compile', 'leaf-only', 'runtime', 'skip-families',
+      'apply', 'json', 'no-context', 'with-context', 'no-compile', 'leaf-only', 'runtime', 'skip-families',
       'include-targets', 'include-details', 'include-source', 'include-members', 'include-context', 'include-solved', 'capture-identities',
     ].includes(name)) {
       options[name] = true;
@@ -494,6 +495,7 @@ function comparisonSummary(result) {
   return {
     candidateId: result.candidate.candidateId,
     cached: result.cached,
+    terminalTail: result.terminalTail ?? comparison?.terminalTail ?? null,
     comparisonRefreshed: result.comparisonRefreshed === true,
     status: result.compile.status,
     sourceClass: result.compile.source_class || result.compile.sourceClass,
@@ -623,6 +625,7 @@ async function main(argv = process.argv.slice(2)) {
 }
 
 function validatePrivateOptions(command, options) {
+  if (options.apply && command !== 'tail-admit') throw new Error('--apply requires tail-admit');
   if (options.inputs) {
     if (!options['scratch-root'] || !['intake', 'watch', 'probe'].includes(command)
         || command !== 'intake' && !options.source) throw new Error('--inputs supports only guarded intake, watch --source and probe --source');
@@ -649,6 +652,9 @@ async function executeCommand(command, parsed, workspace = null, emit = print, a
     if(positional.length!==1)throw new Error('intake requires one symbol');
     const model=loadIntakeModel({inputs}),target=resolveTarget(model,positional[0]);
     print(researchPresentation(target.symbol,{workbench:model,limit:numeric(options.limit,'--limit',20),...researchOptions,...intakeRouting}),options);return;
+  }
+  if (command === 'tail-admit') {
+    print(require('./lib/matching/terminal_tail').admit(positional, options), options); return;
   }
   const workbench = loadWorkbenchModel({inputs});
   if (['prepare', 'watch', 'probe', 'import'].includes(command) && positional[0]

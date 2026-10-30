@@ -91,9 +91,18 @@ This is an execution check, not a new evidence protocol: retain the concise resu
 the existing cursor or cleanup report. Keep wave scratch bounded during matching and
 remove it after accepted output has been copied and hash-checked.
 
+If deletion of an authorized disposable item is blocked, Joe requests moving it to
+`C:/Users/Joe/Desktop/Recycling` instead, when safe and permitted. Use a unique descriptive
+subfolder without overwriting existing contents. Apply the same no-follow census to the
+source and destination ancestors, protect active users and published references, then
+move the validated literal path and verify its contents. Record the original and new
+paths in the existing cleanup report or cursor. If the move is blocked or unsafe, leave
+the item in place and report why. Do not automatically empty Recycling.
+
 ## The short path
 
-Use the agent guide's worker assignments on `main`, with one production source/build writer.
+Use the agent guide's worker assignments on `main`, with one dedicated top-level integration
+thread as production source/build writer, additional to the assigned matching workers.
 Route retrieval/data-seeking or parsing-only assignments to Sol High under the agent guide's worker-model rule.
 Use [the active queue](NEXT_STEPS.md) for current worker assignments and the
 [program](Plans/sequential-main-program.md) for complete family scope and real dependencies.
@@ -103,6 +112,11 @@ Assign source workers separate complete waves, preferably in less-related famili
 [the private workflow below](#private-candidate-workers). Each works on one target at a time;
 do not divide one function or coupled producer between source workers. The production writer
 retains sole canonical integration and build ownership, with one completed wave integrated at a time.
+Matching workers stay with their own complete waves and private context. The integrator reconciles
+ready sources, runs acceptance, publishes shared research and performs authorized cleanup.
+The Director makes acceptance and ownership-release decisions. For a production-role transfer,
+finish the outgoing writer's active production commands and record the next action in its existing
+cursor/handoff before releasing it; then grant the new integrator sole write authority.
 Parent top-level task transport procedures do not apply to this decomp program.
 
 After the one-time local setup in [the repository README](../README.md):
@@ -742,8 +756,8 @@ checkpoint receipts, frozen accepted trees, or separate review packages.
 
 ### 8. Start the next wave with a fresh worker
 
-Maintain two top-level matching workers on disjoint complete waves from the existing assigned program,
-with one production writer and private candidate ownership for the other. The Director owns
+Maintain Joe's assigned number of top-level matching workers on disjoint complete waves from the existing assigned program,
+with private candidate ownership for each and a separate dedicated production integrator. The Director owns
 finding the next complete dependency-ready assignment whenever a slot opens; do that work
 immediately, using an explicitly assigned retrieval helper when useful. An unrelated unfinished
 wave is not a staffing dependency. Resolve ownership before dispatch, preserve assigned
@@ -753,14 +767,14 @@ second assignment is genuinely blocked, record the exact dependency, owner and r
 in the existing cursor; do not manufacture activity or expand the program to fill a slot.
 
 After normal acceptance of the complete assigned wave, the Director starts a fresh matching
-top-level worker using `gpt-6.1-sol` with reasoning `xhigh`. Preserve one production writer
-and the other worker's private candidate ownership. Use subagents for bounded research,
+top-level worker using `gpt-6.1-sol` with reasoning `xhigh`. Preserve the dedicated integration thread
+and the other workers' private candidate ownership. Use subagents for bounded research,
 tooling and review. Do not fork the outgoing conversation's full history.
 Release its source/private-root ownership before reuse, stop its retired watchers, and attach
 the replacement's own native message and stop monitoring without copying delivery state. A private
 candidate packet alone is not wave acceptance; coordinate its normal production integration
-before treating that wave as completed. Integrating another worker's wave does not complete
-the production writer's own unfinished assignment.
+before treating that wave as completed. Do not give a matching worker another wave's integration
+or verification assignment; its unfinished matching assignment remains with that worker.
 
 The new worker's initial prompt must start work immediately and include:
 
@@ -923,8 +937,8 @@ using live inputs remain stopped throughout that verifier. Unsupported grouped/a
 do not invent missing relocation expectations or controls to make a target eligible.
 
 An unrelated unfinished wave does not delay a complete, dependency-ready wave. The Director schedules
-that ready wave with the sole production writer, who temporarily handles its integration and final
-verification before returning to matching. Keep unfinished candidates from other waves private.
+that ready wave with the dedicated integration thread for source reconciliation and final
+verification. Keep unfinished candidates from other waves private and their workers matching.
 Real interface, table and structural dependencies must still be resolved before affected integration.
 When shared inputs stabilize, each worker refreshes only its affected context and resumes private checks;
 there is no per-function integration pause or requirement to rebase a Git worktree.
@@ -1103,3 +1117,34 @@ encodings, control in delay slots, terminal fall-through and alternate terminal
 delay entry reject. Internal control flow remains supported. This is neither a
 semantic proof nor general pointer escape, CFG or stack-safety analysis. The
 restriction applies only to the initializer-containing function.
+
+## Routine terminal-zero suffixes
+
+`watch` automatically reports `terminalTail` for a bounded complete PURE_C body followed by
+4, 8 or 12 original zero bytes. It retains the original length-mismatch verdict and separates
+raw/masked body equality from linked acceptance. The complete return/delay slot, reachable
+body coverage, original entry/ROM, actual native/assigned objects and relocation census must
+qualify. No private command publishes tracked research or changes a registry. Unsupported
+shapes remain ordinary investigation or separate structural work.
+
+At a complete-wave integration boundary, the dedicated integrator stages current sources and
+ordinary active entries, then runs:
+
+```powershell
+node tools/match.js tail-admit func_XXXXXXXX func_YYYYYYYY --apply --json
+```
+
+Omit `--apply` to inspect the freshly recomputed proposal. The command never imports a worker
+registry or historical receipt. It prefers the existing nativeTextTail contract only when actual
+native extent covers the whole owner; otherwise the complete original suffix stays executable
+ASM under the retained-edge contract and contributes no C bytes. No original padding provenance
+or numeric/runtime-reference absence is inferred. Current conflicting records fail closed.
+
+`configuration-staged` is provisional. Run normal focused diffs, then the original complete
+wave verifier and applicable structural audit. Actual provider/REL closure, original fallback,
+sole custody, placement and full physical bytes remain mandatory. Strictly qualifying uses
+need no new per-target structural author/reviewer package after independent generic tooling
+review; exceptional shapes retain their review. No per-function full-ROM checks are added.
+
+Historical reports remain unchanged evidence. Shared tooling installation requires affected
+native drains and selected-input refresh before checks resume.

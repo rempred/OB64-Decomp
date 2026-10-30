@@ -56,6 +56,7 @@ const ROUTINE_TESTS = [
   ['allocator-scheduler-trace', 'tests/allocator_scheduler_trace.js'],
   ['late-jump-provenance', 'tests/late_jump_provenance.js'],
   ['late-jump-trace', 'tests/late_jump_trace.js'],
+  ['matching-terminal-tail', 'tests/matching_terminal_tail.js'],
   ['matching-workbench', 'tests/matching_workbench.js'],
   ['scratch-cop1', 'tests/scratch_cop1.js'],
 ];

@@ -56,8 +56,17 @@ Matching-source workers run in top-level Codex threads using Sol 6.1 Extra High
 (`gpt-6.1-sol`, reasoning `xhigh`). Subagents are for bounded research, tooling and review.
 After a worker's complete assigned wave passes normal acceptance, the Director starts its next
 wave with a fresh worker and fresh conversation, preserving useful knowledge and releasing the
-outgoing worker's ownership first. Maintain two matching workers on disjoint complete waves
+outgoing worker's ownership first. Maintain Joe's assigned number of matching workers on disjoint complete waves
 within the existing program, preserving assigned top-level roles and one production writer.
+A dedicated top-level integration thread is the sole production source/header/configuration/build
+writer and is additional to the matching-worker allocation. Matching workers retain their own
+complete waves and private context. Never assign a matching worker another wave's integration
+or verification; those tasks belong to the dedicated integrator. A necessary shared-input drain
+may pause affected matching checks, but does not change the matching worker's role.
+The integrator handles complete-wave source/interface reconciliation, acceptance commands,
+shared research publication and authorized cleanup. The Director accepts the result and releases
+wave ownership. Transfer production ownership only after the outgoing writer's production commands
+have finished and its existing cursor records the handoff; never run two production writers.
 When a slot opens, the Director immediately owns identifying and dispatching its next
 dependency-ready complete wave; do not wait for Joe or an unrelated wave's completion.
 If no second assignment can proceed, name the concrete dependency, resolving owner and
@@ -79,7 +88,7 @@ under the agreement, audit and review requirements below.
 Never use scheduled tasks or heartbeat automations for this program. Use the existing
 native thread watcher scripts for event-driven continuity. After accepted consultation setup,
 this decomp program uses native Codex collaboration/thread messaging, not Agent Mail.
-Every assigned top-level source worker and internal tooling, research or review helper needs
+Every assigned top-level matching or integration worker and internal tooling, research or review helper needs
 its own verified native thread stop/attention route and tested native message route to
 the exact current Director thread. A completion recorded in chat history alone is not
 proof that an idle Director will wake. Verify actual delivery, preserve retry/deduplication state, and register
@@ -153,7 +162,7 @@ users must drain before their referenced shared tools, original inputs or accept
 is diagnostic evidence, not matching acceptance. Keep coupled producers and their dependencies whole;
 parallel assignment does not reduce the original wave or add per-function full-ROM verification.
 The Director chooses the next dependency-ready complete wave for integration; the production writer
-integrates and verifies it, then resumes matching. Other workers may continue private edits and
+integrates and verifies it in its dedicated thread. Matching workers may continue private edits and
 reasoning while native checks are drained, and refresh affected inputs before resuming those checks.
 
 Use the accepted structural owner as-is, reconstruct the function in C, and iterate with the linked diff.
@@ -168,6 +177,12 @@ reviewing that evidence does not require a separate reviewer.
 
 If the boundary or overlay mapping appears wrong, stop treating the task as ordinary matching
 work and open a structural task.
+
+Strictly qualifying routine terminal-zero suffixes may use the independently reviewed generic
+`match.js tail-admit` rule at complete-wave integration, without bespoke per-target structural
+author/reviewer packages. Worker suggestions are provisional; only the dedicated integrator stages
+current-base records. Existing linked/provider, full-owner, complete-wave verification and applicable
+structural audit gates remain mandatory. Unsupported coverage or producer shapes still escalate.
 
 Ordinary matchers must not edit shared tooling. Route an independently justified representation defect
 as a separate structural/tooling assignment with its applicable audit and independent review.
@@ -329,6 +344,13 @@ and proof, and follow [the cleanup procedure](docs/WORKFLOW.md#safe-filesystem-c
 An archive alone does not preserve access to published research references. Retain needed files at
 resolvable paths or migrate references through the existing research mechanisms, then validate the
 current curated-reference closure before removing the old paths.
+
+Joe's cleanup preference: when an authorized disposable item cannot be deleted, move it
+to a uniquely named subfolder of `C:/Users/Joe/Desktop/Recycling` when a safe move is
+possible. Apply the same path, reparse-point, active-use and reference checks before
+moving; never move required tools, inputs or evidence. Record its original and new path
+in the existing cleanup report or cursor. If moving is also blocked or unsafe, leave it
+in place and report the concrete blocker. Do not automatically empty Recycling.
 
 ## Clean-Room Boundary
 

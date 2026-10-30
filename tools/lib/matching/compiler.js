@@ -147,6 +147,7 @@ function prepareCompilerSession(options = {}) {
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessor: preprocessorIdentity(preprocessor),
     workbenchCompilerContract: 12,
+    terminalTailImplementation: sha256File(require.resolve('./terminal_tail')),
     ...(options.inputs ? { inputSetId: options.inputs.id } : {}),
     scratchAssembly: SCRATCH_ASSEMBLY_POLICY,
   };
@@ -878,6 +879,12 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     throw new Error('matching candidate authored-source identity drift');
   }
   verifyClassificationInputs(classification);
+  const terminalTail = artifactDir => {
+    const value = require('./terminal_tail').diagnose({ session, target, classification, artifactDir });
+    authenticatePrivateSource();
+    verifyClassificationInputs(classification);
+    return value;
+  };
   const sourcePolicy = JSON.parse(JSON.stringify(classification));
   const compileTool = { ...session.tool, candidateSourcePolicy: sourcePolicy };
   const expectedRelocationEvidence = acceptedExpectedRelocationEvidence(session, target);
@@ -921,7 +928,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     );
     if (comparisonIsCurrent(storedComparison, candidatePrepared)) {
       authenticatePrivateSource();
-      return { candidate, compile: cached, comparison: storedComparison, cached: true, comparisonRefreshed: false };
+      return { candidate, compile: cached, comparison: storedComparison, cached: true, comparisonRefreshed: false, terminalTail: terminalTail(cachedArtifactDirectory) };
     }
     const comparison = compareCandidateDiagnostic({
       session,
@@ -950,7 +957,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     }, diagnosticReports);
     authenticatePrivateSource();
     const refreshed = storeRequest({ action: 'replace_comparison', record: refreshedRecord }, storeOptions);
-    return { candidate, compile: cached, comparison: refreshed, cached: true, comparisonRefreshed: true };
+    return { candidate, compile: cached, comparison: refreshed, cached: true, comparisonRefreshed: true, terminalTail: terminalTail(cachedArtifactDirectory) };
   }
   // Successful work is reused by cache key. Failed attempts are retried and
   // retain distinct run identities so a repaired host/tool path is not pinned
@@ -994,6 +1001,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       prepared: diagnosticPreparedForCandidate(preparedDiagnostic, candidateArtifact),
     });
     authenticatePrivateSource();
+    comparison.terminalTail = terminalTail(artifactDir);
     comparisonRecord = makeComparisonRecord(runId, comparison);
     writeJson(path.join(artifactDir, 'workbench-report.json'), {
       schemaVersion: 3,

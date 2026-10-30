@@ -15,6 +15,7 @@ function load(name, modules) {
     : ['./input_set', './matching/input_set'].includes(key) ? require('../tools/lib/matching/input_set')
     : ['fs', 'path', 'crypto', 'util', 'child_process'].includes(key) ? require(key) : {});
   const file = path.join(ROOT, name === 'current_workflow.js' ? 'tools/lib' : 'tools/lib/matching', name);
+  req.resolve = require('node:module').createRequire(file).resolve;
   vm.runInNewContext(fs.readFileSync(file, 'utf8'), { module, require: req, Buffer, process, __filename: file });
   return module.exports;
 }
@@ -140,18 +141,23 @@ test('one private command reuses one sealed context and exposes existing profile
 });
 
 test('actual compiler session entry dispatches private helper only with explicit private mode', () => {
-  const context = { localTools: { compiler: 'fixture' }, phase8: { model: {}, config: { compiler: { compileFlags: [] } }, toolchain: { identity: 'toolchain' } } };
+  const context = { localTools: { compiler: __filename }, phase8: { model: {}, config: { compiler: { compileFlags: [] } }, toolchain: { identity: 'toolchain' } } };
   const calls = [];
   const compiler = load('compiler.js', {
-    '../phase7_conventional': { ROOT, sha256File: () => 'hash' },
+    '../phase7_conventional': { ROOT, sha256File: policy.sha256File },
     '../current_workflow': { prepareContext() { calls.push('default'); return context; } },
     './private_preparation': { preparePrivateContext(options) { calls.push(options); return context; } },
     '../phase8_matching_c': { verifyRuntimeTools: () => ({}), verifyCompiler() {} },
     '../source_policy': { resolvePreprocessor: () => ({}), preprocessorIdentity: () => ({}) },
     './target_model': { digest: () => 'digest' },
   });
-  compiler.prepareCompilerSession(); compiler.prepareCompilerSession({ privateWorkspace: true, matchingRoot: 'private', privateTarget: { symbol: 'member' } });
-  compiler.prepareCompilerSession({ privateWorkspace: true, context });
+  const sessions = [compiler.prepareCompilerSession(),
+    compiler.prepareCompilerSession({ privateWorkspace: true, matchingRoot: 'private', privateTarget: { symbol: 'member' } }),
+    compiler.prepareCompilerSession({ privateWorkspace: true, context })];
+  for (const session of sessions) {
+    assert.equal(session.tool.compilerSha256, policy.sha256File(__filename));
+    assert.equal(session.tool.terminalTailImplementation, policy.sha256File(path.join(ROOT, 'tools/lib/matching/terminal_tail.js')));
+  }
   assert.equal(calls.length, 2); assert.equal(calls[0], 'default'); assert.equal(calls[1].matchingRoot, 'private'); assert.equal(calls[1].privateTarget.symbol, 'member');
 });
 
