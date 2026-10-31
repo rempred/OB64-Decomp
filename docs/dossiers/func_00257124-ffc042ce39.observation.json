@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FFC042CE397B37E067092106B977381F5E856318A39104819699270C1CB4173A",
+  "observationId": "C2C195D0B2B11B32A2B4E105FC243E0F778441C59D77703929117119837EB82A",
+  "symbol": "func_00257124",
+  "authored": {
+    "context": "Complete1048-byte r4527. Watch01 403CAE7D/run865964CB emits PURE_C1052/frame64, but initializing from/to/direction pointers at case entry materializes them immediately after BCE8, before the offset-selection branch; state occupiesS1. This control also has an extra break after1003. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling",
+      "control-flow"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "543ED832FA85959346AEA64DE247E290BC8105316347400AEAB77D06D21F3628",
+      "sourceSha256": "6D15DBA211123425C21B4C6F43D60DB411B9A3B9131580CA1EA8CD4320D3ACE3"
+    },
+    "label": "p05-coordinate-pointer-timing",
+    "observedEffect": "Watch03 4A88CEA2/run3D44D37B emits PURE_C1048/frame64 with38 actual relocations and full raw relocation-masked equality. Native watch02 comparison confines nonrelocation differences before its extra exit to three branch offsets for the shifted tail; remaining differences begin at0x3A0, its extra J/zero exit. This establishes pointer-assignment placement as useful in this exact body; it does not prove a universal allocator mechanism or unique original C syntax. Assembly coverage, not a score heuristic, established1003-to1004 fall-through.",
+    "parentCandidateId": "39DB82D0FEE7DD58C60A4755C97D3D1F60C09ECA817226FD7112EA86C8A5F124",
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_00257124/candidates/4A88CEA20F8C636541B1C98222FFB974AA080CFB9CF635C31991EFEE4D7D01D9.c",
+        "sha256": "07EC097B021DFAFEF467735D23F316FCBBBAC9241849AFEB9470B141C247B3A7"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00257124-03.json",
+        "sha256": "3B0501FB970B176A5EAB6636A829C81B2CF1FD499E414CD52D408F4B545BEFE6"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/3D44D37B630B3BF5570232B1666E5F2C942845F19E6F07BBE9313B6B603E9028/workbench-report.json",
+        "sha256": "FFE1C8F7D3B61C2D140B48DC4AC4AB69065E0415137F805A8D6DF57C4F6FE32C"
+      },
+      {
+        "path": "build/matching/ae-p05/research-00257124.json",
+        "sha256": "57F3A990FACCB765F84B3703420AD8A4DD0D91C15F3EC21DE0DA440675C4EAE1"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00257124.s",
+        "sha256": "20BEF061B9EAE6930010B9DD1953753D69CD908A983AFE994396FB0B5CB3416F"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00257124-01.json",
+        "sha256": "3F54F782E6E1EE78C78D99D2B51A7EDEE77336F3F426E15D3314D3C9F4898086"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00257124-02.json",
+        "sha256": "2880285B0C39EFAFFFE2807FD1A34A838CE34C72EC2D650194DA1FF27C580417"
+      },
+      {
+        "path": "build/matching/ae-p05/coverage-00257124.json",
+        "sha256": "C13A43775230F5135AA900E1F87D5F12E25138EE9FC21CF29F057D594AA82954"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/865964CBAD2973CA3CA4EB66B3323D2C38B349B2504CEC092D7C7ED4208096ED/workbench-report.json",
+        "sha256": "840E1181539D8EAB17FAA23A427B5A0743CC252F46693CFAEECA37524C70F1A8"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/25B6BF059C6A78824535ED70A7BFDA92B2E8D8937F4DDD3BF9B3B457883303F8/workbench-report.json",
+        "sha256": "400F190659873C39F1655EC4076F648F8EAA5F04DA561D80850240B7A1EFFE23"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [
+      "540C340D640AA285D811C46A1DE8F3EF92021CC1FE39FAA0C78A2213E4864F34"
+    ],
+    "remainingFailure": "Private symbolic-object evidence only. Integrator must bindD_80209E42 atROM25EA02 under originaldata_0025e890, reconcile partial factory/placement/node/provider views, and run whole-wave linked ownership/placement/REL/PURE_C/target/full-ROM acceptance. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move only each from/to/direction assignment to its first call site: beforeC0DC, beforeBF04, beforeC7A4. Watch02 DEFCA4D5/run25B6BF05 then restores stateS3/fromS2/toS1/directionS0 and original instruction order through1003, but is1056B because the extra1003 exit remains. Remove only that break for watch03; preserve all fields, operations and interfaces."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 7407,
+      "sha256": "543ED832FA85959346AEA64DE247E290BC8105316347400AEAB77D06D21F3628"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6D15DBA211123425C21B4C6F43D60DB411B9A3B9131580CA1EA8CD4320D3ACE3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00257124-ffc042ce39.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

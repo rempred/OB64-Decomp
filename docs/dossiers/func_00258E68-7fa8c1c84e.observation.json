@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7FA8C1C84E2A62BA7E68B385EEAEEFA8B7CCC100CDE34A917DEDC255C01232FE",
+  "observationId": "9393580C123276592A12CAA43217B18821DC753845B6BD8DD285D9C6FE2F3F73",
+  "symbol": "func_00258E68",
+  "authored": {
+    "context": "Complete600B ten-commanddispatcher/frame24/56REL. FirstDEA0AE17/run94D2A1FE PURE_C600 coversall150words/21calls, with5maskednative diffs110/114/118/11C/120 only1001 callbackparameterinitialization. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "instruction-scheduling",
+      "value-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 4120,
+          "path": "include/game/effect_callbacks_p02.h",
+          "sha256": "E6B6A2909CFFBEF4477651FA37FB8315C674F5A9019F5C4536D51D68A1CAF74B"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "4E2148418E0E95A292A5B0322FD466175F7100779D78A7F83DE48DB83DC68FD7",
+      "sourceSha256": "65DBDEF73B8895B235A87DE14FE0BA12B83FF288C47CEB5CFF5CC21E0B746F20"
+    },
+    "label": "p05-context-byte-before-shared-halfword-reset",
+    "observedEffect": "Watch02 78866824/runE8192C7E staysPURE_C600/frame24/56REL, fullraw relocation-masked equality. Onlyfive native wordschange, restoringcontextbyteLBU/callbackaddressLUI-ADDI beforeglobalSHzero; byteSB remainsAB0delay. Thisestablishes thelocalsource effect, notuniqueoriginal or universalscheduler/aliasrule.",
+    "parentCandidateId": "676FD98AA0B18C4C2416E3E5C97BA7065C9284023C55C6BFFDD604BAC83A29E7",
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_00258E68/candidates/7886682495D4A682795E6D96B4F25F11B0CE42459A4D69DB3588A8FC18507F58.c",
+        "sha256": "65DBDEF73B8895B235A87DE14FE0BA12B83FF288C47CEB5CFF5CC21E0B746F20"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00258E68-02.json",
+        "sha256": "FAC205CA0223C4D07E05E73FD76C40D46A10769FCF9C71F06B366FDAC9482D48"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/E8192C7E5C38CB329E608D6FACC821A263CDDF95C83B68B188C08D0ED9A97BC3/workbench-report.json",
+        "sha256": "7CECC8057649662E52EDB582EE6C15AC1B28B24EDBF0DAF4B2847CEF577A8C24"
+      },
+      {
+        "path": "build/matching/ae-p05/research-00258E68.json",
+        "sha256": "6D79A51C9A942858B47BE918BB7A688BCB05EBF015483EB549FDD4A744BC9445"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00258E68.s",
+        "sha256": "ED39D999FA564BADA50AC0E1F8EDD0A6B41876C3927EE78B8322580D2B0F657E"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00258E68-01.json",
+        "sha256": "6247BBE51C926CDEFB3821DAE3120538DD259BD23DA9C541B9380E6563C53B7F"
+      },
+      {
+        "path": "build/matching/ae-p05/coverage-00258E68.json",
+        "sha256": "7E889DD9CE63574EAF995B05554E537BB99F956CFF18E39681BED26CCC0E50C5"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object only; originaldataaliases, ordinarycomplete-wave interfaces, canonicalsoleownership/placement/providerREL/PURE_C/target/full-ROM gatespending. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Captureu8value=state->context[0] beforep05_halfword_80220F6A=0; assignp01_byte_80220F68=value, thenlaunchown58A28 asbefore. Addcase-localblock; allotherstatements unchanged."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 4120,
+        "path": "include/game/effect_callbacks_p02.h",
+        "sha256": "E6B6A2909CFFBEF4477651FA37FB8315C674F5A9019F5C4536D51D68A1CAF74B"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 8598,
+      "sha256": "4E2148418E0E95A292A5B0322FD466175F7100779D78A7F83DE48DB83DC68FD7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "65DBDEF73B8895B235A87DE14FE0BA12B83FF288C47CEB5CFF5CC21E0B746F20"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00258E68-7fa8c1c84e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

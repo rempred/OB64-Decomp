@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E1AA859CF302F3CD3548FD0BFB4E90F4A9D88C7DD6D3105CA6FA697F65B8E55E",
+  "observationId": "8D99D740DE48B2466D24E42B90D381C85A7B155C6199EB6239C5DBB894872CA9",
+  "symbol": "func_00258A28",
+  "authored": {
+    "context": "Complete1088B six-command dispatcher r4538/RAM80203E68/frame80/40REL. Firstmi7 F125A993/runD2649DFD PURE_C1112B/frame80 includes allsix bodies butfourC830 sites/22calls. mi8 retains exact physicalrange/expectedhash butnewtarget/model IDs; oldIDs remain historicalprovenance. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "control-flow",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 4120,
+          "path": "include/game/effect_callbacks_p02.h",
+          "sha256": "E6B6A2909CFFBEF4477651FA37FB8315C674F5A9019F5C4536D51D68A1CAF74B"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "71B57F3E75F5C8D2849B3B5EE9654B3214A665A9646CA91E59098BF4243452E1",
+      "sourceSha256": "69642BB31267BFC79AA71AF527FB2597B4E3D029A03161BAECDDA0C481B28881"
+    },
+    "label": "p05-shared-advance-and-paired-float-order-control-f125a993",
+    "observedEffect": "This saved PURE_C comparison object contains 1112 text bytes. The worker's emitted-best observation documents its comparison context; this baseline does not inherit that best result.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_00258A28/candidates/F125A99397FF65ECC768D59AFE9976013ADA7AE0C522E20D0FBD97F3EC6F21C7.c",
+        "sha256": "69642BB31267BFC79AA71AF527FB2597B4E3D029A03161BAECDDA0C481B28881"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00258A28-01.json",
+        "sha256": "9179208F363C13FFC79C7DC1DAF32671087A16134AD1828382AF5B17E3B774DE"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/D2649DFDE8C4C0B415B8A0BBD9C689B306144AB4344645D0ACCF898802F97383/workbench-report.json",
+        "sha256": "5194745E94ABFBF263DBB80006B5939877718B5EED1AEBB697D18A5AC3355E2C"
+      },
+      {
+        "path": "build/matching/ae-p05/research-00258A28.json",
+        "sha256": "54E139F525F1E006E9DD147A2EB386DBAD448B09342FA1B89E8BFA3984552693"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical control, not canonical matching acceptance. Do not attribute the emitted-best result to this baseline or infer a universal compiler rule. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve the exact comparison source for p05-shared-advance-and-paired-float-order. The emitted-best observation describes the bounded change; the two source files and saved reports remain the authority."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 4120,
+        "path": "include/game/effect_callbacks_p02.h",
+        "sha256": "E6B6A2909CFFBEF4477651FA37FB8315C674F5A9019F5C4536D51D68A1CAF74B"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 10202,
+      "sha256": "71B57F3E75F5C8D2849B3B5EE9654B3214A665A9646CA91E59098BF4243452E1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "69642BB31267BFC79AA71AF527FB2597B4E3D029A03161BAECDDA0C481B28881"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00258A28-e1aa859cf3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

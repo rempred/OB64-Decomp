@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "092F7F1DA74DFBFDF9131F2B7191984B33566A55FEDAB3C5DF7C401417E2E11F",
+  "observationId": "E1B13C1ED5855F2171A857F0F98F803A456B002AF6F18F344E6152697A3EEE3A",
+  "symbol": "func_00278278",
+  "authored": {
+    "context": "P05 complete-wave original source/ASM evidence; numeric storage and full-body coverage remain distinct from semantic claims. Read the exact preserved source pair and native reports. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "complete-body-coverage",
+      "source-transfer"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "943CE911B2365F707F41D9D3490D10D17DA80092780021E9F1043959C06EFD2E",
+      "sourceSha256": "9A05EAEB570D546B7D20D2108E2371058F9838347FFF8B391201678774FA5A31"
+    },
+    "label": "p05-00278278-source-1",
+    "observedEffect": "First draft full744B/frame40/60REL, all186words/11handledcommands/28externalcalls/14internalJ. Ownexact77F90 source structure transfers after target-original word pairing shows only14Jaddresses+7dataLOs differ; shared tableindices6..11/two opaque tables preserve all opcodes/registers/stack slots. Default packet qualified,1006 explicitly covered. Canonical fullwave gates pending.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_00278278/candidates/2CEBBB8068E6B5F1147A6C57D7D2D7288428882435CB01130D662E527186F73F.c",
+        "sha256": "BFBDEF34299FD6A671C066AFF55049E5BC9FF65BE4DDE5B89F48DB681B8ECD5C"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00278278-01.json",
+        "sha256": "F645860E250060AA90E42FE89E9BF1878A34C6E5F7F87A0E2D5633F9F90E5469"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/26F34AB4ED3A73248AA4C50A8BC949A0CE8448578151315A554E84231896DD0A/workbench-report.json",
+        "sha256": "4E93CCD575B800039E5DD132B7F32B0484934F718B06A0001C76E764A29C9551"
+      },
+      {
+        "path": "build/matching/ae-p05/research-00278278.json",
+        "sha256": "5645568CD1575D7D12693C4B0F11882CE4AB3673695D57C2B70BC86C0BF9BBB3"
+      },
+      {
+        "path": "build/matching/ae-p05/research-00277F90.json",
+        "sha256": "628EFBA5EC644DC0B92207ED18F6068F68DB93253958E5BA231916B21D84785B"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Canonical whole-wave acceptance pending; canonical descendant acceptance is a separate linked/full-wave record. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse own verified77F90 structured source after full original comparison, with function identity/tableindices+6 and two numericdata views changed; same partialstate/provider contracts."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 5785,
+      "sha256": "943CE911B2365F707F41D9D3490D10D17DA80092780021E9F1043959C06EFD2E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9A05EAEB570D546B7D20D2108E2371058F9838347FFF8B391201678774FA5A31"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00278278-092f7f1da7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

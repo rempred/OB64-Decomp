@@ -171,10 +171,28 @@
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
     },
     {
+      "romStart": 2433756,
+      "romEndExclusive": 2433760,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original return and delay slot end at ROM 0x2522DC; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+    },
+    {
       "romStart": 2450440,
       "romEndExclusive": 2450448,
       "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
       "evidence": "Complete original body ROM 0x0025630C..0x00256408 includes JR ra at 0x00256400 and stack-restoring delay at 0x00256404. The following two zero words remain executable original ASM through 0x00256410; the original-name GLOBAL native function covers all 252 preceding bytes. No native padding provenance or numeric/runtime reference absence is claimed."
+    },
+    {
+      "romStart": 2465960,
+      "romEndExclusive": 2465968,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Complete original return and delay slot end at ROM 0x25A0A8; 8 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+    },
+    {
+      "romStart": 2477488,
+      "romEndExclusive": 2477492,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original return and delay slot end at ROM 0x25CDB0; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
     },
     {
       "romStart": 2488296,
@@ -4616,6 +4634,34 @@
       }
     },
     {
+      "romStart": 2433432,
+      "romEndExclusive": 2433756,
+      "symbol": "func_00252198",
+      "aliases": [],
+      "expectedBytesSha256": "AB200A8C6E5AD13EF1F32D361306AA147AC6886B7DC4EE5CB569AD681128A724",
+      "evidence": {
+        "caseId": "routine-row4490-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original return and delay slot end at ROM 0x2522DC; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+      },
+      "fragments": [
+        {
+          "rowIndex": 4490,
+          "romStart": 2433432,
+          "romEndExclusive": 2433756,
+          "ownerOffset": 0,
+          "bytes": 324,
+          "vramStart": 2149570008,
+          "sectionName": ".ob64.r4490.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 11,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00252198.s",
+          "sha256": "0015705F948B906636A327E043717806933B9BCC57090DDFA78859AC34F900F2"
+        }
+      ]
+    },
+    {
       "romStart": 2450188,
       "romEndExclusive": 2450440,
       "evidence": {
@@ -4640,6 +4686,62 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_0025630C.s",
           "sha256": "AB49E1A8AF39F6E1FD54D63E9B7182A1A2751CAD9F6B5536B39F610746B738CC"
+        }
+      ]
+    },
+    {
+      "romStart": 2465748,
+      "romEndExclusive": 2465960,
+      "symbol": "func_00259FD4",
+      "aliases": [],
+      "expectedBytesSha256": "90C0D4181F0DB13443EA64C666FC5533919ADEF31BE3F2FE1753479CB7EF9866",
+      "evidence": {
+        "caseId": "routine-row4547-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original return and delay slot end at ROM 0x25A0A8; 8 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+      },
+      "fragments": [
+        {
+          "rowIndex": 4547,
+          "romStart": 2465748,
+          "romEndExclusive": 2465960,
+          "ownerOffset": 0,
+          "bytes": 212,
+          "vramStart": 2149602324,
+          "sectionName": ".ob64.r4547.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 11,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00259FD4.s",
+          "sha256": "B7259769575F01AE2643364942F2099FD3502F73AA764657890AC072DF9ECE47"
+        }
+      ]
+    },
+    {
+      "romStart": 2477368,
+      "romEndExclusive": 2477488,
+      "symbol": "func_0025CD38",
+      "aliases": [],
+      "expectedBytesSha256": "DC2E94777FC93418494590760312685F8102C98319A1C45A13AC76020EB2BFFD",
+      "evidence": {
+        "caseId": "routine-row4585-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original return and delay slot end at ROM 0x25CDB0; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+      },
+      "fragments": [
+        {
+          "rowIndex": 4585,
+          "romStart": 2477368,
+          "romEndExclusive": 2477488,
+          "ownerOffset": 0,
+          "bytes": 120,
+          "vramStart": 2149613944,
+          "sectionName": ".ob64.r4585.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 11,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0025CD38.s",
+          "sha256": "C79D101FCCA039ACD55BBE8B4AFECEBBB7A5E3A0212E1F2D07983EBAB7FFAAD7"
         }
       ]
     },

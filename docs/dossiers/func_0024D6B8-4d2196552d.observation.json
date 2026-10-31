@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4D2196552D54829FFCD4723C6B7867F1FBE513632916EFF04056F588CF31E95C",
+  "observationId": "B1E7E125DB1A52051D2A2B568E6B0C0C14BE6B35FE0CBFAB99B2CE732108E776",
+  "symbol": "func_0024D6B8",
+  "authored": {
+    "context": "Full 856-byte r4445 at RAM801F8AF8. First case-local four-vector source 3CB4A5A1 emits 876 bytes/frame104; retained switch index adds five instructions, and vectors have four distinct 16-byte homes. Fixed per-case indices plus inline scaling helper 7E590AF2 emits 856 bytes/frame88 with exact opcode/register sequence but sixteen nonrelocation stack offsets: case1 basis10/scale20; case2 basis20/scale30, hex. All paths, stores and actual calls remain present. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "stack-layout-or-offset-family",
+      "inline-workspace-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "8676C8A9E9ABEAD39D8B3A4B5D6E2A8F7A695C4EBE6CE0555422F701E487DA49",
+      "sourceSha256": "7A9738F9D1552980C16CCF46EE86D689D3A89344DD412C90343E19E8A06DAB40"
+    },
+    "label": "p05-inline-basis-workspace",
+    "observedEffect": "Watch03 candidate 6D06DFDF is PURE_C 856 bytes/frame88 with raw relocation-masked equality and thirty actual relocations. Case1 scale10/basis20 and case2 scale20/basis30 now reproduce all retail homes; all opcode/register/stack differences are zero. This is a measured source-organization effect. Different handling of inline and named case workspaces is a plausible mechanism, not proven allocator internals or unique original syntax. The scalar shared-buffer interpretation conflicts with differing homes in the two retail arms. No additional probes or source trials are needed for this target.",
+    "parentCandidateId": "BA479EA707C9A77B03475B5FC0C3A01CE96AFAFEE1FCD21019B37E6DCCDCBEEE",
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_0024D6B8/candidates/6D06DFDFE2F4786678D7FE20E9275AB5E243E54D5ACC86A964FDF518ED03F6C3.c",
+        "sha256": "7A9738F9D1552980C16CCF46EE86D689D3A89344DD412C90343E19E8A06DAB40"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-0024D6B8-03.json",
+        "sha256": "DF46AEF8DA28CABDD8669A8113E4E4F1B28718E4491C6DF9EBC29BB7F8CAB73D"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/719B3641DCFD4164871D8E0A9C8AF690796D8CEF7B3EE1AD7AE66C3FC927FD7A/workbench-report.json",
+        "sha256": "5F65945CC31F9185F536FA58B33432CCAA6A9847B76BF3765A338F009AD6B1A3"
+      },
+      {
+        "path": "build/matching/ae-p05/research-0024D6B8.json",
+        "sha256": "642C4096E0C72996F3E82283364B001D231781F7C92590C8A81AF667477ED094"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-0024D6B8-01.json",
+        "sha256": "8931E0428FD880A693EC5F0B477B3B5F89E5E1B1052A4628554573A563578333"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-0024D6B8-02.json",
+        "sha256": "0A9EFE8C18302C45BFC9E4D77A6260ED479FE18D03213D5F9B7AC5CC68035C25"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/2C3F503F41117DA67DD7F6136CC83C34FB667E09E92105733246B8BFC7E40ECC/candidate.compiler.s",
+        "sha256": "81436798900C9760DEE6BAB238AE8D8040E457422D0D7E634D9D7D902C2E7EF5"
+      },
+      {
+        "path": "build/consultants/attack-p05-muse/003-response.txt",
+        "sha256": "2BB27522E04C095E5EDF68BF01577816007D3A23B9418209D74A2CF476E8D306"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EF0269D480B6189936177CC7C872A4756E6A673CB2CDE43C02911AAD86D7333E"
+    ],
+    "remainingFailure": "Private diagnostics are symbolic only. Ordinary table binding D_80209718 must resolve through descriptor11 to original table25E2D8 without changing data ownership. Existing D_8020A230 and D_80220EE0 and accepted math interfaces stay as-is. Complete-wave canonical linked/full-ROM acceptance remains pending. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Against watch02, put the basis copy/orientation operation in a static inline helper with its genuine Vec3 basis local; restore a caller-local scaling Vec3 to each transform arm. Preserve constant factory slots, all flag/s16 logic, actual provider calls, ternary predicate, basis copy before identity test, scale store chain and partial +1C matrix view."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 6052,
+      "sha256": "8676C8A9E9ABEAD39D8B3A4B5D6E2A8F7A695C4EBE6CE0555422F701E487DA49"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7A9738F9D1552980C16CCF46EE86D689D3A89344DD412C90343E19E8A06DAB40"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0024D6B8-4d2196552d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

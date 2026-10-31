@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C66DB6A4139F5C2E73B0ED9E66A9BC82DF0533C1A800D233318D5943CB9BE2EA",
+  "observationId": "25CDEA480775FFDBD5CACBCBACE7FDF30DCC1B37CC1CAEDCB678B8C1D64DA035",
+  "symbol": "func_00258178",
+  "authored": {
+    "context": "Complete1652B seven-command dispatcher, r4536, frame200. First watch01 F444E7AC/run818CBC56 PURE_C1676/frame208 with same local homes18/28/38/48/88/98 and all36 external calls. Watch02 49079BD4/runC495CEBD PURE_C1672/frame208 fixes sort-pointer reload and both raw marker ADDU associations; lexical vector scope alone retains two hoisted stack addresses and extra S7/S8. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "instruction-scheduling",
+      "alias-views",
+      "readability"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 4120,
+          "path": "include/game/effect_callbacks_p02.h",
+          "sha256": "E6B6A2909CFFBEF4477651FA37FB8315C674F5A9019F5C4536D51D68A1CAF74B"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "5C692E7AA7CD7099DE055BC42D6BED5DB80328648EED1BAE24F1106167593B50",
+      "sourceSha256": "20EFE5FC8914A8414B7CE8B9540A6B6B2E18DE18049A91BAF27484F0D5120E49"
+    },
+    "label": "p05-choreography-inline-distance-and-ordered-views",
+    "observedEffect": "Watch04 08354B7B/run9ED794EF PURE_C1652/frame200/71REL, complete native raw relocation-masked equality. Removes hoisted SP88/SP98 addresses and two extra saved registers, restoring exact per-call SP rematerialization, homes, opcode/register/stack sequence and original loop layout. Watch03 is the ordering control. Lexical scope alone in02 was insufficient; inline workspace ownership is a useful source distinction in this context, not a proved optimizer mechanism or unique original syntax.",
+    "parentCandidateId": "1BB244668E089216AF45888A4A852A4E1C74A76D771CCC1E6D96F1AB06DEB8C6",
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_00258178/candidates/08354B7B48AD8A46D1F4DF84CB5F4AB5AC71E9CD316C56D81D285DD8BA235BCB.c",
+        "sha256": "848DC0247E64C9F7911CD5C32045B48E05B0A7F61FD7B167EAE5AD5DAC5183BA"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00258178-04.json",
+        "sha256": "E72C35E423A958476E7866590950ABC8B6E6983E6A702419262554333FBB08E1"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/9ED794EF591C7827745384930546DD726778D08D98AD07A5E88097B89C37F5B0/workbench-report.json",
+        "sha256": "469C2748192383357CBE50B18872A4F30394A12A354EBFED7D05CE77DE25A81D"
+      },
+      {
+        "path": "build/matching/ae-p05/research-00258178.json",
+        "sha256": "B4B05805C100EAB0F0869EACD52B1B75608EA58C4B9FC77EFC9E406C43557E5B"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00258178.s",
+        "sha256": "ED22B797A25E4803439AA359401821FB2D113E446043BB0F6D314ADA27BEB254"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00258178-01.json",
+        "sha256": "A8EC510EDD0BE566D1D426E33DEB0D12E371C917E8AE8CC4FD6FF70543EC07FC"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00258178-02.json",
+        "sha256": "888510AE1C70C566D3A467CCB9DFD8FCECD3912679A1AD8C8B862623D0830A21"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00258178-03.json",
+        "sha256": "30E15E8F71FCF9AE77826863156EE44DB599722A5EAC96AF39B841DFB8895675"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/960C14CD3C366E94AA7D7BC36A1251C1F03FC3BDA73A557C8391484508E7D559/workbench-report.json",
+        "sha256": "D7AF66A6E660EEBF482B44141543C9D4CC567E5D7FCC7A5DF4064E57B5F9FED5"
+      },
+      {
+        "path": "build/consultants/attack-p05-muse/004-response.txt",
+        "sha256": "01F6200C5EDD0E5BD0DCF9E3D2474F76FE1B71A553253B5B9C31F9F711FC69A9"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [
+      "32805C189D49027D98404EAEB2F91A3B3362D5F2A9676F4A0BD191142206E12E",
+      "553F1EB29F5FF9B6C160E4E31538665BB745C976D9DBED1FB32311F1469A32F3"
+    ],
+    "remainingFailure": "Private symbolic-object evidence only. Ordinary source/type/data-alias reconciliation and complete-wave canonical ownership/placement/REL/PURE_C/target/full-ROM gates pending. No further target experiments needed. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "From watch02 keep loop unchanged. Raw u16 state+2C postincrement and raw s16 object+5C later compare complete the already-raw snapshot source views. Separate release float calculation from its store and place object38 load between them. These edits affect distinct command blocks; no allocator mechanism or unique original syntax claimed. From03 move only the three-call half-distance sequence and its delta/position locals into a static-inline helper. Preserve caller short-result conversion, hit gating and unconditional break, all other statements and loop edges."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 4120,
+        "path": "include/game/effect_callbacks_p02.h",
+        "sha256": "E6B6A2909CFFBEF4477651FA37FB8315C674F5A9019F5C4536D51D68A1CAF74B"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 14925,
+      "sha256": "5C692E7AA7CD7099DE055BC42D6BED5DB80328648EED1BAE24F1106167593B50"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "20EFE5FC8914A8414B7CE8B9540A6B6B2E18DE18049A91BAF27484F0D5120E49"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00258178-c66db6a413.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

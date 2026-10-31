@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EE3DDC4D25D4C5708E9CCF40FED1F79B32A5C3F04D56A398F00A71E93A9CA425",
+  "observationId": "E107C40A97C29ADF8E955F350D875BB4C450D2C4FEE3DF849B50FDCD8B2A04E8",
+  "symbol": "func_002587EC",
+  "authored": {
+    "context": "Complete572B seven-command dispatcher r4537, frame64/39REL. First F25EA2C7/run4A1E5DF6 PURE_C572/frame64 covers all143 words/15 external calls. Seven masked native differences confined to1002 shared parameter writes: typed field4 pointer read/globalpointer store precede byteglobalSB, byteSB occupiesAB0 delay. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "instruction-scheduling",
+      "alias-views"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 4120,
+          "path": "include/game/effect_callbacks_p02.h",
+          "sha256": "E6B6A2909CFFBEF4477651FA37FB8315C674F5A9019F5C4536D51D68A1CAF74B"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "8E3EAC5E34F78844863CE95A63F885B83CC643766ECB4AE47BC1F22B8911719D",
+      "sourceSha256": "7B24CA6DFCCFE77EB24A1A3FFD721B65B27EABE0875F948D6A6267166C207489"
+    },
+    "label": "p05-shared-byte-before-pointer-read",
+    "observedEffect": "Watch02 440A981C/runCA4EA959 stays PURE_C572/frame64/39REL, full raw relocation-masked equality. All7 native differences1D8/1DC/1E0/1E4/1E8/1EC/1F8(hex) resolve: byteSB before pointerLW, pointerSW inAB0 delay. This establishes a local source effect, not a universal alias/scheduler mechanism or original syntax. Related515B4 scalar halfword source pair supplied a qualified transfer lead.",
+    "parentCandidateId": "B403151C371FDCF7F7ED72F02B2142A46134FD469AAD22C6F0B0420CFAA452BB",
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_002587EC/candidates/440A981C3469BEB5ADB7C7371F387ABCC5085A2FE2DDF9BC7199944AA695A9BC.c",
+        "sha256": "7B24CA6DFCCFE77EB24A1A3FFD721B65B27EABE0875F948D6A6267166C207489"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-002587EC-02.json",
+        "sha256": "F40F1D721892FF32DDA0C2FC484DA4D377C4F5F4ECF7FA6F50BC9F6DEB9F63C7"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/CA4EA959D4B4818F2AF8E736242FAF60CBD7703DAA72FEABFEF76E44DCA8B267/workbench-report.json",
+        "sha256": "A46C4EDD2166A6A1F43E1B8186541F83B9C107140218190ACB7F7869555D2133"
+      },
+      {
+        "path": "build/matching/ae-p05/research-002587EC.json",
+        "sha256": "45C5C6CEC2668CAC0001E20784D7457CE7FD27872704E1DC022A056C38E84EF9"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002587EC.s",
+        "sha256": "A5D219FD86843BE4ED1C751C3FA757BABEA4F28250103301374037B18E91D077"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-002587EC-01.json",
+        "sha256": "189B79285E02C796F63CAE0AB1948C919EA043E9199B991FEC2313E5A9CDA00D"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/4A1E5DF66ED8928980D762A9EF81E0AE66B22AFBE79A5DDF236491D3AAE96ACD/workbench-report.json",
+        "sha256": "3829AD6DB89C311ABB50AEEAC3C00981D323A80F8BCEDDB67A0E15F1A02614EE"
+      },
+      {
+        "path": "build/matching/ae-p05/research-002515B4.json",
+        "sha256": "911117FAB04400F5B0F1D2837983D025D3D520677F2729E594D3FB2355150E83"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object only. NewD9ED8/+6 aliases remain originaldata_0025e890; D180 void* return/minimalprefix and own58178 callback ordinary interface reconciliation, complete-wave canonical ownership/placement/REL/PURE_C/target/full-ROM gates pending. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace only p01_pointer_80220F6C=state->values_04 with p01_pointer_80220F6C=*(u8**)((u8*)state+4). Keep first-byte expression, global lvalues, callback, waits and all other source unchanged; explain scalar view beside read."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 4120,
+        "path": "include/game/effect_callbacks_p02.h",
+        "sha256": "E6B6A2909CFFBEF4477651FA37FB8315C674F5A9019F5C4536D51D68A1CAF74B"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 8783,
+      "sha256": "8E3EAC5E34F78844863CE95A63F885B83CC643766ECB4AE47BC1F22B8911719D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7B24CA6DFCCFE77EB24A1A3FFD721B65B27EABE0875F948D6A6267166C207489"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_002587EC-ee3ddc4d25.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

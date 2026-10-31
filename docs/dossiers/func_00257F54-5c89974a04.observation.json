@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5C89974A04C77F1EFB16FA6F738BC5FFF16F518DFA6C6E99194EFBCEFF590CAD",
+  "observationId": "2A52A2ACAE286B7A1EE60AF5FA32CB681D1A13E59BACC6ECFA4E654062D5513D",
+  "symbol": "func_00257F54",
+  "authored": {
+    "context": "Complete392-byte r4534. First AF17421B/run2186AFF7 is PURE_C392/frame32, all five commands covered, with8 masked native differences at88/8C/90/94/98/9C/A0/A8(hex). Compiler hoists all three shared halfword loads before storing state40/42/44; retail alternates each LHU/SH. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "load-store-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "26EFE7BB32D8D2E6F1FF1A29D8F0B5DA326AD0B957D4BBDEF76E1F65FF7931FA",
+      "sourceSha256": "8D9F623D117222692C5BA328EBE39AD5B8456F31A5D0DE1601AD846BBAF57207"
+    },
+    "label": "p05-scalar-halfword-store-order-control-af17421b",
+    "observedEffect": "This saved PURE_C comparison object contains 392 text bytes. The worker's emitted-best observation documents its comparison context; this baseline does not inherit that best result.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_00257F54/candidates/AF17421BFF09E88B406E9BF8030A6D5994832DFC33F9732E68063F8047EC8314.c",
+        "sha256": "9D6D7DE606FB4BE1459921F9399A1F46A431756825A66D7F2799A02A2ABC8E03"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00257F54-01.json",
+        "sha256": "1CA5C770871B0153B9CC01DAAB36221DDEF245A84F3F1AD8E15BC9EE9DAE7F3C"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/2186AFF7ECD5CA9229F64160F22DE17A60C9A2C6D35BCCE08A24D52F128D48DD/workbench-report.json",
+        "sha256": "BA6CC203BD7EF1805D523E22F5D671F41B43D90422D763E43CFD17DD26513E11"
+      },
+      {
+        "path": "build/matching/ae-p05/research-00257F54.json",
+        "sha256": "394CF634B08FA536F2AACD5BE66305B2D842D0917534401986F4DA5E366A29BD"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical control, not canonical matching acceptance. Do not attribute the emitted-best result to this baseline or infer a universal compiler rule. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve the exact comparison source for p05-scalar-halfword-store-order. The emitted-best observation describes the bounded change; the two source files and saved reports remain the authority."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 5015,
+      "sha256": "26EFE7BB32D8D2E6F1FF1A29D8F0B5DA326AD0B957D4BBDEF76E1F65FF7931FA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8D9F623D117222692C5BA328EBE39AD5B8456F31A5D0DE1601AD846BBAF57207"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00257F54-5c89974a04.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

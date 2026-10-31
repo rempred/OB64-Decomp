@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2E81B558E8EDA791FCA13B2878F6788A13CDCFE9C20B73050202686C05DD49B1",
+  "observationId": "3B4B914A3ED0E1054A05FC82CA71E2FDBE4CE358F94C740124EA278D621AFA11",
+  "symbol": "func_00257F54",
+  "authored": {
+    "context": "Complete392-byte r4534. First AF17421B/run2186AFF7 is PURE_C392/frame32, all five commands covered, with8 masked native differences at88/8C/90/94/98/9C/A0/A8(hex). Compiler hoists all three shared halfword loads before storing state40/42/44; retail alternates each LHU/SH. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "load-store-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "C05640C70F9B0E34CFE13B5E16FB345D7642414CA977A704E31BE4FA046AC827",
+      "sourceSha256": "3B759E831B92950004ADC9BCAD33858282EF29B004765EF9DAB8C5FFD210CABB"
+    },
+    "label": "p05-scalar-halfword-store-order",
+    "observedEffect": "Watch02 77D54AF9/runE3615785 remains PURE_C392/frame32 with25 actual relocations and full raw relocation-masked equality. Each halfword write now precedes the next global load; all8 native differences disappear. This establishes the source effect here, not a universal alias/allocator rule, exact compiler mechanism or unique original source.",
+    "parentCandidateId": "5C89974A04C77F1EFB16FA6F738BC5FFF16F518DFA6C6E99194EFBCEFF590CAD",
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_00257F54/candidates/77D54AF96AFAABB7D269D4BE02C429CE26A33890194909D7B9EECA7C3298FC00.c",
+        "sha256": "06B847B1AA93B6B641CC7A43FDC9273FF01E70F421ADABE88F71F3BE7381ACB2"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00257F54-02.json",
+        "sha256": "E8EE902805763851A01BE733688B559CB45C0275FE9A4474B94EDEB4E113CD52"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/E36157850848220BE185A2CB10FF825C792554E70648A551891EDFBF4A533292/workbench-report.json",
+        "sha256": "3BE7B99141BD5B83B5DF8AFA5474E4FCED56035B6953FD6C0767E296E2A0BC10"
+      },
+      {
+        "path": "build/matching/ae-p05/research-00257F54.json",
+        "sha256": "394CF634B08FA536F2AACD5BE66305B2D842D0917534401986F4DA5E366A29BD"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00257F54.s",
+        "sha256": "001A5916E334401A12E65078038416881F9B862C5C61CD42C17D0F9B8F3AAE3C"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-00257F54-01.json",
+        "sha256": "1CA5C770871B0153B9CC01DAAB36221DDEF245A84F3F1AD8E15BC9EE9DAE7F3C"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/2186AFF7ECD5CA9229F64160F22DE17A60C9A2C6D35BCCE08A24D52F128D48DD/workbench-report.json",
+        "sha256": "BA6CC203BD7EF1805D523E22F5D671F41B43D90422D763E43CFD17DD26513E11"
+      },
+      {
+        "path": "build/matching/ae-p05/research-002515B4.json",
+        "sha256": "911117FAB04400F5B0F1D2837983D025D3D520677F2729E594D3FB2355150E83"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object evidence only. Whole-wave integrator must bind new halfword viewsFA8/FAA/FAC, retain existing F68 shared address view and partial node/provider contracts, then verify linked ownership/placement/REL/PURE_C/target/full-ROM gates. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Change only three initial member-store lvalues to *(u16 *)((u8 *)state+0x40/0x42/0x44). Keep global declarations, field layout, all reads/operations and control flow. This is a scalar-store source hypothesis qualified by earlier P05 pointer-store and515B4 scalar-load order observations, not presumed transfer equivalence."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 5054,
+      "sha256": "C05640C70F9B0E34CFE13B5E16FB345D7642414CA977A704E31BE4FA046AC827"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3B759E831B92950004ADC9BCAD33858282EF29B004765EF9DAB8C5FFD210CABB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00257F54-2e81b558e8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

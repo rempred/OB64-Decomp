@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "95D882DDBFDC6E7AC3C038AF08CAF78033183B7A82D16C5064D8ECAE019E3BF5",
+  "observationId": "8BA1C8C0F672DD714C36A150696ED88FF06AEAF34C94BB293B5A30DE0549DB09",
+  "symbol": "func_002510E0",
+  "authored": {
+    "context": "Complete 892-byte r4482. First source E81C42AE covers all command operations but incorrectly exits after command 1001 schedules 1002. The original has a direct 1001-to1002 fall-through. First normal comparison emits 900 bytes/frame32 and exposes this missed control edge. This is a source-coverage error, not a compiler representation defect. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "coverage",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "329D593375426F5CBE07444BF33A9BA2FA05559AF496D07154E37A6A9BA9F3D7",
+      "sourceSha256": "F1C2CD1B0FF4B091854670B5BA768C131E6E4E71A23160165FF47DC6445B6F27"
+    },
+    "label": "p05-command-fallthrough-control-e81c42ae",
+    "observedEffect": "This saved PURE_C comparison object contains 900 text bytes. The worker's emitted-best observation documents its comparison context; this baseline does not inherit that best result.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_002510E0/candidates/E81C42AECC42C2E1AD72AD692E1835C5A2327E51949D48A2024E7487516CC828.c",
+        "sha256": "F1C2CD1B0FF4B091854670B5BA768C131E6E4E71A23160165FF47DC6445B6F27"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-002510E0-01.json",
+        "sha256": "CAD1ECD2DC62CC2443B104A29038CB7B57A1822B45BFB2F91DF7B3C04A70F0E1"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/CFFDDCA6977F4C1EC31EAD7A20C0DD054B15860EE7932C6BE3144C08A0792FFA/workbench-report.json",
+        "sha256": "6CC2A52C0F5B1209EA851D1720A23C48EE73A29D6D000228CF23B82AAA74CB35"
+      },
+      {
+        "path": "build/matching/ae-p05/research-002510E0.json",
+        "sha256": "C3B64E22DF50F0235A9A84E6479BC0BC4E38412B25D5A2AE7894C41D530A06B2"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical control, not canonical matching acceptance. Do not attribute the emitted-best result to this baseline or infer a universal compiler rule. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve the exact comparison source for p05-command-fallthrough. The emitted-best observation describes the bounded change; the two source files and saved reports remain the authority."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 4209,
+      "sha256": "329D593375426F5CBE07444BF33A9BA2FA05559AF496D07154E37A6A9BA9F3D7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F1C2CD1B0FF4B091854670B5BA768C131E6E4E71A23160165FF47DC6445B6F27"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_002510E0-95d882ddbf.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

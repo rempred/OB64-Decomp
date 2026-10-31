@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "074B455D4BB5C7B34655D0DFE83AAB4C6025CA53B88D379A21AB46F681FECAF5",
+  "observationId": "AB9356B325FBB1E6A2127AFB549B367E748B49B539E8FF5529F7FEF2DAE36821",
+  "symbol": "func_0024C964",
+  "authored": {
+    "context": "Full 612-byte r4433 at RAM801F7DA4. Direct caller-local XYZ differences in watch02 retain all component stores, both angle blocks and frame80 but emit 616 bytes with X in F2, Z in F6 and different store/save scheduling. Y-first stores retain 616 bytes; XYZ and ZYX scalar-capture forms both emit identical 620-byte native text and relocation censuses. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "C19B4C36AA4A3B3CBD6A8E0BA54D3525B09273B6264D4A9BEB7ABDA03C29979C",
+      "sourceSha256": "C1CE5D4C1796CD2A8EFBA0C5EF52B21D8674996D60418902737B3B8E12217D9E"
+    },
+    "label": "p05-inline-vector-difference-control-e5bbc5de",
+    "observedEffect": "This saved PURE_C comparison object contains 620 text bytes. The worker's emitted-best observation documents its comparison context; this baseline does not inherit that best result.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_0024C964/candidates/E5BBC5DE64F4D92C177BAF4375CBC0C328092AAFDE5352EC0AE9128B8DF7ED87.c",
+        "sha256": "C1CE5D4C1796CD2A8EFBA0C5EF52B21D8674996D60418902737B3B8E12217D9E"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-0024C964-05.json",
+        "sha256": "7468A5737BB1B85CBE3E05D6AB9BAE0EB25EEE36ECF221D17229171C13715296"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/62260C98761357215FA370438C44325DA1400C32787F7DA0694CB7F8756CA189/workbench-report.json",
+        "sha256": "D9470C718F3A36C6FB7D7AF743CD92DC3D14FD37D742009D29A6A20AF87E0DCA"
+      },
+      {
+        "path": "build/matching/ae-p05/research-0024C964.json",
+        "sha256": "9399B1D42F1A1355898D4AF2B833CE22ACC606882F5AA2694AA916CAC84BA241"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical control, not canonical matching acceptance. Do not attribute the emitted-best result to this baseline or infer a universal compiler rule. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve the exact comparison source for p05-inline-vector-difference. The emitted-best observation describes the bounded change; the two source files and saved reports remain the authority."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2033,
+      "sha256": "C19B4C36AA4A3B3CBD6A8E0BA54D3525B09273B6264D4A9BEB7ABDA03C29979C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C1CE5D4C1796CD2A8EFBA0C5EF52B21D8674996D60418902737B3B8E12217D9E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0024C964-074b455d4b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

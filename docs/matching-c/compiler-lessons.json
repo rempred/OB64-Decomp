@@ -28,30 +28,30 @@
       "id": "real-delimiter-arms-merge-after-allocation",
       "symptoms": [
         "register-allocation",
-        "scheduling-or-block-order"
+        "scheduling-or-block-order",
+        "load-store-width-or-signedness",
+        "stack-layout-or-offset-family"
       ],
-      "applicability": "DD7C keeps the word selector/byte switch view and real capture order, then separates arm-local object/flag/value lifetimes. Read the exact pair; its emitted allocation effect is context-specific and does not establish original syntax. Earlier source pairs and their limits remain linked in the combined context note.",
-      "note": "docs/matching-c/p04-reuse.md#case-local-values",
+      "applicability": "CDB4 separates a combined selector/counter experiment from the final byte-selector/direct-use pair. Keep the real union/vector workspaces and all commands; the combined intermediate does not isolate causal effects. Earlier source pairs and their limits remain linked in the context note.",
+      "note": "docs/matching-c/p05-reuse.md#byte-selector-and-case-counters",
       "references": [
-        "docs/matching-c/p04-reuse.md",
-        "docs/dossiers/func_0024DD7C-aae2cd027b.md",
-        "docs/dossiers/func_0024DD7C-bbc4d0bcee.md",
-        "docs/dossiers/func_0019ADF0-b852c88c57.md",
-        "docs/dossiers/func_0019ADF0-b4c93762c6.md",
-        "docs/dossiers/func_0022D14C-a1ecef80a0.md"
+        "docs/matching-c/p05-reuse.md",
+        "docs/dossiers/func_0025CDB4-1c1099b860.md",
+        "docs/dossiers/func_0025CDB4-c461754f62.md",
+        "docs/dossiers/func_0025CDB4-ba7a802787.md"
       ],
       "observations": [
         {
-          "symbol": "func_0024DD7C",
-          "path": "docs/dossiers/func_0024DD7C-aae2cd027b.observation.json"
+          "symbol": "func_0025CDB4",
+          "path": "docs/dossiers/func_0025CDB4-1c1099b860.observation.json"
         },
         {
-          "symbol": "func_0024DD7C",
-          "path": "docs/dossiers/func_0024DD7C-bbc4d0bcee.observation.json"
+          "symbol": "func_0025CDB4",
+          "path": "docs/dossiers/func_0025CDB4-c461754f62.observation.json"
         },
         {
-          "symbol": "func_0019ADF0",
-          "path": "docs/dossiers/func_0019ADF0-b852c88c57.observation.json"
+          "symbol": "func_0025CDB4",
+          "path": "docs/dossiers/func_0025CDB4-ba7a802787.observation.json"
         }
       ]
     },
@@ -112,30 +112,31 @@
       "id": "float-producer-lifetimes-and-late-tail-merging",
       "symptoms": [
         "register-allocation",
-        "scheduling-or-block-order"
+        "scheduling-or-block-order",
+        "stack-layout-or-offset-family"
       ],
-      "applicability": "123458's X/Z phases change F0/F2; its counterexample merges only at JUMP2. In 1284C4, scale/lower-bound SETs select F4; controls choose F8/F2. BC64's SF/DF grid pair keeps real F8 lifetimes through GREG, deletes them at JUMP2 and shifts reload F8/F9 to F10/F11: 14 changed words, identical relocations. Both intermediates are nonmatches. Preserve real operations, widths and source context; this establishes neither original C nor a general allocation rule.",
-      "note": "docs/dossiers/func_0012BC64-2ce5bdbd59.md#recorded-observation",
+      "applicability": "C8B4 separate result, C964 inline vector difference and58178 helper-owned distance workspace restore their own float/register/stack shapes. Use the exact source contexts; temporary regressions did not disprove the broader structures. Earlier source pairs and their limits remain linked in the context note.",
+      "note": "docs/matching-c/p05-reuse.md#floating-workspaces",
       "references": [
-        "docs/dossiers/func_00123458-3c0b9abb61.md",
-        "docs/dossiers/func_00123458-6186fdce4c.md",
-        "docs/dossiers/func_001284C4-8e0651dd81.md",
-        "docs/dossiers/func_001284C4-047f8a31be.md",
-        "docs/dossiers/func_001284C4-aa12cda06f.md",
-        "docs/dossiers/func_0012BC64-17b6d19080.md"
+        "docs/matching-c/p05-reuse.md",
+        "docs/dossiers/func_0024C8B4-54888fa28c.md",
+        "docs/dossiers/func_0024C8B4-ec00eadd39.md",
+        "docs/dossiers/func_0024C964-772b3e4d40.md",
+        "docs/dossiers/func_0024C964-5867170ecc.md",
+        "docs/dossiers/func_00258178-c66db6a413.md"
       ],
       "observations": [
         {
-          "symbol": "func_00123458",
-          "path": "docs/dossiers/func_00123458-3c0b9abb61.observation.json"
+          "symbol": "func_0024C8B4",
+          "path": "docs/dossiers/func_0024C8B4-54888fa28c.observation.json"
         },
         {
-          "symbol": "func_0012BC64",
-          "path": "docs/dossiers/func_0012BC64-2ce5bdbd59.observation.json"
+          "symbol": "func_0024C964",
+          "path": "docs/dossiers/func_0024C964-772b3e4d40.observation.json"
         },
         {
-          "symbol": "func_0012BC64",
-          "path": "docs/dossiers/func_0012BC64-17b6d19080.observation.json"
+          "symbol": "func_00258178",
+          "path": "docs/dossiers/func_00258178-c66db6a413.observation.json"
         }
       ]
     },
@@ -248,28 +249,23 @@
         "scheduling-or-block-order",
         "branch-polarity"
       ],
-      "applicability": "786C scalar delay selection stays arithmetic; separate genuine conditional calls retain the retail branch while merging to one JAL. Full body/frame/workspace coverage matters. No measured RTL-stage explanation or original-syntax claim. Earlier source pairs and their limits remain linked in the combined context note.",
-      "note": "docs/matching-c/p04-reuse.md#timer-call-branches",
+      "applicability": "Check complete command regions and deliberate fall-through before tuning.510E0 restores a missing transition;57124 combines delayed real pointer initialization with the documented fall-through correction. Earlier source pairs and their limits remain linked in the context note.",
+      "note": "docs/matching-c/p05-reuse.md#complete-switch-paths",
       "references": [
-        "docs/matching-c/p04-reuse.md",
-        "docs/dossiers/func_0025786C-82a79da59d.md",
-        "docs/dossiers/func_0025786C-7255c216c0.md",
-        "docs/dossiers/func_0022D14C-004fc93b05.md",
-        "docs/dossiers/func_0022D14C-40c20971a1.md",
-        "docs/dossiers/func_0022D14C-817dcd4281.md"
+        "docs/matching-c/p05-reuse.md",
+        "docs/dossiers/func_002510E0-0b10e98414.md",
+        "docs/dossiers/func_002510E0-95d882ddbf.md",
+        "docs/dossiers/func_00257124-ffc042ce39.md",
+        "docs/dossiers/func_00257124-39db82d0fe.md"
       ],
       "observations": [
         {
-          "symbol": "func_0025786C",
-          "path": "docs/dossiers/func_0025786C-82a79da59d.observation.json"
+          "symbol": "func_002510E0",
+          "path": "docs/dossiers/func_002510E0-0b10e98414.observation.json"
         },
         {
-          "symbol": "func_0025786C",
-          "path": "docs/dossiers/func_0025786C-7255c216c0.observation.json"
-        },
-        {
-          "symbol": "func_0022D14C",
-          "path": "docs/dossiers/func_0022D14C-004fc93b05.observation.json"
+          "symbol": "func_00257124",
+          "path": "docs/dossiers/func_00257124-ffc042ce39.observation.json"
         }
       ]
     },
@@ -377,28 +373,26 @@
         "load-store-width-or-signedness",
         "register-allocation"
       ],
-      "applicability": "F4F4 distinguishes a volatile cast address shape from direct symbolic reads. The04/05 pair then isolates initialization of the actual terminator before cursor copy. Preserve actual access counts; no invented accesses or original-qualifier claims. Earlier source pairs and their limits remain linked in the combined context note.",
-      "note": "docs/matching-c/p04-reuse.md#shared-pointer-reads",
+      "applicability": "CBA8 global-qualifier-only control leaves native bytes unchanged; removing the local row-pointer const restores two reloads and allocation in this context. Numeric table storage stays original ASM; no behavioral mutability claim. Earlier source pairs and their limits remain linked in the context note.",
+      "note": "docs/matching-c/p05-reuse.md#mutable-row-reloads",
       "references": [
-        "docs/matching-c/p04-reuse.md",
-        "docs/dossiers/func_0024F4F4-8a42b57a6a.md",
-        "docs/dossiers/func_0024F4F4-a0db8159d9.md",
-        "docs/dossiers/func_0024F4F4-8df0db4a5e.md",
-        "docs/dossiers/boot_resource_probe_chunk_callback_walk-71559bc2eb.md",
-        "docs/KMC_GCC_MATCHING_NOTES.md"
+        "docs/matching-c/p05-reuse.md",
+        "docs/dossiers/func_0025CBA8-7a2eb01f34.md",
+        "docs/dossiers/func_0025CBA8-196bd76f81.md",
+        "docs/dossiers/func_0025CBA8-f9461b3f68.md"
       ],
       "observations": [
         {
-          "symbol": "func_0024F4F4",
-          "path": "docs/dossiers/func_0024F4F4-8a42b57a6a.observation.json"
+          "symbol": "func_0025CBA8",
+          "path": "docs/dossiers/func_0025CBA8-7a2eb01f34.observation.json"
         },
         {
-          "symbol": "func_0024F4F4",
-          "path": "docs/dossiers/func_0024F4F4-a0db8159d9.observation.json"
+          "symbol": "func_0025CBA8",
+          "path": "docs/dossiers/func_0025CBA8-196bd76f81.observation.json"
         },
         {
-          "symbol": "func_0024F4F4",
-          "path": "docs/dossiers/func_0024F4F4-8df0db4a5e.observation.json"
+          "symbol": "func_0025CBA8",
+          "path": "docs/dossiers/func_0025CBA8-f9461b3f68.observation.json"
         }
       ]
     },
@@ -468,21 +462,34 @@
     },
     {
       "id": "independent-store-schedule",
-      "symptoms": ["scheduling-or-block-order", "register-allocation"],
-      "applicability": "Compare real initialization and expression placement. Realloc's earlier header pointer plus folded endpoints restores mask/load order; rebuild's record stride before its root cursor restores initialization order. Scan's miss-path increment and size-parameter reuse restore scheduling/registers. Preserve actual operations. Private source pairs are diagnostic; the full wave record supplies production acceptance. These effects are context-specific.",
-      "note": "docs/KMC_GCC_MATCHING_NOTES.md#loops-indexing-and-store-scheduling",
+      "symptoms": [
+        "scheduling-or-block-order",
+        "register-allocation",
+        "load-store-width-or-signedness"
+      ],
+      "applicability": "515B4 scalar halfword read,57F54 scalar halfword stores and587EC scalar pointer read preserve specific retail access orders. These are local source effects, not semantic volatility or a general aliasing rule. Earlier source pairs and their limits remain linked in the context note.",
+      "note": "docs/matching-c/p05-reuse.md#scalar-views-and-access-order",
       "references": [
-        "docs/dossiers/resource_realloc-5e478aee2d.md",
-        "docs/dossiers/resource_realloc-8a91d4bc38.md",
-        "docs/dossiers/resource_rebuild_free_trees-39c06f7860.md",
-        "docs/dossiers/resource_rebuild_free_trees-264fc2c72f.md",
-        "docs/dossiers/resource_alloc_tree_scan-57777047a9.md",
-        "docs/Plans/task-logs/sol-resource-trees-wave-20261005.md"
+        "docs/matching-c/p05-reuse.md",
+        "docs/dossiers/func_002515B4-63c9110d2a.md",
+        "docs/dossiers/func_002515B4-d4c02c2fe5.md",
+        "docs/dossiers/func_00257F54-2e81b558e8.md",
+        "docs/dossiers/func_00257F54-5c89974a04.md",
+        "docs/dossiers/func_002587EC-ee3ddc4d25.md"
       ],
       "observations": [
-        {"symbol": "resource_realloc", "path": "docs/dossiers/resource_realloc-8a91d4bc38.observation.json"},
-        {"symbol": "resource_rebuild_free_trees", "path": "docs/dossiers/resource_rebuild_free_trees-264fc2c72f.observation.json"},
-        {"symbol": "resource_alloc_tree_scan", "path": "docs/dossiers/resource_alloc_tree_scan-57777047a9.observation.json"}
+        {
+          "symbol": "func_002515B4",
+          "path": "docs/dossiers/func_002515B4-63c9110d2a.observation.json"
+        },
+        {
+          "symbol": "func_00257F54",
+          "path": "docs/dossiers/func_00257F54-2e81b558e8.observation.json"
+        },
+        {
+          "symbol": "func_002587EC",
+          "path": "docs/dossiers/func_002587EC-ee3ddc4d25.observation.json"
+        }
       ]
     },
     {
@@ -492,49 +499,57 @@
         "register-allocation",
         "stack-layout-or-offset-family",
         "load-store-width-or-signedness",
-        "opcode-or-expression"
+        "opcode-or-expression",
+        "branch-polarity"
       ],
-      "applicability": "Use actual provider contracts and complete physical coverage.76e48 is measured400 C/native bytes plus8 original RX, with bounded raw-ELF local-J proof and complete-wave acceptance. Preserve the historical rejections; do not infer native padding, original semantics or broader local-reference permission. Earlier source pairs and their limits remain linked in the combined context note.",
-      "note": "docs/matching-c/p04-reuse.md#provider-interfaces-and-terminal-tail",
+      "applicability": "77F90/78278 transfer follows full original-body comparison, retaining1006/default behavior, actual floating/word ABI and six-byte table records. Generator output alone did not establish coverage or signatures. Earlier source pairs and their limits remain linked in the context note.",
+      "note": "docs/matching-c/p05-reuse.md#full-body-source-transfer",
       "references": [
-        "docs/matching-c/p04-reuse.md",
-        "docs/dossiers/func_00276e48-b76d240b59.md",
-        "docs/dossiers/func_00045a50-546e4d94ca.md",
-        "docs/dossiers/func_002215D0-233d92db9b.md",
-        "docs/KMC_GCC_MATCHING_NOTES.md",
-        "docs/dossiers/func_0002def4-d0e15208f4.md"
+        "docs/matching-c/p05-reuse.md",
+        "docs/dossiers/func_00277F90-118721e494.md",
+        "docs/dossiers/func_00278278-092f7f1da7.md"
       ],
       "observations": [
         {
-          "symbol": "func_00276e48",
-          "path": "docs/dossiers/func_00276e48-b76d240b59.observation.json"
+          "symbol": "func_00277F90",
+          "path": "docs/dossiers/func_00277F90-118721e494.observation.json"
         },
         {
-          "symbol": "func_00045a50",
-          "path": "docs/dossiers/func_00045a50-546e4d94ca.observation.json"
-        },
-        {
-          "symbol": "func_002215D0",
-          "path": "docs/dossiers/func_002215D0-233d92db9b.observation.json"
+          "symbol": "func_00278278",
+          "path": "docs/dossiers/func_00278278-092f7f1da7.observation.json"
         }
       ]
     },
     {
       "id": "large-cfg-lifetime-and-regression",
-      "symptoms": ["register-allocation", "scheduling-or-block-order", "branch-polarity"],
-      "applicability": "Reconcile joins and real lifetimes. Decoder failure-path layout changes return merging; evidenced address forms and the real U marker affect allocation/frame shape. Validator's actual failure-block placement changes first-CSE read availability in the same ordinary-static source context; compare both observations before transfer. W8/decoder references retain historical bindings; their wave records supply acceptance. Neither example establishes original C or a universal layout rule.",
-      "note": "docs/KMC_GCC_MATCHING_NOTES.md#advanced-exact-case-func_00047a94",
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order",
+        "branch-polarity"
+      ],
+      "applicability": "C428 initialization order,80DC shared negative return and58A28 shared advancement show bounded control/lifetime effects. Preserve each actual source pair; none proves a universal compiler rule or original syntax. Earlier source pairs and their limits remain linked in the context note.",
+      "note": "docs/matching-c/p05-reuse.md#control-flow-and-carriers",
       "references": [
-        "docs/dossiers/func_001F3C00-7e434ec440.md",
-        "docs/dossiers/func_001F3C00-cd8cffb3cd.md",
-        "docs/dossiers/func_001F3C00-7fa66212d4.md",
-        "docs/dossiers/boot_resource_tag_record_decode-3930fd48bc.md",
-        "docs/dossiers/boot_resource_tag_record_decode-853eca2a57.md",
-        "docs/Plans/task-logs/sol-resource-decode-wave-20261006.md"
+        "docs/matching-c/p05-reuse.md",
+        "docs/dossiers/func_0024C428-5fefdce928.md",
+        "docs/dossiers/func_0024C428-e1b18da7cb.md",
+        "docs/dossiers/func_002580DC-15c281486c.md",
+        "docs/dossiers/func_002580DC-d88b1c4aaf.md",
+        "docs/dossiers/func_00258A28-8926e1a3d8.md"
       ],
       "observations": [
-        {"symbol": "resource_ptr_validate", "path": "docs/dossiers/resource_ptr_validate-f187f330ba.observation.json"},
-        {"symbol": "resource_ptr_validate", "path": "docs/dossiers/resource_ptr_validate-10fb1fcbac.observation.json"}
+        {
+          "symbol": "func_0024C428",
+          "path": "docs/dossiers/func_0024C428-5fefdce928.observation.json"
+        },
+        {
+          "symbol": "func_002580DC",
+          "path": "docs/dossiers/func_002580DC-15c281486c.observation.json"
+        },
+        {
+          "symbol": "func_00258A28",
+          "path": "docs/dossiers/func_00258A28-8926e1a3d8.observation.json"
+        }
       ]
     },
     {

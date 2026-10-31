@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "54888FA28C0FA277D589E06736CE4BD859E0894B3ED0C6AB35B2944CCE39281C",
+  "observationId": "FF9B2BB947A83935D5A09DE7AA6F98CA9D3B9A611D0EA316B311FD57AEAA28F7",
+  "symbol": "func_0024C8B4",
+  "authored": {
+    "context": "Full 176-byte r4432. Actual provider mappings and descriptor 11 double-pool addresses are independently derived. Initial early-return form FDC56B69 preserves 176 bytes and the math prefix but reverses the tail block layout. Common overwritten-angle form 3E83E878 has desired branch polarity but emits 168 bytes, sub.s into F2 and one common return copy. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P05 wave report.",
+    "effects": [
+      "floating-return-lifetime",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5EBB21BC8ABFDB5D16F09765A7BDE8D4080D6F076B106B49215C5029E3881104",
+      "sourceSha256": "72581DD7C98AA119FAE09E87661916330B763C3244EB898E52EFFB56022EEEFF"
+    },
+    "label": "p05-float-result-lifetime",
+    "observedEffect": "Third form 82B4A86B is PURE_C, 176 bytes, with raw relocation-masked equality and seven actual relocations. Both arms now write F0, true arm jumps over the false mov, and conversion remains in the predicate delay slot. This transferred as the initial angle-helper hypothesis in C964; transfer there remains separately unproven. No unique original syntax or universal local-variable rule is established.",
+    "parentCandidateId": "EC00EADD39278B90C6A803E790D46E192893AEC8CD83E2719866A5193DB0B248",
+    "references": [
+      {
+        "path": "build/matching/ae-p05/targets/func_0024C8B4/candidates/82B4A86BCD002B42DBC21892D752B2F06039A9EF04C0400603959266B0548318.c",
+        "sha256": "72581DD7C98AA119FAE09E87661916330B763C3244EB898E52EFFB56022EEEFF"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-0024C8B4-03.json",
+        "sha256": "8C9CB5D2A096B635EB89ADFD9E91B4BFC37836C1A72A3532044C1DBBDE001615"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/AE02F91E7160D52512B4EE9B83DC8889EF992C1B3A3D8D292A3DB3650F384FF8/workbench-report.json",
+        "sha256": "21877DC19BEAC8BC09424756E5C0D71F0E4054F23798D160AC6D201B179C636F"
+      },
+      {
+        "path": "build/matching/ae-p05/research-0024C8B4.json",
+        "sha256": "89A244C6FCF8144584DC25FCF89A3D2E6ACBBF27E4753DB890FB38A553F2DCA1"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-0024C8B4-01.json",
+        "sha256": "31714473EE68A7DEE4CD18A1E549FAB1A9AD943A7D53849705E4929704DE4CF7"
+      },
+      {
+        "path": "build/matching/ae-p05/watch-0024C8B4-02.json",
+        "sha256": "34027FE4688DE89BEABCE9D7395750648D47CDB4271EC97E704C35BCF1D53F9A"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/97CB7EF525B4AB3EB6AF116D4AB39F3514C51922CA46A83EE86701C76FD6DAF7/candidate.compiler.s",
+        "sha256": "D51FC92572C36FFF81E7A173A274B81292A326BDDB67D42DD6EC5D7269F9F56C"
+      },
+      {
+        "path": "build/matching/ae-p05/runs/4F422988A5EDB69B74AB8DE4CF0637C381DEA31B52664987DA5CDA77DEFC6C1E/candidate.compiler.s",
+        "sha256": "0A6F2FBCE22C6CC5D6BEF845ADD2ABEEF8D36C4F7B3F41C077D4FD3A017EF9D8"
+      },
+      {
+        "path": "build/consultants/attack-p05-muse/001-response.txt",
+        "sha256": "471D16B5049A13343662D2BBE26F339BB14D4131C1E159B152AC88D26AF54E08"
+      },
+      {
+        "path": "build/integration/attack-effects/p05/wave-acceptance.json",
+        "sha256": "54844D3271B88BDE8AF4BA0158E3DA94BD2DCFAF8A6940DC295FC0484C4BE508"
+      }
+    ],
+    "relatedCandidateIds": [
+      "B53382D62798892493C1E155F5FA88473C123DCB9480CBB17DF3BE08DE53D33B"
+    ],
+    "remainingFailure": "Private evidence is symbolic only. The integrator must bind D_8020A200/208 to original ROM 25EDC0/25EDC8 without changing the ASM data owner and run current linked/whole-wave acceptance. Muse001 supplied analysis after this exact separate-result trial had already started; the result was independently measured. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a separate float result assigned in explicit if/else arms and returned once. Preserve the float angle, original x<0 predicate, math expression, double addresses and 360.0f."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 510,
+      "sha256": "5EBB21BC8ABFDB5D16F09765A7BDE8D4080D6F076B106B49215C5029E3881104"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "72581DD7C98AA119FAE09E87661916330B763C3244EB898E52EFFB56022EEEFF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0024C8B4-54888fa28c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

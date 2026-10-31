@@ -15,10 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7280,
-    "splitOwners": 38,
+    "linkSlices": 7283,
+    "splitOwners": 41,
     "overlayReservations": 19,
-    "retainedPaddingCuts": 21,
+    "retainedPaddingCuts": 24,
     "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
@@ -400,6 +400,54 @@
       "compilerFunctions": [
         {
           "symbol": "func_00276e48",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row4490-terminal",
+      "rowIndex": 4490,
+      "romStart": 2433756,
+      "romEndExclusive": 2433760,
+      "edge": "terminal",
+      "sourceSha256": "0015705F948B906636A327E043717806933B9BCC57090DDFA78859AC34F900F2",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00252198",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row4547-terminal",
+      "rowIndex": 4547,
+      "romStart": 2465960,
+      "romEndExclusive": 2465968,
+      "edge": "terminal",
+      "sourceSha256": "B7259769575F01AE2643364942F2099FD3502F73AA764657890AC072DF9ECE47",
+      "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00259FD4",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row4585-terminal",
+      "rowIndex": 4585,
+      "romStart": 2477488,
+      "romEndExclusive": 2477492,
+      "edge": "terminal",
+      "sourceSha256": "C79D101FCCA039ACD55BBE8B4AFECEBBB7A5E3A0212E1F2D07983EBAB7FFAAD7",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_0025CD38",
           "binding": "GLOBAL",
           "entryEvidence": "owner"
         }
