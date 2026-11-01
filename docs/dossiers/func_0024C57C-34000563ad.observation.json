@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "34000563AD951A67DF22226D91847D5E50B6E22B37491529FF030B4CF167F316",
+  "observationId": "D6C8EEE6058A8677ECD01B4BB3752521CEB14D97BAEDD7A748A90FAF611F742D",
+  "symbol": "func_0024C57C",
+  "authored": {
+    "context": "Source-bound E08 compiler observation independently checked against the saved original/native source pair. Numeric access views do not prove full allocation extents or semantics. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E08 wave report.",
+    "effects": [
+      "source-context",
+      "code-generation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "6FC137B4FB060337729D1DC7210C56B45F94E8971C44E5BE63C02A7DEE18B490",
+      "sourceSha256": "F3D3B149D355226BBC76D30F12070592112FFD2F92A60DDD860F155A052AB413"
+    },
+    "label": "e08-c57c-consumed-byte-mode",
+    "observedEffect": "The selected552-byte/frame64 body restores three entry words at0C/10/14 and retains the other135 words. The one-function classifier, both tables and complete loop remain; no trial08 phase-mechanism claim.",
+    "parentCandidateId": "A28D5DC600A1369EB54EB5F30DC951A02477F96D4973BF7709097B0C228FE657",
+    "references": [
+      {
+        "path": "build/matching/ae-e08/targets/func_0024C57C/candidates/D67E0C9EF80561650A3E7F6279A17EFEE4E2D4BC7E44EF19A9FCAFC17EFAEA01.c",
+        "sha256": "F3D3B149D355226BBC76D30F12070592112FFD2F92A60DDD860F155A052AB413"
+      },
+      {
+        "path": "build/matching/ae-e08/c57c-watch-08-mi7.json",
+        "sha256": "A3F443417D430598014BA472B3AE07D13EEF359AFA29E9F388606B1CB93226ED"
+      },
+      {
+        "path": "build/matching/ae-e08/runs/3C15A1B5693D969184FA7DD35F81435D3390FE0F73AFAF3702E12DB67132B0DD/workbench-report.json",
+        "sha256": "7214430E8CCE601D45501101F681266B846B8FA665B6D2A0ED121CFB29795127"
+      },
+      {
+        "path": "build/matching/ae-e08/c57c-notes.md",
+        "sha256": "D5C7ABAA4EE0B420334E7A6FBA02D515C178C4C594AC7E03D9C76DD94663E7C9"
+      },
+      {
+        "path": "build/matching/ae-e08/targets/func_0024C57C/candidates/16680A1ED8737527FF11A59AF0A21D5F25C51B2DE4CD85EB9CC48ABF0F1C755C.c",
+        "sha256": "0D1279F7954C0966698D6767162DA4EDF3F3A48880BCE0C086E35EF0C5A583F9"
+      },
+      {
+        "path": "build/matching/ae-e08/c57c-watch-07-mi7.json",
+        "sha256": "20133C004FF97CF1A49ECB2274B47D90F80E006A11FDD4542A88FF9735A90354"
+      },
+      {
+        "path": "build/matching/ae-e08/runs/A683C99DE264A287A199DDF6B73A82A1B2918E1BC7348774C5E36381A394FAA1/workbench-report.json",
+        "sha256": "66E0955845D03BEB0F37752BEB8318BD25D2F46CD7D5FFA74C71A6E3ADAE40CA"
+      },
+      {
+        "path": "build/integration/attack-effects/e08/wave-acceptance.json",
+        "sha256": "92159626C6CF26694BB71B977C66774A5F97F78248D31EF98E2C550ED7946EDE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical diagnostic evidence only. Final canonical interface changes and matching acceptance are separate. Compiler-mechanism hypotheses apply only to explicitly measured phases. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the public word mode and consume it through an explicit byte view in the existing vector/offset paths."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2162,
+      "sha256": "6FC137B4FB060337729D1DC7210C56B45F94E8971C44E5BE63C02A7DEE18B490"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F3D3B149D355226BBC76D30F12070592112FFD2F92A60DDD860F155A052AB413"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0024C57C-34000563ad.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

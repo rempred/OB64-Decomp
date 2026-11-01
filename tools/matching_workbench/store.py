@@ -802,18 +802,107 @@ def _immutable_query(database: Path, request: dict[str, Any]) -> Any:
         kernel.CloseHandle(handle)
 
 
+def _completion_path(path: Path, root: Path | None, missing: bool = False) -> None:
+    import os
+    import stat
+    absolute = Path(os.path.abspath(path))
+    if root is not None and absolute != root and root not in absolute.parents:
+        raise ValueError("completion path escapes private root")
+    for item in [absolute, *absolute.parents]:
+        try:
+            st = item.lstat()
+        except FileNotFoundError:
+            if missing and (item == absolute or root is not None and root in item.parents):
+                continue
+            raise
+        redirected = (st.st_file_attributes & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)) if hasattr(st, "st_file_attributes") else item.is_symlink()
+        if redirected:
+            raise ValueError("completion path is redirected")
+        if not (stat.S_ISREG(st.st_mode) or stat.S_ISDIR(st.st_mode)) or stat.S_ISREG(st.st_mode) and st.st_nlink != 1:
+            raise ValueError("completion path is nonregular or hardlinked")
+        if os.path.normcase(os.path.realpath(item)) != os.path.normcase(str(item)):
+            raise ValueError("completion path alias")
+
+
+def _completion_controls(database: Path) -> None:
+    root = database.parent
+    _completion_path(root, root)
+    for suffix in ("", "-wal", "-shm", "-journal"):
+        _completion_path(Path(str(database) + suffix), root, True)
+    _completion_path(root / ".private-guard.json", root)
+    import os
+    ticket = json.loads((root / ".private-guard.json").read_text(encoding="utf-8"))
+    # Native process custody is authenticated by the Node/Job supervisor. The
+    # configured venv launcher may introduce a Python parent, so this store
+    # path gate does not invent a direct-parent process-custody contract.
+    import hashlib
+    root_key = hashlib.sha256(str(root).lower().encode("utf-8")).hexdigest()
+    if ticket.get("rootKey") != root_key or ticket.get("admission") != "candidate-diagnostic-v1":
+        raise ValueError("completion is outside its supervised diagnostic command")
+
+
+def _complete_transaction(connection, database, request):
+    # Input/CPP close has already passed in the supervised caller. All checks
+    # capable of rejecting publication here run before SQLite commits.
+    reports = request.get("completionReports", [])
+    if not isinstance(reports, list) or len(reports) != 1:
+        raise ValueError("completion requires one bounded report")
+    created = []
+    try:
+        with connection:
+            _completion_controls(database)
+            used_paths = request.get("completionInputs")
+            if not isinstance(used_paths, list) or not used_paths or len(used_paths) > 512:
+                raise ValueError("completion input path census")
+            for used_path in used_paths:
+                _completion_path(Path(used_path), None)
+            if "completionCandidate" in request:
+                if request.get("action") != "put_compile_result":
+                    raise ValueError("candidate completion requires a fresh compilation")
+                _put_candidate(connection, {"record": request["completionCandidate"]})
+            if request.get("action") == "complete_probe":
+                result = request["report"]
+            else:
+                result = dispatch(connection, request)
+            for report in reports:
+                if not isinstance(report, dict) or set(report) != {"file", "value"}:
+                    raise ValueError("malformed completion report")
+                file = Path(report["file"])
+                _completion_path(file, database.parent, True)
+                # Existing reports cannot be overwritten or adopted by this run.
+                with file.open("x", encoding="utf-8", newline="\n") as stream:
+                    created.append(file)
+                    json.dump(report["value"], stream, indent=2)
+                    stream.write("\n")
+                _completion_path(file, database.parent)
+            _completion_controls(database)
+        return result
+    except BaseException:
+        # The transaction has rolled back. Remove only files exclusively created
+        # by this invocation, never a recursive directory or someone else's file.
+        for file in created:
+            _completion_path(file, database.parent)
+            file.unlink()
+        raise
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--database", required=True)
     parser.add_argument("--schema", required=True)
     parser.add_argument("--read-only", action="store_true")
     args = parser.parse_args()
-    database = Path(args.database).resolve()
+    import os
+    database = Path(os.path.abspath(args.database))
     schema = Path(args.schema).resolve()
     # Node sends UTF-8 bytes; Windows' redirected stdin may default to cp1252.
     # Do not let the ambient text-wrapper encoding alter content-addressed data.
     request = json.loads(sys.stdin.buffer.read().decode("utf-8", errors="strict"))
     _validate_unicode(request)
+    if "completionReports" in request:
+        _completion_controls(database)
+    else:
+        database = database.resolve()
     if not args.read_only:
         database.parent.mkdir(parents=True, exist_ok=True)
     if args.read_only and request.get("action") != "query":
@@ -849,8 +938,11 @@ def main() -> None:
         # SQLite continues to serialize the short transactional writes.
         connection.execute("PRAGMA journal_mode=WAL")
     try:
-        with connection:
-            result = dispatch(connection, request)
+        if "completionReports" in request:
+            result = _complete_transaction(connection, database, request)
+        else:
+            with connection:
+                result = dispatch(connection, request)
     finally:
         connection.close()
     json.dump({"ok": True, "result": result}, sys.stdout, sort_keys=True)

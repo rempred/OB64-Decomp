@@ -81,7 +81,7 @@ fs.writeFileSync(source, original);
 const shadow = path.join(sourceRoot, 'unit.h'); fs.writeFileSync(shadow, 'shadow'); assert.equal(run().stats.hits, 1); fs.unlinkSync(shadow); // Tier A has no include probes.
 let symlink = 'unavailable';
 const linkedCache = path.join(root, 'linked-cache');
-try { fs.symlinkSync(cacheRoot, linkedCache, 'junction'); const value = run({ cacheRoot: linkedCache }); assert.equal(value.stats.hits, 0); symlink = 'rejected'; }
+try { fs.symlinkSync(cacheRoot, linkedCache, 'junction'); assert.throws(() => run({ cacheRoot: linkedCache }), /unsafe entry/); symlink = 'rejected'; }
 catch (error) { if (!['EPERM', 'EACCES'].includes(error.code)) throw error; }
 finally { if (fs.existsSync(linkedCache)) fs.unlinkSync(linkedCache); }
 // Default policy still calls its fresh child process path; supplying a warm
@@ -212,4 +212,129 @@ for (const different of [false, true]) {
   } finally { fs.renameSync = rename; }
 }
 checks.push('atomic same-key winner byte equality; differing winner never substitutes for fresh result');
+// Cross-invocation reuse excludes one exact normalized execution tag. All other
+// environment names, including lookalikes, retain their original key effect.
+const stableEnvironment = { ...environment }, tagRoot = path.join(root, 'tag-reuse'), beforeTags = calls;
+const tagVariants = [{}, { CODEX_TOOL_CALL_ID: 'tag-A' }, { CODEX_TOOL_CALL_ID: 'tag-B' },
+  { CODEX_TOOL_CALL_ID: '' }, {}, ...(process.platform === 'win32' ? [{ codex_tool_call_id: 'tag-C' }] : [])];
+for (const [index, variant] of tagVariants.entries()) {
+  environment = { ...stableEnvironment, ...variant };
+  const value = run({ cacheRoot: tagRoot });
+  assert.equal(value.stats.hits, index ? 1 : 0); assert.deepEqual(value.result, cold.result);
+}
+assert.equal(calls, beforeTags + 1);
+for (const name of ['PATH', 'TMP', 'SOURCE_DATE_EPOCH', 'CODEX_OTHER', 'CODEX_TOOL_CALL_ID_SUFFIX',
+  'XCODEX_TOOL_CALL_ID', 'CODEX_TOOL_CALL_ID ', ' CODEX_TOOL_CALL_ID', 'CODEX_TOOL_CALL_ID\t']) {
+  environment = { ...stableEnvironment, CODEX_TOOL_CALL_ID: 'tag-A', [name]: 'changed' };
+  assert.equal(run({ cacheRoot: tagRoot }).stats.hits, 0, name);
+}
+environment = { ...stableEnvironment, CODEX_TOOL_CALL_ID: 'tag-A' };
+assert.equal(run({ cacheRoot: tagRoot }).stats.hits, 1);
+checks.push('tag absent/value/empty/Windows-case reuse; exact-name lookalikes and other entries invalidate');
+
+// Inspect the internal pure helper in a test-only VM; production exports stay
+// unchanged. The old algorithm is the oracle for the unfiltered identity.
+const vm = require('vm'), moduleFile = require.resolve('../tools/lib/diff_preprocess_cache');
+const moduleSource = fs.readFileSync(moduleFile, 'utf8'), moduleRequire = require('module').createRequire(moduleFile);
+const legacyHash = (env, platform, omitTag = false) => {
+  const entries = Object.entries(env).map(([name, value]) => [platform === 'win32' ? name.toUpperCase() : name, String(value)]);
+  entries.sort((a, b) => a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]));
+  return hash(Buffer.from(JSON.stringify(omitTag ? entries.filter(([name]) => name !== 'CODEX_TOOL_CALL_ID') : entries)));
+};
+const corpus = [{}, { PATH: 'fixture' }, { CODEX_TOOL_CALL_ID: undefined },
+  { Z: '', a: undefined, Path: 'a', PATH: 'b', CODEX_TOOL_CALL_ID: 'A', codex_tool_call_id: 'B' },
+  { CODEX_TOOL_CALL_ID: '', 'CODEX_TOOL_CALL_ID ': 'suffix', CODEX_TOOL_CALL_IC: 'before', CODEX_TOOL_CALL_IE: 'after' }];
+for (const platform of ['win32', 'linux']) {
+  const module = { exports: {} };
+  vm.runInNewContext(moduleSource + '\nmodule.exports.testHashes = environmentHashes;',
+    { module, require: moduleRequire, Buffer, process: { platform }, __filename: moduleFile });
+  for (const env of corpus) {
+    const actual = module.exports.testHashes(env);
+    assert.equal(actual.full, legacyHash(env, platform)); assert.equal(actual.reuse, legacyHash(env, platform, true));
+  }
+  assert.equal(module.exports.testHashes({ CODEX_TOOL_CALL_ID: 'A' }).reuse, legacyHash({}, platform));
+  assert.equal(module.exports.testHashes({ codex_tool_call_id: 'A' }).reuse === legacyHash({}, platform), platform === 'win32');
+}
+checks.push('full identity matches legacy normalization with duplicates/undefined/ordering on Windows and non-Windows');
+
+// A warm Tier-A use has one observation, and finish has one more. Getters catch
+// a second Object.entries pass even if getEnvironment itself were called once.
+let observations = 0, enumerations = 0;
+const countedEnvironment = { ...stableEnvironment, get CODEX_TOOL_CALL_ID() { enumerations++; return 'tag-A'; } };
+const counted = factory({ cacheRoot: tagRoot, getEnvironment() { observations++; return countedEnvironment; } });
+counted.preprocess(source, preprocessor(), []); assert.equal(counted.stats.hits, 1);
+assert.equal(observations, 1); assert.equal(enumerations, 1);
+counted.finish(); assert.equal(observations, 2); assert.equal(enumerations, 2);
+let changingObservations = 0;
+const changing = factory({ cacheRoot: tagRoot, getEnvironment: () => ({ ...stableEnvironment,
+  CODEX_TOOL_CALL_ID: ++changingObservations === 1 ? 'tag-A' : 'tag-B' }) });
+changing.preprocess(source, preprocessor(), []); assert.equal(changingObservations, 1);
+assert.throws(() => changing.finish(), /environment drift/); assert.equal(changingObservations, 2);
+checks.push('one environment call and normalized enumeration per observation; changing-provider finish rejects');
+
+const probe = path.join(sourceRoot, 'drift-probe.c'), unsupported = path.join(sourceRoot, 'drift-ineligible.c');
+fs.writeFileSync(probe, original); fs.writeFileSync(unsupported, 'int probe = __COUNTER__;\n');
+for (const mode of ['cached', 'requested', 'ineligible']) {
+  const rootForMode = path.join(root, 'tag-drift-' + mode);
+  environment = { ...stableEnvironment, CODEX_TOOL_CALL_ID: 'tag-A' };
+  const seed = factory({ cacheRoot: rootForMode }); seed.preprocess(probe, preprocessor(), []); seed.finish();
+  const extra = { cacheRoot: rootForMode, ...(mode === 'requested' ? {requestedSources: [source]} : {}) };
+  const activeSource = mode === 'ineligible' ? unsupported : source;
+  if (mode === 'cached') run(extra);
+  const invocation = factory(extra); invocation.preprocess(activeSource, preprocessor(), []);
+  const hits = invocation.stats.hits;
+  environment.CODEX_TOOL_CALL_ID = 'tag-B'; invocation.preprocess(activeSource, preprocessor(), []);
+  assert.equal(invocation.stats.hits, hits);
+  environment.CODEX_TOOL_CALL_ID = 'tag-A'; invocation.preprocess(probe, preprocessor(), []);
+  assert.equal(invocation.stats.hits, hits + 1, 'original full baseline must survive B: ' + mode);
+  assert.throws(() => invocation.finish(), /environment changed during invocation/, mode);
+}
+// Also restore A between the rejected input observation and fresh fallback's
+// next observation. The first B observation must already have made drift sticky.
+let observed = 0;
+const briefDrift = factory({ cacheRoot: tagRoot, getEnvironment: () => ({ ...stableEnvironment,
+  CODEX_TOOL_CALL_ID: ++observed === 2 ? 'tag-B' : 'tag-A' }) });
+briefDrift.preprocess(source, preprocessor(), []); briefDrift.preprocess(source, preprocessor(), []);
+assert.equal(observed, 3); briefDrift.preprocess(source, preprocessor(), []);
+assert.equal(briefDrift.stats.hits, 2); assert.throws(() => briefDrift.finish(), /environment changed during invocation/);
+checks.push('A-B-A remains fatal for cached/requested/ineligible paths, including restoration before fresh fallback');
+
+for (const [name, before, after] of [['change', 'A', 'B'], ['add', undefined, 'A'], ['remove', 'A', undefined], ['empty', 'A', ''], ['unempty', '', 'A']]) {
+  for (const mode of ['cold', 'cached', 'requested', 'ineligible']) {
+    environment = { ...stableEnvironment, ...(before === undefined ? {} : {CODEX_TOOL_CALL_ID: before}) };
+    const extra = {cacheRoot: path.join(root, 'finish-tag-' + name + '-' + mode), ...(mode === 'requested' ? {requestedSources: [source]} : {})};
+    if (mode === 'cached') run(extra);
+    const invocation = factory(extra); invocation.preprocess(mode === 'ineligible' ? unsupported : source, preprocessor(), []);
+    if (after === undefined) delete environment.CODEX_TOOL_CALL_ID; else environment.CODEX_TOOL_CALL_ID = after;
+    assert.throws(() => invocation.finish(), /environment drift/, name + '/' + mode);
+  }
+}
+checks.push('tag change/add/remove/empty/unempty rejects at finish on cold/hit/requested/ineligible paths');
+
+// Use the genuine default implementation-file set (no implementationFiles
+// override). Two actual module images at one owned path prove schema1/2 entries
+// cannot survive a change to that module's own bytes.
+environment = { ...stableEnvironment };
+const selfFile = path.join(root, 'default-cache-module.js'), selfRoot = path.join(root, 'default-self-key');
+const loadSelf = suffix => {
+  fs.writeFileSync(selfFile, moduleSource + '\n// test image ' + suffix + '\n');
+  const module = {exports: {}};
+  vm.runInNewContext(fs.readFileSync(selfFile, 'utf8'), {module, require: moduleRequire, Buffer, process, __filename: selfFile});
+  return module.exports.createDiffPreprocessCache;
+};
+const defaultOptions = {cacheRoot: selfRoot, preprocessSource: fresh, resolvePreprocessor: preprocessor, getEnvironment: () => environment};
+const runSelf = factory => { const cache = factory(defaultOptions); cache.preprocess(source, preprocessor(), []); cache.finish(); return cache.stats; };
+const oldFactory = loadSelf('old'); assert.equal(runSelf(oldFactory).published, 1); assert.equal(runSelf(oldFactory).hits, 1);
+const oldName = fs.readdirSync(selfRoot).find(name => /^[A-F0-9]{64}$/.test(name));
+const oldMetadata = JSON.parse(fs.readFileSync(path.join(selfRoot, oldName, 'metadata.json')));
+assert.equal(oldMetadata.schemaVersion, 1); assert.equal(oldMetadata.key.schemaVersion, 2);
+assert.deepEqual(oldMetadata.key.implementation.map(record => record.path), [selfFile, moduleRequire.resolve('./source_policy'), moduleRequire.resolve('./matching/input_set')]);
+const newFactory = loadSelf('new'); assert.equal(runSelf(newFactory).hits, 0); assert.equal(runSelf(newFactory).hits, 1);
+const newName = fs.readdirSync(selfRoot).find(name => /^[A-F0-9]{64}$/.test(name) && name !== oldName);
+const newMetadata = JSON.parse(fs.readFileSync(path.join(selfRoot, newName, 'metadata.json')));
+assert.notEqual(oldMetadata.key.implementation[0].sha256, newMetadata.key.implementation[0].sha256);
+const previousKey = structuredClone(oldMetadata.key); previousKey.implementation[0] = newMetadata.key.implementation[0];
+assert.deepEqual(previousKey, newMetadata.key); // Own image identity was the only key difference.
+checks.push('real default implementation self-key invalidates existing schema1/2 entry with all other key fields equal');
+environment = stableEnvironment;
 console.log(JSON.stringify({ status: 'pass', tiers: ['A', 'B'], checks, unsupportedFreshCases: 11, symlink, treeSymlink, output: root }, null, 2));

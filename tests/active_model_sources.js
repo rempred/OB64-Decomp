@@ -20,6 +20,10 @@ for (const text of texts) {
     assert.equal(indexed.has(symbol), old, symbol + ' ' + JSON.stringify(text)); symbolEquivalences++;
   }
 }
+// The shared reader is an explicit part of every affected call chain. Do not
+// strip generic frames: wrong helper/function/module paths must still reject.
+const inputReadFrame = ['read', 'matching/input_set.js'];
+const bootReadFrames = [inputReadFrame, ['read', 'boot_initialized_data.js']];
 // Atomic owners independently authenticate each original fragment at these bounded sites.
 const atomicReadChains = {
   atomicCensus: [['assertCensus', 'atomic_owner_union.js']],
@@ -41,7 +45,7 @@ function atomicReadSite(stack) {
   const frames = readFrames(stack);
   const frame = ([name, file]) => [name, file === '<anonymous>' ? file : path.join(p7.ROOT, 'tools/lib', file)];
   for (const [site, chain] of Object.entries(atomicReadChains)) {
-    const expected = [['sha256File', 'phase7_conventional.js'], ['authenticate', 'atomic_owner_union.js'],
+    const expected = [inputReadFrame, ['sha256File', 'phase7_conventional.js'], ['authenticate', 'atomic_owner_union.js'],
       ...chain, ['loadActiveTargetModelInternal', 'active_targets.js']].map(frame);
     if (expected.every((value, i) => frames[i + 1]?.[0] === value[0] && frames[i + 1]?.[1] === value[1])) return site;
   }
@@ -54,7 +58,7 @@ const interiorTail = [['interiorOriginal', 'compilation_groups.js'], ['', 'compi
   ['bindInterior', 'compilation_groups.js'], ['bind', 'compilation_groups.js'],
   ['loadActiveTargetModelInternal', 'active_targets.js']];
 const interiorReadChains = {
-  interiorOriginalHash: [['sha256File', 'phase7_conventional.js'], ...interiorTail],
+  interiorOriginalHash: [inputReadFrame, ['sha256File', 'phase7_conventional.js'], ...interiorTail],
   interiorOriginalText: interiorTail,
 };
 function interiorReadSite(stack) {
@@ -71,28 +75,29 @@ const singleTail = [['singleFragmentCanonical', 'compilation_groups.js'],
   ['loadActiveTargetModelInternal', 'active_targets.js']];
 const literalBindTail = [['literalRunBindings', 'compilation_groups.js'], ['bindLiteralRun', 'compilation_groups.js'],
   ['bind', 'compilation_groups.js'], ['loadActiveTargetModelInternal', 'active_targets.js']];
-const literalFinishTail = [['literalRunBindings', 'compilation_groups.js'], ['authenticateLiteralRun', 'compilation_groups.js'],
+const literalFinishTail = [['literalRunBindings', 'compilation_groups.js'], ['', 'compilation_groups.js'],
+  ['measureEvidence', 'text_contract.js'], ['authenticateLiteralRun', 'compilation_groups.js'],
   ['finishLiteralRunBindings', 'compilation_groups.js'], ['loadActiveTargetModelInternal', 'active_targets.js']];
-const registryRead = [['sha256File', 'phase7_conventional.js'], ['', 'logical_functions.js'],
+const registryRead = [inputReadFrame, ['sha256File', 'phase7_conventional.js'], ['', 'logical_functions.js'],
   ['Array.map', '<anonymous>'], ['loadRegistry', 'logical_functions.js']];
 const authorityReadChains = {
-  initialAcceptedModel: [['loadAcceptedModel', 'phase7_conventional.js'], ['loadActiveTargetModelInternal', 'active_targets.js']],
-  bootInitializedDataProof: [['loadProof', 'boot_initialized_data.js'], ['loadAcceptedModel', 'phase7_conventional.js'],
+  initialAcceptedModel: [inputReadFrame, ['loadAcceptedModel', 'phase7_conventional.js'], ['loadActiveTargetModelInternal', 'active_targets.js']],
+  bootInitializedDataProof: [...bootReadFrames, ['loadProof', 'boot_initialized_data.js'], ['loadAcceptedModel', 'phase7_conventional.js'],
     ['loadActiveTargetModelInternal', 'active_targets.js']],
-  singleBoot: [['loadProof', 'boot_initialized_data.js'], ['loadAcceptedModel', 'phase7_conventional.js'], ...singleTail],
-  singleModel: [['loadAcceptedModel', 'phase7_conventional.js'], ...singleTail],
-  singleOriginal: singleTail,
+  singleBoot: [...bootReadFrames, ['loadProof', 'boot_initialized_data.js'], ['loadAcceptedModel', 'phase7_conventional.js'], ...singleTail],
+  singleModel: [inputReadFrame, ['loadAcceptedModel', 'phase7_conventional.js'], ...singleTail],
+  singleOriginal: [inputReadFrame, ...singleTail],
   singleRegistry: [...registryRead, ...singleTail],
-  singleActivation: [['assertActivationCompatible', 'logical_functions.js'], ...singleTail],
-  singlePair: [['sha256File', 'phase7_conventional.js'], ['', 'active_targets.js'], ['Array.map', '<anonymous>'],
+  singleActivation: [inputReadFrame, ['assertActivationCompatible', 'logical_functions.js'], ...singleTail],
+  singlePair: [inputReadFrame, ['sha256File', 'phase7_conventional.js'], ['', 'active_targets.js'], ['Array.map', '<anonymous>'],
     ['resolveAuxiliarySectionContracts', 'active_targets.js'], ...singleTail],
-  singleIdentity: [['sha256File', 'phase7_conventional.js'], ['', 'compilation_groups.js'], ['Array.map', '<anonymous>'], ...singleTail],
+  singleIdentity: [inputReadFrame, ['sha256File', 'phase7_conventional.js'], ['', 'compilation_groups.js'], ['Array.map', '<anonymous>'], ...singleTail],
   literalBindRegistry: [...registryRead, ...literalBindTail],
-  literalBindHash: [['sha256File', 'phase7_conventional.js'], ...literalBindTail],
-  literalBindOriginal: literalBindTail,
+  literalBindHash: [inputReadFrame, ['sha256File', 'phase7_conventional.js'], ...literalBindTail],
+  literalBindOriginal: [inputReadFrame, ...literalBindTail],
   literalFinishRegistry: [...registryRead, ...literalFinishTail],
-  literalFinishHash: [['sha256File', 'phase7_conventional.js'], ...literalFinishTail],
-  literalFinishOriginal: literalFinishTail,
+  literalFinishHash: [inputReadFrame, ['sha256File', 'phase7_conventional.js'], ...literalFinishTail],
+  literalFinishOriginal: [inputReadFrame, ...literalFinishTail],
   mixedOriginal: [['bindMixed', 'retained_literal_references.js'], ['finishFragmentBindings', 'compilation_groups.js'],
     ['validateAuxiliaryOwnerGroups', 'active_targets.js'], ['loadActiveTargetModelInternal', 'active_targets.js']],
 };
@@ -175,6 +180,7 @@ function expectedInteriorReads(context) {
 }
 // An authentication caller must not hide behind the generic retained-projection category.
 const unknownAtomicStack = 'Error\n    at fs.readFileSync (test.js:1:1)\n'
+  + `    at Object.read (${path.join(p7.ROOT, 'tools/lib/matching/input_set.js')}:1:1)\n`
   + `    at Object.sha256File (${path.join(p7.ROOT, 'tools/lib/phase7_conventional.js')}:1:1)\n`
   + `    at Object.authenticate (${path.join(p7.ROOT, 'tools/lib/atomic_owner_union.js')}:1:1)\n`
   + `    at unexpectedCaller (${path.join(p7.ROOT, 'tools/lib/atomic_owner_union.js')}:1:1)\n`

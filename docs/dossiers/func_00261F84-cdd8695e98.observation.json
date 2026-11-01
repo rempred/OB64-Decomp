@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CDD8695E984C0A27B2FBA537E93D42BAE4DBC5A47E8BD236663D923A615F631E",
+  "observationId": "CF752D60940B1115E5E1358D5FDED7D352F5FEAE5B6DF7E10D91BED77C282548",
+  "symbol": "func_00261F84",
+  "authored": {
+    "context": "E03 full original body and source coverage checked; native results use selected mi15 bounded diagnostic model. Import authenticates source/context in separate normal research model; no fabricated cross-model parent linkage. Exact before/after sources and diagnostic artifacts referenced. Shared publication preserves this historical source and its explicit source/control references. The private normal-model research import was uncompiled; selected-mi15 native reports retain their original identities. No cross-model parent relationship is invented.",
+    "effects": [
+      "numeric-table-induction",
+      "nested-array-strength-reduction",
+      "loop-update-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "B06C9E7250A9059D31967A2E4DD610DC787044832550C5A61FD343ACF9E1F718",
+      "sourceSha256": "12FB1B33B6E8725A02A39235E35B8E8364706A7F1745DE09EB50FC7805166A65"
+    },
+    "label": "261f84-indexing-and-loop-update",
+    "observedEffect": "Direct pair indexing removes table pointer/end saved registers and restores frame64 while initially worsening score; global output indexing induces separate outer and inner output cursors and guarded count snapshots, restores736B/97.5 score; loop-update order resolves four register/scheduling fields. Final raw-relocation-masked exact, one full body. Controls preserve all phases and are not selected as best.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e03/experiments/261F84-direct-pairs.c",
+        "sha256": "F97FA41A0B32B6717309B4B6306AC7F946A346756DA448015AE18F725953CC41"
+      },
+      {
+        "path": "build/matching/ae-e03/experiments/261F84-global-output.c",
+        "sha256": "A68656C33CB5818196BBFB05994BDB078FB4EC554F999BFE203F1A6D9ED3477F"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/806CA911148C4FDDEC1DC3F4FA7ADD3A40DF5DF2E3D108062D5DACDA1BC2B05D/workbench-report.json",
+        "sha256": "99791E923306352E55F2ABFF2207EA8B0CD498F666D078457DB159A828156633"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/9716F3347F8707EE3D7244471FC4429AD38AAA4740142003E2DAABF22592DAD6/workbench-report.json",
+        "sha256": "67313B22632DE2BAF3658BC4169B09C4B62FD213D5406F705532139C958451F6"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/3729B2D5773BFBBAED37A4D8087149F312FD7E62D2D876AF39F2FE9F7E804E9E/workbench-report.json",
+        "sha256": "90562F882CA234BD3C39B7187D4AA5C058F72D1A688668A7A5FCC5009313F3EF"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_00261F84/candidates/155872F4F0F1474B9E0FC47816FE2FFE3F1BC47D7BC83AF9299B89D21E37CF9A.c",
+        "sha256": "12FB1B33B6E8725A02A39235E35B8E8364706A7F1745DE09EB50FC7805166A65"
+      },
+      {
+        "path": "build/matching/ae-e03/import-261f84-indexing-and-loop-update.json",
+        "sha256": "08BF3AD41C4B8824FA819225CBF065CCC349969BD8E9BBB7C980474EF8DC61A2"
+      },
+      {
+        "path": "build/matching/ae-e03/observation-261f84-indexing-and-loop-update.json",
+        "sha256": "7EB0C7A73392B969BB81E8EF045541092E66B2810684852005C7921F08F0C6BA"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/wave-acceptance.json",
+        "sha256": "671C2EB76C2E42663CD749938FD1BB6F3F15A5CC81B99CE364235134E8A8917A"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/complete-wave-preparation.json",
+        "sha256": "E683B204B5CAB1C22B27F0371B2731CE19879AF8C0B7826CD89C2295ABC49A5E"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/source-preparation-r3/SOURCE-PREPARATION.json",
+        "sha256": "E264BB8967288136D06A806F913B7AA5C5CBBAFDB9666FFF5BB9D4DBA48802FB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM permits symbolic-object evidence only. Actual provider addresses/REL, sole linked owner/placement/complete target bytes and whole-wave full-ROM verification remain pending. This is the original diagnostic limitation. The separately reconciled canonical E03 descendant now passes the complete wave verifier; that acceptance does not certify historical controls or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use three-element direct command-pair indexing, global output[used] stores in both grouping loops, then record++ before index++ in the grouping-loop update."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 5251,
+      "sha256": "B06C9E7250A9059D31967A2E4DD610DC787044832550C5A61FD343ACF9E1F718"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "12FB1B33B6E8725A02A39235E35B8E8364706A7F1745DE09EB50FC7805166A65"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00261F84-cdd8695e98.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

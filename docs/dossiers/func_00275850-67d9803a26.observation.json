@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "67D9803A26A82A47C97C82DB1D4FE3D50F23BECA06802C95225FFF4C1CBC128D",
+  "observationId": "3918631B2BDABA9E044058E763420BD369B3E95863DB399F243F16D80592D207",
+  "symbol": "func_00275850",
+  "authored": {
+    "context": "Complete680-byte func_00275850/frame0 including signed count gate, orientation, all four vertices, cursor updates and initial-cursor return. Source62 has matching opcode/order forms but11 nonoperand words differ through index/a register exchange. Shared publication preserves the historical source and its explicit controls. Selected-mi14/mi15/mi16 reports retain their actual identities; this current-model research import is uncompiled and creates no cross-model parent relationship.",
+    "effects": [
+      "single-pass-wrapper-removal",
+      "real-index-and-coordinate-phases",
+      "local-copy-preferences"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        }
+      ],
+      "expandedSha256": "13BD36EBCA11B57F1E09AA3BBB1F6E74B8D41DBDAA835EA5B85D2DEEA103A610",
+      "sourceSha256": "CEBDA3E2F8B1324ABF68B1817A88256C1789C95829E6289861359ECD94C9B3D4"
+    },
+    "label": "plain-field-blocks-retain-coordinate-and-index-allocation",
+    "observedEffect": "62 local dump assigns encoded-a register9 and full index register10 (9 references over72 versus98 instructions).67 changes preferences to index9/a10 but swaps b/c and one scheduled pair; its dump confirms new preferences.68/plain-block final is PURE_C680/frame0/rawRelocationMaskedExact=true on selected mi15. No artificial reads, calls, padding or pressure. Original source and complete optimizer causality are not established. Contrast52/65: in-place/union encoding restores index9 but swaps a/constant255;66 inline shift unchanged.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p06/75850-62.json",
+        "sha256": "A0D892AA1416AB80536298B408C6C8BB3C2541B7DD5139FCB6743598D92A30C5"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00275850/candidates/0307F4089DC4DBA5767806A63E95DE82EFAED728241F80B10AA357190E83EE4A.c",
+        "sha256": "C8CDE32D28ACD9C474F67FBFE1EBEF548DB34CB16B4D01A9A747C61684691684"
+      },
+      {
+        "path": "build/matching/ae-p06/75850-67.json",
+        "sha256": "C745CBD2217FEC47DCA8D9FB2EA5B93F53AD55AA462179B321F61DDB4CF31DAF"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00275850/candidates/0575486C75466E1D5257F6BBDF09D17AC3CE8343FB979476E650B5C9CB354B6A.c",
+        "sha256": "21CCBF340342CB0F6EC5FDECC30AA583EF374ACCFCCBC7DF49EA351BC4E551AD"
+      },
+      {
+        "path": "build/matching/ae-p06/75850-68.json",
+        "sha256": "3CD9D7984397C5CDEEBEAE6850CFF0A3778387F352059274161E153BFF716356"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00275850/candidates/BE3AD1B34E23512932D7C898FA18D6D3434231DA2715BB15CD8BA84E848EEC48.c",
+        "sha256": "521AA780853823BD6D45F46F9237ADC03E9D343534A6BE9783F6D166FC2B2709"
+      },
+      {
+        "path": "build/matching/ae-p06/75850-final.json",
+        "sha256": "15C8738B02894376E9B264D5C39CB5ACECFA4154BCBBE4E89D36E509CF6D28BB"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00275850/candidates/7422F709C759DA8C0D38C2A9F6B3498929D0DB94B074017B78131605F0E59077.c",
+        "sha256": "EA0DEE85C3EA4EBF9BDB5AF99E14893B39437F912C8FB085F080F8476E96F6B1"
+      },
+      {
+        "path": "build/matching/ae-p06/75850-probe62.json",
+        "sha256": "5FEB46BCD42271B1548D40929FDAEDCE86B500586725127CFDC68AA4533DAE88"
+      },
+      {
+        "path": "build/matching/ae-p06/75850-probe67.json",
+        "sha256": "0624A441CE392E41EAD19952C157DB8B5641CFD74147D6B6DD0F4DEB2F005E6F"
+      },
+      {
+        "path": "build/matching/ae-p06/75850-assessment.md",
+        "sha256": "9FEF82F618106207DABF7ED80930DD7E36F8D6E6F1A3C248469D537F98691BC3"
+      },
+      {
+        "path": "build/matching/ae-p06/func_00275850.c",
+        "sha256": "EA0DEE85C3EA4EBF9BDB5AF99E14893B39437F912C8FB085F080F8476E96F6B1"
+      },
+      {
+        "path": "build/matching/ae-p06/observations/75850-plain-blocks.json",
+        "sha256": "0B71E93C5966FE7D0A148946AEC94C06940217A0F09B4CFDFC6A3135F4F05476"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/wave-acceptance.json",
+        "sha256": "DFA77C4AC403B59574D04E0057B2A5A73EAE5B89A9EBECA674A7C2FCF9EC08A1"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/source-preparation/SOURCE-PREPARATION.json",
+        "sha256": "001F065D767A07E243DCBF0128DCB1924B224DFF89CB4539F9307ECD0EFA1C35"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/return-view-reconciliation.json",
+        "sha256": "70B497D90C0375A55B3A661B142D7870DB70F2520668B60307B91889A346733A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner has no private linked diagnostic. Canonical symbol/interface reconciliation, actual relocations, sole C ownership, placement, target bytes and complete-wave full-ROM acceptance remain required. The separately reconciled P06 descendant now passes the complete-wave canonical verifier. That acceptance does not certify the historical controls or establish the original source spelling.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Preserve real current/previous index and coordinate-view phases plus XYZ-before-cursor-commit ordering.67 removes do/while(0) wrappers from endpoint vertex writes;68 removes remaining wrappers, retaining all real field writes in plain scoped blocks."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      }
+    ],
+    "expanded": {
+      "bytes": 3563,
+      "sha256": "13BD36EBCA11B57F1E09AA3BBB1F6E74B8D41DBDAA835EA5B85D2DEEA103A610"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CEBDA3E2F8B1324ABF68B1817A88256C1789C95829E6289861359ECD94C9B3D4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00275850-67d9803a26.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

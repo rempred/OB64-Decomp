@@ -3,10 +3,11 @@
 const fs = require('fs');
 const path = require('path');
 const { ROOT, sha256File } = require('../phase7_conventional');
-const { digest, canonicalJson, assertScratchCapability } = require('./target_model');
-const { recordCandidate, candidateRecord, MATCHING_ROOT } = require('./compiler');
+const { digest, canonicalJson, assertScratchCapability, scratchCapability, loadWorkbenchModel, resolveTarget, targetRecord } = require('./target_model');
+const { recordCandidate, candidateRecord, sourceSnapshot, syncTargets, MATCHING_ROOT } = require('./compiler');
 const { requestStore } = require('./store');
 const policy = require('../source_policy');
+const inputSet = require('./input_set');
 
 const same = (a, b) => canonicalJson(a) === canonicalJson(b);
 const hash = value => typeof value === 'string' && /^[A-F0-9]{64}$/.test(value);
@@ -76,8 +77,55 @@ function validateRelations(target, observation, options, candidateId) {
     if(!candidate||candidate.target_id!==target.targetId) throw new Error('research relation must reference an existing candidate of the same target');
   }
 }
+// Publication provenance is private to research. It never authorizes scratch codegen.
+function publicationBinding(workbench, target, options) {
+  for (const inputs of [options.inputs, ...[workbench,workbench?.model,target,target?.model].map(value=>inputSet.context(value))]) {
+    if (inputSet.isResearch(inputs) || inputSet.isLiveResearch(inputs) || inputSet.isDiagnostic(inputs))
+      throw new Error('research publication requires current production inputs');
+  }
+  const fresh = loadWorkbenchModel(), selected = resolveTarget(fresh, target.requestedSymbol || target.symbol);
+  if (!same(targetRecord(target, ''), targetRecord(selected, '')) || !target.expectedBytes.equals(selected.expectedBytes))
+    throw new Error('research publication target identity drift');
+  if (scratchCapability(fresh, selected).code !== 'physical-producer-required')
+    throw new Error('research publication requires the current complete multi-owner producer');
+  const overlapping = [...fresh.activeTargetsBySymbol.values()].filter(active=>active.romStartNumber < selected.romEndExclusive && active.romEndNumber > selected.romStart);
+  if (overlapping.length !== 1) throw new Error('research publication producer is ambiguous');
+  const active = overlapping[0], contract = active.multiOwnerContract;
+  if (!active.multiOwner || !contract || active.compilationGroup || active.compilationGroupId || active.atomicText
+      || active.auxiliaryProjection || active.retainedLiteralReferences || active.auxiliarySections?.length
+      || active.nativeTextTail || selected.romStart !== active.romStartNumber || selected.romEndExclusive !== active.romEndNumber
+      || selected.vramStart !== active.vramStartNumber || selected.vramEndExclusive !== active.vramEndNumber
+      || selected.bytes !== active.bytes || selected.expectedBytesSha256 !== active.expectedTextSha256
+      || digest(selected.expectedBytes) !== active.expectedTextSha256)
+    throw new Error('research publication requires one full standalone multi-owner envelope');
+  const fragments = active.textOwners.map(owner=>{
+    const slice = owner.row.slices.find(value=>value.sectionName===owner.sectionName);
+    return {rowIndex:owner.rowIndex,romStart:owner.romStartNumber,romEndExclusive:owner.romEndNumber,
+      ownerOffset:0,bytes:owner.bytes,vramStart:owner.vramStartNumber,sectionName:owner.sectionName,
+      placementKind:slice.placementKind,overlayDescriptorId:slice.overlayDescriptorId,loadSlabId:slice.loadSlabId,
+      file:owner.originalAssembly,sha256:owner.originalAssemblySha256};
+  });
+  if (!same(selected.logicalFragments,fragments)) throw new Error('research publication full-owner fragment mismatch');
+  const project = producer=>({symbol:producer.symbol,source:producer.source,sourceSha256:producer.sourceSha256,
+    contract:Object.fromEntries(['symbol','ownerRows','romStart','romEndExclusive','vramStart','vramEndExclusive','expectedTextSha256'].map(key=>[key,producer.multiOwnerContract?.[key]])),
+    owners:producer.textOwners?.map(owner=>Object.fromEntries(['ownerIndex','logicalOffset','logicalEnd','primaryId','rowIndex','chunkIndex','sectionName','symbol',
+      'originalAssembly','originalAssemblySha256','romStartNumber','romEndNumber','vramStartNumber','vramEndNumber','bytes','expectedTextSha256'].map(key=>[key,owner[key]])))});
+  const producer = project(active), supplied = workbench.activeTargetsBySymbol?.get(active.symbol.toLowerCase());
+  if (!supplied || !same(project(supplied),producer)) throw new Error('research publication supplied producer identity drift');
+  return {modelId:selected.modelId,targetId:selected.targetId,...producer};
+}
+function recordPublication(workbench,target,sourceText,options,binding) {
+  if (options.syncTargets !== false) syncTargets(workbench,options.storeOptions || {});
+  const candidate = candidateRecord(target,sourceText,options);
+  if (!same(publicationBinding(workbench,target,options),binding)) throw new Error('research publication producer changed before recording');
+  if (!options.deferCompletion) store(options,{action:'put_candidate',record:candidate});
+  // As in recordCandidate, snapshot I/O failure after insertion is retryable and nonaccepting.
+  const sourceFile = sourceSnapshot(target,sourceText,candidate.candidateId,options.matchingRoot || MATCHING_ROOT);
+  return {candidate,sourceFile};
+}
 function importResearch(workbench, target, sourceFile, observation, options = {}) {
-  assertScratchCapability(workbench,target);
+  const binding = scratchCapability(workbench,target).supported ? null : publicationBinding(workbench,target,options);
+  if (!binding) assertScratchCapability(workbench,target);
   validateObservation(observation);
   const file=regular(sourceFile), bytes=fs.readFileSync(file), sourceText=bytes.toString('utf8');
   if(!Buffer.from(sourceText,'utf8').equals(bytes)) throw new Error('research source is not exact UTF-8');
@@ -85,11 +133,13 @@ function importResearch(workbench, target, sourceFile, observation, options = {}
   const classification=policy.classifySource(file);
   if(options.privateWorkspace===true)require('./private_inputs').assertPrivateClassification(classification);
   authenticateClassification(classification,observation);
-  const metadata={sourcePath:relative(file),research:{schemaVersion:1,authored:observation,
+  if (binding && (digest(bytes)!==classification.sourceSha256 || digest(bytes)!==observation.expected.sourceSha256))
+    throw new Error('research publication buffered source identity drift');
+  const metadata={sourcePath:relative(file),...(binding?{publicationProducer:binding}:{}),research:{schemaVersion:1,authored:observation,
     authenticated:{sourceSha256:classification.sourceSha256,expanded:classification.compilationInput,
       dependencies:classification.dependencies,sourceClass:classification.class,preprocessor:classification.preprocessor}}};
-  const result=recordCandidate(workbench,target,sourceText,{...options,origin:'research-import',variant:observation.label,
-    parentCandidateId:observation.parentCandidateId,metadata});
+  const recordOptions={...options,origin:'research-import',variant:observation.label,parentCandidateId:observation.parentCandidateId,metadata};
+  const result=binding?recordPublication(workbench,target,sourceText,recordOptions,binding):recordCandidate(workbench,target,sourceText,recordOptions);
   return {candidateId:result.candidate.candidateId,observationId:result.candidate.observationId,
     sourceSha256:classification.sourceSha256,expandedSha256:classification.compilationInput.sha256,
     sourceClass:classification.class,compiled:false,acceptanceEligible:false};
@@ -106,10 +156,13 @@ function preserveResearch(workbench,candidateId,observationId,note,options={}) {
   const target=[...workbench.targets,...(workbench.logicalTargets||[])].find(t=>t.targetId===candidate?.target_id);
   if(!target||candidateRecord(target,candidate.source_text).candidateId!==candidateId
     ||digest(Buffer.from(candidate.source_text,'utf8'))!==candidate.source_sha256) throw new Error('research candidate identity is stale or malformed');
-  assertScratchCapability(workbench,target);
   const records=store(options,{action:'query',name:'research_observations',args:{targetId:target.targetId,observationId,limit:1}});
   const selected=records[0];
   if(!selected||selected.candidate_id!==candidateId) throw new Error('selected research observation does not belong to this candidate');
+  const bound=Object.hasOwn(selected.metadata || {},'publicationProducer');
+  const binding=bound?publicationBinding(workbench,target,options):null;
+  if (bound) {if (!same(binding,selected.metadata.publicationProducer)) throw new Error('research publication stored producer binding drift');}
+  else assertScratchCapability(workbench,target);
   const research=selected.metadata?.research, authored=validateObservation(research?.authored);
   validateRelations(target,authored,options,candidateId);
   if(selected.variant!==authored.label||selected.parent_candidate_id!==authored.parentCandidateId||!canonicalPath(selected.metadata.sourcePath)) throw new Error('research observation provenance mismatch');
@@ -142,6 +195,7 @@ function preserveResearch(workbench,candidateId,observationId,note,options={}) {
   let published=false;
   try {
     const archived=policy.classifySource(path.join(ROOT,paths.source)); authenticateClassification(archived,authored,research.authenticated.preprocessor);
+    if (bound && !same(publicationBinding(workbench,target,options),binding)) throw new Error('research publication producer changed before export');
     const exported={schemaVersion:1,candidateId,observationId,symbol:target.symbol,authored,
       authenticated:research.authenticated,source:paths.source,
       boundary:'Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance.'};
@@ -151,7 +205,7 @@ function preserveResearch(workbench,candidateId,observationId,note,options={}) {
       `- Candidate: \`${candidateId}\``,`- Observation: \`${observationId}\``,`- Source: [exact C](../archive/matching-c-candidates/${path.basename(paths.source)})`,
       `- Metadata: [curated observation](${path.basename(paths.observation)})`,'',note,'','## Source context', '',authored.context,'',authored.sourceChange,'','## Recorded observation','',authored.observedEffect,'','## Remaining failure','',authored.remainingFailure,'',
       `Research role: ${authored.role}; selected emitted best: ${authored.selectedBest}.`,'',
-      `Replay: \`node tools/match.js probe ${target.symbol} --source ${paths.source}\`. Check the metadata's expanded/header identities before interpreting its dumps.`,''];
+      bound ? 'Scratch replay is unsupported for this active multi-owner selection. Use the complete canonical producer workflow. The archive retains the original observation ID label but does not prove current producer eligibility; re-import requires fresh admission.' : `Replay: \`node tools/match.js probe ${target.symbol} --source ${paths.source}\`. Check the metadata's expanded/header identities before interpreting its dumps.`,''];
     fs.writeFileSync(path.join(ROOT,paths.dossier),lines.join('\n'),{flag:'wx'});created.push(paths.dossier);published=true;
   } finally {
     if(!published)for(const file of created)if(fs.existsSync(path.join(ROOT,file)))fs.unlinkSync(regular(path.join(ROOT,file)));

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A06E8793610A432337964EF8D17E6ABEC681F9417B47C9636A04BC009B2F078C",
+  "observationId": "34D3077B6879276C02F0AA07C1B553F55708D4523E7707E5386D8B0962819404",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Current complete D14C best0BC18188 has97 masked words: same-block context/extra phases restore13/V0 but move the context read ahead of argument stores. Real arg7 phase4C44 gives103, and time-result phaseCE7C gives105; both are unselected.",
+    "effects": [
+      "real-local-reuse",
+      "loop-hoisting",
+      "copy-propagation",
+      "single-set-birth",
+      "register-allocation",
+      "argument-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "453CFE8BDD7CA10210BF9ED379AF21F55D9332A978D00B9CBF045348712162EE",
+      "sourceSha256": "2CBEA1E63F133DC6031E842823FC6D6152008F1C24105542E17249C486500540"
+    },
+    "label": "real-buffer-copy-extra-phases-close-mode8-and10-forms-and-improve-best",
+    "observedEffect": "A06E8793 is PURE_C6844/frame616/177 text relocations/all131 calls in original external-name order; complete table evidence equals9F9 (64 bytes/alignment8/15R). Raw symbolic250words/608bytes; actual-relocation-field masking improves97 to73 words. No mismatched instruction forms remain in either mode8/10 interval1150..1330. Own probe63A80CEB binds users707/741 and13 setters2958/3166: two SETs each survive RTL/CSE/LOOP/FLOW, COMBINE leaves one13 SET, FLOW local177/191 (8refs/live12/deaths2), LREG still local (8refs/live4), SCHED7f000001 birth priority, GREG13/V0. Native setup also has context/V1 and buffer/A5, with retail argument-store order. The source-supported copy phase demonstrates this exact mechanism without identifying unique original source.",
+    "parentCandidateId": "0BC18188C009F94A09B67F4D605ABE85036D3D1CB96F00BA27C38225278634D6",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-local-buffer-extra-phases-watch.json",
+        "sha256": "9B90CB4DDF06DAE5559E46FF5EFB077C2619FCC6BDB03E89040C787C655F9D4E"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-local-buffer-extra-phases-measurement.json",
+        "sha256": "338CF185D5B4959EC2EC0446ED11F2FA08CF8802000443CAF03899EC7B25A368"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/63A80CEB3EF60DF23EEADEE282F133BED5C13B4BCBAC8EC630AEC778E73BC0B5/probe-report.json",
+        "sha256": "468924AB8CA1FAC5D259E0B9F56974D0874D45D5D34075D54DBBBCCA379E7A58"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-local-time-extra-phases-watch.json",
+        "sha256": "58794809F208B63A23A905167514A60043B7F0BAF43B4292D140271BB1EE68F1"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-local-time-extra-phases-measurement.json",
+        "sha256": "E6D57AF5C62339615AF1EE17F9FC3F719CC28B6A86F52CEEF1323AEFDDAE9607"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-0bc18188c0.observation.json",
+        "sha256": "F6E8962348A9801C2ED24372501621393463E857134CAFE4896B35DB458013F6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "73 masked words remain: type5 sum2, other-mode ordering/scratch13 and output/terminal58. Inactive ASM owner, actual relocation/addend placement, separate table/interior/consumer and whole17/full-ROM gates remain open. No linked or matching acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace only those two same-block context captures with the actual prefix.buffer[0] read. Retain that value by a real copy for the existing temp_s7_700+buffer argument expression, then overwrite the extra scalar with13. Leave the context byte directly in its original eighth-argument expression. No read, call, guard, arithmetic or argument value is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40992,
+      "sha256": "453CFE8BDD7CA10210BF9ED379AF21F55D9332A978D00B9CBF045348712162EE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2CBEA1E63F133DC6031E842823FC6D6152008F1C24105542E17249C486500540"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0022D14C-a06e879361.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

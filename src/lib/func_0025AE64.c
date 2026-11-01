@@ -1,3 +1,5 @@
+#include "game/effect_commands_e09.h"
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -16,11 +18,11 @@ extern u8 *p01_pointer_80220F6C;
 extern P05FactoryRecord D_8020A0E2[];
 extern u8 D_8020A15C[];
 extern void func_00262B68(void);
-extern u32 func_0024BCA0(u32);
-extern void func_0024DA50(u8, void *);
-extern void func_0024DC20(u8, void *, s32);
-extern void func_0024E9BC(s32, u8, s32);
-extern void func_0025D678(void *);
+
+
+
+
+
 extern void *func_0020C478(u32);
 extern s32 func_0020C24C(void *);
 extern void func_0020BDCC(s16, s32);
@@ -57,7 +59,7 @@ s32 func_0025AE64(u16 message, P05TableRootState *state)
 
         func_0025D678(D_8020A15C);
         func_0024DA50(state->value_0C, record);
-        func_0024DC20(state->value_0C, record + 4, 0xB);
+        func_0024DC20(state->value_0C, (struct Dc20InputRecord *)(record + 4), 0xB);
         func_00262C64(2, 0x1003);
         break;
     }

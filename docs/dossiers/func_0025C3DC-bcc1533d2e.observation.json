@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BCC1533D2E84A62F25611FC91DCA82BC5DC764C34291655E235F783DEAEA094F",
+  "observationId": "B2E3BA0543448D9DDD86A41C58B6485A050EF41747092230B908291DD5BEDF79",
+  "symbol": "func_0025C3DC",
+  "authored": {
+    "context": "Source-bound E08 compiler observation independently checked against the saved original/native source pair. Numeric access views do not prove full allocation extents or semantics. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E08 wave report.",
+    "effects": [
+      "source-context",
+      "code-generation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "2CEC88A61131E54318792ABE4FAAD66B8296262433123FD4918A58C1B6F3CA24",
+      "sourceSha256": "37BB393A67021F1103101B8C6966EB0B97422D9ED5BC6AF6607B2F0FB440A1A0"
+    },
+    "label": "e08-c3dc-guarded-loop-and-local-lifetimes",
+    "observedEffect": "Frame shrinks88 to40 while complete436-byte body coverage remains. Shared cursor lifetimes still disagree with original case-specific registers; this intermediate remains nonexact.",
+    "parentCandidateId": "AD6DB65684768B2216E6933080E6E4DA062BB07EA74696FD195BFA7116F0BC48",
+    "references": [
+      {
+        "path": "build/matching/ae-e08/targets/func_0025C3DC/candidates/AE3B05DC0937E40674447E6C3DF9B2961D0B00F3E221840DEA6CB5F94B67D95A.c",
+        "sha256": "5C863FB2E4E34C10A101B7526AF1FC24E5633C810E001A41A1477EBB9C0B0B63"
+      },
+      {
+        "path": "build/matching/ae-e08/c3dc-watch-02-mi14.json",
+        "sha256": "AA865AF4DADA708B6576E1EBE073999047022DF4751B70E6C3DE07079A7D1391"
+      },
+      {
+        "path": "build/matching/ae-e08/runs/4A42CF7A6F254C4DF0AE76A246518D18E89C96CDCBEF99F4114856EEE98424F6/workbench-report.json",
+        "sha256": "20286436741572CFA5CACD5C450A92DA690377A6C693CDDB4DCA55AAC3EC0E06"
+      },
+      {
+        "path": "build/matching/ae-e08/c3dc-notes.md",
+        "sha256": "EBFD4DADEBBF15E547EC722372CBF86377CA998944CD62C4801A3762F10C1BF7"
+      },
+      {
+        "path": "build/matching/ae-e08/targets/func_0025C3DC/candidates/F97AE56524E00BAE240E725FB51F7F582EA79CDF39E401B85C26D2ECAA0206E9.c",
+        "sha256": "10E1EF4230BD4625E5D482DCE2DDE204F4D0480EA048B11E87E3DEA856F84C7F"
+      },
+      {
+        "path": "build/matching/ae-e08/c3dc-watch-01-mi14.json",
+        "sha256": "4D36C5D4CFC6353E8225CDC602A3FAF1A4C2E821D83A7EF750841F4B0EFE71E0"
+      },
+      {
+        "path": "build/matching/ae-e08/runs/C8277E9320AFA2CAD711FDE2E5A4322E7A0932282DE3FE362FFB189C448D94C4/workbench-report.json",
+        "sha256": "A7ED0F7F590DD7DAC89B68313D8FE4A5D0D30CE698D194DE7B04A76FCA45A3B8"
+      },
+      {
+        "path": "build/integration/attack-effects/e08/wave-acceptance.json",
+        "sha256": "92159626C6CF26694BB71B977C66774A5F97F78248D31EF98E2C550ED7946EDE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical diagnostic evidence only. Final canonical interface changes and matching acceptance are separate. Compiler-mechanism hypotheses apply only to explicitly measured phases. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use an explicit signed initial guard and do-loop with function-scope locals for the observed separate entry/iteration loads."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2186,
+      "sha256": "2CEC88A61131E54318792ABE4FAAD66B8296262433123FD4918A58C1B6F3CA24"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "37BB393A67021F1103101B8C6966EB0B97422D9ED5BC6AF6607B2F0FB440A1A0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0025C3DC-bcc1533d2e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

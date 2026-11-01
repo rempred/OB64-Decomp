@@ -855,14 +855,54 @@ or repair them. Mutable configuration, active source/include and research data a
 Tools, original assembly/raw data, normalized ROM and the versioned accepted output remain authenticated
 references. Preserve those references while a worker uses the set.
 
-Add `--inputs build/inputs-v1/manifest.json` to guarded `intake`, `watch --source`, or `probe --source`.
-No other command/flag branch supports selected inputs, including `best`, `history`, `preserve`,
-`probe --candidate`, and `--research-compiler`. The actual selected reads, dependency identities,
-directory membership, accepted proof and physical set identity are authenticated. A missing/drifted
+After reviewed installation of only `tools/lib/diff_preprocess_cache.js` and/or
+`tools/match.js`, the sole production writer may run `node tools/match.js refresh-inputs
+--from <parent.json> --from-sha256 <recorded SHA256> --replace <logical-tool-path=reviewed SHA256>
+--output <new sibling.json> --json` (repeat `--replace` for both). First drain in-flight
+shared-tool users and verify installation preimages. Exact-code review must establish unchanged
+enrolled dependencies, runtime and canonical contracts; path/hash eligibility is not approval.
+The constructor binds the parent, three unchanged implementation anchors and copied/live verified
+state, then exclusively writes a sibling sharing the existing `data/`. Only the named records'
+bytes/hashes change; all other expectations remain historical. It certifies neither full selected
+closure nor CURRENT acceptance. Release uses reviewed installation and bounded construction;
+each worker's next normal command retains its own strict opening/runtime/proof/closing checks.
+Use full capture for broader changes or independent storage. Preserve parent/data while any sibling
+is active. Failed/interrupted output is retained and never reported as success by that invocation;
+a complete unreported artifact may still pass unchanged consumers. No acceptance marker is added.
+
+Add `--inputs build/inputs-v1/manifest.json` to guarded `intake`, `history`, `best`, `watch --source`, or `probe --source`.
+No other command/flag branch supports selected inputs, including `preserve`,
+`probe --candidate`, and `--research-compiler`. Watch/probe authenticate actual selected reads, dependency identities,
+directory membership, accepted proof and physical set identity. Read-only intake authenticates
+its consumed metadata, complete original-ASM symbol/owner census, canonical ROM, required
+source/research dependencies and executed repository code. It uses the same target-selection
+rules, but does not replay every active representation or certify all selected files/CURRENT.
+Its accepted fingerprint is historical selection identity, never fresh acceptance. Required
+consumed-input drift aborts before output; optional uncaptured historical references remain
+unavailable. The per-invocation reader retains authenticated in-process bytes and closes with
+content/path/directory checks; subprocess preprocessing retains its actual expanded-output,
+dependency and include-resolution checks, not a claim of race-proof filesystem snapshots.
+Research Python guard/store launches isolate user import configuration while retaining the
+existing trusted configured Python/OS runtime boundary; no whole-Python installation or
+unused PowerShell runtime certification is claimed. Tool implementation changes continue to
+change model/candidate IDs and can make historical observations target-mismatched. A missing/drifted
 required selected input aborts; an uncaptured historical research reference is explicitly unavailable.
 There is no fallback to live mutable bytes. Location-sensitive preprocessing must still agree with
 accepted inputs and authored/snapshot expansion. Results include the selected input-set identity and
 remain private diagnostics, never acceptance.
+
+Intake alone checks the scratch root, SQLite companions, guard ticket and consumed input paths
+without recursively inspecting unrelated scratch descendants. Its research source check uses the
+pinned preprocessor at the actual authored-source location and repeats preprocessing before
+publication. Exact expanded bytes and complete logical dependency identities must agree; source,
+header, runtime, metadata, reference and manifest closing checks remain mandatory. Configured
+repository include-directory closure is retained. An earlier shadow header changes the dependency
+identity even when its bytes agree. Unread descendant membership and output-identical unconsumed
+availability changes are outside this diagnostic seal. This grants no native compilation or
+matching acceptance; strict private commands keep their existing workspace checks. Interrupted
+processes may leave a regular ticket; the existing mutex and drained Job Objects, never the ticket
+or a PID guess, authorize recovery.
+
 
 The Director records each active manifest in existing cursors. Refresh one worker explicitly after
 draining that root, retain its best source/old evidence, and preserve the previous input set until all
@@ -877,17 +917,55 @@ an explicit tracked publication operation reserved to the production writer by a
 automatic side effect of testing. Do not copy databases to share discoveries. Use the existing
 research commands and normal tracked intake for useful best sources, effects and counterexamples.
 
-Only approved repository `include/` dependencies are supported for private candidates. Do not copy
-or shadow headers inside the private root. Authored source and the compiled snapshot must expand to
-the same bytes with the same approved dependencies. Inputs are checked by content before and after
-the command; changing headers, configuration, tools or CURRENT invalidates the check. Each root has
-one live command; duplicate use rejects. Path aliases, reparse points and escaping paths reject.
+Ordinary private `watch --source` and `probe --source` now use a target-scoped
+candidate diagnostic against one historical accepted baseline. With `--inputs`, that
+baseline is the selected state; otherwise the command selects verified CURRENT at
+entry. It never constructs a new canonical CURRENT or treats a private result as
+matching acceptance. The report records the historical fingerprint, actual consumed
+input identity, fresh compilation and `currentAcceptanceCertified: false`.
 
-Private context preparation reuses eligible sibling preprocessing bytes in that root's `preprocess/`
-directory through the existing authenticated CPP cache. Classifications are recomputed; the requested
-active producer and authored/snapshot candidate remain fresh. No classification or acceptance verdict
-is cached. The first use is slower; changed shell environments can make it cold again. Watch/probe JSON
-includes `preprocessCache` counters and `contextPreparation` timings. The normal verifier remains fresh.
+The command validates authentic state/build/verification/fresh companion identities
+and original target/producer cardinalities, then the complete relevant owner/body
+contracts, original ASM, canonical ROM bytes, and actual accepted ELF/control/proof
+inputs. It classifies and compiles only the authored candidate and snapshot. It does
+not reclassify sibling sources, hash unused accepted objects, reverify the rebuilt
+ROM, or recursively inspect unrelated scratch history. A changed unrelated source,
+unused object, or historical run is outside this diagnostic boundary. Full source
+policy, sole ownership, placement, relocation, exact target and whole-ROM gates
+remain at complete-wave canonical acceptance.
+
+Only approved repository `include/` dependencies are supported. Fresh preprocessing
+at authored and snapshot locations must yield identical expanded bytes and logical
+dependencies, and repeats before completion to detect used-header changes and even
+same-bytes include shadows. Ordinary candidate diagnostics require PURE_C and a fresh
+native compile on every invocation; they do not reuse compiled candidate verdicts.
+Explicit research-compiler probes and other nonordinary routes retain their separate
+existing contracts. Research retrieval is available through `match.js intake`; it is
+not embedded in the default native check's result.
+
+The bounded diagnostic adapter supports ordinary complete physical owners and their
+supported existing text contracts. Coupled, partial, split, atomic or auxiliary
+producer shapes it cannot hydrate completely reject without falling back to a full
+model/source census. A complete ordinary inactive-ASM producer can still yield honest
+raw/symbolic evidence with isolated linking explicitly unavailable. Terminal-tail
+fallbacks requiring the full original-ASM collision census are explicitly unavailable
+in this private scope; canonical tail admission retains that census unchanged.
+
+Each root retains one authenticated command/ticket, mutex and Windows Job Object.
+Opening and closing checks cover consumed/written paths and ancestors, selected
+inputs, actual tools and loaded repository code, generated native artifacts, and
+DB/control/sidecar paths. They do not traverse unrelated descendants. Relevant input
+and fresh CPP close precede completed report/store publication; DB/sidecar/output
+path checks run inside the rollback-capable completion transaction. Rejected close
+publishes neither a completed report nor a history/best result. An acknowledgement
+lost after a valid committed transaction is distinct from rejected close. No check
+claims continuous observation of transient external filesystem changes.
+
+Selected historical inputs remain usable as live CURRENT advances; used referenced
+tools/outputs must remain stable and changed-tool installation still drains affected
+users. The wider diagnostic change is ineligible for the narrow CLI-only input
+refresh constructor. Installation requires fresh accepted-state/capture and the
+applicable audit based on functional verification changes, not filename hashing.
 
 `watch` and `probe` default to `--native-concurrency parallel`. Workers in different private roots
 can compile, probe and compare at the same time without permission for individual checks. Each root
@@ -1080,7 +1158,7 @@ Ordinary shared-row contributors from different archive chunks may pair through 
 authenticated boot-initialized data slab only when the existing boot pairing predicate accepts
 every complete contributing text slice against the actual auxiliary owner. Accepted source/chunk
 identities and model/config agreement remain required. Existing loader-DMA admission and bundle
-rules retain their separate contracts. Replacing an old final table requires removing its tail and
+rules retain their separate contracts. Ordinary cross-chunk overlay fragments additionally require one independently authenticated descriptor, complete physical-owner containment and both ROM/RAM endpoint equations. Descriptor authority is constructed once only when needed during a shared-row validation; bounded candidate checks do not acquire global descriptor work. Replacing an old final table requires removing its tail and
 proving the new interior/final tail; rebuild retained-literal evidence against the resulting interval
 without changing original-ASM literal payloads or their configuration.
 
@@ -1148,3 +1226,88 @@ review; exceptional shapes retain their review. No per-function full-ROM checks 
 
 Historical reports remain unchanged evidence. Shared tooling installation requires affected
 native drains and selected-input refresh before checks resume.
+
+Private `history` and `best` use the same bounded target identity as native candidate checks; pass the same `--inputs` selection when querying historical selected-input results. A live-input query may correctly mark an older accepted baseline stale.
+
+
+Registered terminal original-ASM text may be composed, after structural approval,
+with one ordinary readonly switch-table fragment in a shared row. The generic
+contract retains all native table bytes and minimal alignment zeros, authenticates
+their compiler/object provenance, and uses the existing complete ordered C/ASM row
+proof. It does not permit groups, projections, nativeTextTail, sourceObjectPrefix or
+multiple compiler occurrences. This exceptional composition remains outside routine
+tail-admit: the integrator binds current full-row inputs and runs the complete wave's
+normal gates plus the applicable changed-tool structural audit.
+
+
+### Complete inactive multi-owner private diagnostics
+
+Ordinary selected-input watch/probe-source can hydrate a complete inactive ASM
+span when its logical bodies and contiguous physical owners close without gaps.
+One GLOBAL body or exactly one GLOBAL plus one fixed-address-call LOCAL body is
+supported. The latter requires selected accepted caller object/proof/actual REL,
+encoded addend, unique fixed provider and independently mapped original JAL.
+Physical markers are not callable bodies or producer selections. Groups, active
+multi-owner producers, padding, partial/atomic/auxiliary shapes remain excluded.
+The existing single-owner successful path adds no source/object reads or scans.
+
+Expected body and physical partitions remain separate from actual native extents.
+The whole native text/tail is reported, including honest changed-size nonmatches.
+Census-admissible names/order/bindings allow reporting; census-exact offsets/sizes
+and byte equality are separate diagnostic gates. Identical bytes with a different
+function census remain a producer nonmatch. LOCAL permission comes only from the
+fresh context's immutable expectation for its exact target, rechecked on replay.
+Isolated linking remains unavailable for these complete inactive envelopes.
+These results do not establish canonical registration or matching acceptance.
+
+`node tests/matching_multi_owner_diagnostic.js` runs pure geometry/census checks.
+Its explicit `--native --inputs <manifest> --output <new-build-directory>` mode
+runs bounded fixture compilation/replay using the same production APIs. A separately
+reviewed staged-module fixture may substitute only approved existing production
+module IDs and the two test IDs, with exact installed-preimage/replacement guards.
+Staged results establish fixture behavior, never supported-watch lineage or
+canonical acceptance. Installed checks, changed-tool audit/fresh acceptance and
+one fresh capture remain required before combined release. Failure of either
+single-body or composed gates blocks the whole package; no partial release.
+
+For this new complete-owner native route, select the exact original physical
+primary spelling (for example `func_002664b0`). Case-insensitive metadata lookup
+still resolves the owner, but the generic workbench selector clones differently
+spelled requests; a clone deliberately gains no immutable context authority.
+Existing single-owner selector behavior is unchanged. Supporting cloned aliases
+would require a separately reviewed resolver change, not relaxed target identity.
+
+
+### Terminal-tail original interior labels
+
+The canonical terminal-tail fallback also accepts a strict literal-word original
+with an optional primary ROM-address label and inert local ROM-address labels
+strictly inside the authenticated complete C body. Exact-spelling owner-label
+metadata, complete original source/ROM equality and all existing coverage/tail
+checks remain mandatory. This creates no compiler entry, alias or callable-body
+claim; numeric/runtime entry absence is not asserted.
+
+Admission rejects interior identity claims in the already authenticated original
+source census, canonical producers/compiler functions, groups, fixed/linkage/REL
+views and logical-registry names/aliases, including disjoint records. Missing
+required views fail closed. Actual assigned/native complete symbol tables
+(including undefined, ABS and FILE) and complete raw REL records also reject those
+interior identities. Equal runtime RAM in another overlay is not identity.
+Existing ordinary exact-name behavior and reads remain unchanged.
+
+The real native original-emitter fixture must prove LOCAL/default/non-FUNC/size-zero
+interior symbols at exact offsets with no symbolic REL use. Its conformance proof
+is invalidated by an emitter or pinned-toolchain change; production admission does
+not add an original assembly compilation. Inert labels on return/delay instructions
+do not create control edges; actual edge, return/delay and complete-body gates
+remain unchanged. Focused malformed/collision/native controls, independent exact
+review, changed-input structural audit and complete-wave matching acceptance
+remain required for installing this generic capability.
+
+Original-emitter conformance passed for func_00263904 and func_00267670 with
+the pinned STT_OBJECT(1) type: both are LOCAL/default/size-zero at offsets52
+and8, respectively, with exact whole-owner bytes and no REL references.
+The earlier mistaken STT_NOTYPE(0) assumption and failed fixture remain
+preserved in historical evidence. This does not change the candidate/native
+C symbol census or imply data storage. Unexpected emitter metadata fails
+the fixture; it is not a blanket allowance for arbitrary non-function types.

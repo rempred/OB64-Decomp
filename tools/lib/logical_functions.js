@@ -38,7 +38,8 @@ function intersections(model, start, end, padding = false) {
 
 function loadRegistry(model, baserom, config, assemblySource = null) {
   const inputs = inputSet.context(model), configPath = inputSet.resolve(inputs, CONFIG_PATH);
-  if (config === undefined) config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const configBytes = inputSet.read(inputs, CONFIG_PATH);
+  if (config === undefined) config = JSON.parse(configBytes.toString('utf8'));
   if (config.schemaVersion !== 1 || config.profile !== model.config.profile || !Array.isArray(config.bodies)
     || !Array.isArray(config.padding) || !Array.isArray(config.preservedProductionEnvelopes)
     || !Array.isArray(config.unavailableBodies)) fail('schema or profile drift');
@@ -56,7 +57,7 @@ function loadRegistry(model, baserom, config, assemblySource = null) {
     if (JSON.stringify(fragments) !== JSON.stringify(body.fragments)) fail(`fragment or fallback drift: ${body.symbol}`);
     for (const fragment of fragments) {
       if (assemblySource) assemblySource(fragment.file, fragment.sha256);
-      else if (sha256File(path.join(ROOT, fragment.file)) !== fragment.sha256) fail('fallback source drift');
+      else if (sha256File(path.join(ROOT, fragment.file), inputs) !== fragment.sha256) fail('fallback source drift');
     }
     if (baserom && sha256Buffer(baserom.subarray(body.romStart, body.romEndExclusive)) !== body.expectedBytesSha256) fail('canonical body hash drift');
     if (baserom && !baserom.subarray(body.romStart, body.romEndExclusive).some(byte => byte !== 0)) fail('padding cannot be a function');
@@ -124,7 +125,7 @@ function loadRegistry(model, baserom, config, assemblySource = null) {
     unavailableEnd = entry.romEndExclusive;
   }
   const registry = { bodies, aliases, padding, unavailableBodies: config.unavailableBodies, preservedProductionEnvelopes: config.preservedProductionEnvelopes, identity: { path: 'config/logical-functions.json',
-    bytes: fs.statSync(configPath).size, sha256: sha256File(configPath) } };
+    bytes: configBytes.length, sha256: sha256Buffer(configBytes) } };
   inputSet.bind(registry, inputs);
   if (Buffer.isBuffer(baserom) && baserom.length === model.config.rom.bytes
       && sha256Buffer(baserom) === model.config.rom.sha256) {
@@ -279,7 +280,7 @@ function assertActivationCompatible(registry, symbol, rows, compilerTextFunction
   // The old fallback accepts arbitrary assembly labels. If a label actually
   // occurs after emitted bytes it is an interior selection, not an owner alias.
   const source = assemblySource ? assemblySource(rows[0].part.file, rows[0].part.sha256)
-    : fs.readFileSync(path.join(ROOT, rows[0].part.file), 'utf8');
+    : inputSet.read(inputSet.context(registry), path.join(ROOT, rows[0].part.file)).toString('utf8');
   let emitted = 0;
   let entryDefinition = false;
   for (const line of source.split(/\r?\n/)) {

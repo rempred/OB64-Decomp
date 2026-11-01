@@ -2,6 +2,7 @@
 #define GAME_EFFECT_PRESENTATION_P05_H
 
 #include "common/types.h"
+#include "game/effect_adapters_e08.h"
 
 /* Shared P05 numeric views. These prefixes do not establish allocation extents
  * or independent storage for the aliased parameter/table addresses below. */
@@ -92,7 +93,7 @@ s32 func_00278278(u16, P05State77F90 *);
 
 /* Existing providers: BF04 consumes flag bits as a word and a vector address;
  * C070 forwards the input word, returning the allocation header address. */
-void func_0024BF04(u8, void *, u32);
+
 void *func_0026C070(u32);
 
 /* Address/width/qualifier views, not new definitions. The mutable row pointer

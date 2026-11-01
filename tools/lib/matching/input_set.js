@@ -7,19 +7,36 @@ const path = require('path');
 const crypto = require('crypto');
 const ROOT = path.resolve(__dirname, '../../..');
 const contexts = new WeakMap();
+const RESEARCH_VALUE = Symbol("research-only-value");
+const researchContexts = new WeakSet();
+const diagnosticContexts = new WeakSet();
+const DIAGNOSTIC = Symbol("candidate-diagnostic");
+const LIVE_DIAGNOSTIC = Symbol("live-candidate-diagnostic");
+function isDiagnostic(inputs) { return diagnosticContexts.has(inputs); }
+function openDiagnosticInputs(manifestFile, options = {}) {
+  return openInputSetInternal(manifestFile || null, options, manifestFile ? DIAGNOSTIC : LIVE_DIAGNOSTIC);
+}
+const RESEARCH = Symbol("research-read-scope");
+const LIVE_RESEARCH = Symbol("live-research-read-scope");
+const liveResearchContexts = new WeakSet();
+function isLiveResearch(inputs) { return liveResearchContexts.has(inputs); }
+function isResearch(inputs) { return researchContexts.has(inputs); }
+function assertProduction(inputs) { if (isResearch(inputs)) fail("research-only input context cannot certify compilation or acceptance"); }
 const digest = bytes => crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase();
 const fail = message => { const error = new Error(`selected inputs: ${message}`); error.code = 'OB64_SELECTED_INPUT'; throw error; };
 const key = file => path.resolve(file).toLowerCase();
 const keys = (value, allowed) => value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).every(name => allowed.includes(name));
 function freeze(value) { if (value && typeof value === 'object') { for (const child of Object.values(value)) freeze(child); Object.freeze(value); } return value; }
 
-function regular(file, directory = false) {
+function regular(file, directory = false, ancestors) {
   const absolute = path.resolve(file);
   for (let current = absolute; ; current = path.dirname(current)) {
+    if (ancestors && current !== absolute && ancestors.has(key(current))) break;
     let stat;
     try { stat = fs.lstatSync(current); } catch (_) { fail(`missing path ${current}`); }
     if (stat.isSymbolicLink()) fail(`redirected path ${current}`);
     if (current === absolute && (directory ? !stat.isDirectory() : !stat.isFile() || stat.nlink !== 1)) fail(`nonregular or multiply linked path ${current}`);
+    if (ancestors && stat.isDirectory()) ancestors.add(key(current));
     if (current === path.dirname(current)) break;
   }
   if (key(fs.realpathSync.native(absolute)) !== key(absolute)) fail(`aliased path ${absolute}`);
@@ -41,12 +58,14 @@ function logicalPath(value) {
 
 function bind(value, inputs) {
   if (inputs && value && typeof value === 'object') {
-    if (contexts.has(value) && contexts.get(value) !== inputs) fail('input context replacement');
+    if (context(value) && context(value) !== inputs) fail('input context replacement');
+    if (context(value.model) && context(value.model) !== inputs) fail('mixed model input context');
     contexts.set(value, inputs);
+    if (isResearch(inputs) && Object.isExtensible(value) && !Object.hasOwn(value, RESEARCH_VALUE)) Object.defineProperty(value, RESEARCH_VALUE, {value: inputs, enumerable: true});
   }
   return value;
 }
-function context(value) { return value && contexts.get(value); }
+function context(value) { return value && (contexts.get(value) || (isResearch(value[RESEARCH_VALUE]) ? value[RESEARCH_VALUE] : undefined)); }
 function assertContext(value, inputs) {
   if (context(value) !== inputs) fail('mixed selected input context');
 }
@@ -72,21 +91,63 @@ function authenticateRuntime(inputs) {
   return python;
 }
 
-function openInputSet(manifestFile, options = {}) {
+function authenticateResearchRuntime(inputs) {
+  if (!isResearch(inputs)) fail('research runtime requires research context');
+  const python = authenticateRuntime(inputs);
+  const conventional = require("../phase7_conventional");
+  if (JSON.stringify(conventional.readJson(conventional.CONFIG_PATH, inputs).rom) !== JSON.stringify(conventional.readJson(conventional.CONFIG_PATH).rom)) fail("research canonical ROM contract differs from trusted shared contract");
+  // Installed shared code is execution authority. A selected manifest may bind
+  // that code, but may not redirect it to copied or alternative implementation.
+  const library = path.join(ROOT, 'tools/lib');
+  inputs.directoryClosure(library);
+  const visit = directory => { for (const name of fs.readdirSync(directory)) {
+    const file = path.join(directory,name);
+    if (fs.lstatSync(file).isDirectory()) visit(file); else inputs.sharedImplementation(file);
+  } };
+  visit(library);
+  for (const file of ['tools/match.js', 'tools/matching_workbench/private_guard.py', 'tools/matching_workbench/store.py', 'tools/matching_workbench/schema.sql']) inputs.sharedImplementation(path.join(ROOT,file));
+  return python;
+}
+
+function openInputSet(manifestFile, options = {}) { return openInputSetInternal(manifestFile, options); }
+function openResearchInputSet(manifestFile, options = {}) { return openInputSetInternal(manifestFile, options, RESEARCH); }
+function openLiveResearchInputs(options = {}) { return openInputSetInternal(null, options, LIVE_RESEARCH); }
+function openInputSetInternal(manifestFile, options = {}, scope) {
+  const diagnostic = scope === DIAGNOSTIC || scope === LIVE_DIAGNOSTIC;
+  const live = scope === LIVE_RESEARCH || scope === LIVE_DIAGNOSTIC;
+  const research = scope === RESEARCH || live || diagnostic;
+  const invocationEnvironment = JSON.stringify(Object.entries(process.env).sort(([a],[b]) => a.localeCompare(b)));
+  const counters = { fileReads: 0, fileBytes: 0, closingReads: 0, directoryMembershipReads: 0 };
+  const validatedFiles = new Set();
+  const consumedFiles = new Set(), consumedDirectories = new Set(), retainedBytes = new Map();
+  const privateFiles = new Map(), privateDirectories = new Map();
+  const checkPrivateDirectory = directory => {
+    regular(directory, true);
+    const members = fs.readdirSync(directory).sort();
+    if (privateDirectories.has(directory) && JSON.stringify(privateDirectories.get(directory)) !== JSON.stringify(members)) fail("private include directory membership drift: " + directory);
+    privateDirectories.set(directory, members);
+    return members;
+  };
+  let retainedSize = 0;
+  const retain = (entry, bytes) => {
+    if (retainedBytes.has(entry)) return;
+    if (retainedSize + bytes.length > 512 * 1024 * 1024) fail("research retained-byte budget exceeded");
+    retainedSize += bytes.length; retainedBytes.set(entry, bytes);
+  };
   const root = path.resolve(options.root || ROOT);
-  const manifestPath = regular(manifestFile);
-  const directory = path.dirname(manifestPath);
+  const manifestPath = live ? null : regular(manifestFile);
+  const directory = live ? root : path.dirname(manifestPath);
   const privateRoot = options.privateRoot && path.resolve(options.privateRoot);
-  if (privateRoot && (key(directory) === key(privateRoot) || key(directory).startsWith(key(privateRoot)+path.sep)
+  if (!live && privateRoot && (key(directory) === key(privateRoot) || key(directory).startsWith(key(privateRoot)+path.sep)
       || key(privateRoot).startsWith(key(directory)+path.sep))) fail('private output root overlaps selected data');
   const isPrivate = file => privateRoot && key(file).startsWith(key(privateRoot) + path.sep);
-  const manifestBytes = fs.readFileSync(manifestPath);
+  const manifestBytes = live ? null : fs.readFileSync(manifestPath);
   let manifest;
-  try { manifest = JSON.parse(manifestBytes); } catch (_) { fail('malformed manifest'); }
-  if (!keys(manifest,['schemaVersion','kind','repository','accepted','runtime','files','directories','unavailableResearchReferences'])
+  try { manifest = live ? { schemaVersion: 1, kind: "ob64-live-research", repository: root, accepted: { fingerprint: null }, runtime: require("../local_tools").resolveLocalTools({readOnly:true}), files: [], directories: [] } : JSON.parse(manifestBytes); } catch (_) { fail("malformed manifest or live runtime configuration"); }
+  if (!live && (!keys(manifest,['schemaVersion','kind','repository','accepted','runtime','files','directories','unavailableResearchReferences'])
       || manifest.schemaVersion !== 1 || manifest.kind !== 'ob64-private-inputs'
       || manifest.repository !== root || !Array.isArray(manifest.files) || !Array.isArray(manifest.directories)
-      || !manifest.accepted || !/^[A-F0-9]{64}$/.test(manifest.accepted.fingerprint || '')) fail('manifest schema/repository identity');
+      || !manifest.accepted || !/^[A-F0-9]{64}$/.test(manifest.accepted.fingerprint || ''))) fail('manifest schema/repository identity');
   const files = new Map(), directories = new Map(), physical = new Map();
   for (const record of manifest.files) {
     if (!keys(record,['logical','storage','path','bytes','sha256']) || !['copy', 'reference'].includes(record.storage) || !Number.isSafeInteger(record.bytes) || record.bytes < 0
@@ -114,40 +175,208 @@ function openInputSet(manifestFile, options = {}) {
     if (directories.has(key(original)) || files.has(key(original)) || physical.has(key(stored))) fail('duplicate directory/file identity');
     directories.set(key(original), { ...record, original, stored });
   }
-  const checkFile = entry => {
-    const actual = identity(entry.stored);
+  function liveFile(file) {
+    const original = path.resolve(root, file), k = key(original);
+    if (!files.has(k)) {
+      const relative = path.relative(root, original).replace(/\\/g, '/');
+      const entry = { logical: relative && !relative.startsWith('..') && !path.isAbsolute(relative) ? relative : null,
+        storage: 'reference', path: original, original, stored: original, bytes: null, sha256: null };
+      files.set(k, entry); physical.set(k, entry);
+    }
+    return files.get(k);
+  }
+  function liveDirectory(file) {
+    const original = path.resolve(root, file), k = key(original);
+    if (directories.has(k)) return directories.get(k);
+    regular(original, true);
+    const members = fs.readdirSync(original).sort();
+    const entry = { logical: path.relative(root, original).replace(/\\/g, '/'), storage: 'reference', path: original, original, stored: original, members };
+    directories.set(k, entry);
+    return entry;
+  }
+  function acceptIdentity(entry, bytes) {
+    const sha256 = digest(bytes);
+    if (live && entry.sha256 === null) { entry.bytes = bytes.length; entry.sha256 = sha256; }
+    if (bytes.length !== entry.bytes || sha256 !== entry.sha256) fail('content drift ' + (entry.logical || entry.original));
+  }
+  const checkFile = (entry, ancestors) => {
+    if (diagnostic && validatedFiles.has(entry)) return entry.stored;
+    consumedFiles.add(entry);
+    regular(entry.stored, false, ancestors);
+    const bytes = fs.readFileSync(entry.stored), actual = { bytes: bytes.length, sha256: digest(bytes) };
+    if (live && entry.sha256 === null) { entry.bytes = actual.bytes; entry.sha256 = actual.sha256; }
     if (actual.bytes !== entry.bytes || actual.sha256 !== entry.sha256) fail(`content drift ${entry.logical || entry.original}`);
+    if (diagnostic) { validatedFiles.add(entry); counters.fileReads++; counters.fileBytes += bytes.length; }
     return entry.stored;
   };
   const checkDirectory = entry => {
+    consumedDirectories.add(entry);
     regular(entry.stored, true);
+    if (diagnostic) return entry.stored;
+    counters.directoryMembershipReads++;
     const members = fs.readdirSync(entry.stored).sort();
     if (JSON.stringify(members) !== JSON.stringify([...entry.members].sort())) fail(`directory membership drift ${entry.logical}`);
     for (const name of members) {
       const child = key(path.join(entry.original, name));
-      const record=files.get(child)||directories.get(child);
+      let record=files.get(child)||directories.get(child);
+      if (live && !record) {
+        const original = path.join(entry.original,name);
+        record = fs.lstatSync(original).isDirectory() ? liveDirectory(original) : liveFile(original);
+      }
       if (!record || key(record.stored)!==key(path.join(entry.stored,name))) fail(`unenrolled or redirected directory member ${entry.logical}/${name}`);
     }
     return entry.stored;
   };
+  async function concurrent(items, action) {
+    let next = 0;
+    // A failure does not leave unobserved filesystem work running after close.
+    const outcomes = await Promise.allSettled(Array.from({length: Math.min(16, items.length)}, async () => {
+      while (next < items.length) await action(items[next++]);
+    }));
+    const failed = outcomes.find(result => result.status === 'rejected');
+    if (failed) throw failed.reason;
+  }
+  async function checkedBytes(entry, ancestry) {
+    const file = path.resolve(entry.stored);
+    async function directory(current) {
+      const k = key(current);
+      if (!ancestry.has(k)) ancestry.set(k, (async () => {
+        const stat = await fs.promises.lstat(current);
+        if (stat.isSymbolicLink() || !stat.isDirectory()) fail('redirected/non-directory ancestor ' + current);
+        if (path.dirname(current) !== current) await directory(path.dirname(current));
+        if (key(await fs.promises.realpath(current)) !== key(current)) fail('aliased directory ' + current);
+        return diagnostic ? null : new Set((await fs.promises.readdir(current)).map(name => name.toLowerCase()));
+      })());
+      return ancestry.get(k);
+    }
+    try {
+      const members = await directory(path.dirname(file));
+      if (members && !members.has(path.basename(file).toLowerCase())) fail('aliased or missing file name ' + file);
+      const stat = await fs.promises.lstat(file);
+      if (!stat.isFile() || stat.isSymbolicLink() || stat.nlink !== 1) fail('nonregular or multiply linked path ' + file);
+      if (diagnostic && key(await fs.promises.realpath(file)) !== key(file)) fail("aliased input " + file);
+      const bytes = await fs.promises.readFile(file);
+      acceptIdentity(entry, bytes);
+      return bytes;
+    } catch (error) { error.code = 'OB64_SELECTED_INPUT'; throw error; }
+  }
   const inputs = {
-    id: digest(Buffer.from(JSON.stringify({ manifestSha256: digest(manifestBytes), path: manifestPath }))),
+    id: live ? null : digest(Buffer.from(JSON.stringify({ manifestSha256: digest(manifestBytes), path: manifestPath }))),
     manifestPath, manifest, root,
+    consumedPaths() { if(!diagnostic) fail('diagnostic consumed paths required'); return [...consumedFiles].map(entry=>entry.stored); },
+    capturePrivateArtifact(file) {
+      if(!diagnostic || !isPrivate(file)) fail('diagnostic artifact escapes private root');
+      const absolute=regular(file), actual=identity(absolute);
+      const entry={original:absolute,stored:absolute,...actual};consumedFiles.add(entry);
+    },
+    installedContract(file) {
+      const absolute=path.resolve(root,file);
+      if(!diagnostic || !['config/phase7/conventional-build.json','config/source-policy.json'].some(relative=>key(path.join(root,relative))===key(absolute)))fail('unsupported installed contract');
+      const bytes=fs.readFileSync(regular(absolute));
+      const entry={original:absolute,stored:absolute,...identity(absolute)};
+      if(digest(bytes)!==entry.sha256)fail('installed contract changed during read');
+      consumedFiles.add(entry);return bytes;
+    },
+    sharedImplementation(file) {
+      const absolute = path.resolve(root,file), entry = files.get(key(absolute)) || (live ? liveFile(absolute) : null);
+      if (!entry || entry.storage !== "reference" || key(entry.stored) !== key(absolute)) fail("required shared implementation is not enrolled: " + absolute);
+      return inputs.resolve(absolute);
+    },
+    readResearch(file) {
+      if (inputs.has(file) || isPrivate(file)) return inputs.read(file);
+      const error = new Error(`selected research reference unavailable: ${file}`); error.code = "OB64_SELECTED_RESEARCH_UNAVAILABLE"; throw error;
+    },
+    read(file) {
+      if (!research) return fs.readFileSync(inputs.resolve(file));
+      const absolute = path.resolve(root, file);
+      let entry = files.get(key(absolute)) || physical.get(key(absolute)) || privateFiles.get(key(absolute)) || (live ? liveFile(absolute) : null);
+      if (!entry && isPrivate(absolute)) {
+        const actual = identity(absolute);
+        entry = { original: absolute, stored: absolute, ...actual }; privateFiles.set(key(absolute), entry);
+      }
+      if (!entry) fail(`unenrolled content input ${absolute}`);
+      if (!retainedBytes.has(entry)) {
+        regular(entry.stored);
+        const bytes = fs.readFileSync(entry.stored);
+        if (diagnostic) { counters.fileReads++; counters.fileBytes += bytes.length; }
+        acceptIdentity(entry, bytes);
+        consumedFiles.add(entry); retain(entry, bytes);
+      }
+      return Buffer.from(retainedBytes.get(entry));
+    },
+    async prefetch(filesToRead) {
+      if (!research || !Array.isArray(filesToRead)) fail('research prefetch context');
+      const entries = [...new Set(filesToRead.map(file => {
+        const absolute = path.resolve(root, file), entry = files.get(key(absolute)) || physical.get(key(absolute)) || (live ? liveFile(absolute) : null);
+        if (!entry) fail('unenrolled prefetch input ' + absolute);
+        return entry;
+      }))];
+      const ancestors = new Map();
+      await concurrent(entries, async entry => {
+        if (retainedBytes.has(entry)) return;
+        const bytes = await checkedBytes(entry, ancestors);
+        consumedFiles.add(entry); retain(entry, bytes);
+      });
+    },
+    async closeResearch() {
+      if (!research) fail('research close requires research input context');
+      if (diagnostic && JSON.stringify(Object.entries(process.env).sort(([a],[b]) => a.localeCompare(b))) !== invocationEnvironment) fail("invocation environment drift");
+      counters.closingReads += consumedFiles.size;
+      if (!live && !fs.readFileSync(regular(manifestPath)).equals(manifestBytes)) fail('manifest changed');
+      for (const entry of consumedDirectories) checkDirectory(entry);
+      for (const directory of privateDirectories.keys()) checkPrivateDirectory(directory);
+      const ancestors = new Map();
+      await concurrent([...consumedFiles], entry => checkedBytes(entry, ancestors));
+      if (!live && !fs.readFileSync(regular(manifestPath)).equals(manifestBytes)) fail('manifest changed');
+    },
+    directoryClosure(file) {
+      if (diagnostic) return inputs.resolve(file);
+      if (!research) return inputs.resolve(file);
+      const requested = path.resolve(root,file), physicalDirectory = [...directories.values()].find(entry => key(entry.stored) === key(requested));
+      const resolved = physicalDirectory ? physicalDirectory.original : requested;
+      if (!live && (isPrivate(resolved) || privateRoot && key(resolved) === key(privateRoot))) {
+        const visit = directory => { for (const name of checkPrivateDirectory(directory)) { const child = path.join(directory,name), stat = fs.lstatSync(child); if (stat.isSymbolicLink() || stat.isFile() && stat.nlink !== 1) fail("redirected private include input: " + child); if (stat.isDirectory()) visit(child); } };
+        visit(resolved); return resolved;
+      }
+      const absolute = key(resolved), prefix = absolute + path.sep;
+      if (live) {
+        const visit = current => { const entry = liveDirectory(current); checkDirectory(entry); for (const name of entry.members) { const child = path.join(current,name); if (fs.lstatSync(child).isDirectory()) visit(child); } };
+        visit(path.resolve(root,file));
+      }
+      const selected = [...directories.values()].filter(entry => key(entry.original) === absolute || key(entry.original).startsWith(prefix));
+      if (!selected.some(entry => key(entry.original) === absolute)) fail('unenrolled include directory ' + file);
+      for (const entry of selected) checkDirectory(entry);
+      return inputs.resolve(file);
+    },
+    declared(file) {
+      if (!research) fail("declared identity is only research metadata");
+      const entry = files.get(key(path.resolve(root, file))) || (live ? liveFile(file) : null);
+      if (!entry) fail(`unenrolled declared input ${file}`);
+      return Object.freeze({ bytes: entry.bytes, sha256: entry.sha256, status: "declared-not-read" });
+    },
+    provenance() { return diagnostic ? { scope: "candidate-consumed-inputs-v1", consumedInputIdentity: digest(Buffer.from(JSON.stringify([...consumedFiles].map(entry=>({path:entry.logical||entry.stored,bytes:entry.bytes,sha256:entry.sha256})).sort((a,b)=>a.path.localeCompare(b.path))))), acceptedFingerprintRole: "historical-selection", fullSelectedClosureCertified: false, currentAcceptanceCertified: false, consumedFiles: consumedFiles.size, consumedDirectories: consumedDirectories.size, counters: { ...counters } } : research ? { scope: live ? "live-research-consumed-inputs-v1" : "research-consumed-inputs-v1", acceptedFingerprintRole: live ? "not-selected" : "historical-selection", fullSelectedClosureCertified: false, currentAcceptanceCertified: false, consumedFiles: consumedFiles.size, consumedDirectories: consumedDirectories.size + privateDirectories.size } : { scope: "full-selected-inputs" }; },
     research(file) {
       if (inputs.has(file)) return inputs.resolve(file);
-      if (isPrivate(file)) return regular(file);
+      if (isPrivate(file)) {
+        if (research && fs.lstatSync(file).isDirectory()) { inputs.directoryClosure(file); return regular(file, true); }
+        if (research) inputs.read(file); return regular(file);
+      }
       const error = new Error(`selected research reference unavailable: ${file}`); error.code = 'OB64_SELECTED_RESEARCH_UNAVAILABLE'; throw error;
     },
     source(file) { return files.has(key(file)) || physical.has(key(file)) ? inputs.resolve(file) : isPrivate(file) ? regular(file) : inputs.resolve(file); },
     resolve(file) {
-      const absolute = path.resolve(root, file), entry = files.get(key(absolute)) || physical.get(key(absolute));
+      const absolute = path.resolve(root, file);
+      if (live && !files.has(key(absolute)) && !directories.has(key(absolute))) {
+        if (fs.lstatSync(absolute).isDirectory()) liveDirectory(absolute); else liveFile(absolute);
+      }
+      const entry = files.get(key(absolute)) || physical.get(key(absolute));
       if (entry) return checkFile(entry);
       const directoryEntry = directories.get(key(absolute)) || [...directories.values()].find(item => key(item.stored) === key(absolute));
       if (directoryEntry) return checkDirectory(directoryEntry);
       fail(`unenrolled input ${absolute}`);
     },
     logical(file) {
-      const entry = physical.get(key(file));
+      const entry = physical.get(key(file)) || (live ? liveFile(file) : null);
       if (!entry) {
         if (isPrivate(file)) { regular(file); return path.relative(root, file).replace(/\\/g, '/'); }
         fail(`unrepresented physical dependency ${file}`);
@@ -156,13 +385,14 @@ function openInputSet(manifestFile, options = {}) {
       return entry.logical || entry.original;
     },
     logicalDirectory(file) {
-      const entry = [...directories.values()].find(item => key(item.stored) === key(file));
+      const entry = [...directories.values()].find(item => key(item.stored) === key(file)) || (live ? liveDirectory(file) : null);
       if (entry) { checkDirectory(entry); return entry.logical; }
       if (isPrivate(file) || privateRoot && key(file) === key(privateRoot)) { regular(file, true); return path.relative(root, file).replace(/\\/g, '/'); }
       fail(`unrepresented include directory ${file}`);
     },
-    has(file) { return files.has(key(path.resolve(root, file))) || directories.has(key(path.resolve(root, file))); },
+    has(file) { return live ? fs.existsSync(path.resolve(root,file)) : files.has(key(path.resolve(root, file))) || directories.has(key(path.resolve(root, file))); },
     authenticate(phase8) {
+      assertProduction(inputs);
       if (context(phase8) !== inputs) fail('accepted model belongs to a different input set');
       const read = file => JSON.parse(fs.readFileSync(inputs.resolve(file), 'utf8'));
       const state = read('build/current/state.json'), accepted = manifest.accepted;
@@ -182,12 +412,16 @@ function openInputSet(manifestFile, options = {}) {
       if (rom.bytes !== phase8.model.config.rom.bytes || rom.sha256 !== phase8.model.config.rom.sha256) fail('accepted full-ROM identity drift');
     },
     assertUnchanged() {
-      if (!fs.readFileSync(regular(manifestPath)).equals(manifestBytes)) fail('manifest changed');
-      for (const entry of directories.values()) checkDirectory(entry);
-      for (const entry of files.values()) checkFile(entry);
+      if (!live && !fs.readFileSync(regular(manifestPath)).equals(manifestBytes)) fail('manifest changed');
+      for (const entry of research ? consumedDirectories : directories.values()) checkDirectory(entry);
+      const ancestors = research ? new Set() : undefined;
+      for (const entry of research ? consumedFiles : files.values()) checkFile(entry, ancestors);
     },
   };
-  inputs.assertUnchanged();
+  if (live) liveResearchContexts.add(inputs);
+  if (diagnostic) diagnosticContexts.add(inputs);
+  else if (research) researchContexts.add(inputs);
+  else inputs.assertUnchanged();
   freeze(manifest);
   return Object.freeze(inputs);
 }
@@ -315,4 +549,7 @@ function captureInputSet(output) {
     referencedBytes: manifest.files.filter(file => file.storage === 'reference').reduce((n, file) => n + file.bytes, 0) };
 }
 
-module.exports = { bind, context, assertContext, authenticateRuntime, resolve, rethrow, openInputSet, captureInputSet, identity, regular, logicalPath, digest };
+function researchRead(inputs, file) { return isResearch(inputs) ? inputs.readResearch(file) : fs.readFileSync(inputs ? inputs.research(file) : file); }
+function read(inputs, file) { return isResearch(inputs) ? inputs.read(file) : fs.readFileSync(resolve(inputs, file)); }
+
+module.exports = { isDiagnostic, openDiagnosticInputs, openLiveResearchInputs, isLiveResearch, researchRead, authenticateResearchRuntime, isResearch, assertProduction, openResearchInputSet, read, bind, context, assertContext, authenticateRuntime, resolve, rethrow, openInputSet, captureInputSet, identity, regular, logicalPath, digest };

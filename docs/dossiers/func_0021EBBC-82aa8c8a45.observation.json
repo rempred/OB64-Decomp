@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "82AA8C8A4582710729C9BE8584E71523905DC36A1AF03969D176A12982E4DB43",
+  "observationId": "8DFB99CEB76332457D4BA08462AC5E5A48750F0C4649ED83B942783491E5EFE3",
+  "symbol": "func_0021EBBC",
+  "authored": {
+    "context": "Complete EBBC03D1204B private source on CURRENT E9E49D47, retaining selected13DA and the two original physical owners.",
+    "effects": [
+      "control-flow",
+      "value-scope",
+      "real-array-index",
+      "instruction-scheduling",
+      "native-extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2A4E6937777147E463AC317D099644ACD3FE564BD784AFBF8C155D9CE08DE709",
+      "sourceSha256": "E787C2CA355ED31769E18904D25C269736B792F3E71078E25AFCE4235EEFE052"
+    },
+    "label": "retail-setup-and-final-lookup-instructions-recovered-with-real-array-phases",
+    "observedEffect": "Final82AA8C8A/sourceE787C2CA is PURE_C10240/frame744/vars664/203 calls/455 actual text relocations/native5BDA3594/918 absolute-offset differences,32 bytes short. Its complete1288-byte setup differs only at the common-exit branch immediate (no branch mask), after positive guard A797 removes12 count-loop bytes, E807 restores12 skip-decision bytes and initialization order, local payloadOffset82FA fixes12 indexed-load words, and actual source-array82AA fixes the two commutative address words. Earlier shared-reset065AAFD0 establishes the152-byte final lookup with only its shifted exit branch: unsigned index restores the retail traversal and unsigned bound; moving word4C to the common phase while keeping actual word48 writes ordered restores selector/key scheduling and caller registers. Duplicating both ordered resets C920 adds8 bytes; current/next cursor and signed index controls remain separate. The104-byte membership and284-byte main counter windows retain their exact instructions except the latter three shifted exit branches. All table partitions and72 helper families remain. The only extent deficits are the supported main27(-20) and35(-12) late-shared2267A8 tails; other instruction differences remain.",
+    "parentCandidateId": "065AAFD0D5F0BCFA9BB323AA1F878183B537726DDF80E3000410585C139B8A13",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-shared-lookup-reset.c",
+        "sha256": "0368DEB1E658A5B93B2C7B649D1733CEFB6C241718A70692A3DE5594A36D321E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-shared-lookup-reset-watch.json",
+        "sha256": "52AF99F8E09B8F1B51A284BD2852A409379BA1A3970686CDC560BA300F06F049"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-shared-lookup-reset-measurement.json",
+        "sha256": "8D22B9E34839C0037B795FC01CAD8565938DEE87EFCA0891405DDD42BBCEAC01"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-shared-lookup-reset-emission.json",
+        "sha256": "DADD0E8BE30BCDE76165355EA625C3140DEA6FA44D676DFE88E288FAA6A7A324"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-array-ordered-resets.c",
+        "sha256": "61303387D2CBC4354BBB8FC102AFC4FA4F10F723C838FC69575B5D1C8F27307D"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-array-ordered-resets-watch.json",
+        "sha256": "47CC6C39FE0F206477DA1B3B95093B53B8F6C1942C05FCB3716BC915C81398E7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-array-ordered-resets-measurement.json",
+        "sha256": "1914AD43A653F7624672849F07DC0611BE79E8A3B4AF23CCF449E6B8B14CCEDB"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-array-ordered-resets-emission.json",
+        "sha256": "AC285B61B3F09FA65EF9511E9FFB5F5D84D63669BE12499E9E85AD1EECFBAFB8"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-bounded-lookup-index.c",
+        "sha256": "A494D2B151B7270B679DEE7DA4E8517614D1F1883E6A27D1AF47DD303097B99C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-bounded-lookup-index-watch.json",
+        "sha256": "EEF3D1008F8ED13654139ABBBEF109972AA06CC31B0043208A5E0BE5DB6D29E5"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-bounded-lookup-index-measurement.json",
+        "sha256": "5A0CE0F6EEA7FD87A8B92E723647966E8414E657FCF556B197DA3A32941A4756"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-bounded-lookup-index-emission.json",
+        "sha256": "CC1516A36C197070A0603ADAEC0025F5EBC1FCAA02225F85E6DBEC5E4152D819"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-unsigned-lookup-index.c",
+        "sha256": "53F28E2021672BC484C01ABE11E14F1F955AF6349D6BCA80A0623E45AE09E8DE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-unsigned-lookup-index-watch.json",
+        "sha256": "EAAF2AFD8E1CAE790CD83BF30310749CC84A6E877187464F33C16FF71874288C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-unsigned-lookup-index-measurement.json",
+        "sha256": "F08A4C9E41632B7D43A56846CDDBBD9DBE43B50CD299F5579527077D5333D9F5"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-unsigned-lookup-index-emission.json",
+        "sha256": "E1A2AB0B8FA39A4593CE6E30075B816B9B7D63AB62F645720E7432F78FF6302E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-count-positive-guard.c",
+        "sha256": "FC94F5A1ACB70181354D2B48E12B17BA667F4FBD100C7BF0CDACF52E1B968B6B"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-count-positive-guard-watch.json",
+        "sha256": "7F7D594DE8D6898C4C98C3D2ADB7B1A3B8430EDC187CF992D37BC25909792E71"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-count-positive-guard-measurement.json",
+        "sha256": "EDE0F1EA259C1D1C618574BFA8674EAF159E525B1277133497B5E183256E559B"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-count-positive-guard-emission.json",
+        "sha256": "61D6A39C9C620640C5B58DEA37CFB1891A28BFE5E6860B6BD54D6D9097592917"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-setup-decision-values.c",
+        "sha256": "54B39C39BE00B8B68228C71C0D11247802E78BF61415E98FF27CEEEF073C66E3"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-setup-decision-values-watch.json",
+        "sha256": "E6D78E579FBE0167D4E68B231558668EF244D67AC8802E8B8FD4038FAE204973"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-setup-decision-values-measurement.json",
+        "sha256": "16D19EDA3A8A1FAE3AAB43778EA16BF05B16BE19AAE683B949FEC9D0E1F872C7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-setup-decision-values-emission.json",
+        "sha256": "7FB11C4B2C0F9A7CDF3110A13F3C0ECE52CB6E42C7F7804566D325ADD1BEBC83"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-payload-offset-scope.c",
+        "sha256": "8CC2FE291607B428639CBE22040384D7D939797982E5FC20B330DA781CF8B050"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-payload-offset-scope-watch.json",
+        "sha256": "30D615BDDF6A12086EB3C1EA2B686A21160FD873046DB925B18CEC8302478F22"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-payload-offset-scope-measurement.json",
+        "sha256": "1F16B33172350A909C47E33471BF1D9FC12BD881438248C48ED01B66AAA4443B"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-payload-offset-scope-emission.json",
+        "sha256": "95E512AD332D933729447C7D38989D3F6630522FEF5DA9CEC1CF92239C41EF2D"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-setup-row-array.c",
+        "sha256": "E787C2CA355ED31769E18904D25C269736B792F3E71078E25AFCE4235EEFE052"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-setup-row-array-watch.json",
+        "sha256": "A4907F8E4CF0E63F686656348644626EE03A47455A4F05F652B05D4003D284EF"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-setup-row-array-measurement.json",
+        "sha256": "80D11DB93D27907558EC12445AD5FEDC425A53A90957B17D009B1573F3F517E1"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-setup-row-array-emission.json",
+        "sha256": "EFEBC123889408DA138C998E40D45303E354A6FD0837754BED6711E05EA70E1F"
+      },
+      {
+        "path": "docs/dossiers/func_0021EBBC-523e38555e.md",
+        "sha256": "25DE1BD82DC33591C02DD1CAB577A6153D2BF22C634BCFD9EF7212E11216C645"
+      },
+      {
+        "path": "docs/dossiers/func_0021EBBC-ae436ecbb0.md",
+        "sha256": "BF28823F640521564AFD5A312B905467D91EAD773D09E5FD4DC3847272A977A8"
+      },
+      {
+        "path": "docs/dossiers/func_0021EBBC-13da29ff0c.md",
+        "sha256": "23A51375AC36F405F32F5CC85EB19A812DCE1C2F678539376481F694643FF702"
+      }
+    ],
+    "relatedCandidateIds": [
+      "065AAFD0D5F0BCFA9BB323AA1F878183B537726DDF80E3000410585C139B8A13",
+      "C92034BBE51801FAF185815B62C789D980129C866D75E7942E4C073E6A03CFC6",
+      "DAF8FAFB92286061BE7833EC9871A99F6F118EEFBC2545F6592A907CB0A46632",
+      "BD48071D4F04CDB9ED189E2A02F6D24B6E83A17E53D3851FC2C8C3CBE2B76691",
+      "A797B8A9D0D24A302D78E6AB963E4117ACA776D17B1B8BC3E0367D773CEC1530",
+      "E80798C46D4A92C7B44009CE8E843C8F88804626F3A9271DF9DB4A00889FFF14",
+      "82FAE71732914FE70626543C33BFA3AFBA8629D5D60553DBF039DE2B5A930BD9"
+    ],
+    "remainingFailure": "Unselected because32-byte deficit is worse than selected13DA. Restore the two real tails and continue other per-block register/scheduling differences. No pure-C impossibility or tooling defect is established. Future aliases, actual linked relocation/table/ownership/placement/full-ROM gates and dependency-ready whole-wave integration remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use an unsigned bounded lookup index, a common ordinary word4C reset and ordered per-arm word48 reset; express the list count with a positive interior guard, materialize the skip decision, initialize the row index before its flag, give payload offsets their own local value, and index the actual source byte array."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 45954,
+      "sha256": "2A4E6937777147E463AC317D099644ACD3FE564BD784AFBF8C155D9CE08DE709"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E787C2CA355ED31769E18904D25C269736B792F3E71078E25AFCE4235EEFE052"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0021EBBC-82aa8c8a45.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

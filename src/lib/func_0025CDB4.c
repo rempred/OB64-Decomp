@@ -1,3 +1,5 @@
+#include "game/effect_commands_e09.h"
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_math_e04.h"
@@ -43,12 +45,12 @@ extern u8 p01_byte_80220F69;
 extern s16 D_8020A1C8[];
 extern const double D_8020A2B0, D_8020A2B8, D_8020A2C0;
 extern void func_00262B68(void);
-extern s16 func_0024BCE8(u8);
-extern s16 func_0024BCA0(u8);
-extern s16 func_0024C3EC(u8);
+
+
+
 extern void *func_0020C478(unsigned int);
 extern s32 func_0020C32C(void *);
-extern s32 func_0025C8D0(u16, struct P05StateC8D0 *);
+
 extern float sinf(float);
 extern float func_00020bf0(float);
 extern float sqrtf(float);
@@ -108,7 +110,7 @@ s32 func_0025CDB4(u16 message, P05StateCDB4 *state)
 
             work.bytes[0] = work.bytes[1] = (u8)state->value_4E + 0x26;
             current = state->values[state->value_50];
-            if (func_0024BCA0(current) == 0) {
+            if ((s16)func_0024BCA0(current) == 0) {
                 u8 first = work.bytes[0];
                 u8 second = work.bytes[1];
 

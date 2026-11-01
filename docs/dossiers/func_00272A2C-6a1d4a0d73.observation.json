@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6A1D4A0D73D397F1FC371022842F5148CB5AD3A3B3E30D4E841E6D3A630E2CDE",
+  "observationId": "B194F90644D1EDDCB3C32B3F1E3AEF06D76C983A2B1C731AA3A515CE75A1D3E5",
+  "symbol": "func_00272A2C",
+  "authored": {
+    "context": "Complete352-byte72A2C. Sources01..03 keep the position query in the inline allocation/matrix phase; struct/array and lookup-placement controls remain340 bytes. Original second case retains SP+20 inS2 across C7C4 and F150. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P07 wave report. Cross-target comparison func_00272F50 candidate EAB552ED7A718B64977C560AF82B7A007A6BCB095D9FCA7CD8128318C29FDCB8 is preserved through its exact source/report and published observation references; candidate relationship IDs are target-local.",
+    "effects": [
+      "inline-phase-boundary",
+      "address-retention",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "A73A458C0717D6160C561974EFBFF0A0ECDA794B4EEDF137136287CDA29B9052",
+      "sourceSha256": "B1DE7DB65EE95CAECB2A660838CAC71C7158068110777C510438DCBF6467025B"
+    },
+    "label": "allocation-phase-cut-retains-later-position-address",
+    "observedEffect": "04 mechanically PURE_C/native352/raw relocation-masked exact with17 actual text REL. It retains S2 and restores all original bytes outside unresolved REL. Later72F50/01 uses the same source-bound cut for its1002 and1004 allocation phases, with independently exact native560 text.",
+    "parentCandidateId": "6BC3F6ACBB1FF3AE4CB48178FA958AEEC5B679715027C8197BFB49BC23D6890D",
+    "references": [
+      {
+        "path": "build/matching/ae-p07/observation-72A2C-04.json",
+        "sha256": "409D6712533099C98F798AB2AEE6A39E60725537BBFED8FE1C8129196C1A805D"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_00272A2C/candidates/966E4D368C6B5C2FDADDDAABC09879CADAA330BACD584BE6FB9DC6A8D3D51400.c",
+        "sha256": "32F357D0CD8C6C0C1BBE33D706BCF440180A4214819A5962D906684CAD61B6E6"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-72A2C-04.json",
+        "sha256": "D82FCD4BE9E919E62AA1028054CF5C57E95AA9E69D701809D01860006000618A"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/D7534AD537DAC39F5ED1EFB4440A3AB5A2212D926A799F804333B713B4518296/workbench-report.json",
+        "sha256": "F6B630ED8C91CD16A2F37663E05F8EBC106D50550BAA2AA09CBAC37E70004A93"
+      },
+      {
+        "path": "build/matching/ae-p07/func_00272A2C-01.c",
+        "sha256": "98818F18922F5ED12696A926198955021F1DD31721E2648F58794EC763D9356F"
+      },
+      {
+        "path": "build/matching/ae-p07/func_00272A2C-02.c",
+        "sha256": "264F7C2BD15190F3501448CA58831F5704C5F24D4ED3C5E3DF2B9D27C9579410"
+      },
+      {
+        "path": "build/matching/ae-p07/func_00272A2C-03.c",
+        "sha256": "8A1A2D6E68C886D66AD071CF7C951C2453C845F56845E5285C6DCC6B11F1D21E"
+      },
+      {
+        "path": "build/matching/ae-p07/func_00272A2C-04.c",
+        "sha256": "32F357D0CD8C6C0C1BBE33D706BCF440180A4214819A5962D906684CAD61B6E6"
+      },
+      {
+        "path": "build/matching/ae-p07/func_00272F50-01.c",
+        "sha256": "6BE962C236156F10BA7973EC06F474D4CE6E5DD33B813DF5AE0C4DB45F4D12E5"
+      },
+      {
+        "path": "build/consultants/attack-p07-muse/002-sol-assessment.json",
+        "sha256": "B457C42B720D26853E633FB3C801168078650E1E914058828CCE275E3667D31B"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_00272A2C/candidates/BCF4A03C29380FD689BECE7E5AC23391EC046D648CB0337E285C67F8CA65BEB4.c",
+        "sha256": "98818F18922F5ED12696A926198955021F1DD31721E2648F58794EC763D9356F"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-72A2C-01.json",
+        "sha256": "CD01D613448C670469B0053B23A6AE8943C4447F8F5E8E6238C2527AD7027B74"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/2D374D0B12E59851F66E281D4FF223DEBF73962B0DC5B5B8FB270EF1E351D2FD/workbench-report.json",
+        "sha256": "981E885E426D221BC04EA1B8B2A6B160F429D9428F2E9E9750779BDB25ED062B"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_00272A2C/candidates/81292B3AC1E508201F48AD59D7CFD067501430CFA7B3066F9E87A9AB361FE654.c",
+        "sha256": "264F7C2BD15190F3501448CA58831F5704C5F24D4ED3C5E3DF2B9D27C9579410"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-72A2C-02.json",
+        "sha256": "7A82E46AAC88503FAB29E229DB9D834F267B0624EEF30CE1B7E4233AA36230EF"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/D6337FB68CB21DF8FAF1D9AF29B5AC2B763DE34111A2C609E1D2C5A7F7CC06C3/workbench-report.json",
+        "sha256": "BDEF32EB02214486103833476FBB3FF26730DD37252986FD2287BF47D0142F33"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_00272A2C/candidates/E1C00A5C0A8F64655426B7549BBEC98C150014855AB24CDB1F79713F47E2CCE1.c",
+        "sha256": "8A1A2D6E68C886D66AD071CF7C951C2453C845F56845E5285C6DCC6B11F1D21E"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-72A2C-03.json",
+        "sha256": "AB10C908C284B1E0D1F91A5135C9B43DE60123ACD2CFA82704F539AA0B3C991E"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/4BAA57468407BB11CCD18BB40AF82F8C639F872C932BC5CCA73C529F47FFED17/workbench-report.json",
+        "sha256": "C8A7845BC77837993734D2E3174A06F8A49D50A9F1C1B7C8899EAD7D92196AC0"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_00272F50/candidates/EAB552ED7A718B64977C560AF82B7A007A6BCB095D9FCA7CD8128318C29FDCB8.c",
+        "sha256": "6BE962C236156F10BA7973EC06F474D4CE6E5DD33B813DF5AE0C4DB45F4D12E5"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-72F50-01.json",
+        "sha256": "94F3BA6D593241348362A4E022640C67F64D8CC14958B03896E42EBE034D35A0"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/FBE23E6BC96FD21C9676ABECA28DEE5B7629086416ABF3E2377EC9F3DFA2DF7A/workbench-report.json",
+        "sha256": "1302782C27B11BD3859AB688426FB96484C82D522FF91EED15039D2E2F61ED4C"
+      },
+      {
+        "path": "docs/dossiers/func_00272F50-3082b64f52.observation.json",
+        "sha256": "625F7BFD6E7070F75FE0763FBA4098AABCA422BA6040D0577002C0414C8D8CD0"
+      },
+      {
+        "path": "build/integration/attack-effects/p07/wave-acceptance.json",
+        "sha256": "DE58DE3FB87D31A7D14CCB60D6CCE1DD064BA2C6D27DDCDA4B71EF403F854D88"
+      }
+    ],
+    "relatedCandidateIds": [
+      "3EDACCBAEC73B45F92BB9ACFDA3115CD006D0F44F8833DBB496BEE60C20142A2",
+      "AFC5E1DFA0A60AB52AD315E974D67E6DCBEB78CC1D430D3EE2DE8BE4C85E90CC"
+    ],
+    "remainingFailure": "Canonical interfaces/ownership/placement/relocations/full-wave ROM remain. Muse002 stronger named-pointer premise is not established by this exact source pair. No universal compiler or original-syntax claim. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "04 keeps lookup and C7C4 in the caller with a P07Vec3 local, then passes &position to the inline allocation/matrix/position phase. Matrix destination is captured separately. No extra named position pointer is required in this solution."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 4454,
+      "sha256": "A73A458C0717D6160C561974EFBFF0A0ECDA794B4EEDF137136287CDA29B9052"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B1DE7DB65EE95CAECB2A660838CAC71C7158068110777C510438DCBF6467025B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00272A2C-6a1d4a0d73.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,3 +1,5 @@
+#include "game/effect_commands_e09.h"
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -23,11 +25,11 @@ extern u8 D_80209A08[];
 extern u8 D_80209A0C[];
 extern s16 D_80209A10[];
 extern void func_00262B68(void);
-extern void func_0025D8A4(void *, void *);
-extern void func_0025D678(void *);
-extern void func_0025CA7C(u8, void *);
-extern void func_0024E9BC(s32, u8, s32);
-extern void *func_0024DC20(u8, void *, s32);
+
+
+
+
+
 
 s32 func_002515B4(u16 message, P05LoopState *state)
 {
@@ -50,7 +52,7 @@ s32 func_002515B4(u16 message, P05LoopState *state)
     case 0x1001: {
         s16 index;
 
-        func_0025D8A4(D_802099FC, D_80209A04);
+        func_0025D8A4((s16 *)(D_802099FC), (s16 *)(D_80209A04));
         func_0025D678(D_80209A08);
         for (index = 0; state->context[index] != 0xFF; index++) {
             func_0025CA7C(state->context[index], D_80209A0C);
@@ -72,7 +74,7 @@ s32 func_002515B4(u16 message, P05LoopState *state)
         func_00262C64(9, 0x1005);
         break;
     case 0x1005:
-        func_0024DC20(0x21, &D_802099AC[1], 1);
+        func_0024DC20(0x21, (struct Dc20InputRecord *)(&D_802099AC[1]), 1);
         func_00262C64(0x32, 0x1006);
         break;
     case 0x1006:

@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0BC18188C009F94A09B67F4D605ABE85036D3D1CB96F00BA27C38225278634D6",
+  "observationId": "603F39C357AFE8B96EA805D09B0376E042D259F627F3790C4E8824D07226EEC4",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete current D14C6715 /9F9DEFCA best105. Earlier distinct predicate-return phases1DCA290A avoid LOOP motion and gain single-set birth priority, but remain globally classified and allocate13/V1 against local context/V0. Gold2016's GREG discriminator confirms that exact-source mechanism.",
+    "effects": [
+      "real-local-reuse",
+      "loop-hoisting",
+      "copy-propagation",
+      "single-set-birth",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "447A4295C20E78C86DEC94E4C42D33D2918284ABE7E0EEEA1DEF445DB0D4E88C",
+      "sourceSha256": "F0915E67F3EA157105AE32FE5F6A5DC555BD4AD7E6E6F2F70E83F79D36333E53"
+    },
+    "label": "same-block-real-context-extra-phases-recover-v0-and-improve-complete-best",
+    "observedEffect": "0BC18188 is PURE_C6844/frame616/177 text relocations/131 calls in original external-name order, with64-byte/alignment8/15R table. Masked differences improve105 to97:22 earlier mode-word differences resolve and14 store-order differences appear. Probe72442EFD binds users707/741, literals2963/3171: two SETs each survive RTL/CSE/LOOP/FLOW; COMBINE removes the real context capture from that scalar, leaving a single13 definition. FLOW users are block-local177/191 (8refs/live10/deaths2), LREG remains local (8refs/live4), SCHED gives7f000001 birth priority, and GREG places13 inV0. The real context becomesV1; native31 fills the predicate delays and full extent is restored. This demonstrates a compatible same-block value-phase representation, not unique original source history.",
+    "parentCandidateId": "9F9DEFCA1A9D9F0BCB448B58338A8166E58C35CE8A54E4172E7E25BF12703F2D",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-local-context-extra-phases-watch.json",
+        "sha256": "9183794DECD814720BBE54AF13519F3FA0968288A00FCCEFE7E63A014F23E669"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-local-context-extra-phases-measurement.json",
+        "sha256": "B475AAEE117AE75A3F8E97E2DEBA34CC54390412472B28860D90D14B22E8A240"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/72442EFD088E52B953FF2EFA23675A3879F1E084902F91EDC4FAA75337DAEA98/probe-report.json",
+        "sha256": "501470B91F8610D493B734E1EDDCC4D13FF071DE6C15EA15D90B9710AF72E3ED"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-distinct-phases-allocation-evidence.json",
+        "sha256": "6A632511DD5566DE30FC4730A7A8A842C7F6096D9F4D1A1CD33FF6FC19EC3477"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-local-arg7-extra-phases-watch.json",
+        "sha256": "BCCFF3F7CD293919E958A396FFD25E21E06665477F5FA9CF99E42945BE9D043F"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-local-arg7-extra-phases-measurement.json",
+        "sha256": "5873DD0E66D7A94A54D5D22CF38F97A767D4CF5FA3002D1C95BB18BB275BF2AD"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-1dca290a98.observation.json",
+        "sha256": "383D4C9612BB34477A42C12619ECE45C23B61561516A92978CF66937AF0BD4B0"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-9f9defca1a.observation.json",
+        "sha256": "552F96D88D99127249D2F8CAC00C5851FB8501502EEB8E8D36016269DACCAC1C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "1DCA290A980B92E69918FEB0BC230A62A28A69102AED25960D25191A36FE71EA"
+    ],
+    "remainingFailure": "Type5 sum and terminal scratch remain, plus mode8/10 store ordering due to the earlier context read. Related real seventh-argument phase4C44AA3A emits6844/frame616/177R/131calls but103 masked words and wrong13/T4, so it is unselected. Best97 stays recoverable; original ASM, table and complete17 acceptance gates remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "In each existing mode8/10 true arm, capture the actual context byte in the extra scalar, retain that value for the real eighth argument, then overwrite the scalar with the existing13 ninth argument. Both actual value phases are in the same block; preserve guards, calls, original field read and all argument values."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41008,
+      "sha256": "447A4295C20E78C86DEC94E4C42D33D2918284ABE7E0EEEA1DEF445DB0D4E88C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F0915E67F3EA157105AE32FE5F6A5DC555BD4AD7E6E6F2F70E83F79D36333E53"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0022D14C-0bc18188c0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

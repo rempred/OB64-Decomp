@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "996302C04BA8DEE4E2D719B7EAD9C7454DF7B785403B016DEB351825FE3D208F",
+  "observationId": "6CE5D43B2E268A068ADD926C6028EF0BB7A1CB9F48C3069690D632AD61F5723C",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete A06E8793 best73 has the original mode8/10 forms but type5 sum still spills throughT3. Old80F9 scoped time after the getter was neutral in its older context. Current canonical D434 is a direct unsigned-byte lookup; both sum operands are unescaped local scalars.",
+    "effects": [
+      "real-local-reuse",
+      "call-separation",
+      "late-scheduling",
+      "reload-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "23587CBA950AD267F76E44788B93424318F796AD1FFC4C6D228994CA88F41B13",
+      "sourceSha256": "B2F1345288DE22D11386A9EAED18AE532BAFA5D99D6ED2255AD3022C2746476A"
+    },
+    "label": "real-byte-query-call-separates-local-sum-until-late-scheduling-and-recovers-v1",
+    "observedEffect": "996302C0 is PURE_C6844/frame616/177R/131calls, with every actual relocation identical to A06 and only two text words changed:728 becomes retail016C1821 and730 becomes retailAFA30174. Thus73 masked words improve to71. Own E9B3CFE4 (all eight dump hashes checked) retains local383 SUM1188 before D434 call1193 and global79 copy1199 through COMBINE. FLOW local block79 has2refs/live6/cross1call; SCHED places1188 after the call, shortens life6to2 and explicitly removes call crossings. LREG remains local/live2; GREG1199 stores V1 to372. The matched sum/store follows naturally from the real call relation and later scheduling, without forced memory or an invented consumer.",
+    "parentCandidateId": "A06E8793610A432337964EF8D17E6ABEC681F9417B47C9636A04BC009B2F078C",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-type5-sum-before-byte-query-watch.json",
+        "sha256": "B26FFCAC06F09A3C8207563CEE77B40F21DD8F555843DBAB3644CDC9AD35329F"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-type5-sum-before-byte-query-measurement.json",
+        "sha256": "F1356EDB9F4DE8582A5A074BB749D84540A3657383DEF41E154A1FE94F9856EA"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/E9B3CFE4E537C5925B7F18FAE3B88DDFDB57C14A40BA04128DDFA2FA4794305B/probe-report.json",
+        "sha256": "3955A4D9D7E57CF520994FA58B190CD25778366E183B9EBB5F7DF88F677B7F05"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-type5-sum-after-byte-query-control-watch.json",
+        "sha256": "828FD33DB9B69FD589161A48B435465E856AC09625CB58E042102C94C28C9196"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/2C9DC90432767FB185FCF09BA1D60B1A3748EA2955799C97C1B71113C336DDF1/probe-report.json",
+        "sha256": "1D19C142548F9C093247FD4D855E8DF9BB24DF6972B41BE19520875D9C7EF942"
+      },
+      {
+        "path": "src/lib/func_0020D434.c",
+        "sha256": "DC9DA3CFBA6284A375931A24F3BA4BBE5DC00F6E01088B1F786676A7165492E4"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-a06e879361.observation.json",
+        "sha256": "B2E0722CA7A1150FEA61D54091C18B95F65D61BB31C20B161AF97CF6C86C56B8"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "71 masked words remain:13 other-mode ordering/scratch and58 output/terminal. Same-local after-query controlF57A7BD1 emits the complete A06 native and all177 relocations identically; its own2C9DC904 COMBINE folds the local into global79 PLUS at1197. This distinguishes the call relation from merely naming the sum. All original table/interior/consumer, whole17 ownership/placement/actual relocation and complete-ROM gates remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Calculate the existing sp16C+sp184 value in a local before the existing byte lookup, then assign it to the existing sp174 after the lookup. Preserve every call, read, arithmetic operation and later consumer; do not change the getter declaration or shared inputs."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41040,
+      "sha256": "23587CBA950AD267F76E44788B93424318F796AD1FFC4C6D228994CA88F41B13"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B2F1345288DE22D11386A9EAED18AE532BAFA5D99D6ED2255AD3022C2746476A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0022D14C-996302c04b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

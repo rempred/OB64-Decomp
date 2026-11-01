@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "93AC5526A9BC3CC54D6DFFB18BC1266CA14F1471B9AAEF8A8092675278744688",
+  "observationId": "D401D2D50E21547B7910A20D860C2E34AB25CA32DA1C543937DE2A4F10101AF0",
+  "symbol": "func_00269F00",
+  "authored": {
+    "context": "Complete 376-byte func_00269F00 against selected mi3 D93D3508. Natural array-index loops emit PURE_C348/frame88, including the FP preamble, all three phases and the 0x44 output stride. The observation is private diagnostic evidence; live canonical identities must be recaptured by the integrator before publication. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report. This same source also serves as a comparison control: Exact historical E07 source/control referenced by first-loop-source-index-initialization-before-count. Preserve original source and native report context.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order",
+      "extent"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "37C76754AEC163B231591D800F79B736BD355097963AC0EECA9912709A313D59",
+      "sourceSha256": "65B81E27E1E8C9382AADF450763F1E5EC8D70D4F3FE223AAF754800DA1F022C0"
+    },
+    "label": "separate-source-and-destination-inductions-restore-seven-words",
+    "observedEffect": "Candidate 22BB215A emits PURE_C376/frame88. The separate index initializations/increments and additional saved register restore the seven missing words, retain the branch-likely null path and cover the full owner. The workbench reports 27 raw aligned differences, including the single emitted call relocation; remaining differences concentrate in output/local-array setup and register swaps.",
+    "parentCandidateId": "3ED4BBEBFE16DD0ECC0074A1A0CEFCD6D6DB3FE3BD2BDDE64C2416D0B61FDFDA",
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_00269F00/candidates/22BB215AB59E149383433C6E414F1B64FB69968DB42D797202FD0FD613F1786B.c",
+        "sha256": "65B81E27E1E8C9382AADF450763F1E5EC8D70D4F3FE223AAF754800DA1F022C0"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-00269F00-02.json",
+        "sha256": "E898187D29CB89101CAD2D0377F172B401402AB3024FBDCD2D4F76CCA89D7840"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/1C3F255C2FE2538FF33AE3AB404D7DF0FB4E49AFD4665B7C11632FC5D19DA482/workbench-report.json",
+        "sha256": "95EBFB635349E16C4C5121B4F938AB4926E52B064D07FF9C95B0683828653551"
+      },
+      {
+        "path": "build/matching/ae-e07/00269F00-indices-observation.json",
+        "sha256": "669612495B7D496961E8F4825A45A03D41CD8190CD6670C32F9DBE5C062288F8"
+      },
+      {
+        "path": "build/matching/ae-e07/func_00269F00-natural.c",
+        "sha256": "10F04DAFC2A640036CD12228E72B83A62F8AB2F7A95FECF5CD6BE7E180BA2E66"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-00269F00-01.json",
+        "sha256": "5CA40D42B59C1C278713AC7F29CF9A385994CEB92C622156BE87692E071830DF"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00269F00.s",
+        "sha256": "D9AD605674BDF0C5E66ED4D3935426D8D2F484F66583F0391C0BFEDF380A710D"
+      },
+      {
+        "path": "build/matching/ae-e07/00269F00-first-init-observation.json",
+        "sha256": "A3FE240114D16A0A9554DA17F859BFF64D5263296B6D5ED6622487449BD528C8"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source remains nonmatching and symbolic-object only: rawRelocationMaskedExact is false, the inactive ASM owner has no private isolated link, and canonical placement/ownership/relocation/target/full-ROM gates remain due for the full E07 wave. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep a separate source_component index in each of the first two three-element loops while component controls the destination and loop bound. Preserve all real loads, stores, null tests, the float helper call and the final copy."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1625,
+      "sha256": "37C76754AEC163B231591D800F79B736BD355097963AC0EECA9912709A313D59"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "65B81E27E1E8C9382AADF450763F1E5EC8D70D4F3FE223AAF754800DA1F022C0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00269F00-93ac5526a9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

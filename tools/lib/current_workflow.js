@@ -289,6 +289,8 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       'tools/verify_phase8_matching_c.js',
       'tools/lib/phase8_matching_c.js',
       'tools/lib/active_targets.js',
+      'tools/lib/overlay_config.js',
+      'tools/lib/rom.js',
       'tools/lib/logical_functions.js',
       'tools/lib/auxiliary_interior.js',
       'tools/lib/auxiliary_projection.js',
@@ -488,6 +490,7 @@ function runtimeArgs(localTools) {
 }
 
 function prepareContext(options = {}) {
+  if(inputSet.isDiagnostic(options.inputs)) throw new Error("candidate diagnostic inputs cannot construct canonical context");
   const profile = options.profile;
   const inputs = options.inputs;
   const localTools = measure(profile, 'prepare.local-tools', () => resolveLocalTools({ audit: options.audit === true, inputs, readOnly: options.readOnly }));
@@ -811,6 +814,7 @@ function verifyCurrent(context, options = {}) {
 }
 
 function currentVerificationState(context) {
+  require("./matching/diagnostic_context").assertCanonicalContext(context);
   const inputs = inputSet.context(context);
   const readJson = file => require('./phase7_conventional').readJson(file, inputs);
   const sha256File = file => require('./phase7_conventional').sha256File(file, inputs);

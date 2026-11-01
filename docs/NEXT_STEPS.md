@@ -2,6 +2,20 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Attack visual effects — complete October 31
+
+The assigned [program](Plans/attack-effects-program-draft/PROGRAM.md) is complete.
+Every complete wave passed its canonical acceptance gates; the final E06 rebuild
+is byte-identical to Rev 0 at CURRENT `04E67D51492FC6021F3CE743FC76EF730C4148E50A891517B23C221DC4F54ADE`.
+Research publication, bounded compiler-lesson curation, reviewed tooling and authorized
+scratch cleanup are complete. Required sources, accepted proofs, selected inputs,
+consultant/review history and retained directories remain protected.
+
+No matching, integration or tooling assignment remains active. Do not resume retired
+workers from old stop events. The [Director cursor](Plans/cursors/director.md) links
+final evidence and records ownership release. Counts remain owned by generated status.
+No follow-on wave, commit or push is assigned; the cutscene program remains a draft.
+
 ## Descriptor and record serialization — revised program complete October 26
 
 Joe authorized the [family program](Plans/descriptor-serialization-program.md).

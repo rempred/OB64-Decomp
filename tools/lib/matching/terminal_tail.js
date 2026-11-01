@@ -9,6 +9,7 @@ const active = require('../active_targets');
 const logical = require('../logical_functions');
 const { instructionInfo, compareMips } = require('./mips_analysis');
 const inputs = require('./input_set');
+const diagnosticContext = require('./diagnostic_context');
 const policy = require('../source_policy');
 const fail = message => { throw new Error('terminal tail: ' + message); };
 const CONFIGS = ['config/phase7/conventional-build.json', 'config/logical-functions.json', 'config/matching-c-linkage.json'];
@@ -219,7 +220,48 @@ function originalEntryCode(source) {
   return code;
 }
 
-function caseVariantEntry(session, target, row, source, original, selected) {
+// Interior names are ROM identities, never unscoped runtime addresses.
+function interiorIdentity(names, name) {
+  if (typeof name !== 'string') return false;
+  const match = /^func_([0-9a-fA-F]{8})$/.exec(name);
+  return names.some(entry => name === entry.name || match && Number.parseInt(match[1], 16) === entry.rom);
+}
+
+function rejectInteriorNames(names, claims, context) {
+  if (claims.some(name => interiorIdentity(names, name))) fail('interior entry ' + context + ' collision');
+}
+
+// Project only supported interface fields. Active targets retain model/row/rows
+// graphs; evidence prose and those graphs are neither names nor extra authority.
+const symbolClaims = records => (records || []).map(record => record.symbol);
+function producerNameClaims(target) {
+  return [target.symbol, target.physicalInterface?.symbol, target.physicalInterface?.primary,
+    ...symbolClaims(target.compilerTextFunctions), ...symbolClaims(target.expectedRelocations),
+    ...symbolClaims(target.legacyAncillaryRelocations), ...symbolClaims(target.fixedBindings),
+    ...(target.auxiliarySections || []).flatMap(section => [section.compilerLabel, section.memberSymbol,
+      ...symbolClaims(section.expectedRelocations)])];
+}
+function groupNameClaims(group) {
+  return [group.symbol, ...symbolClaims(group.functions), ...symbolClaims(group.compilerTextFunctions),
+    ...symbolClaims(group.fixedBindings), ...symbolClaims(group.relocations), ...symbolClaims(group.expectedRelocations),
+    ...symbolClaims(group.owners), ...(group.members || []).flatMap(member => [member.symbol, ...(member.functionSymbols || []),
+      ...symbolClaims(member.expectedRelocations)]),
+    ...(group.auxiliary?.sections || []).flatMap(section => [section.compilerLabel, section.memberSymbol,
+      ...symbolClaims(section.expectedRelocations)])];
+}
+function registryNameClaims(config) {
+  return [...config.bodies, ...config.unavailableBodies].flatMap(body => [body.symbol, ...(body.aliases || [])])
+    .concat(config.preservedProductionEnvelopes.flatMap(entry => [entry.symbol, ...symbolClaims(entry.compilerTextFunctions)]));
+}
+
+function rejectInteriorObjectClaims(names, elf, relocations) {
+  // Include undefined, ABS and FILE symbols, even when no relocation uses them.
+  if (elf.symbols.some(symbol => interiorIdentity(names, symbol.name))
+      || relocations.some(rel => interiorIdentity(names, rel.symbol))) fail('interior entry actual object symbol or REL collision');
+}
+
+function originalEntryFallback(session, target, row, source, original, selected, bodyBytes) {
+  if (diagnosticContext.isDiagnosticContext(session.context)) fail('original-entry fallback unavailable in candidate diagnostic scope: full original-source collision census belongs to canonical admission');
   const address = name => /^func_([0-9a-fA-F]{8})$/.exec(name || '');
   const expected = address(target.symbol);
   if (!expected || Number.parseInt(expected[1], 16) !== row.romStart) fail('original entry is not owner ROM-address identity');
@@ -235,16 +277,48 @@ function caseVariantEntry(session, target, row, source, original, selected) {
     fail('unsupported original entry grammar');
   }
   const label = labels[0], spelling = address(label?.name);
-  if (textDirectives !== 1 || labels.length !== 1 || label.offset !== 0 || !spelling
+  const interiors = labels.filter(entry => entry.offset > 0);
+  if (interiors.length) {
+    const primaries = labels.filter(entry => entry.offset === 0), primary = primaries[0];
+    const identities = labels.map(entry => address(entry.name));
+    if (textDirectives !== 1 || primaries.length > 1 || row.part.name !== target.symbol
+        || row.part.symbolByteOffset !== 0 || Buffer.byteLength(source) !== row.part.textBytes
+        || row.part.hasOwnerLabel !== Boolean(primary && primary.name === row.part.name)
+        || !Number.isInteger(bodyBytes) || bodyBytes < 8 || bodyBytes % 4
+        || labels.some((entry, i) => !identities[i] || Number.parseInt(identities[i][1], 16) !== row.romStart + entry.offset
+          || entry.offset % 4 || entry.offset >= bodyBytes)
+        || new Set(labels.map(entry => entry.offset)).size !== labels.length
+        || globals.length > (primary ? 1 : 0) || globals.some(name => name !== primary?.name)) fail('unsupported interior original entry');
+  } else if (labels.length === 0) {
+    // Entry authority comes from the already selected accepted owner, never
+    // from absence of labels alone. This word-only representation creates no
+    // alias or provider and still runs the complete census/collision checks.
+    if (textDirectives !== 1 || globals.length !== 0 || row.part.hasOwnerLabel !== false
+        || row.part.symbolByteOffset !== 0 || row.part.name !== target.symbol
+        || Buffer.byteLength(source) !== row.part.textBytes) fail('unsupported unlabeled original entry');
+  } else if (textDirectives !== 1 || labels.length !== 1 || label.offset !== 0 || !spelling
       || label.name === target.symbol || spelling[1].toLowerCase() !== expected[1].toLowerCase()
       || globals.length > 1 || globals.some(name => name !== label.name)) fail('extra or nonprimary original entry');
   const bytes = Buffer.alloc(parsed.length * 4); parsed.forEach((word, i) => bytes.writeUInt32BE(word, i * 4));
   if (!bytes.equals(original) || !require('../word_asm').assembleWordAsmText(source).bytes.equals(original)) fail('original entry word census');
   const sameAddressName = name => { const match = address(name); return match && match[1].toLowerCase() === expected[1].toLowerCase(); };
-  const phase8 = session.context.phase8;
+  const interiorNames = interiors.map(entry => ({ ...entry, rom: row.romStart + entry.offset }));
+  const phase8 = diagnosticContext.producerModel(session.context);
+  if (interiorNames.length) {
+    if (!Array.isArray(phase8.model?.rows) || !Array.isArray(phase8.targets) || !Array.isArray(phase8.compilationGroups)
+        || !phase8.linkSymbols || typeof phase8.linkSymbols !== 'object' || Array.isArray(phase8.linkSymbols)
+        || !Array.isArray(phase8.linkageConfig?.symbols) || !Array.isArray(phase8.linkageConfig?.targets)) fail('interior entry canonical views required');
+    if (Object.keys(phase8.linkSymbols).some(name => interiorIdentity(interiorNames, name))) fail('interior entry fixed binding collision');
+    for (const producer of phase8.targets) rejectInteriorNames(interiorNames, producerNameClaims(producer), 'producer');
+    for (const group of phase8.compilationGroups) rejectInteriorNames(interiorNames, groupNameClaims(group), 'group');
+    rejectInteriorNames(interiorNames, phase8.linkageConfig.symbols.map(record => record.name), 'linkage');
+    for (const contract of phase8.linkageConfig.targets) rejectInteriorNames(interiorNames, producerNameClaims(contract), 'linkage');
+  }
   for (const other of phase8.model.rows) {
     if (other === row) continue;
     if (other.romStart === row.romStart || sameAddressName(other.part?.name)) fail('original entry owner collision');
+    if (interiorNames.length && (interiorIdentity(interiorNames, other.part?.name)
+        || other.romStart < row.romEndExclusive && other.romEndExclusive > row.romStart)) fail('interior entry owner collision');
     if (!other.part) continue;
     // Read only the accepted model's source census, using this invocation's
     // selected-input reader. Never discover files or trust another overlay's RAM.
@@ -255,8 +329,10 @@ function caseVariantEntry(session, target, row, source, original, selected) {
     // comma-separated globals. The fallback does not interpret other owners'
     // assembler expressions to distinguish a definition from a reference.
     const names = code.match(/[A-Za-z_.$][A-Za-z0-9_.$]*/g) || [];
-    if (names.some(sameAddressName)) fail('original entry source collision or reference');
+    if (names.some(name => sameAddressName(name) || interiorIdentity(interiorNames, name))) fail('original entry source collision or reference');
   }
+  // A private candidate may have no active C replacement yet; actual candidate
+  // FUNC census is separate. Canonical acceptance still requires sole custody.
   let intendedProviders = 0;
   for (const producer of phase8.targets) {
     const intended = producer.symbol === target.symbol && producer.romStartNumber === row.romStart && producer.romEndNumber === row.romEndExclusive;
@@ -267,11 +343,12 @@ function caseVariantEntry(session, target, row, source, original, selected) {
   for (const group of phase8.compilationGroups || []) {
     if ((group.fixedBindings || []).some(binding => sameAddressName(binding.symbol))) fail('original entry group collision');
   }
+  return interiorNames;
 }
 
 
 function originalOwner(session, target, bodyBytes) {
-  const model = session.context.phase8.model;
+  const model = diagnosticContext.producerModel(session.context).model;
   const matches = model.rows.filter(r => r.part?.name === target.symbol);
   if (matches.length !== 1) fail('unique original-name owner required');
   const row = matches[0], slice = row.slices[0];
@@ -282,8 +359,8 @@ function originalOwner(session, target, bodyBytes) {
   if (![4, 8, 12].includes(tailBytes)) fail('original terminal suffix must be 4, 8 or 12 bytes');
   // Equal RAM addresses can belong to different overlays. These unscoped
   // aliases neither grant an entry nor prove its absence in this owner.
-  const unscopedAddressBindings = addressHints(session.context.phase8.linkSymbols || {}, slice);
-  for (const producer of session.context.phase8.targets.filter(t => t.romStartNumber < row.romEndExclusive && t.romEndNumber > row.romStart)) {
+  const unscopedAddressBindings = addressHints(diagnosticContext.producerModel(session.context).linkSymbols || {}, slice);
+  for (const producer of diagnosticContext.producerModel(session.context).targets.filter(t => t.romStartNumber < row.romEndExclusive && t.romEndNumber > row.romStart)) {
     if (producer.symbol !== target.symbol || producer.compilationGroup || producer.atomicText || producer.nativeTextTail
         || producer.auxiliaryProjection || producer.retainedLiteralReferences || producer.multiOwnerContract
         || producer.physicalInterface || producer.auxiliarySections?.length || producer.compilerTextFunctions?.length > 1) fail('unsupported producer');
@@ -298,15 +375,16 @@ function originalOwner(session, target, bodyBytes) {
   const rom = fs.readFileSync(inputs.resolve(selected, session.context.baserom.path));
   p7.verifyRom(model, rom);
   if (!original.equals(rom.subarray(row.romStart, row.romEndExclusive))) fail('original full owner differs from ROM');
-  if (!exactEntry) caseVariantEntry(session, target, row, source.toString(), original, selected);
+  const interiorNames = exactEntry ? [] : originalEntryFallback(session, target, row, source.toString(), original, selected, bodyBytes);
   terminalSuffix(original, bodyBytes);
   const config = p7.readJson(path.join(p7.ROOT, CONFIGS[1]), selected);
-  logical.loadRegistry(model, rom, config);
+  if (!diagnosticContext.isDiagnosticContext(session.context)) logical.loadRegistry(model, rom, config);
   const overlaps = value => value.romStart < row.romEndExclusive && value.romEndExclusive > row.romStart;
   if (config.bodies.some(overlaps) || config.padding.some(overlaps) || config.unavailableBodies.some(overlaps)
       || config.preservedProductionEnvelopes.some(e => e.fragments.some(overlaps))) fail('existing logical coverage requires separate handling');
+  if (interiorNames.length) rejectInteriorNames(interiorNames, registryNameClaims(config), 'logical registry');
   coverage(original.subarray(0, bodyBytes), slice.vramStart, [], row.bytes);
-  return { row, original, bodyBytes, tailBytes, unscopedAddressBindings };
+  return { row, original, bodyBytes, tailBytes, unscopedAddressBindings, interiorNames };
 }
 
 function descriptor(row, bodyBytes, native) {
@@ -325,6 +403,7 @@ function inspect({ session, target, classification, artifactDir }) {
   const assignedElf = p7.parseElfFile(path.join(artifactDir, 'candidate.o'));
   const assigned = census(assignedElf, target.sectionName, target.symbol, true);
   const owner = originalOwner(session, target, assigned.fn.size);
+  if (owner.interiorNames.length) rejectInteriorObjectClaims(owner.interiorNames, assignedElf, p8.rawRelocationRecords(assignedElf));
   const relocations = p8.relocationRecords(assignedElf, { symbol: target.symbol, bytes: assigned.fn.size, sectionName: target.sectionName });
   if (relocations.some(r => !['R_MIPS_26', 'R_MIPS_HI16', 'R_MIPS_LO16'].includes(r.type)
       || Number(r.offset) % 4 || Number(r.offset) < 0 || Number(r.offset) + 4 > assigned.fn.size)) fail('unsupported actual relocation');
@@ -341,10 +420,11 @@ function inspect({ session, target, classification, artifactDir }) {
   // Each observation has its own artifact; never overwrite an older diagnostic.
   const nativeFile = path.join(artifactDir, 'tn-' + require('crypto').randomBytes(6).toString('hex') + '.o');
   p7.run(session.runtime.tools['mips-kmc-elf-as.exe'].path,
-    [...session.context.phase8.model.config.binutils.compilerAssemblerFlags, '-o', nativeFile, assemblyFile], { cwd: artifactDir });
+    [...diagnosticContext.producerModel(session.context).model.config.binutils.compilerAssemblerFlags, '-o', nativeFile, assemblyFile], { cwd: artifactDir });
   const elf = p7.parseElfFile(nativeFile), native = census(elf, '.text', target.symbol);
   const nativeRelocations = p8.relocationRecords(elf, { symbol: target.symbol, bytes: assigned.fn.size, sectionName: '.text' });
   const allNativeRelocations = p8.rawRelocationRecords(elf);
+  if (owner.interiorNames.length) rejectInteriorObjectClaims(owner.interiorNames, elf, allNativeRelocations);
   if (allNativeRelocations.some(r => r.section !== '.rel.text')) fail('unsupported nontext relocation');
   if (native.fn.size !== assigned.fn.size || !native.bytes.subarray(0, native.fn.size).equals(assigned.bytes)
       || !text.same(nativeRelocations, relocations)) fail('native/assigned body or REL disagreement');
@@ -500,4 +580,4 @@ function admit(symbols, options = {}) {
   return result;
 }
 
-module.exports = { terminalSuffix, addressHints, coverage, census, originalOwner, descriptor, inspect, diagnose, compose, writeBatch, admit };
+module.exports = { rejectInteriorObjectClaims, terminalSuffix, addressHints, coverage, census, originalOwner, descriptor, inspect, diagnose, compose, writeBatch, admit };

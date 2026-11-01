@@ -67,6 +67,8 @@ function usage() {
 
 Core:
   capture-inputs --output <new ignored build directory>
+  refresh-inputs --from <manifest.json> --from-sha256 <SHA256>
+                 --replace <logical-tool-path=SHA256>... --output <new sibling.json>
   doctor [--m2c-root <path>]
   inspect <symbol> [--limit N]
   history <symbol> [--limit N] [--include-details]
@@ -484,9 +486,10 @@ function compactComparison(comparison, includeDetails = false) {
   };
 }
 
-function initialize(workbench, options = {}) {
-  const store = initializeStore(options.storeOptions || {});
-  const targets = syncTargets(workbench, options.storeOptions || {}, { force: options.forceTargetSync === true });
+function initialize(workbench, options = {}, watchCall) {
+  const call = watchCall || (callback => callback());
+  const store = call(() => initializeStore(options.storeOptions || {}), options.storeOptions);
+  const targets = call(() => syncTargets(workbench, options.storeOptions || {}, { force: options.forceTargetSync === true }), options.storeOptions);
   return { store, targets };
 }
 
@@ -585,6 +588,102 @@ function preserveCandidate(workbench, candidateId, note, observationId, routing 
   return { source: sourceRelative, dossier: dossierRelative };
 }
 
+// Integrator-only metadata construction. Review and preimage installation remain
+// external responsibilities; unchanged expectations are retained, not certified.
+async function refreshInputs(argv) {
+  const options = {}, allowed = new Set(['from', 'from-sha256', 'replace', 'output', 'json']);
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index], name = argument.slice(2);
+    if (!argument.startsWith('--') || !allowed.has(name)) throw new Error('refresh-inputs accepts only --from, --from-sha256, --replace, --output and --json');
+    if (name !== 'replace' && Object.hasOwn(options, name)) throw new Error(`--${name} may not be repeated`);
+    if (name === 'json') { options.json = true; continue; }
+    const value = argv[++index];
+    if (!value || value.startsWith('--')) throw new Error(`--${name} requires a value`);
+    if (name === 'replace') (options.replace ||= []).push(value);
+    else options[name] = value;
+  }
+  if (!options.from || !options['from-sha256'] || !options.output || !options.replace?.length) throw new Error('refresh-inputs requires --from, --from-sha256, --replace and --output');
+  const api = require('./lib/matching/input_set');
+  const fail = message => { throw new Error('refresh-inputs: ' + message); };
+  const hash = value => {
+    if (!/^[a-f0-9]{64}$/i.test(value)) fail('expected SHA-256');
+    return value.toUpperCase();
+  };
+  const samePath = (left, right) => path.resolve(left).toLowerCase() === path.resolve(right).toLowerCase();
+  const manifestPath = value => {
+    // Reject alternate spellings, traversal and Windows stream/device aliases.
+    const parts = value.replace(/^[A-Za-z]:/, '').split(/[\\/]/).filter(Boolean);
+    if (!parts.length || parts.some(part => part === '.' || part === '..' || /[. :]/.test(part.slice(-1))
+        || part.includes(':') || /^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(part))) fail('invalid manifest path');
+    const absolute = path.resolve(value), relative = path.relative(path.join(ROOT, 'build'), absolute);
+    if (!relative || relative === '..' || relative.startsWith('..' + path.sep) || path.isAbsolute(relative)
+        || relative.toLowerCase() === 'readme.md') fail('manifest must be under ignored build/');
+    return absolute;
+  };
+  const parentPath = manifestPath(options.from), output = manifestPath(options.output);
+  if (samePath(parentPath, output) || !samePath(path.dirname(parentPath), path.dirname(output))) fail('output must be a new sibling manifest');
+  api.regular(path.dirname(output), true);
+  api.regular(parentPath);
+  const parentBytes = fs.readFileSync(parentPath), parentSha256 = hash(options['from-sha256']);
+  if (api.digest(parentBytes) !== parentSha256) fail('parent SHA-256 differs');
+  const parent = api.openResearchInputSet(parentPath);
+  if (JSON.stringify(JSON.parse(parentBytes)) !== JSON.stringify(parent.manifest)) fail('parent changed while opening');
+  const recordFor = (logical, storage) => {
+    const records = parent.manifest.files.filter(record => record.logical === logical);
+    if (records.length !== 1 || records[0].storage !== storage
+        || storage === 'reference' && !samePath(records[0].path, path.join(ROOT, logical))) fail('required ' + storage + ' record: ' + logical);
+    return records[0];
+  };
+  for (const logical of ['tools/lib/matching/input_set.js', 'tools/lib/current_workflow.js', 'tools/lib/source_policy.js']) {
+    recordFor(logical, 'reference');
+    parent.read(path.join(ROOT, logical));
+  }
+  const stateLogical = 'build/current/state.json', stateRecord = recordFor(stateLogical, 'copy');
+  const state = JSON.parse(parent.read(path.join(ROOT, stateLogical))), accepted = parent.manifest.accepted;
+  const acceptedFields = ['fingerprint', 'baselineFingerprint', 'output', 'buildReport', 'verificationSha256', 'freshCompilationSha256'];
+  if (state.schemaVersion !== 7 || state.status !== 'verified' || !state.verifiedAt
+      || acceptedFields.some(field => state[field] === undefined || accepted[field] === undefined
+        || JSON.stringify(state[field]) !== JSON.stringify(accepted[field]))) fail('accepted state binding differs');
+  const checkIdentity = (file, expected, label) => {
+    const actual = api.identity(file);
+    if (actual.bytes !== expected.bytes || actual.sha256 !== expected.sha256) fail(label + ' identity differs');
+  };
+  const checkLiveState = () => checkIdentity(path.join(ROOT, stateLogical), stateRecord, 'live CURRENT state');
+  checkLiveState();
+  const eligible = new Set(['tools/lib/diff_preprocess_cache.js', 'tools/match.js']), seen = new Set(), delta = [];
+  const successor = JSON.parse(JSON.stringify(parent.manifest));
+  for (const replacement of options.replace) {
+    const separator = replacement.indexOf('='), logical = replacement.slice(0, separator);
+    if (separator < 1 || !eligible.has(logical)) fail('ineligible replacement path');
+    if (seen.has(logical)) fail('duplicate replacement path');
+    seen.add(logical);
+    const sha256 = hash(replacement.slice(separator + 1)), record = recordFor(logical, 'reference');
+    const actual = api.identity(path.join(ROOT, logical));
+    if (actual.sha256 !== sha256) fail('reviewed postimage differs: ' + logical);
+    if (actual.bytes === record.bytes && actual.sha256 === record.sha256) fail('replacement is unchanged: ' + logical);
+    const next = successor.files.find(item => item.logical === logical);
+    next.bytes = actual.bytes; next.sha256 = actual.sha256;
+    delta.push({ logical, before: { bytes: record.bytes, sha256: record.sha256 }, after: actual });
+  }
+  const bytes = Buffer.from(JSON.stringify(successor, null, 2) + '\n');
+  await parent.closeResearch();
+  if (!fs.readFileSync(api.regular(parentPath)).equals(parentBytes)) fail('parent changed before publication');
+  checkLiveState();
+  for (const change of delta) checkIdentity(path.join(ROOT, change.logical), change.after, 'replacement ' + change.logical);
+  api.regular(path.dirname(output), true);
+  // Exclusive creation retains failed/interrupted evidence. A complete unreported
+  // artifact may be valid; ordinary consumers, not a publication marker, decide.
+  fs.writeFileSync(output, bytes, { flag: 'wx' });
+  const result = api.openResearchInputSet(api.regular(output));
+  if (!fs.readFileSync(api.regular(output)).equals(bytes)
+      || JSON.stringify(result.manifest) !== JSON.stringify(successor)) fail('successor readback differs');
+  await result.closeResearch(); // Bind the returned ID to the exact readback bytes.
+  print({ scope: 'successor-manifest-only', fullSelectedClosureCertified: false, currentAcceptanceCertified: false,
+    manifest: output, id: result.id, parent: parentPath, parentSha256,
+    acceptedFingerprint: accepted.fingerprint, delta }, options);
+}
+
+
 async function main(argv = process.argv.slice(2)) {
   if (!argv.length) { usage(); return; }
   if (argv[0] === '--help' || argv[0] === '-h') {
@@ -592,6 +691,7 @@ async function main(argv = process.argv.slice(2)) {
     usage(); return;
   }
   const command = argv[0];
+  if (command === 'refresh-inputs') return refreshInputs(argv.slice(1));
   const parsed = parseArgs(argv.slice(1));
   validatePrivateOptions(command, parsed.options);
   if (parsed.options.inputs && (parsed.positional.length !== 1 || command === 'probe' && parsed.positional[0] === 'compare')) throw new Error('--inputs requires one target; probe comparison is unsupported');
@@ -605,32 +705,160 @@ async function main(argv = process.argv.slice(2)) {
     require('./lib/matching/scratch_assembly').assertScratchEnvironment();
   }
   comparisonQueryProvenanceCache = null;
-  if (!parsed.options['scratch-root']) return executeCommand(command, parsed);
-  const { resolvePrivateWorkspace, withPrivateWorkspace, assertPrivateWorkspace } = require('./lib/matching/private_workspace');
-  const workspace = resolvePrivateWorkspace({ root: ROOT, scratchRoot: parsed.options['scratch-root'], nativeConcurrency: parsed.options['native-concurrency'] || 'parallel' });
-  const inputs = parsed.options.inputs ? require('./lib/matching/input_set').openInputSet(parsed.options.inputs, { privateRoot: workspace.matchingRoot }) : undefined;
-  const selectedPython = inputs ? require('./lib/matching/input_set').authenticateRuntime(inputs) : undefined;
+  if (!parsed.options['scratch-root']) {
+    if (command !== 'intake') return executeCommand(command, parsed);
+    const api = require('./lib/matching/input_set'), inputs = api.openLiveResearchInputs();
+    api.authenticateResearchRuntime(inputs);
+    const outputs = [];
+    const researchSources = require('./lib/matching/research_source').createResearchSourceSession(inputs);
+    await executeCommand(command, parsed, null, (value, options) => outputs.push([value, options]), undefined, inputs, researchSources);
+    await researchSources.close();
+    for (const [value, options] of outputs) print(value, options);
+    return;
+  }
+  const { resolvePrivateWorkspace, withPrivateWorkspace, assertPrivateWorkspace, assertPrivateControls } = require('./lib/matching/private_workspace');
+  const workspace = resolvePrivateWorkspace({ root: ROOT, scratchRoot: parsed.options['scratch-root'], nativeConcurrency: parsed.options['native-concurrency'] || 'parallel', diagnostic: ['watch','probe'].includes(command) && Boolean(parsed.options.source) && !parsed.options['research-compiler'], ...(['intake', 'watch', 'probe'].includes(command) ? { command } : {}) });
+  if (workspace.admission==='candidate-diagnostic-v1') return executePrivateDiagnostic(command, parsed, workspace);
+  if (command === 'history' || command === 'best') return executePrivateDiagnosticQuery(command, parsed, workspace);
+  const inputs = parsed.options.inputs ? require('./lib/matching/input_set')[command === 'intake' ? 'openResearchInputSet' : 'openInputSet'](parsed.options.inputs, { privateRoot: workspace.matchingRoot }) : command === 'intake' ? require('./lib/matching/input_set').openLiveResearchInputs({privateRoot: workspace.matchingRoot}) : undefined;
+  const selectedPython = inputs ? require('./lib/matching/input_set')[command === 'intake' ? 'authenticateResearchRuntime' : 'authenticateRuntime'](inputs) : undefined;
   if (inputs && process.env.OB64_MATCH_PYTHON && path.resolve(process.env.OB64_MATCH_PYTHON) !== selectedPython) throw new Error('selected input Python override differs');
-  if (inputs) workspace.storeOptions = { ...workspace.storeOptions, python: selectedPython };
+  if (inputs) workspace.storeOptions = { ...workspace.storeOptions, python: selectedPython, ...(command === "intake" ? { isolatedPython: true } : {}) };
   const outputs = [];
-  await withPrivateWorkspace(workspace, { python: selectedPython, native: command === 'watch' || (command === 'probe' && parsed.positional[0] !== 'compare') }, async () => {
+  await withPrivateWorkspace(workspace, { python: selectedPython, isolatedPython: command === "intake", native: command === 'watch' || (command === 'probe' && parsed.positional[0] !== 'compare'), ...(command === 'watch' ? { inputs } : {}) }, async () => {
     const inputSeal = inputs || require('./lib/matching/private_inputs').capturePrivateInputs();
-    await executeCommand(command, parsed, workspace, (value, options) => outputs.push([value, options]), () => inputSeal.assertUnchanged(), inputs);
-    inputSeal.assertUnchanged();
-    assertPrivateWorkspace(workspace);
+    const researchSources = require('./lib/matching/input_set').isResearch(inputs) ? require('./lib/matching/research_source').createResearchSourceSession(inputs) : undefined;
+    await executeCommand(command, parsed, workspace, (value, options) => outputs.push([value, options]), () => inputSeal.assertUnchanged(), inputs, researchSources);
+    if (researchSources) await researchSources.close();
+    else inputSeal.assertUnchanged();
+    if (workspace.admission === 'strict-watch-v1') assertPrivateControls(workspace);
+    else assertPrivateWorkspace(workspace);
   });
   // Only the supervised child ran the callback. Publish after wrapper postchecks;
   // the supervisor process has an empty buffer and only forwards child output.
   for (const [value, options] of outputs) print(value, options);
 }
 
+// Query the same bounded model identity used by ordinary private candidates.
+// Historical records remain visible; scores require current comparison provenance.
+async function executePrivateDiagnosticQuery(command, parsed, workspace) {
+  const { positional, options } = parsed;
+  if (positional.length !== 1) throw new Error(`${command} requires one symbol`);
+  const api = require('./lib/matching/input_set');
+  const diagnostic = require('./lib/matching/diagnostic_context');
+  const scope = require('./lib/matching/private_workspace');
+  const inputs = api.openDiagnosticInputs(options.inputs, {privateRoot: workspace.matchingRoot});
+  const python = api.authenticateRuntime(inputs);
+  if (process.env.OB64_MATCH_PYTHON && path.resolve(process.env.OB64_MATCH_PYTHON) !== python) throw new Error('selected diagnostic Python override differs');
+  workspace.storeOptions = {...workspace.storeOptions, python, isolatedPython: true};
+  diagnostic.authenticateCode(inputs);
+  let output;
+  await scope.withPrivateWorkspace(workspace, {python, isolatedPython: true, native: false}, async () => {
+    const context = diagnostic.load({inputs, symbol: positional[0]});
+    const workbench = context.workbench, target = resolveTarget(workbench, positional[0]);
+    const session = prepareCompilerSession({context, inputs, matchingRoot: workspace.matchingRoot, privateTarget: target});
+    const rows = requestStore({action: 'query', name: command, args: {
+      modelId: workbench.modelId, symbol: target.symbol, symbols: historicalSymbols(target),
+      limit: numeric(options.limit, '--limit', 20), includeDetails: true,
+      comparisonAlgorithmId: comparisonAlgorithmIdentity(),
+      diagnosticCurrentFingerprint: diagnostic.baselineFingerprint(context),
+      diagnosticEnvironmentId: loadDiagnosticEnvironment(session).identity,
+    }}, workspace.storeOptions).map(row => {
+      if (!row.details) return row;
+      const {details, ...summary} = row;
+      return {...summary, ...compactMismatchEvidence(details), ...compactDiagnosticEvidence(details),
+        ...(options['include-details'] ? {details} : {})};
+    });
+    diagnostic.authenticateCode(inputs);
+    await inputs.closeResearch();
+    output = {symbol: target.symbol, count: rows.length, rows, diagnosticOnly: true};
+  });
+  if (output !== undefined) print(output, options);
+}
+
+async function executePrivateDiagnostic(command, parsed, workspace) {
+  const inputApi=require('./lib/matching/input_set');
+  const diagnostic=require('./lib/matching/diagnostic_context');
+  const scope=require('./lib/matching/private_workspace');
+  const { positional,options }=parsed;
+  if(positional.length!==1 || command==='probe'&&positional[0]==='compare')throw new Error('candidate diagnostic requires one target');
+  const openingStarted=performance.now();
+  const inputs=inputApi.openDiagnosticInputs(options.inputs,{privateRoot:workspace.matchingRoot});
+  const python=inputApi.authenticateRuntime(inputs);
+  if(process.env.OB64_MATCH_PYTHON && path.resolve(process.env.OB64_MATCH_PYTHON)!==python)throw new Error('selected diagnostic Python override differs');
+  workspace.storeOptions={...workspace.storeOptions,python,isolatedPython:true};
+  diagnostic.authenticateCode(inputs);
+  const started=performance.now(),timings={openingAndRuntimeMs:performance.now()-openingStarted};
+  const measure=(name,fn)=>{const start=performance.now();try{return fn();}finally{timings[name]=(timings[name]||0)+performance.now()-start;}};
+  await scope.withPrivateWorkspace(workspace,{python,isolatedPython:true,native:true,inputs},async()=>{
+    const context=measure('targetPreparationMs',()=>diagnostic.load({inputs,symbol:positional[0]}));
+    const workbench=context.workbench, target=resolveTarget(workbench,positional[0]);
+    assertScratchCapability(workbench,target);
+    const source=scope.assertPrivatePath(workspace,path.resolve(options.source));
+    const closingChecks=[];
+    const storeRequest=(request,storeOptions)=>{
+      scope.requireActiveWatchWorkspace(workspace,inputs,ROOT,workspace.matchingRoot);
+      return require('./lib/matching/store').requestStore(request,storeOptions);
+    };
+    const routing={context,inputs,matchingRoot:workspace.matchingRoot,storeOptions:workspace.storeOptions,storeRequest,
+      privateWorkspace:true,sourcePath:source,syncTargets:false,deferCompletion:true,closingChecks};
+    measure('storePreparationMs',()=>{
+      initializeStore(workspace.storeOptions);
+      // A scoped record is never advertised as the complete accepted model.
+      storeRequest({action:'upsert_targets',records:[require('./lib/matching/target_model').targetRecord(target)]},workspace.storeOptions);
+    });
+    diagnostic.authenticateCode(inputs);
+    const sourceText=fs.readFileSync(source,'utf8');
+    let pending;
+    if(command==='watch') {
+      const session=measure('compilerSessionMs',()=>prepareCompilerSession(routing));
+      session.measure=measure;
+      pending=measure('candidateAndComparisonMs',()=>compileCandidate(workbench,target,sourceText,{...routing,session,origin:'manual-watch',metadata:{sourcePath:portableSourcePath(source)}}));
+    } else pending=measure('probeMs',()=>runProbe(workbench,target,sourceText,{...routing,passes:options.passes ? options.passes.split(',').map(s=>s.trim()).filter(Boolean) : null}));
+    // Inspect only this invocation's fresh output directory, not historical runs.
+    const artifactDirectory=path.dirname(pending.completion.completionReports[0].file);
+    let artifactCount=0;
+    const collect=directory=>{
+      scope.assertPrivatePath(workspace,directory,{regularFile:false});
+      for(const name of fs.readdirSync(directory)) {
+        if(++artifactCount>256)throw new Error('candidate output artifact bound exceeded');
+        const file=scope.assertPrivatePath(workspace,path.join(directory,name),{regularFile:false});
+        if(fs.lstatSync(file).isDirectory())collect(file);else inputs.capturePrivateArtifact(file);
+      }
+    };
+    measure('artifactClosingPreparationMs',()=>{
+      collect(artifactDirectory);inputs.capturePrivateArtifact(source);
+      if(command==='watch')inputs.capturePrivateArtifact(path.join(ROOT,pending.completion.completionReports[0].value.sourcePolicy.source));
+    });
+    measure('candidateClosingMs',()=>{for(const check of closingChecks)check();});
+    diagnostic.authenticateCode(inputs);
+    const closeStart=performance.now();await inputs.closeResearch();timings.inputClosingMs=performance.now()-closeStart;
+    scope.assertPrivateControls(workspace);
+    pending.completion.completionInputs=inputs.consumedPaths();
+    const completedReport=pending.completion.completionReports[0].value;
+    completedReport.inputAuthentication=inputs.provenance();completedReport.diagnosticOnly=true;completedReport.acceptedFingerprint=context.acceptedFingerprint;
+    if(command==='probe')completedReport.reportSha256=require('./lib/matching/probe').reportDigest(completedReport);
+    Object.assign(timings,workspace.guardTimings||{});
+    return ()=>{
+      // Store verifies paths/DB companions while completion can still roll back.
+      const stored=measure('completionMs',()=>require('./lib/matching/store').requestStore(pending.completion,workspace.storeOptions));
+      const result=command==='watch'?{...comparisonSummary({...pending,compile:stored.run,comparison:stored.comparison}),researchIntake:{available:false,reason:'Use match.js intake for research retrieval; this command checks candidate dependencies.'}}:stored;
+      timings.childElapsedMs=performance.now()-started;
+      timings.childProcessElapsedMs=process.uptime()*1000;
+      print({...result,diagnosticOnly:true,acceptedFingerprint:context.acceptedFingerprint,inputSetId:inputs.id,
+        inputAuthentication:inputs.provenance(),nativeConcurrency:workspace.nativeConcurrency,timings},options);
+      if(command==='watch'&&stored.run.status!=='compiled' || command==='probe'&&stored.status!=='complete')process.exitCode=2;
+    };
+  });
+}
+
 function validatePrivateOptions(command, options) {
   if (options.apply && command !== 'tail-admit') throw new Error('--apply requires tail-admit');
   if (options.inputs) {
-    if (!options['scratch-root'] || !['intake', 'watch', 'probe'].includes(command)
-        || command !== 'intake' && !options.source) throw new Error('--inputs supports only guarded intake, watch --source and probe --source');
+    if (!options['scratch-root'] || !['intake', 'watch', 'probe', 'history', 'best'].includes(command)
+        || ['watch', 'probe'].includes(command) && !options.source) throw new Error('--inputs supports guarded intake, history, best, watch --source and probe --source');
     const allowed = new Set(['inputs', 'scratch-root', 'native-concurrency', 'json', 'include-details',
-      ...(command === 'intake' ? ['limit', 'cross-limit', 'symptom'] : command === 'watch' ? ['source', 'cross-limit', 'symptom'] : ['source', 'passes'])]);
+      ...(command === 'intake' ? ['limit', 'cross-limit', 'symptom'] : ['history','best'].includes(command) ? ['limit'] : command === 'watch' ? ['source', 'cross-limit', 'symptom'] : ['source', 'passes'])]);
     for (const key of Object.keys(options)) if (!allowed.has(key)) throw new Error('--inputs does not support --' + key);
   }
   if (options['scratch-root'] && !PRIVATE_COMMANDS.has(command)) throw new Error('--scratch-root is unsupported for ' + command);
@@ -638,18 +866,45 @@ function validatePrivateOptions(command, options) {
   if (options['native-concurrency'] && !['serial', 'parallel'].includes(options['native-concurrency'])) throw new Error('--native-concurrency must be serial or parallel');
 }
 
-async function executeCommand(command, parsed, workspace = null, emit = print, assertPrivateInputs = undefined, inputs = undefined) {
+async function executeCommand(command, parsed, workspace = null, emit = print, assertPrivateInputs = undefined, inputs = undefined, researchSources = undefined) {
   const { positional, options } = parsed;
   const routing = workspace ? { matchingRoot: workspace.matchingRoot, storeOptions: workspace.storeOptions, privateWorkspace: true, privatePreparation: {}, assertPrivateInputs, inputs } : {};
+  let watchCall;
+  if (workspace?.admission === 'strict-watch-v1') {
+    const scope = require('./lib/matching/private_workspace');
+    const check = storeOptions => {
+      scope.requireActiveWatchWorkspace(workspace, inputs, ROOT, routing.matchingRoot);
+      if (storeOptions && path.resolve(storeOptions.database || '') !== path.resolve(workspace.storeOptions.database)) throw new Error('private watch store database differs');
+    };
+    watchCall = (callback, storeOptions) => {
+      check(storeOptions);
+      let result, failure;
+      try { result = callback(); } catch (error) { failure = error || new Error('private watch operation failed', { cause: error }); }
+      try { check(storeOptions); } catch (error) { failure = scope.combinePrivateErrors(failure, error); }
+      if (failure) throw failure;
+      return result;
+    };
+    routing.watchWorkspace = workspace;
+    routing.storeRequest = (request, storeOptions) => {
+      if (!storeOptions) throw new Error('private watch store options are required');
+      return watchCall(() => require('./lib/matching/store').requestStore(request, storeOptions), storeOptions);
+    };
+  }
   const requestStore = (request) => require('./lib/matching/store').requestStore(request, routing.storeOptions || {});
   const loadCandidateRun = (id) => latestCandidateRun(id, routing.storeOptions, { ...routing, privateWorkbench: workbench });
-  const print = (value, options) => emit(inputs ? { ...value, inputSetId: inputs.id, acceptedFingerprint: inputs.manifest.accepted.fingerprint } : value, options);
-  const intakeRouting = workspace ? { database: workspace.storeOptions.database, inputs } : {};
+  const print = (value, options) => emit(inputs ? { ...value, ...(require("./lib/matching/input_set").isLiveResearch(inputs) ? {} : { inputSetId: inputs.id, acceptedFingerprint: inputs.manifest.accepted.fingerprint }), ...(require("./lib/matching/input_set").isResearch(inputs) ? { inputAuthentication: inputs.provenance() } : {}) } : value, options);
+  const intakeRouting = { ...(workspace ? { database: workspace.storeOptions.database, inputs } : {}), ...(researchSources ? { classifyResearchSource: researchSources.classifySource } : {}) };
   const privateFile = (file) => workspace ? require('./lib/matching/private_workspace').assertPrivatePath(workspace, path.resolve(file), { mustExist: true, regularFile: true }) : path.resolve(file);
   const researchOptions=validateKnowledgeOptions({crossLimit:options['cross-limit']===undefined?0:nonnegativeInteger(options['cross-limit'],'--cross-limit'),
     ...(options.symptom===undefined?{}:{symptom:options.symptom})});
   if(command==='intake'){
     if(positional.length!==1)throw new Error('intake requires one symbol');
+    if (require('./lib/matching/input_set').isResearch(inputs)) {
+      const manifest = JSON.parse(inputs.read('asm/original/rev0/manifest.json'));
+      const archive = path.join(ROOT, "docs/dossiers");
+      const records = inputs.has(archive) ? fs.readdirSync(inputs.resolve(archive)).filter(name => name.endsWith(".observation.json")).map(name => path.join(archive, name)) : [];
+      await inputs.prefetch([...manifest.chunks.flatMap(chunk => chunk.parts.map(part => part.file)), ...records]);
+    }
     const model=loadIntakeModel({inputs}),target=resolveTarget(model,positional[0]);
     print(researchPresentation(target.symbol,{workbench:model,limit:numeric(options.limit,'--limit',20),...researchOptions,...intakeRouting}),options);return;
   }
@@ -657,7 +912,7 @@ async function executeCommand(command, parsed, workspace = null, emit = print, a
     print(require('./lib/matching/terminal_tail').admit(positional, options), options); return;
   }
   const workbench = loadWorkbenchModel({inputs});
-  if (['prepare', 'watch', 'probe', 'import'].includes(command) && positional[0]
+  if (['prepare', 'watch', 'probe'].includes(command) && positional[0]
       && !(command === 'probe' && positional[0] === 'compare')) {
     assertScratchCapability(workbench, resolveTarget(workbench, positional[0]));
   }
@@ -681,7 +936,7 @@ async function executeCommand(command, parsed, workspace = null, emit = print, a
     }, options);
     return;
   }
-  initialize(workbench, routing);
+  initialize(workbench, routing, watchCall);
   if (command === 'import') {
     if (positional.length !== 1 || !options.source || !options.observation) throw new Error('import requires <symbol> --source <candidate.c> --observation <curated.json>');
     const target = resolveTarget(workbench, positional[0]);
@@ -745,7 +1000,8 @@ async function executeCommand(command, parsed, workspace = null, emit = print, a
       metadata: { sourcePath: portableSourcePath(sourceFile) },
       syncTargets: false,
     });
-    print({...comparisonSummary(result),researchIntake:researchPresentation(target.symbol,{workbench,...researchOptions,...intakeRouting}),
+    const presentResearch = () => researchPresentation(target.symbol,{workbench,...researchOptions,...intakeRouting});
+    print({...comparisonSummary(result),researchIntake:watchCall ? watchCall(presentResearch) : presentResearch(),
       ...(workspace ? { nativeConcurrency: workspace.nativeConcurrency, preprocessCache: routing.privatePreparation.preprocessCache, contextPreparation: routing.privatePreparation.contextPreparation } : {})}, options);
     if (result.compile.status !== 'compiled') process.exitCode = 2;
     return;

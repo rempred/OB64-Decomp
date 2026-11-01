@@ -2,26 +2,180 @@
   "schemaVersion": 1,
   "lessons": [
     {
-      "id": "union-for-successive-resource-phases",
-      "symptoms": ["register-allocation", "stack-layout-or-offset-family"],
-      "applicability": "Use a union only for real, nonoverlapping phases. DFB8's header/length/destination phases change allocation; its independent-local control differs. Squad1237F0's shared result assignment changes fallback priority; a descriptor/result union then restores S1 and the annulled zero write but leaves unit/code swapped. Read both controls before transferring either effect. These are pinned source contexts, not original-field meanings or a universal union recipe.",
-      "note": "docs/dossiers/func_0002dfb8-09f4a35005.md#recorded-observation",
-      "references": ["docs/dossiers/func_0002dfb8-d70647fd1b.md", "docs/Plans/task-logs/sol-resource-header-loading-wave-20261005.md", "docs/dossiers/func_001237F0-679cae8110.md", "docs/dossiers/func_001237F0-36f9f9d597.md"],
+      "id": "direct-indexing-and-native-induction-copies",
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
+      "applicability": "P07 728C0 and E03 E90/2450/2CC0/F84/DD4 use direct real table/output expressions to recover distinct induction copies or dispatch phases. P07 remains an intermediate with six scheduling words different. Preserve complete loops, accesses, cached-local controls and earlier E07 examples; indexing is not a universal allocation rule.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-direct-indexing-and-native-induction-copies",
+      "references": [
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_002728C0-5ba3c56c2f.md",
+        "docs/matching-c/e03-runtime-reuse.md",
+        "docs/dossiers/func_00261E90-91b83a5b6c.md",
+        "docs/dossiers/func_00261F84-cdd8695e98.md",
+        "docs/dossiers/func_00262DD4-2bb0d35e3c.md"
+      ],
       "observations": [
-        {"symbol": "func_0002dfb8", "path": "docs/dossiers/func_0002dfb8-09f4a35005.observation.json"},
-        {"symbol": "func_0002dfb8", "path": "docs/dossiers/func_0002dfb8-d70647fd1b.observation.json"},
-        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-36f9f9d597.observation.json"}
+        {
+          "symbol": "func_002728C0",
+          "path": "docs/dossiers/func_002728C0-5ba3c56c2f.observation.json"
+        },
+        {
+          "symbol": "func_00262CC0",
+          "path": "docs/dossiers/func_00262CC0-e0ddaf763f.observation.json"
+        },
+        {
+          "symbol": "func_00262DD4",
+          "path": "docs/dossiers/func_00262DD4-2bb0d35e3c.observation.json"
+        }
+      ]
+    },
+    {
+      "id": "real-byte-phases-and-initialization-placement",
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order",
+        "load-store-width-or-signedness"
+      ],
+      "applicability": "Earlier E08/E09/P07/E03 initialization and E06 u16/volatile controls remain in details. E05 65A28 initializes loop controls after the first generator; 667C0 uses a walking cursor and explicit angle scale. Its intermediate restores extent before ordering. Preserve complete controls: temporary regressions do not disprove structure, and combined changes do not isolate a mechanism.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-real-byte-phases-and-initialization-placement",
+      "references": [
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0025C3DC-1115ea2c5e.md",
+        "docs/dossiers/func_00272790-bb07f050eb.md",
+        "docs/dossiers/func_00273180-6a9f9dda91.md",
+        "docs/dossiers/func_00269470-f7067ace36.md",
+        "docs/matching-c/e05-geometry-reuse.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_0025C3DC",
+          "path": "docs/dossiers/func_0025C3DC-1115ea2c5e.observation.json"
+        },
+        {
+          "symbol": "func_00269470",
+          "path": "docs/dossiers/func_00269470-f7067ace36.observation.json"
+        },
+        {
+          "symbol": "func_00265a28",
+          "path": "docs/dossiers/func_00265a28-cbe515c941.observation.json"
+        }
+      ]
+    },
+    {
+      "id": "retained-early-load",
+      "symptoms": [
+        "scheduling-or-block-order",
+        "store-flag",
+        "register-allocation",
+        "load-store-width-or-signedness"
+      ],
+      "applicability": "E08 E490 reads a flag through an unqualified byte view while retaining the const record pointer. P06 56940/56F58 use scalar views; 75E68 retains a real self-XOR instead of zero assignment. Earlier CBA8 controls remain relevant. Preserve read counts and widths; phase dumps and final source pairs have different scope and establish neither original mutability nor universal aliasing/volatility rules.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-retained-early-load",
+      "references": [
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0024E490-620365e011.md",
+        "docs/matching-c/p06-presentation-reuse.md",
+        "docs/dossiers/func_00256940-12ba556124.md",
+        "docs/dossiers/func_00256F58-055b1b6ed1.md",
+        "docs/dossiers/func_00275E68-90714067f6.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_0024E490",
+          "path": "docs/dossiers/func_0024E490-620365e011.observation.json"
+        },
+        {
+          "symbol": "func_00256F58",
+          "path": "docs/dossiers/func_00256F58-055b1b6ed1.observation.json"
+        },
+        {
+          "symbol": "func_00275E68",
+          "path": "docs/dossiers/func_00275E68-90714067f6.observation.json"
+        }
+      ]
+    },
+    {
+      "id": "immutable-selector-and-distinct-selected-result",
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order",
+        "load-store-width-or-signedness"
+      ],
+      "applicability": "After the separate B954 case-order change, immutable paired loaded words and independent halfword-store additions close the remaining sixteen nonrelocation differences. Compare that complete context with the mutable-value control; preserve widths, stores and actual loaded values. Earlier selector and halfword-local examples remain linked. This is a local producer/use observation, not a universal const or narrowing rule.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#immutable-paired-loaded-words",
+      "references": [
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0025B954-d562fb940d.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_0025B954",
+          "path": "docs/dossiers/func_0025B954-d562fb940d.observation.json"
+        }
+      ]
+    },
+    {
+      "id": "union-for-successive-resource-phases",
+      "symptoms": [
+        "register-allocation",
+        "stack-layout-or-offset-family"
+      ],
+      "applicability": "Use unions only for real nonoverlapping phases: DFB8 header/length/destination, Squad1237F0 descriptor/result, and P06 59480 successive payload/header views. Controls isolate different carrier effects; Squad still swaps unit/code. Keep the actual 0x1C access and no dummy reader. These contexts prove neither original fields nor a universal union recipe.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-union-for-successive-resource-phases",
+      "references": [
+        "docs/dossiers/func_0002dfb8-d70647fd1b.md",
+        "docs/Plans/task-logs/sol-resource-header-loading-wave-20261005.md",
+        "docs/dossiers/func_001237F0-679cae8110.md",
+        "docs/dossiers/func_001237F0-36f9f9d597.md",
+        "docs/matching-c/p06-presentation-reuse.md",
+        "docs/dossiers/func_00259480-a021ee4260.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_0002dfb8",
+          "path": "docs/dossiers/func_0002dfb8-09f4a35005.observation.json"
+        },
+        {
+          "symbol": "func_001237F0",
+          "path": "docs/dossiers/func_001237F0-36f9f9d597.observation.json"
+        },
+        {
+          "symbol": "func_00259480",
+          "path": "docs/dossiers/func_00259480-a021ee4260.observation.json"
+        }
       ]
     },
     {
       "id": "early-normalized-word-call-lifetime",
-      "symptoms": ["register-allocation", "scheduling-or-block-order"],
-      "applicability": "In ADF0, assigning the masked item to an SI word before setup calls creates a measured call-crossing lifetime and saved-register allocation, while final assembly places the mask later. Preserve the separately stored full word and real consumers. A narrow local or normalization after the calls is a different hypothesis. The preserved source still has prologue/loop differences; this does not identify original C or a universal allocation rule.",
-      "note": "docs/dossiers/func_0019ADF0-7003015ec7.md#recorded-observation",
-      "references": ["docs/dossiers/func_0019ADF0-b852c88c57.md"],
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
+      "applicability": "E09/P07 real constants/addresses/results and the E03 callback-result control remain in details. E05 675B4 captures the actual embedded-record pointer before command construction, moving addiu before conversion and restoring the call-delay store; the source form also transfers to67668. Keep each source-bound control. Terminal suffix proof is separate, and no universal named-pointer rule follows.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-early-normalized-word-call-lifetime",
+      "references": [
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0025C6A4-9d09feb15e.md",
+        "docs/dossiers/func_002728C0-d072d1846a.md",
+        "docs/dossiers/func_00272A2C-6a1d4a0d73.md",
+        "docs/matching-c/e05-geometry-reuse.md"
+      ],
       "observations": [
-        {"symbol": "func_0019ADF0", "path": "docs/dossiers/func_0019ADF0-7003015ec7.observation.json"},
-        {"symbol": "func_0019ADF0", "path": "docs/dossiers/func_0019ADF0-b852c88c57.observation.json"}
+        {
+          "symbol": "func_0025C6A4",
+          "path": "docs/dossiers/func_0025C6A4-9d09feb15e.observation.json"
+        },
+        {
+          "symbol": "func_0026285C",
+          "path": "docs/dossiers/func_0026285C-60cfc57a70.observation.json"
+        },
+        {
+          "symbol": "func_002675B4",
+          "path": "docs/dossiers/func_002675B4-7e06fbec53.observation.json"
+        }
       ]
     },
     {
@@ -57,54 +211,48 @@
     },
     {
       "id": "retained-insertion-amount-transfer",
-      "symptoms": ["register-allocation", "scheduling-or-block-order"],
-      "applicability": "Retaining the real incoming word amount across a lookup for a new-slot update transferred from B63C to B4C4. The first B4C4 candidate preserved both record scans and matched instruction fields outside actual relocations. Inspect both source contexts, retain the original truncation and memory operations, and reconcile caller widths separately. These are provisional native observations, not canonical linked or whole-wave acceptance.",
-      "note": "docs/dossiers/func_0019B4C4-25d753235b.md#recorded-observation",
-      "references": ["docs/dossiers/func_0019B63C-ee0a6fed13.md"],
-      "observations": [
-        {"symbol": "func_0019B63C", "path": "docs/dossiers/func_0019B63C-ee0a6fed13.observation.json"},
-        {"symbol": "func_0019B4C4", "path": "docs/dossiers/func_0019B4C4-25d753235b.observation.json"}
-      ]
-    },
-    {
-      "id": "branch-local-byte-consumers",
-      "symptoms": ["register-allocation", "load-store-width-or-signedness", "opcode-or-expression"],
-      "applicability": "B710's branch-local byte conversions change temporaries; preserve clamps, reads and call width. LZSS A510's signed -1 fill reuses a full-width sentinel; unsigned -1 matches FF/FFFF. In D9C, defined unsigned byte-extraction shifts cast to s32 let COMBINE recover a selector copy; an unsigned result changes slti to sltiu, while deleting the cast loses the copy. These source pairs are context-bound; final D9C acceptance is established separately.",
-      "note": "docs/dossiers/func_0019B710-f9a6256700.md#source-context",
-      "references": ["docs/dossiers/func_0019B710-e6e2da95b1.md", "docs/dossiers/boot_lzss_decompress-ca71f8b001.md", "docs/dossiers/boot_lzss_decompress-eb80037d0d.md", "docs/dossiers/func_00195D9C-12774b30fc.md", "docs/dossiers/func_00195D9C-f263dcf4b2.md"],
-      "observations": [
-        {"symbol": "func_0019B710", "path": "docs/dossiers/func_0019B710-e6e2da95b1.observation.json"},
-        {"symbol": "func_0019B710", "path": "docs/dossiers/func_0019B710-f9a6256700.observation.json"},
-        {"symbol": "func_00195D9C", "path": "docs/dossiers/func_00195D9C-12774b30fc.observation.json"}
-      ]
-    },
-    {
-      "id": "direct-indexing-and-native-induction-copies",
       "symptoms": [
         "register-allocation",
         "scheduling-or-block-order"
       ],
-      "applicability": "Replacing named slot pointers with direct array reads and writes in guarded nested loops restored the outer cursor and inner snapshot, reducing this source pair from 48 to 18 differing words. A separate named-pointer dump rejects a hoisted address's induction reduction; its user-variable copy cost supports a bounded explanation. This is source-bound evidence, not the winning source's internal pass trace. Preserve genuine accesses; never add dummy consumers.",
-      "note": "docs/matching-c/p04-reuse.md#existing-direct-indexing-context",
+      "applicability": "Retaining the real incoming word amount across a lookup for a new-slot update transferred from B63C to B4C4. The first B4C4 candidate preserved both record scans and matched instruction fields outside actual relocations. Inspect both source contexts, retain the original truncation and memory operations, and reconcile caller widths separately. These are provisional native observations, not canonical linked or whole-wave acceptance.",
+      "note": "docs/dossiers/func_0019B4C4-25d753235b.md#recorded-observation",
       "references": [
-        "docs/matching-c/p04-reuse.md",
-        "docs/dossiers/func_0019B800-32d362c9c3.md",
-        "docs/dossiers/func_0019B800-38a2f59ee0.md",
-        "docs/dossiers/func_0019B800-352909daa5.md",
-        "docs/dossiers/func_0019B800-f158acd707.md"
+        "docs/dossiers/func_0019B63C-ee0a6fed13.md"
       ],
       "observations": [
         {
-          "symbol": "func_0019B800",
-          "path": "docs/dossiers/func_0019B800-32d362c9c3.observation.json"
+          "symbol": "func_0019B63C",
+          "path": "docs/dossiers/func_0019B63C-ee0a6fed13.observation.json"
         },
         {
-          "symbol": "func_0019B800",
-          "path": "docs/dossiers/func_0019B800-38a2f59ee0.observation.json"
+          "symbol": "func_0019B4C4",
+          "path": "docs/dossiers/func_0019B4C4-25d753235b.observation.json"
+        }
+      ]
+    },
+    {
+      "id": "branch-local-byte-consumers",
+      "symptoms": [
+        "register-allocation",
+        "load-store-width-or-signedness",
+        "opcode-or-expression"
+      ],
+      "applicability": "E08 C57C keeps its word interface and consumes a byte view. E09 D8D4 separately needs a byte result, word guard and index store before the duration reload; intermediate split-result forms remain nonmatching. Preserve public widths, signed guards, actual reads and complete paths. These are distinct source contexts, not an instruction to narrow every parameter or a universal allocation rule. Earlier examples remain linked.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#byte-consumers-and-separate-word-guards",
+      "references": [
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0024C57C-34000563ad.md",
+        "docs/dossiers/func_0025D8D4-4838f108ec.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_0024C57C",
+          "path": "docs/dossiers/func_0024C57C-34000563ad.observation.json"
         },
         {
-          "symbol": "func_0019B800",
-          "path": "docs/dossiers/func_0019B800-352909daa5.observation.json"
+          "symbol": "func_0025D8D4",
+          "path": "docs/dossiers/func_0025D8D4-4838f108ec.observation.json"
         }
       ]
     },
@@ -115,15 +263,15 @@
         "scheduling-or-block-order",
         "stack-layout-or-offset-family"
       ],
-      "applicability": "C8B4 separate result, C964 inline vector difference and58178 helper-owned distance workspace restore their own float/register/stack shapes. Use the exact source contexts; temporary regressions did not disprove the broader structures. Earlier source pairs and their limits remain linked in the context note.",
-      "note": "docs/matching-c/p05-reuse.md#floating-workspaces",
+      "applicability": "C8B4/C964/58178, P06 and E06 scalar/matrix helper controls remain in details. E05 65D10 reuses the angle formal in a combined pair; 660D0 uses the initial buffer and later real zero; 66A30 converts projected output directly to signed halfword. Preserve storage phases, widths, NaN constraints and every control. Equivalent arithmetic or frame size does not establish allocation or original source.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-float-producer-lifetimes-and-late-tail-merging",
       "references": [
         "docs/matching-c/p05-reuse.md",
         "docs/dossiers/func_0024C8B4-54888fa28c.md",
         "docs/dossiers/func_0024C8B4-ec00eadd39.md",
         "docs/dossiers/func_0024C964-772b3e4d40.md",
-        "docs/dossiers/func_0024C964-5867170ecc.md",
-        "docs/dossiers/func_00258178-c66db6a413.md"
+        "docs/dossiers/func_00267FD0-5cfdea0ab6.md",
+        "docs/matching-c/e05-geometry-reuse.md"
       ],
       "observations": [
         {
@@ -131,39 +279,61 @@
           "path": "docs/dossiers/func_0024C8B4-54888fa28c.observation.json"
         },
         {
-          "symbol": "func_0024C964",
-          "path": "docs/dossiers/func_0024C964-772b3e4d40.observation.json"
+          "symbol": "func_00267FD0",
+          "path": "docs/dossiers/func_00267FD0-5cfdea0ab6.observation.json"
         },
         {
-          "symbol": "func_00258178",
-          "path": "docs/dossiers/func_00258178-c66db6a413.observation.json"
+          "symbol": "func_00265d10",
+          "path": "docs/dossiers/func_00265d10-729dfd2287.observation.json"
         }
       ]
     },
     {
       "id": "real-workword-phases-and-register-preferences",
-      "symptoms": ["register-allocation"],
-      "applicability": "Preserve real producers and consumers. Shop977E0's cursor/value precursor changes preferences but retains an address bug. Squad1237F0's evaluator-call consumers add hard-A0 conflicts; final allocation also needs prior storage fixes. DDB4's distinct address/value phases retain separate stack homes; exposing its real mask-chain results changes scheduling/coalescing. Compare the linked baselines and final contexts. These observations identify neither original C nor universal allocation rules.",
-      "note": "docs/dossiers/func_001977E0-70a68c829e.md#measured-precursor-cursorvalue-phases",
-      "references": ["docs/dossiers/func_001977E0-0fbeca6ab5.md", "docs/dossiers/func_001237F0-120c606310.md", "docs/dossiers/func_001237F0-615b45b15b.md",
-        "docs/dossiers/func_0010DDB4-5ee5eca184.md",
-        "docs/dossiers/func_0010DDB4-4f9e130a19.md",
-        "docs/dossiers/func_0010DDB4-777e9bf9c6.md"],
+      "symptoms": [
+        "register-allocation"
+      ],
+      "applicability": "P07 72B8C reuses its consumed dispatch word for the entry address, retains narrow in-place case2 arithmetic and performs the final direct field read. Case0 needs its earlier non-inplace expressions; the in-place counterexample swaps registers. Preserve all six reads and four update stores plus the final store. Earlier real-word-phase examples remain linked; neither qualifier identity nor a universal reuse rule follows.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#consumed-dispatch-word-reused-for-an-address",
+      "references": [
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_00272B8C-0b27d9e190.md"
+      ],
       "observations": [
-        {"symbol": "func_001977E0", "path": "docs/dossiers/func_001977E0-70a68c829e.observation.json"},
-        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-120c606310.observation.json"},
-        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-615b45b15b.observation.json"}
+        {
+          "symbol": "func_00272B8C",
+          "path": "docs/dossiers/func_00272B8C-0b27d9e190.observation.json"
+        }
       ]
     },
     {
       "id": "minimum-operand-order-and-relocated-loads",
-      "symptoms": ["register-allocation", "branch-polarity"],
-      "applicability": "Equivalent minimum conditionals can preserve every relocation-masked instruction field while exchanging the external objects loaded. In this source pair, reversing the comparison and matching result arms restored actual address bindings without changing text extent or table bytes. Check real symbols and implicit addends; field agreement alone is insufficient. The earlier source remains a counterexample. This is bounded source evidence, not a general operand-order rule.",
-      "note": "docs/dossiers/func_001977E0-0fbeca6ab5.md#source-context",
-      "references": ["docs/dossiers/func_001977E0-70a68c829e.md"],
+      "symptoms": [
+        "register-allocation",
+        "branch-polarity",
+        "opcode-or-expression"
+      ],
+      "applicability": "977E0 operand arms exchange external loads despite masked agreement. P01 EA70 uses a real compound result and two-store object lifetime; E03 DD4 spells strict maximum item>endpoint and reloads after the minimum swap. Check symbols/addends and each complete source pair. Preserve strict comparisons and reloads; these are neither a universal operand rule nor stable-sort evidence.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-minimum-operand-order-and-relocated-loads",
+      "references": [
+        "docs/dossiers/func_001977E0-70a68c829e.md",
+        "docs/dossiers/func_0024EA70-80d593ed8c.md",
+        "docs/matching-c/e03-runtime-reuse.md",
+        "docs/dossiers/func_00262DD4-2bb0d35e3c.md"
+      ],
       "observations": [
-        {"symbol": "func_001977E0", "path": "docs/dossiers/func_001977E0-70a68c829e.observation.json"},
-        {"symbol": "func_001977E0", "path": "docs/dossiers/func_001977E0-0fbeca6ab5.observation.json"}
+        {
+          "symbol": "func_001977E0",
+          "path": "docs/dossiers/func_001977E0-70a68c829e.observation.json"
+        },
+        {
+          "symbol": "func_0024EA70",
+          "path": "docs/dossiers/func_0024EA70-80d593ed8c.observation.json"
+        },
+        {
+          "symbol": "func_00262DD4",
+          "path": "docs/dossiers/func_00262DD4-2bb0d35e3c.observation.json"
+        }
       ]
     },
     {
@@ -174,28 +344,28 @@
         "register-allocation",
         "opcode-or-expression"
       ],
-      "applicability": "Real call-argument definitions, loop scopes and path-local increments can change hoisting, induction reduction and allocation. D14C controls remain inexact; the S4 and 2488D0 source pairs show context-specific effects. Preserve each real call, increment, bound and path and consult every cited control. Notes, weights or intermediate improvement do not establish a best, original source or universal transfer; whole-wave acceptance is separate.",
-      "note": "docs/dossiers/func_0022D14C-24dd5fe250.md#source-context",
+      "applicability": "E08 B4A0/C3DC separate real initial/reloaded entries and case cursors; intermediates still fail. E03 C90 separates index+1 from loop update; 2730/2910 traverse globals in a for update. Typed incoming 2730 parameters fix copies lost by an opaque argument/local alias. Preserve C89 scope, complete paths and controls; worse intermediates do not disprove structure or establish acceptance.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-real-loop-definitions-and-path-increments",
       "references": [
-        "docs/dossiers/func_00127830-626dd1cc85.md",
-        "docs/dossiers/func_0013C060-c73ea9e11c.md",
-        "docs/dossiers/func_0022D14C-28d08a87ca.md",
-        "docs/dossiers/func_0022D14C-4fc43a6437.md",
-        "docs/dossiers/func_0022D14C-1921b5ec8c.md",
-        "docs/dossiers/func_002488D0-535425129c.md"
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0025B4A0-b10c7e8fe0.md",
+        "docs/dossiers/func_0025C3DC-bd489940e6.md",
+        "docs/matching-c/e03-runtime-reuse.md",
+        "docs/dossiers/func_00261C90-12155a01fa.md",
+        "docs/dossiers/func_00262910-282790eee6.md"
       ],
       "observations": [
         {
-          "symbol": "func_0022D14C",
-          "path": "docs/dossiers/func_0022D14C-24dd5fe250.observation.json"
+          "symbol": "func_0025B4A0",
+          "path": "docs/dossiers/func_0025B4A0-b10c7e8fe0.observation.json"
         },
         {
-          "symbol": "func_00127830",
-          "path": "docs/dossiers/func_00127830-626dd1cc85.observation.json"
+          "symbol": "func_00262730",
+          "path": "docs/dossiers/func_00262730-ee0b0d69ce.observation.json"
         },
         {
-          "symbol": "func_002488D0",
-          "path": "docs/dossiers/func_002488D0-535425129c.observation.json"
+          "symbol": "func_00262910",
+          "path": "docs/dossiers/func_00262910-282790eee6.observation.json"
         }
       ]
     },
@@ -204,42 +374,60 @@
       "symptoms": [
         "register-allocation",
         "constant-or-immediate-construction",
-        "opcode-or-expression"
+        "opcode-or-expression",
+        "scheduling-or-block-order"
       ],
-      "applicability": "In accepted 42e64, one signed index for record/saved arrays repairs the register swap left by explicit cursors (9E3E9E99 vs 2FB666E6). D14C indexing avoids a shared-cursor copy; comparison-operand pairs alter quotient/remainder allocation and scheduling. Those comparison cases retain artificial filter references and need replay without them. Preserve actual layout, operands, consumers and order. These source pairs do not prove original C or a universal allocation rule.",
-      "note": "docs/dossiers/func_0022D14C-8ea0dea85a.md#source-context",
+      "applicability": "E08/P06 offset-first controls remain in details. E05 full784-byte664B0 preserves all plane cases, point loops and packet batches. Index reuse, a separate next index/count, earlier command capture and offset-before-base addition resolve distinct differences. Typed pointer addition retains opposite ADDU operands in this context; owner fragments are not separate functions. No general indexing rule follows.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-indexed-addresses-and-comparison-operands",
       "references": [
-        "docs/dossiers/func_0022D14C-31a3b1c0ac.md",
-        "docs/dossiers/func_0022D14C-7cb96be950.md",
-        "docs/dossiers/func_0022D14C-b1139cbd5d.md",
-        "docs/dossiers/func_00042e64-9e3e9e99a9.md",
-        "docs/dossiers/func_00042e64-2fb666e621.md"
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0024DFCC-a0528ca84c.md",
+        "docs/matching-c/p06-presentation-reuse.md",
+        "docs/dossiers/func_00279A90-c2fb03fe92.md",
+        "docs/matching-c/e05-geometry-reuse.md"
       ],
       "observations": [
         {
-          "symbol": "func_0022D14C",
-          "path": "docs/dossiers/func_0022D14C-31a3b1c0ac.observation.json"
+          "symbol": "func_0024DFCC",
+          "path": "docs/dossiers/func_0024DFCC-a0528ca84c.observation.json"
         },
         {
-          "symbol": "func_0022D14C",
-          "path": "docs/dossiers/func_0022D14C-8ea0dea85a.observation.json"
+          "symbol": "func_00279A90",
+          "path": "docs/dossiers/func_00279A90-c2fb03fe92.observation.json"
         },
         {
-          "symbol": "func_00042e64",
-          "path": "docs/dossiers/func_00042e64-9e3e9e99a9.observation.json"
+          "symbol": "func_002664b0",
+          "path": "docs/dossiers/func_002664b0-d4145c776a.observation.json"
         }
       ]
     },
     {
       "id": "comparison-spill-from-real-index-guard",
-      "symptoms": ["register-allocation", "branch-polarity"],
+      "symptoms": [
+        "register-allocation",
+        "branch-polarity"
+      ],
       "applicability": "D14C's nonmatching pair retains an index<count comparison through FLOW/COMBINE into an eight-byte slot; count>0 loses it. In D9C, separate real count definitions at the presence-path join let the phase<capacity guard create the slot; the same label with one count definition does not. Preserve real producers, widths and zero-iteration behavior; inspect source-bound stages, never invent readers or padding. Inexact intermediates and cross-target transfer remain unaccepted.",
       "note": "docs/dossiers/func_0022D14C-2f23666082.md#source-context",
-      "references": ["docs/dossiers/func_0022D14C-ebaf8896cf.md", "docs/dossiers/func_00195D9C-e0c8a6b9db.md", "docs/dossiers/func_00195D9C-f263dcf4b2.md", "docs/dossiers/func_00195D9C-12774b30fc.md"],
+      "references": [
+        "docs/dossiers/func_0022D14C-ebaf8896cf.md",
+        "docs/dossiers/func_00195D9C-e0c8a6b9db.md",
+        "docs/dossiers/func_00195D9C-f263dcf4b2.md",
+        "docs/dossiers/func_00195D9C-12774b30fc.md"
+      ],
       "observations": [
-        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-ebaf8896cf.observation.json"},
-        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-2f23666082.observation.json"},
-        {"symbol": "func_00195D9C", "path": "docs/dossiers/func_00195D9C-e0c8a6b9db.observation.json"}
+        {
+          "symbol": "func_0022D14C",
+          "path": "docs/dossiers/func_0022D14C-ebaf8896cf.observation.json"
+        },
+        {
+          "symbol": "func_0022D14C",
+          "path": "docs/dossiers/func_0022D14C-2f23666082.observation.json"
+        },
+        {
+          "symbol": "func_00195D9C",
+          "path": "docs/dossiers/func_00195D9C-e0c8a6b9db.observation.json"
+        }
       ]
     },
     {
@@ -249,88 +437,142 @@
         "scheduling-or-block-order",
         "branch-polarity"
       ],
-      "applicability": "Check complete command regions and deliberate fall-through before tuning.510E0 restores a missing transition;57124 combines delayed real pointer initialization with the documented fall-through correction. Earlier source pairs and their limits remain linked in the context note.",
-      "note": "docs/matching-c/p05-reuse.md#complete-switch-paths",
+      "applicability": "E08 B954 reorders complete case1 before case0 but leaves sixteen case2 differences; immutable-word changes are separate. P06 79920 combines an FF guard with separately written equal-call cases; either change alone remains short. Preserve every case/operation and controls. Neither source order, FF meaning nor original syntax is established.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-real-arithmetic-tails-and-switch-sharing",
       "references": [
-        "docs/matching-c/p05-reuse.md",
-        "docs/dossiers/func_002510E0-0b10e98414.md",
-        "docs/dossiers/func_002510E0-95d882ddbf.md",
-        "docs/dossiers/func_00257124-ffc042ce39.md",
-        "docs/dossiers/func_00257124-39db82d0fe.md"
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0025B954-a07a8aade9.md",
+        "docs/matching-c/p06-presentation-reuse.md",
+        "docs/dossiers/func_00279920-031b867af4.md"
       ],
       "observations": [
         {
-          "symbol": "func_002510E0",
-          "path": "docs/dossiers/func_002510E0-0b10e98414.observation.json"
+          "symbol": "func_0025B954",
+          "path": "docs/dossiers/func_0025B954-a07a8aade9.observation.json"
         },
         {
-          "symbol": "func_00257124",
-          "path": "docs/dossiers/func_00257124-ffc042ce39.observation.json"
+          "symbol": "func_00279920",
+          "path": "docs/dossiers/func_00279920-031b867af4.observation.json"
         }
       ]
     },
     {
       "id": "guard-local-allocation-before-delay-fill",
-      "symptoms": ["register-allocation", "scheduling-or-block-order"],
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
       "applicability": "Allocation starts before delay filling. D14C's guard-local controls remain nonmatching; the resource-context branch-local index restores 428 bytes versus early-index 424. In LZSS AC0C, branch-local promoted byte/offset, shifts through existing len and decoded-word/working-byte separation remove 16 nonrelocated differences at 804 bytes. Preserve real consumers, widths and guards. These context-bound research pairs are not complete-owner acceptance or universal register recipes.",
       "note": "docs/dossiers/func_0022D14C-cf36d3de05.md#source-context",
-      "references": ["docs/dossiers/func_0022D14C-5fa0215a89.md", "docs/dossiers/boot_resource_node_context_materialize-f424609055.md", "docs/dossiers/boot_resource_node_context_materialize-8f262b64ca.md", "docs/Plans/task-logs/sol-resource-node-context-wave-20261005.md", "docs/dossiers/boot_lzss_decompress-de9f9f4972.md", "docs/dossiers/boot_lzss_decompress-289c12cb5a.md"],
+      "references": [
+        "docs/dossiers/func_0022D14C-5fa0215a89.md",
+        "docs/dossiers/boot_resource_node_context_materialize-f424609055.md",
+        "docs/dossiers/boot_resource_node_context_materialize-8f262b64ca.md",
+        "docs/Plans/task-logs/sol-resource-node-context-wave-20261005.md",
+        "docs/dossiers/boot_lzss_decompress-de9f9f4972.md",
+        "docs/dossiers/boot_lzss_decompress-289c12cb5a.md"
+      ],
       "observations": [
-        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-5fa0215a89.observation.json"},
-        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-cf36d3de05.observation.json"},
-        {"symbol": "boot_resource_node_context_materialize", "path": "docs/dossiers/boot_resource_node_context_materialize-8f262b64ca.observation.json"}
+        {
+          "symbol": "func_0022D14C",
+          "path": "docs/dossiers/func_0022D14C-5fa0215a89.observation.json"
+        },
+        {
+          "symbol": "func_0022D14C",
+          "path": "docs/dossiers/func_0022D14C-cf36d3de05.observation.json"
+        },
+        {
+          "symbol": "boot_resource_node_context_materialize",
+          "path": "docs/dossiers/boot_resource_node_context_materialize-8f262b64ca.observation.json"
+        }
       ]
     },
     {
       "id": "real-value-phases-and-loop-weighting",
-      "symptoms": ["register-allocation", "scheduling-or-block-order"],
-      "applicability": "Real producer/use phases can affect allocation. Shop 994B4 X/Y phases fold in combine. EBBC's single-pass quotient loop retains notes and later load dependencies; removing only the loop leaves 33 word differences. D14C's DA2A emission loop retains FLOW notes and raises reference weight but leaves all native bytes and 68 differences unchanged. Inspect the receiver's stages: notes or weights alone establish neither a desired reload choice nor original macro identity. Wave acceptance is separate.",
-      "note": "docs/dossiers/func_0022D14C-74e71a423e.md#source-context",
-      "references": ["docs/dossiers/func_0022D14C-78ba4d48d9.md", "docs/dossiers/func_0022D14C-acac3be17b.md", "docs/dossiers/func_001994B4-e6e5d67846.md", "docs/dossiers/func_001994B4-e07b12638a.md", "docs/dossiers/func_0021EBBC-d8da8636e3.md", "docs/dossiers/func_0022D14C-da2a8e50ea.md"],
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
+      "applicability": "Earlier shop/loop and P06 observations remain in the linked details. E05 63AF0 changes real command-block scopes; 653D8 keeps the count-bound phase and cursor home, adding a real batch snapshot. Preserve each complete source/control: combined changes do not isolate a compiler mechanism or imply a universal loop preference.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-real-value-phases-and-loop-weighting",
+      "references": [
+        "docs/dossiers/func_0022D14C-78ba4d48d9.md",
+        "docs/dossiers/func_0022D14C-acac3be17b.md",
+        "docs/dossiers/func_001994B4-e6e5d67846.md",
+        "docs/dossiers/func_001994B4-e07b12638a.md",
+        "docs/dossiers/func_00275850-67d9803a26.md",
+        "docs/matching-c/e05-geometry-reuse.md"
+      ],
       "observations": [
-        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-acac3be17b.observation.json"},
-        {"symbol": "func_0021EBBC", "path": "docs/dossiers/func_0021EBBC-d8da8636e3.observation.json"},
-        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-da2a8e50ea.observation.json"}
-      ]
-    },
-    {
-      "id": "real-byte-phases-and-initialization-placement",
-      "symptoms": ["register-allocation", "scheduling-or-block-order"],
-      "applicability": "237F0 separates raw-byte and normalized-flag phases: 457 restores S4/S5; B834 restores homes but moves zero; 5E is unchanged. Those examples remain nonmatching and priority ratios are explanatory. L6 27540 uses a u32 accumulator plus counter-first declaration to restore initialization order; 2B4D0 keeps a widened bank across a call and compares its byte view. Read the linked positive/negative source contexts; these are not universal width, declaration-order or register rules.",
-      "note": "docs/dossiers/func_001237F0-457bf323de.md#recorded-observation",
-      "references": ["docs/dossiers/func_001237F0-b8345856c9.md", "docs/dossiers/func_001237F0-5e4a4c0189.md", "docs/dossiers/func_00027540-7bdcd93859.md", "docs/dossiers/func_0002b4d0-0bfdc6d43c.md"],
-      "observations": [
-        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-5e4a4c0189.observation.json"},
-        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-b8345856c9.observation.json"},
-        {"symbol": "func_001237F0", "path": "docs/dossiers/func_001237F0-457bf323de.observation.json"}
+        {
+          "symbol": "func_0022D14C",
+          "path": "docs/dossiers/func_0022D14C-acac3be17b.observation.json"
+        },
+        {
+          "symbol": "func_00275850",
+          "path": "docs/dossiers/func_00275850-67d9803a26.observation.json"
+        },
+        {
+          "symbol": "func_002653d8",
+          "path": "docs/dossiers/func_002653d8-eebb9d007c.observation.json"
+        }
       ]
     },
     {
       "id": "actor-real-operation-duplication",
-      "symptoms": ["register-allocation", "scheduling-or-block-order"],
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
       "applicability": "For the evidenced allocator-result/owner-load ordering conflict, inspect identical arms containing the real clear, copy and saved-byte load. The low-bit form transferred between two Actor functions; a full-null condition specializes an argument, and CF0's first site changes other registers. Preserve complete behavior; no pointer-bit meaning or exact compiler-pass mechanism is established.",
       "note": "docs/dossiers/func_002158E4-fe58db22c0.md#source-context",
-      "references": ["docs/dossiers/func_00215CF0-5288d37cc8.md"],
+      "references": [
+        "docs/dossiers/func_00215CF0-5288d37cc8.md"
+      ],
       "observations": [
-        {"symbol": "func_002158E4", "path": "docs/dossiers/func_002158E4-fe58db22c0.observation.json"},
-        {"symbol": "func_00217BA8", "path": "docs/dossiers/func_00217BA8-36e8f5b010.observation.json"},
-        {"symbol": "func_002158E4", "path": "docs/dossiers/func_002158E4-d9c32d5cd0.observation.json"}
+        {
+          "symbol": "func_002158E4",
+          "path": "docs/dossiers/func_002158E4-fe58db22c0.observation.json"
+        },
+        {
+          "symbol": "func_00217BA8",
+          "path": "docs/dossiers/func_00217BA8-36e8f5b010.observation.json"
+        },
+        {
+          "symbol": "func_002158E4",
+          "path": "docs/dossiers/func_002158E4-d9c32d5cd0.observation.json"
+        }
       ]
     },
     {
       "id": "actor-word-element-clear-direct-owner",
-      "symptoms": ["register-allocation", "scheduling-or-block-order"],
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
       "applicability": "Compare the coupled word-element spelling of a real clear and direct owner argument after allocation. The source form transferred from 159D0 to CF0's first site, while its second site needed the distinct duplication form. Neither component alone nor the proposed memory-class/pass mechanism is established by these observations; compare the complete source pairs.",
       "note": "docs/dossiers/func_002159D0-7a21444874.md#source-context",
-      "references": ["docs/dossiers/func_00215CF0-bf5e19c178.md", "docs/dossiers/func_00215CF0-5288d37cc8.md"],
+      "references": [
+        "docs/dossiers/func_00215CF0-bf5e19c178.md",
+        "docs/dossiers/func_00215CF0-5288d37cc8.md"
+      ],
       "observations": [
-        {"symbol": "func_002159D0", "path": "docs/dossiers/func_002159D0-7a21444874.observation.json"},
-        {"symbol": "func_00215CF0", "path": "docs/dossiers/func_00215CF0-fd09bdd799.observation.json"}
+        {
+          "symbol": "func_002159D0",
+          "path": "docs/dossiers/func_002159D0-7a21444874.observation.json"
+        },
+        {
+          "symbol": "func_00215CF0",
+          "path": "docs/dossiers/func_00215CF0-fd09bdd799.observation.json"
+        }
       ]
     },
     {
       "id": "scenario-single-set-and-shared-loads",
-      "symptoms": ["register-allocation", "scheduling-or-block-order"],
+      "symptoms": [
+        "register-allocation",
+        "scheduling-or-block-order"
+      ],
       "applicability": "Historical source-context lead only: the observation's canonical-source reference has drifted, so it is excluded from authenticated curated observations. Its archived source pair remains recoverable. For repeated constructor sites with verified coverage, compare per-site single-set locals against genuine loaded values shared across sites; this is not a universal allocator recipe.",
       "note": "docs/dossiers/func_0023A5EC-9683d35159.md#source-context",
       "references": [],
@@ -338,61 +580,62 @@
     },
     {
       "id": "scenario-word-result-and-byte-index",
-      "symptoms": ["branch-polarity", "opcode-or-expression", "load-store-width-or-signedness", "register-allocation"],
-      "applicability": "Historical source pairs: 249A14's separate word result and narrowed byte index preserve the observed branch. In 249290, byte modifier/option formals change 27 setup/allocation words while persistent results remain wide; the historical caller supplies byte casts. Read the wider-input control and immutable pre-declaration-update caller context. These effects neither prove original types nor authorize dummy carriers; repaired records add no new measurement or matching acceptance.",
-      "note": "docs/dossiers/func_00249A14-df5262ccce.md#source-context",
-      "references": ["docs/dossiers/func_00249290-f8819d8982.md", "docs/dossiers/func_00249290-c0f2d9fa01.md"],
+      "symptoms": [
+        "branch-polarity",
+        "opcode-or-expression",
+        "load-store-width-or-signedness",
+        "register-allocation"
+      ],
+      "applicability": "E08 DC20 replaces a void formal/local alias with the evidenced typed formal. E09 CA7C separates mutable input reloads from byte-parameter allocation; CAF0 preserves its word interface with a byte local and corrects the callback provider. Read each control and reconcile actual callers independently. Masked bytes do not validate a prototype or address-spelled alias. Earlier interface examples remain linked.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#interfaces-and-local-views",
+      "references": [
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0024DC20-fd240db31b.md",
+        "docs/dossiers/func_0025CA7C-5c97440371.md",
+        "docs/dossiers/func_0025CAF0-b38c965ab1.md"
+      ],
       "observations": [
-        {"symbol": "func_00249A14", "path": "docs/dossiers/func_00249A14-df5262ccce.observation.json"},
-        {"symbol": "func_00249290", "path": "docs/dossiers/func_00249290-c0f2d9fa01.observation.json"}
+        {
+          "symbol": "func_0024DC20",
+          "path": "docs/dossiers/func_0024DC20-fd240db31b.observation.json"
+        },
+        {
+          "symbol": "func_0025CA7C",
+          "path": "docs/dossiers/func_0025CA7C-5c97440371.observation.json"
+        },
+        {
+          "symbol": "func_0025CAF0",
+          "path": "docs/dossiers/func_0025CAF0-b38c965ab1.observation.json"
+        }
       ]
     },
     {
       "id": "allocator-lifetimes",
-      "symptoms": ["register-allocation"],
-      "applicability": "Check CFG, widths and ABI before lifetimes. DMA1A380 keeps a real chunk live across the call; DE50 restricts its copy cursor to the small branch. Arena-register returning the slot already present in retail v0 keeps it live through the tail and resolves allocation; the void-return control differs. Read the source pairs and final wave records. These are source-shape observations, not proof of intended return semantics or a universal register preference.",
-      "note": "docs/KMC_GCC_MATCHING_NOTES.md#register-allocation-observations",
-      "references": [
-        "docs/dossiers/func-000135a0.md",
-        "docs/Plans/task-logs/sol-resource-dma-transfer-wave-20261005.md",
-        "docs/dossiers/resource_arena_register-269c4e086f.md",
-        "docs/dossiers/resource_arena_register-701139a6e0.md",
-        "docs/Plans/task-logs/sol-resource-arena-wave-20261005.md"
-      ],
-      "observations": [
-        {"symbol": "func_0001a380", "path": "docs/dossiers/func_0001a380-9352e8b29c.observation.json"},
-        {"symbol": "func_0002de50", "path": "docs/dossiers/func_0002de50-0f22f20863.observation.json"},
-        {"symbol": "resource_arena_register", "path": "docs/dossiers/resource_arena_register-269c4e086f.observation.json"}
-      ]
-    },
-    {
-      "id": "retained-early-load",
       "symptoms": [
-        "scheduling-or-block-order",
-        "store-flag",
-        "load-store-width-or-signedness",
         "register-allocation"
       ],
-      "applicability": "CBA8 global-qualifier-only control leaves native bytes unchanged; removing the local row-pointer const restores two reloads and allocation in this context. Numeric table storage stays original ASM; no behavioral mutability claim. Earlier source pairs and their limits remain linked in the context note.",
-      "note": "docs/matching-c/p05-reuse.md#mutable-row-reloads",
+      "applicability": "E08 E7AC, E09 700B0 and P07 728C0 change distinct real result lifetimes/accesses; P07 remains nonexact. E03 DA8/2910 use inline allocators returning actual payload/task addresses without emitted helpers. Preserve initialization, list/callback work, required reloads and exact controls. Earlier allocation examples remain linked; no universal allocation recipe follows.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-allocator-lifetimes",
       "references": [
-        "docs/matching-c/p05-reuse.md",
-        "docs/dossiers/func_0025CBA8-7a2eb01f34.md",
-        "docs/dossiers/func_0025CBA8-196bd76f81.md",
-        "docs/dossiers/func_0025CBA8-f9461b3f68.md"
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0024E7AC-d44a25d331.md",
+        "docs/dossiers/func_002700B0-00882fd20d.md",
+        "docs/dossiers/func_002728C0-28ceff7648.md",
+        "docs/matching-c/e03-runtime-reuse.md",
+        "docs/dossiers/func_00262910-282790eee6.md"
       ],
       "observations": [
         {
-          "symbol": "func_0025CBA8",
-          "path": "docs/dossiers/func_0025CBA8-7a2eb01f34.observation.json"
+          "symbol": "func_0024E7AC",
+          "path": "docs/dossiers/func_0024E7AC-d44a25d331.observation.json"
         },
         {
-          "symbol": "func_0025CBA8",
-          "path": "docs/dossiers/func_0025CBA8-196bd76f81.observation.json"
+          "symbol": "func_00261DA8",
+          "path": "docs/dossiers/func_00261DA8-d4c4f7315c.observation.json"
         },
         {
-          "symbol": "func_0025CBA8",
-          "path": "docs/dossiers/func_0025CBA8-f9461b3f68.observation.json"
+          "symbol": "func_00262910",
+          "path": "docs/dossiers/func_00262910-282790eee6.observation.json"
         }
       ]
     },
@@ -402,28 +645,16 @@
         "stack-layout-or-offset-family",
         "load-store-width-or-signedness"
       ],
-      "applicability": "50A4 signed-halfword tables and5540 word indices require different representations and the observed signed counter order. Natural vector workspaces match without source padding; compiler local-byte accounting does not prove original array bounds. Earlier source pairs and their limits remain linked in the combined context note.",
-      "note": "docs/matching-c/p04-reuse.md#table-widths-and-workspaces",
+      "applicability": "E08 D180 shares one real basis workspace across mutually exclusive paths and switches on the word selector. Its measured frame and body shrink, but the pair combines both source changes and does not isolate either cause. Keep all cases and actual workspace uses. Earlier scalar-frame and genuine-aggregate counterexamples remain linked; frame size alone proves neither original declarations nor a compiler mechanism.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#shared-real-workspace",
       "references": [
-        "docs/matching-c/p04-reuse.md",
-        "docs/dossiers/func_002550A4-557ab8b4eb.md",
-        "docs/dossiers/func_00255540-961a6c474c.md",
-        "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.md",
-        "docs/KMC_GCC_MATCHING_NOTES.md",
-        "docs/dossiers/func-0006d7d8.md"
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0024D180-af095ff86e.md"
       ],
       "observations": [
         {
-          "symbol": "func_002550A4",
-          "path": "docs/dossiers/func_002550A4-557ab8b4eb.observation.json"
-        },
-        {
-          "symbol": "func_00255540",
-          "path": "docs/dossiers/func_00255540-961a6c474c.observation.json"
-        },
-        {
-          "symbol": "boot_command_stream_resource_node_dispatch",
-          "path": "docs/dossiers/boot_command_stream_resource_node_dispatch-09bcbee5d7.observation.json"
+          "symbol": "func_0024D180",
+          "path": "docs/dossiers/func_0024D180-af095ff86e.observation.json"
         }
       ]
     },
@@ -435,28 +666,28 @@
         "opcode-or-expression",
         "scheduling-or-block-order"
       ],
-      "applicability": "E8DC inline byte-result plus useful complemented-result capture matches; u32-inline and word-local controls differ in other source context. Probe04 shows early jump folding for that control only. This is not a return-width-only A/B or universal rule. Earlier source pairs and their limits remain linked in the combined context note.",
-      "note": "docs/matching-c/p04-reuse.md#classifier-result-and-tail",
+      "applicability": "E08 BCE8/BF04 and E09 C590 change bounded selectors/views with different guard/mask effects. P06 78560 uses only constructed 0/4/8/12 flags; 75EE0 needs a pinned-compiler label-address inactive exit after structured controls differ. Keep word guards/relocations and controls. Mechanical PURE_C does not prove original spelling or universal narrowing/pass timing.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-conditional-expression-shape",
       "references": [
-        "docs/matching-c/p04-reuse.md",
-        "docs/dossiers/func_0024E8DC-22471390f3.md",
-        "docs/dossiers/func_0024E8DC-bf20e13d0f.md",
-        "docs/dossiers/func_0024E8DC-71f588e050.md",
-        "docs/KMC_GCC_MATCHING_NOTES.md",
-        "docs/dossiers/func_000458f0-cf1dce4ed7.md"
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0024BCE8-5083527c70.md",
+        "docs/dossiers/func_0024BF04-4af03861dc.md",
+        "docs/dossiers/func_0025C590-196f2782fb.md",
+        "docs/matching-c/p06-presentation-reuse.md",
+        "docs/dossiers/func_00275EE0-a53e564e26.md"
       ],
       "observations": [
         {
-          "symbol": "func_0024E8DC",
-          "path": "docs/dossiers/func_0024E8DC-22471390f3.observation.json"
+          "symbol": "func_0024BCE8",
+          "path": "docs/dossiers/func_0024BCE8-5083527c70.observation.json"
         },
         {
-          "symbol": "func_0024E8DC",
-          "path": "docs/dossiers/func_0024E8DC-bf20e13d0f.observation.json"
+          "symbol": "func_00278560",
+          "path": "docs/dossiers/func_00278560-649fb1bd40.observation.json"
         },
         {
-          "symbol": "func_0024E8DC",
-          "path": "docs/dossiers/func_0024E8DC-71f588e050.observation.json"
+          "symbol": "func_00275EE0",
+          "path": "docs/dossiers/func_00275EE0-a53e564e26.observation.json"
         }
       ]
     },
@@ -467,28 +698,28 @@
         "register-allocation",
         "load-store-width-or-signedness"
       ],
-      "applicability": "515B4 scalar halfword read,57F54 scalar halfword stores and587EC scalar pointer read preserve specific retail access orders. These are local source effects, not semantic volatility or a general aliasing rule. Earlier source pairs and their limits remain linked in the context note.",
-      "note": "docs/matching-c/p05-reuse.md#scalar-views-and-access-order",
+      "applicability": "Earlier access-width/packet-stride and P06 controls remain in details. E05 65014 orders real triangle fields before opcode setup; 657D0 captures Y after the first coordinate store to retain an unsigned reload. Keep original widths, source pairs and emitted-word evidence; no universal scheduling or MMIO claim follows.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-independent-store-schedule",
       "references": [
-        "docs/matching-c/p05-reuse.md",
-        "docs/dossiers/func_002515B4-63c9110d2a.md",
-        "docs/dossiers/func_002515B4-d4c02c2fe5.md",
-        "docs/dossiers/func_00257F54-2e81b558e8.md",
-        "docs/dossiers/func_00257F54-5c89974a04.md",
-        "docs/dossiers/func_002587EC-ee3ddc4d25.md"
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0025C8D0-03ababd1b8.md",
+        "docs/dossiers/func_0025D6C8-6d4223b0b6.md",
+        "docs/dossiers/func_0025DAB0-4d408a0b7a.md",
+        "docs/dossiers/func_00256410-99e5643fba.md",
+        "docs/matching-c/e05-geometry-reuse.md"
       ],
       "observations": [
         {
-          "symbol": "func_002515B4",
-          "path": "docs/dossiers/func_002515B4-63c9110d2a.observation.json"
+          "symbol": "func_0025C8D0",
+          "path": "docs/dossiers/func_0025C8D0-03ababd1b8.observation.json"
         },
         {
-          "symbol": "func_00257F54",
-          "path": "docs/dossiers/func_00257F54-2e81b558e8.observation.json"
+          "symbol": "func_00256410",
+          "path": "docs/dossiers/func_00256410-99e5643fba.observation.json"
         },
         {
-          "symbol": "func_002587EC",
-          "path": "docs/dossiers/func_002587EC-ee3ddc4d25.observation.json"
+          "symbol": "func_002657d0",
+          "path": "docs/dossiers/func_002657d0-79a75ea3cd.observation.json"
         }
       ]
     },
@@ -527,50 +758,16 @@
         "scheduling-or-block-order",
         "branch-polarity"
       ],
-      "applicability": "C428 initialization order,80DC shared negative return and58A28 shared advancement show bounded control/lifetime effects. Preserve each actual source pair; none proves a universal compiler rule or original syntax. Earlier source pairs and their limits remain linked in the context note.",
-      "note": "docs/matching-c/p05-reuse.md#control-flow-and-carriers",
+      "applicability": "E08 C3DC uses the actual signed initial guard, do-loop and function-scope locals for separate entry/iteration loads. The frame shrinks while the whole body remains covered, but shared cursor allocation still differs. Later cursor and setup changes are separate observations. Preserve the nonmatching intermediate and earlier CFG examples; frame improvement neither proves exactness nor disproves useful structure.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#guarded-loops-and-complete-body-coverage",
       "references": [
-        "docs/matching-c/p05-reuse.md",
-        "docs/dossiers/func_0024C428-5fefdce928.md",
-        "docs/dossiers/func_0024C428-e1b18da7cb.md",
-        "docs/dossiers/func_002580DC-15c281486c.md",
-        "docs/dossiers/func_002580DC-d88b1c4aaf.md",
-        "docs/dossiers/func_00258A28-8926e1a3d8.md"
+        "docs/matching-c/e08-e09-p07-reuse.md",
+        "docs/dossiers/func_0025C3DC-bcc1533d2e.md"
       ],
       "observations": [
         {
-          "symbol": "func_0024C428",
-          "path": "docs/dossiers/func_0024C428-5fefdce928.observation.json"
-        },
-        {
-          "symbol": "func_002580DC",
-          "path": "docs/dossiers/func_002580DC-15c281486c.observation.json"
-        },
-        {
-          "symbol": "func_00258A28",
-          "path": "docs/dossiers/func_00258A28-8926e1a3d8.observation.json"
-        }
-      ]
-    },
-    {
-      "id": "immutable-selector-and-distinct-selected-result",
-      "symptoms": [
-        "register-allocation",
-        "scheduling-or-block-order"
-      ],
-      "applicability": "In Q7 101DDC, keeping the selector base immutable and assigning the indexed result to a separate local restores two LA pairs without changing the remaining body. The named negative-offset/subtraction form remains necessary in this pinned source context. Compare 67E3D7E3 with 5FEC30F2 and preserve actual reads, values and interfaces. This records allocation behavior, not original names or a universal pointer rule. Historical private evidence and later whole-wave acceptance remain separate.",
-      "note": "docs/dossiers/func_00101DDC-5fec30f21f.md#recorded-observation",
-      "references": [
-        "docs/dossiers/func_00101DDC-67e3d7e3b9.md"
-      ],
-      "observations": [
-        {
-          "symbol": "func_00101DDC",
-          "path": "docs/dossiers/func_00101DDC-67e3d7e3b9.observation.json"
-        },
-        {
-          "symbol": "func_00101DDC",
-          "path": "docs/dossiers/func_00101DDC-5fec30f21f.observation.json"
+          "symbol": "func_0025C3DC",
+          "path": "docs/dossiers/func_0025C3DC-bcc1533d2e.observation.json"
         }
       ]
     },
@@ -606,10 +803,13 @@
       "symptoms": [
         "constant-or-immediate-construction"
       ],
-      "applicability": "Q7 118E44 demonstrates that relocation-masked equality can hide a wrong address-spelled symbol. Its original LUI 800F plus ADDIU -4E10 resolves 800EB1F0; the earlier D_800FB1F0 declaration retained masked equality but emitted the wrong displayed HI16 word. Compare preserved failing 477F631C and corrected 71DAA247. Decode the actual address pair and preserve signed addends; unauthenticated display is a diagnostic, and canonical linked relocation/byte gates establish acceptance.",
-      "note": "docs/dossiers/func_00118E44-71daa24793.md#recorded-observation",
+      "applicability": "Q7 118E44 proves masked equality can hide the wrong address-spelled symbol: LUI800F plus ADDIU-4E10 resolves800EB1F0. E06 signed-low pairs similarly bind callbacks to accepted s32(u8*) providers func_00263CE4/func_00263E10, not data at old names. Keep original failing/corrected pairs and actual addends; canonical linked gates establish acceptance.",
+      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-signed-low-address-name-correction",
       "references": [
-        "docs/dossiers/func_00118E44-477f631cad.md"
+        "docs/dossiers/func_00118E44-477f631cad.md",
+        "docs/matching-c/e06-model-reuse.md",
+        "build/integration/attack-effects/e06/complete-wave-preparation.json",
+        "build/integration/attack-effects/e06/wave-acceptance.json"
       ],
       "observations": [
         {

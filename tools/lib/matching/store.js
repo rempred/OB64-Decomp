@@ -19,8 +19,9 @@ function pythonPath(options = {}) {
 function requestStore(request, options = {}) {
   const database = path.resolve(options.database || DATABASE);
   const python = pythonPath(options);
-  const result = childProcess.spawnSync(python, [BRIDGE, '--database', database, '--schema', SCHEMA, ...(options.readOnly ? ['--read-only'] : [])], {
+  const result = childProcess.spawnSync(python, [...(options.isolatedPython ? ['-I','-S'] : []), BRIDGE, '--database', database, '--schema', SCHEMA, ...(options.readOnly ? ['--read-only'] : [])], {
     cwd: ROOT,
+    ...(options.isolatedPython ? { env: Object.fromEntries(Object.entries(process.env).filter(([name]) => !/^PYTHON/i.test(name))) } : {}),
     encoding: 'utf8',
     input: Buffer.from(JSON.stringify(request), 'utf8'),
     windowsHide: true,

@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4E6BF13655A0C57F6A032B130D05F525AF5A1BAB252805A44CF321AB2C118727",
+  "observationId": "CC01A3460BC7CD0FB02C6F6D2FBD8ACADBCE760099D47C81539968722C107489",
+  "symbol": "func_00266A30",
+  "authored": {
+    "context": "Complete 896-byte producer with separate generation and projected-coordinate loop cursors. First-loop and stack allocation already align. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi15/mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        }
+      ],
+      "expandedSha256": "7969A0A273B1D2A9025D4A5ED3EE3B7E10CB78C682816754ECC55FCB1F9F4F49",
+      "sourceSha256": "9852FE47E36EE6A261229E5930A39A60B1505A3878A451ABA1FC96F4EAC5FB68"
+    },
+    "label": "e05-66A30-direct-short-output-conversion",
+    "observedEffect": "Direct s16 conversion resolves the final ten word differences in the projected loop, including float temporary allocation and the integer comparison/store schedule. The selected 896-byte object has zero nonrelocation word differences.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e05/66A30-final.json",
+        "sha256": "2B0F62124190D392B835E68ACDC303BD8B99BD3BF004B7A8AE016EBFD5853AFA"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00266A30/candidates/15BCBCD6ADEAA0101FC49A097F3EF5953D774E200573E7331C9F7139716C60FA.c",
+        "sha256": "9852FE47E36EE6A261229E5930A39A60B1505A3878A451ABA1FC96F4EAC5FB68"
+      },
+      {
+        "path": "build/matching/ae-e05/66A30-integer-pair.json",
+        "sha256": "5E6A40612BED73B4A7F4ED7EB1B970570CD5BF7031E973E7E0783C9B211EE0AF"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00266A30/candidates/6BF68987C415BDEBCA46CA9D42535CAB99FDE58B20A0A5AADF357BB998F9A3F3.c",
+        "sha256": "461BC6A5597D93BB2EAC320E5E7BFA9F0D0237FF14CC07AAE13A4031E6B30550"
+      },
+      {
+        "path": "build/matching/ae-e05/66A30-separate-phase-cursors.json",
+        "sha256": "672E956E9C384CB45266DD94558A7D35C3E1C1F7A2224A4D0151E6AEE66F6D07"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00266A30/candidates/3F3B085ABF093A18CF54A5AD59764707D471F74F7923CF46F992CF2A5070096B.c",
+        "sha256": "9BD18ECD6C4C74220085E7AF55AE12FC18EC34ACC65F8DE0004D092BB3ACB000"
+      },
+      {
+        "path": "build/matching/ae-e05/66A30-first.json",
+        "sha256": "6608CD22F000E9BB1AFCC386DFF6B5E1E0BBDAE9CF188A3D753334CECCF7A675"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00266A30/candidates/1ACF6847E892EC7D4F2D177F4B939D1B926F7BB5E26D899E61C2DCBE2A1FBB95.c",
+        "sha256": "2CA38987E67299C59B9AEF821A1800505BE9EBFA0C71DFEB465990F75E418D7A"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00266A30/candidates/8ADC26D72CD4F237450EE47BE297359A6506C7BD98517B1E3E84B447117811B5.c",
+        "sha256": "9852FE47E36EE6A261229E5930A39A60B1505A3878A451ABA1FC96F4EAC5FB68"
+      },
+      {
+        "path": "build/matching/ae-e05/66A30-final-import.json",
+        "sha256": "1B0BAFB8CC925A2BAFD2B622CED660D8B8C1531BFB13CBF7ABC407F08EC5E0D5"
+      },
+      {
+        "path": "build/matching/ae-e05/66A30-final-observation.json",
+        "sha256": "4EB7903EFE19F953802B674044CC367C6A85688F2C11254B428389FA89F0EC3F"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/wave-acceptance.json",
+        "sha256": "A899FC33E5813D1D394439D7110AFFF4ECA66B3AD8FDB7FCF0E1D6F903FF7654"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "E62590846C43B2740FF6D0F676BE929CEC90FB108E369E3165D3C552990B74FA"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/resume-after-p06/installation.json",
+        "sha256": "7E36653C3269B2BDF0DA2DE0F511AA42103687686385D3F196935B542FF7747A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private selected-input object evidence only; current-base linked ownership, relocation/placement and complete-wave/full-ROM gates remain with the integrator. The separately reconciled canonical E05 descendant now passes the complete-wave normal verifier within the changed-tool structural audit. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Convert the two cached float differences directly to s16 for their stored coordinates, rather than casting through s32. Separate per-phase cursor names also remove cross-phase register constraints."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      }
+    ],
+    "expanded": {
+      "bytes": 4383,
+      "sha256": "7969A0A273B1D2A9025D4A5ED3EE3B7E10CB78C682816754ECC55FCB1F9F4F49"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9852FE47E36EE6A261229E5930A39A60B1505A3878A451ABA1FC96F4EAC5FB68"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_00266A30-4e6bf13655.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

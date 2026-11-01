@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5BA3C56C2FE54D7B006C0692E14B5F0C598F7FA4AD7C48610F599FD21CB4EEA2",
+  "observationId": "175C3007CCEBA65B4A20EBE8A9357C549FB370E5AF65F9CD96C22AA122ADFAD4",
+  "symbol": "func_002728C0",
+  "authored": {
+    "context": "Complete364-byte func_002728C0. Candidate04 already uses direct state->value_08[i], symbolic original p07_data_80220AA0 address and independent later allocation phases. It retains a named resource pointer incremented in the loop; table is S1 and state induction S0. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P07 wave report.",
+    "effects": [
+      "direct-global-table-indexing",
+      "register-allocation",
+      "loop-induction"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "508CEB192A5C107932118DA06FFA8904ED76C4FFECAC6E6DF9E5C6054F9965D7",
+      "sourceSha256": "7B1847E170ACDCEC73EDC6AEB7FA95B934932F8FD5F1C76526A072D875C7F0BD"
+    },
+    "label": "direct-table-index-restores-two-induction-registers",
+    "observedEffect": "Candidate747F7E0A/runDA61AA93 is PURE_C364/frame64 with17 actual text REL. Native table induction becomes S0 and state-base induction S1, reproducing the original complete loop apart from unresolved actual relocations. Six non-relocation word differences remain in the later matrix-address load and setup scheduling. This is a measured source-context effect; neither a universal allocation rule nor unique original syntax.",
+    "parentCandidateId": "6DEEB88A79EC8987D96B2D0DDFDFEBB1CB0888AFEEB7A1421E0213BEB7C2BAA1",
+    "references": [
+      {
+        "path": "build/matching/ae-p07/observation-728C0-05.json",
+        "sha256": "D9C08053877ACD1E723ECB17A9A2C26460618BAACF37ED6EB6912C6D1E1FB1E7"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_002728C0/candidates/747F7E0AE6304E8F63B85FF5A7A07E005483DF3BE958574511E62F7ADEFCB4D0.c",
+        "sha256": "81DACE672865740F81DE6ADFB55D1E0288BDCCFB6394E3700B2FBA7ECF082DAB"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-728C0-05.json",
+        "sha256": "8484A4098385E9B6BF34DD8C85FE9938B183BFBBC34E3D98B2E6DD22CA0A1197"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/DA61AA939CE6C4BA38982AE2492E992791953A773706FECCAE338518E11D8D97/workbench-report.json",
+        "sha256": "4047592EDF77A1ED89F5EDAF875B83BF1D13E44D0C5FA508D8678DFE05C930A7"
+      },
+      {
+        "path": "build/matching/ae-p07/func_002728C0-04.c",
+        "sha256": "516E1CF9B941D14F7FA62F8381558F778C84C33DC77217F47FC207F8D32B4A9D"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-728C0-04.json",
+        "sha256": "242A9FB2843E6C5AFEE6251D9DCD3D50EF28471E504D304FA053F73A00C132FE"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/C0D091C12FEE1ECF1AF2FF056C6D8457AE8F265A372CC87019108FBDE6E26763/candidate.compiler.s",
+        "sha256": "F7E06FF0A7E9C6EAF725EC078E89DB702611F7B497C5A5354F0D6D567CADC2EF"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/DA61AA939CE6C4BA38982AE2492E992791953A773706FECCAE338518E11D8D97/candidate.compiler.s",
+        "sha256": "1D4F7EB5C91D3967AF563CBCE84A1879DA6109BEC0960AA01512CB59B4D6FFBA"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_002728C0/candidates/EA43371E0922F874E191BA585245C9883E505631A6A2422722FC21A50EF771F7.c",
+        "sha256": "516E1CF9B941D14F7FA62F8381558F778C84C33DC77217F47FC207F8D32B4A9D"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/C0D091C12FEE1ECF1AF2FF056C6D8457AE8F265A372CC87019108FBDE6E26763/workbench-report.json",
+        "sha256": "E3F96DCA9F4F757D1E86934CB03742A35F86052BE183CD4C9BA11ED654D3B3C1"
+      },
+      {
+        "path": "build/integration/attack-effects/p07/wave-acceptance.json",
+        "sha256": "DE58DE3FB87D31A7D14CCB60D6CCE1DD064BA2C6D27DDCDA4B71EF403F854D88"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Six matrix-address/scheduling words differ. Source06 tests two-stage real matrix base/offset capture. Symbolic data address needs canonical binding, isolated linked diagnostic unavailable for inactive ASM owner, and complete16-target P07 acceptance remains outstanding. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Remove named resource declaration/initialization. Use p07_data_80220AA0[i] directly in func_0026abc8 argument. Keep loop counter, state indexing and all later phases unchanged."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 4151,
+      "sha256": "508CEB192A5C107932118DA06FFA8904ED76C4FFECAC6E6DF9E5C6054F9965D7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7B1847E170ACDCEC73EDC6AEB7FA95B934932F8FD5F1C76526A072D875C7F0BD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_002728C0-5ba3c56c2f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

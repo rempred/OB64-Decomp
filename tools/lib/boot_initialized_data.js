@@ -72,8 +72,8 @@ function authenticateSources(config, manifest, header, source) {
 }
 
 function loadProof(root, config, manifest, inputs) {
-  const resolve = file => require('./matching/input_set').resolve(inputs, path.join(root, file));
-  return authenticateSources(config, manifest, fs.readFileSync(resolve(HEADER)), fs.readFileSync(resolve(CLEAR)));
+  const read = file => require('./matching/input_set').read(inputs, path.join(root, file));
+  return authenticateSources(config, manifest, read(HEADER), read(CLEAR));
 }
 
 function intersects(a, b, c, d) { return a < d && b > c; }

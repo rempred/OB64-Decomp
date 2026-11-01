@@ -410,7 +410,12 @@ function diagnosticEnvironmentIdentityTests() {
       && environmentIdentity(base) !== environmentIdentity({ ...base, buildReportSha256: 'OTHER-REPORT' }),
     'control/build-report provenance was omitted from diagnostic environment identity');
   } finally {
-    fs.rmSync(output, { recursive: true, force: true });
+    // Retain the fresh fixture; disposal is not part of this test.
+    try {
+      console.log('Matching diagnostics fixture retained:', output);
+    } catch (_) {
+      // Best-effort reporting must not mask an original test failure.
+    }
   }
 }
 
@@ -659,8 +664,12 @@ function cachedArtifactSecurityTests() {
       ));
     }
   } finally {
-    fs.rmSync(directory, { recursive: true, force: true });
-    fs.rmSync(outsideAncestor, { recursive: true, force: true });
+    // Retain both fresh roots, including their deliberate junctions/links.
+    try {
+      console.log('Matching diagnostics fixtures retained:', directory, outsideAncestor);
+    } catch (_) {
+      // Best-effort reporting must not mask an original test failure.
+    }
   }
 }
 
@@ -804,7 +813,12 @@ function compileCandidateCacheRejectionTests() {
     ).replace(/\\/g, '/');
     expectError(/matching runs directory is not a plain directory/, () => compile(junctionRoot));
   } finally {
-    fs.rmSync(directory, { recursive: true, force: true });
+    // Retain the fresh root, including any deliberate junctions/links.
+    try {
+      console.log('Matching diagnostics fixture retained:', directory);
+    } catch (_) {
+      // Best-effort reporting must not mask an original test failure.
+    }
   }
 }
 

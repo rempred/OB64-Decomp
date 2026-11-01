@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "729DFD2287819AF75D6BDD53169583395DBCA529E152B8DB034D205CC74D5A4B",
+  "observationId": "4248FDCE6238EF080ED39BAB65043D2CA125DDD0505182DFF61B29F22424A9A9",
+  "symbol": "func_00265d10",
+  "authored": {
+    "context": "Complete 960-byte producer, including point generation, both transforms, packed point writes, clamping and optional depth handling. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi15/mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "DDE456FD71AF5EC17A7B4AFA2CC39DF43D9B2D9CFA5BCD5F5B771BBFFC53A372",
+      "sourceSha256": "4578A71AD4DBFC05C7159B26047F85B48D328A770A2FD0C74D6F45FEBE783B3C"
+    },
+    "label": "e05-65d10-angle-formal-reuse",
+    "observedEffect": "The first full-size reconstruction had ten nonrelocation differences. The selected 960-byte object has zero. This pair changes both source details, so it does not isolate either allocation mechanism alone.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e05/65d10-angle-phase-reuse.json",
+        "sha256": "2D7D60B8525B6E63E9EB2EBCF8CEB4B8BA223337D8B3AB08F0255668F1F71DCC"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00265d10/candidates/C3942B71A233B88D2E478ABB75D8BBDA7017ECBFF0F9A134654D043C21ED1F26.c",
+        "sha256": "4578A71AD4DBFC05C7159B26047F85B48D328A770A2FD0C74D6F45FEBE783B3C"
+      },
+      {
+        "path": "build/matching/ae-e05/65d10-first.json",
+        "sha256": "F6975EB36006A6F00A6B4D089CDCE6539F7C4D796D09EE5DE0311B69F7637BC9"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00265d10/candidates/7107F746B4C4FEA228D8C2F942536D44737CC18E58158DC7DE0334CD1DE09A90.c",
+        "sha256": "62A72B9B766F5ECA3FA197BCF6145760434CBA6317E121F1B4081AB9DC6B358A"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00265d10/candidates/A4CBED5EFBCAEAD6DA2DE196EE798CBDEB5207DE53434CCB422EE8D5288C03CA.c",
+        "sha256": "4578A71AD4DBFC05C7159B26047F85B48D328A770A2FD0C74D6F45FEBE783B3C"
+      },
+      {
+        "path": "build/matching/ae-e05/65d10-final-import.json",
+        "sha256": "1499D5E7795C414BDE7B242E8271BFF6A372E06CF0F226D2D979294514925E55"
+      },
+      {
+        "path": "build/matching/ae-e05/65d10-final-observation.json",
+        "sha256": "BE1C27A142B121AC82A171EE32B13E4C8F72D11686E1BF6F11AF6E616C90F931"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/wave-acceptance.json",
+        "sha256": "A899FC33E5813D1D394439D7110AFFF4ECA66B3AD8FDB7FCF0E1D6F903FF7654"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "E62590846C43B2740FF6D0F676BE929CEC90FB108E369E3165D3C552990B74FA"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/resume-after-p06/installation.json",
+        "sha256": "7E36653C3269B2BDF0DA2DE0F511AA42103687686385D3F196935B542FF7747A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private selected-input object evidence only; current-base linked ownership, relocation/placement and complete-wave/full-ROM gates remain with the integrator. The separately reconciled canonical E05 descendant now passes the complete-wave normal verifier within the changed-tool structural audit. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse the angle formal for its radians phase instead of introducing another float local; increment the count before advancing the cursor."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 3748,
+      "sha256": "DDE456FD71AF5EC17A7B4AFA2CC39DF43D9B2D9CFA5BCD5F5B771BBFFC53A372"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4578A71AD4DBFC05C7159B26047F85B48D328A770A2FD0C74D6F45FEBE783B3C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_00265d10-729dfd2287.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

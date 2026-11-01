@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "69B94944C419156105265BD9D1B6FB7F2A4D3A99A5622B931B18A478DCFDC59B",
+  "observationId": "EBECC0B813F957D8B02FFFE4A37C64FF13D30EBA307906C7D5E166164E5A05BD",
+  "symbol": "func_0026a6e4",
+  "authored": {
+    "context": "Full1252-byte func_0026a6e4, mi7 setE2412884/target60891AA4. Trial03 uses two static inline C phases, a real cached header and mutable pointer-slot cursor, if-or flag extraction and a u32 flag local. PURE_C1248/frame280, complete body but wrong flag-copy/register sequence; six setup loads still cluster before their stores. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report. This same source also serves as a comparison control: Exact historical E07 source/control referenced by bounded-volatile-access-views-and-ordered-call-values. Preserve original source and native report context.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "740500DD8906227861550A35A05D0E672C2606FCCEBFFDAD8C523DD8BA7B98A0",
+      "sourceSha256": "ED832180C5594085E9F1DBFC8DD64B5E5CAD3FC4B10AB88D85C1CB875BBD3138"
+    },
+    "label": "halfword-flag-local-restores-copy-and-loop-allocation",
+    "observedEffect": "Trial04 candidate51E7BBEB/runB325F15E emits PURE_C1252/frame280. It retains ANDI/SLTU, materializes the distinct final A2 value with MOVE in the mask20 branch delay, and uses ORI A2,V1,2. The loop header/cursor/index become A1/A0/V1 and record[1] still reloads each trip. All required phase bodies and full return remain present. Score rises54.23 to94.31; raw relocation-masked equality remains false.",
+    "parentCandidateId": "C799C8273C49B92F9ED48FEF3049A609139E97AF4BDFAF87446035E4D9874720",
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_0026a6e4/candidates/51E7BBEBAB912EBF386C6CDA61CD3A3D6AA9DA1FB285BB778DD84C5F35E0503E.c",
+        "sha256": "630782D134398DE59901BC1CABD9E7B13C647D16440220D595518EEEC5474479"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026a6e4-04-mi7.json",
+        "sha256": "65C29ECA4FFE5C8E960BF29BCC5705FF565C6BC8AAEAA8C6C1545D2A93CA97AA"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/B325F15EA59BD25B61FDFFE096873DA2C56566BD172600454F0D4EDC7C5DC699/workbench-report.json",
+        "sha256": "BE4593697B3572E4FCDF778E2582CB6486745D201AB0E1606F0EE10A00DACCC1"
+      },
+      {
+        "path": "build/matching/ae-e07/0026a6e4-halfword-flags-observation.json",
+        "sha256": "6522095D6623B9186D922917482C38488B19DD78DB6111D0E4C364BFF94A10EF"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026a6e4-if-or-flags.c",
+        "sha256": "071653C8ADDE73F2BD0FBA6678D2A68CF376F3A02EDE78897B5F65F414C9FCCA"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026a6e4-03-mi7.json",
+        "sha256": "C46EF3BCBC2F19BAB0281C36170343372B091EF6854214547AE6891D27C04850"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026a6e4-halfword-case0-flags.c",
+        "sha256": "630782D134398DE59901BC1CABD9E7B13C647D16440220D595518EEEC5474479"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0026a6e4.s",
+        "sha256": "0C42889738037D707C81338A2BB189864276961E5E725FEA85F3BE8EDFA7712E"
+      },
+      {
+        "path": "build/consultants/attack-e07-muse/008-answer.txt",
+        "sha256": "AD57B78169807786ACBD9FB0B296912FFE4780995CC8083ADBA1321745EFE857"
+      },
+      {
+        "path": "build/matching/ae-e07/0026a6e4-ordered-accesses-observation.json",
+        "sha256": "277DA12ADB07B74476B9611356B9BCE58B6A2B8ACDA893E9E0D7660C195C4359"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Command0 setup load/store scheduling and a helper argument-read pocket remain nonmatching. This control does not establish original source syntax or a universal local-width/allocation rule. Actual relocation/provider/addend, sole canonical C custody, linked bytes and full-ROM gates remain complete-wave integration work. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change only the case0 flag local from u32 to u16. Its values remain0..3 and its sole destination is the observed halfword store at output+18. Preserve both if-or extractions, the header/cursor initialization points, per-iteration record[1] reload and all other code."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 8350,
+      "sha256": "740500DD8906227861550A35A05D0E672C2606FCCEBFFDAD8C523DD8BA7B98A0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "ED832180C5594085E9F1DBFC8DD64B5E5CAD3FC4B10AB88D85C1CB875BBD3138"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0026a6e4-69b94944c4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

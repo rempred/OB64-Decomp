@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D4C4F7315CF67CBA12DE64D9AB83F401F5DBC387A072FFA5515DD84D65F5AD08",
+  "observationId": "16CA1651F2D68243B836BF3864B9E392A0CF6E4949F9E33E7B6D9FDA0D902A93",
+  "symbol": "func_00261DA8",
+  "authored": {
+    "context": "E03 full original body and source coverage checked; native results use selected mi15 bounded diagnostic model. Import authenticates source/context in separate normal research model; no fabricated cross-model parent linkage. Exact before/after sources and diagnostic artifacts referenced. Shared publication preserves this historical source and its explicit source/control references. The private normal-model research import was uncompiled; selected-mi15 native reports retain their original identities. No cross-model parent relationship is invented.",
+    "effects": [
+      "inline-helper-lifetimes",
+      "store-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "33DF87F2E5324721BB75B2A37DBB4DFA742427C31E22DA15BA854015935C5ADA",
+      "sourceSha256": "7DE74FC3312CB9BC7984A493E97E3F525592A0272C5193412E04DE09C5C9B4F5"
+    },
+    "label": "261da8-inline-allocation-lifetime",
+    "observedEffect": "Recovers incoming A1 copy and A0 payload/S0 return lifetimes; reordered flag store removes remaining scheduling differences. Full136B PURE_C raw-relocation-masked object equality; helper emits no separate function.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e03/targets/func_00261DA8/candidates/15461C8DEBA867A5DF6CE5CAE07A1C98090DDC7A09475EA1DFCC6A045701F694.c",
+        "sha256": "05677E5366C01101B490AF509E643B910D7952139DABE865A278A388A5204FA3"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_00261DA8/candidates/860E970F11E5E670D7D9FAF8975C6CF333906EE5E230DE75FF973DFC8ACF70EB.c",
+        "sha256": "9F447C6187E108B7C54F80C9C738805B91B3ED29439447A6FD5213AFC80CAC27"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/21C37032DDC79BB650DB9C0B8E38A9FBC6E046B080350C96A2379C3FC5FE33BC/workbench-report.json",
+        "sha256": "7F4BD55ACA9900B702DF2048C1F6C3D724C171C54429F4CA0818582F623FEF10"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_00261DA8/candidates/E4C173B2164074F610C81C1E0E764FB489DDC0CC437392A052FE59D25020A3C3.c",
+        "sha256": "FB443EF8268CF2A7C70D3382F4C08EC01DEC8BE1BE133153679F010DF7A19CDE"
+      },
+      {
+        "path": "build/matching/ae-e03/import-261da8-inline-allocation-lifetime.json",
+        "sha256": "FA4315CC36D94E3ACA548A3AD32F5961BFD565B7B6334AC0CE12AAB444EEA11C"
+      },
+      {
+        "path": "build/matching/ae-e03/observation-261da8-inline-allocation-lifetime.json",
+        "sha256": "71BB35EC19F508E39B51B9B930577FB988DACD21B6E000E3BD14DC347F0426CF"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/wave-acceptance.json",
+        "sha256": "671C2EB76C2E42663CD749938FD1BB6F3F15A5CC81B99CE364235134E8A8917A"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/complete-wave-preparation.json",
+        "sha256": "E683B204B5CAB1C22B27F0371B2731CE19879AF8C0B7826CD89C2295ABC49A5E"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/source-preparation-r3/SOURCE-PREPARATION.json",
+        "sha256": "E264BB8967288136D06A806F913B7AA5C5CBBAFDB9666FFF5BB9D4DBA48802FB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM permits symbolic-object evidence only. Actual provider addresses/REL, sole linked owner/placement/complete target bytes and whole-wave full-ROM verification remain pending. This is the original diagnostic limitation. The separately reconciled canonical E03 descendant now passes the complete wave verifier; that acceptance does not certify historical controls or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express allocation/pop and initialization in an ordinary static inline C helper; clear words before setting field18=1, then caller stores payload and registers it."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 3148,
+      "sha256": "33DF87F2E5324721BB75B2A37DBB4DFA742427C31E22DA15BA854015935C5ADA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7DE74FC3312CB9BC7984A493E97E3F525592A0272C5193412E04DE09C5C9B4F5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00261DA8-d4c4f7315c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

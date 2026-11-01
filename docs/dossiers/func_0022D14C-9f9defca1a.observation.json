@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9F9DEFCA1A9D9F0BCB448B58338A8166E58C35CE8A54E4172E7E25BF12703F2D",
+  "observationId": "8BB46444D3E0655CE79C8072C3D1B8ECD38006C3BC73EBAA9C694CBF76AB93F2",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete17 W6 under Director1992/1997. CURRENT intake finds newer6715F5D1 continuation after assigned F8A control. All1711 original words and complete source read; canonical ASM/table/source/config remain unchanged.",
+    "effects": [
+      "source-coverage",
+      "reload-allocation",
+      "research-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2C35D0C381512B5A070064A3F3820C1BF95DA9A0DEFDD8393156DE1036D64791",
+      "sourceSha256": "6715F5D1AFC7E50B3BE8DA8768BB64485AA4A71293209057C14E4169B572225F"
+    },
+    "label": "current-complete-d14c-control-and-source-matched-sum-spill",
+    "observedEffect": "Fresh9F9DEFCA is PURE_C6844/frame616/177 actual text relocations/131 calls, native2FE78F2F identical to preserved8B76. Raw symbolic comparison280words/704bytes; read-only offset-aligned actual-relocation-field masking leaves105word differences. First728/730 difference usesT3 instead ofretailV1 for sum/store. In the exact source's retained6539 RTL/COMBINE/SCHED UID1196 remains user80=79+82; GREG loads16C intoT3/184 intoT4, adds intoT3 and stores174. Source/compiler/full-assembly parity and allnine hashes pass; historical target-binding limits remain explicit. This identifies current candidate direct spill behavior, not retail compiler history.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-current-control-evidence.json",
+        "sha256": "79C148BC775E85B9F852F0EDF9D92D35401AE7002C63406889170865BBCA3A6C"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-current-best-watch.json",
+        "sha256": "8138BFDC77165788DA3F3C6A79220F2E6503BC7E51CD6D9C8B7035DE4B823F0A"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-existing-probe-authentication.json",
+        "sha256": "961CBE2D700B20D140746633EDBB2955E54D146707D6FEBFB37E9AF9EBB3FCFA"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-8b76e39dd3.observation.json",
+        "sha256": "E47CA9227E4BCA79603E9F628D2F1F2129DC803D1AEDAFBD42637D430D7D62B1"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Type5 sum, modes8/10 predicate argument/late-sharing and output/terminal scratch remain nonexact; Gold1999 seeks a real source discriminator after known controls. Separate64B/alignment8/15R table, whole17 integration, sole C/placement/actualrelocation/linked target/fullROM gates remain open. No artificial operation, new diagnostic pipeline, tooling change or canonical activation.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "No source change. Authenticate and refresh the preserved complete6715F5D1 source under CURRENT, then authenticate its existing6539 source/compiler/final-assembly correspondence and allnine dump hashes before using candidate-specific stage observations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40791,
+      "sha256": "2C35D0C381512B5A070064A3F3820C1BF95DA9A0DEFDD8393156DE1036D64791"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6715F5D1AFC7E50B3BE8DA8768BB64485AA4A71293209057C14E4169B572225F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0022D14C-9f9defca1a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

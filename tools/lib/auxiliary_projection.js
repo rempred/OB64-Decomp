@@ -173,7 +173,8 @@ function checkTarget(target, assemblySource = null) {
         || owner.romStartNumber !== row.romStart || owner.romEndNumber !== row.romEndExclusive
         || owner.vramStartNumber !== slice.vramStart || owner.vramEndNumber !== slice.vramEndExclusive) fail('native text selected-owner placement');
     const logical = require('./logical_functions');
-    const rom = fs.readFileSync(path.join(ROOT, 'build/baserom.us_rev0.z64'));
+    const reader = require('./matching/input_set');
+    const rom = reader.read(reader.context(target.model), path.join(ROOT, 'build/baserom.us_rev0.z64'));
     const registry = logical.loadRegistry(target.model, rom, undefined, assemblySource);
     logical.assertActivationCompatible(registry, target.symbol, target.rows, target.compilerTextFunctions, assemblySource);
     if (!same(target.reviewedLocalBodyRegistryIdentity, registry.identity)) fail('native multi-function registry identity drift');

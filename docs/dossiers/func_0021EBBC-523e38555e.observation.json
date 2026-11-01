@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "523E38555E56A27485AF913C3091115633BCEED822E06C8563B3E55F49D3290D",
+  "observationId": "6E99AC564EE5A5E325A8076A1658BD5510A5D6DBC6EA2A90D9226C1DC90B085A",
+  "symbol": "func_0021EBBC",
+  "authored": {
+    "context": "Controlled extension of E7B7828C under03D1204B/E9E49D47, following GoldOx advisory2080; adviser scratch evidence is separate from this own authenticated result.",
+    "effects": [
+      "loop-test-cse",
+      "distinct-byte-loads",
+      "array-index-strength-reduction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A5B9C0151277D37F84897ECD4098D4CE6190E3F0432CCEFBA9380E98F81A5FFA",
+      "sourceSha256": "75ECC53226EF5EA58CDE6B40D37AF3C2ECA34761B2577C9A7631341C498A6EA3"
+    },
+    "label": "real-array-index-blocks-loop-test-byte-sharing",
+    "observedEffect": "523E3855/source75ECC532/expandedA5B9C015 is PURE_C10252/frame744/203calls/native1CBEEEDE/1259 absolute-offset differences. Exactly19 raw text words change from E7, confined to function offsets944..1068; actual relocation census is identical. The combined104-byte membership window has zero actual-relocation-masked differences; setup remains1288 bytes and improves115 to96 differences. Own99992EFF nine-pass probe authenticates all12 artifacts and normalized compiler assembly. CSE pre-test7490 reads source103+210, while body691 reads source103+slot102+210 through232; QI1923/234/229 stay distinct. FLOW creates giv2176 from source103 and removes the slot/address induction, retaining D2/DE displacements. This matches the primary cse_set_around_loop address-equality condition and loop-strength-reduction explanation; previous05DC keeps the shared loop-test byte and surviving extension. No volatile, dummy use, compiler flag or ownership change is involved.",
+    "parentCandidateId": "E7B7828C52176025FC0461FF2BD937F1D99F8A99182C92C77C3EFECAFB1A5616",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-array-index-watch.json",
+        "sha256": "45C1846D5258CB4F3C53C01A12A4EA36A68BB46AB2CD55C4E8473A0F253EC0FF"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-array-index-measurement.json",
+        "sha256": "69777D2528875171EC18F93FBD411661D39A806A3226678BA1A18E04A5DA7F3E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-array-index-emission.json",
+        "sha256": "598574E219243A408EAD340566233D14046C865A7BF76C601B0F67264432D354"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-array-index-probe.json",
+        "sha256": "DB1A3F84B296C9D4E29E5F7C9E00F5F79F95A7FE47145E56EFD043BA46704710"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-array-index-probe-auth.json",
+        "sha256": "7AA75A2AEA75799B557DF005AA99C76ACC98787C04AC77A3275FC686D2D07095"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-array-index-pair.json",
+        "sha256": "E6680BF9B9AE954CAF1053A26C62A0A6E570143B2707F258556B3C9EE91416A1"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-membership-probe.json",
+        "sha256": "D74FF82F9EE736A665D16060958C357530A427EBF56EA51919685ECEF3ABB0DE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-membership-probe-auth.json",
+        "sha256": "C4A071BAD7D58B3100927364A66858B605D5099C7E07136A18931A6BDF99A302"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/ebbc-membership-advisory-2080.json",
+        "sha256": "2FE18A57A549F5EC1123607EAAE8C88A105E27CF0706F0B27217A0E3BBBBD9F1"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/cse.c",
+        "sha256": "6B8E883477534F06AF12F471EB53242965100FE0EDFCFA7F0476EAD490B716EB"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/jump.c",
+        "sha256": "45860E25B20891170703EB33848B01A6B03AC5D9A6629995E40C3748B1B9E6D8"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/loop.c",
+        "sha256": "1680B125630D5CCD6CCF9872AA0C5E6EC81E65B19C01F06F8B194656B60ABDD8"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021EBBC.s",
+        "sha256": "012A605E6F9699E7ADE44224828B62A876474B744A380394E3AF402A36586CBF"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Useful unselected intermediate:20-byte body deficit exceeds selected13DA four-byte deficit. Setup list-count rotation, paired skip boolean and initial operand/register differences remain. Transfer the measured array form to the improved counter/lookup source, checking its exact context; then finish the two2267A8 tail merges and remaining scheduling. Own diagnostics do not establish linked/table/ownership/full-ROM or complete-wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use a signed slot index for the two declared bytesD2/bytesDE arrays. Retain all other source, including the now-unused scan declaration during this isolated comparison."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 45151,
+      "sha256": "A5B9C0151277D37F84897ECD4098D4CE6190E3F0432CCEFBA9380E98F81A5FFA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "75ECC53226EF5EA58CDE6B40D37AF3C2ECA34761B2577C9A7631341C498A6EA3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0021EBBC-523e38555e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

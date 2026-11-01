@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "750377EFB98255D852CF16B9DD5130114E8AD8F4864AEA26CD4D0BDC3E73470F",
+  "observationId": "7D770466D11161257839C7EE2144B70353C13E39505D4F083559536A1A8EA768",
+  "symbol": "func_00273180",
+  "authored": {
+    "context": "Exact saved P07 comparison source for complete-coordinate-expression-before-scalar-initialization. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P07 wave report.",
+    "effects": [
+      "floating-point-scheduling",
+      "source-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 3930,
+          "path": "include/game/effect_dispatch_e07.h",
+          "sha256": "FC78652B77CF72533777E888E8395CAADD267A6A448C235AA8CA67796D4401BD"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "136D1888287DF02F12B39B350079A0E429943E9F76622BF715A42A75E4C9D3B2",
+      "sourceSha256": "C19696DA3187518A2D867F97E3F7DCA5697FB613EB28F745EB0FC960DBF71D45"
+    },
+    "label": "p07-control-1f4438dde1",
+    "observedEffect": "Saved mechanically PURE_C object has924 function text bytes; source-bound reports and authored observations retain its actual differences.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p07/targets/func_00273180/candidates/1F4438DDE10AD25AB9F56E0CBE89688142A2097BB6374278960D4DCB870579E3.c",
+        "sha256": "0E6B5FD7A046C6C54D2CDDBF290C0B240D506FB92AD42D02E744EB44644E9B0E"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-73180-01.json",
+        "sha256": "1C1459239325D807BDB58D07F31B97093ED79D02057584DA7647DA55596246CD"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/73DCB24BC3D10EC92BEE89C84777F000EB22FFEE6A7247104D22011D59BBE98B/workbench-report.json",
+        "sha256": "EFD65899BEFED2EA62051EC15B444957B17BDABF24D6E130D84B846E05C5F9C1"
+      },
+      {
+        "path": "build/matching/ae-p07/observation-73180-02.json",
+        "sha256": "C19BD0BC0077D978DE984DB85A1E1613158833084852848AC1F016BAB057C535"
+      },
+      {
+        "path": "build/integration/attack-effects/p07/wave-acceptance.json",
+        "sha256": "DE58DE3FB87D31A7D14CCB60D6CCE1DD064BA2C6D27DDCDA4B71EF403F854D88"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical diagnostic source, not canonical linked/full-ROM acceptance or a universal compiler rule. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve the measured baseline/intermediate/counterexample with its original source context."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 3930,
+        "path": "include/game/effect_dispatch_e07.h",
+        "sha256": "FC78652B77CF72533777E888E8395CAADD267A6A448C235AA8CA67796D4401BD"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 10114,
+      "sha256": "136D1888287DF02F12B39B350079A0E429943E9F76622BF715A42A75E4C9D3B2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C19696DA3187518A2D867F97E3F7DCA5697FB613EB28F745EB0FC960DBF71D45"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00273180-750377efb9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

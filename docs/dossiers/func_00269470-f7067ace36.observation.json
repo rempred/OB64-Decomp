@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F7067ACE36D947CE8D3342E70EC8BED34073B4C7F242E495F08DAF437362793B",
+  "observationId": "75E6766FFDF6B8A238B14D21044ED57E3DC7C2B5CF785227F90D73A2AB6C91A2",
+  "symbol": "func_00269470",
+  "authored": {
+    "context": "func_00269470, KMC2.7.2 O2, normal switch and real inline node-flag loop. Private native runs consumed mi16 inputSet41F37D66C2EFD39BEF00255A88342103DBF902FF58DBDFE14A1C15E269A61617; this import annotates source/reference evidence, not a live native replay. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "halfword-mask-lifetime",
+      "scoped-volatile-access-view",
+      "boolean-conversion",
+      "inline-loop-register-allocation",
+      "switch-table"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "F57007E2D8C07CD2779734D9C8AF3E4392228E971C28BDFA7D8914B206C0E802",
+      "sourceSha256": "C0BF8CCB43CEB9DED5F0E1B41B0E7940006AF896F06DEEDAED8EDD8C0FEFBCE7"
+    },
+    "label": "e06-dispatch-halfword-mask-and-scoped-setup-access",
+    "observedEffect": "The u32 mask context emits804B, coalesces mask into v1 and rotates record/nodes/counter to a2/a1/a0. The u16 local emits the complete808B body; andi/sltu materializes the Boolean in v1, move/ori forms the final a2 mask, and record/nodes/counter become a1/a0/v1. Native watch classifies PURE_C with relocation-masked body equality. Scoped setup accesses separately preserve the evidenced global/store ordering and required halfword reloads without inline asm.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e06/runs/3E334A1B43D29864CF95E195F015DD95F6B367C44DFF5A5308868101C8D4FD14/candidate.compiler.s",
+        "sha256": "86A121FDF42A0AFD9EC347520F181E666943E116E7A8D6BBA6228D5B6A0D9E53"
+      },
+      {
+        "path": "build/matching/ae-e06/runs/3E334A1B43D29864CF95E195F015DD95F6B367C44DFF5A5308868101C8D4FD14/candidate.input.c",
+        "sha256": "FEE01F1FEC0F4CF54CDB93A0D14EE1DF5F2D0E4D99845300A2FE370D0E204CD8"
+      },
+      {
+        "path": "build/matching/ae-e06/runs/85410C9903FAF276CCFEF42214349F3F1300DA83B4341D1D5FD0A739975A29C8/workbench-report.json",
+        "sha256": "CD7F6521E734EF5A5C863F5AABE26256ACDC35C267329A7218B3FB92337F6124"
+      },
+      {
+        "path": "build/matching/ae-e06/runs/85410C9903FAF276CCFEF42214349F3F1300DA83B4341D1D5FD0A739975A29C8/candidate.compiler.s",
+        "sha256": "018746EE9D4D05B3AD23654D6DD56DD9B7A51003109905605DEF075BB2903501"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00269470.s",
+        "sha256": "8A11B4BE872A6ABABA1F9EE8FF5C3108CBD81B18C45A21653D3FBE49BAA2B7EB"
+      },
+      {
+        "path": "build/matching/ae-e06/targets/func_00269470/candidates/13E1EA2AD26559DD60E89DFE0EB88151F5F71431C9001D6B4944773E20C31D20.c",
+        "sha256": "55E06ADCE365E81FA78AA9D2CAE37E2263639CDE52A1B63AB1E34B1AE93CCE67"
+      },
+      {
+        "path": "build/matching/ae-e06/import-269470.json",
+        "sha256": "32DB2C6025EB233BCAEFB360273099F435FCD7532D099C9F57089324A9339323"
+      },
+      {
+        "path": "build/matching/ae-e06/research-269470.json",
+        "sha256": "AA4173FD184D5618FB2C4F422F0A4E78C256E3C3A2B9B0E8F23E377EF8965E43"
+      },
+      {
+        "path": "build/integration/attack-effects/e06/wave-acceptance.json",
+        "sha256": "AD7F5773B0A8FF9DF15F4CB4698EED379A9F9811E9A8838C245463EE6BE7C3C9"
+      },
+      {
+        "path": "build/integration/attack-effects/e06/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "612CE7A51742D1D28532E64EABC563A82064F34FCF58D50DCEECDA87C8373962"
+      },
+      {
+        "path": "build/integration/attack-effects/e06/wave-installation.json",
+        "sha256": "224780AB7A99335026F974EA91E80C237D862DC75A84E961554B44A807858FEA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private evidence is not matching acceptance. Native .rodata has32B/alignment8 with seven table relocations. Integrator must reconcile interfaces and actual provider/REL/table placement, prove sole ownership/full owner bytes and verify the complete original E06 wave against retail. The separately reconciled canonical E06 descendant now passes the complete-wave normal verifier under ordinary complete-wave acceptance. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "After retaining five observed paired setup stores through a scoped volatile access view, change only the node mask local from u32 to u16 in the real inline flag-store helper context. Remove unused declarations and add rationale comments in the selected final source."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 5583,
+      "sha256": "F57007E2D8C07CD2779734D9C8AF3E4392228E971C28BDFA7D8914B206C0E802"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C0BF8CCB43CEB9DED5F0E1B41B0E7940006AF896F06DEEDAED8EDD8C0FEFBCE7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_00269470-f7067ace36.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

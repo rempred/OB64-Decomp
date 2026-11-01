@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "649FB1BD4016929F0DC86E9507B57B5BF929F3421DFF2697F5D726AAB22BEEB4",
+  "observationId": "A4F47A3A1366046C000E6E9AC3D176EDDDA410B755A24BFB15EC6E6464EC4337",
+  "symbol": "func_00278560",
+  "authored": {
+    "context": "78560 full1440-byte owner/frame88; all message/default and invalid-neighbor self-loop coverage checked. Shared publication preserves the historical source and its explicit controls. Selected-mi14/mi15/mi16 reports retain their actual identities; this current-model research import is uncompiled and creates no cross-model parent relationship.",
+    "effects": [
+      "real-matrix-pointer-pair",
+      "narrow-flag-value-phase",
+      "nested-fp-condition-tail"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "A80C4C7DFF32B9F0F84CC89A93F7A8390C176AE0EB3FFFB0EF73404EA70DE90E",
+      "sourceSha256": "A95CCA1066CAE4F30CD5B498205B244A843560114AAD8632DB6FECC09EA77408"
+    },
+    "label": "matrix-pointer-pair-short-flag-bits-and-nested-FP-tail",
+    "observedEffect": "04 restores frame88/stack30,34.07 full1440 has18 word differences confined to dispatch;15/final full1440/frame88 mechanicalPURE_C rawRelocationMaskedExact=true. Probe07 shows promotion before first branch; mask test avoids that while preserving exactly values0/4/8/12. Unsigned widths introduce masks; fullword and combined OR lose setup phase; switch adds dispatch. Original spelling and complete compiler causality unproven.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p06/78560-04.json",
+        "sha256": "433B6F920397BB902519D192442D24DCEEDF0ADC26922810B25BF3E6B9340313"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00278560/candidates/8E57E64EFB9865063C0ED9ED9DA2F6CCC46F50A831DF88B0A4C803AC61963CF2.c",
+        "sha256": "1B78931C7DE6E77B41D4BF15E4EFFDEF8DC800D969D6DB5E12F4E1CE94A88A30"
+      },
+      {
+        "path": "build/matching/ae-p06/78560-06.json",
+        "sha256": "A936DAAA085563624B68E264030D6DA7A50D2D6E45991111040CD051F4A20EAB"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00278560/candidates/F2F695E320A302F04CC8D087479096299A71647447DCFCA8A14B543E1F7BB070.c",
+        "sha256": "47CBB630AF89EAF7CB6F6EF02DBACC4B998F690838DB60D33E4FDFA9830C59F7"
+      },
+      {
+        "path": "build/matching/ae-p06/78560-07.json",
+        "sha256": "D7EA31C5656BA24CAFF3E05C5C234970E0909DF28CE8565662CB63D360EF6B92"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00278560/candidates/A0A32A349018354B8D46D572413BF7C7209D2CC09D2FA3D8E2C3C15898B21614.c",
+        "sha256": "09C3A3BE6FE9F62DB33E0B7226C348AF405B5BD0F092FC17B14A954E02BB633C"
+      },
+      {
+        "path": "build/matching/ae-p06/78560-15.json",
+        "sha256": "5CBC0850C6E002D77AF1BE1BDB5BED852482DE3B1E9EE23697FD845929C0723B"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00278560/candidates/D5D5A4C60B448FEA511EAD02F8288748957244CE643E89720F989DC1A559E6CE.c",
+        "sha256": "99E6F8EB23C0B930F5F27889322ACC6306B6FF4E27C0499DCE1245F2C3A25259"
+      },
+      {
+        "path": "build/matching/ae-p06/78560-final.json",
+        "sha256": "C8164F75F518B2983E2E6C5C8C5C6D145ADD9F67FF1C5528556B15B59F171268"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00278560/candidates/80234360B62E4D01BB3423DBADDEECA4622935BF342C35A093D50B1402FD0B42.c",
+        "sha256": "A95CCA1066CAE4F30CD5B498205B244A843560114AAD8632DB6FECC09EA77408"
+      },
+      {
+        "path": "build/matching/ae-p06/78560-probe07.json",
+        "sha256": "7AAA623E2F496D939D2526D9A4E41B8D607F9FC53A7A15EEEDA5D97D2B6B7F48"
+      },
+      {
+        "path": "build/matching/ae-p06/78560-assessment.md",
+        "sha256": "5846365F0E921CC783C869A53085BE9D37703E96CDB0B91B391EAA7E4D874944"
+      },
+      {
+        "path": "build/matching/ae-p06/func_00278560.c",
+        "sha256": "A95CCA1066CAE4F30CD5B498205B244A843560114AAD8632DB6FECC09EA77408"
+      },
+      {
+        "path": "build/matching/ae-p06/observations/78560-local-views.json",
+        "sha256": "678677A9B0D05D9FD698A821A743EF12138DB5F636EEA16F9C93A7B6B22D35D7"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/wave-acceptance.json",
+        "sha256": "DFA77C4AC403B59574D04E0057B2A5A73EAE5B89A9EBECA674A7C2FCF9EC08A1"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/source-preparation/SOURCE-PREPARATION.json",
+        "sha256": "001F065D767A07E243DCBF0128DCB1924B224DFF89CB4539F9307ECD0EFA1C35"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/return-view-reconciliation.json",
+        "sha256": "70B497D90C0375A55B3A661B142D7870DB70F2520668B60307B91889A346733A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM has no private linked diagnostic; integrator must reconcile interfaces/relocations and canonical whole-wave gates. The separately reconciled P06 descendant now passes the complete-wave canonical verifier. That acceptance does not certify the historical controls or establish the original source spelling.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "04 real pair[2] stores matrix arguments.06 signedshort flags restores materialization.07 nested real flag updates merges FP condition tails.15 tests constructed bits0xC before full short equality promotion."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 7377,
+      "sha256": "A80C4C7DFF32B9F0F84CC89A93F7A8390C176AE0EB3FFFB0EF73404EA70DE90E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A95CCA1066CAE4F30CD5B498205B244A843560114AAD8632DB6FECC09EA77408"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00278560-649fb1bd40.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

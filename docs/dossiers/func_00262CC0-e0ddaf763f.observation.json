@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E0DDAF763F504F529AA2C17E47C1C774A490C6285791B2B92B7F0985E775E0B4",
+  "observationId": "C94EFBD0E5F192C0FBB7E89DCF084C13D839782D5F7F286D2CD28AAB8CC6B419",
+  "symbol": "func_00262CC0",
+  "authored": {
+    "context": "E03 full original body and emitted native census checked. Referenced trials use selected mi15 bounded diagnostics. Research import uses its separate normal model; no fabricated cross-model parent. Current private source additionally reconciles285C prototype to s32 and includes compiler-form comments, to be natively refreshed before import. Shared publication preserves this historical source and its explicit source/control references. The private normal-model research import was uncompiled; selected-mi15 native reports retain their original identities. No cross-model parent relationship is invented.",
+    "effects": [
+      "global-array-indexing",
+      "multi-field-pointer-induction"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "C377CE81F99DBD260FC85F67F1EC3084183AB2C1473B0D273A3A928ECB1AD979",
+      "sourceSha256": "8B30FD3EB11D293812236ECF79F3ECFC60D7F9C7EC51060705A6E37F887973A5"
+    },
+    "label": "262cc0-global-multifield-initializer",
+    "observedEffect": "First multi-field clear keeps record base in V3, stores fields at+4/+C and increments index in original position; second guard/loop count copy restored.224->228B and full PURE_C raw-relocation-masked equality. This is a measured transfer of E90/2450 global-array lesson, not a universal rewriting rule.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e03/experiments/262CC0-cached-pointer.c",
+        "sha256": "8AA18873F52DB38757372DC2FBD11F2F0C1485E6281B3AC2C6FFE85E13DDD929"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/E088D4B438D8EDEEB358E982A7347F2FA6BE4030954F381840703B0379008A6F/workbench-report.json",
+        "sha256": "3DD412876B35A76A5314CBF4BF040B168881A938DB369F891B085E2C823BA24F"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/A26AD26C4DF1FE74CA32D7E58D961C58936F7FD7F7B2C5C0BF66EC93F6D94B7F/workbench-report.json",
+        "sha256": "69471B1849F95425724441F24A67B924A9E4F5B07B7A27B7A8369DCF8A8DA807"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_00262CC0/candidates/02941684C0DBAF1213949EC2068F490BB12A842266B0BEFCBCDD7049A1010984.c",
+        "sha256": "E00FCBE4A5B59370A7F8FF4C9FFD922DD216E71C321157F8DADE6B37194187BD"
+      },
+      {
+        "path": "build/matching/ae-e03/import-262cc0-global-multifield-initializer.json",
+        "sha256": "A77D88487CBB70FBB3C04EC7DEEEE67ECE2F2E663C4372438A3D2FD26601979D"
+      },
+      {
+        "path": "build/matching/ae-e03/observation-262cc0-global-multifield-initializer.json",
+        "sha256": "909DF6B77DB86DDD8605F927CFF0990F41122913A372B3F211E5C1D2F0280D66"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/wave-acceptance.json",
+        "sha256": "671C2EB76C2E42663CD749938FD1BB6F3F15A5CC81B99CE364235134E8A8917A"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/complete-wave-preparation.json",
+        "sha256": "E683B204B5CAB1C22B27F0371B2731CE19879AF8C0B7826CD89C2295ABC49A5E"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/source-preparation-r3/SOURCE-PREPARATION.json",
+        "sha256": "E264BB8967288136D06A806F913B7AA5C5CBBAFDB9666FFF5BB9D4DBA48802FB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM symbolic-object only; actual provider/REL, sole linked custody/placement/full target bytes and complete-wave full-ROM gates remain pending. This is the original diagnostic limitation. The separately reconciled canonical E03 descendant now passes the complete wave verifier; that acceptance does not certify historical controls or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express pool initialization and free links with direct global base/count/index expressions instead of cached bounds and walking a local record pointer."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 3013,
+      "sha256": "C377CE81F99DBD260FC85F67F1EC3084183AB2C1473B0D273A3A928ECB1AD979"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8B30FD3EB11D293812236ECF79F3ECFC60D7F9C7EC51060705A6E37F887973A5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00262CC0-e0ddaf763f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

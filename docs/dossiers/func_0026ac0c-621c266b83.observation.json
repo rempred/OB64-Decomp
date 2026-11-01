@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "621C266B8345A931D551E4907820F74F319C2E080C9D86E5A16C9C0469DCDD8D",
+  "observationId": "A8B43981BEF3F1E4AD5F1E4EE9D3FF80BAFC630E9EDC115FE07169850AB532BF",
+  "symbol": "func_0026ac0c",
+  "authored": {
+    "context": "Full88-byte func_0026ac0c on mi7 setE2412884/targetDA07A3E5. Initial PURE_C80/frame24 clears24 bytes through the flag symbol, then rematerializes that symbol for its post-clear SH; the reference retains the address across clear and uses frame32. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "FF19A4B2B958B8200246EB612F7A573A7AFFB7A1BFEC4EA2C4B6C1578CF8B6EE",
+      "sourceSha256": "5553725E922B9CB26E4FD557E21AAC83342A20281CDD0B60DEE7A80B226E15E9"
+    },
+    "label": "real-cached-flag-address-restores-call-lifetime",
+    "observedEffect": "Trial02 candidateF9999671/run4BB527AA emits PURE_C88/frame32 with raw relocation-masked equality. Flag address is retained inS0, saved argument inS1, and prologue/epilogue match. Actual REL count changes10 to8 because the second symbol-address construction is absent. Full helper calls, stores and return/delay remain covered.",
+    "parentCandidateId": "24CA54DCD98EE64CDEA04A37FCE5C2FE102FDE645137B727A9BF9663EDC85948",
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_0026ac0c/candidates/F99996710D181AF9D3B8B4E95167E747A4E82D7E2A9E7F290FF3C04814B74B04.c",
+        "sha256": "784AFB8F62F63F08E4085142E26CBFF4B646F383CF3197371D6AB137E00011A9"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026ac0c-02-mi7.json",
+        "sha256": "AEFEC46408E91564A5FDEC3AC25972EE5AF95AF869018DB967656C3DA380AE84"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/4BB527AAC4D12F77BDED0129A38EC6BC276AA1D43C801E46AFE418EB89E6F4CE/workbench-report.json",
+        "sha256": "7446BC0DD18E844A088B1E2DB817ABD8677E8B93D2B99B9EEEA6387588ED314F"
+      },
+      {
+        "path": "build/matching/ae-e07/0026ac0c-cached-address-observation.json",
+        "sha256": "FFDA53920596D155D8B9127F70BC203D98282392980EA8ABB8F4A189E5CC6E0E"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026ac0c-initial.c",
+        "sha256": "0A6BA0CC17101119B7FC004BBE0B65DB3D8CE893BA95BDC020F18AE2FF75287C"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026ac0c-cached-flags-address.c",
+        "sha256": "784AFB8F62F63F08E4085142E26CBFF4B646F383CF3197371D6AB137E00011A9"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026ac0c-01-mi7.json",
+        "sha256": "F714CD4196253EAE4D831806E21B9A52239FED1A81FC280AC33BE04C9C85145A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0026ac0c.s",
+        "sha256": "E237DC240EC44D7BB327679CB882080DB9FA4AB13414B76AA3E15832F6B24471"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object equality does not establish actual provider/addend contracts, sole canonical C ownership, linked target bytes or full-ROM equality. Whole E07 integration must reconcile shared factory/callback interfaces. This is source-context evidence, not original syntax or a universal pointer-allocation rule. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture the actual volatile-u16 flag address in a local pointer, pass that address to the clear helper, then use the same pointer for the existing halfword store. Preserve volatile qualifiers, store order, argument and explicit factory return; no added memory access or forced register."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 705,
+      "sha256": "FF19A4B2B958B8200246EB612F7A573A7AFFB7A1BFEC4EA2C4B6C1578CF8B6EE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5553725E922B9CB26E4FD557E21AAC83342A20281CDD0B60DEE7A80B226E15E9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0026ac0c-621c266b83.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

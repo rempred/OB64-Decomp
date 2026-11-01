@@ -1,46 +1,25 @@
-typedef unsigned char u8;
-typedef signed short s16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/effect_adapters_e08.h"
+#include "game/effect_presentation_p04.h"
 
-asm(".macro move dst,src\n"
-    "addu \\dst,\\src,$0\n"
-    ".endm\n");
+typedef struct P01Vec3 {
+    float x, y, z;
+} P01Vec3;
 
-extern void func_001F7344(u32 value, void *workspace, u32 flags);
-extern void *func_001F85C0(void *workspace, const u8 *record);
 
 void func_0024E490(u32 value, const u8 *records, u32 count)
 {
-    u8 workspace[0x10];
-    u32 masked_value;
-    void *workspace_ptr;
-    register const u8 *record asm("$17") = records;
-    register s32 count_reg asm("$16");
-    register s16 index asm("$18");
-    register u32 flags_reg asm("$2");
-    register s16 next asm("$2");
+    P01Vec3 position;
+    /* Keep the consumed byte count while retaining the word interface. */
+    u8 countBits = (u8)count;
+    s16 index;
 
-    masked_value = value & 0xFF;
-    workspace_ptr = workspace;
-    asm("" : : "r"(masked_value), "r"(workspace_ptr));
-    asm("" : : : "$31");
-    asm volatile("lbu $2,2($17)\n"
-                 "addu $18,$0,$0\n"
-                 "addu $16,$6,$0"
-                 : "=r"(flags_reg), "=r"(index), "=r"(count_reg)
-                 : "r"(record), "r"(count)
-                 : "memory");
-    func_001F7344(masked_value, workspace_ptr, flags_reg & 0xF0);
-    count_reg &= 0xFF;
-    if (count_reg == 0) {
-        return;
+    /* KMC marks const-pointer loads invariant; use an unqualified byte view
+       to retain the load's dependencies on generated stack saves. */
+    func_0024BF04((u8)value, &position, ((u8 *)records)[2] & 0xF0);
+    for (index = 0; index < countBits; index++) {
+        const u8 *record = records;
+
+        records += 6;
+        func_0024D180(&position, (void *)record);
     }
-    do {
-        const u8 *current = record;
-        record += 6;
-        func_001F85C0(workspace, current);
-        next = index + 1;
-        index = next;
-    } while (next < count_reg);
 }

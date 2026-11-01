@@ -4,6 +4,8 @@ const literals = require('./retained_literal_references');
 const preparedLink = require('./prepared_link_view');
 
 const fs = require('fs');
+const inputSet = require('./matching/input_set');
+function assertProductionTarget(target) { inputSet.assertProduction(inputSet.context(target)); inputSet.assertProduction(inputSet.context(target?.model)); }
 const path = require('path');
 const { parseElfFile, parseElf32BigEndian, elfSectionBytes, sha256Buffer, sha256File } = require('./phase7_conventional');
 
@@ -137,6 +139,16 @@ function textOwners(target) {
   }];
 }
 function resolveTextContract(target) {
+  assertProductionTarget(target);
+  return textContractShape(target);
+}
+// Research construction may validate the same native metadata rules, but gets
+// no ordinary contract object or compile/proof authority from this operation.
+function validateResearchNativeTextMetadata(target) {
+  if (!inputSet.isResearch(inputSet.context(target?.model)) || !target.nativeTextTail || target.atomicText || target.compilationGroup) fail('research native metadata scope');
+  textContractShape(target);
+}
+function textContractShape(target) {
   if (target.atomicText) return require('./atomic_owner_union').contract(target);
   if (target.compilationGroup) return require('./compilation_groups').contract(target);
   const native = target.nativeTextTail ? normalizeNativeTextTail(target.nativeTextTail, target.symbol) : null;
@@ -242,11 +254,13 @@ function resolveWorkbenchActiveTarget(entries, target) {
   return unique(candidates, 'workbench group alias') || exactEntry || null;
 }
 function bindWorkbenchTarget(session, target) {
-  const active = resolveWorkbenchActiveTarget(session?.context?.phase8?.targets || [], target);
+  assertProductionTarget(target);
+  const view = require('./matching/diagnostic_context').producerModel(session?.context);
+  const active = resolveWorkbenchActiveTarget(view?.targets || [], target);
   if (target.compilationGroup || active?.compilationGroup) {
     fail('group workbench requires a complete group candidate; use canonical diff with the group source');
   }
-  const matches = (session?.context?.phase8?.targets || []).filter((entry) => entry.symbol === target.symbol && entry.nativeTextTail);
+  const matches = (view?.targets || []).filter((entry) => entry.symbol === target.symbol && entry.nativeTextTail);
   if (matches.length === 0) {
     if (target.nativeTextTail) fail('workbench native descriptor is not active');
     return target;
@@ -266,6 +280,7 @@ function inputTarget(target) {
 }
 function inputSection(target, outputSection) { return target.nativeTextTail ? '.text' : outputSection; }
 function assemblerInput(compilerBytes, target, adjust, options = {}) {
+  assertProductionTarget(target);
   if (target.auxiliaryProjection) {
     if (options.allowAuxiliaryReadOnlySections || options.legalizeCop1BinaryInstructions) fail("projection cannot use scratch allowances");
     return auxiliaryProjection.assembly(compilerBytes, target, adjust);
@@ -433,11 +448,13 @@ function nativeLinkedAllocationEvidence(target, elf, mapText) {
     unexpectedAllocationCount: 0, unexpectedLoadCount: 0 };
 }
 function deriveObjectEvidence(target, root, artifactFiles = null) {
+  assertProductionTarget(target);
   if (target.compilationGroup) return require('./compilation_groups').evidence(target, root, artifactFiles);
   return withObjectArtifactSnapshot(target, root, artifactFiles, snapshot =>
     measureEvidence('evidence.object-derivation', () => deriveObjectEvidenceFromSnapshot(target, snapshot)));
 }
 function deriveObjectEvidenceFromSnapshot(target, snapshot) {
+  assertProductionTarget(target);
   const { artifacts, buffers, files } = capturedArtifacts(snapshot, target);
   const contract = resolveTextContract(target), native = Boolean(target.nativeTextTail);
   // Projection also authenticates retained model bindings; leave that uncommon
@@ -512,11 +529,13 @@ function linkContext(root, canonicalBaserom, elf = null) {
   return preparedLink.linkContext(root, canonicalBaserom, elf);
 }
 function deriveLinkEvidence(target, root, canonicalBaserom) {
+  assertProductionTarget(target);
   return deriveLinkEvidenceFromObject(target, root, canonicalBaserom, deriveObjectEvidence(target, root));
 }
 // Private: evidence always comes from a fresh derivation in this invocation,
 // never a report or a caller-supplied cached verdict.
 function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvidence) {
+  assertProductionTarget(target);
   const owned = Buffer.isBuffer(canonicalBaserom);
   const context = owned ? linkContext(root, canonicalBaserom) : canonicalBaserom;
   if (context.mapView) preparedLink.assertContext(context, root);
@@ -741,7 +760,7 @@ module.exports = { nativeSingleOwnerCensus, NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SH
   buildTargetRecords, representationDigest, assertCompactRecord, uniqueReportTarget, proofDescriptor, withSourceObjectProof, readCompactReport, publishCompactReport,
   withObjectEvidenceMemo, withEvidenceProfile, measureEvidence, objectInputs,
   withObjectArtifactSnapshot, objectArtifactBytes, deriveObjectEvidenceFromSnapshot,
-  normalizeNativeTextTail, resolveTextContract, resolveWorkbenchActiveTarget, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,
+  validateResearchNativeTextMetadata, normalizeNativeTextTail, resolveTextContract, resolveWorkbenchActiveTarget, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,
   linkContext, finishLinkContext: preparedLink.finishLinkContext, ownerEvidence, functionCensus, tailEvidence, nativeObjectAllocationEvidence, nativeLinkedAllocationEvidence,
   deriveObjectEvidence, deriveLinkEvidence, recordsForTarget, validateRecords };
 

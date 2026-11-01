@@ -1,297 +1,155 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef int s32;
+#include "game/effect_model_e06.h"
+#include "game/effect_dispatch_e07.h"
 
-asm(".macro move dst,src\n"
-    "addu \\dst,\\src,$0\n"
-    ".endm\n");
+typedef struct Func0026B820Values {
+    float value_00;
+    float value_04;
+    float value_08;
+    float value_0C;
+    float value_10;
+    float value_14;
+} Func0026B820Values;
 
-typedef struct Func0026B820Data {
-    void *base_00;
+typedef struct Func0026B820Record {
+    u32 unknown_00;
+    u32 *entry_04;
+    void *records_08;
+    void *slots_0C;
+    u16 value_10;
+    u8 unknown_12[6];
+} Func0026B820Record;
+
+typedef struct Func0026B820Fields {
+    Func0026B820Values *values_00;
     s32 count_04;
     u16 *flags_08;
-    u8 *records_0C;
-} Func0026B820Data;
+    Func0026B820Record *records_0C;
+} Func0026B820Fields;
 
 typedef struct Func0026B820State {
-    u8 unused_00[8];
+    u8 unknown_00[8];
     u16 flags_08;
     u16 flags_0A;
-    void *argument_0C;
-    void *argument_10;
-    u8 unused_14[8];
-    Func0026B820Data data;
+    void *value_0C;
+    void *value_10;
+    u8 unknown_14[8];
+    Func0026B820Fields fields_1C;
 } Func0026B820State;
 
-extern void *g_func_0026B820_dispatch_table[];
+struct Func0026A510Record;
+struct Func0026A510Output;
+struct Func0026A630Record;
 extern volatile u32 g_func_0026B820_value_38;
 extern volatile u32 g_func_0026B820_count;
-
-extern void func_00268798(void *record);
-extern void func_00268800(void *record);
-extern void *func_00001330(u32 size);
-extern void func_000016C4(void *pointer);
-extern void func_00268678(void *record, void *value);
-extern void func_00268358(u32 value, void *record_value);
-extern void func_00267FD0(void *argument, u32 *record, void *record_value);
-extern void func_00028F60(void *scratch, u32 value_0C, u32 value_10, u32 value_14);
-extern void func_002136F4(void *scratch, void *value_04, void *value_08);
-extern void func_0026A510(float base_00, float base_04, u32 base_08, u32 entry_04);
-extern void func_0026A630(float base_00, float base_04, u32 base_08, u32 entry_04);
-extern void func_00268F64(void *argument, void *value_04, void *value_0C);
-
-u32 func_0026B820(u32 selector_arg, Func0026B820State *state_arg)
+extern void *func_00001330(u32 bytes);
+extern void func_000016C4(void *allocation);
+extern void func_00028F60(float matrix[4][4], float first, float second, float third);
+u32 func_0026B820(u16 command, Func0026B820State *state)
 {
-    Func0026B820State *state = state_arg;
-    register Func0026B820Data *data asm("$17") = &state->data;
-    register float one_float asm("$f22");
-    register float zero_float asm("$f20");
     u32 result = 0;
-    volatile u8 frame_pad[0x8C];
-    u32 selector;
+    Func0026B820Fields *fields = &state->fields_1C;
+    float matrix[4][4];
+    s32 item;
 
-    selector = selector_arg & 0xFFFF;
-
-    if (selector < 7) {
-        __asm__ volatile ("" : : "X"(&&func_0026B820_case_1));
-        __asm__ volatile ("" : : "X"(&&func_0026B820_case_2));
-        __asm__ volatile ("" : : "X"(&&func_0026B820_case_6));
-        __asm__ volatile ("" : : "X"(&&func_0026B820_case_0));
-        __asm__ volatile ("" : : "X"(&&func_0026B820_case_5));
-        __asm__ volatile ("" : : "X"(&&func_0026B820_case_3));
-        __asm__ volatile ("" : : "X"(&&func_0026B820_case_4));
-        goto *g_func_0026B820_dispatch_table[selector];
-    }
-    data = &state->data;
-    goto func_0026B820_return;
-
-func_0026B820_case_1:
-    {
-        register s32 index asm("$16") = 0;
-        register s32 offset asm("$18");
-        if (data->count_04 <= 0) goto func_0026B820_return;
-        offset = 0;
-            do {
-            func_00268798(data->records_0C + offset);
-            index += 1;
-            offset += 0x18;
-        } while (index < data->count_04);
-    }
-    goto func_0026B820_return;
-
-func_0026B820_case_2:
-    {
-        register s32 index asm("$16") = 0;
-        register s32 offset asm("$18");
-        if (data->count_04 <= 0) goto func_0026B820_case_2_free;
-        offset = 0;
-        do {
-            func_00268800(data->records_0C + offset);
-            index += 1;
-            offset += 0x18;
-        } while (index < data->count_04);
-    }
-func_0026B820_case_2_free:
-    func_000016C4(data->base_00);
-    func_000016C4(data->flags_08);
-    func_000016C4(data->records_0C);
-    goto func_0026B820_return;
-
-func_0026B820_case_6:
-    result = **(u32 **)(data->records_0C + 4);
-    goto func_0026B820_return;
-
-func_0026B820_case_0:
-    {
-        data->count_04 = g_func_0026B820_count;
-        data->base_00 = func_00001330((data->count_04 * 3) << 3);
-        data->flags_08 = (u16 *)func_00001330(data->count_04 << 1);
-        data->records_0C = (u8 *)func_00001330((data->count_04 * 3) << 3);
-    }
-    {
-        register s32 offset asm("$16");
-        register s32 index asm("$18");
-        register s32 one asm("$19");
-        index = 0;
-        if (data->count_04 <= 0) goto func_0026B820_return;
-        one = 1;
-        one_float = 1.0f;
-        offset = 0;
-        zero_float = 0.0f;
-        do {
-            func_00268678(data->records_0C + offset,
-                          (void *)g_func_0026B820_value_38);
-            data->flags_08[index] = one;
-            {
-                register void *base asm("$2") = data->base_00;
-                base = (u8 *)base + offset;
-                *(float *)((u8 *)base + 0x08) = zero_float;
-                *(float *)((u8 *)base + 0x04) = zero_float;
-                *(float *)((u8 *)base + 0x00) = zero_float;
-                *(float *)((u8 *)base + 0x14) = one_float;
-                *(float *)((u8 *)base + 0x10) = one_float;
-                *(float *)((u8 *)base + 0x0C) = one_float;
-            }
-            index += 1;
-            offset += 0x18;
-        } while (index < data->count_04);
-    }
-    goto func_0026B820_return;
-
-func_0026B820_case_5:
-    {
-        register s32 index asm("$16") = 0;
-        register s32 offset asm("$19");
-        if (data->count_04 <= 0) goto func_0026B820_case_5_clear;
-        offset = 0;
-        do {
-            u16 flags = data->flags_08[index];
-            if ((flags & 1) != 0 && (flags & 0x8000) == 0) {
-                u32 *record = (u32 *)(offset + (u32)data->records_0C);
-                u32 *entry = (u32 *)record[1];
-                func_00268358(entry[1], (void *)record[3]);
-                data->flags_08[index] |= 0x8000;
-            }
-            index += 1;
-            offset += 0x18;
-        } while (index < data->count_04);
-    }
-func_0026B820_case_5_clear:
-    state->flags_08 &= (u16)~4;
-    goto func_0026B820_return;
-
-func_0026B820_case_3:
-    {
-        register s32 index asm("$16");
-        register s32 offset asm("$18");
-        index = 0;
-        if (*((volatile s32 *)&data->count_04) <= 0) goto func_0026B820_case_3_loop_2;
-        offset = 0;
-        do {
-                if ((data->flags_08[index] & 1) != 0) {
-                    u32 *record = (u32 *)(offset + (u32)data->records_0C);
-                    func_00267FD0(state->argument_10,
-                                  (u32 *)record[1],
-                                  (void *)record[2]);
-                }
-                index += 1;
-                offset += 0x18;
-        } while (index < data->count_04);
-
-func_0026B820_case_3_loop_2:
-        index = 0;
-        if (data->count_04 <= 0) goto func_0026B820_case_3_loop_3;
-        offset = 0;
-        do {
-                if ((data->flags_08[index] & 1) != 0) {
-                    {
-                        register void *scratch_arg asm("$4") = (void *)&frame_pad[0x08];
-                        register u32 *record asm("$2");
-                        func_00028F60(scratch_arg,
-                                      *(u32 *)(offset + (u32)data->base_00 + 0x0C),
-                                      *(u32 *)(offset + (u32)data->base_00 + 0x10),
-                                      *(u32 *)(offset + (u32)data->base_00 + 0x14));
-                        record = (u32 *)(offset + (u32)data->records_0C);
-                        asm volatile (
-                            ".set noreorder\n"
-                            "lw $5,4(%0)\n"
-                            "lw $6,8(%0)\n"
-                            "jal func_002136F4\n"
-                            "addiu $4,$sp,0x18\n"
-                            ".set reorder\n"
-                            :
-                            : "r"(record)
-                            : "$4", "$5", "$6", "memory");
-                    }
-            }
-            index += 1;
-            offset += 0x18;
-        } while (index < data->count_04);
-
-func_0026B820_case_3_loop_3:
-        index = 0;
-        if (*((volatile s32 *)&data->count_04) <= 0) goto func_0026B820_case_3_loop_4;
-        offset = 0;
-        do {
-            if ((data->flags_08[index] & 1) != 0) {
-                u32 *record = (u32 *)(offset + (u32)data->records_0C);
-                register u32 *base asm("$3") = (u32 *)data->base_00;
-                register u32 call_value_0 asm("$4") = record[2];
-                register u32 *call_value_1 asm("$5") = (u32 *)record[1];
-                asm volatile ("sw %0,0x10($sp)" : : "r"(call_value_0) : "memory");
-                record = (u32 *)(offset + (u32)data->records_0C);
-                asm volatile (
-                    "addu %0,%1,%2\n"
-                    "sw %3,0x14($sp)"
-                    : "=r"(base)
-                    : "r"(offset), "0"(base), "r"(record[3])
-                    : "memory");
-                func_0026A510(
-                    *(float *)((u8 *)base + 0x00),
-                    *(float *)((u8 *)base + 0x04),
-                    *(u32 *)((u8 *)base + 0x08),
-                    call_value_1[1]);
-                asm volatile ("" : : "r"(call_value_1) : "memory");
-            }
-            index += 1;
-            offset += 0x18;
-        } while (index < data->count_04);
-
-func_0026B820_case_3_loop_4:
-        index = 0;
-        if (data->count_04 <= 0) goto func_0026B820_return;
-        offset = 0;
-        do {
-            if ((data->flags_08[index] & 1) != 0) {
-                u32 *record = (u32 *)(offset + (u32)data->records_0C);
-                register u32 *base asm("$3") = (u32 *)data->base_00;
-                register u32 call_value_0 asm("$4") = record[2];
-                register u32 *call_value_1 asm("$5") = (u32 *)record[1];
-                asm volatile ("sw %0,0x10($sp)" : : "r"(call_value_0) : "memory");
-                record = (u32 *)(offset + (u32)data->records_0C);
-                asm volatile (
-                    "addu %0,%1,%2\n"
-                    "sw %3,0x14($sp)"
-                    : "=r"(base)
-                    : "r"(offset), "0"(base), "r"(record[3])
-                    : "memory");
-                func_0026A630(
-                    *(float *)((u8 *)base + 0x00),
-                    *(float *)((u8 *)base + 0x04),
-                    *(u32 *)((u8 *)base + 0x08),
-                    call_value_1[1]);
-                asm volatile ("" : : "r"(call_value_1) : "memory");
-            }
-            index += 1;
-            offset += 0x18;
-        } while (index < data->count_04);
-    }
-    goto func_0026B820_return;
-
-func_0026B820_case_4:
-    {
-        register s32 index asm("$16") = 0;
-        s32 offset;
-        if (data->count_04 > 0) {
-            offset = 0;
-            do {
-                if ((data->flags_08[index] & 1) != 0) {
-                    u32 *record = (u32 *)(offset + (u32)data->records_0C);
-                    if (*(u16 *)((u8 *)record + 0x10) != 0) {
-                        func_00268F64(state->argument_10,
-                                      (void *)record[1],
-                                      (void *)record[3]);
-                    }
-                }
-                index += 1;
-                offset += 0x18;
-            } while (index < data->count_04);
+    switch (command) {
+    case 1:
+        for (item = 0; item < fields->count_04; item++) {
+            func_00268798((struct E06State *)(&fields->records_0C[item]));
         }
-    }
-    asm ("" : "=m"(frame_pad));
-    goto func_0026B820_return;
+        break;
 
-func_0026B820_return:
+    case 2:
+        for (item = 0; item < fields->count_04; item++) {
+            func_00268800((struct E06State *)(&fields->records_0C[item]));
+        }
+        func_000016C4(fields->values_00);
+        func_000016C4(fields->flags_08);
+        func_000016C4(fields->records_0C);
+        break;
+
+    case 6:
+        result = fields->records_0C[0].entry_04[0];
+        break;
+
+    case 0: {
+        s32 init_item;
+
+        fields->count_04 = g_func_0026B820_count;
+        fields->values_00 = func_00001330(fields->count_04 * sizeof(*fields->values_00));
+        fields->flags_08 = func_00001330(fields->count_04 * sizeof(*fields->flags_08));
+        fields->records_0C = func_00001330(fields->count_04 * sizeof(*fields->records_0C));
+        for (init_item = 0; init_item < fields->count_04; init_item++) {
+            Func0026B820Values *values;
+
+            func_00268678((struct E06State *)(&fields->records_0C[init_item]), (s32)((void *)g_func_0026B820_value_38));
+            fields->flags_08[init_item] = 1;
+            /* The six writes use the same selected values record. */
+            values = &fields->values_00[init_item];
+            values->value_00 = values->value_04 = values->value_08 = 0.0f;
+            values->value_0C = values->value_10 = values->value_14 = 1.0f;
+        }
+        break;
+    }
+
+    case 5:
+        for (item = 0; item < fields->count_04; item++) {
+            u16 flags = fields->flags_08[item];
+
+            if ((flags & 1) && !(flags & 0x8000)) {
+                func_00268358((s32)(fields->records_0C[item].entry_04[1]),
+                              (void **)(fields->records_0C[item].slots_0C));
+                fields->flags_08[item] |= 0x8000;
+            }
+        }
+        state->flags_08 &= ~4;
+        break;
+
+    case 3:
+        for (item = 0; item < fields->count_04; item++) {
+            if (fields->flags_08[item] & 1) {
+                func_00267FD0((s32)(state->value_10), (struct E06TransformInput *)(fields->records_0C[item].entry_04),
+                              (struct E06TransformOutput *)(fields->records_0C[item].records_08));
+            }
+        }
+        for (item = 0; item < fields->count_04; item++) {
+            if (fields->flags_08[item] & 1) {
+                func_00028F60(matrix, fields->values_00[item].value_0C,
+                              fields->values_00[item].value_10,
+                              fields->values_00[item].value_14);
+                func_002682A4((float (*)[4])(matrix), (struct E06HierarchyInput *)(fields->records_0C[item].entry_04),
+                              (struct E06TransformOutput *)(fields->records_0C[item].records_08));
+            }
+        }
+        for (item = 0; item < fields->count_04; item++) {
+            if (fields->flags_08[item] & 1) {
+                func_0026a510(fields->values_00[item].value_00,
+                              fields->values_00[item].value_04,
+                              fields->values_00[item].value_08,
+                              fields->records_0C[item].entry_04[1],
+                              (struct Func0026A510Record *)fields->records_0C[item].records_08,
+                              (struct Func0026A510Output **)fields->records_0C[item].slots_0C);
+            }
+        }
+        for (item = 0; item < fields->count_04; item++) {
+            if (fields->flags_08[item] & 1) {
+                func_0026a630(fields->values_00[item].value_00,
+                              fields->values_00[item].value_04,
+                              fields->values_00[item].value_08,
+                              fields->records_0C[item].entry_04[1],
+                              (struct Func0026A630Record *)fields->records_0C[item].records_08,
+                              (void **)fields->records_0C[item].slots_0C);
+            }
+        }
+        break;
+
+    case 4:
+        for (item = 0; item < fields->count_04; item++) {
+            if ((fields->flags_08[item] & 1) && fields->records_0C[item].value_10) {
+                func_00268F64((s32)(state->value_10), (struct E06Model *)(fields->records_0C[item].entry_04),
+                              (struct E06Node **)(fields->records_0C[item].slots_0C));
+            }
+        }
+        break;
+    }
     return result;
 }

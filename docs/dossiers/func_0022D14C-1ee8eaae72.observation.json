@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1EE8EAAE72D22065186409F1AC4474F98429F1CC5C24C814396A95BBA7C973F5",
+  "observationId": "F9C732FE9BF308BED200E19B488258A0FEFCF8DD1C461A729DA9F32644D58B6B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Director2093 reopens retained complete17 W6, earliest unresolved D14C. Supported private intake and first changed-candidate watch refresh affected context to accepted CURRENT E9E49D47. Full original1711 words/6844 bytes,131 calls and one return agree with current intake/physical owner4176. Best8DDF/718B and B1F4 plus fifteen protected siblings remain unchanged.",
+    "effects": [
+      "bounded-transfer-counterexample",
+      "actual-helper-result-phase",
+      "native-neutral"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CEDEFECDEA531227A81A3F72E4F86C5F4FDDE567C9E989684952F29A21BE27D2",
+      "sourceSha256": "43E813C0C751B9D123C7751EA49FE6EF2EC376FCE16697DD5EA2E9A572AC72BE"
+    },
+    "label": "d14c-new-ebbc-loop-note-helper-result-phase-is-whole-native-neutral",
+    "observedEffect": "Candidate1EE8EAAE/source43E813C0 remains PURE_C6844/frame616/177 actual text relocations/131 calls. Every native byte, actual text relocation and read-only contract equals selected8DDF; nativeCEBDD465,68 masked differences, no missing/extra words. No stage probe was repeated for the unchanged native result, and no stage claim is made for this new source. Own current-best6070 evidence independently binds metadata scalar95 from real setter1653, FLOW37 refs/live813/cross70; LREG argument-store3468 still uses95, while GREG inserts reload5015 intoT4 from stack500. The first retail difference143C expectsT3. Those UIDs belong to best8DDF only. The old1720 scalar identity survives COMBINE as self-copy and emits an extra LW/SW/+8 bytes; that closed control is not repeated. EBBC source-specific priority and2215D0 real-address results are research leads, not proof of transfer to a reload-generated scratch register.",
+    "parentCandidateId": "8DDF71FBDD63021BB2238D8399A4A01560BDE5169D4AB046B85434618AF93706",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode3-result-loop-phase.c",
+        "sha256": "43E813C0C751B9D123C7751EA49FE6EF2EC376FCE16697DD5EA2E9A572AC72BE"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode3-result-loop-phase-prediction.json",
+        "sha256": "4C7A7AD7A0A96192C5720BF2B7CCB17C476F91C5A9D00055B08917F3AF56776E"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode3-result-loop-phase-watch.json",
+        "sha256": "26D06763830209AE204FEC5F42E09A0BB3D76CC99E9A8DF152AF8A8904D36212"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode3-result-loop-phase-measurement.json",
+        "sha256": "7E73B1DE6E77E2EEE0EEAFDF61091CE1670472C0E180D6DDDDD808AC28220523"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-resume-2093-intake.json",
+        "sha256": "F592C67B95BADECB894F6CB6B08EDA2994F1EE30C465B22B6080FE1490528289"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-readable-best68-evidence.json",
+        "sha256": "D86F080C7BCFBD8C81EC56463F27CE1BF2A34D24D774F3B6C1F78456B97041A2"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode3-accumulator-allocation-identity-pass-evidence.json",
+        "sha256": "843FD3BFBC819D3BA73FDBE809E61539A5178AA449D67917591CF594551A46E2"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-8ddf71fbdd.md",
+        "sha256": "8263DF5580ACAF37030B8A26934E2EBF39A5A950D9293FE8F94D2E87F3C8FD20"
+      },
+      {
+        "path": "docs/dossiers/func_0021EBBC-d8da8636e3.md",
+        "sha256": "6048F48F88455E44430902DE42B52C04C76AD8F003B49050CAB89C570A42AFA9"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-case4-scaled-step-mechanism.json",
+        "sha256": "61EBC49EED77AF91AC104DE7486D458C0F31A955DDF3D28730489BCFF12A5976"
+      },
+      {
+        "path": "docs/dossiers/func_002215D0-233d92db9b.md",
+        "sha256": "DEADE14CBEDDD9A1B0B44F68EA98A61231FB8B76AAC298546808BCEF2811AC5D"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/6070A2E98A509D29D09D538A8CDC993EED57502D4B68B149C5A91EF8836AF436/input.c.flow",
+        "sha256": "D388CC194338F3985D9F1122EE930805D7ED4E68DD57AD2AFCA8FA5FA3E28EA2"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/6070A2E98A509D29D09D538A8CDC993EED57502D4B68B149C5A91EF8836AF436/input.c.lreg",
+        "sha256": "D1E0AFF7677CB68ED27567A5796F49E72FE4E642201E080400F6C2771B21BC1E"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/6070A2E98A509D29D09D538A8CDC993EED57502D4B68B149C5A91EF8836AF436/input.c.greg",
+        "sha256": "6B85719A7D607B5FA92DFB762CD50AF90DB21EFAAC6AA6CE6A984886ECCE2B13"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "All68 T3/T4 residuals remain. This bounds only the tested helper-result loop placement; it does not disprove retained loop notes generally. Need a distinct real value/address/call phase that changes reload input/order without an extra memory operation, altered call effect or arbitrary algebra. Consult GoldOx with exact source-bound question. No tooling defect, inherent-assembly or impossibility claim; full17/table/dependency/linked/placement/full-ROM gates remain.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Wrap only the existing mode3 func_00237AF8 helper-result capture and sp1E4 assignment in a documented single-pass do/while(0), preserving the existing nonzero test and every operation/call/store. Test the newly established EBBC retained-loop-note/reference-weighting mechanism at a real source phase, without transplanting UIDs."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41434,
+      "sha256": "CEDEFECDEA531227A81A3F72E4F86C5F4FDDE567C9E989684952F29A21BE27D2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "43E813C0C751B9D123C7751EA49FE6EF2EC376FCE16697DD5EA2E9A572AC72BE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0022D14C-1ee8eaae72.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

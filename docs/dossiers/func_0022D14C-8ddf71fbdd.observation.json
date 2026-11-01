@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8DDF71FBDD63021BB2238D8399A4A01560BDE5169D4AB046B85434618AF93706",
+  "observationId": "8766ED76C54168770D6804A4A9D1DDE07F4B722C26C9E9A8442B7752097FB8B8",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete17 W6 current native best0FD3A459 has68 masked scratch differences after closing type5 and mode1/mode8/10 forms. Existing C definition intake finds private caller declarations inconsistent with available canonical definitions. Shared sources/configuration/compiler/build remain unchanged.",
+    "effects": [
+      "existing-type-contract",
+      "explicit-encoded-argument",
+      "source-readability",
+      "native-equivalence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A483DFC548F371B421A0BFC61600A2256079AEEA5F6F211806ACFBFC024A17F3",
+      "sourceSha256": "718B3615611E145AB2E8D820AF9E37CCB949F94E427588D93146E3DAB732E098"
+    },
+    "label": "readable-best68-reconciles-existing-c-signatures-with-identical-native-output",
+    "observedEffect": "8DDF71FB is mechanically PURE_C6844/frame616/177 textR/131 original ordered calls/table64+15R. Complete native text, all177 actual text relocations and table metadata equal0FD3A459; nativeCEBDD465 and68 masked differences are retained. Intermediate void-only4064 and all-definition F877 views are also whole-native-neutral. Own current eleven-pass probe authenticates authored/expanded input, pinned compiler, complete assembly agreement and every dump hash; these new dumps supersede older source-specific UIDs for further tuning. Private37AF8 byte-return view0B2 grows6852 and is unselected; it does not establish original C return type.",
+    "parentCandidateId": "0FD3A459BEF2E50DE3FAE060FD91D947EB0B543F6F3F62B9094287DE6DC70479",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-readable-best68-watch.json",
+        "sha256": "6F35404FC769F3F593A06FCDD0B9EC922F20E843F36B3B785770D913BA739D84"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-readable-best68-evidence.json",
+        "sha256": "D86F080C7BCFBD8C81EC56463F27CE1BF2A34D24D774F3B6C1F78456B97041A2"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-existing-c-definition-intake.json",
+        "sha256": "BD9EBCF8AE3E305EFFD62097AF729FF999F5CF1D757673EB863E5777C18B2BC6"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/6070A2E98A509D29D09D538A8CDC993EED57502D4B68B149C5A91EF8836AF436/probe-report.json",
+        "sha256": "87191673E6662B269CD1E2E75B455276547B4B50563F2DC9195D2846EF40BFD4"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode1-real-branch-stores-measurement.json",
+        "sha256": "E9B5973F472114BDBA3A665E8358DF29692215C912579B23DB383E327C9B69D2"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-accepted-void-callee-declarations-watch.json",
+        "sha256": "A043DF368CDC92100DB92FA7120AB4276F877DB12F65B023B4649AEA41FC1A6C"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-existing-c-definition-declarations-watch.json",
+        "sha256": "0230431C56DA11B9E6E37416F7BFF52DA8598E688F593A919389575340654810"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-private-helper-byte-return-view-watch.json",
+        "sha256": "7A39DF8862D7C572A18C1AE6DCCE08794994575326F1AA6FA72272F3C44D436A"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-0fd3a459be.observation.json",
+        "sha256": "6F2AAF967A375ED174131896F5E56673D2D4179B84F41220C75F97CD8CFC9EB5"
+      },
+      {
+        "path": "src/battle/func_0021D28C.c",
+        "sha256": "D6312090447B6712867EFDE395640EFAE982A6AF1B0F681706DD63939EC187D0"
+      },
+      {
+        "path": "src/battle/func_0021D25C.c",
+        "sha256": "41E27F933C0ADA07468C4F15537010E7A6A37837699BCF1FB89AF0AC8686BB60"
+      },
+      {
+        "path": "src/battle/func_0021D230.c",
+        "sha256": "96EECD23F640157AA98B26535535146C05560CB3D44CB55216CEF47B12712464"
+      },
+      {
+        "path": "src/battle/func_0021D200.c",
+        "sha256": "7B67BF3EFC22F8CEE41308B43A58949B213D87ED8790B4A4855B9C4AED32F306"
+      },
+      {
+        "path": "src/battle/func_0021D334.c",
+        "sha256": "1A381323C08D0A7B4463F9D9E76D95B7B5FA6F4CE69644644CD6FABD085B0B7B"
+      },
+      {
+        "path": "src/battle/func_0021D2C0.c",
+        "sha256": "87F11BC9036A53776BA961E99E95BD087797B2939D5BB2A14D186D021EE6BB38"
+      },
+      {
+        "path": "src/battle/func_0022257C.c",
+        "sha256": "8E001DF9556B25B57B3745CEE3F69FEFAE93973F5F4FDBAE037EAC02C59161C7"
+      },
+      {
+        "path": "src/battle/func_002224F4.c",
+        "sha256": "21478407062280597E2E9CE0E619FFAC1766FE57E7B6B65C6083BDE7637D10D6"
+      },
+      {
+        "path": "src/battle/func_0022A7B8.c",
+        "sha256": "277DBA1554826AE8B3FDAA4643AF448CACBC859907F3A2CEBE80A3FB35C8B3E1"
+      },
+      {
+        "path": "src/battle/func_0022B06C.c",
+        "sha256": "1F6B201AC62EC7929019F8713D4B92F548B456EE9EA6052C6930E631112CC6A3"
+      },
+      {
+        "path": "src/lib/func_0020D434.c",
+        "sha256": "DC9DA3CFBA6284A375931A24F3BA4BBE5DC00F6E01088B1F786676A7165492E4"
+      },
+      {
+        "path": "src/lib/func_0020C014.c",
+        "sha256": "ACDA67AAB74BBD57145E2B8465CF01CE677E1C1DCF7FB914EC9148467DEC6E4B"
+      },
+      {
+        "path": "src/lib/func_0020BFE4.c",
+        "sha256": "CA170438925160FA2C7342A59E150F8CFF6B77505B42A5ED56F741F2E3CD1DF0"
+      },
+      {
+        "path": "src/lib/func_0020BF50.c",
+        "sha256": "8E672C6B3B0A4E5F2A1F2FD11C244365230A8DFFA35A6F74D8E07B02B6CAA78E"
+      },
+      {
+        "path": "src/lib/func_00201798.c",
+        "sha256": "1F1567680D3E1DBFD963A9F36262E831BE6DC772FCAB7F40002FA673B36F9367"
+      },
+      {
+        "path": "src/lib/func_00044130.c",
+        "sha256": "67CD6EDBC0B4D93E36DD2130801E255BE2B789304CE0AE8C1B2AC83286A7AD74"
+      },
+      {
+        "path": "src/lib/func_00043ad8.c",
+        "sha256": "29A821E63E8AD1E28CE877BB4C04C56EBA0DE33EC60776FFE59E97BD071FCC31"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "68 T3/T4 forms remain (10 other-mode,58 output/terminal). Signature reconciliation is existing-contract source quality, not proof of semantic names or original source. Inactive ASM owner, linked placement/actual relocation/addend, separate table/interior/consumers and whole17 exact-ROM gates remain open. Original ASM stays available.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reconcile A7B8/B06C void returns,43ad8 byte return/int arguments,224F4 int return,2257C pointer/int arguments and integer-encoded emission wrapper arguments with their existing C definitions. Make the actual pointer/integer boundary conversions explicit. Add contextual comments beside the real type5 call relation, mode1 hit-arm stores and mode8/10 buffer/extra phases. No operation, condition, call, memory access or allocation is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41350,
+      "sha256": "A483DFC548F371B421A0BFC61600A2256079AEEA5F6F211806ACFBFC024A17F3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "718B3615611E145AB2E8D820AF9E37CCB949F94E427588D93146E3DAB732E098"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0022D14C-8ddf71fbdd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

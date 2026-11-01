@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0FD3A459BEF2E50DE3FAE060FD91D947EB0B543F6F3F62B9094287DE6DC70479",
+  "observationId": "629BFABC2EE858E4590CEAB72740FD7151A8CB71075FD0AACA99738D35CF4AF8",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Current complete996 best71 has only three mode1 ordering differences before the T3/T4 residuals. Own46AC95C7 SCHED2 shows store/add priorities3 against argument-move priority1 in one block. Naming the value, actual buffer/add phases and typed field94 store do not recover this ordering.",
+    "effects": [
+      "real-branch-tail",
+      "late-tail-merging",
+      "scheduler-boundary",
+      "delay-slot"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9E3F2262A17CE1E01DE722BA2AFA93E960EBBA36AA44690DAA0BAB6C329AF644",
+      "sourceSha256": "D33DE2BF30D1E7AC243EE9D30BAAB7CBC722054867DB87B1FA24A553786AC8C3"
+    },
+    "label": "real-mode1-hit-arm-stores-retain-scheduler-join-and-recover-retail-delay-slot",
+    "observedEffect": "0FD3A459 is PURE_C6844/frame616/177 actual text relocations/131 original ordered calls/table64+15R, nativeCEBDD465. Every actual relocation and native word equals996 except1010/1014/101C, now retail, improving71 masked words to68. Authenticated ownF779F098 eleven-pass probe has the real store2693 before hit-join label2695 and argument move2698/call2700 after it through GREG/SCHED2. JUMP2 merges the actual arm tails and deletes2695, leaving the store before move; DBR sequence5282 puts move2698 in call2700 delay. This supplies a genuine source boundary using existing branches, without an invented copy-only guard.",
+    "parentCandidateId": "996302C04BA8DEE4E2D719B7EAD9C7454DF7B785403B016DEB351825FE3D208F",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode1-real-branch-stores-watch.json",
+        "sha256": "67B474C3F65E4975DF7B2FD69150F0CA68CA68ACA38F72B36638B9BCBA173D63"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode1-real-branch-stores-measurement.json",
+        "sha256": "E9B5973F472114BDBA3A665E8358DF29692215C912579B23DB383E327C9B69D2"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode1-real-branch-stores-evidence.json",
+        "sha256": "B418C2BF0037AA2E41F703CD589E33564E6B442FE9B1566776FE6538869ED733"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/F779F098F1C1C173EFC2447078F6A128A3915FE5BD9F2E9A3F683B7403503E2F/probe-report.json",
+        "sha256": "0AE9A01D474F9AC450FD41BF014AD13A887D682F53D4EC364FFEB93F22CC390A"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-best71-late-reload-probe.json",
+        "sha256": "DE1F73BDFC040D98F28F459CD1DCC792011F9DF7BBE1F6BA86E6F42CBF4EBAD3"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode1-store-real-buffer-phase-measurement.json",
+        "sha256": "C056E2AD335E232AEB50BC34B78A1E9D1C3276E9CB38C6E6D33577F41A4882EA"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-mode1-typed-field94-store-watch.json",
+        "sha256": "9E218C8787BC9F2A856887EC741AC50B5E44FAA69FC1FDD1C7768F2E9E9DBF85"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-996302c04b.observation.json",
+        "sha256": "95B35BA0EA331EB059CB8674015CBDCA41A5CC260D6C3CD5D6FE8DA8922C9E55"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "68 T3/T4 masked words remain:10 other-mode scratch forms and58 output/terminal. This result does not establish a hidden retail reload allocation or original source provenance. Inactive ASM owner, separate table/interior/consumer, whole17 ownership/placement/actual relocation/addend and exact-ROM gates remain open. Add the contextual compiler-workaround explanation beside these real stores when integrating the completed wave.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move the existing field94 store to the end of each already-existing mode1 hit success/failure arm. Each executed path performs exactly one unchanged store after the same calls. Add no condition, read, operation or side effect."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41130,
+      "sha256": "9E3F2262A17CE1E01DE722BA2AFA93E960EBBA36AA44690DAA0BAB6C329AF644"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D33DE2BF30D1E7AC243EE9D30BAAB7CBC722054867DB87B1FA24A553786AC8C3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0022D14C-0fd3a459be.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

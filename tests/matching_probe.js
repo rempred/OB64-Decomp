@@ -55,6 +55,7 @@ function runUnitTests() {
     './target_model': { ...realModel, assertScratchCapability(_w, target) { if (target.group) throw new Error('complete group candidate'); } },
     './compiler': { MATCHING_ROOT: path.join(root, 'cache') },
     './input_set': require('../tools/lib/matching/input_set'),
+    './diagnostic_context': require('../tools/lib/matching/diagnostic_context'),
     './scratch_assembly': require('../tools/lib/matching/scratch_assembly'),
     '../source_policy': mockedPolicy,
     child_process: { spawnSync(_exe, args, options) {
@@ -196,6 +197,15 @@ function runUnitTests() {
   test('report filename binding',()=>assert.throws(()=>api.readProbe(copiedReport('wrong-name',()=>{},{wrongName:true})),/location\/key/));
   test('copied paths must be rebased',()=>assert.throws(()=>api.readProbe(copiedReport('old-paths',()=>{},{keepPaths:true})),/location\/key/));
   test('properly rebased historical copy remains comparable',()=>{const file=copiedReport('valid',()=>{});assert.equal(api.compareProbes(reportPath(first),file).firstTextualDivergence,null);});
+  test('deferred probe rejects closing source drift without publishing its report', () => {
+    fail=false;omit=null;empty=null;duringCompile=null;fs.writeFileSync(sourceFile,source);
+    const closingChecks=[];const pending=run({deferCompletion:true,closingChecks});
+    const file=pending.completion.completionReports[0].file;
+    assert.equal(fs.existsSync(file),false);
+    fs.appendFileSync(sourceFile,'\n/* closing drift */\n');
+    assert.throws(()=>closingChecks.forEach(check=>check()));
+    assert.equal(fs.existsSync(file),false);fs.writeFileSync(sourceFile,source);
+  });
   const result={checks,executions,preprocessing,root}; fs.writeFileSync(path.join(root,'test-results.json'),JSON.stringify(result,null,2)); return result;
 }
 

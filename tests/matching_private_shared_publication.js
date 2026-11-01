@@ -22,7 +22,7 @@ test('real compileCandidate publication boundary rejects shared drift on fresh a
     const classification = { class: 'PURE_C', source: 'source.c', sourceSha256: 'hash', symbol: 'f', bytes: 4 };
     const session = { preprocessor: {}, tool: {}, context: { phase8: { targets: [] } } };
     const sandbox = {
-      Buffer, path, Date, JSON, MATCHING_ROOT: 'private',
+      Buffer, path, Date, JSON, diagnosticContext: require('../tools/lib/matching/diagnostic_context'), MATCHING_ROOT: 'private',
       executablePrefixComparisonScope, originalOwnerComparison,
       fs: { readFileSync: () => Buffer.from(text) },
       require: name => name === './input_set' ? require('../tools/lib/matching/input_set') : ({ regular: x => x, assertPrivateClassification() {}, equalExpandedInputs() {} }),
@@ -55,7 +55,9 @@ test('root-only marker permits native mode changes only with the exact supervise
   const root = fs.mkdtempSync(path.join(FIXTURES, 'guard-fixture-'));
   const workspace = { matchingRoot: root, storeOptions: { database: path.join(root, 'workbench.sqlite') }, nativeConcurrency: 'serial' };
   const key = crypto.createHash('sha256').update(root.toLowerCase()).digest('hex');
-  const processStub = { pid: 1234, ppid: 5678, env: { OB64_PRIVATE_GUARD: key } };
+  const processStub = { pid: 1234, ppid: 5678, env: { OB64_PRIVATE_GUARD: key },
+    execPath: process.execPath,
+    argv: [process.execPath, path.join(ROOT, 'tests/matching_private_shared_publication.js')] };
   const module = { exports: {} };
   vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'tools/lib/matching/private_workspace.js'), 'utf8'), { module, process: processStub,
     require: name => name === 'child_process' ? { spawn() { throw Error('test must not launch a process'); } } : require(name) });

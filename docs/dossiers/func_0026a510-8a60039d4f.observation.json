@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8A60039D4F93AF2BC3B01C483515FB6F5CCFD517198D8385E29F4228EFF375B7",
+  "observationId": "176E6B953FA67A640E4AA812F0BE767E3149DE487A64C0A9397B896969E9EAA9",
+  "symbol": "func_0026a510",
+  "authored": {
+    "context": "Full288-byte func_0026a510 on mi6 setD86806F8/target1F13F9C5. Initial mutable-pointer-formal source emits PURE_C292/frame144 with complete body but prologue argument loads, reversed array registers and biased record induction. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "1D1E1E86532928F3772DFA4F52C578FF4299A6D59A2D2A82E6648043DF117A9D",
+      "sourceSha256": "77DF4F3F88DE0B096DB68E4C4C3EBBE038C22FF2D6530B864CB739F3451F5006"
+    },
+    "label": "immutable-indexed-arrays-restore-argument-lifetimes-and-induction",
+    "observedEffect": "Trial02 candidate55CA293D/runEE98F1ED emits PURE_C288/frame144 with raw relocation-masked equality. Array loads move after the guard, slots/records use S0/S1, record field offsets remain30/34/38 without a separate biased-base addition, and loop increments agree. Four actual REL fields remain: global HI16/LO16 at4/8 and R26 at3C/A0. Full generated body and complete return/delay were checked.",
+    "parentCandidateId": "5E2EE48EC9615C95D5568F35AFF3ACF2F5D8B20F38528ADF397315CF65AEFADD",
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_0026a510/candidates/55CA293D15308C2E13F18AD2E623CE06380EFBE07674297AC967FDD78279F5AD.c",
+        "sha256": "31D02B947CCF38EA9F6B95646B6B2CD03492B2A36B4F64221838378D22219CB1"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026a510-02-mi6.json",
+        "sha256": "F4D1629A85F787A80CE56950E8CC5B354CC7671E10BD91DB615565A08B6E9DB6"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/EE98F1EDA736E77B630B4FE336137EEE2D84D145BAA87843E1D3699AA4DBA8B6/workbench-report.json",
+        "sha256": "67ADC43F62F882A6E9A347BDD6E2B4305BC3BF0F9DF216046B7443FFDACE6C5A"
+      },
+      {
+        "path": "build/matching/ae-e07/0026a510-indexed-arrays-observation.json",
+        "sha256": "E33527A9B1631D63B6E7FAAA505F4642F9BF6EC76A598523CE2EB06A7F624598"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026a510-initial.c",
+        "sha256": "63B8B14EE65CD58AEF48F212F883F9749120BA09D6DA38B57B7D11D19B6E9146"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026a510-indexed-input-output.c",
+        "sha256": "31D02B947CCF38EA9F6B95646B6B2CD03492B2A36B4F64221838378D22219CB1"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026a510-01-mi6.json",
+        "sha256": "6257C22615CC1D8C6CE1CE65640153480D6CF6390F7045ED16FB8B7E55B1CE8B"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0026a510.s",
+        "sha256": "89D968C17A82376B0A894AE8029D6B5B2F9DE45A024AE71A301B55AC14F55BFA"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Symbolic-object diagnostics do not establish actual providers/addends, sole canonical C ownership, linked target equality or full-ROM equality. Complete E07 integration must also reconcile the later B820 caller's six-argument interface and raw third-float bit view. No original-source or universal compiler-rule claim. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep both record and pointer-slot array parameters immutable; replace pointer increments and dereferences with records[item] and slots[item]. Retain signed item/count, full matrix and addressable scalar parameters, helper calls, null path, products, signed truncations and separate output-slot expressions."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1449,
+      "sha256": "1D1E1E86532928F3772DFA4F52C578FF4299A6D59A2D2A82E6648043DF117A9D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "77DF4F3F88DE0B096DB68E4C4C3EBBE038C22FF2D6530B864CB739F3451F5006"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0026a510-8a60039d4f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

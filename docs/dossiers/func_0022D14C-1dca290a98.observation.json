@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1DCA290A980B92E69918FEB0BC230A62A28A69102AED25960D25191A36FE71EA",
+  "observationId": "EBF774B7F45E3A25427A8AA00E8A0EA4A815CBD3459537D8B4D5A618FCB9920D",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Gold2012 lead after shared-phase EDD63036 was native-neutral and separate literal-only AEF68234 was loop-hoisted. Retail13 is late and directly precedes its true-arm argument store in both modes8/10.",
+    "effects": [
+      "loop-hoisting",
+      "copy-propagation",
+      "stale-flow-data",
+      "single-set-birth",
+      "delay-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F4D4DFD09BE53DBA0E4919D1E591B4D902D4914D5366A2B7D5494FF1D1DD612D",
+      "sourceSha256": "5780D711ED31729478563E7FB928E5472DAA245606B9C0AA5042353430A0F4B1"
+    },
+    "label": "real-return-phases-plus-distinct-extra-values-recover-single-set-birth-boost",
+    "observedEffect": "1DCA290A is PURE_C6836/frame616/177 text relocations/131 calls in original external-name order. ProbeF07410FE independently binds user691/725 to literal setters2959/3170: four SETs each survive LOOP/FLOW, COMBINE deletes three real return copies leaving one13 SET each. FLOW16refs/live17 persist; SCHED shortens life to2, and both setters gain7f000001 birth priority. Native31 fills all six predicate branch delays. Only call intervals92/97 shrink, one word each;13 is still V1 and context V0, with a late shared context-store tail. This recovers the proposed scheduling mechanism without matching the original allocation or body extent.",
+    "parentCandidateId": "EDD630364FEEA50F02851FAE6B8E088704689FCDC2A9501B669AD89DCF193E3A",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-distinct-predicate-extra-phases-watch.json",
+        "sha256": "21566404606EC13B82D3796B0A9C5FA48F61002320C32A23E9C974C3672E36EF"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/F07410FE03FD2B88B543821E56EA58CC1A292E63C5D4B3F17973BD3637A1824E/probe-report.json",
+        "sha256": "969351C45B8AC690268B0D197F0ECEECA56EDEC390DFCF8E5068ABC7B1602D79"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-distinct-phases-context-byte-watch.json",
+        "sha256": "376149E728AC163C9B4B9C7D94D2BC97F67B864FE1BF79EDBC00009EC5D6CBE1"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-edd630364f.observation.json",
+        "sha256": "1B55D614751F89C1B9A9B782371C4D0C430DA117FB4159613F4FA5BB1F26099E"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-9f9defca1a.observation.json",
+        "sha256": "552F96D88D99127249D2F8CAC00C5851FB8501502EEB8E8D36016269DACCAC1C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Eight bytes short, unselected; no new best or linked claim. Actual byte context temporaries in this exact context (29114C5C) also remain6836 and keep13/V1 and context/V0. Gold2015 receives the specific global/block classification question. Original type5 and terminal residuals remain; baseline records complete table/wave gates.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Give each mode arm its own scalar for the three actual short-circuit predicate returns, then overwrite it with the existing13 argument on the true path. Calls, guards, false-path consumers and all other source are unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41072,
+      "sha256": "F4D4DFD09BE53DBA0E4919D1E591B4D902D4914D5366A2B7D5494FF1D1DD612D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5780D711ED31729478563E7FB928E5472DAA245606B9C0AA5042353430A0F4B1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0022D14C-1dca290a98.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,3 +1,5 @@
+#include "game/effect_commands_e09.h"
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_math_e04.h"
@@ -16,11 +18,11 @@ extern u8 *p01_pointer_80220F6C;
 extern P05FactoryRecord D_80225780[];
 extern u8 D_802257C8[], D_802257D0[];
 extern void func_00262B68(void);
-extern s16 func_0024BCA0(u8);
-extern void func_0025D8A4(void *, void *);
-extern void func_0024E9BC(s32, u8, s32);
-extern void *func_0024D41C(P01Vec3 *, void *);
-extern void *func_0024D180(P01Vec3 *, void *);
+
+
+
+
+
 
 s32 func_00277F90(u16 message, P05State77F90 *state)
 {
@@ -35,7 +37,7 @@ s32 func_00277F90(u16 message, P05State77F90 *state)
         *(u8 **)state = p01_context_80220F68;
         *(u8 **)((u8 *)state + 4) = p01_pointer_80220F6C;
         state->index = 0;
-        if (func_0024BCA0(state->values[0]) != 0) {
+        if ((s16)func_0024BCA0(state->values[0]) != 0) {
             state->index++;
         }
         func_00262830(0x1000);
@@ -45,7 +47,7 @@ s32 func_00277F90(u16 message, P05State77F90 *state)
         func_00262C64(-1, 0x1002);
         break;
     case 0x1002:
-        func_0025D8A4(D_802257C8, D_802257D0);
+        func_0025D8A4((s16 *)(D_802257C8), (s16 *)(D_802257D0));
         func_00262830(0x1003);
         break;
     case 0x1003:

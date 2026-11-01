@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AE436ECBB06D9C8C5280C6233C55227A7985234D803C061EE2CDF4E853C43200",
+  "observationId": "042E357436EF3D8E248BB300940D73CF9DAEAF80127B8AE3268C9E6D601EE195",
+  "symbol": "func_0021EBBC",
+  "authored": {
+    "context": "Complete EBBC private source under03D1204B/E9E49D47; extends aggregate-base E7, selected13DA retained.",
+    "effects": [
+      "real-pointer-lifetime",
+      "value-scope",
+      "register-allocation",
+      "native-extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9B659DAD5FE7199691D9D76FF6E919DD1418C92A1F087157CA2A4372C363D86F",
+      "sourceSha256": "9C9160BFECDB4777962AD84B4B7008CE5463E11B646EE73912B655BF91CEE96F"
+    },
+    "label": "real-counter-storage-and-value-scopes-restore-register-pairs",
+    "observedEffect": "AE436ECB/source9C9160BF is PURE_C10240/frame744/203calls/native3E428A61/1054 absolute-offset differences,32 bytes short. Storage pointers1B550 remove eight bytes from the main counter block; lookup-key797E removes four bytes from the nested window. Separating counterValue/counterIndex then restores actual pointerA0/valueV1 pairs in both counter arms. The284-byte main20/31 window has only three differing common-exit branch immediates, with the remaining function32 bytes short; no branch operands were masked as relocations. Nested lookup is152 bytes/23 differences. Explicit side-arm definitions CB903 retain size and reduce two differences but move reset writes after selector/key reads. Current/next cursor21A85 retains a real copy but adds four bytes and rotates caller-register roles. The two opened D14C lessons motivated these real phase/cursor experiments; their original conclusions remain source-bound, not proof of transfer.",
+    "parentCandidateId": "E7B7828C52176025FC0461FF2BD937F1D99F8A99182C92C77C3EFECAFB1A5616",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-counter-value-scopes.c",
+        "sha256": "9C9160BFECDB4777962AD84B4B7008CE5463E11B646EE73912B655BF91CEE96F"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-counter-value-scopes-watch.json",
+        "sha256": "2173C3D8E22241333B1663E631691BF0219F3517EFAA64A6064643CAB6D0401F"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-counter-value-scopes-measurement.json",
+        "sha256": "4DDA9840980FBA3D2BA146A9D87CFAC4456EAD5234710AC889BB435AC30D77B8"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-counter-value-scopes-emission.json",
+        "sha256": "77E6A7A0193D6E97228A9E68BB91059A1882A712A1F815CC4586594023353895"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-counter-pointers.c",
+        "sha256": "7BDCDA3FA58640D76AFBCC918B2FD84DA19B8FB270BA7536794CC9F4E2963490"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-counter-pointers-watch.json",
+        "sha256": "2AB4BA5337FA4DFAA9B6A2E362944943A3E5061A7FE7D27D9745DDEFE09A8CB5"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-counter-pointers-measurement.json",
+        "sha256": "039873CA3DE0090A9648608DFF2CE0EA66C422987FA6C878D876ADC5A8FC6817"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-counter-pointers-emission.json",
+        "sha256": "9A7886169D9285F2CFE7C72864022EA277B0B41673B420CE418692E447BE0886"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-byte-phase.c",
+        "sha256": "238C6ACCB31542F9A64D1A725ABF171181D0F57E8A221C9BE4B4918315458CA1"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-byte-phase-watch.json",
+        "sha256": "A13BBF204173CC98A0BC9634AF5A918035D46BFC43DD1EAC0ACA3AD265C150CB"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-byte-phase-measurement.json",
+        "sha256": "991B5612DA50182BCC2AFD09768FAD641BD81E9DFC86635D3AABE7E325ECE522"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-byte-phase-emission.json",
+        "sha256": "18498AB686957741836427E06C597BD74B4D9E21599B7E84922CACFBE37B5271"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-side-arms.c",
+        "sha256": "58A0F3B17BA07623FE3F8382FF7CE0A52AD25CB51EE2DEADC2CFEE3CECE201E6"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-side-arms-watch.json",
+        "sha256": "2D8B4C19056071F186991545F2C22905277364866CA33050344D5E1EEA5F1CEE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-side-arms-measurement.json",
+        "sha256": "8F59C026CEB4B82F8349D1A60983E50BE5120AAB0A70B15DA331B54CD4C4B9C0"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-side-arms-emission.json",
+        "sha256": "9A5C13A1FDFC922C30E6313C6B1F5C0FAB5042C1AB15B6E4C701780B9CCE533C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-cursor-phases.c",
+        "sha256": "A2FD226ECE7D9D9A0C22E832ACF3F2F210B5AC37ADDB8A1E222F0DB0E1B0F3C1"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-cursor-phases-watch.json",
+        "sha256": "D066CF3FAE6E0159091C96B10A39CE982648A37C11DC8EC25270C5CDBAC08F86"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-cursor-phases-measurement.json",
+        "sha256": "23AB990D49EBD5FF8C8E11CAFCB1FCEB67BA634179556BB8F18DCE5FE3CF1DA9"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-lookup-cursor-phases-emission.json",
+        "sha256": "BAC1E14E8C857D2A0D0802393E02522BCD4B721391F18AE8A422A8E9A5ED1A3C"
+      },
+      {
+        "path": "docs/dossiers/func_0021EBBC-e7b7828c52.md",
+        "sha256": "7949A14434E2A7FDC97E9D8DF9023F0CDDC79B04EDC84A39D0ECACDA97156766"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-24dd5fe250.md",
+        "sha256": "430ACEA4D88B5AF976AD0BA406725DABF7D1796031E70E119DCF140D4F17C848"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-31a3b1c0ac.md",
+        "sha256": "F7211B8F5D3C5F4CA7BE607377549B35F65E473AFDDE99D5167FF087B1873D57"
+      }
+    ],
+    "relatedCandidateIds": [
+      "1B550496D504A98F35E73AE69D8DA4E84DE3BE59BF162DBFCAC33F92A41019DD",
+      "797E0D7E12DDA5844F10C519DEB01EEA9A17823B5B2069871B0A4B119B8A03B4",
+      "CB903FE9AE66A7C51890CC0DA90CC3D78CCADD6F35972441D1D6AFB7AD416023",
+      "21A85DFA83CAF24D72F5E42E16E4BDFC14854F83B246B7FD9920FDBBD134ED4A"
+    ],
+    "remainingFailure": "Unselected because extent regresses versus selected13DA. Remaining questions include ordered existing reset writes, final lookup cursor/key allocation, shared QI membership loads (GoldOx advisory2079), and two2267A8 tail merges. Test an ordered view of the existing resets without adding operations. Native diagnostics do not establish linked/table/ownership/full-ROM or complete-wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Cache each actual counter storage pointer, separate the two branch-local counter values from the later selector, and read the final lookup key once after the side query."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 45316,
+      "sha256": "9B659DAD5FE7199691D9D76FF6E919DD1418C92A1F087157CA2A4372C363D86F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9C9160BFECDB4777962AD84B4B7008CE5463E11B646EE73912B655BF91CEE96F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0021EBBC-ae436ecbb0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

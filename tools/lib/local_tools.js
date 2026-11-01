@@ -42,7 +42,7 @@ function loadLocalConfig(inputs) {
   if (!fs.existsSync(physical)) {
     throw new Error(`machine-local tool configuration is missing; copy ${EXAMPLE_CONFIG_PATH} to ${DEFAULT_CONFIG_PATH} or set OB64_LOCAL_TOOLS`);
   }
-  const config = readJson(physical);
+  const config = JSON.parse(require("./matching/input_set").read(inputs, selected).toString("utf8"));
   if (!config || config.schemaVersion !== 1) throw new Error(`machine-local tool configuration schema drift: ${selected}`);
   return { config, path: selected };
 }

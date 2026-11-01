@@ -1,4 +1,5 @@
 'use strict';
+const diagnosticContext = require('./diagnostic_context');
 
 const crypto = require('crypto');
 const fs = require('fs');
@@ -30,6 +31,7 @@ const ENVIRONMENT_CACHE = Symbol('matching-diagnostic-environment');
 // set invalidates stored comparisons without changing the compile cache key.
 const COMPARISON_ALGORITHM_FILES = Object.freeze([
   path.join(__dirname, 'diagnostic_link.js'),
+  path.join(__dirname, 'diagnostic_context.js'),
   path.join(__dirname, 'mips_analysis.js'),
   path.join(__dirname, 'compiler.js'),
   path.join(__dirname, 'target_model.js'),
@@ -165,8 +167,20 @@ function environmentIdentity(status) {
 function loadDiagnosticEnvironment(session, options = {}) {
   const inputs = inputSet.context(session?.context);
   if (options.environment) return options.environment;
+  if (diagnosticContext.isDiagnosticContext(session?.context)) {
+    if(session[ENVIRONMENT_CACHE]) return session[ENVIRONMENT_CACHE];
+    const base=session.context.environment;
+    const selectedTarget=diagnosticContext.producerModel(session.context).targets[0];
+    const controls=selectedTarget ? base.buildReport.targetReplacements.filter(r=>r.symbol===selectedTarget.symbol) : [];
+    const acceptedControls=acceptedControlArtifacts(base.output,{targetReplacements:controls});
+    if(!acceptedControls.available) throw new Error('consumed accepted control artifact drift');
+    for(const record of controls) session.context.expect(path.join(base.output,record.sourceObject),{bytes:fs.statSync(path.join(base.output,record.sourceObject)).size,sha256:record.sourceObjectSha256});
+    const result={...base,available:true,currentFingerprint:session.context.acceptedFingerprint,symbols:acceptedSymbolIndex(base.acceptedElf),acceptedControls,acceptedControlsId:acceptedControls.identity};
+    result.identity=environmentIdentity(result); session[ENVIRONMENT_CACHE]=result;return result;
+  }
+
   if (session?.[ENVIRONMENT_CACHE]) return session[ENVIRONMENT_CACHE];
-  const base = { currentFingerprint: session?.context?.currentFingerprint || null, ...(inputs ? { inputSetId: inputs.id } : {}) };
+  const base = { currentFingerprint: diagnosticContext.baselineFingerprint(session?.context) || null, ...(inputs ? { inputSetId: inputs.id } : {}) };
   let result;
   try {
     if (!session?.context || !base.currentFingerprint) {
@@ -391,7 +405,7 @@ function exactAcceptedTargetBytes(environment, target) {
 }
 
 function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, options = {}) {
-  assertExecutablePrefixSelection(session?.context?.phase8, target);
+  assertExecutablePrefixSelection(diagnosticContext.producerModel(session?.context), target);
   if (target) target = textContract.bindWorkbenchTarget(session, target);
   const baseIdentity = {
     textContract: target?.nativeTextTail ? textContract.resolveTextContract(target) : null,
@@ -400,7 +414,7 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
     diagnosticLinkContract: DIAGNOSTIC_LINK_CONTRACT,
     comparisonAlgorithmId: comparisonAlgorithmIdentity(),
     toolId: session?.toolId || null,
-    currentFingerprint: session?.context?.currentFingerprint || null,
+    currentFingerprint: diagnosticContext.baselineFingerprint(session?.context) || null,
     targetId: target?.targetId || null,
     comparisonScope: target ? executablePrefixComparisonScope(target) : null,
     expectedRelocationEvidence,
@@ -413,6 +427,9 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
     result.inputId = digest({ ...baseIdentity, unavailable: { code, reason, details } });
     return result;
   }
+  if (diagnosticContext.completeOwnerExpectation(session?.context,target)) {
+    return reject('complete-owner-symbolic-only', 'complete inactive owner envelope has no isolated-link admission');
+  }
   if (!target || !target.expectedBytes || target.symbolByteOffset !== 0) {
     return reject('unsupported-target-owner', 'isolated diagnostics require one ordinary accepted function owner');
   }
@@ -423,7 +440,7 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
       { placementKind: target.placementKind },
     );
   }
-  const activeMatches = (session?.context?.phase8?.targets || []).filter((candidate) => (
+  const activeMatches = (diagnosticContext.producerModel(session?.context)?.targets || []).filter((candidate) => (
     candidate.symbol === target.symbol && candidate.bytes === target.bytes
       && candidate.romStartNumber === target.romStart && candidate.vramStartNumber === target.vramStart
   ));
@@ -466,7 +483,7 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
         || !/^[A-F0-9]{64}$/i.test(replacement.sourceObjectSha256)) {
       throw new Error('accepted control object lacks authenticated SHA-256 provenance');
     }
-    const linkContext = textContract.linkContext(environment.output, fs.readFileSync(session.context.baserom.path), environment.acceptedElf);
+    const linkContext = textContract.linkContext(environment.output, diagnosticContext.isDiagnosticContext(session.context) ? session.context.rom : fs.readFileSync(session.context.baserom.path), environment.acceptedElf);
     const representation = textContract.recordsForTarget(activeMatches[0], environment.output, linkContext);
     textContract.withSourceObjectProof(environment.output, activeMatches[0], replacement, proof => {
       textContract.validateRecords(proof, representation, 'diagnostic accepted control');
@@ -515,7 +532,7 @@ function linkerDefinitions(object, environment) {
   const names = [...new Set(object.elf.symbols
     .filter((symbol) => symbol.sectionIndex === 0 && symbol.name)
     .map((symbol) => symbol.name))].sort();
-  const definitions = [];
+  const definitions = [], facts = [];
   for (const name of names) {
     if (name === '.' || !/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(name)) {
       throw new Error(`undefined diagnostic symbol has unsafe spelling: ${name}`);
@@ -523,9 +540,10 @@ function linkerDefinitions(object, environment) {
     const matches = environment.symbols.get(name) || [];
     if (matches.length === 0) throw new Error(`unresolved accepted symbol: ${name}`);
     if (matches.length !== 1) throw new Error(`ambiguous accepted symbol: ${name}`);
+    facts.push({...matches[0]});
     definitions.push(`${name} = 0x${matches[0].value.toString(16).toUpperCase()};`);
   }
-  return { names, definitions };
+  return { names, definitions, facts };
 }
 
 function ensurePlainDiagnosticDirectory(directory) {
@@ -642,13 +660,13 @@ function linkOne(session, target, object, environment, artifactDir, label) {
   });
   const linker = session.runtime.tools['mips-kmc-elf-ld.exe'].path;
   const args = [
-    ...session.context.phase8.model.config.binutils.linkerFlags,
+    ...diagnosticContext.producerModel(session.context).model.config.binutils.linkerFlags,
     '-T', path.basename(script),
     '-o', path.basename(output),
     path.basename(stripped.objectFile),
   ];
   const started = Date.now();
-  run(linker, args, { cwd: artifactDir });
+  if(session.measure)session.measure(label+'LinkMs',()=>run(linker,args,{cwd:artifactDir}));else run(linker, args, { cwd: artifactDir });
   for (const file of [script, output, linkInput]) assertPlainDiagnosticOutput(file, artifactDir);
   if (sha256File(script) !== linkerScriptSha256
       || sha256File(linkInput) !== stripped.objectSha256) {
@@ -703,6 +721,7 @@ function linkOne(session, target, object, environment, artifactDir, label) {
       linkedBytesSha256: sha256Buffer(bytes),
       linkedBytes: bytes.length,
       resolvedSymbols: resolution.names.length,
+      resolvedSymbolFacts: resolution.facts,
       acceptedElfSha256: environment.acceptedElfSha256,
       vramStart: `0x${target.vramStart.toString(16).toUpperCase().padStart(8, '0')}`,
       durationMs: Date.now() - started,
@@ -924,7 +943,7 @@ function compareCandidateDiagnostic({
   prepared,
   options = {},
 }) {
-  assertExecutablePrefixSelection(session?.context?.phase8, target);
+  assertExecutablePrefixSelection(diagnosticContext.producerModel(session?.context), target);
   const comparisonOptions = {
     actualRelocations,
     actualRelocationsAvailable: true,
@@ -942,7 +961,22 @@ function compareCandidateDiagnostic({
   });
   const targetDiagnostic = prepared || prepareTargetDiagnostic(session, target, expectedRelocationEvidence, options);
   if (!targetDiagnostic.available) {
-    return symbolicFallback(target, objectText, comparisonOptions, rawComparison, targetDiagnostic, targetDiagnostic);
+    const result = symbolicFallback(target, objectText, comparisonOptions, rawComparison, targetDiagnostic, targetDiagnostic);
+    if (diagnosticContext.completeOwnerExpectation(session?.context,target)) {
+      if (!candidateArtifact?.objectFile || sha256File(candidateArtifact.objectFile)!==candidateArtifact.objectSha256) throw new Error('complete owner comparison object identity');
+      const elf=parseElfFile(candidateArtifact.objectFile), sections=elf.sections.filter(s=>s.name===target.sectionName);
+      if(sections.length!==1 || !Buffer.from(elfSectionBytes(elf,sections[0])).equals(objectText)) throw new Error('complete owner comparison text identity');
+      const census=require('./compiler').admittedFunctionCensus(session.context,target,elf,sections[0]);
+      result.completeOwnerCensus=census;
+      result.producerExact=census.exact && rawComparison.exactBytes;
+      if(!census.exact) {
+        result.exactBytes=false; result.relocationMaskedExact=false;
+        result.diagnosticExactBytes=false; result.diagnosticRelocationMaskedExact=false;
+        result.primaryClass='producer-census-mismatch'; result.score=Math.min(result.score,99);
+        result.recommendation='preserve observed native offsets and sizes; the complete expected function census differs';
+      }
+    }
+    return result;
   }
   let candidate;
   try {

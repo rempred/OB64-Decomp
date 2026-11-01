@@ -99,7 +99,7 @@ Different contributor archive chunks require one uniquely accepted non-descripto
 `loader-dma` slab with model/config identity, containment and exact ROM/RAM equations, or,
 for ordinary fragments, one uniquely authenticated boot-initialized data slab with every
 complete contributor passing the existing boot text/data pairing check against the actual owner.
-The latter does not extend bundle admission.
+Ordinary cross-chunk fragments may also share one independently authenticated overlay descriptor. The complete physical text owners (including retained ASM slices) and complete data owner must lie within its text/data sections with both ROM/RAM endpoint equations. Descriptor bytes, selected accepted configuration and model reservations must agree; original archive identities remain unchanged. This does not extend bundle admission.
 Actual archive chunk identities remain unchanged. Missing context, forged ownership and
 unsupported cross-chunk placement modes reject. Existing same-chunk cases retain their pairing rules.
 Every multi-member row uses explicit full-path C/ASM selectors and exact map order, including
@@ -347,19 +347,29 @@ fallback and numeric address/bytes remain. No ELF-symbol injection or renaming o
 a native compiler function is permitted. Numeric/runtime references are not
 inferred absent from a lack of ELF relocations.
 
-A terminal retained-ASM edge may compose with exactly one ordinary compiler table
-when the sole complete GLOBAL C body uses the original physical entry name and
-both owners use the same accepted overlay descriptor. The table must cover one
-whole read-only original row with ordered R_MIPS_32 pointers strictly inside the
-C body. Leading edges, LOCAL or additional functions, derived interfaces, groups,
-unions, native tails, projection, multiple tables, and partial/shared auxiliary
-rows remain excluded. Existing independent text-edge and auxiliary proofs compose;
-no new native-padding or compiler-origin claim is made. All three contributions
-use explicit object-path selectors. Only C body and ordinary auxiliary bytes count
-as replacements; the original terminal edge remains ASM. Run
-`node tests/retained_auxiliary_composition.js` for the unrelated native switch,
-source nonmatch, cache and rejection controls. Tooling fixtures do not activate a
-producer or replace the complete-wave and structural acceptance gates.
+A terminal retained-ASM edge may compose with exactly one ordinary compiler
+switch table when the sole complete GLOBAL C body uses the original physical
+entry name and both owners use the same accepted overlay descriptor. The table
+may cover a whole read-only original row or one contained fragment of a shared
+row. Ordered R_MIPS_32 entries must point strictly inside the C body; all native
+table bytes remain, including only minimal terminal zero alignment. Authenticated
+native grammar, raw/stripped object headers and symbols, and complete outgoing
+and incoming relocation checks establish that alignment provenance during fresh
+compilation, independent proof and cache replay. No compiler-origin claim is
+made for the original terminal text edge, which remains ASM.
+The complete auxiliary row must retain exact ordered C and original-ASM custody,
+with explicit full object-path selectors, unchanged neighbors and fallback,
+and the existing prefix/interior/tail, placement and full-row byte proofs.
+Leading edges, LOCAL or additional functions, derived interfaces, groups, unions,
+nativeTextTail, projections, multiple tables, sourceObjectPrefix and multiple
+compiler occurrences remain excluded. No bytes are fabricated or discarded.
+Only the C body and ordinary auxiliary bytes count as replacements; retained
+original ASM does not. The PURE_C classification, sole C ownership, actual
+relocations, exact target bytes and complete-wave full-ROM gates are unchanged.
+Run `node tests/retained_auxiliary_composition.js` and
+`node tests/retained_auxiliary_provenance.js` for native, nonmatch, shared-row,
+alignment, replay/cache and rejection controls. Tooling fixtures do not activate
+a producer or replace complete-wave and applicable structural acceptance.
 
 ## Compilation groups
 

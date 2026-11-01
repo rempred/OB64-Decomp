@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E7B7828C52176025FC0461FF2BD937F1D99F8A99182C92C77C3EFECAFB1A5616",
+  "observationId": "B51D379D6512C8569DDDC4F6A2571417B4B473FBFC170C742D13F51024AE9900",
+  "symbol": "func_0021EBBC",
+  "authored": {
+    "context": "Complete private EBBC, current03D1204B/E9E49D47; extends payload-lifetime106A. Selected13DA remains unchanged.",
+    "effects": [
+      "aggregate-base-addressing",
+      "byte-sharing",
+      "surviving-zero-extension"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3492EE15B599801E447782712D7314C04D314D06160A5C9781226ED369112C03",
+      "sourceSha256": "71920604A29647FBCAE81B8C2388DC321E4C12B1909617FC67F2B4995E4CD70A"
+    },
+    "label": "aggregate-base-membership-and-source-bound-byte-sharing",
+    "observedEffect": "E7B7828C/source71920604 is PURE_C10252/frame744/203calls/native46A65148/1278 absolute-offset differences; setup1288 bytes/115 aligned differences. Own05DCBAB2 nine-pass probe authenticates expanded3492EE15, all12 artifacts and normalized native assembly. FLOW7472/673 share QI226 between first/bottom D2 reads, with separate extensions7473/684/674. COMBINE removes7473/674 into comparisons while684 survives; GREG assignsV0 and emission retains ANDI255. DE repeats with231/722. Old667 field-pointer source instead retains independent preheader/match/bottom QI loads; its different declaration census is not an isolated causal pair. Signed-index17AA, dereferenceC4DC and integer-address637C controls emit the identical native hash; no claim that the integer cast reached a different initial RTL. Volatile47C adds loads but retains masks. Explicit guard/do-loop558 removes masks but creates a bypassing entry jump and changes allocation. Its scoped booleanAF64 adds12 bytes and reconstructs retail skip-decision form. None is selected.",
+    "parentCandidateId": "106A014096128679421CA8B2848D08B72071F1370E7162A2ED586330E345D190",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-membership.c",
+        "sha256": "71920604A29647FBCAE81B8C2388DC321E4C12B1909617FC67F2B4995E4CD70A"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-membership-measurement.json",
+        "sha256": "518D20819BF4979B8D1ABF9D21F324E76F58FD555258591E148B58FE1FE2A463"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-membership-emission.json",
+        "sha256": "FE6A11990E889094BA9471E285483D80EDE17D8C12EC759A862FCF9B00A26268"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-guards.c",
+        "sha256": "03B3BC3B5D29064FC92A9DBD8EA150448B644D8233809661767C4001B3CCA71A"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-guards-measurement.json",
+        "sha256": "7534F951EB25F82FD494293158DEEA4A456525E6B6F720C75CBEA434752F19C2"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-guards-emission.json",
+        "sha256": "C645366E08AE5D4BD1BA9347FAC25FEF20994DF5DC07856B8FF5C8A1D609ADBE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-skip-mode.c",
+        "sha256": "D90CAC772BD5A3CECCFF146870AB65A341A497D0BE85AA22BA5789E775ADD450"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-skip-mode-measurement.json",
+        "sha256": "1FA75ED8491A2D1AE8DD87CDCD696E65820F922AC7755CB2D6198239DF574B90"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-skip-mode-emission.json",
+        "sha256": "EEB135523552A066FCCC280CCE2F713996F5E4BA159CD33695299A180EC5246E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-separate-membership-reads.c",
+        "sha256": "5F7B9DB164C6E4C4FBA63AAE5BC2070130D9AB63304F940E5862EBCA6934A74D"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-separate-membership-reads-measurement.json",
+        "sha256": "53488F8672BEAD0F42F5ACA0909A75CCE1805A93E1F32224AD66156BF06999C3"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-separate-membership-reads-emission.json",
+        "sha256": "8BE87816060A3373852D7D6CA7265DB42400ECD7BBEC537179D86B968CF15A78"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-index-view.c",
+        "sha256": "DD9BB7D76E271F1A925824AD925ABC475E0F399732A99DFF5F2073FDB4011034"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-index-view-measurement.json",
+        "sha256": "5ADD0DA26B96F7C6E3FCD12BDC5B25B53FBE296927968286A44A27CD493DBF3E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-index-view-emission.json",
+        "sha256": "E0CC6D3AF6B8DAA22239464BB2CEC4D86F0C5F8D88E362B62F7B3DA60B5B57E7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-dereferences.c",
+        "sha256": "DB397F7B59F40004DB91483784F3D98AB7F25674924D54EFC494759E2727E2B3"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-dereferences-measurement.json",
+        "sha256": "F9E9F6A0443E59CC4685E93CFABA6B6AACB5B31767B1FE832EF9932007FA07D5"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-membership-dereferences-emission.json",
+        "sha256": "76FF6D7DEA5F3CFB32E23CE3613C467D617BDBDB4DED2A22769D7F0FDD6518C6"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scalar-membership.c",
+        "sha256": "C19CC56394E7CFF050F842BEC81B276F0B9E582C05CD13C65E3263A8724727F8"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scalar-membership-measurement.json",
+        "sha256": "EC013BA491F7B04DB31769583567AFC378CD0ABCE892D2F06A70DC3DE37A8492"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scalar-membership-emission.json",
+        "sha256": "A1118CD8F63696619E522537F7C613302ACA55C907424927C5BE577FAA56493E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-membership-probe.json",
+        "sha256": "D74FF82F9EE736A665D16060958C357530A427EBF56EA51919685ECEF3ABB0DE"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-scoped-membership-probe-auth.json",
+        "sha256": "C4A071BAD7D58B3100927364A66858B605D5099C7E07136A18931A6BDF99A302"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-current-x-phase-probe.json",
+        "sha256": "F815CB40C07D4328CB45628A301B38B057BF3C3BBB41C764C8F204987AF39D90"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-current-x-phase-probe-auth.json",
+        "sha256": "F86EA66852E775EDCA1899B804FB6A185DADDAA96DB3B95F2B29937D02BDA085"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/ebbc-membership-question.md",
+        "sha256": "B1792FF3E623D3952462D3972622B256FFE490CAA90FEFD152CBA19C64F4A2F7"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/ebbc-membership-question-delivery.json",
+        "sha256": "4F4F012DFE3A6D16B28CC1FF43FB3EC714BBDEE1BA4D00FA8EE86423A365306C"
+      },
+      {
+        "path": "build/regalloc-oracle/gcc/expr.c",
+        "sha256": "5A9B54DD4E55C29B1FCB07623AA69F46E45AEA864D1CD24E430EAFFFC9E637CE"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021EBBC.s",
+        "sha256": "012A605E6F9699E7ADE44224828B62A876474B744A380394E3AF402A36586CBF"
+      }
+    ],
+    "relatedCandidateIds": [
+      "558223BD9E3EA4D4C4096C71048EF13678DBFBFFDB4FED49796BC7CE8D4E7397",
+      "AF64C5C3D9290E721385A33F374DEDBCC6EEED54A155450FE166FE2892FBF3FA",
+      "47C689E7DFF8331E1F4FF8F3441587AD1E96A205D5BFA753C0BE93B9882AE9E3",
+      "17AA0740AE20EC1B13484B0FF0EFCFCCEFFC859A7B30BEADF16655AB403BADC1",
+      "C4DC41B3828F7441EC7463A8AD452A32C9CCEAC1305815CC60CF24ECA1BB94F4",
+      "637CF4BFB68A409A3CA7208EA19B90743D2DE53910A07B0EA46B41167D101EC2"
+    ],
+    "remainingFailure": "Body remains20 bytes short versus selected13DA four-byte deficit. The shared byte value remains a concrete unresolved source question, sent to GoldOx through verified advisory2079. Continue real counter-pointer and final lookup-byte phases in the same target while awaiting guidance. Two2267A8 tail merges and final linked/table/ownership/full-wave gates remain; no general CSE or pure-C impossibility is established.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Traverse each membership list with the aggregate base plus D2/DE field displacement, preserving the corrected payload/index/flag phases."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 45106,
+      "sha256": "3492EE15B599801E447782712D7314C04D314D06160A5C9781226ED369112C03"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "71920604A29647FBCAE81B8C2388DC321E4C12B1909617FC67F2B4995E4CD70A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0021EBBC-e7b7828c52.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

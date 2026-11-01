@@ -1,3 +1,4 @@
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -9,7 +10,7 @@ typedef struct P05CountdownState {
 } P05CountdownState;
 
 extern void func_00262B68(void);
-extern void func_0024E7AC(u8, u32);
+
 
 s32 func_002518EC(u16 message, P05CountdownState *state)
 {

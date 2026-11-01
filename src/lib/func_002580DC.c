@@ -1,3 +1,4 @@
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -10,7 +11,7 @@ typedef struct P05ComparisonRecord {
 } P05ComparisonRecord;
 
 extern void *func_0020C478(u32);
-extern s16 func_0024BCE8(u8);
+
 
 s32 func_002580DC(const void *leftView, const void *rightView)
 {

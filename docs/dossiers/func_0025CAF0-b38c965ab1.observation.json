@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B38C965AB145A288BE14994B291675BAE065EFBE3B3D549F068360AEEC557EE5",
+  "observationId": "603F21827B9427ECA138CD25C59DCC8417A8026BA00C060E8F8EBF8D68F2481D",
+  "symbol": "func_0025CAF0",
+  "authored": {
+    "context": "E09 private selected-input reconstruction from the complete original target disassembly; source/watch pairs remain under this root. This is observed output, not original-source or compiler-mechanism proof. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E09 wave report.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "1AE2B67F3E3B1916AA17B31AD90F282CC81698A1E7A97FD1BCCF4C1A56F4E38E",
+      "sourceSha256": "0E5B946502CA7BC5DA937D65A1353D3E8B22EB8DC395FA5E23373768AFB514EF"
+    },
+    "label": "word-interface-byte-local-and-callback-provider",
+    "observedEffect": "Byte/word/word parameters watch03 fixed prologue order, but legacy alias80218F90 produced a wrong linked HI16 for actual callback80208F90. Real DB50 provider watch04 linked exact. Word interface plus byte local watch05/06 keeps exact112/frame32 and avoids changing accepted callers.",
+    "parentCandidateId": "7EF335837663754EA9F57ACA41323B56CFEAB89C6918D6B1320E354999765C6B",
+    "references": [
+      {
+        "path": "build/matching/ae-e09/targets/func_0025CAF0/candidates/4E41B86EEDC3C87C2734BA647DA99E9A5AD9623BCEE02C3CE25989EF698C11EF.c",
+        "sha256": "7C17D36837CFCD9F2C7D0CCCDFE6E13658A1D2A583627269D4C633847D61CFB2"
+      },
+      {
+        "path": "build/matching/ae-e09/0025CAF0-watch06.json",
+        "sha256": "876F09877E30A40A1BE443E025FCE9A2905F6E98EBC936C316F0878C62250D18"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/BDC5F6C184680CF2EBD8EE4760C904582CE243E907A6984A97EE95350E7B2874/workbench-report.json",
+        "sha256": "32770A3CC416FA3E3AA0CA034AA68C3A7FBC103DFA320CABBD4ACD7151042FE1"
+      },
+      {
+        "path": "build/matching/ae-e09/0025CAF0-observation.json",
+        "sha256": "FFB30CE42706F87EEC2AEFBFBE3FF9C8B9454D6014262A38A92BF38400F91BD4"
+      },
+      {
+        "path": "build/matching/ae-e09/0025CAF0-watch04.json",
+        "sha256": "4658557606B4C98FA4ABD07997270B862F43A93509608DF812BEAB17F79FEA9F"
+      },
+      {
+        "path": "build/matching/ae-e09/0025CAF0-watch03.json",
+        "sha256": "F00211285C2F4214B9A630214E24DEC99EB4F713B3367A350146E32CCF816945"
+      },
+      {
+        "path": "build/matching/ae-e09/0025CAF0-watch05.json",
+        "sha256": "DC7C802F5175FB91EA5907CF49B729A31EB37E89FD914EE7090E17DB6D273842"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025CAF0/candidates/DFF97FDFEDC16790FC74160FB9820EDDD1DCD650CFF24A098C7CEDBFA5F5936F.c",
+        "sha256": "5CA279BC81CDFF98B0FDF952E187B020A44173E120DA9ECB0EAA3B30F3BB09B5"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/D239EA4E8D54097DFC1D2B18752D238C00BF6E7708E368DABCF58251F69B8C2E/workbench-report.json",
+        "sha256": "02B7A60A2D53A13BEE9FAA13EF6AF476EFF7071BC2DC70DCC4B6704E02CEBAFB"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025CAF0/candidates/538FDC496F12EDE2AC3013574D847F8E36CBD016CE12123FD2F38C549974595C.c",
+        "sha256": "36EFA618A3E5769625D739701875CBF8F9BEB13D5EFC87CC4D9D4CC770A794D1"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/DB92068D8CF03612D8E399CD2992DCBB0D9E24D6FA0E97CAC7CAB9D1AC4FAE93/workbench-report.json",
+        "sha256": "C77AA91B94333C3413DF696B40EBA28258B48B21CCDBB3A130F9E86BFA928376"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025CAF0/candidates/F4475DF26CDC0143DABB9F3DEF3F4A6D055F958D4E3EB99BAB065351D4242F95.c",
+        "sha256": "CD83ED9057B6EFDEEC029C827DA30C1ACE9B6EACD5A2A245BDBF74108AB1F6AD"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/4D1F1AB872AC1FC89CD19343A57A9CFF95277B356E5F5CA044BB1217935AA2E5/workbench-report.json",
+        "sha256": "B5CBCE1F3C44A54661036C16CFBB70149509DF727D9944360D8BB31FC60EBCD1"
+      },
+      {
+        "path": "build/integration/attack-effects/e09/wave-acceptance.json",
+        "sha256": "5DC4609CBCA0A4C89223B9649C6AD65B485974ABDB31EAF73576027F6454076C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "16B05BABAB1187E9DD809DB066C6FE0B469F2DF3C76F13E94E0C6CB240119AC4",
+      "83E27F8C972333738F69C1BA13735D5B798374F2DB6DB74A77B4F880106F9AA2"
+    ],
+    "remainingFailure": "Private diagnostic only. Actual REL/provider/sole-owner/placement/complete target bytes and complete18-wave full-ROM gates remain with the integrator. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Preserve the existing three-word interface with a local u8 first value; use accepted DB50 code symbol instead of the legacy message alias."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 733,
+      "sha256": "1AE2B67F3E3B1916AA17B31AD90F282CC81698A1E7A97FD1BCCF4C1A56F4E38E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0E5B946502CA7BC5DA937D65A1353D3E8B22EB8DC395FA5E23373768AFB514EF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0025CAF0-b38c965ab1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

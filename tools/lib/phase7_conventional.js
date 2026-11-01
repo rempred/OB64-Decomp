@@ -85,7 +85,7 @@ function ensureDir(directory) {
 }
 
 function readJson(file, inputs) {
-  return JSON.parse(fs.readFileSync(require('./matching/input_set').resolve(inputs, file), 'utf8'));
+  return JSON.parse(require('./matching/input_set').read(inputs, file).toString('utf8'));
 }
 
 function writeJson(file, value) {
@@ -98,7 +98,7 @@ function sha256Buffer(buffer) {
 }
 
 function sha256File(file, inputs) {
-  return sha256Buffer(fs.readFileSync(require('./matching/input_set').resolve(inputs, file)));
+  return sha256Buffer(require('./matching/input_set').read(inputs, file));
 }
 
 function hex(value, width = 8) {
@@ -479,7 +479,7 @@ function loadAcceptedModel(options = {}) {
     if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(part.name)) fail(`unsafe tracked assembly symbol: ${part.name}`);
     const sourceFile = path.join(ROOT, part.file.replace(/\//g, path.sep));
     let sourceBuffer;
-    try { sourceBuffer = fs.readFileSync(require('./matching/input_set').resolve(inputs, sourceFile)); }
+    try { sourceBuffer = require('./matching/input_set').read(inputs, sourceFile); }
     catch (error) {
       if (error.code === 'ENOENT') fail(`tracked assembly source is missing: ${part.file}`);
       throw error;

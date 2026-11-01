@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2BB0D35E3CCC557AB1307D4080C37BAA42247B012149466AA7279F5CE2A76171",
+  "observationId": "249E5C73A9F5E82273297440F0702721E7E4395F3F492479FFF3F2DCD0E495AB",
+  "symbol": "func_00262DD4",
+  "authored": {
+    "context": "E03 full original body and emitted native census checked. Referenced trials use selected mi15 bounded diagnostics. Research import uses its separate normal model; no fabricated cross-model parent. Current private source additionally reconciles285C prototype to s32 and includes compiler-form comments, to be natively refreshed before import. Shared publication preserves this historical source and its explicit source/control references. The private normal-model research import was uncompiled; selected-mi15 native reports retain their original identities. No cross-model parent relationship is invented.",
+    "effects": [
+      "global-array-cse",
+      "floating-operand-order",
+      "counter-initialization-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "DBBFE6891C0E1737A5C5B87F1EB207A0CF25F0D4A1399DD349E7418E166D8869",
+      "sourceSha256": "77413891C9BB4FC6D32E1E151A17E18967195CFA5FF64FE5583DC3FAC3549887"
+    },
+    "label": "262dd4-array-cse-fp-order-and-init",
+    "observedEffect": "Global arrays restore380B and both endpoint-slot induction paths. item>endpoint restores original FP load/compare operand order plus reload only after minimum swap. Reversing initial counter initialization order fixes the remaining four prologue register/save fields; moving same-order init outside for or swapping declarations alone does not. Full raw-relocation-masked equality, frame56. All inclusive scan/endpoints, strict comparisons and post-minimum swap reload retained.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e03/experiments/262DD4-cached-locals.c",
+        "sha256": "1337866D045C91F5D1FB508F9625A5169249AF0EEDFC94DEA4FDE86B274468BC"
+      },
+      {
+        "path": "build/matching/ae-e03/experiments/262DD4-global-array.c",
+        "sha256": "DEE3287BE46D6BEB9708204358D430952423963EB5440F8A1561E906BB2D9E63"
+      },
+      {
+        "path": "build/matching/ae-e03/experiments/262DD4-global-greater.c",
+        "sha256": "A214FFC6377DAC8E92821A542EF7CB3152C46525DF578A5B537B4227BE1DAD33"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/3B05358E57B83C3A2276021402FCAEF5DBFFEFC29C029D39D69C5524AB895C67/workbench-report.json",
+        "sha256": "7F38EE557E8384960C316F1F9BA32002BA72E98096B4C992FB3E2B1CA7FCB980"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/410C4A0ABBA4EB58B402233BE9CEDB3CDF9FCFFC4B101333A915E0F80F21CAF1/workbench-report.json",
+        "sha256": "EAD56ABF70251A64707F21E7B193FE70D900CF7D1FC755B6DD5B392B6EB3F4C5"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_00262DD4/candidates/E8B47E2252CAB59B96551B43F3D2061D49662BD90B2F4E7A9C1CB03607ADCAA5.c",
+        "sha256": "5F7D0D2E530759AB290BF81BE3919599434631840396DE366B9A283F4959F0EC"
+      },
+      {
+        "path": "build/matching/ae-e03/import-262dd4-array-cse-fp-order-and-init.json",
+        "sha256": "E3AB2643F6390B34E98988D5A4E98EB16A9B10F43079AA05318BB8DC574129C6"
+      },
+      {
+        "path": "build/matching/ae-e03/observation-262dd4-array-cse-fp-order-and-init.json",
+        "sha256": "7D6742033A9CDC2916A57CED764954476DA93FDDD89FB0ECF220DC93E747C950"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/wave-acceptance.json",
+        "sha256": "671C2EB76C2E42663CD749938FD1BB6F3F15A5CC81B99CE364235134E8A8917A"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/complete-wave-preparation.json",
+        "sha256": "E683B204B5CAB1C22B27F0371B2731CE19879AF8C0B7826CD89C2295ABC49A5E"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/source-preparation-r3/SOURCE-PREPARATION.json",
+        "sha256": "E264BB8967288136D06A806F913B7AA5C5CBBAFDB9666FFF5BB9D4DBA48802FB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM symbolic-object only; actual provider/REL, sole linked custody/placement/full target bytes and complete-wave full-ROM gates remain pending. This is the original diagnostic limitation. The separately reconciled canonical E03 descendant now passes the complete wave verifier; that acceptance does not certify historical controls or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use direct global array expressions, one outer index reused across phases and a separate inner scan. Spell the strict maximum check item>endpoint. Initialize index before used outside first loop."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 3853,
+      "sha256": "DBBFE6891C0E1737A5C5B87F1EB207A0CF25F0D4A1399DD349E7418E166D8869"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "77413891C9BB4FC6D32E1E151A17E18967195CFA5FF64FE5583DC3FAC3549887"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00262DD4-2bb0d35e3c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

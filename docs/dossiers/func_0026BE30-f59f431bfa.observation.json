@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F59F431BFA58D77DB8F7EF6136164A4F10A8FF2A9F083AD0663D3BB93EB386EA",
+  "observationId": "CA28BC089A57EE0298B95463A2CF7EE3E704AF398A1A25CA28A7D55AE169DE75",
+  "symbol": "func_0026BE30",
+  "authored": {
+    "context": "Full324-byte func_0026BE30 on mi8 set59CFBA63/target1856BCAF. Scoped-fields source34E32FF8 gives each switch case its own fields/entry/slots variables. It is PURE_C324/frame48 but uses different pointer registers between command0 and command4, with27 raw differing words/51bytes. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report. This same source also serves as a comparison control: Exact historical E07 source/control referenced by one-common-fields-definition-with-guarded-original-for. Preserve original source and native report context.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E6B036A3FFBB159012FFD20D209A04B571E92096ABC766E8F87FB027E0A68B0B",
+      "sourceSha256": "35D7C7DBC141DCE47F30D7CD96900260B9AB4DF9ADA345FBC2A930700DA9E85F"
+    },
+    "label": "shared-pointer-variables-align-two-command-register-roles",
+    "observedEffect": "Watch03 source35D7C7DB/candidate9BFB310B/runB9A172A3 remains PURE_C324/frame48(vars16). Both cases now use reference A6 fields/A7 entry/A5 slots. Raw differences fall to12words/32bytes, including10 actual text relocations. Remaining nonrelocated words exchange cmd0 counter initialization and fields-address calculation at+40/+50. Full generated ASM, both command bodies, all paths, widths, unsigned count reloads and complete return/delay were checked.",
+    "parentCandidateId": "1B5F3F9E24801997017925BE65598D12196B2DA92773F5637F8B5A04E5725A60",
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_0026BE30/candidates/9BFB310BB205752D40B9DC8FDC655675765E92B88E502A22DE7353F652B7471E.c",
+        "sha256": "35D7C7DBC141DCE47F30D7CD96900260B9AB4DF9ADA345FBC2A930700DA9E85F"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026BE30-03-mi8.json",
+        "sha256": "214A57E344F9AAFF95E558C10E6416A99568B324D6BF2874EADCE544274C8A4D"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/B9A172A3C60450B47F412E1E0F6C87970DFC936B6A54DEC203C370953CE342E1/workbench-report.json",
+        "sha256": "0756858D08443805610879BB72C287861DF720C1B9D4C701B70E0BE720963F0A"
+      },
+      {
+        "path": "build/matching/ae-e07/0026BE30-shared-pointers-observation.json",
+        "sha256": "E5D849F422055674CA20CE05BCCFA51E1034315F628D4B50BB1C7918E350650B"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026BE30-scoped-fields.c",
+        "sha256": "34E32FF88A686DA6CB537B98FE8F18D03F60B0ED81AFB2572E9E5B2C95D1FFB4"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026BE30-shared-pointers.c",
+        "sha256": "35D7C7DBC141DCE47F30D7CD96900260B9AB4DF9ADA345FBC2A930700DA9E85F"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026BE30-02-mi8.json",
+        "sha256": "8C2142CC76BB0DE79705CD684FF9716809595B457976B30195B67073018519A1"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0026BE30.s",
+        "sha256": "1FD466D1E23AD7FCCB7A84A28A1BD0741DA91FB215F6CB1AD561F220939DF19C"
+      },
+      {
+        "path": "build/matching/ae-e07/0026BE30-common-view-guarded-for-observation.json",
+        "sha256": "7CE2736EEFD4773D08029861BF59C32BE14A20812AEAB55BDE116E6204E6F3B0"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Raw and relocation-masked equality remain false. Private isolated link unavailable nonactive-asm-owner. Early index setup is the next scheduling hypothesis; not yet measured in this source pair. Current provider/interface/addend identity, sole C ownership, linked target bytes and complete-ROM equality remain whole-wave integration gates. This observation does not prove original declaration syntax or a universal register/lifetime rule. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Declare fields/entry/slots once at function scope, retaining their separate assignments inside each existing command block. Leave all field accesses, conditions, loops, counter and return unchanged."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2802,
+      "sha256": "E6B036A3FFBB159012FFD20D209A04B571E92096ABC766E8F87FB027E0A68B0B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "35D7C7DBC141DCE47F30D7CD96900260B9AB4DF9ADA345FBC2A930700DA9E85F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0026BE30-f59f431bfa.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D562FB940D2C142379F8E03CE031C1B13174BE1D283EFBA3C8230A52B17F6884",
+  "observationId": "5E18AC5273F1A23D3F783914F0C8505AA47C69D2D19FD638DB7AD2EAB253ECAA",
+  "symbol": "func_0025B954",
+  "authored": {
+    "context": "Source-bound E08 compiler observation independently checked against the saved original/native source pair. Numeric access views do not prove full allocation extents or semantics. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E08 wave report.",
+    "effects": [
+      "source-context",
+      "code-generation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "EB0BE580D0F7C89D99DDD6F98CD79D8C3A99031633A56847B686710B6BAF28A4",
+      "sourceSha256": "7AC9E66F761BFF177BB89802F67A8CB7DCFE4B3198306804BC1315C3924973F4"
+    },
+    "label": "e08-b954-immutable-paired-words",
+    "observedEffect": "The remaining sixteen nonrelocation case2 differences close. Selected384-byte/frame40 body has88 literal-exact words and eight actual relocation words.",
+    "parentCandidateId": "A07A8AADE9A8C606AA2D01579E0DE168C48C7336A67B59BF8154234EED03AE51",
+    "references": [
+      {
+        "path": "build/matching/ae-e08/targets/func_0025B954/candidates/98251C977ADC5515BB59DFDCDC5D09DC617E4B7FA7880E4FBEF511A1B139F4D9.c",
+        "sha256": "8BDD70F1B4EFF65972CA673BF7BEC4B8EFDE883776A99D96FB5B11F6A828599B"
+      },
+      {
+        "path": "build/matching/ae-e08/b954-watch-03-mi14.json",
+        "sha256": "D114C776662181EB0C3E7B0BDBE37711332764659BBC7269E93EB72B768557EA"
+      },
+      {
+        "path": "build/matching/ae-e08/runs/06CDE27349EFD2BBDF90849162F34511800122341B2C8221D575C05CF70C86CC/workbench-report.json",
+        "sha256": "785BAB0AD8C824289C6243801E76F89BA7FAE36C319BF151417DE270EDFC4465"
+      },
+      {
+        "path": "build/matching/ae-e08/b954-notes.md",
+        "sha256": "6FDE27A54B96F93FD5DE292D838F86F0B163365C02D53A402AD16BC97CDBE753"
+      },
+      {
+        "path": "build/matching/ae-e08/targets/func_0025B954/candidates/BB2458F57EC19C450339B99B4A839DACD821FE85E1C786DCFBCC02159D7B75F7.c",
+        "sha256": "7E321427AF74AA5356E254534C8A53B03825FAFF5195AAF2575AAF40DFADA13A"
+      },
+      {
+        "path": "build/matching/ae-e08/b954-watch-02-mi14.json",
+        "sha256": "A5331B1BF04330F750136E13EBE7F81B12745BE2952873F39797C44B95CF3080"
+      },
+      {
+        "path": "build/matching/ae-e08/runs/96F6BC2DB00E9E02C6795F0B7ED28F0E1C7DECB5C0F1F5644AF130FD745551FB/workbench-report.json",
+        "sha256": "D160B4E79F0D05D4CC8CD6DD0EE7094E34FB58112A24F91495667BACFB91DCA8"
+      },
+      {
+        "path": "build/integration/attack-effects/e08/wave-acceptance.json",
+        "sha256": "92159626C6CF26694BB71B977C66774A5F97F78248D31EF98E2C550ED7946EDE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical diagnostic evidence only. Final canonical interface changes and matching acceptance are separate. Compiler-mechanism hypotheses apply only to explicitly measured phases. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the paired loaded word values immutable and express each halfword store as its own addition to the original loaded value."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1706,
+      "sha256": "EB0BE580D0F7C89D99DDD6F98CD79D8C3A99031633A56847B686710B6BAF28A4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7AC9E66F761BFF177BB89802F67A8CB7DCFE4B3198306804BC1315C3924973F4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0025B954-d562fb940d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

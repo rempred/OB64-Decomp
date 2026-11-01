@@ -1,3 +1,5 @@
+#include "game/effect_commands_e09.h"
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_math_e04.h"
@@ -21,10 +23,10 @@ extern P05FactoryRecord D_80209EFC[];
 extern u8 D_80209FD4[];
 extern u8 D_80209FD8[];
 extern void func_00262B68(void);
-extern void func_0024E9BC(s32, u8, s32);
-extern void func_0024DA50(u8, void *);
-extern void func_0025CA7C(u8, void *);
-extern void func_0025D678(void *);
+
+
+
+
 
 s32 func_00258E68(u16 message, P05StagedRootState *state)
 {

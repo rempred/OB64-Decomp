@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "13DA29FF0CB73BA8134477C5748B482B3E4460578F9C0019B901C3E09CF956DE",
+  "observationId": "F65DBB46C5A73312EEDEC243D800A21C31AE9AFD1FAC24821DF5D554AF7A7973",
+  "symbol": "func_0021EBBC",
+  "authored": {
+    "context": "Complete EBBC10272-byte private reconstruction, current03D1204B/E9E49D47; no canonical activation.",
+    "effects": [
+      "source-scope",
+      "register-allocation",
+      "native-emission"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7C9943814840FA799878E70201A96AA653C5D33D5C946B8D5640D9F25DC639EC",
+      "sourceSha256": "A8DA9D0DC74D34BD057D3F3109BD0310582BECDDCCB67A08ACF2504F7FF81205"
+    },
+    "label": "scoped-row-indices-and-folded-count-reference",
+    "observedEffect": "13DA29FF/sourceA8DA9D0D is PURE_C10268/frame744/vars664/457 text relocations/204 calls/native1047E36E, one word short/2091 absolute-offset masked differences. The three steps emit2103 (872),2097 (1F945) and2091 differences respectively, versus preserved5DD2106. CurrentX case2 remains396-byte dispatch-aligned masked-exact. The latest identity restores firstEndS4/sourceS6 with no extra instructions or native extent change. The first setup traversal now has indexS3/countS2; the original FIRST traversal actually requires indexS2/countS3. Later setup traversals require indexS3. Earlier priority-note prose generalized the later roles incorrectly; its source-bound numeric measurements remain valid.",
+    "parentCandidateId": "1F945EB2D1F87B2DEABB970BE14F2735F74045600CAE012434F671815BF31B21",
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-phased-count-identity.c",
+        "sha256": "A8DA9D0DC74D34BD057D3F3109BD0310582BECDDCCB67A08ACF2504F7FF81205"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-phased-count-identity-watch.json",
+        "sha256": "282C140108EF80B711EEC96A80B854E11D85A007791CF9D0B81ED4BA01A568B4"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-phased-count-identity-measurement.json",
+        "sha256": "E39A659C7FD3B8637E77D67D552FFCC94336747EDD59C6100F7B25656DBF8CFD"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-phased-count-identity-emission.json",
+        "sha256": "AAAE8F46BC41DC37FFB08F164A8132B41E25B537956BB45385CFE90A45FAB95E"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-row-pointer-phases.c",
+        "sha256": "3D10FB4D3B94A7A467124B7E22A36213D837BD6EC7BACCFCA1B21881C443AB7A"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-row-pointer-phases-watch.json",
+        "sha256": "80C249B5D73803D34D8A50A6190CD49510E1DFA343A36747CD697A86577B77B1"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-row-pointer-phases-measurement.json",
+        "sha256": "0E674828832F766D0589756D1AE4D387EA6A3F28883EAFF48CD87C70ED785ACC"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-row-pointer-phases-emission.json",
+        "sha256": "25244363C102D9B748ECD128A89BF39E74CBE04B02309D5BFFAEA4A0E9AB28CC"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-loop-index-phases.c",
+        "sha256": "DCDC6AEAD7B788476E769C09B199991328A8030372788B73E9AFF81D7413FA90"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-loop-index-phases-watch.json",
+        "sha256": "6F2F78D83D4E0FD9DD6059C677A9E92EE4C3E98BB0BD1C91ED52FF54DB16DE26"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-loop-index-phases-measurement.json",
+        "sha256": "D7ACD291CA2E0232E9BB9F12ACE0E10AAFE24998874A483EB1266902075316D3"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-loop-index-phases-emission.json",
+        "sha256": "75D9490C63795DF3F75EE825BD289F1FEC28B19A41C42BC3F4ECF13F755D2810"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-count-allocation-identity.c",
+        "sha256": "7C1CC41375A62C2526980CB6010049C79A3A5135F5C1EEBBB925322CE7B6A416"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-count-allocation-identity-watch.json",
+        "sha256": "B53093DCA4F5EA94EEC2D9CB39A2AE8C87331AF2AD1F1284A86E32DE69DE4C4B"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-count-allocation-identity-measurement.json",
+        "sha256": "D9649EA30F93DD13BEDC790A7796950C7AB08EAFB2C965DF63608AA9971926A9"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-count-allocation-identity-emission.json",
+        "sha256": "F65BEC7ED618603C0EDA9A148B18C1E844196AA0C8A6DE7BC2A9E65BA9313B44"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-terminal-count-identity.c",
+        "sha256": "0532D893BC1F5416EB803E541FB3C1A645418B016B6DA0B3541D0E03C5617C07"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-terminal-count-identity-watch.json",
+        "sha256": "825003279C1D54605D4F9824D34B902DF3EE6323E3657FE91AD2D44825CDC656"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-terminal-count-identity-measurement.json",
+        "sha256": "39C375A97A2574D5C9AEFB2D92EFB47CF8D479E727B1635B4CA777F72EADAC2C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-terminal-count-identity-emission.json",
+        "sha256": "03CCD1E5A1D64AC3FE8FE85A196A0DAE208FF53B5EF3C5812837AC0AF3BF1286"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-first-row-scope.c",
+        "sha256": "09A3F9D606F40AB35ED427EBE4F0EECDF798EDCE8BC42C8B6B76B5ECFACCBAE8"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-first-row-scope-watch.json",
+        "sha256": "7B34374BAF80F943EB8E99F6A3E23C5829D6254CE61A9211D8912602BC4468FC"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-first-row-scope-measurement.json",
+        "sha256": "3C35A56FE2C90D82B93683303812E6B166665A767D868D0BB4991C7079B2689C"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-first-row-scope-emission.json",
+        "sha256": "AD89D4D9948F3356B918FC66884D0747A10D2E225D32A499E5FE00D7603FD8E8"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-current-x-phase-setup-priorities.json",
+        "sha256": "B844F07E2A0289E1735A35F85095C0B4076AB14FAFA26F2C545C889605438D75"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-count-allocation-identity-setup-priorities.json",
+        "sha256": "EF1DA8B96CEE38A9826DAFDD725EFE6DB4DFDFD044C5CD218F1558DF1B4B2C98"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/21ebbc-terminal-count-identity-setup-priorities.json",
+        "sha256": "9C79CD5A7E281AEB989E1D07BF48CBD46EC6FB5C2B4CD925B67F764BF2803BB1"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021EBBC.s",
+        "sha256": "012A605E6F9699E7ADE44224828B62A876474B744A380394E3AF402A36586CBF"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0021EBBC_chunk34tail.s",
+        "sha256": "6DE2614AD6C6EC264B49FE7BE54C05E3BEFCD575A8C3760D33D5AF5FCA9A4C0C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "87229ACCC36445581D6D46376C2412691CD0B930EE4A78C03509A8A5566BD006",
+      "1F945EB2D1F87B2DEABB970BE14F2735F74045600CAE012434F671815BF31B21",
+      "A3D6DF20C8AD91AAC000C2DC03492281BFD58676AF7898D79200CAD857CC801D",
+      "769E31D85112F9565B945AF52CB26991F2C014262954DDE7CCBED682C3524B78",
+      "BC7CF18CB4F8CF9FB3E91D04001364082C0904573D12AD6F1996FFCD9CF2BE7A"
+    ],
+    "remainingFailure": "Selected over5DD for the smaller native difference count, with the same four-byte deficit. First-row scopeBC7CF is a useful next intermediate but not selected: its extent deficit increases. Original source ownership, actual final relocated tables/operands, five data aliases, future4813C/BF8C corrections and complete W8/W6/W7 acceptance remain. No linked acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "From667: give the three row traversals separate pointer scopes; reuse the main unsigned index for setup row traversals but retain a separate nested child index. Add the mathematically exact unsigned (count|firstEnd)&count identity at the terminating byte store, outside the nested first-row loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 44701,
+      "sha256": "7C9943814840FA799878E70201A96AA653C5D33D5C946B8D5640D9F25DC639EC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A8DA9D0DC74D34BD057D3F3109BD0310582BECDDCCB67A08ACF2504F7FF81205"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-10-func_0021EBBC-13da29ff0c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

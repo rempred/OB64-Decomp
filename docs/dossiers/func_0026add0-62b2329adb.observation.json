@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "62B2329ADB5B39711FBF32CB14EEE5EF886EEDB365F0A1BC33C07A3F56111421",
+  "observationId": "65E5F24E6BBE366300F6DF994160842B4E77814402AD8A75FF18B65706A62DA7",
+  "symbol": "func_0026add0",
+  "authored": {
+    "context": "Full1068-byte func_0026add0 on mi7 setE2412884/targetB8E051DE. Original frame120 has no direct stack data accesses beyond register saves/restores. There is no prior compiled source control for this target. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report.",
+    "effects": [
+      "stack-layout-or-offset-family"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "DE80A02072B42F106228B02653ABEF05D6D94DCC2DC757404ADC4BAA83521648",
+      "sourceSha256": "D25BFFACF414A0B529FB8E05D974995CF4BB2862DF3712DEEB4E10724EDA5CDB"
+    },
+    "label": "structured-scalar-dispatcher-naturally-retains-unused-frame-extent",
+    "observedEffect": "The first native comparison, candidateF5A68C2D/run6F536B4A, is PURE_C1068/frame120 with raw relocation-masked equality. Compiler assembly reports vars72 and all seven saved registers at original offsets, without direct local stack data accesses. Full body, all loops/guards/calls and final return/delay were read and checked;28 actual textREL remain. The source itself is a counterexample to inferring an aggregate from unused frame extent. No A/B mechanism experiment was performed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_0026add0/candidates/F5A68C2D277782FBF58830B4D93D0DAB567BF1CACA0D5467FACAF2D32015ED5B.c",
+        "sha256": "D25BFFACF414A0B529FB8E05D974995CF4BB2862DF3712DEEB4E10724EDA5CDB"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026add0-01-mi7.json",
+        "sha256": "F35E491D5F009D7F6D98A45A7F7A007A45921572ACDE57B9453867D6B379B733"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/6F536B4A1B7502F72E574C40347E7D8EEFDA35C7678F88A999ECDB2852158A07/workbench-report.json",
+        "sha256": "E5111D938AF2824242746EBCFAAF2E9FD006EE88A268DDEBB56FC88D7E4CE800"
+      },
+      {
+        "path": "build/matching/ae-e07/0026add0-natural-frame-observation.json",
+        "sha256": "25D0C16FC6865FB473FF7FCF928F489479B35ED88F3398FA5591D01DE75C34EB"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026add0-initial.c",
+        "sha256": "D25BFFACF414A0B529FB8E05D974995CF4BB2862DF3712DEEB4E10724EDA5CDB"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0026add0.s",
+        "sha256": "D5ABA8D12D2800B7BFACCBD6360D832C55746F964FE2C13503BA56705C2A903D"
+      },
+      {
+        "path": "docs/dossiers/func_0025FD90-a9bb2038e6.md",
+        "sha256": "2B172D3519B2C67A4C18AB9806F1FDFF092C93EEE7148698200A98E185894FE4"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object masking does not establish actual providers/addends, canonical sole-C custody, exact linked bytes, readonly table custody or full-ROM equality. These remain whole-E07 integration gates. This result proves neither original source syntax nor the compiler mechanism or a universal transfer rule. The related E01 FD90 source pair is historical context only. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently reconstruct all seven commands with ordinary switch/for control flow, typed24-byte records, matrix64 array indexing, signed count/index and existing global/helper contracts. Function locals are scalar or pointer values; add no local aggregate, frame padding, dummy consumer or forced register."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 4873,
+      "sha256": "DE80A02072B42F106228B02653ABEF05D6D94DCC2DC757404ADC4BAA83521648"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D25BFFACF414A0B529FB8E05D974995CF4BB2862DF3712DEEB4E10724EDA5CDB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0026add0-62b2329adb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -128,7 +128,7 @@ At minimum verify:
   ownership through a unique read-only input section rather than `.data` or `.bss`;
 - C switch-table fragments and explicit retained original-ASM intervals completely cover their accepted auxiliary row in address order;
 - shared auxiliary rows re-resolve every complete text/data owner against explicit accepted-model context, retaining actual archive chunk and source identities;
-- cross-chunk contributors share one unique accepted non-descriptor `loader-dma` slab, with model/config agreement, containment and both placement equations; ordinary fragments may instead use one uniquely authenticated boot-initialized data slab only when every complete contributor passes the existing boot pairing check against the actual auxiliary owner; bundle admission is unchanged, and missing context, forged chunks and unsupported placement modes reject;
+- cross-chunk contributors share one unique accepted non-descriptor `loader-dma` slab, with model/config agreement, containment and both placement equations; ordinary fragments may instead use one uniquely authenticated boot-initialized data slab only when every complete contributor passes the existing boot pairing check against the actual auxiliary owner; ordinary cross-chunk overlay fragments may instead share one independently authenticated descriptor with selected config/model/raw-byte identity, complete physical text/data containment and both endpoint equations; bundle admission is unchanged, and missing context, forged chunks and unsupported placement modes reject;
 - every multi-member auxiliary row has explicit full-path C/ASM linker selectors and exact map contribution order, including rows without interiors and reversed manifest/response-file order; recorded-script checks reject residual wildcards independently of byte equality;
 - auxiliary coverage removes the original row contribution once, retains its authenticated fallback, and leaves no gap, overlap, or duplicate tail;
 - only the first auxiliary fragment may retain an exterior prefix, and only the final fragment may retain the exterior tail;
@@ -161,6 +161,24 @@ must reconstruct the full-row proof and reject absent/stale ownership fields and
 changed scripts/maps/fallback artifacts. Existing read-only retained-slice and
 ordinary multi-function guards remain mandatory. Tooling acceptance never
 activates a source target or accepts an unfinished matching wave.
+
+### Retained terminal text with ordinary readonly fragments
+
+A sole complete GLOBAL body with registered original terminal ASM may compose with
+one ordinary switch-table fragment in a shared readonly row under the same overlay
+descriptor. Preserve the complete ordered row, original fallback, explicit C/ASM
+selectors, retained neighbors and all existing relocation/placement checks. The
+fragment retains its whole native section, including only minimal terminal alignment
+zeros; no projection or discarded bytes are implied.
+
+Audit the authenticated compiler grammar (one local-label table, no explicit padding
+payload), actual raw/stripped section headers and symbols, outgoing table relocations,
+and incoming references with complete same-symbol/same-carrier HI16/LO16 pairing.
+Padding may not own a symbol or incoming relocation destination. Recreate these
+checks during independent proof and cache replay. Exercise padded/unpadded native
+shared rows, the old whole-table case, altered grammar/objects/partition/selector
+controls, cache invalidation and real nonmatches. Original text suffix bytes remain
+ASM; source semantics, structural admission and complete-wave acceptance stay distinct.
 
 ### Baseline build
 
@@ -447,3 +465,38 @@ actual-object controls. Tooling fixtures are diagnostic; independent tooling rev
 changed-input structural audit and the complete wave's canonical matching gates
 remain necessary. Old function-owner logical rules and whole-row composition modes
 retain their existing semantics.
+
+
+### Terminal-tail original interior labels
+
+The canonical terminal-tail fallback also accepts a strict literal-word original
+with an optional primary ROM-address label and inert local ROM-address labels
+strictly inside the authenticated complete C body. Exact-spelling owner-label
+metadata, complete original source/ROM equality and all existing coverage/tail
+checks remain mandatory. This creates no compiler entry, alias or callable-body
+claim; numeric/runtime entry absence is not asserted.
+
+Admission rejects interior identity claims in the already authenticated original
+source census, canonical producers/compiler functions, groups, fixed/linkage/REL
+views and logical-registry names/aliases, including disjoint records. Missing
+required views fail closed. Actual assigned/native complete symbol tables
+(including undefined, ABS and FILE) and complete raw REL records also reject those
+interior identities. Equal runtime RAM in another overlay is not identity.
+Existing ordinary exact-name behavior and reads remain unchanged.
+
+The real native original-emitter fixture must prove LOCAL/default/non-FUNC/size-zero
+interior symbols at exact offsets with no symbolic REL use. Its conformance proof
+is invalidated by an emitter or pinned-toolchain change; production admission does
+not add an original assembly compilation. Inert labels on return/delay instructions
+do not create control edges; actual edge, return/delay and complete-body gates
+remain unchanged. Focused malformed/collision/native controls, independent exact
+review, changed-input structural audit and complete-wave matching acceptance
+remain required for installing this generic capability.
+
+Original-emitter conformance passed for func_00263904 and func_00267670 with
+the pinned STT_OBJECT(1) type: both are LOCAL/default/size-zero at offsets52
+and8, respectively, with exact whole-owner bytes and no REL references.
+The earlier mistaken STT_NOTYPE(0) assumption and failed fixture remain
+preserved in historical evidence. This does not change the candidate/native
+C symbol census or imply data storage. Unexpected emitter metadata fails
+the fixture; it is not a blanket allowance for arbitrary non-function types.

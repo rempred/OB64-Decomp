@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5CFDEA0AB60A9AE5A84D7BF55508C183517072592C25BD307E46D447714B55BD",
+  "observationId": "9361E2699B23B41B4DB56F8F71073081CA1143117FAB572331DE1047E1682823",
+  "symbol": "func_00267FD0",
+  "authored": {
+    "context": "func_00267FD0 complete724B entry includes the30.0f preamble; indexed transform output, ten-component curve evaluation and9-component base matrix work. Private native evidence used immutable mi16 selection41F37D66C2EFD39BEF00255A88342103DBF902FF58DBDFE14A1C15E269A61617. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "matrix-access-view",
+      "stack-reload",
+      "inline-helper-boundary",
+      "indexed-output-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "2C262FC4AC269B3F16FBBDA53AC204534352B34E943ACA0F963D51AD43F3606F",
+      "sourceSha256": "8D71F4FAF9ED1CA2886CBB1EB0B10CAFE2684D21D708E895A38D71D2A2D0D75D"
+    },
+    "label": "e06-nine-value-matrix-view-restores-stack-reload",
+    "observedEffect": "The nine-value struct-pointer helper emits720B and keeps values0 in f4 across a store. Its matrix-array parameter view emits724B with the required stack reload and exact masked native text. The real9/10 split also restores the evidenced frame0x80, scalar1.0f lifetime and separate no-curve scalarstore. Output indexing is required for the observed saved-register allocation; a matching frame or extent alone was insufficient.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e06/runs/B5F527633E3768722461BDFE666706DD1CEFAB4D87D2EE9478C665544D887826/candidate.input.c",
+        "sha256": "8A166E27F59C8597371173EF289FD655D525DA5397142441649380857AB73E19"
+      },
+      {
+        "path": "build/matching/ae-e06/runs/B5F527633E3768722461BDFE666706DD1CEFAB4D87D2EE9478C665544D887826/candidate.compiler.s",
+        "sha256": "E3C604DBE939B6B123C8A271C0553F4C7CA07EC219345AFEF3BE17A18662696C"
+      },
+      {
+        "path": "build/matching/ae-e06/runs/6C6EFA854EC530CCECD114FA722969D40CEC69B5C244AB4211E2AA2E4EBFBECE/workbench-report.json",
+        "sha256": "8E9799C17A57D4AD1A8D6E9CE3F8B57FB37BA50F024A3E7E8826ED3F8AB0062A"
+      },
+      {
+        "path": "build/matching/ae-e06/runs/6C6EFA854EC530CCECD114FA722969D40CEC69B5C244AB4211E2AA2E4EBFBECE/candidate.compiler.s",
+        "sha256": "2C5230FE04321895D0748E5DE18B83932A73DE4E08CFFE1C886D00EEE44146D8"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00267FD0.s",
+        "sha256": "772C5A8DEA7030C8AC152D217D21100635B305BD42E5C865462DD74F7A5DDE20"
+      },
+      {
+        "path": "build/matching/ae-e06/targets/func_00267FD0/candidates/B9101859677FFC6889B9907FC9A7C173630E8CAA34DC5B6C015E99955C4FFF83.c",
+        "sha256": "FA8C1AB4F6E4420E3D4C1C6A09368B6E9B460F196A26ADECF665BD66BD5A43F9"
+      },
+      {
+        "path": "build/matching/ae-e06/import-267fd0.json",
+        "sha256": "B2E0DECA8B602C13E5DB245838DCDCEA7122EA4AE5F2C854E371A577B84A3F2C"
+      },
+      {
+        "path": "build/matching/ae-e06/research-267fd0.json",
+        "sha256": "24BF64D0C397B69A7CDE5A364C93B05D7B4F9313C768E0472A5CD64FA9DAD384"
+      },
+      {
+        "path": "build/integration/attack-effects/e06/wave-acceptance.json",
+        "sha256": "AD7F5773B0A8FF9DF15F4CB4698EED379A9F9811E9A8838C245463EE6BE7C3C9"
+      },
+      {
+        "path": "build/integration/attack-effects/e06/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "612CE7A51742D1D28532E64EABC563A82064F34FCF58D50DCEECDA87C8373962"
+      },
+      {
+        "path": "build/integration/attack-effects/e06/wave-installation.json",
+        "sha256": "224780AB7A99335026F974EA91E80C237D862DC75A84E961554B44A807858FEA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private raw/masked native observations are not accepted matching C. Integrator retains actual providers/REL, sole producer/placement/full-owner proof and complete original-wave full-ROM verification. This source pair does not prove original statement spelling or a general aliasing rule beyond its exact context. The separately reconciled canonical E06 descendant now passes the complete-wave normal verifier under ordinary complete-wave acceptance. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Split the tenth scalar store from the nine-component matrix helper, then change the actual helper parameter view from E06TransformOutput* to float matrix[4][4] and pass output.m. Keep the accessed stack values and original arithmetic; no filler workspace or assembly."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2185,
+      "sha256": "2C262FC4AC269B3F16FBBDA53AC204534352B34E943ACA0F963D51AD43F3606F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8D71F4FAF9ED1CA2886CBB1EB0B10CAFE2684D21D708E895A38D71D2A2D0D75D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_00267FD0-5cfdea0ab6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

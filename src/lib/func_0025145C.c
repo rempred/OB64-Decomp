@@ -1,3 +1,4 @@
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -11,7 +12,7 @@ typedef struct P05StepState {
 } P05StepState;
 
 extern void func_00262B68(void);
-extern void func_0024E7AC(u8, u32);
+
 /* Two signed halfwords in original data_0025e318; ownership stays there. */
 extern s16 D_802099F0[];
 

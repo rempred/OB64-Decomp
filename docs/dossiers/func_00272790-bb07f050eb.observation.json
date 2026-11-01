@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BB07F050EB95AEF63973538A80491AC48070D4769E4C7C77C954BE56E9A1D791",
+  "observationId": "7AC8C8DD03B4A4787FCB7969CEF03C0AE123CA4E2C4B4EDB38C44A762565A882",
+  "symbol": "func_00272790",
+  "authored": {
+    "context": "E09 private selected-input reconstruction from the complete original target disassembly; source/watch pairs remain under this root. This is observed output, not original-source or compiler-mechanism proof. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E09 wave report.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "29091205ABC6DC36149E00514E3BB6386C25B62662A7ACDADB6501E3EE6B8A1C",
+      "sourceSha256": "532D52D8DB1C084C7AA21A0134C66793817BB0F71B9B71F348E770333E2FA614"
+    },
+    "label": "second-loop-counter-initialization-order",
+    "observedEffect": "watch01 already covers both six-entry loops and full304/frame32 but swaps two zero-register initializations. watch02 restores those two instruction positions and all non-REL words equal.",
+    "parentCandidateId": "496C3E0B128D2117BEA2432B8972B3B8C3E7D4703AA2D5B31990AD6ECCE215ED",
+    "references": [
+      {
+        "path": "build/matching/ae-e09/targets/func_00272790/candidates/0EA920DC48246D11808F585E6FA468703A414BC5879402BB3A54B90A26552DDF.c",
+        "sha256": "AA0F2322548673EAACF64C3611A88A7789834329E049C0FD3BB7B3276C4B0536"
+      },
+      {
+        "path": "build/matching/ae-e09/00272790-watch02.json",
+        "sha256": "B4F888F365DEB8A79A7646104E413B9D0D0ED1DA3A75BC49B7B8CEDE256E996A"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/6B9B4D2052470A86E2C0E7D945DE0CA10FB67038B082917F0C5ECCB7BC155A4E/workbench-report.json",
+        "sha256": "5C367F02D80DBB523841AE823F0B073EE9CE19F24561D5E20887C3823E93FCA6"
+      },
+      {
+        "path": "build/matching/ae-e09/00272790-observation.json",
+        "sha256": "DAD778D0F5880EC681A0EBDF459BF1B83B612AE456A2801C397FAB283E9A9FB2"
+      },
+      {
+        "path": "build/matching/ae-e09/00272790-watch01.json",
+        "sha256": "B019BC6724C7C05B25757626DFD18EC7B6830EC09A726CEC1DBDC7CC7630BC59"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_00272790/candidates/74C68582F0A2E15793B0D30E82C5B15811DC3E66A9575026BAF279F1F4261427.c",
+        "sha256": "9DCED04A4E3120B1CF6674BEA91B4C36887CCA863B4378721592C8FB0FB33695"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/05C11A7F84E2ADDA136C556C716A8E8872F75E7097F18E26AA9690196E126210/workbench-report.json",
+        "sha256": "FC20FC4BC243C371A48EDA16BF85512418713B7727A2275786A399652FB5BD88"
+      },
+      {
+        "path": "build/integration/attack-effects/e09/wave-acceptance.json",
+        "sha256": "5DC4609CBCA0A4C89223B9649C6AD65B485974ABDB31EAF73576027F6454076C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private diagnostic only. Actual REL/provider/sole-owner/placement/complete target bytes and complete18-wave full-ROM gates remain with the integrator. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Initialize the reused unsigned loop index before the second-loop count, with an open for initializer."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 2407,
+      "sha256": "29091205ABC6DC36149E00514E3BB6386C25B62662A7ACDADB6501E3EE6B8A1C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "532D52D8DB1C084C7AA21A0134C66793817BB0F71B9B71F348E770333E2FA614"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00272790-bb07f050eb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

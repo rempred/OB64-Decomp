@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9D09FEB15E026C96CF1DD58F7D42647DC1DA90ED2AB8AB5D91B3EC1D1A5DCBF5",
+  "observationId": "28851B4D18730A23E92AE9AC741117E40867FFB66DC21806A6FA0A33E9945B6B",
+  "symbol": "func_0025C6A4",
+  "authored": {
+    "context": "Complete512-byte sparse-command callback with list loop, child callback and shared send. All source pairs/watch01..29 retained in private E09 root. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E09 wave report.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "31DC77C912181B32F6B2539C44D734C17B59E98FD0F75B48C9C02D93EBC6701D",
+      "sourceSha256": "BDFDAC1172EDD08DA72910E0F55BBB5ED859C06A85AEEE5234424943119D81B2"
+    },
+    "label": "callback-control-word-send-and-loop-field-order",
+    "observedEffect": "watch25 has complete512/frame56 with only three non-REL words differing: field LUI/ADDIU before LI8. watch28 moves LI8 before field materialization and all non-REL words equal; final29 preserves bytes and PURE_C classification. Earlier case1000-only return retained zero result in s8 (watch21); s32 send_arg plus explicit callback s16 cast fixed BEQ and a0 sign extension (watch23). This is source/output evidence, not original-source or compiler-mechanism proof.",
+    "parentCandidateId": "084E4A4B4C628EDCEFD176D4ED87358E04D83DFD55CB2E46F945B20D5ADBE66B",
+    "references": [
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C6A4/candidates/0DFFC2BDC33809728E74AFF3AE8FE32FB07ADDAD91F3975DEA4340BDD21D0798.c",
+        "sha256": "23ADDFFE04AE9B93E8E73B5607D19DF86F2EA499390D51DE7817AD59FD165CAE"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C6A4-watch29.json",
+        "sha256": "4CFC87A7DECFC2259D012B8EBCFBBD6EAF7074A0089128761BC102F4C503C18A"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/664C240750EED2D101F20D705DE75DF7D9FB6B6A5466789DB647D903D5DAC9E0/workbench-report.json",
+        "sha256": "237EBD81971E3BF6F23C763BC5D3FC4A1229DC8838E528BBD9595B7B7F1A1BFB"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C6A4-observation.json",
+        "sha256": "9C44F77342F1ACCF433FEE90D38F0B981DF8585BC13FF67342381C130592D6DC"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C6A4-watch25.json",
+        "sha256": "AC2C81DD6B2487EC318E0352DD7AE3B577D9DD5E337BD7F65F3CFD54932DFAD6"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C6A4-watch28.json",
+        "sha256": "F9892F474DFD1E49CEF6C6DFCCE7B384059FC267807FD1133BC1F478432F8674"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C6A4/candidates/2758D76D30836191CACE25AC40AA56B53C2622B80EEB3A7BF160764453EF9365.c",
+        "sha256": "DC34F02F59616637F07AEC0187B681C42E33FC1972451385482A5037697FCB8E"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/BF792766BE45D396B2F0149DC3B00CEE7D94BE37121483920001C4FD3C3535D1/workbench-report.json",
+        "sha256": "BB4A2084A184E377BB87B92C679D810D639F5AA69B4528E2A305D857EB5A0DBE"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C6A4/candidates/566EB2CA226704C55FBA3A556A6342B854B05666BB3C3B81B2A3D724B26AE7A7.c",
+        "sha256": "6E6CB11EEF39A03FD46C948ECF44F5722BD55EF63A2EE7558D066869C1FF2A12"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C6A4-watch21.json",
+        "sha256": "4618F154F5368CE6511B75D0614C493FC38F3FBA3FA1788B1752499274E5C193"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/87EEF6C5D746857E52267A5FB200042684CBB3430EE2E3A3FE7E4DB5A70F8221/workbench-report.json",
+        "sha256": "340D3C8511A43202A886DF3A61062FC9E983869D0980426276BF2F62225946AA"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C6A4/candidates/3C1EAA7DF9CA94B57C7343687859F338D1D11574DC5C5CBDB64AE36C4EEE0C6B.c",
+        "sha256": "488C08994DB991B9BFB9854A22775F82D29431D192D6595C696F0A543CBBE336"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C6A4-watch23.json",
+        "sha256": "356D39C9710F8BC7DAFF43CB103E2C3E94E402735966471A36504D694D98E776"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/F86575560EB31688CA641C6F29494A5C7DE16B11450B8EAEDAD303EF6D066BB7/workbench-report.json",
+        "sha256": "966B0FC9A017035A800B75DC33DC912550036AA05160B22305E5F4C622EAE3CD"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C6A4/candidates/D997EE1129247815F7DB191B2230BA2B7B8D06D4BF3FC2D4BC6496ED3E7147BB.c",
+        "sha256": "24FC12B107497EA87720399D1AC2DA962018C437E6A46A26A3DD74684F347A72"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/9150E862F7DD52E933149FBEE66D673BC05DB3B16F1D300A2AE1EA86D421A698/workbench-report.json",
+        "sha256": "10A4C3962CE530F40A4AC0460BE53CA562307F19E6262F374B2DC7C05B7F5B6B"
+      },
+      {
+        "path": "build/integration/attack-effects/e09/complete-wave-preparation.json",
+        "sha256": "60FCF006102B397573BF6329B9F7016568124F954139519464E7D348DE146287"
+      },
+      {
+        "path": "build/integration/attack-effects/e09/source-preparation/SOURCE-PREPARATION.json",
+        "sha256": "7B4C634208435EABA9EB1CCAC3B42FBC957A8FCEA5E81D6388D87C5C33F7FBA7"
+      },
+      {
+        "path": "build/integration/attack-effects/e09/wave-acceptance.json",
+        "sha256": "5DC4609CBCA0A4C89223B9649C6AD65B485974ABDB31EAF73576027F6454076C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "7850246CD5883CEC5730CA40E72BF7F188186D990BB2A7DB618C355BC7C8CF93",
+      "36A5A88B706F2125A66D33912F6A74430C00B86FA273F33CBAB4D588DDD72CB4",
+      "CB6A1FCAB8C7B2CBD75C33C02E46271EE76920C37A6CD44C17EEB07A089FC60D"
+    ],
+    "remainingFailure": "Symbolic-object diagnostic only. Actual25 text REL/providers/placement/sole linked C owner/complete target bytes and entire18-wave exact ROM remain integration gates. No terminal suffix. Its historical numeric alias names 8021A1C0/8021A2D2 were corrected to effective addresses8020A1C0/8020A2D2 during canonical reconciliation; the original source and names remain historical evidence, not accepted address claims. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "From loop-field-before-exit/watch25, introduce a distinct s32 constant_8 assigned8 after the classification call and before the loop-local field pointer assignment; compare the narrowed classification to that variable. Final29 preserves existing saved_arg qualifier view and explains necessary scheduling near source."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 4911,
+      "sha256": "31DC77C912181B32F6B2539C44D734C17B59E98FD0F75B48C9C02D93EBC6701D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "BDFDAC1172EDD08DA72910E0F55BBB5ED859C06A85AEEE5234424943119D81B2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0025C6A4-9d09feb15e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

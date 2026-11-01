@@ -132,7 +132,7 @@ Roles and `selectedBest` describe research state and never establish matching ac
 `node tools/match.js observations <symbol> --effect <tag> --limit 20 --json` retrieves bounded
 research observations (limit 1–200). `preserve <candidateId> --observation <observationId>
 --note "context"` exports the exact C, selected observation envelope and neutral dossier.
-Preservation rechecks current scratch eligibility, original include context and preprocessor;
+Preservation rechecks current scratch eligibility (or the source-only producer binding below), original include context and preprocessor;
 the archive must independently preprocess to the identical expanded input and dependency closure.
 Sibling files in a generated source snapshot reject. Expanded C and compiler dumps remain ignored.
 Existing preservation without `--observation` retains its prior route.
@@ -679,3 +679,62 @@ Tooling review subject `45904b5` had an empty production group registry. Activat
 The mixed pose fixture proves the bounded group mechanism, not production activation or completed Combat W5 acceptance.
 The pose tail is not an extension of standalone art-native support. Scratch exactness never replaces the canonical complete-wave verifier.
 Ordinary matching needs no independent source review; structural/tooling changes retain their applicable audit and review requirements.
+
+
+### Complete inactive multi-owner private diagnostics
+
+Ordinary selected-input watch/probe-source can hydrate a complete inactive ASM
+span when its logical bodies and contiguous physical owners close without gaps.
+One GLOBAL body or exactly one GLOBAL plus one fixed-address-call LOCAL body is
+supported. The latter requires selected accepted caller object/proof/actual REL,
+encoded addend, unique fixed provider and independently mapped original JAL.
+Physical markers are not callable bodies or producer selections. Groups, active
+multi-owner producers, padding, partial/atomic/auxiliary shapes remain excluded.
+The existing single-owner successful path adds no source/object reads or scans.
+
+Expected body and physical partitions remain separate from actual native extents.
+The whole native text/tail is reported, including honest changed-size nonmatches.
+Census-admissible names/order/bindings allow reporting; census-exact offsets/sizes
+and byte equality are separate diagnostic gates. Identical bytes with a different
+function census remain a producer nonmatch. LOCAL permission comes only from the
+fresh context's immutable expectation for its exact target, rechecked on replay.
+Isolated linking remains unavailable for these complete inactive envelopes.
+These results do not establish canonical registration or matching acceptance.
+
+`node tests/matching_multi_owner_diagnostic.js` runs pure geometry/census checks.
+Its explicit `--native --inputs <manifest> --output <new-build-directory>` mode
+runs bounded fixture compilation/replay using the same production APIs. A separately
+reviewed staged-module fixture may substitute only approved existing production
+module IDs and the two test IDs, with exact installed-preimage/replacement guards.
+Staged results establish fixture behavior, never supported-watch lineage or
+canonical acceptance. Installed checks, changed-tool audit/fresh acceptance and
+one fresh capture remain required before combined release. Failure of either
+single-body or composed gates blocks the whole package; no partial release.
+
+For this new complete-owner native route, select the exact original physical
+primary spelling (for example `func_002664b0`). Case-insensitive metadata lookup
+still resolves the owner, but the generic workbench selector clones differently
+spelled requests; a clone deliberately gains no immutable context authority.
+Existing single-owner selector behavior is unchanged. Supporting cloned aliases
+would require a separately reviewed resolver change, not relaxed target identity.
+
+### Source-only research for an active multi-owner producer
+
+Import/preserve may publish historical C for an active standalone multi-owner producer only
+when the current public selection covers its entire authenticated producer envelope. The
+research layer binds the current complete ordered owners, extent, target identity and production
+source identity in observation metadata. Historical candidate C may differ from production C;
+its exact source, expanded input, headers and references retain their own authentication.
+Partial logical bodies, groups, atomic/auxiliary producers and research/diagnostic input contexts
+are excluded. Prepare/watch/probe/compile retain their existing scratch restrictions.
+
+A bound observation must still match fresh current producer identity on preserve, even if the
+selection later becomes scratch-supported. Import/export perform no code generation and confer
+no matching acceptance. Import's post-insertion snapshot failure remains retryable, nonaccepting
+persistence. Export closes its producer check after final-path preprocessing, with existing
+rollback on failure. The unchanged archive format retains the original observation ID label,
+source and authored claims, but omits the store-only producer binding; it does not establish
+current producer eligibility. Re-import freshly admits and binds the source, potentially yielding
+a new observation ID for the same current-target candidate. Import parents first and use returned
+same-target candidate IDs for child links. Scratch replay of these archives is unsupported; use
+the complete canonical producer workflow for any later byte comparison.

@@ -1327,7 +1327,7 @@ function literalRunBindings(group,context){
   if(targets.some(t=>t.textOwners.some(o=>o.rowIndex===row.index||o.romStartNumber<row.romEndExclusive&&o.romEndNumber>row.romStart)
     ||(t.auxiliarySections||[]).some(a=>a.ownerRowIndex===row.index||a.romStartNumber<row.romEndExclusive&&a.romEndNumber>row.romStart)))fail('literal run selected neighbor');
   for(const r of [...rows,row])if(p7.sha256File(path.join(ROOT,r.part.file))!==r.part.sha256)fail('literal run original source drift');
-  const original=require('./word_asm').assembleWordAsmText(fs.readFileSync(path.join(ROOT,row.part.file),'utf8')).bytes;
+  const original=require('./word_asm').assembleWordAsmText(inputSet.read(inputSet.context(model),path.join(ROOT,row.part.file)).toString('utf8')).bytes;
   if(original.length!==row.bytes||!original.equals(rom.subarray(row.romStart,row.romEndExclusive))||sha256Buffer(original.subarray(0,4))!==d.expectedSha256)fail('literal run original neighbor bytes');
   return{logicalBinding,retainedNeighborBinding:{registryIdentity:registry.identity,rowIndex:row.index,romStart:row.romStart,romEndExclusive:row.romEndExclusive,vramStart:slice.vramStart,section:slice.sectionName,source:row.part.file,sourceSha256:row.part.sha256,objectRelative:'objects/assembly/chunk_'+String(row.part.chunkIndex).padStart(3,'0')+'.o',bytesSha256:sha256Buffer(original),padding:pads[0]}};
 }
@@ -1437,7 +1437,7 @@ function singleFragmentAliases(group,symbols){
 }
 function singleFragmentCanonical(group){
   const p=require('./phase7_conventional'),logical=require('./logical_functions'),active=require('./active_targets');
-  const inputs=inputSet.context(group),model=p.loadAcceptedModel({inputs}),rom=fs.readFileSync(inputSet.resolve(inputs,path.join(ROOT,'build/baserom.us_rev0.z64')));
+  const inputs=inputSet.context(group),model=p.loadAcceptedModel({inputs}),rom=inputSet.read(inputs,path.join(ROOT,'build/baserom.us_rev0.z64'));
   if(p.sha256Buffer(rom)!==model.config.rom.sha256)fail('single fragment ROM identity');
   const row=model.rows.find(r=>r.index===group.members[0].ownerRowIndex),data=model.rows.find(r=>r.slices.some(s=>s.sectionName===group.auxiliary.sections[0].outputSection));
   if(!row||!data||row.slices.length!==1||data.slices.length!==1||row.retainedPadding||row.ambiguous!==false||row.primaryClass!=='code')fail('single fragment accepted owner');
@@ -1446,15 +1446,15 @@ function singleFragmentCanonical(group){
       ||owner.romEndNumber!==row.romEndExclusive||owner.vramStartNumber!==slice.vramStart||owner.vramEndNumber!==slice.vramEndExclusive
       ||owner.originalAssembly!==row.part.file||owner.originalAssemblySha256!==row.part.sha256||owner.chunkIndex!==row.part.chunkIndex
       ||a.ownerRowIndex!==data.index||a.ownerOriginalAssembly!==data.part.file||a.ownerOriginalAssemblySha256!==data.part.sha256)fail('single fragment physical source binding');
-  for(const r of [row,data]){const b=fs.readFileSync(path.join(ROOT,r.part.file));
+  for(const r of [row,data]){const b=inputSet.read(inputs,path.join(ROOT,r.part.file));
     if(p.sha256Buffer(b)!==r.part.sha256||!require('./word_asm').assembleWordAsmText(b.toString('utf8')).bytes.equals(rom.subarray(r.romStart,r.romEndExclusive)))fail('single fragment original ASM bytes');}
-  const saved=JSON.parse(fs.readFileSync(inputSet.resolve(inputs,CONFIG_PATH),'utf8')).groups.filter(g=>g.id===group.id);
+  const saved=JSON.parse(inputSet.read(inputs,CONFIG_PATH).toString('utf8')).groups.filter(g=>g.id===group.id);
   if(saved.length!==1)fail('single fragment current registry group');
   registry({schemaVersion:1,profile:model.config.profile,groups:saved},model.config.profile);
   for(const k of ['id','source','mode','members','text','functions','tail','relocations'])if(!same(saved[0][k],group[k]))fail('single fragment registry drift');
   for(const k of ['compilerLabel','alignmentDirectives','nativeSection'])if(!same(saved[0].auxiliary[k],group.auxiliary[k]))fail('single fragment auxiliary registry drift');
   const selected=normalizeAuxiliary(saved[0])[0];for(const [k,v]of Object.entries(selected))if(!same(a[k],v))fail('single fragment normalized auxiliary drift');
-  const linkage=JSON.parse(fs.readFileSync(inputSet.resolve(inputs,active.LINKAGE_CONFIG_PATH),'utf8')),symbols=Object.fromEntries(linkage.symbols.map(s=>[s.name,s.address]));
+  const linkage=JSON.parse(inputSet.read(inputs,active.LINKAGE_CONFIG_PATH).toString('utf8')),symbols=Object.fromEntries(linkage.symbols.map(s=>[s.name,s.address]));
   const aliases=singleFragmentAliases(group,symbols),reg=logical.loadRegistry(model,rom);
   singleFragmentLogical(reg,row,group,aliases);
   logical.assertActivationCompatible(reg,group.members[0].symbol,[row]);

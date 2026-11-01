@@ -12,6 +12,7 @@ import json
 import hashlib
 import os
 from pathlib import Path
+import stat
 import subprocess
 import sys
 import time
@@ -74,7 +75,99 @@ def check_paths(root):
             for child in item.iterdir(): visit(child)
     visit(root)
 
+def check_research_paths(root):
+    # Research reads only these control files; actual inputs are authenticated by
+    # the research reader and fresh CPP/replay bracket in the supervised child.
+    def inspect(item, directory=False):
+        try: st = item.lstat()
+        except FileNotFoundError: return
+        if getattr(st, 'st_file_attributes', 0) & 0x400:
+            raise RuntimeError('research control path contains a reparse point: ' + str(item))
+        if directory:
+            if not item.is_dir(): raise RuntimeError('research ancestor is not a directory: ' + str(item))
+        elif not item.is_file() or st.st_nlink != 1:
+            raise RuntimeError('research control path is nonregular or hardlinked: ' + str(item))
+        if os.path.normcase(os.path.realpath(item)) != os.path.normcase(os.path.abspath(item)):
+            raise RuntimeError('research control path alias: ' + str(item))
+    for item in reversed(root.parents): inspect(item, True)
+    inspect(root, True)
+    for name in ('workbench.sqlite', 'workbench.sqlite-wal', 'workbench.sqlite-shm', 'workbench.sqlite-journal', '.private-guard.json'):
+        inspect(root / name)
+
+def validate_research_command(args):
+    root = Path(os.path.abspath(args.root))
+    repository = root.parent.parent.parent
+    command = args.command
+    if args.native or len(command) < 3 or command[2] != 'intake' or os.path.normcase(os.path.abspath(command[1])) != os.path.normcase(str(repository / 'tools' / 'match.js')):
+        raise RuntimeError('research admission requires the intake CLI')
+    positions = [i for i, token in enumerate(command) if token == '--scratch-root']
+    if len(positions) != 1 or positions[0] + 1 >= len(command):
+        raise RuntimeError('research admission requires one scratch-root')
+    requested = os.path.abspath(repository / command[positions[0] + 1])
+    if os.path.normcase(requested) != os.path.normcase(str(root)):
+        raise RuntimeError('research admission command/root mismatch')
+    return hashlib.sha256(json.dumps(command, ensure_ascii=False, separators=(',', ':')).encode('utf-8')).hexdigest()
+
+def inspect_watch_path(item, directory=None, missing=False):
+    try: value = item.lstat()
+    except FileNotFoundError:
+        if missing: return None
+        raise
+    is_directory = stat.S_ISDIR(value.st_mode)
+    is_file = stat.S_ISREG(value.st_mode)
+    if getattr(value, 'st_file_attributes', 0) & 0x400 or stat.S_ISLNK(value.st_mode):
+        raise RuntimeError('strict watch path is a reparse point or link: ' + str(item))
+    if not (is_directory or is_file) or is_file and value.st_nlink != 1:
+        raise RuntimeError('strict watch path is nonregular or hardlinked: ' + str(item))
+    if directory is True and not is_directory or directory is False and not is_file:
+        raise RuntimeError('strict watch path type differs: ' + str(item))
+    if os.path.normcase(os.path.realpath(item)) != os.path.normcase(os.path.abspath(item)):
+        raise RuntimeError('strict watch path alias: ' + str(item))
+    return is_directory
+
+def check_watch_controls(root):
+    for item in reversed(root.parents): inspect_watch_path(item, True, True)
+    inspect_watch_path(root, True, True)
+    for name in ('workbench.sqlite', 'workbench.sqlite-wal', 'workbench.sqlite-shm', 'workbench.sqlite-journal', '.private-guard.json'):
+        inspect_watch_path(root / name, False, True)
+
+def check_watch_paths(root):
+    # Union of the original JS regular/alias and Python Windows-reparse checks.
+    for item in reversed(root.parents): inspect_watch_path(item, True)
+    def visit(item):
+        if inspect_watch_path(item):
+            for child in item.iterdir(): visit(child)
+    visit(root)
+
+def validate_watch_command(args):
+    root = Path(os.path.abspath(args.root))
+    repository = root.parent.parent.parent
+    command = args.command
+    if len(command) < 4 or command[2] not in ('watch', 'probe') or os.path.normcase(os.path.abspath(command[1])) != os.path.normcase(str(repository / 'tools' / 'match.js')):
+        raise RuntimeError('strict watch admission requires the watch CLI')
+    def argument(name, optional=False):
+        positions = [i for i, token in enumerate(command) if token == name]
+        if optional and not positions: return None
+        if len(positions) != 1 or positions[0] + 1 >= len(command) or command[positions[0] + 1].startswith('--'):
+            raise RuntimeError('strict watch requires one ' + name)
+        return command[positions[0] + 1]
+    requested = os.path.abspath(repository / argument('--scratch-root'))
+    if os.path.normcase(requested) != os.path.normcase(str(root)):
+        raise RuntimeError('strict watch command/root mismatch')
+    source = os.path.abspath(repository / argument('--source'))
+    relative = os.path.relpath(source, root)
+    if relative == '.' or relative == '..' or relative.startswith('..' + os.sep) or os.path.isabs(relative):
+        raise RuntimeError('strict watch source escapes root')
+    mode = argument('--native-concurrency', True) or 'parallel'
+    if mode not in ('parallel', 'serial') or bool(args.native) != (mode == 'serial'):
+        raise RuntimeError('strict watch scheduling mismatch')
+    expected_key = hashlib.sha256(str(root).lower().encode('utf-8')).hexdigest()
+    if args.root_key != expected_key: raise RuntimeError('strict watch root key differs')
+    return hashlib.sha256(json.dumps(command, ensure_ascii=False, separators=(',', ':')).encode('utf-8')).hexdigest()
+
 def run(args):
+    opening_started = time.monotonic()
+    command_sha256 = validate_research_command(args) if args.research_intake else validate_watch_command(args) if args.strict_watch or args.candidate_diagnostic else None
     deadline = time.monotonic() + args.wait_ms / 1000
     parent = checked(open_process(0x100000, False, args.parent), 'open invoking process')
     held, jobs = [], []
@@ -118,16 +211,32 @@ def run(args):
         limits.BasicLimitInformation.LimitFlags = 0x2000  # KILL_ON_JOB_CLOSE; no breakaway allowed.
         checked(set_job(jobs[0], 9, C.byref(limits), C.sizeof(limits)), 'enable kill-on-close')
         root = Path(args.root)
-        check_paths(root)
-        root.mkdir(parents=True, exist_ok=True)
-        check_paths(root)
+        if args.strict_watch or args.candidate_diagnostic:
+            check_watch_controls(root)
+            root.mkdir(parents=True, exist_ok=True)
+            if not args.candidate_diagnostic:
+                check_watch_paths(root)
+        else:
+            inspect_paths = check_research_paths if args.research_intake else check_paths
+            inspect_paths(root)
+            root.mkdir(parents=True, exist_ok=True)
+            inspect_paths(root)
         si = STARTUPINFO(); si.cb = C.sizeof(si)
         si.dwFlags = 0x100
         si.hStdInput, si.hStdOutput, si.hStdError = [get_std(n & 0xffffffff) for n in (-10, -11, -12)]
         command = C.create_unicode_buffer(subprocess.list2cmdline(args.command))
         checked(create_process(None, command, None, None, True, 0x4 | 0x08000000, None, None, C.byref(si), C.byref(pi)), 'create suspended private command')
         for job in jobs: checked(assign_job(job, pi.hProcess), 'assign private job (nested Job Objects required)')
-        marker.write_text(json.dumps({'pid': pi.dwProcessId, 'supervisorPid': os.getpid(), 'rootKey': args.root_key, 'native': bool(args.native)}), encoding='utf-8')
+        ticket = {'pid': pi.dwProcessId, 'supervisorPid': os.getpid(), 'rootKey': args.root_key, 'native': bool(args.native)}
+        if args.research_intake:
+            check_research_paths(root)
+            ticket.update({'admission': 'research-intake', 'commandSha256': command_sha256})
+        elif args.strict_watch or args.candidate_diagnostic:
+            check_watch_controls(root)
+            ticket.update({'admission': 'candidate-diagnostic-v1' if args.candidate_diagnostic else 'strict-watch-v1', 'commandSha256': command_sha256})
+        if args.candidate_diagnostic:
+            ticket['timings'] = {'parentProcessBeforeSupervisorMs': args.parent_elapsed_ms, 'supervisorOpeningMs': (time.monotonic() - opening_started) * 1000}
+        marker.write_text(json.dumps(ticket), encoding='utf-8')
         marker_written = True
         if resume(pi.hThread) == 0xffffffff: raise OSError(C.get_last_error(), 'resume private command')
         while wait(pi.hProcess, 20) != 0:
@@ -151,7 +260,15 @@ def run(args):
                     print('private guard: owned job cleanup exceeded five seconds; successors remain blocked until it drains', file=sys.stderr)
                     cleanup_failed = True
             close(pi.hThread); close(pi.hProcess)
-        if marker_written: marker.unlink(missing_ok=True)
+        if marker_written:
+            if not args.research_intake: marker.unlink(missing_ok=True)
+            else:
+                try:
+                    check_research_paths(Path(args.root))
+                    marker.unlink(missing_ok=True)
+                except Exception as error:
+                    cleanup_failed = True
+                    print('private guard: ticket cleanup rejected: ' + str(error), file=sys.stderr)
         for job in reversed(jobs): close(job)
         for mutex in reversed(held): release_mutex(mutex); close(mutex)
         close(parent)
@@ -164,6 +281,11 @@ def main():
     parser.add_argument('--root', required=True)
     parser.add_argument('--wait-ms', type=int, default=120000)
     parser.add_argument('--native', action='store_true')
+    parser.add_argument('--parent-elapsed-ms', type=float, default=0)
+    admission = parser.add_mutually_exclusive_group()
+    admission.add_argument('--research-intake', action='store_true')
+    admission.add_argument('--strict-watch', action='store_true')
+    admission.add_argument('--candidate-diagnostic', action='store_true')
     parser.add_argument('command', nargs=argparse.REMAINDER)
     args = parser.parse_args()
     if args.command and args.command[0] == '--': args.command.pop(0)

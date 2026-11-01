@@ -1,4 +1,5 @@
 'use strict';
+const diagnosticContext = require('./diagnostic_context');
 
 const crypto = require('crypto');
 const fs = require('fs');
@@ -137,14 +138,14 @@ function prepareCompilerSession(options = {}) {
     splatSplit: context.localTools.splatSplit,
     asmDifferRoot: context.localTools.asmDifferRoot,
   };
-  const runtime = verifyRuntimeTools(context.phase8.model, runtimeOptions);
-  verifyCompiler(context.phase8, context.localTools.compiler);
+  const runtime = diagnosticContext.isDiagnosticContext(context) ? diagnosticContext.runtime(context, options.inputs) : verifyRuntimeTools(diagnosticContext.producerModel(context).model, runtimeOptions);
+  verifyCompiler(diagnosticContext.producerModel(context), context.localTools.compiler);
   const preprocessor = resolvePreprocessor(undefined, options.inputs);
   const tool = {
     schemaVersion: 1,
     compilerSha256: sha256File(context.localTools.compiler),
-    compilerFlags: context.phase8.config.compiler.compileFlags,
-    assembler: context.phase8.toolchain.identity,
+    compilerFlags: diagnosticContext.producerModel(context).config.compiler.compileFlags,
+    assembler: diagnosticContext.producerModel(context).toolchain.identity,
     sourcePolicyPreprocessor: preprocessorIdentity(preprocessor),
     workbenchCompilerContract: 12,
     terminalTailImplementation: sha256File(require.resolve('./terminal_tail')),
@@ -245,6 +246,20 @@ function validateLogicalFunctionCensus(functions, expected, textSize, admittedBi
   return end;
 }
 
+// Both fresh and replay consumers obtain authority from the exact live context.
+function admittedFunctionCensus(context, target, elf, section) {
+  const expected = diagnosticContext.completeOwnerExpectation(context, target);
+  if (!expected) return null;
+  const functions = elf.symbols.filter(s => s.symbolType === 2);
+  if (functions.some(s => s.sectionIndex !== section.index)
+      || elf.symbols.some(s => expected.markers.includes(s.name) && s.sectionIndex !== 0)) {
+    throw new Error('complete owner unexpected function or physical marker');
+  }
+  const end = validateLogicalFunctionCensus(functions, expected.functions, section.size, expected.functions.map(f => f.binding));
+  const actual = [...functions].sort((a,b) => a.value-b.value).map(f => ({symbol:f.name,offset:f.value,bytes:f.size,binding:f.binding===1?'GLOBAL':'LOCAL'}));
+  return {admissible:true,exact:canonicalJson(actual)===canonicalJson(expected.functions),expected:expected.functions,actual,end};
+}
+
 function compileScratchCandidate({ session, target, sourceFile, artifactDir, classification = null }) {
   assertScratchEnvironment();
   assertExecutablePrefixSelection(session?.context?.phase8, target);
@@ -255,6 +270,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
       || typeof sourceFile !== 'string' || typeof artifactDir !== 'string') {
     throw new Error('scratch candidate compiler inputs are malformed');
   }
+  diagnosticContext.completeOwnerExpectation(session.context,target);
   target = textContract.bindWorkbenchTarget(session, target);
   const candidateClassification = classification || classifySource(relative(sourceFile), {
     preprocessor: session.preprocessor,
@@ -286,24 +302,24 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
     throw new Error('scratch candidate compilation-input identity drift');
   }
   const compilerArgs = [
-    ...session.context.phase8.config.compiler.compileFlags,
+    ...diagnosticContext.producerModel(session.context).config.compiler.compileFlags,
     '-o',
     compilerAssembly,
     'candidate.input.c',
   ];
-  const compilerResult = run(session.context.localTools.compiler, compilerArgs, { cwd: artifactDir });
+  const compilerResult = session.measure ? session.measure('nativeCompilerMs',()=>run(session.context.localTools.compiler,compilerArgs,{cwd:artifactDir})) : run(session.context.localTools.compiler, compilerArgs, { cwd: artifactDir });
   verifyClassificationInputs(candidateClassification);
   const compilerBytes = fs.readFileSync(compilerAssembly);
   const adjustedBytes = scratchAssemblerInput(compilerBytes, target);
   fs.writeFileSync(adjustedAssembly, adjustedBytes);
   const assembler = session.runtime.tools['mips-kmc-elf-as.exe'].path;
   const assemblerArgs = [
-    ...session.context.phase8.model.config.binutils.compilerAssemblerFlags,
+    ...diagnosticContext.producerModel(session.context).model.config.binutils.compilerAssemblerFlags,
     '-o',
     objectFile,
     adjustedAssembly,
   ];
-  const assemblerResult = run(assembler, assemblerArgs, { cwd: artifactDir });
+  const assemblerResult = session.measure ? session.measure('nativeAssemblerMs',()=>run(assembler,assemblerArgs,{cwd:artifactDir})) : run(assembler, assemblerArgs, { cwd: artifactDir });
   const elf = parseElfFile(objectFile);
   if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(elf);
 
@@ -322,7 +338,8 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
   ));
   const expectedFunctions = target.logicalFunctions || [{ symbol: target.symbol }];
   sectionFunctions.sort((a, b) => a.value - b.value);
-  const functionEnd = validateLogicalFunctionCensus(sectionFunctions, expectedFunctions, textSection.size, target.selectionKind === 'registered-padding-producer' ? expectedFunctions.map(fn=>fn.binding) : null);
+  const completeCensus = admittedFunctionCensus(session.context,target,elf,textSection);
+  const functionEnd = completeCensus?.end ?? validateLogicalFunctionCensus(sectionFunctions, expectedFunctions, textSection.size, target.selectionKind === 'registered-padding-producer' ? expectedFunctions.map(fn=>fn.binding) : null);
   const primary = sectionFunctions[0];
   if (primary.name !== target.symbol || primary.value !== 0 || primary.binding !== 1
       || primary.visibility !== 0 || !Number.isInteger(primary.size) || primary.size <= 0
@@ -346,6 +363,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
     if (owned.length > 0) throw new Error(`scratch object unexpectedly owns ${name} bytes: ${target.symbol}`);
   }
   const rodataSections = elf.sections.filter((section) => section.name === '.rodata' && section.size > 0);
+  if (completeCensus && rodataSections.length) throw new Error('complete owner auxiliary scratch sections unsupported');
   if (rodataSections.length > 1) throw new Error('scratch object has multiple .rodata sections');
   if (rodataSections.some((section) => section.type !== 1 || section.flags !== 2)) {
     throw new Error('scratch object .rodata is not read-only allocated PROGBITS');
@@ -411,7 +429,8 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
     textContract: nativeContract,
     fullOwner: { bytes: textSectionBytes.length, sha256: sha256Buffer(textSectionBytes), tailBytes: tail.length },
     kind: target.logicalFunctions ? 'logical-functions-scratch-object' : 'single-function-scratch-object',
-    logicalFunctions: sectionFunctions.map(fn => ({ symbol: fn.name, offset: fn.value, bytes: fn.size, ...(target.selectionKind === 'registered-padding-producer' ? { binding: fn.binding === 1 ? 'GLOBAL' : 'LOCAL' } : {}) })),
+    logicalFunctions: sectionFunctions.map(fn => ({ symbol: fn.name, offset: fn.value, bytes: fn.size, ...(completeCensus || target.selectionKind === 'registered-padding-producer' ? { binding: fn.binding === 1 ? 'GLOBAL' : 'LOCAL' } : {}) })),
+    ...(completeCensus ? {completeOwnerCensus:completeCensus} : {}),
     logicalCoverageComplete: target.logicalCoverageComplete ?? null,
     primarySymbol: {
       name: primary.name,
@@ -482,13 +501,13 @@ function recordCandidate(workbench, target, sourceText, options = {}) {
   const storeOptions = options.storeOptions || {};
   if (options.syncTargets !== false) syncTargets(workbench, storeOptions);
   const candidate = candidateRecord(target, sourceText, options);
-  (options.storeRequest || requestStore)({ action: 'put_candidate', record: candidate }, storeOptions);
+  if (!options.deferCompletion) (options.storeRequest || requestStore)({ action: 'put_candidate', record: candidate }, storeOptions);
   const sourceFile = sourceSnapshot(target, sourceText, candidate.candidateId, options.matchingRoot || MATCHING_ROOT);
   return { candidate, sourceFile };
 }
 
 function acceptedExpectedRelocationEvidence(session, target) {
-  const acceptedTargets = session?.context?.phase8?.targets;
+  const acceptedTargets = diagnosticContext.producerModel(session?.context)?.targets;
   if (!Array.isArray(acceptedTargets)) {
     return { available: false, records: null, reason: 'accepted phase8 target census is unavailable' };
   }
@@ -701,7 +720,8 @@ function verifyNativeScratchProvenance(scratch, target, directory) {
       || elf.symbols.filter(symbol => symbol.symbolType === 2).length !== 1
       || !textContract.same(relocations, scratch.textRelocations)) throw new Error('cached native object census drift');
 }
-function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING_ROOT, authority = null) {
+function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING_ROOT, authority = null, context = null) {
+  diagnosticContext.completeOwnerExpectation(context,target);
   assertExecutablePrefixSelection(authority, target);
   assertScratchEnvironment();
   const directory = resolveRunArtifactDirectory(run, matchingRoot);
@@ -749,7 +769,10 @@ function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING
     if (sections.length !== 1) throw new Error('cached logical text section census drift');
     const section = sections[0];
     const functions = elf.symbols.filter(symbol => symbol.sectionIndex === section.index && symbol.symbolType === 2);
-    const end = validateLogicalFunctionCensus(functions, target.logicalFunctions, section.size, target.selectionKind === 'registered-padding-producer' ? target.logicalFunctions.map(fn=>fn.binding) : null);
+    const completeCensus = admittedFunctionCensus(context,target,elf,section);
+    const end = completeCensus?.end ?? validateLogicalFunctionCensus(functions, target.logicalFunctions, section.size, target.selectionKind === 'registered-padding-producer' ? target.logicalFunctions.map(fn=>fn.binding) : null);
+    if (completeCensus && (canonicalJson(completeCensus)!==canonicalJson(report.scratchContract.completeOwnerCensus)
+        || canonicalJson(completeCensus.actual)!==canonicalJson(report.scratchContract.logicalFunctions))) throw new Error('cached complete owner census drift');
     if (target.selectionKind === 'registered-padding-producer') {
       const actualFunctions = [...functions].sort((a,b)=>a.value-b.value).map(fn=>({symbol:fn.name,offset:fn.value,bytes:fn.size,binding:fn.binding===1?'GLOBAL':'LOCAL'}));
       if(canonicalJson(report.scratchContract.logicalFunctions)!==canonicalJson(actualFunctions))throw new Error('cached admitted compiler binding evidence drift');
@@ -836,7 +859,7 @@ function candidateCompileCacheKey(session, target, candidate, sourcePolicy, expe
 
 function compileCandidate(workbench, target, sourceText, options = {}) {
   assertScratchEnvironment();
-  assertScratchCapability(workbench, target, options.session?.context?.phase8?.targets);
+  assertScratchCapability(workbench, target, diagnosticContext.producerModel(options.session?.context)?.targets);
   const storeOptions = options.storeOptions || {};
   const storeRequest = options.storeRequest || requestStore;
   if (options.session) require('./input_set').assertContext(options.session.context, options.inputs);
@@ -852,10 +875,12 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   };
   const classification = classifySource(targetForCompile.source, { preprocessor: session.preprocessor });
   let authenticatePrivateSource = () => {};
+  let authoredForClosing;
   if (options.privateWorkspace === true) {
     const privateInputs = require('./private_inputs');
     const authoredFile = privateInputs.regular(options.sourcePath);
     const authored = classifySource(authoredFile, {preprocessor: session.preprocessor});
+    authoredForClosing=authored;
     privateInputs.assertPrivateClassification(authored);
     privateInputs.assertPrivateClassification(classification);
     privateInputs.equalExpandedInputs(authored, classification, {compilationInputBytes});
@@ -871,7 +896,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   }
   classification.symbol = target.symbol;
   classification.bytes = target.bytes;
-  if (!['PURE_C', 'HYBRID_C'].includes(classification.class)) {
+  if (!(options.deferCompletion ? ['PURE_C'] : ['PURE_C', 'HYBRID_C']).includes(classification.class)) {
     throw new Error(`matching candidate source classification is ${classification.class}: ${classification.error || 'unsupported source'}`);
   }
   if (classification.source !== targetForCompile.source
@@ -880,7 +905,12 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   }
   verifyClassificationInputs(classification);
   const terminalTail = artifactDir => {
-    const value = require('./terminal_tail').diagnose({ session, target, classification, artifactDir });
+    if(diagnosticContext.isDiagnosticContext(session.context)) {
+      options.inputs.sharedImplementation(require.resolve('./terminal_tail'));
+      require('./terminal_tail');diagnosticContext.authenticateCode(options.inputs);
+    }
+    const diagnose=()=>require('./terminal_tail').diagnose({ session, target, classification, artifactDir });
+    const value = session.measure ? session.measure('terminalTailMs',diagnose) : diagnose();
     authenticatePrivateSource();
     verifyClassificationInputs(classification);
     return value;
@@ -894,14 +924,15 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     expectedRelocationEvidence,
     options.diagnosticOptions || {},
   );
-  const cacheKey = candidateCompileCacheKey(
+  const reusableCacheKey = candidateCompileCacheKey(
     session,
     target,
     candidate,
     sourcePolicy,
     expectedRelocationEvidence,
   );
-  const cached = storeRequest({ action: 'query', name: 'compile_by_cache', args: { cacheKey } }, storeOptions);
+  const cacheKey = options.deferCompletion ? digest({ reusableCacheKey, fresh: require('crypto').randomUUID() }) : reusableCacheKey;
+  const cached = options.deferCompletion ? null : storeRequest({ action: 'query', name: 'compile_by_cache', args: { cacheKey } }, storeOptions);
   if (cached && (cached.candidate_id !== candidate.candidateId || canonicalJson(cached.tool) !== canonicalJson(compileTool))) {
     throw new Error(`compile cache digest collision for ${candidate.candidateId}`);
   }
@@ -921,6 +952,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       target,
       options.matchingRoot || MATCHING_ROOT,
       workbench,
+      session.context,
     );
     const candidatePrepared = diagnosticPreparedForCandidate(
       preparedDiagnostic,
@@ -970,6 +1002,8 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   );
   const started = Date.now();
   let compileRecord;
+  let pendingReport;
+  const publishReport = (file, value) => { if(options.deferCompletion) pendingReport={file,value}; else writeJson(file,value); };
   let comparisonRecord = null;
   try {
     const result = compileScratchCandidate({ session, target, sourceFile, artifactDir, classification });
@@ -1003,7 +1037,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     authenticatePrivateSource();
     comparison.terminalTail = terminalTail(artifactDir);
     comparisonRecord = makeComparisonRecord(runId, comparison);
-    writeJson(path.join(artifactDir, 'workbench-report.json'), {
+    publishReport(path.join(artifactDir, 'workbench-report.json'), {
       schemaVersion: 3,
       target: { symbol: target.symbol, targetId: target.targetId, expectedBytesSha256: target.expectedBytesSha256,
         comparisonScope: executablePrefixComparisonScope(target), originalOwnerComparison: originalOwnerComparison(target) },
@@ -1031,7 +1065,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       tool: compileTool,
       createdAt: attemptStartedAt,
     };
-    writeJson(path.join(artifactDir, 'workbench-report.json'), {
+    publishReport(path.join(artifactDir, 'workbench-report.json'), {
       schemaVersion: 3,
       target: { symbol: target.symbol, targetId: target.targetId },
       candidate: { ...candidate, sourceText: undefined },
@@ -1042,6 +1076,18 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   // Input drift is an invalid check, not a failed candidate. In particular the
   // fresh-path catch must not publish a drift failure to the experiment history.
   authenticatePrivateSource();
+  if(options.deferCompletion) {
+    pendingReport.value.sourcePolicy ||= sourcePolicy;
+    options.closingChecks.push(() => {
+      authenticatePrivateSource();
+      const freshAuthored=classifySource(options.sourcePath,{preprocessor:session.preprocessor});
+      const freshSnapshot=classifySource(sourceFile,{preprocessor:session.preprocessor});
+      require('./private_inputs').equalExpandedInputs(freshAuthored,authoredForClosing,{compilationInputBytes});
+      require('./private_inputs').equalExpandedInputs(freshSnapshot,classification,{compilationInputBytes});
+    });
+    return {candidate,compile:compileRecord,comparison:comparisonRecord,cached:false,comparisonRefreshed:false,
+      completion:{action:'put_compile_result',completionCandidate:candidate,compile:compileRecord,comparison:comparisonRecord,completionReports:[pendingReport]}};
+  }
   const stored = storeRequest({
     action: 'put_compile_result',
     compile: compileRecord,
@@ -1068,6 +1114,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
 }
 
 module.exports = {
+  admittedFunctionCensus,
   validateLogicalFunctionCensus,
   MATCHING_ROOT,
   candidateCompileCacheKey,

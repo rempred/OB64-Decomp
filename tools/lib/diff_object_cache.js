@@ -25,6 +25,7 @@ const {
   verifyAuxiliaryLinkedObjectSection,
   verifyAuxiliaryPaddingBytes,
   verifyAuxiliarySourceObjectSection,
+  verifyRetainedAuxiliaryCompilerAssembly,
   verifyCompilerTextFunctions,
   primaryCompilerFunctionBytes,
 } = require('./phase8_matching_c');
@@ -48,6 +49,8 @@ const OBJCOPY_FLAGS = Object.freeze([
 const IMPLEMENTATION_FILES = Object.freeze([
   'tools/diff.js',
   'tools/lib/active_targets.js',
+  'tools/lib/overlay_config.js',
+  'tools/lib/rom.js',
   'tools/lib/logical_functions.js',
   'tools/lib/auxiliary_interior.js',
   'tools/lib/auxiliary_projection.js',
@@ -678,6 +681,7 @@ function inspectCapturedTargetArtifacts(options, snapshot) {
     fail(`authenticated compilation input drift: ${target.symbol}`);
   }
 
+  verifyRetainedAuxiliaryCompilerAssembly(bytesByName['compiler.s'], target);
   const expectedAdjusted = textContract.assemblerInput(bytesByName['compiler.s'], target, adjustSectionAssembly, {
     auxiliarySections: target.auxiliarySections || [],
   });

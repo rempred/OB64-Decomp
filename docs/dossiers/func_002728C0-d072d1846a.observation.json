@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D072D1846A27B2AA14A40733E0CD8D9A5ED5E285A4DA3EC0F6A9B149F9F7D66C",
+  "observationId": "9AF7AC8D06CE121AFC54330C69A96B64430F269E167BB74C3145876BDD9A2FDE",
+  "symbol": "func_002728C0",
+  "authored": {
+    "context": "Complete364-byte728C0. Saved08 puts both matrix684 and positionF150 calls in one inline helper with a position pointer and emits368 bytes.09 returns the matrix destination from that helper and leaves F150 in the caller; it emits364 bytes but remains nonexact outside actual REL. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete P07 wave report.",
+    "effects": [
+      "inline-phase-boundary",
+      "address-retention",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "134A408EAD595E3D3AEFDC14624F6A058CC384FCD7C391DD36088489E4347D55",
+      "sourceSha256": "E99C49D841782FD054DF5F3EECB24EAEF3BB8A75131BE81CE297A16DF2DFB43C"
+    },
+    "label": "return-destination-helper-keeps-position-copy-in-caller",
+    "observedEffect": "Saved10 is mechanically PURE_C, native364 and raw relocation-masked exact with17 actual text REL.08/09/10 preserve the two-step source sequence;09's restored extent alone was not an exact match. The canonical reconciled descendant subsequently passed the22-target linked batch.",
+    "parentCandidateId": "03362A060612D302EEBE11D82C00D859D4A084530C3096F49C6CEA8794867DB8",
+    "references": [
+      {
+        "path": "build/integration/attack-effects/p07/observation-728C0-10.json",
+        "sha256": "16FE9F314ADDA5E2F3CEA353AE86B6E2B6356B3FE3D18B24E04B6D91A6F19AD9"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_002728C0/candidates/FD1A7CC30BE4F9CE328E888102A4CC8FF1993846B9145FC18FFCB6BB0C7C9039.c",
+        "sha256": "236CFADFA377F916C8C0D4855169836A03E1BFD0A66430FD66F3359D957DB007"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-728C0-10.json",
+        "sha256": "D2FBD05AA8A23C244946A768926058334C07122924BB53B4C1C49093EFE4B7F5"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/826C233CFA2752EE129DCCC5429DFFCAADCDC513BCC82A97F02A469EA4D30F33/workbench-report.json",
+        "sha256": "1B0ACF99F1B7BFC3D900AC6423DFD13AFD703C756E6DCA8B61C9A402DEBE7663"
+      },
+      {
+        "path": "build/matching/ae-p07/func_002728C0-09.c",
+        "sha256": "D5A4BDBF5E3ACCA82F3CCBD8659A9E0EE4267A057166079A9ECA283E426C2B7B"
+      },
+      {
+        "path": "build/matching/ae-p07/func_002728C0-08.c",
+        "sha256": "280E498F0AD4A51492AAEA0A493A5D682A8DD0A2F28BECAE1EB30050F896F061"
+      },
+      {
+        "path": "build/matching/ae-p07/func_002728C0-10.c",
+        "sha256": "236CFADFA377F916C8C0D4855169836A03E1BFD0A66430FD66F3359D957DB007"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-728C0-08.json",
+        "sha256": "3CD544A6145573A14496107E52E589DF11B5B8D285D12B1ACBC3E5AB7056668F"
+      },
+      {
+        "path": "build/matching/ae-p07/watch-728C0-09.json",
+        "sha256": "143C75C78DB85071245CD912C0B98CAFE523E374A3AAF65C57C6A7901CE465DC"
+      },
+      {
+        "path": "build/integration/attack-effects/p07/focused-proof.json",
+        "sha256": "98BBEEEE5708B25741507B89E0D8A4F78E480C977BBDA6BF6660615048965D91"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_002728C0/candidates/89A6F0B13F0CA479723EA97C687D80591F5EB5E77CA95257F89736EC4C5150D9.c",
+        "sha256": "D5A4BDBF5E3ACCA82F3CCBD8659A9E0EE4267A057166079A9ECA283E426C2B7B"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/1C08C2F6AD0BD549791D2FCDB01E52142BFA75075B3065819ACA351D7E4D1E4D/workbench-report.json",
+        "sha256": "822B2C9F64DBA317466D77D44E4BD8C41E2A40779AA25D6090B0A5D5F1804D31"
+      },
+      {
+        "path": "build/matching/ae-p07/targets/func_002728C0/candidates/37A78F84F896F453F54D7E2F5DECD77EA97C3E9564E4B05B3085D30440EA72DB.c",
+        "sha256": "280E498F0AD4A51492AAEA0A493A5D682A8DD0A2F28BECAE1EB30050F896F061"
+      },
+      {
+        "path": "build/matching/ae-p07/runs/E75CFE8DE305A689464C423DE8989D6FD1FE9B3577EC24A4B42AD72F3336AD59/workbench-report.json",
+        "sha256": "17FE25B5B90A7C8EB4A34E1030EE8DD60322503831E00A240D1F198D3C3C756B"
+      },
+      {
+        "path": "build/integration/attack-effects/p07/wave-acceptance.json",
+        "sha256": "DE58DE3FB87D31A7D14CCB60D6CCE1DD064BA2C6D27DDCDA4B71EF403F854D88"
+      }
+    ],
+    "relatedCandidateIds": [
+      "F71F01D29C81C90006DD3377515883A7414B4137F2256EAEE26C1EBE343214AB"
+    ],
+    "remainingFailure": "These saved source/native observations do not prove unique original syntax, universal allocation behavior or the complete compiler mechanism. Canonical source reconciliation and complete-wave acceptance are separately bound by the integration report. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "09 separates the position-copy call from the684 inline helper and returns destination.10 adds the analogous return-destination55C helper for the final allocation, retaining the following F150 call in the caller. The first later allocation remains explicit in the caller."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 4569,
+      "sha256": "134A408EAD595E3D3AEFDC14624F6A058CC384FCD7C391DD36088489E4347D55"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E99C49D841782FD054DF5F3EECB24EAEF3BB8A75131BE81CE297A16DF2DFB43C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_002728C0-d072d1846a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

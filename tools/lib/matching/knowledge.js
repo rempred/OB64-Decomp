@@ -33,7 +33,7 @@ function catalog(directory, inputs) {
     regular(mapped(directory), true);
     for (const name of fs.readdirSync(mapped(directory)).filter(n => n.endsWith('.observation.json')).sort()) {
       const file = path.join(directory, name);
-      try { records.push({ origin: 'archive', metadataPath: relative(file), envelope: JSON.parse(fs.readFileSync(regular(mapped(file)), 'utf8')) }); }
+      try { records.push({ origin: 'archive', metadataPath: relative(file), envelope: JSON.parse((inputSet.isResearch(inputs)?inputSet.researchRead(inputs,file):fs.readFileSync(regular(mapped(file)))).toString('utf8')) }); }
       catch (error) { inputSet.rethrow(error); diagnostics.push({ path: relative(file), validity: 'malformed', reason: error.message }); }
     }
   } catch (error) { inputSet.rethrow(error); diagnostics.push({ path: relative(directory), validity: 'unavailable', reason: error.message }); }
@@ -71,7 +71,7 @@ function link(value, anchor = false, inputs) {
   const [file, fragment, extra] = value.split('#');
   if (!canonicalPath(file) || extra !== undefined || (!anchor && fragment !== undefined)) throw new Error('invalid lesson link');
   const original = path.join(ROOT, file);
-  const text = fs.readFileSync(regular(inputs ? inputs.research(original) : original), 'utf8');
+  const text = (inputSet.isResearch(inputs)?inputSet.researchRead(inputs,original):fs.readFileSync(regular(inputs ? inputs.research(original) : original))).toString('utf8');
   if (fragment !== undefined) {
     const headings = [...text.matchAll(/^#{1,6}\s+(.+)$/gm)].map(m => m[1].trim().toLowerCase().replace(/[^\p{L}\p{N}_\s-]/gu, '').replace(/\s/g, '-'));
     if (!fragment || !headings.includes(fragment)) throw new Error('lesson anchor is missing');
@@ -81,7 +81,7 @@ function link(value, anchor = false, inputs) {
 function loadLessons(file = INDEX, inputs) {
   const result = { status: 'available', lessons: [], diagnostics: [] };
   try {
-    const value = JSON.parse(fs.readFileSync(regular(inputs ? inputs.research(file) : file), 'utf8'));
+    const value = JSON.parse((inputSet.isResearch(inputs)?inputSet.researchRead(inputs,file):fs.readFileSync(regular(inputs ? inputs.research(file) : file))).toString('utf8'));
     keys(value, ['schemaVersion', 'lessons']);
     if (value.schemaVersion !== 1 || !Array.isArray(value.lessons) || value.lessons.length > 30) throw new Error('unsupported lesson index');
     const seen = new Set();
@@ -135,7 +135,7 @@ function selectKnowledge(workbench, target, options, assess) {
   function authenticate(ref) {
     try {
       const donor = resolveTarget(workbench, ref.symbol);
-      const envelope = JSON.parse(fs.readFileSync(regular(mapped(path.join(ROOT, ref.path))), 'utf8'));
+      const envelope = JSON.parse((inputSet.isResearch(inputs)?inputSet.researchRead(inputs,path.join(ROOT,ref.path)):fs.readFileSync(regular(mapped(path.join(ROOT, ref.path))))).toString('utf8'));
       return { ...assess(donor, { origin: 'archive', metadataPath: ref.path, envelope }),
         donorSymbol: donor.symbol, applicability: applicability(workbench, target, donor),
         relationsStatus: 'not-assessed; donor relation claims are not transfer proof' };
@@ -152,7 +152,7 @@ function selectKnowledge(workbench, target, options, assess) {
     if (source) {
       row.kind = 'active-source-example'; row.source = source;
       try {
-        const file = regular(mapped(path.join(ROOT, source))), classification = policy.classifySource(path.join(ROOT, source), {inputs});
+        const file = regular(mapped(path.join(ROOT, source))), classification = (options.classifyResearchSource || policy.classifySource)(path.join(ROOT, source), {inputs});
         row.sourceSha256 = sha256File(file); row.sourceClass = classification.class;
         row.validity = classification.class === 'UNKNOWN' ? 'unavailable' : 'source-example';
         if (classification.error) row.reason = classification.error;

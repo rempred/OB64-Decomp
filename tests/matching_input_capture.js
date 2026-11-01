@@ -29,7 +29,7 @@ const prepared=()=>({model:{config:{acceptedInputSha256:{}}},phase8:{targets:[{s
   localTools:{compiler,splatPython:python,splatSplit:split,powershellRuntimeRoot:path.join(root,'.runtime/powershell'),asmDifferRoot:path.join(root,'.runtime/differ')}});
 const moduleFixture={exports:{}};
 vm.runInNewContext(fs.readFileSync(require.resolve('../tools/lib/matching/input_set'),'utf8'),{module:moduleFixture,Buffer,
-  __dirname:path.join(root,'tools/lib/matching'),process:{execPath:node},require:name=>{
+  __dirname:path.join(root,'tools/lib/matching'),process:{execPath:node,env:{}},require:name=>{
     if(name==='../current_workflow')return{prepareContext(options){assert.equal(options.readOnly,true);gateCalls++;return prepared();},currentVerificationState(){return{exact,state};}};
     if(name==='./private_inputs')return{capturePrivateInputs(options){return privateInputs.capturePrivateInputs({root,directories:['config','src','include','tools/lib'],files:['build/current/state.json'],extraDirectories:options.extraDirectories});}};
     if(name==='../source_policy')return{loadPolicyConfig(){return{matchingCompiler:{manifest:'compiler-manifest.json'},preprocessor:{path:'.runtime/cpp.exe',requiredExecutables:[{path:'.runtime/cc1.exe'}]}};}};

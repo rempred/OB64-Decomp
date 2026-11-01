@@ -1,3 +1,4 @@
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -12,7 +13,6 @@ typedef struct P05FactoryNode {
 
 struct P01PlacementObject;
 /* Descriptor 11 maps this dispatch subtable to original ROM 0x25E2F4. */
-extern P05FactoryNode *(*D_80209734[])(u32);
 
 struct P01PlacementObject *func_0024CF10(P05FactoryRecord *record)
 {

@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A021EE42601810F2A1051C37BAAB14CDA589FA8CA310F07E846445829B1EBF0F",
+  "observationId": "F264E41CF54033A66AB2D62164D878A04116DB17BD04E76035FF1731E7BD2433",
+  "symbol": "func_00259480",
+  "authored": {
+    "context": "Complete1156-byte func_00259480, frame112, including initialization, both factories, interpolation workspace, all coordinate updates, emission and cleanup. Source02 reaches the retail extent but keeps the first/second factory results in S1/S0 across the header-conversion cluster, unlike retail's successive S0 reuse. Shared publication preserves the historical source and its explicit controls. Selected-mi14/mi15/mi16 reports retain their actual identities; this current-model research import is uncompiled and creates no cross-model parent relationship.",
+    "effects": [
+      "successive-real-pointer-phases",
+      "factory-result-register-reuse"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E27E4AD261B1013436C110D074CE315AD27B181291E8ADF1952480A03874989A",
+      "sourceSha256": "AB4C075793B9843727B36CA236DAB0237563563C50C50BFA9AFE6210E87A6B9F"
+    },
+    "label": "successive-payload-header-views-recover-factory-pointer-reuse",
+    "observedEffect": "Source07 restores first-payload S0 but retains a separate S1 for the second return. Source08 and commented final source are mechanical PURE_C1156/frame112/rawRelocationMaskedExact=true on selected mi14/ED24A479. Both unions describe real nonoverlapping pointer views and add no storage reader, fabricated bytes or padding. Complete optimizer causality and original source are not established.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p06/59480-02.c",
+        "sha256": "6247BB3C455CF0E077E9054819BDC355EB8A9921ED3BE6364ED517216D078C94"
+      },
+      {
+        "path": "build/matching/ae-p06/59480-02.json",
+        "sha256": "5EBDD84975D7330C476FAD545E07C8EE5333887BF0AD58D5800CCCB5A95BBB71"
+      },
+      {
+        "path": "build/matching/ae-p06/59480-07.c",
+        "sha256": "D655AE98A734645BF82BCD54EB5A85588BD093B16F7086C51C0B43E831B105CE"
+      },
+      {
+        "path": "build/matching/ae-p06/59480-07.json",
+        "sha256": "8DAAF38543E95412F8D3DCEFF15141B8EAC0CAF1DAE3AE6AEED0CF35B5E71892"
+      },
+      {
+        "path": "build/matching/ae-p06/59480-08.c",
+        "sha256": "257C61782D468E3E40DB1EA4F289F7A1CEBDC95816A59B66DD7417B39AA06B33"
+      },
+      {
+        "path": "build/matching/ae-p06/59480-08.json",
+        "sha256": "2DE1A46FDA8C7E4D0E9A9166EE03A92181FCD2BEF705FC4C9B7798E73B8F7D8D"
+      },
+      {
+        "path": "build/matching/ae-p06/func_00259480.c",
+        "sha256": "239FA23CD79172E4EEDC67E19E49B46EAB668CA75634AE6EC7E9D6564B85E1A1"
+      },
+      {
+        "path": "build/matching/ae-p06/observations/59480-pointer-phases.json",
+        "sha256": "913F4C3B1558E8CE3C1B804CD1A7E2AEF52912AF21AE746A4234676CC4166F7B"
+      },
+      {
+        "path": "build/matching/ae-p06/59480-final.json",
+        "sha256": "BB22880A404063BD93A919BBDD3711002EDFACAA89AA6926D50157742B279234"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/wave-acceptance.json",
+        "sha256": "DFA77C4AC403B59574D04E0057B2A5A73EAE5B89A9EBECA674A7C2FCF9EC08A1"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/source-preparation/SOURCE-PREPARATION.json",
+        "sha256": "001F065D767A07E243DCBF0128DCB1924B224DFF89CB4539F9307ECD0EFA1C35"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/return-view-reconciliation.json",
+        "sha256": "70B497D90C0375A55B3A661B142D7870DB70F2520668B60307B91889A346733A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner has no private linked diagnostic. Canonical interface/alias reconciliation, actual relocations, sole linked C ownership, placement, target bytes and completed-wave full-ROM acceptance remain required. The separately reconciled P06 descendant now passes the complete-wave canonical verifier. That acceptance does not certify the historical controls or establish the original source spelling.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express each real factory result's successive payload and physical-header views in one local union. Keep the observed byte subtraction0x1C, both state stores and registrations, actual record addresses, source order, full switch and workspaces. Source07 changes only the first pointer's phase representation;08 applies the corresponding second phase representation."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 6067,
+      "sha256": "E27E4AD261B1013436C110D074CE315AD27B181291E8ADF1952480A03874989A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "AB4C075793B9843727B36CA236DAB0237563563C50C50BFA9AFE6210E87A6B9F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00259480-a021ee4260.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

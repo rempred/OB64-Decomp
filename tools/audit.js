@@ -83,6 +83,54 @@ function validateSquadMigration(targets, verifiedTargets) {
   return { ...result, p3066Active: true };
 }
 
+// Summary consistency only: callers must first independently reconstruct and
+// authenticate the complete source-object proofs against these bound targets.
+function validateRetiredPdrEvidence(targets, evidence) {
+  const fail = message => { throw new Error('retired PDR evidence: ' + message); };
+  const symbol = value => typeof value === 'string' && value.length > 0 && value.trim() === value;
+  const count = value => Number.isSafeInteger(value) && value >= 0;
+  const sources = new Set(['canonical', 'legacy-compatibility', 'compilation-group']);
+  if (!Array.isArray(targets) || !evidence || !Array.isArray(evidence.targets)
+      || !evidence.counts || !count(evidence.counts.proofTargets)
+      || !count(evidence.counts.retiredPdrRelocations)) fail('malformed census');
+  const expected = new Map();
+  let expectedTotal = 0;
+  for (const target of targets) {
+    if (!target || !symbol(target.symbol) || expected.has(target.symbol)
+        || !sources.has(target.relocationContractSource)
+        || !Array.isArray(target.expectedRelocations) || !Array.isArray(target.legacyAncillaryRelocations)) {
+      fail('malformed or duplicate active target');
+    }
+    if (target.expectedRelocations.some(record => !record || typeof record.section !== 'string'
+          || record.section.length === 0 || record.section === '.rel.pdr')
+        || target.legacyAncillaryRelocations.some(record => !record || record.section !== '.rel.pdr')) {
+      fail('active/retired section policy');
+    }
+    expected.set(target.symbol, target);
+    expectedTotal += target.legacyAncillaryRelocations.length;
+    if (!count(expectedTotal)) fail('expected total overflow');
+  }
+  const seen = new Set();
+  let observedTotal = 0;
+  for (const record of evidence.targets) {
+    const target = record && expected.get(record.symbol);
+    if (!target || seen.has(record.symbol) || !count(record.retiredPdrRelocations)
+        || record.relocationContractSource !== target.relocationContractSource
+        || record.retiredPdrRelocations !== target.legacyAncillaryRelocations.length) {
+      fail('target identity or count mismatch');
+    }
+    seen.add(record.symbol);
+    observedTotal += record.retiredPdrRelocations;
+    if (!count(observedTotal)) fail('observed total overflow');
+  }
+  if (seen.size !== expected.size || evidence.targets.length !== targets.length
+      || evidence.counts.proofTargets !== targets.length
+      || observedTotal !== expectedTotal || evidence.counts.retiredPdrRelocations !== expectedTotal) {
+    fail('aggregate or membership mismatch');
+  }
+  return { targets: targets.length, retiredPdrRelocations: expectedTotal };
+}
+
 function main(argv = process.argv.slice(2)) {
   const args = parseArgs(argv);
   if (args.help) {
@@ -93,7 +141,7 @@ function main(argv = process.argv.slice(2)) {
 }
 
 function runAudit(args, profile) {
-  const context = measure(profile, 'prepare-context', () => prepareContext({ profile }));
+  let context = measure(profile, 'prepare-context', () => prepareContext({ profile }));
   const phase5aRoot = args.phase5aRoot || resolveLocalTools({ audit: true }).phase5aRoot;
   if (!fs.existsSync(phase5aRoot) || !fs.statSync(phase5aRoot).isDirectory()) {
     throw new Error(`accepted Phase 5A evidence root is missing: ${phase5aRoot}`);
@@ -111,7 +159,9 @@ function runAudit(args, profile) {
   const func002861C8Structure = measure(profile, 'func002861c8-structure', () => verifyFunc002861C8Structure({ runMutations: true }));
   measure(profile, 'baseline-setup', () => ensureBaseline(context));
   console.log('Running CURRENT ownership and exact-ROM verification...');
-  const current = measure(profile, 'normal-fresh-acceptance', () => verifyCurrent(prepareContext({ profile }), { profile, forceFresh: true }));
+  // All post-fresh assertions use the exact context passed to verification.
+  context = prepareContext({ profile });
+  const current = measure(profile, 'normal-fresh-acceptance', () => verifyCurrent(context, { profile, forceFresh: true }));
   const sourceObjectEvidence = current.verification.verification.sourceObjectEvidence;
   if (!sourceObjectEvidence
       || sourceObjectEvidence.identity.sourceCommit !== '54514ded39ceb32165a125ddba04ca5b551773a2'
@@ -119,14 +169,10 @@ function runAudit(args, profile) {
       || sourceObjectEvidence.counts.pureTargets !== current.sourcePolicy.counts.PURE_C
       || sourceObjectEvidence.counts.hybridTargets !== current.sourcePolicy.counts.HYBRID_C
       || sourceObjectEvidence.counts.compilerAssemblyRewrites !== 0
-      || sourceObjectEvidence.counts.retiredPdrRelocations !== 38
       || sourceObjectEvidence.targets.some((target) => target.compilerAssemblyRewritten !== false)) {
     throw new Error('verified GNU 2.6 source-to-object evidence invariant failed');
   }
-  if (context.phase8.targets.some((target) => target.expectedRelocations.some((record) => record.section === '.rel.pdr'))
-      || !context.phase8.targets.every((target) => target.legacyAncillaryRelocations.every((record) => record.section === '.rel.pdr'))) {
-    throw new Error('active/retired relocation policy invariant failed');
-  }
+  validateRetiredPdrEvidence(context.phase8.targets, sourceObjectEvidence);
   const canonicalLinkageTargets = context.phase8.targets.filter((target) => target.relocationContractSource === 'canonical');
   const legacyLinkageTargets = context.phase8.targets.filter((target) => target.relocationContractSource === 'legacy-compatibility');
   const func135a0Linkage = context.phase8.compatibility.find((target) => target.symbol === 'func_000135a0');
@@ -161,6 +207,9 @@ function runAudit(args, profile) {
     let summary;
     textContract.withSourceObjectProof(current.build.output, target, record, proof => {
       textContract.validateRecords(proof, { textContract: textContract.resolveTextContract(target) }, 'audit');
+      if (!require('util').isDeepStrictEqual(proof.finalObject?.legacyPdrRelocationsRetired, target.legacyAncillaryRelocations)) {
+        throw new Error('audit retired PDR proof array mismatch: ' + target.symbol);
+      }
       if (!proof.objectEvidence || proof.linkEvidence?.fullOwnerExact !== true) throw new Error('audit text representation evidence is incomplete');
       summary = { symbol: target.symbol, mode: proof.textContract.mode, textContractSha256: textContract.hash(proof.textContract) };
     });
@@ -215,4 +264,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { main, parseArgs, validateSquadMigration, validateSquadMigrationModel };
+module.exports = { main, parseArgs, validateSquadMigration, validateSquadMigrationModel, validateRetiredPdrEvidence };

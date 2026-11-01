@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7E06FBEC53AC00C221B3F99B1C100CA7318BD5E82B721101827E7B2D21982D95",
+  "observationId": "9EF9AA30A31A34C64ED710471EA7DC70A3F4EBCE5EBC2FEEB07A7A32DF2BB052",
+  "symbol": "func_002675B4",
+  "authored": {
+    "context": "Complete wrapper with display-list preamble, alpha float-to-u32 conversion and call to the shared renderer. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi15/mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        }
+      ],
+      "expandedSha256": "A6381E9726A7D1A0E651694B21D07C078A4A4B8DDE6483923AF42AF41392A8C0",
+      "sourceSha256": "D33E9DC5C150DEF4A3FFC1DF0480C8D635D48E7C516979E28F55D1DFB47781A6"
+    },
+    "label": "e05-675B4-embedded-pointer-before-packets",
+    "observedEffect": "The pointer lifetime moves its addiu before the conversion branch and restores the call delay-slot store. The selected 180-byte object has zero nonrelocation word differences; the same source form transfers to the 220-byte body of func_00267668, whose original 12-byte zero suffix still needs admission.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e05/675B4-embedded-before-packets.json",
+        "sha256": "28C3E4EEC083F7E6B17C906C3ECF259A487C2406FBFB23DCA3BE6BEB8401FE3D"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002675B4/candidates/8EAD7E0297B28C85FF50755027336602F8C72AF906917BC40BD8DEEA5544BA05.c",
+        "sha256": "D33E9DC5C150DEF4A3FFC1DF0480C8D635D48E7C516979E28F55D1DFB47781A6"
+      },
+      {
+        "path": "build/matching/ae-e05/675B4-first.json",
+        "sha256": "132351CB54A41CA1D7CFA736C364C75EF8B8C4A57BDBADA7BE34CF81DEE8F4F8"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002675B4/candidates/A9B6B3BDFC86DD49D2CBAF0A90227B26B9376CE457FF9E922C8667F2F1D1FE11.c",
+        "sha256": "C3B25CD056290FB161192437B3D507773A932A4530CB24752D691BC729061DD4"
+      },
+      {
+        "path": "build/matching/ae-e05/67668-first.json",
+        "sha256": "8DFEFE511356992A5E962801316BE573955563FF9EC5E745FF43D269F32A9299"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00267668/candidates/628D91A0A7F49B4EB734308CEAE604699F7A1C62407EAE28EF870224BC7675F9.c",
+        "sha256": "AE77A5B6C363FE7564745008D382EFC2EC00272900024F8C1C99C34FC5E55697"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002675B4/candidates/53E523FF6E54FE4ACCC67FB93208FF7AF4BE10AE665D9E6873D25ACBD6E64C3F.c",
+        "sha256": "D33E9DC5C150DEF4A3FFC1DF0480C8D635D48E7C516979E28F55D1DFB47781A6"
+      },
+      {
+        "path": "build/matching/ae-e05/675B4-final-import.json",
+        "sha256": "7C8D8826D451081E6DA80657676ABB06ADA485C32C6902A60BAA03E26EFE70AE"
+      },
+      {
+        "path": "build/matching/ae-e05/675B4-final-observation.json",
+        "sha256": "57A410C555F77A45FCC419BA84CD425531D3140FCFF10CBBBBFCE9F1D00D3A2F"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/wave-acceptance.json",
+        "sha256": "A899FC33E5813D1D394439D7110AFFF4ECA66B3AD8FDB7FCF0E1D6F903FF7654"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "E62590846C43B2740FF6D0F676BE929CEC90FB108E369E3165D3C552990B74FA"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/resume-after-p06/installation.json",
+        "sha256": "7E36653C3269B2BDF0DA2DE0F511AA42103687686385D3F196935B542FF7747A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private selected-input object evidence only; current-base linked ownership, relocation/placement and complete-wave/full-ROM gates remain with the integrator. The separately reconciled canonical E05 descendant now passes the complete-wave normal verifier within the changed-tool structural audit. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Compute the embedded object pointer before the packet blocks instead of forming object+0x18 only in the final call expression."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      }
+    ],
+    "expanded": {
+      "bytes": 1742,
+      "sha256": "A6381E9726A7D1A0E651694B21D07C078A4A4B8DDE6483923AF42AF41392A8C0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D33E9DC5C150DEF4A3FFC1DF0480C8D635D48E7C516979E28F55D1DFB47781A6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_002675B4-7e06fbec53.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

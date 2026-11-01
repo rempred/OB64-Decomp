@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E4E79E242432E033E2AA2BDE13B20F4A9E21D36A7A43DDA2D74D979DFB1E5DF5",
+  "observationId": "D3F793DE8A1AD6C95BB19E16C3AE53BC7DF1D49576D4E2C085F5C265FEDC7FAF",
+  "symbol": "func_00263AF0",
+  "authored": {
+    "context": "Same complete500B owner and operations as the do/while control; comparison files retain the exact source-bound native evidence on historical mi15. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi15/mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        }
+      ],
+      "expandedSha256": "9D9FAB44D4068948B331779E867744DAD03B070E21A98E2DB92CC7CE67B0CA37",
+      "sourceSha256": "999AE8991CE8638B13B2B83765001F2E628B1A9D1D90A11499B5D7F5361ED021"
+    },
+    "label": "e05-63af0-plain-command-block",
+    "observedEffect": "PURE_C500B raw relocation-masked exact; initial cursor load now precedes stack setup, and all nonrelocated instruction fields agree. Native run316AE2C4 remains preserved. Header transfer is a combined source change, not an isolated proof of which spelling caused the optimizer behavior.",
+    "parentCandidateId": "125FD7CDA44993A665A0CF949A47C6EF296966C5BEA43B2E8E778548878B7638",
+    "references": [
+      {
+        "path": "build/matching/ae-e05/63AF0-plain.json",
+        "sha256": "5687E4981817E54F1F9AEF3BEB6CB2657468D13509B193133C98B0C506ABFDD9"
+      },
+      {
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00263AF0/candidates/1FD9D92F6E980EC0D7B73177670F251ECD496DD6228B9E6081C37E07E22EE829.c",
+        "sha256": "999AE8991CE8638B13B2B83765001F2E628B1A9D1D90A11499B5D7F5361ED021"
+      },
+      {
+        "path": "build/matching/ae-e05/63AF0-plain-import.json",
+        "sha256": "360FBAB80F5B6818C2085C26FFB4737233D10578E3B7FC53FD706A00E3F9A1E4"
+      },
+      {
+        "path": "build/matching/ae-e05/63AF0-plain-observation.json",
+        "sha256": "95CB7904EBD1FC6686259F6CEBD02B0E8ACE3E1CA8CE99031F102BC98044FE80"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/wave-acceptance.json",
+        "sha256": "A899FC33E5813D1D394439D7110AFFF4ECA66B3AD8FDB7FCF0E1D6F903FF7654"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "E62590846C43B2740FF6D0F676BE929CEC90FB108E369E3165D3C552990B74FA"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/resume-after-p06/installation.json",
+        "sha256": "7E36653C3269B2BDF0DA2DE0F511AA42103687686385D3F196935B542FF7747A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner has no isolated linked diagnostic; actual provider/addend identity, linked bytes, sole ownership and full-wave ROM gates remain for integrator. The separately reconciled canonical E05 descendant now passes the complete-wave normal verifier within the changed-tool structural audit. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace the local do/while packet macro with the established game/combat_draw_commands.h plain-block postincrement macro. Typedef and member spellings follow that existing header."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      }
+    ],
+    "expanded": {
+      "bytes": 3032,
+      "sha256": "9D9FAB44D4068948B331779E867744DAD03B070E21A98E2DB92CC7CE67B0CA37"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "999AE8991CE8638B13B2B83765001F2E628B1A9D1D90A11499B5D7F5361ED021"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_00263AF0-e4e79e2424.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

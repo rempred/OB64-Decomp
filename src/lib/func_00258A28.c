@@ -1,3 +1,4 @@
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -47,9 +48,9 @@ extern const double D_8020A278;
 extern const double D_8020A280;
 extern void func_00262B68(void);
 extern void func_00262C80(void);
-extern s16 func_0024BCE8(u8);
-extern void func_0024C0DC(u8, P01Vec3 *, float, float, float);
-extern void *func_0024D180(P01Vec3 *, void *);
+
+
+
 extern void func_0026241C(void *, s32, s32);
 extern void func_00262434(void *);
 extern void func_002623C4(void *);

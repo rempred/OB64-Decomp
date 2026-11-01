@@ -132,24 +132,55 @@ function probeHistoryTests(root, context, workbench, target) {
   const options = { context, matchingRoot: root, sourcePath: sourceFile, passes: ['rtl'] };
   const current = probe.runProbe(workbench, target, source, options);
   assert.equal(current.status, 'complete', current.error);
-  assert.equal(current.identity.implementation.length, 5);
-  const historical = JSON.parse(JSON.stringify(current));
-  historical.identity.implementation.pop();
-  historical.probeId = digest(historical.identity);
-  assert.notEqual(historical.probeId, current.probeId);
-  const oldDir = path.join(root, 'historical', historical.probeId);
-  fs.mkdirSync(oldDir, { recursive: true });
-  for (const entry of historical.artifacts) fs.copyFileSync(path.join(p7.ROOT, path.dirname(current.source), entry.name), path.join(oldDir, entry.name));
-  historical.source = relative(path.join(oldDir, 'authored.c'));
-  historical.expandedSource = relative(path.join(oldDir, 'input.c'));
-  historical.assembly = relative(path.join(oldDir, 'output.s'));
-  delete historical.reportSha256; historical.reportSha256 = digest(historical);
-  const reportFile = path.join(oldDir, 'probe-report.json'); fs.writeFileSync(reportFile, JSON.stringify(historical));
-  assert.equal(probe.readProbe(reportFile).probeId, historical.probeId);
+  // Ordered closure includes the diagnostic context consumed by the current probe.
+  // Compare fresh file hashes, not just the observed implementation count.
+  const expectedImplementations = [
+    'tools/lib/matching/probe.js', 'tools/match.js', 'tools/lib/source_policy.js',
+    'tools/lib/matching/target_model.js', 'tools/lib/matching/scratch_assembly.js',
+    'tools/lib/matching/input_set.js', 'tools/lib/matching/diagnostic_context.js',
+  ].map(file => ({ path: file, sha256: p7.sha256File(path.join(p7.ROOT, file)) }));
+  assert.deepEqual(current.identity.implementation, expectedImplementations);
+  const histories = [];
+  for (const count of [4, 5]) {
+    // These are retained historical-format fixtures, not current executable identities.
+    const historical = JSON.parse(JSON.stringify(current));
+    historical.identity.implementation = historical.identity.implementation.slice(0, count);
+    historical.probeId = digest(historical.identity);
+    assert.notEqual(historical.probeId, current.probeId);
+    const oldDir = path.join(root, 'historical', historical.probeId);
+    fs.mkdirSync(oldDir, { recursive: true });
+    for (const entry of historical.artifacts) fs.copyFileSync(path.join(p7.ROOT, path.dirname(current.source), entry.name), path.join(oldDir, entry.name));
+    historical.source = relative(path.join(oldDir, 'authored.c'));
+    historical.expandedSource = relative(path.join(oldDir, 'input.c'));
+    historical.assembly = relative(path.join(oldDir, 'output.s'));
+    delete historical.reportSha256; historical.reportSha256 = digest(historical);
+    const reportFile = path.join(oldDir, 'probe-report.json'); fs.writeFileSync(reportFile, JSON.stringify(historical));
+    assert.equal(probe.readProbe(reportFile).probeId, historical.probeId);
+    histories.push({ historical, reportFile });
+  }
+  assert.equal(new Set([current.probeId, ...histories.map(h => h.historical.probeId)]).size, 3);
+  // Self-consistent report hashes must not admit a malformed ordered implementation prefix.
+  for (const mutate of [
+    entries => entries.slice(0, 3),
+    entries => [entries[1], entries[0], ...entries.slice(2)],
+    entries => [entries[0], entries[0], ...entries.slice(2)],
+    entries => entries.map((entry, i) => i === 0 ? { ...entry, path: 'tools/unexpected.js' } : entry),
+    entries => entries.map((entry, i) => i === 0 ? { ...entry, sha256: 'invalid' } : entry),
+  ]) {
+    const malformed = JSON.parse(JSON.stringify(histories[0].historical));
+    malformed.identity.implementation = mutate(malformed.identity.implementation);
+    malformed.probeId = digest(malformed.identity);
+    delete malformed.reportSha256; malformed.reportSha256 = digest(malformed);
+    const reportFile = path.join(root, 'malformed-probe-report.json');
+    fs.writeFileSync(reportFile, JSON.stringify(malformed));
+    assert.throws(() => probe.readProbe(reportFile), /probe report provenance is malformed/);
+  }
   const environmentBefore = process.env.VR4300MUL;
   try {
     process.env.VR4300MUL = 'OFF';
-    assert.equal(probe.readProbe(reportFile).probeId, historical.probeId, 'historical read was blocked');
+    for (const { historical, reportFile } of histories) {
+      assert.equal(probe.readProbe(reportFile).probeId, historical.probeId, 'historical read was blocked');
+    }
     assert.throws(() => probe.runProbe(workbench, target, source, options), /VR4300MUL disables/);
   } finally {
     if (environmentBefore === undefined) delete process.env.VR4300MUL;
@@ -157,7 +188,9 @@ function probeHistoryTests(root, context, workbench, target) {
   }
   const reused = probe.runProbe(workbench, target, source, options);
   assert.equal(reused.cached, true); assert.equal(reused.probeId, current.probeId);
-  assert.notEqual(reused.probeId, historical.probeId, 'historical report was reused as current');
+  for (const { historical } of histories) {
+    assert.notEqual(reused.probeId, historical.probeId, 'historical report was reused as current');
+  }
 }
 
 async function main() {

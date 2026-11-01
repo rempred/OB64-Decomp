@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const { validateRetiredPdrEvidence } = require('../tools/audit');
 const path = require('path');
 const textContract = require('../tools/lib/text_contract');
 const compilationGroups = require('../tools/lib/compilation_groups');
@@ -688,18 +689,19 @@ function main() {
       || independentEvidence.counts.proofTargets !== phase8.targets.length
       || independentEvidence.counts.pureTargets !== classifications.counts.PURE_C
       || independentEvidence.counts.hybridTargets !== classifications.counts.HYBRID_C
-      || independentEvidence.counts.compilerAssemblyRewrites !== 0
-      || independentEvidence.counts.retiredPdrRelocations !== 38) {
+      || independentEvidence.counts.compilerAssemblyRewrites !== 0) {
     fail('source-to-object evidence aggregate drift');
   }
 
-  // Retain all historical GNU 2.6 cases under their current mechanical classes.
+  validateRetiredPdrEvidence(phase8.targets, independentEvidence);
+
+  // Retain all historical GNU 2.6 cases under their reviewed current classes.
   const gnu26RegressionClasses = new Map([
     ['func_0002CD70', SOURCE_CLASSES.HYBRID_C],
     ['func_0000BC8C', SOURCE_CLASSES.PURE_C],
     ['func_0015DF10', SOURCE_CLASSES.HYBRID_C],
     ['func_0002DE10', SOURCE_CLASSES.HYBRID_C],
-    ['func_00269798', SOURCE_CLASSES.HYBRID_C],
+    ['func_00269798', SOURCE_CLASSES.PURE_C],
     ['func_0000B29C', SOURCE_CLASSES.PURE_C],
   ]);
   const targetProofs = [];

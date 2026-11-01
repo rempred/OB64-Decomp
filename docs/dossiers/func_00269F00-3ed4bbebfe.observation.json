@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3ED4BBEBFE16DD0ECC0074A1A0CEFCD6D6DB3FE3BD2BDDE64C2416D0B61FDFDA",
+  "observationId": "C0E130A2C83BE730AFED85B1B52F256066B9CA3B4400581B7CFD5C348E5391D5",
+  "symbol": "func_00269F00",
+  "authored": {
+    "context": "Exact historical E07 source/control referenced by separate-source-and-destination-inductions-restore-seven-words. Preserve original source and native report context. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order",
+      "extent"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "3159BA7BDD9A93F1F712CFFEF4736B2044D54E5771497EC42F15A24CEC41CF2E",
+      "sourceSha256": "10F04DAFC2A640036CD12228E72B83A62F8AB2F7A95FECF5CD6BE7E180BA2E66"
+    },
+    "label": "e07-source-control-d11f1d74cf",
+    "observedEffect": "This saved mechanically PURE_C object has 348 function text bytes. The authored primary observations separately identify the source changes and outcomes.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_00269F00/candidates/D11F1D74CFFD8262AD9EF0023016F415D07D22A6463C7971771C2327C8462871.c",
+        "sha256": "10F04DAFC2A640036CD12228E72B83A62F8AB2F7A95FECF5CD6BE7E180BA2E66"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-00269F00-01.json",
+        "sha256": "5CA40D42B59C1C278713AC7F29CF9A385994CEB92C622156BE87692E071830DF"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/4DB927141A65247BEAB7E45263EDD40192F6860087E4084E64A6F7C586331684/workbench-report.json",
+        "sha256": "D763148388CAB44C78CDDC407EDBEFC5D59AA6CB35C31E748D2AC9E098C1CD7F"
+      },
+      {
+        "path": "build/matching/ae-e07/00269F00-indices-observation.json",
+        "sha256": "669612495B7D496961E8F4825A45A03D41CD8190CD6670C32F9DBE5C062288F8"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical diagnostic control only, not linked matching acceptance or a universal compiler mechanism. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve this measured control for the separately authored source-pair observations; it does not inherit their observed improvement."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1461,
+      "sha256": "3159BA7BDD9A93F1F712CFFEF4736B2044D54E5771497EC42F15A24CEC41CF2E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "10F04DAFC2A640036CD12228E72B83A62F8AB2F7A95FECF5CD6BE7E180BA2E66"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00269F00-3ed4bbebfe.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

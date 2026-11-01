@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "125FD7CDA44993A665A0CF949A47C6EF296966C5BEA43B2E8E778548878B7638",
+  "observationId": "A0285FAF204A966260C830077BD886D5156EFC3F751119B742AA34F3E21B35C2",
+  "symbol": "func_00263AF0",
+  "authored": {
+    "context": "Full500B owner and 24B frame with the actual alpha conversion, helper call and all command regions; supported private symbolic-object comparison on mi15. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi15/mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "31F4BB13B8DF43B309B3712755D51BFBF4C3EE27D5890E235429C569C672EFDF",
+      "sourceSha256": "CC65CC5396FCA9C0571E4FF975A941841B8A6A3F1E02240F162A434CAFF373BF"
+    },
+    "label": "e05-63af0-do-while-control",
+    "observedEffect": "PURE_C500B; first display-list cursor load remains after the prologue and many packet stores/values allocate differently. Native run BA8AC465 and source CC65CC53 remain preserved.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e05/63AF0-post.json",
+        "sha256": "750796469B3C040E5283769893824A56182D105FF2B1863408373E40DD6F8B4D"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00263AF0/candidates/1E9F5C7774FA28CD29A22FF550D0B7D9C6D31EFBF76107A6F2A29EF9E0B278EA.c",
+        "sha256": "CC65CC5396FCA9C0571E4FF975A941841B8A6A3F1E02240F162A434CAFF373BF"
+      },
+      {
+        "path": "build/matching/ae-e05/63AF0-post-import.json",
+        "sha256": "A74381E2EBC3141B96B6C60DABEAA574851FB1979FB08779DC330637A2B3F128"
+      },
+      {
+        "path": "build/matching/ae-e05/63AF0-post-observation.json",
+        "sha256": "C91B7A78DEF4BEE85472913FE5BC330EDD14612AF610772C7429B4E0C79C5657"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/wave-acceptance.json",
+        "sha256": "A899FC33E5813D1D394439D7110AFFF4ECA66B3AD8FDB7FCF0E1D6F903FF7654"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "E62590846C43B2740FF6D0F676BE929CEC90FB108E369E3165D3C552990B74FA"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/resume-after-p06/installation.json",
+        "sha256": "7E36653C3269B2BDF0DA2DE0F511AA42103687686385D3F196935B542FF7747A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonrelocated scheduling/allocation differences; no isolated link for inactive ASM. Compare the ordinary plain-block macro source next. The separately reconciled canonical E05 descendant now passes the complete-wave normal verifier within the changed-tool structural audit. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use postincrement packet locals inside a do/while(0) emission wrapper."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2217,
+      "sha256": "31F4BB13B8DF43B309B3712755D51BFBF4C3EE27D5890E235429C569C672EFDF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CC65CC5396FCA9C0571E4FF975A941841B8A6A3F1E02240F162A434CAFF373BF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_00263AF0-125fd7cda4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

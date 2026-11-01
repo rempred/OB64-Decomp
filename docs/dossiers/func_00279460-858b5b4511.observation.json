@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "858B5B45119EF435F14FC34E4818986C6870D65A3E73DC5D7C3E9E04073ED6D4",
+  "observationId": "4799874A309D2CD334FE0F7A130DA396DB85AAB9E17CA7723C4BB2890B9FF4EB",
+  "symbol": "func_00279460",
+  "authored": {
+    "context": "79460 sole944-byte owner/frame128; complete init, factory, update, shared matrix publication, child launch, release/default coverage. Shared publication preserves the historical source and its explicit controls. Selected-mi14/mi15/mi16 reports retain their actual identities; this current-model research import is uncompiled and creates no cross-model parent relationship.",
+    "effects": [
+      "complete-offset-arms-and-case-local-object-matrix-phase"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2829,
+          "path": "include/game/effect_adapters_e08.h",
+          "sha256": "58D4BD437FDD4E87FCC962547501B975F828C5F6C3920F947035F0C0E058D55C"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "43EA07CF12BC1CA08D447323A3410E2455CDE39C14162F101D0DA70BA8639769",
+      "sourceSha256": "8279B0475DCB785A086742EBF6645AD943EB84ACD29E006BDC1BF0BA751A7E4A"
+    },
+    "label": "complete-offset-arms-and-case-local-object-matrix-phase",
+    "observedEffect": "07 restores initialization exactly,08 cached object keepsS0 and adds reload.09/final full944/frame128 mechanicalPURE_C/rawRelocationMaskedExact=true. Earlier localheight/conditional forms eliminated original jump; floatarray added load. Case-local current usesV1 until derived matrix entersS0. Exact original source and complete pass causality remain unproven.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p06/79460-01.json",
+        "sha256": "4379A6472E6A5AD85FC91804164518CD3688DB14762D643D01CA074A55D48D20"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00279460/candidates/552353CF1859352608AA8C86ABC3458D8850323473324DF1E122DCD97868ADF8.c",
+        "sha256": "1BAF68750A0999FC2FE6705043F2BC4D0001F4B8B57282651BDB5E2530F79C0E"
+      },
+      {
+        "path": "build/matching/ae-p06/79460-03.json",
+        "sha256": "F2C690E283D93F8E7FB2E2644B974AE8590A1B772B823F1D30D2150CFB8F4A05"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00279460/candidates/7C77EEC53DBB05A677BDAF30EDE69D09017C64696C598049DDF3BBA6EB3D769C.c",
+        "sha256": "9E1E1D5E19B465B43C1CA5565F89750CE937CE3464C46A856AD3C297E8C66578"
+      },
+      {
+        "path": "build/matching/ae-p06/79460-06.json",
+        "sha256": "363A6DAEB9A9A617836B1E26E023C78B4071BF20A1633AAA1F00F104E1A6C738"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00279460/candidates/B0132A7E36AB2F2597EB601EACE0EAEB81D0FE4C530A6E1B2E269CC04BD91422.c",
+        "sha256": "4CA621AB81A774B0DCFA87E573CD7F2D4C3B7689C99DE2D0B9514A316D24AD9C"
+      },
+      {
+        "path": "build/matching/ae-p06/79460-07.json",
+        "sha256": "1FBFD1E3135A916A3A973454FAE03E2FD8E8944B0CE90599E8B6D168A822C649"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00279460/candidates/D7398149FB1CB5271F552C3FB4427B4EF7A6D54578BD4C3289C15311DC16BD7E.c",
+        "sha256": "6C32F366B578C02CB948F347F1A29E36D86F1531F81484701A1889CFC812483D"
+      },
+      {
+        "path": "build/matching/ae-p06/79460-08.json",
+        "sha256": "B1218FCFC950B3AE33288D66927A2D07A8AC90A7209FD653D778F772C53540C2"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00279460/candidates/C019C4CDA4D93378374057D72320FC852EFD7B74E12FA62149A03ED9547C7CEC.c",
+        "sha256": "84E4E15A519BBD83C9532B4E4CB60E7BA9678D99394C3FFEB83EB3DD8E8F62AE"
+      },
+      {
+        "path": "build/matching/ae-p06/79460-09.json",
+        "sha256": "CD863BA3C508AF96AAD87A89A81348E6CF487A85CD755343FBC801B8DA40DD64"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00279460/candidates/B502AA11FFFA52DE9072DAC80DFF4529681D2FE4DD412298ABD700B88C329BAA.c",
+        "sha256": "6CEE223FB6FA740BAC4B516935C3B87B200D3742C79BFAA9FE373EC3A3303CED"
+      },
+      {
+        "path": "build/matching/ae-p06/79460-final.json",
+        "sha256": "AF621085AC76EADC8FC8E78E6254E642065943BB534800EC5967051F4931FFE0"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00279460/candidates/AE49BF5018E8410A737DBFC2993283E2F8F87D06275F73BA7FCB00413E63AB34.c",
+        "sha256": "8279B0475DCB785A086742EBF6645AD943EB84ACD29E006BDC1BF0BA751A7E4A"
+      },
+      {
+        "path": "build/matching/ae-p06/79460-assessment.md",
+        "sha256": "65A953596FDAD6466D1AA548EAA907215A4AA60EAF71840F5AA29512CCAF9AA1"
+      },
+      {
+        "path": "build/matching/ae-p06/func_00279460.c",
+        "sha256": "8279B0475DCB785A086742EBF6645AD943EB84ACD29E006BDC1BF0BA751A7E4A"
+      },
+      {
+        "path": "build/matching/ae-p06/observations/79460-value-phases.json",
+        "sha256": "ACA49B638906982F55F36FD56F6B805140499F2C2706B81564D7DB15B85EC92B"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/wave-acceptance.json",
+        "sha256": "DFA77C4AC403B59574D04E0057B2A5A73EAE5B89A9EBECA674A7C2FCF9EC08A1"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/source-preparation/SOURCE-PREPARATION.json",
+        "sha256": "001F065D767A07E243DCBF0128DCB1924B224DFF89CB4539F9307ECD0EFA1C35"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/return-view-reconciliation.json",
+        "sha256": "70B497D90C0375A55B3A661B142D7870DB70F2520668B60307B91889A346733A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private diagnostic only. Canonical interface/relocation, ownership, placement, target/full-owner bytes and complete-wave exact-ROM gates remain integrator-only. The separately reconciled P06 descendant now passes the complete-wave canonical verifier. That acceptance does not certify the historical controls or establish the original source spelling.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "07 assigns all three actual offset components within both selection arms;09 separates update-case object lifetime from earlier factory case and captures matrix/context before transition."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2829,
+        "path": "include/game/effect_adapters_e08.h",
+        "sha256": "58D4BD437FDD4E87FCC962547501B975F828C5F6C3920F947035F0C0E058D55C"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 9682,
+      "sha256": "43EA07CF12BC1CA08D447323A3410E2455CDE39C14162F101D0DA70BA8639769"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8279B0475DCB785A086742EBF6645AD943EB84ACD29E006BDC1BF0BA751A7E4A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00279460-858b5b4511.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

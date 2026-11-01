@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "196F2782FB344753A1E5ADCCACBD9818CAB6C6D43C09D0E6B9042691CAEDB2C5",
+  "observationId": "F0D38D47048B415423B0DA2ED03B642C83C76A5F914E4D260FAE33A423C29ABE",
+  "symbol": "func_0025C590",
+  "authored": {
+    "context": "Frameless276-byte func_0025C590 range ladder. A word parameter and separate u16 local preserve distinct source views; original first branch has a copy delay plus separate local jump. Sources/watch03,05,06 are preserved under this private root. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E09 wave report.",
+    "effects": [
+      "control-flow",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "75240E93FCC204ED95307A6C38F235E8FA993CC4B870D8CF5321BE1426687F4F",
+      "sourceSha256": "2D3226F6EDA6E09F62114A07A7841C8DB8A068B533483273D3D7609BB7590A97"
+    },
+    "label": "common-halfword-view-before-range-guard",
+    "observedEffect": "watch06 emits the complete276-byte frameless PURE_C body with exactly one R_MIPS_26 at0x10 to local body offset0x10C; all other words equal original and raw relocation-masked comparison is exact. watch05 is also276 bytes but places the separate BEQ/copy/J at the second guard (9 differing instructions). The separate initialized view before guard reproduces the first BEQ/copy/J and a0-to-v1 use pattern. This is observed source/output evidence, not a proven compiler mechanism or original syntax.",
+    "parentCandidateId": "564F46C2042C536924D1FD57AFFC60326EC1383CA97F261C2057BE935C436697",
+    "references": [
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C590/candidates/4DF8223BBD425993F691B5EE4BB93276814654E5C5A7917115F27AA304EAA7EB.c",
+        "sha256": "0EC6B298A7AEDCA308E94A867AEEF58DE2F644E6BF552E7955F75F8FC80E26D5"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C590-watch06.json",
+        "sha256": "090A1D0B18603DCCA5E04CE4F9BC90FDD42CC48C0A839B4618BAFA8C89AFA963"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/DEEE992A26A09A11AFF9E59A3CA3DBEF7BA4F60354B6ACD4CD52E6B4235CB976/workbench-report.json",
+        "sha256": "561A8F0BF63A7FB1BE347ED47928532DF02E60DAC103C47108DFA01B892F35EF"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C590-observation.json",
+        "sha256": "DD4FF69404C8AF95A406682F0B57064BA3E98E6666B0FBBE083AF380C239B94F"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C590-watch05.json",
+        "sha256": "18998425818FEFB162144826221A0F6DD0C6FC1488B9ACA05589B7AEB6E7952C"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C590/candidates/787104092691821A7E1592CD1588386F9AB7AE388E598AE6C31EA67E9CF6E314.c",
+        "sha256": "C72F7356D3A9CDE835313DE1883C889C41A845445D22EE7B234FB2ECCF5F9E19"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/4EAB7F0CB2B29DB5C0CB46E33A9F87FB5BA76F0B2D1961897F967A4F60ABFC07/workbench-report.json",
+        "sha256": "DF30A24236F2FE4FFEF26D34AC2AB1AE643C444E8E772F0368B59DB0DE182242"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C590/candidates/991B910A32D90A22948F6412BAF9EBEA7EFC336DBF0C968CE8A64303711F74DD.c",
+        "sha256": "67F449D1701C3A5DE31E4093F999CC69C7599D9C567E5D12BFA63E479CCCD912"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C590-watch03.json",
+        "sha256": "90E0411CE872EFC9C022552CE90CC90079EF61C7F1E2D2DF5B3F390FBBDA1CE3"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/04F8C3954A5EE4BBE58E8A9EA36945E7B8E7B781B011863887728F1E3A743023/workbench-report.json",
+        "sha256": "70F11796CBBF4EFE600038CCDDEBE571020A6F64B15301BBD814F3E91F81DF1D"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C590/candidates/0A29A980076E45D3228A8AD60BC6DEB187A7A78F44A9F833F7D99FE2909C6329.c",
+        "sha256": "FF57126343B1F6B104A950C57B41D7E370347FC42D4DBEE5578F40E86674B6BC"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C590-watch01.json",
+        "sha256": "D1162A94740BCC19508FB09A04C0B3A1D3FE8E3A7DB705529DE6C18F7B6B7201"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/C8C53E0BA39567FE10DF5D1395A008FF7630A362AE720D4071E111A8F0570CE4/workbench-report.json",
+        "sha256": "E9EEC2E514BD1A408B090F39E25325216EDC15A752736CCC2765EBA4A4D2B9F4"
+      },
+      {
+        "path": "build/integration/attack-effects/e09/wave-acceptance.json",
+        "sha256": "5DC4609CBCA0A4C89223B9649C6AD65B485974ABDB31EAF73576027F6454076C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D6F46CFDB47CB6F06FDF1A0785643403048B31442896E5C94F228B38C278E59A",
+      "AE4790CA03EB7B52F5FA9F7BF29F240B870B859D8ED75912F5FF599FC29B2FA9"
+    ],
+    "remainingFailure": "Raw J is relocatable, so raw bytes are not exact; inactive-ASM diagnostic is symbolic-object with isolated linking unavailable. Production provider/local-REL/sole-owner/placement/linked bytes and complete18-wave full-ROM verification remain. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move initialization of the u16 rangeValue local from after the first raw-word low16 guard to before it; later range tests use that local."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 899,
+      "sha256": "75240E93FCC204ED95307A6C38F235E8FA993CC4B870D8CF5321BE1426687F4F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2D3226F6EDA6E09F62114A07A7841C8DB8A068B533483273D3D7609BB7590A97"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0025C590-196f2782fb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

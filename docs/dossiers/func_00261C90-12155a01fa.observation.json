@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "12155A01FAAAD6176F77C510144BCB3110B64035B2A6254DA7674CEDDE8CD4FF",
+  "observationId": "DF0DBEB9156726D69BB8262E87772C52B82B7918C86DD49BDDDF05587B3213D6",
+  "symbol": "func_00261C90",
+  "authored": {
+    "context": "Full112B pool initializer, pointer-walk baseline on selected mi15; preincrement inside link assignment emitted108B and fused increment into index register. Native candidate IDs come from selected bounded diagnostic model; this research import authenticates source/context under its separate normal model. Parent source is linked explicitly rather than inventing cross-model lineage. Shared publication preserves this historical source and its explicit source/control references. The private normal-model research import was uncompiled; selected-mi15 native reports retain their original identities. No cross-model parent relationship is invented.",
+    "effects": [
+      "loop-update-copy",
+      "extent-restored"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "5EC9DFBD7316D5AB3B35A5E42901323F4368B14F71E413714BD0E93DB46A1A26",
+      "sourceSha256": "F6DE274674FA023AEFF2D307279E2BD1EA5C1C72BDB7E6C9EB3CCF06B141E45D"
+    },
+    "label": "261c90-conventional-loop-update",
+    "observedEffect": "KMC now emits separate index+1 temporary, halfword store and index copy; complete extent112B and rawObjectRelocationMaskedExact=true. No other C behavior changed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e03/runs/B752E1A8DB731D5866A7D77D4144219868D984B0B9D633CA21EF48D2A8305D89/workbench-report.json",
+        "sha256": "24F19E2513604AD58EE9C513C77C4CA8C8AE1541512402AEAB8705389CBA5140"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/D0C8D38DC33B5FA043677C1317E2BBB9149CC59E26A1D0FA45107F7B52151A3D/workbench-report.json",
+        "sha256": "F54A3C8EDED5F95D6A95C2AF3D254BAF62851E34F0CE1CA693BAF49FDBAC7A0E"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_00261C90/candidates/6EE86641122738F56C3136BD016289CDBF050E6A2D1437DA7FED4020BD4851FF.c",
+        "sha256": "FF7EF7C800CF50BCBF0AF36897294E7118BFFC0B4F752276C524168A18F1292D"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_00261C90/candidates/AB3F57E7A41EF22E6014B5D7C53A19BFD228EA5E24A69E112C758FF97839D347.c",
+        "sha256": "F6DE274674FA023AEFF2D307279E2BD1EA5C1C72BDB7E6C9EB3CCF06B141E45D"
+      },
+      {
+        "path": "build/matching/ae-e03/import-261C90-loop-update.json",
+        "sha256": "3DD589D629365C7F271F94C222B34977D8BD3A4495B4D4366B7496A53AEFAE68"
+      },
+      {
+        "path": "build/matching/ae-e03/observation-261C90-loop-update.json",
+        "sha256": "B585C694E8E4A5711721946388BD5F7EA9DE17B649CEE1C3CDE4EDD9B1563180"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/wave-acceptance.json",
+        "sha256": "671C2EB76C2E42663CD749938FD1BB6F3F15A5CC81B99CE364235134E8A8917A"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/complete-wave-preparation.json",
+        "sha256": "E683B204B5CAB1C22B27F0371B2731CE19879AF8C0B7826CD89C2295ABC49A5E"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/source-preparation-r3/SOURCE-PREPARATION.json",
+        "sha256": "E264BB8967288136D06A806F913B7AA5C5CBBAFDB9666FFF5BB9D4DBA48802FB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner gives symbolic-object evidence only. Actual provider addresses/REL, linked complete-owner bytes and full-wave verifier remain required. This is the original diagnostic limitation. The separately reconciled canonical E03 descendant now passes the complete wave verifier; that acceptance does not certify historical controls or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use slot->next_00=index+1 and index++ in the loop update, retaining pointer traversal, unsigned types, allocation and post-call count read."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2870,
+      "sha256": "5EC9DFBD7316D5AB3B35A5E42901323F4368B14F71E413714BD0E93DB46A1A26"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F6DE274674FA023AEFF2D307279E2BD1EA5C1C72BDB7E6C9EB3CCF06B141E45D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00261C90-12155a01fa.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

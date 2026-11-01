@@ -1,39 +1,21 @@
-typedef unsigned int u32;
-typedef unsigned char u8;
+#include "game/effect_commands_e09.h"
+#include "game/effect_callbacks_p02.h"
+#include "game/effect_adapters_e08.h"
 
-extern u32 func_0024BCA0(u32 value);
-extern void func_0020DF00(const void *message);
 
 extern volatile u8 g_func_0025CAF0_value_68;
 extern volatile u8 g_func_0025CAF0_value_70;
 extern volatile u8 g_func_0025CAF0_value_71;
-extern unsigned char g_func_0025CAF0_message[];
+/* Retail materializes the accepted DB50 callback entry, 0x80208F90. */
 
-void func_0025CAF0(u32 value, u32 value_70, u32 value_71)
+void func_0025CAF0(u32 value_arg, u32 value_70, u32 value_71)
 {
-    register u32 zero asm("$0");
-    register u32 saved_value_70 asm("$18") = value_70 + zero;
-    register u32 saved_value_71 asm("$17") = value_71 + zero;
-    register u32 saved_value asm("$16") = value + zero;
-
-    asm volatile ("" : : "r"(saved_value_70), "r"(saved_value_71), "r"(saved_value));
-    if ((func_0024BCA0(saved_value & 0xFF) << 16) != 0) {
-        return;
+    /* The byte local retains KMC save order with the existing word interface. */
+    u8 value = value_arg;
+    if ((s16)func_0024BCA0(value & 255) == 0) {
+        g_func_0025CAF0_value_68 = value;
+        g_func_0025CAF0_value_71 = value_71;
+        g_func_0025CAF0_value_70 = value_70;
+        func_00262AB0((void *)func_0025DB50);
     }
-
-    asm volatile (
-        ".set noreorder\n"
-        "lui $4,0x8021\n"
-        "addiu $4,$4,0x8F90\n"
-        "sb $16,g_func_0025CAF0_value_68\n"
-        "sb $17,g_func_0025CAF0_value_71\n"
-        "lui $1,%%hi(g_func_0025CAF0_value_70)\n"
-        "jal func_0020DF00\n"
-        "sb $18,%%lo(g_func_0025CAF0_value_70)($1)\n"
-        ".set reorder"
-        :
-        :
-        : "memory");
 }
-
-asm(".size func_0025CAF0, 112");

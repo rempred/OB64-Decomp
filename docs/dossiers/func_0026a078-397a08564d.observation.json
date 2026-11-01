@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "397A08564DBDB8863FB41EC9AEA6A85647F845F624CB4470B5613CA21FFEA11C",
+  "observationId": "0BFBEB6ED475B4DE0226B02D8B9729375248181E3A841FA9D64F66A49419B494",
+  "symbol": "func_0026a078",
+  "authored": {
+    "context": "Full396-byte func_0026a078, mi4 set03ABD35D/target76FBB81E. Trial05 emits PURE_C396/frame264 with seven non-REL differences around pair entry/index/level. Trial06 explicit selected_index is bytecode-neutral. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "DB40064F1E18BF1A6AE2D010B442B4B92A6C27485C6674AC98233AE98B5DD093",
+      "sourceSha256": "86E347EB2C311FC01F7F19C4AFA46CDF8EF59CEB1A7F63CBF6F705D8B929083A"
+    },
+    "label": "direct-pair-fields-resolve-entry-index-level-allocation",
+    "observedEffect": "Trial07 candidate02B010AD/run57A6BD17 is PURE_C396/frame264 with raw relocation-masked equality. It retains one table-head LW and two LHUs per item; entry/index/level become V0/V1/A0 and selected math/level consumers agree. Five raw actual REL fields remain. Complete logical phases, live reads and final return/delay remain covered.",
+    "parentCandidateId": "795075387DCB1A5B2C5CD2F8E58BB9EA98769E5136A315F7179563DDEE89FA92",
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_0026a078/candidates/02B010ADC6ED5519A931AB02087E973402A5841BE45E045E6CFF68887BA26097.c",
+        "sha256": "86E347EB2C311FC01F7F19C4AFA46CDF8EF59CEB1A7F63CBF6F705D8B929083A"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026a078-07-mi4.json",
+        "sha256": "0202A37E7A6095ECE9C22E59CB603811AA2BDDF42E3F673D7880096CC7524B54"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/57A6BD17462BD73E6108B1E9AB859CA2C7580507F45BC71CCFC921ABFE19EFC0/workbench-report.json",
+        "sha256": "BA9953E23E9A933B468231BFB65D40D5E4318640A404E4619426A2CC98001BCC"
+      },
+      {
+        "path": "build/matching/ae-e07/0026a078-direct-fields-observation.json",
+        "sha256": "4F032B769BFFE5EF87EAB776F6CCDEA13A96C3A7E08E5C66F4CDC8BFFB5BD421"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026a078-ordered-indexed-output.c",
+        "sha256": "EFDC171477C0B533A08C1DADB099DD8F0E675BF5F6938DAF99F48F169CAB5EF6"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026a078-explicit-index.c",
+        "sha256": "C5B8C539DC1539AE88E6D4E118A5654C7A5F743EB0F1C9B6A933657C709A869C"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026a078-direct-pair-fields.c",
+        "sha256": "86E347EB2C311FC01F7F19C4AFA46CDF8EF59CEB1A7F63CBF6F705D8B929083A"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026a078-05-mi4.json",
+        "sha256": "708A9467CAA03AECCEFED8083FE568038537D5F2BF3173EFDE710F8A54C2F45A"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026a078-06-mi4.json",
+        "sha256": "B3215B18A026318A801CA040E586B22F4002AD4FFE591F2F8AEEBB049396CB9D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0026a078.s",
+        "sha256": "2BCD76A6C9951DE65846589AAF8955D07C7DE29A6C5D709B253D59DE781A6C79"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [
+      "0AE6C8655D0CA10A824F9A812337698B85C68AA0AFE9DC5B346BBAEBEC6C8758"
+    ],
+    "remainingFailure": "Symbolic-object diagnostics do not prove actual providers/addends, sole canonical C custody, target linked bytes or full-ROM equality. Those remain complete-wave integrator gates. No proof of semantic table capacity or exact original source statements. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Remove the named Pair*entry and access input->value_10[item].level_02/index_00 directly. Retain level-before-selected, level-left equality, indexed output traversal, named pointer-table base and the measured32-bound hypothesis."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2612,
+      "sha256": "DB40064F1E18BF1A6AE2D010B442B4B92A6C27485C6674AC98233AE98B5DD093"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "86E347EB2C311FC01F7F19C4AFA46CDF8EF59CEB1A7F63CBF6F705D8B929083A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0026a078-397a08564d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

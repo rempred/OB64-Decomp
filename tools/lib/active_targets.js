@@ -7,7 +7,7 @@ const inputSet = require('./matching/input_set');
 const fs = require('fs');
 const path = require('path');
 const { normalizeInterior, resolveInterior } = require('./auxiliary_interior');
-const { normalizeNativeTextTail, resolveTextContract } = require('./text_contract');
+const { normalizeNativeTextTail, resolveTextContract, validateResearchNativeTextMetadata } = require('./text_contract');
 const {
   ROOT,
   fail,
@@ -756,6 +756,12 @@ function verifyRowSymbolSourceCache(cache) {
 }
 
 const preparedModelSources = new WeakMap();
+const workbenchViews = new WeakMap();
+function workbenchView(phase8) {
+  const view = workbenchViews.get(phase8);
+  if (!view || view.model !== phase8.model) fail("workbench model identity drift");
+  return view;
+}
 // One-shot binding permission is created only after canonical model validation.
 // Exported consumers can check it, but cannot register cloned or rebuilt models.
 const fixedEntryBindingOrigins = new WeakMap();
@@ -811,7 +817,7 @@ function finishActiveTargetModelSources(phase8) {
   rowSymbolIndexes.delete(state.model);
   if (phase8.model !== state.model || sha256Buffer(Buffer.from(JSON.stringify(state.model))) !== state.modelSha256) fail('accepted model changed during source bracket');
   const identities = completeAssemblySourceCensus(state.model, state.cache);
-  verifyRowSymbolSourceCache(state.cache);
+  if (!inputSet.isResearch(inputSet.context(phase8))) verifyRowSymbolSourceCache(state.cache);
   state.cache.clear();
   return identities;
 }
@@ -854,7 +860,8 @@ function resolveAcceptedRow(model, symbol, sourceCache = null) {
 function resolveCompilerTextFunctions(target, records) {
   if (!Array.isArray(records)) fail(`compiler text-function contract is malformed: ${target.symbol}`);
   if (target.nativeTextTail) {
-    resolveTextContract(target);
+    if (inputSet.isResearch(inputSet.context(target.model))) validateResearchNativeTextMetadata(target);
+    else resolveTextContract(target);
     if (records.length !== 0) fail('native text cannot have additional compiler functions');
     return [{ symbol: target.symbol, offset: '0x00000000', offsetNumber: 0,
       bytes: target.nativeTextTail.functionBytes, binding: 'GLOBAL', entryEvidence: 'owner' }];
@@ -1311,7 +1318,8 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
 }
 
 // Compose two existing custody proofs only for a complete sole GLOBAL body and
-// a whole pointer-only table. Original terminal ASM never becomes compiler bytes.
+// one ordinary readonly fragment. Original terminal ASM never becomes compiler bytes.
+// The resolver and complete shared-row ledger separately prove retained neighbors.
 function validateRetainedAuxiliaryComposition(target) {
   if (!target.row?.retainedPadding || !target.auxiliarySections.length) return;
   const edge = require('./phase7_conventional').retainedPaddingSlices(target.row);
@@ -1329,18 +1337,150 @@ function validateRetainedAuxiliaryComposition(target) {
       || edge.body.placementKind !== 'overlay' || slice?.placementKind !== 'overlay'
       || edge.body.overlayDescriptorId === null || slice.overlayDescriptorId !== edge.body.overlayDescriptorId
       || !auxiliaryPlacementPair(target.model, edge.body, slice)
-      || auxiliary.romStartNumber !== table.romStart || auxiliary.romEndNumber !== table.romEndExclusive
-      || auxiliary.vramStartNumber !== slice.vramStart || auxiliary.vramEndNumber !== slice.vramEndExclusive
-      || auxiliary.bytes !== table.bytes || auxiliary.preservedPrefix || auxiliary.preservedTail
-      || auxiliary.preservedInteriorBefore || auxiliary.sourceObjectPrefix || auxiliary.compilerOccurrences
-      || auxiliary.trailingPaddingBytes !== 0 || auxiliary.entryBytes !== auxiliary.bytes
-      || auxiliary.expectedRelocations.length * 4 !== auxiliary.bytes
+      || auxiliary.romStartNumber < table.romStart || auxiliary.romEndNumber > table.romEndExclusive
+      || auxiliary.vramStartNumber !== slice.vramStart + auxiliary.romStartNumber - table.romStart
+      || auxiliary.vramEndNumber !== slice.vramStart + auxiliary.romEndNumber - table.romStart
+      || auxiliary.bytes !== auxiliary.romEndNumber - auxiliary.romStartNumber
+      || auxiliary.bytes !== auxiliary.vramEndNumber - auxiliary.vramStartNumber
+      || auxiliary.vramStartNumber % auxiliary.alignment !== 0
+      || auxiliary.sourceObjectPrefix || auxiliary.compilerOccurrences
+      || !Number.isInteger(auxiliary.entries) || auxiliary.entries <= 0
+      || auxiliary.entryBytes !== auxiliary.entries * 4
+      || auxiliary.trailingPaddingBytes !== (auxiliary.alignment - auxiliary.entryBytes % auxiliary.alignment) % auxiliary.alignment
+      || auxiliary.bytes !== auxiliary.entryBytes + auxiliary.trailingPaddingBytes
+      || auxiliary.expectedRelocations.length * 4 !== auxiliary.entryBytes
       || auxiliary.expectedRelocations.some((r, i) => r.type !== 'R_MIPS_32'
         || parseNumber(r.offset, 'table offset') !== i * 4
         || parseNumber(r.addend, 'table destination') % 4 !== 0
         || parseNumber(r.addend, 'table destination') < 0
         || parseNumber(r.addend, 'table destination') + 4 > target.bytes)) {
     fail('retained padding ordinary auxiliary composition drift');
+  }
+}
+
+// Only ordinary cross-chunk overlay groups need this authority. Construct it
+// once per validator invocation; never cache trust in a mutable caller model.
+function sharedAuxiliaryOverlayAuthority(model) {
+  const inputs = inputSet.context(model);
+  const config = readJson(path.join(ROOT, 'config/phase7/conventional-build.json'), inputs);
+  if (config.schemaVersion !== 1 || config.profile !== 'us-rev0'
+      || !sameJson(config, model.config)) fail('shared auxiliary overlay configuration identity');
+  const authenticatedJson = relative => {
+    const bytes = inputSet.read(inputs, path.join(ROOT, relative));
+    if (!SHA256.test(config.acceptedInputSha256?.[relative] || '')
+        || sha256Buffer(bytes) !== config.acceptedInputSha256[relative]) {
+      fail('shared auxiliary overlay accepted input identity: ' + relative);
+    }
+    return JSON.parse(bytes.toString('utf8'));
+  };
+  const overlayConfig = authenticatedJson('config/overlays/us_rev0.json');
+  const linker = authenticatedJson('config/splat/us_rev0.overlay-linker-inputs.json');
+  if (overlayConfig.schemaVersion !== 1 || linker.schemaVersion !== 1
+      || linker.phase4OverlayConfigSha256 !== config.acceptedInputSha256['config/overlays/us_rev0.json']
+      || !sameJson(linker.overlayReservations, model.overlays)
+      || !sameJson(linker.overlayReservations, model.linkerInputs?.overlayReservations)) {
+    fail('shared auxiliary overlay reservation model/config identity');
+  }
+  if (inputs) {
+    for (const relative of ['tools/lib/overlay_config.js', 'tools/lib/rom.js']) {
+      inputs.sharedImplementation(path.join(ROOT, relative));
+    }
+  }
+  const parser = require('./overlay_config');
+  const rom = inputSet.read(inputs, path.join(ROOT, 'build/baserom.us_rev0.z64'));
+  if (rom.length !== 41943040 || config.rom.bytes !== rom.length
+      || config.rom.sha256 !== parser.CANONICAL_ROM_SHA256
+      || sha256Buffer(rom) !== parser.CANONICAL_ROM_SHA256) fail('shared auxiliary overlay canonical ROM identity');
+  const descriptors = parser.parseDescriptors(rom);
+  if (!Array.isArray(overlayConfig.descriptors) || overlayConfig.descriptors.length !== descriptors.length
+      || !Array.isArray(model.overlays) || model.overlays.length !== descriptors.length) {
+    fail('shared auxiliary overlay descriptor census');
+  }
+  const authority = new Map();
+  for (const descriptor of descriptors) {
+    const configured = overlayConfig.descriptors.filter(item => item.id === descriptor.id);
+    const reservations = model.overlays.filter(item => item.descriptor_id === descriptor.id);
+    if (configured.length !== 1 || reservations.length !== 1) fail('shared auxiliary overlay descriptor is missing or ambiguous');
+    const entry = configured[0], reservation = reservations[0];
+    const f = Object.fromEntries(Object.entries(descriptor.fields).map(([key, value]) => [key, parseNumber(value, 'parsed overlay field')]));
+    if (!sameJson(entry.source, descriptor.source) || entry.rawSha256 !== descriptor.rawSha256
+        || !sameJson(entry.rawWords, descriptor.rawWords) || !sameJson(entry.sizes, descriptor.sizes)
+        || !sameJson(Object.keys(entry.fields).sort(), Object.keys(f).sort())
+        || Object.keys(f).some(key => parseNumber(entry.fields[key], 'overlay descriptor field') !== f[key])) {
+      fail('shared auxiliary overlay raw descriptor/config drift');
+    }
+    const expected = {
+      raw_sha256: descriptor.rawSha256,
+      source_record_start: parseNumber(descriptor.source.start, 'descriptor source'),
+      source_record_end_exclusive: parseNumber(descriptor.source.endExclusive, 'descriptor source end'),
+      rom_start: f.romStart, rom_end_exclusive: f.romEnd,
+      vram_start: f.vramStart, vram_end_exclusive: f.vramEnd,
+      text_start: f.textStart, text_end_exclusive: f.textEnd,
+      text_rom_start: f.romStart + f.textStart - f.vramStart,
+      text_rom_end_exclusive: f.romStart + f.textEnd - f.vramStart,
+      data_rodata_start: f.dataRodataStart, data_rodata_end_exclusive: f.dataRodataEnd,
+      data_rodata_rom_start: f.romStart + f.dataRodataStart - f.vramStart,
+      data_rodata_rom_end_exclusive: f.romStart + f.dataRodataEnd - f.vramStart,
+      bss_start: f.bssStart, bss_end_exclusive: f.bssEnd,
+    };
+    if (Object.entries(expected).some(([key, value]) => reservation[key] !== value)) {
+      fail('shared auxiliary overlay descriptor/reservation geometry');
+    }
+    authority.set(descriptor.id, f);
+  }
+  return authority;
+}
+
+function validateSharedAuxiliaryOverlay(members, model, rowsByIndex, ownerSlices, authority) {
+  const id = ownerSlices.get(members[0].auxiliary)?.overlayDescriptorId;
+  const descriptor = authority.get(id);
+  if (!descriptor || members.some(({ target }) => target.compilationGroup
+      || target.compilationGroupId || target.auxiliaryProjection)) {
+    fail('shared auxiliary overlay requires ordinary contributors');
+  }
+  const checkSlice = (slice, section) => {
+    const start = section === 'text' ? descriptor.textStart : descriptor.dataRodataStart;
+    const end = section === 'text' ? descriptor.textEnd : descriptor.dataRodataEnd;
+    const romStart = descriptor.romStart + start - descriptor.vramStart;
+    const romEnd = descriptor.romStart + end - descriptor.vramStart;
+    if (!slice || ['romStart', 'romEndExclusive', 'vramStart', 'vramEndExclusive', 'bytes']
+      .some(key => !Number.isSafeInteger(slice[key]))
+      || slice.bytes <= 0 || slice.bytes !== slice.romEndExclusive - slice.romStart
+      || slice.bytes !== slice.vramEndExclusive - slice.vramStart
+      || slice.placementKind !== 'overlay' || slice.overlayDescriptorId !== id || slice.loadSlabId !== null
+      || slice.overlaySection !== section || slice.executable !== (section === 'text')
+      || slice.romStart < romStart || slice.romEndExclusive > romEnd
+      || slice.vramStart < start || slice.vramEndExclusive > end
+      || slice.vramStart !== descriptor.vramStart + slice.romStart - descriptor.romStart
+      || slice.vramEndExclusive !== descriptor.vramStart + slice.romEndExclusive - descriptor.romStart) {
+      fail('shared auxiliary overlay complete slice containment/equations');
+    }
+    // Overlapping VRAM reservations are normal for overlays. ROM custody is not.
+    for (const [otherId, other] of authority) {
+      if (otherId !== id && slice.romStart < other.romEnd && slice.romEndExclusive > other.romStart) {
+        fail('shared auxiliary overlay competing ROM ownership');
+      }
+    }
+  };
+  for (const { target, auxiliary } of members) {
+    for (const owner of target.textOwners) {
+      const row = rowsByIndex.get(owner.rowIndex);
+      if (!row || !Number.isSafeInteger(row.bytes) || row.bytes <= 0
+          || row.bytes !== row.romEndExclusive - row.romStart) fail('shared auxiliary overlay physical owner extent');
+      if (row.retainedPadding) {
+        require('./phase7_conventional').retainedPaddingSlices(row);
+        if (target.model !== model || target.row !== row) fail('shared auxiliary overlay retained owner context');
+        validateRetainedAuxiliaryComposition(target);
+      }
+      let cursor = row.romStart;
+      for (const slice of row.slices) {
+        if (slice.romStart !== cursor) fail('shared auxiliary overlay physical owner coverage');
+        checkSlice(slice, 'text');
+        cursor = slice.romEndExclusive;
+      }
+      if (cursor !== row.romEndExclusive) fail('shared auxiliary overlay incomplete physical owner');
+    }
+    checkSlice(ownerSlices.get(auxiliary), 'data-rodata');
   }
 }
 
@@ -1427,6 +1567,7 @@ function validateAuxiliaryOwnerGroups(targets, model) {
     }
   }
   const outputOwners = new Map();
+  let overlayAuthority;
   for (const members of groups.values()) {
     const first = members[0].auxiliary;
     if (outputOwners.has(first.outputSection) && outputOwners.get(first.outputSection) !== first.ownerRowIndex) {
@@ -1435,15 +1576,20 @@ function validateAuxiliaryOwnerGroups(targets, model) {
     outputOwners.set(first.outputSection, first.ownerRowIndex);
     const chunks = new Set(members.flatMap(({ target }) => target.textOwners.map(owner => owner.chunkIndex)));
     if (chunks.size > 1) {
-      // Keep archive identities immutable. Loader-DMA or the authenticated boot
-      // image must prove every contribution; equal addresses alone do not.
+      // Keep archive identities immutable. The accepted overlay, loader-DMA,
+      // or boot image must prove every contribution; equal addresses do not.
       const slabs = validateNonDescriptorLoadSlabs(model.config, model.overlays);
       if (!sameJson(slabs, model.nonDescriptorLoadSlabs)) fail('shared auxiliary load-slab model/config drift');
       const allSlices = members.flatMap(({ target, auxiliary }) => [...textSlices.get(target), ownerSlices.get(auxiliary)]);
       const bootMatches = slabs.filter(slab => slab.id === ownerSlices.get(first)?.loadSlabId);
       const bootPair = bootMatches.length === 1 && bootMatches[0].kind === 'boot-initialized-data'
         && members.every(({target,auxiliary}) => textSlices.get(target).every(text => bootData.isAuxiliaryPair(model,text,ownerSlices.get(auxiliary))));
-      if (!bootPair) {
+      const overlayCandidate = allSlices.some(slice => slice.placementKind === 'overlay'
+        || slice.overlayDescriptorId !== null);
+      if (overlayCandidate) {
+        if (!overlayAuthority) overlayAuthority = sharedAuxiliaryOverlayAuthority(model);
+        validateSharedAuxiliaryOverlay(members, model, rowsByIndex, ownerSlices, overlayAuthority);
+      } else if (!bootPair) {
       const matches = slabs.filter(slab => slab.id === allSlices[0].loadSlabId);
       if (matches.length !== 1 || matches[0].kind !== 'loader-dma') fail('shared auxiliary cross-chunk load slab is unsupported');
       const slab = matches[0];
@@ -1693,7 +1839,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
   if (!fs.existsSync(baseromFile) || fs.statSync(baseromFile).size !== model.config.rom.bytes || sha256File(baseromFile) !== model.config.rom.sha256) {
     fail('canonical normalized baserom is missing or has drifted; run node tools/verify_baserom.js');
   }
-  const baserom = fs.readFileSync(baseromFile);
+  const baserom = inputSet.read(inputs, baseromFile);
   const logicalSupport = require('./logical_functions');
   const logicalRegistry = logicalSupport.loadRegistry(model, baserom, undefined, assemblySource);
   const multiOwnerContracts = validateMultiOwnerConfig(
@@ -1756,7 +1902,8 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       }
     }
     const sourceFile = resolveRelative(ROOT, entry.source, 'target source');
-    if (!fs.existsSync(readPath(sourceFile)) || !fs.statSync(readPath(sourceFile)).isFile()) fail(`active target source is missing: ${entry.symbol}`);
+    if (inputSet.isResearch(inputs)) inputs.declared(sourceFile);
+    else if (!fs.existsSync(readPath(sourceFile)) || !fs.statSync(readPath(sourceFile)).isFile()) fail(`active target source is missing: ${entry.symbol}`);
     for (const owner of acceptedOwners.owners) {
       assemblySource(owner.originalAssembly, owner.originalAssemblySha256);
     }
@@ -1807,7 +1954,7 @@ function loadActiveTargetModelInternal(options, deferFinish) {
       ...(relocationContract.atomicText ? { atomicText: relocationContract.atomicText } : {}),
       relocationContractSource: relocationContract.source,
       legacyAncillaryRelocations: legacyTarget ? (legacyTarget.expectedRelocations || []).filter((record) => record.section === '.rel.pdr') : [],
-      sourceSha256: sha256File(sourceFile),
+      sourceSha256: inputSet.isResearch(inputs) ? inputs.declared(sourceFile).sha256 : sha256File(sourceFile),
       descriptor,
       model,
       row,
@@ -1945,16 +2092,22 @@ function loadActiveTargetModelInternal(options, deferFinish) {
   logicalSupport.bindFixedEntryInterfaces(phase8,logicalRegistry,assemblySource);
   preparedModelSources.set(phase8, { model, cache: rowSymbolSourceCache,
     modelSha256: sha256Buffer(Buffer.from(JSON.stringify(model))) });
+  workbenchViews.set(phase8, { model, baserom, registry: logicalRegistry });
   if (!deferFinish) finishActiveTargetModelSources(phase8);
   return phase8;
 }
 
-function loadActiveTargetModel(options = {}) { return loadActiveTargetModelInternal(options, false); }
+function loadActiveTargetModel(options = {}) { inputSet.assertProduction(options.inputs); return loadActiveTargetModelInternal(options, false); }
+function loadActiveTargetModelForResearch(options = {}) {
+  if (!inputSet.isResearch(options.inputs)) fail("research model requires private research input context");
+  return loadActiveTargetModelInternal(options, false);
+}
 // Preparation-only API: the caller MUST consume finishActiveTargetModelSources
 // before using this model as authenticated context. Other callers use the loader above.
-function loadActiveTargetModelForContext(options = {}) { return loadActiveTargetModelInternal(options, true); }
+function loadActiveTargetModelForContext(options = {}) { inputSet.assertProduction(options.inputs); return loadActiveTargetModelInternal(options, true); }
 
 module.exports = {
+  workbenchView, loadActiveTargetModelForResearch,
   consumeFixedEntryBindingOrigin,
   legacyComparisonView,
   CONFIG_PATH,

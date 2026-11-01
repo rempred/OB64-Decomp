@@ -734,6 +734,104 @@ function auxiliaryRelocationSection(elf, section, auxiliary, label) {
   return named[0];
 }
 
+
+// This stronger provenance check belongs only to the retained-text composition.
+// It neither authorizes an ordinary auxiliary contract nor changes compiler bytes.
+function retainedAuxiliaryContract(target, auxiliary = null) {
+  if (!target.row?.retainedPadding || !(target.auxiliarySections || []).length) return null;
+  require('./active_targets').validateRetainedAuxiliaryComposition(target);
+  const bound = target.auxiliarySections[0];
+  if (auxiliary !== null && auxiliary !== bound) fail('retained auxiliary contract identity');
+  return bound;
+}
+
+function verifyRetainedAuxiliaryCompilerAssembly(compilerBytes, target) {
+  const auxiliary = retainedAuxiliaryContract(target);
+  if (!auxiliary) return;
+  if (!Buffer.isBuffer(compilerBytes)) fail('retained auxiliary compiler buffer');
+  const text = compilerBytes.toString('utf8');
+  if (!Buffer.from(text, 'utf8').equals(compilerBytes)) fail('retained auxiliary compiler encoding');
+  const sections = [...text.matchAll(/^[ \t]*\.section\b([^\r\n]*)(?:\r?)$/gm)];
+  const texts = [...text.matchAll(/^[ \t]*\.text[ \t]*(?:\r?)$/gm)];
+  if (sections.length !== 1 || !/^[ \t]+\.rodata[ \t]*$/.test(sections[0][1])
+      || texts.length !== 2 || !(texts[0].index < sections[0].index && sections[0].index < texts[1].index)) {
+    fail('retained auxiliary compiler block');
+  }
+  const start = sections[0].index + sections[0][0].length, end = texts[1].index;
+  const lines = text.slice(start, end).split(/\r?\n/).map(line => line.trim())
+    .filter(line => line && !line.startsWith('#'));
+  let cursor = 0, alignment = 1;
+  while (cursor < lines.length && /^\.align[ \t]+[234]$/.test(lines[cursor])) {
+    alignment = Math.max(alignment, 2 ** Number(lines[cursor++].split(/\s+/)[1]));
+  }
+  const label = /^\.L[0-9]+:$/.test(lines[cursor] || '') ? lines[cursor++].slice(0, -1) : null;
+  const words = lines.slice(cursor);
+  if (!label || alignment !== auxiliary.alignment || words.length !== auxiliary.entries
+      || words.some(line => !/^\.word[ \t]+\.L[0-9]+$/.test(line))) fail('retained auxiliary native table grammar');
+  const definitions = [...text.matchAll(/^[ \t]*(\.L[0-9]+):[ \t]*(?:\r?)$/gm)];
+  const declarations = name => definitions.filter(match => match[1] === name);
+  if (declarations(label).length !== 1) fail('retained auxiliary table label');
+  for (const word of words) {
+    const matches = declarations(word.split(/\s+/)[1]);
+    if (matches.length !== 1 || matches[0].index < texts[0].index
+        || (matches[0].index >= sections[0].index && matches[0].index < end)) {
+      fail('retained auxiliary destination label');
+    }
+  }
+}
+
+function verifyRetainedAuxiliaryObject(elf, target, auxiliary, section, relocationSection) {
+  if (!retainedAuxiliaryContract(target, auxiliary)) return;
+  if (section.link !== 0 || section.info !== 0 || section.entrySize !== 0
+      || elf.symbols.some(symbol => symbol.sectionIndex === section.index
+        && (symbol.value >= auxiliary.entryBytes || symbol.value + symbol.size > auxiliary.entryBytes))) {
+    fail('retained auxiliary alignment symbol or header');
+  }
+  // Resolve each serialized r_info against its own symbol table. Only references
+  // to this auxiliary section receive the additional addend/type restrictions.
+  for (const carrier of elf.sections.filter(value => value.type === 9 || value.type === 4)) {
+    const width = carrier.type === 9 ? 8 : 12;
+    const owner = elf.sections[carrier.info], symbols = elf.sections[carrier.link];
+    if (!owner || !symbols || symbols.type !== 2 || carrier.entrySize !== width || carrier.size % width
+        || carrier.offset + carrier.size > elf.buffer.length
+        || (owner.index === section.index && carrier !== relocationSection)) {
+      fail('retained auxiliary relocation carrier');
+    }
+    const pending = new Map();
+    for (let offset = 0; offset < carrier.size; offset += width) {
+      const place = elf.buffer.readUInt32BE(carrier.offset + offset);
+      const info = elf.buffer.readUInt32BE(carrier.offset + offset + 4), index = info >>> 8, type = info & 255;
+      const matches = elf.symbols.filter(symbol => symbol.symbolTableIndex === carrier.link && symbol.symbolIndex === index);
+      if (matches.length !== 1 || place % 4 || place + 4 > owner.size
+          || owner.type === 8 || owner.offset + place + 4 > elf.buffer.length) {
+        fail('retained auxiliary relocation attribution');
+      }
+      const symbol = matches[0];
+      if (symbol.sectionIndex !== section.index) continue;
+      if (carrier.type !== 9) fail('retained auxiliary incoming RELA');
+      const word = elf.buffer.readUInt32BE(owner.offset + place);
+      const check = addend => {
+        const destination = symbol.value + addend;
+        if (!Number.isSafeInteger(destination) || destination < 0 || destination > 0xFFFFFFFF
+            || destination % 4 || destination + 4 > auxiliary.entryBytes) {
+          fail('retained auxiliary reference into alignment or outside entries');
+        }
+      };
+      if (type === 2) check(word);
+      else if (type === 4) check((word & 0x03FFFFFF) * 4);
+      else if (type === 5) {
+        if (!pending.has(index)) pending.set(index, []);
+        pending.get(index).push(word & 0xFFFF);
+      } else if (type === 6) {
+        if (!pending.has(index)) fail('retained auxiliary unpaired LO16');
+        for (const high of pending.get(index)) check(high * 65536 + (word << 16 >> 16));
+        pending.delete(index);
+      } else fail('retained auxiliary unsupported incoming relocation');
+    }
+    if (pending.size) fail('retained auxiliary unpaired HI16');
+  }
+}
+
 function verifyAuxiliarySourceObjectSection(elf, target, auxiliary, label) {
   const selection = auxiliary.sourceObjectPrefix || null;
   const expectedBytes = selection ? selection.bytes : auxiliary.bytes;
@@ -749,6 +847,7 @@ function verifyAuxiliarySourceObjectSection(elf, target, auxiliary, label) {
   const section = sections[0];
   const sourceBytes = Buffer.from(elfSectionBytes(elf, section));
   const relocationSection = auxiliaryRelocationSection(elf, section, auxiliary, label);
+  verifyRetainedAuxiliaryObject(elf, target, auxiliary, section, relocationSection);
   const relocations = auxiliaryRelocationRecords(elf, target, auxiliary);
   if (!sameJson(relocations, auxiliary.expectedRelocations)) {
     fail('KMC auxiliary source-object relocation contract drift: ' + label);
@@ -860,6 +959,7 @@ function verifyAuxiliaryLinkedObjectSection(elf, target, auxiliary, label) {
   const section = sections[0];
   const bytes = Buffer.from(elfSectionBytes(elf, section));
   const relocationSection = auxiliaryRelocationSection(elf, section, auxiliary, label);
+  verifyRetainedAuxiliaryObject(elf, target, auxiliary, section, relocationSection);
   const relocations = auxiliaryRelocationRecords(elf, target, auxiliary);
   const padding = verifyAuxiliaryPaddingBytes(bytes, auxiliary, label);
   if (sha256Buffer(bytes) !== auxiliary.expectedObjectSha256
@@ -1957,6 +2057,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   }
 
   const compilerBytes = fs.readFileSync(compilerAssembly);
+  verifyRetainedAuxiliaryCompilerAssembly(compilerBytes, target);
   const linkedBytes = textContract.assemblerInput(compilerBytes, target, adjustSectionAssembly, {
     allowAuxiliaryReadOnlySections: options.allowAuxiliaryReadOnlySections === true,
     auxiliarySections: acceptedAuxiliarySections,
@@ -2256,6 +2357,7 @@ function deriveSourceObjectProofUncached(phase8, target, output, classification,
     ? fileIdentity(output, assemblerRelative, 'unsplit assembler object')
     : null;
   const compilerBytes = fs.readFileSync(resolveRelative(output, compilerRelative, 'compiler assembly'));
+  verifyRetainedAuxiliaryCompilerAssembly(compilerBytes, target);
   const expectedSectionBytes = textContract.assemblerInput(compilerBytes, target, adjustSectionAssembly, {
     auxiliarySections: target.auxiliarySections || [],
   });
@@ -3381,7 +3483,10 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
   }
   for (const target of phase8.targets.filter(t => edgePadding(t) && t.auxiliarySections.length)) {
     require('./active_targets').validateRetainedAuxiliaryComposition(target);
-    const section = target.auxiliarySections[0].outputSection;
+    const auxiliary = target.auxiliarySections[0];
+    // Ordered rows were rendered above from their complete validated membership.
+    if (orderedAuxiliaryGroup(auxiliaryGroups.get(auxiliary.ownerRowIndex))) continue;
+    const section = auxiliary.outputSection;
     const selector = '    *(' + section + ')';
     if (linkerText.split(selector).length !== 2) fail('retained auxiliary linker selector census');
     linkerText = linkerText.replace(selector, '    ' + compilationGroups.objectPath(target) + '(' + section + ')');
@@ -3872,9 +3977,12 @@ function generatedLinkerSelectors(script) {
 function verifySharedAuxiliaryScript(phase8, script) {
   if (typeof script !== 'string') fail('shared auxiliary linker script is missing');
   const inputSelectors = generatedLinkerSelectors(script);
+  const auxiliaryGroups = validateAuxiliaryOwnerGroups(phase8.targets, phase8.model);
   for(const target of phase8.targets.filter(t=>edgePadding(t))){
     require('./active_targets').validateRetainedAuxiliaryComposition(target);
     for (const auxiliary of target.auxiliarySections) {
+      // The full ordered block and selector census below prove these rows.
+      if (orderedAuxiliaryGroup(auxiliaryGroups.get(auxiliary.ownerRowIndex))) continue;
       const owner = compilationGroups.objectPath(target), pattern = auxiliary.outputSection;
       if (!sameJson(inputSelectors.filter(s => s.pattern === pattern), [{owner, pattern}])) fail('retained auxiliary recorded selector drift');
     }
@@ -3883,7 +3991,7 @@ function verifySharedAuxiliaryScript(phase8, script) {
       if(!sameJson(inputSelectors.filter(s=>s.pattern===slice.sectionName),[{owner,pattern:slice.sectionName}]))fail('retained padding recorded selector drift');
     }
   }
-  for (const members of validateAuxiliaryOwnerGroups(phase8.targets, phase8.model).values()) {
+  for (const members of auxiliaryGroups.values()) {
     if (!orderedAuxiliaryGroup(members)) continue;
     const auxiliary = members[0].auxiliary;
     const name = auxiliary.outputSection;
@@ -4974,6 +5082,7 @@ module.exports = {
   verifyAuxiliaryLinkedObjectSection,
   verifyAuxiliaryPaddingBytes,
   verifyAuxiliarySourceObjectSection,
+  verifyRetainedAuxiliaryCompilerAssembly,
   validateSourceObjectProofBytes,
   validateTargetClassifications,
   validateTargetClassification,

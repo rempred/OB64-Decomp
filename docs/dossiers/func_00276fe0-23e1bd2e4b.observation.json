@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "23E1BD2E4B2D9312DE1A1E6093086DF8FB29C9918C6C9B423C5E793749CEEA5F",
+  "observationId": "FDDE9A880D6CA562E76FEA7D67FFD7DB57AD3671783930F103E2F4B2ED5A8D84",
+  "symbol": "func_00276fe0",
+  "authored": {
+    "context": "Full1416-byte276FE0 owner (actual symbol00276fe0), all initialization/orbit/matrix/movement/cleanup paths, two intentional message fallthroughs, seven real three-float workspaces. Accepted physical owner is1416 bytes, frame200; no extra body or producer. Shared publication preserves the historical source and its explicit controls. Selected-mi14/mi15/mi16 reports retain their actual identities; this current-model research import is uncompiled and creates no cross-model parent relationship.",
+    "effects": [
+      "real-floating-value-phases",
+      "zero-word-float-abi",
+      "direct-stored-halfword-conversion"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "CEB6F028D757A4643B2DFBA9CD20CDD0328BE41238D6368CC56333A167DF38B2",
+      "sourceSha256": "9A00ED0A6E87AAE879D42EDE235E58007C0504F35440460552B8DBCC8EE8D99C"
+    },
+    "label": "zero-word-float-argument-and-direct-halfword-conversion-phases",
+    "observedEffect": "02 restores case1001 FP registers but remains1432/frame208 due preserved FPzero andF30.03 removes that unnecessary lifetime, reaching1420/frame200 with every opcode/order/register agreeing except early normalization A0 move and extra NOP after conversion.04 explicit integer local and05 scalar half-store are unchanged.06 and commented final are mechanicalPURE_C1416/frame200/rawRelocationMaskedExact=true. Probe03 shows argument move before fix-trunc as early as schedule1; complete pass causality/original source are not established. These are actual numeric/pointer producers, no dummy readers or padding.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p06/76fe0-02.json",
+        "sha256": "EE968F5DC51FD386ED84C064969606F7A58C4CCDE5384F040AF97EC4A3F78A58"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00276fe0/candidates/97988BBD0D4F8CB6B9875574D6E29A0E45F3E6D3AE5EE0C28AEC933D1C882EEC.c",
+        "sha256": "13AAD08A2F4A537D17E89C188C1217295D7D83059F8F8BB19C24896B932CF7EC"
+      },
+      {
+        "path": "build/matching/ae-p06/76fe0-03.json",
+        "sha256": "0B3466C1FA4EB251215EC0DC5A001203AC88B61C4F834B1AFCAB7C2787EC10E5"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00276fe0/candidates/FE8A90FDA216A0263A29678243D06134DE7242062A5EE3E3C6994D0F46BA4355.c",
+        "sha256": "5948B12007EB1830DB988745620BF8CC954CBDD1078161C05D59A6ACAE1D8E90"
+      },
+      {
+        "path": "build/matching/ae-p06/76fe0-04.json",
+        "sha256": "BF99D554A8BEC9EB48D40190CFBCAF1FF6133739267DDAB27D80DA0542140358"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00276fe0/candidates/03FE01CBD2AF354BB0B986922223918902E8C0953E1E14F6E29F52F5E19AE4FB.c",
+        "sha256": "DD36F1CA5CA544C4A389B42C102EAACAB74B5AA1D0FFA4ED1A642DD79A295D65"
+      },
+      {
+        "path": "build/matching/ae-p06/76fe0-05.json",
+        "sha256": "28F28DA89E43215C047CE430A0CABF9A18C3D986D20703C078836089E2F4E75C"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00276fe0/candidates/2D90777217020FE21BB63F1B86B0CC36C52BBC467F487AA44F3DF6D69A66DBC2.c",
+        "sha256": "B17A2251EAFB5A9B11A2535067897A6A3FF91F42BFFE8ADA8E35C4EC33E285DD"
+      },
+      {
+        "path": "build/matching/ae-p06/76fe0-06.json",
+        "sha256": "C32393D91476CEA3AF089892BF1B021F9A3956B1AF6FC6D2311C7BD6BBB0AB3D"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00276fe0/candidates/0E888F33D8D8499DACCCF4E41BDEFCDD36EDCA221CFEF95CD110B52C0A6CFC79.c",
+        "sha256": "67085E04AA36439A41D68C382D4A392BB75E1582560B541BEEABA6FE67712FBC"
+      },
+      {
+        "path": "build/matching/ae-p06/76fe0-final.json",
+        "sha256": "EDAF63ACF6094A27C8F614619355779B56DF22B66AD8D7E413A5EF18F4C8BDE0"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00276fe0/candidates/64A6605306FFC22490E21913CAAC4459D4DD502416004C1D2BD905FBD520B452.c",
+        "sha256": "9A00ED0A6E87AAE879D42EDE235E58007C0504F35440460552B8DBCC8EE8D99C"
+      },
+      {
+        "path": "build/matching/ae-p06/76fe0-probe03.json",
+        "sha256": "17541A12D152D00CB93EB205CD2A9EDC62FB0EBEDC035A398CFFF8A820986B30"
+      },
+      {
+        "path": "build/matching/ae-p06/func_00276fe0.c",
+        "sha256": "9A00ED0A6E87AAE879D42EDE235E58007C0504F35440460552B8DBCC8EE8D99C"
+      },
+      {
+        "path": "build/matching/ae-p06/observations/76fe0-value-phases.json",
+        "sha256": "D537EB933109D0031C982A325DF5C606C68D8154C1A68251C4813814D6C839F5"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/wave-acceptance.json",
+        "sha256": "DFA77C4AC403B59574D04E0057B2A5A73EAE5B89A9EBECA674A7C2FCF9EC08A1"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/source-preparation/SOURCE-PREPARATION.json",
+        "sha256": "001F065D767A07E243DCBF0128DCB1924B224DFF89CB4539F9307ECD0EFA1C35"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/return-view-reconciliation.json",
+        "sha256": "70B497D90C0375A55B3A661B142D7870DB70F2520668B60307B91889A346733A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM has no private linked diagnostic. Canonical interface/relocation reconciliation, ownership, placement, target bytes and complete-wave full-ROM gates remain required. The separately reconciled P06 descendant now passes the complete-wave canonical verifier. That acceptance does not certify the historical controls or establish the original source spelling.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "02 uses case-local angle-to-radian in-place phase and captures actual matrix destination before movement clamp.03 supplies the real zero float argument via raw-zero/float union at the two transform calls while retaining the exact float prototype.06 changes only float-to-stored-halfword conversion from an intermediate s32 cast to direct s16 cast."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 7687,
+      "sha256": "CEB6F028D757A4643B2DFBA9CD20CDD0328BE41238D6368CC56333A167DF38B2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9A00ED0A6E87AAE879D42EDE235E58007C0504F35440460552B8DBCC8EE8D99C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00276fe0-23e1bd2e4b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

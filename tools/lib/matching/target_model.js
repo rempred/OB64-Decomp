@@ -4,7 +4,12 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const inputSet = require('./input_set');
-const { loadActiveTargetModel, resolveAcceptedRow, resolveAcceptedRows } = require('../active_targets');
+const { loadActiveTargetModel, loadActiveTargetModelForResearch, workbenchView, resolveAcceptedRow, resolveAcceptedRows } = require('../active_targets');
+const registryScopes = new WeakMap();
+function selectionRegistry(authority, baserom) {
+  const scoped = registryScopes.get(authority.model);
+  return scoped && scoped.baserom === baserom ? scoped.registry : logical.loadRegistry(authority.model, baserom);
+}
 const logical = require('../logical_functions');
 const { resolveWorkbenchActiveTarget } = require('../text_contract');
 // Keep scratch admission in this sealed comparison-algorithm input.
@@ -60,6 +65,10 @@ function scratchCapability(workbench, target, sessionTargets = []) {
 }
 
 function assertScratchCapability(workbench, target, sessionTargets) {
+  inputSet.assertProduction(inputSet.context(workbench));
+  inputSet.assertProduction(inputSet.context(workbench?.model));
+  inputSet.assertProduction(inputSet.context(target));
+  inputSet.assertProduction(inputSet.context(target?.model));
   const capability = scratchCapability(workbench, target, sessionTargets);
   if (!capability.supported) throw new Error(capability.reason);
   assertExecutablePrefixSelection(workbench, target);
@@ -133,7 +142,7 @@ function retainedPaddingSelection(authority, row, baserom = null, requestedSymbo
   if (!authority?.model || !(authority.multiOwnerContracts instanceof Map) || !authority.multiOwnerConfigIdentity
       || [...authority.multiOwnerContracts.values()].some(c=>c.rows.some(r=>r.index===row.index))) throw new Error('retained padding producer requires standalone accepted membership');
   baserom ||= authority.baserom || loadBaserom(authority.model);
-  const registry=logical.loadRegistry(authority.model,baserom);
+  const registry=selectionRegistry(authority,baserom);
   const edge=logical.assertRetainedPaddingProducer(registry,row);
   const symbol=edge.bodies[0].symbol;
   if(requestedSymbol!==null&&requestedSymbol!==symbol)throw new Error('retained padding cannot select a padding or partial-body entry');
@@ -219,7 +228,7 @@ function executablePrefixSelection(authority, row, baserom = null, requestedSymb
 function authenticatedSplitLogicalBody(authority, target) {
   if (target.selectionKind !== 'logical-body' || target.originalOwner !== undefined || target.entryEvidence !== undefined) return false;
   const baserom = authority.baserom || loadBaserom(authority.model);
-  const registry = logical.loadRegistry(authority.model, baserom);
+  const registry = selectionRegistry(authority, baserom);
   const bodies = registry.bodies.filter(body => [body.symbol, ...body.aliases].some(symbol => symbol.toLowerCase() === target.symbol.toLowerCase()));
   if (bodies.length !== 1) return false;
   const body = bodies[0], first = body.fragments[0], last = body.fragments[body.fragments.length - 1];
@@ -373,14 +382,29 @@ function applyRegisteredAliasCorrection(authority, targets, registry, body) {
 }
 
 function loadWorkbenchModel(options = {}) {
+  inputSet.assertProduction(options.inputs);
+  return scopedWorkbenchModel(options, false);
+}
+function loadResearchWorkbenchModel(options = {}) {
+  if (!inputSet.isResearch(options.inputs)) throw new Error("research workbench requires private research inputs");
+  return scopedWorkbenchModel(options, true);
+}
+function scopedWorkbenchModel(options, research) {
+  const scope = {};
+  try { return buildWorkbenchModel(options, research, scope); }
+  finally { if (scope.model) registryScopes.delete(scope.model); }
+}
+function buildWorkbenchModel(options, research, scope) {
   const inputs = options.inputs;
-  const config = readJson(inputSet.resolve(inputs, CONFIG_PATH));
+  const config = JSON.parse(inputSet.read(inputs, CONFIG_PATH).toString("utf8"));
   if (config.schemaVersion !== 1 || config.databaseSchemaVersion !== 2) throw new Error('matching workbench configuration schema drift');
-  const activeModel = loadActiveTargetModel({inputs});
-  inputs?.authenticate(activeModel);
+  const activeModel = research ? loadActiveTargetModelForResearch({inputs}) : loadActiveTargetModel({inputs});
+  if (!research) inputs?.authenticate(activeModel);
   const model = activeModel.model;
-  const baserom = options.requireBaserom === false ? null : loadBaserom(model);
-  const logicalRegistry = logical.loadRegistry(model, baserom);
+  const view = workbenchView(activeModel);
+  const baserom = options.requireBaserom === false ? null : view.baserom;
+  const logicalRegistry = baserom ? view.registry : logical.loadRegistry(model, baserom);
+  scope.model = model; registryScopes.set(model, { baserom, registry: logicalRegistry });
   const activeBySymbol = new Map(activeModel.targets.map(target => [target.symbol.toLowerCase(), target]));
   const modelManifest = {
     schemaVersion: 1,
@@ -456,7 +480,7 @@ function loadWorkbenchModel(options = {}) {
         ...metadata,
         activeMatchingSource: active?.source || null,
         activeMatchingProducer: producerView(active),
-        scratchCompilation: scratchCapability({ activeTargetsBySymbol: activeBySymbol }, metadata),
+        scratchCompilation: research ? null : scratchCapability({ activeTargetsBySymbol: activeBySymbol }, metadata),
         targetId,
         modelId,
         expectedBytes: expected,
@@ -561,10 +585,11 @@ function loadWorkbenchModel(options = {}) {
       expectedBytes: baserom ? Buffer.from(baserom.subarray(body.romStart, body.romEndExclusive)) : null,
       targetId: digest({ modelId, metadata, expectedBytesSha256: baserom ? body.expectedBytesSha256 : null }),
       activeMatchingSource: null, activeMatchingProducer: null };
-    target.scratchCompilation = scratchCapability({ activeTargetsBySymbol: activeBySymbol }, target);
+    target.scratchCompilation = research ? null : scratchCapability({ activeTargetsBySymbol: activeBySymbol }, target);
     logicalTargets.push(target); bySymbol.set(body.symbol.toLowerCase(), target);
   }
-  for (const target of targets) target.scratchCompilation = scratchCapability({ activeTargetsBySymbol: activeBySymbol }, target);
+  if (!research) for (const target of targets) target.scratchCompilation = scratchCapability({ activeTargetsBySymbol: activeBySymbol }, target);
+  for (const target of [...targets, ...logicalTargets]) inputSet.bind(target, inputs);
   return inputSet.bind({ config, model, modelId, modelManifest, baserom, targets, logicalTargets, bySymbol, logicalRegistry,
     multiOwnerContracts: activeModel.multiOwnerContracts, multiOwnerConfigIdentity: activeModel.multiOwnerConfigIdentity,
     activeTargetsBySymbol: activeBySymbol }, inputs);
@@ -573,7 +598,9 @@ function loadWorkbenchModel(options = {}) {
 function resolveTarget(workbench, symbol) {
   const target = workbench.bySymbol.get(String(symbol).toLowerCase());
   if (!target) throw new Error(`accepted function target does not resolve uniquely: ${symbol}`);
-  return String(symbol) === target.symbol ? target : { ...target, requestedSymbol: String(symbol) };
+  const selected = String(symbol) === target.symbol ? target : { ...target, requestedSymbol: String(symbol) };
+  if (inputSet.isResearch(inputSet.context(workbench))) selected.scratchCompilation = scratchCapability(workbench, selected);
+  return inputSet.bind(selected, inputSet.context(workbench));
 }
 
 function historicalSymbols(target) {
@@ -631,6 +658,7 @@ function publicTarget(target) {
 }
 
 module.exports = {
+  loadResearchWorkbenchModel,
   applyRegisteredAliasCorrection, retainedPaddingSelection, executablePrefixSelection, assertExecutablePrefixSelection, executablePrefixComparisonScope, originalOwnerComparison,
   assertExecutablePrefixReportScope,
   historicalSymbols,

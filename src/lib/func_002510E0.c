@@ -1,3 +1,5 @@
+#include "game/effect_commands_e09.h"
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -24,10 +26,10 @@ extern u8 D_802099D8[];
 extern u8 D_802099E4[];
 extern u8 D_802099EC[];
 extern void func_00262B68(void);
-extern u32 func_0024BCA0(u32);
-extern void func_0025D8A4(void *, void *);
-extern void func_0025CA7C(u8, void *);
-extern void func_0024E9BC(s32, u8, s32);
+
+
+
+
 
 s32 func_002510E0(u16 message, P05LoopState *state)
 {
@@ -53,7 +55,7 @@ s32 func_002510E0(u16 message, P05LoopState *state)
     case 0x1001: {
         s16 index;
 
-        func_0025D8A4(D_802099D8, D_802099E4);
+        func_0025D8A4((s16 *)(D_802099D8), (s16 *)(D_802099E4));
         for (index = 0; state->context[index] != 0xFF; index++) {
             func_0025CA7C(state->context[index], D_802099EC);
         }

@@ -1,3 +1,4 @@
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_math_e04.h"
@@ -18,10 +19,10 @@ extern u8 *p01_context_80220F68;
 extern u8 *p01_pointer_80220F6C;
 extern P05FactoryRecord D_80209F80[];
 extern void func_00262B68(void);
-extern P01PlacementObject *func_0024CDD8(void *);
+
 extern void func_0024C7A4(void *, void *, void *);
-extern void func_0024C7D8(P01Vec3 *, P01PlacementObject *);
-extern void func_0024E9BC(s32, u8, s32);
+
+
 
 s32 func_00259C44(u16 message, P05StagedRootState *state)
 {

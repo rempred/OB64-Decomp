@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "296B8B35B80B629452D3CC5B503B67B872062DE24B219653606F6B8B0BD7C1BD",
+  "observationId": "32E7586B65284C862AF3D6757E5DEDF1100ACEBC72C0893F1B50C8A4B34408D9",
+  "symbol": "func_0026B820",
+  "authored": {
+    "context": "Full1196-byte func_0026B820 on mi7 setE2412884/targetC3711630. Structured switch, nine loops, real64-byte matrix and six-argument float helper calls. Initial6E723782 emits PURE_C1204/frame208(vars136), with two base lw/addu pairs across the zero and one initialization chains. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report. This same source also serves as a comparison control: Exact historical E07 source/control referenced by separate-initialization-counter-restores-eight-register-words. Preserve original source and native report context.",
+    "effects": [
+      "extent"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "0EABE7F3D08E6104D670F315126C0530951EE682CFC6CAD11AAFEC3DC99FF162",
+      "sourceSha256": "A06F2EBEF16FDDA8630D251CDF288FFF01B86F1A0EBBF5532937EE64E54CCE6B"
+    },
+    "label": "captured-values-record-removes-second-initialization-base-load",
+    "observedEffect": "Watch02 sourceA06F2EBE/candidateF2AB8A53/run9ACB485E emits PURE_C1196 with the same208-byte frame. The second base lw/addu pair disappears, all six stores share the original single base and later operations return to reference offsets. Full generated ASM was read; all seven cases, nine loops, real matrix operations, both six-argument ABI sequences and complete return remain present.",
+    "parentCandidateId": "ED1582352EDA1455A01F461EA2CAC663D1A597B5E2292F94C0C8914611D912A9",
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_0026B820/candidates/F2AB8A53E00AF249D9EE65F394315EB0FBFB58D65B0C0263D0CFAB55194606B3.c",
+        "sha256": "A06F2EBEF16FDDA8630D251CDF288FFF01B86F1A0EBBF5532937EE64E54CCE6B"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026B820-02-mi7.json",
+        "sha256": "A961929930E88BB5DECD73197A30C9F3D86D80BB041B98A3F9A305AFBED30536"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/9ACB485EFCD2CB84662F5267B0C727438FFD0CD29B4D3AD06392ED5FD0AB866C/workbench-report.json",
+        "sha256": "C67451665330272220AA1BD87DD879FC81AA9FECA231500F309F5290E3F7FCB3"
+      },
+      {
+        "path": "build/matching/ae-e07/0026B820-values-pointer-observation.json",
+        "sha256": "F76F0219DDC46BFB38FD632DAFD11EF10EEACF20598AB869BC9F7A53CC06FD2C"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026B820-initial.c",
+        "sha256": "6E7237820B6E7F2E184E3912F0F8066B12E0AA185C2848AF99E794788F11F44F"
+      },
+      {
+        "path": "build/matching/ae-e07/func_0026B820-values-pointer.c",
+        "sha256": "A06F2EBEF16FDDA8630D251CDF288FFF01B86F1A0EBBF5532937EE64E54CCE6B"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-0026B820-01-mi7.json",
+        "sha256": "738BB111A4C29C5DF653A91F60D618BAE6A332424ACFF967350A56B19768F13A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0026B820.s",
+        "sha256": "C43334DEC069D6760B6A2D24E40FDB3C7F3518D63224BA8A021EEB9F8A84997D"
+      },
+      {
+        "path": "build/matching/ae-e07/0026B820-init-counter-observation.json",
+        "sha256": "AD77EAF069B17140D9A40376688F859652E951DBF31A755CDA8AFAFDDE7301CC"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Eight register-field differences remain in the initialization counter/offset allocation; this source is not relocation-masked exact. Allocated.rodata prevents private isolated linked diagnostics. Provider/addend identity, table custody, sole C ownership, linked bytes and complete-ROM equality remain whole-wave integration obligations. This pair proves neither original syntax nor a universal pointer/alias/allocation rule. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "After the existing record helper and flag1 store, capture the actual indexed six-float values record in a named pointer. Reuse that pointer for both assignment chains; retain store order8/4/0/14/10/C and all other code."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 6308,
+      "sha256": "0EABE7F3D08E6104D670F315126C0530951EE682CFC6CAD11AAFEC3DC99FF162"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A06F2EBEF16FDDA8630D251CDF288FFF01B86F1A0EBBF5532937EE64E54CCE6B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0026B820-296b8b35b8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

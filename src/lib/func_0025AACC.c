@@ -1,3 +1,5 @@
+#include "game/effect_commands_e09.h"
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -18,9 +20,9 @@ extern P05FactoryRecord D_8020A09A[];
 extern u8 D_8020A150[];
 extern u8 D_8020A158[];
 extern void func_00262B68(void);
-extern void func_0025D8A4(void *, void *);
-extern void func_0024DA50(u8, void *);
-extern void func_0024E9BC(s32, u8, s32);
+
+
+
 
 s32 func_0025AACC(u16 message, P05TableRootState *state)
 {
@@ -35,7 +37,7 @@ s32 func_0025AACC(u16 message, P05TableRootState *state)
         func_00262830(0x1000);
         break;
     case 0x1000:
-        func_0025D8A4(D_8020A150, D_8020A158);
+        func_0025D8A4((s16 *)(D_8020A150), (s16 *)(D_8020A158));
         func_00262830(0x1001);
         /* Retail continues into this case in the same invocation. */
     case 0x1001:

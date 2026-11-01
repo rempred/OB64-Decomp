@@ -121,6 +121,42 @@
       "vramStart": "0x801FC3DC",
       "vramEndExclusive": "0x801FC520",
       "expectedTextSha256": "FF5C90357AFB3035DF8A1D5EB64DB10B9D441951CD2451F4B944D0D79D076E71"
+    },
+    {
+      "symbol": "func_00261D24",
+      "ownerRows": [
+        4676,
+        4677
+      ],
+      "romStart": "0x00261D24",
+      "romEndExclusive": "0x00261D7C",
+      "vramStart": "0x8020D174",
+      "vramEndExclusive": "0x8020D1CC",
+      "expectedTextSha256": "62A8849C3913632DEB1C865B6AD8230300594778F2A0518F2FF6E0F02C808A2E"
+    },
+    {
+      "symbol": "func_002664b0",
+      "ownerRows": [
+        4753,
+        4754
+      ],
+      "romStart": "0x002664B0",
+      "romEndExclusive": "0x002667C0",
+      "vramStart": "0x80211900",
+      "vramEndExclusive": "0x80211C10",
+      "expectedTextSha256": "E29492F89012878518DF340AE771B3594B9B4773894B845DA73726D9A75CBE65"
+    },
+    {
+      "symbol": "func_00267928",
+      "ownerRows": [
+        4774,
+        4775
+      ],
+      "romStart": "0x00267928",
+      "romEndExclusive": "0x00267D98",
+      "vramStart": "0x80212D78",
+      "vramEndExclusive": "0x802131E8",
+      "expectedTextSha256": "B19899093C02866B74082A689F7123EF14461790086C09E4B9B93C38F50833DE"
     }
   ]
 }

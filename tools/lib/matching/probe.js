@@ -1,4 +1,5 @@
 'use strict';
+const diagnosticContext = require('./diagnostic_context');
 
 const childProcess = require('child_process');
 const fs = require('fs');
@@ -21,7 +22,7 @@ const PASSES = Object.freeze([
 const SCHEMA = 3;
 const IMPLEMENTATIONS = [__filename, path.join(ROOT, 'tools/match.js'),
   path.join(ROOT, 'tools/lib/source_policy.js'), path.join(ROOT, 'tools/lib/matching/target_model.js'),
-  path.join(ROOT, 'tools/lib/matching/scratch_assembly.js'), path.join(ROOT, 'tools/lib/matching/input_set.js')];
+  path.join(ROOT, 'tools/lib/matching/scratch_assembly.js'), path.join(ROOT, 'tools/lib/matching/input_set.js'), path.join(ROOT, 'tools/lib/matching/diagnostic_context.js')];
 const portable = file => path.relative(ROOT, file).replace(/\\/g, '/');
 const same = (a, b) => canonicalJson(a) === canonicalJson(b);
 
@@ -153,8 +154,9 @@ function validSourcePolicy(value) {
     error: null, preprocessorIdentity: value.preprocessor }));
 }
 function validIdentity(id) {
-  if (!keys(id, ['schemaVersion', 'targetId', 'symbol', 'sourceOrigin', 'sourcePolicy', 'runtimePreprocessor', 'compiler', 'flags', 'passes', 'implementation'], ['inputSetId'])
+  if (!keys(id, ['schemaVersion', 'targetId', 'symbol', 'sourceOrigin', 'sourcePolicy', 'runtimePreprocessor', 'compiler', 'flags', 'passes', 'implementation'], ['inputSetId','freshAttempt'])
     || id.inputSetId !== undefined && !isHash(id.inputSetId)
+    || id.freshAttempt !== undefined && !isHash(id.freshAttempt)
     || id.schemaVersion !== SCHEMA || !isHash(id.targetId) || !isText(id.symbol) || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(id.symbol)
     || (id.sourceOrigin !== null && !relativePath(id.sourceOrigin)) || !strings(id.flags, true)
     || !strings(id.passes, true) || !validSourcePolicy(id.sourcePolicy) || !validPreprocessor(id.runtimePreprocessor)
@@ -163,7 +165,7 @@ function validIdentity(id) {
     // Retained probes contain compiler dumps, never assembler output. Preserve
     // their original four-file identities for historical comparisons; new runs
     // bind the scratch environment guard as well and receive a different ID.
-    || !Array.isArray(id.implementation) || ![4, 5, IMPLEMENTATIONS.length].includes(id.implementation.length)) return false;
+    || !Array.isArray(id.implementation) || ![4, 5, 6, IMPLEMENTATIONS.length].includes(id.implementation.length)) return false;
   if (id.implementation.some((record, i) => !keys(record, ['path', 'sha256'])
     || record.path !== portable(IMPLEMENTATIONS[i]) || !isHash(record.sha256))) return false;
   const expectedPreprocessor = id.sourceOrigin !== null && id.sourceOrigin !== id.sourcePolicy.source
@@ -215,19 +217,19 @@ function readProbe(reportFile) {
 
 function runProbe(workbench, target, sourceText, options = {}) {
   assertScratchEnvironment();
-  assertScratchCapability(workbench, target, options.context?.phase8?.targets);
+  assertScratchCapability(workbench, target, diagnosticContext.producerModel(options.context)?.targets);
   if (typeof sourceText !== 'string' || !sourceText.length || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(target.symbol)
       || !isHash(target.targetId)) throw new Error('compiler probe source or target is malformed');
   const context = options.context || (options.privateWorkspace === true
     ? require('./private_preparation').preparePrivateContext({ ...options, privateTarget: target }) : prepareContext());
   require('./input_set').assertContext(context, options.inputs);
-  assertScratchCapability(workbench, target, context.phase8?.targets);
-  if (!strings(context.phase8.config.compiler.compileFlags, true)) throw new Error('probe compiler flags are malformed');
+  assertScratchCapability(workbench, target, diagnosticContext.producerModel(context)?.targets);
+  if (!strings(diagnosticContext.producerModel(context).config.compiler.compileFlags, true)) throw new Error('probe compiler flags are malformed');
   const passes = selectedPasses(options.passes);
   const compiler = plainPath(path.resolve(options.researchCompiler || context.localTools.compiler));
-  if (!options.researchCompiler) verifyCompiler(context.phase8, compiler);
+  if (!options.researchCompiler) verifyCompiler(diagnosticContext.producerModel(context), compiler);
   const compilerIdentity = { path: compiler, sha256: sha256File(compiler), acceptanceCompiler: !options.researchCompiler };
-  const flags = [...context.phase8.config.compiler.compileFlags];
+  const flags = [...diagnosticContext.producerModel(context).config.compiler.compileFlags];
   const bytes = Buffer.from(sourceText, 'utf8');
   const matchingRoot = options.matchingRoot || MATCHING_ROOT;
   if (options.matchingRoot) repositoryPath(matchingRoot, true);
@@ -260,13 +262,13 @@ function runProbe(workbench, target, sourceText, options = {}) {
     ? { ...preprocessor, includeDirectories: [path.join(ROOT, sourceOrigin), ...preprocessor.includeDirectories] }
     : preprocessor;
   const classification = classifySource(sourceFile, { preprocessor: effectivePreprocessor });
-  if (!['PURE_C', 'HYBRID_C'].includes(classification.class)) throw new Error(`probe source classification is ${classification.class}: ${classification.error || ''}`);
+  if (!(options.deferCompletion ? ['PURE_C'] : ['PURE_C', 'HYBRID_C']).includes(classification.class)) throw new Error(`probe source classification is ${classification.class}: ${classification.error || ''}`);
   if (options.privateWorkspace === true) require('./private_inputs').assertPrivateClassification(classification);
   verifyClassificationInputs(classification);
   if (classification.sourceSha256 !== digest(bytes)) throw new Error('probe authored source identity drift');
   const input = compilationInputBytes(classification);
-  const identity = { schemaVersion: SCHEMA, targetId: target.targetId, symbol: target.symbol,
-    ...(options.inputs ? { inputSetId: options.inputs.id } : {}),
+  const identity = { ...(options.deferCompletion ? { freshAttempt: digest(require('crypto').randomUUID()) } : {}), schemaVersion: SCHEMA, targetId: target.targetId, symbol: target.symbol,
+    ...(options.inputs?.id ? { inputSetId: options.inputs.id } : {}),
     sourceOrigin, sourcePolicy: JSON.parse(JSON.stringify(classification)), runtimePreprocessor, compiler: compilerIdentity,
     flags, passes: passes.map(p => p.name), implementation: IMPLEMENTATIONS.map(file => ({ path: portable(file), sha256: sha256File(file) })) };
   const authenticateLive = () => {
@@ -306,6 +308,16 @@ function runProbe(workbench, target, sourceText, options = {}) {
     assembly: portable(path.join(directory, 'output.s')), artifacts, dumps: artifacts.slice(3) };
   if (options.privateWorkspace === true) options.assertPrivateInputs?.();
   report.reportSha256 = reportDigest(report);
+  if(options.deferCompletion) {
+    options.closingChecks.push(() => {
+      authenticateLive();
+      const fresh=classifySource(sourceFile,{preprocessor:effectivePreprocessor});
+      require('./private_inputs').equalExpandedInputs(fresh,classification,{compilationInputBytes});
+      const snapshot=classifySource(path.join(directory,'authored.c'),{preprocessor:effectivePreprocessor});
+      require('./private_inputs').equalExpandedInputs(snapshot,classification,{compilationInputBytes});
+    });
+    return {report, completion:{action:'complete_probe',report,completionReports:[{file:reportFile,value:report}]}};
+  }
   writeJson(reportFile, report);
   if (failure) return report;
   return readProbe(reportFile);
@@ -335,4 +347,4 @@ function compareProbes(leftReportFile, rightReportFile) {
     provenanceDifferences, comparisons };
 }
 
-module.exports = { PASSES, compareProbes, runProbe, readProbe };
+module.exports = { reportDigest, PASSES, compareProbes, runProbe, readProbe };

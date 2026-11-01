@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EE0B0D69CED7B6959E4DE0179F80AB916A3346AC04753A6C71A20E871F4DABC8",
+  "observationId": "CB7BF4B8A9392860C02779FF97572D42FCF370A283365F8724B4772BA62F3E13",
+  "symbol": "func_00262730",
+  "authored": {
+    "context": "Whole original body/producer coverage checked. Selected mi15 native model and normal research import model are distinct; parent source/control artifacts linked explicitly without fabricated cross-model lineage. Shared publication preserves this historical source and its explicit source/control references. The private normal-model research import was uncompiled; selected-mi15 native reports retain their original identities. No cross-model parent relationship is invented. Integrator addendum: the initial canonical opaque task parameter plus a separate typed local alias introduced a move and changed five nonrelocation instruction fields at unchanged176B. Restoring the original typed incoming parameters recovered raw-masked equality in preflight-r1; full linked acceptance is recorded separately. This is a different experiment from the worker loop-update pair, with its own preserved source/header and native evidence, not a general pointer-cast rule.",
+    "effects": [
+      "for-update-traversal",
+      "global-reload-lifetimes"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "7D090C88A447225400A88DA59D60E22DA27141B9342B7C279F12F743FBD47A11",
+      "sourceSha256": "05D51B8ED47115B8AE3B2E5E0CEF4F7D542FA89E9C64EADCF5AF7A1A9D56487F"
+    },
+    "label": "262730-for-update-traversal",
+    "observedEffect": "KMC emits original repeated global tail reload, V0 temporary and delayed global store rather than incoming-parameter register cache/move.172->176B and full raw-relocation-masked exact. Same for-update lesson also helps inlined traversal2910.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e03/experiments/262730-while.c",
+        "sha256": "B6B6900290F2E4B283F87F5A3115092FEFF2FE252461C52B308A2CB45E236D22"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/868DB3C8F7E316A0FC7504196819C8611FFEA15C8F6ADABF0EEA296C02599DCC/workbench-report.json",
+        "sha256": "1E18824C4D397F2EDD0C80B864FD6206B9C434F0605B050751502D2494AE3E1C"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/108908A33FCBAB8A5EAAC8551274209B9909FDEC759C388BD4FC6C1333B65DAF/workbench-report.json",
+        "sha256": "A8BB25A00DB7065ACCD3FDC75E8C342045FEE2C7B56A4450F51E722C243F71D6"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_00262730/candidates/0BCA777B3814006C0580A9B29B93C809FF6C41DD8F3E9EC534881D3E3ADA4E3B.c",
+        "sha256": "05D51B8ED47115B8AE3B2E5E0CEF4F7D542FA89E9C64EADCF5AF7A1A9D56487F"
+      },
+      {
+        "path": "build/matching/ae-e03/import-262730-for-update-traversal.json",
+        "sha256": "F3CE29C3FA04875F9654E6889E978956C388DDBE8BFDCE20F6BA7D360A520D0F"
+      },
+      {
+        "path": "build/matching/ae-e03/observation-262730-for-update-traversal.json",
+        "sha256": "548937056BDAE07BDF67F79FBAC746B8CB577205974AF422421AFFD7AB769F43"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/wave-acceptance.json",
+        "sha256": "671C2EB76C2E42663CD749938FD1BB6F3F15A5CC81B99CE364235134E8A8917A"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/complete-wave-preparation.json",
+        "sha256": "E683B204B5CAB1C22B27F0371B2731CE19879AF8C0B7826CD89C2295ABC49A5E"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/source-preparation-r3/SOURCE-PREPARATION.json",
+        "sha256": "E264BB8967288136D06A806F913B7AA5C5CBBAFDB9666FFF5BB9D4DBA48802FB"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/failed-batch-object-census.json",
+        "sha256": "DD2247A52B1200A6453533F9E126F7A74D8FBF64070EFE03D6A00025A10D2AA7"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/typed-list-reconciliation.json",
+        "sha256": "2A77B455F3DD243CA6413D87EB8C99C29486F7DAE3DF6D478745F6222924F550"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/typed-list-preimages/func_00262730.c",
+        "sha256": "6619115DD83AC5D1F1EF66CD84AEE50748CFC8DB9774882DC9022CE0ADEAAD2E"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/typed-list-header-before.h",
+        "sha256": "F4D6295537D19F33AA6313E9437B05C0EFD48F555F788D447BD01D539280ACFD"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/registration-word-preimages/include/game/effect_runtime_e03_internal.h",
+        "sha256": "A30EE8CE4F48C60512331E90279441FBB1948071D4F229EA435E5393F89E77D3"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/typed-release-preimages/effect_runtime_e03.h",
+        "sha256": "20C9EB41E9E1728138313A39DBBAB84957DA4E761D2BB7F06072D0A559C8F566"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/preflight-r1/result.json",
+        "sha256": "3494A42B9DC873CD58D243D89B81A6F835418353F9745E71BD19CA307750D951"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/accepted-inputs/src/overlays/descriptor_12/func_00262730.c",
+        "sha256": "95081C761938316D0CADDD70AAA6774597115426FEA287217137B349C8683F01"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/accepted-inputs/include/game/effect_runtime_e03.h",
+        "sha256": "93B456CB484F16E3979323FE8ABA03D5A3440547F94703B7AD3DDEDC19898AAD"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/accepted-inputs/include/game/effect_runtime_e03_internal.h",
+        "sha256": "C7569EDA6E89D6FF2904FA7B9D805D00F97F746E4EA0DD591572C7917603672D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object only. Sole linked ownership/placement/actual REL/provider/complete target and whole-wave full-ROM acceptance remain pending. This is the original diagnostic limitation. The separately reconciled canonical E03 descendant now passes the complete wave verifier; that acceptance does not certify historical controls or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move global list-tail traversal assignment from a while body into an otherwise empty for-loop update; preserve loop condition, insertion operations and all aliases."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 3284,
+      "sha256": "7D090C88A447225400A88DA59D60E22DA27141B9342B7C279F12F743FBD47A11"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "05D51B8ED47115B8AE3B2E5E0CEF4F7D542FA89E9C64EADCF5AF7A1A9D56487F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00262730-ee0b0d69ce.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

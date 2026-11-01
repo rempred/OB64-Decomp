@@ -63,7 +63,7 @@ function validPinnedExecutable(record, requireDriverProgram = false) {
 }
 
 function loadPolicyConfig(inputs) {
-  const config = readJson(inputSet.resolve(inputs, POLICY_CONFIG_PATH));
+  const config = JSON.parse(inputSet.read(inputs, POLICY_CONFIG_PATH).toString("utf8"));
   const preprocessor = config.preprocessor;
   const requiredExecutables = preprocessor && preprocessor.requiredExecutables;
   if (config.schemaVersion !== 3 || !config.matchingCompiler || !preprocessor
@@ -137,11 +137,19 @@ function preprocessorIdentity(preprocessor) {
 
 function resolvePreprocessor(config, inputs) {
   if (config === undefined) config = loadPolicyConfig(inputs);
+  if (inputSet.isResearch(inputs)) {
+    const trusted = loadPolicyConfig();
+    if (JSON.stringify(config.matchingCompiler) !== JSON.stringify(trusted.matchingCompiler)
+        || JSON.stringify(config.preprocessor) !== JSON.stringify(trusted.preprocessor)) {
+      const error = new Error("research preprocessor differs from trusted shared contract"); error.code = "OB64_SELECTED_INPUT"; throw error;
+    }
+    for (const directory of config.preprocessor.includeDirectories) inputs.directoryClosure(path.resolve(ROOT, directory));
+  }
   const compilerManifest = inputSet.resolve(inputs, path.resolve(ROOT, config.matchingCompiler.manifest));
   if (!fs.existsSync(compilerManifest) || sha256File(compilerManifest) !== config.matchingCompiler.manifestSha256) {
     throw new Error('source-policy matching compiler manifest drift');
   }
-  const compiler = readJson(compilerManifest);
+  const compiler = JSON.parse(inputSet.read(inputs, compilerManifest).toString("utf8"));
   if (compiler.schemaVersion !== 1 || !compiler.compiler
       || compiler.compiler.executableSha256 !== config.matchingCompiler.executableSha256
       || config.matchingCompiler.preprocessingMode !== 'authenticated-external-companion') {
@@ -157,6 +165,7 @@ function resolvePreprocessor(config, inputs) {
     config: record,
     resolved: resolvePinnedExecutable(record),
   }));
+  if (inputSet.isResearch(inputs)) for (const file of [driver.absolutePath, ...dependencies.map(dependency => dependency.resolved.absolutePath)]) inputs.resolve(file);
   for (const dependency of dependencies) {
     const probe = childProcess.spawnSync(driver.absolutePath, [`-print-prog-name=${dependency.config.driverProgram}`], {
       cwd: ROOT,
@@ -538,7 +547,7 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
   try {
     normalizedIncludeDirectories = profileMeasure(options, 'source-policy.include-authentication', () => (
       [...new Set(includeDirectories.map((directory) => {
-        if (inputs) { inputs.logicalDirectory(directory); return directory; }
+        if (inputs) { if (inputSet.isResearch(inputs)) inputs.directoryClosure(directory); inputs.logicalDirectory(directory); return directory; }
         const relative = repositoryRelative(directory, 'source-policy include directory');
         if (!fs.existsSync(directory) || !fs.lstatSync(directory).isDirectory() || fs.lstatSync(directory).isSymbolicLink()) {
           throw new Error(`source-policy include directory is not a regular directory: ${directory}`);
@@ -738,7 +747,7 @@ function classifySource(source, options = {}) {
   }
 
   const authored = profileMeasure(options, 'source-policy.authored-read-hash', () => {
-    const rawBytes = fs.readFileSync(readSource());
+    const rawBytes = inputSet.isResearch(inputs) ? inputs.readResearch(sourceFile) : fs.readFileSync(readSource());
     return {
       rawBytes,
       rawText: rawBytes.toString('utf8'),

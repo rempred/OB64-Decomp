@@ -1,3 +1,5 @@
+#include "game/effect_commands_e09.h"
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -16,8 +18,8 @@ extern u8 D_8020A11E[];
 extern u8 D_8020A160[];
 extern u8 D_8020A168[];
 extern void func_00262B68(void);
-extern void func_0025D8A4(void *, void *);
-extern void func_0024E9BC(s32, u8, s32);
+
+
 
 s32 func_0025B264(u16 message, P05Value0CState *state)
 {
@@ -33,7 +35,7 @@ s32 func_0025B264(u16 message, P05Value0CState *state)
         func_00262830(0x1000);
         break;
     case 0x1000:
-        func_0025D8A4(D_8020A160, D_8020A168);
+        func_0025D8A4((s16 *)(D_8020A160), (s16 *)(D_8020A168));
         func_00262830(0x1001);
         /* Retail continues into the next case in this invocation. */
     case 0x1001:

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "42444AC05AE10747A5F08BAE5A4103FAF1816FE1BA49A64B6AAC583711AB8AFF",
+  "observationId": "9D6898A7C7F503DB65DFF7C89E853A27BA9CD2A94CC3515D97022D443BF9C3FB",
+  "symbol": "func_00269F00",
+  "authored": {
+    "context": "Complete376-byte func_00269F00 against selected mi3 D93D3508. Source02 already has full extent/frame88 and both real inner indices; this isolates first-loop initialization order. Private symbolic-object evidence only; integrator must capture applicable identities before shared publication. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E07 wave report. This same source also serves as a comparison control: Exact historical E07 source/control referenced by indexed-output-restores-late-destination-and-array-base-allocation. Preserve original source and native report context.",
+    "effects": [
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "51D3FDCF01DBA22CC0E8364CA9E02C507114A1A711C2F3D786EE0FBABBE6632C",
+      "sourceSha256": "5385E9485101C60B0871AED242583A32C8F19FDB5A7F04744EFE5721E8BC9F7C"
+    },
+    "label": "first-loop-source-index-initialization-before-count",
+    "observedEffect": "PURE_C candidateE536582A retains376/frame88 and the same register map, fixing exactly the two first-loop zero initializations. Raw aligned differences fall27 to25, including one actual R_MIPS_26 call relocation. The private worker selects this source as its best recoverable candidate.",
+    "parentCandidateId": "93AC5526A9BC3CC54D6DFFB18BC1266CA14F1471B9AAEF8A8092675278744688",
+    "references": [
+      {
+        "path": "build/matching/ae-e07/targets/func_00269F00/candidates/E536582A4C68160B6220C24FAFCBD71CDB138E86E90A809124F500FB0D5DFEEA.c",
+        "sha256": "5385E9485101C60B0871AED242583A32C8F19FDB5A7F04744EFE5721E8BC9F7C"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-00269F00-12.json",
+        "sha256": "DC5FBBDC0D55A9F6E9A30B39AE109BDB256B713530B472BCA0E2D726ED75D8D1"
+      },
+      {
+        "path": "build/matching/ae-e07/runs/8EC1A5DF7215F60D8290956F5252574DC55A05CAA51829B342CC026523C5EFAF/workbench-report.json",
+        "sha256": "61685F6F7AD7611C9605439656FA6CA9992AED3E67E6CFA2B7931BDD34354963"
+      },
+      {
+        "path": "build/matching/ae-e07/00269F00-first-init-observation.json",
+        "sha256": "A3FE240114D16A0A9554DA17F859BFF64D5263296B6D5ED6622487449BD528C8"
+      },
+      {
+        "path": "build/matching/ae-e07/func_00269F00-indices.c",
+        "sha256": "65B81E27E1E8C9382AADF450763F1E5EC8D70D4F3FE223AAF754800DA1F022C0"
+      },
+      {
+        "path": "build/matching/ae-e07/func_00269F00-first-init.c",
+        "sha256": "5385E9485101C60B0871AED242583A32C8F19FDB5A7F04744EFE5721E8BC9F7C"
+      },
+      {
+        "path": "build/matching/ae-e07/watch-00269F00-02.json",
+        "sha256": "E898187D29CB89101CAD2D0377F172B401402AB3024FBDCD2D4F76CCA89D7840"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00269F00.s",
+        "sha256": "D9AD605674BDF0C5E66ED4D3935426D8D2F484F66583F0391C0BFEDF380A710D"
+      },
+      {
+        "path": "build/matching/ae-e07/00269F00-indexed-output-observation.json",
+        "sha256": "9EF10186B51691EE3A85CEC64D4CF3BDECE7386AAB464A24FDE632FA7CBF63DD"
+      },
+      {
+        "path": "build/integration/attack-effects/e07/wave-acceptance.json",
+        "sha256": "6CFEAAAEF3E684E7BDEAB5E592FCD2EC3F6E09F1F0E41FF228AF06E0BB4B3441"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonmatching symbolic-object diagnostic: early output argument copy shifts the prologue; output/base remain FP/S7 instead of retailS7/FP. Actual linked providers/ownership/placement/target and full-wave ROM acceptance remain due. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "In the first inner for initializer only, set source_component=0 before component=0. Keep the second loop initializer, all accesses, calls, increments and outer CFG unchanged."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1625,
+      "sha256": "51D3FDCF01DBA22CC0E8364CA9E02C507114A1A711C2F3D786EE0FBABBE6632C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5385E9485101C60B0871AED242583A32C8F19FDB5A7F04744EFE5721E8BC9F7C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00269F00-42444ac05a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

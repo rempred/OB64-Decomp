@@ -1,3 +1,4 @@
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_presentation_p04.h"
@@ -15,7 +16,7 @@ extern u16 D_802099F4[];
 extern P05SixByteRecord D_802099A0[];
 extern void func_00262B68(void);
 extern void func_00262C80(void);
-extern s16 func_0024BCE8(u8);
+
 
 s32 func_00252198(u16 message, P05IndexedByteState *state)
 {

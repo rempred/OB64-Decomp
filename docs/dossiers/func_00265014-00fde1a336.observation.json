@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "00FDE1A336B422B7A9A9A652D9292133C249E7126530619F7DCC12120AEAD473",
+  "observationId": "6B464F4FD5A1BCBA7A6E28BE49FBD50BFF96269685AC1DB0A2DB8B98D144C8CE",
+  "symbol": "func_00265014",
+  "authored": {
+    "context": "Complete964B coordinate workspace, six loops and eight packets; consuming sort counter plus cached indices and conditional swap already match both original sorting loops at native-object level. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi15/mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        }
+      ],
+      "expandedSha256": "23DA6FA1EA45D3D7A6DB82218A8E8646D269131EF23816485EA829BBD9AD692A",
+      "sourceSha256": "85B2E1EA53A52F9EB6B1F770D0520065A284956844B3DB8B73AAAA424618F258"
+    },
+    "label": "e05-65014-prefix-first-triangle-control",
+    "observedEffect": "PURE_C964B;34 nonrelocation word differences all at offsets330..3B8, despite compiler ASM comments and pretty-printed virtual scheduling making sorting appear suspect. No nonrelocation differences precede330.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e05/65014-conditional-swap.json",
+        "sha256": "C4C1DA3D2C3F49E54CBA929B50CFDECEDC68F45361C78712A88D55BDE1349F11"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00265014/candidates/55916F6C7A14790C9932459EB279D6F150516038354ACEBD3CF7D32EA80AC41D.c",
+        "sha256": "85B2E1EA53A52F9EB6B1F770D0520065A284956844B3DB8B73AAAA424618F258"
+      },
+      {
+        "path": "build/matching/ae-e05/65014-prefix-control-import.json",
+        "sha256": "ED8BA88C97629785E7077A8D027EAEFDAA5A8E51F7BC171FE6FB579AD36B4D19"
+      },
+      {
+        "path": "build/matching/ae-e05/65014-prefix-control-observation.json",
+        "sha256": "A3BCBE0586F908117471F2CB7965147867F6ED0F156CF03AFDD27EACD8FB20C5"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/wave-acceptance.json",
+        "sha256": "A899FC33E5813D1D394439D7110AFFF4ECA66B3AD8FDB7FCF0E1D6F903FF7654"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "E62590846C43B2740FF6D0F676BE929CEC90FB108E369E3165D3C552990B74FA"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/resume-after-p06/installation.json",
+        "sha256": "7E36653C3269B2BDF0DA2DE0F511AA42103687686385D3F196935B542FF7747A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Final triangle grouping and preceding multiply/store schedule differ; actual provider/link/fullwave gates are not supplied by private symbolic-object evidence. The separately reconciled canonical E05 descendant now passes the complete-wave normal verifier within the changed-tool structural audit. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use opcode-first bit packing in the last triangle packet, retaining the established plain-block command macro."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      }
+    ],
+    "expanded": {
+      "bytes": 5216,
+      "sha256": "23DA6FA1EA45D3D7A6DB82218A8E8646D269131EF23816485EA829BBD9AD692A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "85B2E1EA53A52F9EB6B1F770D0520065A284956844B3DB8B73AAAA424618F258"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_00265014-00fde1a336.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

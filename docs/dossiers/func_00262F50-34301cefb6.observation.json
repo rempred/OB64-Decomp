@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "34301CEFB66AB040DEAE49630143BFAF298DBB66A939022AB1561FD31B01BA11",
+  "observationId": "74523BA58EA158F2AB9FB94A5B0FBD5AF82AD0BC9F4B6A20A99666523FED9CE4",
+  "symbol": "func_00262F50",
+  "authored": {
+    "context": "E03 full original body and emitted native census checked. Referenced trials use selected mi15 bounded diagnostics. Research import uses its separate normal model; no fabricated cross-model parent. Current private source additionally reconciles285C prototype to s32 and includes compiler-form comments, to be natively refreshed before import. Shared publication preserves this historical source and its explicit source/control references. The private normal-model research import was uncompiled; selected-mi15 native reports retain their original identities. No cross-model parent relationship is invented.",
+    "effects": [
+      "cursor-postincrement",
+      "packet-store-order",
+      "private-array-stride"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "BA9C35E7BEDBF41C1C30F789235CB8E7720B4CF53B19F35B55B6DD9B46B154E5",
+      "sourceSha256": "FC151ED390B5DCE6D888F0306D4F3D3206B70CB860CE1356C494FFA58E003B4D"
+    },
+    "label": "262f50-command-and-matrix-postincrements",
+    "observedEffect": "Separate packet increments alone recover constant A6/A7 but move argument mask to last call delay, worsening score at unchanged256B. Matrix postincrements recover original global cursor-store-before-packet-store order and original call-delay packet store. Full256B/frame40 raw-relocation-masked equality.64-byte private block records stride only; no new alignment/field meaning or linked addresses certified.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e03/experiments/262F50-cached-packets.c",
+        "sha256": "92A4E4B77293F089FF639ACF017AD06091478232AA12D1343DDA9F5F8E2A3B35"
+      },
+      {
+        "path": "build/matching/ae-e03/experiments/262F50-separated-increments.c",
+        "sha256": "7896DFA1CFB13DF483696364909D761C1C62C3B30E16A3F4C497BB03C1F339D5"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/9D7B6D8C5AA01AEB6E93B75CC66BCA91B1F8DFE1E59A2FD6B68D8BBC048854C3/workbench-report.json",
+        "sha256": "9B2CEB53BDF1D8920BAACC3B67C0EFEB3F3A3DD4678908A99D5A35D6ECDBE877"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/7CA31E72BFC1E4741E87CFC78CE1FEA4F6B3CB4E90ED3E47CDA15AEE9FBA97CD/workbench-report.json",
+        "sha256": "BA5B9F2CD4DB889676275A8885CA4C2CD97D2A2AF4CBDCDCDD22C499DF97A436"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_00262F50/candidates/188F2B81096C41F0A61025CD66D5A92A6E3B2F3F0BA735E5BB73793E4CB6C4A7.c",
+        "sha256": "FC151ED390B5DCE6D888F0306D4F3D3206B70CB860CE1356C494FFA58E003B4D"
+      },
+      {
+        "path": "build/matching/ae-e03/import-262f50-command-and-matrix-postincrements.json",
+        "sha256": "5408135754EC4E44D027F44371F02F53CAA48DFA98F0BC80C3C8DEB7FC0C9C23"
+      },
+      {
+        "path": "build/matching/ae-e03/observation-262f50-command-and-matrix-postincrements.json",
+        "sha256": "01B0CE5A2768413198EF7E5F3A18196F3C8A2308E0A2AE1F5624E645D353953B"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/wave-acceptance.json",
+        "sha256": "671C2EB76C2E42663CD749938FD1BB6F3F15A5CC81B99CE364235134E8A8917A"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/complete-wave-preparation.json",
+        "sha256": "E683B204B5CAB1C22B27F0371B2731CE19879AF8C0B7826CD89C2295ABC49A5E"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/source-preparation-r3/SOURCE-PREPARATION.json",
+        "sha256": "E264BB8967288136D06A806F913B7AA5C5CBBAFDB9666FFF5BB9D4DBA48802FB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM symbolic-object only; actual provider/REL, sole linked custody/placement/full target bytes and complete-wave full-ROM gates remain pending. This is the original diagnostic limitation. The separately reconciled canonical E03 descendant now passes the complete wave verifier; that acceptance does not certify historical controls or imply a universal compiler mechanism. Canonical integration corrects the old private D_800F9BA0 spelling to existing D_800E9BA0, derived from original LUI plus signed low-half addressing; the archived spelling remains historical.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use separate command-cursor postincrements for both packets; model the observed0x40-byte matrix stride as a private block type and use matrix-cursor postincrement inside each word04 assignment."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 3463,
+      "sha256": "BA9C35E7BEDBF41C1C30F789235CB8E7720B4CF53B19F35B55B6DD9B46B154E5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FC151ED390B5DCE6D888F0306D4F3D3206B70CB860CE1356C494FFA58E003B4D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00262F50-34301cefb6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

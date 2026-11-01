@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "03ABABD1B888687AC43232D0CAE1097B068CADE03D465B52E130D67E8979BDA4",
+  "observationId": "E9D121B9D8A1884CB1F223D16E59C68694EB97B4D11175024FB2200102A8AB81",
+  "symbol": "func_0025C8D0",
+  "authored": {
+    "context": "E09 private selected-input reconstruction from the complete original target disassembly; source/watch pairs remain under this root. This is observed output, not original-source or compiler-mechanism proof. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E09 wave report.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "A2A2A977B4EAF169A0EB00A8419F70DC6B73E69FEB44A4DFFA87B84183930036",
+      "sourceSha256": "B82388B3DF6EAF09BF3D64931A51D1E13C9DE8C2C970D2A096FB56BBF79C358A"
+    },
+    "label": "ordered-initialization-store-view",
+    "observedEffect": "watch08/09 retain complete428/frame32 and all non-REL words equal. Earlier wholesale volatile index/flag views regressed load widths and scheduling. The narrow initialization view fixes the three-word LI/SB/SH order.",
+    "parentCandidateId": "9C1C3A0E72FE6F3E32A52E74C761C0F7D1BC5B12A9C8A04D80F8C47FE75C40C9",
+    "references": [
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C8D0/candidates/E0F5554D7928DD5D248351E1C0EE3B6A1FC093D763ED3855F5FF32AC5EC57066.c",
+        "sha256": "D173E01A474893992DFDBD955571274127AFB0AAC6A579B1D1C9F82D31FDA0E8"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C8D0-watch09.json",
+        "sha256": "DD88D7CBA36B262EE92C8A75ED7D8F15DA6832F63130F68F45C0C4B1107D7B89"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/F393E60470CDE0C2A9E267741DD713684B063700CA114AF7503AEF8301256877/workbench-report.json",
+        "sha256": "866DA07DEAF4E81D65AB27C9BB5AEA52E0C509D22746E216AB0CCAA2953AC9F2"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C8D0-observation.json",
+        "sha256": "9F9C534C2F12E400FFE0114B4B80C4F405562B19EE96573B337DE472A5195BC1"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C8D0-watch07.json",
+        "sha256": "5C4A4277DC8393790F35C3443E650BCBF5D2A072CDF88A4C621A104978D738D1"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C8D0-watch03.json",
+        "sha256": "F6DA739C1AADE182AD0A9F27D5BED67A8C99D809D0F256562403D9DAC31DA97C"
+      },
+      {
+        "path": "build/matching/ae-e09/0025C8D0-watch08.json",
+        "sha256": "3F03FFD157AE65BDEB3DE05345ED0EBFC82B8F1F49A678B42C85B58809066FE4"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C8D0/candidates/34C4F95E9B2B7935CB3319286B2A6D909C9E519B2557D9240CFEB86A4E94273B.c",
+        "sha256": "6A164906616D24FBD4CF5C3204F36CCCC6AD0483D10A4AAE91D18A9CC897E017"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/1DE66B834371E01DCDE3D46BD425F3501DB1896F3C617D8A30D314BCACF78478/workbench-report.json",
+        "sha256": "89B7D9B947D156C7128CCA61463CF3260E88C309F26AD7F22818D0BF6727FEAB"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C8D0/candidates/23942675298970D5437213DC88DF9D135496A137AF24B89C6167A3DB61731373.c",
+        "sha256": "AE0D8250E656C1C6140FE9E95D9BAFEF883971F1A5AE77AC8D0BFD7A4A19DAD1"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/C5A9A2A15D0E8CF0CF6191548A84AFB1F0B465AD2142688ACA9520365C32220E/workbench-report.json",
+        "sha256": "C314C235D66AA8DDCBCAC9B660C1668F2782F341BCBD34770CA6A136ED9CBFBC"
+      },
+      {
+        "path": "build/matching/ae-e09/targets/func_0025C8D0/candidates/60C64B75D3F00634EF2DFBC8B6BF017F916B5F409293B6F5C22DD825DC1797A3.c",
+        "sha256": "868A64ED98F15E53426B6DCBF35F58DF2018C96C6929369E22771218A6C2D7BC"
+      },
+      {
+        "path": "build/matching/ae-e09/runs/18DA48B6334F33F66BEC6CBF00BC248A4D4C7F25F602D6B5C67DFD2D7B403978/workbench-report.json",
+        "sha256": "1E6DCAACD722FE7B6704E2D838D89B01123330C580248DE3B48A6C34F31A2EF2"
+      },
+      {
+        "path": "build/integration/attack-effects/e09/wave-acceptance.json",
+        "sha256": "5DC4609CBCA0A4C89223B9649C6AD65B485974ABDB31EAF73576027F6454076C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "E6A7DB4207EC58C85B40361C256BFECA8C63BFFB2186AFC6139143AFC3409DAF",
+      "63192286F4F759A685A6930A59384925792152514D4BC3527D1BF9834626380C"
+    ],
+    "remainingFailure": "Private diagnostic only. Actual REL/provider/sole-owner/placement/complete target bytes and complete18-wave full-ROM gates remain with the integrator. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "From watch07, order only the two initialization stores through a volatile state view; keep ordinary later index accesses."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 2992,
+      "sha256": "A2A2A977B4EAF169A0EB00A8419F70DC6B73E69FEB44A4DFFA87B84183930036"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B82388B3DF6EAF09BF3D64931A51D1E13C9DE8C2C970D2A096FB56BBF79C358A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0025C8D0-03ababd1b8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

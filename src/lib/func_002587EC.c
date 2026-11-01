@@ -1,3 +1,4 @@
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_math_e04.h"
@@ -29,10 +30,10 @@ extern u8 p01_byte_80220F68;
 /* Two six-byte records at ROM25EA98/+6 remain in original data_0025e890. */
 extern P05FactoryRecord D_80209ED8[];
 extern void func_00262B68(void);
-extern s16 func_0024BCE8(u8);
-extern void func_0024C0DC(u8, P01Vec3 *, float, float, float);
-extern void *func_0024D180(P01Vec3 *, void *);
-extern void func_0024E9BC(s32, u8, s32);
+
+
+
+
 
 s32 func_002587EC(u16 message, P05ChoreographyRootState *state)
 {

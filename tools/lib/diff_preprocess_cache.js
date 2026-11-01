@@ -73,10 +73,14 @@ function eligibility(bytes) {
   return { tier: 'B', includes };
 }
 function measure(options, name, callback) { return options?.profile ? options.profile.measure('diff-preprocess-cache.' + name, callback) : callback(); }
-function environmentHash(environment) {
+function environmentHashes(environment) {
   const entries = Object.entries(environment).map(([name, value]) => [process.platform === 'win32' ? name.toUpperCase() : name, String(value)]);
   entries.sort((a, b) => a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]));
-  return hash(Buffer.from(json(entries)));
+  // This execution tag is bookkeeping on the authenticated CPP path. Exclude
+  // only its normalized exact name from reuse; full invocation drift still
+  // seals every entry. Neither observation changes the child's environment.
+  return { full: hash(Buffer.from(json(entries))),
+    reuse: hash(Buffer.from(json(entries.filter(([name]) => name !== 'CODEX_TOOL_CALL_ID')))) };
 }
 function createDiffPreprocessCache(options = {}) {
   const inputs = options.inputs;
@@ -89,9 +93,72 @@ function createDiffPreprocessCache(options = {}) {
   const cacheRoot = path.resolve(options.cacheRoot || path.join(ROOT, 'build/cache/diff-preprocess'));
   const requested = new Set((options.requestedSources || []).map(file => canonicalPath(physical(file))));
   const tools = new Map(), used = new Map(), roots = new Set(), inventories = new Map();
+  const attemptedFinal = new Set(), successfulFinal = new Set(), ownedStages = new Set();
   const counters = { hits: 0, misses: 0, fresh: 0, requested: 0, ineligible: 0, invalid: 0, published: 0, writeFailures: 0,
     publishSkipped: 0, unpublishable: 0, firstIneligibleReason: null };
-  let active = true, implementation = null, environment = null, deferredDrift = null;
+  let active = true, implementation = null, fullEnvironment = null, reuseEnvironment = null, deferredDrift = null;
+  let entrySafetyFailure = null;
+  function unsafeEntry(file, reason) {
+    const error = new Error(`diff preprocessing cache: unsafe entry ${reason}: ${file}`);
+    error.code = 'OB64_CACHE_ENTRY_SAFETY';
+    entrySafetyFailure ||= error;
+    throw error;
+  }
+  function entryNode(file) {
+    let status;
+    try { status = fs.lstatSync(file); }
+    catch (error) { if (error.code === 'ENOENT') return null; unsafeEntry(file, 'unreadable'); }
+    if (status.isSymbolicLink() || !status.isDirectory() && !status.isFile()) unsafeEntry(file, 'link or nonregular node');
+    if (status.isFile() && status.nlink !== 1) unsafeEntry(file, 'hardlink');
+    if (canonicalPath(fs.realpathSync.native(file)) !== canonicalPath(file)) unsafeEntry(file, 'alias');
+    return status;
+  }
+  function checkedCacheRoot() {
+    const ancestors = [];
+    for (let current = cacheRoot; ; current = path.dirname(current)) { ancestors.push(current); if (path.dirname(current) === current) break; }
+    for (const current of ancestors.reverse()) {
+      const status = entryNode(current);
+      if (status && !status.isDirectory()) fail('cache ancestor is not a directory');
+    }
+  }
+  function entryFile(file) {
+    const status = entryNode(file);
+    if (!status || !status.isFile()) fail('entry file is missing or not regular');
+    return regular(file);
+  }
+  function entryName(file, stage = false) {
+    const name = path.basename(file);
+    if (path.dirname(path.resolve(file)) !== cacheRoot || !(stage ? /^\.stage-[A-Za-z0-9_-]+$/ : SHA).test(name)) fail('entry path binding');
+    return name;
+  }
+  function combinedEntryError(primary, secondary) {
+    if (!primary) return secondary;
+    const error = new AggregateError([primary, secondary], `${primary.message}; entry cleanup/check: ${secondary.message}`, { cause: primary });
+    if (primary.code !== undefined) error.code = primary.code;
+    return error;
+  }
+  function finishEntrySafety() {
+    if (!attemptedFinal.size && !ownedStages.size && !entrySafetyFailure) return;
+    let failure = entrySafetyFailure;
+    try {
+      checkedCacheRoot();
+      const visit = file => {
+        const status = entryNode(file);
+        if (status?.isDirectory()) for (const name of fs.readdirSync(file)) visit(path.join(file, name));
+        return status;
+      };
+      for (const name of [...attemptedFinal, ...ownedStages]) {
+        const file = path.join(cacheRoot, name);
+        entryName(file, ownedStages.has(name));
+        const status = visit(file);
+        if (status && successfulFinal.has(name)) {
+          if (!status.isDirectory() || !equal(fs.readdirSync(file).sort(), ['bytes.bin', 'metadata.json'])) fail('successful entry shape changed at finish');
+          for (const child of ['bytes.bin', 'metadata.json']) if (!entryNode(path.join(file, child))?.isFile()) fail('successful entry file changed at finish');
+        }
+      }
+    } catch (error) { failure = combinedEntryError(failure, error); }
+    if (failure) throw failure;
+  }
   function live() { if (!active) fail('invocation already finished'); }
   function remember(file, identity) {
     if (used.has(file) && !equal(used.get(file), identity)) fail('source/dependency changed between uses');
@@ -165,10 +232,16 @@ function createDiffPreprocessCache(options = {}) {
   }
   function baseline(preprocessor) {
     const pin = authenticate(preprocessor);
-    const currentImplementation = implementationFiles.map(regular), currentEnvironment = environmentHash(getEnvironment());
+    const currentImplementation = implementationFiles.map(regular), currentEnvironment = environmentHashes(getEnvironment());
     if (implementation && !equal(implementation, currentImplementation)) fail('implementation changed during invocation');
-    if (environment && environment !== currentEnvironment) fail('environment changed during invocation');
-    implementation = currentImplementation; environment = currentEnvironment;
+    if (fullEnvironment && fullEnvironment !== currentEnvironment.full) {
+      // input() may fall back to fresh(), which observes the environment again.
+      // Restoring the old value there must not erase this failed observation.
+      const error = new Error('diff preprocessing cache: environment changed during invocation');
+      deferredDrift ||= error;
+      throw error;
+    }
+    implementation = currentImplementation; fullEnvironment = currentEnvironment.full; reuseEnvironment = currentEnvironment.reuse;
     return pin;
   }
   function input(sourceFile, preprocessor, extra) {
@@ -184,7 +257,7 @@ function createDiffPreprocessCache(options = {}) {
     return { schemaVersion: 2, tier: parsed.tier, source, sourceFile: canonicalPath(sourceFile), preprocessor: pin.identity,
       cwd: canonicalPath(ROOT), includeDirectories, ...(inputs ? { inputSet: inputs.id, sourceArgument: sourceFile } : {}),
       ...(parsed.tier === 'B' ? closure(sourceFile, includeDirectories) : { closure: [source], inventories: [] }),
-      implementation, environmentSha256: environment };
+      implementation, environmentSha256: reuseEnvironment };
   }
   function dependenciesValid(dependencies, key) {
     if (!Array.isArray(dependencies) || !dependencies.length || !dependencies.some(record => equal(record, key.source))) return false;
@@ -205,10 +278,13 @@ function createDiffPreprocessCache(options = {}) {
       && equal(args.slice(flags.length + 5), [...key.includeDirectories.flatMap(file => ['-I', file]), key.sourceArgument || key.source.path]);
   }
   function readEntry(entry, key) {
+    checkedCacheRoot();
+    const status = entryNode(entry);
+    if (!status?.isDirectory()) fail('entry is not a directory');
     directory(cacheRoot); directory(entry); confined(cacheRoot, entry);
     if (!equal(fs.readdirSync(entry).sort(), ['bytes.bin', 'metadata.json'])) fail('entry file census');
-    for (const name of ['bytes.bin', 'metadata.json']) confined(entry, path.join(entry, name));
-    regular(path.join(entry, 'metadata.json'));
+    for (const name of ['bytes.bin', 'metadata.json']) { entryNode(path.join(entry, name)); confined(entry, path.join(entry, name)); }
+    entryFile(path.join(entry, 'metadata.json'));
     const metadataBytes = fs.readFileSync(path.join(entry, 'metadata.json')), metadata = JSON.parse(metadataBytes);
     if (!keys(metadata, ['schemaVersion', 'key', 'keySha256', 'output', 'dependencies', 'args', 'stderr'])
         || metadata.schemaVersion !== 1 || !equal(metadata.key, key) || metadata.keySha256 !== hash(Buffer.from(json(key)))
@@ -216,35 +292,42 @@ function createDiffPreprocessCache(options = {}) {
         || !SHA.test(metadata.output.sha256) || !dependenciesValid(metadata.dependencies, key)
         || typeof metadata.stderr !== 'string' || !resultArgsValid(metadata.args, key)
         || !metadataBytes.equals(Buffer.from(json(metadata) + '\n'))) fail('entry metadata contract');
-    const identity = regular(path.join(entry, 'bytes.bin')), bytes = fs.readFileSync(path.join(entry, 'bytes.bin'));
+    const identity = entryFile(path.join(entry, 'bytes.bin')), bytes = fs.readFileSync(path.join(entry, 'bytes.bin'));
     if (identity.bytes !== metadata.output.bytes || identity.sha256 !== metadata.output.sha256 || hash(bytes) !== identity.sha256) fail('entry byte identity');
     return { ok: true, bytes, text: bytes.toString('utf8'), stderr: metadata.stderr, args: [...metadata.args],
       source: { ...key.source }, dependencies: metadata.dependencies.map(record => ({ ...record })) };
   }
   function publish(entry, key, result) {
     if (fs.existsSync(entry)) { counters.publishSkipped++; return; } // Unknown/corrupt entries are never clobbered.
+    checkedCacheRoot();
     fs.mkdirSync(cacheRoot, { recursive: true }); directory(cacheRoot);
     const stage = fs.mkdtempSync(path.join(cacheRoot, '.stage-'));
+    ownedStages.add(entryName(stage, true));
+    let failure;
     try {
       const metadata = { schemaVersion: 1, key, keySha256: hash(Buffer.from(json(key))),
         output: { bytes: result.bytes.length, sha256: hash(result.bytes) }, dependencies: result.dependencies, args: result.args, stderr: result.stderr };
       fs.writeFileSync(path.join(stage, 'bytes.bin'), result.bytes, { flag: 'wx' });
       fs.writeFileSync(path.join(stage, 'metadata.json'), json(metadata) + '\n', { flag: 'wx' });
       readEntry(stage, key);
-      try { fs.renameSync(stage, entry); counters.published++; }
+      try { fs.renameSync(stage, entry); counters.published++; successfulFinal.add(entryName(entry)); }
       catch (error) {
         if (!fs.existsSync(entry)) throw error;
         const winner = readEntry(entry, key);
         if (!winner.bytes.equals(result.bytes)) fail('atomic winner differs from fresh preprocessing');
+        successfulFinal.add(entryName(entry));
       }
-    } finally {
-      if (fs.existsSync(stage)) {
+    } catch (error) { failure = error; }
+    try {
+      checkedCacheRoot();
+      if (entryNode(stage)) {
         directory(stage); confined(cacheRoot, stage);
         // Only these two files were created here; never recursively delete.
         for (const name of ['bytes.bin', 'metadata.json']) if (fs.existsSync(path.join(stage, name))) fs.unlinkSync(path.join(stage, name));
         fs.rmdirSync(stage);
       }
-    }
+    } catch (error) { failure = combinedEntryError(failure, error); }
+    if (failure) throw failure;
   }
   function fresh(sourceFile, preprocessor, extra, preprocessOptions) {
     try { baseline(preprocessor); } catch (error) { deferredDrift = error; }
@@ -269,9 +352,11 @@ function createDiffPreprocessCache(options = {}) {
       return fresh(sourceFile, preprocessor, extraIncludeDirectories, preprocessOptions);
     }
     const entry = path.join(cacheRoot, hash(Buffer.from(json(key))));
+    // Attempt, not success, determines finish coverage (including skipped publication).
+    attemptedFinal.add(entryName(entry));
     let result;
     if (fs.existsSync(entry)) {
-      try { result = measure(preprocessOptions, 'read', () => readEntry(entry, key)); counters.hits++; }
+      try { result = measure(preprocessOptions, 'read', () => readEntry(entry, key)); counters.hits++; successfulFinal.add(entryName(entry)); }
       catch (_) { counters.invalid++; }
     }
     if (!result) {
@@ -289,11 +374,12 @@ function createDiffPreprocessCache(options = {}) {
     live(); active = false;
     if (deferredDrift) throw deferredDrift;
     if (implementation && !equal(implementationFiles.map(regular), implementation)) fail('implementation drift at finish');
-    if (environment && environmentHash(getEnvironment()) !== environment) fail('environment drift at finish');
+    if (fullEnvironment && environmentHashes(getEnvironment()).full !== fullEnvironment) fail('environment drift at finish');
     for (const value of tools.values()) for (const record of value.records) if (!equal(regular(record.path), record)) fail('tool/configuration drift at finish');
     for (const [file, identity] of used) if (!equal(dependencies([file], file), [identity])) fail('source drift at finish');
     for (const root of roots) { directory(root); if (inputs) inputs.logicalDirectory(root); else confined(directory(ROOT), root); }
     for (const [root, identity] of inventories) if (!equal(inventory(root), identity)) fail('include tree inventory drift at finish');
+    finishEntrySafety();
   }
   return { preprocess, finish, get stats() { return { ...counters }; } };
 }

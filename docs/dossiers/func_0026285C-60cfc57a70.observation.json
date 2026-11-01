@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "60CFC57A7093A71E1FADCE9F8F9649522507B261DD9CF443EAF8E7242816442B",
+  "observationId": "26876807CBFA66426AAA908F3B4AE9D2E42C0279A52E689039F5901ACB36CAD7",
+  "symbol": "func_0026285C",
+  "authored": {
+    "context": "Whole original body/producer coverage checked. Selected mi15 native model and normal research import model are distinct; parent source/control artifacts linked explicitly without fabricated cross-model lineage. Shared publication preserves this historical source and its explicit source/control references. The private normal-model research import was uncompiled; selected-mi15 native reports retain their original identities. No cross-model parent relationship is invented.",
+    "effects": [
+      "return-value-liveness",
+      "callback-wrapper-interface"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "962579380DCE5B2F6DB91EA1A8556D9420CA1449A17C350D1645E16EABEA1EC6",
+      "sourceSha256": "82AD8996D9280F10CCC670BDB0299988F9B8FA233136F1DBF2231D99FDB5EFA2"
+    },
+    "label": "26285c-callback-return-liveness",
+    "observedEffect": "Original V0 remains unchanged after jalr through return. Making this value live across context restore shifts index/base/address+parent from V3/A4/V0 to exact A4/A5/V3; all10 register fields resolved, same136B/frame24. No visible caller-consumption claim. Parent-local and void-inline helper controls reproduce baseline; parameter reuse worsens pre-call allocation.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e03/experiments/26285C-baseline.c",
+        "sha256": "1A87F9B1B918D64BFE87775C83E13676F665096527AE05F2310C843433CBDEE4"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/DC9C0E6BE86D6FCF20DCA2AE3197B59689F574706F44518B94B690594AB3A63C/workbench-report.json",
+        "sha256": "2BBC92AE0904E29A1F29A7A3F2B5B1C79078DE1F2A6CE4A977F0BB8BBA1E9C1D"
+      },
+      {
+        "path": "build/consultants/attack-e03-muse/006-sol-assessment.json",
+        "sha256": "3DDAD2949A3F4812A30681C6629EE2A2CEE17821D0602AE4E1BA7A8D89F8F31C"
+      },
+      {
+        "path": "build/matching/ae-e03/runs/35D76DD7642612BB344FF5243C208B6957AB640A76BF575F2B993140B90C1915/workbench-report.json",
+        "sha256": "B764821D309C9B34F4D22EAA6DBDC3ED2C8EC3BDC513F8A080AED6918BE3876F"
+      },
+      {
+        "path": "build/matching/ae-e03/targets/func_0026285C/candidates/70585DD2A14C83C2D9B77C038455399A72482BB9E92BA43735B1B4FFB6805EB8.c",
+        "sha256": "76ED1DA78775B61F724BB26CB232B69BB874C8A35EA2C61D34FD7DFC8366E93D"
+      },
+      {
+        "path": "build/matching/ae-e03/import-26285c-callback-return-liveness.json",
+        "sha256": "F86FA05F3446F353B686BEFF9FC422CF623E21DE57021F9881C9CD2B87B76743"
+      },
+      {
+        "path": "build/matching/ae-e03/observation-26285c-callback-return-liveness.json",
+        "sha256": "CE85B2B390F5636CD2BEF008F4488D2A63C5000F09B808B628F4C1D80006423D"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/wave-acceptance.json",
+        "sha256": "671C2EB76C2E42663CD749938FD1BB6F3F15A5CC81B99CE364235134E8A8917A"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/complete-wave-preparation.json",
+        "sha256": "E683B204B5CAB1C22B27F0371B2731CE19879AF8C0B7826CD89C2295ABC49A5E"
+      },
+      {
+        "path": "build/integration/attack-effects/e03/source-preparation-r3/SOURCE-PREPARATION.json",
+        "sha256": "E264BB8967288136D06A806F913B7AA5C5CBBAFDB9666FFF5BB9D4DBA48802FB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object only. Sole linked ownership/placement/actual REL/provider/complete target and whole-wave full-ROM acceptance remain pending. This is the original diagnostic limitation. The separately reconciled canonical E03 descendant now passes the complete wave verifier; that acceptance does not certify historical controls or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Return the task callback s32 result from the wrapper after context restore; retain direct predecrement push/preincrement pop and both post-call global reloads. Correct this candidate forward declaration to s32."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2781,
+      "sha256": "962579380DCE5B2F6DB91EA1A8556D9420CA1449A17C350D1645E16EABEA1EC6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "82AD8996D9280F10CCC670BDB0299988F9B8FA233136F1DBF2231D99FDB5EFA2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0026285C-60cfc57a70.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

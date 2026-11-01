@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E4A57C0107BF10959C9E84A9BFEDE075890F6B9D37AA9D716C56028BD2DA01A9",
+  "observationId": "22EC801C2323595284F47189BA63F17AF6979524D46EAFB8E02620AFDD3D461B",
+  "symbol": "func_002653d8",
+  "authored": {
+    "context": "Complete strip producer with a real point workspace plus retained cursor home in one local aggregate. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi15/mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        }
+      ],
+      "expandedSha256": "36F6F590282287D5EA9ED2483D310D76439050A44DFDE8064F7EE9F1BEEDC25E",
+      "sourceSha256": "F0AB196FBE7492A44540FA32EF22B350AE2A4CA884644CC8262FCE4166947DF5"
+    },
+    "label": "e05-653d8-bound-hoist-before-batch-snapshot",
+    "observedEffect": "The compiler loop dump hoists count-1, unlike the conventional for condition whose temporary has life 1 and savings 1. The 88-byte frame and prefix allocation align; this 452-byte control lacks one required tail cursor move.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e05/653d8-for-bound-before-prefix.json",
+        "sha256": "8684B1A0CF0A761F048A08C16C061D2ACB8F8B3055F15F7A27CA6C3324B35FAE"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002653d8/candidates/24C93D3AEECB0FA6BB863E699119390C641BDB8A1AC1326DAFAA0851E6C81314.c",
+        "sha256": "F0AB196FBE7492A44540FA32EF22B350AE2A4CA884644CC8262FCE4166947DF5"
+      },
+      {
+        "path": "build/matching/ae-e05/653d8-work-aggregate-corrected.json",
+        "sha256": "CCC7CBFBAD2992901EB81E0C0DBAD1B939B59BCCB233B8E5A09305F4B01ABEE0"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002653d8/candidates/D638543A86688392915B7EC758245285F36E415E9CE119AA5EB7899302E6F607.c",
+        "sha256": "C1BC28F3DC46D9AA39FE45522C0658B1D989F4BEDB8BDAA3C5FCAAD3901E4C2F"
+      },
+      {
+        "path": "build/consultants/attack-e05-muse/003-sol-assessment.json",
+        "sha256": "A8CC74AC728BB1EC964FE3C287F526926920F21B25C731081C4CD581FBB3A272"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002653d8/candidates/9678A4644B6F6DABB1D68A5491C264B788FDD6B1FC13BB58B74C594B261C6CE5.c",
+        "sha256": "F0AB196FBE7492A44540FA32EF22B350AE2A4CA884644CC8262FCE4166947DF5"
+      },
+      {
+        "path": "build/matching/ae-e05/653d8-baseline-import.json",
+        "sha256": "FA344C0A68C83346937D3DC52B883ECDFC42416B4EEF548DB31CB0A9AC2A0790"
+      },
+      {
+        "path": "build/matching/ae-e05/653d8-baseline-observation.json",
+        "sha256": "0FFD85AA880FD665C48B4FDDC6E9871C26B0ADD00E9F8C1C03B2AC6AA10A045A"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/wave-acceptance.json",
+        "sha256": "A899FC33E5813D1D394439D7110AFFF4ECA66B3AD8FDB7FCF0E1D6F903FF7654"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "E62590846C43B2740FF6D0F676BE929CEC90FB108E369E3165D3C552990B74FA"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/resume-after-p06/installation.json",
+        "sha256": "7E36653C3269B2BDF0DA2DE0F511AA42103687686385D3F196935B542FF7747A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private selected-input object evidence only; current-base linked ownership, relocation/placement and complete-wave/full-ROM gates remain with the integrator. The separately reconciled canonical E05 descendant now passes the complete-wave normal verifier within the changed-tool structural audit. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use for(i=-1; count-1 > ++i;) so the bound temporary lives across the increment; retain the ordinary single batch cursor as the pair baseline."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      }
+    ],
+    "expanded": {
+      "bytes": 3221,
+      "sha256": "36F6F590282287D5EA9ED2483D310D76439050A44DFDE8064F7EE9F1BEEDC25E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F0AB196FBE7492A44540FA32EF22B350AE2A4CA884644CC8262FCE4166947DF5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_002653d8-e4a57c0107.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F92674A339CB9EC011E159A515C4C1F55A3ECD67FBF2B3546F6EA3526E8C74C5",
+  "observationId": "FE00674B5E19B599C6C845B847810765CACA5847B0A472C73550F0DD25208860",
+  "symbol": "func_00265014",
+  "authored": {
+    "context": "Full964B producer, six workspace loops and eight command packets. Both sorting loops already match outside real relocation fields in the linked-prefix control. Shared publication preserves the historical source and exact source/control references. Original normal-model research imports were uncompiled; selected-mi15/mi16 native reports retain their own identities. Existing source-pair parent relationships are remapped to their corresponding current-model research candidates, not to historical native runs.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        }
+      ],
+      "expandedSha256": "5D43D02148C97BE6FE672FCBD141CEAC0B4BB85FC709AF9F8443DAE0380F8D41",
+      "sourceSha256": "D97C49FE0BBA458F61A8462BA6B62179C0B6780211F40BAF1C6F9D4EFAF776EC"
+    },
+    "label": "e05-65014-fields-before-triangle-opcode",
+    "observedEffect": "PURE_C964B; zero nonrelocation object-word differences. The prior opcode-first source had34 differences only at offsets330..3B8. Actual object words resolve #nop compiler-annotation ambiguity.",
+    "parentCandidateId": "00FDE1A336B422B7A9A9A652D9292133C249E7126530619F7DCC12120AEAD473",
+    "references": [
+      {
+        "path": "build/matching/ae-e05/65014-final.json",
+        "sha256": "E3970F9B2DC17D31B6975F0A59DFC84FA57CE9B266E550D02DDBB08CE9573FAA"
+      },
+      {
+        "path": "build/matching/ae-e05/65014-triangle-fields-first.json",
+        "sha256": "6B34C8BEE8B38AAC0246CEBAAB7768094B6F5C2322B31002EAF4FE0763E9DE45"
+      },
+      {
+        "path": "build/consultants/attack-e05-muse/001-sol-assessment.json",
+        "sha256": "2BF504D00D6686CD04A3ABB3511590CBFF087C78C859074CEEB0C1EB2EF4ED1E"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_00265014/candidates/1FB6CF5D7A769E53437A93C1FD3703110515A907E650AD5F90F68318720CA41F.c",
+        "sha256": "D97C49FE0BBA458F61A8462BA6B62179C0B6780211F40BAF1C6F9D4EFAF776EC"
+      },
+      {
+        "path": "build/matching/ae-e05/65014-final-import.json",
+        "sha256": "8D1193DAE1E0C434CA350E9463BC257134CCD0EB85FC4A669B4A15E8413FC8A2"
+      },
+      {
+        "path": "build/matching/ae-e05/65014-final-observation.json",
+        "sha256": "B107B9E6112437362136A62C8BF9E87A317C3281426C691D45A8571A070E9BA8"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/wave-acceptance.json",
+        "sha256": "A899FC33E5813D1D394439D7110AFFF4ECA66B3AD8FDB7FCF0E1D6F903FF7654"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "E62590846C43B2740FF6D0F676BE929CEC90FB108E369E3165D3C552990B74FA"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/resume-after-p06/installation.json",
+        "sha256": "7E36653C3269B2BDF0DA2DE0F511AA42103687686385D3F196935B542FF7747A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object evidence does not establish linked relocation/provider or fullwave/fullROM acceptance. The separately reconciled canonical E05 descendant now passes the complete-wave normal verifier within the changed-tool structural audit. That acceptance does not certify historical controls, prove original source spelling or imply a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Place the06000000 triangle opcode after its three packed vertex fields. The selected final source also has whitespace/comment cleanup; the pre-cleanup triangle-fields-first snapshot isolates the expression change."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      }
+    ],
+    "expanded": {
+      "bytes": 5304,
+      "sha256": "5D43D02148C97BE6FE672FCBD141CEAC0B4BB85FC709AF9F8443DAE0380F8D41"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D97C49FE0BBA458F61A8462BA6B62179C0B6780211F40BAF1C6F9D4EFAF776EC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_00265014-f92674a339.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

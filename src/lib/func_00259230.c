@@ -1,3 +1,4 @@
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_math_e04.h"
@@ -22,7 +23,7 @@ extern u8 *p01_pointer_80220F6C;
 extern u8 p01_byte_80220F68;
 extern P05FactoryRecord D_80209F1A[];
 extern void func_00262B68(void);
-extern void func_0024E9BC(s32, u8, s32);
+
 
 s32 func_00259230(u16 message, P05TableRootState *state)
 {

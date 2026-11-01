@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A53E564E260593C1A6BC30309D176A8A7F0AB46390F4399B672D19B4132D5EDA",
+  "observationId": "F53843DF965B8C12A8F2BA98CCBB3AC96A3179FBA6502B28F75F47F5422CAAB3",
+  "symbol": "func_00275EE0",
+  "authored": {
+    "context": "Preservation of the source worker’s documented full-body75EE0 assessment. Original owner272 bytes, complete C function264 bytes plus original8-byte terminal zeros. Historical selected-mi15 diagnostics only. Shared publication preserves the historical source and its explicit controls. Selected-mi14/mi15/mi16 reports retain their actual identities; this current-model research import is uncompiled and creates no cross-model parent relationship.",
+    "effects": [
+      "conditional-expression-shape",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        }
+      ],
+      "expandedSha256": "7D2F1D57A3855EF079337B3DA64B01794B7FDFF14C3BADD86763E75B52FB4BF7",
+      "sourceSha256": "DD0C55D5D61311F634D438A134EF65568DE75140A204C4545B4C4E51CF36DD42"
+    },
+    "label": "inactive-label-address-exit-preserves-independent-zero-returns",
+    "observedEffect": "The source worker’s preserved03 common-return control is256 bytes;06 shared-result control is268 bytes with a different result carrier.13 retains the full264-byte body and the original branch/return ordering; final reported mechanical PURE_C and zero differences outside actual relocation fields. Structured09/14/15 alternatives still invert the initial condition. This does not establish the original source spelling or a general compiler mechanism.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p06/75ee0-assessment.md",
+        "sha256": "2DDA7CEF5DB46CA4BE629F1794FFC60A22B160BD2FD9E5AFD87A913393029193"
+      },
+      {
+        "path": "build/matching/ae-p06/75ee0-final.json",
+        "sha256": "E58E64A39560934042C715443688ED024EF64A4458E6F4B5C47AE1FD9532AABC"
+      },
+      {
+        "path": "build/matching/ae-p06/75ee0-03.json",
+        "sha256": "A8DFEE5785C720247A35898618B99711777714327D419C6204ABDD0DBC45D04D"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00275EE0/candidates/27AEBF7540A320E110C12459834CB88ED56028AAE68070B7C8C47A3AD6488093.c",
+        "sha256": "87AFEDBED9BCBD96DDE482AFC1EB8BF8065393A9BDC982D8F808CE2802EAE4D0"
+      },
+      {
+        "path": "build/matching/ae-p06/75ee0-06.json",
+        "sha256": "757169FC2675F19ACBCDCDFF1BFA8525897EF22FD9A8453486F37B1DA8D0C46D"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00275EE0/candidates/4C2E093A7A46BA4DE0AC493A313035AF72C5F748DE142200FF20450292952074.c",
+        "sha256": "4A5E629BD79DC3F63AC172DE627E4FA10EF1F19C3236F0DBF0158EEDD45F3E03"
+      },
+      {
+        "path": "build/matching/ae-p06/75ee0-13.json",
+        "sha256": "87BE0016EBE0E09DB1055C794A6BFAA5C3A546C110F01990B3839F89C1B1742F"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00275EE0/candidates/4B4CA41D0BFB7CDE02E29F63B28F74F10E045F068BD041C844EB33AE2EA11F69.c",
+        "sha256": "14D2C0A4963CEDE7ABB5B10B3DE76017CE049F5DF8056E5C4186D554A5F5BF2E"
+      },
+      {
+        "path": "build/matching/ae-p06/75ee0-15.json",
+        "sha256": "CC84EC55D739FF094BF4C1644B05C092A7B240E174B1919908F87E3663253E8A"
+      },
+      {
+        "path": "build/matching/ae-p06/targets/func_00275EE0/candidates/7D61A7191BB849F90509CA475B29E1F9DD1F4F5ECDAFB6D3C4A0E1E7772589A3.c",
+        "sha256": "490D690CC70B0868DD1DC341B42F68189F54F00FD531312BC2A7969D7E3A0F8D"
+      },
+      {
+        "path": "build/matching/ae-p06/func_00275EE0.c",
+        "sha256": "DD0C55D5D61311F634D438A134EF65568DE75140A204C4545B4C4E51CF36DD42"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/75ee0-preservation-observation.json",
+        "sha256": "92798A950AFD96DD9B9A2B01B902AA44996E948C34110B673876583035E65685"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/wave-acceptance.json",
+        "sha256": "DFA77C4AC403B59574D04E0057B2A5A73EAE5B89A9EBECA674A7C2FCF9EC08A1"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/source-preparation/SOURCE-PREPARATION.json",
+        "sha256": "001F065D767A07E243DCBF0128DCB1924B224DFF89CB4539F9307ECD0EFA1C35"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/return-view-reconciliation.json",
+        "sha256": "70B497D90C0375A55B3A661B142D7870DB70F2520668B60307B91889A346733A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical symbolic-object diagnostics do not establish linked ownership, exact placement, target bytes or full-ROM acceptance. Generic terminal-tail qualification and the complete canonical wave gates are separate. Preserve the assessment and exact controls rather than treating the workaround as evidence of structured original source. The separately reconciled P06 descendant now passes the complete-wave canonical verifier. That acceptance does not certify the historical controls or establish the original source spelling.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the actual inactive exit label address while retaining the active draw body and both literal-zero returns. Keep the real raw-zero/float union arguments and the accepted float prototypes. The source comment documents this compiler workaround."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      }
+    ],
+    "expanded": {
+      "bytes": 2827,
+      "sha256": "7D2F1D57A3855EF079337B3DA64B01794B7FDFF14C3BADD86763E75B52FB4BF7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DD0C55D5D61311F634D438A134EF65568DE75140A204C4545B4C4E51CF36DD42"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00275EE0-a53e564e26.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

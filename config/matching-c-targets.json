@@ -117,14 +117,6 @@
       "source": "src/overlays/descriptor_12/func_00269470.c"
     },
     {
-      "symbol": "func_0026B360",
-      "source": "src/overlays/descriptor_12/func_0026B360.c"
-    },
-    {
-      "symbol": "func_0026B820",
-      "source": "src/overlays/descriptor_12/func_0026B820.c"
-    },
-    {
       "symbol": "func_00003798",
       "source": "src/boot/boot_resource_state_reset.c"
     },
@@ -171,10 +163,6 @@
     {
       "symbol": "func_0025DAB0",
       "source": "src/lib/func_0025DAB0.c"
-    },
-    {
-      "symbol": "func_00269798",
-      "source": "src/lib/func_00269798.c"
     },
     {
       "symbol": "func_000241f8",
@@ -5407,6 +5395,1034 @@
     {
       "symbol": "func_00278278",
       "source": "src/lib/func_00278278.c"
+    },
+    {
+      "symbol": "func_00269798",
+      "source": "src/lib/func_00269798.c"
+    },
+    {
+      "symbol": "func_002697DC",
+      "source": "src/overlays/descriptor_12/func_002697DC.c"
+    },
+    {
+      "symbol": "func_00269834",
+      "source": "src/overlays/descriptor_12/func_00269834.c"
+    },
+    {
+      "symbol": "func_002698A0",
+      "source": "src/overlays/descriptor_12/func_002698A0.c"
+    },
+    {
+      "symbol": "func_0026990C",
+      "source": "src/overlays/descriptor_12/func_0026990C.c"
+    },
+    {
+      "symbol": "func_00269964",
+      "source": "src/overlays/descriptor_12/func_00269964.c"
+    },
+    {
+      "symbol": "func_002699BC",
+      "source": "src/overlays/descriptor_12/func_002699BC.c"
+    },
+    {
+      "symbol": "func_00269A64",
+      "source": "src/overlays/descriptor_12/func_00269A64.c"
+    },
+    {
+      "symbol": "func_00269B0C",
+      "source": "src/overlays/descriptor_12/func_00269B0C.c"
+    },
+    {
+      "symbol": "func_00269BC8",
+      "source": "src/overlays/descriptor_12/func_00269BC8.c"
+    },
+    {
+      "symbol": "func_00269C2C",
+      "source": "src/overlays/descriptor_12/func_00269C2C.c"
+    },
+    {
+      "symbol": "func_00269CD4",
+      "source": "src/overlays/descriptor_12/func_00269CD4.c"
+    },
+    {
+      "symbol": "func_00269D7C",
+      "source": "src/overlays/descriptor_12/func_00269D7C.c"
+    },
+    {
+      "symbol": "func_00269E38",
+      "source": "src/overlays/descriptor_12/func_00269E38.c"
+    },
+    {
+      "symbol": "func_00269F00",
+      "source": "src/overlays/descriptor_12/func_00269F00.c"
+    },
+    {
+      "symbol": "func_0026a078",
+      "source": "src/overlays/descriptor_12/func_0026a078.c"
+    },
+    {
+      "symbol": "func_0026a204",
+      "source": "src/overlays/descriptor_12/func_0026a204.c"
+    },
+    {
+      "symbol": "func_0026a45c",
+      "source": "src/overlays/descriptor_12/func_0026a45c.c"
+    },
+    {
+      "symbol": "func_0026a494",
+      "source": "src/overlays/descriptor_12/func_0026a494.c"
+    },
+    {
+      "symbol": "func_0026a4d0",
+      "source": "src/overlays/descriptor_12/func_0026a4d0.c"
+    },
+    {
+      "symbol": "func_0026a510",
+      "source": "src/overlays/descriptor_12/func_0026a510.c"
+    },
+    {
+      "symbol": "func_0026a630",
+      "source": "src/overlays/descriptor_12/func_0026a630.c"
+    },
+    {
+      "symbol": "func_0026a6e4",
+      "source": "src/overlays/descriptor_12/func_0026a6e4.c"
+    },
+    {
+      "symbol": "func_0026abc8",
+      "source": "src/overlays/descriptor_12/func_0026abc8.c"
+    },
+    {
+      "symbol": "func_0026ac0c",
+      "source": "src/overlays/descriptor_12/func_0026ac0c.c"
+    },
+    {
+      "symbol": "func_0026ac64",
+      "source": "src/overlays/descriptor_12/func_0026ac64.c"
+    },
+    {
+      "symbol": "func_0026acd0",
+      "source": "src/overlays/descriptor_12/func_0026acd0.c"
+    },
+    {
+      "symbol": "func_0026ad28",
+      "source": "src/overlays/descriptor_12/func_0026ad28.c"
+    },
+    {
+      "symbol": "func_0026add0",
+      "source": "src/overlays/descriptor_12/func_0026add0.c"
+    },
+    {
+      "symbol": "func_0026b1fc",
+      "source": "src/overlays/descriptor_12/func_0026b1fc.c"
+    },
+    {
+      "symbol": "func_0026B270",
+      "source": "src/overlays/descriptor_12/func_0026B270.c"
+    },
+    {
+      "symbol": "func_0026B32C",
+      "source": "src/overlays/descriptor_12/func_0026B32C.c"
+    },
+    {
+      "symbol": "func_0026B360",
+      "source": "src/overlays/descriptor_12/func_0026B360.c"
+    },
+    {
+      "symbol": "func_0026B7E4",
+      "source": "src/overlays/descriptor_12/func_0026B7E4.c"
+    },
+    {
+      "symbol": "func_0026B820",
+      "source": "src/overlays/descriptor_12/func_0026B820.c"
+    },
+    {
+      "symbol": "func_0026BCCC",
+      "source": "src/overlays/descriptor_12/func_0026BCCC.c"
+    },
+    {
+      "symbol": "func_0026BD40",
+      "source": "src/overlays/descriptor_12/func_0026BD40.c"
+    },
+    {
+      "symbol": "func_0026BDFC",
+      "source": "src/overlays/descriptor_12/func_0026BDFC.c"
+    },
+    {
+      "symbol": "func_0026BE30",
+      "source": "src/overlays/descriptor_12/func_0026BE30.c"
+    },
+    {
+      "symbol": "func_0026BF74",
+      "source": "src/overlays/descriptor_12/func_0026BF74.c"
+    },
+    {
+      "symbol": "func_0026BFB8",
+      "source": "src/overlays/descriptor_12/func_0026BFB8.c"
+    },
+    {
+      "symbol": "func_0026C010",
+      "source": "src/overlays/descriptor_12/func_0026C010.c"
+    },
+    {
+      "symbol": "func_0026C070",
+      "source": "src/overlays/descriptor_12/func_0026C070.c"
+    },
+    {
+      "symbol": "func_0026C09C",
+      "source": "src/overlays/descriptor_12/func_0026C09C.c"
+    },
+    {
+      "symbol": "func_0024BCA0",
+      "source": "src/overlays/descriptor_11/func_0024BCA0.c"
+    },
+    {
+      "symbol": "func_0024BCE8",
+      "source": "src/overlays/descriptor_11/func_0024BCE8.c"
+    },
+    {
+      "symbol": "func_0024BF04",
+      "source": "src/overlays/descriptor_11/func_0024BF04.c"
+    },
+    {
+      "symbol": "func_0024C0DC",
+      "source": "src/overlays/descriptor_11/func_0024C0DC.c"
+    },
+    {
+      "symbol": "func_0024C204",
+      "source": "src/overlays/descriptor_11/func_0024C204.c"
+    },
+    {
+      "symbol": "func_0024C2F8",
+      "source": "src/overlays/descriptor_11/func_0024C2F8.c"
+    },
+    {
+      "symbol": "func_0024C3EC",
+      "source": "src/overlays/descriptor_11/func_0024C3EC.c"
+    },
+    {
+      "symbol": "func_0024C57C",
+      "source": "src/overlays/descriptor_11/func_0024C57C.c"
+    },
+    {
+      "symbol": "func_0024C7D8",
+      "source": "src/overlays/descriptor_11/func_0024C7D8.c"
+    },
+    {
+      "symbol": "func_0024CD40",
+      "source": "src/overlays/descriptor_11/func_0024CD40.c"
+    },
+    {
+      "symbol": "func_0024CDD8",
+      "source": "src/overlays/descriptor_11/func_0024CDD8.c"
+    },
+    {
+      "symbol": "func_0024D180",
+      "source": "src/overlays/descriptor_11/func_0024D180.c"
+    },
+    {
+      "symbol": "func_0024D41C",
+      "source": "src/overlays/descriptor_11/func_0024D41C.c"
+    },
+    {
+      "symbol": "func_0024DA50",
+      "source": "src/overlays/descriptor_11/func_0024DA50.c"
+    },
+    {
+      "symbol": "func_0024DAE4",
+      "source": "src/overlays/descriptor_11/func_0024DAE4.c"
+    },
+    {
+      "symbol": "func_0024DC20",
+      "source": "src/overlays/descriptor_11/func_0024DC20.c"
+    },
+    {
+      "symbol": "func_0024DFCC",
+      "source": "src/overlays/descriptor_11/func_0024DFCC.c"
+    },
+    {
+      "symbol": "func_0024E510",
+      "source": "src/overlays/descriptor_11/func_0024E510.c"
+    },
+    {
+      "symbol": "func_0024E7AC",
+      "source": "src/overlays/descriptor_11/func_0024E7AC.c"
+    },
+    {
+      "symbol": "func_0024E898",
+      "source": "src/overlays/descriptor_11/func_0024E898.c"
+    },
+    {
+      "symbol": "func_0024E9BC",
+      "source": "src/overlays/descriptor_11/func_0024E9BC.c"
+    },
+    {
+      "symbol": "func_0025B4A0",
+      "source": "src/overlays/descriptor_11/func_0025B4A0.c"
+    },
+    {
+      "symbol": "func_0025B5F4",
+      "source": "src/overlays/descriptor_11/func_0025B5F4.c"
+    },
+    {
+      "symbol": "func_0025B714",
+      "source": "src/overlays/descriptor_11/func_0025B714.c"
+    },
+    {
+      "symbol": "func_0025B7B8",
+      "source": "src/overlays/descriptor_11/func_0025B7B8.c"
+    },
+    {
+      "symbol": "func_0025B85C",
+      "source": "src/overlays/descriptor_11/func_0025B85C.c"
+    },
+    {
+      "symbol": "func_0025B954",
+      "source": "src/overlays/descriptor_11/func_0025B954.c"
+    },
+    {
+      "symbol": "func_0025BAD4",
+      "source": "src/overlays/descriptor_11/func_0025BAD4.c"
+    },
+    {
+      "symbol": "func_0025BBCC",
+      "source": "src/overlays/descriptor_11/func_0025BBCC.c"
+    },
+    {
+      "symbol": "func_0025BCDC",
+      "source": "src/overlays/descriptor_11/func_0025BCDC.c"
+    },
+    {
+      "symbol": "func_0025BE00",
+      "source": "src/overlays/descriptor_11/func_0025BE00.c"
+    },
+    {
+      "symbol": "func_0025BEF8",
+      "source": "src/overlays/descriptor_11/func_0025BEF8.c"
+    },
+    {
+      "symbol": "func_0025C0E4",
+      "source": "src/overlays/descriptor_11/func_0025C0E4.c"
+    },
+    {
+      "symbol": "func_0025C1E8",
+      "source": "src/overlays/descriptor_11/func_0025C1E8.c"
+    },
+    {
+      "symbol": "func_0025C2E8",
+      "source": "src/overlays/descriptor_11/func_0025C2E8.c"
+    },
+    {
+      "symbol": "func_0025C3DC",
+      "source": "src/overlays/descriptor_11/func_0025C3DC.c"
+    },
+    {
+      "symbol": "func_0025C590",
+      "source": "src/overlays/descriptor_11/func_0025C590.c"
+    },
+    {
+      "symbol": "func_0025C6A4",
+      "source": "src/overlays/descriptor_11/func_0025C6A4.c"
+    },
+    {
+      "symbol": "func_0025C8D0",
+      "source": "src/overlays/descriptor_11/func_0025C8D0.c"
+    },
+    {
+      "symbol": "func_0025CA7C",
+      "source": "src/overlays/descriptor_11/func_0025CA7C.c"
+    },
+    {
+      "symbol": "func_0025D3CC",
+      "source": "src/overlays/descriptor_11/func_0025D3CC.c"
+    },
+    {
+      "symbol": "func_0025D678",
+      "source": "src/overlays/descriptor_11/func_0025D678.c"
+    },
+    {
+      "symbol": "func_0025D6C8",
+      "source": "src/overlays/descriptor_11/func_0025D6C8.c"
+    },
+    {
+      "symbol": "func_0025D8A4",
+      "source": "src/overlays/descriptor_11/func_0025D8A4.c"
+    },
+    {
+      "symbol": "func_0025D8D4",
+      "source": "src/overlays/descriptor_11/func_0025D8D4.c"
+    },
+    {
+      "symbol": "func_0025DB00",
+      "source": "src/overlays/descriptor_11/func_0025DB00.c"
+    },
+    {
+      "symbol": "func_0025DB50",
+      "source": "src/overlays/descriptor_11/func_0025DB50.c"
+    },
+    {
+      "symbol": "func_0025DC4C",
+      "source": "src/overlays/descriptor_11/func_0025DC4C.c"
+    },
+    {
+      "symbol": "func_002700B0",
+      "source": "src/overlays/descriptor_12/func_002700B0.c"
+    },
+    {
+      "symbol": "func_00272790",
+      "source": "src/overlays/descriptor_12/func_00272790.c"
+    },
+    {
+      "symbol": "func_002728C0",
+      "source": "src/overlays/descriptor_12/func_002728C0.c"
+    },
+    {
+      "symbol": "func_00272A2C",
+      "source": "src/overlays/descriptor_12/func_00272A2C.c"
+    },
+    {
+      "symbol": "func_00272B8C",
+      "source": "src/overlays/descriptor_12/func_00272B8C.c"
+    },
+    {
+      "symbol": "func_00272CB8",
+      "source": "src/overlays/descriptor_12/func_00272CB8.c"
+    },
+    {
+      "symbol": "func_00272DFC",
+      "source": "src/overlays/descriptor_12/func_00272DFC.c"
+    },
+    {
+      "symbol": "func_00272F50",
+      "source": "src/overlays/descriptor_12/func_00272F50.c"
+    },
+    {
+      "symbol": "func_00273180",
+      "source": "src/overlays/descriptor_12/func_00273180.c"
+    },
+    {
+      "symbol": "func_0027351C",
+      "source": "src/overlays/descriptor_12/func_0027351C.c"
+    },
+    {
+      "symbol": "func_0027370C",
+      "source": "src/overlays/descriptor_12/func_0027370C.c"
+    },
+    {
+      "symbol": "func_00273800",
+      "source": "src/overlays/descriptor_12/func_00273800.c"
+    },
+    {
+      "symbol": "func_002738F0",
+      "source": "src/overlays/descriptor_12/func_002738F0.c"
+    },
+    {
+      "symbol": "func_002739E0",
+      "source": "src/overlays/descriptor_12/func_002739E0.c"
+    },
+    {
+      "symbol": "func_00273AD8",
+      "source": "src/overlays/descriptor_12/func_00273AD8.c"
+    },
+    {
+      "symbol": "func_00273BD0",
+      "source": "src/overlays/descriptor_12/func_00273BD0.c"
+    },
+    {
+      "symbol": "func_00273CC0",
+      "source": "src/overlays/descriptor_12/func_00273CC0.c"
+    },
+    {
+      "symbol": "func_00273EDC",
+      "source": "src/overlays/descriptor_12/func_00273EDC.c"
+    },
+    {
+      "symbol": "func_00261C90",
+      "source": "src/overlays/descriptor_12/func_00261C90.c"
+    },
+    {
+      "symbol": "func_00261D00",
+      "source": "src/overlays/descriptor_12/func_00261D00.c"
+    },
+    {
+      "symbol": "func_00261D24",
+      "source": "src/overlays/descriptor_12/func_00261D24.c"
+    },
+    {
+      "symbol": "func_00261D7C",
+      "source": "src/overlays/descriptor_12/func_00261D7C.c"
+    },
+    {
+      "symbol": "func_00261DA8",
+      "source": "src/overlays/descriptor_12/func_00261DA8.c"
+    },
+    {
+      "symbol": "func_00261E30",
+      "source": "src/overlays/descriptor_12/func_00261E30.c"
+    },
+    {
+      "symbol": "func_00261E90",
+      "source": "src/overlays/descriptor_12/func_00261E90.c"
+    },
+    {
+      "symbol": "func_00261F60",
+      "source": "src/overlays/descriptor_12/func_00261F60.c"
+    },
+    {
+      "symbol": "func_00261F84",
+      "source": "src/overlays/descriptor_12/func_00261F84.c"
+    },
+    {
+      "symbol": "func_00262264",
+      "source": "src/overlays/descriptor_12/func_00262264.c"
+    },
+    {
+      "symbol": "func_002622B4",
+      "source": "src/overlays/descriptor_12/func_002622B4.c"
+    },
+    {
+      "symbol": "func_00262328",
+      "source": "src/overlays/descriptor_12/func_00262328.c"
+    },
+    {
+      "symbol": "func_00262434",
+      "source": "src/overlays/descriptor_12/func_00262434.c"
+    },
+    {
+      "symbol": "func_00262450",
+      "source": "src/overlays/descriptor_12/func_00262450.c"
+    },
+    {
+      "symbol": "func_00262588",
+      "source": "src/overlays/descriptor_12/func_00262588.c"
+    },
+    {
+      "symbol": "func_002625AC",
+      "source": "src/overlays/descriptor_12/func_002625AC.c"
+    },
+    {
+      "symbol": "func_00262694",
+      "source": "src/overlays/descriptor_12/func_00262694.c"
+    },
+    {
+      "symbol": "func_002626E4",
+      "source": "src/overlays/descriptor_12/func_002626E4.c"
+    },
+    {
+      "symbol": "func_00262730",
+      "source": "src/overlays/descriptor_12/func_00262730.c"
+    },
+    {
+      "symbol": "func_002627E0",
+      "source": "src/overlays/descriptor_12/func_002627E0.c"
+    },
+    {
+      "symbol": "func_0026285C",
+      "source": "src/overlays/descriptor_12/func_0026285C.c"
+    },
+    {
+      "symbol": "func_00262910",
+      "source": "src/overlays/descriptor_12/func_00262910.c"
+    },
+    {
+      "symbol": "func_00262AB0",
+      "source": "src/overlays/descriptor_12/func_00262AB0.c"
+    },
+    {
+      "symbol": "func_00262AD4",
+      "source": "src/overlays/descriptor_12/func_00262AD4.c"
+    },
+    {
+      "symbol": "func_00262B68",
+      "source": "src/overlays/descriptor_12/func_00262B68.c"
+    },
+    {
+      "symbol": "func_00262C04",
+      "source": "src/overlays/descriptor_12/func_00262C04.c"
+    },
+    {
+      "symbol": "func_00262C80",
+      "source": "src/overlays/descriptor_12/func_00262C80.c"
+    },
+    {
+      "symbol": "func_00262C94",
+      "source": "src/overlays/descriptor_12/func_00262C94.c"
+    },
+    {
+      "symbol": "func_00262CC0",
+      "source": "src/overlays/descriptor_12/func_00262CC0.c"
+    },
+    {
+      "symbol": "func_00262DA4",
+      "source": "src/overlays/descriptor_12/func_00262DA4.c"
+    },
+    {
+      "symbol": "func_00262DD4",
+      "source": "src/overlays/descriptor_12/func_00262DD4.c"
+    },
+    {
+      "symbol": "func_00262F50",
+      "source": "src/overlays/descriptor_12/func_00262F50.c"
+    },
+    {
+      "symbol": "func_00263050",
+      "source": "src/overlays/descriptor_12/func_00263050.c"
+    },
+    {
+      "symbol": "func_00263074",
+      "source": "src/overlays/descriptor_12/func_00263074.c"
+    },
+    {
+      "symbol": "func_002630CC",
+      "source": "src/overlays/descriptor_12/func_002630CC.c"
+    },
+    {
+      "symbol": "func_00263120",
+      "source": "src/overlays/descriptor_12/func_00263120.c"
+    },
+    {
+      "symbol": "func_0024CD84",
+      "source": "src/overlays/descriptor_11/func_0024CD84.c"
+    },
+    {
+      "symbol": "func_0024CE74",
+      "source": "src/overlays/descriptor_11/func_0024CE74.c"
+    },
+    {
+      "symbol": "func_00256410",
+      "source": "src/overlays/descriptor_11/func_00256410.c"
+    },
+    {
+      "symbol": "func_00256940",
+      "source": "src/overlays/descriptor_11/func_00256940.c"
+    },
+    {
+      "symbol": "func_00256AC8",
+      "source": "src/overlays/descriptor_11/func_00256AC8.c"
+    },
+    {
+      "symbol": "func_00256F58",
+      "source": "src/overlays/descriptor_11/func_00256F58.c"
+    },
+    {
+      "symbol": "func_00259480",
+      "source": "src/overlays/descriptor_11/func_00259480.c"
+    },
+    {
+      "symbol": "func_00259904",
+      "source": "src/overlays/descriptor_11/func_00259904.c"
+    },
+    {
+      "symbol": "func_00273DB0",
+      "source": "src/overlays/descriptor_12/func_00273DB0.c"
+    },
+    {
+      "symbol": "func_00275850",
+      "source": "src/overlays/descriptor_13/func_00275850.c"
+    },
+    {
+      "symbol": "func_00275AF8",
+      "source": "src/overlays/descriptor_13/func_00275AF8.c"
+    },
+    {
+      "symbol": "func_00275DC4",
+      "source": "src/overlays/descriptor_13/func_00275DC4.c"
+    },
+    {
+      "symbol": "func_00275E68",
+      "source": "src/overlays/descriptor_13/func_00275E68.c"
+    },
+    {
+      "symbol": "func_00275EB0",
+      "source": "src/overlays/descriptor_13/func_00275EB0.c"
+    },
+    {
+      "symbol": "func_00275EE0",
+      "source": "src/overlays/descriptor_13/func_00275EE0.c"
+    },
+    {
+      "symbol": "func_00275FF0",
+      "source": "src/overlays/descriptor_13/func_00275FF0.c"
+    },
+    {
+      "symbol": "func_002762F0",
+      "source": "src/overlays/descriptor_13/func_002762F0.c"
+    },
+    {
+      "symbol": "func_0027651C",
+      "source": "src/overlays/descriptor_13/func_0027651C.c"
+    },
+    {
+      "symbol": "func_002767bc",
+      "source": "src/overlays/descriptor_13/func_002767bc.c"
+    },
+    {
+      "symbol": "func_00276998",
+      "source": "src/overlays/descriptor_13/func_00276998.c"
+    },
+    {
+      "symbol": "func_00276b0c",
+      "source": "src/overlays/descriptor_13/func_00276b0c.c"
+    },
+    {
+      "symbol": "func_00276ce8",
+      "source": "src/overlays/descriptor_13/func_00276ce8.c"
+    },
+    {
+      "symbol": "func_00276fe0",
+      "source": "src/overlays/descriptor_13/func_00276fe0.c"
+    },
+    {
+      "symbol": "func_00277568",
+      "source": "src/overlays/descriptor_13/func_00277568.c"
+    },
+    {
+      "symbol": "func_00277714",
+      "source": "src/overlays/descriptor_13/func_00277714.c"
+    },
+    {
+      "symbol": "func_002778D4",
+      "source": "src/overlays/descriptor_13/func_002778D4.c"
+    },
+    {
+      "symbol": "func_00277A40",
+      "source": "src/overlays/descriptor_13/func_00277A40.c"
+    },
+    {
+      "symbol": "func_00277CCC",
+      "source": "src/overlays/descriptor_13/func_00277CCC.c"
+    },
+    {
+      "symbol": "func_00277D60",
+      "source": "src/overlays/descriptor_13/func_00277D60.c"
+    },
+    {
+      "symbol": "func_00277E28",
+      "source": "src/overlays/descriptor_13/func_00277E28.c"
+    },
+    {
+      "symbol": "func_00277EBC",
+      "source": "src/overlays/descriptor_13/func_00277EBC.c"
+    },
+    {
+      "symbol": "func_00278560",
+      "source": "src/overlays/descriptor_13/func_00278560.c"
+    },
+    {
+      "symbol": "func_00278B00",
+      "source": "src/overlays/descriptor_13/func_00278B00.c"
+    },
+    {
+      "symbol": "func_00278D5C",
+      "source": "src/overlays/descriptor_13/func_00278D5C.c"
+    },
+    {
+      "symbol": "func_00279290",
+      "source": "src/overlays/descriptor_13/func_00279290.c"
+    },
+    {
+      "symbol": "func_00279460",
+      "source": "src/overlays/descriptor_13/func_00279460.c"
+    },
+    {
+      "symbol": "func_00279810",
+      "source": "src/overlays/descriptor_13/func_00279810.c"
+    },
+    {
+      "symbol": "func_00279920",
+      "source": "src/overlays/descriptor_13/func_00279920.c"
+    },
+    {
+      "symbol": "func_00279A90",
+      "source": "src/overlays/descriptor_13/func_00279A90.c"
+    },
+    {
+      "symbol": "func_00279D58",
+      "source": "src/overlays/descriptor_13/func_00279D58.c"
+    },
+    {
+      "symbol": "func_002638D0",
+      "source": "src/overlays/descriptor_12/func_002638D0.c"
+    },
+    {
+      "symbol": "func_002639E0",
+      "source": "src/overlays/descriptor_12/func_002639E0.c"
+    },
+    {
+      "symbol": "func_00263AF0",
+      "source": "src/overlays/descriptor_12/func_00263AF0.c"
+    },
+    {
+      "symbol": "func_00263CE4",
+      "source": "src/overlays/descriptor_12/func_00263CE4.c"
+    },
+    {
+      "symbol": "func_00263E10",
+      "source": "src/overlays/descriptor_12/func_00263E10.c"
+    },
+    {
+      "symbol": "func_00263F40",
+      "source": "src/overlays/descriptor_12/func_00263F40.c"
+    },
+    {
+      "symbol": "func_002641B0",
+      "source": "src/overlays/descriptor_12/func_002641B0.c"
+    },
+    {
+      "symbol": "func_00264490",
+      "source": "src/overlays/descriptor_12/func_00264490.c"
+    },
+    {
+      "symbol": "func_00264770",
+      "source": "src/overlays/descriptor_12/func_00264770.c"
+    },
+    {
+      "symbol": "func_00264b1c",
+      "source": "src/overlays/descriptor_12/func_00264b1c.c"
+    },
+    {
+      "symbol": "func_00264b50",
+      "source": "src/overlays/descriptor_12/func_00264b50.c"
+    },
+    {
+      "symbol": "func_00264bb0",
+      "source": "src/overlays/descriptor_12/func_00264bb0.c"
+    },
+    {
+      "symbol": "func_00264f24",
+      "source": "src/overlays/descriptor_12/func_00264f24.c"
+    },
+    {
+      "symbol": "func_00264f58",
+      "source": "src/overlays/descriptor_12/func_00264f58.c"
+    },
+    {
+      "symbol": "func_00264fc0",
+      "source": "src/overlays/descriptor_12/func_00264fc0.c"
+    },
+    {
+      "symbol": "func_00265014",
+      "source": "src/overlays/descriptor_12/func_00265014.c"
+    },
+    {
+      "symbol": "func_002653d8",
+      "source": "src/overlays/descriptor_12/func_002653d8.c"
+    },
+    {
+      "symbol": "func_002655a0",
+      "source": "src/overlays/descriptor_12/func_002655a0.c"
+    },
+    {
+      "symbol": "func_002657d0",
+      "source": "src/overlays/descriptor_12/func_002657d0.c"
+    },
+    {
+      "symbol": "func_00265a28",
+      "source": "src/overlays/descriptor_12/func_00265a28.c"
+    },
+    {
+      "symbol": "func_00265cd0",
+      "source": "src/overlays/descriptor_12/func_00265cd0.c"
+    },
+    {
+      "symbol": "func_00265cf0",
+      "source": "src/overlays/descriptor_12/func_00265cf0.c"
+    },
+    {
+      "symbol": "func_00265d10",
+      "source": "src/overlays/descriptor_12/func_00265d10.c"
+    },
+    {
+      "symbol": "func_002660d0",
+      "source": "src/overlays/descriptor_12/func_002660d0.c"
+    },
+    {
+      "symbol": "func_00266484",
+      "source": "src/overlays/descriptor_12/func_00266484.c"
+    },
+    {
+      "symbol": "func_002664b0",
+      "source": "src/overlays/descriptor_12/func_002664b0.c"
+    },
+    {
+      "symbol": "func_002667c0",
+      "source": "src/overlays/descriptor_12/func_002667c0.c"
+    },
+    {
+      "symbol": "func_002669F0",
+      "source": "src/overlays/descriptor_12/func_002669F0.c"
+    },
+    {
+      "symbol": "func_00266A10",
+      "source": "src/overlays/descriptor_12/func_00266A10.c"
+    },
+    {
+      "symbol": "func_00266A30",
+      "source": "src/overlays/descriptor_12/func_00266A30.c"
+    },
+    {
+      "symbol": "func_00266DB0",
+      "source": "src/overlays/descriptor_12/func_00266DB0.c"
+    },
+    {
+      "symbol": "func_00266DD0",
+      "source": "src/overlays/descriptor_12/func_00266DD0.c"
+    },
+    {
+      "symbol": "func_00267018",
+      "source": "src/overlays/descriptor_12/func_00267018.c"
+    },
+    {
+      "symbol": "func_00267038",
+      "source": "src/overlays/descriptor_12/func_00267038.c"
+    },
+    {
+      "symbol": "func_00267108",
+      "source": "src/overlays/descriptor_12/func_00267108.c"
+    },
+    {
+      "symbol": "func_002673C4",
+      "source": "src/overlays/descriptor_12/func_002673C4.c"
+    },
+    {
+      "symbol": "func_002673F0",
+      "source": "src/overlays/descriptor_12/func_002673F0.c"
+    },
+    {
+      "symbol": "func_0026756C",
+      "source": "src/overlays/descriptor_12/func_0026756C.c"
+    },
+    {
+      "symbol": "func_002675B4",
+      "source": "src/overlays/descriptor_12/func_002675B4.c"
+    },
+    {
+      "symbol": "func_00267668",
+      "source": "src/overlays/descriptor_12/func_00267668.c"
+    },
+    {
+      "symbol": "func_00267750",
+      "source": "src/overlays/descriptor_12/func_00267750.c"
+    },
+    {
+      "symbol": "func_00267788",
+      "source": "src/overlays/descriptor_12/func_00267788.c"
+    },
+    {
+      "symbol": "func_002677D0",
+      "source": "src/overlays/descriptor_12/func_002677D0.c"
+    },
+    {
+      "symbol": "func_00267828",
+      "source": "src/overlays/descriptor_12/func_00267828.c"
+    },
+    {
+      "symbol": "func_002678A4",
+      "source": "src/overlays/descriptor_12/func_002678A4.c"
+    },
+    {
+      "symbol": "func_00267928",
+      "source": "src/overlays/descriptor_12/func_00267928.c"
+    },
+    {
+      "symbol": "func_00267D98",
+      "source": "src/overlays/descriptor_12/func_00267D98.c"
+    },
+    {
+      "symbol": "func_00267E80",
+      "source": "src/overlays/descriptor_12/func_00267E80.c"
+    },
+    {
+      "symbol": "func_00267FD0",
+      "source": "src/overlays/descriptor_12/func_00267FD0.c"
+    },
+    {
+      "symbol": "func_002682A4",
+      "source": "src/overlays/descriptor_12/func_002682A4.c"
+    },
+    {
+      "symbol": "func_00268358",
+      "source": "src/overlays/descriptor_12/func_00268358.c"
+    },
+    {
+      "symbol": "func_002683B4",
+      "source": "src/overlays/descriptor_12/func_002683B4.c"
+    },
+    {
+      "symbol": "func_00268400",
+      "source": "src/overlays/descriptor_12/func_00268400.c"
+    },
+    {
+      "symbol": "func_00268478",
+      "source": "src/overlays/descriptor_12/func_00268478.c"
+    },
+    {
+      "symbol": "func_002684AC",
+      "source": "src/overlays/descriptor_12/func_002684AC.c"
+    },
+    {
+      "symbol": "func_00268530",
+      "source": "src/overlays/descriptor_12/func_00268530.c"
+    },
+    {
+      "symbol": "func_00268678",
+      "source": "src/overlays/descriptor_12/func_00268678.c"
+    },
+    {
+      "symbol": "func_00268798",
+      "source": "src/overlays/descriptor_12/func_00268798.c"
+    },
+    {
+      "symbol": "func_00268800",
+      "source": "src/overlays/descriptor_12/func_00268800.c"
+    },
+    {
+      "symbol": "func_00268890",
+      "source": "src/overlays/descriptor_12/func_00268890.c"
+    },
+    {
+      "symbol": "func_00268AD8",
+      "source": "src/overlays/descriptor_12/func_00268AD8.c"
+    },
+    {
+      "symbol": "func_00268B78",
+      "source": "src/overlays/descriptor_12/func_00268B78.c"
+    },
+    {
+      "symbol": "func_00268BFC",
+      "source": "src/overlays/descriptor_12/func_00268BFC.c"
+    },
+    {
+      "symbol": "func_00268D4C",
+      "source": "src/overlays/descriptor_12/func_00268D4C.c"
+    },
+    {
+      "symbol": "func_00268E6C",
+      "source": "src/overlays/descriptor_12/func_00268E6C.c"
+    },
+    {
+      "symbol": "func_00268ED4",
+      "source": "src/overlays/descriptor_12/func_00268ED4.c"
+    },
+    {
+      "symbol": "func_00268F64",
+      "source": "src/overlays/descriptor_12/func_00268F64.c"
+    },
+    {
+      "symbol": "func_0026909C",
+      "source": "src/overlays/descriptor_12/func_0026909C.c"
+    },
+    {
+      "symbol": "func_002691EC",
+      "source": "src/overlays/descriptor_12/func_002691EC.c"
+    },
+    {
+      "symbol": "func_00269324",
+      "source": "src/overlays/descriptor_12/func_00269324.c"
+    },
+    {
+      "symbol": "func_002693C4",
+      "source": "src/overlays/descriptor_12/func_002693C4.c"
     }
   ]
 }

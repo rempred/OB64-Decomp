@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "055B1B6ED154654A966048A2CB320A2597F894ACF9CC01F071534BE195E4086D",
+  "observationId": "D83D51336EAA6A4FBC47C9A1207F418138E89EAB01248785E548E924FFB13C6B",
+  "symbol": "func_00256F58",
+  "authored": {
+    "context": "Complete460-byte func_00256F58. Source01 has the full body and correct extent but hoists the state+E halfword read ahead of the shared-context byte store and changes the ensuing register/scheduling cluster. The signed state field remains required by the later comparison and table indexing. Shared publication preserves the historical source and its explicit controls. Selected-mi14/mi15/mi16 reports retain their actual identities; this current-model research import is uncompiled and creates no cross-model parent relationship.",
+    "effects": [
+      "scalar-halfword-read-view",
+      "shared-context-access-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "2DBD4F67C84F85AC81F3A9B83400414BBFFE9B44E9A2DC71E1CDF1B9C2A5D3F5",
+      "sourceSha256": "8690B611FB6D75A2DF44F90697AAC47CCDCA23BFCE7563DC1DC6DDE99B6B984B"
+    },
+    "label": "scalar-halfword-copy-retains-prior-context-byte-store",
+    "observedEffect": "Source02 and commented final source compile mechanical PURE_C460/rawRelocationMaskedExact=true using selected mi14/ED24A479. The byte store stays before the halfword read, with the retail V0 reuse and callback setup. No extra access was introduced, and this is not evidence of semantic volatility or a universal scalar-view rule.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p06/56f58-01.c",
+        "sha256": "99006DE3DB994D740308CE77D85ACB12F64700ECF9140D9991B3C4FD5CBAC5A9"
+      },
+      {
+        "path": "build/matching/ae-p06/56f58-01.json",
+        "sha256": "869BFB40020BC8B17EBD769A20D3B7FE20D2239790CE6880AC518857971D8C55"
+      },
+      {
+        "path": "build/matching/ae-p06/56f58-02.c",
+        "sha256": "B619B45721325C2BE6F55B31E964F3AE8220D9B0C1DD12AD32492842DDDDE179"
+      },
+      {
+        "path": "build/matching/ae-p06/56f58-02.json",
+        "sha256": "90643028845F0385E5A45AECF6B27EE27C8F94E8D2DA3B0EFFA827D88184AA5B"
+      },
+      {
+        "path": "build/matching/ae-p06/56f58-final.json",
+        "sha256": "F437B14561DCD4D7A1D08D742A5EF1497D6133184FB7FDDC89AEDCF9EC1D0891"
+      },
+      {
+        "path": "build/matching/ae-p06/func_00256F58.c",
+        "sha256": "6708BEE2E682006A9D24C098F93753FFA6F7016A06A5F03300840CF3841C4F7C"
+      },
+      {
+        "path": "build/matching/ae-p06/observations/56f58-scalar-halfword.json",
+        "sha256": "7E8C9B0ABAF7B42FC9CBDD3AC36EC538A6F177137FA6DA1BE380BB3D1ABA3B35"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/wave-acceptance.json",
+        "sha256": "DFA77C4AC403B59574D04E0057B2A5A73EAE5B89A9EBECA674A7C2FCF9EC08A1"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/source-preparation/SOURCE-PREPARATION.json",
+        "sha256": "001F065D767A07E243DCBF0128DCB1924B224DFF89CB4539F9307ECD0EFA1C35"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/return-view-reconciliation.json",
+        "sha256": "70B497D90C0375A55B3A661B142D7870DB70F2520668B60307B91889A346733A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object diagnostics do not supply canonical linked ownership, placement, actual binding, target-byte or whole-ROM acceptance. All complete-wave gates remain with the dedicated integrator. The separately reconciled P06 descendant now passes the complete-wave canonical verifier. That acceptance does not certify the historical controls or establish the original source spelling.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Change only the existing context-copy RHS from the named state value_0E field to the scalar u16 view at the same observed state+E address. Preserve the signed field declaration, increment, branch, table read, handoff, and all calls."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 2166,
+      "sha256": "2DBD4F67C84F85AC81F3A9B83400414BBFFE9B44E9A2DC71E1CDF1B9C2A5D3F5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8690B611FB6D75A2DF44F90697AAC47CCDCA23BFCE7563DC1DC6DDE99B6B984B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00256F58-055b1b6ed1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

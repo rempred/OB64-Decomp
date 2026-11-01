@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "99E5643FBA3C62E1458816C84EFEC4BC59A1EF2BD7FA6213B41E34BE58E14801",
+  "observationId": "C87F7AE02E30DCA2E17CFC0C97CA4EC6F2F56A9E2554FE9CCB34F04637B8A0C3",
+  "symbol": "func_00256410",
+  "authored": {
+    "context": "Complete ordinary func_00256410, ROM256410..256940,1328 bytes/frame40. Source06 already has all nonrelocation words exact except the swapped float store and argument address at offsets4E0/4F0. Selected mi14/ED24A479 diagnostics only. Shared publication preserves the historical source and its explicit controls. Selected-mi14/mi15/mi16 reports retain their actual identities; this current-model research import is uncompiled and creates no cross-model parent relationship.",
+    "effects": [
+      "real-conditional-update-arms",
+      "float-store-and-call-delay-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "1BF3FC524997150F337CDC4166DA47C975C133BCD3F5794DD6E55687940F1281",
+      "sourceSha256": "D9C6D1A50BC5B7BD8AC8D40D42CCD452B7877BB04FBE0B151B970A373326CDBA"
+    },
+    "label": "real-sign-arms-restore-float-store-and-call-delay-order",
+    "observedEffect": "Source25 and the commented final source compile PURE_C1328/frame40 with rawRelocationMaskedExact=true over the complete body. The exact source06 control places the argument-address addiu at4E0 and float store in call delay4F0; final output reverses them to retail. There is no added operation or invented condition. RTL/scheduling dumps for source06 are retained, but the complete optimizer mechanism and original source spelling are not established.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-p06/56410-06.c",
+        "sha256": "23279577B726BAC063492F812E7750E2623D9FB13FB9385A96EDCC6F47308F74"
+      },
+      {
+        "path": "build/matching/ae-p06/56410-06.json",
+        "sha256": "80EFC9AB79E2E6BBFB5EBD7AC66E1BE645061B697425E54857DE9B007339F5C5"
+      },
+      {
+        "path": "build/matching/ae-p06/56410-25.c",
+        "sha256": "978E722D5D3D76FAD16A117821429E5AAF3C20A6DE5ECEBEC71368537E42E6B1"
+      },
+      {
+        "path": "build/matching/ae-p06/56410-25.json",
+        "sha256": "58A095CB7C3FECA0B3CBB8729079753165D3DED9BDDC7E8D8BB27D6A27301A08"
+      },
+      {
+        "path": "build/matching/ae-p06/56410-final.json",
+        "sha256": "C7BBE2DCBE3F8F1B14B527872CFD1E64B648A69F9B0F94CEE1483984C3B887BE"
+      },
+      {
+        "path": "build/matching/ae-p06/56410-scheduling-probe06.json",
+        "sha256": "A8B958DDC8E6037C458DAB631E768A682DCC4736F2967E475A5B32B846F74699"
+      },
+      {
+        "path": "build/matching/ae-p06/func_00256410.c",
+        "sha256": "1F7E069E8E6E3E82F92A877271A92A3AC4D0B84DA95D43C2B70BF766B219CE16"
+      },
+      {
+        "path": "build/matching/ae-p06/observations/56410-sign-arms.json",
+        "sha256": "92AB6EF715F8EF8DD0522B80A92914DD67F2B05C9F9B745BE776A3F8F6E1841C"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/wave-acceptance.json",
+        "sha256": "DFA77C4AC403B59574D04E0057B2A5A73EAE5B89A9EBECA674A7C2FCF9EC08A1"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/source-preparation/SOURCE-PREPARATION.json",
+        "sha256": "001F065D767A07E243DCBF0128DCB1924B224DFF89CB4539F9307ECD0EFA1C35"
+      },
+      {
+        "path": "build/integration/attack-effects/p06/return-view-reconciliation.json",
+        "sha256": "70B497D90C0375A55B3A661B142D7870DB70F2520668B60307B91889A346733A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Inactive ASM owner provides symbolic-object evidence only. Actual alias/provider bindings, sole C ownership, placement, target bytes and the complete-wave full-ROM gates remain for the dedicated integrator. This is provisional evidence, not matching acceptance. The separately reconciled P06 descendant now passes the complete-wave canonical verifier. That acceptance does not certify the historical controls or establish the original source spelling.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the real coordinate update in both arms of the existing x<0 sign condition, retaining the negated signed-word step only in the negative arm. All paths still execute one coordinate update and the unchanged following call. Add nearby comments explaining the word conversion and source-level scheduling workaround."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 5706,
+      "sha256": "1BF3FC524997150F337CDC4166DA47C975C133BCD3F5794DD6E55687940F1281"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D9C6D1A50BC5B7BD8AC8D40D42CCD452B7877BB04FBE0B151B970A373326CDBA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_00256410-99e5643fba.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

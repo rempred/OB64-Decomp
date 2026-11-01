@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EDD630364FEEA50F02851FAE6B8E088704689FCDC2A9501B669AD89DCF193E3A",
+  "observationId": "533716583973413E24A71480D2961E63D459D8ACD91296B78B234CD4EEC7287B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Current complete D14C source 6715F5D1 / candidate 9F9DEFCA, preserved with 105 relocation-field-masked word differences. Director2008 proposes reusing the existing modes8/10 extra scalar for the real predicate returns.",
+    "effects": [
+      "reload-allocation",
+      "copy-propagation",
+      "stale-flow-data"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D04226FA0DAABDBE9137499DB85F4651E733AB1549A68FD212D338A4B3A7C886",
+      "sourceSha256": "B3B6AF7D57E82862D2A29369FA56DD9C40D15AD193334884E3E00EAC8DE007AC"
+    },
+    "label": "real-predicate-extra-phases-leave-flow-references-but-identical-native",
+    "observedEffect": "Candidate EDD63036 remains PURE_C,6844 bytes/frame616/131 calls and emits the same entire native text and all177 actual text relocations as9F9DEFCA. All six new user76 return definitions survive RTL/CSE/LOOP/FLOW, then COMBINE deletes them and guards consume V0 directly. FLOW references increase from8 to32 and span22 to34; SCHED adjusts the span to24, and LREG retains32 references with only two literal13 definitions. Both literal setters have priority1, as in the baseline, without the7f000001 birth boost. This is retained FLOW reference data after deleted copies, not six surviving allocation definitions; it has no observed native effect.",
+    "parentCandidateId": "9F9DEFCA1A9D9F0BCB448B58338A8166E58C35CE8A54E4172E7E25BF12703F2D",
+    "references": [
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-predicate-extra-phases-watch.json",
+        "sha256": "6E866FD83B5C117AE7327BA4F2B320725BA9AD3B9ACAA23093BE6AB352F9694C"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/targets/func_0022D14C/probes/B24AF69D4CEB3BCFE23911C0D4ACCC55499E1E6E540AC406CC2D5159B1E20508/probe-report.json",
+        "sha256": "35859ED680E1C5CF0A19C1C67E6B7E4DB319C5D602321A68F0439E9C4C4066FE"
+      },
+      {
+        "path": "build/matching/combat-w6-261009/22d14c-existing-probe-authentication.json",
+        "sha256": "961CBE2D700B20D140746633EDBB2955E54D146707D6FEBFB37E9AF9EBB3FCFA"
+      },
+      {
+        "path": "docs/dossiers/func_0022D14C-9f9defca1a.observation.json",
+        "sha256": "552F96D88D99127249D2F8CAC00C5851FB8501502EEB8E8D36016269DACCAC1C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The preserved105-word mismatch remains. This closes this exact predicate/extra phase experiment; a next experiment needs a different source-supported value relation or consumer. Baseline6539 has no LREG dump, so no baseline LREG comparison is claimed. See the current baseline for unchanged full-body, auxiliary-table and whole-wave acceptance obligations.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Assign each of the three short-circuit predicate returns to mode8or10Extra in each of modes8 and10, before the existing true-path assignment of13. Call order and guards are unchanged; the false paths have no later consumer of this scalar."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41049,
+      "sha256": "D04226FA0DAABDBE9137499DB85F4651E733AB1549A68FD212D338A4B3A7C886"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B3B6AF7D57E82862D2A29369FA56DD9C40D15AD193334884E3E00EAC8DE007AC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_0022D14C-edd630364f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

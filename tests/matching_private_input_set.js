@@ -69,8 +69,12 @@ assert.throws(()=>inputSet.openInputSet(path.join(output,'interrupted-manifest.j
 const include=path.dirname(header),realInclude=include+'-real';fs.renameSync(include,realInclude);
 try{fs.symlinkSync(realInclude,include,'junction');assert.throws(()=>inputs.assertUnchanged(),/redirected/);fs.unlinkSync(include);}
 finally{if(!fs.existsSync(include))fs.renameSync(realInclude,include);}
-for(const command of ['best','history','preserve','compare','classify','capture-inputs'])assert.throws(()=>validatePrivateOptions(command,{inputs:f.file,'scratch-root':'build/private'}),/--inputs/);
+for(const command of ['preserve','compare','classify','capture-inputs'])assert.throws(()=>validatePrivateOptions(command,{inputs:f.file,'scratch-root':'build/private'}),/--inputs/);
 for(const extra of [{candidate:'x'},{'research-compiler':'x'},{'source-origin':'x'},{runtime:true}])assert.throws(()=>validatePrivateOptions('probe',{inputs:f.file,'scratch-root':'build/private',source:'candidate.c',...extra}),/--inputs/);
+for(const command of ['best','history']){
+ validatePrivateOptions(command,{inputs:f.file,'scratch-root':'build/private',limit:'3'});
+ for(const extra of [{source:'candidate.c'},{candidate:'x'},{'research-compiler':'x'},{runtime:true}])assert.throws(()=>validatePrivateOptions(command,{inputs:f.file,'scratch-root':'build/private',...extra}),/--inputs/);
+}
 for(const command of ['intake','watch','probe'])validatePrivateOptions(command,{inputs:f.file,'scratch-root':'build/private',...(command==='intake'?{}:{source:'candidate.c'})});
 
 // Exercise the real companion routing boundary with a spy at the existing
@@ -89,7 +93,7 @@ for(const command of ['intake','watch','probe'])validatePrivateOptions(command,{
  const fixtureData=fixture(proofRoot,path.join(output,'proof-set'),['build/current'],['accepted']);fixtureData.manifest.accepted=accepted;fs.writeFileSync(fixtureData.file,JSON.stringify(fixtureData.manifest));
  let checks=0,implementationDrift=false;
  const module={exports:{}};
- vm.runInNewContext(fs.readFileSync(require.resolve('../tools/lib/matching/input_set'),'utf8'),{module,Buffer,__dirname:path.join(ROOT,'tools/lib/matching'),
+ vm.runInNewContext(fs.readFileSync(require.resolve('../tools/lib/matching/input_set'),'utf8'),{module,Buffer,process:{env:{}},__dirname:path.join(ROOT,'tools/lib/matching'),
   require:name=>name==='../current_workflow'?{validateVerifiedCompanions(b,f,v,out){checks++;assert.equal(JSON.stringify(b),JSON.stringify(build));assert.equal(JSON.stringify(f),JSON.stringify(fresh));assert.equal(JSON.stringify(v),JSON.stringify(verified));assert.equal(out,acceptedOutput);if(implementationDrift)throw Error('implementation drift');}}:require(name)});
  const api=module.exports,selected=api.openInputSet(fixtureData.file,{root:proofRoot});
  const model=api.bind({model:{config:{rom:{bytes:rom.length,sha256:inputSet.digest(rom)}}}},selected);

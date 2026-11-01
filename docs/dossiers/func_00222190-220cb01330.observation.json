@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "220CB01330A91FEAD6513B1F038321B57A713AF2F62394F9FBB77AA9DD92D815",
+  "observationId": "EEEFEDD55A443CFF72F441B8F5614B024158C4D976A184DFF2353C6A4680B8F8",
+  "symbol": "func_00222190",
+  "authored": {
+    "context": "Complete terminal15 W8; full39-word original and accepted helper signatures are reconciled. This independently derived readable source supplies the same two twelve-byte triples, distance/divisor order and int result but misses the original GP argument-load sequence.",
+    "effects": [
+      "integer-stack-argument",
+      "direct-cop1-load",
+      "complete-calculation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "992A98D26146DAA1597A5ED355B98594377F2F26C2391C45931CA1F19331468A",
+      "sourceSha256": "1422549892FD4918022261384BAA34E1F9E07135A9DC69E6B663F9B0703378F3"
+    },
+    "label": "plain-integer-stack-argument-conversion-uses-direct-cop1-load",
+    "observedEffect": "220CB013 is mechanically PURE_C148/frame64/twoR/two calls, eight bytes short of156. NativeFC68FF03 uses LWC1 from incoming80(sp) before CVT.S.W instead of the retail LW V0 followed by MTC1/hazard sequence. Real later-divisor-argument phase944F emits identical full native/relocations; zero-component phase9559 emits152 with a new FP-zero representation and is unselected.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/terminal-w8-261009/222190-readable-watch.json",
+        "sha256": "4EBAED94E57607314740443E323C167B0974A0D2E6D42E408DF3400F18C114F9"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/222190-readable-measurement.json",
+        "sha256": "D93A5DB212255BA9A5E18E9ADEA0E333A1294B8B8B34B66A0F2C068E61E642B2"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00222190.s",
+        "sha256": "C4E9508F02CF98D762983F4B5C79BBF12F17F0BBF285BD5B95F87AF29B089249"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/222190-real-zero-phases-watch.json",
+        "sha256": "8BA975178D208DB90A71CDF6E2C19864D143642836142F1AAFE51283D4200D77"
+      },
+      {
+        "path": "build/matching/terminal-w8-261009/222190-real-call-argument-phases-watch.json",
+        "sha256": "03A627CA53613E562DC6A2F893A1EF338A02652A16D830861AE201520BDDFA7C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "4FE623B9FACB269AEEDFA7D7D638715571FBD2A1C2693DB849FDA1247F075441"
+    ],
+    "remainingFailure": "The incoming integer argument allocation remains nonretail; shorter extent is not a body-boundary defect. No linked/sole-owner/placement/addend/full-ROM acceptance. Current selected readable4FE623B9 adds an ordinary word identity, emits156 and zero masked differences; own pass evidence is separate.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Build two float triples from five int arguments using direct casts and literal zero components; calculate vec3_distance, divide by00201670, truncate to int. No word identity or lifetime workaround."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 696,
+      "sha256": "992A98D26146DAA1597A5ED355B98594377F2F26C2391C45931CA1F19331468A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1422549892FD4918022261384BAA34E1F9E07135A9DC69E6B663F9B0703378F3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-09-func_00222190-220cb01330.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

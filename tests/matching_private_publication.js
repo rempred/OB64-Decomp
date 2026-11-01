@@ -50,10 +50,10 @@ const api = load(compilerFile, {
   './store':{},
   './private_inputs':privateInputs,
 });
-function attempt() {
+function attempt(extra = {}) {
   const matchingRoot=fs.mkdtempSync(path.join(fixture,'matching-'));
   return api.compileCandidate({}, {symbol:'fixture',targetId:'target',bytes:4,sectionName:'.fixture',placementKind:'rom-only'},source, {
-    sourcePath:sourceFile,privateWorkspace:true,matchingRoot,syncTargets:false,
+    sourcePath:sourceFile,privateWorkspace:true,matchingRoot,syncTargets:false,...extra,
     session:{context:{phase8:{targets:[]}},preprocessor:{},tool:{},toolId:'unit'},
     storeRequest(request) {if(request.action==='put_compile_result'){publications++;return{run:request.compile,comparison:request.comparison,cached:false};} return null;},
   });
@@ -64,3 +64,14 @@ changeAfterFailure=true;
 assert.throws(attempt,/source identity drift/);
 assert.equal(publications,1,'drift was published as a failed candidate');
 console.log('Private publication: ordinary failure recorded; same-size source drift rejects before store publication');
+
+changeAfterFailure=false;fs.writeFileSync(sourceFile,source);
+const closingChecks=[];const pending=attempt({deferCompletion:true,closingChecks});
+assert.equal(publications,1,'deferred result escaped before close');
+assert.equal(pending.compile.status,'failed');
+assert.equal(fs.existsSync(pending.completion.completionReports[0].file),false,'deferred report escaped before close');
+fs.writeFileSync(sourceFile,source.replace('1','2'));
+assert.throws(()=>closingChecks.forEach(check=>check()),/source identity drift/);
+assert.equal(publications,1,'rejected deferred close published a result');
+assert.equal(fs.existsSync(pending.completion.completionReports[0].file),false);
+console.log('Deferred publication: report/result remain in memory; rejected close publishes neither');

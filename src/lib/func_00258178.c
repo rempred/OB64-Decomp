@@ -1,3 +1,5 @@
+#include "game/effect_geometry_e05.h"
+#include "game/effect_adapters_e08.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_math_e04.h"
@@ -64,17 +66,16 @@ extern float p02_f32_80220F68[];
 extern P05FactoryRecord D_80209EE4[];
 extern void func_00262B68(void);
 extern void func_00262C80(void);
-extern s16 func_0024BCE8(u8);
-extern void func_0024C0DC(u8, P01Vec3 *, float, float, float);
+
+
 extern void func_0024C7A4(void *, void *, void *);
-extern void func_0024C7D8(P01Vec3 *, P01PlacementObject *);
-extern P01ChildObject *func_0024E510(P01Vec3 *, void *);
-extern void func_0024E9BC(s32, u8, s32);
+
+
+
 extern void *func_00261DA8(void *);
 extern void func_00261E30(void *);
 extern void func_002623C4(void *);
 extern void func_0026241C(void *, s32, s32);
-extern s32 func_002673C4(void *);
 struct P05CopyState;
 extern void func_002101DC(void *, s32, s32,
                         s32 (*)(const void *, const void *));

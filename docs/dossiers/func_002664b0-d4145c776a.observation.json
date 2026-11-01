@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D4145C776AD2AC3799820A3001ADF08EAA68AF4DC01D44BD24717C44A6F9C424",
+  "observationId": "1BFCCF3137A189B13C408A65D5DF7BF6439DDBC7531A8BD96DA1936B79FEAB87",
+  "symbol": "func_002664b0",
+  "authored": {
+    "context": "One complete 784-byte logical body over the 160-byte initial switch owner and 624-byte continuation. The first supported mi16 watch compiled the full draft as PURE_C, 780 bytes with 47 nonrelocation word differences; both switches and field-copy behavior were present. Shared publication preserves the historical complete784-byte source and exact source/control references. This source-only import binds the current complete active producer after E06 integration; historical native reports and E05 canonical acceptance retain their own input identities. The historical source need not equal current production C.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        }
+      ],
+      "expandedSha256": "9489D2BE64CED347C948B8423D57672CBF57F500CF7CAB7D7173A03DE08B463C",
+      "sourceSha256": "71C36E850A2CF0FE37586F5834609E1E79BC333CA7758E17AD797C925BA83603"
+    },
+    "label": "e05-664b0-index-phases-and-packet-lifetimes",
+    "observedEffect": "Index reuse fixes the first-loop allocation. A separate nextIndex restores the missing MOVE and full 784-byte extent. Explicit nextCount, earlier command capture and offset-before-base addition resolve the remaining five word differences; the final object has zero differences outside actual relocation fields. Typed pointer addition swaps the final ADDU operands in this context.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/ae-e05/664b0-mi16-intake.json",
+        "sha256": "F34DA756DA787A39F3842FBFAFD7CF80F27E11ADFC5A0C4197F57349D72A331F"
+      },
+      {
+        "path": "build/matching/ae-e05/664b0-next-index-probe.json",
+        "sha256": "61E2E8D5DB1900BC6BB3C4D2FFDC8326569E1F682CD412231DC84518864E6FF1"
+      },
+      {
+        "path": "build/matching/ae-e05/664b0-mi16-first.json",
+        "sha256": "F887C40A0E4243BD941C71DF83159A64E99E0AC05C63FF6159C005B949B15B13"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002664b0/candidates/D69AC4E50DB8DC19865D7B63A1F62ADDDE2C1B3C1EFA3CBA37549A478ECC22C3.c",
+        "sha256": "76944523B6D8F0BE57851AAC0A6D81A0698536DD8B7ECCF348D647009C212CCA"
+      },
+      {
+        "path": "build/matching/ae-e05/664b0-reuse-index-phases.json",
+        "sha256": "35B6C2798E51036C46EADA13F3F4186FA8A25FBB25C9525353D5629852E2BFB7"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002664b0/candidates/C1DFD9CE0BE40E55304587F4E221E344A3EF967B89F71B51E2481C63001F5CF4.c",
+        "sha256": "55AE03FDCC21E9AD505F80AD96B521C62E21969FF2496DF0E5858F1AF7312132"
+      },
+      {
+        "path": "build/matching/ae-e05/664b0-next-index-walk.json",
+        "sha256": "CE48D2A4DD07BD67555D8C4FBC7104BA22AE9CEAD475B8474E8E9CADB0E73EA1"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002664b0/candidates/563840E2DF520A1D6835D53B6D53955E4D0E0A4FA25D9A65CF8F6D19723BEB7D.c",
+        "sha256": "6304C469EE73FCA8B03D9AE796840826CBAB9824C831EE33D67CC1D3DE13E5B6"
+      },
+      {
+        "path": "build/matching/ae-e05/664b0-next-count-local.json",
+        "sha256": "7438E2E0990F8942E7F39F8B5D46AA9750C6C15F1CD7F2ABE3969E6B9C2D3F89"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002664b0/candidates/680B4311880355DCEDF09C65063E770D7B844C39768D4E7FBF89B1DE5D8C8D2F.c",
+        "sha256": "9541D78BB43ED8066A15D25E1079231135AFA147714AC6454AC70321FCF2FEDB"
+      },
+      {
+        "path": "build/matching/ae-e05/664b0-command-before-count.json",
+        "sha256": "F2183E57A1E461A122AB14EE7EDE79E20D194DD38B4F922DB649503A275C7F91"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002664b0/candidates/9FE01486E79C2CFA7BDA804D1DCF6D100C9FF680D7BE15670CF239DAD2C4C868.c",
+        "sha256": "C66F30B814A3A19409C2B2621EFA1ED9F865A60C55BBEDBCEC9804727946E31D"
+      },
+      {
+        "path": "build/matching/ae-e05/664b0-mi16-final.json",
+        "sha256": "29ECFCE0C67BD7716EE0BB621C65BF38E6952B1FD30D2E4AFF98B16BD6E8D9C3"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002664b0/candidates/39A2D3B882A8FDE5CB69308D306290F0F1C5C2B5D654231FAEB0C4488EBA0A1F.c",
+        "sha256": "71C36E850A2CF0FE37586F5834609E1E79BC333CA7758E17AD797C925BA83603"
+      },
+      {
+        "path": "build/matching/ae-e05/targets/func_002664b0/candidates/EC0B9EDDDFDF8279FFFB423755C2943AE6E75A1DB434B8A063C7378A17766931.c",
+        "sha256": "71C36E850A2CF0FE37586F5834609E1E79BC333CA7758E17AD797C925BA83603"
+      },
+      {
+        "path": "build/matching/ae-e05/664b0-final-import.json",
+        "sha256": "29932150DBE08A8926C97E334D055BEA9910D2F16359F599E51A4301213225AC"
+      },
+      {
+        "path": "build/matching/ae-e05/664b0-final-observation.json",
+        "sha256": "E23DDEFE8C199C3AF25645B1AB4AD2824855448816409AF4F40E54C4666D1CC3"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/wave-acceptance.json",
+        "sha256": "A899FC33E5813D1D394439D7110AFFF4ECA66B3AD8FDB7FCF0E1D6F903FF7654"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/source-preparation-r2/SOURCE-PREPARATION.json",
+        "sha256": "E62590846C43B2740FF6D0F676BE929CEC90FB108E369E3165D3C552990B74FA"
+      },
+      {
+        "path": "build/integration/attack-effects/e05/resume-after-p06/installation.json",
+        "sha256": "7E36653C3269B2BDF0DA2DE0F511AA42103687686385D3F196935B542FF7747A"
+      },
+      {
+        "path": "build/integration/attack-effects/e06/wave-acceptance.json",
+        "sha256": "AD7F5773B0A8FF9DF15F4CB4698EED379A9F9811E9A8838C245463EE6BE7C3C9"
+      },
+      {
+        "path": "build/integration/active-producer-research-20261101/companion-vm-handoff.json",
+        "sha256": "04BFD93FA7086A9407D54A40D21630E6E01CFF1DA40E9B1000D0FDDCEFF78A49"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic-object evidence is not canonical acceptance. The integrator must activate the reviewed complete multi-owner producer, reconcile interfaces, validate actual REL/provider ownership and full-owner placement/bytes, and verify the original complete 40-member wave and full ROM. The separately reconciled canonical E05 descendant passed its complete-wave normal verifier within the changed-tool structural audit. That historical acceptance does not certify this source-only import or prove original source spelling or a universal compiler mechanism.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse i for the batch size and index for the fan countdown after the closed-point loop. Keep nextIndex live with the current index while constructing the triangle packet, use an explicit nextCount, capture the command before that arithmetic, and form the 6-byte point offset as integer byte-address addition."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      }
+    ],
+    "expanded": {
+      "bytes": 4225,
+      "sha256": "9489D2BE64CED347C948B8423D57672CBF57F500CF7CAB7D7173A03DE08B463C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "71C36E850A2CF0FE37586F5834609E1E79BC333CA7758E17AD797C925BA83603"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-01-func_002664b0-d4145c776a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

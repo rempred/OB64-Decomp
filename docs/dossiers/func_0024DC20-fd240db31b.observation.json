@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FD240DB31BE0B88BCB7D5011682BD313F215D1FCFCCD95D1FFFA906F3E719471",
+  "observationId": "09D38B0D78AF7541C9E60AE1F7C7843B39E25B8BD9D3C95E798FBE660D180B2D",
+  "symbol": "func_0024DC20",
+  "authored": {
+    "context": "Source-bound E08 compiler observation independently checked against the saved original/native source pair. Numeric access views do not prove full allocation extents or semantics. Publication preserves the original source context; the canonically reconciled descendant is separately bound by the complete E08 wave report.",
+    "effects": [
+      "source-context",
+      "code-generation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2311,
+          "path": "include/game/effect_math_e04.h",
+          "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+        }
+      ],
+      "expandedSha256": "C3DE4B7459C07ECE05C20F6389D0C2C69C756F1F03C7E0176048576777B6EDFD",
+      "sourceSha256": "35DAB251B7D369C9BE68C5AF6705FC6D25EE3EBA8FBA9D74EEA58C16B54F564A"
+    },
+    "label": "e08-dc20-typed-input-formal",
+    "observedEffect": "Only four entry save/copy-order words04/08/0C/10 change; the other83 instructions remain. Selected348-byte/frame64 body is relocation-masked exact. No new trial02 phase dump was taken.",
+    "parentCandidateId": "3573D7B6FC4205B8D8AD45803E6B67E5904A2B6AF4C9ACF4E1B76BC78F0A81F7",
+    "references": [
+      {
+        "path": "build/matching/ae-e08/targets/func_0024DC20/candidates/815A200AB8E674E8A5BBDE9EE0013A57C850BEAA7DCDF989347AB523CE417D95.c",
+        "sha256": "BF8250475A44D621A6C4C5D7748AC76F739C4C8BC9DA51E0E63E6047E5F7C4C7"
+      },
+      {
+        "path": "build/matching/ae-e08/dc20-watch-02-mi9.json",
+        "sha256": "7D5714DB7A1699D46AB84086DB063595962024F2305B461FBA4D0C3082069265"
+      },
+      {
+        "path": "build/matching/ae-e08/runs/262568BE222A0A04E561A09CBC43072780893E63B26779AF0BFF5727B3B555A7/workbench-report.json",
+        "sha256": "724A44146DCAF7ADAD3A3354AFC48498B604CA334B3FD22A3C53CA79CD0F60E9"
+      },
+      {
+        "path": "build/matching/ae-e08/dc20-notes.md",
+        "sha256": "32265D8319D643A5818EBAAE11BF9BB76FB9B89EAA35B273C4D4641E02B65C5B"
+      },
+      {
+        "path": "build/matching/ae-e08/targets/func_0024DC20/candidates/E49A0AA52D021491E1CB6C27A87D376AAB3C4A3ED03F584712E23706C524360C.c",
+        "sha256": "0E0BEC625BA707D9A8398ED4D6EA194E3CB10284C0D6D1E0551E56976F8DCF72"
+      },
+      {
+        "path": "build/matching/ae-e08/dc20-watch-01-mi9.json",
+        "sha256": "3D7F6959F19E762DE058854F6D6C4F425ACE77E920BCC518B4CEE712AD9349D1"
+      },
+      {
+        "path": "build/matching/ae-e08/runs/1141EE0DB11722E8831520CE486E6C8110DDCDFFEA6B592F0246D567ACBDB3E2/workbench-report.json",
+        "sha256": "32AC5C533224D79F9A0833E8033025DA8CD5FC3702B3C32166193E608AF83D35"
+      },
+      {
+        "path": "build/integration/attack-effects/e08/wave-acceptance.json",
+        "sha256": "92159626C6CF26694BB71B977C66774A5F97F78248D31EF98E2C550ED7946EDE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical diagnostic evidence only. Final canonical interface changes and matching acceptance are separate. Compiler-mechanism hypotheses apply only to explicitly measured phases. The complete canonical descendant wave now has linked/full-ROM acceptance; historical controls and authored effect claims are not certified by that acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace void* recordView plus a typed local alias with the observed Dc20InputRecord* formal; preserve all field operations and other lifetimes."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2311,
+        "path": "include/game/effect_math_e04.h",
+        "sha256": "3ED8AB74F4DE59C371E1998512E89AA8E85748203AB7F517D7B33C32763677EB"
+      }
+    ],
+    "expanded": {
+      "bytes": 3948,
+      "sha256": "C3DE4B7459C07ECE05C20F6389D0C2C69C756F1F03C7E0176048576777B6EDFD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "35DAB251B7D369C9BE68C5AF6705FC6D25EE3EBA8FBA9D74EEA58C16B54F564A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-31-func_0024DC20-fd240db31b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

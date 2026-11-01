@@ -1,3 +1,4 @@
+#include "game/effect_geometry_e05.h"
 #include "common/types.h"
 #include "game/effect_presentation_p05.h"
 #include "game/effect_math_e04.h"
@@ -30,8 +31,6 @@ extern float p02_f32_80220F68[];
 extern void func_00262B68(void);
 extern void *func_00261DA8(void *);
 extern void func_00261E30(void *);
-extern s32 func_002673C4(void *);
-
 s32 func_00257F54(u16 message, P05CopyState *state)
 {
     switch (message) {

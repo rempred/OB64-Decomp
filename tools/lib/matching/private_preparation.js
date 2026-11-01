@@ -5,11 +5,14 @@ const { ROOT } = require('../phase7_conventional');
 const { prepareContext } = require('../current_workflow');
 const { createDiffPreprocessCache } = require('../diff_preprocess_cache');
 const { createDiffProfiler } = require('../diff_profile');
-const { resolvePrivateWorkspace, assertPrivatePath, assertPrivateWorkspace } = require('./private_workspace');
+const { resolvePrivateWorkspace, assertPrivatePath, assertPrivateWorkspace, requireActiveWatchWorkspace, combinePrivateErrors } = require('./private_workspace');
 
 function preparePrivateContext(options = {}) {
   if (options.privateWorkspace !== true || !options.matchingRoot) throw new Error('private context preparation requires an explicit private root');
-  const workspace = resolvePrivateWorkspace({ root: ROOT, scratchRoot: options.matchingRoot });
+  const watch = options.watchWorkspace !== undefined;
+  const workspace = watch
+    ? requireActiveWatchWorkspace(options.watchWorkspace, options.inputs, ROOT, options.matchingRoot)
+    : resolvePrivateWorkspace({ root: ROOT, scratchRoot: options.matchingRoot });
   const cacheRoot = assertPrivatePath(workspace, path.join(workspace.matchingRoot, 'preprocess'), { mustExist: false, regularFile: false });
   const target = options.privateTarget;
   const activeSource = target?.activeMatchingSource || target?.activeMatchingProducer?.source;
@@ -35,8 +38,18 @@ function preparePrivateContext(options = {}) {
       return {
         preprocess: cache.preprocess,
         finish() {
-          try { cache.finish(); }
-          finally { assertPrivateWorkspace(workspace); }
+          if (!watch) {
+            try { cache.finish(); }
+            finally { assertPrivateWorkspace(workspace); }
+            return;
+          }
+          let failure;
+          try { cache.finish(); } catch (error) { failure = error || new Error('private preparation failed', { cause: error }); }
+          try {
+            requireActiveWatchWorkspace(workspace, options.inputs, ROOT, options.matchingRoot);
+            assertPrivatePath(workspace, cacheRoot, { mustExist: false, regularFile: false });
+          } catch (error) { failure = combinePrivateErrors(failure, error); }
+          if (failure) throw failure;
         },
       };
     },
