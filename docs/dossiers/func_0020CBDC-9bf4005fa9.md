@@ -1,11 +1,13 @@
 # func_0020CBDC: final-clean
 
+Historical observation: the duplicate source/export was retired on November 1, 2026.
+The linked canonical C was byte-identical; original metadata remains in Git at `38efb10a`.
+
 Preservation does not change current source ownership or establish matching acceptance.
 
 - Candidate: `9BF4005FA9CD2E30B05347E2CFB4CACB44545362FF4064AFE91D2358DFE60EE1`
 - Observation: `D6F701394BADD8B741DD7ED160D9834E8DB4F4EDA8D3992503C3D15F726573CC`
-- Source: [exact C](../archive/matching-c-candidates/2026-09-09-func_0020CBDC-9bf4005fa9.c)
-- Metadata: [curated observation](func_0020CBDC-9bf4005fa9.observation.json)
+- Source: [exact C](../../src/lib/func_0020CBDC.c)
 
 CBDC frame and initializer comparisons; retain useful intermediates and exact PURE_C source pending full-wave verification.
 
@@ -25,4 +27,4 @@ Complete thirteen-target supplement verifier has not run; focused exact source r
 
 Research role: emitted-best; selected emitted best: true.
 
-Replay: `node tools/match.js probe func_0020CBDC --source docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-9bf4005fa9.c`. Check the metadata's expanded/header identities before interpreting its dumps.
+Replay: `node tools/match.js probe func_0020CBDC --source src/lib/func_0020CBDC.c`. This replays current canonical C; consult the original Git export for historical expanded/header identities.

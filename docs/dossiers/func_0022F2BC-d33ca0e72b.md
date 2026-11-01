@@ -1,11 +1,13 @@
 # func_0022F2BC: complete-f2bc-current-linked-exact-ordinary-byte-symbol-contract
 
+Historical observation: the duplicate source/export was retired on November 1, 2026.
+The linked canonical C was byte-identical; original metadata remains in Git at `38efb10a`.
+
 Preservation does not change current source ownership or establish matching acceptance.
 
 - Candidate: `D33CA0E72BF881AD1128A825CAC241D44A8AFE92A9EB35DE242F1EB355F0E664`
 - Observation: `62ADAEA547965E70036C4905851B28DC074ECAE7ABC64CBBF11243D6F3D46AEE`
-- Source: [exact C](../archive/matching-c-candidates/2026-10-02-func_0022F2BC-d33ca0e72b.c)
-- Metadata: [curated observation](func_0022F2BC-d33ca0e72b.observation.json)
+- Source: [exact C](../../src/battle/func_0022F2BC.c)
 
 Confirmed byte symbol, unchanged original data owner and both actual address pairs; provisional exact within complete W6.
 
@@ -25,4 +27,4 @@ Provisional focused proof only; B1F4/D14C remain nonexact and the complete W6 fi
 
 Research role: emitted-best; selected emitted best: true.
 
-Replay: `node tools/match.js probe func_0022F2BC --source docs/archive/matching-c-candidates/2026-10-02-func_0022F2BC-d33ca0e72b.c`. Check the metadata's expanded/header identities before interpreting its dumps.
+Replay: `node tools/match.js probe func_0022F2BC --source src/battle/func_0022F2BC.c`. This replays current canonical C; consult the original Git export for historical expanded/header identities.

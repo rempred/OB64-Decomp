@@ -1,11 +1,13 @@
 # func_0012E9F4: record-formation-slot-index
 
+Historical observation: the duplicate source/export was retired on November 1, 2026.
+The linked canonical C was byte-identical; original metadata remains in Git at `38efb10a`.
+
 Preservation does not change current source ownership or establish matching acceptance.
 
 - Candidate: `4E1F6FBFD01EF19D0437487628A854F7F19122F84D0EE89ED23E40E5A03061A3`
 - Observation: `7E6ED2318D1FEC4A68C6B192C6F5D55720837F2BF8F7496E8FFA2482C5BBB373`
-- Source: [exact C](../archive/matching-c-candidates/2026-09-30-func_0012E9F4-4e1f6fbfd0.c)
-- Metadata: [curated observation](func_0012E9F4-4e1f6fbfd0.observation.json)
+- Source: [exact C](../../src/lib/func_0012E9F4.c)
 
 Retain the complete body and bounded slot-index source context for the nine-member record/formation wave.
 
@@ -25,4 +27,4 @@ Provisional candidate only. The complete unchanged nine-member wave needs one no
 
 Research role: emitted-best; selected emitted best: true.
 
-Replay: `node tools/match.js probe func_0012E9F4 --source docs/archive/matching-c-candidates/2026-09-30-func_0012E9F4-4e1f6fbfd0.c`. Check the metadata's expanded/header identities before interpreting its dumps.
+Replay: `node tools/match.js probe func_0012E9F4 --source src/lib/func_0012E9F4.c`. This replays current canonical C; consult the original Git export for historical expanded/header identities.

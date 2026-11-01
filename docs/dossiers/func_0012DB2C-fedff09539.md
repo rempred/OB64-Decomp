@@ -1,11 +1,13 @@
 # func_0012DB2C: func_0012DB2C-lifecycle-provisional-exact
 
+Historical observation: the duplicate source/export was retired on November 1, 2026.
+The linked canonical C was byte-identical; original metadata remains in Git at `38efb10a`.
+
 Preservation does not change current source ownership or establish matching acceptance.
 
 - Candidate: `FEDFF09539F02DF838025E9E71F683193F6EF27BABD5A43750AD99ACA21ECC81`
 - Observation: `DFCAC1E91EBD6D4BB755864B9D0F42B581BBEB7A24119B6BD4209893D7E6DAB1`
-- Source: [exact C](../archive/matching-c-candidates/2026-09-30-func_0012DB2C-fedff09539.c)
-- Metadata: [curated observation](func_0012DB2C-fedff09539.observation.json)
+- Source: [exact C](../../src/lib/func_0012DB2C.c)
 
 Preserve full-owner provisional source without shrinking the lifecycle wave.
 
@@ -25,4 +27,4 @@ Lifecycle wave still waits for all five members before its single final verifier
 
 Research role: emitted-best; selected emitted best: true.
 
-Replay: `node tools/match.js probe func_0012DB2C --source docs/archive/matching-c-candidates/2026-09-30-func_0012DB2C-fedff09539.c`. Check the metadata's expanded/header identities before interpreting its dumps.
+Replay: `node tools/match.js probe func_0012DB2C --source src/lib/func_0012DB2C.c`. This replays current canonical C; consult the original Git export for historical expanded/header identities.

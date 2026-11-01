@@ -1,11 +1,13 @@
 # boot_resource_op_dispatch: production-local-helper-and-accepted-callee-contracts
 
+Historical observation: the duplicate source/export was retired on November 1, 2026.
+The linked canonical C was byte-identical; original metadata remains in Git at `38efb10a`.
+
 Preservation does not change current source ownership or establish matching acceptance.
 
 - Candidate: `041353E29D2954402B582D880BE2BA4E41D3DD736120A75BE082A795192D670D`
 - Observation: `4BB92E23A15ADFE11E22B3F98B44C98448A7F1A2FCEC481B2861F0E1260148F1`
-- Source: [exact C](../archive/matching-c-candidates/2026-10-06-boot_resource_op_dispatch-041353e29d.c)
-- Metadata: [curated observation](boot_resource_op_dispatch-041353e29d.observation.json)
+- Source: [exact C](../../src/boot/boot_resource_op_dispatch.c)
 
 Complete production-local dispatcher/BF48 source with reconciled accepted callee contracts and exact native diagnostics; complete-wave canonical gates remain.
 
@@ -25,4 +27,4 @@ Private inactive-ASM census expects GLOBAL secondaries and reportsfailed for pro
 
 Research role: emitted-best; selected emitted best: true.
 
-Replay: `node tools/match.js probe boot_resource_op_dispatch --source docs/archive/matching-c-candidates/2026-10-06-boot_resource_op_dispatch-041353e29d.c`. Check the metadata's expanded/header identities before interpreting its dumps.
+Replay: `node tools/match.js probe boot_resource_op_dispatch --source src/boot/boot_resource_op_dispatch.c`. This replays current canonical C; consult the original Git export for historical expanded/header identities.

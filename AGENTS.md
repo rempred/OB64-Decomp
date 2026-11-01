@@ -201,6 +201,17 @@ Record discoveries that will change a future experiment through the shared resea
 with a concise source change, observed effect and remaining failure. Keep the best source
 recoverable. This does not require archiving every trial or reading the complete historical record.
 
+Before committing a complete wave, curate its candidate archives and observation dossiers.
+Keep only sources needed by a useful documented lesson: a meaningful comparison, intermediate
+or counterexample, including the complete producer and required parent context. Use accepted
+canonical C as the final-source example when it already supplies the same evidence. A match,
+wave membership, export command or `selectedBest` flag is not a reason to commit another copy.
+Remove redundant trials and obsolete companion records together; preserve useful prose, repair
+incoming references and validate retained research before deleting referenced files. Do not
+rewrite historical identities or remove a needed control merely because its function matched.
+Routine attempts remain ignored scratch. This is part of normal pre-commit curation, not a new
+review gate, tracking system or full-ROM check.
+
 Agents must reconcile logical bodies, physical owners, and the C producer before tuning a target.
 Use current intake, relevant documentation, and full target disassembly to cross-check accepted metadata and generated output.
 Acceptance status does not resolve contradictory evidence by itself.

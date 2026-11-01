@@ -1,11 +1,13 @@
 # func_0012E8EC: record-formation-signed-limit
 
+Historical observation: the duplicate source/export was retired on November 1, 2026.
+The linked canonical C was byte-identical; original metadata remains in Git at `38efb10a`.
+
 Preservation does not change current source ownership or establish matching acceptance.
 
 - Candidate: `5CAB83AEE9FCF42E95B297005B2742F8488DEC747CD567C364C937A0B701B5CF`
 - Observation: `AF5B6A6FF5EED85165D05C3ED12396A1314EF541E38F0656548D84FA4EDF8CD4`
-- Source: [exact C](../archive/matching-c-candidates/2026-09-30-func_0012E8EC-5cab83aee9.c)
-- Metadata: [curated observation](func_0012E8EC-5cab83aee9.observation.json)
+- Source: [exact C](../../src/lib/func_0012E8EC.c)
 
 Retain the complete body and bounded signed-limit source context for the nine-member record/formation wave.
 
@@ -25,4 +27,4 @@ Provisional candidate only. The complete unchanged nine-member wave needs one no
 
 Research role: emitted-best; selected emitted best: true.
 
-Replay: `node tools/match.js probe func_0012E8EC --source docs/archive/matching-c-candidates/2026-09-30-func_0012E8EC-5cab83aee9.c`. Check the metadata's expanded/header identities before interpreting its dumps.
+Replay: `node tools/match.js probe func_0012E8EC --source src/lib/func_0012E8EC.c`. This replays current canonical C; consult the original Git export for historical expanded/header identities.

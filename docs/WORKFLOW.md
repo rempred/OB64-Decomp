@@ -562,11 +562,13 @@ metadata remain tool output. Do not repeat unchanged constraints, hash lists, bo
 or acceptance disclaimers in every trial; link their authoritative record and describe
 only a relevant change. Worse bytes can still justify a useful mechanism observation.
 
-Preserve a small useful set: the best emitted match, a source pair demonstrating a useful
-effect, and the nearest counterexample when one exists. A worse candidate can be worth keeping
-when it distinguishes a mechanism. Export actionable sources and observations for future
-checkouts; generated assembly, dumps and bulk evidence remain ignored. Do not archive every
-trial, invent a counterexample or update several status documents for each observation.
+Preserve a small useful set tied to documented lessons: a source pair demonstrating a useful
+effect and a counterexample when it distinguishes a mechanism. Use accepted canonical C for
+the final example when it supplies the same evidence; do not automatically export another
+"best" or final-source copy. A worse candidate can be worth keeping when the documented
+comparison needs it. Export actionable sources and observations for future checkouts;
+routine trials, generated assembly, dumps and bulk evidence remain ignored. Do not archive
+every trial, invent a counterexample or update several status documents for each observation.
 For grouped sources, retain the complete producer context and existing group restrictions;
 reading a member's history does not authorize single-member import or compilation.
 
@@ -734,7 +736,22 @@ can replace the one final command; it must not be followed by a duplicate full v
 ### 7. Integrate the completed wave
 
 Preserve unrelated work in a shared checkout. Record the verified wave without
-an independent source-review gate. Before recording any scoped commit, inspect:
+an independent source-review gate. Before staging a completed wave, curate its research:
+
+- Every candidate C file needs a useful documented lesson or a required comparison/parent
+  role in one. Wave membership, a successful match or an export command is insufficient.
+- Prefer canonical C for an identical final example. Keep the smallest set that actually
+  demonstrates each lesson, with complete producer context; do not keep routine trial chains.
+- Check incoming file and candidate-ID references before pruning. Remove obsolete companion
+  dossiers together, or preserve their useful prose and migrate links to the retained example.
+  Preserve live authenticated observations and their required controls unchanged; do not rewrite
+  identities to hide missing evidence. Historical census lists are records of their date, not
+  a requirement to retain every old working-tree path forever.
+- Check the retained lesson/reference closure with the existing research checks, then inspect
+  the explicit staged file list. No new archive registry, approval gate or full-ROM run is needed
+  for documentation-only curation.
+
+Before recording any scoped commit, inspect:
 
 ```powershell
 git diff --check
