@@ -419,7 +419,7 @@ function inventory(root, inputs = {}, config = settings()) {
   plain(root, 'directory');
   const references = referenceInputs(inputs), runs = [], issues = [...references.issues];
   // Latest member reports protect their common output even when no prose cites it.
-  const latest = path.resolve(__dirname, '../../build/diff');
+  const latest = path.join(require('./execution_paths').ROOT, 'build/diff');
   for (const name of fs.readdirSync(root)) {
     const run = path.join(root, name), protection = [];
     try {

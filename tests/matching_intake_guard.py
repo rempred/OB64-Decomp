@@ -1,6 +1,7 @@
 """Intake admission falsifiers over owned scratch postimages; no native compiler."""
 import ctypes
 import json
+import hashlib
 import os
 from pathlib import Path
 import subprocess
@@ -18,8 +19,29 @@ else:
 OUT = REPO
 (REPO / 'tools').mkdir()
 NODE = ROOT / '.toolchains/node-v24.13.1-win-x64/node.exe'
-GUARD = Path(os.environ.get('OB64_TEST_GUARD', str(ROOT / 'tools/matching_workbench/private_guard.py')))
-API = ROOT / 'tools/lib/matching/private_workspace.js'
+GUARD_SOURCE = Path(os.environ.get('OB64_TEST_GUARD', str(ROOT / 'tools/matching_workbench/private_guard.py')))
+GUARD_BYTES = GUARD_SOURCE.read_bytes()
+GUARD_SHA256 = hashlib.sha256(GUARD_BYTES).hexdigest()
+# The fake entry and its supervisor must belong to the same fixture repository.
+GUARD = REPO / 'tools/matching_workbench/private_guard.py'
+GUARD.parent.mkdir()
+GUARD.write_bytes(GUARD_BYTES)
+assert hashlib.sha256(GUARD.read_bytes()).hexdigest() == GUARD_SHA256
+assert hashlib.sha256(GUARD_SOURCE.read_bytes()).hexdigest() == GUARD_SHA256
+# The real API derives its CLI identity from its own code placement.
+API = REPO / 'tools/lib/matching/private_workspace.js'
+API_PAIRS = []
+for relative in ('tools/lib/matching/private_workspace.js', 'tools/lib/execution_paths.js'):
+    original = ROOT / relative
+    copied = REPO / relative
+    data = original.read_bytes()
+    digest = hashlib.sha256(data).hexdigest()
+    copied.parent.mkdir(parents=True, exist_ok=True)
+    copied.write_bytes(data)
+    API_PAIRS.append((original, copied, digest))
+for original, copied, digest in API_PAIRS:
+    assert hashlib.sha256(original.read_bytes()).hexdigest() == digest
+    assert hashlib.sha256(copied.read_bytes()).hexdigest() == digest
 ENTRY = REPO / 'tools/match.js'
 WORK = REPO / 'build/matching/w1'
 ENTRY.write_text('''const fs=require('fs'),path=require('path'),cp=require('child_process');
@@ -117,6 +139,11 @@ try:
         invalid = subprocess.run(base + ['--'] + command, capture_output=True, text=True)
         assert invalid.returncode != 0 and not invalid.stdout
         results.append({'name': name, 'result': 'rejected'})
+    assert hashlib.sha256(GUARD.read_bytes()).hexdigest() == GUARD_SHA256
+    assert hashlib.sha256(GUARD_SOURCE.read_bytes()).hexdigest() == GUARD_SHA256
+    for original, copied, digest in API_PAIRS:
+        assert hashlib.sha256(original.read_bytes()).hexdigest() == digest
+        assert hashlib.sha256(copied.read_bytes()).hexdigest() == digest
     report = {'status': 'pass', 'checks': len(results), 'scope': 'Owned fake entrypoint exercises exact guard admission/lifecycle; actual guarded intake separately benchmarked; no native compiler', 'results': results}
     (OUT / 'guard-intake.json').write_text(json.dumps(report, indent=2))
     print(json.dumps(report))

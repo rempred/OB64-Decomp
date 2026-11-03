@@ -94,11 +94,78 @@ def check_research_paths(root):
     for name in ('workbench.sqlite', 'workbench.sqlite-wal', 'workbench.sqlite-shm', 'workbench.sqlite-journal', '.private-guard.json'):
         inspect(root / name)
 
+def validate_entry(repository, command):
+    # Pre-child drift check; this already-interpreted guard is trusted. Node's
+    # sealed-byte reader and closing checks provide the remaining code checks.
+    def same(a, b):
+        return os.path.normcase(os.path.abspath(a)) == os.path.normcase(os.path.abspath(b))
+    def plain(file):
+        for parent in reversed(file.parents): inspect_watch_path(parent, True)
+        inspect_watch_path(file, False)
+    guard = Path(os.path.abspath(__file__))
+    plain(guard)
+    live = repository / 'tools' / 'matching_workbench' / 'private_guard.py'
+    if same(guard, live):
+        return same(command[1], repository / 'tools' / 'match.js')
+    bundle = guard.parent.parent.parent
+    version = bundle.name
+    expected = repository / 'build' / 'matching-tools' / version
+    if not same(bundle, expected) or not same(guard, expected / 'tools' / 'matching_workbench' / 'private_guard.py'):
+        raise RuntimeError('guard placement/repository differs')
+    if not 16 <= len(version) <= 64 or any(c not in '0123456789abcdef' for c in version):
+        raise RuntimeError('guard bundle version differs')
+    descriptor_file = bundle / 'bundle.json'
+    plain(descriptor_file)
+    raw = descriptor_file.read_bytes()
+    identity = hashlib.sha256(raw).hexdigest().upper()
+    descriptor = json.loads(raw)
+    if descriptor.get('schemaVersion') != 1 or not identity.lower().startswith(version):
+        raise RuntimeError('guard bundle descriptor differs')
+    positions = [i for i, token in enumerate(command) if token == '--inputs']
+    if len(positions) != 1 or positions[0] + 1 >= len(command) or command[positions[0] + 1].startswith('--'):
+        raise RuntimeError('guard bundle requires one inputs')
+    manifest_file = Path(os.path.abspath(repository / command[positions[0] + 1]))
+    plain(manifest_file)
+    manifest = json.loads(manifest_file.read_bytes())
+    if manifest.get('schemaVersion') != 2 or manifest.get('bundle') != {'version': version, 'descriptorSha256': identity}:
+        raise RuntimeError('guard selected bundle differs')
+    members = descriptor.get('members')
+    if not isinstance(members, list): raise RuntimeError('guard member census')
+    seen = set()
+    for record in members:
+        name = record.get('path')
+        if not isinstance(name, str) or not name or '\\' in name or ':' in name or name.startswith('/') or any(p in ('', '.', '..') or p.endswith(('.', ' ')) for p in name.split('/')):
+            raise RuntimeError('guard invalid member path')
+        physical = os.path.normcase(os.path.abspath(bundle / name))
+        if physical in seen: raise RuntimeError('guard duplicate member alias')
+        seen.add(physical)
+    for name, kind in [('tools/matching_workbench/private_guard.py', 'python'), ('tools/match.js', 'javascript')]:
+        records = [r for r in members if same(bundle / r['path'], bundle / name)]
+        if len(records) != 1 or records[0]['path'] != name or records[0].get('kind') != kind:
+            raise RuntimeError('guard executable member identity')
+        file = bundle / name
+        plain(file)
+        data = file.read_bytes()
+        if records[0].get('bytes') != len(data) or records[0].get('sha256') != hashlib.sha256(data).hexdigest().upper():
+            raise RuntimeError('guard executable member drift')
+    node_record = descriptor.get('node', {})
+    node = Path(command[0])
+    if not node.is_absolute() or not isinstance(node_record.get('path'), str) or not Path(node_record['path']).is_absolute() or not same(node, node_record['path']):
+        raise RuntimeError('guard Node path differs')
+    plain(node)
+    config_file = repository / 'config' / 'phase7' / 'conventional-build.json'
+    plain(config_file)
+    config = json.loads(config_file.read_bytes())
+    node_hash = hashlib.sha256(node.read_bytes()).hexdigest().upper()
+    if node_hash != node_record.get('sha256') or node_hash != config.get('host', {}).get('nodeExeSha256'):
+        raise RuntimeError('guard Node pin differs')
+    return same(command[1], bundle / 'tools' / 'match.js')
+
 def validate_research_command(args):
     root = Path(os.path.abspath(args.root))
     repository = root.parent.parent.parent
     command = args.command
-    if args.native or len(command) < 3 or command[2] != 'intake' or os.path.normcase(os.path.abspath(command[1])) != os.path.normcase(str(repository / 'tools' / 'match.js')):
+    if args.native or len(command) < 3 or command[2] != 'intake' or not validate_entry(repository, command):
         raise RuntimeError('research admission requires the intake CLI')
     positions = [i for i, token in enumerate(command) if token == '--scratch-root']
     if len(positions) != 1 or positions[0] + 1 >= len(command):
@@ -143,7 +210,7 @@ def validate_watch_command(args):
     root = Path(os.path.abspath(args.root))
     repository = root.parent.parent.parent
     command = args.command
-    if len(command) < 4 or command[2] not in ('watch', 'probe') or os.path.normcase(os.path.abspath(command[1])) != os.path.normcase(str(repository / 'tools' / 'match.js')):
+    if len(command) < 4 or command[2] not in ('watch', 'probe') or not validate_entry(repository, command):
         raise RuntimeError('strict watch admission requires the watch CLI')
     def argument(name, optional=False):
         positions = [i for i, token in enumerate(command) if token == name]

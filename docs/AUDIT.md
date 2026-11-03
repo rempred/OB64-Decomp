@@ -42,6 +42,19 @@ Also run it periodically before a release/milestone if useful.
 
 ---
 
+## Private tool versions and canonical reachability
+
+A private-only immutable tool revision needs focused dependency, isolation, whole-owner,
+fresh/replay and rejection tests plus independent exact-code review. It may omit a full structural
+audit only when the reviewed change cannot affect canonical acceptance through execution, consumed
+data, implementation hashes or shared trusted pins. Directory names and a private command label do
+not establish that separation. Changes to structural owners, compiler/toolchain contracts, linking,
+production verification or any canonical dependency retain the full audit.
+
+The initial repository-root/code-root separation, selected-input schema and loader plumbing touch
+production-used modules and require one installed structural audit, including its fresh verification.
+This rule neither repeats unchanged acceptance nor replaces complete-wave full-ROM verification.
+
 ## Do Not Require the Audit For
 
 The audit is not required merely because:

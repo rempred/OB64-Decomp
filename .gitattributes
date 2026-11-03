@@ -339,3 +339,17 @@ docs/archive/matching-c-candidates/2026-10-17-func_0002b90c-79edf01553.c -text w
 
 # P01 verified source retains its recorded mixed line endings byte for byte.
 src/lib/func_002526CC.c -text whitespace=cr-at-eol
+
+# C02 authenticated comparison sources and accepted C retain exact authored bytes.
+docs/archive/matching-c-candidates/2026-11-03-func_001AD0E4-21893f9315.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-03-func_001A9290-d415ab4b5e.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-11-03-func_001A9290-2f83c96715.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-11-03-func_001A9290-7601f6b75a.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-11-03-func_001A9290-57e02a5589.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-11-03-func_001A9290-77828fd097.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-11-03-func_001A9290-d73671b576.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-11-03-func_001A9290-9fec9ced8b.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-11-03-func_001A9290-6153564bb8.c -text whitespace=cr-at-eol,-blank-at-eof
+src/lib/func_001AD8CC.c -text whitespace=cr-at-eol,-blank-at-eof
+src/lib/func_001AD0E4.c -text whitespace=cr-at-eol,-blank-at-eof
+src/lib/func_001A9290.c -text whitespace=cr-at-eol,-blank-at-eof

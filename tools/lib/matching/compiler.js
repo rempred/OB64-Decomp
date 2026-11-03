@@ -143,6 +143,7 @@ function prepareCompilerSession(options = {}) {
   const preprocessor = resolvePreprocessor(undefined, options.inputs);
   const tool = {
     schemaVersion: 1,
+    ...(require('../execution_paths').bundle()?{bundleId:require('../execution_paths').bundle().id}:{}),
     compilerSha256: sha256File(context.localTools.compiler),
     compilerFlags: diagnosticContext.producerModel(context).config.compiler.compileFlags,
     assembler: diagnosticContext.producerModel(context).toolchain.identity,

@@ -887,7 +887,37 @@ Use full capture for broader changes or independent storage. Preserve parent/dat
 is active. Failed/interrupted output is retained and never reported as success by that invocation;
 a complete unreported artifact may still pass unchanged consumers. No acceptance marker is added.
 
-Add `--inputs build/inputs-v1/manifest.json` to guarded `intake`, `history`, `best`, `watch --source`, or `probe --source`.
+### Complete-wave preparation and immutable private tool selection
+
+Before dispatch, run `node tools/match.js preflight <all wave symbols> --inputs <manifest>
+--scratch-root <private root> --output <new ignored report> --json`, using the selected bundle's
+`run.ps1` in place of `node tools/match.js` for v2 inputs. This guarded command constructs the actual
+diagnostic target and compiler preparation session for every target without a candidate, compiler
+invocation, SQLite write or full-ROM build. Only `prepared` for every assigned target passes;
+duplicates, aliases and target-local failures remain explicit. Shared prerequisite failures prevent
+dependent preparation. The report proves neither C classification nor emitted-body, table or
+relocation coverage, exact target bytes or matching acceptance.
+
+The production writer publishes reviewed code with `node tools/match.js publish-tools
+--reviewed-patch-sha256 <SHA256> [--source <complete reviewed code root>] --json`, then captures selected data with `capture-inputs
+--tool-bundle <version> --output <new ignored directory> --json`. This records provenance; the hash
+argument does not itself constitute review approval. An explicit source root must contain the entire
+reviewed execution closure; publication never fills missing dependencies from live code. This lets
+a future private version be published while prior-version workers run. Share one content-addressed bundle between
+workers. Its launcher admits only explicit selected private commands; it cannot build or certify
+CURRENT. V1 live inputs remain supported; v2 requires its exact bound bundle. No implicit migration
+or live implementation fallback is allowed. Hash-only historical tool evidence is copied into
+selected data, outside loadable bundle code; it must never be imported or spawned.
+
+Adopt a new version only after that root's command has finished. Separate roots may use A and B
+concurrently. Existing drains still apply before referenced shared runtimes, original inputs or
+accepted outputs change. Keep old versions and selected data while referenced by active workers or
+needed research; retirement requires recoverable reviewed source and the normal safe-cleanup and
+research-reference checks. This is trusted-local-operator integrity, not a sandbox against an operator
+who can rewrite tools, manifests and pins. The already executing Python guard is trusted; its
+pre-child identity checks complement sealed Node reads, runtime pins and closing checks.
+
+Add `--inputs build/inputs-v1/manifest.json` to guarded `preflight`, `intake`, `history`, `best`, `watch --source`, or `probe --source`.
 No other command/flag branch supports selected inputs, including `preserve`,
 `probe --candidate`, and `--research-compiler`. Watch/probe authenticate actual selected reads, dependency identities,
 directory membership, accepted proof and physical set identity. Read-only intake authenticates

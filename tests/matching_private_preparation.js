@@ -12,6 +12,7 @@ const { createDiffPreprocessCache } = require(path.join(ROOT, 'tools/lib/diff_pr
 function load(name, modules, processOverride = process) {
   const module = { exports: {} };
   const req = key => modules[key] || (key === './diagnostic_context' ? require('../tools/lib/matching/diagnostic_context') : key === './scratch_assembly' ? require('../tools/lib/matching/scratch_assembly')
+    : key === '../execution_paths' ? require('../tools/lib/execution_paths')
     : ['./input_set', './matching/input_set'].includes(key) ? require('../tools/lib/matching/input_set')
     : ['fs', 'path', 'crypto', 'util', 'child_process'].includes(key) ? require(key) : {});
   const file = path.join(ROOT, name === 'current_workflow.js' ? 'tools/lib' : 'tools/lib/matching', name);

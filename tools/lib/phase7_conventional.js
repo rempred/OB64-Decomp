@@ -7,7 +7,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..', '..');
+const { ROOT } = require('./execution_paths');
 const CONFIG_PATH = path.join(ROOT, 'config', 'phase7', 'conventional-build.json');
 const SHIM_TEXT = [
   '"""One-shot asm-differ compatibility shim.',

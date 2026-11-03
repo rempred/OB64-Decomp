@@ -32,7 +32,7 @@ function manifest(name,{fake=false,missing=false,alterPins=false,omitExecution=n
 }
 function cli(runtimeApi=api, enterGuard=false) {
  const file=path.join(ROOT,'tools/match.js'),mod={exports:{}},req=createRequire(file),events=[];
- vm.runInNewContext(fs.readFileSync(file,'utf8'),{module:mod,Buffer,console,__dirname:path.dirname(file),process:{...process,env:{...process.env,OB64_MATCH_PYTHON:undefined}},require:name=>name==='./lib/matching/input_set'?runtimeApi:name==='./lib/matching/private_workspace'?{
+ vm.runInNewContext(fs.readFileSync(file,'utf8'),{module:mod,Buffer,console,__filename:file,__dirname:path.dirname(file),process:{...process,env:{...process.env,OB64_MATCH_PYTHON:undefined}},require:name=>name==='./lib/matching/input_set'?runtimeApi:name==='./lib/matching/private_workspace'?{
   resolvePrivateWorkspace(){return {matchingRoot:path.join(root,'private'),storeOptions:{database:path.join(root,'unused.sqlite')}};},
   async withPrivateWorkspace(workspace,options,callback){events.push({python:options.python});if(enterGuard)await callback();},assertPrivateWorkspace(){}}
   :name==='./lib/matching/store'?{requestStore(){throw Error('unexpected store spawn');}}:req(name)});

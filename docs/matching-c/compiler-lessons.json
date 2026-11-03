@@ -573,10 +573,26 @@
         "register-allocation",
         "scheduling-or-block-order"
       ],
-      "applicability": "Historical source-context lead only: the observation's canonical-source reference has drifted, so it is excluded from authenticated curated observations. Its archived source pair remains recoverable. For repeated constructor sites with verified coverage, compare per-site single-set locals against genuine loaded values shared across sites; this is not a universal allocator recipe.",
-      "note": "docs/dossiers/func_0023A5EC-9683d35159.md#source-context",
-      "references": [],
-      "observations": []
+      "applicability": "C02 A9290 compares branch-local window mutation, a six-slot pointer-array view and conditional clamp forms in complete intermediate producers; reload/allocation effects remain context dependent. Read the paired sources and remaining failures. The older 23A5EC source-context lead remains linked, but its drifted canonical reference is not authenticated. No universal aliasing, volatile or allocator rule follows.",
+      "note": "docs/matching-c/c02-scenario-reuse.md#branch-local-window-store",
+      "references": [
+        "docs/dossiers/func_0023A5EC-9683d35159.md",
+        "docs/matching-c/c02-scenario-reuse.md"
+      ],
+      "observations": [
+        {
+          "symbol": "func_001A9290",
+          "path": "docs/dossiers/func_001A9290-2f83c96715.observation.json"
+        },
+        {
+          "symbol": "func_001A9290",
+          "path": "docs/dossiers/func_001A9290-d73671b576.observation.json"
+        },
+        {
+          "symbol": "func_001A9290",
+          "path": "docs/dossiers/func_001A9290-57e02a5589.observation.json"
+        }
+      ]
     },
     {
       "id": "scenario-word-result-and-byte-index",
@@ -586,13 +602,14 @@
         "load-store-width-or-signedness",
         "register-allocation"
       ],
-      "applicability": "E08 DC20 replaces a void formal/local alias with the evidenced typed formal. E09 CA7C separates mutable input reloads from byte-parameter allocation; CAF0 preserves its word interface with a byte local and corrects the callback provider. Read each control and reconcile actual callers independently. Masked bytes do not validate a prototype or address-spelled alias. Earlier interface examples remain linked.",
+      "applicability": "C02 A9290 retains a wide range-check value and separate masked equality local; AD0E4 retains rectangle command/lower bits before upper-coordinate combination. Rectangle controls also change unsigned shifts/declarations, so masking alone is not isolated. Earlier E08 typed-formal and E09 word-interface/byte-local examples remain linked. Preserve actual caller widths and complete source context; masked agreement does not prove an interface.",
       "note": "docs/matching-c/e08-e09-p07-reuse.md#interfaces-and-local-views",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
         "docs/dossiers/func_0024DC20-fd240db31b.md",
         "docs/dossiers/func_0025CA7C-5c97440371.md",
-        "docs/dossiers/func_0025CAF0-b38c965ab1.md"
+        "docs/dossiers/func_0025CAF0-b38c965ab1.md",
+        "docs/matching-c/c02-scenario-reuse.md"
       ],
       "observations": [
         {
@@ -666,7 +683,7 @@
         "opcode-or-expression",
         "scheduling-or-block-order"
       ],
-      "applicability": "E08 BCE8/BF04 and E09 C590 change bounded selectors/views with different guard/mask effects. P06 78560 uses only constructed 0/4/8/12 flags; 75EE0 needs a pinned-compiler label-address inactive exit after structured controls differ. Keep word guards/relocations and controls. Mechanical PURE_C does not prove original spelling or universal narrowing/pass timing.",
+      "applicability": "C02 A9290 conditional clamps restore two gain copies and the 9372-byte extent in an intermediate; other scheduling/allocation differences remain. Earlier E08/E09 selector/mask controls and P06 constructed flags/inactive-exit controls remain linked. Compare complete producers, widths and branch behavior; mechanical PURE_C or matching output does not establish original syntax or a universal expression rule.",
       "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-conditional-expression-shape",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
@@ -674,7 +691,7 @@
         "docs/dossiers/func_0024BF04-4af03861dc.md",
         "docs/dossiers/func_0025C590-196f2782fb.md",
         "docs/matching-c/p06-presentation-reuse.md",
-        "docs/dossiers/func_00275EE0-a53e564e26.md"
+        "docs/matching-c/c02-scenario-reuse.md"
       ],
       "observations": [
         {

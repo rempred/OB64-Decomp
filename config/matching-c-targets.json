@@ -6423,6 +6423,18 @@
     {
       "symbol": "func_002693C4",
       "source": "src/overlays/descriptor_12/func_002693C4.c"
+    },
+    {
+      "symbol": "func_001A9290",
+      "source": "src/lib/func_001A9290.c"
+    },
+    {
+      "symbol": "func_001AD0E4",
+      "source": "src/lib/func_001AD0E4.c"
+    },
+    {
+      "symbol": "func_001AD8CC",
+      "source": "src/lib/func_001AD8CC.c"
     }
   ]
 }

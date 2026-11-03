@@ -4,11 +4,12 @@ const childProcess = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const { ROOT } = require('../phase7_conventional');
+const execution=require('../execution_paths');
 const { resolveLocalTools } = require('../local_tools');
 
 const DATABASE = path.join(ROOT, 'build', 'matching', 'workbench.sqlite');
-const SCHEMA = path.join(ROOT, 'tools', 'matching_workbench', 'schema.sql');
-const BRIDGE = path.join(ROOT, 'tools', 'matching_workbench', 'store.py');
+const SCHEMA = execution.codePath('tools/matching_workbench/schema.sql');
+const BRIDGE = execution.codePath('tools/matching_workbench/store.py');
 
 function pythonPath(options = {}) {
   if (options.python) return path.isAbsolute(options.python) ? path.resolve(options.python) : options.python;
@@ -19,6 +20,7 @@ function pythonPath(options = {}) {
 function requestStore(request, options = {}) {
   const database = path.resolve(options.database || DATABASE);
   const python = pythonPath(options);
+  execution.bundle()?.verify(BRIDGE);execution.bundle()?.verify(SCHEMA);
   const result = childProcess.spawnSync(python, [...(options.isolatedPython ? ['-I','-S'] : []), BRIDGE, '--database', database, '--schema', SCHEMA, ...(options.readOnly ? ['--read-only'] : [])], {
     cwd: ROOT,
     ...(options.isolatedPython ? { env: Object.fromEntries(Object.entries(process.env).filter(([name]) => !/^PYTHON/i.test(name))) } : {}),
@@ -27,6 +29,7 @@ function requestStore(request, options = {}) {
     windowsHide: true,
     maxBuffer: 128 * 1024 * 1024,
   });
+  execution.bundle()?.verify(BRIDGE);execution.bundle()?.verify(SCHEMA);
   let payload = null;
   try {
     payload = JSON.parse(String(result.stdout || '').trim());

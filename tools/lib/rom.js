@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..', '..');
+const { ROOT } = require('./execution_paths');
 const PARENT_ROOT = process.env.OB64_PARENT_ROOT
   ? path.resolve(process.env.OB64_PARENT_ROOT)
   : path.resolve(ROOT, '..');

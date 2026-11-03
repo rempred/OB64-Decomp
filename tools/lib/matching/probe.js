@@ -1,5 +1,6 @@
 'use strict';
 const diagnosticContext = require('./diagnostic_context');
+const execution=require('../execution_paths');
 
 const childProcess = require('child_process');
 const fs = require('fs');
@@ -20,9 +21,16 @@ const PASSES = Object.freeze([
   ['schedule2', '-dR', '.sched2'], ['late-jump', '-dJ', '.jump2'], ['delay-slots', '-dd', '.dbr'],
 ]);
 const SCHEMA = 3;
-const IMPLEMENTATIONS = [__filename, path.join(ROOT, 'tools/match.js'),
-  path.join(ROOT, 'tools/lib/source_policy.js'), path.join(ROOT, 'tools/lib/matching/target_model.js'),
-  path.join(ROOT, 'tools/lib/matching/scratch_assembly.js'), path.join(ROOT, 'tools/lib/matching/input_set.js'), path.join(ROOT, 'tools/lib/matching/diagnostic_context.js')];
+const IMPLEMENTATIONS = [__filename, require.resolve('./target_selection'), path.join(execution.CODE_ROOT, 'tools/match.js'),
+  path.join(execution.CODE_ROOT, 'tools/lib/source_policy.js'), path.join(execution.CODE_ROOT, 'tools/lib/matching/target_model.js'),
+  path.join(execution.CODE_ROOT, 'tools/lib/matching/scratch_assembly.js'), path.join(execution.CODE_ROOT, 'tools/lib/matching/input_set.js'), path.join(execution.CODE_ROOT, 'tools/lib/matching/diagnostic_context.js')];
+// Retained schema-3 reports use these original path contracts, not current prefixes.
+const HISTORICAL_IMPLEMENTATION_PATHS = Object.freeze([
+  'tools/lib/matching/probe.js', 'tools/match.js', 'tools/lib/source_policy.js',
+  'tools/lib/matching/target_model.js', 'tools/lib/matching/scratch_assembly.js',
+  'tools/lib/matching/input_set.js', 'tools/lib/matching/diagnostic_context.js',
+]);
+const CURRENT_IMPLEMENTATION_PATHS = Object.freeze(IMPLEMENTATIONS.map(file => execution.logicalCode(file)));
 const portable = file => path.relative(ROOT, file).replace(/\\/g, '/');
 const same = (a, b) => canonicalJson(a) === canonicalJson(b);
 
@@ -154,7 +162,8 @@ function validSourcePolicy(value) {
     error: null, preprocessorIdentity: value.preprocessor }));
 }
 function validIdentity(id) {
-  if (!keys(id, ['schemaVersion', 'targetId', 'symbol', 'sourceOrigin', 'sourcePolicy', 'runtimePreprocessor', 'compiler', 'flags', 'passes', 'implementation'], ['inputSetId','freshAttempt'])
+  if (!keys(id, ['schemaVersion', 'targetId', 'symbol', 'sourceOrigin', 'sourcePolicy', 'runtimePreprocessor', 'compiler', 'flags', 'passes', 'implementation'], ['inputSetId','freshAttempt','bundleId'])
+    || id.bundleId !== undefined && !isHash(id.bundleId)
     || id.inputSetId !== undefined && !isHash(id.inputSetId)
     || id.freshAttempt !== undefined && !isHash(id.freshAttempt)
     || id.schemaVersion !== SCHEMA || !isHash(id.targetId) || !isText(id.symbol) || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(id.symbol)
@@ -162,12 +171,13 @@ function validIdentity(id) {
     || !strings(id.passes, true) || !validSourcePolicy(id.sourcePolicy) || !validPreprocessor(id.runtimePreprocessor)
     || !keys(id.compiler, ['path', 'sha256', 'acceptanceCompiler']) || !absolutePath(id.compiler.path)
     || !isHash(id.compiler.sha256) || typeof id.compiler.acceptanceCompiler !== 'boolean'
-    // Retained probes contain compiler dumps, never assembler output. Preserve
-    // their original four-file identities for historical comparisons; new runs
-    // bind the scratch environment guard as well and receive a different ID.
-    || !Array.isArray(id.implementation) || ![4, 5, 6, IMPLEMENTATIONS.length].includes(id.implementation.length)) return false;
-  if (id.implementation.some((record, i) => !keys(record, ['path', 'sha256'])
-    || record.path !== portable(IMPLEMENTATIONS[i]) || !isHash(record.sha256))) return false;
+    || !Array.isArray(id.implementation)) return false;
+  if (id.implementation.some(record => !keys(record, ['path', 'sha256']) || !isHash(record.sha256))) return false;
+  const implementationPaths = id.implementation.map(record => record.path);
+  const historical = [4, 5, 6, 7].includes(implementationPaths.length)
+    && same(implementationPaths, HISTORICAL_IMPLEMENTATION_PATHS.slice(0, implementationPaths.length));
+  // Format admission does not establish freshness; runProbe authenticates its exact live identity.
+  if (!historical && !same(implementationPaths, CURRENT_IMPLEMENTATION_PATHS)) return false;
   const expectedPreprocessor = id.sourceOrigin !== null && id.sourceOrigin !== id.sourcePolicy.source
     ? { ...id.runtimePreprocessor, includeDirectories: [id.sourceOrigin, ...id.runtimePreprocessor.includeDirectories] }
     : id.runtimePreprocessor;
@@ -269,14 +279,15 @@ function runProbe(workbench, target, sourceText, options = {}) {
   const input = compilationInputBytes(classification);
   const identity = { ...(options.deferCompletion ? { freshAttempt: digest(require('crypto').randomUUID()) } : {}), schemaVersion: SCHEMA, targetId: target.targetId, symbol: target.symbol,
     ...(options.inputs?.id ? { inputSetId: options.inputs.id } : {}),
+    ...(execution.bundle()?{bundleId:execution.bundle().id}:{}),
     sourceOrigin, sourcePolicy: JSON.parse(JSON.stringify(classification)), runtimePreprocessor, compiler: compilerIdentity,
-    flags, passes: passes.map(p => p.name), implementation: IMPLEMENTATIONS.map(file => ({ path: portable(file), sha256: sha256File(file) })) };
+    flags, passes: passes.map(p => p.name), implementation: IMPLEMENTATIONS.map(file => ({ path: execution.logicalCode(file), sha256: sha256File(file) })) };
   const authenticateLive = () => {
     if (options.privateWorkspace === true) options.assertPrivateInputs?.();
     authenticateSnapshot();
     verifyClassificationInputs(classification);
     if (sha256File(compiler) !== compilerIdentity.sha256 || !same(preprocessorIdentity(resolvePreprocessor(undefined, options.inputs)), runtimePreprocessor)
-        || identity.implementation.some(record => sha256File(path.join(ROOT, record.path)) !== record.sha256)) throw new Error('probe tool/input closure changed during execution');
+        || identity.implementation.some(record => sha256File(execution.codePath(record.path)) !== record.sha256)) throw new Error('probe tool/input closure changed during execution');
   };
   const probeId = digest(identity), directory = path.join(base, probeId), reportFile = path.join(directory, 'probe-report.json');
   if (fs.existsSync(reportFile)) {

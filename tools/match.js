@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+require('./lib/matching/tool_bundle_runtime').initialize(__filename,process.argv.slice(2));
 const { assertScratchCapability } = require('./lib/matching/target_model');
 
 const fs = require('fs');
@@ -44,9 +45,9 @@ const { validateOptions: validateKnowledgeOptions } = require('./lib/matching/kn
 const VALUE_OPTIONS = new Set([
   'limit', 'source', 'candidate', 'variant', 'm2c-root', 'set', 'max-size',
   'lane', 'note', 'research-compiler', 'passes', 'jobs', 'case-map', 'source-origin',
-  'scratch-root', 'inputs', 'native-concurrency', 'actual-dispatch', 'actual-body', 'output', 'actual-tail', 'observation', 'effect', 'cross-limit', 'symptom',
+  'tool-bundle', 'reviewed-patch-sha256', 'scratch-root', 'inputs', 'native-concurrency', 'actual-dispatch', 'actual-body', 'output', 'actual-tail', 'observation', 'effect', 'cross-limit', 'symptom',
 ]);
-const PRIVATE_COMMANDS = new Set(['intake', 'watch', 'classify', 'compare', 'inspect', 'history', 'best', 'observations', 'import', 'preserve', 'probe']);
+const PRIVATE_COMMANDS = new Set(['preflight','intake', 'watch', 'classify', 'compare', 'inspect', 'history', 'best', 'observations', 'import', 'preserve', 'probe']);
 const REPEAT_OPTIONS = new Set(['variant', 'actual-tail']);
 let comparisonQueryProvenanceCache = null;
 
@@ -66,7 +67,9 @@ function usage() {
   console.log(`Usage: node tools/match.js <command> [arguments]
 
 Core:
-  capture-inputs --output <new ignored build directory>
+  publish-tools --reviewed-patch-sha256 <SHA256>
+  capture-inputs --output <new ignored build directory> [--tool-bundle <version>]
+  preflight <symbols...> --inputs <manifest> --scratch-root <root> --output <new report>
   refresh-inputs --from <manifest.json> --from-sha256 <SHA256>
                  --replace <logical-tool-path=SHA256>... --output <new sibling.json>
   doctor [--m2c-root <path>]
@@ -181,6 +184,7 @@ function actualTailMap(values) {
 }
 
 function print(value, options = {}) {
+  require('./lib/execution_paths').bundle()?.close();
   if (options.json) {
     console.log(JSON.stringify(value, null, 2));
     return;
@@ -691,13 +695,14 @@ async function main(argv = process.argv.slice(2)) {
     usage(); return;
   }
   const command = argv[0];
+  if(command==='publish-tools'){const p=parseArgs(argv.slice(1));if(p.positional.length||Object.keys(p.options).some(k=>!['reviewed-patch-sha256','source','json'].includes(k)))throw Error('publish-tools options');print(require('./lib/matching/tool_bundle').publish(p.options['reviewed-patch-sha256'],p.options.source?path.resolve(p.options.source):undefined),p.options);return;}
   if (command === 'refresh-inputs') return refreshInputs(argv.slice(1));
   const parsed = parseArgs(argv.slice(1));
   validatePrivateOptions(command, parsed.options);
-  if (parsed.options.inputs && (parsed.positional.length !== 1 || command === 'probe' && parsed.positional[0] === 'compare')) throw new Error('--inputs requires one target; probe comparison is unsupported');
+  if (parsed.options.inputs && command!=='preflight' && (parsed.positional.length !== 1 || command === 'probe' && parsed.positional[0] === 'compare')) throw new Error('--inputs requires one target; probe comparison is unsupported');
   if (command === 'capture-inputs') {
-    if (parsed.positional.length || !parsed.options.output || Object.keys(parsed.options).some(key => !['output', 'json'].includes(key))) throw new Error('capture-inputs requires only --output <new build directory>');
-    print(require('./lib/matching/input_set').captureInputSet(parsed.options.output), parsed.options);
+    if (parsed.positional.length || !parsed.options.output || Object.keys(parsed.options).some(key => !['output', 'json','tool-bundle'].includes(key))) throw new Error('capture-inputs requires only --output <new build directory>');
+    print(require('./lib/matching/input_set').captureInputSet(parsed.options.output,{toolBundle:parsed.options['tool-bundle']}), parsed.options);
     return;
   }
   if (command === 'watch' || (command === 'probe' && parsed.positional[0] !== 'compare')
@@ -718,6 +723,7 @@ async function main(argv = process.argv.slice(2)) {
   }
   const { resolvePrivateWorkspace, withPrivateWorkspace, assertPrivateWorkspace, assertPrivateControls } = require('./lib/matching/private_workspace');
   const workspace = resolvePrivateWorkspace({ root: ROOT, scratchRoot: parsed.options['scratch-root'], nativeConcurrency: parsed.options['native-concurrency'] || 'parallel', diagnostic: ['watch','probe'].includes(command) && Boolean(parsed.options.source) && !parsed.options['research-compiler'], ...(['intake', 'watch', 'probe'].includes(command) ? { command } : {}) });
+  if(command==='preflight'){const result=await require('./lib/matching/preflight').run(parsed.positional,parsed.options,workspace);if(result)print(result,parsed.options);return;}
   if (workspace.admission==='candidate-diagnostic-v1') return executePrivateDiagnostic(command, parsed, workspace);
   if (command === 'history' || command === 'best') return executePrivateDiagnosticQuery(command, parsed, workspace);
   const inputs = parsed.options.inputs ? require('./lib/matching/input_set')[command === 'intake' ? 'openResearchInputSet' : 'openInputSet'](parsed.options.inputs, { privateRoot: workspace.matchingRoot }) : command === 'intake' ? require('./lib/matching/input_set').openLiveResearchInputs({privateRoot: workspace.matchingRoot}) : undefined;
@@ -754,9 +760,7 @@ async function executePrivateDiagnosticQuery(command, parsed, workspace) {
   diagnostic.authenticateCode(inputs);
   let output;
   await scope.withPrivateWorkspace(workspace, {python, isolatedPython: true, native: false}, async () => {
-    const context = diagnostic.load({inputs, symbol: positional[0]});
-    const workbench = context.workbench, target = resolveTarget(workbench, positional[0]);
-    const session = prepareCompilerSession({context, inputs, matchingRoot: workspace.matchingRoot, privateTarget: target});
+    const {context,workbench,target,session}=require('./lib/matching/private_target').prepare(inputs,positional[0],workspace.matchingRoot);
     const rows = requestStore({action: 'query', name: command, args: {
       modelId: workbench.modelId, symbol: target.symbol, symbols: historicalSymbols(target),
       limit: numeric(options.limit, '--limit', 20), includeDetails: true,
@@ -791,9 +795,8 @@ async function executePrivateDiagnostic(command, parsed, workspace) {
   const started=performance.now(),timings={openingAndRuntimeMs:performance.now()-openingStarted};
   const measure=(name,fn)=>{const start=performance.now();try{return fn();}finally{timings[name]=(timings[name]||0)+performance.now()-start;}};
   await scope.withPrivateWorkspace(workspace,{python,isolatedPython:true,native:true,inputs},async()=>{
-    const context=measure('targetPreparationMs',()=>diagnostic.load({inputs,symbol:positional[0]}));
-    const workbench=context.workbench, target=resolveTarget(workbench,positional[0]);
-    assertScratchCapability(workbench,target);
+    const preparedTarget=measure('targetPreparationMs',()=>require('./lib/matching/private_target').prepare(inputs,positional[0],workspace.matchingRoot));
+    const {context,workbench,target}=preparedTarget;
     const source=scope.assertPrivatePath(workspace,path.resolve(options.source));
     const closingChecks=[];
     const storeRequest=(request,storeOptions)=>{
@@ -811,7 +814,7 @@ async function executePrivateDiagnostic(command, parsed, workspace) {
     const sourceText=fs.readFileSync(source,'utf8');
     let pending;
     if(command==='watch') {
-      const session=measure('compilerSessionMs',()=>prepareCompilerSession(routing));
+      const session=preparedTarget.session;
       session.measure=measure;
       pending=measure('candidateAndComparisonMs',()=>compileCandidate(workbench,target,sourceText,{...routing,session,origin:'manual-watch',metadata:{sourcePath:portableSourcePath(source)}}));
     } else pending=measure('probeMs',()=>runProbe(workbench,target,sourceText,{...routing,passes:options.passes ? options.passes.split(',').map(s=>s.trim()).filter(Boolean) : null}));
@@ -853,6 +856,10 @@ async function executePrivateDiagnostic(command, parsed, workspace) {
 }
 
 function validatePrivateOptions(command, options) {
+  if(command==='preflight'){
+    if(!options.inputs||!options['scratch-root']||!options.output||Object.keys(options).some(k=>!['inputs','scratch-root','output','json'].includes(k)))throw Error('preflight requires only inputs, scratch-root, output and optional json');
+    return;
+  }
   if (options.apply && command !== 'tail-admit') throw new Error('--apply requires tail-admit');
   if (options.inputs) {
     if (!options['scratch-root'] || !['intake', 'watch', 'probe', 'history', 'best'].includes(command)

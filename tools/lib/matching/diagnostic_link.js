@@ -1,5 +1,6 @@
 'use strict';
 const diagnosticContext = require('./diagnostic_context');
+const execution=require('../execution_paths');
 
 const crypto = require('crypto');
 const fs = require('fs');
@@ -35,6 +36,7 @@ const COMPARISON_ALGORITHM_FILES = Object.freeze([
   path.join(__dirname, 'mips_analysis.js'),
   path.join(__dirname, 'compiler.js'),
   path.join(__dirname, 'target_model.js'),
+  path.join(__dirname, 'target_selection.js'),
   path.join(__dirname, 'input_set.js'),
   path.join(__dirname, '..', 'logical_functions.js'),
   path.join(__dirname, '..', 'current_workflow.js'),
@@ -45,7 +47,7 @@ const COMPARISON_ALGORITHM_FILES = Object.freeze([
   path.join(__dirname, '..', 'prepared_link_view.js'),
   path.join(__dirname, '..', 'verification_profile.js'),
   path.join(__dirname, '..', 'diff_profile.js'),
-  path.join(ROOT, 'tools', 'matching_workbench', 'store.py'),
+  execution.codePath('tools/matching_workbench/store.py'),
 ]);
 let algorithmIdentity = null;
 
@@ -57,8 +59,9 @@ function comparisonAlgorithmManifest() {
   return {
     schemaVersion: 1,
     comparisonContract: WORKBENCH_COMPARISON_CONTRACT,
+    ...(execution.bundle()?{bundleId:execution.bundle().id}:{}),
     files: COMPARISON_ALGORITHM_FILES.map((file) => ({
-      path: path.relative(ROOT, file).replace(/\\/g, '/'),
+      path: execution.logicalCode(file),
       sha256: sha256File(file),
     })),
   };

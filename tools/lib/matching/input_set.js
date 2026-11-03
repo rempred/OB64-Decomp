@@ -5,7 +5,8 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const ROOT = path.resolve(__dirname, '../../..');
+const execution = require('../execution_paths');
+const { ROOT } = execution;
 const contexts = new WeakMap();
 const RESEARCH_VALUE = Symbol("research-only-value");
 const researchContexts = new WeakSet();
@@ -98,14 +99,14 @@ function authenticateResearchRuntime(inputs) {
   if (JSON.stringify(conventional.readJson(conventional.CONFIG_PATH, inputs).rom) !== JSON.stringify(conventional.readJson(conventional.CONFIG_PATH).rom)) fail("research canonical ROM contract differs from trusted shared contract");
   // Installed shared code is execution authority. A selected manifest may bind
   // that code, but may not redirect it to copied or alternative implementation.
-  const library = path.join(ROOT, 'tools/lib');
+  const library = execution.codePath('tools/lib');
   inputs.directoryClosure(library);
   const visit = directory => { for (const name of fs.readdirSync(directory)) {
     const file = path.join(directory,name);
     if (fs.lstatSync(file).isDirectory()) visit(file); else inputs.sharedImplementation(file);
   } };
   visit(library);
-  for (const file of ['tools/match.js', 'tools/matching_workbench/private_guard.py', 'tools/matching_workbench/store.py', 'tools/matching_workbench/schema.sql']) inputs.sharedImplementation(path.join(ROOT,file));
+  for (const file of ['tools/match.js', 'tools/matching_workbench/private_guard.py', 'tools/matching_workbench/store.py', 'tools/matching_workbench/schema.sql']) inputs.sharedImplementation(execution.codePath(file));
   return python;
 }
 
@@ -144,12 +145,19 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
   const manifestBytes = live ? null : fs.readFileSync(manifestPath);
   let manifest;
   try { manifest = live ? { schemaVersion: 1, kind: "ob64-live-research", repository: root, accepted: { fingerprint: null }, runtime: require("../local_tools").resolveLocalTools({readOnly:true}), files: [], directories: [] } : JSON.parse(manifestBytes); } catch (_) { fail("malformed manifest or live runtime configuration"); }
-  if (!live && (!keys(manifest,['schemaVersion','kind','repository','accepted','runtime','files','directories','unavailableResearchReferences'])
-      || manifest.schemaVersion !== 1 || manifest.kind !== 'ob64-private-inputs'
+  if (!live && (!keys(manifest,['schemaVersion','kind','repository','accepted','runtime','files','directories','unavailableResearchReferences','bundle'])
+      || ![1,2].includes(manifest.schemaVersion) || manifest.schemaVersion===1 && manifest.bundle!==undefined || manifest.kind !== 'ob64-private-inputs'
       || manifest.repository !== root || !Array.isArray(manifest.files) || !Array.isArray(manifest.directories)
       || !manifest.accepted || !/^[A-F0-9]{64}$/.test(manifest.accepted.fingerprint || ''))) fail('manifest schema/repository identity');
+  let selectedBundle=null;
+  if (!live && manifest.schemaVersion===2) {
+    if (!execution.bundled) fail('v2 selected inputs require bundled execution');
+    selectedBundle=require('./tool_bundle').validateDataOnly(manifest,manifest.bundle.version);
+    if(selectedBundle.id!==execution.bundle().id)fail('selected tool version differs from executing bundle');
+  } else if(execution.bundled) fail('bundle execution requires explicit v2 inputs');
+  const bundledEntries=selectedBundle?require('./tool_bundle').entries(selectedBundle):{files:[],directories:[]};
   const files = new Map(), directories = new Map(), physical = new Map();
-  for (const record of manifest.files) {
+  for (const record of [...manifest.files,...bundledEntries.files]) {
     if (!keys(record,['logical','storage','path','bytes','sha256']) || !['copy', 'reference'].includes(record.storage) || !Number.isSafeInteger(record.bytes) || record.bytes < 0
         || !/^[A-F0-9]{64}$/.test(record.sha256 || '')) fail('malformed file identity');
     const logical = record.logical ? path.resolve(root, logicalPath(record.logical)) : null;
@@ -157,12 +165,12 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
     if (!logical && (record.storage !== 'reference' || !path.isAbsolute(record.path || ''))) fail('invalid external reference');
     const original = logical || path.resolve(record.path);
     const stored = record.storage === 'copy' ? path.join(directory, 'data', logicalPath(record.logical)) : path.resolve(record.path || logical);
-    if (record.storage === 'reference' && logical && key(stored) !== key(logical)) fail('reference logical/physical mismatch');
+    if (record.storage === 'reference' && logical && key(stored) !== key(logical) && !bundledEntries.files.includes(record)) fail('reference logical/physical mismatch');
     if (files.has(key(original)) || physical.has(key(stored))) fail('duplicate file or physical alias');
     const entry = { ...record, original, stored };
     files.set(key(original), entry); physical.set(key(stored), entry);
   }
-  for (const record of manifest.directories) {
+  for (const record of [...manifest.directories,...bundledEntries.directories]) {
     if (!keys(record,['logical','storage','path','members'])) fail('malformed directory entry');
     const logical = record.logical && logicalPath(record.logical);
     if (record.storage === 'copy' && Object.hasOwn(record,'path') || record.storage === 'reference' && !path.isAbsolute(record.path || '')) fail('directory storage binding malformed');
@@ -171,7 +179,7 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
         || new Set(record.members.map(name => name.toLowerCase())).size !== record.members.length) fail('malformed directory membership');
     const original = logical ? path.resolve(root, logical) : path.resolve(record.path);
     const stored = record.storage === 'copy' ? path.join(directory, 'data', logical) : path.resolve(record.path || original);
-    if (record.storage === 'reference' && key(stored) !== key(original)) fail('directory reference alias');
+    if (record.storage === 'reference' && key(stored) !== key(original) && !bundledEntries.directories.includes(record)) fail('directory reference alias');
     if (directories.has(key(original)) || files.has(key(original)) || physical.has(key(stored))) fail('duplicate directory/file identity');
     directories.set(key(original), { ...record, original, stored });
   }
@@ -278,6 +286,11 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
       consumedFiles.add(entry);return bytes;
     },
     sharedImplementation(file) {
+      if(selectedBundle) {
+        const absolute=path.resolve(root,file);
+        const logical=absolute.startsWith(execution.CODE_ROOT+path.sep)?execution.logicalCode(absolute):path.relative(ROOT,absolute).replace(/\\/g,'/');
+        return execution.bundle().verify(execution.codePath(logical));
+      }
       const absolute = path.resolve(root,file), entry = files.get(key(absolute)) || (live ? liveFile(absolute) : null);
       if (!entry || entry.storage !== "reference" || key(entry.stored) !== key(absolute)) fail("required shared implementation is not enrolled: " + absolute);
       return inputs.resolve(absolute);
@@ -319,6 +332,7 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
       });
     },
     async closeResearch() {
+      execution.bundle()?.close();
       if (!research) fail('research close requires research input context');
       if (diagnostic && JSON.stringify(Object.entries(process.env).sort(([a],[b]) => a.localeCompare(b))) !== invocationEnvironment) fail("invocation environment drift");
       counters.closingReads += consumedFiles.size;
@@ -354,7 +368,7 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
       if (!entry) fail(`unenrolled declared input ${file}`);
       return Object.freeze({ bytes: entry.bytes, sha256: entry.sha256, status: "declared-not-read" });
     },
-    provenance() { return diagnostic ? { scope: "candidate-consumed-inputs-v1", consumedInputIdentity: digest(Buffer.from(JSON.stringify([...consumedFiles].map(entry=>({path:entry.logical||entry.stored,bytes:entry.bytes,sha256:entry.sha256})).sort((a,b)=>a.path.localeCompare(b.path))))), acceptedFingerprintRole: "historical-selection", fullSelectedClosureCertified: false, currentAcceptanceCertified: false, consumedFiles: consumedFiles.size, consumedDirectories: consumedDirectories.size, counters: { ...counters } } : research ? { scope: live ? "live-research-consumed-inputs-v1" : "research-consumed-inputs-v1", acceptedFingerprintRole: live ? "not-selected" : "historical-selection", fullSelectedClosureCertified: false, currentAcceptanceCertified: false, consumedFiles: consumedFiles.size, consumedDirectories: consumedDirectories.size + privateDirectories.size } : { scope: "full-selected-inputs" }; },
+    provenance() { return diagnostic ? { scope: "candidate-consumed-inputs-v1", bundleId:execution.bundle()?.id||null, consumedInputIdentity: digest(Buffer.from(JSON.stringify([...consumedFiles].map(entry=>({path:entry.logical||entry.stored,bytes:entry.bytes,sha256:entry.sha256})).sort((a,b)=>a.path.localeCompare(b.path))))), acceptedFingerprintRole: "historical-selection", fullSelectedClosureCertified: false, currentAcceptanceCertified: false, consumedFiles: consumedFiles.size, consumedDirectories: consumedDirectories.size, counters: { ...counters } } : research ? { scope: live ? "live-research-consumed-inputs-v1" : "research-consumed-inputs-v1", acceptedFingerprintRole: live ? "not-selected" : "historical-selection", fullSelectedClosureCertified: false, currentAcceptanceCertified: false, consumedFiles: consumedFiles.size, consumedDirectories: consumedDirectories.size + privateDirectories.size } : { scope: "full-selected-inputs" }; },
     research(file) {
       if (inputs.has(file)) return inputs.resolve(file);
       if (isPrivate(file)) {
@@ -412,6 +426,7 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
       if (rom.bytes !== phase8.model.config.rom.bytes || rom.sha256 !== phase8.model.config.rom.sha256) fail('accepted full-ROM identity drift');
     },
     assertUnchanged() {
+      execution.bundle()?.close();
       if (!live && !fs.readFileSync(regular(manifestPath)).equals(manifestBytes)) fail('manifest changed');
       for (const entry of research ? consumedDirectories : directories.values()) checkDirectory(entry);
       const ancestors = research ? new Set() : undefined;
@@ -428,7 +443,8 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
 
 // Production-owner operation. This only copies data and authenticates a CURRENT
 // already accepted by the installed implementation; it never builds or repairs it.
-function captureInputSet(output) {
+function captureInputSet(output, options = {}) {
+  execution.assertCanonical();
   const destination = path.resolve(output);
   if (!destination.startsWith(path.join(ROOT, 'build') + path.sep)) fail('capture output must be under ignored build/');
   regular(path.dirname(destination), true);
@@ -537,13 +553,14 @@ function captureInputSet(output) {
     if (!actual || actual.bytes!==expected.bytes || actual.sha256!==expected.sha256) fail('captured source/preprocessing dependency differs from accepted preparation');
   }
   seal.assertUnchanged();
-  const manifest = { schemaVersion: 1, kind: 'ob64-private-inputs', repository: ROOT, runtime: prepared.localTools,
+  let manifest = { schemaVersion: 1, kind: 'ob64-private-inputs', repository: ROOT, runtime: prepared.localTools,
     accepted: { fingerprint: state.fingerprint, baselineFingerprint: state.baselineFingerprint, buildReport: state.buildReport,
       verificationSha256: state.verificationSha256, freshCompilationSha256: state.freshCompilationSha256, output: state.output },
     files: [...files.values()], directories: [...directories.values()], unavailableResearchReferences: [...new Set(unavailableResearchReferences)].sort() };
+  if(options.toolBundle) manifest=require('./tool_bundle').bindManifest(manifest,options.toolBundle,destination);
   const manifestPath = path.join(destination, 'manifest.json');
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n', { flag: 'wx' });
-  const inputs = openInputSet(manifestPath);
+  const inputs = options.toolBundle ? (require('./tool_bundle').validateDataOnly(manifest,options.toolBundle),{id:digest(Buffer.from(JSON.stringify({manifestSha256:digest(fs.readFileSync(manifestPath)),path:manifestPath})))}) : openInputSet(manifestPath);
   return { manifest: manifestPath, id: inputs.id, acceptedFingerprint: state.fingerprint,
     copiedBytes: manifest.files.filter(file => file.storage === 'copy').reduce((n, file) => n + file.bytes, 0),
     referencedBytes: manifest.files.filter(file => file.storage === 'reference').reduce((n, file) => n + file.bytes, 0) };

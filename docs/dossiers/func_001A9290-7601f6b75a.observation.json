@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7601F6B75A0DFB9FD1953F3CBC377D9D1FFED8A1E8CE70E1C05D66186FE81C6C",
+  "observationId": "10C1D2606B5E065C85834289BD72688DD349B4585A7599FE4A75CA86ECE1E91F",
+  "symbol": "func_001A9290",
+  "authored": {
+    "context": "Complete C02 scenario state dispatcher; original private source context is preserved without expression changes. Comparison sources and native reports remain in the integrator retained-research directory.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3AE93DBCF9815D629A317AA482FD8D88A6F66E0CEA76DDE93C530F4B753E523A",
+      "sourceSha256": "29973E8A546669A0665E8AB08676AE5ED17A4E3D10076CB9E1556DF8337A1D81"
+    },
+    "label": "c02-conditional-clamp-before",
+    "observedEffect": "Two clamp expressions change together. The worker observed both gain copies and the 9372-byte extent return; later scheduling/allocation work remained.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/integration/consumables/c02-closeout/retained-research/conditional-clamp/dispatcher-029.json",
+        "sha256": "1A91425504DA57FF4914AB62D21A7512957F6E3FAE96730744FF35045047C816"
+      },
+      {
+        "path": "build/integration/consumables/c02-closeout/retained-research/conditional-clamp/dispatcher-030.json",
+        "sha256": "4061F9A4F6684D361FAD6F7E82717C1916885D194ECAADC818AF3383B3653D2D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This imported source is a historical diagnostic control, not the accepted canonical source. Matching acceptance belongs to the canonical C02 wave and its combined audit; historical report identities are not upgraded.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace assignment inside the if-condition with a conditional expression selecting capped difference or gain."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 33506,
+      "sha256": "3AE93DBCF9815D629A317AA482FD8D88A6F66E0CEA76DDE93C530F4B753E523A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "29973E8A546669A0665E8AB08676AE5ED17A4E3D10076CB9E1556DF8337A1D81"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-03-func_001A9290-7601f6b75a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

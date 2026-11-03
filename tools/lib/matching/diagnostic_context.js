@@ -9,7 +9,11 @@ const inputSet = require('./input_set');
 const p7 = require('../phase7_conventional');
 const text = require('../text_contract');
 const active = require('../active_targets');
+const composition = require('./target_model');
+const wordAssembly = require('../word_asm');
 const { ROOT } = p7;
+const execution=require('../execution_paths');
+const selection=require('./target_selection');
 const contexts = new WeakSet();
 const fail = message => { const error = new Error('candidate diagnostic: ' + message); error.code = 'OB64_SELECTED_INPUT'; throw error; };
 const hash = inputSet.digest;
@@ -209,7 +213,7 @@ function inspectCompleteOwnerSource(owner, source, expectedBytes) {
   if(owner.bytes!==owner.romEndExclusive-owner.romStart || owner.bytes!==part.bytes
       || part.romStartNumber!==owner.romStart || part.romEndNumber!==owner.romEndExclusive
       || !Buffer.isBuffer(expectedBytes) || expectedBytes.length!==owner.bytes) fail('complete owner source metadata extent');
-  const assemble=require('../word_asm').assembleWordAsmText;
+  const assemble=wordAssembly.assembleWordAsmText;
   const lines=source.toString('utf8').split(/\r?\n/);
   const escaped=part.name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
   const pattern=new RegExp('^\\s*'+escaped+'\\s*:');
@@ -253,6 +257,56 @@ function hydrateCompleteOwners(env) {
   const functions = closure.bodies.map((b,i) => ({symbol:i === 0 ? row.part.name : b.symbol,
     binding:i === 0 ? 'GLOBAL':'LOCAL',offset:b.romStart-closure.romStart,bytes:b.romEndExclusive-b.romStart}));
   return {...closure,owners,functions,caller};
+}
+
+
+// Resolve geometry only. No serialized or exported helper result grants authority.
+function continuationSelection(rows,logicalConfig,symbol) {
+  const description=selection.describe(rows,logicalConfig.bodies,symbol,{checkEntryOffset:false});
+  if(['partial','alias','conflict'].includes(description.kind))fail(description.reason);
+  if(description.kind!=='continuation')return null;
+  return {symbol:description.canonicalSymbol,head:rows.find(r=>r.index===description.owners[0].rowIndex),tail:rows.find(r=>r.index===description.owners[1].rowIndex)};
+}
+
+function hydrateContinuation(pair, env) {
+  const {logicalConfig,config,multi,groupConfig,minimal,build,linkage,expect,rom}=env;
+  const rows=[pair.head,pair.tail], start=pair.head.romStart, end=pair.tail.romEndExclusive;
+  const names=new Set([pair.symbol,...rows.map(r=>r.part.name)].map(n=>n.toLowerCase()));
+  const named=r=>typeof r.symbol==='string' && names.has(r.symbol.toLowerCase());
+  const overlaps=r=>r.romStart<end && r.romEndExclusive>start;
+  if (logicalConfig.bodies.some(b=>overlaps(b)||[b.symbol,...b.aliases].some(n=>names.has(n.toLowerCase())))
+      || logicalConfig.padding.some(overlaps) || logicalConfig.unavailableBodies.some(overlaps)
+      || logicalConfig.preservedProductionEnvelopes.some(e=>e.fragments.some(overlaps))) fail('continuation logical coverage conflict');
+  if (minimal.targets.some(named) || build.targetReplacements.some(named)
+      || linkage.targets.some(t=>named(t) && (t.atomicText || t.auxiliaryProjection || t.auxiliarySections?.length
+        || t.retainedLiteralReferences || t.nativeTextTail || t.compilerTextFunctions?.length))) fail('continuation named producer conflict');
+  const owners=rows.map((row,index)=>{
+    const part=row.part,slice=row.slices?.[0],prev=rows[index-1],prior=prev?.slices[0];
+    if (!part || row.inputKind!=='tracked-assembly' || row.ownerKind!=='tracked-assembly-part'
+        || row.primaryClass!=='code' || row.ambiguous!==false || row.slices.length!==1
+        || !slice.executable || !['early-boot-linear','non-descriptor-load-slab','overlay'].includes(slice.placementKind)
+        || typeof slice.sectionName!=='string' || !slice.sectionName || index && slice.sectionName===prior.sectionName
+        || !Number.isSafeInteger(row.index) || !Number.isSafeInteger(row.romStart) || !Number.isSafeInteger(row.romEndExclusive)
+        || row.bytes<=0 || row.bytes%4 || row.romStart%4 || row.romEndExclusive-row.romStart!==row.bytes
+        || part.bytes!==row.bytes || part.romStartNumber!==row.romStart || part.romEndNumber!==row.romEndExclusive
+        || slice.bytes!==row.bytes || slice.romStart!==row.romStart || slice.romEndExclusive!==row.romEndExclusive
+        || !Number.isSafeInteger(slice.vramStart) || !Number.isSafeInteger(slice.vramEndExclusive)
+        || slice.vramStart%4 || slice.vramEndExclusive-slice.vramStart!==row.bytes
+        || index && (row.index!==prev.index+1 || row.romStart!==prev.romEndExclusive || slice.vramStart!==prior.vramEndExclusive
+          || slice.placementKind!==prior.placementKind || slice.overlayDescriptorId!==prior.overlayDescriptorId
+          || slice.loadSlabId!==prior.loadSlabId || slice.overlaySection!==prior.overlaySection)) fail('continuation owner geometry');
+    if (config.retainedPaddingCuts?.some(c=>c.rowIndex===row.index)
+        || multi.targets.some(t=>t.ownerRows.includes(row.index))
+        || groupConfig.groups.some(g=>g.members.some(m=>m.ownerRowIndex===row.index))
+        || build.targetReplacements.some(t=>t.owners.some(o=>o.rowIndex===row.index))) fail('continuation producer membership');
+    const source=expect(part.file,{bytes:part.textBytes,sha256:part.sha256});
+    const entry=inspectCompleteOwnerSource(row,source,rom.subarray(row.romStart,row.romEndExclusive));
+    return {rowIndex:row.index,symbol:part.name,sectionName:slice.sectionName,romStart:row.romStart,romEndExclusive:row.romEndExclusive,
+      vramStart:slice.vramStart,vramEndExclusive:slice.vramEndExclusive,file:part.file,sha256:part.sha256,bytes:row.bytes,
+      entryEvidence:entry.entryEvidence,symbolByteOffset:entry.symbolByteOffset};
+  });
+  return {romStart:start,romEndExclusive:end,owners,functions:[{symbol:pair.symbol,binding:'GLOBAL',offset:0,bytes:end-start}],caller:null,
+    markers:owners.map(o=>o.symbol),continuation:true,bodies:[]};
 }
 
 function load(options) {
@@ -322,17 +376,24 @@ function load(options) {
     if(source.index!==index || owner.index!==index || owner.romStart!==source.romStart || owner.romEndExclusive!==source.romEndExclusive || owner.primaryId!==source.primaryId)fail('layout/semantic owner drift');
     return {...source,inputKind:part?'tracked-assembly':'splat-data',part:part||null,slices:owner.slices.map((slice,sliceIndex)=>({...slice,rowIndex:index,sliceIndex,sliceCount:owner.slices.length,bytes:slice.romEndExclusive-slice.romStart,primaryId:source.primaryId}))};
   });
-  const aliases = logicalConfig.bodies.filter(b=>[b.symbol,...b.aliases].some(s=>s.toLowerCase()===symbol.toLowerCase()));
-  const candidates=rows.filter(r=>r.part?.name.toLowerCase()===symbol.toLowerCase() || aliases.some(b=>b.romStart>=r.romStart&&b.romStart<r.romEndExclusive));
+  const continuation = continuationSelection(rows,logicalConfig,symbol);
+  const continuationComplete = continuation ? hydrateContinuation(continuation,{logicalConfig,config,multi,groupConfig,minimal,build,linkage,expect,rom}) : null;
+  const selectedDescription=selection.describe(rows,logicalConfig.bodies,symbol,{checkEntryOffset:false});
+  const candidates=['owner','continuation'].includes(selectedDescription.kind)?rows.filter(r=>r.index===selectedDescription.primaryRowIndex):[];
   if(candidates.length!==1)fail('target original owner missing/ambiguous');
   const row=candidates[0], part=row.part;
   const sourceBytes=expect(part.file,{bytes:part.textBytes,sha256:part.sha256});
   const sourceText=sourceBytes.toString('utf8');
   const assembled=require('../word_asm').assembleWordAsmText(sourceText).bytes;
   if(assembled.length!==row.bytes || !assembled.equals(rom.subarray(row.romStart,row.romEndExclusive)))fail('complete original owner bytes');
-  const lines=sourceText.split(/\r?\n/), label=lines.findIndex(line=>line.trim()===part.name+':');
-  part.symbolByteOffset=label<0?0:lines.slice(0,label).filter(line=>/^\s*\.word\b/.test(line)).length*4;
-  part.hasOwnerLabel=label>=0;
+  if (continuation) {
+    const entry=inspectCompleteOwnerSource(row,sourceBytes,rom.subarray(row.romStart,row.romEndExclusive));
+    part.symbolByteOffset=entry.symbolByteOffset;part.hasOwnerLabel=entry.hasOwnerLabel;
+  } else {
+    const lines=sourceText.split(/\r?\n/), label=lines.findIndex(line=>line.trim()===part.name+':');
+    part.symbolByteOffset=label<0?0:lines.slice(0,label).filter(line=>/^\s*\.word\b/.test(line)).length*4;
+    part.hasOwnerLabel=label>=0;
+  }
   const overlaps=r=>r.romStart<row.romEndExclusive&&r.romEndExclusive>row.romStart;
   if(multi.targets.some(t=>t.ownerRows.includes(row.index)))fail('complete multi-owner producer required');
   if(groupConfig.groups.some(g=>g.members.some(m=>m.ownerRowIndex===row.index)))fail('complete-group-candidate-required');
@@ -353,8 +414,8 @@ function load(options) {
   const model=inputSet.bind({config,rows,slices:rows.flatMap(r=>r.slices),inputFiles:modelInputs,assemblyManifest:manifest},inputs);
   let bodyRecords=logicalConfig.bodies.filter(overlaps), padding=logicalConfig.padding.filter(overlaps);
   // Existing complete single-owner path does no additional metadata scan or read.
-  const complete = bodyRecords.some(b => b.romEndExclusive > b.romStart && (b.romStart < row.romStart || b.romEndExclusive > row.romEndExclusive))
-    ? hydrateCompleteOwners({rows,logicalConfig,row,symbol,model,expect,rom,config,multi,groupConfig,build,linkage,verified,fresh,output,elf}) : null;
+  const complete = continuationComplete || (bodyRecords.some(b => b.romEndExclusive > b.romStart && (b.romStart < row.romStart || b.romEndExclusive > row.romEndExclusive))
+    ? hydrateCompleteOwners({rows,logicalConfig,row,symbol,model,expect,rom,config,multi,groupConfig,build,linkage,verified,fresh,output,elf}) : null);
   if (complete) { bodyRecords=complete.bodies; padding=[]; }
   const spanStart=complete?.romStart ?? row.romStart, spanEnd=complete?.romEndExclusive ?? row.romEndExclusive;
   if(logicalConfig.unavailableBodies.some(overlaps) || logicalConfig.preservedProductionEnvelopes.some(e=>e.fragments.some(overlaps)))fail('unsupported logical coverage');
@@ -371,6 +432,10 @@ function load(options) {
       vramEndExclusive:complete.owners[complete.owners.length-1].vramEndExclusive,
       expectedBytes:Buffer.from(rom.subarray(spanStart,spanEnd)),expectedBytesSha256:hash(rom.subarray(spanStart,spanEnd)),
       completeOwnerDiagnostic:{owners:complete.owners,expectedFunctions:complete.functions,caller:complete.caller}});
+  }
+  if (continuation) {
+    const fn={symbol:continuation.symbol,romStart:spanStart,romEndExclusive:spanEnd,offset:0,bytes:spanEnd-spanStart,binding:'GLOBAL'};
+    Object.assign(target,{symbol:continuation.symbol,logicalFunctions:[fn],logicalCoverage:[{...fn,kind:'function'}],logicalCoverageComplete:true});
   }
   const producerTargets=[];
   if(activeEntry){
@@ -397,7 +462,9 @@ function load(options) {
   }
   const modelManifest={schemaVersion:1,scope:'candidate-target-diagnostic',acceptedFingerprint:state.fingerprint,targetSymbol:target.symbol,originalOwnerSha256:part.sha256,structuralInputs:build.acceptedInputs.phase7Model,
     logicalConfig:build.acceptedInputs.logicalFunctionConfig,linkageConfig:build.acceptedInputs.linkageConfig,implementation:hash(fs.readFileSync(__filename))};
+  modelManifest.selectionImplementation=hash(fs.readFileSync(require.resolve('./target_selection')));
   if (complete) modelManifest.completeOwnerDiagnostic=target.completeOwnerDiagnostic;
+  if (continuation) modelManifest.continuationImplementation = ['tools/lib/matching/target_model.js','tools/lib/word_asm.js'].map(file=>({path:file,sha256:hash(fs.readFileSync(inputs.sharedImplementation(execution.codePath(file))))}));
   const modelId=hash(Buffer.from(JSON.stringify(modelManifest)));
   target.modelId=modelId;target.targetId=hash(Buffer.from(JSON.stringify({modelId,symbol:target.symbol,romStart:target.romStart,bytes:target.bytes,expectedBytesSha256:target.expectedBytesSha256})));
   const workbench=inputSet.bind({config:json('config/matching-workbench.json'),model,modelId,modelManifest,baserom:rom,targets:[inputSet.bind(target,inputs)],logicalTargets:[],bySymbol:new Map([[target.symbol.toLowerCase(),target]]),activeTargetsBySymbol:new Map(producerTargets.map(t=>[t.symbol.toLowerCase(),t])),diagnosticTargetScope:true},inputs);
@@ -413,7 +480,7 @@ function load(options) {
   contexts.add(context);
   if (complete) {
     const expectation=freezeRecord(JSON.parse(JSON.stringify({functions:complete.functions,
-      markers:complete.owners.slice(1).map(o=>o.symbol),owners:complete.owners,caller:complete.caller})));
+      markers:complete.markers || complete.owners.slice(1).map(o=>o.symbol),owners:complete.owners,caller:complete.caller})));
     completeOwnerContexts.set(context,{target,snapshot:JSON.stringify(target),baseline:context.acceptedFingerprint,expectation});
   }
   return context;
@@ -437,8 +504,8 @@ function runtime(context, inputs) {
 }
 function authenticateCode(inputs) {
   const fixed=['tools/match.js','tools/matching_workbench/private_guard.py','tools/matching_workbench/store.py','tools/matching_workbench/schema.sql'];
-  for(const file of fixed) inputs.sharedImplementation(path.join(ROOT,file));
-  for(const file of Object.keys(require.cache)) if(inside(path.join(ROOT,'tools'),file)) inputs.sharedImplementation(file);
+  for(const file of fixed) inputs.sharedImplementation(execution.codePath(file));
+  for(const file of Object.keys(require.cache)) if(inside(execution.codePath('tools'),file)) inputs.sharedImplementation(file);
 }
 // Evidence inspection is public for fixtures; only load() can bind private eligibility.
-module.exports={inspectCompleteOwnerSource,fixedEntryCallerEvidence,completeOwnerClosure,completeOwnerExpectation,validateHistoricalReports,runtime,authenticateCode,load,isDiagnosticContext,producerModel,baselineFingerprint,assertCanonicalContext};
+module.exports={continuationSelection,hydrateContinuation,inspectCompleteOwnerSource,fixedEntryCallerEvidence,completeOwnerClosure,completeOwnerExpectation,validateHistoricalReports,runtime,authenticateCode,load,isDiagnosticContext,producerModel,baselineFingerprint,assertCanonicalContext};

@@ -7,7 +7,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..', '..');
+const { ROOT } = require('./execution_paths');
 const POLICY_CONFIG_PATH = path.join(ROOT, 'config', 'source-policy.json');
 const COMPILATION_INPUT_BYTES = Symbol('ob64CompilationInputBytes');
 const SHA256 = /^[0-9A-F]{64}$/;

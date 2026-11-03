@@ -44,6 +44,7 @@ function assess(target,record,inputs,classifyResearchSource){
  return result;
 }
 function intake(workbench,target,options={}){
+ const selectedIdentity=require('./target_selection').describe(workbench.model.rows,workbench.logicalRegistry?.bodies||[],target.requestedSymbol||target.symbol,{checkEntryOffset:true});
  const inputs=options.inputs||inputSet.context(workbench),mapped=file=>inputs?inputs.research(file):file;
  const limit=options.limit??20;if(!Number.isSafeInteger(limit)||limit<1||limit>200)throw new Error('intake limit must be 1..200');
  const directory=options.archiveDirectory||path.join(ROOT,'docs/dossiers'),records=[],discovery=[],otherArchives=new Map();
@@ -85,7 +86,7 @@ function intake(workbench,target,options={}){
  if(currentSource.path)try{currentSource.sha256=inputSet.isResearch(inputs)?inputSet.digest(inputSet.researchRead(inputs,path.join(ROOT,currentSource.path))):sha256File(regular(mapped(path.join(ROOT,currentSource.path))));currentSource.status='available';}catch(error){inputSet.rethrow(error);currentSource.status='unavailable';currentSource.reason=error.message;}
  for(const row of observations)row.matchesCurrentSource=currentSource.sha256&&row.sourceSha256?row.sourceSha256===currentSource.sha256:null;
  const issues=discovery.length||store.status==='error';
- const report={schemaVersion:1,symbol:target.symbol,targetId:target.expectedBytesSha256?target.targetId:null,targetBinding:target.expectedBytesSha256?'exact':'unavailable',status:observations.length?(issues?'partial':'found'):issues?'unavailable':'none',
+ const report={schemaVersion:1,selection:selectedIdentity,preparationStatus:'not-preflighted',symbol:target.symbol,targetId:target.expectedBytesSha256?target.targetId:null,targetBinding:target.expectedBytesSha256?'exact':'unavailable',status:observations.length?(issues?'partial':'found'):issues?'unavailable':'none',
   currentSource,currentProducer:target.activeMatchingProducer||null,historyApplicability:capability.supported?'Research history only; validate applicability to current source context.':capability.code==='complete-group-candidate-required'?'Current target is grouped; prior standalone history is reference only and does not enable single-member compilation/import/preservation.':capability.reason,
   boundary:'Authored research claims, not recommendations or matching acceptance. Archive observation IDs are opaque provenance. Per-record validity and targetBinding report whether candidate identity and current source/header/preprocessor/reference closure could be checked; relations have separate verification status.',
   store,discovery,counts,total:observations.length,truncated:observations.length>limit,observations:observations.slice(0,limit)};

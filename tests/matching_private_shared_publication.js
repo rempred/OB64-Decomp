@@ -60,7 +60,7 @@ test('root-only marker permits native mode changes only with the exact supervise
     argv: [process.execPath, path.join(ROOT, 'tests/matching_private_shared_publication.js')] };
   const module = { exports: {} };
   vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'tools/lib/matching/private_workspace.js'), 'utf8'), { module, process: processStub,
-    require: name => name === 'child_process' ? { spawn() { throw Error('test must not launch a process'); } } : require(name) });
+    require: name => name === 'child_process' ? { spawn() { throw Error('test must not launch a process'); } } : require('module').createRequire(path.join(ROOT, 'tools/lib/matching/private_workspace.js'))(name) });
   const guard = module.exports;
   const ticket = native => fs.writeFileSync(path.join(root, '.private-guard.json'), JSON.stringify({ pid: 1234, supervisorPid: 5678, rootKey: key, native }));
   let callbacks = 0;

@@ -26,13 +26,22 @@ function open(){fs.writeFileSync(manifestFile,JSON.stringify(manifest()));return
  const queryFunction=querySource.slice(querySource.indexOf('async function executePrivateDiagnosticQuery('),querySource.indexOf('async function executePrivateDiagnostic('));
  for(const command of ['history','best'])for(const drift of ['none','content','environment']) {
   const reader=open(),published=[],environmentKey='CODEX_TOOL_CALL_ID',prior=process.env[environmentKey];
+  const diagnosticFixture={authenticateCode(){},load(){reader.read(used);return {workbench:{modelId:'model'}};},baselineFingerprint:()=> 'historical'};
+  const preparation={exports:{}};
+  require('vm').runInNewContext(fs.readFileSync(path.join(ROOT,'tools/lib/matching/private_target.js'),'utf8'),{
+   module:preparation,require:name=>name==='./diagnostic_context'?diagnosticFixture:
+    name==='./target_model'?{resolveTarget:()=>({symbol:'f'}),assertScratchCapability(){}}:
+    name==='./compiler'?{prepareCompilerSession:()=>({})}:
+    name==='./scratch_assembly'?require('../tools/lib/matching/scratch_assembly'):require(name)
+  },{filename:'private_target.js'});
   const query=require('vm').runInNewContext('('+queryFunction.trim()+')',{
    ROOT,path,process,resolveTarget:()=>({symbol:'f'}),historicalSymbols:()=>['f'],numeric:()=>20,
    prepareCompilerSession:()=>({}),comparisonAlgorithmIdentity:()=> 'algorithm',loadDiagnosticEnvironment:()=>({identity:'environment'}),
    requestStore:()=>{if(drift==='content')fs.writeFileSync(used,'Used');if(drift==='environment')process.env[environmentKey]='query-close-drift';return [{candidate_id:'result'}];},
    print:value=>published.push(value),
    require:name=>name==='./lib/matching/input_set'?{...inputs,openDiagnosticInputs:()=>reader,authenticateRuntime:()=>''}:
-    name==='./lib/matching/diagnostic_context'?{authenticateCode(){},load(){reader.read(used);return {workbench:{modelId:'model'}};},baselineFingerprint:()=> 'historical'}:
+    name==='./lib/matching/private_target'?preparation.exports:
+    name==='./lib/matching/diagnostic_context'?diagnosticFixture:
     name==='./lib/matching/private_workspace'?{async withPrivateWorkspace(_workspace,_options,callback){await callback();}}:require(name),
   });
   try {

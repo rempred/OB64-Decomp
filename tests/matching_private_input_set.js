@@ -94,7 +94,7 @@ for(const command of ['intake','watch','probe'])validatePrivateOptions(command,{
  let checks=0,implementationDrift=false;
  const module={exports:{}};
  vm.runInNewContext(fs.readFileSync(require.resolve('../tools/lib/matching/input_set'),'utf8'),{module,Buffer,process:{env:{}},__dirname:path.join(ROOT,'tools/lib/matching'),
-  require:name=>name==='../current_workflow'?{validateVerifiedCompanions(b,f,v,out){checks++;assert.equal(JSON.stringify(b),JSON.stringify(build));assert.equal(JSON.stringify(f),JSON.stringify(fresh));assert.equal(JSON.stringify(v),JSON.stringify(verified));assert.equal(out,acceptedOutput);if(implementationDrift)throw Error('implementation drift');}}:require(name)});
+  require:name=>name==='../current_workflow'?{validateVerifiedCompanions(b,f,v,out){checks++;assert.equal(JSON.stringify(b),JSON.stringify(build));assert.equal(JSON.stringify(f),JSON.stringify(fresh));assert.equal(JSON.stringify(v),JSON.stringify(verified));assert.equal(out,acceptedOutput);if(implementationDrift)throw Error('implementation drift');}}:require('module').createRequire(path.join(ROOT,'tools/lib/matching/input_set.js'))(name)});
  const api=module.exports,selected=api.openInputSet(fixtureData.file,{root:proofRoot});
  const model=api.bind({model:{config:{rom:{bytes:rom.length,sha256:inputSet.digest(rom)}}}},selected);
  for(const name of ['state.json','fresh.json','verified.json'])fs.writeFileSync(path.join(live,name),'unreadable live pointer');

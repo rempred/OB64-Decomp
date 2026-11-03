@@ -30,6 +30,13 @@ const prepared=()=>({model:{config:{acceptedInputSha256:{}}},phase8:{targets:[{s
 const moduleFixture={exports:{}};
 vm.runInNewContext(fs.readFileSync(require.resolve('../tools/lib/matching/input_set'),'utf8'),{module:moduleFixture,Buffer,
   __dirname:path.join(root,'tools/lib/matching'),process:{execPath:node,env:{}},require:name=>{
+    if(name==='../execution_paths') {
+      const execution={exports:{}};
+      vm.runInNewContext(fs.readFileSync(require.resolve('../tools/lib/execution_paths'),'utf8'),{
+        module:execution,require,__dirname:path.join(root,'tools/lib')
+      });
+      return execution.exports;
+    }
     if(name==='../current_workflow')return{prepareContext(options){assert.equal(options.readOnly,true);gateCalls++;return prepared();},currentVerificationState(){return{exact,state};}};
     if(name==='./private_inputs')return{capturePrivateInputs(options){return privateInputs.capturePrivateInputs({root,directories:['config','src','include','tools/lib'],files:['build/current/state.json'],extraDirectories:options.extraDirectories});}};
     if(name==='../source_policy')return{loadPolicyConfig(){return{matchingCompiler:{manifest:'compiler-manifest.json'},preprocessor:{path:'.runtime/cpp.exe',requiredExecutables:[{path:'.runtime/cc1.exe'}]}};}};

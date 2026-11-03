@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "77828FD0976335C0409328F2E9CE99DBE7ED46EE219D92EF1279354B0F776440",
+  "observationId": "EE61045937CF68EA516F6FCD4F8E2503D856A09D19BAD14880F5E74826FBD4BF",
+  "symbol": "func_001A9290",
+  "authored": {
+    "context": "Complete C02 scenario state dispatcher; original private source context is preserved without expression changes. Comparison sources and native reports remain in the integrator retained-research directory.",
+    "effects": [
+      "aliasing"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A2CA14CF37BC20AF6299A41F644F525F00F718446B0EF73C71452F3D9814F54B",
+      "sourceSha256": "41064B167915F308DFA6A21B95B8EB19F93916F4D8989D8873BBC9583ECBDE2E"
+    },
+    "label": "c02-array-alias-view-before",
+    "observedEffect": "The pair changes declarations and accesses across the complete dispatcher, so observed reload changes are context dependent. Separate global and volatile alternatives are counterexamples, not a universal compiler rule.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/integration/consumables/c02-closeout/retained-research/array-alias-view/dispatcher-004.json",
+        "sha256": "6F256FAC81EAE1E7A9CE10219C25BB8EDA1885FC8EB29634E89DC2D3CC785BE9"
+      },
+      {
+        "path": "build/integration/consumables/c02-closeout/retained-research/array-alias-view/dispatcher-006.json",
+        "sha256": "FD74630C6EB17CEF5F583DFAD6CC430968EE36612DE6287381FD3A044AEE3962"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This imported source is a historical diagnostic control, not the accepted canonical source. Matching acceptance belongs to the canonical C02 wave and its combined audit; historical report identities are not upgraded.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace separate window globals with a six-slot pointer-array view."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 32657,
+      "sha256": "A2CA14CF37BC20AF6299A41F644F525F00F718446B0EF73C71452F3D9814F54B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "41064B167915F308DFA6A21B95B8EB19F93916F4D8989D8873BBC9583ECBDE2E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-03-func_001A9290-77828fd097.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

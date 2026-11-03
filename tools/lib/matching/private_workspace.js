@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { spawn } = require('child_process');
+const execution=require('../execution_paths');
 
 const RESERVED = new Set(['calibration', 'manual', 'research-preserve', 'runs', 'targets', 'probes', 'candidates', 'reports', 'shared', 'current', 'workbench', 'con', 'prn', 'aux', 'nul']);
 const MARKER = 'OB64_PRIVATE_GUARD';
@@ -92,7 +93,7 @@ function combinePrivateErrors(primary, secondary) {
   return error;
 }
 function validateWatchCommand(workspace, command, nativeRequested) {
-  if (!nativeRequested || !same(command[1], path.join(workspace.root, 'tools/match.js')) || !['watch','probe'].includes(command[2])) throw new Error('strict watch admission requires the watch CLI');
+  if (!nativeRequested || !same(command[1], execution.codePath('tools/match.js')) || !['watch','probe'].includes(command[2])) throw new Error('strict watch admission requires the watch CLI');
   const argument = (name, optional = false) => {
     const positions = command.flatMap((value, index) => value === name ? [index] : []);
     if (optional && positions.length === 0) return undefined;
@@ -111,7 +112,7 @@ async function withPrivateWorkspace(workspace, options, callback) {
   if (research && options.native) throw new Error('research admission cannot supervise a native command');
   const command = [process.execPath, ...process.argv.slice(1)];
   if (watch) validateWatchCommand(workspace, command, options.native === true);
-  if (research && (!same(command[1], path.join(workspace.root, 'tools/match.js')) || command[2] !== 'intake')) throw new Error('research admission requires the intake CLI');
+  if (research && (!same(command[1], execution.codePath('tools/match.js')) || command[2] !== 'intake')) throw new Error('research admission requires the intake CLI');
   const commandSha256 = crypto.createHash('sha256').update(JSON.stringify(command)).digest('hex');
   const native = options.native === true && workspace.nativeConcurrency === 'serial';
   const key = crypto.createHash('sha256').update(workspace.matchingRoot.toLowerCase()).digest('hex');
@@ -157,15 +158,16 @@ async function withPrivateWorkspace(workspace, options, callback) {
   // Resolve only Python here. resolveLocalTools() also creates the shared workRoot.
   const configuredPython = options.python || process.env.OB64_MATCH_PYTHON || process.env.OB64_SPLAT_PYTHON;
   const python = configuredPython || path.resolve(workspace.root, require('../local_tools').loadLocalConfig().config.splatPython);
-  const guard = options.guardPath || path.join(workspace.root, 'tools', 'matching_workbench', 'private_guard.py');
+  const guard = options.guardPath || execution.codePath('tools/matching_workbench/private_guard.py');
   // A first private context can spend several minutes authenticating/preprocessing
   // the complete active census; allow the other assigned worker to finish it.
   const waitMs = options.waitMs === undefined ? 300000 : options.waitMs;
   if (!Number.isInteger(waitMs) || waitMs < 0 || waitMs > 300000) throw new Error('private guard wait must be 0..300000 ms');
+  execution.bundle()?.verify(guard);
   await new Promise((resolve, reject) => {
     const child = spawn(python, [...(options.isolatedPython ? ['-I','-S'] : []), guard, '--parent', String(process.pid), '--root-key', key, '--root', workspace.matchingRoot, '--wait-ms', String(waitMs), ...(workspace.admission==='candidate-diagnostic-v1' ? ['--parent-elapsed-ms',String(process.uptime()*1000)] : []), ...(native ? ['--native'] : []), ...(research ? ['--research-intake'] : []), ...(watch ? [workspace.admission==='candidate-diagnostic-v1' ? '--candidate-diagnostic' : '--strict-watch'] : []), '--', ...command], { cwd: process.cwd(), stdio: 'inherit', windowsHide: true, env: { ...Object.fromEntries(Object.entries(process.env).filter(([name]) => !options.isolatedPython || !/^PYTHON/i.test(name))), [MARKER]: marker } });
     child.once('error', reject);
-    child.once('exit', (code, signal) => { process.exitCode = code === null ? 1 : code; resolve(); });
+    child.once('exit', (code, signal) => { try{execution.bundle()?.verify(guard);}catch(error){reject(error);return;} process.exitCode = code === null ? 1 : code; resolve(); });
   });
 }
 

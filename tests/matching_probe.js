@@ -71,7 +71,10 @@ function runUnitTests() {
   };
   const file = path.join(ROOT, 'tools/lib/matching/probe.js'), module = { exports: {} };
   const wrapper = vm.runInThisContext(`(function(require,module,exports,__filename,__dirname){${fs.readFileSync(file, 'utf8')}\n})`, { filename: file });
-  wrapper(name => substitutions[name] || require(name), module, module.exports, file, path.dirname(file));
+  const moduleRequire = require('module').createRequire(file);
+  const fixtureRequire = name => substitutions[name] || moduleRequire(name);
+  fixtureRequire.resolve = moduleRequire.resolve;
+  wrapper(fixtureRequire, module, module.exports, file, path.dirname(file));
   const api = module.exports;
   const context = { localTools: { compiler }, phase8: { targets: [], config: { compiler: { compileFlags: ['-O2'] } } } };
   const target = { symbol: 'fixture', targetId: digest('fixture-target') };

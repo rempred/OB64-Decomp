@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..', '..');
+const { ROOT } = require('./execution_paths');
 const DEFAULT_CONFIG_PATH = path.join(ROOT, 'config', 'local-tools.json');
 const EXAMPLE_CONFIG_PATH = path.join(ROOT, 'config', 'local-tools.example.json');
 

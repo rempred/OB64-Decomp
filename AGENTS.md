@@ -283,6 +283,20 @@ this policy unless pure-C conversion is the assigned task.
 
 See `docs/SOURCE_POLICY.md`.
 
+Before dispatching a private matching wave, run the supported guarded preparation preflight
+for its complete target membership with the selected inputs and tool version. Preparation is
+source-independent diagnostic evidence, never source classification, emitted-body coverage,
+matching bytes or canonical acceptance. A target-local failure does not prevent preparing the
+remaining targets; shared authentication failures stop dependent preparation.
+
+Private workers may share an explicitly selected immutable tool bundle. Version selection changes
+only at that worker's command boundary. Never silently use newer live code for a selected version.
+Continue to drain users before changing their referenced shared compiler/runtime, original inputs
+or accepted outputs. All complete matching waves retain normal full-ROM acceptance. Determine
+tooling audit scope from actual canonical execution, data and hash dependencies under docs/AUDIT.md,
+not the directory containing a change. Initial bundle/root/schema plumbing requires its installed
+structural audit; private-only follow-up changes retain focused tests and independent exact-code review.
+
 ## Normal Matching Wave
 
 The normal loop is:

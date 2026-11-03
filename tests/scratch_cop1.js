@@ -135,16 +135,24 @@ function probeHistoryTests(root, context, workbench, target) {
   // Ordered closure includes the diagnostic context consumed by the current probe.
   // Compare fresh file hashes, not just the observed implementation count.
   const expectedImplementations = [
-    'tools/lib/matching/probe.js', 'tools/match.js', 'tools/lib/source_policy.js',
+    'tools/lib/matching/probe.js', 'tools/lib/matching/target_selection.js',
+    'tools/match.js', 'tools/lib/source_policy.js',
     'tools/lib/matching/target_model.js', 'tools/lib/matching/scratch_assembly.js',
     'tools/lib/matching/input_set.js', 'tools/lib/matching/diagnostic_context.js',
   ].map(file => ({ path: file, sha256: p7.sha256File(path.join(p7.ROOT, file)) }));
   assert.deepEqual(current.identity.implementation, expectedImplementations);
+  // Historical schema-3 path contracts are independent of today's implementation closure.
+  const historicalPaths = [
+    'tools/lib/matching/probe.js', 'tools/match.js', 'tools/lib/source_policy.js',
+    'tools/lib/matching/target_model.js', 'tools/lib/matching/scratch_assembly.js',
+    'tools/lib/matching/input_set.js', 'tools/lib/matching/diagnostic_context.js',
+  ];
   const histories = [];
-  for (const count of [4, 5]) {
+  for (const count of [4, 5, 6, 7]) {
     // These are retained historical-format fixtures, not current executable identities.
     const historical = JSON.parse(JSON.stringify(current));
-    historical.identity.implementation = historical.identity.implementation.slice(0, count);
+    historical.identity.implementation = historicalPaths.slice(0, count)
+      .map(file => ({ path: file, sha256: p7.sha256File(path.join(p7.ROOT, file)) }));
     historical.probeId = digest(historical.identity);
     assert.notEqual(historical.probeId, current.probeId);
     const oldDir = path.join(root, 'historical', historical.probeId);
@@ -158,7 +166,25 @@ function probeHistoryTests(root, context, workbench, target) {
     assert.equal(probe.readProbe(reportFile).probeId, historical.probeId);
     histories.push({ historical, reportFile });
   }
-  assert.equal(new Set([current.probeId, ...histories.map(h => h.historical.probeId)]).size, 3);
+  assert.equal(new Set([current.probeId, ...histories.map(h => h.historical.probeId)]).size, 5);
+  // No truncated current closure, unknown extension, or historic/current hybrid is historical.
+  for (const entries of [
+    ...[4, 5, 6, 7].map(count => current.identity.implementation.slice(0, count)),
+    [current.identity.implementation[1], current.identity.implementation[0], ...current.identity.implementation.slice(2)],
+    [current.identity.implementation[0], current.identity.implementation[0], ...current.identity.implementation.slice(2)],
+    current.identity.implementation.map((entry, i) => i === 0 ? null : entry),
+    current.identity.implementation.map((entry, i) => i === 0 ? { ...entry, extra: true } : entry),
+    [...histories[3].historical.identity.implementation, current.identity.implementation[1]],
+    [...current.identity.implementation, { path: 'tools/unexpected.js', sha256: '0'.repeat(64) }],
+  ]) {
+    const malformed = JSON.parse(JSON.stringify(current));
+    malformed.identity.implementation = entries;
+    malformed.probeId = digest(malformed.identity);
+    delete malformed.reportSha256; malformed.reportSha256 = digest(malformed);
+    const reportFile = path.join(root, 'malformed-probe-report.json');
+    fs.writeFileSync(reportFile, JSON.stringify(malformed));
+    assert.throws(() => probe.readProbe(reportFile), /probe report provenance is malformed/);
+  }
   // Self-consistent report hashes must not admit a malformed ordered implementation prefix.
   for (const mutate of [
     entries => entries.slice(0, 3),

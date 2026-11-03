@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const execution=require('../execution_paths');
 const inputSet = require('./input_set');
 const { loadActiveTargetModel, loadActiveTargetModelForResearch, workbenchView, resolveAcceptedRow, resolveAcceptedRows } = require('../active_targets');
 const registryScopes = new WeakMap();
@@ -65,6 +66,7 @@ function scratchCapability(workbench, target, sessionTargets = []) {
 }
 
 function assertScratchCapability(workbench, target, sessionTargets) {
+  if(target?.descriptionOnly)throw Error('selection description cannot grant scratch capability');
   inputSet.assertProduction(inputSet.context(workbench));
   inputSet.assertProduction(inputSet.context(workbench?.model));
   inputSet.assertProduction(inputSet.context(target));
@@ -325,12 +327,14 @@ function assertExecutablePrefixReportScope(target, record) {
     throw new Error('cached executable-prefix comparison scope drift');
 }
 
-function compositeFunctionRows(model) {
+// Pure accepted composition only; diagnostic eligibility authenticates entries separately.
+function compositeFunctionRows(model, { checkEntryOffset = true } = {}) {
   const eligible = (row) => row.primaryClass === 'code'
     && row.part
     && row.slices.length === 1
     && row.slices[0].executable;
   const continuations = new Map();
+  const pairs = [];
   const consumedRows = new Set();
   for (let rowIndex = 0; rowIndex < model.rows.length; rowIndex += 1) {
     const tail = model.rows[rowIndex];
@@ -344,16 +348,21 @@ function compositeFunctionRows(model) {
         || head.slices[0].placementKind !== tail.slices[0].placementKind
         || head.slices[0].overlayDescriptorId !== tail.slices[0].overlayDescriptorId
         || head.slices[0].loadSlabId !== tail.slices[0].loadSlabId
-        || tail.part.symbolByteOffset !== 0) {
+        || checkEntryOffset && tail.part.symbolByteOffset !== 0) {
       throw new Error(`accepted continuation part does not compose with its preceding function head: ${tail.part.name}`);
     }
     if (continuations.has(head.index) || consumedRows.has(head.index) || consumedRows.has(tail.index)) {
       throw new Error(`accepted continuation part is duplicated or overlaps: ${tail.part.name}`);
     }
+    pairs.push({ head, tail, symbol: `func_${stem.slice(5).toUpperCase()}` });
     continuations.set(head.index, tail);
     consumedRows.add(tail.index);
   }
-  return { continuations, consumedRows };
+  const claims = model.rows.flatMap(row => {
+    const name=row.part?.name, stem=continuationPartStem(name) || functionPartStem(name);
+    return stem && String(name).toLowerCase()!==stem ? [{row,symbol:`func_${stem.slice(5).toUpperCase()}`}] : [];
+  });
+  return { continuations, consumedRows, pairs, claims };
 }
 
 // Preserve the stronger complete-producer contract when its one whole primary
@@ -411,8 +420,8 @@ function buildWorkbenchModel(options, research, scope) {
     targetModelContract: 7,
     multiOwnerConfig: activeModel.multiOwnerConfigIdentity,
     logicalFunctionRegistry: logicalRegistry.identity,
-    logicalFunctionSemantics: [__filename, require.resolve('../logical_functions'), require.resolve('../text_contract'), require.resolve('./input_set')].map(file => ({
-      path: path.relative(ROOT, file).replace(/\\/g, '/'), sha256: sha256File(file),
+    logicalFunctionSemantics: [__filename, require.resolve('./target_selection'), require.resolve('../logical_functions'), require.resolve('../text_contract'), require.resolve('./input_set')].map(file => ({
+      path: execution.logicalCode(file), sha256: sha256File(file),
     })),
     profile: config.profile,
     baserom: { bytes: model.config.rom.bytes, sha256: model.config.rom.sha256 },
@@ -435,7 +444,7 @@ function buildWorkbenchModel(options, research, scope) {
       const continuation = compositeRows.continuations.get(row.index) || null;
       const continuationSlice = continuation ? continuation.slices[0] : null;
       const symbol = continuation
-        ? `func_${continuationPartStem(continuation.part.name).slice(5).toUpperCase()}`
+        ? compositeRows.pairs.find(pair => pair.head === row).symbol
         : row.part.name;
       const romStart = continuation ? row.romStart + row.part.symbolByteOffset : prefixes.has(row.index) ? slice.romStart : row.romStart;
       const romEndExclusive = continuation ? continuation.romEndExclusive : prefixes.has(row.index) ? slice.romEndExclusive : row.romEndExclusive;
@@ -658,6 +667,7 @@ function publicTarget(target) {
 }
 
 module.exports = {
+  compositeFunctionRows,
   loadResearchWorkbenchModel,
   applyRegisteredAliasCorrection, retainedPaddingSelection, executablePrefixSelection, assertExecutablePrefixSelection, executablePrefixComparisonScope, originalOwnerComparison,
   assertExecutablePrefixReportScope,

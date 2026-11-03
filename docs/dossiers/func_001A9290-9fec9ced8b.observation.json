@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9FEC9CED8BBA5216DFF3063F9EF735761ABE211A2B8511EB4F5974949B478337",
+  "observationId": "B7C50EE7CECA21C2B63BC0C901B2309DA3671D41E978D9063DB36F6E5BBA65D2",
+  "symbol": "func_001A9290",
+  "authored": {
+    "context": "Complete C02 scenario state dispatcher; original private source context is preserved without expression changes. Comparison sources and native reports remain in the integrator retained-research directory.",
+    "effects": [
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F695922AFDFB49849100D0C93BE6D420247DC0C82F31999493365393939D13A2",
+      "sourceSha256": "0E8F648AD6D3431060621DF8CEAE5269EE636BE6575020C1DAB045D9DE9161AE"
+    },
+    "label": "c02-wide-value-mask-before",
+    "observedEffect": "The worker observed the expected ANDI while the unmasked value still feeds the range expression. The dispatcher remained an intermediate and did not yet match.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/integration/consumables/c02-closeout/retained-research/wide-value-mask/dispatcher-018.json",
+        "sha256": "CECC846D77CE847FB23F6B4F3AFF8BA7FF220ECCC19092FFDF7D9DC8AC764DF9"
+      },
+      {
+        "path": "build/integration/consumables/c02-closeout/retained-research/wide-value-mask/dispatcher-019.json",
+        "sha256": "E62249B3D4B7B88BF659D8261EEC7B6E50FD92B3EF9B6358EA69F099BD7A6870"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This imported source is a historical diagnostic control, not the accepted canonical source. Matching acceptance belongs to the canonical C02 wave and its combined audit; historical report identities are not upgraded.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain a wide value for the range check and a separate masked local for equality comparisons."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 33062,
+      "sha256": "F695922AFDFB49849100D0C93BE6D420247DC0C82F31999493365393939D13A2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0E8F648AD6D3431060621DF8CEAE5269EE636BE6575020C1DAB045D9DE9161AE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-03-func_001A9290-9fec9ced8b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

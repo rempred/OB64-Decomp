@@ -92,11 +92,19 @@ function fixture({ drift = false, guardDrift = false, selectedDrift = false, ent
       assertPrivatePath: log('privatePath', (_workspace, file) => { if (!file.startsWith(PRIVATE + path.sep)) throw Error('outside private root'); return file; }),
     },
   };
+  // Execute the common preparation boundary with the same lower-level fixture dependencies.
+  const preparation = { exports: {} };
+  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'tools/lib/matching/private_target.js'), 'utf8'), {
+    module: preparation, require: name => modules['./lib/matching/' + name.slice(2)]
+  }, { filename: 'private_target.js' });
+  modules['./lib/matching/private_target'] = preparation.exports;
+  modules['./lib/matching/tool_bundle_runtime'] = require('../tools/lib/matching/tool_bundle_runtime');
+  modules['./lib/execution_paths'] = require('../tools/lib/execution_paths');
   const module = { exports: {} };
   const requireMock = name => name === 'fs' ? { ...fs, readFileSync: () => '{}' } : name === 'path' ? path : modules[name] || {};
   if (entryArgs) requireMock.main = module;
   const processMock = { argv: ['node', 'match.js', ...(entryArgs || [])], env:{}, exitCode: 0 };
-  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'tools/match.js'), 'utf8'), { module, require: requireMock, Buffer, process: processMock, console: { log: x => output.push(x), error: x => errors.push(x) } }, { filename: 'match.js' });
+  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'tools/match.js'), 'utf8'), { module, __filename: path.join(ROOT, 'tools/match.js'), require: requireMock, Buffer, process: processMock, console: { log: x => output.push(x), error: x => errors.push(x) } }, { filename: 'match.js' });
   return { cli: module.exports, calls, output, errors, inputs, classifyResearchSource, process: processMock };
 }
 

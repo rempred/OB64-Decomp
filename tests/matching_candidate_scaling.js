@@ -5,7 +5,7 @@ const base=path.join(ROOT,'build/matching','ccd-'+crypto.randomBytes(4).toString
 const source=path.join(base,'candidate.c');fs.writeFileSync(source,'int f(void){return 0;}');
 let walks=0;const io={...fs,readdirSync(file,...args){if(path.resolve(file).startsWith(base))walks++;return fs.readdirSync(file,...args);}};
 const processView={pid:41,ppid:42,platform:'win32',execPath:process.execPath,argv:[process.execPath,path.join(ROOT,'tools/match.js'),'watch','f','--source',source,'--scratch-root',base],env:{}};
-const moduleView={exports:{}};vm.runInNewContext(fs.readFileSync(path.join(ROOT,'tools/lib/matching/private_workspace.js'),'utf8'),{module:moduleView,process:processView,require:name=>name==='fs'?io:name==='child_process'?{spawn(){throw Error('unexpected spawn');}}:require(name)});
+const moduleView={exports:{}};vm.runInNewContext(fs.readFileSync(path.join(ROOT,'tools/lib/matching/private_workspace.js'),'utf8'),{module:moduleView,process:processView,require:name=>name==='fs'?io:name==='child_process'?{spawn(){throw Error('unexpected spawn');}}:require('module').createRequire(path.join(ROOT,'tools/lib/matching/private_workspace.js'))(name)});
 const scope=moduleView.exports,workspace=scope.resolvePrivateWorkspace({root:ROOT,scratchRoot:base,command:'watch',diagnostic:true});
 const rootKey=hash(base.toLowerCase());processView.env.OB64_PRIVATE_GUARD=rootKey;
 const ticket={pid:41,supervisorPid:42,rootKey,native:false,admission:'candidate-diagnostic-v1',commandSha256:hash(JSON.stringify(processView.argv))};
