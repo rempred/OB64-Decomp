@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "14FDF597DB21CF321C9AB65179C37AE68F2946684030E31CC4BD233C4F8EBC99",
+  "observationId": "02E86CF72EA1E0476769F8C413A7F00E5973EE05BA7289A255CD7B211DDA5738",
+  "symbol": "func_000c9850",
+  "authored": {
+    "context": "Complete independently reconstructed func_000c9850 producer, historical worker experiment46. Original candidate identity 0B148406D409425129022F4E62A6CBAFB2BFD3BF5B5C1B859817E5446314FD68. Full source context is preserved; private score/REL masks are diagnostic only. Canonical source now has combined-wave acceptance, but this intermediate does not inherit it.",
+    "effects": [
+      "stack-frame",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "112A9636ECEA52AAD3476AC155B091CADDCA45F8A99C96AD83297BB287766049",
+      "sourceSha256": "5E67B0DAE686481CB905E6B67E4E9EF0EF3E831A031A2525493AB26C2B30D618"
+    },
+    "label": "c01-narrow-frame-046",
+    "observedEffect": "46->52 changes frame48 to56 with seven saved registers and no fabricated local padding. The complete controls still use the historical volatile pointer declaration; this does not establish a universal narrow-scalar or volatile rule.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/narrow-frame/c9850-046.json",
+        "sha256": "EE46F6E5F7F96897E4BB8C474691727EC14D2D566B5516173179C02136B5EF04"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/complete-wave-handoff.md",
+        "sha256": "DDD9EBBCD1AD64E4F94E190C6BC499CDE84E865D1B4A77C213481C910DCF0397"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/c9850-coverage-frame-update.md",
+        "sha256": "644AB9C2E059920D7711D5508B0E5CEAA8D52F6CEFFDCB31EF153563AE6BE769"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical intermediate, not the accepted final source. Source/interface, provider and layout reconciliation differs from canonical C; historical reports are not upgraded. Full-controller coverage erratum applies to earlier drafts; these selected controller controls follow its correction. Canonical final examples are src/lib/func_000c4650.c and src/lib/func_000c9850.c.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the state2 shared s32 selection scalar with a block-local s16 selected_character."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 18233,
+      "sha256": "112A9636ECEA52AAD3476AC155B091CADDCA45F8A99C96AD83297BB287766049"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5E67B0DAE686481CB905E6B67E4E9EF0EF3E831A031A2525493AB26C2B30D618"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-04-func_000c9850-14fdf597db.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

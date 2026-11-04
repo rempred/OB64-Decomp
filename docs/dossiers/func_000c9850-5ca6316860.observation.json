@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5CA6316860A9109EFCF5EB12CD5D9952C0874F21F693B47ACA2C6D7A59BD7F9E",
+  "observationId": "49A42C48EAD01421E06F6C8E04F8AB1B4E31533134A7C2E86B835D0A7CF512F6",
+  "symbol": "func_000c9850",
+  "authored": {
+    "context": "Complete independently reconstructed func_000c9850 producer, historical worker experiment107. Original candidate identity 4DD5E1F41928E46E0F6EDAD9C0B70FAACD646F9BE44F541D02ACCF157815B01B. Full source context is preserved; private score/REL masks are diagnostic only. Canonical source now has combined-wave acceptance, but this intermediate does not inherit it.",
+    "effects": [
+      "scheduling-or-block-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D17CCDCE377CD6A05C03694AAED613BC0397C1EAF9A60100106F59A3077A9124",
+      "sourceSha256": "CE19CE03693024B227BD64C70E7B5CD1EA50A8CF6EC9CECD11608BA97ADE4645"
+    },
+    "label": "c01-late-increment-107",
+    "observedEffect": "The complete101->107 pair differs only in the increment/call order. Worker107 records the504-byte state5 shape; no inlined helper is necessary. Other states and relocation/link contracts were still unresolved.",
+    "parentCandidateId": "6BEF3B6855F1FAFC78B022024BE07998CDC6F81F798F8078578C819193630F09",
+    "references": [
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/late-increment/c9850-107.json",
+        "sha256": "6AD6A9654892370BB2C4FBBB0D5115B4E230F2281A6057BC8EB7BFC24DBBD5F0"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/complete-wave-handoff.md",
+        "sha256": "DDD9EBBCD1AD64E4F94E190C6BC499CDE84E865D1B4A77C213481C910DCF0397"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/c9850-coverage-frame-update.md",
+        "sha256": "644AB9C2E059920D7711D5508B0E5CEAA8D52F6CEFFDCB31EF153563AE6BE769"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/late-increment/c9850-101.json",
+        "sha256": "EA3D0864528E5905906C179505DE188280741E2C74053587971D3074DB148E80"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical intermediate, not the accepted final source. Source/interface, provider and layout reconciliation differs from canonical C; historical reports are not upgraded. Full-controller coverage erratum applies to earlier drafts; these selected controller controls follow its correction. Canonical final examples are src/lib/func_000c4650.c and src/lib/func_000c9850.c.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move output+=2 after the executor call in the group path."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 18632,
+      "sha256": "D17CCDCE377CD6A05C03694AAED613BC0397C1EAF9A60100106F59A3077A9124"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CE19CE03693024B227BD64C70E7B5CD1EA50A8CF6EC9CECD11608BA97ADE4645"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-04-func_000c9850-5ca6316860.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

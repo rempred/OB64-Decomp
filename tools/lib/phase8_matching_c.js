@@ -293,6 +293,65 @@ function edgeInterfaceSymbols(phase8) {
     [...(target.expectedRelocations || []).map(r=>r.symbol), ...(target.auxiliarySections || []).flatMap(a=>(a.expectedRelocations || []).map(r=>r.symbol))])])];
 }
 function physicalInterface(target) { return require('./logical_functions').physicalInterface(target); }
+function multiOwnerPhysicalInterface(target) { return require('./logical_functions').multiOwnerPhysicalInterface(target); }
+function verifyMultiOwnerPhysicalInterface(elf, target, linked = false) {
+  const descriptor = multiOwnerPhysicalInterface(target);
+  if (!descriptor) return null;
+  const owner = target.textOwners[0], sections = elf.sections.filter(s => s.name === descriptor.sectionName);
+  const symbols = elf.symbols.filter(s => s.name === descriptor.symbol);
+  if (sections.length !== 1 || symbols.length !== 1 || symbols[0].sectionIndex !== sections[0].index
+      || symbols[0].value !== (linked ? owner.vramStartNumber : 0) || symbols[0].size !== 0
+      || symbols[0].binding !== 1 || symbols[0].symbolType !== 2 || symbols[0].visibility !== 0) {
+    fail('multi-owner physical interface metadata drift');
+  }
+  return symbols[0];
+}
+function projectMultiOwnerPhysicalInterface(buffer, target) {
+  const descriptor = multiOwnerPhysicalInterface(target);
+  if (!descriptor) fail('multi-owner physical interface derivation not admitted');
+  const parse = require('./phase7_conventional').parseElf32BigEndian;
+  const native = parse(buffer), owners = targetTextOwners(target);
+  const source = native.sections.filter(s => s.name === target.sectionName);
+  const functions = native.symbols.filter(s => s.symbolType === 2 && s.sectionIndex !== 0);
+  const fn = functions[0];
+  if (source.length !== 1 || source[0].size !== descriptor.logicalBytes || source[0].type !== 1
+      || source[0].flags !== 6 || source[0].address !== 0 || functions.length !== 1
+      || fn.name !== descriptor.primary || fn.value !== 0 || fn.size !== descriptor.logicalBytes
+      || fn.binding !== 1 || fn.visibility !== 0 || fn.sectionIndex !== source[0].index
+      || native.symbols.some(s => owners.some(owner => owner.symbol === s.name))) {
+    fail('multi-owner physical interface raw compiler census');
+  }
+  // This is a compiler partition, not a replacement of accepted owner identity.
+  const split = splitRelocatableTextSection(buffer, target.sectionName, owners.map((owner, i) => ({
+    sectionName: owner.sectionName, bytes: owner.bytes, symbol: i === 0 ? target.symbol : owner.symbol,
+    symbolSize: i === 0 ? descriptor.logicalBytes : 0,
+  })));
+  const intermediate = parse(split.buffer);
+  const sections = owners.map(owner => intermediate.sections.find(s => s.name === owner.sectionName));
+  const splitFunctions = intermediate.symbols.filter(s => sections.some(section => section.index === s.sectionIndex) && s.symbolType === 2);
+  if (splitFunctions.length !== owners.length || intermediate.symbols.some(s => s.name === descriptor.symbol)) {
+    fail('multi-owner physical interface split census');
+  }
+  for (const [i, owner] of owners.entries()) {
+    const matches = splitFunctions.filter(s => s.name === (i === 0 ? target.symbol : owner.symbol));
+    if (matches.length !== 1 || matches[0].sectionIndex !== sections[i].index || matches[0].value !== 0
+        || matches[0].size !== (i === 0 ? descriptor.logicalBytes : 0) || matches[0].binding !== 1
+        || matches[0].visibility !== 0) fail('multi-owner physical interface split symbol drift');
+  }
+  const beforeRelocations = relocationRecords(intermediate, target);
+  if (!sameJson(beforeRelocations, target.expectedRelocations)) fail('multi-owner physical interface relocation contract drift');
+  const appended = require('./elf_text_split').appendPhysicalInterface(split.buffer, {
+    schemaVersion: 1, kind: 'registered-primary-physical-interface', symbol: descriptor.symbol,
+    primary: descriptor.primary, sectionName: descriptor.sectionName, offset: 0, bytes: 0,
+    binding: 1, symbolType: 2, visibility: 0,
+  });
+  const derived = parse(appended.buffer);
+  verifyMultiOwnerPhysicalInterface(derived, target);
+  verifyCompilerTextFunctions(derived, target, derived.sections.find(s => s.name === target.sectionName));
+  if (!sameJson(relocationRecords(derived, target), beforeRelocations)) fail('multi-owner physical interface changed relocations');
+  return { ...appended, splitResult: split, splitIntermediateSha256: sha256Buffer(split.buffer),
+    nativeFunctions: functions, splitFunctions, normalizedRelocations: beforeRelocations };
+}
 function verifyPhysicalInterface(elf, target, linked=false) {
   const d=physicalInterface(target);if(!d)return null;
   const sections=elf.sections.filter(s=>s.name===d.sectionName),symbols=elf.symbols.filter(s=>s.name===d.symbol);
@@ -1818,6 +1877,7 @@ function verifyCompilerTextFunctions(elf, target, section, linked = false, nativ
   const owners = targetTextOwners(target);
   let sections = [section];
   const boundarySymbols = new Set();
+  if (multiOwnerPhysicalInterface(target)) boundarySymbols.add(verifyMultiOwnerPhysicalInterface(elf, target, linked));
   if(physicalInterface(target)) {
     if(nativeInterface) { if(elf.symbols.some(s=>s.name===physicalInterface(target).symbol))fail('native object contains physical interface'); }
     else boundarySymbols.add(verifyPhysicalInterface(elf,target,linked));
@@ -2083,7 +2143,11 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   if (target.auxiliaryProjection) {
     fs.writeFileSync(proofObjectFile, (target.atomicText ? atomic : auxiliaryProjection).project(fs.readFileSync(assemblerObjectFile), target).buffer);
   }
-  if (!target.retainedLiteralReferences && !target.atomicText && targetTextOwners(target).length > 1) {
+  if (multiOwnerPhysicalInterface(target)) {
+    const projected = projectMultiOwnerPhysicalInterface(fs.readFileSync(assemblerObjectFile), target);
+    splitResult = projected.splitResult;
+    fs.writeFileSync(proofObjectFile, projected.buffer);
+  } else if (!target.retainedLiteralReferences && !target.atomicText && targetTextOwners(target).length > 1) {
     splitResult = splitRelocatableTextSection(
       fs.readFileSync(assemblerObjectFile),
       target.sectionName,
@@ -2367,7 +2431,7 @@ function deriveSourceObjectProofUncached(phase8, target, output, classification,
   }
 
   if (assemblerArtifact) {
-    const reproduced = target.retainedLiteralReferences ? literals.projectComplete(fs.readFileSync(resolveRelative(output, assemblerRelative, 'literal native object')), target) : physicalInterface(target) ? projectPhysicalInterface(fs.readFileSync(resolveRelative(output,assemblerRelative,'native interface assembler object')),target) : target.auxiliaryProjection ? (target.atomicText ? atomic : auxiliaryProjection).project(
+    const reproduced = multiOwnerPhysicalInterface(target) ? projectMultiOwnerPhysicalInterface(fs.readFileSync(resolveRelative(output,assemblerRelative,'multi-owner native assembler object')),target) : target.retainedLiteralReferences ? literals.projectComplete(fs.readFileSync(resolveRelative(output, assemblerRelative, 'literal native object')), target) : physicalInterface(target) ? projectPhysicalInterface(fs.readFileSync(resolveRelative(output,assemblerRelative,'native interface assembler object')),target) : target.auxiliaryProjection ? (target.atomicText ? atomic : auxiliaryProjection).project(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'native auxiliary assembler object')), target)
       : target.compilationGroup ? compilationGroups.project(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'native assembler object')), target.compilationGroup)
@@ -2577,6 +2641,7 @@ function deriveSourceObjectProofUncached(phase8, target, output, classification,
           ? basePermittedAdjustment + '; authenticate the complete aligned auxiliary source-object section and select only its declared zero-offset prefix for linkage'
           : basePermittedAdjustment,
       ...(physicalInterface(target)?{physicalInterfaceDerivation:1}:{}),
+      ...(multiOwnerPhysicalInterface(target) ? { multiOwnerPhysicalInterfaceDerivation: 'split-then-append' } : {}),
       auxiliarySectionCount: auxiliaryProofs.length,
       ...(target.auxiliaryProjection ? { auxiliaryProjection: true } : {}),
       ...(sourceObjectPrefixSelections > 0 ? { sourceObjectPrefixSelections } : {}),
@@ -5106,3 +5171,7 @@ module.exports = {
   writeObjectManifest,
 };
 
+
+module.exports.multiOwnerPhysicalInterface = multiOwnerPhysicalInterface;
+module.exports.projectMultiOwnerPhysicalInterface = projectMultiOwnerPhysicalInterface;
+module.exports.verifyMultiOwnerPhysicalInterface = verifyMultiOwnerPhysicalInterface;

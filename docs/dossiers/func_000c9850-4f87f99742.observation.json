@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4F87F99742850053CAF885216AE240059166094F33556C9D52226E3F0F3795FF",
+  "observationId": "776ACB66CA8B7BA932D162F30EE35DAAE70F0A1E4116CE4FA58D6710466F55EB",
+  "symbol": "func_000c9850",
+  "authored": {
+    "context": "Complete independently reconstructed func_000c9850 producer, historical worker experiment89. Original candidate identity D575F54372DEE0EFAE053FC54D882221F0FB138B27D9C9CBBBE78EDC08A4225C. Full source context is preserved; private score/REL masks are diagnostic only. Canonical source now has combined-wave acceptance, but this intermediate does not inherit it.",
+    "effects": [
+      "common-subexpression-elimination",
+      "control-flow",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "05ECBF73403413C307983BA11DC7101305F958039CE62FD6893F337B6F442805",
+      "sourceSha256": "881EC233481FD267645A4AA3867A4E9C096BA4C4ECEE9D5AA74BA4068D7F8BB2"
+    },
+    "label": "c01-field-rereads-089",
+    "observedEffect": "72 lost required state-pointer reloads during first CSE.89 restores the single path,90 the group path;91 keeps rereads while changing the join. Extra join/allocation differences remain. These observations are source-context-specific and do not require volatile.",
+    "parentCandidateId": "60A560279C3ADA91F893DEEB6905D290C2B439AEAA3B7466473A6F146E7C84D8",
+    "references": [
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/field-rereads/c9850-089.json",
+        "sha256": "A43F2BBB87BE2C6F7E1EC03EE1285AF48C7A631A9DF3404E19D6CC4D05C7813C"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/complete-wave-handoff.md",
+        "sha256": "DDD9EBBCD1AD64E4F94E190C6BC499CDE84E865D1B4A77C213481C910DCF0397"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/c9850-coverage-frame-update.md",
+        "sha256": "644AB9C2E059920D7711D5508B0E5CEAA8D52F6CEFFDCB31EF153563AE6BE769"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/field-rereads/c9850-072.json",
+        "sha256": "B6354A2D47A03BACA7A84D3C8B52EDC09C6636182EEA3C0EB867967F7CDB3B3C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical intermediate, not the accepted final source. Source/interface, provider and layout reconciliation differs from canonical C; historical reports are not upgraded. Full-controller coverage erratum applies to earlier drafts; these selected controller controls follow its correction. Canonical final examples are src/lib/func_000c4650.c and src/lib/func_000c9850.c.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compare cached normalization with repeated nonvolatile field expressions in single/group sign branches, then positive-first branch ordering."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 18469,
+      "sha256": "05ECBF73403413C307983BA11DC7101305F958039CE62FD6893F337B6F442805"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "881EC233481FD267645A4AA3867A4E9C096BA4C4ECEE9D5AA74BA4068D7F8BB2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-04-func_000c9850-4f87f99742.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

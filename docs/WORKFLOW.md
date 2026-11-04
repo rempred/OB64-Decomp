@@ -1,4 +1,4 @@
-# OB64 Decomp — Canonical Matching Workflow
+# OB64 Decomp â€” Canonical Matching Workflow
 
 This document defines the ordinary function-matching loop for *Ogre Battle 64:
 Person of Lordly Caliber*, US Rev 0. It uses the accepted structural model and
@@ -123,17 +123,17 @@ After the one-time local setup in [the repository README](../README.md):
 
 ```text
 node tools/match.js doctor
-→ establish a missing setup baseline once
-→ choose one accepted target
-→ consult its current research intake
-→ write or adjust its C source
-→ node tools/diff.js <symbol>
-→ iterate from the linked diff
-→ confirm PURE_C and exact relocation contract; record a provisional candidate
-→ repeat for the remaining assigned wave targets
-→ after the complete wave, node tools/verify.js once
-→ confirm every wave target is PURE_C in the final report
-→ completed-wave integration; verify changed integration inputs
+â†’ establish a missing setup baseline once
+â†’ choose one accepted target
+â†’ consult its current research intake
+â†’ write or adjust its C source
+â†’ node tools/diff.js <symbol>
+â†’ iterate from the linked diff
+â†’ confirm PURE_C and exact relocation contract; record a provisional candidate
+â†’ repeat for the remaining assigned wave targets
+â†’ after the complete wave, node tools/verify.js once
+â†’ confirm every wave target is PURE_C in the final report
+â†’ completed-wave integration; verify changed integration inputs
 ```
 
 `match.js doctor` is a setup check for the optional research workbench. It needs
@@ -1090,7 +1090,31 @@ rewriting compiler instructions or data:
 Such a contract must pin the complete symbol or fragment census, section shape,
 alignment, bytes, hashes, load-relevant relocations, placement, and ownership.
 Local functions do not become new accepted owners or exported aliases.
+
+A sole complete logical GLOBAL function may span ordinary accepted multi-owner
+rows whose first physical name differs from its compiler name. This narrow path
+requires canonical-loader-bound multi-owner authority; a descriptor or diagnostic
+selection cannot grant it. Preserve the accepted owner identities: first split
+using the logical compiler entry, then append the authenticated physical head as
+a zero-size section-relative FUNC. Native, split-intermediate and appended/stripped
+censuses remain distinct. Both physical markers and the full-size logical function
+must resolve at their accepted entries, with unchanged instruction and relocation
+semantics. Fresh, cached and recorded proof reconstruct both stages and bind the
+intermediate hash. Same-name producers and retained-padding interfaces retain
+their existing paths. Structural review and complete-wave exact-ROM acceptance
+remain required; this derivation adds no C bytes or accepted function boundary.
+
 C fragments and explicit retained ASM intervals must cover the complete auxiliary row in order without gaps or overlaps.
+
+A sole complete GLOBAL body with registered terminal original ASM may compose with
+exactly one ordinary whole-native readonly switch-table fragment under the existing
+overlay rule or within one unique accepted `loader-dma` slab. The loader proof binds
+both complete accepted physical owners and original assembly identities, recomputes
+slab authority, and checks contiguous affine coverage including the original text
+suffix and surrounding table-row bytes. Shared IDs or fragment-only containment do
+not suffice. Keep the original suffix classified ASM, all shared-row custody and REL
+checks, and the structural review/audit gates. This permits no boot/unknown slab,
+projection, discarded native bytes, multiple tables or new producer shape.
 Only the first fragment may retain an exterior prefix; only the final fragment may retain the single exterior tail.
 Noninitial fragments may contract an immediately preceding interval through `preservedInteriorBefore`.
 Retained interiors support literal data only: the whole original row must have no nonempty REL/RELA sections targeting it.
@@ -1114,9 +1138,9 @@ contract.
 
 Naming does not gate a machine-code match. Use exactly these evidence classes:
 
-1. `CANDIDATE` — an external lead; never a canonical build name.
-2. `SUPPORTED_ALIAS` — independently supported by static evidence.
-3. `CANONICAL` — established by runtime evidence, controlled mutation, or
+1. `CANDIDATE` â€” an external lead; never a canonical build name.
+2. `SUPPORTED_ALIAS` â€” independently supported by static evidence.
+3. `CANONICAL` â€” established by runtime evidence, controlled mutation, or
    recognized SDK/library proof.
 
 During matching, inspect the body, callers, callees, strings, and data accesses
@@ -1153,13 +1177,13 @@ does not prove modified behavior.
 
 ## Optional references
 
-- [MATCHING_WORKBENCH.md](MATCHING_WORKBENCH.md) — generated candidate research,
+- [MATCHING_WORKBENCH.md](MATCHING_WORKBENCH.md) â€” generated candidate research,
   history, diagnostics, sweeps, and limits.
-- [KMC_GCC_MATCHING_NOTES.md](KMC_GCC_MATCHING_NOTES.md) — reproduced,
+- [KMC_GCC_MATCHING_NOTES.md](KMC_GCC_MATCHING_NOTES.md) â€” reproduced,
   target-scoped compiler matching observations.
 - [templates/matching-c-agent-prompt-guide.md](templates/matching-c-agent-prompt-guide.md)
-  — a concise prompt for an assigned one-function task.
-- [tools/README.md](../tools/README.md) — repository tool index.
+  â€” a concise prompt for an assigned one-function task.
+- [tools/README.md](../tools/README.md) â€” repository tool index.
 
 ## Text representation evidence
 

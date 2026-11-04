@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "013FCA8B7243F31875FE4866A10FED385A172D83223F380C2895F21FE0B7101C",
+  "observationId": "37E2AB218E778F76441D92690CF1C13EC34B17AFDD6CA7C0A0CF43068802BA64",
+  "symbol": "func_000c9850",
+  "authored": {
+    "context": "Complete independently reconstructed func_000c9850 producer, historical worker experiment137. Original candidate identity 70ECEBAE217F47FD4E8991B41D33699C2BDE756AB9801EF09FB7293BCD81CDB7. Full source context is preserved; private score/REL masks are diagnostic only. Canonical source now has combined-wave acceptance, but this intermediate does not inherit it.",
+    "effects": [
+      "branch-polarity",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "36FB6182510CAF7520A2817F4835529DE3FF86452B0E80E5CA75440BE71FB8C5",
+      "sourceSha256": "F0F8B901F28E1B6ED04D75612B041A252607925671472165E68916F2E516B31E"
+    },
+    "label": "c01-branch-assigned-index-137",
+    "observedEffect": "131->137 preserves the reverse range comparison while changing index assignment and final comparison spelling. The worker records restored state8 masked shape. Both changes are present; this is not an isolated one-edit result.",
+    "parentCandidateId": "25E35B9E5D65EED8503611057C2CF35C1A5D965EA437C6A1832BBC3B9FA2E9FE",
+    "references": [
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/branch-assigned-index/c9850-137.json",
+        "sha256": "E303816004DC30936EBCAB0DE11067984235C9D7E8AAB7456AE472464AB315D3"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/complete-wave-handoff.md",
+        "sha256": "DDD9EBBCD1AD64E4F94E190C6BC499CDE84E865D1B4A77C213481C910DCF0397"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/c9850-coverage-frame-update.md",
+        "sha256": "644AB9C2E059920D7711D5508B0E5CEAA8D52F6CEFFDCB31EF153563AE6BE769"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/branch-assigned-index/c9850-131.json",
+        "sha256": "CB35A11675BE9AA0AE04CA4624F06920449CF6BE8821B4581AEE318EC36B4AC1"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical intermediate, not the accepted final source. Source/interface, provider and layout reconciliation differs from canonical C; historical reports are not upgraded. Full-controller coverage erratum applies to earlier drafts; these selected controller controls follow its correction. Canonical final examples are src/lib/func_000c4650.c and src/lib/func_000c9850.c.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Assign the u16 adjusted index in both branches and reverse the final bound-comparison operand spelling."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 19358,
+      "sha256": "36FB6182510CAF7520A2817F4835529DE3FF86452B0E80E5CA75440BE71FB8C5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F0F8B901F28E1B6ED04D75612B041A252607925671472165E68916F2E516B31E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-04-func_000c9850-013fca8b72.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

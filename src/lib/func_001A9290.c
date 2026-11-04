@@ -30,11 +30,9 @@ typedef struct {
     f32 field18, field1C, field20, field24, field28;
 } ScenarioCamera;
 typedef struct { f32 x, y, z; } ScenarioPoint;
-typedef struct { u8 pad00[2], field02, field03; } ScenarioInventory;
 typedef struct { u16 field00, field02; } ScenarioInput;
 
 extern u32 D_8021E194;
-extern ScenarioInventory D_80193AC0[];
 extern ScenarioUnit *D_801F0CB0[];
 extern ScenarioCamera *D_8018F58C;
 extern ScenarioInput *D_801F0CA0;
@@ -64,7 +62,6 @@ extern u8 func_00045440(s32);
 extern s32 func_801FE190(u8);
 extern s32 func_801DA228(ScenarioUnit *), func_8009C7CC(void);
 extern void *func_8016F4E0(u8);
-extern s32 func_00041098(s32, s32, u16, u8);
 extern u8 func_801E027C(s32, void *, s32, s32, s32, s32, s32);
 extern s32 func_801E00F0(u8, s32, s32, s32, s32, s32);
 extern void func_8021DC08(u16, s32, s32, s32, u8);
@@ -548,7 +545,7 @@ resize_item:
                                     u16 third;
                                     current = D_80190EBC[member];
                                     segments = func_00040FF4(0, member) & 0xFF;
-                                    total = D_80190F82[0];
+                                    total = D_80190F82.entries[0];
                                     third = total / 3;
                                     cap = third * segments;
                                     if (segments == 3) cap += total % 3;

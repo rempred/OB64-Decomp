@@ -353,3 +353,30 @@ docs/archive/matching-c-candidates/2026-11-03-func_001A9290-6153564bb8.c -text w
 src/lib/func_001AD8CC.c -text whitespace=cr-at-eol,-blank-at-eof
 src/lib/func_001AD0E4.c -text whitespace=cr-at-eol,-blank-at-eof
 src/lib/func_001A9290.c -text whitespace=cr-at-eol,-blank-at-eof
+
+# C01 complete comparison sources retain authenticated authored bytes.
+docs/archive/matching-c-candidates/2026-11-04-func_000c4650-75b3862288.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c4650-79bf6a264b.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-14fdf597db.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-612eb8fb37.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-60a560279c.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-4f87f99742.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-87853dc6cc.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-bc62651082.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-6bef3b6855.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-5ca6316860.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-25e35b9e5d.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-013fca8b72.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-aba6c5c4a3.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-ae6a784a21.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-9e0bc0ff85.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-ac488cbdd6.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-81a8fdd778.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-593e10e791.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-41b020ef36.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+docs/archive/matching-c-candidates/2026-11-04-func_000c9850-4139c6fd25.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_00041098.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_00040FF4.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_000c4650.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+src/lib/func_000c9850.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+include/game/scenario_item_views.h -text whitespace=cr-at-eol

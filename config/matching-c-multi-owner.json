@@ -157,6 +157,18 @@
       "vramStart": "0x80212D78",
       "vramEndExclusive": "0x802131E8",
       "expectedTextSha256": "B19899093C02866B74082A689F7123EF14461790086C09E4B9B93C38F50833DE"
+    },
+    {
+      "symbol": "func_00040FF4",
+      "ownerRows": [
+        813,
+        814
+      ],
+      "romStart": "0x00040FF4",
+      "romEndExclusive": "0x00041098",
+      "vramStart": "0x8016B0F4",
+      "vramEndExclusive": "0x8016B198",
+      "expectedTextSha256": "62A7711F44CDE60AFFB1BFDD4D4937E660E5901106DA82C3EDE81F9666339C5E"
     }
   ]
 }

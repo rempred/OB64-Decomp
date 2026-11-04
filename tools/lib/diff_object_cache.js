@@ -37,6 +37,7 @@ const { splitRelocatableTextSection } = require('./elf_text_split');
 
 const CACHE_SCHEMA_VERSION = 4;
 const physicalInterface=target=>require('./logical_functions').physicalInterface(target);
+const multiOwnerPhysicalInterface=target=>require('./logical_functions').multiOwnerPhysicalInterface(target);
 const DEFAULT_CACHE_ROOT = path.join(ROOT, 'build', 'diff-object-cache');
 const SAFE_SYMBOL = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
 const SHA256 = /^[0-9A-F]{64}$/;
@@ -694,7 +695,11 @@ function inspectCapturedTargetArtifacts(options, snapshot) {
     if(!projected.referenceProjected.equals(bytesByName['literal-projected.o'])||!projected.buffer.equals(bytesByName['source-object.o']))fail('literal cache reconstruction');splitResult=projected.splitResult;}
   if(physicalInterface(target) && !require('./phase8_matching_c').projectPhysicalInterface(bytesByName['assembler-object.o'],target).buffer.equals(bytesByName['source-object.o']))fail('physical interface cache reconstruction');
   if (target.auxiliaryProjection && !(target.atomicText ? atomic : auxiliaryProjection).project(bytesByName['assembler-object.o'], target).buffer.equals(bytesByName['source-object.o'])) fail('projected source-object bytes drift');
-  if (!target.retainedLiteralReferences && !target.atomicText && targetTextOwners(target).length > 1) {
+  if (multiOwnerPhysicalInterface(target)) {
+    const projected = require('./phase8_matching_c').projectMultiOwnerPhysicalInterface(bytesByName['assembler-object.o'], target);
+    if (!projected.buffer.equals(bytesByName['source-object.o'])) fail('multi-owner physical interface cache reconstruction');
+    splitResult = projected.splitResult;
+  } else if (!target.retainedLiteralReferences && !target.atomicText && targetTextOwners(target).length > 1) {
     splitResult = splitRelocatableTextSection(
       bytesByName['assembler-object.o'],
       target.sectionName,

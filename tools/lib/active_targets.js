@@ -764,6 +764,14 @@ function workbenchView(phase8) {
 }
 // One-shot binding permission is created only after canonical model validation.
 // Exported consumers can check it, but cannot register cloned or rebuilt models.
+const multiOwnerInterfaceOrigins = new WeakMap();
+function consumeMultiOwnerInterfaceBindingOrigin(phase8) {
+  const state = multiOwnerInterfaceOrigins.get(phase8);
+  if (!state || state.targets !== phase8.targets || state.model !== phase8.model
+      || state.contracts !== phase8.multiOwnerContracts || state.identity !== phase8.multiOwnerConfigIdentity
+      || state.linkSymbols !== phase8.linkSymbols) fail('multi-owner interface canonical loader authority missing');
+  multiOwnerInterfaceOrigins.delete(phase8);
+}
 const fixedEntryBindingOrigins = new WeakMap();
 function consumeFixedEntryBindingOrigin(phase8, registry) {
   const state = fixedEntryBindingOrigins.get(phase8);
@@ -1320,8 +1328,66 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
 // Compose two existing custody proofs only for a complete sole GLOBAL body and
 // one ordinary readonly fragment. Original terminal ASM never becomes compiler bytes.
 // The resolver and complete shared-row ledger separately prove retained neighbors.
+function validateRetainedLoaderAuxiliary(target, table, slice) {
+  const model = target.model, row = target.row, auxiliary = target.auxiliarySections[0];
+  if (!model.config || typeof model.config !== 'object' || Array.isArray(model.config)
+      || !Array.isArray(model.overlays) || model.overlays.some(value => !value || typeof value !== 'object'
+        || Array.isArray(value) || !Number.isSafeInteger(value.descriptor_id) || value.descriptor_id < 0
+        || !Number.isSafeInteger(value.rom_start) || !Number.isSafeInteger(value.rom_end_exclusive)
+        || value.rom_start < 0 || value.rom_end_exclusive <= value.rom_start
+        || value.rom_end_exclusive > model.config.rom?.bytes)
+      || !Array.isArray(model.rows) || model.rows.some(value => !value || typeof value !== 'object')
+      || !Array.isArray(model.nonDescriptorLoadSlabs)) fail('retained auxiliary loader model is malformed');
+  const textRows = model.rows.filter(value => value.index === row.index);
+  const tableRows = model.rows.filter(value => value.index === auxiliary.ownerRowIndex);
+  if (textRows.length !== 1 || textRows[0] !== row || tableRows.length !== 1 || tableRows[0] !== table
+      || row === table || !row.part || !table.part
+      || row.index !== target.rowIndex || row.primaryId !== target.primaryId
+      || row.part.name !== target.symbol || row.part.file !== target.originalAssembly
+      || row.part.sha256 !== target.originalAssemblySha256 || row.part.chunkIndex !== target.chunkIndex
+      || table.primaryId !== auxiliary.ownerPrimaryId || table.part.chunkIndex !== auxiliary.ownerChunkIndex
+      || table.part.name !== auxiliary.ownerSymbol || table.part.file !== auxiliary.ownerOriginalAssembly
+      || table.part.sha256 !== auxiliary.ownerOriginalAssemblySha256
+      || table.bytes !== auxiliary.ownerSectionBytes || table.romStart !== auxiliary.ownerRomStartNumber
+      || table.romEndExclusive !== auxiliary.ownerRomEndNumber
+      || slice.vramStart !== auxiliary.ownerVramStartNumber || slice.vramEndExclusive !== auxiliary.ownerVramEndNumber
+      || slice.vramStart + table.part.symbolByteOffset !== auxiliary.ownerSymbolVram) {
+    fail('retained auxiliary loader accepted owner binding');
+  }
+  // Recompute authority on every invocation; a shared ID is only a pairing hint.
+  const slabs = validateNonDescriptorLoadSlabs(model.config, model.overlays);
+  if (!sameJson(slabs, model.nonDescriptorLoadSlabs)) fail('retained auxiliary loader model/config drift');
+  const matches = slabs.filter(slab => slab.id === slice.loadSlabId);
+  if (matches.length !== 1 || matches[0].kind !== 'loader-dma') fail('retained auxiliary loader slab is unsupported');
+  const slab = matches[0];
+  for (const [owner, executable] of [[row, true], [table, false]]) {
+    if (!Number.isSafeInteger(owner.bytes) || owner.bytes <= 0
+        || owner.bytes !== owner.romEndExclusive - owner.romStart) fail('retained auxiliary loader owner extent');
+    let cursor = owner.romStart;
+    for (const part of owner.slices) {
+      if (['romStart', 'romEndExclusive', 'vramStart', 'vramEndExclusive', 'bytes']
+          .some(key => !Number.isSafeInteger(part[key]))
+          || part.bytes <= 0 || part.romStart !== cursor
+          || part.bytes !== part.romEndExclusive - part.romStart
+          || part.bytes !== part.vramEndExclusive - part.vramStart
+          || part.placementKind !== 'non-descriptor-load-slab' || part.loadSlabId !== slab.id
+          || part.overlayDescriptorId !== null || part.overlaySection !== null || part.executable !== executable
+          || part.romStart < slab.romStart || part.romEndExclusive > slab.romEndExclusive
+          || part.vramStart < slab.vramStart || part.vramEndExclusive > slab.vramEndExclusive
+          || part.vramStart !== slab.vramStart + part.romStart - slab.romStart
+          || part.vramEndExclusive !== slab.vramStart + part.romEndExclusive - slab.romStart) {
+        fail('retained auxiliary loader complete owner coverage/placement');
+      }
+      cursor = part.romEndExclusive;
+    }
+    if (cursor !== owner.romEndExclusive) fail('retained auxiliary loader incomplete owner');
+  }
+}
+
 function validateRetainedAuxiliaryComposition(target) {
   if (!target.row?.retainedPadding || !target.auxiliarySections.length) return;
+  if (!target.model || !Array.isArray(target.model.rows)
+      || target.model.rows.some(row => !row || typeof row !== 'object')) fail('retained auxiliary model rows are malformed');
   const edge = require('./phase7_conventional').retainedPaddingSlices(target.row);
   const functions = target.compilerTextFunctions;
   const auxiliary = target.auxiliarySections[0];
@@ -1334,9 +1400,7 @@ function validateRetainedAuxiliaryComposition(target) {
       || functions[0].binding !== 'GLOBAL' || functions[0].offsetNumber !== 0
       || functions[0].bytes !== edge.body.bytes || target.bytes !== edge.body.bytes
       || target.auxiliarySections.length !== 1 || !table || table.slices.length !== 1
-      || edge.body.placementKind !== 'overlay' || slice?.placementKind !== 'overlay'
-      || edge.body.overlayDescriptorId === null || slice.overlayDescriptorId !== edge.body.overlayDescriptorId
-      || !auxiliaryPlacementPair(target.model, edge.body, slice)
+      || !slice
       || auxiliary.romStartNumber < table.romStart || auxiliary.romEndNumber > table.romEndExclusive
       || auxiliary.vramStartNumber !== slice.vramStart + auxiliary.romStartNumber - table.romStart
       || auxiliary.vramEndNumber !== slice.vramStart + auxiliary.romEndNumber - table.romStart
@@ -1355,6 +1419,12 @@ function validateRetainedAuxiliaryComposition(target) {
         || parseNumber(r.addend, 'table destination') < 0
         || parseNumber(r.addend, 'table destination') + 4 > target.bytes)) {
     fail('retained padding ordinary auxiliary composition drift');
+  }
+  if (edge.body.placementKind === 'overlay' && slice.placementKind === 'overlay') {
+    if (edge.body.overlayDescriptorId === null || slice.overlayDescriptorId !== edge.body.overlayDescriptorId
+        || !auxiliaryPlacementPair(target.model, edge.body, slice)) fail('retained padding ordinary auxiliary composition drift');
+  } else {
+    validateRetainedLoaderAuxiliary(target, table, slice);
   }
 }
 
@@ -2088,6 +2158,9 @@ function loadActiveTargetModelInternal(options, deferFinish) {
   };
   inputSet.bind(phase8, inputs);
   for (const target of targets) inputSet.bind(target, inputs);
+  multiOwnerInterfaceOrigins.set(phase8, { targets, model, contracts: multiOwnerContracts,
+    identity: phase8.multiOwnerConfigIdentity, linkSymbols: phase8.linkSymbols });
+  logicalSupport.bindMultiOwnerPhysicalInterfaces(phase8);
   fixedEntryBindingOrigins.set(phase8, { registry: logicalRegistry, targets, model, linkSymbols: reviewedLinkage.linkSymbols });
   logicalSupport.bindFixedEntryInterfaces(phase8,logicalRegistry,assemblySource);
   preparedModelSources.set(phase8, { model, cache: rowSymbolSourceCache,
@@ -2108,7 +2181,7 @@ function loadActiveTargetModelForContext(options = {}) { inputSet.assertProducti
 
 module.exports = {
   workbenchView, loadActiveTargetModelForResearch,
-  consumeFixedEntryBindingOrigin,
+  consumeFixedEntryBindingOrigin, consumeMultiOwnerInterfaceBindingOrigin,
   legacyComparisonView,
   CONFIG_PATH,
   LINKAGE_CONFIG_PATH,

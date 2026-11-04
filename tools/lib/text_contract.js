@@ -24,6 +24,7 @@ function measureEvidence(name, callback) {
 }
 const derivedInputs = new WeakMap();
 const physicalInterface = target => require('./logical_functions').physicalInterface(target);
+const multiOwnerPhysicalInterface = target => require('./logical_functions').multiOwnerPhysicalInterface(target);
 const artifactSnapshots = new WeakMap();
 function freezeEvidence(value) {
   if (!value || typeof value !== 'object' || Buffer.isBuffer(value)) return value;
@@ -180,8 +181,9 @@ function textContractShape(target) {
   return {
     ...(native?.schemaVersion===2 ? {nativeTextTailSchemaVersion:2} : {}),
     ...(target.retainedLiteralReferences ? {retainedLiteralReferences:target.retainedLiteralReferences,retainedLiteralBinding:target.retainedLiteralBinding,literalImplementationSha256:sha256File(require.resolve('./retained_literal_references'))} : {}),
-    schemaVersion: target.retainedLiteralReferences ? 3 : physicalInterface(target) ? 2 : 1, mode: physicalInterface(target) ? 'native-with-derived-physical-interface' : native ? 'native-text-tail' : 'section-assigned',
+    schemaVersion: multiOwnerPhysicalInterface(target) ? 4 : target.retainedLiteralReferences ? 3 : physicalInterface(target) ? 2 : 1, mode: multiOwnerPhysicalInterface(target) ? 'native-split-then-append-multi-owner-interface' : physicalInterface(target) ? 'native-with-derived-physical-interface' : native ? 'native-text-tail' : 'section-assigned',
     ...(physicalInterface(target)?{physicalInterface:{...physicalInterface(target),implementationSha256:sha256File(require.resolve('./elf_text_split'))}}:{}),
+    ...(multiOwnerPhysicalInterface(target) ? { multiOwnerPhysicalInterface: multiOwnerPhysicalInterface(target) } : {}),
     owners: owners.map((owner) => ({
       rowIndex: owner.rowIndex, primaryId: owner.primaryId, logicalOffset: owner.logicalOffset,
       inputSection: native ? native.inputSection : owner.sectionName, outputSection: owner.sectionName,
@@ -459,7 +461,7 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const contract = resolveTextContract(target), native = Boolean(target.nativeTextTail);
   // Projection also authenticates retained model bindings; leave that uncommon
   // path fresh rather than memoizing a partial projection/model contract.
-  const memoKey = objectMemo && !physicalInterface(target) && !target.auxiliaryProjection && !target.retainedLiteralReferences
+  const memoKey = objectMemo && !multiOwnerPhysicalInterface(target) && !physicalInterface(target) && !target.auxiliaryProjection && !target.retainedLiteralReferences
     ? hash({ target: require('./diff_object_cache').projectTargetContract(target), contract, artifacts }) : null;
   if (memoKey && objectMemo.has(memoKey)) return objectMemo.get(memoKey);
   const { adjustSectionAssembly, relocationRecords, rawRelocationRecords } = require('./phase8_matching_c');
@@ -482,6 +484,19 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
       nativeObjectSha256:artifacts.unsplitAssemblerObject.sha256,derivedObjectSha256:artifacts.rawObject.sha256,
       nativeFunctions:functionCensus(nativeElf,nativeElf.sections.filter(s=>s.name===target.sectionName)),
       nativeRelocations:rawRelocationRecords(nativeElf),nativeSymbolCount:result.nativeSymbolCount,interfaceSymbolIndex:result.interfaceSymbolIndex};
+  }
+  let multiOwnerPhysicalEvidence = null;
+  if (multiOwnerPhysicalInterface(target)) {
+    if (!buffers.unsplitAssemblerObject || !artifacts.unsplitAssemblerObject) fail('multi-owner physical interface native artifact missing');
+    const result = require('./phase8_matching_c').projectMultiOwnerPhysicalInterface(buffers.unsplitAssemblerObject, target);
+    if (!result.buffer.equals(buffers.rawObject)) fail('multi-owner physical interface deterministic reconstruction');
+    require('./phase8_matching_c').verifyMultiOwnerPhysicalInterface(stripped, target);
+    multiOwnerPhysicalEvidence = { schemaVersion: 1, kind: 'split-then-append-multi-owner-physical-interface',
+      descriptor: contract.multiOwnerPhysicalInterface, nativeObjectSha256: artifacts.unsplitAssemblerObject.sha256,
+      splitIntermediateSha256: result.splitIntermediateSha256, derivedObjectSha256: artifacts.rawObject.sha256,
+      appendInputSymbolCount: result.nativeSymbolCount, interfaceSymbolIndex: result.interfaceSymbolIndex,
+      nativeFunctions: result.nativeFunctions, splitFunctions: result.splitFunctions,
+      normalizedRelocations: result.normalizedRelocations };
   }
   let literalEvidence=null;
   if(target.retainedLiteralReferences){
@@ -509,11 +524,12 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const loadSections = new Set([...contract.owners.map((owner) => '.rel' + owner.inputSection), ...(target.auxiliarySections || []).map((section) => '.rel' + section.outputSection)]);
   const tail = tailEvidence(contract, rawOwners, normalizedRelocations);
   tailEvidence(contract, strippedOwners, normalizedRelocations);
-  const evidence = { schemaVersion: literalEvidence ? 18 : physicalEvidence ? 16 : target.atomicText ? 11 : projectionEvidence ? (projectionEvidence.schemaVersion === 6 ? 17 : projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
+  const evidence = { schemaVersion: multiOwnerPhysicalEvidence ? 24 : literalEvidence ? 18 : physicalEvidence ? 16 : target.atomicText ? 11 : projectionEvidence ? (projectionEvidence.schemaVersion === 6 ? 17 : projectionEvidence.schemaVersion === 3 ? 8 : projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
     ...(target.atomicText ? {atomicUnion:require('./atomic_owner_union').evidence(target,buffers,artifacts,files)} : {}),
     ...(nativeSingleOwner ? {nativeSingleOwner} : {}),
     ...(literalEvidence ? {retainedLiteralReferences:literalEvidence} : {}),
     ...(physicalEvidence ? {physicalInterface:physicalEvidence,rawObjectRole:'derived-physical-interface',nativeArtifactRole:'unsplitAssemblerObject'} : {}),
+    ...(multiOwnerPhysicalEvidence ? { multiOwnerPhysicalInterface: multiOwnerPhysicalEvidence, rawObjectRole: 'split-then-appended-physical-interface', nativeArtifactRole: 'unsplitAssemblerObject' } : {}),
     ...(projectionEvidence ? { auxiliaryProjection: projectionEvidence } : {}), textContractSha256: hash(contract), artifacts,
     rawOwners: rawOwners.map((r) => r.record), strippedOwners: strippedOwners.map((r) => r.record), rawFunctions, strippedFunctions,
     rawRelocations: rawRelocations.filter((r) => loadSections.has(r.section)), normalizedRelocations,
@@ -574,7 +590,7 @@ function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvid
   });
   auxiliaryProjection.validateOccurrenceObject(elf,target,true);
   const functions = functionCensus(elf, records.map((record) => record.section), true);
-  if(physicalInterface(target)) require('./phase8_matching_c').verifyCompilerTextFunctions(elf,target,records[0].section,true);
+  if(physicalInterface(target) || multiOwnerPhysicalInterface(target)) require('./phase8_matching_c').verifyCompilerTextFunctions(elf,target,records[0].section,true);
   if ((target.nativeTextTail || target.compilationGroup) && !same(functions, contract.compilerTextFunctions)) fail('linked native function census');
   const tail = tailEvidence(contract, records, objectEvidence.normalizedRelocations);
   if (tail && !records[0].bytes.subarray(tail.offset).equals(canonicalBaserom.subarray(target.romStartNumber + tail.offset, target.romEndNumber))) fail('linked retail tail mismatch');

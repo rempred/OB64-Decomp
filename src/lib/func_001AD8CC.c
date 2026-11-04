@@ -17,13 +17,13 @@ u8 func_001AD8CC(u16 item, u8 member, s32 group)
                 eligible = current < CHARACTER_HALF(member, 0x16);
         } else {
             u8 segments = func_00040FF4(0, member);
-            u16 total = D_80190F82[0];
+            u16 total = D_80190F82.entries[0];
             u16 third = total / 3;
             s32 maximum = third * segments;
             u16 current;
             if (segments == 3)
                 maximum += (u16)(total % 3);
-            current = D_80190F82[member - 99];
+            current = D_80190F82.entries[member - 99];
             eligible = 0;
             if (current != 0 && !(*(u8 *)(0x80191010U + member) & 4))
                 eligible = current < maximum;

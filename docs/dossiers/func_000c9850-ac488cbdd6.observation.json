@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AC488CBDD6C8B762DAA575FCD67E6C72E1840CD5F9EB9B0CBC38E1B98831CF27",
+  "observationId": "E10B770669905507832FAC70E51A56A4952E7FB1085FC9F8203DD28D50564A5A",
+  "symbol": "func_000c9850",
+  "authored": {
+    "context": "Complete independently reconstructed func_000c9850 producer, historical worker experiment167. Original candidate identity 03D31FC8625B6824A6AEB76F5008BEFCC19E2C168293EB46896A125C568DA4A0. Full source context is preserved; private score/REL masks are diagnostic only. Canonical source now has combined-wave acceptance, but this intermediate does not inherit it.",
+    "effects": [
+      "register-allocation",
+      "variable-lifetime",
+      "operand-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1361D8A9F65172729232EAF2DF9DF2D687C845066CF08BE331F7A02B09AF88E9",
+      "sourceSha256": "B248B241B536AB67CC2A6BB63C6154B02EDC4904B375821B7B238D75EDA6D746"
+    },
+    "label": "c01-value-and-address-phases-167",
+    "observedEffect": "149->154 shares item across selector/single/group phases;158 is the unsigned member-address control for167, whose group-local u16 copy removes11 saved-register differences.173 adds literal group mode (plus unsigned word addressing),179 a complete effect-record base,181 staged squad/shared-value bases,185 staged per-access group addresses. Worker reports7/3/5 and final member-load differences resolved at these stages; residual clear-base differences remain in185. Canonical C is the final example, not another186/187 archive.",
+    "parentCandidateId": "9E0BC0FF850BDC02AFA687F227F03372372AE53E6A342BE30A6A562412ABFE6E",
+    "references": [
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/value-and-address-phases/c9850-167.json",
+        "sha256": "484535FD9095A3643C85C0AF2AFFC77EB03306CDFAF1B0BEB9DD7D0EDD01932D"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/complete-wave-handoff.md",
+        "sha256": "DDD9EBBCD1AD64E4F94E190C6BC499CDE84E865D1B4A77C213481C910DCF0397"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/c9850-coverage-frame-update.md",
+        "sha256": "644AB9C2E059920D7711D5508B0E5CEAA8D52F6CEFFDCB31EF153563AE6BE769"
+      },
+      {
+        "path": "build/integration/consumables/c01-closeout/retained-research/value-and-address-phases/c9850-158.json",
+        "sha256": "79AC25E901EAC8466384F7F5F19E38052B5BFA15DC4367E469759AB0A21BC758"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Historical intermediate, not the accepted final source. Source/interface, provider and layout reconciliation differs from canonical C; historical reports are not upgraded. Full-controller coverage erratum applies to earlier drafts; these selected controller controls follow its correction. Canonical final examples are src/lib/func_000c4650.c and src/lib/func_000c9850.c.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve real item lifetimes, group-local u16 use, literal mode stores and complete effect/member/clear address phases."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 19508,
+      "sha256": "1361D8A9F65172729232EAF2DF9DF2D687C845066CF08BE331F7A02B09AF88E9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B248B241B536AB67CC2A6BB63C6154B02EDC4904B375821B7B238D75EDA6D746"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-04-func_000c9850-ac488cbdd6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

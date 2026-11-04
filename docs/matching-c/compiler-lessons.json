@@ -344,8 +344,8 @@
         "register-allocation",
         "opcode-or-expression"
       ],
-      "applicability": "E08 B4A0/C3DC separate real initial/reloaded entries and case cursors; intermediates still fail. E03 C90 separates index+1 from loop update; 2730/2910 traverse globals in a for update. Typed incoming 2730 parameters fix copies lost by an opaque argument/local alias. Preserve C89 scope, complete paths and controls; worse intermediates do not disprove structure or establish acceptance.",
-      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-real-loop-definitions-and-path-increments",
+      "applicability": "C01 controller101->107 isolates moving output+=2 after the executor call. E08 B4A0/C3DC and E03 C90/2730/2910 retain real initial/reloaded entries, cursor phases and typed incoming parameters. Keep complete C89 scopes and controls; intermediate shape improvements do not establish acceptance or disprove other structures.",
+      "note": "docs/matching-c/c01-consumable-reuse.md#increment-after-the-real-call",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
         "docs/dossiers/func_0025B4A0-b10c7e8fe0.md",
@@ -364,8 +364,8 @@
           "path": "docs/dossiers/func_00262730-ee0b0d69ce.observation.json"
         },
         {
-          "symbol": "func_00262910",
-          "path": "docs/dossiers/func_00262910-282790eee6.observation.json"
+          "symbol": "func_000c9850",
+          "path": "docs/dossiers/func_000c9850-5ca6316860.observation.json"
         }
       ]
     },
@@ -462,8 +462,8 @@
         "register-allocation",
         "scheduling-or-block-order"
       ],
-      "applicability": "Allocation starts before delay filling. D14C's guard-local controls remain nonmatching; the resource-context branch-local index restores 428 bytes versus early-index 424. In LZSS AC0C, branch-local promoted byte/offset, shifts through existing len and decoded-word/working-byte separation remove 16 nonrelocated differences at 804 bytes. Preserve real consumers, widths and guards. These context-bound research pairs are not complete-owner acceptance or universal register recipes.",
-      "note": "docs/dossiers/func_0022D14C-cf36d3de05.md#source-context",
+      "applicability": "C01 cap-exit controls restore delay-slot shape; canonical C supplies the last/default merge.03->39 includes prior pointer/control changes. D14C, resource-context and LZSS controls retain guard-local indices and real byte/word consumers. Allocation precedes delay filling; none of these context-specific pairs establishes a universal register recipe.",
+      "note": "docs/matching-c/c01-consumable-reuse.md#cap-exits-and-the-final-default-merge",
       "references": [
         "docs/dossiers/func_0022D14C-5fa0215a89.md",
         "docs/dossiers/boot_resource_node_context_materialize-f424609055.md",
@@ -482,8 +482,8 @@
           "path": "docs/dossiers/func_0022D14C-cf36d3de05.observation.json"
         },
         {
-          "symbol": "boot_resource_node_context_materialize",
-          "path": "docs/dossiers/boot_resource_node_context_materialize-8f262b64ca.observation.json"
+          "symbol": "func_000c4650",
+          "path": "docs/dossiers/func_000c4650-79bf6a264b.observation.json"
         }
       ]
     },
@@ -573,8 +573,8 @@
         "register-allocation",
         "scheduling-or-block-order"
       ],
-      "applicability": "C02 A9290 compares branch-local window mutation, a six-slot pointer-array view and conditional clamp forms in complete intermediate producers; reload/allocation effects remain context dependent. Read the paired sources and remaining failures. The older 23A5EC source-context lead remains linked, but its drifted canonical reference is not authenticated. No universal aliasing, volatile or allocator rule follows.",
-      "note": "docs/matching-c/c02-scenario-reuse.md#branch-local-window-store",
+      "applicability": "C01 nonvolatile repeated-field controls72/89/90/91 restore rereads lost during first CSE, then alter join direction. C02 A9290 retains branch-local mutation and array-view comparisons. The older23A5EC drifted canonical reference remains unauthenticated. Preserve full paths and controls; no universal aliasing or volatile rule follows.",
+      "note": "docs/matching-c/c01-consumable-reuse.md#repeated-field-expressions-and-rereads",
       "references": [
         "docs/dossiers/func_0023A5EC-9683d35159.md",
         "docs/matching-c/c02-scenario-reuse.md"
@@ -589,8 +589,8 @@
           "path": "docs/dossiers/func_001A9290-d73671b576.observation.json"
         },
         {
-          "symbol": "func_001A9290",
-          "path": "docs/dossiers/func_001A9290-57e02a5589.observation.json"
+          "symbol": "func_000c9850",
+          "path": "docs/dossiers/func_000c9850-bc62651082.observation.json"
         }
       ]
     },
@@ -631,8 +631,8 @@
       "symptoms": [
         "register-allocation"
       ],
-      "applicability": "E08 E7AC, E09 700B0 and P07 728C0 change distinct real result lifetimes/accesses; P07 remains nonexact. E03 DA8/2910 use inline allocators returning actual payload/task addresses without emitted helpers. Preserve initialization, list/callback work, required reloads and exact controls. Earlier allocation examples remain linked; no universal allocation recipe follows.",
-      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-allocator-lifetimes",
+      "applicability": "C01 controller158->167 isolates a real group-local u16 copy;149/154 and173/179/181/185 retain item/address phases, with canonical C as final. E08 E7AC, E09 700B0, P07 728C0 and E03 DA8/2910 retain distinct result/access and inline allocator contexts. Preserve actual operations, reloads and complete controls; no universal allocation recipe follows.",
+      "note": "docs/matching-c/c01-consumable-reuse.md#value-lifetimes-and-complete-address-phases",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
         "docs/dossiers/func_0024E7AC-d44a25d331.md",
@@ -651,8 +651,8 @@
           "path": "docs/dossiers/func_00261DA8-d4c4f7315c.observation.json"
         },
         {
-          "symbol": "func_00262910",
-          "path": "docs/dossiers/func_00262910-282790eee6.observation.json"
+          "symbol": "func_000c9850",
+          "path": "docs/dossiers/func_000c9850-4139c6fd25.observation.json"
         }
       ]
     },
@@ -662,8 +662,8 @@
         "stack-layout-or-offset-family",
         "load-store-width-or-signedness"
       ],
-      "applicability": "E08 D180 shares one real basis workspace across mutually exclusive paths and switches on the word selector. Its measured frame and body shrink, but the pair combines both source changes and does not isolate either cause. Keep all cases and actual workspace uses. Earlier scalar-frame and genuine-aggregate counterexamples remain linked; frame size alone proves neither original declarations nor a compiler mechanism.",
-      "note": "docs/matching-c/e08-e09-p07-reuse.md#shared-real-workspace",
+      "applicability": "C01 controller46->52 uses a block-local s16 scalar to change frame48->56 without fake padding, within its historical volatile-pointer context. E08 D180 shares real workspace and changes the selector, so that pair does not isolate either cause. Keep complete scalar/aggregate controls; frame size alone proves neither original declarations nor a compiler mechanism.",
+      "note": "docs/matching-c/c01-consumable-reuse.md#narrow-scalar-frame-control",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
         "docs/dossiers/func_0024D180-af095ff86e.md"
@@ -672,6 +672,14 @@
         {
           "symbol": "func_0024D180",
           "path": "docs/dossiers/func_0024D180-af095ff86e.observation.json"
+        },
+        {
+          "symbol": "func_000c9850",
+          "path": "docs/dossiers/func_000c9850-14fdf597db.observation.json"
+        },
+        {
+          "symbol": "func_000c9850",
+          "path": "docs/dossiers/func_000c9850-612eb8fb37.observation.json"
         }
       ]
     },
@@ -683,8 +691,8 @@
         "opcode-or-expression",
         "scheduling-or-block-order"
       ],
-      "applicability": "C02 A9290 conditional clamps restore two gain copies and the 9372-byte extent in an intermediate; other scheduling/allocation differences remain. Earlier E08/E09 selector/mask controls and P06 constructed flags/inactive-exit controls remain linked. Compare complete producers, widths and branch behavior; mechanical PURE_C or matching output does not establish original syntax or a universal expression rule.",
-      "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-conditional-expression-shape",
+      "applicability": "C01 controller131->137 combines branch-assigned u16 adjustment and comparison spelling; do not isolate one cause. C02 A9290 conditional clamps restore gain copies in an intermediate. Earlier E08/E09/P06 selectors, masks and flags remain linked. Compare complete producers and widths; matching output does not prove original syntax or a universal expression rule.",
+      "note": "docs/matching-c/c01-consumable-reuse.md#branch-assigned-bounded-index",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
         "docs/dossiers/func_0024BCE8-5083527c70.md",
@@ -703,8 +711,8 @@
           "path": "docs/dossiers/func_00278560-649fb1bd40.observation.json"
         },
         {
-          "symbol": "func_00275EE0",
-          "path": "docs/dossiers/func_00275EE0-a53e564e26.observation.json"
+          "symbol": "func_000c9850",
+          "path": "docs/dossiers/func_000c9850-013fca8b72.observation.json"
         }
       ]
     },

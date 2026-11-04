@@ -152,6 +152,82 @@ function loadRegistry(model, baserom, config, assemblySource = null) {
 }
 
 const interfaceRows = new WeakMap();
+// Ordinary complete multi-owner producers have a separate authority and proof
+// from retained-padding interfaces. Serialized descriptors never grant access.
+const multiOwnerInterfaces = new WeakMap();
+const ownerIdentity = owner => { const { row, ...fields } = owner; return fields; };
+const multiOwnerIdentity = target => JSON.stringify({
+  symbol: target.symbol, source: target.source, sourceSha256: target.sourceSha256,
+  rowIndex: target.rowIndex, primaryId: target.primaryId, sectionName: target.sectionName,
+  originalAssembly: target.originalAssembly, originalAssemblySha256: target.originalAssemblySha256,
+  bytes: target.bytes, romStartNumber: target.romStartNumber, romEndNumber: target.romEndNumber,
+  vramStartNumber: target.vramStartNumber, vramEndNumber: target.vramEndNumber,
+  textOwners: target.textOwners.map(ownerIdentity), compilerTextFunctions: target.compilerTextFunctions,
+  compilerTextFunctionsExplicit: target.compilerTextFunctionsExplicit, multiOwner: target.multiOwner,
+  excluded: [target.compilationGroup, target.compilationGroupId, target.atomicText, target.nativeTextTail,
+    target.auxiliaryProjection, target.retainedLiteralReferences, target.physicalInterface],
+});
+function bindMultiOwnerPhysicalInterfaces(phase8) {
+  require('./active_targets').consumeMultiOwnerInterfaceBindingOrigin(phase8);
+  const names = new Set([...Object.keys(phase8.linkSymbols), ...phase8.targets.flatMap(target =>
+    [target.symbol, ...target.compilerTextFunctions.map(fn => fn.symbol)])]);
+  for (const [index, target] of phase8.targets.entries()) {
+    if (!target.multiOwner || target.textOwners[0]?.symbol === target.symbol) continue;
+    const contract = phase8.multiOwnerContracts.get(target.symbol.toLowerCase());
+    const fn = target.compilerTextFunctions[0];
+    if (!contract || target.model !== phase8.model || target.multiOwnerContract !== contract
+        || contract.symbol !== target.symbol || target.rows !== contract.rows || target.rows.length < 2
+        || target.row !== target.rows[0] || target.textOwners.length !== contract.owners.length
+        || target.compilerTextFunctionsExplicit !== false || target.compilerTextFunctions.length !== 1
+        || fn.symbol !== target.symbol || fn.offsetNumber !== 0 || Number(fn.offset) !== 0
+        || fn.bytes !== target.bytes || target.bytes !== contract.bytes || fn.binding !== 'GLOBAL' || fn.entryEvidence !== 'owner'
+        || target.compilationGroup || target.compilationGroupId || target.atomicText || target.nativeTextTail
+        || target.auxiliaryProjection || target.retainedLiteralReferences || target.physicalInterface
+        || target.rows.some(row => row.retainedPadding)
+        || target.textOwners.some((owner, i) => owner.row !== contract.rows[i]
+          || JSON.stringify(ownerIdentity(owner)) !== JSON.stringify(ownerIdentity(contract.owners[i])))
+        || target.textOwners.some(owner => names.has(owner.symbol))) fail('multi-owner physical interface binding drift/collision');
+    const head = target.textOwners[0];
+    const descriptor = { schemaVersion: 1, kind: 'canonical-multi-owner-physical-interface',
+      symbol: head.symbol, primary: target.symbol, rowIndex: head.rowIndex, sectionName: head.sectionName,
+      originalAssembly: head.originalAssembly, originalAssemblySha256: head.originalAssemblySha256,
+      logicalBytes: target.bytes, owners: target.textOwners.map(owner => ({ rowIndex: owner.rowIndex,
+        sectionName: owner.sectionName, symbol: owner.symbol, bytes: owner.bytes })) };
+    const descriptorJson = JSON.stringify(descriptor);
+    const rows = target.rows.map(row => ({ row, index: phase8.model.rows.indexOf(row), identity: JSON.stringify(row) }));
+    if (rows.some(record => record.index < 0)) fail('multi-owner physical interface accepted row missing');
+    multiOwnerInterfaces.set(target, Object.freeze({ phase8, index, targets: phase8.targets, model: phase8.model,
+      contracts: phase8.multiOwnerContracts, contract, contractIdentity: JSON.stringify(contract), rows,
+      targetRows: target.rows, targetIdentity: multiOwnerIdentity(target), descriptorJson,
+      configIdentity: phase8.multiOwnerConfigIdentity, configJson: JSON.stringify(phase8.multiOwnerConfigIdentity),
+      linkSymbols: phase8.linkSymbols, linkJson: JSON.stringify(phase8.linkSymbols) }));
+    target.multiOwnerPhysicalInterface = JSON.parse(descriptorJson);
+  }
+}
+function multiOwnerPhysicalInterface(target) {
+  const state = multiOwnerInterfaces.get(target);
+  if (!state) {
+    if (target.multiOwnerPhysicalInterface || (target.compilerTextFunctions
+        && (target.multiOwner || target.multiOwnerContract || target.textOwners?.length > 1)
+        && (target.row?.part?.name !== target.symbol || target.textOwners?.[0]?.symbol !== target.symbol))) {
+      fail('multi-owner physical interface authority missing');
+    }
+    return null;
+  }
+  const { phase8 } = state;
+  if (phase8.targets !== state.targets || phase8.targets[state.index] !== target || target.model !== state.model
+      || phase8.model !== state.model || phase8.multiOwnerContracts !== state.contracts
+      || state.contracts.get(target.symbol.toLowerCase()) !== state.contract || target.multiOwnerContract !== state.contract
+      || target.rows !== state.targetRows || state.contract.rows !== state.targetRows || target.row !== state.rows[0].row
+      || state.rows.some((record, i) => state.model.rows[record.index] !== record.row
+        || target.rows[i] !== record.row || target.textOwners[i]?.row !== record.row
+        || state.contract.owners[i]?.row !== record.row || JSON.stringify(record.row) !== record.identity)
+      || JSON.stringify(state.contract) !== state.contractIdentity || multiOwnerIdentity(target) !== state.targetIdentity
+      || phase8.multiOwnerConfigIdentity !== state.configIdentity || JSON.stringify(state.configIdentity) !== state.configJson
+      || phase8.linkSymbols !== state.linkSymbols || JSON.stringify(state.linkSymbols) !== state.linkJson
+      || JSON.stringify(target.multiOwnerPhysicalInterface) !== state.descriptorJson) fail('multi-owner physical interface authority drift');
+  return JSON.parse(state.descriptorJson);
+}
 function bindPhysicalInterfaces(targets, registry, linkSymbols) {
   for (const target of targets.filter(t => t.row?.retainedPadding)) {
     const bound = assertRetainedPaddingProducer(registry, target.row, target.symbol, target.compilerTextFunctions);
@@ -421,3 +497,6 @@ function fixedEntryInterfaces(target){
   return state.records.map(record=>fixedEntryInterface(target,record.name));
 }
 Object.assign(module.exports,{bindFixedEntryInterfaces,fixedEntryInterface,fixedEntryInterfaces});
+
+module.exports.bindMultiOwnerPhysicalInterfaces = bindMultiOwnerPhysicalInterfaces;
+module.exports.multiOwnerPhysicalInterface = multiOwnerPhysicalInterface;

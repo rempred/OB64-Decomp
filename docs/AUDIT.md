@@ -1,4 +1,4 @@
-# OB64 Decomp — Structural Audit
+# OB64 Decomp â€” Structural Audit
 
 ## Purpose
 
@@ -29,7 +29,7 @@ Run the structural audit when changing or accepting changes to:
 - Splat segmentation or owner rows;
 - function/data boundaries;
 - executable extent;
-- overlay descriptors or ROM↔VRAM mapping;
+- overlay descriptors or ROMâ†”VRAM mapping;
 - linker script/layout generation;
 - accepted structural symbol ownership;
 - source-ownership/coverage rules;
@@ -179,7 +179,12 @@ activates a source target or accepts an unfinished matching wave.
 
 A sole complete GLOBAL body with registered original terminal ASM may compose with
 one ordinary switch-table fragment in a shared readonly row under the same overlay
-descriptor. Preserve the complete ordered row, original fallback, explicit C/ASM
+descriptor, or in one unique accepted `loader-dma` slab. The loader alternative
+independently binds both complete physical rows and their original assembly identities,
+recomputes accepted slab configuration, and proves contiguous affine ROM/VRAM coverage
+including the ASM suffix and all surrounding table-row bytes. Equal slab IDs alone
+are insufficient; boot/unknown slabs and partial-owner containment are rejected.
+Preserve the complete ordered row, original fallback, explicit C/ASM
 selectors, retained neighbors and all existing relocation/placement checks. The
 fragment retains its whole native section, including only minimal terminal alignment
 zeros; no projection or discarded bytes are implied.
@@ -254,9 +259,9 @@ A good structural review is:
 
 ```text
 what structural claim changed?
-→ what direct evidence supports it?
-→ what test would falsify it?
-→ does the full baseline/current rebuild remain exact?
+â†’ what direct evidence supports it?
+â†’ what test would falsify it?
+â†’ does the full baseline/current rebuild remain exact?
 ```
 
 ---
@@ -344,7 +349,7 @@ The separately gated interior-run composition uses schemas 9/13/6. Authenticate
 both immediately adjacent original accepted neighbours and every complete member
 against source and ROM, with unchanged overlay placement and no original padding
 boundary. Actual `.align 2` entries justify output alignment 4; native alignment 16
-remains visible. Only the minimal authenticated 0–12-byte subset-compilation tail
+remains visible. Only the minimal authenticated 0â€“12-byte subset-compilation tail
 may be omitted, with no symbol, relocation, effective address, decoded control
 edge or executable fallthrough reaching it. No original owner receives that span.
 Conservative ambiguous boundary or unsupported indirect-control forms reject.

@@ -6435,6 +6435,22 @@
     {
       "symbol": "func_001AD8CC",
       "source": "src/lib/func_001AD8CC.c"
+    },
+    {
+      "symbol": "func_00041098",
+      "source": "src/lib/func_00041098.c"
+    },
+    {
+      "symbol": "func_00040FF4",
+      "source": "src/lib/func_00040FF4.c"
+    },
+    {
+      "symbol": "func_000c4650",
+      "source": "src/lib/func_000c4650.c"
+    },
+    {
+      "symbol": "func_000c9850",
+      "source": "src/lib/func_000c9850.c"
     }
   ]
 }

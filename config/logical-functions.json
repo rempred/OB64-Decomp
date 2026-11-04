@@ -123,6 +123,12 @@
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
     },
     {
+      "romStart": 805436,
+      "romEndExclusive": 805440,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original return and delay slot end at ROM 0x000C4A3C; the following four zero bytes remain executable original ASM. Complete native C body and ten-entry readonly table are separately bound; no historical padding origin or absence of numeric/runtime references is claimed."
+    },
+    {
       "romStart": 852852,
       "romEndExclusive": 852864,
       "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
@@ -3297,6 +3303,34 @@
           "loadSlabId": "loader-dma-00087200",
           "file": "asm/original/rev0/lib/func_000ba2b4.s",
           "sha256": "A597B8BC7E0710156E48CFB908798434595F1A32F89B12890BB1C5225EDF8858"
+        }
+      ]
+    },
+    {
+      "romStart": 804432,
+      "romEndExclusive": 805436,
+      "symbol": "func_000c4650",
+      "aliases": [],
+      "expectedBytesSha256": "AA294CAE373A1C436488B1839F9A9EE46184F8CDA662CABC8D0EFE76E05B35F9",
+      "evidence": {
+        "caseId": "c01-row1831-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original return and delay slot end at ROM 0x000C4A3C; the following four zero bytes remain executable original ASM. Complete native C body and ten-entry readonly table are separately bound; no historical padding origin or absence of numeric/runtime references is claimed."
+      },
+      "fragments": [
+        {
+          "rowIndex": 1831,
+          "romStart": 804432,
+          "romEndExclusive": 805436,
+          "ownerOffset": 0,
+          "bytes": 1004,
+          "vramStart": 2149415920,
+          "sectionName": ".ob64.r1831.s0",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000c4650.s",
+          "sha256": "8D9C9298ECC3CCEA5816D60A5A960812270A68F882906EE4BB905CCAC7C6FA3C"
         }
       ]
     },

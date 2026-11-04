@@ -15,10 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7300,
-    "splitOwners": 58,
+    "linkSlices": 7301,
+    "splitOwners": 59,
     "overlayReservations": 19,
-    "retainedPaddingCuts": 41,
+    "retainedPaddingCuts": 42,
     "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
@@ -720,6 +720,22 @@
       "compilerFunctions": [
         {
           "symbol": "func_002693C4",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "c01-row1831-terminal",
+      "rowIndex": 1831,
+      "romStart": 805436,
+      "romEndExclusive": 805440,
+      "edge": "terminal",
+      "sourceSha256": "8D9C9298ECC3CCEA5816D60A5A960812270A68F882906EE4BB905CCAC7C6FA3C",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_000c4650",
           "binding": "GLOBAL",
           "entryEvidence": "owner"
         }
