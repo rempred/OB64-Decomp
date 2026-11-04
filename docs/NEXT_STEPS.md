@@ -2,6 +2,21 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Consumable effects — complete November 3
+
+Both waves of the [program](Plans/consumable-effects-program.md) are accepted:
+C01 shared effects and Army use, and C02 scenario use and feedback. Every assigned
+target is PURE_C with exclusive C ownership and exact linked bytes; the combined
+fresh rebuild is byte-identical to canonical Rev 0 at CURRENT `51174C7C`.
+Reviewed tooling, research curation and authorized scratch cleanup are complete.
+Commits `e2086f74` and `fece5b83` are pushed to `origin/main`.
+
+The [Director cursor](Plans/cursors/director.md) records final evidence and ownership
+release. Both matching workers, the integrator and reviewers are retired; their
+assignment watchers are stopped. Required sources, proofs, research and shared
+tools remain protected. No follow-on family is assigned; the cutscene program
+remains a draft.
+
 ## Attack visual effects — complete October 31
 
 The assigned [program](Plans/attack-effects-program-draft/PROGRAM.md) is complete.
@@ -11,10 +26,10 @@ Research publication, bounded compiler-lesson curation, reviewed tooling and aut
 scratch cleanup are complete. Required sources, accepted proofs, selected inputs,
 consultant/review history and retained directories remain protected.
 
-No matching, integration or tooling assignment remains active. Do not resume retired
-workers from old stop events. The [Director cursor](Plans/cursors/director.md) links
-final evidence and records ownership release. Counts remain owned by generated status.
-No follow-on wave, commit or push is assigned; the cutscene program remains a draft.
+No attack-effects assignment remains active. Do not resume its retired workers
+from old stop events. Its final evidence and ownership release are preserved in
+the Director cursor at Git `c6b65db3`. Counts remain owned by generated status.
+The cutscene program remains a draft.
 
 ## Descriptor and record serialization — revised program complete October 26
 

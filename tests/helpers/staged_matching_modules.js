@@ -8,6 +8,9 @@ const ALLOWED=Object.freeze([
   'tests/matching_multi_owner_diagnostic.js',
   'tests/helpers/staged_matching_modules.js',
 ]);
+// Preserve the original exact package shape for existing registered-owner fixtures.
+const CONTINUATION_ALLOWED=Object.freeze([ALLOWED[0], 'tools/lib/matching/target_model.js', ...ALLOWED.slice(1,-1),
+  'tests/matching_continuation_diagnostic.js', ALLOWED[ALLOWED.length-1]]);
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex').toUpperCase();
 const key=p=>path.resolve(p).toLowerCase();
 function plain(file) {
@@ -38,7 +41,8 @@ async function run(packageFile,packageSha,argv,bootstrapFile) {
   plain(packageFile);const packageBytes=fs.readFileSync(packageFile);
   if(hash(packageBytes)!==packageSha)throw Error('staged package identity');
   const pkg=JSON.parse(packageBytes),root=path.resolve(__dirname,'../..'),base=path.dirname(path.resolve(packageFile));
-  if(pkg.schemaVersion!==1||pkg.repository!==root||JSON.stringify(pkg.modules.map(r=>r.id))!==JSON.stringify(ALLOWED))throw Error('staged exact module allowlist');
+  const continuation=JSON.stringify(pkg.modules.map(r=>r.id))===JSON.stringify(CONTINUATION_ALLOWED);
+  if(pkg.schemaVersion!==1||pkg.repository!==root||!continuation && JSON.stringify(pkg.modules.map(r=>r.id))!==JSON.stringify(ALLOWED))throw Error('staged exact module allowlist');
   if(path.resolve(bootstrapFile)!==path.join(base,'bootstrap.js'))throw Error('staged bootstrap path binding');
   sealedFile(bootstrapFile,pkg.bootstrapSha256,'staged bootstrap opening');
   const records=new Map(),identity=[];
@@ -77,7 +81,7 @@ async function run(packageFile,packageSha,argv,bootstrapFile) {
     catch(error){record.state='failed';throw error;}
   };
   try {
-    const entry=Module._load(path.join(root,'tests/matching_multi_owner_diagnostic.js'),module,false);
+    const entry=Module._load(path.join(root,continuation?'tests/matching_continuation_diagnostic.js':'tests/matching_multi_owner_diagnostic.js'),module,false);
     const beforePublish=async()=>{
       for(const record of records.values()) {
         if(record.state!=='loaded')throw Error('staged module was not exercised: '+record.id);
