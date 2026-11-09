@@ -2,6 +2,20 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Body construction and equipment visuals — complete November 9
+
+Both complete owners in the [program](Plans/body-equipment-program.md) are accepted
+matching PURE_C: B02 `func_002AAC60` in `8eaabdfc` and B01 `func_002AB810` in
+`ea3dfaae`. Combined CURRENT `5894EA0E` passes exclusive C ownership, placement,
+relocation, target-byte and fresh complete-ROM gates, including the earlier group
+dependencies. The rebuilt ROM is byte-identical to canonical Rev 0.
+
+Research curation is complete. Director accepted the final handoff and released
+production ownership; all assignment routes are retired and workers remain stopped.
+Required inputs and evidence are preserved. Commits remain local. No follow-on is
+assigned; broader presentation paths and the cutscene draft remain outside this
+completed scope. The [Director cursor](Plans/cursors/director.md) records closeout.
+
 ## Consumable effects — complete November 3
 
 Both waves of the [program](Plans/consumable-effects-program.md) are accepted:
@@ -14,8 +28,8 @@ Commits `e2086f74` and `fece5b83` are pushed to `origin/main`.
 The [Director cursor](Plans/cursors/director.md) records final evidence and ownership
 release. Both matching workers, the integrator and reviewers are retired; their
 assignment watchers are stopped. Required sources, proofs, research and shared
-tools remain protected. No follow-on family is assigned; the cutscene program
-remains a draft.
+tools remain protected. The body/equipment program above is the authorized
+follow-on; the cutscene program remains a draft.
 
 ## Attack visual effects — complete October 31
 

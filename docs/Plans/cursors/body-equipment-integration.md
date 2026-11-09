@@ -2,12 +2,12 @@
 
 ## Assignment and ownership
 
-Integrator `ses_e43db0377ffeFRjZ89yj2KkFej` is sole production/integration owner
-under Director `ses_e43ef7d4effe75r1xU4kjl9h0w`. November 9 dispatch authorizes
-complete B01 integration, normal acceptance, research curation and scoped local commit
-under the [B01/B02 program](../body-equipment-program.md). B02 was accepted at
-`8eaabdfc`; B01 direct193 is complete and frozen. No private native checks are active.
-Director owns program/queue/director-cursor and native communication setup.
+Integrator `ses_e43db0377ffeFRjZ89yj2KkFej` completed sole production/integration
+ownership under Director `ses_e43ef7d4effe75r1xU4kjl9h0w` for the
+[B01/B02 program](../body-equipment-program.md). Director accepted B01 at `ea3dfaae`
+and released ownership after successful stop `idle-1794215552903`; native release
+`msg_06c4a23ba4abc3dc5e0315af1d7c6165` was stored without resuming the session.
+The assignment route is retired. No private or production check is active.
 
 ## Current state — November 9, 2026
 
@@ -29,7 +29,7 @@ Director owns program/queue/director-cursor and native communication setup.
 - Full configured host tuple independently authenticated, including pinned
   PowerShell executable/automation DLL/version; evidence:
   `build/integration/body-equipment/pinned-host-authentication.json`.
-- Active v1 live-tool manifest:
+- Preserved v1 live-tool manifest:
   `build/body-equipment-inputs-20261108-pinned/manifest.json`, SHA-256
   `8E1EB1FB4A1D32820D64932387EA551D858399C30E5C80C7B6ECE9FA116FCFA2`.
   Input-set ID: `C60413BAAA88B813BA13FC6586D69810D6F52BF4CD2D667875210EE971671D50`.
@@ -42,7 +42,7 @@ Director owns program/queue/director-cursor and native communication setup.
   old `51174c7c86b20d82b20106f2/build` directory, selected storage, tools/runtime,
   original ASM/ROM and other referenced inputs; none were changed or cleaned.
 
-## Research and next action — B01 verified
+## Research and closeout — B01 accepted
 
 Canonical diff is EXACT/PURE_C with relocation MATCH; read-only evidence extraction
 authenticated final reports/ROM and reconciled HI/LO/jump addresses to linked symbols.
@@ -52,6 +52,6 @@ allocation, direct191 wrong-scope scheduling; canonical C supplies the final exa
 The shared lesson index remains within its supported 30-entry bound and now includes
 B01 controls plus B02's accepted direct27 lifetime lesson; previous evidence remains
 reachable. No duplicate final source or routine trial archives.
-Scoped source/config/research/cursor commit only, excluding unrelated dirty files.
-No tooling/structural changes, push, pin updates or cleanup. Retain sole production
-ownership, stop after final native handoff, and await Director acceptance/closeout.
+Scoped source/config/research/cursor commit `ea3dfaae` excludes unrelated dirty files.
+Director independently authenticated final report/ROM/source hashes and accepted
+the handoff. Ownership is released; remain stopped. No follow-on is assigned.
