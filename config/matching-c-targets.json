@@ -6451,6 +6451,10 @@
     {
       "symbol": "func_000c9850",
       "source": "src/lib/func_000c9850.c"
+    },
+    {
+      "symbol": "func_002AAC60",
+      "source": "src/lib/func_002AAC60.c"
     }
   ]
 }

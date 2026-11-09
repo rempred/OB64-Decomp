@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B390F0A1AC33365C0BC048E6EDCE7955B56D27B43FF72D5B718C4D2F49EB203C",
+  "observationId": "AD8052D2BEE63ED05A5437F8BD236E0AF414A15CEEDCA857DA33D43A45972438",
+  "symbol": "func_002AAC60",
+  "authored": {
+    "context": "Complete 1176-byte func_002AAC60 with natural outer unit indexing and natural inner work[isLeader + 4] indexing. The true leader arm assigns isLeader = 1 before loading startX/startY. Compare the final canonical source, which moves only that assignment after the two loads; unused declarations/comments also differ.",
+    "effects": [
+      "register-allocation",
+      "lifetime-order",
+      "natural-indexing"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "92F090DB3B21D325D90CFD2CB3395DFCF2DBB78292A023CDB3BFD610AEC8A06F",
+      "sourceSha256": "92F090DB3B21D325D90CFD2CB3395DFCF2DBB78292A023CDB3BFD610AEC8A06F"
+    },
+    "label": "natural-index-before-lifetime-fix",
+    "observedEffect": "Direct27 and direct57 both emit 294 instructions and a 120-byte frame covering the full owner and preamble. Direct27 has 29 normalized word differences involving s2/s3 roles; direct57 has zero after masking relocation fields and normalizing internal jumps. The canonical source with the lifetime change has an exact 1176-byte linked diff, so natural indexing is not inherently incompatible with the retail allocation.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_002AAC60.c",
+        "sha256": "B01E631850262BCAAB85E46EFD08261007426690E624457D35EF55AE583E1CC3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This counterexample does not match retail. The comparison is specific to this producer and does not prove the original C or a general KMC allocation rule. Final-source acceptance belongs to its canonical verifier, not these symbolic-object diagnostics.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the natural inner index; delay the true-arm isLeader = 1 assignment until after both coordinate loads, without moving declarations or rewriting the loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5578,
+      "sha256": "92F090DB3B21D325D90CFD2CB3395DFCF2DBB78292A023CDB3BFD610AEC8A06F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "92F090DB3B21D325D90CFD2CB3395DFCF2DBB78292A023CDB3BFD610AEC8A06F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-09-func_002AAC60-b390f0a1ac.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

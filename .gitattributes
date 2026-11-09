@@ -380,3 +380,6 @@ src/lib/func_00040FF4.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
 src/lib/func_000c4650.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
 src/lib/func_000c9850.c -text whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
 include/game/scenario_item_views.h -text whitespace=cr-at-eol
+
+# B02's curated counterexample retains the raw bytes authenticated by its observation.
+docs/archive/matching-c-candidates/2026-11-09-func_002AAC60-b390f0a1ac.c -text whitespace=cr-at-eol
