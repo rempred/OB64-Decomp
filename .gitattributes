@@ -383,3 +383,8 @@ include/game/scenario_item_views.h -text whitespace=cr-at-eol
 
 # B02's curated counterexample retains the raw bytes authenticated by its observation.
 docs/archive/matching-c-candidates/2026-11-09-func_002AAC60-b390f0a1ac.c -text whitespace=cr-at-eol
+
+# B01 complete research controls retain their authenticated source bytes.
+docs/archive/matching-c-candidates/2026-11-09-func_002AB810-5ac620f538.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-11-09-func_002AB810-f90f408384.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-11-09-func_002AB810-866f346e32.c -text whitespace=cr-at-eol

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F90F408384CCF6E5F550D44D8BBF0BFF36142E216FCC43EB87360D7DB99A20FC",
+  "observationId": "0DF96BDF719258D26581901C977FAE5F6E7B9CE751312E00E58AD30B95452946",
+  "symbol": "func_002AB810",
+  "authored": {
+    "context": "Complete B01 producer with duplicate inline initialization and one common once-only scope, but no once-only scope around the optional variant store. Compare canonical C; apart from canonical external names/comments, direct192 adds only that inner scope.",
+    "effects": [
+      "register-allocation",
+      "once-scope-depth"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D65192008827DCB2103B33CACEA06E1485C2D4532A0677A1A6D9E1BD17AB9078",
+      "sourceSha256": "D65192008827DCB2103B33CACEA06E1485C2D4532A0677A1A6D9E1BD17AB9078"
+    },
+    "label": "variant-once-scope-allocation-control",
+    "observedEffect": "Direct190 has retail instruction ordering with 13 normalized kind/minus-one register-role differences. Adding the variant-only scope reaches zero normalized word differences in direct192/193 and the final canonical source links all 812 bytes exactly. A scope around the sequence store instead is the direct191 counterexample.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_002AB810.c",
+        "sha256": "0A9B3AE271AC1B0214469301BACEF8A8E68A95F9ABCD53724FE890D603A0FB3E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This control is nonmatching. Once-scope flow-note allocation effects are producer-specific; this does not prove the original C or a generally desirable source idiom.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Wrap if (variant != -1) record->variant = variant in do/while(0) inside the existing common once-only scope, retaining declaration order and both inline expansions."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5572,
+      "sha256": "D65192008827DCB2103B33CACEA06E1485C2D4532A0677A1A6D9E1BD17AB9078"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D65192008827DCB2103B33CACEA06E1485C2D4532A0677A1A6D9E1BD17AB9078"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-09-func_002AB810-f90f408384.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

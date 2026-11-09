@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "866F346E3244CDF9D5DCC585D9EF3F15568096968D0477BD683EA693799B5B62",
+  "observationId": "75FB868F7E29C2AF005AE9DEC4B11612DD19001C7992C44724A6DCF3F40FB09E",
+  "symbol": "func_002AB810",
+  "authored": {
+    "context": "Complete B01 producer with duplicate initialization; a once-only scope surrounds record->sequence = -1 rather than the optional variant store. Compare canonical C's final scope placement.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order",
+      "once-scope-depth"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7F0DF6C780660D3B1C390A5367605B6D78FC6227932CE19C53093A7E626A525F",
+      "sourceSha256": "7F0DF6C780660D3B1C390A5367605B6D78FC6227932CE19C53093A7E626A525F"
+    },
+    "label": "sequence-once-scope-wrong-window",
+    "observedEffect": "Direct191 restores the desired register homes but retains 11 normalized common-window ordering differences. Direct190 instead has correct ordering and 13 register-role differences. The final variant-scope producer resolves both, showing that final register homes alone do not establish matching scheduling.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_002AB810.c",
+        "sha256": "0A9B3AE271AC1B0214469301BACEF8A8E68A95F9ABCD53724FE890D603A0FB3E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This is a useful nonmatching counterexample, not a failed proof of the surrounding structure. It establishes no general scope-placement or compiler-priority theorem.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the extra once-only scope from the sequence assignment to the optional variant assignment without rewriting the loop or declaration order."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5590,
+      "sha256": "7F0DF6C780660D3B1C390A5367605B6D78FC6227932CE19C53093A7E626A525F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7F0DF6C780660D3B1C390A5367605B6D78FC6227932CE19C53093A7E626A525F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-09-func_002AB810-866f346e32.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

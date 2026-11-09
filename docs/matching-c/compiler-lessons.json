@@ -524,10 +524,14 @@
         "register-allocation",
         "scheduling-or-block-order"
       ],
-      "applicability": "For the evidenced allocator-result/owner-load ordering conflict, inspect identical arms containing the real clear, copy and saved-byte load. The low-bit form transferred between two Actor functions; a full-null condition specializes an argument, and CF0's first site changes other registers. Preserve complete behavior; no pointer-bit meaning or exact compiler-pass mechanism is established.",
+      "applicability": "Earlier actor allocator/owner-load duplicate clear/copy/saved-byte arms and low-bit transfer remain linked; full-null specialization and CF0 register changes limit generality. B01 002AB810 retains duplicate initialization until late-jump merging. Its single-initializer, unscoped-variant and wrong-scope controls distinguish ordering from allocation; canonical C is final. Preserve the union slot view and complete scopes. No pointer-bit meaning, original syntax or universal compiler rule follows.",
       "note": "docs/dossiers/func_002158E4-fe58db22c0.md#source-context",
       "references": [
-        "docs/dossiers/func_00215CF0-5288d37cc8.md"
+        "docs/dossiers/func_00215CF0-5288d37cc8.md",
+        "docs/dossiers/func_002158E4-d9c32d5cd0.md",
+        "docs/dossiers/func_002AB810-5ac620f538.md",
+        "docs/dossiers/func_002AB810-f90f408384.md",
+        "docs/dossiers/func_002AB810-866f346e32.md"
       ],
       "observations": [
         {
@@ -539,8 +543,8 @@
           "path": "docs/dossiers/func_00217BA8-36e8f5b010.observation.json"
         },
         {
-          "symbol": "func_002158E4",
-          "path": "docs/dossiers/func_002158E4-d9c32d5cd0.observation.json"
+          "symbol": "func_002AB810",
+          "path": "docs/dossiers/func_002AB810-5ac620f538.observation.json"
         }
       ]
     },
@@ -631,7 +635,7 @@
       "symptoms": [
         "register-allocation"
       ],
-      "applicability": "C01 controller158->167 isolates a real group-local u16 copy;149/154 and173/179/181/185 retain item/address phases, with canonical C as final. E08 E7AC, E09 700B0, P07 728C0 and E03 DA8/2910 retain distinct result/access and inline allocator contexts. Preserve actual operations, reloads and complete controls; no universal allocation recipe follows.",
+      "applicability": "C01 controller158->167 isolates a group-local u16 copy;149/154 and173/179/181/185 retain item/address phases. E08 E7AC, E09 700B0, P07 728C0 and E03 DA8/2910 retain result/access and inline allocator contexts. B02 002AAC60 direct27 versus canonical C delays true-arm isLeader until after coordinate loads, recovering saved-register roles with natural indexing. Preserve complete controls; no universal lifetime rule or inherent indexing impossibility follows.",
       "note": "docs/matching-c/c01-consumable-reuse.md#value-lifetimes-and-complete-address-phases",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
@@ -639,12 +643,12 @@
         "docs/dossiers/func_002700B0-00882fd20d.md",
         "docs/dossiers/func_002728C0-28ceff7648.md",
         "docs/matching-c/e03-runtime-reuse.md",
-        "docs/dossiers/func_00262910-282790eee6.md"
+        "docs/dossiers/func_002AAC60-b390f0a1ac.md"
       ],
       "observations": [
         {
-          "symbol": "func_0024E7AC",
-          "path": "docs/dossiers/func_0024E7AC-d44a25d331.observation.json"
+          "symbol": "func_002AAC60",
+          "path": "docs/dossiers/func_002AAC60-b390f0a1ac.observation.json"
         },
         {
           "symbol": "func_00261DA8",
