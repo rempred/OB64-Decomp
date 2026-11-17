@@ -189,7 +189,7 @@ function render(inputs) {
     '  base_path: .',
     '  target_path: baserom.us_rev0.z64',
     '  platform: n64',
-    '  compiler: IDO',
+    '  compiler: KMC',
     '  endianness: big',
     '  asm_path: asm',
     '  asset_path: assets',
