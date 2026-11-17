@@ -97,7 +97,7 @@ s32 func_002910DC();
 void func_002AE4DC();
 void func_002A91E4(f32, f32, f32, f32, s32);
 s32 func_002A92C8();
-void func_002A9364(s32, s32, s32, s32, s32, s32, s32, s32);
+s32 func_002A9364(s32, s32, s32, s32, s32, s32, u8, u8);
 s32 func_002A98C4(s32);
 void func_002AF3EC(s32, s32);
 void func_002AF470(s16, s16, s16, s16, s32, s32);
