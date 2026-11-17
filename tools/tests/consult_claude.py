@@ -3,7 +3,8 @@ from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import consult_claude as c
-ROOT=Path(tempfile.mkdtemp(prefix='consultation-offline-',dir=os.environ.get('OB64_CONSULT_TEST_ROOT',str(Path(__file__).resolve().parents[2]))))
+TEMP_ROOT=tempfile.TemporaryDirectory(prefix='consultation-offline-',dir=os.environ.get('OB64_CONSULT_TEST_ROOT'))
+ROOT=Path(TEMP_ROOT.name)
 
 class Fake:
     def __init__(self):self.calls=[];self.sessions={};self.auth='claude.ai';self.mode='success';self.extra={};self.code=0
