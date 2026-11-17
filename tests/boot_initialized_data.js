@@ -791,7 +791,19 @@ function runTests(model = loadAcceptedModel()) {
       ]
     }
   ];
-  const testedCuts = [...e02Cuts, ...successorCuts, ...newSuccessorCuts, ...e09SuccessorCuts, ...acceptedWaveCuts];
+  // C01 retained this original ASM word after its complete 1004-byte C body.
+  // Accepted in fece5b83; the split preserves the 1008-byte original owner.
+  const c01Cuts = [{
+    id: 'c01-row1831-terminal',
+    rowIndex: 1831,
+    romStart: 0x000C4A3C,
+    romEndExclusive: 0x000C4A40,
+    edge: 'terminal',
+    sourceSha256: '8D9C9298ECC3CCEA5816D60A5A960812270A68F882906EE4BB905CCAC7C6FA3C',
+    expectedSha256: 'DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119',
+    compilerFunctions: [{ symbol: 'func_000c4650', binding: 'GLOBAL', entryEvidence: 'owner' }],
+  }];
+  const testedCuts = [...e02Cuts, ...successorCuts, ...newSuccessorCuts, ...e09SuccessorCuts, ...acceptedWaveCuts, ...c01Cuts];
   const allCutFixtures = [...earlierCuts, ...testedCuts];
   const independentConfig = JSON.parse(fs.readFileSync(path.join(ROOT, 'config/phase7/conventional-build.json')));
   const pinnedInput = relative => {
@@ -967,7 +979,7 @@ function runTests(model = loadAcceptedModel()) {
   }
   // Each newer successor is independently falsified; omitted fixtures cannot
   // silently lower the expected census, and source/tail hashes remain pinned.
-  for (const cut of [...newSuccessorCuts, ...e09SuccessorCuts]) {
+  for (const cut of [...newSuccessorCuts, ...e09SuccessorCuts, ...c01Cuts]) {
     const owner = model.rows[cut.rowIndex], evidence = fixtureSources.get(cut.rowIndex);
     profileMutation(model.config, 'retainedPaddingCuts', model.config.retainedPaddingCuts.filter(item => item.rowIndex !== cut.rowIndex));
     profileMutation(model.config, 'retainedPaddingCuts', [...model.config.retainedPaddingCuts, cut]);

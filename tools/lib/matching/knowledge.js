@@ -129,7 +129,8 @@ function selectKnowledge(workbench, target, options, assess) {
   const index = symptom ? loadLessons(options.indexPath, inputs) : { lessons: [], diagnostics: [] };
   result.diagnostics.push(...index.diagnostics);
   const lessons = index.lessons.filter(l => l.symptoms.includes(symptom));
-  result.lessonsOmitted = Math.max(0, lessons.length - 3);
+  const lessonLimit = options.includeDetails ? lessons.length : 3;
+  result.lessonsOmitted = Math.max(0, lessons.length - lessonLimit);
   result.timings.selectionMs = Date.now() - start;
   const authStart = Date.now();
   function authenticate(ref) {
@@ -171,7 +172,7 @@ function selectKnowledge(workbench, target, options, assess) {
     }
     result.siblings.push(row);
   }
-  for (const lesson of lessons.slice(0, 3)) result.lessons.push({ ...lesson,
+  for (const lesson of lessons.slice(0, lessonLimit)) result.lessons.push({ ...lesson,
     evidence: 'Open the cited note for its scoped evidence labels; this index supplies no independent proof.',
     observations: lesson.observations.map(authenticate) });
   result.timings.authenticationMs = Date.now() - authStart;

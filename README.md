@@ -19,7 +19,7 @@ provide the authenticated local dependencies described below.
    paths. Keep an existing local configuration.
 3. Provision the pinned local tools and m2c checkout; the configuration files
    authenticate them but do not install them.
-4. Normalize the ROM, check the matching workbench, and build the exact current
+4. In PowerShell, select the pinned Node runtime for this shell. Normalize the ROM, check the matching workbench, and build the exact current
    baseline.
 
 ```powershell
@@ -27,6 +27,12 @@ if (-not (Test-Path config/local-tools.json)) {
   Copy-Item config/local-tools.example.json config/local-tools.json
 }
 # If copied above, replace its normal-work placeholders before continuing.
+$contract = Get-Content -Raw config/phase7/conventional-build.json | ConvertFrom-Json
+$runtime = Resolve-Path (Join-Path .toolchains ("node-" + $contract.host.nodeVersion + "-win-x64"))
+if ((Get-FileHash (Join-Path $runtime node.exe)).Hash -ne $contract.host.nodeExeSha256) {
+  throw "Provision the Node executable identified by the production contract."
+}
+$env:Path = "$runtime;$env:Path"
 node tools/verify_baserom.js
 node tools/match.js doctor
 node tools/build.js
@@ -54,7 +60,7 @@ provisional and continue through the complete wave. Then run the final verifier 
 
 ```powershell
 node tools/verify.js
-node tools/status.js
+.\tools\status.ps1
 ```
 
 Confirm every wave target is `PURE_C` in the final authoritative report.
@@ -117,8 +123,9 @@ A function counts as matching C only when all of these are true:
 A `.c` file with inline assembly or another assembler escape hatch is
 `HYBRID_C`. It may be exact, but it does not count as matching C. Read
 [the source policy](docs/SOURCE_POLICY.md) for the mechanical classifications.
-Run `node tools/status.js` for current generated counts; prose documentation is
-not a status source.
+Use `.\tools\status.ps1 --snapshot` for a quick reading of retained verified artifacts.
+Use `.\tools\status.ps1` to authenticate today's sources against that proof. Both
+commands select the pinned Node executable; the latter also runs source classification.
 
 Matching, structural, and semantic evidence remain separate. Exact machine code
 does not prove a descriptive function name, field name, or gameplay explanation.
@@ -148,7 +155,8 @@ does not prove a descriptive function name, field name, or gameplay explanation.
 | `node tools/source_policy.js --target <symbol>` | Classify one active source; classification alone does not prove a match. |
 | `node tools/verify.js --target <symbol> --require-pure` | Full verifier with a target purity assertion; only an alternative final command for a standalone one-function wave. |
 | `node tools/verify.js` | Run once for the complete wave; check each wave target's final source class. Verify changed completed-wave integration inputs. |
-| `node tools/status.js` | Derive current exact-source counts from accepted generated state. |
+| `.\tools\status.ps1 --snapshot` | Inspect the retained reports and ROM, without a current-source claim. |
+| `.\tools\status.ps1` | Authenticate the current source tree and compare it to the retained acceptance. |
 | `node tools/test.js` | Run the required routine tooling regression manifest; this does not replace canonical verification. |
 | `node tools/audit.js` | Run heavyweight structural verification for structural tasks. |
 

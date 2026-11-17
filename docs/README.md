@@ -42,6 +42,8 @@ have graduated from parent-workspace experiments into decomp knowledge.
   generated-manifest summary.
 - `NEXT_STEPS.md` - ordered work queue for the next decomp pass.
 
-Run `node tools/status.js` for current generated progress. Use
+Run `.\tools\status.ps1` for current generated progress. Use
 `node tools/match.js --help` and `../tools/README.md` for the matching workbench
 rather than copying command lists from dated reports.
+
+For matching examples from actual workers and a comparison with human practice, read the [matching-methods study](research/how-matching-works-20261117.md).

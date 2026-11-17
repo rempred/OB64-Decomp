@@ -1,6 +1,13 @@
 # OB64 Decomp — Next Steps
 
-This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
+This file is the active queue only. Changing counts belong in `.\tools\status.ps1`, not here.
+
+The [matching-methods study](research/how-matching-works-20261117.md) covers
+the two November construction routines, repeated compiler output and the next
+retrieval experiment. The [priority and retrieval check](research/matching-retrieval-replay-20261117.md)
+identifies two unresolved actor/briefing owners for future selection. Use
+`node tools/match.js rank --priorities-only --lane leverage` to inspect those
+annotations and direct callers. Full ranking also loads family and compiler history.
 
 ## Body construction and equipment visuals — complete November 9
 

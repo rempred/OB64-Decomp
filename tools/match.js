@@ -98,7 +98,7 @@ Research:
   family <symbol> [--limit N] [--include-members]
   family list [--tier <tier>] [--limit N] [--include-members]
   context <symbol> [--runtime] [--include-context]
-  rank [--lane leverage|batch|hard-tail] [--limit N] [--skip-families]
+  rank [--lane leverage|batch|hard-tail] [--limit N] [--skip-families] [--priorities-only]
   rank --explain <symbol>
   probe <symbol> [--source <file> | --candidate <id>] [--passes a,b] [--research-compiler <file>]
   probe compare <left-report.json> <right-report.json>
@@ -145,7 +145,7 @@ function parseArgs(argv) {
         options[name] = value;
       }
     } else if ([
-      'apply', 'json', 'no-context', 'with-context', 'no-compile', 'leaf-only', 'runtime', 'skip-families',
+      'apply', 'json', 'no-context', 'with-context', 'no-compile', 'leaf-only', 'runtime', 'skip-families', 'priorities-only',
       'include-targets', 'include-details', 'include-source', 'include-members', 'include-context', 'include-solved', 'capture-identities',
     ].includes(name)) {
       options[name] = true;
@@ -875,6 +875,7 @@ function validatePrivateOptions(command, options) {
 
 async function executeCommand(command, parsed, workspace = null, emit = print, assertPrivateInputs = undefined, inputs = undefined, researchSources = undefined) {
   const { positional, options } = parsed;
+  if (options['priorities-only'] && command !== 'rank') throw new Error('--priorities-only requires rank');
   const routing = workspace ? { matchingRoot: workspace.matchingRoot, storeOptions: workspace.storeOptions, privateWorkspace: true, privatePreparation: {}, assertPrivateInputs, inputs } : {};
   let watchCall;
   if (workspace?.admission === 'strict-watch-v1') {
@@ -902,8 +903,8 @@ async function executeCommand(command, parsed, workspace = null, emit = print, a
   const print = (value, options) => emit(inputs ? { ...value, ...(require("./lib/matching/input_set").isLiveResearch(inputs) ? {} : { inputSetId: inputs.id, acceptedFingerprint: inputs.manifest.accepted.fingerprint }), ...(require("./lib/matching/input_set").isResearch(inputs) ? { inputAuthentication: inputs.provenance() } : {}) } : value, options);
   const intakeRouting = { ...(workspace ? { database: workspace.storeOptions.database, inputs } : {}), ...(researchSources ? { classifyResearchSource: researchSources.classifySource } : {}) };
   const privateFile = (file) => workspace ? require('./lib/matching/private_workspace').assertPrivatePath(workspace, path.resolve(file), { mustExist: true, regularFile: true }) : path.resolve(file);
-  const researchOptions=validateKnowledgeOptions({crossLimit:options['cross-limit']===undefined?0:nonnegativeInteger(options['cross-limit'],'--cross-limit'),
-    ...(options.symptom===undefined?{}:{symptom:options.symptom})});
+  const researchOptions={...validateKnowledgeOptions({crossLimit:options['cross-limit']===undefined?0:nonnegativeInteger(options['cross-limit'],'--cross-limit'),
+    ...(options.symptom===undefined?{}:{symptom:options.symptom})}),includeDetails:Boolean(options['include-details'])};
   if(command==='intake'){
     if(positional.length!==1)throw new Error('intake requires one symbol');
     if (require('./lib/matching/input_set').isResearch(inputs)) {
@@ -943,7 +944,7 @@ async function executeCommand(command, parsed, workspace = null, emit = print, a
     }, options);
     return;
   }
-  initialize(workbench, routing, watchCall);
+  if (!(command === 'rank' && options['priorities-only'])) initialize(workbench, routing, watchCall);
   if (command === 'import') {
     if (positional.length !== 1 || !options.source || !options.observation) throw new Error('import requires <symbol> --source <candidate.c> --observation <curated.json>');
     const target = resolveTarget(workbench, positional[0]);
@@ -1264,15 +1265,18 @@ async function executeCommand(command, parsed, workspace = null, emit = print, a
       lane: options.lane || null,
       limit: options.explain ? workbench.targets.length : numeric(options.limit, '--limit', 20),
       skipFamilies: options['skip-families'],
+      prioritiesOnly: Boolean(options['priorities-only']),
       includeDetails: Boolean(options.explain),
       includeSolved: Boolean(options['include-solved'] || options.explain),
-      comparisonCurrentFingerprint: comparisonQueryProvenance().diagnosticCurrentFingerprint,
-      comparisonEnvironmentId: comparisonQueryProvenance().diagnosticEnvironmentId,
+      ...(options['priorities-only'] ? {} : {
+        comparisonCurrentFingerprint: comparisonQueryProvenance().diagnosticCurrentFingerprint,
+        comparisonEnvironmentId: comparisonQueryProvenance().diagnosticEnvironmentId,
+      }),
     });
     if (options.explain) {
       const selected = report.entries.find((item) => item.symbol.toLowerCase() === options.explain.toLowerCase());
       if (!selected) throw new Error(`rank target does not resolve: ${options.explain}`);
-      print(selected, options);
+      print(options['priorities-only'] ? { ...selected, coverage: report.coverage } : selected, options);
     } else print(report, options);
     return;
   }

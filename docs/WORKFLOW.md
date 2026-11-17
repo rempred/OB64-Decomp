@@ -450,6 +450,23 @@ Before recording a candidate, confirm the report identifies the current source
 and compiled artifacts. Process exit and scalar diagnostic scores do not prove
 linked-byte equality or a matching relocation contract.
 
+#### Choosing a different experiment
+
+When several source changes give the same instructions, inspect one caller and the
+earliest differing block. Identify whether the difference concerns behavior, a
+call interface, instruction scheduling, register lifetime, relocation, or owner
+extent. State one change and the result that would distinguish two explanations.
+For numbered private direct reports, `tools/matching_studies/emitted_states.js`
+shows earlier attempts with the same executable bytes and relocations. Keep a
+repeat that tests a control or a refuted hypothesis. A quota interruption belongs
+in the existing director route with the recoverable source and pending experiment.
+
+The [November matching study](research/how-matching-works-20261117.md) gives
+worked examples, local diagnostic commands, and a prospective comparison of
+retrieved examples against the worker's own first experiment. Track an actual
+wait or scratch growth through `tools/wave-accounting.js --help` when evaluating
+staffing or storage. Unknown intervals stay unknown.
+
 #### When matching ideas run out
 
 Exhausting the current experiment list does not finish or suspend the assignment. The worker
@@ -831,7 +848,7 @@ Use `node tools/test.js --list` to inspect its explicit suite list. The routine
 runner is not a canonical build, complete-ROM verifier, or structural audit, so
 it supplements rather than replaces `verify.js`.
 
-Run `node tools/status.js` after a valid verification state to derive current
+Run `.\tools\status.ps1` to authenticate the current tree, or add `--snapshot` to inspect retained artifacts. The default command derives current
 `PURE_C`, `HYBRID_C`, and remaining-owner counts. Do not copy changing counts
 into prose documents.
 

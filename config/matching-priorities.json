@@ -1,6 +1,28 @@
 {
   "schemaVersion": 1,
   "profile": "us-rev0",
-  "subsystems": [],
-  "targets": []
+  "subsystems": [
+    {
+      "id": "actor-construction",
+      "value": 25,
+      "reason": "Remaining parallel actor construction paths identified by the completed body/equipment census.",
+      "evidence": "docs/Plans/body-equipment-program.md"
+    }
+  ],
+  "targets": [
+    {
+      "symbol": "func_002A9364",
+      "subsystem": "actor-construction",
+      "value": 20,
+      "reason": "Actor initialization/placement owner at z64 2A9364..2A985C. The parent constructor trace identifies current-class/body inputs on this parallel path. Recovering it would make that original construction path available for editor adaptations; no existing patch removal is claimed.",
+      "evidence": "docs/Plans/body-equipment-program.md"
+    },
+    {
+      "symbol": "func_002B867C",
+      "subsystem": "actor-construction",
+      "value": 20,
+      "reason": "Mission-briefing construction owner at z64 2B867C..2B88C8. This parallel consumer lies beyond the completed ten-patch body/equipment group and is identified by the parent constructor-argument trace.",
+      "evidence": "docs/Plans/body-equipment-program.md"
+    }
+  ]
 }

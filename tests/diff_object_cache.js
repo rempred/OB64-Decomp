@@ -101,6 +101,9 @@ function makeTarget(symbol, sourceHash, options = {}) {
     vramEndNumber: 0x80001000 + bytes,
     bytes,
     sectionName: owners[0].sectionName,
+    // This fixture models a plain producer whose physical head keeps its name.
+    // Renamed physical heads need the separate authenticated interface contract.
+    row: { part: { name: owners[0].symbol } },
     textOwners: owners,
     multiOwner: Boolean(options.multiOwner),
     overlayDescriptorId: null,
@@ -404,6 +407,14 @@ function main() {
     const baseInputs = commonKeyInputs(phase8, sibling, classifications.get(sibling.symbol));
     const firstKey = keyFor(baseInputs);
     assert(firstKey === keyFor(clone(baseInputs)), 'equal inputs did not produce a deterministic key');
+    const plainMultiInputs = commonKeyInputs(phase8, multi, classifications.get(multi.symbol));
+    assert(keyFor(plainMultiInputs) === keyFor(clone(plainMultiInputs)), 'plain multi-owner inputs did not produce a deterministic key');
+    for (const physicalHead of [undefined, { part: { name: 'fixture_other_physical_head' } }]) {
+      const missingAuthority = clone(plainMultiInputs);
+      missingAuthority.target.row = physicalHead;
+      expectError(/multi-owner physical interface authority missing/, () => keyFor(missingAuthority),
+        'missing or renamed multi-owner physical head without authority');
+    }
 
     mutateKey(baseInputs, (value) => {
       value.target.sourceSha256 = HASH.d;

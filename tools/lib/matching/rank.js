@@ -62,7 +62,7 @@ function familyFacts(workbench, storeOptions) {
 
 function rankTargets(workbench, options = {}) {
   const storeOptions = options.storeOptions || {};
-  syncTargets(workbench, storeOptions);
+  if (!options.prioritiesOnly) syncTargets(workbench, storeOptions);
   const priorities = loadPriorities();
   for (const record of priorities.targets) {
     if (!workbench.bySymbol.has(record.symbol.toLowerCase())) {
@@ -71,22 +71,27 @@ function rankTargets(workbench, options = {}) {
   }
   const overrides = new Map(priorities.targets.map((record) => [record.symbol.toLowerCase(), record]));
   const subsystemById = new Map(priorities.subsystems.map((record) => [record.id, record]));
-  const querySession = options.comparisonCurrentFingerprint && options.comparisonEnvironmentId
-    ? null : prepareCompilerSession(options);
-  const comparisonCurrentFingerprint = options.comparisonCurrentFingerprint
-    || querySession.context.currentFingerprint;
-  const comparisonEnvironmentId = options.comparisonEnvironmentId
-    || loadDiagnosticEnvironment(querySession).identity;
-  const compilations = latestByTarget(requestStore({ action: 'query', name: 'compilation_summaries', args: {
-    modelId: workbench.modelId,
-    comparisonAlgorithmId: comparisonAlgorithmIdentity(),
-    diagnosticCurrentFingerprint: comparisonCurrentFingerprint,
-    diagnosticEnvironmentId: comparisonEnvironmentId,
-  } }, storeOptions));
-  const families = options.skipFamilies ? new Map() : familyFacts(workbench, storeOptions);
+  let compilations = new Map();
+  let families = new Map();
+  if (!options.prioritiesOnly) {
+    const querySession = options.comparisonCurrentFingerprint && options.comparisonEnvironmentId
+      ? null : prepareCompilerSession(options);
+    const comparisonCurrentFingerprint = options.comparisonCurrentFingerprint
+      || querySession.context.currentFingerprint;
+    const comparisonEnvironmentId = options.comparisonEnvironmentId
+      || loadDiagnosticEnvironment(querySession).identity;
+    compilations = latestByTarget(requestStore({ action: 'query', name: 'compilation_summaries', args: {
+      modelId: workbench.modelId,
+      comparisonAlgorithmId: comparisonAlgorithmIdentity(),
+      diagnosticCurrentFingerprint: comparisonCurrentFingerprint,
+      diagnosticEnvironmentId: comparisonEnvironmentId,
+    } }, storeOptions));
+    families = options.skipFamilies ? new Map() : familyFacts(workbench, storeOptions);
+  }
   const contextIndex = buildContextIndex(workbench);
   const activeByName = new Map(workbench.targets.map((target) => [target.symbol.toLowerCase(), isActiveTarget(target)]));
-  const entries = workbench.targets.filter((target) => options.includeSolved || !isActiveTarget(target)).map((target) => {
+  const entries = workbench.targets.filter((target) => (!options.prioritiesOnly || overrides.has(target.symbol.toLowerCase()))
+    && (options.includeSolved || !isActiveTarget(target))).map((target) => {
     const metrics = targetMetrics(target.expectedBytes, target.vramStart);
     const manual = overrides.get(target.symbol.toLowerCase()) || null;
     const targetFamilies = families.get(target.targetId) || [];
@@ -136,7 +141,9 @@ function rankTargets(workbench, options = {}) {
     matchability = clamp(matchability);
     let lane = 'hard-tail';
     const reviewedLeverage = Boolean(manual?.subsystem) || Number(manual?.value || 0) >= 20 || uniqueCallers.size >= 8;
-    if (reviewedLeverage && value >= 25 && matchability >= 35) lane = 'leverage';
+    // Value and difficulty remain independent. A difficult reviewed editor
+    // dependency must remain discoverable through the useful-work filter.
+    if (reviewedLeverage && value >= 25) lane = 'leverage';
     else if (matchability >= 65) lane = 'batch';
     const displayedMetrics = options.includeDetails ? metrics : {
       instructions: metrics.instructions,
@@ -171,7 +178,21 @@ function rankTargets(workbench, options = {}) {
   });
   const selected = options.lane ? entries.filter((entry) => entry.lane === options.lane) : entries;
   selected.sort((left, right) => right.value - left.value || right.matchability - left.matchability || left.bytes - right.bytes || left.symbol.localeCompare(right.symbol));
-  return { schemaVersion: 1, modelId: workbench.modelId, lane: options.lane || null, total: selected.length, entries: selected.slice(0, options.limit || workbench.config.limits.defaultRows) };
+  return {
+    schemaVersion: 1, modelId: workbench.modelId, lane: options.lane || null,
+    ...(options.prioritiesOnly ? {
+      coverage: {
+        targets: 'configured priorities only',
+        basis: 'accepted target bytes, direct static callers and authored priority annotations',
+        candidateHistory: 'omitted',
+        familyEvidence: 'omitted',
+        sourceClassification: 'not evaluated; active-source presence controls visibility',
+        matchingAcceptance: 'not evaluated',
+      },
+    } : {}),
+    total: selected.length,
+    entries: selected.slice(0, options.limit || workbench.config.limits.defaultRows),
+  };
 }
 
 module.exports = { PRIORITIES_PATH, loadPriorities, rankTargets };
