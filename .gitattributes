@@ -388,3 +388,57 @@ docs/archive/matching-c-candidates/2026-11-09-func_002AAC60-b390f0a1ac.c -text w
 docs/archive/matching-c-candidates/2026-11-09-func_002AB810-5ac620f538.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-11-09-func_002AB810-f90f408384.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-11-09-func_002AB810-866f346e32.c -text whitespace=cr-at-eol
+
+# Accepted compiler input bytes verified against the November 10 source manifest.
+# These Windows sources use CRLF consistently. Git can reproduce them from LF blobs.
+src/lib/func_00041c20.c text eol=crlf
+src/lib/func_0011AECC.c text eol=crlf
+src/lib/func_001284C4.c text eol=crlf
+src/lib/func_0012C788.c text eol=crlf
+src/lib/func_0012E968.c text eol=crlf
+src/lib/func_0012E9F4.c text eol=crlf
+src/lib/func_0012F010.c text eol=crlf
+src/lib/func_00131828.c text eol=crlf
+src/lib/func_001F6098.c text eol=crlf
+src/lib/resource_alloc_tree_scan.c text eol=crlf
+src/lib/resource_find_arena_index.c text eol=crlf
+src/lib/resource_realloc.c text eol=crlf
+src/lib/resource_rebuild_free_trees.c text eol=crlf
+src/lib/resource_tree_insert_find.c text eol=crlf
+
+# Mixed endings carry distinct source hashes and must round-trip byte for byte.
+src/battle/func_0021D7F0.c -text !eol whitespace=cr-at-eol
+src/battle/func_0021DCA4.c -text !eol whitespace=cr-at-eol
+src/battle/func_0021E50C.c -text !eol whitespace=cr-at-eol
+src/battle/func_002317C8.c -text !eol whitespace=cr-at-eol
+src/boot/boot_command_stream_resource_node_dispatch.c -text !eol whitespace=cr-at-eol
+src/boot/boot_resource_node_cleanup_group.c -text !eol whitespace=cr-at-eol
+src/boot/boot_resource_node_context_materialize.c -text !eol whitespace=cr-at-eol
+src/boot/boot_resource_node_insert_find.c -text !eol whitespace=cr-at-eol
+src/boot/boot_resource_node_overlay_context_materialize.c -text !eol whitespace=cr-at-eol
+src/lib/func_0004d634.c -text !eol whitespace=cr-at-eol
+src/lib/func_00127830.c -text !eol whitespace=cr-at-eol
+src/lib/func_0012E7E8.c -text !eol whitespace=cr-at-eol
+src/lib/func_0012E8EC.c -text !eol whitespace=cr-at-eol
+src/lib/func_0019A1AC.c -text !eol whitespace=cr-at-eol
+src/lib/func_0019A294.c -text !eol whitespace=cr-at-eol
+src/lib/func_0019AA04.c -text !eol whitespace=cr-at-eol
+src/lib/func_0019AB44.c -text !eol whitespace=cr-at-eol
+src/lib/func_0019ADF0.c -text !eol whitespace=cr-at-eol
+src/lib/func_0019AF78.c -text !eol whitespace=cr-at-eol
+src/lib/func_0019B710.c -text !eol whitespace=cr-at-eol
+src/lib/func_0024DD7C.c -text !eol whitespace=cr-at-eol
+src/lib/func_0024E8DC.c -text !eol whitespace=cr-at-eol
+src/lib/func_0024F334.c -text !eol whitespace=cr-at-eol
+src/lib/func_0024F4F4.c -text !eol whitespace=cr-at-eol
+src/lib/func_0024FFD8.c -text !eol whitespace=cr-at-eol
+src/lib/func_00250F9C.c -text !eol whitespace=cr-at-eol
+src/lib/func_00254BD4.c -text !eol whitespace=cr-at-eol
+src/lib/func_002559E0.c -text !eol whitespace=cr-at-eol
+src/lib/func_00255B20.c -text !eol whitespace=cr-at-eol
+src/lib/func_0025B394.c -text !eol whitespace=cr-at-eol
+src/lib/func_0025DF2C.c -text !eol whitespace=cr-at-eol
+src/lib/movement_107d60_107e38.c -text !eol whitespace=cr-at-eol
+src/lib/movement_125460_125f84.c -text !eol whitespace=cr-at-eol
+src/lib/squad_pursuit_producer.c -text !eol whitespace=cr-at-eol
+src/overlays/descriptor_12/func_0026a6e4.c -text !eol whitespace=cr-at-eol

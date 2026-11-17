@@ -45,6 +45,7 @@ const ROUTINE_TESTS = [
   ['matching-context', 'tests/matching_context.js'],
   ['status-accounting', 'tests/status.js'],
   ['status-command', 'tests/status_command.js'],
+  ['source-checkout', 'tests/source_checkout.js'],
   ['matching-priorities', 'tests/matching_priorities.js'],
   ['matching-knowledge-details', 'tests/matching_knowledge_details.js'],
   ['wave-accounting', 'tests/wave_accounting.js'],

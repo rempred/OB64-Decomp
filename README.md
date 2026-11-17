@@ -157,6 +157,7 @@ does not prove a descriptive function name, field name, or gameplay explanation.
 | `node tools/verify.js` | Run once for the complete wave; check each wave target's final source class. Verify changed completed-wave integration inputs. |
 | `.\tools\status.ps1 --snapshot` | Inspect the retained reports and ROM, without a current-source claim. |
 | `.\tools\status.ps1` | Authenticate the current source tree and compare it to the retained acceptance. |
+| `node tools/check_source_checkout.js` | Check that the staged source and header files reproduce the retained accepted bytes in a fresh Git checkout. Use after staging an accepted wave or changing checkout rules. |
 | `node tools/test.js` | Run the required routine tooling regression manifest; this does not replace canonical verification. |
 | `node tools/audit.js` | Run heavyweight structural verification for structural tasks. |
 
