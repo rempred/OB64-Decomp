@@ -13,6 +13,15 @@ Rev 1 is out of scope until the Rev 0 build and workflow are stable.
 
 ## Read Order
 
+**Director priority reading.** Start with the [Director handoff](docs/Plans/cursors/director.md)
+and [current queue](docs/NEXT_STEPS.md). Before proposing a matching program or
+briefing a worker, read [How Ogre Battle 64 matching actually works](docs/research/how-matching-works-20261117.md).
+Use its worked examples to identify the game consumer, the first meaningful
+instruction or relocation difference, and an experiment that distinguishes two
+explanations. Carry the relevant example into the worker's brief. The queue
+records which work Joe has assigned; the canonical workflow and source policy
+define acceptance.
+
 For normal work, read only what the task requires:
 
 1. `AGENTS.md`
@@ -52,6 +61,10 @@ program history, lane history, promotion history, or archived research chronolog
 
 ### 1. Normal matching work
 
+These staffing and continuation rules apply within a program Joe has assigned.
+At a program boundary, use the Director handoff for ownership and the queue
+for candidates. Follow Joe's staffing instructions for the assigned program.
+
 Matching-source workers run in top-level Codex threads using Sol 6.1 Extra High
 (`gpt-6.1-sol`, reasoning `xhigh`). Subagents are for bounded research, tooling and review.
 After a worker's complete assigned wave passes normal acceptance, the Director starts its next
@@ -86,8 +99,10 @@ function matching and experimentation. Workers own ordinary matching and use the
 under the agreement, audit and review requirements below.
 
 Never use scheduled tasks or heartbeat automations for this program. Use the existing
-native thread watcher scripts for event-driven continuity. After accepted consultation setup,
-this decomp program uses native Codex collaboration/thread messaging, not Agent Mail.
+native thread watcher scripts for event-driven continuity. This decomp program uses the
+current harness's native session messaging and stop/attention events. In OpenCode, use
+the assigned native session routes; do not discover, start, or use a separate mail server.
+Historical transport instructions and archived messages do not authorize current use.
 Every assigned top-level matching or integration worker and internal tooling, research or review helper needs
 its own verified native thread stop/attention route and tested native message route to
 the exact current Director thread. A completion recorded in chat history alone is not
@@ -129,7 +144,10 @@ never create a replacement session on failure. Route failures and tooling agreem
 the worker's verified native Director route with session/attempt/result evidence. No routine per-function review is required.
 Tooling escalation retains explicit Sol/Claude agreement and the Director's approval before changes.
 The Director is Astra; independent exact-code review remains a separate reviewer responsibility.
-Fresh-worker instructions must include this communication policy and verified native Director routing.
+Fresh-worker instructions must include this communication policy, verified native Director routing,
+and the [worker matching approach addendum](docs/WORKFLOW.md#worker-matching-approach-addendum).
+Emphasize mismatch diagnosis and focused, hypothesis-driven iteration after the initial m2c draft;
+this adds no per-experiment report, approval or acceptance gate.
 
 Running out of matching ideas is part of the unfinished matching assignment, not grounds for
 an indefinite hold, ownership release or worker replacement. A Claude/GoldOx no-lead reply or

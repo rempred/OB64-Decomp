@@ -1,4 +1,4 @@
-# OB64 Decomp â€” Canonical Matching Workflow
+# OB64 Decomp — Canonical Matching Workflow
 
 This document defines the ordinary function-matching loop for *Ogre Battle 64:
 Person of Lordly Caliber*, US Rev 0. It uses the accepted structural model and
@@ -9,6 +9,26 @@ Read [the agent guide](../AGENTS.md) first. Source classification is defined by
 overlay, placement, executable extent, linker ownership rule, or toolchain
 contract, stop using this ordinary workflow and follow
 [the structural audit](AUDIT.md).
+
+## Incoming Director
+
+Read the [handoff](Plans/cursors/director.md) for the accepted baseline and
+released roles, then the [queue](NEXT_STEPS.md) for assigned work and available
+candidates. Read the [matching study](research/how-matching-works-20261117.md)
+before choosing a family or briefing workers. Its construction examples show
+how a repeated compiler result or an unresolved relocation can change the next
+experiment.
+
+On a fresh checkout, the tracked audit linked from the handoff identifies the
+last accepted build. Follow [local setup](../README.md#start-here) when you need
+to reproduce it. On a provisioned checkout with the retained proof,
+`.\tools\status.ps1 --snapshot` checks the saved reports and ROM;
+`.\tools\status.ps1` also checks today's source tree. A handoff alone calls
+for no new verification run.
+
+If the queue has no assigned program, use the candidate evidence to propose a
+scope to Joe. When he assigns one, use its roster and dependencies for the
+steps below. Old program plans and session identifiers remain useful as history.
 
 ## Comparison scratch storage
 
@@ -47,19 +67,20 @@ not a new matching-worker handoff protocol.
 
 Read-only inventory is available through:
 
-`node tools/scratch-retention.js --root <absolute-diff-root> --dry-run --docs <absolute-docs-root> --memory <absolute-memory-root> --mail <absolute-project-mail-archive>`
+`node tools/scratch-retention.js --root <absolute-diff-root> --dry-run --docs <absolute-docs-root> --memory <absolute-memory-root>`
 
-The --mail option above reads preserved historical archives only; it is not an operational
-Mail dependency. Repeat reference options to cover all relevant roots. Missing, unreadable or unsafe
+Historical communication archives are read-only reference inputs when relevant to an
+authorized cleanup; no messaging service is needed to inspect them. Repeat reference
+options to cover all relevant roots. Missing, unreadable or unsafe
 inputs are exposed as incomplete, protecting affected data. Supplied-root coverage
 is not proof that every current/best/pinned/live reference has been found. The
 inventory recognizes full diff names/paths, bare 13-digit timestamps and a 6-hex
 suffix adjacent to its symbol; 64-/8-hex identifiers apply only to actual hash run
 IDs. Function address mentions alone are not hash-run references. No apply/remove
 operation exists. All data, including current/best/referenced/unknown runs and their
-complete dependency closure, remains untouched. The Director owns the next reviewed
-historical dry-run and operator-apply decision after this stage; inspection does not
-authorize cleanup of workbench/probes, accepted proofs, compiler sources or fixtures.
+complete dependency closure, remains untouched. If Joe assigns historical cleanup,
+the Director reviews the dry run and decides which actions its scope permits.
+Workbench probes, accepted proofs, compiler sources and fixtures remain protected.
 
 ### Safe filesystem cleanup
 
@@ -101,11 +122,12 @@ the item in place and report why. Do not automatically empty Recycling.
 
 ## The short path
 
-Use the agent guide's worker assignments on `main`, with one dedicated top-level integration
+For an assigned program, use the agent guide's role rules on `main`, with one dedicated top-level integration
 thread as production source/build writer, additional to the assigned matching workers.
 Route retrieval/data-seeking or parsing-only assignments to Sol High under the agent guide's worker-model rule.
-Use [the active queue](NEXT_STEPS.md) for current worker assignments and the
-[program](Plans/sequential-main-program.md) for complete family scope and real dependencies.
+Use the program named in [the active queue](NEXT_STEPS.md) for complete family
+scope, dependencies and assigned ownership. The [October sequential plan](Plans/sequential-main-program.md)
+preserves earlier family membership and decisions.
 Do not create or use concurrent development branches/worktrees. Preserve historical worktrees as read-only evidence.
 Independent read-only research/review and explicitly disjoint documentation work may proceed alongside matching.
 Assign source workers separate complete waves, preferably in less-related families, under
@@ -119,22 +141,19 @@ finish the outgoing writer's active production commands and record the next acti
 cursor/handoff before releasing it; then grant the new integrator sole write authority.
 Parent top-level task transport procedures do not apply to this decomp program.
 
-After the one-time local setup in [the repository README](../README.md):
-
-```text
-node tools/match.js doctor
-â†’ establish a missing setup baseline once
-â†’ choose one accepted target
-â†’ consult its current research intake
-â†’ write or adjust its C source
-â†’ node tools/diff.js <symbol>
-â†’ iterate from the linked diff
-â†’ confirm PURE_C and exact relocation contract; record a provisional candidate
-â†’ repeat for the remaining assigned wave targets
-â†’ after the complete wave, node tools/verify.js once
-â†’ confirm every wave target is PURE_C in the final report
-â†’ completed-wave integration; verify changed integration inputs
-```
+1. Follow [one-time setup](../README.md#start-here) if the workspace needs
+   provisioning. The production writer prepares the selected inputs. Before
+   dispatch, preflight every owner in each worker's complete assigned wave.
+2. In the [private workspace](#private-candidate-workers), the worker reads
+   the intake and assembly for one complete owner, then writes or resumes its C.
+   Use `match.js watch` on the selected inputs to compare the emitted code.
+3. Use the first meaningful difference to choose a source experiment. Check
+   relocation targets when addresses differ. Preserve the candidate and controls
+   in the private workspace and repeat for the remaining owners.
+4. The integrator reconciles the complete wave in the production tree, uses
+   `node tools/diff.js <symbol>` for linked diagnostics, and runs
+   `node tools/verify.js` once on the combined final inputs. Confirm source class,
+   sole ownership, relocations, exact target bytes and the full ROM before release.
 
 `match.js doctor` is a setup check for the optional research workbench. It needs
 the normalized baserom, the configured production compiler/assembler chain, and
@@ -200,20 +219,9 @@ with the canonical ROM. Intermediate wave candidates do not establish a new acce
 
 ## One-time setup
 
-The README lists every local prerequisite. In summary, provide the supported
-ROM and authenticated host, compiler, PowerShell, Splat, asm-differ, GNU
-Binutils, preprocessing, and m2c dependencies. Then create the ignored local
-configuration and normalize the ROM:
-
-```powershell
-if (-not (Test-Path config/local-tools.json)) {
-  Copy-Item config/local-tools.example.json config/local-tools.json
-}
-# If copied above, replace its normal-work placeholders.
-node tools/verify_baserom.js
-node tools/match.js doctor
-node tools/build.js
-```
+Use the [README setup commands](../README.md#start-here) to select the pinned
+Node runtime, configure the local tools and normalize the supplied Rev 0 ROM.
+That sequence includes the workbench check and initial build.
 
 The normalization command auto-selects a sole ROM under `baserom/`. If the ROM
 exists only at the external path recorded as `romInput`, pass that path directly
@@ -248,10 +256,12 @@ owner rows; use its reviewed mapping as-is. Do not reject that mapping or infer
 a new boundary from a plausible disassembly during an ordinary match. For conflicting
 evidence, use the bounded coverage check below before routing a structural concern.
 
-The optional workbench can inspect or rank accepted targets:
+For proposed editor work, start with the reviewed priorities and direct callers.
+The full ranking also uses compiler and family history.
 
 ```powershell
 node tools/match.js inspect <symbol>
+node tools/match.js rank --priorities-only --lane leverage
 node tools/match.js rank --lane leverage
 node tools/match.js rank --explain <symbol>
 ```
@@ -435,10 +445,70 @@ final recompilation and complete-ROM check at wave completion and remain mandato
 The diff's internal development link remains necessary for relocated target-byte
 comparison. It does not authorize a separate final ROM build or full verifier per function.
 
-Use the instruction diff to make one evidence-driven source change at a time.
-Source order, control-flow shape, integer widths, expression grouping,
-temporaries, and live ranges can change the old compiler's output. Do not force
-register allocation with assembly.
+#### Worker matching approach addendum
+
+Include this guidance in each matching worker's initial prompt. Use this loop throughout
+the assigned wave. **Steps 5 and 6 are the main investigative work.**
+
+1. **Understand the complete target.** Confirm the accepted function boundaries,
+   physical owners and required body coverage. Read the current research intake and
+   relevant existing lessons before repeating experiments. Inspect the assembly's
+   control flow, calls and data accesses sufficiently to identify missing or incorrectly
+   reconstructed behavior.
+
+2. **Generate or reuse the initial C candidate.** Use the pinned m2c output as the
+   primary starting hypothesis, or resume an existing useful candidate. Check generated
+   C against the assembly; do not blindly trust inferred types, prototypes, expressions
+   or control flow. Preserve complete function coverage and aim for readable, structured
+   PURE_C.
+
+3. **Compile through the supported matching tools.** Use the selected inputs and pinned
+   historical toolchain through the existing private workbench. Preserve the compiler
+   configuration and ownership contracts.
+
+4. **Compare early.** Obtain an early machine-code comparison rather than attempting to
+   perfect the entire function before compiling. Use the supported comparison's
+   relocation handling and distinguish actual source differences from unresolved addresses.
+
+5. **Diagnose the actual mismatches.** Select a specific mismatch or related group of
+   mismatches. Examine instruction selection, register allocation, scheduling, stack
+   layout or control flow as relevant—not every category on every iteration.
+
+   Form a testable, evidence-backed hypothesis about the source-level cause. Use existing
+   source comparisons or compiler diagnostics when they help distinguish plausible
+   explanations. You do not need to prove the original source or fully explain the
+   compiler before trying a reasonable hypothesis.
+
+6. **Test, learn and repeat.** Make one coherent source change, compile and compare again.
+   Use the result to refine the diagnosis and choose the next experiment. Avoid combining
+   unrelated changes or repeatedly trying equivalent variations without new evidence.
+
+   Prefer focused experiments, but do not impose a one-line or small-edits-only rule.
+   Incorrect types, data layouts, control-flow structures or variable lifetimes may
+   require coordinated changes across the function.
+
+   Keep the best candidate recoverable. Temporary regressions can be informative during
+   a justified sequence of experiments; a worse score does not by itself disprove the
+   underlying hypothesis.
+
+**Own the investigation.** Continue investigating independently. Use the assigned
+persistent assistant for broader guidance, alternative explanations or targeted insight
+when useful. Explore its guidance before returning with another question, and bring the
+results and remaining uncertainty. Do not become a relay that merely implements
+successive suggestions.
+
+An unchanged score or exhausted ideas does not complete the assignment or justify an
+indefinite hold. Continue reconstruction and targeted consultation unless a concrete
+external blocker, explicit pause or applicable fail-closed rule prevents the affected work.
+
+**Keep the loop lightweight.** Routine experiments need no Director approval or formal
+per-trial report. Record discoveries that will inform future work, preserve meaningful
+controls, and avoid archiving every attempt.
+
+Use focused matching checks during iteration. Full-ROM verification remains at the
+complete-wave acceptance boundary. Diagnostic exactness alone is not accepted matching C;
+all existing source-class, ownership, relocation, target-byte and complete-ROM gates still
+apply. Do not force register allocation with assembly.
 
 Generated diff reports and compiler outputs are ignored evidence. Do not commit
 them.
@@ -510,18 +580,18 @@ or add scheduled tasks to provide continuity.
 
 #### Director event continuity
 
-After accepted consultation setup, use native Codex collaboration/thread messaging and
-local thread stop/attention watchers; never scheduled tasks or heartbeat automations.
-Agent Mail is no longer an operational transport for this decomp program. Preserve its
-archives as read-only historical evidence; do not modify unrelated global Mail services. Internal tooling, research and review helpers require the
+Use the current harness's native session messaging and event-driven stop/attention
+watchers; never scheduled tasks or heartbeat automations. In OpenCode, use the assigned
+native session routes and native events. Do not discover, start, or use a separate mail
+server. Historical transport instructions do not authorize current use; archived
+communications remain read-only evidence. Internal tooling, research and review helpers require the
 same reliable continuation coverage as top-level source workers.
 
 1. At assignment, record the helper's real thread ID, role and ownership in the Director
-   cursor. Reuse the existing tested thread-monitor implementation with a dedicated
-   configuration/state directory for that helper and the current Director destination.
-   Do not copy another worker's delivery cursor or create a duplicate process. Confirm
-   the exact process, destination and fresh status, including a successful read of the
-   internal thread. Keep an active collaboration wait until this route is established.
+   cursor. Use the current harness's native route and stop/attention events.
+   Where a monitor is required, configure it for that helper and this Director,
+   with its own delivery state. Confirm the destination and a fresh read of the
+   assigned thread. Keep an active collaboration wait until the route is established.
 2. Give the helper the exact current Director thread identity and tested native route.
    Send one clearly labeled native startup delivery test and verify actual receipt and
    stop-watcher wakeup at that destination. Approval/scope requests and final handoffs,
@@ -546,13 +616,10 @@ same reliable continuation coverage as top-level source workers.
    an old event. Keep transport retries and durable event deduplication; test completion,
    attention, restart/retry and wrong-destination rejection when the transport changes.
 
-The current reused implementation lives under
-`C:/Users/Joe/.local/share/codex-thread-monitors/actor-worker-to-astra/`;
-dedicated `internal-*-to-purple` directories carry current internal-helper routes.
-`watch-sol.py` and `desktop-bridge.mjs` perform metadata-only observation and delivery;
-the historical filename does not restrict them to source workers. Read current status
-and ownership records rather than assuming an old PID is still authoritative. A watcher
-alert requests Director intake, not automatic worker resumption or acceptance.
+Historical monitor directories, process IDs and destination IDs describe their
+original assignments. Establish and test routes for the people and threads in
+the new assignment. A stop notification prompts the Director to inspect the
+handoff and decide the next action.
 
 #### Record useful experiments
 
@@ -824,8 +891,10 @@ The new worker's initial prompt must start work immediately and include:
   is Astra and owns infrastructure approval; independent exact-code review remains separate.
   A specific stuck question goes to the paired Claude session; ordinary matching does not
   wait for routine review;
-- the normal one-target loop, concurrent private checks, complete-wave verifier, and the
-  exception-only reporting policy in `AGENTS.md`.
+- the [worker matching approach](#worker-matching-approach-addendum) and a
+  relevant [example from the matching study](research/how-matching-works-20261117.md).
+  Include the first difference to investigate, concurrent private checks,
+  complete-wave verification and the reporting policy in `AGENTS.md`.
 
 The Director owns this handoff and monitor transfer; workers do not create successors or send
 routine progress messages to each other. Preserve knowledge through the existing records and
@@ -858,7 +927,7 @@ The Director assigns each candidate worker a separate complete wave and one shor
 under `build/matching/`, preferably using less-related families. Each worker owns one target at a time.
 Before dispatch, preflight the chosen path through `resolvePrivateWorkspace` in
 `tools/lib/matching/private_workspace.js` without starting native work. Its current guard requires
-a nonreserved lowercase basename of at most24 characters and a resolved root no longer than120;
+a nonreserved lowercase basename of at most 24 characters and a resolved root no longer than 120;
 the validator remains authoritative. An invalid assignment path is a Director scope correction,
 not grounds to weaken the guard or replace the unfinished worker.
 Keep the original complete wave and any coupled producer, required bodies,
@@ -1155,9 +1224,9 @@ contract.
 
 Naming does not gate a machine-code match. Use exactly these evidence classes:
 
-1. `CANDIDATE` â€” an external lead; never a canonical build name.
-2. `SUPPORTED_ALIAS` â€” independently supported by static evidence.
-3. `CANONICAL` â€” established by runtime evidence, controlled mutation, or
+1. `CANDIDATE` — an external lead; never a canonical build name.
+2. `SUPPORTED_ALIAS` — independently supported by static evidence.
+3. `CANONICAL` — established by runtime evidence, controlled mutation, or
    recognized SDK/library proof.
 
 During matching, inspect the body, callers, callees, strings, and data accesses
@@ -1194,21 +1263,27 @@ does not prove modified behavior.
 
 ## Optional references
 
-- [MATCHING_WORKBENCH.md](MATCHING_WORKBENCH.md) â€” generated candidate research,
+- [MATCHING_WORKBENCH.md](MATCHING_WORKBENCH.md) — generated candidate research,
   history, diagnostics, sweeps, and limits.
-- [KMC_GCC_MATCHING_NOTES.md](KMC_GCC_MATCHING_NOTES.md) â€” reproduced,
+- [KMC_GCC_MATCHING_NOTES.md](KMC_GCC_MATCHING_NOTES.md) — reproduced,
   target-scoped compiler matching observations.
 - [templates/matching-c-agent-prompt-guide.md](templates/matching-c-agent-prompt-guide.md)
-  â€” a concise prompt for an assigned one-function task.
-- [tools/README.md](../tools/README.md) â€” repository tool index.
+  — a concise prompt for an assigned one-function task.
+- [tools/README.md](../tools/README.md) — repository tool index.
 
 ## Text representation evidence
 
-Strict outputs use linkage schema 4, source-object proof 4, layout 2, and build/verification/manifest 5. Each target carries independently derived textContract, objectEvidence, and linkEvidence. Stale outputs must be rebuilt. CURRENT fingerprints use version 7; verified state and fresh compilation use version 5.
+Each target carries independently derived `textContract`, `objectEvidence`
+and `linkEvidence`. For the November 10 baseline, the verified state and
+fresh-compilation report both use schema 7. The [acceptance implementation](../tools/lib/current_workflow.js)
+checks compatible report identities and the ROM. Follow the recorded state's
+references to the exact proof for a particular build.
 
 Ordinary section assignment and existing auxiliary contracts retain their behavior. The bounded nativeTextTail descriptor permits untouched compiler assembly with a 1132-byte function inside its 1136-byte, 16-aligned native text owner. The four zero bytes must come from assembler alignment. Full-owner bytes, sole ownership, relocations, and the entire ROM must still match. The art routine `func_00204A70` is active in the canonical target registry.
 
-Shared-header compatibility defaults to current version-5 evidence on both sides. Use `--historical-v3-v4` only for the retained historical migration; it cannot bridge older evidence into version 5.
+The [shared-header checker](../tools/verify_shared_header_compatibility.js)
+reads the schema of each supplied build and authenticates its associated
+evidence. Its `--historical-v3-v4` option is reserved for that migration.
 
 ## Compilation-group workflow
 

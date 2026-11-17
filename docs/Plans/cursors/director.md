@@ -1,35 +1,21 @@
-# Director / Astra — body/equipment complete
+# Director handoff — November 17, 2026
 
-Director `ses_e43ef7d4effe75r1xU4kjl9h0w`, Astra/HIGH, OpenCode Desktop **2.2.6**. Final source commit on `main`: `ea3dfaae`. The [body/equipment program](../body-equipment-program.md) is accepted and closed November 9. No active matching assignment or production writer; further work needs Joe's assignment.
+**No matching wave or production writer is active.** The last assigned program closed on November 9. Its workers, reviewers, integration role and notification routes are released. The next decision for Joe is which editor problem to assign.
 
-## Completed staffing
+## Accepted baseline
 
-Joe assigned two DeepSeek Free/MAX workers with persistent Inkling Free/MAX assistants, two reviewers and a separate Sol6.1/HIGH integrator, all with maximum supported context. After quota failures Joe authorized Director to finish both private candidates. All assignments are now released/stopped.
+The [November 10 structural audit](../../audit/2026-11-10-splat-and-repository-cleanup.md) records the accepted US Rev 0 build (CURRENT), fingerprint `081B815B15E33390CB26067C16891AAA20C32FB00415F9D963841A5E37018A8C`. Its normalized z64 ROM SHA-256 is `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. The audited Splat configuration is committed at `29e0915c`. The November 17 matching tools and Git checkout corrections are recorded at `b6d715cb` and `02406d96`.
 
-Seven primary threads retain verified identities. Eight excess worker/assistant roles remain archived/retired.
+On a provisioned checkout, run `.\tools\status.ps1 --snapshot` to authenticate the retained reports and ROM. Use `.\tools\status.ps1` when a decision depends on whether today's sources still match that proof. A fresh Git checkout contains the audit record. Reproducing verification locally requires the private ROM, pinned tools and [setup instructions](../../../README.md#start-here).
 
-## Preserved identities — assignments retired
+## Closed work
 
-| App thread | Session |
-|---|---|
-| OB64 Worker1 — DeepSeek MAX | `ses_e43db03cfffe3O5jrbtX2mxsDx` |
-| OB64 Assistant1 — Inkling MAX | `ses_e43db03c6ffeC8s0gF3jtm2XPZ` |
-| OB64 Worker2 — DeepSeek MAX | `ses_e43db03bfffeT6bIkw5CuQxkA0` |
-| OB64 Assistant2 — Inkling MAX | `ses_e43db03b9ffeqZaOJ0fV09NODL` |
-| OB64 Reviewer — DeepSeek MAX | `ses_e43db0382ffevxV7BDuNA9sVKa` |
-| OB64 Reviewer — Inkling MAX | `ses_e43db037dffecLNMVVFoUxO0Af` |
-| OB64 Integrator — Sol6.1 HIGH | `ses_e43db0377ffeFRjZ89yj2KkFej` |
+[Body construction and equipment visuals](../body-equipment-program.md) closed with B02 scene placement (`8eaabdfc`) and B01 body construction (`ea3dfaae`). Both complete owners passed pure-C and full-ROM verification. The [integration closeout](body-equipment-integration.md) preserves the accepted controls, original assembly references and earlier wave fingerprint. The [consumable effects program](consumable-integration.md) closed on November 3 (`0b972a78`).
 
-Pairs are1-to-1 and2-to-2. The [registry](../../../build/opencode-director/sessions.json) contains exact models and retirement state. Integrator uses `openai/gpt-6.1-sol#high`; Director remains Astra/HIGH. User confirmed all seven app threads visible. Eight excess roles remain archived.
+Attack visual effects closed on October 31 (closure commit `38efb10a`). The [descriptor program](../descriptor-serialization-program.md) closed on October 26 with an exact hybrid encoder. Its pure-C objective and sixteen-byte tail remain open research questions. The [standard-library program](../standard-library-program-draft/PROGRAM.md) finished October 17.
 
-## Acceptance and continuity
+## Next decision
 
-B02 `func_002AAC60` accepted in `8eaabdfc`: complete 1,176-byte owner including preamble, 39 relocations. B01 `func_002AB810` accepted in `ea3dfaae`: complete 812-byte owner, 20 relocations. Combined fresh verification confirms all program owners PURE_C, sole C ownership, exact placement/relocations/linked bytes and byte-identical full ROM. Original ASM references remain.
+Read the [matching study](../../research/how-matching-works-20261117.md) before scoping or staffing a wave. The study and worked examples are tracked. Replaying the private runs requires their saved reports. The [queue](../../NEXT_STEPS.md) identifies two candidates for a proposal: `func_002A9364` for actor initialization and placement, and `func_002B867C` for mission-briefing construction. Choose the relevant game path, identify the editor behavior the source could unlock, and bound the related owners and callers. The broader cutscene program remains a draft.
 
-Native V2 transport under `build/opencode-director/` passed reviewed six-test coverage, pair roundtrips, idle-Director wakeup, pending-form recovery and route-retirement checks; README preserves evidence. All assignment routes are now disarmed. Integrator successful stop `idle-1794215552903` and no active production commands were confirmed before release `msg_06c4a23ba4abc3dc5e0315af1d7c6165` (stored, resume:false). Director recorded release in the integration cursor. No outstanding approval or follow-on assignment.
-
-Accepted CURRENT: `5894EA0E55DBDB41BA76517755F5E8110AC032C4DD35E6313BEB49DD6BE14086`. Proof paths: `build/current/state.json` and `build/integration/body-equipment/b01-acceptance-evidence.json`. Director independently authenticated verification, fresh-compilation, build-report, ROM and canonical B01 source hashes. ROM SHA256: `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
-
-Useful direct177/190/191 controls and B01/B02 compiler lessons are published; canonical C supplies final examples. Private direct193 and probe evidence remain under `build/matching/bv-b01`. Optional reviewer quota failure was cancelled/released, not an acceptance dependency.
-
-Preserve historical selected inputs `build/body-equipment-inputs-20261108-pinned/manifest.json`, referenced51174C7C outputs, shared tools/runtime, original ROM and unrelated edits. Pinned Node24.13.1 and `OB64_WORK_ROOT=C:/Users/Joe/.codex/ob64-descriptor-20261026` remain unchanged. Broader presentation paths/cutscene draft are unassigned. No push, cleanup or emulator activity.
+Once Joe assigns a program, use the [workflow](../../WORKFLOW.md#the-short-path) to give workers complete waves and the integrator sole production ownership. Establish fresh native message and stop routes to the incoming Director for the assigned roles. Retired session IDs and old monitors are historical records.
