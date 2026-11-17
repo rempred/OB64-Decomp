@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "candidateId": "B390F0A1AC33365C0BC048E6EDCE7955B56D27B43FF72D5B718C4D2F49EB203C",
-  "observationId": "AD8052D2BEE63ED05A5437F8BD236E0AF414A15CEEDCA857DA33D43A45972438",
+  "candidateId": "55B287797BF4F4A305BC849FE91E8472F23DB8A880E85FD8153598A0166C47DB",
+  "observationId": "1308703FD680F768705DE7320C4252FA5D374911C480A4734B82DBBC3B9D718B",
   "symbol": "func_002AAC60",
   "authored": {
-    "context": "Complete 1176-byte func_002AAC60 with natural outer unit indexing and natural inner work[isLeader + 4] indexing. The true leader arm assigns isLeader = 1 before loading startX/startY. Compare the final canonical source, which moves only that assignment after the two loads; unused declarations/comments also differ.",
+    "context": "Complete 1176-byte func_002AAC60 with natural outer unit indexing and natural inner work[isLeader + 4] indexing. The true leader arm assigns isLeader = 1 before loading startX/startY. Compare the final canonical source, which moves only that assignment after the two loads; unused declarations/comments also differ. The original comparison uses the pre-A01 canonical companion in commit 1c8419fb. The current companion changes the initializer flag declaration and reproduces the same linked text and relocations.",
     "effects": [
       "register-allocation",
       "lifetime-order",
@@ -21,7 +21,7 @@
     "references": [
       {
         "path": "src/lib/func_002AAC60.c",
-        "sha256": "B01E631850262BCAAB85E46EFD08261007426690E624457D35EF55AE583E1CC3"
+        "sha256": "9DF05037CB46AEE956E9825FDE729317DD393FECA795D5892F195CE1FDFE3020"
       }
     ],
     "relatedCandidateIds": [],

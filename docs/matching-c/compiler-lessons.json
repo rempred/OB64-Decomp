@@ -643,12 +643,12 @@
         "docs/dossiers/func_002700B0-00882fd20d.md",
         "docs/dossiers/func_002728C0-28ceff7648.md",
         "docs/matching-c/e03-runtime-reuse.md",
-        "docs/dossiers/func_002AAC60-b390f0a1ac.md"
+        "docs/dossiers/func_002AAC60-55b287797b.md"
       ],
       "observations": [
         {
           "symbol": "func_002AAC60",
-          "path": "docs/dossiers/func_002AAC60-b390f0a1ac.observation.json"
+          "path": "docs/dossiers/func_002AAC60-55b287797b.observation.json"
         },
         {
           "symbol": "func_00261DA8",

@@ -5,7 +5,8 @@ Preservation does not change current source ownership or establish matching acce
 - Candidate: `B390F0A1AC33365C0BC048E6EDCE7955B56D27B43FF72D5B718C4D2F49EB203C`
 - Observation: `AD8052D2BEE63ED05A5437F8BD236E0AF414A15CEEDCA857DA33D43A45972438`
 - Source: [exact C](../archive/matching-c-candidates/2026-11-09-func_002AAC60-b390f0a1ac.c)
-- Metadata: [curated observation](func_002AAC60-b390f0a1ac.observation.json)
+- Current reference: [successor observation](func_002AAC60-55b287797b.md)
+- Original observation envelope: Git commit `1c8419fb` at this dossier’s original metadata path.
 
 Retain direct27 as the minimal natural-index allocation counterexample; the final example is src/lib/func_002AAC60.c, not another archived final-source copy.
 
