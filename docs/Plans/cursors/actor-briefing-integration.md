@@ -12,7 +12,7 @@ Captured [version 1 selected inputs](../../../build/actor-briefing-inputs-202611
 | A02 | `func_002AB0F8` (`2AB0F8..2AB2A8`, row 5478), `func_002ACFD8` (`2ACFD8..2AD224`, row 5498), `func_002AD224` (`2AD224..2AD420`, row 5499) | `build/matching/actor-20261117-a02` |
 | M01 | `func_002B88C8` (`2B88C8..2B89B8`, row 5619), `func_002B867C` (`2B867C..2B88C8`, row 5618) | `build/matching/actor-20261117-m01` |
 
-At intake the authenticated baseline had no active C producer for any of the six targets. Original assembly confirms A02 calls A01 at `2AB278`, `2AD1DC`, and `2AD3A4`. Preserve the eight-byte entry preambles at `2ACFD8` and `2AD224`, following the accepted [B02 owner](body-equipment-integration.md). The old `size=520` annotation at `2AD22C` includes the following 20-byte accessor. The real owner restores and returns through the delay slot at `2AD41C`, and the dispatch at `285250` independently calls the accessor at `2AD420`. The M01 wrapper calls the constructor at `2B8970`, and its final return delay slot ends at the executable boundary `2B89B8`.
+At intake the authenticated baseline had no active C producer for these six targets. The M01 wrapper calls its constructor at `2B8970`; its final return delay slot reaches the code boundary `2B89B8`.
 
 All six targets returned `prepared` in the guarded complete-wave reports. These are source-independent diagnostic results. [A01](../../../build/actor-20261117-a01-preflight.json) · [A02](../../../build/actor-20261117-a02-preflight.json) · [M01](../../../build/actor-20261117-m01-preflight.json)
 
@@ -24,4 +24,10 @@ The guarded A03 report covers both complete owners using the same manifest. `fun
 
 A01 passed one fresh complete-wave verification as `PURE_C`. `objects/c/func_002A9364.o` solely owns `.ob64.r5466`. The 1,272 linked bytes, all relocations and the full Rev 0 ROM pass. CURRENT `99CC16F00A2BB5B15C50E9648DE9E758C2C7E9D454D1F454EDD27C54850D075D`. All three callers retain exact bytes and relocations. The staged checkout reproduced every accepted source and header identity. [A01 acceptance evidence](../../../build/integration/actor-briefing/a01-acceptance-evidence.json)
 
-A02 is next on verified A01. All three A05 continuation targets passed guarded preparation on the original selected manifest. [A05 preflight](../../../build/actor-20261117-a05-preflight.json)
+## A02 integration and A05 preparation
+
+A02 passed one fresh verification on A01 commit `4d85bc65`. All three owners are `PURE_C` with exact placement, sole C ownership, 8/17/18 matching relocation records, and a byte-identical full ROM. CURRENT `07B56AC1C0132FC773C93DD4ED96D24F4062B36B26E4CE202DB416D445BCAC89`. Both eight-byte preambles and the separate accessor at `2AD420` pass. Staged source checkout passed. A02 follows A01's word/byte ABI and open-ended actor-indexed row view. [A02 acceptance evidence](../../../build/integration/actor-briefing/a02-acceptance-evidence.json)
+
+Retained controls passed current intake. [Float temporary](../../dossiers/func_002AB0F8-0d5700e9ef.md) · [State cursor](../../dossiers/func_002ACFD8-ddc5648031.md) · [Refresh tails](../../dossiers/func_002AD224-57b9909561.md)
+
+`func_002AD574`, `func_002AB574`, and `func_002AD434` passed preparation on the original manifest in `build/matching/actor-20261117-a05`. A03 integrates next. [A05 preflight](../../../build/actor-20261117-a05-preflight.json)

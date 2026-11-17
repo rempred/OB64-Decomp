@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0D5700E9EF82FE220EBC63473D56F617A8AB79011137F3B73FC1A3BAD10E4298",
+  "observationId": "9FBEEBB522A120AE110D4F5D52C5B5F4A270A452DE9991D4ED648475B4D3181B",
+  "symbol": "func_002AB0F8",
+  "authored": {
+    "context": "Complete movement setup for the first actor placement path. The control computes the integer duration from a literal 555.0f after assigning the outgoing Z temporary.",
+    "effects": [
+      "register-allocation",
+      "floating-point-temporary"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3E7D143FB2072CD9D49371C78FBC384C6E67D2BD4BEC88AB10E46D3A8AE756B9",
+      "sourceSha256": "57C715F70A68EDFBBD88FBEDAACAA3668AF2572D0D2B49F53F65D488EA33170A"
+    },
+    "label": "reuse-float-temporary-before-outgoing-z",
+    "observedEffect": "The control and revised source each emit 432 bytes and the same eight relocation records. The revised source leaves the product in f0 at 0x002AB1E0 and uses f2 for the Z conversion and outgoing stack slot. Six raw words change to the matching form.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_002AB0F8.c",
+        "sha256": "545C9CDCD9FDECA29DB5F0BC12E2BB9FF3BABACB55E6E71E08676DD7E87807DE"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002AB0F8.s",
+        "sha256": "0771AEC0EA401DCA054ABAC69505522C336F464FE1F815562DC07A3C00306C54"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The control keeps the opposite floating-register roles in the multiply, coordinate conversion, and argument preparation.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the Z temporary for 555.0f first, compute duration, then assign the Z coordinate. The otherwise identical private pair isolates this change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2000,
+      "sha256": "3E7D143FB2072CD9D49371C78FBC384C6E67D2BD4BEC88AB10E46D3A8AE756B9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "57C715F70A68EDFBBD88FBEDAACAA3668AF2572D0D2B49F53F65D488EA33170A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-17-func_002AB0F8-0d5700e9ef.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
