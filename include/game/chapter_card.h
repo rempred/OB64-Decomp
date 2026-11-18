@@ -58,4 +58,16 @@ void func_002879F8(void);
 void func_00287A4C(void);
 void func_00287AA4(void);
 
+void func_0028A310(void);
+void func_0028A678(void);
+void func_0028A534(void);
+void func_0028a6e4(void);
+
+typedef void (*TitleSceneCallback)(s32 slot);
+
+void func_00281F10(s32 slot);
+void func_00281FA8(s32 slot);
+void func_00282004(s32 slot);
+void func_00282094(s32 slot);
+
 #endif
