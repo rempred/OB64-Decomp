@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F1D57FDCEF69B3CF32186F9DF4EF90D262DB42140960CB3DA10095F349637AEF",
+  "observationId": "E0F74557160A58627FA4EECEC0C0BFFE346C41CAA1C336C72F61DF187C40C871",
+  "symbol": "func_002A98C4",
+  "authored": {
+    "context": "Complete word-returning pose query uses the established word-returning decoder. The control compares all three decoder results as full words.",
+    "effects": [
+      "return-abi",
+      "instruction-scheduling",
+      "function-extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DB44FF9EBBC5B21D720D75663A56C4D516321F776DA09A8DAA65125EB3EBD208",
+      "sourceSha256": "B3F8EA3209341CBCCA9656E8F2C4E9F215764DAD63D59651FAEEC2E07C85856C"
+    },
+    "label": "pose-query-tests-decoder-low-byte",
+    "observedEffect": "The word-test control keeps the folded scene lookup and emits 260 bytes. At ROM 2A9914 it copies v0 directly into v1 instead of masking the low byte. The three explicit token casts produce the full 268-byte retail extent and all five relocations.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_002A98C4.c",
+        "sha256": "EBA827FEBC5587DCC01D9B90A765DB8A71DCF1783B952145C53D31D9A666FB8F"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002A98C4.s",
+        "sha256": "4024729D5E9394AE08EE507CD5CE02D78479BD4F7C9769FDF84FA3CEC3EF69DA"
+      },
+      {
+        "path": "src/lib/combat_pose_metadata.c",
+        "sha256": "9F66F026AED5C65C6AF25D46090E19961F850C00242332789D5AE59842CD7398"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00284288.s",
+        "sha256": "0973E4AFEDC1F1816BF0DAB3B8577CEB8C23EF5EAEC0DB9C6EE77ADE0A98A0D5"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002AD224.s",
+        "sha256": "A06FD639BDCE29D1BD22A586987BD2D05AC0B8656A9A75C90A9C837EA8F137B5"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The control changes the token semantics and omits the retail masks.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Narrow each decoder result to u8 at its token test, while preserving both callable interfaces."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1567,
+      "sha256": "DB44FF9EBBC5B21D720D75663A56C4D516321F776DA09A8DAA65125EB3EBD208"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B3F8EA3209341CBCCA9656E8F2C4E9F215764DAD63D59651FAEEC2E07C85856C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_002A98C4-f1d57fdcef.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

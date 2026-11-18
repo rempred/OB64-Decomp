@@ -18,6 +18,8 @@ Complete guarded preparation passed for [A01](../../../build/actor-20261117-a01-
 
 - **M01** `2B88C8` and `2B867C` passed together as `PURE_C`. The 240-byte wrapper and 588-byte constructor retain their eight and thirteen relocations, including internal addends `0xCC` and `0x164`. The C2 dispatcher now declares the wrapper's `s32` return and retains its exact linked bytes. Verified CURRENT `639972C68E60A602C8243D36BFABF8CF58423A326C18CFBD7CCB44F3798ABD7B`. [Proof](../../../build/integration/actor-briefing/m01-acceptance-evidence.json)
 
-A04 is next. [P01 preparation](../../../build/integration/actor-briefing/p01-producer-evidence.json) binds all 22 table entries and their separate read-only assembly owner for private dispatch.
+- **A04** `2A98C4` passed as `PURE_C` for all 268 bytes and five relocations, including the folded scene-pointer load. The query remains word-returning and masks each decoder result to a byte. Both existing callers retain their linked bytes and relocations. Verified CURRENT `765657330506B3584329A7519AD2974A9860A4BA597FC9B7AD11629C80C147DC`. [Proof](../../../build/integration/actor-briefing/a04-acceptance-evidence.json)
+
+P01 is next. [P01 preparation](../../../build/integration/actor-briefing/p01-producer-evidence.json) binds all 22 table entries and their separate read-only assembly owner for private dispatch.
 
 The B02 reference repair in `bb1a4e6e` preserves the historical Direct27/Direct57 pair and authenticates a successor for the current caller declaration. [Live lesson dossier](../../dossiers/func_002AAC60-55b287797b.md)
