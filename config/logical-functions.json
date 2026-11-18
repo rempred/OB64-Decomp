@@ -379,6 +379,12 @@
       "romEndExclusive": 2622688,
       "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 2664364,
+      "romEndExclusive": 2664368,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original return and delay slot end at ROM 0x28A7AC; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
     }
   ],
   "unavailableBodies": [],
@@ -5922,6 +5928,34 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_00280700.s",
           "sha256": "20B8EDECF726665EEBC647BD8B5A8755B48DF25E1E58CE2F295F22F0498F71D7"
+        }
+      ]
+    },
+    {
+      "romStart": 2664164,
+      "romEndExclusive": 2664364,
+      "symbol": "func_0028a6e4",
+      "aliases": [],
+      "expectedBytesSha256": "65CC45C1EA80FA1BBFF27FE796A36C269FE9B9D1E084D8CBE9D763BE13A06BDB",
+      "evidence": {
+        "caseId": "routine-row5151-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original return and delay slot end at ROM 0x28A7AC; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+      },
+      "fragments": [
+        {
+          "rowIndex": 5151,
+          "romStart": 2664164,
+          "romEndExclusive": 2664364,
+          "ownerOffset": 0,
+          "bytes": 200,
+          "vramStart": 2149771172,
+          "sectionName": ".ob64.r5151.s0",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "resource-dispatcher-00286bd0",
+          "file": "asm/original/rev0/lib/func_0028a6e4.s",
+          "sha256": "9F25C895D9F01E2E8FD16EE036CA2B6DF9C558B33857004670AFE8226360C98B"
         }
       ]
     },

@@ -24,4 +24,8 @@ Private roots use `build/matching/preview-261117-<lowercase-wave>`. Each report 
 - **P1.** The constructor row at `29A408..29A460` has 21 entries, 14 in-owner destinations and the original terminal zero word. The adjacent `29A460..29A4B4` row dispatches inside `func_00299740` in P2. The query ends at `283740` and release starts at `283748`.
 - **T1.** Preserve the folded heads at `28A310`, `28A534` and `28A678`. The `29A0A0..29A0B8` row has five in-owner entries and one zero word. The dispatch instructions encode base `0x8023E160` using the sign-extended `lw` displacement at `28A3B4`. Teardown covers all 204 bytes through the terminal word at `28A7AC`.
 
-Preflight establishes preparation. On Director release of a complete wave, reconcile the candidate's interfaces, complete producer and actual text/table relocations, then run one canonical verifier for the combined wave. Preserve the referenced inputs while selected-input workers use them.
+## November 18 integration
+
+**T1** passed one fresh verifier as four `PURE_C` bodies with 40/44/6/22 text relocations. The constructor owns the complete 24-byte table and five local destinations. Four T5 callers retain their linked bytes and placement. The teardown keeps four original executable ASM bytes after its 200-byte C body. Verified CURRENT `690FCDFD7ED7EE235C5EA96AE79CAD3E3C23645523A82AD626D62B79B3D9230F`. [Acceptance](../../../build/integration/cutscene-preview/t1-acceptance-evidence.json) · [Tail layout proof](../../../build/integration/cutscene-preview/t1-retained-layout-evidence.json) · [Fade control](../../dossiers/func_0028A678-6e73cac4b2.md) · [Graphics control](../../dossiers/func_0028A534-c14e6b643e.md)
+
+Q1 and P1 are released in that order. [Q1 private handoff](../../../build/matching/preview-261117-q1/cursor.md) · [P1 private handoff](../../../build/matching/preview-261117-p1/cursor.md). Preserve selected inputs and referenced outputs during integration.
