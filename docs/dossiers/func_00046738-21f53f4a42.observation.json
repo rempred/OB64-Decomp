@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "21F53F4A42E0119D9D2D02EF562D66117CDED10EEA0E1D672581FD7EB13E1921",
+  "observationId": "69820A1C90F08FBCFCC1C835559809CE8D7FC7DFF65CBEAA2BC866BCA8B53AF2",
+  "symbol": "func_00046738",
+  "authored": {
+    "context": "The mapper writes an unsigned request halfword. The native scheduler stores the low halfword, and the interpreter explicitly masks the word before a zero test. The canonical production C and original assembly supply the comparison.",
+    "effects": [
+      "load-store-width-or-signedness",
+      "abi-return-width",
+      "control-flow-shape"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D01EACD5E0EE46DD235991F91D6BCCCA2145A69CA81B403D5E87DB0DFFFACB7F",
+      "sourceSha256": "FF308A64E92C256BD8F3C30425FB73125340B359E0048AA9D0BB5B33088CCB41"
+    },
+    "label": "signed-halfword-return-changes-mapper-epilogue",
+    "observedEffect": "The selected-input native trial adds SLL/SRA to sign extend the result and grows r1016 from 284 to 292 bytes. The initial guard moves from ROM 0x46744 branching to RAM 0x8017094C to the same branch targeting 0x80170950. The comparison with unsigned short has the retail move in the return delay slot.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_00046738.c",
+        "sha256": "332875108669143D08109ABA483F781C1A0DE45D9561F52826F1965BFD69F851"
+      },
+      {
+        "path": "include/game/story_event.h",
+        "sha256": "44FE3279FCC302C2553CCE469B301147C4829AF274538E216E5680CC444D3418"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00046738.s",
+        "sha256": "04EA9A7B9A9AB3180B2D8CCA412F6FAE0F092CDB7BB1D2F30A493F55603CF41A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00047a94.s",
+        "sha256": "541182127BF8B4A6637E9413CF7463BB1C62C39D9A37BF8538774BF62025F3E7"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00046854.s",
+        "sha256": "98D7DBE020D5C99163B5EFCB1133A49CAE97942DA1781C4C7065F9A7F69C7E9E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The signed-return control mismatches the retail text. A word-return control also produced the retail mapper bytes, so this evidence does not identify the original declaration.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the request local unsigned and change only the function return declaration to signed short. The archived control normalizes the worker source line endings."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1773,
+      "sha256": "D01EACD5E0EE46DD235991F91D6BCCCA2145A69CA81B403D5E87DB0DFFFACB7F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FF308A64E92C256BD8F3C30425FB73125340B359E0048AA9D0BB5B33088CCB41"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00046738-21f53f4a42.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
