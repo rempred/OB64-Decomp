@@ -13,13 +13,13 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). Worker 1 started T3 mission-entry images after Q1 acceptance at `7c0cbbbf`. Worker 3 continues T2 chapter reveal after T1 acceptance at `be483783`. The [integrator](cutscene-preview-integration.md) started [P1](../../../build/matching/preview-261117-p1/cursor.md) on the verified Q1 base. After P1 acceptance dispatch retained worker 2 to P2 panel updates. Preserve all three chats and watchers.
+All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). Worker 1 is on T3 mission-entry images after Q1 (`7c0cbbbf`). Worker 2 started P2 scripted Army-panel updates after P1 (`6381778e`). Worker 3 continues T2 chapter reveal after T1 (`be483783`). The [integrator](cutscene-preview-integration.md) retains production ownership and is ready for the next complete wave. Keep the three matching chats and their watchers through reassignment.
 
 After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
 
 ## Accepted baseline
 
-[Q1 acceptance](../../../build/integration/cutscene-preview/q1-acceptance-evidence.json) binds the two actor queries to the exact Rev 0 ROM at CURRENT `EFA1E8FA027D650C69CC74769C7607DF218621B2F4D5D613321A0A97742C4242`. The separate 48-byte override table retains original ASM ownership. [T1 acceptance](../../../build/integration/cutscene-preview/t1-acceptance-evidence.json) covers four title-card functions, the constructor's 24-byte table and the teardown's four retained ASM bytes.
+[P1 acceptance](../../../build/integration/cutscene-preview/p1-acceptance-evidence.json) binds the three opening-panel routines and 88-byte constructor table to exact Rev 0 CURRENT `6510F1E970B7015B0C85F33E849E9180E1A6A0B3C043282523210E1D7105AB6B`. The adjacent P2 update table remains in ASM. [Q1](../../../build/integration/cutscene-preview/q1-acceptance-evidence.json) covers the two actor queries and preserves the 48-byte override table. [T1](../../../build/integration/cutscene-preview/t1-acceptance-evidence.json) covers four title-card functions and the constructor table.
 
 ## Released assignments
 
