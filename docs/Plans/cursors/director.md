@@ -1,8 +1,8 @@
 # Director handoff — November 18, 2026
 
-**Active assignment.** The [story event wave](../story-event-continuation.md) pairs the scene request driver and event interpreter for Wentinus and Sheen. Both owners passed [guarded preparation](../../../build/story-event-261118-preflight.json). Sol 6.2 XHigh matching chat `01a1f05f-2856-7260-9e6d-02d145e80e0f` started the driver at 15:41 Eastern. [Integration](story-event-integration.md) retains sole production ownership and resumes when the complete pair is ready. Both native routes delivered their startup messages and stop events. The Director alerts the Editor after acceptance.
+**Active assignment.** The [story event program](../story-event-continuation.md) covers the request driver, interpreter, event entry and outgoing requests. The driver matches in private testing. Its worker continues the interpreter for Wentinus and Sheen. The entry worker continues its three-function wave. All matching chats use Sol 6.2 XHigh and have verified native routes.
 
-The [entry trio and request mapper](../story-event-continuation.md#event-entry-and-campaign-effects) passed preparation on the same inputs. Both Sol 6.2 XHigh workers have verified native routes. Select the first ready wave. The mapper and interpreter occupy disjoint intervals in `r1283`; either can go first if its compiled table satisfies the shared-row rules.
+The [mapper worker’s handoff](../../../build/matching/story-mapper-261118/cursor.md) records exact private text, 27 table entries and the native alignment word. The [production integrator](story-event-integration.md) started the mapper wave on November 18, with the interpreter portion of row `r1283` retained in assembly. Reconcile the unsigned-halfword return with both consumers. The Director releases the mapper worker and alerts the Editor after canonical acceptance.
 
 The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
 
