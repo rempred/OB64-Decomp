@@ -1,6 +1,6 @@
 # Director handoff — November 18, 2026
 
-**Active assignment.** The [story event wave](../story-event-continuation.md) pairs the scene request driver and event interpreter for Wentinus and Sheen. Sol 6.2 XHigh matching chat `01a1f05f-2856-7260-9e6d-02d145e80e0f` owns private C. Integration chat `01a1f05f-2cc1-7700-88c1-dcf0b0551584` owns canonical inputs and verification. Native routes are `story-event-261118-matching` and `story-event-261118-integration`. The Director releases candidate work after both owners pass guarded preparation, and alerts the Editor when the pair is accepted.
+**Active assignment.** The [story event wave](../story-event-continuation.md) pairs the scene request driver and event interpreter for Wentinus and Sheen. Both owners passed [guarded preparation](../../../build/story-event-261118-preflight.json). Sol 6.2 XHigh matching chat `01a1f05f-2856-7260-9e6d-02d145e80e0f` started the driver at 15:41 Eastern. [Integration](story-event-integration.md) retains sole production ownership and resumes when the complete pair is ready. Both native routes delivered their startup messages and stop events. The Director alerts the Editor after acceptance.
 
 The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
 
