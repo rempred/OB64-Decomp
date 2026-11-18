@@ -2,7 +2,7 @@
 
 **Active assignment.** All private work in the [story event program](../story-event-continuation.md) is complete. The [entry trio](../../../build/matching/story-entry-261118/cursor.md) matched with 102 relocation fields masked and checked separately. The [driver and interpreter](../../../build/matching/story-event-261118/cursor.md) matched in fixed-address links, including all 325 interpreter table entries. Five explicit cursor advances fixed the final register allocation. Canonical symbol resolution and full-ROM verification remain with integration.
 
-The [production integrator](story-event-integration.md) is verifying the [mapper](../../../build/matching/story-mapper-261118/cursor.md), then takes the entry trio and finally the driver/interpreter pair. All three waves are released to that writer. Check the full shared row `r1283` with both C contributions on the final state. The Director releases each matching worker and alerts the Editor after acceptance.
+The [request mapper passed canonical acceptance](../../../build/integration/story-event/mapper-acceptance-evidence.json) at `17cb2e9d`. The Director released its worker and sent the Editor the source, interface and replay evidence. The [production integrator](story-event-integration.md) has started the entry trio, with the driver/interpreter pair queued next. Check the full shared row `r1283` with both C contributions on the final state.
 
 The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
 
