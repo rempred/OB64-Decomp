@@ -1,6 +1,19 @@
 # Director handoff — November 17, 2026
 
-**Awaiting Joe's next program assignment.** The [actor placement, body selection and mission-briefing program](../actor-placement-briefing-program.md) closed on main at `3ac73120`. The [active queue](../../NEXT_STEPS.md) holds the remaining proposals.
+**Joe assigned all 46 owners in the [cutscene preview program](../cutscene-preview-services-draft.md).** Q1 covers actor-dependent branches, P1 the scripted Army panel opening and T1 the shared title-card path. Retain the three Sol 6.2 XHigh matching chats across complete waves and use a separate production integrator. Joe requested no assistants. The Director owns native route qualification, preflight release, wave acceptance and reassignment. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) closed on main at `3ac73120`.
+
+## Current chats
+
+Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on host `local`. The per-chat monitor directories under `~/.local/share/codex-thread-monitors/cutscene-preview-261117-*` keep their original suffix across reassignments.
+
+| Role | Chat | First wave / route suffix |
+| --- | --- | --- |
+| Matching 1 | `01a1ecea-4461-7391-9450-0209f3c2bee8` | Q1 / q1 |
+| Matching 2 | `01a1ecea-3ceb-7173-abd1-499259192f6e` | P1 / p1 |
+| Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
+| Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
+
+The first-wave private roots use `build/matching/preview-261117-{q1,p1,t1}`. See the [assigned roster](../cutscene-preview-services-draft.md) for complete membership and the worked experiments.
 
 ## Accepted baseline
 

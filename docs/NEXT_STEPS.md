@@ -2,7 +2,7 @@
 
 ## Assignment status — November 17, 2026
 
-**Awaiting Joe's next program assignment.** The [actor placement, body selection and mission-briefing program](Plans/actor-placement-briefing-program.md) closed on November 17 at `3ac73120`. The [Director handoff](Plans/cursors/director.md) records the exact Rev 0 baseline and release of all roles. The broader cutscene plan remains a draft.
+**Joe assigned the full [cutscene preview program](Plans/cutscene-preview-services-draft.md).** Start Q1 actor queries, P1 scripted Army panels and T1 chapter/mission cards. Retain three Sol 6.2 XHigh matching workers across all eleven waves, with a dedicated production writer and native chat watchers. The [Director handoff](Plans/cursors/director.md) carries the assignments and verified baseline. The prior [actor placement and mission-briefing program](Plans/actor-placement-briefing-program.md) closed at `3ac73120`.
 
 ## Unresolved source and research scope
 
