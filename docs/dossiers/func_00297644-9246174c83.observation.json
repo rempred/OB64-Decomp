@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9246174C833FAF7776AF9BD375734B3C2EEC0F54501EFB23FD04F6E2081B10C2",
+  "observationId": "4481035A9AF761F4CB3C6A204116C4C4DBD33F2E987DADB27B7377363D8CAD89",
+  "symbol": "func_00297644",
+  "authored": {
+    "context": "The preset 5 callback chooses its signed halfword state at panel offset 0x18 plus twice the callback index. The archived control uses Git checkout line endings. The original private source remains in the wave scratch root.",
+    "effects": [
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        }
+      ],
+      "expandedSha256": "1892BA068B3887958682F5C20C347D91444279E34A92CD116BFBCDE11AB6F3C9",
+      "sourceSha256": "08C79526DBF49C71F88B66DD559A6B150D07800DA7F102EEBBA6C455863B0B43"
+    },
+    "label": "indexed-state-address-operand-order",
+    "observedEffect": "Both forms emit 344 bytes and compute the same address. The integer expression reproduces retail's addu source operand order at owner offset 0x14.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00297644.s",
+        "sha256": "824B73EAC71126498E18A60129565FF04EC3BE066780AE488136F7ABB1D4C63F"
+      },
+      {
+        "path": "src/lib/func_00297644.c",
+        "sha256": "8C11AFB7E99EB4DC52CA89A24440A71828D80969B32AE0977B51E6A6DA99498B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The pointer expression differs by the two source register fields of that single instruction.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compute the indexed panel base with pointer arithmetic. The companion C explicitly adds the integer byte offset and integer panel address in the opposite order."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      }
+    ],
+    "expanded": {
+      "bytes": 3404,
+      "sha256": "1892BA068B3887958682F5C20C347D91444279E34A92CD116BFBCDE11AB6F3C9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "08C79526DBF49C71F88B66DD559A6B150D07800DA7F102EEBBA6C455863B0B43"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00297644-9246174c83.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -24,16 +24,22 @@ typedef struct PanelParameters {
 } PanelParameters;
 
 typedef struct PanelContent {
-    u8 pad000[0x5F0];
+    u8 text[0x500];
+    u8 pad500[0x30];
+    u8 *rows[48];
     u8 field5F0;
     u8 field5F1;
-    u8 pad5F2[2];
+    u8 pad5F2;
+    u8 field5F3;
     u8 field5F4;
     u8 field5F5;
     u8 field5F6;
-    u8 pad5F7[5];
+    u8 field5F7;
+    u8 pad5F8[4];
     u8 field5FC;
-    u8 pad5FD[3];
+    u8 pad5FD;
+    u8 field5FE;
+    u8 pad5FF;
     s32 key;
 } PanelContent;
 
@@ -50,7 +56,12 @@ typedef struct Panel {
     u8 field23;
     s8 field24;
     u8 field25;
-    u8 pad26[0x1A];
+    u8 pad26[6];
+    s32 field2C;
+    s32 field30;
+    s32 field34;
+    s32 field38;
+    u8 pad3C[4];
     s32 field40;
     u8 pad44[4];
     s32 field48;
@@ -73,8 +84,13 @@ typedef struct PanelScene {
     PanelSlot *slots[14];
 } PanelScene;
 
+typedef struct PanelSubject {
+    u8 pad00[0x2C];
+    s16 field2C;
+} PanelSubject;
+
 typedef struct PanelPositionState {
-    u8 pad000[0x23C];
+    PanelSubject *subjects[0x23C / 4];
     u8 field23C;
     u8 field23D;
     u8 field23E;
@@ -91,6 +107,8 @@ typedef void (*PanelCallback)(Panel *, s32);
 void func_00297CC8(s32 slot, s32 preset);
 void func_00283748(s32 slot);
 s32 func_002836C8(s32 slot);
+PanelContent *func_00296518(Panel *panel, s32 key);
+PanelContent *func_00296754(Panel *panel, s32 section);
 void func_00297644(Panel *panel, s32 index);
 void func_002978F4(Panel *panel, s32 index);
 

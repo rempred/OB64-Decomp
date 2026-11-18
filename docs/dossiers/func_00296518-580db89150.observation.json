@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "580DB89150DBF6F75AE71780C7666B2EF1EDC0D3538D695EC0C218C67ED335C0",
+  "observationId": "85AE58056DA2C37712AFC936B472CA49F1D2E1605010A99C9EDE6B9B06AEA1BE",
+  "symbol": "func_00296518",
+  "authored": {
+    "context": "Preset 4 and preset 5 initialize a newly zeroed panel content object before loading child zero of the shared text archive. The archived control uses Git checkout line endings. The original private source remains in the wave scratch root.",
+    "effects": [
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "16E8BC74FA00D64CAC22E4528414D1C9D845293ED8F84385067BDF13BECF373B",
+      "sourceSha256": "D4B4AADFE1DF271C69F159524F924E56BAF10572FAD4326CC613956D81BF4170"
+    },
+    "label": "layout-key-write-order",
+    "observedEffect": "Reordering the two disjoint stores in C leaves the same store order in KMC output and swaps only the content-pointer load and the zero child argument move ahead of the archive call. Writing the key first reproduces all 572 retail bytes after projection.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00296518.s",
+        "sha256": "FAAEB5BF93C39419BA892144EF98F113E83BFFAC431D24639199165C7F8E4237"
+      },
+      {
+        "path": "src/lib/func_00296518.c",
+        "sha256": "C71A763F4A4F77875D2226FAD23738AC626FB9D82CD1A1055E930B2C6780D286"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This control differs at owner offsets 0x64 and 0x68.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Write field5F3 before the layout key. In the companion C, write the key before field5F3 and keep the other defaults and archive arguments in place."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 3642,
+      "sha256": "16E8BC74FA00D64CAC22E4528414D1C9D845293ED8F84385067BDF13BECF373B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D4B4AADFE1DF271C69F159524F924E56BAF10572FAD4326CC613956D81BF4170"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00296518-580db89150.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
