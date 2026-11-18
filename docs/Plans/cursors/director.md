@@ -1,6 +1,8 @@
 # Director handoff — November 18, 2026
 
-**Awaiting Joe’s next Decomp assignment.** The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The final fresh verifier covered every assigned function together. The [Editor director](codex://threads/01a1eae5-90a2-7c31-956d-6ed447687e40) has taken up the integration and feature follow-up request. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
+**Active assignment.** The [story event wave](../story-event-continuation.md) pairs the scene request driver and event interpreter for Wentinus and Sheen. Sol 6.2 XHigh matching chat `01a1f05f-2856-7260-9e6d-02d145e80e0f` owns private C. Integration chat `01a1f05f-2cc1-7700-88c1-dcf0b0551584` owns canonical inputs and verification. Native routes are `story-event-261118-matching` and `story-event-261118-integration`. The Director releases candidate work after both owners pass guarded preparation, and alerts the Editor when the pair is accepted.
+
+The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
 
 ## Released cutscene chats
 

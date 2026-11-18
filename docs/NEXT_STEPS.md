@@ -2,7 +2,7 @@
 
 ## Assignment status — November 18, 2026
 
-**Awaiting Joe’s next Decomp assignment.** The [cutscene preview program](Plans/cutscene-preview-services-draft.md) closed on main at `2447f1d5` with an exact US Rev 0 rebuild. The [Editor director](codex://threads/01a1eae5-90a2-7c31-956d-6ed447687e40) received the source, evidence and feature follow-up request and started the editor-side inventory. The [Director handoff](Plans/cursors/director.md) records acceptance and delivery.
+**Active assignment.** Match the resident event driver and interpreter that connect a story decision to its next scene. The [two-function wave](Plans/story-event-continuation.md) follows the Editor director’s referral for Wentinus and Sheen. The previous [cutscene preview program](Plans/cutscene-preview-services-draft.md) closed on main at `2447f1d5` with an exact US Rev 0 rebuild. The [Director handoff](Plans/cursors/director.md) records acceptance and delivery.
 
 ## Unresolved source and research scope
 
