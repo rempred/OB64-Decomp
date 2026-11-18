@@ -13,7 +13,7 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-The first-wave private roots use `build/matching/preview-261117-{q1,p1,t1}`. See the [assigned roster](../cutscene-preview-services-draft.md) for complete membership and the worked experiments.
+All four chats delivered a native startup message and an actual stop alert to this Director. Each watcher keeps its retry and deduplication state. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). All three matching chats started Q1, P1 and T1 in their respective `build/matching/preview-261117-*` roots. The [integrator](cutscene-preview-integration.md) retains sole production ownership and is ready for a complete wave. At handoff, release integration, check the canonical result and dispatch the next dependency-ready complete wave to the retained worker. Prefer chapter reveal or mission-entry work when equally ready.
 
 ## Accepted baseline
 
