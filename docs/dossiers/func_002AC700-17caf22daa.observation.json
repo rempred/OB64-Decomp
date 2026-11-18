@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "17CAF22DAA0B987D890247158504A00994BA2FD33686D16D1F08554184F8816E",
+  "observationId": "EFFA62CA1FB63D6B1490CDFACAE2801AF8B21ACB34012960F21643EF3D74DBD4",
+  "symbol": "func_002AC700",
+  "authored": {
+    "context": "The full 0x90 producer has a sentinel guard followed by a 2-byte record scan. The matching candidate uses a separately addressed first key and typed indexing thereafter.",
+    "effects": [
+      "address-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8FFE6180B2847BA9E6EF9932F8DD71924E582A3AA3A6E4FF28D81E030D1FE934",
+      "sourceSha256": "49640132F66C8D8C4F1B614AE45F5861F49D3E532998D8CB2B9B9C3D63F133B3"
+    },
+    "label": "story-override-first-key-address-reuse",
+    "observedEffect": "KMC shares the address across the sentinel guard and scan. The full owner shrinks from 332 to 328 bytes and the divide tail, branch delay and loop initialization diverge.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_002AC700.s",
+        "sha256": "5C66BD8B31342EE86AA22DA1A20CBA2B37534BA74BFAF2ABAC847CC83FA99F6A"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_002868F0.s",
+        "sha256": "01F6670B5A6D6ADE4730B2E43A2D160D4D94D7A5DDBEBF81EB842A670BC1A95B"
+      },
+      {
+        "path": "src/lib/func_002AC700.c",
+        "sha256": "51C86705A95E2950236B4972DF18A40F895A3400C90F1222BD9F0A506ECD91DB"
+      },
+      {
+        "path": "src/lib/func_00284288.c",
+        "sha256": "147E507C2AB4226F860747C6567B7518998965F87AA7D599814D4D477EC7952C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Sharing the guard base shortens the body to 328 bytes and changes the retail branch and loop setup.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Spell the first key as table_002868F0[0].artKey instead of a byte read at its documented RAM address; leave the indexed loop unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1802,
+      "sha256": "8FFE6180B2847BA9E6EF9932F8DD71924E582A3AA3A6E4FF28D81E030D1FE934"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "49640132F66C8D8C4F1B614AE45F5861F49D3E532998D8CB2B9B9C3D63F133B3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_002AC700-17caf22daa.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

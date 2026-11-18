@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2D1E401A723D715DDD202F7694FBF8872A2651A2C3908AD4E30449B76C9CEB0E",
+  "observationId": "B0112B341BECFD1D9D5418E81458B8D356853D9A5089D962216EC3CFB671CDCE",
+  "symbol": "func_002AC700",
+  "authored": {
+    "context": "The dispatcher and generic comparator consume a signed word. m2c inferred a byte from the byte-sized table payload; the provider also has a native -1 sentinel.",
+    "effects": [
+      "return-width"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9A2AD96E02B3F37090061B449C9B66A3ADE355FB429AEBF9E13E08998FB77CA1",
+      "sourceSha256": "3A3D18E61C94068AB9AF5E16FDC71B0EA65B9991377FEF7BB7C34AFB2EFBE5C5"
+    },
+    "label": "unsigned-byte-return-loses-missing-actor",
+    "observedEffect": "The compiled 332-byte owner differs by four words after address projection; both missing cases return 255 through the retail dispatcher. Signed less-than-zero changes from true to false.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_002AC700.s",
+        "sha256": "5C66BD8B31342EE86AA22DA1A20CBA2B37534BA74BFAF2ABAC847CC83FA99F6A"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_002868F0.s",
+        "sha256": "01F6670B5A6D6ADE4730B2E43A2D160D4D94D7A5DDBEBF81EB842A670BC1A95B"
+      },
+      {
+        "path": "src/lib/func_002AC700.c",
+        "sha256": "51C86705A95E2950236B4972DF18A40F895A3400C90F1222BD9F0A506ECD91DB"
+      },
+      {
+        "path": "src/lib/func_00284288.c",
+        "sha256": "147E507C2AB4226F860747C6567B7518998965F87AA7D599814D4D477EC7952C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The narrow return loses the negative sentinel used by the dispatcher comparison.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change only the s32 definition return type to u8."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1750,
+      "sha256": "9A2AD96E02B3F37090061B449C9B66A3ADE355FB429AEBF9E13E08998FB77CA1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3A3D18E61C94068AB9AF5E16FDC71B0EA65B9991377FEF7BB7C34AFB2EFBE5C5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_002AC700-2d1e401a72.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
