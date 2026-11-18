@@ -381,6 +381,12 @@
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
     },
     {
+      "romStart": 2660220,
+      "romEndExclusive": 2660224,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original return and delay slot end at ROM 0x28977C; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+    },
+    {
       "romStart": 2664364,
       "romEndExclusive": 2664368,
       "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
@@ -5928,6 +5934,34 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_00280700.s",
           "sha256": "20B8EDECF726665EEBC647BD8B5A8755B48DF25E1E58CE2F295F22F0498F71D7"
+        }
+      ]
+    },
+    {
+      "romStart": 2659672,
+      "romEndExclusive": 2660220,
+      "symbol": "func_00289558",
+      "aliases": [],
+      "expectedBytesSha256": "8625DD4003B45D20684DFF1E5F17530151DADF8FAB1777B70F713FF543357879",
+      "evidence": {
+        "caseId": "routine-row5142-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original return and delay slot end at ROM 0x28977C; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+      },
+      "fragments": [
+        {
+          "rowIndex": 5142,
+          "romStart": 2659672,
+          "romEndExclusive": 2660220,
+          "ownerOffset": 0,
+          "bytes": 548,
+          "vramStart": 2149766680,
+          "sectionName": ".ob64.r5142.s0",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "resource-dispatcher-00286bd0",
+          "file": "asm/original/rev0/lib/func_00289558.s",
+          "sha256": "46F998C344B95A7EFF39271BDCFA08FA1871622592E88DF0389EC5D349426F3F"
         }
       ]
     },

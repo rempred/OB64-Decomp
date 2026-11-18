@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "17354E236C6388ED2E38A83B865988B7CAD01784E91BB2A9ACF882A75CEF1DAD",
+  "observationId": "C9629DB5E0186AE2B16F39ECD32A1FE78C6087E31F155672E0661EB277BC9762",
+  "symbol": "func_00289558",
+  "authored": {
+    "context": "The mission-entry draw constructs six consecutive display-list commands and publishes six successive cursor writes using the shared T1 cursor address.",
+    "effects": [
+      "volatile",
+      "store-coalescing"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        }
+      ],
+      "expandedSha256": "3C7BC81FE7E21D4DAF8B1E5D620AB2CB2910B9C5079474F8F488B4FFF6890617",
+      "sourceSha256": "735551AC12FD5F4D2FACDFD1B0F871680111C1A99D6A83CE75F85126466573F1"
+    },
+    "label": "title-cursor-advance-coalescing",
+    "observedEffect": "KMC coalesces the six original cursor stores to one. The resulting 488-byte body diverges at the first display command advance; the qualified form retains the exact projected 548-byte body.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00289558.s",
+        "sha256": "46F998C344B95A7EFF39271BDCFA08FA1871622592E88DF0389EC5D349426F3F"
+      },
+      {
+        "path": "src/lib/func_00289558.c",
+        "sha256": "E16AC3F144693C56941340E58D048B097C278C3227275647ABB180412EC550B4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The unqualified pointer drops five of the six original cursor writes. The canonical source retains the qualified pointer and the six explicit advances.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Remove only the volatile qualification from the cursor pointer object."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      }
+    ],
+    "expanded": {
+      "bytes": 3449,
+      "sha256": "3C7BC81FE7E21D4DAF8B1E5D620AB2CB2910B9C5079474F8F488B4FFF6890617"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "735551AC12FD5F4D2FACDFD1B0F871680111C1A99D6A83CE75F85126466573F1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00289558-17354e236c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -2,7 +2,7 @@
 
 ## November 17, 2026
 
-All 11 waves of the [46-owner program](../cutscene-preview-services-draft.md) passed guarded preparation on `main`. Integration chat `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` owns production writes. Director chat `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` owns release and confirmed receipt of the startup message and first stop notification. Monitor `cutscene-preview-261117-integration` remains active.
+All 11 waves of the [46-owner program](../cutscene-preview-services-draft.md) passed guarded preparation on `main`. Integration chat `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` owns production. The verified native watcher `cutscene-preview-261117-integration` routes to Director chat `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b`.
 
 ## Verified input selection
 
@@ -31,5 +31,7 @@ Private roots use `build/matching/preview-261117-<lowercase-wave>`. Each report 
 **Q1** passed one fresh verifier as two `PURE_C` bodies with 14/6 relocations. The 48-byte retail override table stays in ASM. The first key remains at `0x8022A921`. 18 dispatcher fixtures matched retail. Verified CURRENT `EFA1E8FA027D650C69CC74769C7607DF218621B2F4D5D613321A0A97742C4242`. [Acceptance](../../../build/integration/cutscene-preview/q1-acceptance-evidence.json) · [Dispatcher fixtures](../../../build/integration/cutscene-preview/q1-accepted-query-cases.json) · [First-key guard control](../../dossiers/func_002AC700-17caf22daa.md) · [Signed return control](../../dossiers/func_002AC700-2d1e401a72.md)
 
 **P1** passed one fresh verifier as three `PURE_C` bodies with 170/8/5 text relocations. Constructor row 5290 owns 21 table relocations and the terminal zero. P2 row 5291 remains in ASM and the eight-byte stub keeps its own C owner. Verified CURRENT `6510F1E970B7015B0C85F33E849E9180E1A6A0B3C043282523210E1D7105AB6B`. [Acceptance](../../../build/integration/cutscene-preview/p1-acceptance-evidence.json) · [Coordinate-load control](../../dossiers/func_00297CC8-8f77cc233b.md)
+
+**T3** passed one fresh verifier as three `PURE_C` bodies with 22/36/15 ordered relocations. Guarded admission keeps the original executable word at `28977C` and T2 starts at `289780`. Eight controlled selector 1078 traces matched retail. Verified CURRENT `D18575D37F1C1C03DF01550DC052C8342F711C27688EDBEFB903EBE601FFC5D2`. [Acceptance](../../../build/integration/cutscene-preview/t3-acceptance-evidence.json) · [Layout](../../../build/integration/cutscene-preview/t3-retained-layout-evidence.json) · [Traces](../../../build/integration/cutscene-preview/t3-accepted-traces.json) · [Initialization control](../../dossiers/func_002893E4-bc3af70a17.md) · [Cursor control](../../dossiers/func_00289558-17354e236c.md)
 
 Production ownership stays with the integration chat. Selected inputs and referenced outputs remain available to assigned workers.
