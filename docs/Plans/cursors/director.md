@@ -1,6 +1,6 @@
 # Director handoff — November 18, 2026
 
-**Active assignment.** The [story event program](../story-event-continuation.md) covers the request driver, interpreter, event entry and outgoing requests. The driver matches in private testing. Its worker continues the interpreter for Wentinus and Sheen. The entry worker continues its three-function wave. All matching chats use Sol 6.2 XHigh and have verified native routes.
+**Active assignment.** The [story event program](../story-event-continuation.md) covers the request driver, interpreter, event entry and outgoing requests. The driver matches in private testing. Its worker continues the interpreter for Wentinus and Sheen. The [entry trio](../../../build/matching/story-entry-261118/cursor.md) is queued after the mapper. Its 1,132 bytes match with relocation fields masked. All 102 fields were reviewed; canonical links remain pending.
 
 The [mapper worker’s handoff](../../../build/matching/story-mapper-261118/cursor.md) records exact private text, 27 table entries and the native alignment word. The [production integrator](story-event-integration.md) started the mapper wave on November 18, with the interpreter portion of row `r1283` retained in assembly. Reconcile the unsigned-halfword return with both consumers. The Director releases the mapper worker and alerts the Editor after canonical acceptance.
 
