@@ -13,13 +13,13 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). Worker 1 is on T3 mission-entry images after Q1 (`7c0cbbbf`). Worker 2 started P2 scripted Army-panel updates after P1 (`6381778e`). Worker 3 continues T2 chapter reveal after T1 (`be483783`). The [integrator](cutscene-preview-integration.md) retains production ownership and is ready for the next complete wave. Keep the three matching chats and their watchers through reassignment.
+All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The Director accepted T3 at `1010386e`. Retained worker 1 started T4 mission-entry companion setup, release, update and draw. Worker 2 continues P2 scripted Army-panel updates and worker 3 continues T2 chapter reveal. The [integrator](cutscene-preview-integration.md) retains production ownership and is ready for the next complete wave. Preserve the three chats and their watchers.
 
 After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
 
 ## Accepted baseline
 
-[P1 acceptance](../../../build/integration/cutscene-preview/p1-acceptance-evidence.json) binds the three opening-panel routines and 88-byte constructor table to exact Rev 0 CURRENT `6510F1E970B7015B0C85F33E849E9180E1A6A0B3C043282523210E1D7105AB6B`. The adjacent P2 update table remains in ASM. [Q1](../../../build/integration/cutscene-preview/q1-acceptance-evidence.json) covers the two actor queries and preserves the 48-byte override table. [T1](../../../build/integration/cutscene-preview/t1-acceptance-evidence.json) covers four title-card functions and the constructor table.
+[T3 acceptance](../../../build/integration/cutscene-preview/t3-acceptance-evidence.json) binds the mission-entry selector, draw and release to exact Rev 0 CURRENT `D18575D37F1C1C03DF01550DC052C8342F711C27688EDBEFB903EBE601FFC5D2`. The original word at `28977C` and T2's draw entry at `289780` retain exact placement. Earlier accepted waves are [P1](../../../build/integration/cutscene-preview/p1-acceptance-evidence.json), [Q1](../../../build/integration/cutscene-preview/q1-acceptance-evidence.json) and [T1](../../../build/integration/cutscene-preview/t1-acceptance-evidence.json).
 
 ## Released assignments
 
