@@ -1,4 +1,4 @@
-# Director handoff — November 17, 2026
+# Director handoff — November 18, 2026
 
 **Joe assigned all 46 owners in the [cutscene preview program](../cutscene-preview-services-draft.md).** Q1 covers actor-dependent branches, P1 the scripted Army panel opening and T1 the shared title-card path. Retain the three Sol 6.2 XHigh matching chats across complete waves and use a separate production integrator. Joe requested no assistants. The Director owns native route qualification, preflight release, wave acceptance and reassignment. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) closed on main at `3ac73120`.
 
@@ -13,7 +13,9 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-All four chats delivered a native startup message and an actual stop alert to this Director. Each watcher keeps its retry and deduplication state. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). All three matching chats started Q1, P1 and T1 in their respective `build/matching/preview-261117-*` roots. The [integrator](cutscene-preview-integration.md) retains sole production ownership and is ready for a complete wave. At handoff, release integration, check the canonical result and dispatch the next dependency-ready complete wave to the retained worker. Prefer chapter reveal or mission-entry work when equally ready.
+All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The [integrator](cutscene-preview-integration.md) passed four linked diffs for [T1](../../../build/matching/preview-261117-t1/cursor.md) and started its full verifier. The Director released [Q1](../../../build/matching/preview-261117-q1/cursor.md) next, then [P1](../../../build/matching/preview-261117-p1/cursor.md), each with its own canonical verification. On acceptance dispatch worker 3 to T2 chapter reveal, worker 1 to T3 mission-entry images and worker 2 to P2 panel updates. The preflighted wave roots and reports are in the integration cursor. Keep all three chats and watchers through reassignment.
+
+After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
 
 ## Accepted baseline
 
