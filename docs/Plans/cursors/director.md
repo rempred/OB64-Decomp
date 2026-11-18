@@ -13,7 +13,7 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The Director accepted P5 at `a00b48dd`. Retained worker 1 started P3 opening panels and help callbacks. Worker 2 continues P2 panel updates and worker 3 continues T2 chapter reveal. P4 is the last unassigned wave. Release it to the next available retained worker after canonical acceptance. The [integrator](cutscene-preview-integration.md) retains production ownership.
+All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The [integrator](cutscene-preview-integration.md) passed focused checks for P2 and started its verifier on P5 base `a00b48dd`. The Director released [P3 opening panels and help](../../../build/matching/preview-261117-p3/cursor.md) immediately behind P2 for its own acceptance. Worker 1 handed off P3. Worker 3 continues T2 chapter reveal. On P2 acceptance, dispatch retained worker 2 to P4, the final unassigned wave.
 
 After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
 
