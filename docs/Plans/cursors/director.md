@@ -17,6 +17,8 @@ All four native message and stop routes are verified. All 46 owners passed guard
 
 After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
 
+T2 checkpoint, November 18. Between 07:45:41 and 08:15:41 Eastern the renderer went from 18 differing words to five. The Director independently projected all 72 relocations in [candidate 1697](../../../build/matching/preview-261117-t2/289780-1697.c). It preserves the 1,412-byte body and register allocations. The improvement exceeded Joe's checkpoint threshold. Sol continues independently.
+
 ## Accepted baseline
 
 [P4 acceptance](../../../build/integration/cutscene-preview/p4-acceptance-evidence.json) binds three downstream panel routines to exact Rev 0 CURRENT `EDDB549B8AFFBC7B77BDC15FAC2A12AC9AE8B882763E0AAB1B9447B252758842`. Its [dispatcher replay](../../../build/integration/cutscene-preview/p4-accepted-traces.json) covers the signed preset-16 label condition and both position calls. The [integration cursor](cutscene-preview-integration.md) links the earlier wave proofs.
