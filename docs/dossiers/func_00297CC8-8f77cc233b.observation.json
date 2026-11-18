@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8F77CC233BFF664E2909A763954714F6BE022557F4F5F6E389504A2E6AA06C96",
+  "observationId": "71E3663BED4C58CC8736E0C8D820D53E4B99261F395A6699E25FE44BAAD011CB",
+  "symbol": "func_00297CC8",
+  "authored": {
+    "context": "Presets 8 and 10 write different outgoing geometry words at stack offsets 0x10, 0x14 and 0x18. They share four more coordinate words and one allocator call.",
+    "effects": [
+      "stack-argument-staging",
+      "call-tail-merging",
+      "halfword-load-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6B6C96A8EE48C60B8D8FD1E4B3F28ABB67769408B7D04FCC15AB491440C353E4",
+      "sourceSha256": "049EA3092FD4E53DB188111E7D8EBD10D253434BD64224CDA1A6FF41069AAC29"
+    },
+    "label": "coordinate-pointer-call-tail-merge",
+    "observedEffect": "Direct member reads emit 420 bytes for the combined case and reload both coordinates. Indirect reads emit the retail 372 bytes, reuse both signed halfword loads and join the calls at the first shared outgoing store. The direct-read control also reduces the frame to 0x80. The final source has a 0x90 frame and agrees with all 3,148 target bytes after private relocation reconstruction.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00297CC8.s",
+        "sha256": "4991A901BE95EE6332D089306654AF095D26611BD034BB577D1ACDF4211162DD"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_0029a408.s",
+        "sha256": "8C056C06843D36B7F4CCCB7C5AAF63B79B93056609EB58D4CD89C96B5AFE24CD"
+      },
+      {
+        "path": "src/lib/func_00297CC8.c",
+        "sha256": "D416B5C45E8FCF88FC3FC4CE51B5E460ABC82AFF32703747079D19C2C2E4FC90"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The direct member-read control has two extra reloads, a larger case body, and a 0x80 frame. The original local type behind the retail 0x90 frame remains unknown.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the two source calls and read left and top through local pointers to the same signed rectangle members in both arms."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 15454,
+      "sha256": "6B6C96A8EE48C60B8D8FD1E4B3F28ABB67769408B7D04FCC15AB491440C353E4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "049EA3092FD4E53DB188111E7D8EBD10D253434BD64224CDA1A6FF41069AAC29"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00297CC8-8f77cc233b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

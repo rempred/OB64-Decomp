@@ -30,4 +30,6 @@ Private roots use `build/matching/preview-261117-<lowercase-wave>`. Each report 
 
 **Q1** passed one fresh verifier as two `PURE_C` bodies with 14/6 relocations. The 48-byte retail override table stays in ASM. The first key remains at `0x8022A921`. 18 dispatcher fixtures matched retail. Verified CURRENT `EFA1E8FA027D650C69CC74769C7607DF218621B2F4D5D613321A0A97742C4242`. [Acceptance](../../../build/integration/cutscene-preview/q1-acceptance-evidence.json) · [Dispatcher fixtures](../../../build/integration/cutscene-preview/q1-accepted-query-cases.json) · [First-key guard control](../../dossiers/func_002AC700-17caf22daa.md) · [Signed return control](../../dossiers/func_002AC700-2d1e401a72.md)
 
-P1 is released next. [P1 private handoff](../../../build/matching/preview-261117-p1/cursor.md). Preserve selected inputs and referenced outputs during integration.
+**P1** passed one fresh verifier as three `PURE_C` bodies with 170/8/5 text relocations. Constructor row 5290 owns 21 table relocations and the terminal zero. P2 row 5291 remains in ASM and the eight-byte stub keeps its own C owner. Verified CURRENT `6510F1E970B7015B0C85F33E849E9180E1A6A0B3C043282523210E1D7105AB6B`. [Acceptance](../../../build/integration/cutscene-preview/p1-acceptance-evidence.json) · [Coordinate-load control](../../dossiers/func_00297CC8-8f77cc233b.md)
+
+Production ownership stays with the integration chat. Selected inputs and referenced outputs remain available to assigned workers.
