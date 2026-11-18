@@ -1,8 +1,8 @@
 # Director handoff — November 18, 2026
 
-**Active assignment.** All private work in the [story event program](../story-event-continuation.md) is complete. The [entry trio](../../../build/matching/story-entry-261118/cursor.md) matched with 102 relocation fields masked and checked separately. The [driver and interpreter](../../../build/matching/story-event-261118/cursor.md) matched in fixed-address links, including all 325 interpreter table entries. Five explicit cursor advances fixed the final register allocation. Canonical symbol resolution and full-ROM verification remain with integration.
+**Active assignment.** The [production integrator](story-event-integration.md) has started the [story event program](../story-event-continuation.md)’s final pair. The [driver and interpreter](../../../build/matching/story-event-261118/cursor.md) matched in fixed-address links, including all 325 interpreter table entries. Canonical symbol resolution, the full shared row `r1283` with both C contributions, and full-ROM verification remain with integration.
 
-The [request mapper passed canonical acceptance](../../../build/integration/story-event/mapper-acceptance-evidence.json) at `17cb2e9d`. The Director released its worker and sent the Editor the source, interface and replay evidence. The [production integrator](story-event-integration.md) has started the entry trio, with the driver/interpreter pair queued next. Check the full shared row `r1283` with both C contributions on the final state.
+The [request mapper](../../../build/integration/story-event/mapper-acceptance-evidence.json) passed at `17cb2e9d`. The [entry trio](../../../build/integration/story-event/entry-acceptance-evidence.json) passed at `ed57a210`, including its 102 relocations and ten isolated retail comparisons with controlled external calls. The Director released both workers and sent their canonical sources and replay limits to the Editor.
 
 The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
 
