@@ -13,13 +13,13 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The [integrator](cutscene-preview-integration.md) passed focused checks for P2 and started its verifier on P5 base `a00b48dd`. The Director released [P3 opening panels and help](../../../build/matching/preview-261117-p3/cursor.md) immediately behind P2 for its own acceptance. Worker 1 handed off P3. Worker 3 continues T2 chapter reveal. On P2 acceptance, dispatch retained worker 2 to P4, the final unassigned wave.
+All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The Director accepted P2 at `927ca666`. Retained worker 2 started P4, the three downstream panel routines. The [integrator](cutscene-preview-integration.md) started [P3 opening panels and help](../../../build/matching/preview-261117-p3/cursor.md) from worker 1 on the verified P2 base. Worker 3 continues T2 chapter reveal. Every program wave has been assigned. Retain all three workers through program closeout.
 
 After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
 
 ## Accepted baseline
 
-[P5 acceptance](../../../build/integration/cutscene-preview/p5-acceptance-evidence.json) binds the seven scripted Army scene routines to exact Rev 0 CURRENT `7FD3ADAFE1D6131DA22EFF7F6FE9EDF411446A4D40D7B3E4F3AFDE73C83AC276`. [Seven controlled traces](../../../build/integration/cutscene-preview/p5-accepted-traces.json) cover Army opening, help, updates, drawing and teardown. The [integration cursor](cutscene-preview-integration.md) links the earlier accepted T1, Q1, P1, T3, T4 and T5 proofs.
+[P2 acceptance](../../../build/integration/cutscene-preview/p2-acceptance-evidence.json) binds four panel update routines to exact Rev 0 CURRENT `FE3064D1B7B826E2DF9F43E5792895F1ADF4EBA5B2AC39DE7F8687908F8260AA`. The 84-byte update table and both neighboring owners passed. [Panel traces](../../../build/integration/cutscene-preview/p2-accepted-traces.json) cover preset 4 submission/resume and both close opcodes. The [integration cursor](cutscene-preview-integration.md) links the earlier accepted wave proofs.
 
 ## Released assignments
 
