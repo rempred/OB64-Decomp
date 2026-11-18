@@ -13,13 +13,13 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The Director accepted P2 at `927ca666`. Retained worker 2 started P4, the three downstream panel routines. The [integrator](cutscene-preview-integration.md) started [P3 opening panels and help](../../../build/matching/preview-261117-p3/cursor.md) from worker 1 on the verified P2 base. Worker 3 continues T2 chapter reveal. Every program wave has been assigned. Retain all three workers through program closeout.
+All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The Director accepted P3 at `5e0fc6fe` and released its ownership. Worker 1 is retained and idle since every wave is assigned. Worker 2 continues P4 downstream panel routines. Worker 3 continues T2 chapter reveal. The [integrator](cutscene-preview-integration.md) retains production ownership and is ready for either complete wave. Keep the three matching chats through program closeout.
 
 After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
 
 ## Accepted baseline
 
-[P2 acceptance](../../../build/integration/cutscene-preview/p2-acceptance-evidence.json) binds four panel update routines to exact Rev 0 CURRENT `FE3064D1B7B826E2DF9F43E5792895F1ADF4EBA5B2AC39DE7F8687908F8260AA`. The 84-byte update table and both neighboring owners passed. [Panel traces](../../../build/integration/cutscene-preview/p2-accepted-traces.json) cover preset 4 submission/resume and both close opcodes. The [integration cursor](cutscene-preview-integration.md) links the earlier accepted wave proofs.
+[P3 acceptance](../../../build/integration/cutscene-preview/p3-acceptance-evidence.json) binds six panel and help routines to exact Rev 0 CURRENT `1C408827F04E03D90198FF33D613C264451A95BA58EE230D35F40101E728E282`. The [accepted help replay](../../../build/integration/cutscene-preview/p3-accepted-traces.json) resolves the editor reference correction for tokens `0x878E` and `0x878F`. The [integration cursor](cutscene-preview-integration.md) links the earlier wave proofs.
 
 ## Released assignments
 
