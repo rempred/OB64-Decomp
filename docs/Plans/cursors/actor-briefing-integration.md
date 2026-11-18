@@ -20,6 +20,8 @@ Complete guarded preparation passed for [A01](../../../build/actor-20261117-a01-
 
 - **A04** `2A98C4` passed as `PURE_C` for all 268 bytes and five relocations, including the folded scene-pointer load. The query remains word-returning and masks each decoder result to a byte. Both existing callers retain their linked bytes and relocations. Verified CURRENT `765657330506B3584329A7519AD2974A9860A4BA597FC9B7AD11629C80C147DC`. [Proof](../../../build/integration/actor-briefing/a04-acceptance-evidence.json)
 
-P01 is next. [P01 preparation](../../../build/integration/actor-briefing/p01-producer-evidence.json) binds all 22 table entries and their separate read-only assembly owner for private dispatch.
+- **P01** `29E218` passed as `PURE_C` for the complete 1,268-byte body and 55 text relocations. Its 88-byte switch table has 22 relocations and 14 destinations. The complete data row has the original 208-byte prefix and 232-byte tail. The five discard-only callers retain the same callable alias address and linked evidence. Verified CURRENT `25FDAD0F2D4C068AD63FA63A5EDD21FD5E53BB20985B4F5432400FF32D7F500F`. [P01 proof](../../../build/integration/actor-briefing/p01-acceptance-evidence.json)
+
+All assigned waves are accepted on `main`. [Complete program roster against the final verifier](../../../build/integration/actor-briefing/program-acceptance-evidence.json).
 
 The B02 reference repair in `bb1a4e6e` preserves the historical Direct27/Direct57 pair and authenticates a successor for the current caller declaration. [Live lesson dossier](../../dossiers/func_002AAC60-55b287797b.md)
