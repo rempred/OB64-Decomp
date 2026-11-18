@@ -1,19 +1,5 @@
 #include "game/cutscene_panels.h"
 
-typedef struct PanelParameters {
-    u8 pad00[0x18];
-    u16 field18;
-    u16 field1A;
-    u16 field1C;
-    u8 pad1E[2];
-    u16 field20;
-    u16 field22;
-    u8 pad24[0x41];
-    u8 field65;
-    u8 pad66;
-    u8 field67;
-} PanelParameters;
-
 typedef struct PanelPositionState {
     u8 pad000[0x23D];
     u8 field23D;
@@ -21,7 +7,6 @@ typedef struct PanelPositionState {
     u8 position;
 } PanelPositionState;
 
-extern PanelParameters *D_8023DE34;
 extern PanelPositionState *D_8023DE30;
 extern u8 D_8023E5FF[];
 

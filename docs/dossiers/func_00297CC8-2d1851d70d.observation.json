@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "candidateId": "8F77CC233BFF664E2909A763954714F6BE022557F4F5F6E389504A2E6AA06C96",
-  "observationId": "71E3663BED4C58CC8736E0C8D820D53E4B99261F395A6699E25FE44BAAD011CB",
+  "candidateId": "AA3710425A7B7CF720441959EB8F9CC9C47483E54F611EC2FED056CB5B28067D",
+  "observationId": "2D1851D70DB02C15DDE89B5B36A7C064B9E7D19DD0A87FD9050B09A3BD5E57DE",
   "symbol": "func_00297CC8",
   "authored": {
-    "context": "Presets 8 and 10 write different outgoing geometry words at stack offsets 0x10, 0x14 and 0x18. They share four more coordinate words and one allocator call.",
+    "context": "Presets 8 and 10 write different outgoing geometry words at stack offsets 0x10, 0x14 and 0x18. They share four more coordinate words and one allocator call. The original comparison uses the constructor at commit 6381778e. The current constructor uses the shared PanelParameters declaration and preserves the compared case bodies.",
     "effects": [
       "stack-argument-staging",
       "call-tail-merging",
@@ -29,7 +29,7 @@
       },
       {
         "path": "src/lib/func_00297CC8.c",
-        "sha256": "D416B5C45E8FCF88FC3FC4CE51B5E460ABC82AFF32703747079D19C2C2E4FC90"
+        "sha256": "C7D64A6872CFDC4CE8561C38062F61971015655EB7F0D2EB9A257CF6951259FE"
       }
     ],
     "relatedCandidateIds": [],

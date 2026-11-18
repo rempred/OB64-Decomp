@@ -3,6 +3,25 @@
 
 #include "common/types.h"
 
+typedef struct PanelParameters {
+    u16 *field00;
+    u8 *field04;
+    void *field08;
+    void *field0C;
+    void *field10;
+    void *field14;
+    u16 field18;
+    u16 field1A;
+    u16 field1C;
+    u8 pad1E[2];
+    u16 field20;
+    u16 field22;
+    u8 pad24[0x41];
+    u8 field65;
+    u8 field66;
+    u8 field67;
+} PanelParameters;
+
 typedef struct PanelContent {
     u8 pad000[0x5F1];
     u8 field5F1;
@@ -49,6 +68,7 @@ typedef struct PanelScene {
     PanelSlot *slots[14];
 } PanelScene;
 
+extern PanelParameters *D_8023DE34;
 extern PanelScene *D_8022A974;
 extern Panel *D_8018FDC0;
 
@@ -59,5 +79,14 @@ void func_00283748(s32 slot);
 s32 func_002836C8(s32 slot);
 void func_00297644(Panel *panel, s32 index);
 void func_002978F4(Panel *panel, s32 index);
+
+void func_00281BD8(s32 slot);
+void func_00281C78(s32 slot);
+void func_00281CE4(s32 slot);
+void func_00281ED0(s32 slot);
+
+void func_0028adf4(void);
+void func_0028af64(void);
+void func_0028b0e0(void);
 
 #endif
