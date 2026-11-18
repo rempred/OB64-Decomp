@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "823DE770D9F9DD5497783F8BCD715B819F93FB6EFFB41739E385635D1CDF7090",
+  "observationId": "6936EA5B8B9333D2BB5D969AA9DF64D2240E748DBB79FF513FD3E6759D8D48CA",
+  "symbol": "func_00287AA4",
+  "authored": {
+    "context": "T1's selector-1078 route calls companion draw before title draw. The companion has a volatile cursor view to preserve the distinct cursor advances observed in the original. The first cursor read follows the child 19 render call.",
+    "effects": [
+      "volatile",
+      "delay-slot",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        }
+      ],
+      "expandedSha256": "50E1B2364B2B93BE66E729ECC5F3C37554688D8C0B79146A1B9C227F2B3CDDA1",
+      "sourceSha256": "6951CCAA21DF6A91C51C10A71A365894F4AC85F866CFF613892AD48A4EF0EF32"
+    },
+    "label": "companion-cursor-read-delay-slot",
+    "observedEffect": "Both selected-input PURE_C sources emit the complete 1300-byte owner with the 104-byte frame and 100 relocations. Their scheduler dumps place the immediate 20 after the first phase load; at delay-slot filling the volatile read control pulls 20 into the first JAL delay slot. Reading through D_800E9BA0 instead fills the slot with 0xE7000000 and leaves 20 at the expected phase-load position. This fixes one scheduling rotation occupying 70 projected words, preserves all 23 direct cursor writes by the owner, and gives zero word differences across the full projection.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00287AA4.s",
+        "sha256": "C5CCB7BF2D528E53575AC4105C7D460A189D1C3DE2698BC12E4DACCB32EA4277"
+      },
+      {
+        "path": "src/lib/func_00287AA4.c",
+        "sha256": "9466EBF8DA5D59FA662CC6EC5598BB8BA381D5B97E7EEBAAA10D094E455771D3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Qualifying the first read as volatile moves the immediate 20 into the first call delay slot. The canonical source uses the ordinary read and retains volatile cursor advances.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control uses the volatile cursor alias for the first read. Use the existing unqualified D_800E9BA0 declaration for that read while retaining the volatile alias for all advances and later accesses."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      }
+    ],
+    "expanded": {
+      "bytes": 5984,
+      "sha256": "50E1B2364B2B93BE66E729ECC5F3C37554688D8C0B79146A1B9C227F2B3CDDA1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6951CCAA21DF6A91C51C10A71A365894F4AC85F866CFF613892AD48A4EF0EF32"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00287AA4-823de770d9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -8,7 +8,8 @@
  * in the reserved ranges.
  */
 typedef struct TitleImageHeader {
-    u8 pad00[4];
+    u8 pad00[3];
+    u8 field03;
     u16 width;
     u16 height;
 } TitleImageHeader;
@@ -38,11 +39,23 @@ extern TitleImageHeader *D_8023E594;
 extern TitleImageHeader *D_8023E598;
 extern TitleImageHeader *D_8023E59C;
 
+extern TitleImageHeader *D_8023E580;
+/* Setup replaces the loaded image header with its duplicated payload. */
+extern void *D_8023E584;
+extern TitleImageHeader *D_8023E588;
+extern s32 D_8023E58C;
+extern s32 D_8023E590;
+
 extern CombatDrawCommand D_8022AA40[];
 extern CombatDrawCommand *volatile gTitleCardDisplayListCursor;
 
 void func_002893E4(void);
 void func_00289558(void);
 void func_00289504(void);
+
+void func_002878F4(void);
+void func_002879F8(void);
+void func_00287A4C(void);
+void func_00287AA4(void);
 
 #endif
