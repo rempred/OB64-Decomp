@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7C9F9DDA6B5DCB535D656847DAA617261E7EB6EF3DA725953E8CAC21BBD1E61D",
+  "observationId": "5BCE20D9BF5FAC7A35DD2C869EBDA8795A858C662900DEC3B39593177C7296E1",
+  "symbol": "func_00048294",
+  "authored": {
+    "context": "Loader source func_00048294-interface.c agrees with the scheduler's volatile word declarations. Its compiled comparison is loader-interface.json.",
+    "effects": [
+      "volatile-store-scheduling",
+      "call-delay-slot"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2C39BF77E0EF3B9C17FF9B20604D332557D5BF29DDA12594F59EA5A8CF4CB54B",
+      "sourceSha256": "13635C7AA651E05AC65506DDCE9F0536A4AEB6B3B058E4CE680BA29E37DD7D8E"
+    },
+    "label": "volatile-first-program-store-control",
+    "observedEffect": "The unscoped source has the expected 544-byte extent but places the volatile first-program store in the second decoder call delay slot. Scoping that first store gives full relocation-masked equality. Scoping the second store instead switches the saved-register assignments for the program keys.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00048294.s",
+        "sha256": "5144338858C8049D0EF166A44F423EB7B5E568ADD9B4354DD8D2E3608A035776"
+      },
+      {
+        "path": "src/lib/func_00048294.c",
+        "sha256": "C814C30AFA7E21BAC5EE64A8CD7854373EA0BB6BAEA86F32E3AB03C1734E8061"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The control has the correct extent and a different first store position. The accepted C uses a dedicated scope for the first volatile store.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Place the first decoded program store inside a single-iteration scope."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2605,
+      "sha256": "2C39BF77E0EF3B9C17FF9B20604D332557D5BF29DDA12594F59EA5A8CF4CB54B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "13635C7AA651E05AC65506DDCE9F0536A4AEB6B3B058E4CE680BA29E37DD7D8E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00048294-7c9f9dda6b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

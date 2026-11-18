@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "90D773F158CFE49CC05E845EB7321458986D04399D246D3D82CAC653FB541050",
+  "observationId": "5FE28B1C45D8C15873CEA25D41262B9F5A9F7C6FA5CC187783C4930B6301B86E",
+  "symbol": "func_00048294",
+  "authored": {
+    "context": "This early pair preserves the same pointer declarations, volatile directory reads, and surrounding loader source.",
+    "effects": [
+      "call-argument-register-allocation",
+      "branch-tail-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C57F0208100ABFD9A82A7A74B1CDB7ACB803C5FC659AEADB8135832AD7C617A8",
+      "sourceSha256": "F7654577251E0B803D0A7D017549721DF6FC24173CCE34A31B324C14C744D3AE"
+    },
+    "label": "branch-local-directory-free-pair-control",
+    "observedEffect": "The branch-local source emits 544 bytes with full relocation-masked equality. Moving the free after the join keeps the directory in v0 through the key lookups and yields 536 bytes.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00048294.s",
+        "sha256": "5144338858C8049D0EF166A44F423EB7B5E568ADD9B4354DD8D2E3608A035776"
+      },
+      {
+        "path": "src/lib/func_00048294.c",
+        "sha256": "C814C30AFA7E21BAC5EE64A8CD7854373EA0BB6BAEA86F32E3AB03C1734E8061"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This private experiment predates reconciliation to the scheduler’s volatile word declarations. The canonical wave uses that reconciled interface.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Free the directory inside each branch immediately after reading both keys."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2534,
+      "sha256": "C57F0208100ABFD9A82A7A74B1CDB7ACB803C5FC659AEADB8135832AD7C617A8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F7654577251E0B803D0A7D017549721DF6FC24173CCE34A31B324C14C744D3AE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00048294-90d773f158.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

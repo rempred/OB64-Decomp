@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5D2DCA6077FA13DD37919C6972B006E36ECF4AAE8F659397A58F034D13BA5A43",
+  "observationId": "F3F8EAB81D29EC787216F7E630E3F382775E062D3E65423B9F2EA80B2BF8AD1F",
+  "symbol": "func_00047ee0",
+  "authored": {
+    "context": "Entry source func_00047ee0-volatile-state.c uses one pointer with a negative subscript before subtracting two. Its compiled comparison is entry-volatile-state.json.",
+    "effects": [
+      "symbol-address-folding",
+      "call-delay-slot"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AA6A3F8C158997EB5F681CAB9CDA64C4E89AC86203530D07339E615D221FD13F",
+      "sourceSha256": "0F3117AEB78ABB666AF6E476B997AE89B662B7D0028FCBE4F076F5BD1EE885F0"
+    },
+    "label": "entry-selection-pointer-control",
+    "observedEffect": "The negative subscript becomes an absolute symbol-plus-addend store and the owner gains four bytes. A separate row pointer yields the expected store at negative two from s1 and the pointer adjustment in the directory call delay slot. Subtracting in place before the store reaches 324 bytes but schedules the adjustment too early and stores at offset zero.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00047ee0.s",
+        "sha256": "75480DC2B5F7EE354DD9BD00AECB6E15923B0FA743C924CDFD59621EDD33E00D"
+      },
+      {
+        "path": "src/lib/func_00047ee0.c",
+        "sha256": "833D79ACF7B6B0C30CFFE51F92590904466EAF38217B38A8591AEA88B8AEFDC9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The negative-subscript control emits four extra bytes. The accepted C uses the separately held row pointer.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the row-byte pointer in a separate temporary for the store, then assign it back for context restoration."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1183,
+      "sha256": "AA6A3F8C158997EB5F681CAB9CDA64C4E89AC86203530D07339E615D221FD13F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0F3117AEB78ABB666AF6E476B997AE89B662B7D0028FCBE4F076F5BD1EE885F0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00047ee0-5d2dca6077.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

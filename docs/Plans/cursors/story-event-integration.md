@@ -22,4 +22,8 @@ The mapper now supplies the first 112 bytes of row 1283, including its four-byte
 
 `func_00046738` is exact `PURE_C` with 30 text and 27 table relocations. The scheduler shares its `u16` return and `s32` input declaration, and all 836 scheduler bytes match retail. The [mapper report](../../../build/integration/story-event/mapper-acceptance-evidence.json) binds CURRENT `633858359D12F0FDEC97023B190478784A5848F1C3B84F95A1431AF1FC78822C`, the exact ROM, 256 oracle cases and 768 isolated retail replays. The [signed-return control](../../dossiers/func_00046738-21f53f4a42.md) records the extra sign extension.
 
-The complete entry trio is next, followed by the complete driver and interpreter pair. Both private handoffs are ready. Preserve the selected input references while the workers use them.
+## Accepted event entry
+
+The [entry report](../../../build/integration/story-event/entry-acceptance-evidence.json) binds verified CURRENT `D695992DEA7F10DDCACFE89ACF8DE2ECAC6E5804EAA3931CFB02A0FD0254F903` to all three exact `PURE_C` bodies and 102 text relocations. Both callers of `func_00047ee0` pass verification with its word-return declaration. Ten isolated checks against linked production and retail cover dispatch, selector and row changes, and indexed entry with full context restoration. External calls are controlled stubs.
+
+The complete driver and interpreter pair is next. Its private source and five-table relocation inventory are ready. Preserve the selected input references through final reconciliation.
