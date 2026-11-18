@@ -1,8 +1,8 @@
 # OB64 Decomp — Next Steps
 
-## Assignment status — November 17, 2026
+## Assignment status — November 18, 2026
 
-**Joe assigned the full [cutscene preview program](Plans/cutscene-preview-services-draft.md).** Start Q1 actor queries, P1 scripted Army panels and T1 chapter/mission cards. Retain three Sol 6.2 XHigh matching workers across all eleven waves, with a dedicated production writer and native chat watchers. The [Director handoff](Plans/cursors/director.md) carries the assignments and verified baseline. The prior [actor placement and mission-briefing program](Plans/actor-placement-briefing-program.md) closed at `3ac73120`.
+**Awaiting Joe’s next Decomp assignment.** The [cutscene preview program](Plans/cutscene-preview-services-draft.md) closed on main at `2447f1d5` with an exact US Rev 0 rebuild. The [Editor director](codex://threads/01a1eae5-90a2-7c31-956d-6ed447687e40) received the source, evidence and feature follow-up request and started the editor-side inventory. The [Director handoff](Plans/cursors/director.md) records acceptance and delivery.
 
 ## Unresolved source and research scope
 

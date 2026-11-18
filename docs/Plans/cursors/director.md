@@ -1,10 +1,10 @@
 # Director handoff — November 18, 2026
 
-**Joe assigned all 46 owners in the [cutscene preview program](../cutscene-preview-services-draft.md).** Q1 covers actor-dependent branches, P1 the scripted Army panel opening and T1 the shared title-card path. Retain the three Sol 6.2 XHigh matching chats across complete waves and use a separate production integrator. Joe requested no assistants. The Director owns native route qualification, preflight release, wave acceptance and reassignment. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) closed on main at `3ac73120`.
+**Awaiting Joe’s next Decomp assignment.** The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The final fresh verifier covered every assigned function together. The [Editor director](codex://threads/01a1eae5-90a2-7c31-956d-6ed447687e40) has taken up the integration and feature follow-up request. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
 
-## Current chats
+## Released cutscene chats
 
-Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on host `local`. The per-chat monitor directories under `~/.local/share/codex-thread-monitors/cutscene-preview-261117-*` keep their original suffix across reassignments.
+The three original matching chats were retained across waves. The integrator finished all production commands and released ownership. The Director confirmed that all four native monitors exited through their own stop flags. Their delivery records remain under `~/.local/share/codex-thread-monitors/cutscene-preview-261117-*`.
 
 | Role | Chat | First wave / route suffix |
 | --- | --- | --- |
@@ -13,15 +13,13 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The Director accepted P4 at `03e13245`. Workers 1 and 2 are retained and idle after P3 and P4. Worker 3 owns the final [T2 chapter reveal wave](../../../build/matching/preview-261117-t2/cursor.md). Release all six candidates to the [integrator](cutscene-preview-integration.md) together on handoff. Once accepted, check all 46 owners against the final combined verifier and send the Editor handoff.
+## Editor handoff
 
-After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
-
-T2 checkpoint, November 18. Between 07:45:41 and 08:15:41 Eastern the renderer went from 18 differing words to five. The Director independently projected all 72 relocations in [candidate 1697](../../../build/matching/preview-261117-t2/289780-1697.c). It preserves the 1,412-byte body and register allocations. The improvement exceeded Joe's checkpoint threshold. Sol continues independently.
+The [requested handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) reached local Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` at 09:42 Eastern on November 18. Its turn `01a1ef1c-102e-77b2-b668-381e7ecb9eaf` started with the Editor import and preview inventory. The request covers every affected Editor feature, the help-token correction, playback checks, and reporting results and remaining dependencies to Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b`.
 
 ## Accepted baseline
 
-[P4 acceptance](../../../build/integration/cutscene-preview/p4-acceptance-evidence.json) binds three downstream panel routines to exact Rev 0 CURRENT `EDDB549B8AFFBC7B77BDC15FAC2A12AC9AE8B882763E0AAB1B9447B252758842`. Its [dispatcher replay](../../../build/integration/cutscene-preview/p4-accepted-traces.json) covers the signed preset-16 label condition and both position calls. The [integration cursor](cutscene-preview-integration.md) links the earlier wave proofs.
+The [final acceptance roster](../../../build/integration/cutscene-preview/program-acceptance-evidence.json) binds all assigned owners and sources to CURRENT `8412D50E1A2CDD150C75409B585A92DBF5748C5F5FE16C9530EDCEFB15B7ECF3`. The rebuilt ROM SHA-256 is `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. The two retained four-byte ASM suffixes and three linked C switch tables are itemized in the roster. The [integration closeout](cutscene-preview-integration.md) links each wave and the [T2 replay](../../../build/integration/cutscene-preview/t2-accepted-traces.json) covers chapter reveal completion with controlled assets and randomness.
 
 ## Released assignments
 
