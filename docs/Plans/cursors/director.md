@@ -13,13 +13,13 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The Director accepted T3 at `1010386e`. Retained worker 1 started T4 mission-entry companion setup, release, update and draw. Worker 2 continues P2 scripted Army-panel updates and worker 3 continues T2 chapter reveal. The [integrator](cutscene-preview-integration.md) retains production ownership and is ready for the next complete wave. Preserve the three chats and their watchers.
+All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). T4 was accepted at `2abac0b3`. Retained worker 1 started T5 title-scene callbacks. Worker 2 continues P2 scripted Army-panel updates and worker 3 continues T2 chapter reveal. The [integrator](cutscene-preview-integration.md) retains production ownership pending the next complete wave. Preserve all three chats and their watchers.
 
 After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
 
 ## Accepted baseline
 
-[T3 acceptance](../../../build/integration/cutscene-preview/t3-acceptance-evidence.json) binds the mission-entry selector, draw and release to exact Rev 0 CURRENT `D18575D37F1C1C03DF01550DC052C8342F711C27688EDBEFB903EBE601FFC5D2`. The original word at `28977C` and T2's draw entry at `289780` retain exact placement. Earlier accepted waves are [P1](../../../build/integration/cutscene-preview/p1-acceptance-evidence.json), [Q1](../../../build/integration/cutscene-preview/q1-acceptance-evidence.json) and [T1](../../../build/integration/cutscene-preview/t1-acceptance-evidence.json).
+[T4 acceptance](../../../build/integration/cutscene-preview/t4-acceptance-evidence.json) binds all four mission-entry companion routines to exact Rev 0 CURRENT `8F90F3F160E4FA51A22F991B342EE10038424C16064E0540D23C13CB1374733A`. [Three controlled traces](../../../build/integration/cutscene-preview/t4-accepted-traces.json) cover the companion and title draw/release order. Earlier accepted waves are [T3](../../../build/integration/cutscene-preview/t3-acceptance-evidence.json), [P1](../../../build/integration/cutscene-preview/p1-acceptance-evidence.json), [Q1](../../../build/integration/cutscene-preview/q1-acceptance-evidence.json) and [T1](../../../build/integration/cutscene-preview/t1-acceptance-evidence.json).
 
 ## Released assignments
 
