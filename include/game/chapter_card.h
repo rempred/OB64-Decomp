@@ -4,30 +4,25 @@
 #include "common/types.h"
 #include "game/combat_draw_commands.h"
 
-/* Shared view of D_8023DE20. The reveal code uses additional fields
- * in the reserved ranges.
- */
+/* Shared chapter-card state used by setup, fade and reveal. */
 typedef struct TitleImageHeader {
     u8 pad00[3];
     u8 field03;
     u16 width;
     u16 height;
+    u8 pixels[0];
 } TitleImageHeader;
 
 typedef struct ChapterCard {
     TitleImageHeader *secondary[5];
     TitleImageHeader *images[5];
-    u8 pad28[2];
-    s16 x;
-    u8 pad2C[8];
-    s16 y;
-    u8 pad36[8];
-    u16 fadeStep;
-    u8 pad40[8];
-    u16 alpha;
-    u8 pad4A[8];
-    u16 fadeTicks;
-    u8 pad54[7];
+    s16 x[5];
+    s16 y[5];
+    u16 fadeStep[5];
+    u16 alpha[5];
+    /* Slot 1 tracks the fade. Slots 2 through 4 track the reveal. */
+    u16 revealTicks[5];
+    u8 revealSlot;
     u8 secondaryCount;
 } ChapterCard;
 
@@ -57,6 +52,13 @@ void func_002878F4(void);
 void func_002879F8(void);
 void func_00287A4C(void);
 void func_00287AA4(void);
+
+void func_00289780(void);
+void func_00289D24(void);
+s32 func_00289E88(void);
+void func_00289ECC(void);
+s32 func_0028ac88(s32 format, u32 width);
+u32 func_0028acdc(s32 format, u32 width);
 
 void func_0028A310(void);
 void func_0028A678(void);

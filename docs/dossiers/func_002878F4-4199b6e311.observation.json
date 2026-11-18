@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "10BE6576B76062DA740E7FC089A0A3E7A1DA9FCF39315C04891DBA280F07B006",
+  "observationId": "4199B6E311F1F6434B99636FDD65E09CC9E007FB96DEE16FBED44F72B27BF606",
+  "symbol": "func_002878F4",
+  "authored": {
+    "context": "T1 selector 1078 calls the companion setup before title setup. The setup retains an allocated directory across three archive child lookups, releases that directory and then allocates two contiguous copies of child 18's payload. T2 shares the stride helper declaration with the mission-entry companion setup. The companion passes the format byte and width halfword in the same argument registers and reproduces its linked body at commit `2abac0b3`.",
+    "effects": [
+      "register-allocation",
+      "local-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "F131BAA57DE02840115329CABE9CB3339FF5366F331B6AA7780F147046D8F493",
+      "sourceSha256": "60ED23CD041584D06CABA370BB7E1F9BA440BD7E718AABC3A214D02354F62121"
+    },
+    "label": "companion-directory-and-payload-pointer",
+    "observedEffect": "Both selected-input PURE_C sources emit the complete 260-byte owner. The separate-pointer source allocates the directory to s0 and leaves five projected words different at +0x20, +0x28, +0x2c, +0x3c and +0x58. Reuse restores s1 and gives zero projected word differences across the owner.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_002878F4.s",
+        "sha256": "332CB746682BC0FE2758C6413BBB9C8BA9852345D225FC59181E4688F851BB8F"
+      },
+      {
+        "path": "src/lib/func_002878F4.c",
+        "sha256": "32C278FB66B4D38FF73269E3D83B579FF185E59106B17297FC578150C3480B78"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Separate pointers put the directory in s0 and change five original operands. The canonical source reuses the buffer pointer across the two allocations.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control uses a separate u32 pointer for the directory. Reuse one u8 buffer pointer across the directory and payload allocations, with a u32 view at the child-key loads."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1501,
+      "sha256": "F131BAA57DE02840115329CABE9CB3339FF5366F331B6AA7780F147046D8F493"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "60ED23CD041584D06CABA370BB7E1F9BA440BD7E718AABC3A214D02354F62121"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_002878F4-10be6576b7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

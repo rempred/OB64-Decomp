@@ -9,6 +9,30 @@
   },
   "targets": [
     {
+      "symbol": "func_00289D24",
+      "source": "src/lib/func_00289D24.c"
+    },
+    {
+      "symbol": "func_00289E88",
+      "source": "src/lib/func_00289E88.c"
+    },
+    {
+      "symbol": "func_00289ECC",
+      "source": "src/lib/func_00289ECC.c"
+    },
+    {
+      "symbol": "func_00289780",
+      "source": "src/lib/func_00289780.c"
+    },
+    {
+      "symbol": "func_0028ac88",
+      "source": "src/lib/func_0028ac88.c"
+    },
+    {
+      "symbol": "func_0028acdc",
+      "source": "src/lib/func_0028acdc.c"
+    },
+    {
       "symbol": "func_00298B70",
       "source": "src/lib/func_00298B70.c"
     },

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "candidateId": "6E73CAC4B26004970FFBAF0494ED4C2D504BFCFA193C952DCAD52A2150DB8AAA",
-  "observationId": "1E7D034724A8E4E6D29891341632C4B240737705493D54D0DBEF101D42FD326E",
-  "symbol": "func_0028A678",
+  "candidateId": "ACF8DDE5EFF1A298984691BEFE7871173105BF17595BD7F86E8484AE8A04090E",
+  "observationId": "01E8DBC370CCBBF5CAD24C867B66DAB40533A311BA87EB9CD0C995A1A903373F",
+  "symbol": "func_00289780",
   "authored": {
-    "context": "The active fade checks fadeTicks before reading alpha and fadeStep, then writes alpha before the decremented countdown.",
+    "context": "The selector 1073 renderer packs clipped signed fixed-point X into the upper part of the texture rectangle word.",
     "effects": [
-      "load-order",
-      "function-extent"
+      "register-allocation",
+      "load-order"
     ],
     "expected": {
       "dependencies": [
@@ -15,30 +15,35 @@
           "bytes": 219,
           "path": "include/common/types.h",
           "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
         }
       ],
-      "expandedSha256": "52A762B8C8E2A6B4D601D38C11E055305FD64225B3BB069224BB8F441A78D2BF",
-      "sourceSha256": "C0152EA8C13E4FF708FE58404836A9BF560012B2D87397DBFCB7E3A9B8D0190E"
+      "expandedSha256": "C137128114132D82063DE13C742A51CEAF9E1BFE6290471DD547265D15B295D5",
+      "sourceSha256": "4BDC1D93679077070DE8CFF026BC6C13C8220F6B1EF16E7D91A95C3F9AAFEC23"
     },
-    "label": "fade-countdown-reload",
-    "observedEffect": "The unqualified control merged the guarded countdown load with the first load and emitted 100 bytes. The final candidate retained both loads, the alpha-before-countdown stores and the original 108-byte extent.",
+    "label": "chapter-render-clipped-x-control",
+    "observedEffect": "The 1,412-byte body has one projected word difference at +0x3e8. KMC emits and v1,v1,t1 where retail uses and v1,t1,v1. The canonical source stages mask, shift and Y pack in the clipped-X scalar.",
     "parentCandidateId": null,
     "references": [
       {
-        "path": "src/lib/func_0028A678.c",
-        "sha256": "3E294BD84670096F1F00C7CFBFA044A1C38705C661CCCAC794C0854C4E838775"
+        "path": "src/lib/func_00289780.c",
+        "sha256": "F824DC09E9DC16B6936E3A2D3362CCEC91981695327DA6ACEDB1DB317123E1F6"
       },
       {
-        "path": "asm/original/rev0/lib/func_0028A678.s",
-        "sha256": "6D45088FDD6C90BAE30453431CDD2DC4A4788395C27986BB667385B062ED8809"
+        "path": "asm/original/rev0/lib/func_00289780.s",
+        "sha256": "3F4A887ABA35EBF8FD3D2233E7D222D21FED84290ACFB07FE9273EBDC09398FD"
       }
     ],
     "relatedCandidateIds": [],
-    "remainingFailure": "The unqualified control omits the second load and reverses the store order.",
+    "remainingFailure": "The bitwise AND operands remain reversed in the emitted rectangle pack.",
     "role": "counterexample",
     "schemaVersion": 1,
     "selectedBest": false,
-    "sourceChange": "Use a volatile ChapterCard view and perform the decrement in the guarded load expression."
+    "sourceChange": "Use the shared E300 command scalar for E100 and order the independent cursor address assignments as in the original. Retain the combined clipped-X and Y expression."
   },
   "authenticated": {
     "dependencies": [
@@ -46,11 +51,16 @@
         "bytes": 219,
         "path": "include/common/types.h",
         "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
       }
     ],
     "expanded": {
-      "bytes": 1102,
-      "sha256": "52A762B8C8E2A6B4D601D38C11E055305FD64225B3BB069224BB8F441A78D2BF"
+      "bytes": 12420,
+      "sha256": "C137128114132D82063DE13C742A51CEAF9E1BFE6290471DD547265D15B295D5"
     },
     "preprocessor": {
       "config": {
@@ -93,8 +103,8 @@
       "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
     },
     "sourceClass": "PURE_C",
-    "sourceSha256": "C0152EA8C13E4FF708FE58404836A9BF560012B2D87397DBFCB7E3A9B8D0190E"
+    "sourceSha256": "4BDC1D93679077070DE8CFF026BC6C13C8220F6B1EF16E7D91A95C3F9AAFEC23"
   },
-  "source": "docs/archive/matching-c-candidates/2026-11-18-func_0028A678-6e73cac4b2.c",
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00289780-acf8dde5ef.c",
   "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
 }

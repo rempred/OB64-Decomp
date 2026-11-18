@@ -77,6 +77,6 @@ void func_0028A310(void)
     resource_free(keys);
     card = D_8023DE20;
     image = card->images[1];
-    card->x = 160 - (image->width >> 1);
-    card->y = 120 - (image->height >> 1) - 16 * card->secondaryCount;
+    card->x[1] = 160 - (image->width >> 1);
+    card->y[1] = 120 - (image->height >> 1) - 16 * card->secondaryCount;
 }

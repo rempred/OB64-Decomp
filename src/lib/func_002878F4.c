@@ -5,7 +5,6 @@ extern void *func_0002e138(u32 key);
 extern s32 resource_free(u8 *buffer);
 extern void *func_00070F30(s32 size);
 extern void memcpy_aligned(void *destination, const void *source, s32 count);
-extern s32 func_0028ac88(u8 field03, u16 width);
 
 void func_002878F4(void)
 {

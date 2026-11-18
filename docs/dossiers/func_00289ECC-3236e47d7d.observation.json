@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3236E47D7D77571D9C57BFB602533E50FB1FA560C18B6DEBAE0823784A8D2B7E",
+  "observationId": "1F94740F85A6C9CEE8EC3E721E3311E625183785258FA6F24828CA16E3DE8E0F",
+  "symbol": "func_00289ECC",
+  "authored": {
+    "context": "In the selector 1073 chapter updater, the subtracted width contributes to the start offset within each image row.",
+    "effects": [
+      "register-allocation",
+      "load-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "E90CD31680ADFD795CB117E36D19D6F57DF4D153286B76109D65C67B84AB67E4",
+      "sourceSha256": "EB60E68E0D78746DB4A714EF261B059A046558BF91D70EE8C2BB911ECB0ED387"
+    },
+    "label": "reveal-width-word-control",
+    "observedEffect": "The full 1,092-byte body has six differences after selected-input projection. The subtraction at +0x198 uses a1 instead of a3. The remaining five words reverse the stack homes at +0x34 and +0x3c.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_00289ECC.c",
+        "sha256": "2DD690F145C771197AC5150858DEF68B967CEFD27A55DB0C2334A2B17B6EB259"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00289ECC.s",
+        "sha256": "2F9F82787DA99D3603F155FB9DC31D8733D49547E641276A0CAF6B293188AF0B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The paired halfword control isolates the input-width difference and the accepted C resolves the stack-home allocation.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the image width in a signed word, subtract the countdown into a separate word and pass the word width to the stride helper."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 5764,
+      "sha256": "E90CD31680ADFD795CB117E36D19D6F57DF4D153286B76109D65C67B84AB67E4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EB60E68E0D78746DB4A714EF261B059A046558BF91D70EE8C2BB911ECB0ED387"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00289ECC-3236e47d7d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
