@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "685367D5FA22AAD723BAA477816F8E10407CE30EE5C4331AF94603A35AAB3322",
+  "observationId": "5008E0FD3AAF9E6BE9AA12BA5C18089C8930FBB7A8B347F6087B5C78346BFB04",
+  "symbol": "func_00298B70",
+  "authored": {
+    "context": "The last backward-page adjustment stores its selection before entering the shared refresh check. The complete owner is 1,704 bytes.",
+    "effects": [
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "609B438625B73B71CF692C8A970FA4BCB23B543DB74BC2D15E13798B8C16D13B",
+      "sourceSha256": "1BBD29B8F7564EC6791D6C40389880538DE04A45125A0190CE3C878A69DAD942"
+    },
+    "label": "shared-page-adjustment-tail",
+    "observedEffect": "Both 1,704-byte versions agree at every word except the jump at +0x584. The accepted jump enters the retail refresh block at 0x8023D22C.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00298B70.s",
+        "sha256": "C70DC3962E0148427CCDA41FAFBBB4DEC851CAF216E5FB7293E6D934FA6ACBF9"
+      },
+      {
+        "path": "src/lib/func_00298B70.c",
+        "sha256": "279456680E987CE248D564063BDFE6747E320A67A640E7F6227C4C97D92D97F7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The control jumps one instruction later, to 0x8023D230.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Share the selection and start byte stores across page directions in the accepted source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11691,
+      "sha256": "609B438625B73B71CF692C8A970FA4BCB23B543DB74BC2D15E13798B8C16D13B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1BBD29B8F7564EC6791D6C40389880538DE04A45125A0190CE3C878A69DAD942"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00298B70-685367d5fa.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

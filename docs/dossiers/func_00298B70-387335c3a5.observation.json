@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "387335C3A590333A7E54B82195FEB4687297BCBEC2B24C311CF1AE09EAE51CC9",
+  "observationId": "D8CCAC319D3BDFC16DCB1AED327B253512EA9E514EB95544AF94842F68F1D459",
+  "symbol": "func_00298B70",
+  "authored": {
+    "context": "The panel navigation arms reuse the same signed halfword lookup step. This pair changes the C lifetime of that accumulator across directions.",
+    "effects": [
+      "register-allocation",
+      "signedness",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F3B37EB74ACE600702C77E065645108253B9277AB6A9C382F327FEF16FE5CAFD",
+      "sourceSha256": "6D2BD2A53B5681246C6B280015ACB6E5486AC183ECBE3DAC8E00880A0EAC60F2"
+    },
+    "label": "shared-signed-record-step-before",
+    "observedEffect": "These declarations leave the decrement step in a0 and the page steps in v0. Reusing one step changes nine words and leaves the 1,688-byte extent unchanged.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/research/how-matching-works-20261117.md",
+        "sha256": "3DC6EB7853969E81079C190D32B82244B945BD210F7445EDDBB72EA6FF3D5583"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00298B70.s",
+        "sha256": "C70DC3962E0148427CCDA41FAFBBB4DEC851CAF216E5FB7293E6D934FA6ACBF9"
+      },
+      {
+        "path": "src/lib/func_00298B70.c",
+        "sha256": "279456680E987CE248D564063BDFE6747E320A67A640E7F6227C4C97D92D97F7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The lookup step registers and the later page-bound code still differ from retail.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep a separate signed accumulator in each lookup arm."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11625,
+      "sha256": "F3B37EB74ACE600702C77E065645108253B9277AB6A9C382F327FEF16FE5CAFD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6D2BD2A53B5681246C6B280015ACB6E5486AC183ECBE3DAC8E00880A0EAC60F2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00298B70-387335c3a5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

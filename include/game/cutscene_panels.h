@@ -17,7 +17,7 @@ typedef struct PanelParameters {
     u16 field20;
     u16 field22;
     u8 field24[0x40];
-    u8 pad64;
+    u8 field64;
     u8 field65;
     u8 field66;
     u8 field67;
@@ -29,7 +29,7 @@ typedef struct PanelContent {
     u8 *rows[48];
     u8 field5F0;
     u8 field5F1;
-    u8 pad5F2;
+    u8 field5F2;
     u8 field5F3;
     u8 field5F4;
     u8 field5F5;
@@ -37,7 +37,7 @@ typedef struct PanelContent {
     u8 field5F7;
     u8 pad5F8[4];
     u8 field5FC;
-    u8 pad5FD;
+    u8 field5FD;
     u8 field5FE;
     u8 pad5FF;
     s32 key;
@@ -65,7 +65,11 @@ typedef struct Panel {
     s32 field40;
     u8 pad44[4];
     s32 field48;
-    u8 pad4C[0x84];
+    s32 field4C;
+    s32 field50;
+    s32 field54;
+    s32 field58;
+    u8 pad5C[0x74];
     PanelContent *content;
 } Panel;
 

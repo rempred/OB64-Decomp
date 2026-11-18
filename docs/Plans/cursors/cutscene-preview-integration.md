@@ -2,17 +2,17 @@
 
 ## November 17, 2026
 
-All 11 waves of the [46-owner program](../cutscene-preview-services-draft.md) passed guarded preparation on `main`. Integration chat `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` owns production. The verified native watcher `cutscene-preview-261117-integration` routes to Director chat `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b`.
+The [46-owner program](../cutscene-preview-services-draft.md) passed guarded preparation on `main`. Integration chat `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` owns production. The verified native watcher `cutscene-preview-261117-integration` routes to Director chat `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b`.
 
 ## Verified input selection
 
-Pinned `tools/status.ps1` reported `VERIFIED / EXACT ROM` for CURRENT `25FDAD0F2D4C068AD63FA63A5EDD21FD5E53BB20985B4F5432400FF32D7F500F`. The normalized 41,943,040-byte US Rev 0 ROM and retained exact rebuild have SHA-256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+The normalized US Rev 0 ROM and original verified rebuild have SHA-256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 The [selected v1 manifest](../../../build/cutscene-preview-inputs-20261117/manifest.json) has input set ID `150FBB21062FD23C49B740591A5ABD2D536B364C7DC9316ACB20A9304235EBBE` and manifest SHA-256 `B4A83B17419A8F355177050C5083CFE4A6C659F5EAF437981A85E8EC049219CD`. Set `OB64_WORK_ROOT=C:/Users/Joe/.codex/ob64-descriptor-20261026` and prepend `.toolchains/node-v24.13.1-win-x64` to the process PATH. Invoke that pinned `node.exe`.
 
 ## Guarded preflight
 
-Private roots use `build/matching/preview-261117-<lowercase-wave>`. Each report records the full roster with exact canonical spelling. All selected ROM spans and hashes agree with the normalized ROM.
+Private roots use `build/matching/preview-261117-<lowercase-wave>`. Reports identify the accepted spans and hashes.
 
 - Actor queries [Q1 2/2](../../../build/preview-261117-q1-preflight.json).
 - Army panels [P1 3/3](../../../build/preview-261117-p1-preflight.json), [P2 4/4](../../../build/preview-261117-p2-preflight.json), [P3 6/6](../../../build/preview-261117-p3-preflight.json), [P4 3/3](../../../build/preview-261117-p4-preflight.json), [P5 7/7](../../../build/preview-261117-p5-preflight.json).
@@ -34,8 +34,10 @@ Private roots use `build/matching/preview-261117-<lowercase-wave>`. Each report 
 
 **P5** has seven exact C bodies, two folded entries and row 5166 preserved. Seven selector 0 replays used the original P2 assembly. [Acceptance](../../../build/integration/cutscene-preview/p5-acceptance-evidence.json) · [Traces](../../../build/integration/cutscene-preview/p5-accepted-traces.json) · [Frame control](../../dossiers/func_0028af64-f0a4c947ed.md) · [Scissor control](../../dossiers/func_00281CE4-5ebe719806.md)
 
-**P2** passed one fresh verifier. Four exact PURE_C bodies have 143 ordered text relocations. Row 5291 owns 84 linked bytes and 21 entries. The reviewed contract discards four native alignment bytes. Seven selector 0 replays and five close controls matched retail. Verified CURRENT FE3064D1B7B826E2DF9F43E5792895F1ADF4EBA5B2AC39DE7F8687908F8260AA. [Acceptance](../../../build/integration/cutscene-preview/p2-acceptance-evidence.json) · [Replays](../../../build/integration/cutscene-preview/p2-accepted-traces.json) · [Signed-extension frame control](../../dossiers/func_00298948-9be4b392f2.md) · [Unsigned-byte control](../../dossiers/func_00298948-63b0ff58d4.md) · [Call interface control](../../dossiers/func_00299740-94aec088ad.md) · [Counted loop control](../../dossiers/func_00299AC8-b1002cecdd.md)
+**P2** has four PURE_C bodies and 143 text relocations. Row 5291 links 84 bytes and 21 entries. Seven scene and five close controls matched. [Acceptance](../../../build/integration/cutscene-preview/p2-acceptance-evidence.json) · [Replays](../../../build/integration/cutscene-preview/p2-accepted-traces.json) · [Signed-extension frame control](../../dossiers/func_00298948-9be4b392f2.md) · [Unsigned-byte control](../../dossiers/func_00298948-63b0ff58d4.md) · [Call interface control](../../dossiers/func_00299740-94aec088ad.md) · [Counted loop control](../../dossiers/func_00299AC8-b1002cecdd.md)
 
-**P3** passed one fresh verifier. Six exact PURE_C bodies have 62 text relocations and preserve the folded help entry. The selector 0 replay confirmed section 20 uses the subject lookup. Sections 21 and 22 expand from parameters +0x24. Verified CURRENT 1C408827F04E03D90198FF33D613C264451A95BA58EE230D35F40101E728E282. [Acceptance](../../../build/integration/cutscene-preview/p3-acceptance-evidence.json) · [Help replay](../../../build/integration/cutscene-preview/p3-accepted-traces.json) · [Constructor store control](../../dossiers/func_00296518-580db89150.md) · [Marker fallthrough control](../../dossiers/func_00296754-c3cd02883c.md) · [Indexed address control](../../dossiers/func_00297644-9246174c83.md)
+**P3** has six PURE_C bodies, 62 text relocations and the folded help entry. Section 20 uses the subject. Sections 21 and 22 use parameters +0x24. [Acceptance](../../../build/integration/cutscene-preview/p3-acceptance-evidence.json) · [Help replay](../../../build/integration/cutscene-preview/p3-accepted-traces.json) · [Constructor store control](../../dossiers/func_00296518-580db89150.md) · [Marker fallthrough control](../../dossiers/func_00296754-c3cd02883c.md) · [Indexed address control](../../dossiers/func_00297644-9246174c83.md)
+
+**P4** passed one fresh verifier as three PURE_C bodies with 124 text relocations. The folded text entry and separate 299324 assembly entry are intact. All 87 dispatcher scenarios and three direct null cases matched. Verified CURRENT EDDB549B8AFFBC7B77BDC15FAC2A12AC9AE8B882763E0AAB1B9447B252758842. [Acceptance](../../../build/integration/cutscene-preview/p4-acceptance-evidence.json) · [Replays](../../../build/integration/cutscene-preview/p4-accepted-traces.json) · [Byte branch control](../../dossiers/func_002993EC-2e084146c6.md) · [Signed step pair](../../dossiers/func_00298B70-61be3cd751.md) · [Page readback pair](../../dossiers/func_00298B70-dd2571b164.md) · [Refresh jump control](../../dossiers/func_00298B70-685367d5fa.md)
 
 Production ownership stays with the integration chat. Selected inputs and referenced outputs remain available to assigned workers.

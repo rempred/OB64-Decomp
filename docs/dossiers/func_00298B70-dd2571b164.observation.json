@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DD2571B16419822F856FD0A2EE3809490C34280BE7B4754DB1CA37B291ADA2FB",
+  "observationId": "582892261159082C2F2C69A690351FAE3F762586F0FA04A4B7B58451AFF371D2",
+  "symbol": "func_00298B70",
+  "authored": {
+    "context": "Both forward-page cases adjust the start byte before comparing the selected byte. This pair tests whether the new start is taken from the assignment or read separately.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E86D109ACE9878AD8843B992196EB6BD6C4D5F919509E46F506131ECFD2114F1",
+      "sourceSha256": "17F042874348F45F40E4F793702BC8C9E6D0456BEDF70B624EEEAF1F9FBB06DC"
+    },
+    "label": "page-bound-byte-readback",
+    "observedEffect": "The forward-page region uses the retail raw width and masked width registers and emits the two move/store pairs followed by the branch-likely selection stores. The ordinary chained assignment did not reproduce the region. The later backward-page guard still differed in this intermediate.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/research/how-matching-works-20261117.md",
+        "sha256": "3DC6EB7853969E81079C190D32B82244B945BD210F7445EDDBB72EA6FF3D5583"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00298B70.s",
+        "sha256": "C70DC3962E0148427CCDA41FAFBBB4DEC851CAF216E5FB7293E6D934FA6ACBF9"
+      },
+      {
+        "path": "src/lib/func_00298B70.c",
+        "sha256": "279456680E987CE248D564063BDFE6747E320A67A640E7F6227C4C97D92D97F7"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-11-18-func_00298B70-fc5c8a8c6b.c",
+        "sha256": "800E3EF433C873A95465AD7CFCE08D06383FBD3A3412AFEEF6B1652DB2A4AFA0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The selected intermediate is one word shorter than retail, localized to the next page-back condition.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "After writing the page start, read back the stored byte in a distinct C expression before testing or advancing the selected byte."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11683,
+      "sha256": "E86D109ACE9878AD8843B992196EB6BD6C4D5F919509E46F506131ECFD2114F1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "17F042874348F45F40E4F793702BC8C9E6D0456BEDF70B624EEEAF1F9FBB06DC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00298B70-dd2571b164.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

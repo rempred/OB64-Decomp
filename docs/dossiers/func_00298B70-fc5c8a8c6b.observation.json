@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FC5C8A8C6B867135D8BBE2757F18CE85768EC332EC6D37D4F3F0A49D8FE99D7E",
+  "observationId": "30CE367AF0038F2933610C8C1429649D0FA9EACCC79C6AF3074597B055026EE2",
+  "symbol": "func_00298B70",
+  "authored": {
+    "context": "Both forward-page cases adjust the start byte before comparing the selected byte. This pair tests whether the new start is taken from the assignment or read separately.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E7863064E9626D1987CD14ECF0CA192199307EB5E5E05878013D3CDC17C3E579",
+      "sourceSha256": "800E3EF433C873A95465AD7CFCE08D06383FBD3A3412AFEEF6B1652DB2A4AFA0"
+    },
+    "label": "page-bound-byte-readback-before",
+    "observedEffect": "The chained assignment produces the 1,692-byte baseline and changes the forward-page register and delay-slot sequence.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/research/how-matching-works-20261117.md",
+        "sha256": "3DC6EB7853969E81079C190D32B82244B945BD210F7445EDDBB72EA6FF3D5583"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00298B70.s",
+        "sha256": "C70DC3962E0148427CCDA41FAFBBB4DEC851CAF216E5FB7293E6D934FA6ACBF9"
+      },
+      {
+        "path": "src/lib/func_00298B70.c",
+        "sha256": "279456680E987CE248D564063BDFE6747E320A67A640E7F6227C4C97D92D97F7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The forward-page instructions and later backward-page guard differ from retail.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the assignment result as the local start value in both forward-page arms."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11569,
+      "sha256": "E7863064E9626D1987CD14ECF0CA192199307EB5E5E05878013D3CDC17C3E579"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "800E3EF433C873A95465AD7CFCE08D06383FBD3A3412AFEEF6B1652DB2A4AFA0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00298B70-fc5c8a8c6b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

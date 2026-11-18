@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "61BE3CD751A5A358558735B47E89A885A7B36288B9786C8624E5DDD6027974C6",
+  "observationId": "7507B2C843E13B55EB7C581A86B9E244C2E145BAFD83DF1DC6D1FCAA61715563",
+  "symbol": "func_00298B70",
+  "authored": {
+    "context": "The panel navigation arms reuse the same signed halfword lookup step. This pair changes the C lifetime of that accumulator across directions.",
+    "effects": [
+      "register-allocation",
+      "signedness",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6CFE4B51C21470471D41D8A80BC1727674D80AF0DA99DDCCB2CB00753D5CE8C2",
+      "sourceSha256": "9EF5FD87F41004D28397E3A5986811A9C37AFAF95C7B8A7C14F2AAB3B34EA071"
+    },
+    "label": "shared-signed-record-step",
+    "observedEffect": "The decrement and page steps moved to the retail a1 register throughout. The 0x4 current byte still reloads after the lookup in a0. The earlier per-arm step locals put the decrement step in a0 and the page steps in v0.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/research/how-matching-works-20261117.md",
+        "sha256": "3DC6EB7853969E81079C190D32B82244B945BD210F7445EDDBB72EA6FF3D5583"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00298B70.s",
+        "sha256": "C70DC3962E0148427CCDA41FAFBBB4DEC851CAF216E5FB7293E6D934FA6ACBF9"
+      },
+      {
+        "path": "src/lib/func_00298B70.c",
+        "sha256": "279456680E987CE248D564063BDFE6747E320A67A640E7F6227C4C97D92D97F7"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-11-18-func_00298B70-387335c3a5.c",
+        "sha256": "6D2BD2A53B5681246C6B280015ACB6E5486AC183ECBE3DAC8E00880A0EAC60F2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This intermediate retains the page-bound arithmetic differences only.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse one signed step accumulator across increment, decrement, and forward/back page arms. Keep the narrowed arithmetic while assigning each path its own lookup value."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11597,
+      "sha256": "6CFE4B51C21470471D41D8A80BC1727674D80AF0DA99DDCCB2CB00753D5CE8C2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9EF5FD87F41004D28397E3A5986811A9C37AFAF95C7B8A7C14F2AAB3B34EA071"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00298B70-61be3cd751.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

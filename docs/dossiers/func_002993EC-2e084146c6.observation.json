@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2E084146C6505F47943C008EEE17882CB3FB26C3123E2BA965A1BFE130276AEB",
+  "observationId": "9FE79BB1B85A717724ABBD423442CA58393917AAD563272918A8F0E23D6BC127",
+  "symbol": "func_002993EC",
+  "authored": {
+    "context": "The state-1 forward bound check retains the old byte or increments it. The accepted code assigns the result in each arm of the check.",
+    "effects": [
+      "register-allocation",
+      "scheduling-or-block-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D11190894955777CC00C7DAF2BE0919CEB23B773003D2DFE95471A7AEF2BC4AE",
+      "sourceSha256": "9F448218FDAC3E35AA0D7FC947C44ED00A3F379AC0326FC60487B6194E525E41"
+    },
+    "label": "explicit-byte-update-branch-pair",
+    "observedEffect": "The delay-slot copy, repeated addiu and byte store use v0, matching all 852 projected bytes. Initializing the local before the conditional preserved the two increments but allocated a1 for that three-word group.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/dossiers/func_002AAC60-55b287797b.md",
+        "sha256": "2F40EA3700BC94C70208A9723DB199DAD0B42878C49A2A06D2C3198CCB764B50"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002993EC.s",
+        "sha256": "80F7A69AF8D968622642357B0CF049642C88C9AE0B67A426AA0B1E801C120C69"
+      },
+      {
+        "path": "src/lib/func_002993EC.c",
+        "sha256": "1C45500CD256C50ECD4AD984154FB6FF4F78908D60B1571116F669CE5CB6803C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The control uses a1 for the copied result, the increment and the byte store at offsets +0x298 through +0x2A0.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Assign the result in each arm of the bound check. Keep the byte cast in the successful increment."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4846,
+      "sha256": "D11190894955777CC00C7DAF2BE0919CEB23B773003D2DFE95471A7AEF2BC4AE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9F448218FDAC3E35AA0D7FC947C44ED00A3F379AC0326FC60487B6194E525E41"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_002993EC-2e084146c6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
