@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DFC2B640A54FF3C567268FD4AFBF5CEA0DE4E8C02EC550545AE8175F9BA82F3D",
+  "observationId": "5964A28F0BF82105EC46E581EA73966EC4781242CFADDC5FCAE1F7C8A976CDB5",
+  "symbol": "func_002AD574",
+  "authored": {
+    "context": "Complete body-filter predicate with a signed-word return declaration. The original consumers at ROM 2AAEF0 and 2ABD04 mask the returned word to 0xFF before comparing with 1.",
+    "effects": [
+      "return-abi",
+      "byte-equivalence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CA0637B393B578E25D28D9759EA630B3122BD4ABDFBB92AE55A43B57FA9BB464",
+      "sourceSha256": "C20D9E87AA8FF15132DEDB812A1824DDBBBAA6A5F5C1B731B7135F403601CD45"
+    },
+    "label": "predicate-return-width-counterexample",
+    "observedEffect": "The one-line type change leaves all 348 raw text bytes and all 28 relocation records equal. The entry preamble is preserved in both cases.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_002AD574.c",
+        "sha256": "BFC56DFC93BD9048956A16317F2C2444177E556C39EF1C68FC97832CFD5304A0"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002AD574.s",
+        "sha256": "5102B3AA54004E037452FD2751663472986EB19A6A69C7AAC8CD86FD2C882714"
+      },
+      {
+        "path": "src/lib/func_002AAC60.c",
+        "sha256": "9DF05037CB46AEE956E9825FDE729317DD393FECA795D5892F195CE1FDFE3020"
+      },
+      {
+        "path": "src/lib/func_002ABB3C.c",
+        "sha256": "C732BC71FB13D1E2CE3C206E288830284D5E77A38CB089B7455E0F5BD774ADAC"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The matching provider text is compatible with both tested return declarations. The original consumer masks and accepted caller declarations provide independent ABI evidence.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the signed-word return type with the unsigned byte return already declared by both existing C consumers."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1871,
+      "sha256": "CA0637B393B578E25D28D9759EA630B3122BD4ABDFBB92AE55A43B57FA9BB464"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C20D9E87AA8FF15132DEDB812A1824DDBBBAA6A5F5C1B731B7135F403601CD45"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-17-func_002AD574-dfc2b640a5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

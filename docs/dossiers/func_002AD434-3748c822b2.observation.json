@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3748C822B2C24C3F7B86AA68E63F008391560B23088ACE0C50582EFE43AAC5F9",
+  "observationId": "761C0E22F39C3C6C084B608E7FAE8516EA3C3F13B3825FA880C84E414C1157DF",
+  "symbol": "func_002AD434",
+  "authored": {
+    "context": "Complete explicit member-slot binder with direct two-dimensional indexing into a 25-byte roster row.",
+    "effects": [
+      "load-scheduling",
+      "register-allocation",
+      "relocation-placement"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1215AFBFF6E2940F41CC778D3C3F0AF1DFE4F5B50738D0CE44D8E2419F40208F",
+      "sourceSha256": "61BAF8640077109F2DECF4470A21741353432F8B09A77EEC4CE97582628C3471"
+    },
+    "label": "roster-base-before-member-index",
+    "observedEffect": "Both sources emit 320 bytes and 11 relocations. Direct indexing first diverges at +0x24 and changes ten words through +0x4C. In the matching source the roster-table HI16/LO16 moves from +0x24/+0x28 to +0x44/+0x48.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_002AD434.c",
+        "sha256": "234401BBCFDED5499F38E284E574FC42A56613BDD31E2609040AE27A6A9C997C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002AD434.s",
+        "sha256": "A1AFA7BA512E2FF450AF8523E55CEAB4351CA29BFB1E17A0E6BBC1DE02FA6439"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The direct-index control computes the right address with a different instruction and relocation schedule.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compute the roster byte offset, add it to the table base, then index the resulting row by the member position."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2009,
+      "sha256": "1215AFBFF6E2940F41CC778D3C3F0AF1DFE4F5B50738D0CE44D8E2419F40208F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "61BAF8640077109F2DECF4470A21741353432F8B09A77EEC4CE97582628C3471"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-17-func_002AD434-3748c822b2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

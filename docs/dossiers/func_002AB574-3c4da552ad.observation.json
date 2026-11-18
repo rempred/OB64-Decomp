@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3C4DA552ADF840A8F9F9B16114E1F147A508B129FB91DEEBC0DDB53512041D64",
+  "observationId": "006DBEC75B72BE7193F15BC51505CBB27A159BE9CFC5F74CE9CF6FADD787ED25",
+  "symbol": "func_002AB574",
+  "authored": {
+    "context": "Complete leader-slot normalization source with four swap locals declared above the actor loop.",
+    "effects": [
+      "register-allocation",
+      "local-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9356FDEC7EB7659BD8CE9E0EBABD25D802E0DD2A24E5AC0016AD272C501B779E",
+      "sourceSha256": "98BD89AD7B2362E41DD10BB25218AAA7F1D2BEDEDDB99525767A67373685753C"
+    },
+    "label": "swap-locals-per-branch",
+    "observedEffect": "AB574-01 and AB574-07 both cover 328 bytes with the same 12 relocations. The scope change removes 16 instruction register differences beginning at +0xA4. AB574-07 and canonical-draft object text and relocations agree.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_002AB574.c",
+        "sha256": "2C33D20CEDCD9E24D891A2BF3AC4817C9174ACB6601DD9720D0429AFBBAF77A2"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002AB574.s",
+        "sha256": "446983AD3F69187D0C400508D5375D2D249982D6364A7482F3CBFC75ECF9DF80"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The function-scoped control assigns different registers to the global scene load and the swap sequences.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Declare the scene, slot, moving actor, and displaced actor inside each swap arm. AB574-07 tests that change in isolation. Canonical source adds names for other row fields without changing emitted text."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2251,
+      "sha256": "9356FDEC7EB7659BD8CE9E0EBABD25D802E0DD2A24E5AC0016AD272C501B779E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "98BD89AD7B2362E41DD10BB25218AAA7F1D2BEDEDDB99525767A67373685753C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-17-func_002AB574-3c4da552ad.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
