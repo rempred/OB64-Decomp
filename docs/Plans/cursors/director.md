@@ -13,13 +13,13 @@ Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` is the native destination on hos
 | Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
 | Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
 
-All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). The [integrator](cutscene-preview-integration.md) passed four linked diffs for [T1](../../../build/matching/preview-261117-t1/cursor.md) and started its full verifier. The Director released [Q1](../../../build/matching/preview-261117-q1/cursor.md) next, then [P1](../../../build/matching/preview-261117-p1/cursor.md), each with its own canonical verification. On acceptance dispatch worker 3 to T2 chapter reveal, worker 1 to T3 mission-entry images and worker 2 to P2 panel updates. The preflighted wave roots and reports are in the integration cursor. Keep all three chats and watchers through reassignment.
+All four native message and stop routes are verified. All 46 owners passed guarded preparation on the [selected inputs](../../../build/cutscene-preview-inputs-20261117/manifest.json). Worker 1 started T3 mission-entry images after Q1 acceptance at `7c0cbbbf`. Worker 3 continues T2 chapter reveal after T1 acceptance at `be483783`. The [integrator](cutscene-preview-integration.md) started [P1](../../../build/matching/preview-261117-p1/cursor.md) on the verified Q1 base. After P1 acceptance dispatch retained worker 2 to P2 panel updates. Preserve all three chats and watchers.
 
 After all 46 owners pass, send Joe's [Editor director handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) and record delivery. Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` is verified on host `local`.
 
 ## Accepted baseline
 
-The final fresh verifier accepted CURRENT `25FDAD0F2D4C068AD63FA63A5EDD21FD5E53BB20985B4F5432400FF32D7F500F`. The complete rebuilt Rev 0 ROM matches normalized z64 SHA-256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. The [integration closeout](actor-briefing-integration.md) and [final roster](../../../build/integration/actor-briefing/program-acceptance-evidence.json) bind every member to that proof. P01's 22-entry switch table retains both adjacent assembly intervals. The five discard-only alias callers retain verified code, relocations and ownership.
+[Q1 acceptance](../../../build/integration/cutscene-preview/q1-acceptance-evidence.json) binds the two actor queries to the exact Rev 0 ROM at CURRENT `EFA1E8FA027D650C69CC74769C7607DF218621B2F4D5D613321A0A97742C4242`. The separate 48-byte override table retains original ASM ownership. [T1 acceptance](../../../build/integration/cutscene-preview/t1-acceptance-evidence.json) covers four title-card functions, the constructor's 24-byte table and the teardown's four retained ASM bytes.
 
 ## Released assignments
 

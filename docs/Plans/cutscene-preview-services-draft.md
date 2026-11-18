@@ -1,6 +1,6 @@
 # Cutscene preview services for US Rev 0
 
-**Assigned November 17, 2026.** Joe selected all 46 owners for cutscene playback. Three top-level Sol 6.2 XHigh matching workers stay with the program across waves. A dedicated integrator owns canonical changes and verification. The Director runs the native chat watchers. Joe requested no assistants. Chapter and mission-entry cards share their lifecycle. The Army panel state and actor roster state have different owners.
+**Assigned November 17, 2026.** Joe selected all 46 owners for cutscene playback. Three top-level Sol 6.2 XHigh matching workers stay with the program across waves. A dedicated integrator owns canonical changes and verification. The Director runs the native chat watchers. Joe's no-assistants instruction covers subagents and paired Claude consultations on every wave. Workers investigate mismatches independently using the local compiler, focused probes and source-pair controls. Chapter and mission-entry cards share their lifecycle. The Army panel state and actor roster state have different owners.
 
 ## Assigned roster
 
