@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6C851B863E26DDCAE3CE0DA81CADC5061CC3DA94AEF277E6690AC0ADF9C43375",
+  "observationId": "287710F533B9F6D604E6215E97203A8F6AA583189A26933647D032539F2B0978",
+  "symbol": "func_002B867C",
+  "authored": {
+    "context": "Complete briefing constructor with a direct halfword assignment after the vacant-slot scan.",
+    "effects": [
+      "instruction-scheduling",
+      "bit-preserving-copy"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "F2BB3396F981E8501DF4F1A6CAE4C5A9A64409696D7F68698E5C0BCEC3A54C90",
+      "sourceSha256": "E469D1BA57877E088E002DF5A22F18E9F16740A61DADE61E3D2B7E2C96DEF6E4"
+    },
+    "label": "briefing-animation-seed-copy-schedule",
+    "observedEffect": "Both bodies cover 588 bytes and resolve 13 relocations. The control emits the anchor shift after the two-word 8.0f load, changing +0x94 through +0x9C. In the matching sched2 trace an S4 halfword-from-word self-copy issues at T-6. The queued F20 literal issues at T-7 and the shift at T-8. Assembly emits no word for the self-copy, leaving the retail shift and spill order.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_002B867C.c",
+        "sha256": "3C02B3A3121139D25066470537CB2EB2BCFF36909948F35A5A7E54EB1EEE48DB"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002B867C.s",
+        "sha256": "9EAA96610C837D9ADA88F113C283FCD60601EE6C6FC13E5B0F8D4D82A653B086"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The direct-halfword control retains three differing setup instructions.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture the initial halfword in the low bits of a word before the scan, copy it through the float union member after the offset calculation, then use the low halfword of the copied word."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 4090,
+      "sha256": "F2BB3396F981E8501DF4F1A6CAE4C5A9A64409696D7F68698E5C0BCEC3A54C90"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E469D1BA57877E088E002DF5A22F18E9F16740A61DADE61E3D2B7E2C96DEF6E4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_002B867C-6c851b863e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

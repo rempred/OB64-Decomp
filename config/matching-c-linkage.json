@@ -9752,6 +9752,37 @@
       ]
     },
     {
+      "symbol": "func_002B88C8",
+      "expectedRelocations": [
+        { "offset": "0x0000003C", "type": "R_MIPS_HI16", "symbol": "D_801CE8BC", "section": ".rel.text" },
+        { "offset": "0x00000040", "type": "R_MIPS_LO16", "symbol": "D_801CE8BC", "section": ".rel.text" },
+        { "offset": "0x00000054", "type": "R_MIPS_26", "symbol": "func_0020BFF8", "section": ".rel.text" },
+        { "offset": "0x00000064", "type": "R_MIPS_26", "symbol": "func_0020C0E8", "section": ".rel.text" },
+        { "offset": "0x00000074", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x00000078", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x000000A8", "type": "R_MIPS_26", "symbol": "func_002B867C", "section": ".rel.text" },
+        { "offset": "0x000000B0", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_002B867C",
+      "expectedRelocations": [
+        { "offset": "0x00000050", "type": "R_MIPS_26", "symbol": "func_0020C120", "section": ".rel.text" },
+        { "offset": "0x00000068", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x0000006C", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x000000CC", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x000000D0", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x000000E0", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000E8", "type": "R_MIPS_26", "symbol": "resource_alloc", "section": ".rel.text" },
+        { "offset": "0x000000F8", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x000000FC", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x0000010C", "type": "R_MIPS_26", "symbol": "func_00023780", "section": ".rel.text" },
+        { "offset": "0x000001C4", "type": "R_MIPS_26", "symbol": "func_00045934", "section": ".rel.text" },
+        { "offset": "0x000001F0", "type": "R_MIPS_26", "symbol": "func_00207658", "section": ".rel.text" },
+        { "offset": "0x000001F8", "type": "R_MIPS_26", "symbol": "func_8022E9E8", "section": ".rel.text" }
+      ]
+    },
+    {
       "symbol": "func_002A9364",
       "expectedRelocations": [
         { "offset": "0x0000006C", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },

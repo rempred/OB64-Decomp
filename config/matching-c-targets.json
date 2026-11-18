@@ -6473,6 +6473,14 @@
       "source": "src/lib/func_002AD434.c"
     },
     {
+      "symbol": "func_002B88C8",
+      "source": "src/lib/func_002B88C8.c"
+    },
+    {
+      "symbol": "func_002B867C",
+      "source": "src/lib/func_002B867C.c"
+    },
+    {
       "symbol": "func_002A9364",
       "source": "src/lib/func_002A9364.c"
     },

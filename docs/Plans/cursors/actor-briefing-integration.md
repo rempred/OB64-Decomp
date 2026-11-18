@@ -16,6 +16,8 @@ Complete guarded preparation passed for [A01](../../../build/actor-20261117-a01-
 
 - **A05** `2AD574`, `2AB574` and `2AD434` passed together as `PURE_C`. All 996 bytes and 51 relocations matched, including the `2AD574` and `2AD434` folded entries. The filter retains its byte return and all three existing callers retain their linked code and relocations. Verified CURRENT `6E759DEE83C137245461588A7C0082C4A539E382423A424B0AE04134F034360F`. [Proof](../../../build/integration/actor-briefing/a05-acceptance-evidence.json)
 
-M01 is next, then A04. [P01 preparation](../../../build/integration/actor-briefing/p01-producer-evidence.json) binds all 22 table entries and their separate read-only assembly owner for private dispatch.
+- **M01** `2B88C8` and `2B867C` passed together as `PURE_C`. The 240-byte wrapper and 588-byte constructor retain their eight and thirteen relocations, including internal addends `0xCC` and `0x164`. The C2 dispatcher now declares the wrapper's `s32` return and retains its exact linked bytes. Verified CURRENT `639972C68E60A602C8243D36BFABF8CF58423A326C18CFBD7CCB44F3798ABD7B`. [Proof](../../../build/integration/actor-briefing/m01-acceptance-evidence.json)
+
+A04 is next. [P01 preparation](../../../build/integration/actor-briefing/p01-producer-evidence.json) binds all 22 table entries and their separate read-only assembly owner for private dispatch.
 
 The B02 reference repair in `bb1a4e6e` preserves the historical Direct27/Direct57 pair and authenticates a successor for the current caller declaration. [Live lesson dossier](../../dossiers/func_002AAC60-55b287797b.md)
