@@ -12,3 +12,18 @@ Wentinus event program 22 selects question 171, 174, 177 or 180 according to the
 The [matching worker](codex://threads/01a1f05f-2856-7260-9e6d-02d145e80e0f) owns both functions in `build/matching/story-event-261118`. Start with the driver. Check the interpreter interface against the caller and the uses of its result, following the [P02 width experiment](../dossiers/func_0026d770-103dc31163.md). Inventory the full interpreter body, its five indirect dispatches, referenced tables, destinations and physical owners before tuning. An early linked comparison should distinguish a missing dispatch body or table from an instruction-selection difference. Keep new behavioral conclusions tied to the cases that demonstrate them.
 
 The [production integrator](codex://threads/01a1f05f-2cc1-7700-88c1-dcf0b0551584) prepares selected inputs, reconciles the complete pair and runs the normal combined verifier. The Director returns the accepted source and evidence to the Editor for Wentinus and Sheen playback. The Editor can work on already evidenced decision paths in parallel.
+
+## Event entry and campaign effects
+
+The Editor’s second referral adds the paths that establish an event’s starting state and translate its outgoing requests. The three event-entry routines form a complete wave. The request mapper has its own text owner and contributes table entries to the same physical data row as the interpreter.
+
+| Assignment | Function | US Rev 0 ROM, exclusive end | Bytes | What the editor can check |
+| --- | --- | --- | ---: | --- |
+| Event entry | `func_00047dd8` | `0x47DD8–0x47EE0` | 264 | The world caller selects arrival or investigation. The first two instructions feed the branch after the historical `47DE0` label. |
+| Event entry | `func_00048294` | `0x48294–0x484B4` | 544 | The loader establishes the active event context. Its halfword store at `0x4839C` supplies the row that the row 68 test seeded. |
+| Event entry | `func_00047ee0` | `0x47EE0–0x48024` | 324 | A caller can select a particular program and entry before invoking the interpreter at `0x47FB8`. |
+| Request mapping | `func_00046738` | `0x46738–0x46854` | 284 | The interpreter and scheduler use the returned request code and associated subtype to route campaign effects. |
+
+The [entry worker](codex://threads/01a1f087-8a01-7e01-a576-7676ca725980) owns the [three prepared entry targets](../../build/story-entry-261118-preflight.json) in `build/matching/story-entry-261118`. The [mapper worker](codex://threads/01a1f087-8e2f-7af1-bbd9-7e1c2f561a2f) owns the [prepared mapper](../../build/story-mapper-261118-preflight.json) in `build/matching/story-mapper-261118`. The [arrival cases](../../../docs/Plans/task-logs/scenario-events-view-20261103.md), [row 68 continuation](../../../docs/event-semantics/review.md) and [256 mapper inputs](../../../docs/event-semantics/vm-reference.md) supply behavior checks.
+
+The mapper’s 27 entries occupy `[0x665C8, 0x66634)`. A zero word precedes the interpreter’s first entry at `0x66638`. The integrator reconciles both contributions against the full physical row `r1283`, including any retained bytes and relocation evidence. Each worker can use its selected inputs independently. The event-entry trio can proceed to acceptance when ready.

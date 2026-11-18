@@ -2,6 +2,8 @@
 
 **Active assignment.** The [story event wave](../story-event-continuation.md) pairs the scene request driver and event interpreter for Wentinus and Sheen. Both owners passed [guarded preparation](../../../build/story-event-261118-preflight.json). Sol 6.2 XHigh matching chat `01a1f05f-2856-7260-9e6d-02d145e80e0f` started the driver at 15:41 Eastern. [Integration](story-event-integration.md) retains sole production ownership and resumes when the complete pair is ready. Both native routes delivered their startup messages and stop events. The Director alerts the Editor after acceptance.
 
+The [entry trio and request mapper](../story-event-continuation.md#event-entry-and-campaign-effects) passed preparation on the same inputs. Two additional Sol 6.2 XHigh matching workers own these assignments with verified native routes. The integrator coordinates the interpreter and mapper tables in physical row `r1283`. The entry trio can be accepted independently.
+
 The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
 
 ## Released cutscene chats
