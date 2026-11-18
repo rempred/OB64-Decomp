@@ -1,6 +1,6 @@
 # Actor placement and mission-briefing integration
 
-The integrator is the sole production writer on `main`. Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b` owns dispatch and the verified native stop route. [Program](../actor-placement-briefing-program.md) · [Director cursor](director.md)
+Production completed on `main` at `3ac73120`. The Director accepted the final roster and released integration ownership after all production commands exited. The native stop route was retired. [Program](../actor-placement-briefing-program.md) · [Director cursor](director.md)
 
 ## Selected inputs
 

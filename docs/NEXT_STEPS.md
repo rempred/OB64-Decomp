@@ -2,31 +2,7 @@
 
 ## Assignment status — November 17, 2026
 
-**Awaiting Joe's next program assignment.** The [Director handoff](Plans/cursors/director.md)
-records the accepted November 10 CURRENT fingerprint `081B815B` and the
-closeouts for body/equipment, consumables, attack visual effects, descriptor
-serialization and the standard library. All matching and production ownership
-has been released. The [body/equipment census](Plans/body-equipment-program.md#family-census)
-delimits that completed family and records the broader cutscene program as a draft.
-
-## Candidates for the next matching program
-
-| Candidate (z64 ROM) | Game path | First scoping question |
-| --- | --- | --- |
-| `func_002A9364`, `0x002A9364..0x002A985C` (end exclusive) | Actor initialization and placement | Which caller supplies the actor's class and body on the editor path we want to improve? |
-| `func_002B867C`, `0x002B867C..0x002B88C8` (end exclusive) | Mission-briefing construction | Which briefing caller and constructor inputs determine the actor the editor needs to represent? |
-
-Both complete owners are outside the ten patch sites already recovered. Neither
-has an active C producer in the reviewed model. Their selection would start
-by identifying the intended editor behavior and mapping the related routines.
-A specific patch removal still needs evidence. See the [priority evidence](research/matching-retrieval-replay-20261117.md#supported-priorities)
-and the tracked [priority annotations](../config/matching-priorities.json).
-
-On a provisioned checkout, `node tools/match.js rank --priorities-only --lane leverage`
-shows the annotations and static callers. The full ranking also consults candidate
-and family history. Read the [matching study](research/how-matching-works-20261117.md#recommended-operating-model)
-when preparing a proposal. If Joe selects a family, record its scope and ownership
-here and use the [workflow](WORKFLOW.md#the-short-path) for dispatch.
+**Awaiting Joe's next program assignment.** The [actor placement, body selection and mission-briefing program](Plans/actor-placement-briefing-program.md) closed on November 17 at `3ac73120`. The [Director handoff](Plans/cursors/director.md) records the exact Rev 0 baseline and release of all roles. The broader cutscene plan remains a draft.
 
 ## Unresolved source and research scope
 

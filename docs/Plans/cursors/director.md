@@ -1,21 +1,17 @@
 # Director handoff — November 17, 2026
 
-**No matching wave or production writer is active.** The last assigned program closed on November 9. Its workers, reviewers, integration role and notification routes are released. The next decision for Joe is which editor problem to assign.
+**Awaiting Joe's next program assignment.** The [actor placement, body selection and mission-briefing program](../actor-placement-briefing-program.md) closed on main at `3ac73120`. The [active queue](../../NEXT_STEPS.md) holds the remaining proposals.
 
 ## Accepted baseline
 
-The [November 10 structural audit](../../audit/2026-11-10-splat-and-repository-cleanup.md) records the accepted US Rev 0 build (CURRENT), fingerprint `081B815B15E33390CB26067C16891AAA20C32FB00415F9D963841A5E37018A8C`. Its normalized z64 ROM SHA-256 is `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. The audited Splat configuration is committed at `29e0915c`. The November 17 matching tools and Git checkout corrections are recorded at `b6d715cb` and `02406d96`.
+The final fresh verifier accepted CURRENT `25FDAD0F2D4C068AD63FA63A5EDD21FD5E53BB20985B4F5432400FF32D7F500F`. The complete rebuilt Rev 0 ROM matches normalized z64 SHA-256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. The [integration closeout](actor-briefing-integration.md) and [final roster](../../../build/integration/actor-briefing/program-acceptance-evidence.json) bind every member to that proof. P01's 22-entry switch table retains both adjacent assembly intervals. The five discard-only alias callers retain verified code, relocations and ownership.
 
-On a provisioned checkout, run `.\tools\status.ps1 --snapshot` to authenticate the retained reports and ROM. Use `.\tools\status.ps1` when a decision depends on whether today's sources still match that proof. A fresh Git checkout contains the audit record. Reproducing verification locally requires the private ROM, pinned tools and [setup instructions](../../../README.md#start-here).
+## Released assignments
+
+The A01/A03/A04, A02/A05/P01 and M01 matching chats completed their assignments. The production integrator finished all commands and released ownership. All four route processes exited through their own stop flags; their delivery records remain in the original `actor-briefing-261117-*` monitor directories. Preserve the private candidates, selected inputs and generated proof at their existing paths. The B02 research-reference repair is recorded at `bb1a4e6e`.
 
 ## Closed work
 
 [Body construction and equipment visuals](../body-equipment-program.md) closed with B02 scene placement (`8eaabdfc`) and B01 body construction (`ea3dfaae`). Both complete owners passed pure-C and full-ROM verification. The [integration closeout](body-equipment-integration.md) preserves the accepted controls, original assembly references and earlier wave fingerprint. The [consumable effects program](consumable-integration.md) closed on November 3 (`0b972a78`).
 
 Attack visual effects closed on October 31 (closure commit `38efb10a`). The [descriptor program](../descriptor-serialization-program.md) closed on October 26 with an exact hybrid encoder. Its pure-C objective and sixteen-byte tail remain open research questions. The [standard-library program](../standard-library-program-draft/PROGRAM.md) finished October 17.
-
-## Next decision
-
-Read the [matching study](../../research/how-matching-works-20261117.md) before scoping or staffing a wave. The study and worked examples are tracked. Replaying the private runs requires their saved reports. The [queue](../../NEXT_STEPS.md) identifies two candidates for a proposal: `func_002A9364` for actor initialization and placement, and `func_002B867C` for mission-briefing construction. Choose the relevant game path, identify the editor behavior the source could unlock, and bound the related owners and callers. The broader cutscene program remains a draft.
-
-Once Joe assigns a program, use the [workflow](../../WORKFLOW.md#the-short-path) to give workers complete waves and the integrator sole production ownership. Establish fresh native message and stop routes to the incoming Director for the assigned roles. Retired session IDs and old monitors are historical records.
