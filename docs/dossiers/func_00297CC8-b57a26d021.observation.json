@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "candidateId": "AA3710425A7B7CF720441959EB8F9CC9C47483E54F611EC2FED056CB5B28067D",
-  "observationId": "2D1851D70DB02C15DDE89B5B36A7C064B9E7D19DD0A87FD9050B09A3BD5E57DE",
+  "observationId": "B57A26D021AB86225870F4D9DA4F49ACDB75E85546D9AFA07FF75CD7551BCCBC",
   "symbol": "func_00297CC8",
   "authored": {
-    "context": "Presets 8 and 10 write different outgoing geometry words at stack offsets 0x10, 0x14 and 0x18. They share four more coordinate words and one allocator call. The original comparison uses the constructor at commit 6381778e. The current constructor uses the shared PanelParameters declaration and preserves the compared case bodies.",
+    "context": "Presets 8 and 10 write different outgoing geometry words at stack offsets 0x10, 0x14 and 0x18. They share four more coordinate words and one allocator call. The original comparison uses the constructor at commit 6381778e. The current constructor uses the shared PanelParameters declaration and preserves the compared case bodies. The P2 integration shares PanelPositionState with the constructor. The compared case bodies are preserved.",
     "effects": [
       "stack-argument-staging",
       "call-tail-merging",
@@ -29,7 +29,7 @@
       },
       {
         "path": "src/lib/func_00297CC8.c",
-        "sha256": "C7D64A6872CFDC4CE8561C38062F61971015655EB7F0D2EB9A257CF6951259FE"
+        "sha256": "C334B9A81D8A3CE1069C98ABA65E480BFE7AC543ED7C2E6203EA6BD5AC26057B"
       }
     ],
     "relatedCandidateIds": [],

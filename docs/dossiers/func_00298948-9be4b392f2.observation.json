@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9BE4B392F210AD3FD81069B8379EAA5A8D67A4F1816AE125FF3867B695EF53A9",
+  "observationId": "EA83311DA2C027E239D857A3DE01DE4B8935E299C1539311D10E97977590E212",
+  "symbol": "func_00298948",
+  "authored": {
+    "context": "The eligible preset 4 handshake increments a signed selection while separately retaining the prior byte for the sound comparison. The increment sequence also appears in retail at ROM 0x55990 and 0x2A6DE4.",
+    "effects": [
+      "register-allocation",
+      "stack-frame"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F905A62596E138035E0C730D8A6CB223522A9A5BD01AC3051BAFD5856B6A9D9D",
+      "sourceSha256": "2602F7CD1A76F7690E1336ED2C8D66247A7C13E65851FE7C4EF1F710691F80B1"
+    },
+    "label": "army-handshake-signed-extension-frame",
+    "observedEffect": "Both forms emit the full 552-byte body and 34 native text relocations, with all 128 non-frame words equal. The cast emits a 40-byte frame; the explicit extension emits the original 48-byte frame. The final KMC probe records USE-only stack homes at sp+0x14 and sp+0x1C. The cast probe retains only sp+0x14. Neither home emits a load or store.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00298948.s",
+        "sha256": "B2A03C676873D34F8989256095CB4E5787BB353AEF12C609467617F6A2BF47B9"
+      },
+      {
+        "path": "src/lib/func_00298948.c",
+        "sha256": "3E3CCE1506B3AF05301C543237C50DF8BBEDAAF33EBC5946439BBA7D535B1A38"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00055454.s",
+        "sha256": "131784C38E41F21ED0B77C538859433DA0131136CE54869242789EF3BE743D7C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002A6BE4.s",
+        "sha256": "19F12680E6A5F087E3F99A4DC0A630ABBFF5E5A7B22165A49D55E765BA6CE154"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The direct cast changes ten prologue and epilogue words.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the isolated unsigned-left-shift and signed-right-shift extension of the saved byte with a direct signed cast."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4342,
+      "sha256": "F905A62596E138035E0C730D8A6CB223522A9A5BD01AC3051BAFD5856B6A9D9D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2602F7CD1A76F7690E1336ED2C8D66247A7C13E65851FE7C4EF1F710691F80B1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00298948-9be4b392f2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

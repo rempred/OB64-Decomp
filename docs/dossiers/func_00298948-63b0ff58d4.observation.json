@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "63B0FF58D482BC0204AA200E4DD7AB9DFDF0A43FD007A1471464B39C0A19C51A",
+  "observationId": "56E0F702E89473BF926794FA3FC25403538509A0F99ED58911CE6719A20CE8B0",
+  "symbol": "func_00298948",
+  "authored": {
+    "context": "A separate saved byte view affects the live range and frame for the preset 4 selection increment. The fixture uses the same complete 552-byte producer. The archived control uses Git checkout line endings. The private control with the original line endings remains in the wave scratch root.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6BBA146A083434C12BDC7FC7B8069AEE5DFBE2B0D0731A1AE89BD7701CF038A6",
+      "sourceSha256": "5CA5651C97BCFF4215A8D15C6C32E9084DCBE6B6F17B80AAE1BF08D7DEF9B1D7"
+    },
+    "label": "army-handshake-unsigned-saved-byte",
+    "observedEffect": "The unsigned view retains the 48-byte stack frame and the original operand order of the increment addition. It emits ANDI v1,v0,0xFF instead of MOVE v1,v0 at owner offset +0x1B0.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00298948.s",
+        "sha256": "B2A03C676873D34F8989256095CB4E5787BB353AEF12C609467617F6A2BF47B9"
+      },
+      {
+        "path": "src/lib/func_00298948.c",
+        "sha256": "3E3CCE1506B3AF05301C543237C50DF8BBEDAAF33EBC5946439BBA7D535B1A38"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "One instruction at ROM 0x298AF8 still differs.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the previously selected byte as unsigned in the increment arm. Compare with the canonical explicit sign extension of the saved byte."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4299,
+      "sha256": "6BBA146A083434C12BDC7FC7B8069AEE5DFBE2B0D0731A1AE89BD7701CF038A6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5CA5651C97BCFF4215A8D15C6C32E9084DCBE6B6F17B80AAE1BF08D7DEF9B1D7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00298948-63b0ff58d4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

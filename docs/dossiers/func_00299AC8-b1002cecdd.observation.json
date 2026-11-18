@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B1002CECDDE6419B14327BF11834296DF3A5871CF617D173FD50D50BE4378FBE",
+  "observationId": "3F4B8B3DC83DC8E6851E25718606C4EEF38CAB35A7DDCC2AFB3A8353F11F01A7",
+  "symbol": "func_00299AC8",
+  "authored": {
+    "context": "The alternate draw path walks up to fourteen slots before updating the graphics cursors. Presets 6, 11 and 16 can also enter the bounded linked-panel walk. The archived control uses Git checkout line endings. The private control with the original line endings remains in the wave scratch root.",
+    "effects": [
+      "branch-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "816E8FCC3B06D250EE24AD1FBEC1EF7D416F8C6CC7E1167A5228C935EB5D39FC",
+      "sourceSha256": "90ECA8E46EC6A54D58923DF89A488D99B963687A918216E51ADC5451CDD8F524"
+    },
+    "label": "army-alternate-counted-slot-loop",
+    "observedEffect": "Both forms emit 480 bytes. The for-loop gives the original two branch forms and the original delay slot at offsets +0x38, +0x74 and +0x78.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00299AC8.s",
+        "sha256": "530996C6B42337B581664800F4A2A23BEFBA1D1D6380C139A45D12CCCAB15AEC"
+      },
+      {
+        "path": "src/lib/func_00299AC8.c",
+        "sha256": "A2436A96168349AD3AD7CAD0826CA3588E1768AE4567C5FDB2138C4A370D66BE"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0028af64.s",
+        "sha256": "D7E018690C9FD2E78359456039B543C66BA45C96B2AC932F2DC26F06D70EB23B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The do-while form uses two branch-likely encodings and puts the low-byte mask in the second delay slot.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use a counted for-loop over the slots instead of the do-while loop in the control."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3478,
+      "sha256": "816E8FCC3B06D250EE24AD1FBEC1EF7D416F8C6CC7E1167A5228C935EB5D39FC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "90ECA8E46EC6A54D58923DF89A488D99B963687A918216E51ADC5451CDD8F524"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00299AC8-b1002cecdd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

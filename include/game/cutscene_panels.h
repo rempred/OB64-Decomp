@@ -16,14 +16,16 @@ typedef struct PanelParameters {
     u8 pad1E[2];
     u16 field20;
     u16 field22;
-    u8 pad24[0x41];
+    u8 field24[0x40];
+    u8 pad64;
     u8 field65;
     u8 field66;
     u8 field67;
 } PanelParameters;
 
 typedef struct PanelContent {
-    u8 pad000[0x5F1];
+    u8 pad000[0x5F0];
+    u8 field5F0;
     u8 field5F1;
     u8 pad5F2[2];
     u8 field5F4;
@@ -40,7 +42,10 @@ typedef struct Panel {
     struct Panel *link04;
     u8 pad08[0xC];
     u8 flags;
-    u8 pad15[0xD];
+    u8 pad15;
+    u16 field16;
+    s16 field18;
+    u8 pad1A[8];
     u8 field22;
     u8 field23;
     s8 field24;
@@ -68,9 +73,18 @@ typedef struct PanelScene {
     PanelSlot *slots[14];
 } PanelScene;
 
+typedef struct PanelPositionState {
+    u8 pad000[0x23C];
+    u8 field23C;
+    u8 field23D;
+    u8 field23E;
+    u8 position;
+} PanelPositionState;
+
 extern PanelParameters *D_8023DE34;
 extern PanelScene *D_8022A974;
 extern Panel *D_8018FDC0;
+extern PanelPositionState *D_8023DE30;
 
 typedef void (*PanelCallback)(Panel *, s32);
 
