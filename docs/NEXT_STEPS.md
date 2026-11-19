@@ -2,7 +2,7 @@
 
 ## Assignment status — November 18, 2026
 
-**Active assignment.** Match the [text renderer and glyph helper for Liedel’s recruitment](Plans/liedel-dialogue-renderer.md). The [Magnus and Paul audio pair](Plans/paul-audio-envelope.md) closed at `b4beb6d4` and went to the Editor for scene playback. The [story event program](Plans/story-event-continuation.md) closed at `9be88806` and the [cutscene preview program](Plans/cutscene-preview-services-draft.md) at `2447f1d5`. The [Director handoff](Plans/cursors/director.md) records acceptance and delivery.
+**Active assignments.** Match the [text renderer and glyph helper for Liedel’s recruitment](Plans/liedel-dialogue-renderer.md) and the [dialogue close and resume handlers for graduation](Plans/graduation-dialogue-close.md). The [Magnus and Paul audio pair](Plans/paul-audio-envelope.md) closed at `b4beb6d4` and went to the Editor for scene playback. The [story event program](Plans/story-event-continuation.md) closed at `9be88806` and the [cutscene preview program](Plans/cutscene-preview-services-draft.md) at `2447f1d5`. The [Director handoff](Plans/cursors/director.md) records acceptance and delivery.
 
 ## Unresolved source and research scope
 
