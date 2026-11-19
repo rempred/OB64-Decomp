@@ -2,7 +2,7 @@
 
 ## Assignment status — November 18, 2026
 
-**Active assignment.** Match the resident driver and interpreter that connect a story decision to its next scene, the three routines that enter an event with its saved or caller-selected context, and the mapper that translates event requests. The [story event program](Plans/story-event-continuation.md) follows the Editor director’s referrals for story playback. The previous [cutscene preview program](Plans/cutscene-preview-services-draft.md) closed on main at `2447f1d5` with an exact US Rev 0 rebuild. The [Director handoff](Plans/cursors/director.md) records acceptance and delivery.
+**Active assignments.** The [story event program](Plans/story-event-continuation.md) is in final integration. The Editor director’s next referral covers the [text renderer and glyph helper for Liedel’s recruitment](Plans/liedel-dialogue-renderer.md). The previous [cutscene preview program](Plans/cutscene-preview-services-draft.md) closed on main at `2447f1d5` with an exact US Rev 0 rebuild. The [Director handoff](Plans/cursors/director.md) records acceptance and delivery.
 
 ## Unresolved source and research scope
 

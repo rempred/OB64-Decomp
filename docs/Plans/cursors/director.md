@@ -1,5 +1,7 @@
 # Director handoff — November 18, 2026
 
+The [Liedel dialogue worker](../liedel-dialogue-renderer.md) owns the renderer and glyph helper. Its native message and stop routes passed. The integrator retains production ownership across both programs.
+
 **Active assignment.** The [production integrator](story-event-integration.md) has started the [story event program](../story-event-continuation.md)’s final pair. The [driver and interpreter](../../../build/matching/story-event-261118/cursor.md) matched in fixed-address links, including all 325 interpreter table entries. Canonical symbol resolution, the full shared row `r1283` with both C contributions, and full-ROM verification remain with integration.
 
 The [request mapper](../../../build/integration/story-event/mapper-acceptance-evidence.json) passed at `17cb2e9d`. The [entry trio](../../../build/integration/story-event/entry-acceptance-evidence.json) passed at `ed57a210`, including its 102 relocations and ten isolated retail comparisons with controlled external calls. The Director released both workers and sent their canonical sources and replay limits to the Editor.
