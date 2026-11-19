@@ -1,10 +1,8 @@
 # Director handoff — November 18, 2026
 
-The [Liedel dialogue worker](../liedel-dialogue-renderer.md) owns the renderer and glyph helper. Its native message and stop routes passed. The integrator retains production ownership across both programs.
+**Active assignments.** The [Liedel dialogue worker](../liedel-dialogue-renderer.md) owns the renderer and glyph helper. The [Magnus and Paul worker](../paul-audio-envelope.md) owns the envelope initializer and update routine. Both pairs passed complete guarded preparation. Retain the [existing production integrator](story-event-integration.md) and its verified route for the first complete wave.
 
-**Active assignment.** The [production integrator](story-event-integration.md) has started the [story event program](../story-event-continuation.md)’s final pair. The [driver and interpreter](../../../build/matching/story-event-261118/cursor.md) matched in fixed-address links, including all 325 interpreter table entries. Canonical symbol resolution, the full shared row `r1283` with both C contributions, and full-ROM verification remain with integration.
-
-The [request mapper](../../../build/integration/story-event/mapper-acceptance-evidence.json) passed at `17cb2e9d`. The [entry trio](../../../build/integration/story-event/entry-acceptance-evidence.json) passed at `ed57a210`, including its 102 relocations and ten isolated retail comparisons with controlled external calls. The Director released both workers and sent their canonical sources and replay limits to the Editor.
+The [story event program](../story-event-continuation.md) closed at `9be88806`. One [fresh final report](../../../build/integration/story-event/story-event-program-acceptance-evidence.json) covers all six exact C owners and the byte-identical Rev 0 ROM. The Editor director received the driver and interpreter, the evidence and its controlled-call scope. All three story matching workers are released. Preserve candidates, inputs and watcher delivery records.
 
 The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
 

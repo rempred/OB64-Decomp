@@ -1,5 +1,7 @@
 # Story choices and the next scene
 
+The complete six-function program passed on main at `9be88806`. The [final acceptance record](../../build/integration/story-event/story-event-program-acceptance-evidence.json) covers all six sole C owners in one exact US Rev 0 rebuild, both C contributions to the shared table row and six driver/interpreter comparisons with controlled external calls. The Director delivered the final pair to the Editor on November 18.
+
 On November 18, 2026, Joe asked the [Editor director](codex://threads/01a1eae5-90a2-7c31-956d-6ed447687e40) to send functions that would materially help story editing for immediate matching. The first referral covers one caller and its interpreter. The previous [46-function cutscene program](cutscene-preview-services-draft.md) is accepted.
 
 | US Rev 0 function | ROM range, exclusive end | Bytes | Consumer |
