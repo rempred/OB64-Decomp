@@ -11,3 +11,7 @@ The [mapper report](../../../build/integration/story-event/mapper-acceptance-evi
 The [original ASM owner](../../../asm/original/rev0/lib/table_000665c8.s) covers ROM `[0x665C8, 0x66B58)` at RAM `0x801906C8` in the `cold-boot-loader-00040e80` DMA slab. The linked row matches all 1,424 retail bytes. The mapper supplies 112 bytes and 27 pointers. The interpreter supplies 1,308 bytes and 325 pointers across five native tables. The original ASM supplies the terminal zero word at `0x66B54`. The interpreter calls the accepted interior entry `func_0004890C` at RAM `0x80172A0C` through a fixed symbol.
 
 The [selected v1 manifest](../../../build/story-event-inputs-20261118/manifest.json) remains available with its guarded [mapper](../../../build/story-mapper-261118-preflight.json), [entry](../../../build/story-entry-261118-preflight.json) and [pair](../../../build/story-event-261118-preflight.json) reports. The driver pointer-lifetime and interpreter register-role controls are preserved in the research archive alongside the earlier mapper and entry observations.
+
+## Liedel text renderer and glyph helper
+
+The [guarded preflight](../../../build/liedel-text-261118-preflight.json) prepared both owners in [the Liedel private root](../../../build/matching/liedel-text-261118) using the immutable manifest above. The wave covers func_0004fe04 (row 1176, 2,048 bytes) and func_0004f86c (row 1175, 1,432 bytes). The Director has the preflight for source-worker dispatch. Production integration starts after the complete candidate pair is delivered.
