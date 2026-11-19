@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "72C3D1D69298ABA9A5BA30D6267E5F4BDECA6377BDE304405223B199B6C277BB",
+  "observationId": "55FE67ABD169F45C7682E482D93F19EB1E9F1167BD84FCC14A284B086570B72F",
+  "symbol": "func_0004fe04",
+  "authored": {
+    "context": "The renderer uses ordered display-list cursor updates, and its final clipping guard can fill the branch delay slot with a right-extent copy.",
+    "effects": [
+      "instruction-scheduling",
+      "delay-slot",
+      "volatile-load"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "0B146BB518FA61910435973A49262F0EA6E7DC068291661922F6AB9FB13BC1A1",
+      "sourceSha256": "269CC85BBC48E051506F35965CCAE7748F982E21066E9F512ECF9FFA61D72759"
+    },
+    "label": "clipped-extent-cursor-load",
+    "observedEffect": "The all-volatile control emits beqzl at ROM 0x5035C and puts the extent copy at 0x5036C. The ordinary read enables the retail beq and move in its delay slot at 0x50360. The linked extent changes from 2052 to 2048 bytes.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_0004fe04.c",
+        "sha256": "F159E8E9CA2E45C353B45A98C79C1EF36ECD94364D9C285A319F62EE61314B2F"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0004fe04.s",
+        "sha256": "1C18966BEA201C075CD2393B6EE87B17D17F93F89C7B8FA8EC2A039498D71D72"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The control has a different guard, delay slot and full function extent. The canonical source preserves the otherwise identical clipped flow.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use an ordinary read for the one cursor capture after the clipping guards. Keep cursor updates and the other groups volatile."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 10261,
+      "sha256": "0B146BB518FA61910435973A49262F0EA6E7DC068291661922F6AB9FB13BC1A1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "269CC85BBC48E051506F35965CCAE7748F982E21066E9F512ECF9FFA61D72759"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-19-func_0004fe04-72c3d1d692.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
