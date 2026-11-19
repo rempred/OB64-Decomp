@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A3BEA83D68DE0AEF4364B5C3B7B642C06B8B718ED88A6D8A0CE1F922FD864AAA",
+  "observationId": "C00F5852134759CC817E12AE32E74810F3D573630E41CC7EDC9290C226937848",
+  "symbol": "func_00048024",
+  "authored": {
+    "context": "The driver clears its work area before testing the pending request byte, clearing it, and advancing the halfword cursor.",
+    "effects": [
+      "call-live-range",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7A2B46E41BD988B88FC604BBCA1FBC01A797A0613966DB439FB95BCCAB32E0B2",
+      "sourceSha256": "54344DCF46A15909E939A89E72C57CCFBA2CA4049860DA440A263FDBEFCB3307"
+    },
+    "label": "driver-guard-lifetime",
+    "observedEffect": "Initializing the pointer before the clear call carries its address in s0. Initializing it afterward emits the retail v1 use and restores the complete 280-byte body.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_00048024.c",
+        "sha256": "9A4B6EF460BABCB4D8B8D117E8D0DF2803844189F29150439ECE47CBB25F0FA5"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00048024.s",
+        "sha256": "94B87AB62A1B0B534FCE70FE281268984FC6207AF211841A7F1DB949EAB56463"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The pre-call initialization has a different register allocation. The canonical source is the accepted comparison.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move creation of the volatile request pointer below the clear call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1483,
+      "sha256": "7A2B46E41BD988B88FC604BBCA1FBC01A797A0613966DB439FB95BCCAB32E0B2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "54344DCF46A15909E939A89E72C57CCFBA2CA4049860DA440A263FDBEFCB3307"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00048024-a3bea83d68.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

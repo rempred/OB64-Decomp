@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C72D3FB062EE490EB184C3F8149BD1C0C6C60D48CD8390D27D51B19D4BD6FE47",
+  "observationId": "3AC0F84F88874D248C1566ED324D7EE6A0186A931AA81FECDD295FC3F97D8FB2",
+  "symbol": "func_00046854",
+  "authored": {
+    "context": "An exact table and full-length interpreter can still exchange the roles of s2 and s3. The selected 202 control links all 1,312 native read-only bytes and occupies 4,672 text bytes.",
+    "effects": [
+      "register-allocation",
+      "live-range",
+      "tail-merging"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A3086F20C4AECB03E054F0B8D6ABB88868911909BEB8FD037F7989F6CE74BFF6",
+      "sourceSha256": "6E08E8A57EF2054541B26587D158CE1954B441017E93B9F1E4CC6E6269F6A409"
+    },
+    "label": "interpreter-cursor-register-roles",
+    "observedEffect": "The 202 control differs in 21 text words that exchange the saved registers. In the accepted compiler probe, the cursor pseudo has 36 references across 1,904 instructions and the depth pseudo has 21 across 951, and both cross 24 calls. They allocate to retail s2 and s3 respectively. The five cursor updates merge after allocation.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_00046854.c",
+        "sha256": "E32B3888D1C38E772A05D0207230902D3B96A8445F69517E746958F21D9CF910"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00046854.s",
+        "sha256": "98D7DBE020D5C99163B5EFCB1133A49CAE97942DA1781C4C7065F9A7F69C7E9E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The role-swapped control mismatches retail text despite identical table bytes. The accepted source supplies the exact comparator.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compared with the control, the accepted source makes the cursor advances explicit in handlers 0x02, 0x17, 0x1E, 0x1F and 0x20. The compiler merges their tails after register allocation."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 32453,
+      "sha256": "A3086F20C4AECB03E054F0B8D6ABB88868911909BEB8FD037F7989F6CE74BFF6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6E08E8A57EF2054541B26587D158CE1954B441017E93B9F1E4CC6E6269F6A409"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-18-func_00046854-c72d3fb062.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
