@@ -9,6 +9,14 @@
   },
   "targets": [
     {
+      "symbol": "func_00283224",
+      "source": "src/lib/func_00283224.c"
+    },
+    {
+      "symbol": "func_00283350",
+      "source": "src/lib/func_00283350.c"
+    },
+    {
       "symbol": "func_00047dd8",
       "source": "src/lib/func_00047dd8.c"
     },

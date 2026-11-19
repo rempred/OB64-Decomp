@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F551014AAEBE9157A555691C59258A92823B62E685A6EDC4DAEF7ED7DFB2E033",
+  "observationId": "46F146DDD0E12E611A6178FBF70A7F60CD54C3D2953B3B4A3E639DEC2F4205A2",
+  "symbol": "func_00283350",
+  "authored": {
+    "context": "The first loop keeps its request index in s0. The later clamp sums two signed halfwords in a word before comparing against 0 and 32767.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "23CD686B404BCB046CA209A4D4B5A0E41790E60A87D5B779035BC50917543E98",
+      "sourceSha256": "1A1F1641F68EF8515033D219C7ADD6CB552E45994C4A5C24D46251110347A1FD"
+    },
+    "label": "separate-gain-local",
+    "observedEffect": "The fixed-address link still has 372 bytes with the same branches and relocations. Only the four instructions that define or use the clamp sum change from s0 to a0.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_00283350.c",
+        "sha256": "CF2530805F20492F80E6882F354DDD93E2F4C7A761119BB5D7E903C484B3D9C0"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00283350.s",
+        "sha256": "465E141E69B29C5F8B4CEFC802AF331986DABB29302CBD5B388000DDBEFE8927"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The four register fields differ. Reusing the loop index for the sum restores exact retail bytes.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Give the clamp its own s32 gain local in place of reusing the earlier loop index."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 3424,
+      "sha256": "23CD686B404BCB046CA209A4D4B5A0E41790E60A87D5B779035BC50917543E98"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1A1F1641F68EF8515033D219C7ADD6CB552E45994C4A5C24D46251110347A1FD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-19-func_00283350-f551014aae.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

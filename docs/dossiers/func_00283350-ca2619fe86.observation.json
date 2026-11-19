@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CA2619FE863DEEE1973EDE97913F4A3E33E0D76DDA662E2FDCDCBFE8DA3FF274",
+  "observationId": "29619CB977B38ED9F8638A6E6022574C3FBDAD3310BAF4270055CE66B81C8748",
+  "symbol": "func_00283350",
+  "authored": {
+    "context": "The exact update stores its countdown in a signed halfword at offset 4 and also uses a signed halfword local for the value checked before decrement.",
+    "effects": [
+      "instruction-scheduling",
+      "stack-frame"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 992,
+          "path": "include/game/effect_presentation_p04.h",
+          "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+        }
+      ],
+      "expandedSha256": "3FF7682D671C67BCC61D32232651A23145ACCB4E62254B0AB61DEA67112BC85C",
+      "sourceSha256": "017A7E3354BF85D0829B42C4E42DA54B643175D4FACF90CDF7746642B6E812D7"
+    },
+    "label": "widened-countdown-local",
+    "observedEffect": "The counter remains a signed halfword load and halfword store. The decrement moves into the branch delay slot and the frame shrinks from 40 to 32 bytes. The linked function shrinks from 372 to 368 bytes.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_00283350.c",
+        "sha256": "CF2530805F20492F80E6882F354DDD93E2F4C7A761119BB5D7E903C484B3D9C0"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00283350.s",
+        "sha256": "465E141E69B29C5F8B4CEFC802AF331986DABB29302CBD5B388000DDBEFE8927"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The frame, decrement schedule and total extent differ. Restore the s16 local to recover the original schedule and exact length.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Widen only the local from s16 to s32 while leaving all struct fields and calls as in the exact source."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 992,
+        "path": "include/game/effect_presentation_p04.h",
+        "sha256": "38A7AB65C6D7FC0DAE8C13BEF97A8E4F640CC1C0A0160CDE271C96096B935377"
+      }
+    ],
+    "expanded": {
+      "bytes": 3479,
+      "sha256": "3FF7682D671C67BCC61D32232651A23145ACCB4E62254B0AB61DEA67112BC85C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "017A7E3354BF85D0829B42C4E42DA54B643175D4FACF90CDF7746642B6E812D7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-19-func_00283350-ca2619fe86.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

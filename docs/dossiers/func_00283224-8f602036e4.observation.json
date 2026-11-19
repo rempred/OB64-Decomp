@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8F602036E45A7521048A79E719CA51A12594DC35CDFF1EB7F87E9FDFBAC44443",
+  "observationId": "B817002932B5D2E153F24C62C8D1FAB1A25F8134BCD4075D2E6C7F21CDEAC5A6",
+  "symbol": "func_00283224",
+  "authored": {
+    "context": "The initialized context table occupies 32 bytes. Its final word is the mutable envelope pointer, after the seven context pointers.",
+    "effects": [
+      "symbol-address-folding",
+      "call-live-range",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "979CEA6DE642F2754BC7C31F57B81A7B693B968F8B8C2F4AD44C7FE8B79CAAD0",
+      "sourceSha256": "E259A0126C0C74D4B6AA83D494F632335E7A3FA87F5ADF73C73B871439FE6805"
+    },
+    "label": "envelope-pointer-cell-address",
+    "observedEffect": "The aggregate form retains the address of the envelope cell across calls and emits 268 bytes and 19 relocations. The direct cell declaration emits the retail global loads in 244 bytes with 17 relocations.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_00283224.c",
+        "sha256": "CFB272364AC6BE016D923E91D6BAFB954198E9EEC9A73F698648FC62CB76480E"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00283224.s",
+        "sha256": "F1042E3E9A9D70F7E89C470523F2CE62F27EB485B6EF6B44BDF7A4D8BCD175A2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The aggregate control changes the envelope-cell address lifetime and the complete emitted body. The final C is the direct-cell comparator.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Address the pointer as an interior field on the table aggregate instead of using the direct fixed-address cell declaration."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 1472,
+      "sha256": "979CEA6DE642F2754BC7C31F57B81A7B693B968F8B8C2F4AD44C7FE8B79CAAD0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E259A0126C0C74D4B6AA83D494F632335E7A3FA87F5ADF73C73B871439FE6805"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-19-func_00283224-8f602036e4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
