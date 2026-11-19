@@ -15,3 +15,7 @@ The [selected v1 manifest](../../../build/story-event-inputs-20261118/manifest.j
 ## Liedel text renderer and glyph helper
 
 The [guarded preflight](../../../build/liedel-text-261118-preflight.json) prepared both owners in [the Liedel private root](../../../build/matching/liedel-text-261118) using the immutable manifest above. The wave covers func_0004fe04 (row 1176, 2,048 bytes) and func_0004f86c (row 1175, 1,432 bytes). The Director has the preflight for source-worker dispatch. Production integration starts after the complete candidate pair is delivered.
+
+## Magnus and Paul audio
+
+The [guarded preflight](../../../build/paul-audio-261118-preflight.json) prepared func_00283224 (row 5082, 244 bytes) and func_00283350 (row 5084, 372 bytes) in [their private root](../../../build/matching/paul-audio-261118). Row 5084 includes both original instructions preceding the 0x283358 internal label. The Director has this independent wave for dispatch. Production will take the first complete wave the Director releases.
