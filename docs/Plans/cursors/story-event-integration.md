@@ -19,3 +19,7 @@ The [guarded preflight](../../../build/liedel-text-261118-preflight.json) prepar
 ## Magnus and Paul audio
 
 The [audio acceptance report](../../../build/integration/paul-audio/paul-audio-acceptance-evidence.json) binds CURRENT `718A3FB4DBCC9727AFC56CFC3E1B8853AC53848521253289B69222B27CC9C945` to the exact `PURE_C` initializer and updater. The dispatcher uses the shared header and retains exact bytes. Row 5084 includes the two instructions before `0x283358`, and the original context table still supplies all 32 bytes, including the envelope cell. The report records eight isolated checks with seeded data and controlled audio calls. The Editor owns the actual index-44 state and confrontation playback. The [guarded preflight](../../../build/paul-audio-261118-preflight.json) and [private handoff](../../../build/matching/paul-audio-261118/cursor.md) remain available. Production retains its route for Liedel.
+
+## Graduation dialogue shutdown
+
+The [guarded preflight](../../../build/grad-close-261118-preflight.json) prepared func_002A0374 (row 5354, 28 bytes) and func_002A0548 (row 5357, 148 bytes). [Placement evidence](../../../build/integration/grad-close/placement-evidence.json) binds both original calls to descriptor 4, including the provider with a coincident RAM address. The Director has the report. Production retains the route for the first complete wave released.
