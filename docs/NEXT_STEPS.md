@@ -2,7 +2,7 @@
 
 ## Assignment status — November 18, 2026
 
-**Active assignments.** Match the [text renderer and glyph helper for Liedel’s recruitment](Plans/liedel-dialogue-renderer.md) and the [audio envelope in Magnus’s confrontation with Paul](Plans/paul-audio-envelope.md). The [story event program](Plans/story-event-continuation.md) closed at `9be88806`, and the Editor director received its final driver and interpreter. The previous [cutscene preview program](Plans/cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The [Director handoff](Plans/cursors/director.md) records acceptance and delivery.
+**Active assignment.** Match the [text renderer and glyph helper for Liedel’s recruitment](Plans/liedel-dialogue-renderer.md). The [Magnus and Paul audio pair](Plans/paul-audio-envelope.md) closed at `b4beb6d4` and went to the Editor for scene playback. The [story event program](Plans/story-event-continuation.md) closed at `9be88806` and the [cutscene preview program](Plans/cutscene-preview-services-draft.md) at `2447f1d5`. The [Director handoff](Plans/cursors/director.md) records acceptance and delivery.
 
 ## Unresolved source and research scope
 

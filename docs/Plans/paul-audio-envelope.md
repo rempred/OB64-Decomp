@@ -1,5 +1,7 @@
 # Audio envelope in Magnus’s confrontation with Paul
 
+The complete pair passed canonical acceptance on main at `b4beb6d4`. The [acceptance report](../../build/integration/paul-audio/paul-audio-acceptance-evidence.json) covers both sole C owners, the unchanged dispatcher bytes and a byte-identical US Rev 0 rebuild. Eight isolated production-versus-retail comparisons used controlled audio calls; the index-44 case used a seeded value at `0x800EB440`. The Director sent the sources and test scope to the Editor for scene 290.
+
 The [Editor director](codex://threads/01a1eae5-90a2-7c31-956d-6ed447687e40) referred two routines on November 18. In [scene 290](../../../docs/Plans/task-logs/story-cutscene-preview-20261118.md), playback reaches Director word 174 and requests an audio envelope using index 44. The [accepted command dispatcher](../../src/lib/func_00284288.c) passes four script operands to the initializer for command `0xB4`. The desktop test’s initial gain table contains four values.
 
 | Function | US Rev 0 ROM, exclusive end | Bytes | Evidence to preserve |
