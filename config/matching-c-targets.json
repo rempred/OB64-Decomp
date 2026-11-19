@@ -10327,6 +10327,90 @@
     {
       "symbol": "func_002B8610",
       "source": "src/lib/func_002B8610.c"
+    },
+    {
+      "symbol": "func_001820B0",
+      "source": "src/lib/func_001820B0.c"
+    },
+    {
+      "symbol": "func_001C0FC8",
+      "source": "src/overlays/descriptor_18/func_001C0FC8.c"
+    },
+    {
+      "symbol": "func_001DBF34",
+      "source": "src/overlays/descriptor_15/func_001DBF34.c"
+    },
+    {
+      "symbol": "func_00240FF0",
+      "source": "src/lib/func_00240FF0.c"
+    },
+    {
+      "symbol": "boot_state_service_loop",
+      "source": "src/boot/boot_state_service_loop.c"
+    },
+    {
+      "symbol": "boot_flag_table_reset",
+      "source": "src/boot/boot_flag_table_reset.c"
+    },
+    {
+      "symbol": "boot_mode_message_accumulator_update",
+      "source": "src/boot/boot_mode_message_accumulator_update.c"
+    },
+    {
+      "symbol": "boot_resource_buffer_reset_flags",
+      "source": "src/boot/boot_resource_buffer_reset_flags.c"
+    },
+    {
+      "symbol": "boot_resource_window_cache_update",
+      "source": "src/boot/boot_resource_window_cache_update.c"
+    },
+    {
+      "symbol": "boot_resource_global_handle_slot_record_prepare",
+      "source": "src/boot/boot_resource_global_handle_slot_record_prepare.c"
+    },
+    {
+      "symbol": "boot_io_fwrite",
+      "source": "src/boot/boot_io_fwrite.c"
+    },
+    {
+      "symbol": "func_0003fb94",
+      "source": "src/lib/func_0003fb94.c"
+    },
+    {
+      "symbol": "func_0003fd74",
+      "source": "src/lib/func_0003fd74.c"
+    },
+    {
+      "symbol": "func_0003fde0",
+      "source": "src/lib/func_0003fde0.c"
+    },
+    {
+      "symbol": "func_000488cc",
+      "source": "src/lib/func_000488cc.c"
+    },
+    {
+      "symbol": "func_00049918",
+      "source": "src/lib/func_00049918.c"
+    },
+    {
+      "symbol": "func_000f7f38",
+      "source": "src/overlays/descriptor_03/func_000f7f38.c"
+    },
+    {
+      "symbol": "func_001C2064",
+      "source": "src/overlays/descriptor_18/func_001C2064.c"
+    },
+    {
+      "symbol": "func_001C2CA8",
+      "source": "src/overlays/descriptor_18/func_001C2CA8.c"
+    },
+    {
+      "symbol": "func_001CF3AC",
+      "source": "src/overlays/descriptor_15/func_001CF3AC.c"
+    },
+    {
+      "symbol": "func_001CF9C0",
+      "source": "src/overlays/descriptor_15/func_001CF9C0.c"
     }
   ]
 }
