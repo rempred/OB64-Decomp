@@ -1,6 +1,6 @@
 # Director handoff — November 18, 2026
 
-**Active assignments.** The [Liedel dialogue worker](../liedel-dialogue-renderer.md) owns the renderer and glyph helper. The [Magnus and Paul worker](../paul-audio-envelope.md) owns the envelope initializer and update routine. Both pairs passed complete guarded preparation. Retain the [existing production integrator](story-event-integration.md) and its verified route for the first complete wave.
+**Active assignments.** The [Liedel dialogue worker](../liedel-dialogue-renderer.md) continues private matching. The [production integrator](story-event-integration.md) has the [Magnus and Paul audio pair](../../../build/matching/paul-audio-261118/cursor.md). Both candidates passed private fixed-address comparisons for their full 244- and 372-byte owners. Canonical ownership, relocation and full-ROM verification are pending. The Editor owns the actual gain at index 44 and playback of the confrontation.
 
 The [story event program](../story-event-continuation.md) closed at `9be88806`. One [fresh final report](../../../build/integration/story-event/story-event-program-acceptance-evidence.json) covers all six exact C owners and the byte-identical Rev 0 ROM. The Editor director received the driver and interpreter, the evidence and its controlled-call scope. All three story matching workers are released. Preserve candidates, inputs and watcher delivery records.
 
