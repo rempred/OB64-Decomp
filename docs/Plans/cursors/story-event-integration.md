@@ -22,4 +22,4 @@ The [audio acceptance report](../../../build/integration/paul-audio/paul-audio-a
 
 ## Graduation dialogue shutdown
 
-The [guarded preflight](../../../build/grad-close-261118-preflight.json) prepared func_002A0374 (row 5354, 28 bytes) and func_002A0548 (row 5357, 148 bytes). [Placement evidence](../../../build/integration/grad-close/placement-evidence.json) binds both original calls to descriptor 4, including the provider with a coincident RAM address. The Director has the report. Production retains the route for the first complete wave released.
+The [expanded preflight](../../../build/grad-close-261118-trio-preflight.json) prepared func_002A0374 (row 5354, 28 bytes), func_002A0548 (row 5357, 148 bytes) and func_002A0354 (row 5353, 32 bytes). The original [pair report](../../../build/grad-close-261118-preflight.json) and [call placements](../../../build/integration/grad-close/placement-evidence.json) remain available. [Query placement](../../../build/integration/grad-close/query-placement-evidence.json) binds its call to descriptor 4, row 2117. The Director has the expanded report. Production awaits a complete wave release.
