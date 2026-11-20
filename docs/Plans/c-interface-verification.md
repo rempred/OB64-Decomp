@@ -1,6 +1,9 @@
 # C function interfaces at final verification
 
-Cutscene sound command `0x6F` is the regression case. Its [dispatcher](../../src/lib/func_00284288.c) declares and supplies two arguments. Its [wrapper](../../src/overlays/descriptor_14/func_002831E0.c) defines one. The retail instructions preserve the second argument in the gain register on both paths. This allowed a byte-identical rebuild while leaving the Editor's portable implementation with an incomplete C interface. [Retail evidence and replay](editor-function-families-20261120.md)
+## Accepted audio interfaces to correct
+
+- **Cutscene gain, command `0x6F`.** The dispatcher declares and supplies context and gain. The wrapper and its two gain-service declarations name only one parameter. Both retail paths forward the gain in `$a1`. Make the gain explicit through both calls and verify that the resulting code still matches. [Dispatcher](../../src/lib/func_00284288.c) · [Wrapper](../../src/overlays/descriptor_14/func_002831E0.c) · [48-case replay finding](editor-function-families-20261120.md)
+- **Null-context sound request.** `func_00208DC8` declares and calls `func_800EA604(0)`. Its call relocation names a fixed address. The accepted resident function at that address, `func_0003fb94`, takes a channel and a 32-bit request. In a replay of both original instruction ranges, modes 0, 11 and 13 forwarded the entire request in `$a1`, while mode 12 skipped the call. For request `0x12340021`, the resident function received `0x12340021` and passed `0x21` to the queue. All 16 combinations passed. Correct the caller's declaration and pass its second argument explicitly. The verifier regression must resolve the fixed alias to the resident entry using relocation and ownership evidence. [Caller](../../src/lib/func_00208DC8.c) · [Retail call and delay slot](../../asm/original/rev0/lib/func_00208DC8.s) · [Resident provider](../../src/lib/func_0003fb94.c)
 
 ## Implementation
 
@@ -13,4 +16,4 @@ The Director approved the plan after independent review. The tooling author is d
 
 ## Verification before rollout
 
-Demonstrate that the real `0x6F` disagreement is detected. Test a corrected declaration and forwarding call, changes on either side of a call, shared-header changes, overlay and local-name collisions, compatible types, unsupported syntax, and stale baseline or analyzer inputs. Report coverage and measure a complete scan and a representative wave on the pinned host. The production integrator runs the [changed-verifier structural audit](../AUDIT.md) and its normal whole-ROM check. The independent reviewer checks the delivered changes before publication.
+Demonstrate that both audio disagreements are detected and that corrected callers clear the corresponding findings. Test changes on either side of a call, shared-header changes, ambiguous and interior aliases, overlay and local-name collisions, compatible types, unsupported syntax, and stale baseline or analyzer inputs. Report coverage and measure a complete scan and a representative wave on the pinned host. The production integrator runs the [changed-verifier structural audit](../AUDIT.md) and its normal whole-ROM check. The independent reviewer checks the delivered changes before publication.
