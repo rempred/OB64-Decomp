@@ -2,9 +2,8 @@
 
 ## Current queue
 
-Updated November 19, 2026.
+Updated November 20, 2026.
 
-- **Contributor PR #1 — waiting for a revision from @cosburn92.** Changes were requested on `6a0d314e`. When a new commit arrives, the Director checks it against the posted review. If it passes the configuration checks, the integrator runs the full Rev 0 verifier. Joe reviews the findings before a public response or acceptance. [PR and requested fixes](https://github.com/rempred/OB64-Decomp/pull/1#pullrequestreview-5986291033)
 - **Internal matching and Editor requests.** No internal matching wave is assigned. The latest requested dialogue functions were delivered to the Editor. Contributors can propose a target or pick up a posted request through the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target). [Last Editor handoff](Plans/cursors/director.md#editor-handoff)
 
 ## Unresolved source and research scope
