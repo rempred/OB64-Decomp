@@ -4,7 +4,8 @@
 
 Updated November 20, 2026.
 
-- **Internal matching and Editor requests.** No internal matching wave is assigned. The latest requested dialogue functions were delivered to the Editor. Contributors can propose a target or pick up a posted request through the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target). [Last Editor handoff](Plans/cursors/director.md#editor-handoff)
+- **Open Editor requests.** Contributors can choose from [six verified function families](Plans/editor-function-families-20261120.md) or browse the [workbench target list](../config/matching-priorities.json). Start with mission suspend/restore for the largest immediate Editor benefit or story sound command `0x6E` for a small, testable match. The list also covers battle amounts, army record ownership, target selection and strike timing. Follow the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target) to coordinate a claim.
+- **Editor integration.** The Editor Director is integrating the [926 newly accepted targets](https://github.com/rempred/OB64-Decomp/pull/1) and tracing affected features, patches and assumptions. Decomp has no internal matching wave assigned.
 
 ## Unresolved source and research scope
 

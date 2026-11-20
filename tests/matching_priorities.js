@@ -46,7 +46,7 @@ async function run() {
       targets,
       bySymbol: new Map(targets.map(target => [target.symbol.toLowerCase(), target])),
       modelId: 'priority-test',
-      config: { limits: { defaultRows: 20 } },
+      config: { limits: { defaultRows: targets.length + 1 } },
     };
     const result = rankTargets(workbench, {
       lane: 'leverage', skipFamilies: true,
@@ -101,7 +101,9 @@ async function run() {
     delete require.cache[commandPath];
     try {
       const { executeCommand, parseArgs } = require(commandPath);
-      const parsed = parseArgs(['--priorities-only', '--include-solved', '--json']);
+      const parsed = parseArgs([
+        '--priorities-only', '--include-solved', '--limit', String(fastWorkbench.targets.length), '--json',
+      ]);
       let report;
       await executeCommand('rank', parsed, null, value => { report = value; });
       assert.deepEqual(report, fastIncludingSolved);

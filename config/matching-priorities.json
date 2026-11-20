@@ -3,26 +3,427 @@
   "profile": "us-rev0",
   "subsystems": [
     {
-      "id": "actor-construction",
-      "value": 25,
-      "reason": "Remaining parallel actor construction paths identified by the completed body/equipment census.",
-      "evidence": "docs/Plans/body-equipment-program.md"
+      "id": "mission-suspend",
+      "value": 32,
+      "reason": "Expanded-army exports patch both sides of the mission suspend format. The writer and reader must agree on squad, HP and map state.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "id": "battle-amount",
+      "value": 30,
+      "reason": "The attack Editor depends on the retail score builders, context routines and common battle amount calculation for damage and healing.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "id": "cutscene-sound",
+      "value": 28,
+      "reason": "The cutscene preview needs the original request behavior when sound voices are busy.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "id": "army-record-ownership",
+      "value": 26,
+      "reason": "Expanded-army export hooks read or update records across deployment, combat and character screens. The two catalogues identify the retail instructions.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "id": "battle-target-patterns",
+      "value": 24,
+      "reason": "Attack-pattern editing and preview need the retail rules for eligible opponents, column selection and repeated weighted draws.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "id": "battle-strike-contact",
+      "value": 22,
+      "reason": "Spell and Pedra playback must consume the queued battle result when each visual strike lands.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
     }
   ],
   "targets": [
     {
-      "symbol": "func_002A9364",
-      "subsystem": "actor-construction",
+      "symbol": "func_0005b864",
+      "subsystem": "mission-suspend",
       "value": 20,
-      "reason": "Actor initialization/placement owner at z64 2A9364..2A985C. The parent constructor trace identifies current-class/body inputs on this parallel path. Recovering it would make that original construction path available for editor adaptations; no existing patch removal is claimed.",
-      "evidence": "docs/Plans/body-equipment-program.md"
+      "reason": "Writes the suspend payload. The expanded-army save catalog patches 129 operands in this owner.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
     },
     {
-      "symbol": "func_002B867C",
-      "subsystem": "actor-construction",
+      "symbol": "func_0005b008",
+      "subsystem": "mission-suspend",
       "value": 20,
-      "reason": "Mission-briefing construction owner at z64 2B867C..2B88C8. This parallel consumer lies beyond the completed ten-patch body/equipment group and is identified by the parent constructor-argument trace.",
-      "evidence": "docs/Plans/body-equipment-program.md"
+      "reason": "Restores the suspend payload. The expanded-army save catalog patches 128 operands in this owner.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00235DC8",
+      "subsystem": "battle-amount",
+      "value": 20,
+      "reason": "Builds the intelligence-based magic attack score used by the amount calculation.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00235FE0",
+      "subsystem": "battle-amount",
+      "value": 20,
+      "reason": "Builds the target’s mental and intelligence defense score for magic.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00234B54",
+      "subsystem": "battle-amount",
+      "value": 20,
+      "reason": "Builds the attack percentage adjustment for physical damage.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_002351D4",
+      "subsystem": "battle-amount",
+      "value": 20,
+      "reason": "Builds the magic percentage adjustment, including the weapon and action interaction.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00234E68",
+      "subsystem": "battle-amount",
+      "value": 20,
+      "reason": "Builds the target context used by the two defense formulas.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_0023697C",
+      "subsystem": "battle-amount",
+      "value": 20,
+      "reason": "Computes the common battle amount. The Editor intercepts this routine through lc_attack_amount.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00239338",
+      "subsystem": "battle-amount",
+      "value": 20,
+      "reason": "Evaluates incoming power by target for combined attacks.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_0028308C",
+      "subsystem": "cutscene-sound",
+      "value": 20,
+      "reason": "Handles story sound command 0x6E. Compare request and deferral with free and busy voices in the scene-audio interpreter test.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_0004196c",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses enemy deletion retains tags for surviving source references at 0x00041BCC.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00055b28",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x00055B70.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00083970",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x00083A10.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00083c5c",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x00084814.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_0008e728",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x0008E898.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_000bd3d0",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x000BD3D4.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_000bd43c",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x000BD444.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_000bd60c",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x000BD620.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_000bd8c4",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x000BD8D8.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_000bdb74",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x000BDBC4.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_000bddcc",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x000BDE1C.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_000be024",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x000BE074.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_000be27c",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x000BE284.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_000be494",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x000BE49C.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00132D30",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses source record ownership at 0x00132D80, 0x00132E78.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00133028",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses source record ownership at 0x00133078, 0x00133170.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00133234",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses combined player/enemy availability includes all ordinary handles at 0x00133298.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00133BE0",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses source record ownership, rest healing separates indexed HP from shared maximum at 0x00133C50, 0x00133CB0.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00135EE4",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses source record ownership at 0x00135FB0.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00136C38",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses source record ownership, record-pool flag at 0x00137ABC, 0x001386F4.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00150550",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses enemy record selection at 0x001506D8, 0x001508EC.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_001526AC",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x001526BC.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00152930",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x00152940.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00152FBC",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x00153014.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_001532B0",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x00153308.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_001535A4",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x001535FC.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_001541C0",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x00154288.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_001587DC",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses source record ownership at 0x001588C0.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00159474",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses player record flag at 0x0015956C.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00159FD4",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses enemy record selection at 0x0015B9EC.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_0015E498",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses record-pool flag at 0x0015E4EC, 0x0015E58C.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00188CDC",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses ownership of either enemy record, enemy record selection at 0x0018931C, 0x001894F0.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00189778",
+      "subsystem": "army-record-ownership",
+      "value": 20,
+      "reason": "Expanded-army export uses record-pool flag at 0x00189854 and 15 other sites.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_001ADD4C",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses enemy record selection at 0x001ADF18.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_001AE25C",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses enemy record selection at 0x001AE2D4.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00209774",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses source record ownership at 0x0020982C.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00209F74",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses source record ownership, formation Soldier HP and maximum at 0x0020ABEC, 0x0020B7AC, 0x0020B7D0.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_002142C4",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses defensive recruitment guard before clearing a player record at 0x00214318.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00219A14",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses full player roster prevents destructive recruitment success at 0x00219A64.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_0021C140",
+      "subsystem": "army-record-ownership",
+      "value": 20,
+      "reason": "Expanded-army export uses source record ownership, combat HP writeback before original status call, combat state update retains existing set/clear rule at 0x0021C254, 0x0021C308, 0x0021C328, 0x0021C33C.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_0021D450",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses enemy record selection at 0x0021D4D4.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00249D98",
+      "subsystem": "army-record-ownership",
+      "value": 8,
+      "reason": "Expanded-army export uses class search includes all ordinary enemy handles, excludes Soldiers/template, preflight scripted copy and initialize player IDs by formation slot at 0x00249DD4, 0x00249EA8.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00237E2C",
+      "subsystem": "battle-target-patterns",
+      "value": 20,
+      "reason": "Builds the six weighted target draws for retail patterns 9 and 10.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_00238D94",
+      "subsystem": "battle-target-patterns",
+      "value": 20,
+      "reason": "Builds the action context, including same-column target selection for pattern 12.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
+    },
+    {
+      "symbol": "func_002226D4",
+      "subsystem": "battle-strike-contact",
+      "value": 20,
+      "reason": "Consumes a queued result on strike contact. The repeated spell and Pedra playback test covers the strike-count extension.",
+      "evidence": "docs/Plans/editor-function-families-20261120.md"
     }
   ]
 }
