@@ -5,6 +5,9 @@ Rev 0. The matching baseline replaces accepted MIPS assembly owners with C while
 continuing to rebuild the normalized retail ROM byte-for-byte. US Rev 1 is out
 of scope.
 
+To pick up an Editor request, submit a match, or report a finding, see the
+[contributor guide](CONTRIBUTING.md).
+
 ## Start here
 
 Run commands from the repository root. The repository does **not** include an
