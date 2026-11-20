@@ -30,6 +30,11 @@ function isDiagnosticContext(context) { return contexts.has(context); }
 function producerModel(context) { return isDiagnosticContext(context) ? context.producerModel : context?.phase8; }
 function baselineFingerprint(context) { return isDiagnosticContext(context) ? context.acceptedFingerprint : context?.currentFingerprint; }
 function assertCanonicalContext(context) { if (isDiagnosticContext(context)) fail('diagnostic context cannot establish canonical acceptance'); }
+function validateInterfaceEvidence(inputs,state,fresh,selected) {
+  return require('../c_interface_companion').validate({root:ROOT,state,fresh,accepted:selected.fingerprint===null?undefined:selected,
+    read:file=>inputs.readUnretained(path.resolve(ROOT,file)),selectedInputs:inputs,
+    trustedFrontend:()=>JSON.parse(inputs.installedContract('config/c-interface-frontend.json'))});
+}
 
 function validateHistoricalReports({state,build,fresh,verified,minimal,config}) {
   const construction = build.schemaVersion === 8 && build.status === 'constructed';
@@ -339,6 +344,7 @@ function load(options) {
   const verifiedBytes = read(state.verificationReport), freshBytes = read(state.freshCompilationReport);
   if (hash(verifiedBytes) !== state.verificationSha256 || hash(freshBytes) !== state.freshCompilationSha256) fail('companion hash');
   const verified = JSON.parse(verifiedBytes), fresh = JSON.parse(freshBytes);
+  validateInterfaceEvidence(inputs,state,fresh,selected);
   const verification=verified.verification;
   const canonicalRom={bytes:config.rom.bytes,sha256:config.rom.sha256};
   const minimal = json('config/matching-c-targets.json');
@@ -508,4 +514,4 @@ function authenticateCode(inputs) {
   for(const file of Object.keys(require.cache)) if(inside(execution.codePath('tools'),file)) inputs.sharedImplementation(file);
 }
 // Evidence inspection is public for fixtures; only load() can bind private eligibility.
-module.exports={continuationSelection,hydrateContinuation,inspectCompleteOwnerSource,fixedEntryCallerEvidence,completeOwnerClosure,completeOwnerExpectation,validateHistoricalReports,runtime,authenticateCode,load,isDiagnosticContext,producerModel,baselineFingerprint,assertCanonicalContext};
+module.exports={validateInterfaceEvidence,continuationSelection,hydrateContinuation,inspectCompleteOwnerSource,fixedEntryCallerEvidence,completeOwnerClosure,completeOwnerExpectation,validateHistoricalReports,runtime,authenticateCode,load,isDiagnosticContext,producerModel,baselineFingerprint,assertCanonicalContext};

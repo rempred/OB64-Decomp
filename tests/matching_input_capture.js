@@ -2,6 +2,8 @@
 // Transaction tests for the actual capture implementation, with its existing
 // acceptance gate replaced by an explicit fixture. No retail proof is invented.
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict');
+const {createRequire}=require('module');
+const inputSetRequire=createRequire(require.resolve('../tools/lib/matching/input_set'));
 const set=require('../tools/lib/matching/input_set'),privateInputs=require('../tools/lib/matching/private_inputs');
 const repo=path.resolve(__dirname,'..'),root=fs.mkdtempSync(path.join(repo,'build/tests/capture-fixture-'));
 const write=(relative,text)=>{const file=path.join(root,relative);fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,text);return file;};
@@ -41,7 +43,7 @@ vm.runInNewContext(fs.readFileSync(require.resolve('../tools/lib/matching/input_
     if(name==='./private_inputs')return{capturePrivateInputs(options){return privateInputs.capturePrivateInputs({root,directories:['config','src','include','tools/lib'],files:['build/current/state.json'],extraDirectories:options.extraDirectories});}};
     if(name==='../source_policy')return{loadPolicyConfig(){return{matchingCompiler:{manifest:'compiler-manifest.json'},preprocessor:{path:'.runtime/cpp.exe',requiredExecutables:[{path:'.runtime/cc1.exe'}]}};}};
     if(name==='fs')return{...fs,copyFileSync(source,target,flags){if(source===path.join(root,'src/a.c')&&mode==='interrupt')throw Error('fixture interrupted copy');fs.copyFileSync(source,target,flags);if(source===path.join(root,'src/a.c')&&mode==='drift')fs.writeFileSync(source,'int a(void){return 2;}\n');}};
-    return require(name);
+    return inputSetRequire(name);
   }});
 const api=moduleFixture.exports;
 exact=false;assert.throws(()=>api.captureInputSet(path.join(root,'build/unaccepted')),/currently verified/);assert(!fs.existsSync(path.join(root,'build/unaccepted')));exact=true;

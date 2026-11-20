@@ -236,9 +236,11 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       || !Array.isArray(sourcePolicy.targets) || sourcePolicy.targets.length !== phase8.targets.length) {
     throw new Error('CURRENT fingerprint source-policy census is malformed');
   }
+  require('./c_interfaces').authenticate(ROOT, JSON.parse(inputSet.read(inputs, path.join(ROOT,'config/c-interface-frontend.json')).toString('utf8')), inputs);
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   return sha256Value({
     schemaVersion: 10,
+    cInterfaceInputs: ['config/c-interface-frontend.json', 'config/c-interface-baseline.json', 'tools/lib/c_interfaces.js', 'tools/lib/c_interface_companion.js'].map(file => ({ file, sha256: sha256File(path.join(ROOT,file), inputs) })),
     baseline,
     compilerSha256: sha256File(localTools.compiler),
     activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json'), inputs),
@@ -784,6 +786,15 @@ function verifyCurrent(context, options = {}) {
   const freshCompilation = { report: freshReport, reportFile: freshFile };
   validateVerifiedCompanions(actualBuild.report, freshCompilation.report, verification, build.output, context.phase8);
   if (!isDeepStrictEqual(session.buildReport, actualBuild.identity)) throw new Error('fresh construction changed before verified state');
+  const interfaceReport = measure(profile, 'c-interface-consistency', () => require('./c_interfaces').run(ROOT, build.output, actualBuild.report, readJson(path.join(ROOT,'config/c-interface-frontend.json')), readJson(path.join(ROOT,'config/c-interface-baseline.json'))));
+  interfaceReport.acceptanceBinding = { inputFingerprint: context.currentFingerprint, baselineFingerprint: context.baselineFingerprint, buildReport: actualBuild.identity };
+  textContract.publishCompactReport(path.join(path.dirname(build.output), 'c-interface-report.json'), interfaceReport);
+  if (!interfaceReport.verdict.pass) throw new Error('C interface consistency failed (ROM equality is reported separately); inspect c-interface-report.json');
+  const interfaceCompanion = require('./c_interface_companion');
+  const interfaceBinding = interfaceCompanion.create(build, interfaceReport, fs.readFileSync(path.join(ROOT,'config/c-interface-frontend.json')));
+  const interfaceState = { ...build, fingerprint: context.currentFingerprint, baselineFingerprint: context.baselineFingerprint, buildReport: actualBuild.identity, ...interfaceBinding };
+  freshReport.cInterfaceEvidence = interfaceBinding;
+  interfaceCompanion.validate({root:ROOT,state:interfaceState,fresh:freshReport});
   const finalContext = measure(profile, 'final-input-seal', () => prepareContext());
   if (finalContext.currentFingerprint !== context.currentFingerprint || finalContext.baselineFingerprint !== context.baselineFingerprint) throw new Error('fresh build inputs changed before publication');
   measure(profile, 'final-tool-authentication', () => verifyRuntimeTools(context.phase8.model, context.localTools));
@@ -801,6 +812,7 @@ function verifyCurrent(context, options = {}) {
     ...build,
     schemaVersion: 7,
     status: 'verified',
+    ...interfaceBinding,
     buildReport: actualBuild.identity,
     verifiedAt: new Date().toISOString(),
     verificationReport: path.join(build.output, 'verification.json'),
@@ -809,8 +821,9 @@ function verifyCurrent(context, options = {}) {
     verificationSha256: verifiedReportSha256,
     sourcePolicyReport: SOURCE_POLICY_REPORT_PATH,
   };
+  interfaceCompanion.validate({root:ROOT,state,fresh:freshReport});
   textContract.publishCompactReport(CURRENT_STATE_PATH, state);
-  return { build, freshCompilation, sourcePolicy, verification };
+  return { build, freshCompilation, sourcePolicy, verification, interfaceReport };
 }
 
 function currentVerificationState(context) {
@@ -827,6 +840,10 @@ function currentVerificationState(context) {
     for (const [file, expected] of [[state.verificationReport, state.verificationSha256], [state.freshCompilationReport, state.freshCompilationSha256]]) {
       if (!file || !expected || sha256File(file) !== expected || readJson(file).schemaVersion !== state.schemaVersion) return { exact: false, state };
     }
+  } catch (error) { inputSet.rethrow(error, inputs); return { exact: false, state }; }
+  try {
+    const interfaces = require('./c_interface_companion').validate({root:ROOT,state,fresh:readJson(state.freshCompilationReport),read:inputs?file=>inputSet.read(inputs,file):undefined,selectedInputs:inputs});
+    if (interfaces.version !== 1) return { exact: false, state };
   } catch (error) { inputSet.rethrow(error, inputs); return { exact: false, state }; }
   const rom = path.join(state.output, 'phase8.us_rev0.z64');
   const exact = fs.existsSync(rom) && fs.statSync(rom).size === context.model.config.rom.bytes

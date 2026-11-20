@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "21.1.8",
+  "flags": [
+    "-cc1",
+    "-triple",
+    "mips-unknown-none",
+    "-target-abi",
+    "o32",
+    "-std=gnu89",
+    "-fsyntax-only",
+    "-ast-dump=json",
+    "-ferror-limit",
+    "0",
+    "-Wno-everything",
+    "-Wint-conversion",
+    "-Wincompatible-pointer-types",
+    "-Wno-error=int-conversion",
+    "-Wno-error=incompatible-pointer-types",
+    "-x",
+    "cpp-output"
+  ],
+  "executable": {
+    "path": ".toolchains/c-interface-clang-21.1.8/clang.exe",
+    "bytes": 100453888,
+    "sha256": "812F6A0E80A5541108C0F4AE31121BCD5B692707041AC83A86E595F4729F5C8A"
+  },
+  "archive": {
+    "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.8/clang%2Bllvm-21.1.8-x86_64-pc-windows-msvc.tar.xz",
+    "bytes": 942572476,
+    "sha256": "749D22F565FCD5718DBED06512572D0E5353B502C03FE1F7F17EE8B8ACA21A47",
+    "member": "clang+llvm-21.1.8-x86_64-pc-windows-msvc/bin/clang.exe"
+  }
+}

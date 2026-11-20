@@ -279,7 +279,7 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
     },
     installedContract(file) {
       const absolute=path.resolve(root,file);
-      if(!diagnostic || !['config/phase7/conventional-build.json','config/source-policy.json'].some(relative=>key(path.join(root,relative))===key(absolute)))fail('unsupported installed contract');
+      if(!diagnostic || !['config/phase7/conventional-build.json','config/source-policy.json','config/c-interface-frontend.json'].some(relative=>key(path.join(root,relative))===key(absolute)))fail('unsupported installed contract');
       const bytes=fs.readFileSync(regular(absolute));
       const entry={original:absolute,stored:absolute,...identity(absolute)};
       if(digest(bytes)!==entry.sha256)fail('installed contract changed during read');
@@ -316,6 +316,15 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
         consumedFiles.add(entry); retain(entry, bytes);
       }
       return Buffer.from(retainedBytes.get(entry));
+    },
+    readUnretained(file) {
+      // Large diagnostic companions/tools need authentication and closing seals,
+      // not lifetime retention in the bounded producer-input cache.
+      const absolute=path.resolve(root,file),entry=files.get(key(absolute))||physical.get(key(absolute))||(live?liveFile(absolute):null);
+      if(!entry)fail('unenrolled unretained input '+absolute);
+      regular(entry.stored);const bytes=fs.readFileSync(entry.stored);acceptIdentity(entry,bytes);consumedFiles.add(entry);
+      if(diagnostic){validatedFiles.add(entry);counters.fileReads++;counters.fileBytes+=bytes.length;}
+      return bytes;
     },
     async prefetch(filesToRead) {
       if (!research || !Array.isArray(filesToRead)) fail('research prefetch context');
@@ -421,6 +430,8 @@ function openInputSetInternal(manifestFile, options = {}, scope) {
         if (identity(inputs.resolve(file)).sha256 !== sha256) fail('accepted companion identity drift');
       }
       const build = read(path.join(state.output, 'build-report.json'));
+      require('../c_interface_companion').validate({root,state,fresh:read(state.freshCompilationReport),accepted,read:file=>fs.readFileSync(inputs.resolve(file)),selectedInputs:inputs,
+        trustedFrontend:()=>JSON.parse(require('../c_interface_companion').regularRead(path.join(root,'config/c-interface-frontend.json')))});
       require('../current_workflow').validateVerifiedCompanions(build, read(state.freshCompilationReport), read(state.verificationReport), state.output, phase8);
       const rom = identity(inputs.resolve(path.join(state.output, 'phase8.us_rev0.z64')));
       if (rom.bytes !== phase8.model.config.rom.bytes || rom.sha256 !== phase8.model.config.rom.sha256) fail('accepted full-ROM identity drift');
@@ -461,6 +472,8 @@ function captureInputSet(output, options = {}) {
   const current = workflow.currentVerificationState(prepared);
   if (!current.exact || !current.state?.verifiedAt) fail('capture requires currently verified exact CURRENT');
   const state = current.state;
+  const interfaceCompanion=require('../c_interface_companion');
+  const interfaces=interfaceCompanion.validate({root:ROOT,state,fresh:JSON.parse(fs.readFileSync(state.freshCompilationReport,'utf8'))});
   fs.mkdirSync(destination); // Exclusive publication directory; failures retain partial evidence.
   const files = new Map(), directories = new Map();
   const shown = file => {
@@ -495,9 +508,13 @@ function captureInputSet(output, options = {}) {
   }
   for (const directory of ['config', 'src', 'include', 'docs/dossiers', 'docs/matching-c', 'docs/archive/matching-c-candidates']) enroll(path.join(ROOT, directory), 'copy');
   for (const target of prepared.phase8.targets) if (!files.has(key(path.resolve(ROOT, target.source)))) enroll(path.dirname(path.resolve(ROOT, target.source)), 'copy');
-  for (const file of ['build/current/state.json', 'build/current/baseline-state.json', state.verificationReport, state.freshCompilationReport]) {
+  for (const file of ['build/current/state.json', 'build/current/baseline-state.json', state.verificationReport, state.freshCompilationReport,...(interfaces.version===1?[state.cInterfaceReport]:[])]) {
     const absolute = path.resolve(ROOT, file);
-    enroll(absolute, shown(absolute) ? 'copy' : 'reference');
+    // Output members share the output's reference role even when workRoot is
+    // repository-local. Standalone siblings (including interface reports) can copy.
+    const outputRelative=path.relative(path.resolve(state.output),absolute);
+    const inOutput=outputRelative && !outputRelative.startsWith('..') && !path.isAbsolute(outputRelative);
+    enroll(absolute, !inOutput && shown(absolute) ? 'copy' : 'reference');
   }
   for (const directory of ['asm/original/rev0', 'tools/lib']) enroll(path.join(ROOT, directory), 'reference');
   for (const file of ['store.py','schema.sql','private_guard.py']) enroll(path.join(ROOT,'tools/matching_workbench',file),'reference');
@@ -509,6 +526,7 @@ function captureInputSet(output, options = {}) {
   const policy = require('../source_policy').loadPolicyConfig();
   const toolchain = JSON.parse(fs.readFileSync(path.join(ROOT, 'config/toolchain.json')));
   for (const file of [process.execPath, prepared.localTools.compiler, prepared.localTools.splatPython, prepared.localTools.splatSplit,
+    ...(interfaces.version===1?[interfaces.frontend.executable.path]:[]),
     policy.matchingCompiler.manifest, policy.preprocessor.path, ...policy.preprocessor.requiredExecutables.map(item => item.path),
     ...Object.values(toolchain.tools).map(file => path.join(toolchain.localRoot, file)),
     ...['diff.py', 'pyproject.toml', 'LICENSE'].map(file => path.join(prepared.localTools.asmDifferRoot, file)),
@@ -555,6 +573,7 @@ function captureInputSet(output, options = {}) {
   seal.assertUnchanged();
   let manifest = { schemaVersion: 1, kind: 'ob64-private-inputs', repository: ROOT, runtime: prepared.localTools,
     accepted: { fingerprint: state.fingerprint, baselineFingerprint: state.baselineFingerprint, buildReport: state.buildReport,
+      ...interfaceCompanion.binding(state),
       verificationSha256: state.verificationSha256, freshCompilationSha256: state.freshCompilationSha256, output: state.output },
     files: [...files.values()], directories: [...directories.values()], unavailableResearchReferences: [...new Set(unavailableResearchReferences)].sort() };
   if(options.toolBundle) manifest=require('./tool_bundle').bindManifest(manifest,options.toolBundle,destination);

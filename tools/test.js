@@ -7,6 +7,12 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const ROUTINE_TESTS = [
+  // Synthetic interface fixtures; retained-ROM historical replay remains opt-in.
+  ["c-interface-publication","tests/c_interface_publication.js"],
+  ["c-interfaces","tests/c_interfaces.js",{"OB64_INTERFACE_REAL_BUILD":""}],
+  ["c-interface-scan-seals","tests/c_interface_scan_seals.js"],
+  ["c-interface-selected-external","tests/c_interface_selected.js",{"OB64_INTERFACE_INSIDE_ROOT":"0"}],
+  ["c-interface-selected-local","tests/c_interface_selected.js",{"OB64_INTERFACE_INSIDE_ROOT":"1"}],
   ['cursor-budget', 'tests/cursor_budget.js'],
   ['declaration-inventory', 'tests/declaration_inventory.js'],
   ['matching-knowledge', 'tests/matching_knowledge.js'],
@@ -95,7 +101,7 @@ function main() {
 
   const failures = [];
   const startedAt = Date.now();
-  for (const [name, relative] of ROUTINE_TESTS) {
+  for (const [name, relative, environment] of ROUTINE_TESTS) {
     console.log(`\n== ${name} (${relative}) ==`);
     const script = path.join(ROOT, ...relative.split('/'));
     if (!fs.existsSync(script) || !fs.statSync(script).isFile()) {
@@ -106,6 +112,7 @@ function main() {
     }
     const result = childProcess.spawnSync(process.execPath, [script], {
       cwd: ROOT,
+      env: { ...process.env, ...environment },
       stdio: 'inherit',
       windowsHide: true,
     });

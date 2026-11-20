@@ -75,6 +75,10 @@ function runVerification(args, profile) {
   printLine('Relocations ', 'PASS');
   printLine('Target bytes ', 'EXACT');
   printLine('Full ROM ', 'EXACT');
+  printLine('C interface gate ', 'PASS (existing debt retained)');
+  printLine('Existing interface conflicts ', result.interfaceReport.verdict.existingConflicts);
+  printLine('Unparsed C producers ', result.interfaceReport.coverage.unparsed);
+  printLine('Interface limitations ', result.interfaceReport.coverage.limitations);
   console.log('');
   printLine('PURE_C exact ', `${result.sourcePolicy.counts.PURE_C} functions / ${result.sourcePolicy.bytes.PURE_C} bytes`);
   printLine('HYBRID_C exact ', `${result.sourcePolicy.counts.HYBRID_C} functions / ${result.sourcePolicy.bytes.HYBRID_C} bytes`);

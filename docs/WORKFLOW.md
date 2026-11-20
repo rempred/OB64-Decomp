@@ -194,6 +194,46 @@ existing linker rules remains ordinary matching work. Reviewing that evidence
 does not require a separate reviewer. Route any change to the linker rules or
 accepted structural model through the structural workflow.
 
+## C interface consistency at the complete-wave boundary
+
+Final verification also scans the exact authenticated expanded C consumed by KMC,
+using the separately pinned diagnostic Clang frontend. Provision it with
+`node tools/setup_c_interfaces.js --clang <exact-clang.exe>` or
+`--archive <official-LLVM-21.1.8-Windows-x64-tar.xz>`; the setup command prints the
+official URL, package digest and installed size. This portable tool does not change
+the matching compiler or require a machine-wide installation.
+
+The census includes unchanged callers and changed callees across complete active
+producers. It uses actual linked symbol section/address identity, keeps file-local
+functions separate and reports indirect calls, unresolved providers and unsupported
+types or syntax explicitly. Parsed does not mean every interface was proved valid.
+For the small unparsed census, debt remains bound to exact expanded bytes: any
+change requires reevaluation because the parser cannot establish unaffected scope.
+Fully parsed debt uses stable signatures and call-site preprocessing tokens, not
+whole-file hashes. Unsupported spellings/ranges retain exact evidence and an explicit limitation.
+Normal C argument conversions are not conflicts. Primitive prototype disagreements
+and definite argument-count conflicts are checked independently from ROM equality.
+
+`config/c-interface-baseline.json` records reviewed existing conflicts and precise
+coverage limitations. It is existing source debt, not a compatibility certificate.
+New conflicts and new unresolved evidence fail before CURRENT is published as
+verified. Removed debt is reported as progress for documented baseline maintenance.
+There is no automatic baseline update or game-source
+suppression. Baseline reconciliation is an explicit reviewed tooling change; preserve
+the old evidence and explain each changed record. The generated
+`c-interface-report.json` retains caller/provider identities and coverage. A retained
+build can be inspected with `node tools/check_c_interfaces.js --build <output> --report <file>`;
+that diagnostic does not establish fresh acceptance. The full census currently runs
+once per final wave, with no parse cache and no additional ROM build. The structural
+audit reaches the same gate through its existing fresh verification.
+
+New verified states bind both raw report bytes and its JSON-value digest, plus
+frontend configuration, in the fresh companion and selected-input manifest.
+Capture includes the standalone report and pins the frontend executable. Selected
+readers never replace missing/stale captured evidence with live data. Historical
+states without the versioned interface contract retain their original contract;
+they are not silently upgraded to interface acceptance.
+
 ## Acceptance boundary
 
 The project keeps four kinds of evidence separate:

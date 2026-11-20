@@ -69,6 +69,8 @@ function capturePrivateInputs(options = {}) {
       if (current.verifiedAt) {
         pin('current-verification', current.verificationReport);
         pin('current-fresh-lineage', current.freshCompilationReport);
+        const interfaces=require('../c_interface_companion').validate({root,state:current,fresh:JSON.parse(fs.readFileSync(current.freshCompilationReport,'utf8'))});
+        if(interfaces.version===1){pin('current-c-interfaces',current.cInterfaceReport);pin('c-interface-frontend',interfaces.frontend.executable.path);}
       }
       pin('compiler', local.compiler);
       pin('preprocessor', policy.preprocessor.path);
