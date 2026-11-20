@@ -1,6 +1,7 @@
-Use Ultracode mode.
-
 # OB64 Data Territory Ownership Prompt Template
+
+This template records the earlier data-territory program and its Ultracode staffing.
+For a new structural assignment, use the [audit](../AUDIT.md) and [current Director routing](../WORKFLOW.md#director-event-continuity).
 
 Use this template for Rev 0 data-territory ownership runs after the
 executable-MIPS frontier has ended. This template is for ownership work over

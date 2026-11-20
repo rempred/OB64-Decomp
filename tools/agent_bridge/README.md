@@ -1,9 +1,8 @@
 # OB64 Agent Bridge
 
-This is a tiny local-only HTTP bridge for coordinating long decomp agent runs.
-It records completion events under ignored `build/agent-bridge/`. A Codex
-heartbeat monitor can poll the bridge, tailor the next prompt, and paste it into
-the external GUI agent chat.
+This local HTTP bridge belongs to the historical GUI coordination workflow.
+Current Director-managed programs use [native event delivery](../../docs/WORKFLOW.md#director-event-continuity).
+The following commands document the earlier bridge and its ignored `build/agent-bridge/` records.
 
 Start it from the repo root:
 
@@ -69,7 +68,5 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' `
 
 ## Limits
 
-The bridge only records local events. It does not directly control Claude or any
-GUI window. The active Codex coordinator thread or a heartbeat automation must
-poll `/events`, tailor the prompt from repo state, use desktop control to paste
-into the correct GUI chat, and then mark the event handled.
+The bridge records local events. Its former coordinator polled `/events`, used
+desktop control to paste a prompt into the external chat, and marked the event handled.

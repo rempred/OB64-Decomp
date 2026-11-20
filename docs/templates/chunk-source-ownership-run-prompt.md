@@ -1,5 +1,8 @@
 # Multi-Chunk Source-Ownership Run Prompt Template
 
+This template records the original MIPS ownership program. For a new structural
+assignment, use the [audit](../AUDIT.md) and [current Director routing](../WORKFLOW.md#director-event-continuity).
+
 Use this template for future Rev 0 original-MIPS source-ownership runs. The
 default unit of work is still two adjacent 64 KiB chunks, but the coordinator
 may choose three adjacent chunks when the previous run is clean, the next range

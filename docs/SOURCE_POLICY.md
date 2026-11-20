@@ -269,6 +269,7 @@ complete wave passes final verification. A single successful final wave report
 can supply the complete-ROM and ownership evidence for every included target.
 Every wave target must be present and `PURE_C` in that run's authoritative report.
 Ordinary matching acceptance requires no independent reviewer after these canonical gates pass.
+Public replies and acceptance of a contributor PR follow [Joe's review policy](../AGENTS.md#pull-request-notifications-and-review).
 Source classification alone or a successful ROM build alone does not establish acceptance.
 Do not run full-ROM verification separately for each target to establish source class.
 The existing accepted baseline may contain hybrid sources; they remain separate

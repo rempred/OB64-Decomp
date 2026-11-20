@@ -13,6 +13,10 @@ Rev 1 is out of scope until the Rev 0 build and workflow are stable.
 
 ## Read Order
 
+Outside contributors and agents working in their forks start with [CONTRIBUTING.md](CONTRIBUTING.md).
+The staffing, checkout and chat-routing rules below govern Joe's assigned team. Anyone
+proposing matching C uses the same source, ownership, relocation and byte-equality rules.
+
 **Director priority reading.** Start with the [Director handoff](docs/Plans/cursors/director.md)
 and [current queue](docs/NEXT_STEPS.md). Before proposing a matching program or
 briefing a worker, read [How Ogre Battle 64 matching actually works](docs/research/how-matching-works-20261117.md).
@@ -144,7 +148,7 @@ under the production writer or send that writer routine progress messages. Work 
 with one production source/build writer.
 The Director assigns workers separate complete waves, preferably from less-related families
 whose accepted inputs are stable. Each worker handles one target at a time; a function or
-coupled producer belongs to one source worker. Parent top-level task transport requirements do not apply.
+coupled producer belongs to one source worker. Use the decomp program's native Director route.
 Independent read-only research/review and explicitly disjoint documentation work may run alongside that writer.
 
 Inter-agent communication is exception-based. Contact the Director for a complete-wave handoff,
@@ -198,7 +202,8 @@ integrates and verifies it in its dedicated thread. Matching workers may continu
 reasoning while native checks are drained, and refresh affected inputs before resuming those checks.
 
 Use the accepted structural owner as-is, reconstruct the function in C, and iterate with the linked diff.
-Run the final full-ROM build and normal verifier only after the complete assigned wave is ready.
+Once the complete assigned wave is ready, the integrator runs the normal verifier.
+It builds CURRENT as needed.
 
 Ordinary matching-wave completion does not require independent review. The canonical verifier,
 including every assigned target's `PURE_C` classification, ownership, placement, relocation,
@@ -331,17 +336,15 @@ structural audit; private-only follow-up changes retain focused tests and indepe
 
 ## Normal Matching Wave
 
-The normal loop is:
+For a Director-managed wave, the roles share this loop:
 
 ```text
-choose accepted target
-→ write/adjust C
-→ diff <symbol>
-→ confirm mechanical PURE_C and exact relocation contract
-→ record provisional candidate; continue with the next wave target
-→ after the complete wave, run verify once on the combined result
-→ confirm every wave target is PURE_C in that final report
-→ completed-wave integration; verify changed integration inputs
+Director assigns complete membership and prepares the private workbench inputs with the integrator
+→ source worker reconstructs, compares and preserves each candidate in its private root
+→ complete-wave handoff to the Director
+→ integrator reconciles sources and contracts, runs linked diffs and checks PURE_C
+→ integrator runs the verifier on the combined wave and checks every target in the final report
+→ Director confirms the evidence and releases the wave
 ```
 
 Do not run `build.js`, `verify.js --target`, or equivalent full-ROM acceptance commands after each function.
@@ -373,16 +376,16 @@ result remains `HYBRID_C exact`; it is not matching C and does not count toward 
 
 ## Sequential Work
 
-Do not create a Git branch or worktree unless Joe explicitly directs you to create it. A request to
+In Joe's shared checkout, do not create a Git branch or worktree unless Joe explicitly directs you to create it. A request to
 parallelize work, delegate a task, make a commit, or continue autonomously is not authorization to
 create either one. Work in the current checkout and branch by default.
 
 Do not create or use concurrent development branches/worktrees for this decomp program.
 Preserve historical worktrees and their evidence. They are read-only inputs unless Joe changes this direction.
 
-Each worker owns one target at a time and uses focused linked-diff and source-policy checks within its assigned wave.
-Small commits remain provisional until final wave verification passes; ordinary waves need no independent review.
-Record the completed wave on `main`; verify changed combined integration inputs.
+Each source worker owns one target at a time and uses the assigned private workbench.
+The integrator runs the canonical linked diff and source-policy checks, verifies the complete
+wave, and records the accepted result on `main`. A provisional commit supplies source history.
 
 No Highway, Lane, Lease, Checkpoint, frozen-tree, promotion-receipt, or handoff protocol is
 required.
