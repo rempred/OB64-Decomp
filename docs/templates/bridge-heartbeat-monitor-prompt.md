@@ -1,8 +1,8 @@
 # Bridge Heartbeat Monitor Prompt Template
 
-Use this as the prompt for a Codex heartbeat automation attached to the coordinator
-thread. It assumes `tools/agent_bridge/agent_bridge_server.js` is running locally
-and that the external agent is a separate GUI chat, usually Claude.
+**Historical template from the earlier GUI bridge.** Current Director-managed
+programs use [native stop and attention events](../WORKFLOW.md#director-event-continuity).
+The prompt below records how the earlier coordinator polled its local bridge.
 
 ```text
 Poll the OB64 agent bridge at `http://127.0.0.1:17776/events?status=new`.

@@ -4,7 +4,10 @@ This document defines the ordinary function-matching loop for *Ogre Battle 64:
 Person of Lordly Caliber*, US Rev 0. It uses the accepted structural model and
 toolchain and keeps them unchanged.
 
-Read [the agent guide](../AGENTS.md) first. Source classification is defined by
+If you are submitting from a fork, start with [the contributor guide](../CONTRIBUTING.md).
+It covers a fresh checkout, local checks, and the handoff to a maintainer with
+the pinned build host. The Director, worker and integrator instructions here
+describe Joe's assigned team. Read [the agent guide](../AGENTS.md) for those roles. Source classification is defined by
 [the source policy](SOURCE_POLICY.md). If the work changes a boundary, segment,
 overlay, placement, executable extent, linker ownership rule, or toolchain
 contract, stop using this ordinary workflow and follow
@@ -18,6 +21,12 @@ candidates. Read the [matching study](research/how-matching-works-20261117.md)
 before choosing a family or briefing workers. Its construction examples show
 how a repeated compiler result or an unresolved relocation can change the next
 experiment.
+
+The paired-assistant launcher and native chat watchers use Joe's machine-local
+configuration and session identities. Supply those routes when briefing an
+assigned worker. Put reusable matching evidence in the tracked research records
+and give PR authors a reproducible command, source location or first differing
+offset when feedback depends on a maintainer's local result.
 
 On a fresh checkout, the tracked audit linked from the handoff identifies the
 last accepted build. Follow [local setup](../README.md#start-here) when you need
@@ -128,7 +137,7 @@ Route retrieval/data-seeking or parsing-only assignments to Sol High under the a
 Use the program named in [the active queue](NEXT_STEPS.md) for complete family
 scope, dependencies and assigned ownership. The [October sequential plan](Plans/sequential-main-program.md)
 preserves earlier family membership and decisions.
-Do not create or use concurrent development branches/worktrees. Preserve historical worktrees as read-only evidence.
+For that internal program, use the assigned checkout. Preserve historical worktrees as read-only evidence.
 Independent read-only research/review and explicitly disjoint documentation work may proceed alongside matching.
 Assign source workers separate complete waves, preferably in less-related families, under
 [the private workflow below](#private-candidate-workers). Each works on one target at a time;
@@ -139,7 +148,8 @@ ready sources, runs acceptance, publishes shared research and performs authorize
 The Director makes acceptance and ownership-release decisions. For a production-role transfer,
 finish the outgoing writer's active production commands and record the next action in its existing
 cursor/handoff before releasing it; then grant the new integrator sole write authority.
-Parent top-level task transport procedures do not apply to this decomp program.
+Use the [decomp Director's native message and stop routes](#director-event-continuity)
+for these assignments.
 
 1. Follow [one-time setup](../README.md#start-here) if the workspace needs
    provisioning. The production writer prepares the selected inputs. Before
@@ -170,11 +180,13 @@ ROM build. They remain unaccepted until the combined wave passes its final gates
 Do not redefine a multi-function wave as single-function waves to retain the old cadence.
 A genuinely standalone function assignment has one wave containing that function.
 
-Ordinary matching-wave completion does not require independent review. Passing
+Ordinary matching-wave completion does not require an independent technical reviewer. Passing
 the complete canonical verifier and confirming every assigned target is `PURE_C`
 establishes matching acceptance for those exact inputs. A ROM build alone is
 insufficient. Director intake confirms scope and the reported proof; it does
 not repeat the matching work or require another verifier for independent review.
+For a contributor PR, the Director brings that evidence to Joe for a decision
+before replying or accepting it. [PR review policy](../AGENTS.md#pull-request-notifications-and-review)
 
 Structural changes, tooling or verification changes, and new semantic claims
 retain their applicable review requirements. Recording actual relocations under
@@ -306,8 +318,9 @@ three siblings and three lessons. No compiler corpus or persistent discovery ser
 
 Matching preparation/watch results and standalone analysis-packet results also present fresh
 research intake. If that current presentation has already been read, do not repeat the lookup.
-The lookup uses tracked records on a fresh checkout and can supplement them from an existing
-local store. It performs no code generation or source activation. Optional history problems
+On a configured workbench, the lookup uses tracked records and can supplement them from an existing
+local store. For an unprovisioned checkout, read the [tracked example and dossiers](../CONTRIBUTING.md#try-the-workflow-from-a-fresh-checkout).
+The lookup performs no code generation or source activation. Optional history problems
 do not block the ordinary compile, linked diff or final verifier. See the
 [workbench reference](MATCHING_WORKBENCH.md) for commands and evidence-state details.
 
@@ -855,7 +868,9 @@ Commit only the source and smallest necessary configuration or evidence change. 
 the integration record; ordinary matches do not need promotion manifests,
 checkpoint receipts, frozen accepted trees, or separate review packages.
 
-### 8. Start the next wave with a fresh worker
+<a id="8-start-the-next-wave-with-a-fresh-worker"></a>
+
+### 8. Staff the next wave
 
 Maintain Joe's assigned number of top-level matching workers on disjoint complete waves from the existing assigned program,
 with private candidate ownership for each and a separate dedicated production integrator. The Director owns
@@ -867,11 +882,12 @@ holds only affected native commands; continue useful authorized private preparat
 second assignment is genuinely blocked, record the exact dependency, owner and release condition
 in the existing cursor; do not manufacture activity or expand the program to fill a slot.
 
-After normal acceptance of the complete assigned wave, the Director starts a fresh matching
-top-level worker using `gpt-6.1-sol` with reasoning `xhigh`. Preserve the dedicated integration thread
+After normal acceptance of the complete assigned wave, the Director applies Joe's staffing
+instructions for that program, using the [default continuation rules](../AGENTS.md#1-normal-matching-work)
+when no override applies. Preserve the dedicated integration thread
 and the other workers' private candidate ownership. Use subagents for bounded research,
-tooling and review. Do not fork the outgoing conversation's full history.
-Release its source/private-root ownership before reuse, stop its retired watchers, and attach
+tooling and review. When replacing a worker, start a fresh conversation.
+Release the outgoing worker's source/private-root ownership before reuse, stop its retired watchers, and attach
 the replacement's own native message and stop monitoring without copying delivery state. A private
 candidate packet alone is not wave acceptance; coordinate its normal production integration
 before treating that wave as completed. Do not give a matching worker another wave's integration

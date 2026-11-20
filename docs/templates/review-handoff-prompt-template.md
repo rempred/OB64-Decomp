@@ -1,5 +1,8 @@
 # Review Handoff Prompt Template
 
+This is the historical chunk-ownership handoff. For an assigned matching wave,
+use the [private matching-worker guide](matching-c-agent-prompt-guide.md).
+
 Fallback template only. Future chunk prompts should normally require the agent to
 create the review handoff before it pings the bridge. Use this follow-up prompt
 only when a chunk/run is complete but the agent did not create a sufficient review

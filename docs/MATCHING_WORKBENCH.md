@@ -183,8 +183,9 @@ existing owner-prefix eligibility field. Grouped prepare, watch and probe
 requests reject before generation, candidate storage or compilation. Automatic
 sweeps exclude grouped members and report their reasons in `excludedTargets`,
 including with `--include-solved` and the smallest-leaves preset. Complete-group
-scratch candidates remain unsupported. Edit the shared source and use canonical
-`node tools/diff.js <member>` for whole-group source work.
+scratch candidates remain unsupported. On a provisioned contributor fork or in
+the integrator's checkout, edit the shared source and run `node tools/diff.js <member>`
+for whole-group work. A private worker reports an unsupported group to the Director.
 
 The workbench uses the same normalized baserom and authenticated production
 compiler, assembler, preprocessing, and host tools as the normal workflow. It

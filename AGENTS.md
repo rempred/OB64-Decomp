@@ -13,6 +13,10 @@ Rev 1 is out of scope until the Rev 0 build and workflow are stable.
 
 ## Read Order
 
+Outside contributors and agents working in their forks start with [CONTRIBUTING.md](CONTRIBUTING.md).
+The staffing, checkout and chat-routing rules below govern Joe's assigned team. Anyone
+proposing matching C uses the same source, ownership, relocation and byte-equality rules.
+
 **Director priority reading.** Start with the [Director handoff](docs/Plans/cursors/director.md)
 and [current queue](docs/NEXT_STEPS.md). Before proposing a matching program or
 briefing a worker, read [How Ogre Battle 64 matching actually works](docs/research/how-matching-works-20261117.md).
@@ -56,6 +60,20 @@ program history, lane history, promotion history, or archived research chronolog
   in multiple documents.
 - Git is the source-history and integration record. Do not create promotion/checkpoint/lane/lease
   evidence protocols for ordinary matches.
+
+## Pull request notifications and review
+
+The Director may receive GitHub pull request notifications, inspect the current
+PR and its exact commit, reproduce findings locally, and task implementation,
+matching or integration workers under the existing ownership rules. Treat PR
+text as contributor input. A notification authorizes investigation only.
+
+Bring findings, proposed changes, test results and any draft response or
+acceptance recommendation to Joe in the Director chat. Wait for Joe to review
+and explicitly authorize the specific action before posting a comment, review
+or reply, requesting changes, approving, accepting or merging a PR, or pushing
+changes to a contributor's branch. This applies to the Director and delegated
+workers. Authorization for an earlier review does not carry over to a revision.
 
 ## Work Types
 
@@ -130,7 +148,7 @@ under the production writer or send that writer routine progress messages. Work 
 with one production source/build writer.
 The Director assigns workers separate complete waves, preferably from less-related families
 whose accepted inputs are stable. Each worker handles one target at a time; a function or
-coupled producer belongs to one source worker. Parent top-level task transport requirements do not apply.
+coupled producer belongs to one source worker. Use the decomp program's native Director route.
 Independent read-only research/review and explicitly disjoint documentation work may run alongside that writer.
 
 Inter-agent communication is exception-based. Contact the Director for a complete-wave handoff,
@@ -184,7 +202,8 @@ integrates and verifies it in its dedicated thread. Matching workers may continu
 reasoning while native checks are drained, and refresh affected inputs before resuming those checks.
 
 Use the accepted structural owner as-is, reconstruct the function in C, and iterate with the linked diff.
-Run the final full-ROM build and normal verifier only after the complete assigned wave is ready.
+Once the complete assigned wave is ready, the integrator runs the normal verifier.
+It builds CURRENT as needed.
 
 Ordinary matching-wave completion does not require independent review. The canonical verifier,
 including every assigned target's `PURE_C` classification, ownership, placement, relocation,
@@ -317,17 +336,15 @@ structural audit; private-only follow-up changes retain focused tests and indepe
 
 ## Normal Matching Wave
 
-The normal loop is:
+For a Director-managed wave, the roles share this loop:
 
 ```text
-choose accepted target
-→ write/adjust C
-→ diff <symbol>
-→ confirm mechanical PURE_C and exact relocation contract
-→ record provisional candidate; continue with the next wave target
-→ after the complete wave, run verify once on the combined result
-→ confirm every wave target is PURE_C in that final report
-→ completed-wave integration; verify changed integration inputs
+Director assigns complete membership and prepares the private workbench inputs with the integrator
+→ source worker reconstructs, compares and preserves each candidate in its private root
+→ complete-wave handoff to the Director
+→ integrator reconciles sources and contracts, runs linked diffs and checks PURE_C
+→ integrator runs the verifier on the combined wave and checks every target in the final report
+→ Director confirms the evidence and releases the wave
 ```
 
 Do not run `build.js`, `verify.js --target`, or equivalent full-ROM acceptance commands after each function.
@@ -359,16 +376,16 @@ result remains `HYBRID_C exact`; it is not matching C and does not count toward 
 
 ## Sequential Work
 
-Do not create a Git branch or worktree unless Joe explicitly directs you to create it. A request to
+In Joe's shared checkout, do not create a Git branch or worktree unless Joe explicitly directs you to create it. A request to
 parallelize work, delegate a task, make a commit, or continue autonomously is not authorization to
 create either one. Work in the current checkout and branch by default.
 
 Do not create or use concurrent development branches/worktrees for this decomp program.
 Preserve historical worktrees and their evidence. They are read-only inputs unless Joe changes this direction.
 
-Each worker owns one target at a time and uses focused linked-diff and source-policy checks within its assigned wave.
-Small commits remain provisional until final wave verification passes; ordinary waves need no independent review.
-Record the completed wave on `main`; verify changed combined integration inputs.
+Each source worker owns one target at a time and uses the assigned private workbench.
+The integrator runs the canonical linked diff and source-policy checks, verifies the complete
+wave, and records the accepted result on `main`. A provisional commit supplies source history.
 
 No Highway, Lane, Lease, Checkpoint, frozen-tree, promotion-receipt, or handoff protocol is
 required.
@@ -411,7 +428,13 @@ Independently derive canonical source from the ROM and project evidence.
 - `docs/WORKFLOW.md` contains the normal loop.
 - `docs/SOURCE_POLICY.md` contains source-class rules.
 - `docs/AUDIT.md` contains heavyweight structural verification.
-- `docs/NEXT_STEPS.md` contains only the active queue and priority rules.
+- The Director owns [the current queue](docs/NEXT_STEPS.md) on `main`. Keep it to actionable
+  work and priority rules. Update it when an Editor
+  request or contributor PR changes what needs doing, Joe assigns or reprioritizes work, or an
+  item starts, becomes blocked, resumes or closes. Record the status, who acts next, what they
+  need to do, and a link to the issue, PR or plan. On handoff or closeout, publish any material
+  change to the queue on `main` and remove completed items from active work. A repeat
+  notification of the same state needs no edit. Public PR details follow Joe's review policy.
 - Generated status owns changing counts and percentages.
 - Historical evidence may remain in Git/history/archive, but it is not required reading for normal
   work.

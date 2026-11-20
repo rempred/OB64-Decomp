@@ -5,9 +5,14 @@ Rev 0. The matching baseline replaces accepted MIPS assembly owners with C while
 continuing to rebuild the normalized retail ROM byte-for-byte. US Rev 1 is out
 of scope.
 
+To pick up an Editor request, submit a match, or report a finding, see the
+[contributor guide](CONTRIBUTING.md).
+For a first look with Node.js and your own ROM, follow the
+[fresh-checkout example](CONTRIBUTING.md#try-the-workflow-from-a-fresh-checkout).
+
 ## Start here
 
-Run commands from the repository root. The repository does **not** include an
+This section sets up the pinned build host. Run commands from the repository root. The repository does **not** include an
 installer or download the required ROM and toolchains. Before the first build,
 provide the authenticated local dependencies described below.
 
@@ -48,7 +53,7 @@ verification commands do.
 the pinned m2c checkout. m2c is optional for `build`, `diff`, and `verify`, but it
 is part of the recommended matching setup check.
 
-For each accepted target in the assigned wave, write or adjust its C source and use:
+In a provisioned contributor fork or the integration checkout, check each active C target with:
 
 ```powershell
 node tools/diff.js <symbol>
@@ -69,8 +74,9 @@ Do not run `build.js` or `verify.js --target` after each function; `--target` st
 checks the complete ROM and recompiles every active C replacement.
 A successful matching-C result requires exact linked target bytes, sole C-object
 ownership, `PURE_C` source, and an exact complete ROM for the combined wave.
-Ordinary matching waves require no independent review; the canonical verifier
-and each wave target's final source classification establish matching acceptance.
+The canonical verifier and each wave target's final source classification establish
+the technical match. Joe reviews and authorizes the Director's public PR actions
+under the [PR review policy](AGENTS.md#pull-request-notifications-and-review).
 Structural, tooling/verification, and semantic changes retain their applicable review.
 Verify changed integration inputs at the completed-wave boundary. An unchanged
 commit or handoff does not require another full-ROM run.
@@ -192,5 +198,5 @@ Useful optional references are
 [docs/KMC_GCC_MATCHING_NOTES.md](docs/KMC_GCC_MATCHING_NOTES.md) for reproduced
 compiler-matching observations, [tools/README.md](tools/README.md) for the tool
 index, and
-[the one-function agent prompt guide](docs/templates/matching-c-agent-prompt-guide.md)
+[the private matching-worker prompt guide](docs/templates/matching-c-agent-prompt-guide.md)
 for assigned matching work.

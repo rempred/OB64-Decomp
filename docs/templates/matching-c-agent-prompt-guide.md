@@ -1,20 +1,18 @@
 # Ordinary Matching-C Agent Prompt Guide
 
-Use this guide when assigning accepted functions within an ordinary matching wave.
-Name the complete wave and its completion boundary. A standalone one-function
-assignment is one wave; do not split an existing wave to force per-function final builds.
-Structural corrections and semantic research need their own prompts.
+Use this guide to brief a private source worker in Joe's assigned program.
+Contributors working in their own forks use [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
 ## Before Writing the Prompt
 
 Give the worker a resolved task, not a target-selection problem. Include:
 
 - repository path, symbol, complete wave target list, and wave identifier;
-- intended C source path;
+- assigned scratch root, candidate source path and exact guarded command for its selected inputs/tools;
 - accepted assembly/disassembly owner;
 - only the relevant dossier or subsystem notes;
 - files already dirty that must be preserved;
-- whether the worker should commit; and
+- current Director identity, tested native route, assigned consultation instructions and any program-specific overrides; and
 - the required result: exact `PURE_C`, exploratory C, or analysis only.
 
 For a `PURE_C` assignment, avoid a target already known to require secondary
@@ -22,17 +20,16 @@ entries, hand-authored instructions, or another assembler-only mechanism.
 
 ## Keep the Worker on the Matching Loop
 
-Ask for the simplest plausible C reconstruction, then an early canonical diff.
-The normal loop is:
+Give the worker the game behavior or caller that consumes the target. Include
+one relevant worked example from the [matching study](../research/how-matching-works-20261117.md)
+and a first comparison that can distinguish two explanations. Follow the
+[matching approach](../WORKFLOW.md#worker-matching-approach-addendum).
 
 ```text
-inspect accepted target
-→ write plausible C
-→ node tools/diff.js <symbol>
-→ change C in response to the concrete diff
-→ confirm PURE_C and exact relocation contract; record provisional candidate
-→ continue through the remaining wave targets
-→ run final full-ROM verification once for the complete wave
+Worker: read target intake and assembly, then generate or resume the candidate in the assigned root.
+Worker: compare early, test the first meaningful difference, and preserve useful source and evidence.
+Worker: finish the complete assigned wave and send the handoff to the Director.
+Integrator: reconcile the wave, check linked bytes, relocations and source class, then run the final verifier.
 ```
 
 Compiler assembly, object dumps, and small probes are useful when explaining a
@@ -40,24 +37,10 @@ specific mismatch. They should not replace the diff loop or become a long attemp
 to predict the compiler before the first build. Manual byte equality is diagnostic
 only; it is not acceptance.
 
-The repository also has an optional matching workbench. It can prepare a first
-draft and recover earlier experiments without making canonical source changes:
-
-```text
-node tools/match.js inspect <symbol>
-node tools/match.js prepare <symbol> --variant structured
-node tools/match.js history <symbol>
-node tools/match.js best <symbol>
-node tools/match.js watch <symbol> --source <candidate.c>
-```
-
-Let the worker use it when useful; do not turn every command into a mandatory
-ritual. `--variant structured` produces one ordinary first draft; omitting
-`--variant` runs the complete configured ensemble and is useful when the
-baseline draft is not exact. A scratch result labeled `exact-bytes` still needs
-to be deliberately adapted into `src/` and pass the normal linked diff and
-verifiers. For a close hard case, `family`, `context`, `classify`, `compare`,
-and `probe` can answer a specific question.
+Supply the commands that passed preflight for the worker's complete roster.
+The [private workbench](../WORKFLOW.md#private-candidate-workers) gives examples
+for live inputs. The [selected-input instructions](../WORKFLOW.md#complete-wave-preparation-and-immutable-private-tool-selection)
+specify the supported commands and launcher for each tool version.
 
 Do not prescribe register allocation, exact C syntax, or a guessed semantic name
 unless evidence makes it necessary. Let the worker use the diff to discover the
@@ -107,38 +90,16 @@ scoped experiments with the pinned compiler. It distinguishes reproduced
 observations from explanations that were not established. Read it for possible
 experiments, not as a recipe for predicting register allocation.
 
-An ignored scratch compile-and-word-compare loop may shorten focused experiments
-if it uses the authenticated compiler, exact production flags, accepted section
-adjustment, and pinned assembler. It remains diagnostic. Raw-object `j`/`jal`
-words may not resolve until linking, and only the canonical linked diff and
-verifiers can accept the target.
-
-For a newly activated target, `tools/diff.js` may report that its relocation
-contract is `MISSING` and print a candidate. That is expected discovery output,
-not a verifier failure. Review the candidate, add the smallest exact entry to
-`config/matching-c-linkage.json` (including an explicit empty list when there
-are no load-relevant relocations), and rerun the canonical diff.
-Run the final verifier only after the complete wave is ready.
-Never create a target record in the frozen `config/phase8/matching-c.json`.
+The private workbench compares the candidate with the authenticated inputs.
+Raw-object `j`/`jal` words may not resolve until linking. Check the relocation
+before treating a different address as evidence for a source change.
 
 ## Completion and Stop Conditions
 
-Require these focused checks per function, including an exact reviewed relocation contract:
-
-```text
-node tools/diff.js <symbol>
-node tools/source_policy.js --target <symbol>
-```
-
-Intermediate results and small commits remain provisional. Once the complete
-wave is ready, run `node tools/verify.js` once on its combined final source.
-Confirm every wave target is `PURE_C` in the authoritative report from that run.
-Do not loop the full verifier over targets or require it for intermediate commits.
-For a standalone one-function wave, the target purity option can replace the
-single final command; it must not add a second verifier run.
-Ordinary matching waves require no independent review or review-only verifier repeat.
-Verify changed integration inputs at the completed-wave boundary, not after each function.
-Separate structural, tooling, and semantic changes retain their applicable review requirements.
+The worker keeps the best recoverable candidate and its comparison for each
+target. At the complete-wave handoff, the integrator owns source activation,
+relocation records, linked diffs, mechanical source classification, and final
+whole-ROM verification. [Integration and verification](../WORKFLOW.md#6-verify-the-complete-wave)
 
 The worker must stop and report the exact evidence if:
 
@@ -153,62 +114,26 @@ help explain a blocker, but it must not be reported as a verified match.
 ## Copyable Prompt
 
 ```text
-Match the assigned targets as `PURE_C` candidates for complete wave `<wave-id>` in:
+Prepare PURE_C candidates for <complete wave roster> in <assigned checkout>.
+Your private root is <path>. Start with <symbol>, owned by <assembly path and ROM range>.
+Its consumer is <caller or game behavior>. Relevant prior evidence is <tracked paths>.
+Use <worked example> to distinguish <two plausible causes> at <first difference>.
 
-`<absolute repository path>`
+Use <preflighted launcher and commands, with exact root and input/tool selection>.
+Read the current intake. Check the initial or resumed C against every required body
+and the full disassembly. Compile early and use the first meaningful instruction
+or relocation difference to choose the next experiment. Keep the best candidate,
+useful comparisons and your cursor in your assigned private root.
 
-Target context:
-- Complete wave targets: `<symbols>`
-- Current target: `<symbol>`
-- C source: `<source path>`
-- Accepted assembly/disassembly: `<owner path>`
-- Relevant evidence: `<specific paths, or "none">`
-- Preserve these existing changes: `<paths, or "working tree is clean">`
-- Commit policy: `<provisional scoped commits allowed / Director commits; do not commit>`
+Read AGENTS.md, docs/SOURCE_POLICY.md and the Worker matching approach addendum
+in docs/WORKFLOW.md. Follow <program-specific staffing and consultation instructions>.
+Use <tested native message route and exact Director chat> for a complete handoff,
+a blocker needing a decision, a shared-input coordination need, or a requested
+answer. Keep routine experiments in your cursor. Send a decision request with its
+evidence before stopping. Follow the workflow's “When matching ideas run out”
+procedure for a plateau. Preserve unrelated work and the accepted structural owners.
 
-Read `AGENTS.md`, `docs/WORKFLOW.md`, and `docs/SOURCE_POLICY.md`, followed only
-by the target-specific evidence above. For a difficult compiler-output match,
-also read `docs/KMC_GCC_MATCHING_NOTES.md` and
-`docs/dossiers/func-000135a0.md`. Inspect Git status before editing. Do not create
-a branch or worktree.
-
-This is an ordinary function match. Preserve the accepted function boundary,
-placement, overlay/segment model, linker ownership rules, and toolchain. Keep the
-implementation genuinely `PURE_C`: no inline assembly, register-asm bindings,
-raw instruction injection, or section tricks.
-
-Work directly toward a match:
-1. Inspect the accepted target and nearby calling context. You may use
-   `node tools/match.js inspect <symbol>`, `history <symbol>`, and
-   `prepare <symbol> --variant structured` to recover a bounded first draft
-   and earlier research. If that draft is not exact, the default `prepare
-   <symbol>` may run the full configured ensemble.
-2. Write the simplest plausible C reconstruction.
-3. Run `node tools/diff.js <symbol>` early.
-4. Iterate from the concrete instruction/byte diff. `match.js watch` can shorten
-   scratch iterations; inspect compiler assembly or use a probe only when it
-   answers a specific mismatch.
-5. Once exact, run:
-   - `node tools/source_policy.js --target <symbol>`
-   - `git diff --check`
-   - `git status --short --branch`
-   Confirm the canonical diff report's exact linked bytes and reviewed relocation contract.
-6. Record the provisional candidate and continue with the next wave target.
-   Do not run `build.js`, `verify.js --target`, or a full-ROM acceptance gate per function.
-7. Once the complete wave is ready, run `node tools/verify.js` once.
-   It builds CURRENT when needed; do not run a redundant final build first.
-   Confirm every wave target is PURE_C in its authoritative source-policy report.
-   Preserve final ownership, placement, relocation, target-byte, and full-ROM evidence for the entire wave.
-   No independent review is required for this ordinary matching wave.
-   Leave changed completed-wave integration verification to its assigned actor.
-
-Do not claim success from a manual compile or partial byte comparison. If a
-structural issue, tool-identity failure, or apparent need for assembly blocks the
-task, stop and report the exact command, output, and smallest concrete blocker.
-Do not weaken the canonical verification path or treat a manually reproduced
-pipeline as a substitute for it.
-
-Keep changes limited to the assigned wave source and the smallest required target
-configuration update. Preserve unrelated work. In the final report, state the
-result, files changed, canonical command results, and any remaining uncertainty.
+When the complete wave is ready, send the Director the roster, recoverable source
+paths and comparison evidence. The dedicated integrator owns tracked changes,
+canonical linked checks and the full-ROM verifier.
 ```
