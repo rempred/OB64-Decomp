@@ -428,7 +428,13 @@ Independently derive canonical source from the ROM and project evidence.
 - `docs/WORKFLOW.md` contains the normal loop.
 - `docs/SOURCE_POLICY.md` contains source-class rules.
 - `docs/AUDIT.md` contains heavyweight structural verification.
-- `docs/NEXT_STEPS.md` contains only the active queue and priority rules.
+- The Director owns [the current queue](docs/NEXT_STEPS.md) on `main`. Keep it to actionable
+  work and priority rules. Update it when an Editor
+  request or contributor PR changes what needs doing, Joe assigns or reprioritizes work, or an
+  item starts, becomes blocked, resumes or closes. Record the status, who acts next, what they
+  need to do, and a link to the issue, PR or plan. On handoff or closeout, publish any material
+  change to the queue on `main` and remove completed items from active work. A repeat
+  notification of the same state needs no edit. Public PR details follow Joe's review policy.
 - Generated status owns changing counts and percentages.
 - Historical evidence may remain in Git/history/archive, but it is not required reading for normal
   work.

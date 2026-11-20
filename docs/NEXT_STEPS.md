@@ -1,8 +1,11 @@
 # OB64 Decomp — Next Steps
 
-## Assignment status — November 18, 2026
+## Current queue
 
-**No open matching assignment.** The [Liedel renderer and glyph helper](Plans/liedel-dialogue-renderer.md) closed on main at `e82db7aa`. The Editor received both for replay of the offer and its responses. The [graduation dialogue handlers](Plans/graduation-dialogue-close.md) closed at `88369c7c`, the [Paul audio pair](Plans/paul-audio-envelope.md) at `b4beb6d4`, the [story event program](Plans/story-event-continuation.md) at `9be88806` and the [cutscene preview program](Plans/cutscene-preview-services-draft.md) at `2447f1d5`. The [Director handoff](Plans/cursors/director.md) records delivery.
+Updated November 19, 2026.
+
+- **Contributor PR #1 — waiting for a revision from @cosburn92.** Changes were requested on `6a0d314e`. When a new commit arrives, the Director checks it against the posted review. If it passes the configuration checks, the integrator runs the full Rev 0 verifier. Joe reviews the findings before a public response or acceptance. [PR and requested fixes](https://github.com/rempred/OB64-Decomp/pull/1#pullrequestreview-5986291033)
+- **Internal matching and Editor requests.** No internal matching wave is assigned. The latest requested dialogue functions were delivered to the Editor. Contributors can propose a target or pick up a posted request through the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target). [Last Editor handoff](Plans/cursors/director.md#editor-handoff)
 
 ## Unresolved source and research scope
 
