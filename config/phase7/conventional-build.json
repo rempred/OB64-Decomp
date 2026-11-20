@@ -15,10 +15,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7303,
-    "splitOwners": 61,
+    "linkSlices": 7310,
+    "splitOwners": 68,
     "overlayReservations": 19,
-    "retainedPaddingCuts": 44,
+    "retainedPaddingCuts": 51,
     "fixedOverlayNonExecutableRanges": 4,
     "nonDescriptorLoadSlabs": 30,
     "rspRows": 13
@@ -768,6 +768,118 @@
       "compilerFunctions": [
         {
           "symbol": "func_00289558",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row330-terminal",
+      "rowIndex": 330,
+      "romStart": 96168,
+      "romEndExclusive": 96176,
+      "edge": "terminal",
+      "sourceSha256": "483624493EF2867F214CC9B3E01CE85EB1D1E867ADCCA25C738F3AD10C0C55C0",
+      "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00017664",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row340-terminal",
+      "rowIndex": 340,
+      "romStart": 99324,
+      "romEndExclusive": 99328,
+      "edge": "terminal",
+      "sourceSha256": "7080BC4A6DA29CA6313B3D4DA7C61532CD794D2B9B010A13344FA548E9725932",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_000183c4",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row1047-terminal",
+      "rowIndex": 1047,
+      "romStart": 300504,
+      "romEndExclusive": 300512,
+      "edge": "terminal",
+      "sourceSha256": "09A0F46CF68BD607D2BEE1C60655CF95FBCC75044DAEBF67E79419AFD91D8CD7",
+      "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00049574",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row1265-terminal",
+      "rowIndex": 1265,
+      "romStart": 377292,
+      "romEndExclusive": 377296,
+      "edge": "terminal",
+      "sourceSha256": "4377E7525A1F7E7A75CBBB143A12292F24BDDA52BB8B2878A46C81C95BD4BD78",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_0005c1a8",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row2226-terminal",
+      "rowIndex": 2226,
+      "romStart": 1072316,
+      "romEndExclusive": 1072320,
+      "edge": "terminal",
+      "sourceSha256": "21F6736C878058C785D03AA0BD018A70359A609AF4E7DDB3B577443AB6792E95",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00105C78",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row3989-terminal",
+      "rowIndex": 3989,
+      "romStart": 2177864,
+      "romEndExclusive": 2177872,
+      "edge": "terminal",
+      "sourceSha256": "6FAE73416E50833D18EA53C17CE1750506BAEA555E182BC516F622F200A4DB05",
+      "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "compilerFunctions": [
+        {
+          "symbol": "func_00213B24",
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ]
+    },
+    {
+      "id": "routine-row4258-terminal",
+      "rowIndex": 4258,
+      "romStart": 2339804,
+      "romEndExclusive": 2339808,
+      "edge": "terminal",
+      "sourceSha256": "8B4127C0067DC54744CBB6BCD2B23E9191B9E706447451A904032101A140128C",
+      "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "compilerFunctions": [
+        {
+          "symbol": "func_0023B3D4",
           "binding": "GLOBAL",
           "entryEvidence": "owner"
         }
