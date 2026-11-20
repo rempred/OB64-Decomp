@@ -17,3 +17,4 @@ s16 func_00152BB4(s32 side, s32 idx, s32 k) {
     }
     return sum;
 }
+u16 func_00152CD8(u8 side, u8 idx, u8 slot);

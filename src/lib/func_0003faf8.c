@@ -19,6 +19,7 @@ s32 func_00011f08(s32 h);
 void func_00011e54(s32 h, s32 a);
 void func_000121f0(void *p);
 s32 func_00011b70(s32 a);
+void func_0003faf8(SoundChannel *ch);
 void func_0003faf8(SoundChannel *ch) {
     if ((*(s32 *)((u8 *)(ch) + (0x18))) != 0) {
         if (func_00011f08(ch->handle)) {
