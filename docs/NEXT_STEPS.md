@@ -5,7 +5,7 @@
 Updated November 20, 2026.
 
 - **Open Editor requests.** Contributors can choose from [six verified function families](Plans/editor-function-families-20261120.md) or browse the [workbench target list](../config/matching-priorities.json). Start with mission suspend/restore for the largest immediate Editor benefit or story sound command `0x6E` for a small, testable match. The list also covers battle amounts, army record ownership, target selection and strike timing. Follow the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target) to coordinate a claim.
-- **Editor integration.** The Editor Director is integrating the [926 newly accepted targets](https://github.com/rempred/OB64-Decomp/pull/1) and tracing affected features, patches and assumptions. Decomp has no internal matching wave assigned.
+- **Editor follow-up.** The Editor Director integrated the PR #1 matches into ROM export and verified a byte-identical retail rebuild. Two cutscene preview questions remain open. Story sound needs the game's resident audio state for audible playback. Branch previews still need the alternate directional-input mode. [Decomp PR #1](https://github.com/rempred/OB64-Decomp/pull/1) · [Editor closeout](https://github.com/rempred/LordlyCaliber/pull/14#issuecomment-7031488087)
 
 ## Unresolved source and research scope
 
