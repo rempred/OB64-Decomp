@@ -235243,7 +235243,34 @@
           "symbol": ".text",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 300,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0300",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "functionBytes": 92,
+        "tail": {
+          "ownerRowIndex": 300,
+          "offset": 92,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_000155c0",
@@ -235824,7 +235851,34 @@
           "symbol": "func_00023AE0",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 309,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0309",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 224
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 224
+        },
+        "functionBytes": 220,
+        "tail": {
+          "ownerRowIndex": 309,
+          "offset": 220,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00015bd0",
@@ -236401,7 +236455,34 @@
           "symbol": "osVirtualToPhysical",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 338,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0338",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "functionBytes": 152,
+        "tail": {
+          "ownerRowIndex": 338,
+          "offset": 152,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00018380",
@@ -236536,7 +236617,34 @@
           "symbol": "osSetIntMask",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 341,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0341",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "functionBytes": 76,
+        "tail": {
+          "ownerRowIndex": 341,
+          "offset": 76,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00018450",
@@ -236630,7 +236738,34 @@
           "symbol": "func_00016c38",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 345,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0345",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "functionBytes": 148,
+        "tail": {
+          "ownerRowIndex": 345,
+          "offset": 148,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_000186e0",
@@ -236677,7 +236812,34 @@
           "symbol": "func_00016c38",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 346,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0346",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 160
+        },
+        "functionBytes": 152,
+        "tail": {
+          "ownerRowIndex": 346,
+          "offset": 152,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00018780",
@@ -236706,7 +236868,34 @@
           "symbol": "func_00016c38",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 347,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0347",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 144
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 144
+        },
+        "functionBytes": 132,
+        "tail": {
+          "ownerRowIndex": 347,
+          "offset": 132,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00018810",
@@ -236741,7 +236930,34 @@
           "symbol": "func_00016c38",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 348,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0348",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 176
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 176
+        },
+        "functionBytes": 168,
+        "tail": {
+          "ownerRowIndex": 348,
+          "offset": 168,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_000188c0",
@@ -236770,7 +236986,34 @@
           "symbol": "func_00016c38",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 349,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0349",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 144
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 144
+        },
+        "functionBytes": 136,
+        "tail": {
+          "ownerRowIndex": 349,
+          "offset": 136,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00018950",
@@ -236799,7 +237042,34 @@
           "symbol": "func_00016c38",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 350,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0350",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 128
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 128
+        },
+        "functionBytes": 116,
+        "tail": {
+          "ownerRowIndex": 350,
+          "offset": 116,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_000189d0",
@@ -237237,7 +237507,34 @@
           "symbol": "D_800A9E54",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 359,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0359",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "functionBytes": 76,
+        "tail": {
+          "ownerRowIndex": 359,
+          "offset": 76,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00018f80",
@@ -237289,7 +237586,34 @@
           "symbol": "D_800A9E54",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 361,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0361",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 128
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 128
+        },
+        "functionBytes": 120,
+        "tail": {
+          "ownerRowIndex": 361,
+          "offset": 120,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00019050",
@@ -239283,7 +239607,34 @@
           "symbol": "osSetIntMask",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 379,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0379",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 60,
+        "tail": {
+          "ownerRowIndex": 379,
+          "offset": 60,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00019dd0",
@@ -239312,7 +239663,34 @@
           "symbol": "osSetIntMask",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 380,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0380",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 56,
+        "tail": {
+          "ownerRowIndex": 380,
+          "offset": 56,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00019e10",
@@ -239329,7 +239707,34 @@
           "symbol": "D_800E79A4",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 381,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0381",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "functionBytes": 24,
+        "tail": {
+          "ownerRowIndex": 381,
+          "offset": 24,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00019e30",
@@ -239358,7 +239763,34 @@
           "symbol": "func_00019524",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 382,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0382",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 128
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 128
+        },
+        "functionBytes": 116,
+        "tail": {
+          "ownerRowIndex": 382,
+          "offset": 116,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00019eb0",
@@ -239495,7 +239927,34 @@
           "symbol": "D_800E8290",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 383,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0383",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 272
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 272
+        },
+        "functionBytes": 264,
+        "tail": {
+          "ownerRowIndex": 383,
+          "offset": 264,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00019fc0",
@@ -239979,7 +240438,34 @@
           "symbol": "D_800E79AC",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 394,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0394",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 176
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 176
+        },
+        "functionBytes": 164,
+        "tail": {
+          "ownerRowIndex": 394,
+          "offset": 164,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001a4f0",
@@ -240032,7 +240518,34 @@
           "symbol": "func_00023AE0",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 395,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0395",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 192
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 192
+        },
+        "functionBytes": 188,
+        "tail": {
+          "ownerRowIndex": 395,
+          "offset": 188,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001a5b0",
@@ -240145,7 +240658,34 @@
           "symbol": "func_00019e10",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 396,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0396",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 176
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 176
+        },
+        "functionBytes": 164,
+        "tail": {
+          "ownerRowIndex": 396,
+          "offset": 164,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001a660",
@@ -240592,7 +241132,34 @@
           "symbol": "osSetIntMask",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 407,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0407",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 48
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 48
+        },
+        "functionBytes": 44,
+        "tail": {
+          "ownerRowIndex": 407,
+          "offset": 44,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001aa00",
@@ -240667,7 +241234,34 @@
           "symbol": "osSetIntMask",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 410,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0410",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 56,
+        "tail": {
+          "ownerRowIndex": 410,
+          "offset": 56,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001aaa0",
@@ -241004,7 +241598,34 @@
           "symbol": "func_0001a0f8",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 423,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0423",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "functionBytes": 88,
+        "tail": {
+          "ownerRowIndex": 423,
+          "offset": 88,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b030",
@@ -241015,7 +241636,34 @@
           "symbol": "func_0001a0f8",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 424,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0424",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 56,
+        "tail": {
+          "ownerRowIndex": 424,
+          "offset": 56,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b070",
@@ -241067,7 +241715,34 @@
           "symbol": "func_0001b0a0",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 427,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0427",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 224
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 224
+        },
+        "functionBytes": 212,
+        "tail": {
+          "ownerRowIndex": 427,
+          "offset": 212,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b240",
@@ -241108,7 +241783,34 @@
           "symbol": "bcopy",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 428,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0428",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "functionBytes": 68,
+        "tail": {
+          "ownerRowIndex": 428,
+          "offset": 68,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b290",
@@ -241119,7 +241821,34 @@
           "symbol": "func_0001a0f8",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 429,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0429",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "functionBytes": 72,
+        "tail": {
+          "ownerRowIndex": 429,
+          "offset": 72,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b2e0",
@@ -241130,7 +241859,34 @@
           "symbol": "func_0001a0f8",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 430,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0430",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 60,
+        "tail": {
+          "ownerRowIndex": 430,
+          "offset": 60,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b320",
@@ -241141,7 +241897,34 @@
           "symbol": "func_0001a0f8",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 431,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0431",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 56,
+        "tail": {
+          "ownerRowIndex": 431,
+          "offset": 56,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b360",
@@ -241176,7 +241959,34 @@
           "symbol": "osSetIntMask",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 432,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0432",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 60,
+        "tail": {
+          "ownerRowIndex": 432,
+          "offset": 60,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b3a0",
@@ -241205,7 +242015,34 @@
           "symbol": "osSetIntMask",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 433,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0433",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 64
+        },
+        "functionBytes": 56,
+        "tail": {
+          "ownerRowIndex": 433,
+          "offset": 56,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b3e0",
@@ -241371,7 +242208,34 @@
           "symbol": "osStartThread",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 435,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0435",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "functionBytes": 88,
+        "tail": {
+          "ownerRowIndex": 435,
+          "offset": 88,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b510",
@@ -241382,7 +242246,34 @@
           "symbol": "osViSwapBuffer",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 436,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0436",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 32
+        },
+        "functionBytes": 28,
+        "tail": {
+          "ownerRowIndex": 436,
+          "offset": 28,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0001b530",
@@ -241446,7 +242337,34 @@
           "symbol": ".text",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 438,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0438",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 128
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 128
+        },
+        "functionBytes": 120,
+        "tail": {
+          "ownerRowIndex": 438,
+          "offset": 120,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "ai_get_len",
@@ -242873,7 +243791,34 @@
           "symbol": "bzero",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 956,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r0956",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 352
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 352
+        },
+        "functionBytes": 348,
+        "tail": {
+          "ownerRowIndex": 956,
+          "offset": 348,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00046090",
@@ -249749,7 +250694,34 @@
           "symbol": "guMtxCatF",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 2078,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r2078",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 112
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 112
+        },
+        "functionBytes": 100,
+        "tail": {
+          "ownerRowIndex": 2078,
+          "offset": 100,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_000f6dc4",
@@ -251280,7 +252252,34 @@
           "symbol": ".text",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 2295,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r2295",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 96
+        },
+        "functionBytes": 84,
+        "tail": {
+          "ownerRowIndex": 2295,
+          "offset": 84,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00129918",
@@ -251755,11 +252754,65 @@
           "symbol": "D_801ED4A4",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 2489,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r2489",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 48
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 48
+        },
+        "functionBytes": 44,
+        "tail": {
+          "ownerRowIndex": 2489,
+          "offset": 44,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00145280",
-      "expectedRelocations": []
+      "expectedRelocations": [],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 2616,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r2616",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 16
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 16
+        },
+        "functionBytes": 12,
+        "tail": {
+          "ownerRowIndex": 2616,
+          "offset": 12,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_00145758",
@@ -252997,7 +254050,34 @@
           "symbol": "func_001460B8",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 2676,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r2676",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 112
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 112
+        },
+        "functionBytes": 104,
+        "tail": {
+          "ownerRowIndex": 2676,
+          "offset": 104,
+          "bytes": 8,
+          "fillByte": 0,
+          "sha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0015239C",
@@ -263826,7 +264906,34 @@
           "symbol": "g_func_0015DF10_default",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 3849,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r3849",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 224
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 224
+        },
+        "functionBytes": 220,
+        "tail": {
+          "ownerRowIndex": 3849,
+          "offset": 220,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_0020BCE0",
@@ -273041,7 +274148,34 @@
           "symbol": "D_8022A974",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 5414,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r5414",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "functionBytes": 76,
+        "tail": {
+          "ownerRowIndex": 5414,
+          "offset": 76,
+          "bytes": 4,
+          "fillByte": 0,
+          "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_002A7A6C",
