@@ -8553,10 +8553,6 @@
       "source": "src/overlays/descriptor_06/func_000FDE88.c"
     },
     {
-      "symbol": "func_000FE2E8",
-      "source": "src/overlays/descriptor_06/func_000FE2E8.c"
-    },
-    {
       "symbol": "func_000ffd00",
       "source": "src/overlays/descriptor_06/func_000ffd00.c"
     },

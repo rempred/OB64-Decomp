@@ -23,10 +23,10 @@ extern void *D_800B18A0;
 extern MusSchedData *D_800B18A4;
 void *func_00015edc(s32 size);
 void osCreateMesgQueue(OSMesgQueue *mq, OSMesg *msg, s32 count);
-void list_insert_head_000241f8(void *sc, OSScClient *c, OSMesgQueue *msgQ);
+void func_000241f8(void *sc, OSScClient *c, OSMesgQueue *msgQ);
 void func_00015a2c(void) {
     D_800B18A4 = func_00015edc(sizeof(MusSchedData));
     osCreateMesgQueue(&D_800B18A4->msgQ, D_800B18A4->msgbuf, 4);
     osCreateMesgQueue(&D_800B18A4->taskQ, D_800B18A4->taskbuf, 4);
-    list_insert_head_000241f8(D_800B18A0, &D_800B18A4->client, &D_800B18A4->msgQ);
+    func_000241f8(D_800B18A0, &D_800B18A4->client, &D_800B18A4->msgQ);
 }

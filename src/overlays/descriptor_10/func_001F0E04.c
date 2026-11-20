@@ -16,7 +16,7 @@ typedef struct {
     u8 b46;
     u8 b47;
 } Panel1F;
-void *memset_0002cd70(void *p, s32 c, s32 n);
+void *func_0002CD70(void *p, s32 c, s32 n);
 void bzero(void *p, s32 n);
 void func_001F0E04(Panel1F *p, s16 a) {
     p->h4 = a;
@@ -27,6 +27,6 @@ void func_001F0E04(Panel1F *p, s16 a) {
     p->hC = 0;
     p->b46 = 0;
     p->b47 = 0;
-    memset_0002cd70(p->marks, 0xFF, 0x10);
+    func_0002CD70(p->marks, 0xFF, 0x10);
     bzero(p->zero, 0x10);
 }

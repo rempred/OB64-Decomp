@@ -1,7 +1,7 @@
 typedef unsigned char u8;
 typedef unsigned int u32;
 extern u8 D_80243DB0[];
-void boot_resource_state_reset(void);
+void func_00003798(void);
 void func_00001314(void);
 void resource_arena_init(void *p, u32 size);
 void D_8009DAEC(void);
@@ -16,7 +16,7 @@ extern Gfx *gTitleCardDisplayListCursor;
 extern u8 D_801B80B0[];
 static void func_001CFA18(void);
 void func_001CF9C0(void) {
-    boot_resource_state_reset();
+    func_00003798();
     func_00001314();
     resource_arena_init(D_80243DB0, 0x80400000 - (u32)D_80243DB0);
     D_8009DAEC();

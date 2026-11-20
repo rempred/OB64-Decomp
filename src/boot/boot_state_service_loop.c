@@ -44,7 +44,7 @@ void D_80180BDC(void);
 void boot_table_mask_reconcile(void);
 void D_8016CB44(void *t);
 void D_8007FD10(void);
-void boot_state_slot_queue_service_gate(void);
+void func_000071C8(void);
 void boot_state_slot_callback_dispatch(void);
 void D_8017F490(void);
 void D_801841F4(void);
@@ -114,7 +114,7 @@ void boot_state_service_loop(s32 retrace) {
                     if (D_800E8294->update != ((void *)0)) {
                         D_800E8294->update();
                     }
-                    boot_state_slot_queue_service_gate();
+                    func_000071C8();
                     boot_state_slot_callback_dispatch();
                     D_8017F490();
                     D_801841F4();

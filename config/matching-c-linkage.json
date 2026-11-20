@@ -743,10 +743,6 @@
       "address": "0x801F0CAC"
     },
     {
-      "name": "func_00049aa0",
-      "address": "0x80173BA0"
-    },
-    {
       "name": "D_801D06DC",
       "address": "0x801D06DC"
     },
@@ -1879,10 +1875,6 @@
       "address": "0x800EB1F0"
     },
     {
-      "name": "func_0020F80C",
-      "address": "0x801CC37C"
-    },
-    {
       "name": "D_801E6AE0",
       "address": "0x801E6AE0"
     },
@@ -2209,10 +2201,6 @@
     {
       "name": "overlay_c_bss_end",
       "address": "0x8021CB30"
-    },
-    {
-      "name": "func_0004ef34",
-      "address": "0x80179034"
     },
     {
       "name": "func_00087200",
@@ -3651,10 +3639,6 @@
       "address": "0x800AF3F4"
     },
     {
-      "name": "memset",
-      "address": "0x8007F4B0"
-    },
-    {
       "name": "origsize",
       "address": "0x800AF394"
     },
@@ -4233,10 +4217,6 @@
     {
       "name": "func_0000F47C",
       "address": "0x8007F47C"
-    },
-    {
-      "name": "func_0000BFF4",
-      "address": "0x8007BBF4"
     },
     {
       "name": "g_resource_default_path",
@@ -5873,10 +5853,6 @@
     {
       "name": "D_8021C74D",
       "address": "0x8021C74D"
-    },
-    {
-      "name": "func_0005c090",
-      "address": "0x80186190"
     },
     {
       "name": "func_000F315C",
@@ -7695,10 +7671,6 @@
       "address": "0x8020A170"
     },
     {
-      "name": "func_001FF7EC",
-      "address": "0x801BC35C"
-    },
-    {
       "name": "p03_data_802098AC",
       "address": "0x802098AC"
     },
@@ -8927,14 +8899,6 @@
       "address": "0x8020A2A8"
     },
     {
-      "name": "func_0020C2C0",
-      "address": "0x801C8E30"
-    },
-    {
-      "name": "func_0020D654",
-      "address": "0x801CA1C4"
-    },
-    {
       "name": "g_func_0024BCE8_callbacks",
       "address": "0x80209700"
     },
@@ -9009,10 +8973,6 @@
     {
       "name": "e09_u16_80220F72",
       "address": "0x80220F72"
-    },
-    {
-      "name": "func_0020BDCC",
-      "address": "0x801C893C"
     },
     {
       "name": "p07_context_80220FE8",
@@ -235737,7 +235697,7 @@
         {
           "offset": "0x00000050",
           "type": "R_MIPS_26",
-          "symbol": "list_insert_head_000241f8",
+          "symbol": "func_000241f8",
           "section": ".rel.text"
         }
       ]
@@ -242203,7 +242163,7 @@
         {
           "offset": "0x000000DC",
           "type": "R_MIPS_26",
-          "symbol": "memset_0002cd70",
+          "symbol": "func_0002CD70",
           "section": ".rel.text"
         }
       ]
@@ -246143,7 +246103,7 @@
         {
           "offset": "0x0000002C",
           "type": "R_MIPS_26",
-          "symbol": "boot_resource_state_reset",
+          "symbol": "func_00003798",
           "section": ".rel.text"
         }
       ]
@@ -251142,17 +251102,6 @@
           "offset": "0x0000004C",
           "type": "R_MIPS_26",
           "symbol": "rand",
-          "section": ".rel.text"
-        }
-      ]
-    },
-    {
-      "symbol": "func_000FE2E8",
-      "expectedRelocations": [
-        {
-          "offset": "0x0000007C",
-          "type": "R_MIPS_26",
-          "symbol": ".text",
           "section": ".rel.text"
         }
       ]
@@ -261316,7 +261265,7 @@
         {
           "offset": "0x00000020",
           "type": "R_MIPS_26",
-          "symbol": "boot_resource_state_reset",
+          "symbol": "func_00003798",
           "section": ".rel.text"
         },
         {
@@ -262132,7 +262081,7 @@
         {
           "offset": "0x0000003C",
           "type": "R_MIPS_26",
-          "symbol": "memset_0002cd70",
+          "symbol": "func_0002CD70",
           "section": ".rel.text"
         },
         {
@@ -274702,7 +274651,7 @@
         {
           "offset": "0x000002CC",
           "type": "R_MIPS_26",
-          "symbol": "boot_state_slot_queue_service_gate",
+          "symbol": "func_000071C8",
           "section": ".rel.text"
         },
         {
@@ -274897,7 +274846,7 @@
         {
           "symbol": "func_00002B10",
           "offset": "0x00000378",
-          "bytes": 36,
+          "bytes": 40,
           "binding": "LOCAL",
           "entryEvidence": "fixed-address-call"
         }
@@ -275014,7 +274963,7 @@
         {
           "symbol": "func_00002C4C",
           "offset": "0x00000074",
-          "bytes": 108,
+          "bytes": 112,
           "binding": "LOCAL",
           "entryEvidence": "fixed-address-call"
         }
@@ -275924,7 +275873,7 @@
         {
           "symbol": "func_00004358",
           "offset": "0x00000080",
-          "bytes": 120,
+          "bytes": 124,
           "binding": "LOCAL",
           "entryEvidence": "fixed-address-call"
         }
@@ -276395,7 +276344,7 @@
         {
           "symbol": "func_0000FA40",
           "offset": "0x00000068",
-          "bytes": 4,
+          "bytes": 8,
           "binding": "LOCAL",
           "entryEvidence": "fixed-address-call"
         }
@@ -276750,7 +276699,7 @@
         {
           "symbol": "func_000499C4",
           "offset": "0x000000AC",
-          "bytes": 4,
+          "bytes": 8,
           "binding": "LOCAL",
           "entryEvidence": "fixed-address-call"
         }
@@ -277210,7 +277159,7 @@
         {
           "symbol": "func_001C2CE4",
           "offset": "0x0000003C",
-          "bytes": 216,
+          "bytes": 220,
           "binding": "LOCAL",
           "entryEvidence": "fixed-address-call"
         }
@@ -277261,7 +277210,7 @@
         {
           "offset": "0x00000008",
           "type": "R_MIPS_26",
-          "symbol": "boot_resource_state_reset",
+          "symbol": "func_00003798",
           "section": ".rel.text"
         },
         {
