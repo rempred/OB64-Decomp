@@ -12,7 +12,9 @@ The Director approved the plan after independent review. The tooling author is d
 - At final-wave verification, compare declarations, definitions and direct calls across active C producers, including unchanged callers of a changed definition. Use the actual linked function identity to distinguish overlays and file-local functions.
 - Check definite incompatibilities in fixed argument counts and C types. Account for typedefs, parameter adjustments, variadic functions and old-style declarations. Report which inputs or calls could not be analyzed and why.
 - Record existing confirmed disagreements in a reviewed baseline. Identify each conflict precisely enough to detect a new caller, a changed signature or an additional incompatible call. Review baseline changes in Git.
+- Distinguish changes to an incompatible call's arguments, including member names, prefix and postfix operators, and type operands. A comment or a spacing change between the same tokens should preserve the identity of the call.
 - Report interface consistency separately from source class, placement, linked bytes and whole-ROM equality. Run the check before publishing a verified result. Reuse the existing build's inputs. Ordinary candidate matching continues to use the linked diff.
+- Include the interface report in captured worker inputs. Replay must authenticate the selected report and tools, work from the captured inputs after the live checkout changes, and reject a missing or altered required report. Historical captures retain their original verification contract.
 
 ## Verification before rollout
 
