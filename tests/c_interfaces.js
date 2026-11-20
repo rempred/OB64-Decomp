@@ -1,5 +1,6 @@
 'use strict';
 const assert=require('assert'),fs=require('fs'),path=require('path');
+const {execFileSync}=require('node:child_process');
 const m=require('../tools/lib/c_interfaces');
 const root=process.env.OB64_INTERFACE_TEST_ROOT || path.resolve(__dirname,'..');
 const config=JSON.parse(fs.readFileSync(process.env.OB64_INTERFACE_TEST_CONFIG || path.join(root,'config/c-interface-frontend.json')));
@@ -98,10 +99,7 @@ for(const provider of ['void f(float x){}','int f(int x){return x;}']) {
   check(!m.compareBaseline(fixture('void f(int,...);void caller(void){f(1);f(2);}','void f(int x){}'),debt).pass,'added conflicting prototype-mode use rejected');
 }
 console.log(JSON.stringify({assertions,scratch,status:'pass'}));
-if(process.env.OB64_INTERFACE_REAL_BUILD) {
-  const output=process.env.OB64_INTERFACE_REAL_BUILD;
-  const b=JSON.parse(fs.readFileSync(path.join(output,'build-report.json')));
-  const loaded=m.loadBuild(output,b,root);
+function checkPreFixAudio(loaded) {
   const selected=loaded.units.filter(u=>['src/lib/func_00284288.c','src/overlays/descriptor_14/func_002831E0.c'].includes(u.identity.source));
   assert.strictEqual(selected.length,2);
   for(const u of selected)u.analysis=m.parse(exe,u.file,u.source);
@@ -128,4 +126,90 @@ if(process.env.OB64_INTERFACE_REAL_BUILD) {
   fs.writeFileSync(file,caller.source);caller.analysis=m.parse(exe,file,caller.source);
   assert(!m.analyze(audio,loaded.linked,loaded.authority).findings.some(f=>f.kind==='call-arity'&&f.call.name==='func_800EA604'));
   console.log('Real fixed-address audio alias and changed-call control: PASS');
+}
+
+function directArgument(node) {
+  while (node?.kind === 'ParenExpr' || node?.kind === 'ImplicitCastExpr' && node.castKind === 'LValueToRValue') {
+    node = node.inner[0];
+  }
+  return node?.kind === 'DeclRefExpr' ? node.referencedDecl : null;
+}
+
+function checkForwarding(unit, owner, aliases) {
+  function checkSource(file) {
+    const ast = JSON.parse(execFileSync(exe, [...m.FLAGS, file], { maxBuffer: 16 * 1024 * 1024, windowsHide: true }));
+    const definition = ast.inner.find(node => node.kind === 'FunctionDecl' && node.name === owner);
+    const parameters = definition.inner.filter(node => node.kind === 'ParmVarDecl');
+    assert.strictEqual(parameters.length, 2);
+    const calls = [];
+    function visit(node) {
+      if (node.kind === 'CallExpr') calls.push(node);
+      for (const child of node.inner || []) visit(child);
+    }
+    visit(definition.inner.find(node => node.kind === 'CompoundStmt'));
+    const sites = new Map();
+    for (const alias of aliases) {
+      const matching = calls.filter(call => call.inner[0].inner[0]?.referencedDecl?.name === alias);
+      assert.strictEqual(matching.length, 1, alias);
+      const call = matching[0];
+      assert.strictEqual(call.inner.length, 3, `missing forwarded argument to ${alias}`);
+      assert.strictEqual(directArgument(call.inner[2])?.id, parameters[1].id, `changed forwarded value to ${alias}`);
+      const declaration = ast.inner.find(node => node.kind === 'FunctionDecl' && node.name === alias);
+      sites.set(alias, { call, declaration });
+    }
+    return sites;
+  }
+
+  const sites = checkSource(unit.file);
+  const bytes = Buffer.from(unit.source);
+  for (const [alias, { call, declaration }] of sites) {
+    const variant = path.join(scratch, `${alias}-missing-argument.i`);
+    // Reproduce both halves of the old bug so the missing argument parses cleanly.
+    const edits = [[call.inner[1].range.end, call.range.end.offset],
+      [declaration.inner[0].range.end, declaration.range.end.offset]].sort((a, b) => b[1] - a[1]);
+    let modified = bytes;
+    for (const [from, to] of edits) {
+      const start = from.offset + from.tokLen;
+      assert.match(modified.subarray(start, to).toString('utf8'), /^\s*,/);
+      modified = Buffer.concat([modified.subarray(0, start), modified.subarray(to)]);
+    }
+    fs.writeFileSync(variant, modified);
+    assert.throws(() => checkSource(variant), new RegExp(`missing forwarded argument to ${alias}`));
+
+    const value = call.inner[2].range;
+    const wrongValue = path.join(scratch, `${alias}-constant-argument.i`);
+    fs.writeFileSync(wrongValue, Buffer.concat([bytes.subarray(0, value.begin.offset), Buffer.from('0'),
+      bytes.subarray(value.end.offset + value.end.tokLen)]));
+    assert.throws(() => checkSource(wrongValue), new RegExp(`changed forwarded value to ${alias}`));
+  }
+}
+
+function checkCurrentAudio(loaded) {
+  const gain = 'src/overlays/descriptor_14/func_002831E0.c';
+  const route = 'src/lib/func_00208DC8.c';
+  const pairs = [['src/lib/func_00284288.c', gain, 'func_002831E0'],
+    [route, 'src/lib/func_0003fb94.c', 'func_800EA604']];
+  const selected = loaded.units.filter(unit => pairs.some(([caller, provider]) => [caller, provider].includes(unit.identity.source)));
+  assert.strictEqual(selected.length, 4);
+  for (const unit of selected) unit.analysis = m.parse(exe, unit.file, unit.source);
+  const result = m.analyze(selected, loaded.linked, loaded.authority);
+  for (const [caller, provider, name] of pairs) {
+    const samePair = item => item.caller.source === caller && item.provider.source === provider;
+    assert.strictEqual(result.edges.filter(edge => samePair(edge) && edge.name === name && edge.count === 2).length, 1, name);
+    assert(!result.findings.some(finding => samePair(finding) && (finding.call?.name || finding.declaration?.name) === name), name);
+  }
+  checkForwarding(selected.find(unit => unit.identity.source === gain), 'func_002831E0', ['D_800EA838', 'D_800EA884']);
+  checkForwarding(selected.find(unit => unit.identity.source === route), 'func_00208DC8', ['func_800EA604']);
+  console.log('Current audio aliases forward the second argument. Missing and changed argument controls passed.');
+}
+
+if (process.env.OB64_INTERFACE_REAL_BUILD) {
+  const output = process.env.OB64_INTERFACE_REAL_BUILD;
+  const preFixRoot = process.env.OB64_INTERFACE_PRE_FIX_INPUT_ROOT;
+  const build = JSON.parse(fs.readFileSync(path.join(output, 'build-report.json')));
+  // The pre-fix root is the data directory of a retained pre-fix input capture.
+  // Use the live input root for the current-build regression.
+  const loaded = m.loadBuild(output, build, preFixRoot || root);
+  if (preFixRoot) checkPreFixAudio(loaded);
+  else checkCurrentAudio(loaded);
 }
