@@ -2,9 +2,9 @@
 
 ## Current queue
 
-Updated November 20, 2026.
+Updated November 21, 2026.
 
-- **PR #3 awaits a contributor update.** The Director sent @cosburn92 the tested two-file patch for the 39-function revision. Once the updated commit arrives, the integrator will run final verification, including the C interface check, and the Director will bring the results to Joe for a merge decision. [Review and patch](https://github.com/rempred/OB64-Decomp/pull/3#pullrequestreview-5994614816)
+- **PR #3 is in maintainer verification.** The integrator is applying the reviewed two-file fix to @cosburn92’s submission and verifying the combined result with current main. The revision activates 39 functions and retains the original boot display-list assembly pending review of its two entry labels. After the full ROM and C interface checks pass, the Director will merge the verified revision and post the changes and results for Connor. [PR and tested patch](https://github.com/rempred/OB64-Decomp/pull/3#pullrequestreview-5994614816)
 - **Open Editor requests.** Contributors can choose from [six verified function families](Plans/editor-function-families-20261120.md) or browse the [workbench target list](../config/matching-priorities.json). Start with mission suspend/restore for the largest immediate Editor benefit or story sound command `0x6E` for a small, testable match. The list also covers battle amounts, army record ownership, target selection and strike timing. Follow the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target) to coordinate a claim.
 - **Editor follow-up.** The Editor Director has started integrating the two accepted audio corrections into the cutscene preview and ROM export. Check gain on both service paths, full-width request routing and audible story playback with the resident audio state. Branch previews still need the alternate directional-input mode. The Editor previously integrated the PR #1 matches into a byte-identical retail export. [Audio corrections](Plans/c-interface-verification.md#accepted-audio-corrections) · [Prior Editor closeout](https://github.com/rempred/LordlyCaliber/pull/14#issuecomment-7031488087)
 
