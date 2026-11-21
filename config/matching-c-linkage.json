@@ -278650,17 +278650,6 @@
       ]
     },
     {
-      "symbol": "emit_rdp_setup_displaylist",
-      "expectedRelocations": [
-        {
-          "offset": "0x000000C8",
-          "type": "R_MIPS_26",
-          "symbol": ".text",
-          "section": ".rel.text"
-        }
-      ]
-    },
-    {
       "symbol": "func_0001237c",
       "expectedRelocations": [
         {
@@ -284569,7 +284558,34 @@
           "symbol": "D_8020DD60",
           "section": ".rel.text"
         }
-      ]
+      ],
+      "nativeTextTail": {
+        "schemaVersion": 2,
+        "ownerRowIndex": 5433,
+        "inputSection": ".text",
+        "outputSection": ".ob64.r5433",
+        "inputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "outputShape": {
+          "type": 1,
+          "flags": 6,
+          "alignment": 16,
+          "bytes": 80
+        },
+        "functionBytes": 68,
+        "tail": {
+          "ownerRowIndex": 5433,
+          "offset": 68,
+          "bytes": 12,
+          "fillByte": 0,
+          "sha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+          "origin": "native-assembler-section-alignment"
+        }
+      }
     },
     {
       "symbol": "func_002A8E44",

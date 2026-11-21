@@ -10453,10 +10453,6 @@
       "source": "src/overlays/descriptor_15/func_001CF9C0.c"
     },
     {
-      "symbol": "emit_rdp_setup_displaylist",
-      "source": "src/boot/emit_rdp_setup_displaylist.c"
-    },
-    {
       "symbol": "func_0001237c",
       "source": "src/lib/func_0001237c.c"
     },
