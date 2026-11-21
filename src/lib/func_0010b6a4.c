@@ -27,7 +27,7 @@ void func_8009DA50(void *, void *, s32);
 void func_80093380(void *, s32);
 s32 func_801DA228(ScenarioB040Record *);
 void *func_80070F30(u32);
-void func_800712C4(void *);
+void *func_800712C4(void *);
 void func_80218700(s32 *);
 
 void func_0010B6A4(void)

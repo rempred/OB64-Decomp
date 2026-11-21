@@ -8,7 +8,7 @@ typedef struct BootStateSlotPayload {
 } BootStateSlotPayload;
 
 extern void func_00023460(void *destination, const void *source, unsigned int length);
-extern void func_000016C4(void *pointer);
+extern void *func_000016C4(void *pointer);
 
 void func_00008564(BootStateSlotPayload *payload, const void *source)
 {

@@ -2,8 +2,8 @@ typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
 typedef signed int s32;
-void func_000016C4(void *p);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
+void *func_000016C4(void *p);
 typedef struct {
     u16 state;
     u8 unk02[0x16];

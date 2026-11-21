@@ -8,7 +8,7 @@ extern void **D_80220F20;
 extern s32 func_8009DAF4(void *data);
 extern void func_8009DBB8(void *dest, void *source);
 extern s32 func_8007A7E0(void *data);
-extern void *func_80070F30(s32 size);
+extern void *func_80070F30(u32 size);
 extern void func_8007A110(void *dest, void *source);
 
 void *func_00260F30(u16 code, s32 index)

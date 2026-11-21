@@ -30,7 +30,7 @@ typedef struct P02State2705EC {
     s16 *value_74;
 } P02State2705EC;
 
-extern void func_00262B68(void), func_00262830(s32);
+extern void func_00262B68(void), func_00262830(s16);
 extern void func_00023780(void *, s32);
 
 

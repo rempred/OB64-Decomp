@@ -3,7 +3,7 @@ typedef signed int s32;
 typedef struct { s32 used; u8 b[0x58]; } ScriptRes;
 extern ScriptRes D_8022A4E0[];
 extern u8 *D_8022A650;
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void func_001C0F10(s32 i) {
     u8 *r;
     if (i >= 4) {

@@ -6,7 +6,7 @@ typedef struct { u8 b[0x76]; } ScriptObj;
 extern ScriptObj D_8022A2E8[];
 void bzero(void *p, s32 size);
 void func_001BDBBC();
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 u8 *D_8017C074(u16 a, u8 b, void *fn, s16 c, s16 d, s16 e, s16 f);
 extern void *D_8022A260[];
 s32 D_8009DAF4(s32 id);

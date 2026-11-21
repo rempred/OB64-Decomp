@@ -11,7 +11,7 @@ typedef struct {
     s32 size;
 } BgJob_680F0;
 void func_00068c88(s8 type, u16 w, u16 h, u8 *data, u8 a, u8 b);
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 void bzero(void *p, s32 n);
 s32 func_00069328(u8 *data, u8 a, u8 b) {
     u8 *p = data;

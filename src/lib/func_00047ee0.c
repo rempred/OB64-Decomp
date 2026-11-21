@@ -11,7 +11,7 @@ extern u8 D_80197B03;
 extern u16 D_80197B04;
 extern s32 D_80197B14;
 
-extern s32 resource_free(u8 *resource);
+extern void *resource_free(void *resource);
 extern void *func_8009DBB8(void *destination, u32 key);
 extern void *func_0002e138(u32 key);
 extern s32 func_00046854(s32 entry);

@@ -8,7 +8,7 @@ typedef double f64;
 
 extern u8 *D_8022A974;
 
-void *func_00070F30(s32 bytes);
+void *func_00070F30(u32 bytes);
 f32 func_001BC35C(s16 x, s16 y);
 
 void func_002A0B14(s32 slot, f32 start_x, f32 start_y, f32 target_x,

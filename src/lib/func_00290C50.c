@@ -7,7 +7,7 @@ typedef struct {
     s16 b;
 } Pair28;
 extern Pair28 *D_8023DE38;
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 typedef struct {
     s16 h0;
     s16 h2;

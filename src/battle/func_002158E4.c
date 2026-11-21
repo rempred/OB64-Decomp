@@ -3,8 +3,8 @@ typedef unsigned char u8;
 extern void *D_801CE8BC;
 extern u8 *D_801CE8C0;
 
-void *func_80070F30(int size);
-void func_800712C4(void *pointer);
+void *func_80070F30(unsigned int size);
+void *func_800712C4(void *pointer);
 void func_00023460(void *destination, void *source, int size);
 void func_801EFAAC(void);
 void func_0021C3B0(void);

@@ -16,7 +16,7 @@ extern ResourceSlot *D_80220CA8;
 extern s32 D_80220CAC;
 extern s32 D_80220CB0;
 extern ResourceSlot *D_80220CB8[];
-extern void *func_80070F30(s32 size);
+extern void *func_80070F30(unsigned int size);
 extern void func_80093380(void *destination, s32 size);
 
 void func_00260420(void)

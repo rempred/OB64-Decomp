@@ -11,7 +11,7 @@ typedef struct Func0011B344Owner {
     Func0011B344Slots *field_A4;
 } Func0011B344Owner;
 
-extern void func_000016C4(void *pointer);
+extern void *func_000016C4(void *pointer);
 
 void func_0011B344(Func0011B344Owner *owner)
 {

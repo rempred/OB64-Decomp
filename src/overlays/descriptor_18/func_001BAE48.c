@@ -21,6 +21,7 @@ extern u16 D_8022A828;
 extern u8 *D_8022A234;
 extern u8 D_801936E0;
 extern u8 D_80196AEC;
+void *func_00001330(unsigned int size);
 void bzero(void *p, s32 size);
 extern s32 D_8022A210;
 extern s32 D_8022A230;

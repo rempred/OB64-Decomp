@@ -1,5 +1,5 @@
 typedef signed int s32;
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 s32 D_8009DAF4(s32 id);
 void *resource_alloc_tree_scan(s32 size);
 void *D_8009DBB8(void *dst, s32 id);

@@ -10,7 +10,7 @@ typedef struct ProbeRecordPrefix {
 } ProbeRecordPrefix;
 
 extern void *resource_alloc(u32 bytes);
-extern void resource_free(void *record);
+extern void *resource_free(void *record);
 extern void func_0000539C(s32 id);
 extern void func_0001A4F0(s32 offset, void *destination, u32 bytes, s32 mode);
 extern s32 func_00023350(const void *first, const void *second, u32 bytes);

@@ -10,7 +10,7 @@ typedef struct ResourceEntry16 {
 } ResourceEntry16;
 
 extern ResourceEntry16 *D_80220E14;
-extern void func_800712C4(void *data);
+extern void *func_800712C4(void *data);
 
 void func_00263708(void)
 {

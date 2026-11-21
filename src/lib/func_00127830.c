@@ -13,7 +13,7 @@ extern u8 *boot_command_stream_dispatch(u32, s32, s32, s32);
 extern void boot_command_stream_resource_node_dispatch(u32, s32, s32);
 extern char *strncpy(char *, const char *, u32);
 extern void *resource_alloc(u32);
-extern void resource_free(void *);
+extern void *resource_free(void *);
 extern void memset_00023780(void *, s32);
 extern void func_00023940(void *, ...);
 extern s32 func_0005c110(s32);

@@ -11,13 +11,13 @@ union EndMarker {
 extern s32 func_00046854(s32 arg0);
 extern s32 func_00048024(void);
 extern void func_00048294(void);
-extern void resource_free(s32 resource);
+extern void *resource_free(void *resource);
 
 extern volatile u8 D_80197B03;
 extern volatile s32 D_80197B0C;
 extern volatile s32 D_80197B10;
-extern volatile s32 D_80197B18;
-extern volatile s32 D_80197B1C;
+extern void *volatile D_80197B18;
+extern void *volatile D_80197B1C;
 
 s32 func_00047a94(s32 arg0)
 {

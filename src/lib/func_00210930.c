@@ -1,6 +1,6 @@
 #include "game/combat_types.h"
 
-extern void func_800712C4(void *);
+extern void *func_800712C4(void *);
 extern unsigned char *D_801CFCC0;
 extern unsigned char *D_801D06D0;
 

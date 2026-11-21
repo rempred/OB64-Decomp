@@ -16,7 +16,7 @@ typedef struct {
 extern u8 *D_8022A974; /* Director scene block */
 extern u8 *D_8022A970; /* Director playback block: +0x83C phase, +0x828 counter, +0x830 total */
 
-extern void *resource_alloc(s32 size);
+extern void *resource_alloc(u32 size);
 
 /*
  * Director camera pan setup. Starts from the explicit start point, or from the

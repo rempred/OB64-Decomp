@@ -3,7 +3,7 @@
 typedef void (*ProbeCallback)(void *);
 
 extern void *func_00001330(u32 bytes);
-extern void func_000016C4(void *record);
+extern void *func_000016C4(void *record);
 extern void func_00005624(void);
 extern void func_000050F0(void *record, u32 offset, u32 bytes);
 extern void func_8016CDCC(void *record);

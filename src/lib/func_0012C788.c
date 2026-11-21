@@ -15,7 +15,7 @@ extern f32 func_00106E48(RuntimeUnit *unit, f32 x, f32 z);
 extern f32 func_0002CB80(f32 x, f32 z);
 extern f32 func_8009CFE0(f32 first, f32 second);
 extern void func_00106CE0(f32 *current, f32 *target, f32 amount);
-extern void func_000016C4(void *pointer);
+extern void *func_000016C4(void *pointer);
 extern void func_0011B344(RuntimeUnit *unit);
 extern void func_00106F34(RuntimeUnit *unit);
 extern void func_00131828(RuntimeUnit *unit);

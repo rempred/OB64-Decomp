@@ -1,6 +1,6 @@
 #include "game/cutscene_panels.h"
 
-extern s32 resource_free(u8 *);
+extern void *resource_free(void *);
 
 void func_00283748(s32 slot)
 {

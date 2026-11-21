@@ -5,7 +5,7 @@ extern s32 e09_byte_80220F68;
 extern s32 e09_pointer_80220F6C;
 extern u8 D_800EB1F0[];
 void D_8020DFB8(void);
-void D_8020DC80(u16 state);
+void D_8020DC80(short state);
 void D_8020DD34(u16 state);
 void D_8020E0B4(s32 a, s32 b);
 void D_801F8E50(u8 id, u8 *s);

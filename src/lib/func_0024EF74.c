@@ -17,7 +17,7 @@ typedef struct P01ExtendedRootState {
 struct P01ChildState;
 extern s32 func_0024EA70(u16, struct P01ChildState *);
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 extern void func_00262C64(s16, s16);
 extern void *func_00262AB0(void *);

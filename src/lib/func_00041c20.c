@@ -16,7 +16,7 @@ extern s32 rand(void);
 extern void func_80093380(void *destination, s32 size);
 extern char *func_0002C950(char *destination, const char *source);
 extern s32 func_0002C9E0(const char *first, const char *second);
-extern void resource_free(void *resource);
+extern void *resource_free(void *resource);
 
 void func_00041c20(u8 mode, u8 record_index)
 {

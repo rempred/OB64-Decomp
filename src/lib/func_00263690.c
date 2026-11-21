@@ -11,7 +11,7 @@ typedef struct ResourceEntry16 {
 
 extern ResourceEntry16 *D_80220E14;
 extern u16 D_80220E10;
-extern void *func_80070F30(s32 size);
+extern void *func_80070F30(unsigned int size);
 extern void func_80093380(void *destination, s32 size);
 
 void func_00263690(void)

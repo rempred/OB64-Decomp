@@ -7,7 +7,7 @@ typedef struct ChildNode24 {
     struct ChildNode24 *field_14;
 } ChildNode24;
 
-extern void func_000016C4(void *pointer);
+extern void *func_000016C4(void *pointer);
 
 typedef struct ResourceNode28 {
     unsigned int field_00;

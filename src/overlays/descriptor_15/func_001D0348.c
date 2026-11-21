@@ -2,7 +2,7 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
-void *func_00001330(s32 size);
+void *func_00001330(u32 size);
 typedef struct {
     u8 unk0[6];
     u16 h6;
@@ -15,7 +15,7 @@ typedef struct {
     RecCE *recs;
     u16 (*links)[2];
 } SkelCE;
-void *func_00001330(s32 size);
+void *func_00001330(u32 size);
 void func_001D0348(SkelCE *s, void **out) {
     u32 i;
     for (i = 0; i < s->n; i++) {

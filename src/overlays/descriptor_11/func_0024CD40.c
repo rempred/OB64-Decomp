@@ -7,7 +7,7 @@ typedef struct Cd40PointerFields {
     float *value_40;
 } Cd40PointerFields;
 
-extern s32 resource_free(u8 *pointer);
+extern void *resource_free(void *pointer);
 
 void func_0024CD40(void *stateView)
 {

@@ -30,7 +30,7 @@ typedef struct Func0026B360State {
 extern volatile u32 g_func_0026B360_value_38;
 extern volatile u32 g_func_0026B360_count;
 extern void *func_00001330(u32 bytes);
-extern void func_000016C4(void *allocation);
+extern void *func_000016C4(void *allocation);
 extern void guMtxIdentF(float matrix[4][4]);
 struct Func0026A078Input;
 struct Func0026A078Record;

@@ -16,7 +16,7 @@ void func_00019eb0(void *p, s32 n);
 void D_8016CD50(s32 a);
 extern u8 *D_800A8204[];
 extern u8 *D_800C4BB8;
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void func_001CF588(void) {
     u8 **raw;
     func_00019e10();

@@ -16,10 +16,10 @@ extern s32 D_8022A990;
 
 extern void bzero(void *buffer, s32 size);
 extern void func_0028aa4c(void);
-extern void *func_00070F30(s32 size);
+extern void *func_00070F30(u32 size);
 extern void *func_0002dfb8(void *buffer, u32 key);
 extern void *func_0002e138(u32 key);
-extern s32 resource_free(u8 *buffer);
+extern void *resource_free(void *buffer);
 extern void *func_8016FBE0(u32 field, s32 mode, void *output);
 extern void *func_00291130(u8 **payloadEnd);
 extern void func_800EA6B0(void *state, s32 arg1, s32 arg2);

@@ -5,7 +5,7 @@ extern void *D_8022A974;
 extern s32 D_8022A990;
 extern s16 D_8022A994;
 
-extern void *func_00070F30(s32 size);
+extern void *func_00070F30(u32 size);
 extern void bzero(void *buffer, s32 size);
 extern void func_00283FA8(s32 scenario, s32 mode);
 extern s32 func_00284288(void);
@@ -13,7 +13,7 @@ extern void func_002878F4(void);
 extern void func_002893E4(void);
 extern void *func_0002dfb8(void *buffer, u32 key);
 extern void *func_0002e138(u32 key);
-extern void resource_free(void *buffer);
+extern void *resource_free(void *buffer);
 
 void func_0028A310(void)
 {

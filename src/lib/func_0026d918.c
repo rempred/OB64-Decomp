@@ -30,10 +30,10 @@ typedef struct P02StateD918 {
 
 extern void func_002623C4(void *);
 extern void func_002630CC(void *);
-extern void func_000016C4(void *);
+extern void *func_000016C4(void *);
 extern void func_00262B68(void);
 extern void func_00023780(void *, s32);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 extern void *D_801D0770;
 extern float p02_f32_80220F68[], p02_f32_80220F6C[], p02_f32_80220F70[];
 extern s32 p02_word_80220F74[], p02_word_80220F7C[];

@@ -15,7 +15,7 @@ typedef struct {
     u8 bB;
 } StFC10;
 extern StFC10 *D_8018FC10;
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 void bzero(void *p, s32 n);
 void func_002827EC(s32 a, s32 b);
 void func_002838AC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {

@@ -12,7 +12,7 @@ extern u8 *D_801F0DB0;
 extern u16 *D_801F0DB4, D_801F36D8[];
 extern RuntimeUnit *D_801F0CB0[];
 extern void *resource_alloc(u32 bytes);
-extern void resource_free(void *object);
+extern void *resource_free(void *object);
 extern void func_00126D24(RuntimeUnit *unit);
 extern s32 func_0012E8EC(RuntimeUnit *unit);
 extern void func_00106CE0(f32 *first, f32 *second, f32 step);

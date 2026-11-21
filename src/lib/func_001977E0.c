@@ -111,8 +111,8 @@ extern u8 D_80216164, D_80216C54, D_8021794C, D_80217A34;
 extern u8 D_802182E4, D_802181A4;
 
 extern void memset_00023780(void *destination, s32 size);
-extern void *resource_alloc(s32 size);
-extern void resource_free(void *resource);
+extern void *resource_alloc(u32 size);
+extern void *resource_free(void *resource);
 extern u8 func_0019B1B0(u32 equipment_id);
 extern void func_0019B800(s32 count);
 extern void func_0019BB34(void);

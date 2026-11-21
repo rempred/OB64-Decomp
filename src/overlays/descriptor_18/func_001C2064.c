@@ -21,10 +21,10 @@ typedef struct {
     u8 unk1E[2];
 } Rec698;
 extern Rec698 D_8022A698[];
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 extern void *D_8022A654;
 extern u8 D_8022A658[];
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 void *D_8009DD38(s32 id);
 void bcopy(void *src, void *dst, s32 n);
 typedef struct { u8 b; u8 pad[31]; } Rec32;

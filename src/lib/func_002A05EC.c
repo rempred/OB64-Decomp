@@ -1,6 +1,6 @@
 extern char *D_8022A974;
 
-void func_000016C4(void *ptr);
+void *func_000016C4(void *ptr);
 
 void func_002A05EC(int slot)
 {

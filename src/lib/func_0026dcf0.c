@@ -31,7 +31,7 @@ typedef struct P02StateDCF0 {
 extern void func_00262B68(void);
 extern void func_00023780(void *, s32);
 
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 extern void func_0026241C(P02RenderDCF0 *, s32, s32);
 

@@ -6,7 +6,7 @@ typedef struct AudioGainEntry {
 } AudioGainEntry;
 
 extern AudioGainEntry D_800EB2E0[];
-extern void *func_00070F30(s32 size);
+extern void *func_00070F30(u32 size);
 extern void bzero(void *memory, s32 size);
 
 void func_00283224(s32 route, s32 gainIndex, s32 step, s32 duration) {

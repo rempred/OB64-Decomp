@@ -5,7 +5,7 @@ typedef signed int s32;
 extern u8 *D_80196AF8;
 u8 *D_801CC410(s32 id);
 s32 func_000b93d4(u16 kind, u8 b, void (*fn)(), s16 x, s16 y, s16 w, s16 h, s16 x2, s16 y2, s16 w2, s16 h2);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 s32 D_801CC3B8(s32 id);
 void D_801C0798(s16 a, s32 b);
 void D_801A43F4();

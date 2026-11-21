@@ -54,7 +54,7 @@ double cos(double angle);
 double sin(double angle);
 typedef struct TerminalObject TerminalObject;
 int func_0022222C(TerminalObject *source, TerminalObject *target, int x, int z);
-int resource_free(unsigned char *resource);
+void *resource_free(void *resource);
 void *resource_alloc(unsigned int bytes);
 void memset_00023780(void *destination, int bytes);
 void memcpy(void *source, void *destination, unsigned int bytes);

@@ -4,7 +4,7 @@ typedef unsigned int u32;
 
 extern void *D_801CE8BC;
 
-void func_800712C4(void *pointer);
+void *func_800712C4(void *pointer);
 void func_80093380(void *pointer, s32 size);
 
 void func_001F34B0(void)

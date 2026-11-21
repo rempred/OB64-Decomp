@@ -11,7 +11,7 @@ typedef struct DialogueTrackingScene {
 } DialogueTrackingScene;
 
 extern DialogueTrackingScene *D_8022A974;
-extern s32 resource_free(u8 *pointer);
+extern void *resource_free(void *pointer);
 /* Window close entry in dialogue overlay 4. */
 extern void func_000fa4f4(u8 windowId);
 

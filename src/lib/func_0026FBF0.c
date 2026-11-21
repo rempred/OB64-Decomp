@@ -32,9 +32,10 @@ typedef struct P02StateFBF0 {
 } P02StateFBF0;
 
 extern void func_002623C4(void *), func_002630CC(void *);
-extern void func_00261E30(void *), func_000016C4(void *);
+extern void func_00261E30(void *);
+extern void *func_000016C4(void *);
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 extern void *D_801D0770;
 extern s32 p02_word_80220F68[];
 extern u32 p02_word_80220F78[];

@@ -2,7 +2,7 @@ typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
 void bzero(void *p, s32 size);
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 typedef struct {
     u8 next;
     u8 used;

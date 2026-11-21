@@ -27,8 +27,8 @@ M2C_UNK func_0021AE6C(f32, M2C_UNK, void *);
 M2C_UNK func_0021C3B0();
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
-void *func_80070F30(M2C_UNK);
-M2C_UNK func_800712C4(void *);
+void *func_80070F30(u32);
+void *func_800712C4(void *);
 M2C_UNK func_000238B0(void *, const void *, s32);
 M2C_UNK func_0002C950(void *, const void *);
 

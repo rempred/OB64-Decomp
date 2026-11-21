@@ -21,7 +21,7 @@ extern volatile s32 D_80197B18;
 extern volatile s32 D_80197B1C;
 extern u16 D_80197B60;
 
-extern s32 resource_free(u8 *resource);
+extern void *resource_free(void *resource);
 extern void func_80093380(void *destination, s32 bytes);
 extern void func_80080998(void *destination, void *source, s32 bytes);
 extern void *func_8009DBB8(void *destination, u32 key);

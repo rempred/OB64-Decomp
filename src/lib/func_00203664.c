@@ -7,7 +7,7 @@ extern Header *func_00203414(Header *, u32);
 extern void *func_00203570(Header *, u32);
 extern u32 func_00201E38(s32, u32);
 extern void *resource_alloc_tree_scan(u32);
-extern void resource_free(void *);
+extern void *resource_free(void *);
 extern void memcpy(void *source, void *destination, u32 size);
 
 static __inline__ u8 *primary_data(Header *header, u32 index)

@@ -86,7 +86,7 @@ extern FadeCtx *D_80216BE0;
 extern u8 D_80216BE4;
 extern u16 D_80216F70;
 extern s16 D_80216F8C;
-s32 func_000016C4(u8 *pointer);
+void *func_000016C4(void *pointer);
 s16 D_801AB0FC(u16 a, s32 b);
 void D_800EA7E4(SoundChannel *ch, s32 v);
 void D_8017BED4(void);

@@ -21,7 +21,7 @@ typedef struct {
     void *p1BB4[20];
 } Battle29;
 extern Battle29 *D_8022A974;
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 void *func_000016C4(void *p);
 void func_0029B78C(s32 *a) {
     s16 i = (*(s16 *)((u8 *)(a) + (2)));

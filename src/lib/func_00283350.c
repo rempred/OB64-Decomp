@@ -13,7 +13,7 @@ typedef struct CutscenePendingAudio {
 
 extern CutsceneAudioContext *table_00286878[];
 extern void *D_8022A974;
-extern s32 resource_free(u8 *memory);
+extern void *resource_free(void *memory);
 extern void func_000118c4(s32 routeMask, s16 gain);
 extern s32 func_00011f08(s32 handle);
 

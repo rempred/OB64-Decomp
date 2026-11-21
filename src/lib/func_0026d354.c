@@ -24,7 +24,7 @@ typedef struct P02Parameters {
 } P02Parameters;
 
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 extern void func_00262C64(s16, s16);
 

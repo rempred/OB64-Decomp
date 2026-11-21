@@ -1,7 +1,7 @@
 #include "game/scenario_source_record.h"
 
-extern void *func_80070F30(s32);
-extern void func_800712C4(void *);
+extern void *func_80070F30(u32);
+extern void *func_800712C4(void *);
 extern void func_80093380(void *, s32);
 extern u32 func_0014F300(s32);
 extern void func_00130E60(u16, s32);

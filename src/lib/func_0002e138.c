@@ -44,7 +44,7 @@ extern void *func_80071288(u32 bytes);
 extern void *func_8009DBB8(void *, u32);
 extern u32 func_8007A7E0(void *);
 extern void func_8007A110(void *, void *);
-extern void func_800712C4(void *);
+extern void *func_800712C4(void *);
 
 void *func_0002e138(u32 key)
 {

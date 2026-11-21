@@ -1,6 +1,6 @@
 typedef signed int s32;
 extern void *D_8022A4C0[];
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 s32 D_8009DAF4(s32 id);
 void *D_8009DBB8(void *dst, s32 id);
 void func_001BDE70(void) {

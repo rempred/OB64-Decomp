@@ -42,7 +42,7 @@ struct Func0026A630Record;
 extern volatile u32 g_func_0026B820_value_38;
 extern volatile u32 g_func_0026B820_count;
 extern void *func_00001330(u32 bytes);
-extern void func_000016C4(void *allocation);
+extern void *func_000016C4(void *allocation);
 extern void func_00028F60(float matrix[4][4], float first, float second, float third);
 u32 func_0026B820(u16 command, Func0026B820State *state)
 {

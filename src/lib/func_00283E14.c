@@ -4,7 +4,7 @@ typedef signed int s32;
 extern s32 func_0002def4(s32);
 extern s32 resource_alloc_tree_scan(s32);
 extern void func_0002dfb8(s32, s32);
-extern void resource_free(s32);
+extern void *resource_free(void *);
 extern s32 func_8007A7E0(s32);
 extern s32 boot_lzss_decompress(s32, s32);
 
@@ -20,7 +20,7 @@ s32 func_00283E14(s32 index)
     table = resource_alloc_tree_scan(func_0002def4(0x019A8804));
     func_0002dfb8(table, 0x019A8804);
     resource = *(s32 *)(table + index * 4);
-    resource_free(table);
+    resource_free((void *)table);
 
     table = resource_alloc_tree_scan(func_0002def4(resource));
     func_0002dfb8(table, resource);
@@ -34,8 +34,8 @@ s32 func_00283E14(s32 index)
         adjusted_size = decoded_size + 3;
     }
     tag = ((s32 *)decoded)[(adjusted_size >> 2) - 1];
-    resource_free(table);
-    resource_free(decoded);
+    resource_free((void *)table);
+    resource_free((void *)decoded);
 
     if ((tag & 0xFF000000) != 0xFF000000) {
         return 0;

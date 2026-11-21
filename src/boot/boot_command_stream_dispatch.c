@@ -26,7 +26,7 @@ extern ResourceNode28 *boot_resource_node_payload_materialize(ResourceNode28 *no
 extern void boot_resource_node_context_materialize(ResourceNode28 *node, u32 mode);
 extern void func_00009EFC(ResourceNode28 *node);
 extern void boot_resource_node_overlay_context_materialize(ResourceNode28 *node);
-extern void func_000016C4(void *pointer);
+extern void *func_000016C4(void *pointer);
 
 #define NEXT_WORD(cursor) \
     ((cursor) = (char *)(((u32)(cursor) + 3) & ~3U) + 4, *(u32 *)((cursor) - 4))

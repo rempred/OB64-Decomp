@@ -2,7 +2,7 @@
 
 extern void *D_80219F48[50];
 extern void *D_8021A128, *D_8021A12C, *D_8021A130;
-extern void resource_free(void *resource);
+extern void *resource_free(void *resource);
 
 void func_0019BCA0(void)
 {

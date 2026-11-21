@@ -33,12 +33,12 @@ typedef struct P02StateE64C {
     P02MotionE64C *value_2C;
 } P02StateE64C;
 
-extern void func_000016C4(void *);
+extern void *func_000016C4(void *);
 extern void func_00262B68(void);
 extern void func_00023780(void *, s32);
 extern void *func_00001330(u32);
 
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 
 extern void func_00262C94(void *, s32, s32);

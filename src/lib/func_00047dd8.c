@@ -9,7 +9,7 @@ extern volatile s32 D_80197B18;
 extern volatile s32 D_80197B1C;
 
 extern s32 func_00046854(s32 entry);
-extern s32 resource_free(u8 *resource);
+extern void *resource_free(void *resource);
 extern void func_00048294(void);
 extern s32 func_0004813C(s32 request);
 

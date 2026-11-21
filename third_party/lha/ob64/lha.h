@@ -123,7 +123,7 @@ void init_getbits(void);
 void fwrite_crc(unsigned char *p, int n, void *fp);
 
 extern void *malloc(unsigned int size);
-extern void free(void *ptr);
+extern void *free(void *ptr);
 extern void *memset(void *s, int c, unsigned int n);
 extern unsigned int fwrite(const void *p, unsigned int size, unsigned int n, void *fp);
 extern void lha_printf(const char *fmt, ...);

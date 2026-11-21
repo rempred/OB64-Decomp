@@ -37,7 +37,7 @@ extern u8 p01_data_802097C8[];
 extern const double p01_double_8020A240;
 
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 extern void func_002628E4(s32);
 extern void func_00262C64(s16, s16);
 extern void func_00262C80(void);

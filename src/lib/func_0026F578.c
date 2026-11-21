@@ -24,7 +24,7 @@ typedef struct P02StateF578 {
 
 extern void func_00262B68(void);
 extern void func_00023780(void *, s32);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 extern s32 func_0026285C(void *, u16);
 extern P02ParametersF578 p02_parameters_80220F68;
 

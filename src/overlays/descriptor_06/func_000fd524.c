@@ -4,7 +4,7 @@ typedef signed int s32;
 typedef unsigned int u32;
 extern s32 D_801B4894[];
 void bcopy(const void *src, void *dst, s32 n);
-void *func_00001330(s32 size);
+void *func_00001330(u32 size);
 void func_000fd524(u8 *o, s32 a, s32 b, s32 c) {
     u8 *img = (*(u8 * *)((u8 *)(o) + (4)));
     s32 size;

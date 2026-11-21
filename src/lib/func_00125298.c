@@ -11,7 +11,7 @@ extern s32 D_801F0DA8[2];
 extern f32 D_801F3A38;
 extern char D_801EE710[];
 extern void *resource_alloc(u32 bytes);
-extern void resource_free(void *object);
+extern void *resource_free(void *object);
 extern void func_00023940(const char *format, ...);
 extern f32 func_0002CB80(f32 first, f32 second);
 /* Only the two passed arguments are used here; the return is ignored. */

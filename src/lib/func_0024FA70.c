@@ -15,7 +15,7 @@ typedef struct P01SixByteRecord {
 struct P01F730State;
 extern s32 func_0024F730(u16, struct P01F730State *);
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 extern void func_00262C64(s16, s16);
 extern void *func_00262AB0(void *);

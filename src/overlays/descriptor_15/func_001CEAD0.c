@@ -1,8 +1,8 @@
 typedef unsigned char u8;
 typedef signed int s32;
-void *func_00001330(s32 size);
-void *func_00001330(s32 size);
-void func_000016C4(void *p);
+void *func_00001330(unsigned int size);
+void *func_00001330(unsigned int size);
+void *func_000016C4(void *p);
 typedef struct {
     void *name;
     s32 index;

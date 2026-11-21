@@ -20,7 +20,7 @@ typedef struct P02Parameters {
 typedef struct P02StateFBF0 P02StateFBF0;
 typedef struct P02StateF578 P02StateF578;
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 extern void func_00262C64(s16, s16);
 

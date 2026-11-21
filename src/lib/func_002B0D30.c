@@ -9,7 +9,7 @@ extern u8 *D_8022A974;
 s32 func_8009DAF4(s32 resource);
 void *func_80071C04(s32 size);
 void func_8009DBB8(void *destination, s32 resource);
-void func_800712C4(void *pointer);
+void *func_800712C4(void *pointer);
 void *func_8023BDDC(void *resource);
 
 s16 func_002B0D30(s32 selector, s32 count_override)

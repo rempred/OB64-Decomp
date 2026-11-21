@@ -7,7 +7,7 @@ extern Header *func_00203664(Header *, u32);
 extern void *func_00203414(Header *, u32);
 extern u32 func_00201E38(s32, u32);
 extern void *resource_alloc(u32);
-extern void resource_free(void *);
+extern void *resource_free(void *);
 extern void memcpy(void *source, void *destination, u32 size);
 extern void func_00203030(Header *);
 extern void func_002032B8(Header *);

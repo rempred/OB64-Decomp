@@ -19,9 +19,9 @@ typedef struct {
     void *p38;
 } Rec2A;
 extern Rec2A *D_802395B0;
-void *func_00001330(s32 size);
+void *func_00001330(u32 size);
 void bzero(void *p, s32 n);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 Rec2A *func_002A2458(s32 id, s32 kind);
 s32 D_8009DAF4(s32 id);
 void *D_8009DBB8(void *dst, s32 id);

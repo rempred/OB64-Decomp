@@ -32,12 +32,13 @@ typedef struct P02State2711DC {
 
 typedef struct P02State27109C P02State27109C;
 typedef struct P02State271D18 P02State271D18;
-extern void func_000016C4(void *), func_00262B68(void);
+extern void *func_000016C4(void *);
+extern void func_00262B68(void);
 extern void func_00023780(void *, s32);
 extern void *func_00001330(u32);
 
 extern void func_0026241C(P02Render2711DC *, s32, s32);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 
 extern void func_002623C4(P02Render2711DC *);

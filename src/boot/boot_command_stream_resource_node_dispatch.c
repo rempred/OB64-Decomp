@@ -26,7 +26,7 @@ extern void func_0000A1F8(ResourceNode28 *node);
 extern void boot_resource_node_recursive_field0c_rewrite(ResourceNode28 *node);
 extern ChildNode24 *boot_resource_node_recursive_child_free(ChildNode24 *node);
 extern void boot_resource_node_recursive_key_field_clear(ChildNode24 *node, u32 key);
-extern void func_000016C4(void *pointer);
+extern void *func_000016C4(void *pointer);
 
 #define NEXT_WORD(cursor) \
     ((cursor) = (char *)(((u32)(cursor) + 3) & ~3U) + 4, *(u32 *)((cursor) - 4))

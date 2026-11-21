@@ -4,7 +4,7 @@
 extern u8 p01_byte_80220F68;
 extern u8 p03_data_802098A6[];
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 extern void func_002628E4(s32);
 extern void func_00262C64(s16, s16);
 

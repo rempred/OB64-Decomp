@@ -22,7 +22,7 @@ typedef struct {
 extern Rec2A *D_802395B0;
 extern u8 *D_8022A974;
 void bzero(void *p, s32 n);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void func_002A2C78(void) {
     s16 side = (*(s16 *)((u8 *)((*(u8 * *)((u8 *)(D_8022A974) + (0x1A48)))) + (4)));
     u8 *u;

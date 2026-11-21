@@ -140,7 +140,7 @@ void func_002B6CD0(u8, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 void func_002B6E30(u8, s32, s32, s32);
 s32 func_002B6EDC(s32);
 s32 func_002B88C8(s16, s16);
-void resource_free(void *);
+void *resource_free(void *);
 extern u16 D_800E8100;
 extern u16 D_8018F1A0;
 extern void * D_8018F1A4;

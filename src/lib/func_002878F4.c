@@ -2,8 +2,8 @@
 
 extern void *func_0002dfb8(void *buffer, u32 key);
 extern void *func_0002e138(u32 key);
-extern s32 resource_free(u8 *buffer);
-extern void *func_00070F30(s32 size);
+extern void *resource_free(void *buffer);
+extern void *func_00070F30(u32 size);
 extern void memcpy_aligned(void *destination, const void *source, s32 count);
 
 void func_002878F4(void)

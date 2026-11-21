@@ -45,7 +45,7 @@ extern s32 D_801CEAB0;
 extern s8 D_8022AC80;
 extern u8 D_8022A980;
 extern void *resource_alloc(u32 bytes);
-extern s32 resource_free(void *pointer);
+extern void *resource_free(void *pointer);
 extern void *func_0002E138(u32 key);
 extern void *func_0002CD70(void *destination, s32 value, u32 count);
 extern s32 func_0020BFF8(BodyUnit *unit);

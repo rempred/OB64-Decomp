@@ -16,7 +16,7 @@ typedef struct {
 } ShopWindowBufferView;
 
 extern u8 D_80219C20[];
-extern void *func_80070F30(s32 size);
+extern void *func_80070F30(unsigned int size);
 extern void func_80093380(void *buffer, s32 size);
 extern void func_80093060(void *source, void *destination, s32 size);
 extern void func_801805B4(void *buffer, s32 mode, s32 item);

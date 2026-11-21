@@ -22,6 +22,7 @@ typedef struct {
     s16 fade;
 } Ctx23;
 extern Ctx23 *D_801EFE48;
+extern void *func_000016C4(void *pointer);
 void func_00240FF0(void) {
     Ctx23 *s = D_801EFE48;
     s32 i;

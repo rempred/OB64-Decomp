@@ -7,7 +7,7 @@ extern u8 D_800EB1F0[];
 extern u8 D_80225828[];
 extern u8 D_8022582E[];
 void D_8020DFB8(void);
-void D_8020DC80(u16 state);
+void D_8020DC80(short state);
 void D_8020DD34(u16 state);
 void D_8020E0B4(s32 a, s32 b);
 void D_801F8E50(u8 id, u8 *s);

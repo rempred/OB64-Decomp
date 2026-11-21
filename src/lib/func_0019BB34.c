@@ -8,8 +8,8 @@ extern s32 D_801F3658;
 extern u8 D_801971F2[][25];
 extern u8 D_80193BD1[][56];
 
-extern void *resource_alloc(s32 size);
-extern void resource_free(void *resource);
+extern void *resource_alloc(u32 size);
+extern void *resource_free(void *resource);
 extern u8 *func_0002E138(u32 key);
 extern void func_00023460(const void *source, void *destination, u32 size);
 extern void *func_8016FBE0(u32 field, s32 mode, void *output);

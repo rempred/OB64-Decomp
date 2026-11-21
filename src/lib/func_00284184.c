@@ -2,7 +2,7 @@ extern void *D_8022A950;
 extern void *D_8022A958;
 extern void *D_8022A95C;
 
-extern void resource_free(void *resource);
+extern void *resource_free(void *resource);
 
 void func_00284184(void)
 {

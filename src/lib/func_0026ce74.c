@@ -31,13 +31,13 @@ typedef struct P02ChildState {
     P02MotionState *value_3C;
 } P02ChildState;
 
-extern void func_000016C4(void *);
+extern void *func_000016C4(void *);
 extern void func_00262B68(void);
 extern void func_00023780(void *, s32);
 extern void *func_00001330(u32);
 
 extern void func_0026241C(P02RenderObject *, s32, s32);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 
 extern void func_00262434(void *);

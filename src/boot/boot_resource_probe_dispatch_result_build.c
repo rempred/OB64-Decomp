@@ -8,7 +8,7 @@ typedef struct ProbeRecord {
 } ProbeRecord;
 
 extern void *func_00001330(u32 bytes);
-extern void func_000016C4(void *record);
+extern void *func_000016C4(void *record);
 extern s32 func_00005978(void *record);
 extern s32 func_0000581C(s32 id, void *record);
 extern void func_000050F0(void *record, u32 offset, u32 bytes);

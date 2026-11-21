@@ -2,7 +2,7 @@
 
 extern void *func_0002dfb8(void *buffer, u32 key);
 extern void *func_0002e138(u32 key);
-extern s32 resource_free(u8 *buffer);
+extern void *resource_free(void *buffer);
 extern u8 D_801936AB;
 
 #define D_801936A7 (*(u8 *)0x801936A7)

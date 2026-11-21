@@ -45,7 +45,7 @@ typedef struct BodyResident {
 
 extern BodyScene *D_8022A974;
 extern BodyResident *D_801CE8BC;
-extern s32 resource_free(void *pointer);
+extern void *resource_free(void *pointer);
 extern s32 func_0020C120(BodyUnit *unit);
 extern s32 func_002A98C4(s32 slot);
 extern s32 func_002A13C4(s32 slot);

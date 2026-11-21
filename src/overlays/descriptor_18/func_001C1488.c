@@ -6,7 +6,7 @@ extern ScriptRes D_8022A4E0[];
 void *D_8017F334(u16 id);
 void D_8017C2FC(void *p);
 extern u8 *D_8022A650;
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 extern inline void ScriptResFree(s32 i) {
     ScriptRes *e;
     if (i >= 4) {

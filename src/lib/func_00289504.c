@@ -1,6 +1,6 @@
 #include "game/chapter_card.h"
 
-extern s32 resource_free(u8 *buffer);
+extern void *resource_free(void *buffer);
 
 void func_00289504(void)
 {

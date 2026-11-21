@@ -32,7 +32,7 @@ extern u8 *p01_pointer_80220F6C;
 extern u8 p01_byte_80220F6D;
 extern P01SixByteRecord *p01_pointer_80220F70;
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 extern void func_002628E4(s32);
 extern void func_00262C64(s16, s16);
 extern void func_00262C80(void);

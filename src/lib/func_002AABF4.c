@@ -1,7 +1,7 @@
 typedef unsigned char u8;
 typedef signed int s32;
 extern u8 *D_8022A974;
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 u8 *func_002AABF4(void) {
     u8 *p = (*(u8 * *)((u8 *)(D_8022A974) + (0x1CA8)));
     u8 i;

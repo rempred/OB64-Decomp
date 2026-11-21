@@ -6,7 +6,7 @@ extern struct { u8 pad[4]; u16 state; } *D_800C4BBC;
 extern u8 D_8018FC19;
 extern void *D_8018FC10;
 void D_80227348(void);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void D_801B00B0();
 extern void *D_80197AF0;
 void D_801C58F0(void);

@@ -3,7 +3,7 @@ typedef signed int s32;
 extern u8 *D_801CE8BC;
 extern u8 *D_801CE8C0;
 extern u8 D_8022A7F0;
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 void bzero(void *p, s32 n);
 void D_801BE71C(void);
 void D_801C1D90(void);

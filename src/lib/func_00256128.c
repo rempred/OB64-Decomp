@@ -16,7 +16,7 @@ extern u8 p03_data_80209D8A[];
 extern u8 p03_data_80209DE8[];
 extern u8 p03_data_80209DF0[];
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 extern void func_002628E4(s32);
 extern void func_00262C64(s16, s16);
 

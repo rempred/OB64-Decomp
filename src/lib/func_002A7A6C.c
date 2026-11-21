@@ -4,7 +4,7 @@ typedef signed int s32;
 extern u8 D_80239140[];
 extern u8 D_8023914C[];
 void D_8020DFB8(void);
-void D_8020DC80(u16 state);
+void D_8020DC80(short state);
 void D_8020E0B4(s32 a, s32 b);
 void D_8020B538(s32 a, u8 *s);
 s32 func_002A7A6C(u16 msg) {

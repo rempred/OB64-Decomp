@@ -1,7 +1,5 @@
-typedef signed int s32;
-
-extern s32 D_801F0CAC;
-extern void resource_free(s32 resource);
+extern void *D_801F0CAC;
+extern void *resource_free(void *resource);
 
 void func_00113C60(void)
 {

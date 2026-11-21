@@ -6,7 +6,7 @@ extern u8 *D_8018FDC0;
 void D_80227348(void);
 void func_00019e10(void);
 void D_8022F264(void);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void func_0004eaf4(void) {
     D_80227348();
     func_00019e10();

@@ -19,7 +19,7 @@ extern u8 D_80193BF3[];
 s32 func_0020BF7C(void);
 s32 func_0020BF8C(void);
 void func_00201BAC(void);
-void *func_80070F30(s32 size);
+void *func_80070F30(u32 size);
 void func_80093380(void *pointer, s32 size);
 void func_80080998(void *destination, void *source, s32 size);
 void func_00205220(void);

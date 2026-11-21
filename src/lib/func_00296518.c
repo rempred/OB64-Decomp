@@ -1,7 +1,7 @@
 #include "game/cutscene_panels.h"
 
 extern void *resource_alloc(u32);
-extern s32 resource_free(u8 *);
+extern void *resource_free(void *);
 extern void bzero(void *, s32);
 extern void bcopy(const void *, void *, s32);
 extern void func_80080998(void *, void *, s32);

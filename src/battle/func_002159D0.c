@@ -22,8 +22,8 @@ M2C_UNK func_0021C3B0();
 s32 func_0021C970();
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
-void *func_80070F30(M2C_UNK);
-M2C_UNK func_800712C4(void *);
+void *func_80070F30(u32);
+void *func_800712C4(void *);
 
 extern u8 *D_801CE8BC;
 extern u8 *D_801CE8C0;

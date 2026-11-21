@@ -59,7 +59,7 @@ double sin(double angle);
 unsigned char func_00043ad8(int sourceArt, int ownerContext);
 typedef struct TerminalObject TerminalObject;
 int func_00222344(TerminalObject *object, int x0, int z0, int x1, int z1);
-int resource_free(unsigned char *resource);
+void *resource_free(void *resource);
 void *resource_alloc(unsigned int bytes);
 void memset_00023780(void *destination, int bytes);
 void memcpy(void *source, void *destination, unsigned int bytes);

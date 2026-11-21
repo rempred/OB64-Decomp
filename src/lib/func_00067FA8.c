@@ -23,7 +23,7 @@ void func_80178E60(s32 selector, Func00067FA8Launch *launch,
 u32 func_8009DAF4(u32 resource);
 void *func_80070F30(u32 size);
 void *func_8009DBB8(void *destination, u32 resource);
-void func_800712C4(void *pointer);
+void *func_800712C4(void *pointer);
 void *func_80198B04(u32 resource);
 s32 func_80198360(u8 selector);
 void func_801988A8(void);

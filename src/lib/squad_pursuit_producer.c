@@ -37,7 +37,7 @@ typedef struct CleanupObject {
 } CleanupObject;
 
 
-extern void func_000016C4(void *allocation);
+extern void *func_000016C4(void *allocation);
 extern void func_001C6C04(void *object);
 
 extern f64 D_801EE090;
@@ -240,7 +240,7 @@ void func_001070F4(RuntimeUnit *unit)
     } while (recordIndex < 4);
 }
 
-extern void func_000016C4(void *allocation);
+extern void *func_000016C4(void *allocation);
 extern void func_001C6C04(void *object);
 
 void func_001072B8(CleanupObject *object)
@@ -271,7 +271,7 @@ void func_001072B8(CleanupObject *object)
     object->field_88 = 0;
 }
 
-extern void func_000016C4(void *allocation);
+extern void *func_000016C4(void *allocation);
 extern void func_001C6C04(void *object);
 
 void func_0010738C(CleanupObject *object)
@@ -304,7 +304,7 @@ void func_0010738C(CleanupObject *object)
     }
 }
 
-extern void func_000016C4(void *allocation);
+extern void *func_000016C4(void *allocation);
 extern void func_001C6C04(void *object);
 
 void func_0010746C(CleanupObject *object)

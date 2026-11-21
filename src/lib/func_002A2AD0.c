@@ -19,7 +19,7 @@ typedef struct {
     void *p38;
 } Rec2A;
 extern Rec2A *D_802395B0;
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void func_002A2AD0(void) {
     Rec2A *r;
     u32 i;

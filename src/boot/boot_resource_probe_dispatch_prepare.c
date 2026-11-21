@@ -9,7 +9,7 @@ typedef struct ProbeRecord {
 } ProbeRecord;
 
 extern void *func_00001330(u32 bytes);
-extern void func_000016C4(void *record);
+extern void *func_000016C4(void *record);
 extern void func_00023780(void *record, u32 bytes);
 extern void func_00023940(const char *format, ...);
 extern void func_0000553C(void);

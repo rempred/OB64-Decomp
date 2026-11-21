@@ -10,7 +10,7 @@ extern int func_00201E08(int, int, int);
 extern u32 func_00201E38(int, u32);
 extern void *func_00001330(u32);
 extern void func_00023780(void *, u32);
-extern void func_000016C4(void *);
+extern void *func_000016C4(void *);
 extern void memcpy(void *source, void *destination, u32 bytes);
 extern float sqrtf(float);
 

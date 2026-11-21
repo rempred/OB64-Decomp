@@ -5,7 +5,7 @@ typedef struct ResourcePoolEntry {
 } ResourcePoolEntry;
 
 extern void *func_00001330(unsigned int size);
-extern void func_000016C4(void *ptr);
+extern void *func_000016C4(void *ptr);
 extern void *resource_pool;
 
 void func_0000B33C(unsigned int acquire)

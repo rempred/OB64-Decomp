@@ -50,7 +50,7 @@ typedef struct CombatPosePoolRecord {
 extern unsigned char D_801CEF00;
 extern CombatPosePoolRecord *D_801D0728;
 extern void *func_00001330(u32 bytes);
-extern void func_000016C4(void *allocation);
+extern void *func_000016C4(void *allocation);
 extern void func_00023780(void *destination, u32 bytes);
 
 #endif

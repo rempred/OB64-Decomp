@@ -16,7 +16,7 @@ extern void *D_801F0530;
 extern u16 D_801F0534;
 extern Task23 *D_801F0560;
 extern s32 D_801F0538;
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 void bzero(void *p, s32 n);
 void func_0023B3E0(void) {
     Task23 *p;

@@ -2,7 +2,7 @@
 
 extern u16 D_8018F1A0;
 extern void *D_8022A974;
-extern void resource_free(void *buffer);
+extern void *resource_free(void *buffer);
 extern void func_002879F8(void);
 extern void func_00289504(void);
 extern void func_00284184(void);

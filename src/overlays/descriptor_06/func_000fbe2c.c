@@ -16,9 +16,9 @@ typedef struct {
     u8 x8B;
 } Widget3390;
 void func_000fbe2c(Widget3390 *p);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void func_00100038(void **p);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void func_000fbe2c(Widget3390 *w) {
     u8 *p = (u8 *)w;
     u32 i;

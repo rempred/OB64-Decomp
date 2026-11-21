@@ -8,7 +8,7 @@ typedef struct ResourceNode {
     struct ResourceNode *field_18;
 } ResourceNode;
 
-extern void func_000016C4(void *value);
+extern void *func_000016C4(void *value);
 
 void func_0000A1F8(ResourceNode *node)
 {

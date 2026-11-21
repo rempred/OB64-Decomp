@@ -7,7 +7,7 @@ extern u8 D_801FDA30;
 extern u8 *D_801FDA3C;
 extern s32 D_801F367C;
 void bzero(void *p, s32 size);
-void *func_00001330(s32 size);
+void *func_00001330(u32 size);
 typedef struct {
     s32 id;
     u16 flags;

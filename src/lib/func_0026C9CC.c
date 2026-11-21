@@ -1,7 +1,7 @@
 #include "game/effect_math_e04.h"
 
 extern void *func_00001330(unsigned int);
-extern void func_000016C4(void *);
+extern void *func_000016C4(void *);
 
 void func_0026C9CC(int count, float *a, float *b, float *output)
 {

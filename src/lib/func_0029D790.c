@@ -11,7 +11,7 @@ typedef struct Func0029D790Manager {
 extern Func0029D790Manager * volatile D_8022A974;
 extern s32 D_801CE8FC;
 
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 void func_00023780(void *destination, s32 size);
 void func_8022E3DC(void **record, s32 arg1, s32 arg2, s32 arg3,
                    f32 arg4, f32 arg5, f32 arg6, s32 arg7, s32 arg8,

@@ -11,7 +11,7 @@ typedef struct ResourceSlot {
 } ResourceSlot;
 
 extern ResourceSlot *func_0026061C(void *data);
-extern void func_800712C4(void *data);
+extern void *func_800712C4(void *data);
 extern s32 D_80220CA4;
 extern ResourceSlot *D_80220CA8;
 

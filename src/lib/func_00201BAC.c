@@ -8,7 +8,7 @@ extern void *resource_alloc_tree_scan(s32 size);
 extern void func_0002dfb8(void *data, u32 key);
 extern void *resource_alloc(u32 size);
 extern void memcpy(void *source, void *destination, u32 size);
-extern void resource_free(void *resource);
+extern void *resource_free(void *resource);
 
 extern u8 *D_801D06AC;
 extern u8 *D_801D0690;

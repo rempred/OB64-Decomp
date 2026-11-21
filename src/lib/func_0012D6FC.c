@@ -19,7 +19,7 @@ extern u8 *D_801F0DB0;
 extern u16 *D_801F0DB4;
 extern u16 D_801F36D8[];
 extern void *resource_alloc(u32 bytes);
-extern void resource_free(void *object);
+extern void *resource_free(void *object);
 extern s32 *func_00107D60(s32 first, s32 second, void *third);
 extern s32 func_00107E38(MovementAux *object);
 extern void func_0011AECC(RuntimeUnit *unit);

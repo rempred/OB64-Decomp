@@ -9,7 +9,7 @@ typedef struct {
 extern Seq20F *D_801D06E0;
 void bzero(void *p, s32 n);
 void func_00019e10(void);
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 typedef struct {
     u8 unk00[0x84];
     u8 *data;

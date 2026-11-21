@@ -1,6 +1,6 @@
 #include "game/resource_arena.h"
 
-s32 resource_free(u8 *pointer)
+void *resource_free(void *pointer)
 {
     /* The original validates before testing for a null pointer. */
     s32 index = func_00001F9C(pointer);
@@ -9,7 +9,7 @@ s32 resource_free(u8 *pointer)
     u8 *used_end;
 
     if (pointer != 0) {
-        header = (ArenaNode *)(pointer - 0x20);
+        header = (ArenaNode *)((u8 *)pointer - 0x20);
         /* This local is reused for the predecessor after unlinking. */
         node = header;
         if (header->available >= 0x21) {

@@ -92,7 +92,7 @@ extern void func_0012EA80(s32, f32 *);
 extern f32 func_000F3428(u8, f32, f32);
 extern f32 func_000F315C(u8, f32, f32);
 extern void *resource_alloc(u32);
-extern void resource_free(void *);
+extern void *resource_free(void *);
 extern void func_00023940(char *, ...);
 extern s32 D_801F367C;
 extern s32 D_801F1070;

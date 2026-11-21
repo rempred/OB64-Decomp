@@ -8,7 +8,7 @@ void func_00019e10(void);
 void func_00019eb0(void *p, s32 n);
 void D_8016CD5C(s32 a);
 extern u8 *D_8023DE30;
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 void *func_000016C4(void *p);
 void bzero(void *p, s32 n);
 typedef struct {

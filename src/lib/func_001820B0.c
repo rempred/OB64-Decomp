@@ -56,7 +56,7 @@ extern u8 g_func_0015DF10_default[];
 extern u8 D_801F365D;
 extern u8 D_800E7A90[];
 extern s32 D_801F3620;
-void *func_00001330(s32 size);
+void *func_00001330(unsigned int size);
 void *func_000016C4(void *p);
 void D_800EA604(void *ch, s32 sound);
 s32 func_00181520(void);

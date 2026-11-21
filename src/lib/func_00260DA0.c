@@ -1,6 +1,6 @@
 #include "common/types.h"
 
-extern void *func_80070F30(s32 size);
+extern void *func_80070F30(unsigned int size);
 extern void **D_80220F20;
 extern s32 D_80220D48;
 extern void *D_80220D44;

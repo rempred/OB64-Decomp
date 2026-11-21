@@ -27,7 +27,7 @@ void func_0024C7A4(void *output, void *first, void *second);
 void *func_0020C478(u32 index);
 s32 func_0020C014(void *object);
 void *resource_alloc(u32 bytes);
-s32 resource_free(u8 *pointer);
+void *resource_free(void *pointer);
 
 /* Unchanged KEEP providers in this complete wave. */
 s32 func_0024BD60(s32 value);

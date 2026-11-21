@@ -1,7 +1,7 @@
 #include "common/types.h"
 
 extern void boot_resource_probe_chunk_callback_walk(u8 *buffer);
-extern void resource_free(void *record);
+extern void *resource_free(void *record);
 extern u8 *D_800A83B8;
 extern u8 D_800A83BC;
 

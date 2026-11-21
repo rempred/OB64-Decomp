@@ -11,7 +11,7 @@ typedef struct ResourceNode28 {
 } ResourceNode28;
 
 extern ChildNode24 *boot_resource_node_recursive_child_free(ChildNode24 *node);
-extern void func_000016C4(void *pointer);
+extern void *func_000016C4(void *pointer);
 
 ResourceNode28 *boot_resource_node_recursive_cleanup_free(ResourceNode28 *node)
 {

@@ -22,7 +22,7 @@ typedef struct {
     u8 unk1E[2];
 } Rec698;
 extern Rec698 D_8022A698[];
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 extern void *D_8022A654;
 void func_001C1FF4(void) {
     s32 i;

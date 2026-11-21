@@ -24,7 +24,7 @@ typedef struct P02State271D18 {
 
 extern u8 *p01_context_80220F68;
 
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 
 s32 func_00271D18(u16 message, P02State271D18 *state)

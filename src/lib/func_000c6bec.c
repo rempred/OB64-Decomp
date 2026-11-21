@@ -14,7 +14,7 @@ typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 s32 func_00045ae0(s32, u8, u16 **);
-void resource_free(s32);
+void *resource_free(void *);
 extern u8 * volatile D_80196AF8;
 
 void func_000c6bec(s32 arg0, s32 arg1) {
@@ -30,7 +30,7 @@ void func_000c6bec(s32 arg0, s32 arg1) {
     active_index = *(u16 *)(early_data + 0x24EC);
     resource = *(s32 *)(early_data + (active_index * 4) + 0x68);
     if (resource != 0) {
-        resource_free(resource);
+        resource_free((void *)resource);
         early_data = D_80196AF8;
         active_index = *(u16 *)(early_data + 0x24EC);
         *(s32 *)(early_data + (active_index * 4) + 0x68) = 0;

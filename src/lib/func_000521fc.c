@@ -8,7 +8,7 @@ typedef struct Node {
 } Node;
 extern Node *D_8018FDC0;
 void func_000521fc(Node *n);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void func_000521fc(Node *n) {
     Node *next;
     Node *prev;

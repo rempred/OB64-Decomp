@@ -16,7 +16,7 @@ typedef struct P01ResponseObject {
 struct P01TrailState;
 extern s32 func_00252A9C(u16, struct P01TrailState *);
 extern void func_00262B68(void);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 
 extern void func_00262C64(s16, s16);
 extern void *func_00262AB0(void *);

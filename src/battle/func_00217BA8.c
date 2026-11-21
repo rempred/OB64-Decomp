@@ -23,8 +23,8 @@ M2C_UNK func_002159D0(void);
 M2C_UNK func_0021C3B0();
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
-void *func_80070F30(M2C_UNK, void *, s32);
-M2C_UNK func_800712C4(void *);
+void *func_80070F30(u32 requested);
+void *func_800712C4(void *pointer);
 
 extern u16 D_800E8100;
 extern u8 D_801976DC;
@@ -117,11 +117,11 @@ void func_00217BA8(void) {
     temp_s2_120 = var_a2_84 + 0x10;
     (*(s32 *)((s8 *)(temp_a0_88) + (0x604C))) = (s32) ((*(s32 *)((s8 *)(temp_a0_88) + (0x604C))) | 1);
     if ((*(s32 *)((s8 *)(temp_a0_88) + (0x6048))) == temp_s2_120) {
-        temp_s0_128 = func_80070F30(0x6094, timer_x, var_a2_84);
+        temp_s0_128 = func_80070F30(0x6094);
         temp_a1_131 = D_801CE8BC;
         /* Transfer experiment from 158E4: identical real operations in both
          * arms; the owner bit has no inferred meaning. Keep the owner read
-         * after allocation and preserve the allocator's existing arguments.
+         * after allocation.
          */
         if ((u32)temp_a1_131 & 1) {
             *(s32 *)(D_801CE8C0 + 0x814) = 0;

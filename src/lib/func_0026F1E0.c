@@ -20,7 +20,7 @@ typedef struct P02StateF1E0 {
 extern void func_00262B68(void);
 extern void *func_0020C478(u32);
 extern s32 func_0020C014(void *);
-extern void func_00262830(s32);
+extern void func_00262830(s16);
 extern s32 p02_word_80220F68[], p02_word_80220F6C[];
 
 s32 func_0026F1E0(u16 message, P02StateF1E0 *state)

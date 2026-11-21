@@ -21,7 +21,7 @@ typedef struct {
 extern Rec2A *D_802395B0;
 extern u8 *D_8022A974;
 void bzero(void *p, s32 n);
-void func_000016C4(void *p);
+void *func_000016C4(void *p);
 void func_00019e10(void);
 extern inline void Rec2AFree(s32 id, s32 kind) {
     Rec2A *r;

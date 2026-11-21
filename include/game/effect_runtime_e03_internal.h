@@ -85,8 +85,8 @@ extern u16 D_80220E8E;
 extern void *D_80220EDC;
 extern E03Task *D_80220FE8;
 
-extern void *func_80070F30(s32 size);
-extern void func_800712C4(void *memory);
+extern void *func_80070F30(u32 size);
+extern void *func_800712C4(void *pointer);
 extern void func_001F0F6C(s32 recordWord);
 extern void func_001F0F90(void *record);
 

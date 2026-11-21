@@ -13,7 +13,7 @@ extern void *D_8019E1AC; /* lazily allocated 0x780-byte clear texture and palett
 extern u8 D_8018F480;
 
 extern void *func_00045bec(u32 identity, u32 variant, void **palette);
-extern void *func_00070F30(s32 size);
+extern void *func_00070F30(u32 size);
 extern void func_00023780(void *pointer, s32 size);
 
 /*

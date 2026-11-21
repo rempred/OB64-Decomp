@@ -41,7 +41,7 @@ void D_8023A98C(void);
 void D_80227010(void);
 void *func_000016C4(void *p);
 extern s16 *D_8022A97C;
-void *func_00001330(s32 size);
+void *func_00001330(u32 size);
 s32 D_8009DAF4(s32 id);
 void D_8009DBB8(void *dst, s32 id);
 u32 func_0000ABE0(void *p);

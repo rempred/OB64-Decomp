@@ -35,7 +35,7 @@ extern u8 D_801974DE[];
 
 extern void *func_0002DFB8(void *destination, u32 key);
 extern u32 func_0002DEF4(u32 key);
-extern void resource_free(void *resource);
+extern void *resource_free(void *resource);
 extern void boot_resource_archive_load_many(ResourceArchiveInput *first,
                                             ResourceArchiveInput *second, s32 count);
 extern void memcpy_aligned(void *destination, const void *source, s32 count);
