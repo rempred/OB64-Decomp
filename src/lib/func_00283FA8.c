@@ -13,14 +13,14 @@ void *func_8009DBB8(void *destination, u32 resource);
 void *func_800712C4(void *pointer);
 u32 func_8009DAF4(u32 resource);
 void *func_80070F30(u32 size);
-u32 func_8007A7E0(void *source);
-void func_8007A110(void *destination, void *source);
+u32 func_8007A7E0(const u8 *source);
+u32 func_8007A110(u8 *destination, const u8 *source);
 
 void func_00283FA8(s32 selector, s32 continuation)
 {
     u32 *table;
     u32 resource;
-    u32 *compressed;
+    u8 *compressed;
     u32 decoded_size;
     u32 word_count;
     u32 index;
@@ -54,7 +54,7 @@ void func_00283FA8(s32 selector, s32 continuation)
     func_8009DBB8(compressed, resource);
     decoded_size = func_8007A7E0(compressed);
     D_8022A958 = func_80070F30(decoded_size);
-    func_8007A110(D_8022A958, compressed);
+    func_8007A110((u8 *)D_8022A958, compressed);
     func_800712C4(compressed);
     func_800712C4(table);
 

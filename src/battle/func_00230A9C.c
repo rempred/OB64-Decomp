@@ -62,7 +62,7 @@ extern int func_0020C32C(A9CObject *);
 extern int func_0020C2F4(A9CObject *);
 extern int func_0020C310(A9CObject *);
 extern int func_00233ED4(A9CObject *);
-extern A9CObject *func_0020C478(int);
+extern void *func_0020C478(unsigned int index);
 extern int func_0022F2BC(A9CObject *, int *);
 extern int func_0020F8DC(void);
 extern int func_0020D814(A9CObject *);

@@ -21,7 +21,7 @@ typedef struct ResolutionGlobal {
 
 extern ResolutionGlobal *D_801CE8BC;
 extern int func_0020BF6C(void);
-extern ResolutionObject *func_0020C478(u32 index);
+extern void *func_0020C478(unsigned int index);
 extern int func_0020C2C0(void *object);
 extern int func_0020C014(void *object);
 extern void func_00231CC0(ResolutionRecord *records);

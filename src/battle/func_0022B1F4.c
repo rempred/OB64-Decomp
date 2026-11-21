@@ -22,7 +22,7 @@ s32 func_0020C164(s32 *);
 s32 func_0020C2C0(s32 *);
 s32 func_0020C32C(s32 *);
 s32 func_0020C448(s32 *);
-s32 *func_0020C478(s32);
+void *func_0020C478(unsigned int index);
 s32 func_0020D72C(s32 *);
 void func_0021D200(UnknownWord, s32, s32 *);
 void func_0021D230(UnknownWord, s32, s32 *, u32);

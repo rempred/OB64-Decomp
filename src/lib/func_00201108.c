@@ -19,7 +19,7 @@ extern u8 D_801976DC;
 extern u8 D_801976E8;
 extern SourceRecord g_func_001957D0_source_records[];
 
-void *func_0020C478(s32 index);
+void *func_0020C478(unsigned int index);
 s32 func_0020C014(void *actor);
 s32 func_0020BFF8(void *actor);
 s32 func_0020C2C0(void *actor);

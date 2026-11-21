@@ -8,7 +8,7 @@ s32 func_0020C0CC(void *);
 s32 func_0020C104(void *);
 s32 func_0020C2C0(void *);
 s32 func_0020C32C(void *);
-void *func_0020C478(s32);
+void *func_0020C478(unsigned int index);
 
 extern u8 D_80193BC0[];
 extern u8 D_80195560[];

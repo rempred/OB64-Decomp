@@ -17,7 +17,7 @@ typedef struct {
     s32 actsMax;
 } BattleUnit;
 s32 func_0020C014(BattleUnit *u);
-BattleUnit *func_0020C478(u32 i);
+void *func_0020C478(unsigned int index);
 extern inline s32 func_0020C014(BattleUnit *u) {
     if (u == ((void *)0)) {
         return 0;
@@ -27,4 +27,4 @@ extern inline s32 func_0020C014(BattleUnit *u) {
 s32 func_0020C050(u8 a, u8 b) {
     return func_0020C014(func_0020C478(a)) ^ func_0020C014(func_0020C478(b));
 }
-BattleUnit *func_0020C478(u32 i);
+void *func_0020C478(unsigned int index);

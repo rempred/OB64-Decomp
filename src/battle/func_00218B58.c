@@ -22,7 +22,7 @@ s32 func_0020C014(void **);
 s32 func_0020C0CC(void **);                                     
 s32 func_0020C2C0(void **);                                     
 s32 func_0020C32C(void **);                                     
-void **func_0020C478(s32);                                      
+void *func_0020C478(unsigned int index);                                      
 M2C_UNK func_0021824C(s32 *, s32 *, s32 *, s32 *);              
 extern void *D_801CE8BC;
 extern u8 D_801CEAAB;

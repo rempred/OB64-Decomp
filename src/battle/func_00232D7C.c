@@ -37,7 +37,7 @@ extern u8 D_801939CC;
 extern void func_0021088C(void);
 extern void func_00210930(void);
 extern void func_00023780(void *, u32);
-extern ResolutionObject *func_0020C478(u32);
+extern void *func_0020C478(unsigned int index);
 extern u8 *func_001F21A4(int);
 extern int func_0020BF7C(void);
 /* The getter produces a full zero-extended word, as declared by its existing callers. */

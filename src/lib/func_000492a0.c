@@ -1,10 +1,12 @@
+typedef unsigned char u8;
 typedef signed int s32;
+typedef unsigned int u32;
 void *func_000016C4(void *p);
 s32 D_8009DAF4(s32 id);
 void *resource_alloc_tree_scan(s32 size);
 void *D_8009DBB8(void *dst, unsigned int id);
-s32 func_0000ABE0(void *p);
-void func_0000A510(void *dst, void *src);
+u32 func_0000ABE0(const u8 *p);
+u32 func_0000A510(u8 *dst, const u8 *src);
 s32 func_000492a0(s32 i) {
     s32 *buf;
     s32 *out;
@@ -16,9 +18,9 @@ s32 func_000492a0(s32 i) {
     func_000016C4(buf);
     buf = resource_alloc_tree_scan(D_8009DAF4(i));
     D_8009DBB8(buf, i);
-    i = func_0000ABE0(buf);
+    i = (s32)func_0000ABE0((const u8 *)buf);
     out = resource_alloc_tree_scan(i);
-    func_0000A510(out, buf);
+    func_0000A510((u8 *)out, (const u8 *)buf);
     i = out[i / 4 - 1];
     func_000016C4(buf);
     func_000016C4(out);

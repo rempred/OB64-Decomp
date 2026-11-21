@@ -49,7 +49,7 @@ s32 D_801C8BC0(u8 a, u8 b);
 s32 D_801C8C3C(BattleUnit *u);
 s32 D_801C8D24(BattleUnit *u);
 s32 D_801C8E30(BattleUnit *u);
-BattleUnit *D_801C8FE8(s32 i);
+void *D_801C8FE8(unsigned int index);
 s32 D_801CA038(BattleUnit *u, s32 amount);
 s32 D_801CA29C(BattleUnit *u);
 s32 func_002340EC(BattleUnit *self) {

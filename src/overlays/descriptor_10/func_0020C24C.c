@@ -16,12 +16,14 @@ typedef struct {
     u8 unk5C[0x14];
     s32 actsMax;
 } BattleUnit;
-s32 func_0020C24C(BattleUnit *u) {
+s32 func_0020C24C(void *record) {
+    BattleUnit *u;
     s32 c;
     s32 r;
-    if (u == ((void *)0)) {
+    if (record == ((void *)0)) {
         return 0;
     }
+    u = record;
     c = u->unk48;
     r = 0;
     if ((u32)(c - 135) < 2) {

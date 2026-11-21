@@ -25,7 +25,7 @@ typedef struct SideContext {
 extern SideContext *D_801CE8C0;
 extern u8 *D_801CE8BC;
 extern int func_002335E0(int);
-extern SideObject *func_0020C478(int);
+extern void *func_0020C478(unsigned int index);
 extern int func_0020C2C0(SideObject *);
 extern int func_0020C014(SideObject *);
 extern int func_0020BFF8(SideObject *);

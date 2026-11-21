@@ -118,7 +118,7 @@ extern int func_0020C2F4(ResolutionObject *);
 extern int func_0020C310(ResolutionObject *);
 extern int func_0020C364(int);
 extern int func_0020C1B4(ResolutionObject *);
-extern ResolutionObject *func_0020C478(int);
+extern void *func_0020C478(unsigned int index);
 extern int func_0020D434(int);
 extern int func_0020D4C8(ResolutionObject *, int);
 extern int func_0020D72C(ResolutionObject *);

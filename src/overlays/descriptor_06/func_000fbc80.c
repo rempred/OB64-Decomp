@@ -21,8 +21,8 @@ void bzero(void *p, s32 n);
 void func_000fbc80(Widget3390 *p);
 void *func_00001330(u32 size);
 void *D_8009DBB8(void *dst, u32 id);
-s32 func_0000ABE0(void *p);
-void func_0000A510(void *dst, void *src);
+u32 func_0000ABE0(const u8 *p);
+u32 func_0000A510(u8 *dst, const u8 *src);
 void func_000fbc80(Widget3390 *o) {
     u32 i;
     s32 *tbl;

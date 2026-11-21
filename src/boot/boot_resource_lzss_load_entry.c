@@ -18,7 +18,7 @@ typedef struct UnpackRequest {
 extern void func_00023AE0(void *queue, void *msg, int flags);     /* receive message */
 extern void func_00023C10(void *queue, void *msg, int flags);     /* send message */
 extern void func_00023940(const char *fmt, ...);                  /* diagnostic printf */
-extern unsigned int func_0000A510(void *dst, void *src);
+extern u32 func_0000A510(u8 *dst, const u8 *src);
 
 extern u8 g_boot_resource_lzss_table[];                           /* request queue, 0x800AF320 */
 /* Format string at 0x800AE038, relative to the existing 0x800B0000 link anchor. */

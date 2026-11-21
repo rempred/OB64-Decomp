@@ -1,5 +1,6 @@
 typedef unsigned char u8;
 typedef signed int s32;
+typedef unsigned int u32;
 void *func_000016C4(void *p);
 void *func_00001330(unsigned int size);
 typedef struct {
@@ -11,8 +12,8 @@ typedef struct {
 extern Arc16_20BCE0 D_801D0640;
 s32 D_8009DAF4(s32 id);
 void *D_8009DBB8(void *dst, unsigned int id);
-s32 func_0000ABE0(void *p);
-void func_0000A510(void *dst, void *src);
+u32 func_0000ABE0(const u8 *p);
+u32 func_0000A510(u8 *dst, const u8 *src);
 void boot_resource_archive_load_many(void *arc, void *reqs, s32 n);
 void *resource_alloc_tree_scan(s32 size);
 void *func_0020F5B4(s32 id) {

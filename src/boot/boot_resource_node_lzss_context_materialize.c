@@ -1,3 +1,4 @@
+typedef unsigned char u8;
 typedef unsigned int u32;
 
 typedef struct ResourceNode {
@@ -18,8 +19,8 @@ extern void *func_00009CB4(void *node, u32 index);
 extern u32 func_0002DEF4(u32 key);
 extern void *func_00001330(u32 size);
 extern void *func_0002DFB8(void *buffer, u32 key);
-extern u32 func_0000ABE0(void *buffer);
-extern void func_0000A510(void *destination, void *source);
+extern u32 func_0000ABE0(const u8 *buffer);
+extern u32 func_0000A510(u8 *destination, const u8 *source);
 
 extern ResourceContext *g_boot_resource_context;
 extern void *g_resource_context_output;

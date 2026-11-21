@@ -15,8 +15,8 @@ u32 func_8009DAF4(u32 resource);
 void *func_80071C04(u32 size);
 void *func_8009DBB8(void *destination, u32 resource);
 void *func_800712C4(void *pointer);
-u32 func_8007A7E0(void *source);
-void func_8007A110(void *destination, void *source);
+u32 func_8007A7E0(const u8 *source);
+u32 func_8007A110(u8 *destination, const u8 *source);
 
 s32 func_0004ed60(s32 selector, Func0004ED60Launch *launch)
 {
@@ -37,9 +37,9 @@ s32 func_0004ed60(s32 selector, Func0004ED60Launch *launch)
 
     buffer = func_80071C04(func_8009DAF4(resource));
     func_8009DBB8(buffer, resource);
-    selector = func_8007A7E0(buffer);
+    selector = (s32)func_8007A7E0((const u8 *)buffer);
     decoded = func_80071C04(selector);
-    func_8007A110(decoded, buffer);
+    func_8007A110((u8 *)decoded, (const u8 *)buffer);
     func_800712C4(buffer);
 
     word_count = selector / 4;

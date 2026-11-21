@@ -30,7 +30,7 @@ s32 func_0020C2F4(void *);
 s32 func_0020C310(void *);
 s32 func_0020C32C(void *);
 s32 func_0020C3B4(void *);
-void *func_0020C478(s32);
+void *func_0020C478(unsigned int index);
 u8 func_0020D434(s32);
 s32 func_0020D4C8(void *, u32);
 s32 func_0020D6F8(void *, void *);

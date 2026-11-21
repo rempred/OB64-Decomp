@@ -150,7 +150,7 @@ s32 func_0012E8EC(s32);
 M2C_UNK func_0012EA80(s32, f32 *);
 M2C_UNK func_0012EA80_row(s32, f32 *);
 s32 func_00130794(void);
-M2C_UNK func_00130E60(M2C_UNK, M2C_UNK);
+extern void func_00130E60(u16, u8);
 M2C_UNK func_00131B50(u16);
 void func_001957D0(void *, s32);
 void func_00195D9C(u8, u8, u8, u8);

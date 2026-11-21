@@ -4,7 +4,7 @@ typedef unsigned int u32;
 
 extern u8 D_801976E8;
 
-extern void *func_0020C478(s32 rowIndex);
+extern void *func_0020C478(unsigned int index);
 extern s32 func_0020BFF8(void *row);
 extern void func_00207C08(s32 handle);
 extern void func_001F0F90(void *object);

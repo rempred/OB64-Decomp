@@ -1,5 +1,6 @@
 typedef unsigned char u8;
 typedef signed int s32;
+typedef unsigned int u32;
 void *func_00001330(unsigned int size);
 void *func_00001330(unsigned int size);
 void *func_000016C4(void *p);
@@ -12,8 +13,8 @@ typedef struct {
 extern Arc16_1CE070 D_801B99A0;
 s32 D_8009DAF4(s32 id);
 void *D_8009DBB8(void *dst, unsigned int id);
-s32 func_0000ABE0(void *p);
-void func_0000A510(void *dst, void *src);
+u32 func_0000ABE0(const u8 *p);
+u32 func_0000A510(u8 *dst, const u8 *src);
 void boot_resource_archive_load_many(void *arc, void *reqs, s32 n);
 void *func_001CEAD0(s32 id) {
     s32 size = D_8009DAF4(id);

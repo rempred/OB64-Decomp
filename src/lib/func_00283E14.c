@@ -1,12 +1,14 @@
 typedef signed char s8;
+typedef unsigned char u8;
 typedef signed int s32;
+typedef unsigned int u32;
 
 extern s32 func_0002def4(s32);
 extern s32 resource_alloc_tree_scan(s32);
 extern void *func_0002dfb8(void *, unsigned int);
 extern void *resource_free(void *);
-extern s32 func_8007A7E0(s32);
-extern s32 boot_lzss_decompress(s32, s32);
+extern u32 func_8007A7E0(const u8 *source);
+extern u32 boot_lzss_decompress(u8 *destination, const u8 *source);
 
 s32 func_00283E14(s32 index)
 {
@@ -24,9 +26,9 @@ s32 func_00283E14(s32 index)
 
     table = resource_alloc_tree_scan(func_0002def4(resource));
     func_0002dfb8((void *)table, resource);
-    decoded_size = func_8007A7E0(table);
+    decoded_size = (s32)func_8007A7E0((const u8 *)(u32)table);
     decoded = resource_alloc_tree_scan(decoded_size);
-    boot_lzss_decompress(decoded, table);
+    boot_lzss_decompress((u8 *)(u32)decoded, (const u8 *)(u32)table);
 
     if (decoded_size >= 0) {
         adjusted_size = decoded_size;

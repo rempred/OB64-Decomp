@@ -27,7 +27,7 @@ s32 func_00127BFC();
 u8 func_00127C50();
 M2C_UNK func_0012EA80(s32, f32 *);
 s32 func_00130C2C();
-M2C_UNK func_00130E60(u16, M2C_UNK);
+extern void func_00130E60(u16, u8);
 s32 func_00139C10();
 s32 func_00139C88();
 s32 func_00139CE8();

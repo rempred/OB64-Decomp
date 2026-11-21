@@ -4,7 +4,7 @@ typedef unsigned int u32;
 typedef unsigned char u8;
 typedef float f32;
 
-extern void *func_0020C478(s32 index);
+extern void *func_0020C478(unsigned int index);
 extern s32 func_0020C2C0(void *record);
 
 void func_0021B438(void)

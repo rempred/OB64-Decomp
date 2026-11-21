@@ -28,7 +28,7 @@ s32 func_0020BF7C();
 s32 func_0020BFF8(void *);
 s32 func_0020C2C0(void *);
 s32 func_0020C32C(void *);
-void *func_0020C478(s32);
+void *func_0020C478(unsigned int index);
 void *func_0020C788();
 void *func_0020C810(s32);
 M2C_UNK func_00215CF0();

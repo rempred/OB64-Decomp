@@ -27,7 +27,7 @@ typedef struct ResolutionContext {
 
 extern ResolutionContext *D_801CE8C0;
 extern void func_00023780(void *base, u32 bytes);
-extern ResolutionObject *func_0020C478(u32 index);
+extern void *func_0020C478(unsigned int index);
 extern int func_0020C2C0(void *object);
 
 static inline int object_qualified(ResolutionObject *object)

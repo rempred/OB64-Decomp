@@ -9,7 +9,7 @@ extern u8 D_80195560[];
 extern u8 D_801976DC;
 extern u8 D_801976E8;
 
-void *func_0020C478(s32 index);
+void *func_0020C478(unsigned int index);
 s32 func_801D0880(void);
 s32 func_0020BFF8(void *actor);
 s32 func_0020C0E8(void *actor);

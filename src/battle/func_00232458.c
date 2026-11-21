@@ -66,7 +66,7 @@ extern void func_00237E2C(DispatchDescriptor *, int, int);
 extern void func_00239338(DispatchDescriptor *, DispatchObject *, DispatchObject *, DispatchObject *);
 extern int func_0025FD00(int);
 extern void func_0021D1CC(int, int);
-extern DispatchObject *func_0020C478(int);
+extern void *func_0020C478(unsigned int index);
 extern int func_0020C2C0(DispatchObject *);
 extern int func_0020C0CC(DispatchObject *);
 extern int func_0020BFF8(DispatchObject *);
