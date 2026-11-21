@@ -32,11 +32,13 @@ Opening preparation is tracked per physical source file on the verified main che
 
 The [accepted opening commit](https://github.com/rempred/OB64-Decomp/commit/0193ad299e565e9828920e5c70828ce707e40b08) cleared all 1,073 assigned findings and reproduced the retail ROM. The canonical report at that commit has 2,297 remaining findings across 310 linked function entries. The three highest-ranked providers have disjoint source assignments.
 
-| Source lead | Provider | Findings at the opening commit | Assigned files | First comparison |
+| Source lead | Provider | Findings at the opening commit | Initially assigned files | First comparison |
 | --- | --- | ---: | ---: | --- |
 | ROM transfer | `func_0002de50` | 103 | 19 | Trace the ROM address, destination and byte count through a small transfer and a direct transfer. Check how callers use the return register. |
 | Resource loading | `func_0002dfb8` | 77 | 27 | Trace a boot materializer through the cached and uncached paths. Check the input buffer, resource key and returned pointer. |
 | Node construction | `func_00051eb0` | 77 | 7 | Follow the callback and stack arguments through the constructor and `func_00051f74`. Check where coordinates are widened or narrowed. |
+
+The ROM-transfer source also declares the lower-level DMA routine with a different destination type. Correcting that declaration covers three additional findings in the same file. The node lead owns two further constructor callers and seven callback implementations. The callback dispatcher passes the panel pointer and a pass index. The existing cutscene-panel declaration is a comparison for the proposed shared type. These additions bring the round to 62 distinct source files and 260 known findings. The broader callback checks also cover interfaces that the scanner could not classify.
 
 The integrator checks other callers of the same physical functions, including aliases, for any additional source or shared-header impact. Refresh priorities from the accepted report after each completed group.
 
