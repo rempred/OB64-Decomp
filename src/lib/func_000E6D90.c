@@ -91,7 +91,7 @@ extern void func_0004cb6c(s32,s32,s32,s32,s32,s32,s32);
 extern void func_0004c848(s32,s32,s32,s32,s32,s32,s32,s32,s32);
 extern void func_000ead04(s32,s32);
 extern void func_0004f1e8(void);
-extern void func_0004ef34(u8 *,s32,s32);
+extern void func_0004ef34(void *text, s32 x, s32 y);
 extern void func_00008A74(s32,s32,s32,s32);
 extern void func_000e4930(void);
 

@@ -1,4 +1,5 @@
 typedef unsigned char u8;
+typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 typedef struct {
@@ -9,7 +10,7 @@ extern Gfx *gTitleCardDisplayListCursor;
 extern u8 *D_801F0B90;
 extern u8 D_80210258[];
 extern u8 D_80213648[];
-void func_001520E0(void *a, void *b, s32 c, s32 d, s32 e);
+void func_001520E0(void *pal, void *img, u16 w, u16 h, u16 mode);
 void func_0015394C(void) {
     Gfx *g = gTitleCardDisplayListCursor++;
     g->w0 = 0xDE000000;

@@ -1,3 +1,5 @@
+#include "game/sound_channel.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -23,9 +25,9 @@ void func_80092A60(void);
 f32 func_80092DB0(f32);
 void func_80093380(void*,s32);
 void func_8009DA50(void*,void*,s32);
-void func_800EA604(void*,s32);
+void func_800EA604(SoundChannel *channel, s32 request);
 void func_800EA76C(void);
-void func_800EA7E4(void*,s32);
+void func_800EA7E4(SoundChannel *channel, s32 gain);
 void func_8016C5BC(void*);
 void func_801707F4(void);
 s32 func_8017223C(s32);
@@ -650,7 +652,7 @@ s3_unit_loop:
                 func_8020EA18();
             }
             D_801F0DE0 = 0x13U;
-            func_800EA7E4(D_800EB0B0, 0x3C);
+            func_800EA7E4((SoundChannel *)D_800EB0B0, 0x3C);
             D_801E7DF4 = var_s3;
             D_801F0DE8 = -1;
             D_801F365D = (u8) (D_801F365D | 1);
@@ -888,7 +890,7 @@ block_167:
                         D_801E7DF8 = (s32) (temp_v0_11 - 1);
                     } else {
                         D_801E7DF8 = 0xA;
-                        func_800EA604(D_800EB240, 0x28A);
+                        func_800EA604((SoundChannel *)D_800EB240, 0x28A);
                         func_80186190(D_801F0E00, 1);
                         func_8019FD5C(D_801F0E04);
                         if (D_801F0D80 != 0.0f) {

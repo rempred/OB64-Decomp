@@ -70,7 +70,7 @@ void func_002A175C(s32, s32);
 void func_002A2C78();
 void func_002A44EC(u8, u16);
 void func_002A6150(s32, s32);
-s32 func_002A7010(s32, f32, f32, f32);
+void *func_002A7010(s32, f32, f32, f32);
 void func_002a3bc0(s32, s32, s32, s32);
 s32 func_002a3efc(s32);
 s32 func_8022A428(s32, s32 *);
@@ -199,7 +199,7 @@ s32 func_00284288(void) {
     s32 value_33;
     void *value_33_4;
     s32 value_47;
-    s32 value_80000009;
+    void *value_80000009;
     s32 *previous_stream;
     s32 command;
     s32 first_45_ab;
@@ -1326,7 +1326,7 @@ s32 func_00284288(void) {
                 (f32) *(s32 *)((u8 *)args_80000009 + 0xC) / 1000.0f,
                 (f32) *(s32 *)((u8 *)args_80000009 + 0x10) / 1000.0f);
             D_801CFC70 = 2;
-            *(s32 *)((u8 *)D_8022A974 + 0) = value_80000009;
+            *(void **)((u8 *)D_8022A974 + 0) = value_80000009;
             break;
         case 0x8000000A:
             if (D_801CFC70 != -1) {

@@ -9,7 +9,7 @@ typedef float f32;
 extern u32 * volatile D_800E9BA0;
 extern u8 * volatile D_80196AF8;
 
-void func_0004ef34(void *, s32, s32, u32 *);
+void func_0004ef34(void *text, s32 x, s32 y);
 void func_00087200(s32, s32, s32);
 void func_00087b30();
 void func_00088304(s32, s32, u16, s32);
@@ -96,9 +96,9 @@ void func_0009ed1c(void *unused, u8 *screen, s32 slot)
             asm volatile(
                 "# Preserve the retail image-call cursor publication and delay slot.\n"
                 ".set noreorder\n"
-                "addiu $7,$7,8 # advance the image command pointer passed in $a3\n"
+                "addiu $7,$7,8 # advance the image command pointer in $a3\n"
                 "lui $1,%%hi(D_800E9BA0) # load the display-list cursor global address\n"
-                "sw $7,%%lo(D_800E9BA0)($1) # publish the command pointer passed in $a3\n"
+                "sw $7,%%lo(D_800E9BA0)($1) # publish the command pointer from $a3\n"
                 "jal func_0004ef34 # draw the selected class-screen image\n"
                 "addiu $6,$21,4 # pass y + 4 in $a2 in the call delay slot\n"
                 "# Restore normal assembler scheduling after the image-call delay slot.\n"
