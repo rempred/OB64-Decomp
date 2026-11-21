@@ -60,6 +60,8 @@ Three further callers use the address `D_801C8FE8`, shared by three executable o
 
 In `func_0021824C`, the lookup result goes to two more functions. The call to `func_0020BFF8` accounts for two existing definite findings beyond the initial 172. The next call to `func_0020C24C` passes the same record. Its caller declares an integer argument, while its provider reads a field through a pointer. The revised caller passes the record pointer directly to both functions. The revised `func_0020C24C` accepts the pointer, checks for null and reads the same field through its local battle-record type. This provider is the 25th lookup source file. Focused checks reproduced all 396 caller bytes and 56 provider bytes. All five calls remained visible and nine prior coverage gaps cleared in the focused analysis. The integrator verifies those results against the complete corpus.
 
+In `func_002A2718`, the two calls at ROM `0x2A27A4` and `0x2A27CC` reach the same resident allocator, `resource_alloc_tree_scan(u32 requested)`. The caller declares a signed size. One declaration finding and two call findings trace to that mismatch. The decompression lead owns the unsigned prototype and direct passage of the size-reader result to the second allocation. The integrator verifies both calls and the complete 588-byte caller.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
