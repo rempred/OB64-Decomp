@@ -64,7 +64,7 @@ In `func_002A2718`, the two calls at ROM `0x2A27A4` and `0x2A27CC` reach the sam
 
 ## Round 4
 
-[Round 3 acceptance](https://github.com/rempred/OB64-Decomp/commit/e537aae38cb3f8b56f50705ec87553008e50ec17) cleared all 177 assigned conflicts with an exact US Rev 0 ROM. The accepted report contains 1,860 remaining conflicts across 304 linked entries. The next three providers account for 138 conflicts across 31 complete source files.
+[Round 3 acceptance](https://github.com/rempred/OB64-Decomp/commit/e537aae38cb3f8b56f50705ec87553008e50ec17) cleared all 177 assigned conflicts with an exact US Rev 0 ROM. The accepted report contains 1,860 remaining conflicts across 304 linked entries. The next three providers account for 138 conflicts. The initial assignments covered 31 complete source files.
 
 | Source lead | Provider | Findings against provider | Owned files | First comparison |
 | --- | --- | ---: | ---: | --- |
@@ -73,6 +73,8 @@ In `func_002A2718`, the two calls at ROM `0x2A27A4` and `0x2A27CC` reach the sam
 | Battle call arguments | `func_0021D230` | 38 | 9 | Follow all four incoming values into the nine-argument call. Check the zero stack arguments and whether callers consume a return value. |
 
 Two providers tied at 38 findings. The battle wrapper shares one source file with the first two families. The resource loader `func_0002e138` shares two. The battle lead owns the complete shared `func_0022B1F4.c`, including four random-number findings and seven battle-wrapper findings. This assigns 51, 45 and 42 finding records to the three leads respectively. The integrator checks the two interfaces together in that file.
+
+The battle wrapper also receives a record pointer in callers outside its definite findings. The RNG lead owns the wrapper updates in the already assigned `func_0022F580`, `func_00230A9C`, `func_00232458` and `func_0022D14C`. The battle lead adds `func_002317C8` along with `func_00223874`, `func_00223978` and `func_002239D8`, which use the absolute symbol `D_801D9F60`. All three load with the wrapper in the same ROM region and pass an object pointer as the third argument. Preserve the symbol in those callers. This brings the assigned source count to 35. The integrator is tracing the next call to `func_0021CBC4` and its uses of that argument before changing its interface.
 
 ## Matching and acceptance
 
