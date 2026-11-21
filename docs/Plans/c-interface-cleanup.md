@@ -62,6 +62,18 @@ In `func_0021824C`, the lookup result goes to two more functions. The call to `f
 
 In `func_002A2718`, the two calls at ROM `0x2A27A4` and `0x2A27CC` reach the same resident allocator, `resource_alloc_tree_scan(u32 requested)`. The caller declares a signed size. One declaration finding and two call findings trace to that mismatch. The decompression lead owns the unsigned prototype and direct passage of the size-reader result to the second allocation. The integrator verifies both calls and the complete 588-byte caller.
 
+## Round 4
+
+[Round 3 acceptance](https://github.com/rempred/OB64-Decomp/commit/e537aae38cb3f8b56f50705ec87553008e50ec17) cleared all 177 assigned conflicts with an exact US Rev 0 ROM. The accepted report contains 1,860 remaining conflicts across 304 linked entries. The next three providers account for 138 conflicts across 31 complete source files.
+
+| Source lead | Provider | Findings against provider | Owned files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Resource header word | `func_0002def4` | 51 | 16 | Trace a cache hit and a miss. Check how callers pass the archive key and use the 32-bit header value, including the allocation in `func_002A2718`. |
+| Random number return | `func_0002CBCC` | 49 | 6 | Compare signed and unsigned uses of the random result. Preserve the existing hybrid provider and its volatile stores. |
+| Battle call arguments | `func_0021D230` | 38 | 9 | Follow all four incoming values into the nine-argument call. Check the zero stack arguments and whether callers consume a return value. |
+
+Two providers tied at 38 findings. The battle wrapper shares one source file with the first two families. The resource loader `func_0002e138` shares two. The battle lead owns the complete shared `func_0022B1F4.c`, including four random-number findings and seven battle-wrapper findings. This assigns 51, 45 and 42 finding records to the three leads respectively. The integrator checks the two interfaces together in that file.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
