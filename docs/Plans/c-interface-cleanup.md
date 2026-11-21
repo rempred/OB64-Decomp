@@ -52,6 +52,10 @@ The integrator checks other callers of the same physical functions, including al
 | Encoded item updates | `func_00130E60` | 56 | 6 | Trace both inputs from real callers and compare the two paths selected by bit 15 of the item code. |
 | Battle record lookup | `func_0020C478` | 53 | 17 | Follow an out-of-range index, an empty slot and a populated slot from the lookup into its callers. Check how they use the returned pointer. |
 
+The boot decompression lead also owns 15 callers of the helper that reads the decompressed size. Both `func_0000ABE0` and `func_8007A7E0` reach the same 44-byte resident routine. All 15 callers are already in the 17-file assignment. Compare each caller's use of the unsigned size, including signed tests of its high bit.
+
+The lookup lead also owns `func_00231CC0`, `func_00232280`, `func_00232D7C`, `func_002ACA3C` and `func_0020C050`. Their eight named calls reach `func_0020C478`. The five callers declare a specific structure pointer as the return type where the provider declares `void *`. Preserve how each caller uses the returned record. These five files bring the lookup assignment to 22. The 15 size-reader calls and eight lookup calls are separate from the original definite findings. Three further lookup calls use the address `D_801C8FE8`, which has three executable occupants. The lookup lead is tracing which overlay is loaded at each call.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
