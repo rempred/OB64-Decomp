@@ -10451,6 +10451,162 @@
     {
       "symbol": "func_001CF9C0",
       "source": "src/overlays/descriptor_15/func_001CF9C0.c"
+    },
+    {
+      "symbol": "func_0001237c",
+      "source": "src/lib/func_0001237c.c"
+    },
+    {
+      "symbol": "func_00014a14",
+      "source": "src/lib/func_00014a14.c"
+    },
+    {
+      "symbol": "func_00048a68",
+      "source": "src/lib/func_00048a68.c"
+    },
+    {
+      "symbol": "func_00048af0",
+      "source": "src/lib/func_00048af0.c"
+    },
+    {
+      "symbol": "func_00051400",
+      "source": "src/lib/func_00051400.c"
+    },
+    {
+      "symbol": "func_00051a50",
+      "source": "src/lib/func_00051a50.c"
+    },
+    {
+      "symbol": "func_00052ae8",
+      "source": "src/lib/func_00052ae8.c"
+    },
+    {
+      "symbol": "func_0005c1d0",
+      "source": "src/lib/func_0005c1d0.c"
+    },
+    {
+      "symbol": "func_0006f47c",
+      "source": "src/overlays/descriptor_01/func_0006f47c.c"
+    },
+    {
+      "symbol": "func_000b85b4",
+      "source": "src/lib/func_000b85b4.c"
+    },
+    {
+      "symbol": "func_000F1D54",
+      "source": "src/overlays/descriptor_03/func_000F1D54.c"
+    },
+    {
+      "symbol": "func_000f5450",
+      "source": "src/overlays/descriptor_03/func_000f5450.c"
+    },
+    {
+      "symbol": "func_000f6104",
+      "source": "src/overlays/descriptor_03/func_000f6104.c"
+    },
+    {
+      "symbol": "func_000f6340",
+      "source": "src/overlays/descriptor_03/func_000f6340.c"
+    },
+    {
+      "symbol": "func_000f6474",
+      "source": "src/overlays/descriptor_03/func_000f6474.c"
+    },
+    {
+      "symbol": "func_000f65a8",
+      "source": "src/overlays/descriptor_03/func_000f65a8.c"
+    },
+    {
+      "symbol": "func_000f66dc",
+      "source": "src/overlays/descriptor_03/func_000f66dc.c"
+    },
+    {
+      "symbol": "func_001520E0",
+      "source": "src/overlays/descriptor_09/func_001520E0.c"
+    },
+    {
+      "symbol": "func_00152C6C",
+      "source": "src/overlays/descriptor_09/func_00152C6C.c"
+    },
+    {
+      "symbol": "func_00153CE0",
+      "source": "src/overlays/descriptor_09/func_00153CE0.c"
+    },
+    {
+      "symbol": "func_00157EE8",
+      "source": "src/overlays/descriptor_09/func_00157EE8.c"
+    },
+    {
+      "symbol": "func_0017841C",
+      "source": "src/lib/func_0017841C.c"
+    },
+    {
+      "symbol": "func_0018D164",
+      "source": "src/lib/func_0018D164.c"
+    },
+    {
+      "symbol": "func_001A4058",
+      "source": "src/lib/func_001A4058.c"
+    },
+    {
+      "symbol": "func_001BB720",
+      "source": "src/overlays/descriptor_18/func_001BB720.c"
+    },
+    {
+      "symbol": "func_001BB7C4",
+      "source": "src/overlays/descriptor_18/func_001BB7C4.c"
+    },
+    {
+      "symbol": "func_001BD4B0",
+      "source": "src/overlays/descriptor_18/func_001BD4B0.c"
+    },
+    {
+      "symbol": "func_001BD6FC",
+      "source": "src/overlays/descriptor_18/func_001BD6FC.c"
+    },
+    {
+      "symbol": "func_002104AC",
+      "source": "src/overlays/descriptor_10/func_002104AC.c"
+    },
+    {
+      "symbol": "func_00240048",
+      "source": "src/lib/func_00240048.c"
+    },
+    {
+      "symbol": "func_00240D20",
+      "source": "src/lib/func_00240D20.c"
+    },
+    {
+      "symbol": "func_0027D050",
+      "source": "src/overlays/descriptor_16/func_0027D050.c"
+    },
+    {
+      "symbol": "func_0027D930",
+      "source": "src/overlays/descriptor_16/func_0027D930.c"
+    },
+    {
+      "symbol": "func_00280460",
+      "source": "src/overlays/descriptor_16/func_00280460.c"
+    },
+    {
+      "symbol": "func_002908CC",
+      "source": "src/lib/func_002908CC.c"
+    },
+    {
+      "symbol": "func_0029C404",
+      "source": "src/lib/func_0029C404.c"
+    },
+    {
+      "symbol": "func_002A175C",
+      "source": "src/lib/func_002A175C.c"
+    },
+    {
+      "symbol": "func_002A7010",
+      "source": "src/lib/func_002A7010.c"
+    },
+    {
+      "symbol": "func_002A8E44",
+      "source": "src/lib/func_002A8E44.c"
     }
   ]
 }
