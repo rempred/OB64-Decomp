@@ -8,7 +8,7 @@ extern s32 D_801F0DE0, D_801F0B94, D_801F0B98, D_801F3618, D_801F3658;
 
 void func_800900C0(void *, s32);
 void func_80090010(void *, s32);
-void func_8009DA50(void *, void *, s32);
+void func_8009DA50(u32 rom_address, u8 *destination, u32 bytes);
 void func_80093380(void *, s32);
 void func_80217E30(void);
 
@@ -16,7 +16,8 @@ void func_0010BC4C(void)
 {
     func_800900C0(bc4c_icache_start, bc4c_icache_end - bc4c_icache_start);
     func_80090010(bc4c_dcache_start, bc4c_dcache_end - bc4c_dcache_start);
-    func_8009DA50(D_001A4C10, bc4c_dma_destination, D_001A9290 - D_001A4C10);
+    func_8009DA50((u32)D_001A4C10, bc4c_dma_destination,
+        (u32)D_001A9290 - (u32)D_001A4C10);
     if (bc4c_bss_start != bc4c_bss_end) {
         func_80093380(bc4c_bss_start, bc4c_bss_end - bc4c_bss_start);
     }

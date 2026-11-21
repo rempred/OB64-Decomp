@@ -15,7 +15,7 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-M2C_UNK func_0002de50(void *, void *, s32);
+void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
 M2C_UNK func_0005c090(M2C_UNK, M2C_UNK);
 s32 func_0005c110(M2C_UNK);
 f32 func_000F315C(u8, f32, f32);
@@ -164,7 +164,8 @@ block_2:
     func_00121DA8(temp_a0_43);
     os_inval_icache(overlay_a_icache_text_start, overlay_a_icache_data_start - overlay_a_icache_text_start);
     os_inval_dcache(overlay_a_dcache_data_start, overlay_a_dcache_bss_start - overlay_a_dcache_data_start);
-    func_0002de50(overlay_a_dma_rom_start, overlay_a_dma_text_start, overlay_a_dma_rom_end - overlay_a_dma_rom_start);
+    func_0002de50((u32)overlay_a_dma_rom_start, overlay_a_dma_text_start,
+        (u32)overlay_a_dma_rom_end - (u32)overlay_a_dma_rom_start);
     if (overlay_a_bss_start == overlay_a_bss_end) {
         goto block_8;
     }
@@ -420,7 +421,8 @@ block_75:
     }
     os_inval_icache(overlay_b_icache_text_start, overlay_b_icache_data_start - overlay_b_icache_text_start);
     os_inval_dcache(overlay_b_dcache_data_start, overlay_b_dcache_bss_start - overlay_b_dcache_data_start);
-    func_0002de50(overlay_b_dma_rom_start, overlay_b_dma_text_start, overlay_b_dma_rom_end - overlay_b_dma_rom_start);
+    func_0002de50((u32)overlay_b_dma_rom_start, overlay_b_dma_text_start,
+        (u32)overlay_b_dma_rom_end - (u32)overlay_b_dma_rom_start);
     if (overlay_b_bss_start == overlay_b_bss_end) {
         goto block_79;
     }
@@ -486,7 +488,8 @@ block_96:
 block_100:
     os_inval_icache(overlay_c_icache_text_start, overlay_c_icache_data_start - overlay_c_icache_text_start);
     os_inval_dcache(overlay_c_dcache_data_start, overlay_c_dcache_bss_start - overlay_c_dcache_data_start);
-    func_0002de50(overlay_c_dma_rom_start, overlay_c_dma_text_start, overlay_c_dma_rom_end - overlay_c_dma_rom_start);
+    func_0002de50((u32)overlay_c_dma_rom_start, overlay_c_dma_text_start,
+        (u32)overlay_c_dma_rom_end - (u32)overlay_c_dma_rom_start);
     if (overlay_c_bss_start == overlay_c_bss_end) {
         goto block_102;
     }

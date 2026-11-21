@@ -17,7 +17,7 @@ typedef struct ResourceContext {
 extern void *func_00009CB4(void *node, u32 index);
 extern u32 func_0002DEF4(u32 key);
 extern void *func_00001330(u32 size);
-extern void func_0002DFB8(void *buffer, u32 key);
+extern void *func_0002DFB8(void *buffer, u32 key);
 extern u32 func_801AB720(void *buffer);
 extern void func_801AB74C(void *destination, void *source);
 

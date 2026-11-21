@@ -1,8 +1,9 @@
 typedef unsigned char u8;
+typedef unsigned int u32;
 typedef signed int s32;
 extern void os_inval_icache(void *, s32);
 extern void os_inval_dcache(void *, s32);
-extern void func_0002de50(void *, void *, s32);
+extern void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
 extern void func_80093380(void *, s32);
 extern void func_801D6280(void);
 extern void func_801D3FEC(u8);
@@ -21,7 +22,8 @@ void func_0004e1c4(void)
 
     os_inval_icache(cold_2447a0_icache_text_start, cold_2447a0_icache_data_start - cold_2447a0_icache_text_start);
     os_inval_dcache(cold_2447a0_dcache_data_start, cold_2447a0_dcache_bss_start - cold_2447a0_dcache_data_start);
-    func_0002de50(cold_2447a0_rom_start, cold_2447a0_dma_text_start, cold_2447a0_rom_end - cold_2447a0_rom_start);
+    func_0002de50((u32)cold_2447a0_rom_start, cold_2447a0_dma_text_start,
+        (u32)cold_2447a0_rom_end - (u32)cold_2447a0_rom_start);
     if (cold_2447a0_bss_start != cold_2447a0_bss_end) {
         func_80093380(cold_2447a0_bss_start, cold_2447a0_bss_end - cold_2447a0_bss_start);
     }

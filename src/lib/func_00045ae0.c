@@ -7,7 +7,7 @@ typedef struct {
 } ClassSpriteInfo;
 extern ClassSpriteInfo D_8018ECE0[];
 s32 D_8009DAF4(s32 handle);
-void *D_8009DBB8(void *dst, s32 handle);
+void *D_8009DBB8(void *dst, unsigned int handle);
 void *D_8009DD38(s32 handle);
 void *func_00001330(unsigned int size);
 void *func_000016C4(void *p);

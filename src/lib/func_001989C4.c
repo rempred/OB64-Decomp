@@ -1,3 +1,4 @@
+#include "game/cutscene_panels.h"
 #include "game/shop_price_interface.h"
 
 typedef struct { u32 w0; u32 w1; } ShopGfx;
@@ -55,8 +56,9 @@ extern void func_8017D6D0(void *window, u32 a, u32 b, u32 c,
 #define CLIP4(v) (((u32)(v) << 2) & \
                   (u32)(~(s32)(s16)((u32)(v) << 2) >> 31) & 0xFFC)
 
-void func_001989C4(u8 *window, s32 slot)
+void func_001989C4(Panel *panel, s32 slot)
 {
+    u8 *window = (u8 *)panel;
     s32 y_base, row_count, row, vertical, x, y, item_index;
     ShopRow *info;
     s32 counter, pulse;

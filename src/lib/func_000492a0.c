@@ -2,7 +2,7 @@ typedef signed int s32;
 void *func_000016C4(void *p);
 s32 D_8009DAF4(s32 id);
 void *resource_alloc_tree_scan(s32 size);
-void *D_8009DBB8(void *dst, s32 id);
+void *D_8009DBB8(void *dst, unsigned int id);
 s32 func_0000ABE0(void *p);
 void func_0000A510(void *dst, void *src);
 s32 func_000492a0(s32 i) {

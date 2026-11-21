@@ -13,7 +13,7 @@ typedef struct {
 
 u32 func_8009DAF4(u32 resource);
 void *func_80071C04(u32 size);
-void func_8009DBB8(void *destination, u32 resource);
+void *func_8009DBB8(void *destination, u32 resource);
 void *func_800712C4(void *pointer);
 u32 func_8007A7E0(void *source);
 void func_8007A110(void *destination, void *source);

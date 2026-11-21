@@ -1,3 +1,4 @@
+#include "game/cutscene_panels.h"
 #include "common/types.h"
 
 typedef struct { u32 w0, w1; } ShopGfx;
@@ -228,15 +229,16 @@ extern void func_80200DD0(s32 x, s32 y, s32 size);
     COMMAND_WORK_PHASE(0xF1000000, wrapped_x, presence_or_scan_draw_word); \
 }
 
-void func_001994B4(u8 *window, u32 slot_word)
+void func_001994B4(Panel *panel, s32 slot)
 {
+    u8 *window = (u8 *)panel;
     s32 x, y;
     s32 row;
     u32 item, argument_item;
     u32 cached_loop_sync, flag_grid_or_vertical_word, byte_or_final_sync_word, first_byte_or_texture_y_word;
     u32 presence_or_scan_draw_word;
     char buffer[64];
-    slot_word = (slot_word << 1) + (u32)window;
+    u32 slot_word = ((u32)slot << 1) + (u32)window;
     if (*(s16 *)(slot_word + 0x18) == 0) { return; }
     /* This scratch first transports the X field word, then retains Y. */
     y = *(s32 *)(window + 0x2C);

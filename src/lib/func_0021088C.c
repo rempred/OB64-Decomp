@@ -2,7 +2,7 @@
 
 extern u32 func_8009DAF4(u32);
 extern void *func_80070F30(u32);
-extern void func_8009DBB8(void *, u32);
+extern void *func_8009DBB8(void *, unsigned int);
 extern unsigned char *D_801CFCC0;
 extern unsigned char *D_801D06D0;
 extern unsigned char *D_801D06D4;

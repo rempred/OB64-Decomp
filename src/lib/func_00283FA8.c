@@ -9,7 +9,7 @@ extern u32 *D_8022A958;
 extern u32 *D_8022A95C;
 extern u16 D_80196F60[];
 
-u32 *func_8009DBB8(u32 *destination, u32 resource);
+void *func_8009DBB8(void *destination, u32 resource);
 void *func_800712C4(void *pointer);
 u32 func_8009DAF4(u32 resource);
 void *func_80070F30(u32 size);

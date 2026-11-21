@@ -1,17 +1,8 @@
+#include "game/panel_constructor.h"
 #include "game/scenario_item_views.h"
 typedef float f32;
 typedef double f64;
 
-typedef struct ScenarioWindow ScenarioWindow;
-struct ScenarioWindow {
-    ScenarioWindow *field00, *field04;
-    u8 pad08[0x24];
-    s32 field2C, field30, field34, field38;
-    u8 pad3C[0x10];
-    s32 field4C, field50, field54, field58;
-    u8 pad5C[0x74];
-    void *fieldD0;
-};
 typedef struct {
     u32 field00, field04;
     f32 field08, field0C, field10;
@@ -38,7 +29,7 @@ extern ScenarioCamera *D_8018F58C;
 extern ScenarioInput *D_801F0CA0;
 extern u16 *D_800C4BDC, *D_800C4C4C;
 /* Adjacent window slots retain indexed aliasing during list updates. */
-extern ScenarioWindow *D_8021E388[6];
+extern Panel *D_8021E388[6];
 
 extern u8 D_8021E3C0[], D_8021E198[], D_8021E3AB[];
 extern u8 D_8021E3C3, D_8021E3C8, D_8021E3BF, D_8021E3BE;
@@ -50,14 +41,16 @@ extern s32 D_801F3618, D_801ED5B0, D_801F0B94, D_801F0B98, D_801F3658, D_80214F4
 extern u8 D_80214F50, D_8018F481, D_8019EE40, D_80214F68, D_80214ED9[1], D_80214ECB[1];
 extern u16 D_80214EC0, D_80190EBC[];
 extern f64 D_8021E1F0, D_8021E1F8, D_8021E200;
-extern u8 D_80217648[], D_80218400[], D_802187A0[], D_80218888[];
+extern void D_80217648(Panel *panel, s32 slot);
+extern void D_80218400(Panel *panel, s32 slot);
+extern void D_802187A0(Panel *panel, s32 slot);
+extern void D_80218888(Panel *panel, s32 slot);
 extern void func_8021741C(void), func_80217458(void), func_8021D97C(void);
-extern void func_80217488(ScenarioWindow *, s32), func_802174CC(ScenarioWindow *, s32);
+extern void func_80217488(Panel *, s32), func_802174CC(Panel *, s32);
 extern void func_8020CDA0(s32), func_8020DDD0(ScenarioCursor *);
 extern void *func_800712C4(void *);
-extern void func_8017C384(ScenarioWindow *);
-extern ScenarioWindow *func_8017BFB0(s32, s32, void *, s32, s32, s32, s32, s32, s32, s32, s32);
-extern void func_8021997C(ScenarioWindow *, s16, s16, s16, s32);
+extern void func_8017C384(Panel *);
+extern void func_8021997C(Panel *, s16, s16, s16, s32);
 extern u8 func_8016B738(u16);
 extern u8 func_00045440(s32);
 extern s32 func_801FE190(u8);
@@ -242,16 +235,16 @@ refresh_item:
         if (D_8021E3C3 != 0) selected = D_8021E3C0[D_8021E3A0.field00];
         else selected = D_801971F2[D_8021E3B4].items[D_8021E3A0.field00];
         if (*D_800C4C4C & 0xC0F) {
-            func_800712C4(D_8021E388[1]->fieldD0);
+            func_800712C4(D_8021E388[1]->content);
             func_80217488(D_8021E388[1], (u16)selected);
-            func_800712C4(D_8021E388[2]->fieldD0);
+            func_800712C4(D_8021E388[2]->content);
             func_802174CC(D_8021E388[2], (u16)selected);
         }
         break;
     case 2:
         if (D_8021E3BE >= 4) {
             if (D_8021E3C3 != 0) {
-                ScenarioWindow *a, *b, *c, *d;
+                Panel *a, *b, *c, *d;
                 i = 30;
                 D_8021E3AA.field06 = -1;
                 for (; i < 50; i++) {
@@ -267,26 +260,26 @@ refresh_item:
                 D_8021E388[3] = func_8017BFB0(0x400, 0, D_80218888, 24, 168, 178, 176, 24, 60, 178,
                     (s16)(D_8021E3AA.field04 * 15 + 102));
                 func_80217488(D_8021E388[3], D_8021E3B4);
-                a = D_8021E388[1]->field00;
-                b = D_8021E388[3]->field00;
-                c = D_8021E388[1]->field04;
-                d = D_8021E388[3]->field04;
+                a = D_8021E388[1]->link00;
+                b = D_8021E388[3]->link00;
+                c = D_8021E388[1]->link04;
+                d = D_8021E388[3]->link04;
                 /* Branch-local stores preserve the four link reads before mutation. */
                 if (b == D_8021E388[1]) {
-                    D_8021E388[3]->field00 = a;
-                    D_8021E388[3]->field04 = D_8021E388[1];
-                    D_8021E388[1]->field04 = d;
-                    D_8021E388[1]->field00 = D_8021E388[3];
+                    D_8021E388[3]->link00 = a;
+                    D_8021E388[3]->link04 = D_8021E388[1];
+                    D_8021E388[1]->link04 = d;
+                    D_8021E388[1]->link00 = D_8021E388[3];
                 } else {
-                    D_8021E388[3]->field00 = a;
-                    D_8021E388[3]->field04 = c;
-                    D_8021E388[1]->field04 = d;
-                    D_8021E388[1]->field00 = b;
-                    c->field00 = D_8021E388[3];
-                    b->field04 = D_8021E388[1];
+                    D_8021E388[3]->link00 = a;
+                    D_8021E388[3]->link04 = c;
+                    D_8021E388[1]->link04 = d;
+                    D_8021E388[1]->link00 = b;
+                    c->link00 = D_8021E388[3];
+                    b->link04 = D_8021E388[1];
                 }
-                if (a != 0) a->field04 = D_8021E388[3];
-                if (d != 0) d->field00 = D_8021E388[1];
+                if (a != 0) a->link04 = D_8021E388[3];
+                if (d != 0) d->link00 = D_8021E388[1];
             } else {
                 D_8021E3AA.field06 = 4;
                 D_8021E3AA.field04 = 5;
@@ -315,7 +308,7 @@ refresh_item:
                 }
             } else {
                 /* Keep the two height calculations separate before subtraction. */
-                ScenarioWindow *window = D_8021E388[0];
+                Panel *window = D_8021E388[0];
                 s32 full_height = (D_8021E3A0.field06 + 1) * 15;
                 s32 frame_height = D_8021E3BE * 16 - 48;
                 window->field38 = full_height - frame_height;
@@ -679,7 +672,7 @@ advance_frame:
                     D_80193AC0[inventory].field02--;
                 }
                 D_80193AC0[inventory].field03--;
-                func_800712C4(D_8021E388[2]->fieldD0);
+                func_800712C4(D_8021E388[2]->content);
                 func_802174CC(D_8021E388[2], 0);
                 if (func_00045440(*item) == 2) {
                     if (*item == 20) {

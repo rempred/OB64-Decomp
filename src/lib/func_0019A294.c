@@ -1,9 +1,8 @@
+#include "game/cutscene_panels.h"
 #include "game/shop_price_interface.h"
 
 typedef struct { u32 w0, w1; } ShopGfx;
 typedef struct { s16 field00, field02, field04, field06, field08; } ShopRow;
-/* View of the observed word at34; no total object extent is inferred. */
-typedef struct { u8 pad00[0x34]; s32 field34; } ShopWindowWidthView;
 extern u32 *D_800E9BA0;
 extern ShopRow *D_80219F40;
 extern u8 D_8021A121, D_8021A122, D_8021A123, D_80219D24;
@@ -31,7 +30,7 @@ extern void func_802012D8(void *data);
 extern void func_80201384(s32 x, s32 y, s32 width, s32 height);
 extern void func_801818A0(s32 x, s32 y);
 
-#define W32(off) (*(s32 *)(window + (off)))
+#define W32(off) (*(s32 *)((u8 *)window + (off)))
 #define ROW() (&D_80219F40[D_8021A121])
 #define COMMAND(a,b) { \
     ShopGfx *g = (ShopGfx *)D_800E9BA0; \
@@ -41,11 +40,11 @@ extern void func_801818A0(s32 x, s32 y);
 #define CLIP4(v) (((u32)(v) << 2) & \
                   (u32)(~(s32)(s16)((u32)(v) << 2) >> 31) & 0xFFC)
 
-void func_0019A294(u8 *window, u32 slot_word)
+void func_0019A294(Panel *window, s32 slot)
 {
     s32 x, y, quantity;
     u32 item, price, index;
-    slot_word = (slot_word << 1) + (u32)window;
+    u32 slot_word = ((u32)slot << 1) + (u32)window;
     if (*(s16 *)(slot_word + 0x18) == 0) {
         return;
     }
@@ -136,7 +135,7 @@ void func_0019A294(u8 *window, u32 slot_word)
     {
     s32 left, line_y;
     s32 mode = 2;
-    func_80201384(W32(0x2C) - 8, W32(0x30) - 8, ((ShopWindowWidthView *)window)->field34 + 4, W32(0x38) + 4);
+    func_80201384(W32(0x2C) - 8, W32(0x30) - 8, window->field34 + 4, W32(0x38) + 4);
     func_80200F70(D_801F36C0 + 0x320, D_801F0B90 + 0x2828, 48, 32, mode);
     line_y = y - 6;
     func_80200DD0(x + 80, line_y, 35);
@@ -160,7 +159,7 @@ void func_0019A294(u8 *window, u32 slot_word)
         g[0].w1 = 0;
         /* This observed member read and the following real wrapped-x producer
          * retain the original scheduling with the matching compiler. */
-        width = ((ShopWindowWidthView *)window)->field34;
+        width = window->field34;
         wrapped_x = (s16)((u32)x << 2);
         D_800E9BA0 = (u32 *)(g + 2);
         g[1].w1 = (CLIP4(x) << 12) | CLIP4(y + 26);
@@ -206,7 +205,7 @@ void func_0019A294(u8 *window, u32 slot_word)
     if (D_80219D24 == 4) {
         s32 counter = D_80214F4C;
         s32 offset = counter < 4 ? counter : 7 - counter;
-        func_80201384(W32(0x2C) - 16, W32(0x80), ((ShopWindowWidthView *)window)->field34, W32(0x88));
+        func_80201384(W32(0x2C) - 16, W32(0x80), window->field34, W32(0x88));
         func_801818A0(x + offset - 11, y + 8);
     }
 }

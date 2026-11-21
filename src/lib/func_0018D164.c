@@ -1,23 +1,12 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/cutscene_panels.h"
+
 extern void *D_8021B588[2];
 typedef struct {
     u32 w0;
     u32 w1;
 } Gfx;
-typedef struct Win18C {
-    u8 unk00[0x18];
-    s16 fade[2];
-    u8 unk1C[0x10];
-    s32 x;
-    s32 y;
-    u8 unk34[0x48];
-    s32 rect[4];
-} Win18C;
+#define WINDOW_FADE(w, i) (((s16 *)((u8 *)(w) + 0x18))[i])
+#define WINDOW_RECT(w, i) (((s32 *)((u8 *)(w) + 0x7C))[i])
 typedef struct {
     u8 unk0;
     u8 flags;
@@ -28,7 +17,7 @@ typedef struct {
     u8 strategy;
     u8 legion;
 } SquadRec18C;
-void func_0018D164(Win18C *w, s32 page);
+void func_0018D164(Panel *w, s32 page);
 extern s32 D_8021B5B0;
 extern Gfx *gTitleCardDisplayListCursor;
 extern s8 D_8018F480;
@@ -58,7 +47,7 @@ void *D_8016B070(u8 strategy);
 void D_80179034(void *s, s32 x, s32 y);
 void D_802012D8(void *pal);
 void D_80201384(s32 a, s32 b, s32 c, s32 d);
-void func_0018D164(Win18C *w, s32 page) {
+void func_0018D164(Panel *w, s32 page) {
     s32 x;
     s32 y;
     s32 sq;
@@ -67,13 +56,13 @@ void func_0018D164(Win18C *w, s32 page) {
     s32 p;
     s32 col;
     s32 row;
-    if (w->fade[page] == 0) {
+    if (WINDOW_FADE(w, page) == 0) {
         return;
     }
-    x = w->x;
-    y = w->y;
+    x = w->field2C;
+    y = w->field30;
     { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = ((unsigned int)(((unsigned int)(0xE7) & ((0x01 << (8)) - 1)) << (24))); _g->w1 = 0; };
-    D_8017C4B4(w->fade[page]);
+    D_8017C4B4(WINDOW_FADE(w, page));
     if (w == D_8021B588[0]) {
         sq = D_8021B5AC;
     } else {
@@ -120,7 +109,7 @@ void func_0018D164(Win18C *w, s32 page) {
         { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = (((unsigned int)(((unsigned int)(0xE3) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)(32 - (14) - (2)) & ((0x01 << (8)) - 1)) << (8))) | ((unsigned int)(((unsigned int)((2) - 1) & ((0x01 << (8)) - 1)) << (0)))); _g->w1 = (unsigned int)((2 << 14)); };
         { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = (((unsigned int)(((unsigned int)(0xE3) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)(32 - (12) - (2)) & ((0x01 << (8)) - 1)) << (8))) | ((unsigned int)(((unsigned int)((2) - 1) & ((0x01 << (8)) - 1)) << (0)))); _g->w1 = (unsigned int)(0x2000); };
         { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = (((unsigned int)(((unsigned int)(0xD7) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)((0)) & ((0x01 << (3)) - 1)) << (11))) | ((unsigned int)(((unsigned int)((0)) & ((0x01 << (3)) - 1)) << (8))) | ((unsigned int)(((unsigned int)((1)) & ((0x01 << (7)) - 1)) << (1)))); _g->w1 = (((unsigned int)(((unsigned int)((0x8000)) & ((0x01 << (16)) - 1)) << (16))) | ((unsigned int)(((unsigned int)((0x8000)) & ((0x01 << (16)) - 1)) << (0)))); };
-        { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = (((unsigned int)(((unsigned int)(0xFA) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)(0) & ((0x01 << (8)) - 1)) << (8))) | ((unsigned int)(((unsigned int)(0) & ((0x01 << (8)) - 1)) << (0)))); _g->w1 = (((unsigned int)(((unsigned int)(0xFF) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)(0xFF) & ((0x01 << (8)) - 1)) << (16))) | ((unsigned int)(((unsigned int)(0xFF) & ((0x01 << (8)) - 1)) << (8))) | ((unsigned int)(((unsigned int)(w->fade[page] > 0x50 ? 0x50 : w->fade[page]) & ((0x01 << (8)) - 1)) << (0)))); };
+        { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = (((unsigned int)(((unsigned int)(0xFA) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)(0) & ((0x01 << (8)) - 1)) << (8))) | ((unsigned int)(((unsigned int)(0) & ((0x01 << (8)) - 1)) << (0)))); _g->w1 = (((unsigned int)(((unsigned int)(0xFF) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)(0xFF) & ((0x01 << (8)) - 1)) << (16))) | ((unsigned int)(((unsigned int)(0xFF) & ((0x01 << (8)) - 1)) << (8))) | ((unsigned int)(((unsigned int)(WINDOW_FADE(w, page) > 0x50 ? 0x50 : WINDOW_FADE(w, page)) & ((0x01 << (8)) - 1)) << (0)))); };
         {
             Gfx *_g = gTitleCardDisplayListCursor++;
             _g->w0 = 0xE200001C;
@@ -144,18 +133,18 @@ void func_0018D164(Win18C *w, s32 page) {
     gTitleCardDisplayListCursor++;
     if (w == D_8021B588[1] && D_8021B5A8 != -1 && D_8021B59E != 0) {
         if (D_8021B5E6 == D_8021B5EC) {
-            D_80201384(w->rect[0] - 0x20, w->rect[1], w->rect[2], w->rect[3]);
+            D_80201384(WINDOW_RECT(w, 0) - 0x20, WINDOW_RECT(w, 1), WINDOW_RECT(w, 2), WINDOW_RECT(w, 3));
             D_80200DD0(x - 0x15, y + 0x10, 0x25);
         } else if (D_8021B5AC == 0xFF) {
-            D_80201384(w->rect[0] - 0x20, w->rect[1], w->rect[2], w->rect[3]);
+            D_80201384(WINDOW_RECT(w, 0) - 0x20, WINDOW_RECT(w, 1), WINDOW_RECT(w, 2), WINDOW_RECT(w, 3));
             D_80200DD0(x - 0x15, y + 0x10, 0x24);
         } else {
-            D_80201384(w->rect[0] - 0x20, w->rect[1], w->rect[2], w->rect[3]);
+            D_80201384(WINDOW_RECT(w, 0) - 0x20, WINDOW_RECT(w, 1), WINDOW_RECT(w, 2), WINDOW_RECT(w, 3));
             D_80200DD0(x - 0x15, y + 0x19, 0x24);
             D_80200DD0(x - 0x15, y + 7, 0x25);
         }
     }
 }
-void func_0018D164(Win18C *w, s32 page);
-void func_0018D164(Win18C *w, s32 page);
-void func_0018D164(Win18C *w, s32 page);
+void func_0018D164(Panel *w, s32 page);
+void func_0018D164(Panel *w, s32 page);
+void func_0018D164(Panel *w, s32 page);

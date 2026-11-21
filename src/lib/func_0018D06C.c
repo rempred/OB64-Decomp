@@ -1,8 +1,7 @@
-typedef signed int s32;
+#include "game/panel_constructor.h"
+
 extern void *D_8021B588;
-void *D_8017BFB0(s32 a, s32 b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
-struct Win18C;
-void func_0018D164(struct Win18C *window, s32 page);
+void func_0018D164(Panel *panel, s32 page);
 void func_0018D06C(void) {
     void **p = &D_8021B588;
     if (*p == ((void *)0)) {

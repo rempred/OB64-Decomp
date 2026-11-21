@@ -10,7 +10,7 @@ void *func_000016C4(void *p);
 u8 *D_8017C074(u16 a, u8 b, void *fn, s16 c, s16 d, s16 e, s16 f);
 extern void *D_8022A260[];
 s32 D_8009DAF4(s32 id);
-void *D_8009DBB8(void *dst, s32 id);
+void *D_8009DBB8(void *dst, unsigned int id);
 void func_001BDBBC(void);
 void func_001BDD70(void) {
     s32 n;

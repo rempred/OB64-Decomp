@@ -15,7 +15,7 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-M2C_UNK func_0002de50(void *, void *, s32);
+void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
 void *func_800712C4(void *);
 void func_80079618(u32,s32);
 void func_80090010(void*,s32);
@@ -24,7 +24,7 @@ f32 func_800907F0(f32);
 void func_80092A60(void);
 f32 func_80092DB0(f32);
 void func_80093380(void*,s32);
-void func_8009DA50(void*,void*,s32);
+void func_8009DA50(u32 rom_address, u8 *destination, u32 bytes);
 void func_800EA604(SoundChannel *channel, s32 request);
 void func_800EA76C(void);
 void func_800EA7E4(SoundChannel *channel, s32 gain);
@@ -460,7 +460,8 @@ s3_set_flag:
             func_801D30F0(0);
             func_800900C0(s102_a_icache_start, s102_a_icache_end - s102_a_icache_start);
             func_80090010(s102_a_dcache_start, s102_a_dcache_end - s102_a_dcache_start);
-            func_8009DA50(s102_a_rom_start, s102_a_dma_destination, s102_a_rom_end - s102_a_rom_start);
+            func_8009DA50((u32)s102_a_rom_start, s102_a_dma_destination,
+                (u32)s102_a_rom_end - (u32)s102_a_rom_start);
             if (s102_a_bss_start != s102_a_bss_end) {
                 func_80093380(s102_a_bss_start, s102_a_bss_end - s102_a_bss_start);
             }
@@ -478,7 +479,8 @@ s3_set_flag:
                     D_801F365D = (u8) (D_801F365D | 1);
                     func_800900C0(s102_b_icache_start, s102_b_icache_end - s102_b_icache_start);
             func_80090010(s102_b_dcache_start, s102_b_dcache_end - s102_b_dcache_start);
-            func_8009DA50(s102_b_rom_start, s102_b_dma_destination, s102_b_rom_end - s102_b_rom_start);
+            func_8009DA50((u32)s102_b_rom_start, s102_b_dma_destination,
+                (u32)s102_b_rom_end - (u32)s102_b_rom_start);
             if (s102_b_bss_start != s102_b_bss_end) {
                 func_80093380(s102_b_bss_start, s102_b_bss_end - s102_b_bss_start);
             }
@@ -494,7 +496,8 @@ s3_set_flag:
                 *current_record = (u8)D_8018F481;
                 func_800900C0(s102_c_icache_start, s102_c_icache_end - s102_c_icache_start);
             func_80090010(s102_c_dcache_start, s102_c_dcache_end - s102_c_dcache_start);
-            func_8009DA50(s102_c_rom_start, s102_c_dma_destination, s102_c_rom_end - s102_c_rom_start);
+            func_8009DA50((u32)s102_c_rom_start, s102_c_dma_destination,
+                (u32)s102_c_rom_end - (u32)s102_c_rom_start);
             if (s102_c_bss_start != s102_c_bss_end) {
                 func_80093380(s102_c_bss_start, s102_c_bss_end - s102_c_bss_start);
             }
@@ -506,7 +509,8 @@ s3_set_flag:
                 D_801F0E09 = D_80196A33;
                 func_800900C0(s102_a_icache_start, s102_a_icache_end - s102_a_icache_start);
             func_80090010(s102_a_dcache_start, s102_a_dcache_end - s102_a_dcache_start);
-            func_8009DA50(s102_a_rom_start, s102_a_dma_destination, s102_a_rom_end - s102_a_rom_start);
+            func_8009DA50((u32)s102_a_rom_start, s102_a_dma_destination,
+                (u32)s102_a_rom_end - (u32)s102_a_rom_start);
             if (s102_a_bss_start != s102_a_bss_end) {
                 func_80093380(s102_a_bss_start, s102_a_bss_end - s102_a_bss_start);
             }

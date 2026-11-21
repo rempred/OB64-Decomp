@@ -1,12 +1,6 @@
-#include "common/types.h"
+#include "game/cutscene_panels.h"
 
 typedef struct { u32 w0, w1; } ShopGfx;
-typedef struct {
-    u8 gap00[0x22];
-    s8 field22;
-    u8 gap23[9];
-    s32 field2C, field30;
-} ShopWindowView;
 
 extern u32 *D_800E9BA0;
 extern u8 D_80211558[], D_80213648[], D_80219C14[];
@@ -18,13 +12,13 @@ extern void func_80200DD0(s32 x, s32 y, s32 size);
 extern void func_8020E0F0(s32 x, s32 y, u32 value, s32 digits);
 extern void func_80179034(void *text, s32 x, s32 y);
 
-void func_0019AA04(ShopWindowView *window, u32 slot_word)
+void func_0019AA04(Panel *window, s32 slot)
 {
     s32 x, y, line_y;
     s32 value;
     ShopGfx *command;
     u32 sync;
-    slot_word = (slot_word << 1) + (u32)window;
+    u32 slot_word = ((u32)slot << 1) + (u32)window;
     if (*(s16 *)(slot_word + 0x18) == 0) {
         return;
     }
@@ -50,7 +44,7 @@ void func_0019AA04(ShopWindowView *window, u32 slot_word)
     func_80200DD0(x + 90, line_y, 25);
     func_80200DD0(x + ((D_8021A124 & 0x80) ? 75 : 82), y + 17, 52);
     func_8020E0F0(x + 74, line_y, D_8021A124 & 0x7F, 2);
-    func_8020E0F0(x + 100, line_y, window->field22, 2);
+    func_8020E0F0(x + 100, line_y, (s8)window->field22, 2);
     func_80179034(D_80219C14, x + 8, y + 4);
 }
 

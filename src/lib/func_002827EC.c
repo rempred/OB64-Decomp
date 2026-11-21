@@ -13,7 +13,7 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-M2C_UNK func_0002de50(M2C_UNK, M2C_UNK, s32);                   
+void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);                   
 M2C_UNK func_002836B0(M2C_UNK);                                 
 s32 func_00283E14(s16);                                         
 M2C_UNK func_80076F5C(M2C_UNK, void *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -104,12 +104,14 @@ block_10:
     case -9:
         os_inval_icache(overlay_29a4c0_icache_text_start, overlay_29a4c0_icache_data_start - overlay_29a4c0_icache_text_start);
         os_inval_dcache(overlay_29a4c0_dcache_data_start, overlay_29a4c0_dcache_bss_start - overlay_29a4c0_dcache_data_start);
-        func_0002de50(overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start, overlay_29a4c0_dma_rom_end - overlay_29a4c0_dma_rom_start);
+        func_0002de50((u32)overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start,
+            (u32)overlay_29a4c0_dma_rom_end - (u32)overlay_29a4c0_dma_rom_start);
         if (overlay_29a4c0_bss_start != overlay_29a4c0_bss_end)
             memset_00023780(overlay_29a4c0_bss_start, overlay_29a4c0_bss_end - overlay_29a4c0_bss_start);
         os_inval_icache(overlay_2a8d20_icache_text_start, overlay_2a8d20_icache_data_start - overlay_2a8d20_icache_text_start);
         os_inval_dcache(overlay_2a8d20_dcache_data_start, overlay_2a8d20_dcache_bss_start - overlay_2a8d20_dcache_data_start);
-        func_0002de50(overlay_2a8d20_dma_rom_start, overlay_2a8d20_dma_text_start, overlay_2a8d20_dma_rom_end - overlay_2a8d20_dma_rom_start);
+        func_0002de50((u32)overlay_2a8d20_dma_rom_start, overlay_2a8d20_dma_text_start,
+            (u32)overlay_2a8d20_dma_rom_end - (u32)overlay_2a8d20_dma_rom_start);
         if (overlay_2a8d20_bss_start != overlay_2a8d20_bss_end)
             memset_00023780(overlay_2a8d20_bss_start, overlay_2a8d20_bss_end - overlay_2a8d20_bss_start);
         func_002836B0(2);
@@ -119,7 +121,8 @@ block_10:
     case -8:
         os_inval_icache(overlay_286bd0_icache_text_start, overlay_286bd0_icache_data_start - overlay_286bd0_icache_text_start);
         os_inval_dcache(overlay_286bd0_dcache_data_start, overlay_286bd0_dcache_bss_start - overlay_286bd0_dcache_data_start);
-        func_0002de50(overlay_286bd0_dma_rom_start, overlay_286bd0_dma_text_start, overlay_286bd0_dma_rom_end - overlay_286bd0_dma_rom_start);
+        func_0002de50((u32)overlay_286bd0_dma_rom_start, overlay_286bd0_dma_text_start,
+            (u32)overlay_286bd0_dma_rom_end - (u32)overlay_286bd0_dma_rom_start);
         if (overlay_286bd0_bss_start != overlay_286bd0_bss_end)
             memset_00023780(overlay_286bd0_bss_start, overlay_286bd0_bss_end - overlay_286bd0_bss_start);
         func_002836B0(2);
@@ -135,12 +138,14 @@ resource_nonzero:
         *(s8 *)0x8022A980 = 0;
         os_inval_icache(overlay_29a4c0_icache_text_start, overlay_29a4c0_icache_data_start - overlay_29a4c0_icache_text_start);
         os_inval_dcache(overlay_29a4c0_dcache_data_start, overlay_29a4c0_dcache_bss_start - overlay_29a4c0_dcache_data_start);
-        func_0002de50(overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start, overlay_29a4c0_dma_rom_end - overlay_29a4c0_dma_rom_start);
+        func_0002de50((u32)overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start,
+            (u32)overlay_29a4c0_dma_rom_end - (u32)overlay_29a4c0_dma_rom_start);
         if (overlay_29a4c0_bss_start != overlay_29a4c0_bss_end)
             memset_00023780(overlay_29a4c0_bss_start, overlay_29a4c0_bss_end - overlay_29a4c0_bss_start);
         os_inval_icache(overlay_2ae3c0_icache_text_start, overlay_2ae3c0_icache_data_start - overlay_2ae3c0_icache_text_start);
         os_inval_dcache(overlay_2ae3c0_dcache_data_start, overlay_2ae3c0_dcache_bss_start - overlay_2ae3c0_dcache_data_start);
-        func_0002de50(overlay_2ae3c0_dma_rom_start, overlay_2ae3c0_dma_text_start, overlay_2ae3c0_dma_rom_end - overlay_2ae3c0_dma_rom_start);
+        func_0002de50((u32)overlay_2ae3c0_dma_rom_start, overlay_2ae3c0_dma_text_start,
+            (u32)overlay_2ae3c0_dma_rom_end - (u32)overlay_2ae3c0_dma_rom_start);
         if (overlay_2ae3c0_bss_start != overlay_2ae3c0_bss_end)
             memset_00023780(overlay_2ae3c0_bss_start, overlay_2ae3c0_bss_end - overlay_2ae3c0_bss_start);
         *(s32 *)0x8022A970 = 0;
@@ -150,12 +155,14 @@ resource_nonzero:
     case -6:
         os_inval_icache(overlay_29a4c0_icache_text_start, overlay_29a4c0_icache_data_start - overlay_29a4c0_icache_text_start);
         os_inval_dcache(overlay_29a4c0_dcache_data_start, overlay_29a4c0_dcache_bss_start - overlay_29a4c0_dcache_data_start);
-        func_0002de50(overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start, overlay_29a4c0_dma_rom_end - overlay_29a4c0_dma_rom_start);
+        func_0002de50((u32)overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start,
+            (u32)overlay_29a4c0_dma_rom_end - (u32)overlay_29a4c0_dma_rom_start);
         if (overlay_29a4c0_bss_start != overlay_29a4c0_bss_end)
             memset_00023780(overlay_29a4c0_bss_start, overlay_29a4c0_bss_end - overlay_29a4c0_bss_start);
         os_inval_icache(overlay_2a8d20_icache_text_start, overlay_2a8d20_icache_data_start - overlay_2a8d20_icache_text_start);
         os_inval_dcache(overlay_2a8d20_dcache_data_start, overlay_2a8d20_dcache_bss_start - overlay_2a8d20_dcache_data_start);
-        func_0002de50(overlay_2a8d20_dma_rom_start, overlay_2a8d20_dma_text_start, overlay_2a8d20_dma_rom_end - overlay_2a8d20_dma_rom_start);
+        func_0002de50((u32)overlay_2a8d20_dma_rom_start, overlay_2a8d20_dma_text_start,
+            (u32)overlay_2a8d20_dma_rom_end - (u32)overlay_2a8d20_dma_rom_start);
         if (overlay_2a8d20_bss_start != overlay_2a8d20_bss_end)
             memset_00023780(overlay_2a8d20_bss_start, overlay_2a8d20_bss_end - overlay_2a8d20_bss_start);
         func_002836B0(2);
@@ -166,12 +173,14 @@ resource_nonzero:
         *(s8 *)0x8022A980 = 0;
         os_inval_icache(overlay_29a4c0_icache_text_start, overlay_29a4c0_icache_data_start - overlay_29a4c0_icache_text_start);
         os_inval_dcache(overlay_29a4c0_dcache_data_start, overlay_29a4c0_dcache_bss_start - overlay_29a4c0_dcache_data_start);
-        func_0002de50(overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start, overlay_29a4c0_dma_rom_end - overlay_29a4c0_dma_rom_start);
+        func_0002de50((u32)overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start,
+            (u32)overlay_29a4c0_dma_rom_end - (u32)overlay_29a4c0_dma_rom_start);
         if (overlay_29a4c0_bss_start != overlay_29a4c0_bss_end)
             memset_00023780(overlay_29a4c0_bss_start, overlay_29a4c0_bss_end - overlay_29a4c0_bss_start);
         os_inval_icache(overlay_2ae3c0_icache_text_start, overlay_2ae3c0_icache_data_start - overlay_2ae3c0_icache_text_start);
         os_inval_dcache(overlay_2ae3c0_dcache_data_start, overlay_2ae3c0_dcache_bss_start - overlay_2ae3c0_dcache_data_start);
-        func_0002de50(overlay_2ae3c0_dma_rom_start, overlay_2ae3c0_dma_text_start, overlay_2ae3c0_dma_rom_end - overlay_2ae3c0_dma_rom_start);
+        func_0002de50((u32)overlay_2ae3c0_dma_rom_start, overlay_2ae3c0_dma_text_start,
+            (u32)overlay_2ae3c0_dma_rom_end - (u32)overlay_2ae3c0_dma_rom_start);
         if (overlay_2ae3c0_bss_start != overlay_2ae3c0_bss_end)
             memset_00023780(overlay_2ae3c0_bss_start, overlay_2ae3c0_bss_end - overlay_2ae3c0_bss_start);
         func_8024026C();
@@ -182,12 +191,14 @@ resource_nonzero:
         *(s8 *)0x8022A980 = 0;
         os_inval_icache(overlay_29a4c0_icache_text_start, overlay_29a4c0_icache_data_start - overlay_29a4c0_icache_text_start);
         os_inval_dcache(overlay_29a4c0_dcache_data_start, overlay_29a4c0_dcache_bss_start - overlay_29a4c0_dcache_data_start);
-        func_0002de50(overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start, overlay_29a4c0_dma_rom_end - overlay_29a4c0_dma_rom_start);
+        func_0002de50((u32)overlay_29a4c0_dma_rom_start, overlay_29a4c0_dma_text_start,
+            (u32)overlay_29a4c0_dma_rom_end - (u32)overlay_29a4c0_dma_rom_start);
         if (overlay_29a4c0_bss_start != overlay_29a4c0_bss_end)
             memset_00023780(overlay_29a4c0_bss_start, overlay_29a4c0_bss_end - overlay_29a4c0_bss_start);
         os_inval_icache(overlay_2a8d20_icache_text_start, overlay_2a8d20_icache_data_start - overlay_2a8d20_icache_text_start);
         os_inval_dcache(overlay_2a8d20_dcache_data_start, overlay_2a8d20_dcache_bss_start - overlay_2a8d20_dcache_data_start);
-        func_0002de50(overlay_2a8d20_dma_rom_start, overlay_2a8d20_dma_text_start, overlay_2a8d20_dma_rom_end - overlay_2a8d20_dma_rom_start);
+        func_0002de50((u32)overlay_2a8d20_dma_rom_start, overlay_2a8d20_dma_text_start,
+            (u32)overlay_2a8d20_dma_rom_end - (u32)overlay_2a8d20_dma_rom_start);
         if (overlay_2a8d20_bss_start != overlay_2a8d20_bss_end)
             memset_00023780(overlay_2a8d20_bss_start, overlay_2a8d20_bss_end - overlay_2a8d20_bss_start);
         func_002836B0(2);

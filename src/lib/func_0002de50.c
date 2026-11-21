@@ -1,6 +1,6 @@
 #include "common/types.h"
 
-extern void func_0001A380(u32 rom_address, void *destination, u32 bytes);
+extern void func_0001A380(u32 rom_address, u8 *destination, u32 bytes);
 
 void func_0002de50(u32 rom_address, u8 *destination, u32 bytes)
 {

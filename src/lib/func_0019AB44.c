@@ -1,12 +1,6 @@
-#include "common/types.h"
+#include "game/cutscene_panels.h"
 
 typedef struct { u32 w0, w1; } ShopGfx;
-typedef struct {
-    u8 gap00[0x22];
-    s8 field22;
-    u8 gap23[9];
-    s32 field2C, field30;
-} ShopWindowView;
 extern u32 *D_800E9BA0;
 extern void *D_8021A134, *D_8021A130;
 extern s32 D_801F3658;
@@ -27,7 +21,7 @@ extern void func_80179034(void *text, s32 x, s32 y);
     g->w0 = (u32)(a); g->w1 = (u32)(b); \
 }
 
-void func_0019AB44(ShopWindowView *window, u32 slot_word)
+void func_0019AB44(Panel *window, s32 slot)
 {
     s32 x, y, inner_x, inner_y;
     s32 count, start, index, line_y;
@@ -35,7 +29,7 @@ void func_0019AB44(ShopWindowView *window, u32 slot_word)
     /* Stack capacity reconstructed from the complete framed owner; the
      * observed initialization call consumes 33 bytes. */
     char buffer[50];
-    slot_word = (slot_word << 1) + (u32)window;
+    u32 slot_word = ((u32)slot << 1) + (u32)window;
     if (*(s16 *)(slot_word + 0x18) == 0) {
         return;
     }
@@ -71,8 +65,8 @@ void func_0019AB44(ShopWindowView *window, u32 slot_word)
     func_800934B0(buffer, D_80219DB8,
                  D_80193BC0[D_801971F2[D_801F3658][0]]);
     func_80179034(buffer, x + 52, inner_y);
-    count = D_80219C28[window->field22][1];
-    start = D_80219C28[window->field22][0];
+    count = D_80219C28[(s8)window->field22][1];
+    start = D_80219C28[(s8)window->field22][0];
     index = 0;
     if (count != 0) {
         /* Retain the stable table base before initializing the line offset. */

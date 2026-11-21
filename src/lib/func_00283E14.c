@@ -3,7 +3,7 @@ typedef signed int s32;
 
 extern s32 func_0002def4(s32);
 extern s32 resource_alloc_tree_scan(s32);
-extern void func_0002dfb8(s32, s32);
+extern void *func_0002dfb8(void *, unsigned int);
 extern void *resource_free(void *);
 extern s32 func_8007A7E0(s32);
 extern s32 boot_lzss_decompress(s32, s32);
@@ -18,12 +18,12 @@ s32 func_00283E14(s32 index)
     s32 adjusted_size;
 
     table = resource_alloc_tree_scan(func_0002def4(0x019A8804));
-    func_0002dfb8(table, 0x019A8804);
+    func_0002dfb8((void *)table, 0x019A8804);
     resource = *(s32 *)(table + index * 4);
     resource_free((void *)table);
 
     table = resource_alloc_tree_scan(func_0002def4(resource));
-    func_0002dfb8(table, resource);
+    func_0002dfb8((void *)table, resource);
     decoded_size = func_8007A7E0(table);
     decoded = resource_alloc_tree_scan(decoded_size);
     boot_lzss_decompress(decoded, table);

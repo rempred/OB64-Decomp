@@ -1,3 +1,4 @@
+#include "game/panel_constructor.h"
 #include "game/scenario_source_record.h"
 
 typedef double f64;
@@ -107,8 +108,12 @@ extern u8 D_801971FD[][25];
 extern ShopValueRecord56 D_80193BC0[];
 extern f64 D_80219DA0, D_80219DA8;
 extern u8 D_800EB1F0;
-extern u8 D_80216164, D_80216C54, D_8021794C, D_80217A34;
-extern u8 D_802182E4, D_802181A4;
+extern void D_80216164(Panel *panel, s32 slot);
+extern void D_80216C54(Panel *panel, s32 slot);
+extern void D_8021794C(Panel *panel, s32 slot);
+extern void D_80217A34(Panel *panel, s32 slot);
+extern void D_802182E4(Panel *panel, s32 slot);
+extern void D_802181A4(Panel *panel, s32 slot);
 
 extern void memset_00023780(void *destination, s32 size);
 extern void *resource_alloc(u32 size);
@@ -116,8 +121,6 @@ extern void *resource_free(void *resource);
 extern u8 func_0019B1B0(u32 equipment_id);
 extern void func_0019B800(s32 count);
 extern void func_0019BB34(void);
-extern void *func_00051eb0(s32, s32, const void *, s32, s32, s32,
-                           s32, s32, s32, s32, s32);
 extern void func_0019ADF0(void *object, s32 item, s32 mode);
 extern s32 func_801DCF90(void *unit);
 extern s32 func_0005148c(void *record);

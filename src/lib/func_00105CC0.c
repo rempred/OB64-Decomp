@@ -38,7 +38,7 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-M2C_UNK func_0002de50(M2C_UNK, M2C_UNK, s32);
+void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
 M2C_UNK func_0005c090(M2C_UNK, M2C_UNK);
 s32 func_0005c110(M2C_UNK);
 f32 func_000F315C(u8, f32, f32);
@@ -575,7 +575,7 @@ loop_173:
                     }
                     os_inval_icache(((u32)D_80214F80), ((u32)D_802172B0) - ((u32)D_80214F80));
                     os_inval_dcache(((u32)D_802172B0_data), ((u32)D_80217350) - ((u32)D_802172B0_data));
-                    func_0002de50((u32)D_00195410, ((u32)D_80214F80_dma), (u32)D_001977E0 - (u32)D_00195410);
+                    func_0002de50((u32)D_00195410, D_80214F80_dma, (u32)D_001977E0 - (u32)D_00195410);
                     if (((u32)D_80217350_end) != ((u32)D_80217350_start)) {
                         memset_00023780(((u32)D_80217350_start), ((u32)D_80217350_end) - ((u32)D_80217350_start));
                     }

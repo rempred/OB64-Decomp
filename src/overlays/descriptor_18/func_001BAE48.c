@@ -1,4 +1,5 @@
 typedef unsigned char u8;
+typedef unsigned int u32;
 typedef unsigned short u16;
 typedef signed int s32;
 typedef struct {
@@ -29,8 +30,8 @@ void bzero(void *p, s32 n);
 typedef struct {
     u8 *vram;
     s32 unk04;
-    u8 *romStart;
-    u8 *romEnd;
+    u32 romStart;
+    u32 romEnd;
     u8 *bssStart;
     u8 *bssEnd;
     u8 *textStart;
@@ -55,7 +56,7 @@ extern s32 D_8022A240;
 extern s32 D_8022A244;
 void os_inval_icache(void *p, s32 n);
 void osInvalDCache(void *p, s32 n);
-void D_8009DA50(void *rom, void *dst, s32 size);
+void D_8009DA50(u32 rom_address, u8 *destination, u32 bytes);
 void func_001BDD70(void);
 void func_001BDE70(void);
 void func_001C2A6C(void);

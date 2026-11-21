@@ -14,7 +14,7 @@ typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 s32 func_00022e60();
-void func_0002de50(void *, void *, s32);
+void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
 void func_0005c090(s32, s32);
 M2C_UNK func_000ec838(M2C_UNK, s32, M2C_UNK, M2C_UNK, s32, s32, s32, s32, s32);
 void func_000f6b10(void *, f32 *, f32 *, f32 *);
@@ -193,7 +193,8 @@ static __inline__ s32 *prepare_case02_overlay(s32 *word, s32 value)
     *(volatile s32 *)word = value;
     os_inval_icache(overlay_a_icache_text_start, overlay_a_icache_data_start - overlay_a_icache_text_start);
     os_inval_dcache(overlay_a_dcache_data_start, overlay_a_dcache_bss_start - overlay_a_dcache_data_start);
-    func_0002de50(overlay_a_dma_rom_start, overlay_a_dma_text_start, overlay_a_dma_rom_end - overlay_a_dma_rom_start);
+    func_0002de50((u32)overlay_a_dma_rom_start, overlay_a_dma_text_start,
+        (u32)overlay_a_dma_rom_end - (u32)overlay_a_dma_rom_start);
     if (overlay_a_bss_start == overlay_a_bss_end) {
         return word;
     }
@@ -679,7 +680,8 @@ block_70:
     }
     os_inval_icache(overlay_188b60_icache_text_start, overlay_188b60_icache_data_start - overlay_188b60_icache_text_start);
     os_inval_dcache(overlay_188b60_dcache_data_start, overlay_188b60_dcache_bss_start - overlay_188b60_dcache_data_start);
-    func_0002de50(overlay_188b60_dma_rom_start, overlay_188b60_dma_text_start, overlay_188b60_dma_rom_end - overlay_188b60_dma_rom_start);
+    func_0002de50((u32)overlay_188b60_dma_rom_start, overlay_188b60_dma_text_start,
+        (u32)overlay_188b60_dma_rom_end - (u32)overlay_188b60_dma_rom_start);
     if (overlay_188b60_bss_start == overlay_188b60_bss_end) {
         goto block_73;
     }
@@ -964,7 +966,8 @@ dispatch_case_13:
 dispatch_case_16:
     os_inval_icache(overlay_a_icache_text_start, overlay_a_icache_data_start - overlay_a_icache_text_start);
     os_inval_dcache(overlay_a_dcache_data_start, overlay_a_dcache_bss_start - overlay_a_dcache_data_start);
-    func_0002de50(overlay_a_dma_rom_start, overlay_a_dma_text_start, overlay_a_dma_rom_end - overlay_a_dma_rom_start);
+    func_0002de50((u32)overlay_a_dma_rom_start, overlay_a_dma_text_start,
+        (u32)overlay_a_dma_rom_end - (u32)overlay_a_dma_rom_start);
     if (overlay_a_bss_start == overlay_a_bss_end) {
         goto block_107;
     }
@@ -986,7 +989,8 @@ dispatch_case_17:
     }
     os_inval_icache(overlay_188b60_icache_text_start, overlay_188b60_icache_data_start - overlay_188b60_icache_text_start);
     os_inval_dcache(overlay_188b60_dcache_data_start, overlay_188b60_dcache_bss_start - overlay_188b60_dcache_data_start);
-    func_0002de50(overlay_188b60_dma_rom_start, overlay_188b60_dma_text_start, overlay_188b60_dma_rom_end - overlay_188b60_dma_rom_start);
+    func_0002de50((u32)overlay_188b60_dma_rom_start, overlay_188b60_dma_text_start,
+        (u32)overlay_188b60_dma_rom_end - (u32)overlay_188b60_dma_rom_start);
     if (overlay_188b60_bss_start == overlay_188b60_bss_end) {
         goto block_111;
     }
@@ -1162,7 +1166,8 @@ block_143:
 block_146:
     os_inval_icache(overlay_17f9c0_icache_text_start, overlay_17f9c0_icache_data_start - overlay_17f9c0_icache_text_start);
     os_inval_dcache(overlay_17f9c0_dcache_data_start, overlay_17f9c0_dcache_bss_start - overlay_17f9c0_dcache_data_start);
-    func_0002de50(overlay_17f9c0_dma_rom_start, overlay_17f9c0_dma_text_start, overlay_17f9c0_dma_rom_end - overlay_17f9c0_dma_rom_start);
+    func_0002de50((u32)overlay_17f9c0_dma_rom_start, overlay_17f9c0_dma_text_start,
+        (u32)overlay_17f9c0_dma_rom_end - (u32)overlay_17f9c0_dma_rom_start);
     if (overlay_17f9c0_bss_start == overlay_17f9c0_bss_end) {
         goto block_148;
     }
@@ -1512,7 +1517,8 @@ dispatch_case_28:
 dispatch_case_29:
     os_inval_icache(overlay_b_icache_text_start, overlay_b_icache_data_start - overlay_b_icache_text_start);
     os_inval_dcache(overlay_b_dcache_data_start, overlay_b_dcache_bss_start - overlay_b_dcache_data_start);
-    func_0002de50(overlay_b_dma_rom_start, overlay_b_dma_text_start, overlay_b_dma_rom_end - overlay_b_dma_rom_start);
+    func_0002de50((u32)overlay_b_dma_rom_start, overlay_b_dma_text_start,
+        (u32)overlay_b_dma_rom_end - (u32)overlay_b_dma_rom_start);
     if (overlay_b_bss_start == overlay_b_bss_end) {
         goto block_205;
     }

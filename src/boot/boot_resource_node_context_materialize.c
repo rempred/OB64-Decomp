@@ -24,7 +24,7 @@ typedef struct ResourceDescriptor {
 extern void *func_00009CB4(void *node, u32 index);
 extern u32 func_0002DEF4(u32 key);
 extern void *func_00001330(u32 bytes);
-extern void func_0002DFB8(void *destination, u32 key);
+extern void *func_0002DFB8(void *destination, u32 key);
 extern u32 func_0000B29C(ResourceDescriptor *input);
 extern void func_8007ACB0(ResourceDescriptor *input, ResourceDescriptor *output, u32 mode);
 extern ResourceContext *g_boot_resource_context;

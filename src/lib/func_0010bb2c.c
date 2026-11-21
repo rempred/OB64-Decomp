@@ -22,7 +22,7 @@ extern u8 D_801F365D;
 
 void func_800900C0(void *, s32);
 void func_80090010(void *, s32);
-void func_8009DA50(void *, void *, s32);
+void func_8009DA50(u32 rom_address, u8 *destination, u32 bytes);
 void func_80093380(void *, s32);
 s32 func_801DA228(ScenarioB040Record *);
 void func_802195E0(s32);
@@ -34,7 +34,8 @@ void func_0010BB2C(void)
 
     func_800900C0(bb2c_icache_start, bb2c_icache_end - bb2c_icache_start);
     func_80090010(bb2c_dcache_start, bb2c_dcache_end - bb2c_dcache_start);
-    func_8009DA50(D_001977E0, bb2c_dma_destination, D_0019C760 - D_001977E0);
+    func_8009DA50((u32)D_001977E0, bb2c_dma_destination,
+        (u32)D_0019C760 - (u32)D_001977E0);
     if (bb2c_bss_start != bb2c_bss_end) {
         func_80093380(bb2c_bss_start, bb2c_bss_end - bb2c_bss_start);
     }

@@ -9,7 +9,7 @@ typedef struct ResourceNode {
 
 extern u32 func_0002DEF4(u32 key);
 extern void *func_00001330(u32 bytes);
-extern void func_0002DFB8(void *destination, u32 key);
+extern void *func_0002DFB8(void *destination, u32 key);
 
 ResourceNode *boot_resource_node_payload_materialize(ResourceNode *node)
 {

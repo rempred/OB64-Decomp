@@ -9,14 +9,15 @@ extern u8 D_801F365D;
 
 void func_800900C0(void *, s32);
 void func_80090010(void *, s32);
-void func_8009DA50(void *, void *, s32);
+void func_8009DA50(u32 rom_address, u8 *destination, u32 bytes);
 void func_80093380(void *, s32);
 
 void func_0010C1A8(void)
 {
     func_800900C0(c1a8_icache_start, c1a8_icache_end - c1a8_icache_start);
     func_80090010(c1a8_dcache_start, c1a8_dcache_end - c1a8_dcache_start);
-    func_8009DA50(D_001A9290, c1a8_dma_destination, D_001B2670 - D_001A9290);
+    func_8009DA50((u32)D_001A9290, c1a8_dma_destination,
+        (u32)D_001B2670 - (u32)D_001A9290);
     if (c1a8_bss_start != c1a8_bss_end) {
         func_80093380(c1a8_bss_start, c1a8_bss_end - c1a8_bss_start);
     }

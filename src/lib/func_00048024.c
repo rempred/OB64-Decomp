@@ -9,7 +9,7 @@ extern volatile u16 D_80197B04;
 extern s16 D_80197B06;
 
 extern void func_00023780(void *destination, u32 size);
-extern u32 *func_8009DBB8(u32 *destination, u32 resource);
+extern void *func_8009DBB8(void *destination, u32 resource);
 extern void *func_0002e138(u32 resource);
 extern void *resource_free(void *resource);
 extern s32 func_00046854(s32 program);
