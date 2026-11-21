@@ -58,6 +58,8 @@ The lookup lead also owns `func_00231CC0`, `func_00232280`, `func_00232D7C`, `fu
 
 Three further callers use the address `D_801C8FE8`, shared by three executable overlays or loaded regions. Two enter the lookup assignment on the strength of specific retail paths. `func_002340EC` calls the lookup in its battle-record loop. The descriptor-10 dispatcher calls `func_0023B24C` through callback slot `+0x0C` in the table installed by the loader. Preserve both calls' symbol spelling and the generic overlay coverage limitation. The lookup lead now owns 24 files. In the third caller, `func_00237D5C`, the lookup requires an index below 20. All four identified direct incoming calls pass an index of at least 20. A path reaching the low-index branch in the relevant overlay would establish the missing evidence.
 
+In `func_0021824C`, the lookup result goes to two more functions. The call to `func_0020BFF8` accounts for two existing definite findings beyond the initial 172. The next call to `func_0020C24C` passes the same record. Its caller declares an integer argument, while its provider reads a field through a pointer. The lookup lead is testing direct pointer passing. The integrator checks the other callers and any alternate names for the provider. The verifier recorded the latter mismatch as incomplete type coverage.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
