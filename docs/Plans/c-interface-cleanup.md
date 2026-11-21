@@ -42,6 +42,16 @@ The ROM-transfer source also declares the lower-level DMA routine with a differe
 
 The integrator checks other callers of the same physical functions, including aliases, for any additional source or shared-header impact. Refresh priorities from the accepted report after each completed group.
 
+## Round 3
+
+[Round 2 acceptance](https://github.com/rempred/OB64-Decomp/commit/4b403910b76f1297113d65fee01f28199f7a03ff) cleared all 260 assigned findings with an exact retail ROM. The accepted report has 2,037 remaining findings across 307 linked entries. The first three providers own 40 distinct source files. The integrator also checks callers without findings for changes needed by the chosen declarations.
+
+| Source lead | Provider | Findings at Round 2 acceptance | Initially assigned files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Boot decompression | `boot_lzss_decompress` | 63 | 17 | Trace the compressed input and writable output separately. Compare a caller that uses the decoded length with one that discards it. Preserve the local helpers in the same compiled section. |
+| Encoded item updates | `func_00130E60` | 56 | 6 | Trace both inputs from real callers and compare the two paths selected by bit 15 of the item code. |
+| Battle record lookup | `func_0020C478` | 53 | 17 | Follow an out-of-range index, an empty slot and a populated slot from the lookup into its callers. Check how they use the returned pointer. |
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
