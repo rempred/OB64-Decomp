@@ -28,6 +28,18 @@ Thirty calling files have findings in two of these groups. For the opening assig
 
 Opening preparation is tracked per physical source file on the verified main checkout. If the private workbench rejects a representation, retain every entry in that file together and record it in its original worker's membership. Continue preparation for unrelated files. The integrator can check an accepted compilation group through the documented whole-group linked diff. A missing or ambiguous original owner needs a cross-check against the accepted ELF and owner rows before a source edit. A stopped batch does not classify the files it never reached. The source leads can investigate argument and return behavior while preparation runs. [Workbench group support](../MATCHING_WORKBENCH.md#setup)
 
+## Round 2
+
+The [accepted opening commit](https://github.com/rempred/OB64-Decomp/commit/0193ad299e565e9828920e5c70828ce707e40b08) cleared all 1,073 assigned findings and reproduced the retail ROM. The canonical report at that commit has 2,297 remaining findings across 310 linked function entries. The three highest-ranked providers have disjoint source assignments.
+
+| Source lead | Provider | Findings at the opening commit | Assigned files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| ROM transfer | `func_0002de50` | 103 | 19 | Trace the ROM address, destination and byte count through a small transfer and a direct transfer. Check how callers use the return register. |
+| Resource loading | `func_0002dfb8` | 77 | 27 | Trace a boot materializer through the cached and uncached paths. Check the input buffer, resource key and returned pointer. |
+| Node construction | `func_00051eb0` | 77 | 7 | Follow the callback and stack arguments through the constructor and `func_00051f74`. Check where coordinates are widened or narrowed. |
+
+The integrator checks other callers of the same physical functions, including aliases, for any additional source or shared-header impact. Refresh priorities from the accepted report after each completed group.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
