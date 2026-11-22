@@ -112,6 +112,20 @@ Two additional findings are in the sound selector itself. Both its match and def
 
 The battle callback at +0x08 receives a full-word selector on the loaded battle path. One installed routine uses it to select among 13 cases; the cold-boot implementation returns immediately. The callback worker owns the cold stub in `func_0023B244.c` and proposes the common slot declaration. The integrator verifies all eight consumers of `battle_callbacks.h`, including the seven outside the original source assignments. Both startup capsule masks (`0x38C` and `0x4038C`) load descriptors 3, 7 and 9. Descriptor 7 installs the upper shop code and selects mode `0x24`. With those overlays resident, the handler `func_0019B710` calls the descriptor-9 sound selector with request 2. Its corrected declaration preserves the absolute symbol `func_8020CDA0` and the existing overlay coverage limit. The 14 absolute calls in `func_001A9290` need separate evidence for mode 0x16. The round covers 145 definite findings and 42 files including the supplemental shop caller and seven header consumers.
 
+The [accepted Round 6 commit](https://github.com/rempred/OB64-Decomp/commit/be135a0ec17a5a4e7796fd651622014753ee5400) cleared all 145 assigned findings. The canonical verifier reproduced the retail ROM, linked ELF, all 2,650 existing target contracts and the reviewed census. The shop diagnostic matched all 240 bytes and seven relocations before its scratch retention step failed. Independent review verified the saved inputs, objects and linked images directly. The canonical build then checked that caller with the complete set. The 14 absolute sound calls in mode 0x16 retain their overlay coverage limitation.
+
+## Round 7
+
+The accepted Round 6 scan has 1,468 definite findings across 293 linked entries. The three highest counts are 26 for `func_000454c8`, 25 for `func_0021D200` and 24 for `func_001FF7EC`. The complete assignments include the related record accessors and the [battle dispatcher follow-up](#battle-dispatcher-follow-up).
+
+| Source lead | Owned findings | Complete files | First comparison |
+| --- | ---: | ---: | --- |
+| Record table lookups | 75 | 21 | Compare calls to `func_000454c8` and `func_000454e0` in the shop. The five accessors share a 16-bit index and a 32-byte stride. Check the consumers of each return, including the word read in `func_000454b0` and the alternate byte used by `func_000454e0`. |
+| Battle dispatcher wrappers | 91 | 21 | Trace all eight wrappers into `func_0021CBC4` and its record-index call. At the wrappers, distinguish record pointers, output pointers, full-width masks and zero-filled argument slots. Preserve overlay uncertainty for unproved absolute calls and table entries. |
+| Battle coordinate result | 24 | 12 | The wrapper `func_001FF7EC` currently declares a void result. Battle callers convert a floating-point return to a coordinate word. Follow the result register from `func_001FF5EC` through the wrapper to those conversions, preserving its two coordinates and three forwarded globals. |
+
+The five record accessors account for 85 findings. Ten belong to the battle lead because `func_0022BFF8.c` and `func_0022C78C.c` also call the dispatcher wrappers. The record lead supplies the two supported declarations, and the battle lead makes both sets of edits to those complete files. The four disputed wrappers account for the other 81 battle findings. Together the three assignments cover 190 distinct findings.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
