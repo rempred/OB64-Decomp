@@ -318,6 +318,18 @@ The constructor passes seven filter tags in the fourth argument and stores callb
 
 The synth clears a halfword at ROM `0x2003C` and passes its address at `0x2012C` before the indirect call at `0x20130`. Both `15098` and the effect constructor store the `1f2b8` address at field offset `0x28`. Check these consumers against the actual function types, including the load handler's void return and the command pointer returned by pull callbacks. Keep the interpretation of the full word at `+0x10` bounded by its observed uses.
 
+## Round 18
+
+[Round 17](https://github.com/rempred/OB64-Decomp/commit/6f998635847807a918192f5a937ef57c8189364b) cleared all 51 assigned findings and reproduced the retail ROM. The verified census has 714 findings across 222 linked entries. Three providers tie for first at eight findings each. Their opening assignments cover 24 findings in 12 complete source files.
+
+| Source lead | Provider | Evidence to check |
+| --- | --- | --- |
+| Class record initialization | `0004501C` | Follow the record and level through `19554C` and both `8016F11C` alias callers. Check the 0x48-byte class table, the record fields that are written, and where the level is narrowed. |
+| Unit state update | `00121DA8` | Trace the unit pointer, flags and state stores. Check the return register in all four caller files and preserve the second flag read and the switch behavior. |
+| Battle action stream lookup | `00201798` | Follow the class, context, action and mode into the descriptor-10 table and the 0x28 fallback. Compare all callers that keep the result in a word before masking or forwarding it. |
+
+The unit lead is the sole editor of `001960A8`, which also calls the class initializer three times. Both leads coordinate its shared declaration through the Director. The battle lead checks the six `0020C448` findings deferred in Round 16 against the newly assigned callers before proposing a scope addition.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
