@@ -330,6 +330,20 @@ The synth clears a halfword at ROM `0x2003C` and passes its address at `0x2012C`
 
 The unit lead is the sole editor of `001960A8`, which also calls the class initializer three times. Both leads coordinate its shared declaration through the Director. The battle lead also owns the six `0020C448` findings deferred in Round 16. Three calls in `22B1F4` and `22C78C` use the low halfword returned by the wrapper. Compare all three with the accepted Round 16 caller in `22EF50`. The class lead also owns complete comparisons of `23A5EC`, `44aa4` and `195410`. They pass or update the same character records. Compare the 0x34 and 0x38 strides, the individual bytes at +0x32 and +0x33, and the existing partial clear in `23A5EC`. Keep the equipment service declarations in `44aa4` as controls. Declaring a byte return for the action stream lookup makes the compiler narrow the result too early in two callers. The battle lead will compare a word return in the three remaining C callers, `22D14C`, `22F580` and `230A9C`, including both physical sections of the last function. The round now covers 30 findings in 18 C files.
 
+## Final wave
+
+Joe assigned all findings remaining after Round 18 to one final wave. Use three Sol 6.2 Extra High source workers and the existing production integrator. On the reviewed Round 18 checkout, 684 findings affect 218 function entries and 326 distinct C files. Group entries that share a defining or calling file so that one worker owns every edit to that file. This gives 68 groups. The proposed assignments balance findings, file counts and compiled code size.
+
+| Source worker | Findings | Function entries with findings | C files | Groups |
+| --- | ---: | ---: | ---: | ---: |
+| 1 | 230 | 70 | 110 | 19 |
+| 2 | 228 | 75 | 106 | 24 |
+| 3 | 226 | 73 | 110 | 25 |
+
+Confirm the roster against the published Round 18 census before starting. Within each assignment, start with the highest-count functions and trace their consumers in the retail game. A changed declaration may reach additional callers, aliases or shared headers. The Director assigns each affected source or header to one worker and routes its checked declaration to other affected workers.
+
+The workers can check complete groups privately as soon as their inputs are ready. The integrator combines all three assignments and checks that the original findings have cleared, no new definite conflicts have appeared, and changes in analysis coverage are explained. Final acceptance requires the reviewed baseline, exact target ownership and relocations, and a full rebuild identical to US Rev 0. A finding that lacks enough evidence for a repair stays open with its concrete dependency recorded.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
