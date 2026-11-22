@@ -128,6 +128,8 @@ The five record accessors account for 85 findings. Ten belong to the battle lead
 
 The battle lead adds five complete callers. At its named wrapper calls, `func_0022D14C` passes record pointers and, for command `0x16`, addresses of three local arrays. `func_002317C8` passes an allocated object. The other three, `func_00223874`, `func_0022390C` and `func_0022472C`, call `D_801D9FBC` from the same loaded region as `func_0021D28C`. Preserve that spelling and the generic overlay limitation. Trace commands `0x16` and `0x17` separately because the dispatcher reads arrays on one path and uses scalar bytes on the other.
 
+The first full `func_0022BFF8` comparison put a byte mask at ROM `0x22C18C` when both accessors declared byte returns. Retail copies the full result there and applies a byte mask at `0x22C250`. The record and battle leads are testing word-return declarations in both providers and their callers. Two additional record-owned controls, `func_00044370` and `func_0004440c`, use an explicit mask and a byte local respectively. The battle lead checks the byte local in `func_0022B1F4`.
+
 The coordinate wrapper forwards the floating-point result from the original assembly routine at ROM `0x1FF5EC`. Two further callers already declare the address alias `func_001BC35C` with a float return. `func_0020CBDC` converts the result to an integer, while `func_002A0B14` stores it as a float. Both are unchanged verification cases. Their different load contexts remain part of the overlay evidence.
 
 ## Matching and acceptance
