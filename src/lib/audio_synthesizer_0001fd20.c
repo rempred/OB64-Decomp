@@ -47,7 +47,7 @@ typedef struct L4Config {
     unsigned char fxType;
 } L4Config;
 extern L4Synth *alGlobals;
-extern void *alHeapDBAlloc(char *, int, void *, int, int);
+extern void *alHeapDBAlloc(void *, int, void *, int, int);
 extern void alSaveNew(void *);
 extern void alAuxBusNew(void *, void *, int);
 extern void alMainBusNew(void *, void *, int);

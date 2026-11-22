@@ -1,17 +1,12 @@
-#include "common/types.h"
+#include "game/battle_callbacks.h"
 
 typedef void (*Callback)(s16);
-
-typedef struct {
-    u8 unk0[0xC];
-    Callback callback;
-} CallbackHolder;
 
 extern s8 D_801CFC70;
 
 void func_0020BD8C(s32 value)
 {
-    Callback callback = (*(CallbackHolder **)0x801D0810)->callback;
+    Callback callback = (*(BattleCallbacks **)0x801D0810)->f3;
 
     if (callback != 0) {
         callback((s16)value);

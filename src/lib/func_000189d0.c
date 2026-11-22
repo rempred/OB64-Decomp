@@ -163,7 +163,7 @@ typedef struct ALParam_s {
         s32 i;
     } yetstillmoredata;
 } ALParam;
-void *alHeapDBAlloc(u8 *file, s32 line, void *hp, s32 num, s32 size);
+void *alHeapDBAlloc(void *file, s32 line, void *hp, s32 num, s32 size);
 typedef struct ALPlayer_s {
     struct ALPlayer_s *next;
     void *clientData;

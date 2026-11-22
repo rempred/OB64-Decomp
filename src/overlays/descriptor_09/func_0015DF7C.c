@@ -4,7 +4,7 @@ extern void *D_80213EE8;
 extern u8 D_801F36A0;
 extern s32 D_801F401C;
 extern u8 D_80213EA4[];
-void *D_8009DD38(s32 id);
+void *D_8009DD38(unsigned int id);
 void func_0015DF7C(void) {
     u8 f;
     if (D_80213EE8 == ((void *)0)) {

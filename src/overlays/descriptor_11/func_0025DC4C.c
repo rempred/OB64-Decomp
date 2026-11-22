@@ -12,7 +12,7 @@ extern volatile u32 g_func_0025CB60_pointer;
 extern volatile u8 g_func_0025CAF0_value_70;
 extern volatile u8 g_func_0025CAF0_value_71;
 extern void func_00262B68(void);
-extern void func_0020BDCC(u32, u32);
+extern void func_0020BDCC(s16, s32);
 
 s32 func_0025DC4C(u16 command, E09StateDC4C *state)
 {

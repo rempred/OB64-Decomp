@@ -12,7 +12,7 @@ typedef struct {
     s32 *params;
 } MusSynConfig;
 void func_00015098(void **out, MusSynConfig *c, void *hp);
-void *alHeapDBAlloc(u8 *file, s32 line, void *hp, s32 num, s32 size);
+void *alHeapDBAlloc(void *file, s32 line, void *hp, s32 num, s32 size);
 s32 func_0001f2b8(void *fx, s32 id, void *param);
 typedef struct {
     void *unkA8;

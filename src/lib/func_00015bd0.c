@@ -1,3 +1,5 @@
+#include "common/audio_heap.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
@@ -45,7 +47,7 @@ extern AudioBuffer *D_800B1A64;
 extern Acmd *D_800B1A68;
 extern u8 D_800E7D18[];
 void *func_000155c0(s32 count, s32 length);
-void *func_00015f24(void);
+L4Heap *func_00015f24(void);
 void func_00014d70(void *g, ALSynConfig *c);
 u32 func_00015fd0(u32 retrace, u32 output_rate, u32 vsyncs_per_second, u32 extra_ratio);
 void *func_00015edc(s32 size);

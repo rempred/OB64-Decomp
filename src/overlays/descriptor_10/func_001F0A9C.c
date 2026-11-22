@@ -17,7 +17,7 @@ typedef struct {
 } Slot1F;
 extern Ctx1F *D_801CE8BC;
 void *func_001F0A9C(s32 id);
-void *D_8009DD38(s32 id);
+void *D_8009DD38(u32 id);
 void *func_001F0A9C(s32 id) {
     Slot1F *s = (Slot1F *)D_801CE8BC;
     u32 i;

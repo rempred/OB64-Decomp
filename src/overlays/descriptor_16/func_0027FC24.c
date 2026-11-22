@@ -8,7 +8,7 @@ extern void *D_8022D114;
 extern void *D_8022D118;
 extern void *D_8022D11C;
 extern void *D_8022D120;
-void *D_8009DD38(s32 id);
+void *D_8009DD38(unsigned int id);
 void D_8017BDC0(void);
 void func_0027FC24(void) {
     D_8022D108 = D_8009DD38(0x1DB3672);

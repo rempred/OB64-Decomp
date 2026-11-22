@@ -103,7 +103,7 @@ typedef struct ALParam_s {
         s32 i;
     } yetstillmoredata;
 } ALParam;
-void *alHeapDBAlloc(u8 *file, s32 line, void *hp, s32 num, s32 size);
+void *alHeapDBAlloc(void *file, s32 line, void *hp, s32 num, s32 size);
 void func_0001658c(N_PVoice *mv, ALDMANew dmaNew, void *hp) {
     mv->dc_state = alHeapDBAlloc(0, 0, (hp), (1), (0x20));
     mv->dc_lstate = alHeapDBAlloc(0, 0, (hp), (1), (0x20));

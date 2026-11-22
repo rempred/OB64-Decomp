@@ -25,7 +25,7 @@ void *func_000016C4(void *p);
 extern void *D_8022A654;
 extern u8 D_8022A658[];
 void *func_00001330(unsigned int size);
-void *D_8009DD38(s32 id);
+void *D_8009DD38(unsigned int id);
 void bcopy(void *src, void *dst, s32 n);
 typedef struct { u8 b; u8 pad[31]; } Rec32;
 extern Rec32 D_8022A6A1[];

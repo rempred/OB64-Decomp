@@ -55,7 +55,7 @@ typedef struct {
     s32 sv_first;
 } AlGlobalsLike;
 extern AlGlobalsLike *D_800A9E54;
-void *alHeapDBAlloc(u8 *file, s32 line, void *hp, s32 num, s32 size);
+void *alHeapDBAlloc(void *file, s32 line, void *hp, s32 num, s32 size);
 void alLink(void *ln, void *to);
 void func_0001658c(void *pv, void *dma, void *hp);
 s32 func_00017990(void);

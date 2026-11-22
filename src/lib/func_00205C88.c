@@ -7,7 +7,7 @@ extern int func_000454E0(int);
 extern u32 func_8009DAF4(u32);
 extern void *func_80071C04(u32);
 extern void *func_8009DBB8(void *, unsigned int);
-extern u32 *func_0002E138(u32);
+extern void *func_0002E138(u32);
 extern u32 *func_0002E348(u32);
 extern void func_00023460(const void *, void *, u32);
 

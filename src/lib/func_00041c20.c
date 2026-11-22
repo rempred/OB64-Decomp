@@ -11,7 +11,7 @@ extern Record56 g_func_0019554C_records_56[];
 extern ResourceKeys D_8018FEAC;
 extern char *D_8018EA00[];
 
-extern u8 *func_0002E138(u32 key);
+extern void *func_0002E138(u32 key);
 extern s32 rand(void);
 extern void func_80093380(void *destination, s32 size);
 extern char *func_0002C950(char *destination, const char *source);
