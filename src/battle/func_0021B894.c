@@ -45,7 +45,7 @@ M2C_UNK func_0021B0A0();
 M2C_UNK func_0021B2E0();
 M2C_UNK func_0021B438();
 M2C_UNK func_0021B770();
-M2C_UNK func_0021C3B0();
+void func_0021C3B0(void);
 void func_002215D0(void);
 M2C_UNK func_002224F4();
 M2C_UNK func_00226AFC();

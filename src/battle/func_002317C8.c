@@ -3,18 +3,12 @@
 typedef unsigned char u8;
 typedef unsigned int u32;
 
+#include "game/battle_roster_record.h"
+
+/* The side routines keep their existing object interface. The copy
+ * initializes the complete roster record held by this object. */
 typedef struct SideObject {
-    u8 unknown00[0x48];
-    int field48;
-    u8 unknown4C[0xC];
-    int field58;
-    u8 unknown5C[0x1C];
-    u8 field78;
-    u8 unknown79[3];
-    u32 field7C;
-    u8 unknown80[0x14];
-    int field94;
-    u8 unknown98[0x60];
+    BattleRosterRecord roster;
 } SideObject;
 
 typedef struct SideContext {
@@ -30,7 +24,6 @@ extern int func_002335E0(int);
 extern void *func_0020C478(unsigned int index);
 extern int func_0020C2C0(SideObject *);
 extern void func_00023780(void *, u32);
-extern void func_0020C908(SideObject *, int);
 extern void func_0020D870(SideObject *, int);
 extern u8 func_00043b2c(int, int);
 extern int func_00237750(SideObject *, SideObject *, int, int, int);
@@ -128,7 +121,7 @@ int func_002317C8(int *outTime, int selector)
     func_00023780(&prior[0], 20);
     func_00023780(&temporary, 0xF8);
     if (selector != 0) {
-        func_0020C908(&temporary, 0);
+        func_0020C908(&temporary.roster, 0);
         context = D_801CE8C0;
         bit = context->field82E | 2;
         context->field82E = bit;
@@ -138,14 +131,14 @@ int func_002317C8(int *outTime, int selector)
         bit = context->field82E | 1;
         context->field82E = bit;
     }
-    temporary.field78 = 0;
-    temporary.field7C = func_00043b2c(1, 1) & 0xFF;
+    temporary.roster.field78 = 0;
+    temporary.roster.field7C = func_00043b2c(1, 1) & 0xFF;
     countOrAmount = (int)(((float)((count + 5) / (count * 2)) *
                         (float)quantity) / 12.0f);
     maximum = *outTime;
     for (i = 0; i < count; ++i) {
-        if (maximum < selected[i]->field94)
-            maximum = selected[i]->field94;
+        if (maximum < selected[i]->roster.field94)
+            maximum = selected[i]->roster.field94;
         value = countOrAmount * func_00237750(&temporary, selected[i], 0, 0, 0);
         calculated[i] = value;
         if (value <= 0)
@@ -163,7 +156,7 @@ int func_002317C8(int *outTime, int selector)
     global = D_801CE8BC;
     for (; i < 20; ++i, offset += 0xF8) {
         freeObject = (SideObject *)(global + offset);
-        if (freeObject->field48 == 0) {
+        if (freeObject->roster.class48.word == 0) {
             allocated[objectDuration] = freeObject;
             rawIndex[objectDuration] = i;
             ++objectDuration;
@@ -184,9 +177,9 @@ int func_002317C8(int *outTime, int selector)
     }
     maximum += 45;
     if (selector != 0)
-        temporary.field58 = 14;
+        temporary.roster.row58 = 14;
     else
-        temporary.field58 = -6;
+        temporary.roster.row58 = -6;
     /* Keep the capture, index reset and unconditional copy separate.
        The explicit positive-count entry avoids KMC folding the index test
        and moving its reset past the return-value capture. */
@@ -198,7 +191,7 @@ int func_002317C8(int *outTime, int selector)
             object = selected[i];
             duration[i] = func_002344B4(object, 15);
             stepValue = calculated[i];
-            prior[i] = object->field94;
+            prior[i] = object->roster.field94;
             stepTime = maximum + duration[i];
             func_0022ADFC(object, 0, stepTime, stepValue, 0, 0, 1, 0);
             ++i;
@@ -212,15 +205,15 @@ int func_002317C8(int *outTime, int selector)
     *outTime = maximum + duration[0] + difference;
     for (i = 0; i < count; ++i) {
         object = selected[i];
-        previousDifference = object->field94 - prior[i];
+        previousDifference = object->roster.field94 - prior[i];
         if (previousDifference < difference)
-            object->field94 += difference - previousDifference;
-        previousDifference = object->field94;
+            object->roster.field94 += difference - previousDifference;
+        previousDifference = object->roster.field94;
         currentTime = *outTime;
         if (currentTime < (u32)previousDifference)
             *outTime = previousDifference;
         else
-            object->field94 = currentTime;
+            object->roster.field94 = currentTime;
     }
     return 1;
 }

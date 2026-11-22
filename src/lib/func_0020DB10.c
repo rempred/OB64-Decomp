@@ -1,3 +1,5 @@
+#include "game/battle_roster_record.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -20,7 +22,6 @@ extern int func_00045934(int, int, int, int);
 extern int func_002015C8(int, int, int, int);
 extern void func_00207658(int *, int *, int *, int *, int *, u32);
 extern void func_002073CC(int, int);
-extern void func_0020C908(void *, u8);
 extern void func_0020CBDC(void *, int);
 extern u8 func_0020D434(int);
 extern int func_0020C014(void *);

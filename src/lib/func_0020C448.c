@@ -1,5 +1,4 @@
-extern unsigned short func_00045934(unsigned short, unsigned short,
-                                  unsigned short, unsigned short);
+extern int func_00045934(int item0, int item1, int item2, int item3);
 
 unsigned short func_0020C448(void *object)
 {

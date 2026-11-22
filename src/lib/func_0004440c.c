@@ -16,7 +16,7 @@ typedef s64 M2C_UNK64;
 s32 func_00044130(s32, s32, M2C_UNK);
 int func_000454e0(s32);
 s32 func_00045934(s32, s32, s32, s32);
-s32 func_00045a50(s32, s32, s32, s32);
+s32 func_00045a50(u16, u16, u16, u16);
 
 u8 func_0004440c(u8 *arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u16 arg5, u16 arg6, u16 arg7, u16 arg8) {
     u8 temp_a0_204;

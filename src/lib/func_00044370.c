@@ -3,8 +3,8 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 
 int func_000454e0(int value);
-int func_00045934(int value0, int value1, int value2, u16 value3);
-int func_00045a50(int value0, int value1, int value2, u16 value3);
+int func_00045934(int item0, int item1, int item2, int item3);
+int func_00045a50(u16 item0, u16 item1, u16 item2, u16 item3);
 
 u8 func_00044370(int arg0, int arg1, int arg2, int arg3, u16 arg4)
 {

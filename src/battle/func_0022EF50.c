@@ -6,10 +6,10 @@ typedef unsigned int u32;
 
 u8 func_00044130(u8, u8, s32);
 s32 func_00044358(s32);
-s8 func_0004440c(u8 *, u8, u8, s32, s32, s32, s32, s32, s32);
+u8 func_0004440c(u8 *, s32, s32, s32, u8, u16, u16, u16, u16);
 s32 func_000454e0(s32);
 s32 func_0020144C(u8);
-s32 func_0020C448(void *);
+u16 func_0020C448(void *);
 void *func_0020C478(u32);
 s32 func_0020D434(s32);
 s32 func_00233F94(void *);

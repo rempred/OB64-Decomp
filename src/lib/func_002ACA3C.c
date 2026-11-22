@@ -5,28 +5,9 @@ typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-typedef union ClassWord {
-    s32 word;
-    struct { u8 high[3]; u8 low; } bytes;
-} ClassWord;
+#include "game/battle_roster_record.h"
 
-typedef struct RosterRow {
-    void *links[3];
-    void *partners[3];
-    u8 unknown18[8];
-    u16 field20;
-    u8 unknown22[0x1E];
-    u32 flags40;
-    s32 unknown44;
-    ClassWord class48;
-    ClassWord variant4C;
-    s32 handle50;
-    s32 column54;
-    s32 row58;
-    u8 unknown5C[0x9A];
-    u8 fieldF6;
-    u8 unknownF7;
-} RosterRow;
+typedef BattleRosterRecord RosterRow;
 
 typedef struct RosterTable {
     u8 unknown00[0x1C4];
@@ -39,12 +20,11 @@ extern u16 D_8019532C[];
 extern u8 D_80195480[];
 extern s32 func_0020C0E8(RosterRow *);
 extern u8 func_00043dc4(u8, u8);
-extern void func_0020C908(RosterRow *, u8);
 extern void func_0020CBDC(RosterRow *, s32);
 extern void func_001F0F6C(void *);
 extern void func_001F102C(void *);
 extern void *func_0020C478(unsigned int index);
-extern u16 func_0020C448(RosterRow *);
+extern u16 func_0020C448(void *);
 extern u32 func_002015C8(s32, s32, s32, s32);
 extern void func_00207658(s32 *, s32 *, s32 *, s32 *, s32 *, u32);
 extern void func_001F114C(RosterRow *);

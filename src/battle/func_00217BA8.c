@@ -20,7 +20,7 @@ s32 func_0020C32C(s32);
 s32 func_0020C788();
 s32 func_0020C810();
 M2C_UNK func_002159D0(void);
-M2C_UNK func_0021C3B0();
+void func_0021C3B0(void);
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
 void *func_80070F30(u32 requested);

@@ -18,7 +18,7 @@ void func_00208DC8(void *, s32);
 s32 func_0020BF7C();
 s32 func_0020BF8C();
 s32 func_0020F80C();
-M2C_UNK func_0021C3B0();
+void func_0021C3B0(void);
 s32 func_0021C970();
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
