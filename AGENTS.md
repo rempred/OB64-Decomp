@@ -53,6 +53,12 @@ program history, lane history, promotion history, or archived research chronolog
   - the complete rebuilt ROM is byte-identical to the baserom.
 - A `.c` file containing inline assembly is not `PURE_C`, even if it produces exact retail bytes.
 - Structural claims and semantic claims are separate from matching claims.
+- Before accepting a new or changed function, including a body-only change, reconcile its definition with the declarations
+  visible to known C callers, including aliases and known callbacks: return and parameter
+  types, parameter count and variadic mode must be compatible. Check what known assembly
+  callers pass and consume, and record unresolved uncertainty. Prefer a shared header for
+  interfaces used across C files. A known incompatible declaration blocks acceptance even
+  when bytes match; see the workflow for automated coverage and unsupported-case evidence.
 - Do not strengthen a function/field/subsystem name beyond the available evidence.
 - Ordinary matching tasks must not alter function boundaries, overlay descriptors, segmentation,
   executable extent, linker ownership rules, compiler identity, or other structural foundations.
@@ -112,9 +118,9 @@ research helpers use Astra Medium (`gpt-6-astra`, reasoning `medium`) unless Joe
 
 The Director keeps assignments moving, resolves repository blockers, approves and delegates
 tooling changes, and coordinates integration and its required checks. Limit the Director's own
-function matching and experimentation. Workers own ordinary matching and use their paired Claude session through
-`tools/consult_claude.py` when they need help choosing what to try. Tooling approval remains with the Director
-under the agreement, audit and review requirements below.
+function matching and experimentation. Workers own evidence-based ordinary matching. Route concrete scope, repository or tooling
+needs to the Director. Tooling approval remains with the Director under the audit and review
+requirements below.
 
 Never use scheduled tasks or heartbeat automations for this program. Use the existing
 native thread watcher scripts for event-driven continuity. This decomp program uses the
@@ -156,28 +162,34 @@ a blocker needing director action, a shared-input/build coordination need, or an
 requested answer. Do not send per-experiment, per-function, provisional-match, target-transition,
 or routine status messages; keep those in the existing cursor and research records. Routine
 instructions need no acknowledgement unless ownership or a requested drain must be confirmed.
-When genuinely stuck, consult the worker's paired Claude session with a specific question and
-source-bound evidence through `tools/consult_claude.py`. Preserve the inherited worker identity;
-never create a replacement session on failure. Route failures and tooling agreements through
-the worker's verified native Director route with session/attempt/result evidence. No routine per-function review is required.
-Tooling escalation retains explicit Sol/Claude agreement and the Director's approval before changes.
-The Director is Astra; independent exact-code review remains a separate reviewer responsibility.
+Workers continue independent matching investigation and send concrete decision or tool-assistance
+requests with source-bound evidence through the verified native Director route. No routine
+per-function review is required.
+
+<a id="tooling-review"></a>
+
+For tooling design and necessary independent exact-code review, use one internal Astra 6.2
+Extra High subagent (`gpt-6.2-astra`, reasoning `xhigh`), separate from the author. Reuse that
+reviewer across design and implementation. The reviewer identifies the concrete failure,
+compares it with existing coverage and recommends the smallest effective fix; avoid
+speculative hardening, duplicate panels and extra routine gates. Director approval and
+applicable existing structural audit requirements remain in force.
 Fresh-worker instructions must include this communication policy, verified native Director routing,
 and the [worker matching approach addendum](docs/WORKFLOW.md#worker-matching-approach-addendum).
 Emphasize mismatch diagnosis and focused, hypothesis-driven iteration after the initial m2c draft;
 this adds no per-experiment report, approval or acceptance gate.
 
 Running out of matching ideas is part of the unfinished matching assignment, not grounds for
-an indefinite hold, ownership release or worker replacement. A Claude/GoldOx no-lead reply or
-uncertainty about the original source does not change that. The same worker continues
-reconstruction and targeted consultation under
+an indefinite hold, ownership release or worker replacement. Uncertainty about the original
+source does not change that. The same worker continues
+reconstruction and targeted evidence gathering under
 [When matching ideas run out](docs/WORKFLOW.md#when-matching-ideas-run-out). Plausible source
 hypotheses grounded in available evidence may be tested without proving the exact original
 statement or explaining the complete compiler mechanism first.
 
 On an active worker's stop event, the Director checks its cursor and actual process state.
 If only matching difficulty caused the stop, resume that same unfinished assignment with
-worker/Claude investigation; do not perpetuate a no-ideas hold merely because a cursor calls
+worker investigation; do not perpetuate a no-ideas hold merely because a cursor calls
 it deliberate. A genuine hold must identify the concrete dependency or applicable stop rule,
 the action and owner needed to resolve it, and the release condition. Honor user pauses,
 native/shared-input drains and applicable fail-closed rules; continue unaffected authorized work.
@@ -292,6 +304,16 @@ usable without it.
 
 Before using or changing Total Resolver, read `tools/total_resolver/AGENTS.md`; it defines the
 agent-safe query, capture, recovery, and verification workflow.
+All matching agents may query existing recorded evidence read-only. First run
+`python -m tools.total_resolver knowledge status` and `python -m tools.total_resolver knowledge verify`,
+then explain/search the relevant function or address. If verification fails, stop the query
+without initializing or selecting another database. If static code and available traces
+cannot settle gameplay meaning, ask the Director with the unknown function/value, scene/action
+and result that would distinguish the hypotheses. The Director coordinates a focused emulator
+test and approves each new capture. Queue live captures one at a time; concurrent
+read-only queries of recorded evidence use no emulator slot. Share observations, what they support
+and uncertainty in the existing research records. Matching may continue with meaning open;
+no trace per function, new database, tracking artifact or default emulator dependency is required.
 
 Tracked resolver source, configuration, schemas, documentation, tests, and bounded approved
 fixtures belong in this repository. Session databases, RAM captures, screenshots, generated

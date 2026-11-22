@@ -22,7 +22,7 @@ before choosing a family or briefing workers. Its construction examples show
 how a repeated compiler result or an unresolved relocation can change the next
 experiment.
 
-The paired-assistant launcher and native chat watchers use Joe's machine-local
+The native chat watchers use Joe's machine-local
 configuration and session identities. Supply those routes when briefing an
 assigned worker. Put reusable matching evidence in the tracked research records
 and give PR authors a reproducible command, source location or first differing
@@ -195,6 +195,22 @@ does not require a separate reviewer. Route any change to the linker rules or
 accepted structural model through the structural workflow.
 
 ## C interface consistency at the complete-wave boundary
+
+Starting with the final wave, before accepting any new or changed function, including body-only changes,
+compare its definition
+with the declaration visible at every known C caller, including alternate symbol names
+and known callbacks. Return type, parameter types and count, and variadic mode must be
+compatible. For known assembly callers, trace the actual arguments and consumed result
+or side effects, retaining any genuine uncertainty. Prefer one shared header included by
+the definition and its cross-file callers. A known incompatible declaration blocks
+acceptance even when the linked bytes and full ROM are identical.
+
+Use the existing automated census for the cases it supports and source/linked evidence
+for unsupported types, callbacks or assembly edges. Record that evidence and unresolved
+limits in the existing wave records; an unsupported row is not proof of compatibility.
+The reviewed legacy baseline is not permission to retain a known incompatibility in a
+new or changed function. This prospective requirement adds no per-function build or
+routine review gate and does not claim that the scanner proves unsupported cases.
 
 Final verification also scans the exact authenticated expanded C consumed by KMC,
 using the separately pinned diagnostic Clang frontend. Provision it with
@@ -544,14 +560,12 @@ the assigned wave. **Steps 5 and 6 are the main investigative work.**
    a justified sequence of experiments; a worse score does not by itself disprove the
    underlying hypothesis.
 
-**Own the investigation.** Continue investigating independently. Use the assigned
-persistent assistant for broader guidance, alternative explanations or targeted insight
-when useful. Explore its guidance before returning with another question, and bring the
-results and remaining uncertainty. Do not become a relay that merely implements
-successive suggestions.
+**Own the investigation.** Continue evidence-based matching independently. Bring concrete
+scope, repository or tooling needs to the Director with the relevant source, attempted
+comparison and remaining uncertainty. Routine source experiments need no review.
 
 An unchanged score or exhausted ideas does not complete the assignment or justify an
-indefinite hold. Continue reconstruction and targeted consultation unless a concrete
+indefinite hold. Continue reconstruction and targeted evidence gathering unless a concrete
 external blocker, explicit pause or applicable fail-closed rule prevents the affected work.
 
 **Keep the loop lightweight.** Routine experiments need no Director approval or formal
@@ -573,6 +587,28 @@ Before recording a candidate, confirm the report identifies the current source
 and compiled artifacts. Process exit and scalar diagnostic scores do not prove
 linked-byte equality or a matching relocation contract.
 
+#### Use recorded runtime evidence when useful
+
+All matching agents may query existing Total Resolver evidence read-only. First read
+`tools/total_resolver/AGENTS.md`, then run:
+
+```text
+python -m tools.total_resolver knowledge status
+python -m tools.total_resolver knowledge verify
+python -m tools.total_resolver explain func_XXXXXXXX
+```
+
+Use `explain` or `search` for the relevant function/address. A failed knowledge verification
+stops the query; do not initialize or select another database. If static code and recorded
+traces cannot settle gameplay meaning, send the Director the unknown function/value, the
+scene/action and the observable result that distinguishes the hypotheses. The Director
+approves and coordinates the focused emulator test, queueing live captures one at a time,
+following the resolver capture-safety rules. Concurrent read-only queries of recorded
+evidence use no emulator slot. Record what was observed, what it supports and
+remaining uncertainty through existing research records. Ordinary byte matching continues
+where meaning can stay open. No trace per function, new database or tracking artifact is
+required, and Project64 remains optional for ordinary matching.
+
 #### Choosing a different experiment
 
 When several source changes give the same instructions, inspect one caller and the
@@ -593,18 +629,15 @@ staffing or storage. Unknown intervals stay unknown.
 #### When matching ideas run out
 
 Exhausting the current experiment list does not finish or suspend the assignment. The worker
-retains the complete wave and changes its investigative approach. A no-lead reply from
-Claude/GoldOx, a plateau, or inability to identify the exact original source statement is not
+retains the complete wave and changes its investigative approach. A plateau or inability to identify the exact original source statement is not
 by itself a blocking dependency.
 
 Preserve the best candidate and useful intermediates, then revisit the unresolved mismatch,
 the assumptions behind closed hypotheses, relevant target/caller/data evidence and current
-research intake. Consult the worker-lifetime paired Claude session through `tools/consult_claude.py`
-with a specific question and the source-bound
-evidence that makes it useful. Continue independent reconstruction while awaiting that reply;
-consultation is not a blanket stop. The worker and Claude choose the next meaningful source
-hypothesis or evidence question. The Director handles repository, service, coordination and
-tooling decisions rather than choosing matching experiments.
+research intake. Choose the next meaningful source hypothesis or evidence question. Route
+concrete requests for scope decisions or tool assistance to the Director; continue unaffected
+reconstruction while they are resolved. The Director handles repository, coordination and
+tooling decisions rather than choosing routine matching experiments.
 
 A plausible hypothesis grounded in available evidence is enough to try ordinary C within
 the accepted contracts. Proof of the original statement and a complete compiler explanation
@@ -620,12 +653,14 @@ an applicable fail-closed rule requires it, or a concrete external input, tool, 
 Director decision prevents further authorized work. Record the exact dependency or rule,
 who must take what action, and the observable release condition in the existing cursor;
 continue unaffected authorized work. "Need more ideas" or "need the original statement"
-alone does not establish such a dependency. A proposed tooling remedy retains the existing
-Sol/Claude agreement, Director approval, audit and independent review requirements.
+alone does not establish such a dependency. Proposed tooling remedies follow the
+[single-reviewer tooling rule](../AGENTS.md#tooling-review): use the same independent
+Astra 6.2 Extra High reviewer for design and necessary exact-code review, with the
+smallest effective fix and applicable existing structural audit.
 
 When an existing native thread stop/attention watcher reports an unfinished active worker stopped, the
 Director checks the cursor, process state and any actual hold. If it stopped only for lack
-of ideas, resume that same assignment and its worker/Claude investigation. Do not convert
+of ideas, resume that same assignment and its worker investigation. Do not convert
 the stop into an indefinite hold or replace the worker before its complete assignment is
 accepted and ownership released, unless Joe directs otherwise. Preserve Joe's assigned
 top-level worker role and existing watcher routing. Never resume retired/completed workers
@@ -648,7 +683,7 @@ same reliable continuation coverage as top-level source workers.
 2. Give the helper the exact current Director thread identity and tested native route.
    Send one clearly labeled native startup delivery test and verify actual receipt and
    stop-watcher wakeup at that destination. Approval/scope requests and final handoffs,
-   including tooling agreements, use this verified native route. Preserve durable retry
+   including tooling decisions, use this verified native route. Preserve durable retry
    and deduplication state. Ordinary progress and experiments remain exception-only.
 3. A helper needing a decision preserves evidence, sends the concrete request, and ends
    its turn so the stop/attention monitor is a fallback. A failed send is reported through
@@ -942,11 +977,14 @@ The new worker's initial prompt must start work immediately and include:
   research-intake commands; publish reusable private observations through the existing shared
   research commands and maintain the lesson index without creating another archive;
 - the concrete first target/experiment and the existing concise continuation note;
-- inherited worker identity, its paired Claude wrapper instructions and the verified native
-  route to the exact current Director thread with tested stop/attention wakeup. The Director
-  is Astra and owns infrastructure approval; independent exact-code review remains separate.
-  A specific stuck question goes to the paired Claude session; ordinary matching does not
-  wait for routine review;
+- read-only [Total Resolver query guidance](#use-recorded-runtime-evidence-when-useful),
+  including knowledge status/verify, and the Director route for an unresolved gameplay
+  question or a focused capture requiring the Director's approval;
+- inherited worker identity and the verified native route to the exact current Director
+  thread with tested stop/attention wakeup. The Director owns infrastructure approval.
+  Workers own matching investigation; concrete decision/tool-assistance needs go to the
+  Director. Tooling follows the [single-reviewer rule](../AGENTS.md#tooling-review); ordinary matching
+  does not wait for routine review;
 - the [worker matching approach](#worker-matching-approach-addendum) and a
   relevant [example from the matching study](research/how-matching-works-20261117.md).
   Include the first difference to investigate, concurrent private checks,

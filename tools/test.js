@@ -58,7 +58,6 @@ const ROUTINE_TESTS = [
   ['emitted-states', 'tests/emitted_states.js'],
   ['diff-exactness', 'tests/diff_exactness.js'],
   ['scratch-retention', 'tests/scratch_retention.js'],
-  ['consult-claude', 'tools/tests/consult_claude.js'],
   ['diff-admission', 'tools/tests/diff_admission.js'],
   ['diff-profile', 'tests/diff_profile.js'],
   ['verification-profile', 'tests/verification_profile.js'],

@@ -1,3 +1,14 @@
+# Historical Claude consultation procedure
+
+This procedure is retired. It supplies no current login, consultation, retry or command
+instructions. Do not launch Claude or execute the commands below for active OB64 work.
+Current matching and tooling roles are defined in [AGENTS.md](../AGENTS.md#tooling-review)
+and [WORKFLOW.md](WORKFLOW.md). The helper, tests and old records remain for historical
+reference; the helper test is no longer part of the required routine suite.
+
+<details>
+<summary>Retired procedure, preserved as historical evidence only</summary>
+
 # Paired Claude consultation
 
 Run `python tools/consult_claude.py --prompt-file <UTF-8-file>` from your assigned Codex worker, or supply UTF-8 stdin. The inherited `CODEX_THREAD_ID` owns one persistent Claude session. Optional `--worker-id` must match it. Every later problem resumes that same UUID; never edit mappings, borrow another worker's session or create a replacement pairing after failure.
@@ -28,3 +39,5 @@ claude.exe --restricted --safe-mode --model claude-opus-5-5 --effort xhigh --too
 Do not send a model prompt merely to inspect history. Ctrl+O shows history; double Ctrl+D within 800 ms exits. Close the interactive client before consulting again. Native metadata changes require no hash adoption. The lock cannot protect an independently launched manual client that ignores it.
 
 Claude supplies advice; Sol owns implementation. Keep inter-worker coordination in native Codex messaging and existing stop/attention watchers. Do not rebuild a transcript grammar around this adapter. Real session recall and billing behavior remain separate from offline mocked tests; retained acceptance evidence is in the Director's existing cursor and consultation records.
+
+</details>

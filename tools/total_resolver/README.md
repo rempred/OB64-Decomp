@@ -62,7 +62,9 @@ A query agent must not use these commands or functions:
 
 Only an assigned database build agent can use those functions.
 A general decompilation task does not give this permission.
-Joe must approve each capture run before it starts.
+The Director approves and coordinates each capture run before it starts. Queue live
+captures one at a time. Concurrent read-only queries of recorded evidence use no
+emulator slot. Follow the existing recorder ownership and session safety checks.
 Never use computer control to start Project64.
 
 ## Bridge contract
@@ -215,7 +217,7 @@ Each focused row starts with the `live-unreviewed` state.
 
 ### Dialogue presentation timing
 
-For a future Joe-approved capture, select **Cutscene Studio** to record dialogue timing
+For a future Director-approved capture, select **Cutscene Studio** to record dialogue timing
 alongside the existing cutscene owners, or **Dialogue presentation timing** to record
 only the two dialogue callbacks. Both presets watch the exact dialogue draw callback
 (`0x000E65DC`) and release callback (`0x000E6620`) at all retained placements and
@@ -587,7 +589,8 @@ python -m tools.total_resolver pj64 status
 
 These commands write capture or database state.
 Only a database build agent can use them.
-Joe must approve the capture before the agent starts it.
+The Director must approve and coordinate the capture before the agent starts it;
+queue live captures one at a time.
 
 ```text
 python -m tools.total_resolver session start --defer-ingest --port 64656

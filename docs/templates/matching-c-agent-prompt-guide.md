@@ -12,7 +12,9 @@ Give the worker a resolved task, not a target-selection problem. Include:
 - accepted assembly/disassembly owner;
 - only the relevant dossier or subsystem notes;
 - files already dirty that must be preserved;
-- current Director identity, tested native route, assigned consultation instructions and any program-specific overrides; and
+- current Director identity, tested native route and any program-specific overrides;
+- the [recorded runtime evidence guidance](../WORKFLOW.md#use-recorded-runtime-evidence-when-useful)
+  and Director route for concrete decision or tool-assistance needs; and
 - the required result: exact `PURE_C`, exploratory C, or analysis only.
 
 For a `PURE_C` assignment, avoid a target already known to require secondary
@@ -126,7 +128,10 @@ or relocation difference to choose the next experiment. Keep the best candidate,
 useful comparisons and your cursor in your assigned private root.
 
 Read AGENTS.md, docs/SOURCE_POLICY.md and the Worker matching approach addendum
-in docs/WORKFLOW.md. Follow <program-specific staffing and consultation instructions>.
+in docs/WORKFLOW.md. Follow <program-specific staffing instructions> and the workflow
+section "Use recorded runtime evidence when useful". Check caller compatibility under
+its "C interface consistency at the complete-wave boundary" section, including body-only
+changes. Tooling review follows AGENTS.md, "tooling-review"; it is not routine source review.
 Use <tested native message route and exact Director chat> for a complete handoff,
 a blocker needing a decision, a shared-input coordination need, or a requested
 answer. Keep routine experiments in your cursor. Send a decision request with its

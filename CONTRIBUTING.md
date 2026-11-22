@@ -2,7 +2,7 @@
 
 We welcome matching C for *Ogre Battle 64* US Rev 0, research on game behavior, and fixes to documentation and tools. Recovered game code belongs here. For changes to the Lordly Caliber editor, see the [Editor contributor guide](https://github.com/rempred/LordlyCaliber/blob/main/CONTRIBUTING.md).
 
-Contributors work on a branch in their own fork. You can use any editor and submit through GitHub. The Director, private worker folders, paired assistants and chat watchers in [AGENTS.md](AGENTS.md) coordinate Joe's assigned team. The same [source policy](docs/SOURCE_POLICY.md) and [matching requirements](docs/WORKFLOW.md#acceptance-boundary) apply to a contribution from either route.
+Contributors work on a branch in their own fork. You can use any editor and submit through GitHub. The Director, private worker folders and chat watchers in [AGENTS.md](AGENTS.md) coordinate Joe's assigned team. The same [source policy](docs/SOURCE_POLICY.md) and [matching requirements](docs/WORKFLOW.md#acceptance-boundary) apply to a contribution from either route.
 
 ## Find or request a target
 
@@ -52,6 +52,22 @@ node tools/source_policy.js --target $symbol
 ```
 
 Provision the separate diagnostic frontend using the [C interface setup instructions](docs/WORKFLOW.md#c-interface-consistency-at-the-complete-wave-boundary) before final verification.
+
+Before accepting any new or changed function, including a body-only change, check its
+C definition against the
+declarations visible to every known caller, including callers in other files, alternate
+symbol names and known callbacks. The return type, parameter types and count, and
+variadic mode must be compatible. Prefer a shared header included by the definition
+and its cross-file callers. For assembly callers, inspect what they actually pass and
+consume and record any unresolved uncertainty. A known incompatible declaration blocks
+acceptance even if the compiled bytes are identical.
+
+The existing interface scan checks supported cases during final verification. Unsupported
+types, callbacks and assembly edges need source and linked evidence in the contribution;
+a reported limitation is not a compatibility certificate. Explain remaining uncertainty
+and identify the caller sites you checked. Existing reviewed debt does not waive this
+requirement for a new or changed function. See the
+[caller compatibility workflow](docs/WORKFLOW.md#c-interface-consistency-at-the-complete-wave-boundary).
 
 When the complete set is ready, run `node tools/verify.js` once. For each matching function, the verifier must confirm `PURE_C`, sole ownership of the target section by the C object, correct placement and relocations, and exact linked bytes. The complete rebuilt ROM must also equal the normalized US Rev 0 input byte for byte. Inline assembly is classified as `HYBRID_C`, even when the bytes match. [Source policy](docs/SOURCE_POLICY.md)
 

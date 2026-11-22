@@ -82,5 +82,8 @@ Do not do these actions without a database build assignment:
 - Project64 start or control
 - An emulator memory write
 
-Joe must approve each capture run before it starts.
+Send focused test requests to the Director. The Director approves and coordinates each
+capture run before it starts. Queue live captures one at a time; the shared session root
+allows only one active recording. Concurrent read-only queries of recorded evidence
+use no emulator slot. Keep the existing recorder ownership and session safety checks.
 Never use computer control to start Project64.
