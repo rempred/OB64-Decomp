@@ -206,6 +206,18 @@ The archive decoder and the adapted LHa copy routine share four calls to `boot_i
 
 The stream fields observed in both slots end with the signed position at offset `0x10`. The next word in the write slot, at `0x800AF36C`, holds the separate `infile` pointer. Preserve that boundary and the result alias at `0x800AF360`, which reads the buffer pointer and size. The decoder clears a `0x12C`-byte record in each caller's aligned `0x130`-byte storage. Check both extents and the original comparisons of read and write results.
 
+Round 10 cleared 69 conflicts and retained the existing boot string comparison mismatch. One canonical build verified the complete ROM and all 2,650 target contracts. The archive writer had initially grown from 104 to 108 bytes and shifted its 8-byte local function. Testing both stream layouts with each source-pointer type isolated the difference to the pointer qualifier. The accepted writer keeps a const input parameter and reads through a local cursor. Its object reproduces both original functions. [Accepted archive writer](https://github.com/rempred/OB64-Decomp/blob/373d60c8130bf232bab24b0b7668bc5281b2edbf/src/boot/boot_io_fwrite.c)
+
+## Round 11
+
+The accepted Round 10 census has 1,079 definite findings across 270 linked entries. Four entries tied at 15. Linked-section order selects the three below, whose opening rosters cover 45 distinct findings in 14 disjoint source files. [Accepted Round 10 fixes](https://github.com/rempred/OB64-Decomp/commit/373d60c8130bf232bab24b0b7668bc5281b2edbf)
+
+| Lead | Linked entry | Findings | Source files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Event message registration | `func_00023d40` | 15 | 6 | Follow the queue and message from `osSetEventMesg` callers into the event table and the conditional pre-NMI send. Check actual queue storage and the full event index across the 19 entries compiled from these files. |
+| Class sprite resource lookup | `func_00045ae0` | 15 | 5 | Trace the returned allocation to its consumer and the separate pixel address through the output slot. Compare a real class and variant lookup with the missing-resource path, including the address aliases. |
+| Menu cursor state stack | `func_000ae30c` | 15 | 3 | Trace the saved and incoming triples through a menu transition and the restoring consumer. Compare argument widths at the caller and the three halfword stores at the provider. |
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
