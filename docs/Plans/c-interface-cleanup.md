@@ -150,7 +150,9 @@ The changed array index in `func_001994B4` sits inside an existing call to `func
 
 The selector lead owns the complete `func_0022B1F4`, `func_0022F580` and `func_00230A9C` sources, which also contain six of the random-result findings. This gives the three leads 29, 22 and 15 assigned finding IDs respectively. The random-result lead supplies the grounded declaration and any caller conversions needed in those three files. The existing `rand()` called by the combat selector is a separate provider.
 
-The random-result lead also checks both callers of the [resident string append routine](#resident-string-append-follow-up) in a separate packet. This adds two complete files to the opening scope. Their declaration difference first appeared in coverage review and adds no definite findings to the opening count.
+The random-result lead also checks both callers of the [resident string append routine](#resident-string-append-follow-up) in a separate packet. Their declaration difference first appeared in coverage review and adds no definite findings to the opening count.
+
+The selector lead also owns three complete callers found by the linked scan. Six named calls in `func_0022257C`, `func_0022C78C` and `func_001FFE80` reach the same selector. The first two pass local copies of 0x50 bytes. The third passes the record region starting at +0x44 within an enclosing object. Check its overlapping fields and the complete copy before choosing a compatible record declaration. These callers and the two string append callers bring the round to 23 complete files.
 
 ## Matching and acceptance
 
