@@ -1,3 +1,5 @@
+#include "game/effect_presentation_p06_internal.h"
+
 #include "game/effect_adapters_e08.h"
 #include "game/effect_dispatch_e07.h"
 #include "game/effect_math_e04.h"
@@ -34,7 +36,6 @@ extern void func_00262830(s16), func_00262C64(s16, s16);
 
 
 extern void func_0020BDCC(s16, s32);
-extern void func_002623C4(P02Render271E5C *);
 extern u8 *p01_context_80220F68;
 extern u8 D_800EB290[], D_800EB240[];
 extern float D_80220EE0[16];
@@ -108,8 +109,11 @@ static __inline__ void p02_phase_1006_271E5C(P02State271E5C *state)
     func_00262C64(10, 0x1007);
 }
 
-s32 func_00271E5C(u16 message, P02State271E5C *state)
+/* Use the payload address directly to retain KMC register allocation. */
+#define state ((P02State271E5C *)payload)
+s32 func_00271E5C(u32 command, void *payload)
 {
+    u16 message = (u16)command;
     s32 result = 0;
     P02Vec271E5C target, position;
     void *matrix;
@@ -188,3 +192,4 @@ s32 func_00271E5C(u16 message, P02State271E5C *state)
     }
     return result;
 }
+#undef state

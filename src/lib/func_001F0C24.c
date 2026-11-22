@@ -13,7 +13,7 @@ typedef struct {
 } CombatServiceView;
 
 extern CombatServiceView *D_801CE8BC;
-extern u8 *func_001F0A9C(u32);
+extern void *func_001F0A9C(int);
 extern int func_00201E08(int, int, int);
 extern u32 func_00201E38(int, u32);
 extern void *func_00001330(u32);

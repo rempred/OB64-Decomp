@@ -240,7 +240,7 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   return sha256Value({
     schemaVersion: 10,
-    cInterfaceInputs: ['config/c-interface-frontend.json', 'config/c-interface-baseline.json', 'tools/lib/c_interfaces.js', 'tools/lib/c_interface_companion.js'].map(file => ({ file, sha256: sha256File(path.join(ROOT,file), inputs) })),
+    cInterfaceInputs: ['config/c-interface-frontend.json', 'config/c-interface-baseline.json', 'tools/lib/c_interfaces.js', 'tools/lib/c_interface_companion.js', 'tools/lib/c_interface_types.js', 'tools/lib/c_interface_prospective.js', 'tools/lib/c_interface_site_evidence.js', 'tools/lib/c_interface_exceptions.js', 'config/c-interface-exceptions.json', 'config/c-interface-sites.json', 'config/c-interface-reference.json.gz'].map(file => ({ file, sha256: sha256File(path.join(ROOT,file), inputs) })),
     baseline,
     compilerSha256: sha256File(localTools.compiler),
     activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json'), inputs),
@@ -742,6 +742,7 @@ function verifyFreshCompilation(context, build, options = {}) {
 }
 
 function verifyCurrent(context, options = {}) {
+  const interfaceReference = require('./c_interface_prospective').reference(ROOT, existingState(CURRENT_STATE_PATH));
   const profile = options.profile;
   // A verification request needs executing-controller freshness. Build/status
   // may read unchanged acceptance, but disk companions cannot mint a fresh run.
@@ -786,10 +787,10 @@ function verifyCurrent(context, options = {}) {
   const freshCompilation = { report: freshReport, reportFile: freshFile };
   validateVerifiedCompanions(actualBuild.report, freshCompilation.report, verification, build.output, context.phase8);
   if (!isDeepStrictEqual(session.buildReport, actualBuild.identity)) throw new Error('fresh construction changed before verified state');
-  const interfaceReport = measure(profile, 'c-interface-consistency', () => require('./c_interfaces').run(ROOT, build.output, actualBuild.report, readJson(path.join(ROOT,'config/c-interface-frontend.json')), readJson(path.join(ROOT,'config/c-interface-baseline.json'))));
+  const interfaceReport = measure(profile, 'c-interface-consistency', () => require('./c_interfaces').run(ROOT, build.output, actualBuild.report, readJson(path.join(ROOT,'config/c-interface-frontend.json')), readJson(path.join(ROOT,'config/c-interface-baseline.json')), {reference:interfaceReference}));
   interfaceReport.acceptanceBinding = { inputFingerprint: context.currentFingerprint, baselineFingerprint: context.baselineFingerprint, buildReport: actualBuild.identity };
   textContract.publishCompactReport(path.join(path.dirname(build.output), 'c-interface-report.json'), interfaceReport);
-  if (!interfaceReport.verdict.pass) throw new Error('C interface consistency failed (ROM equality is reported separately); inspect c-interface-report.json');
+  if (!interfaceReport.verdict.pass || !interfaceReport.verdict.readyForPublication) throw new Error('C interface consistency failed (ROM equality is reported separately); inspect c-interface-report.json');
   const interfaceCompanion = require('./c_interface_companion');
   const interfaceBinding = interfaceCompanion.create(build, interfaceReport, fs.readFileSync(path.join(ROOT,'config/c-interface-frontend.json')));
   const interfaceState = { ...build, fingerprint: context.currentFingerprint, baselineFingerprint: context.baselineFingerprint, buildReport: actualBuild.identity, ...interfaceBinding };

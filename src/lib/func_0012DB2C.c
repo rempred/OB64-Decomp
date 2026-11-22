@@ -1,3 +1,5 @@
+#include "game/unit_record_lookup.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef signed int s32;
@@ -7,9 +9,8 @@ typedef struct { u8 bytes[11]; } DeploymentRow11;
 
 extern DeploymentRow11 D_801969B8[];
 extern RuntimeUnit *D_801F0CB0[];
-extern s32 func_0012E968(RuntimeUnit *unit);
 
-s32 func_0012DB2C(RuntimeUnit *unit)
+s32 func_0012DB2C(void *unit)
 {
     DeploymentRow11 *row = &D_801969B8[func_0012E968(unit)];
     s32 slot;

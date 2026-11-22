@@ -10,7 +10,7 @@ extern Record56 g_func_0019554C_records_56[];
 extern Record72 g_func_0019554C_class_records[];
 extern int func_00040f88(u8, u8, u8, u8, u8);
 
-u8 func_00129068(u8 *record)
+int func_00129068(u8 *record)
 {
     u8 values[5];
     int i;
@@ -46,5 +46,5 @@ u8 func_00129068(u8 *record)
             values[i] = g_func_0019554C_class_records[value].bytes[0x2C];
         }
     }
-    return func_00040f88(values[0], values[1], values[2], values[3], values[4]);
+    return (u8)func_00040f88(values[0], values[1], values[2], values[3], values[4]);
 }

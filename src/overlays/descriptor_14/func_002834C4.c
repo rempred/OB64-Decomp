@@ -1,8 +1,9 @@
 #include "game/sound_channel.h"
 
+typedef signed short s16;
 typedef signed int s32;
 extern s32 D_8022A8A8[];
-s32 D_8016FEF4(s32 flag);
+s32 D_8016FEF4(s16 flag);
 void D_800EA7E4(SoundChannel *channel, s32 gain);
 void func_002834C4(s32 i, s32 v) {
     s32 k;

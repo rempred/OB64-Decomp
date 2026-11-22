@@ -2,7 +2,7 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
 extern u8 *D_80196AF8;
-u8 func_000bd26c(u16 row);
+s32 func_000bd26c(s32 row);
 void func_000bafa0(void);
 void func_000bb0cc(void);
 void func_000badd4(void);
@@ -29,7 +29,7 @@ void func_000b7360(void) {
                 rec[1] |= 8;
             }
         }
-        row[0xA] = func_000bd26c(i);
+        row[0xA] = func_000bd26c((u16)i);
     }
     func_000bafa0();
     func_000bb0cc();

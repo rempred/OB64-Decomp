@@ -49,8 +49,7 @@ typedef struct BodyResident {
 extern BodyScene *D_8022A974;
 extern BodyResident *D_801CE8BC;
 extern void *resource_alloc(u32 bytes);
-extern s32 func_0020C0E8(BodyUnit *unit);
-extern s32 func_0020C120(BodyUnit *unit);
+extern s32 func_0020C120(void *unit);
 extern s16 func_002A0A68(BodyActor *actor, f32 x, f32 z, f32 targetX, f32 targetZ);
 extern s32 func_002A9364(s32 slot, s32 sourceArt, s32 ownerContext, s32 animation,
                         s32 arg5, s32 arg6, u8 keep145, u8 keepUnit);

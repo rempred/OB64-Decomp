@@ -17,7 +17,7 @@ void func_00019e10(void);
 void boot_mode_message_select(s32 a);
 void func_00019fc0(void);
 void func_00025a10(u32 f);
-void D_8016CD50(s32 a);
+void D_8016CD50(signed char a);
 /* Inlining scalar slot accesses keeps KMC's separate symbol references. */
 static __inline__ void store_raw_slot(u8 **slot, u8 *value)
 {

@@ -1,8 +1,14 @@
+#include "game/unit_record_lookup.h"
+
+#include "game/character_template.h"
+#include "game/sound_channel.h"
+#include "game/unit_cleanup.h"
+
 extern unsigned char D_80214F80_dma[], D_802172B0_data[];
 extern unsigned char D_00195410[], D_001977E0[];
 extern unsigned char D_80217350_start[], D_80217350_end[];
 extern unsigned char D_800E7AB9[];
-extern unsigned char D_800EB240[];
+extern SoundChannel D_800EB240;
 extern unsigned char D_8018F481[];
 extern unsigned char D_80190000[];
 extern unsigned char D_801969B8[];
@@ -23,12 +29,6 @@ extern unsigned char D_80214F80[];
 extern unsigned char D_802172B0[];
 extern unsigned char D_80217350[];
 extern unsigned char D_801F0EBF[][18];
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
 typedef signed long long s64;
 typedef unsigned long long u64;
 typedef float f32;
@@ -40,47 +40,39 @@ typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
-M2C_UNK func_0005c090(M2C_UNK, M2C_UNK);
+void func_0005c090(s32, s32);
 s32 func_0005c110(M2C_UNK);
 f32 func_000F315C(u8, f32, f32);
 f32 func_000F3428(u8, f32, f32);
-M2C_UNK func_00106CE0(void *, void *, f32);
-M2C_UNK func_001072B8(void *);
-M2C_UNK func_0010746C(void *);
-M2C_UNK func_0010766C(void *);
-M2C_UNK func_00118D0C(void *);
-M2C_UNK func_00120CF0(void *, f32, f32, f32);
-M2C_UNK func_00121724(void *, f32, f32, f32);
+void func_00106CE0(f32 *, f32 *, f32);
+void func_0010766C(RuntimeUnit *);
+void func_00118D0C(RuntimeUnit *);
+void func_00120CF0(RuntimeUnit *, f32, f32, f32);
+void func_00121724(RuntimeUnit *, f32, f32, f32);
 extern void func_00121DA8(RuntimeUnit *unit);
-s32 func_001237F0(void *);
-M2C_UNK func_00124B98(void *);
-M2C_UNK func_00125F84(void *, s32, s32 *);
-M2C_UNK func_00126D24(void *);
-s32 func_00127D30(void *);
-M2C_UNK func_00127EAC(void *);
-f32 func_00128050(void *);
-M2C_UNK func_00128980(void *);
-s32 func_00128AD0(void *);
-M2C_UNK func_00128BF4(void *, s32, M2C_UNK);
-M2C_UNK func_00128D50(void *);
-M2C_UNK func_00128DDC(void *);
-M2C_UNK func_00128E80();
-M2C_UNK func_0012967C(s32);
-M2C_UNK func_0012A828(s32);
-M2C_UNK func_0012A958(void *);
-M2C_UNK func_0012BC64(void *, s32, s32 *, M2C_UNK);
-M2C_UNK func_0012D170(void *, u8, s32 *, s32);
-s32 func_0012DA10(void *);
-s32 func_0012DB2C(void *);
-s32 func_0012E8EC(void *);
-s32 func_0012E950(u8);
-s32 func_0012E968(void *);
+s32 func_001237F0(RuntimeUnit *);
+s32 func_00124B98(RuntimeUnit *);
+void func_00125F84(RuntimeUnit *, s32, s32 *);
+void func_00126D24(RuntimeUnit *);
+s32 func_00127D30(RuntimeUnit *);
+void func_00127EAC(RuntimeUnit *);
+f32 func_00128050(RuntimeUnit *);
+s32 func_00128AD0(RuntimeUnit *);
+void func_00128BF4(RuntimeUnit *, s32, s32);
+void func_00128D50(RuntimeUnit *);
+void func_00128DDC(RuntimeUnit *);
+void func_00128E80(void);
+void func_0012967C(s32);
+void func_0012A828(s32);
+void func_0012A958(RuntimeUnit *);
+void func_0012BC64(f32 *, u8 *, s32 *, s32);
+void func_0012D170(RuntimeUnit *, u8, s32 *, s32);
+s32 func_0012E950(s32);
 M2C_UNK func_0012EA80(M2C_UNK, f32 *);
 s32 func_00131480(void *, M2C_UNK);
 M2C_UNK func_00147BDC(void *);
-M2C_UNK func_001957D0(s32, s32);
 void func_00195D9C(u8, u8, u8, u8);
-M2C_UNK func_800EA604(M2C_UNK, M2C_UNK);
+void func_800EA604(SoundChannel *, s32);
 M2C_UNK func_801CC480(void *, f32, f32, f32, s32);
 M2C_UNK memset_00023780(M2C_UNK, s32);
 M2C_UNK os_inval_dcache(M2C_UNK, s32);
@@ -188,7 +180,7 @@ void func_00105CC0(s32 arg0) {
                         if (temp_v0_66 == 0xFF) {
                             func_0010746C(temp_s1_34);
                             (*(s32 *)((s8 *)(temp_s1_34) + (0))) = (s32) ((*(s32 *)((s8 *)(temp_s1_34) + (0))) & ~0x10);
-                            func_800EA604(((u32)D_800EB240), 0x289);
+                            func_800EA604(&D_800EB240, 0x289);
                             func_00118D0C(temp_s1_34);
                             func_0012A958(temp_s1_34);
                         } else {
@@ -356,7 +348,7 @@ block_87:
                                                     currentAngle = *(f32 *)(temp_s1_34 + 0x18);
                                                     if (currentAngle == temp_f0_434) goto block_101;
 block_100:
-                                                    func_00106CE0(temp_s1_34 + 0x18, temp_s1_34 + 0x9C, 1.0f);
+                                                    func_00106CE0((f32 *)((u8 *)temp_s1_34 + 0x18), (f32 *)((u8 *)temp_s1_34 + 0x9C), 1.0f);
                                                     goto block_154;
 block_101:
                                                     temp_v0_483 = *(u8 *)(temp_s1_34 + 0x98);
@@ -472,7 +464,7 @@ block_142:
                                                 temp_s0_708 = (*(u8 *)((s8 *)(((func_0012E968(temp_s1_34) * 0xB) + ((u32)D_80190000))) + (0x69C1)));
                                                 func_0012D170(temp_s1_34, temp_s0_708, &locals.sp28, func_0012E8EC(temp_s1_34));
                                             }
-                                            func_0012BC64(temp_s1_34 + 8, (func_0012E968(temp_s1_34) * 0xB) + ((u32)D_801969B8), &locals.sp28, 1);
+                                            func_0012BC64((f32 *)((u8 *)temp_s1_34 + 8), D_801969B8 + func_0012E968(temp_s1_34) * 0xB, &locals.sp28, 1);
                                         } else {
                                             var_s0_579 = 0;
                                             goto block_149;
@@ -582,7 +574,7 @@ loop_173:
                     }
                     var_v0_935 = var_s2_898 & 0xFF;
                     temp_s0_940 = var_v0_935 * 8;
-                    func_001957D0((var_v0_935 * 0x23) + ((u32)D_801E85A0), var_s3_13 & 0xFF);
+                    func_001957D0((const CharacterTemplate *)(D_801E85A0 + var_v0_935 * 0x23), var_s3_13 & 0xFF);
                     temp_v0_955 = var_s3_13 * 0x19;
                     (*(u8 *)((s8 *)((temp_v0_955 + ((u32)D_80190000))) + (0x71FC))) = (u8) (*(u8 *)((s8 *)((temp_s0_940 + ((u32)D_801F0000))) + (-0x7A80)));
                     (*(u8 *)((s8 *)((temp_v0_955 + ((u32)D_80190000))) + (0x7207))) = (u8) (*(u8 *)((s8 *)((temp_s0_940 + ((u32)D_801F0000))) + (-0x7A7F)));

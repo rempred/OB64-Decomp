@@ -1,6 +1,6 @@
 typedef unsigned char u8;
-u8 func_002014C4(u8 a) {
-    if (a < 36) {
+u8 func_002014C4(unsigned int a) {
+    if ((u8)a < 36) {
         return a + 55;
     }
     if ((u8)(a - 36) < 3) {

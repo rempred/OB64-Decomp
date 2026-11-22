@@ -508,7 +508,7 @@ function captureInputSet(output, options = {}) {
   }
   for (const directory of ['config', 'src', 'include', 'docs/dossiers', 'docs/matching-c', 'docs/archive/matching-c-candidates']) enroll(path.join(ROOT, directory), 'copy');
   for (const target of prepared.phase8.targets) if (!files.has(key(path.resolve(ROOT, target.source)))) enroll(path.dirname(path.resolve(ROOT, target.source)), 'copy');
-  for (const file of ['build/current/state.json', 'build/current/baseline-state.json', state.verificationReport, state.freshCompilationReport,...(interfaces.version===1?[state.cInterfaceReport]:[])]) {
+  for (const file of ['build/current/state.json', 'build/current/baseline-state.json', state.verificationReport, state.freshCompilationReport,...(interfaces.version>=1?[state.cInterfaceReport]:[])]) {
     const absolute = path.resolve(ROOT, file);
     // Output members share the output's reference role even when workRoot is
     // repository-local. Standalone siblings (including interface reports) can copy.
@@ -526,7 +526,7 @@ function captureInputSet(output, options = {}) {
   const policy = require('../source_policy').loadPolicyConfig();
   const toolchain = JSON.parse(fs.readFileSync(path.join(ROOT, 'config/toolchain.json')));
   for (const file of [process.execPath, prepared.localTools.compiler, prepared.localTools.splatPython, prepared.localTools.splatSplit,
-    ...(interfaces.version===1?[interfaces.frontend.executable.path]:[]),
+    ...(interfaces.version>=1?[interfaces.frontend.executable.path]:[]),
     policy.matchingCompiler.manifest, policy.preprocessor.path, ...policy.preprocessor.requiredExecutables.map(item => item.path),
     ...Object.values(toolchain.tools).map(file => path.join(toolchain.localRoot, file)),
     ...['diff.py', 'pyproject.toml', 'LICENSE'].map(file => path.join(prepared.localTools.asmDifferRoot, file)),

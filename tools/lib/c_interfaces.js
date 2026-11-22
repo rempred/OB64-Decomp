@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const cp = require('child_process');
+const contractTypes = require('./c_interface_types');
 const digest = x => crypto.createHash('sha256').update(typeof x === 'string' || Buffer.isBuffer(x) ? x : JSON.stringify(x)).digest('hex').toUpperCase();
 const fail = m => { throw new Error(`C interfaces: ${m}`); };
 const FLAGS = ['-cc1', '-triple', 'mips-unknown-none', '-target-abi', 'o32', '-std=gnu89', '-fsyntax-only', '-ast-dump=json', '-ferror-limit', '0', '-Wno-everything', '-Wint-conversion', '-Wincompatible-pointer-types', '-Wno-error=int-conversion', '-Wno-error=incompatible-pointer-types', '-x', 'cpp-output'];
@@ -76,63 +77,294 @@ function authenticate(root, config, inputs) {
 }
 function walk(n, fn) { fn(n); for (const c of n.inner || []) walk(c, fn); }
 function extract(ast, source) {
-  const aliases = new Map(), nodes = new Map(), functions = [], calls = [], unsupported = [];
-  walk(ast, n => { if (n.id) nodes.set(n.id, n); if (n.kind === 'TypedefDecl') {
-    const spelling = n.type.desugaredQualType || n.type.qualType;
-    aliases.set(n.name, aliases.has(n.name) && aliases.get(n.name) !== spelling ? null : spelling);
-  } });
-  const sourceBytes = Buffer.from(source,'utf8');
+  const aliases = new Map(),
+    nodes = new Map(),
+    functions = [],
+    calls = [],
+    unsupported = [],
+    stores = [];
+  const resolver = contractTypes.createResolver(ast);
+  walk(ast, n => {
+    if (n.id) nodes.set(n.id, n);
+    if (n.kind === 'TypedefDecl') {
+      const spelling = n.type.desugaredQualType || n.type.qualType;
+      aliases.set(n.name, aliases.has(n.name) && aliases.get(n.name) !== spelling ? null : spelling);
+    }
+  });
+  const sourceBytes = Buffer.from(source, 'utf8');
+
   function type(t) {
     let s = t?.desugaredQualType || t?.qualType || '';
-    for (let i = 0; i < 12; i++) { let changed = false; s = s.replace(/\b[A-Za-z_]\w*\b/g, (name,offset,whole) => {
-      if (/\b(?:struct|union|enum)\s+$/.test(whole.slice(0,offset))) return name;
-      const a = aliases.get(name); if (a && a !== name) { changed = true; return a; } return name;
-    }); if (!changed) break; }
+    for (let i = 0; i < 12; i++) {
+      let changed = false;
+      s = s.replace(/\b[A-Za-z_]\w*\b/g, (name, offset, whole) => {
+        if (/\b(?:struct|union|enum)\s+$/.test(whole.slice(0, offset))) return name;
+        const a = aliases.get(name);
+        if (a && a !== name) {
+          changed = true;
+          return a;
+        }
+        return name;
+      });
+      if (!changed) break;
+    }
     // Top-level parameter qualifiers do not participate in function compatibility.
     s = s.trim().replace(/\s+/g, ' ').replace(/\s*\*\s*/g, ' * ').trim();
     if (!s.includes('*')) s = s.replace(/\b(const|volatile|restrict)\b/g, '').trim().replace(/\s+/g, ' ');
     else s = s.replace(/\*\s+(?:(?:const|volatile|restrict)\s*)+$/, '*').trim();
     const words = s.replace(/\b(const|volatile|restrict)\b/g, '').replace(/\*/g, '').trim().split(/\s+/);
-    const known = words.length && words.every(w => ['void','char','signed','unsigned','short','int','long','float','double','_Bool'].includes(w));
-    return { spelling: s, known: !!known };
+    const known = words.length && words.every(w => ['void', 'char', 'signed', 'unsigned', 'short', 'int',
+      'long', 'float', 'double', '_Bool'
+    ].includes(w));
+    return {
+      spelling: s,
+      known: !!known
+    };
   }
   walk(ast, n => {
     if (n.kind !== 'FunctionDecl' || n.isImplicit) return;
-    const q = n.type?.qualType || '', open = q.indexOf('(');
+    const q = n.type?.qualType || '',
+      open = q.indexOf('(');
     const body = (n.inner || []).find(c => c.kind === 'CompoundStmt');
     const params = (n.inner || []).filter(c => c.kind === 'ParmVarDecl');
-    const f = { id: n.id, name: n.name, linkerName: n.mangledName || n.name, local: n.storageClass === 'static', definition: !!body,
-      offset: n.loc?.offset, returnType: type({ qualType: open < 0 ? '' : q.slice(0, open).trim() }),
-      params: params.map(p => type(p.type)), mode: n.variadic ? 'variadic' : /\(\)$/.test(q) ? (body ? 'definition-empty' : 'unspecified') : 'fixed' };
-    if (q.slice(open + 1).trim().startsWith('*')) f.returnType = { spelling: q, known: false };
-    if (open < 0) { f.mode = 'unsupported'; unsupported.push({reason:'function-typedef-signature',name:f.name,type:type(n.type)}); }
-    if (body && sourceBytes.subarray(n.loc?.offset || 0,body.range.begin.offset).includes(59)) {
-      f.mode = 'old-style'; unsupported.push({ reason: 'old-style-definition-promotions', name: f.name, offset: f.offset,params:f.params,returnType:f.returnType });
+    const f = {
+      id: n.id,
+      name: n.name,
+      linkerName: n.mangledName || n.name,
+      local: n.storageClass === 'static',
+      definition: !!body,
+      offset: n.loc?.offset,
+      returnType: type({
+        qualType: open < 0 ? '' : q.slice(0, open).trim()
+      }),
+      params: params.map(p => type(p.type)),
+      mode: n.variadic ? 'variadic' : /\(\)$/.test(q) ? (body ? 'definition-empty' : 'unspecified') :
+        'fixed'
+    };
+    if (q.slice(open + 1).trim().startsWith('*')) f.returnType = {
+      spelling: q,
+      known: false
+    };
+    if (open < 0) {
+      f.mode = 'unsupported';
+      unsupported.push({
+        reason: 'function-typedef-signature',
+        name: f.name,
+        type: type(n.type)
+      });
     }
-    for(const attr of (n.inner || []).filter(c=>/Attr$/.test(c.kind))) unsupported.push({ reason:'function-attribute',name:f.name,attribute:attr.kind,
-      attributeBytes:digest(sourceBytes.subarray(attr.range?.begin?.offset||0,(attr.range?.end?.offset||0)+(attr.range?.end?.tokLen||1))) });
+    if (body && sourceBytes.subarray(n.loc?.offset || 0, body.range.begin.offset).includes(59)) {
+      f.mode = 'old-style';
+      unsupported.push({
+        reason: 'old-style-definition-promotions',
+        name: f.name,
+        offset: f.offset,
+        params: f.params,
+        returnType: f.returnType
+      });
+    }
+    for (const attr of (n.inner || []).filter(c => /Attr$/.test(c.kind))) unsupported.push({
+      reason: 'function-attribute',
+      name: f.name,
+      attribute: attr.kind,
+      attributeBytes: digest(sourceBytes.subarray(attr.range?.begin?.offset || 0, (attr.range?.end
+        ?.offset || 0) + (attr.range?.end?.tokLen || 1)))
+    });
+    f.contract = f.mode === 'old-style' || f.mode === 'unsupported' ? {
+      kind: 'unknown',
+      reason: f.mode
+    } : resolver.signature(n);
+    f.contractCanonical = {
+      fingerprint: resolver.fingerprint(f.contract),
+      spelling: n.type?.qualType
+    };
+    if (body) {
+      const references = [];
+      let unresolvedDependency = !resolver.complete(f.contract);
+      walk(body, ref => {
+        if (ref.kind === 'DeclRefExpr') {
+          const declaration = nodes.get(ref.referencedDecl?.id);
+          const shape = declaration?.kind === 'FunctionDecl' ? resolver.signature(declaration) :
+            resolver.resolve(ref.referencedDecl?.type);
+          if (!resolver.complete(shape)) unresolvedDependency = true;
+          references.push({
+            kind: ref.referencedDecl?.kind,
+            name: ref.referencedDecl?.name,
+            type: resolver.fingerprint(shape)
+          });
+        }
+      });
+      f.bodyFingerprint = digest({
+        tokens: callAnchor(sourceBytes, n),
+        references,
+        signature: f.contractCanonical.fingerprint,
+        ...(unresolvedDependency ? {
+          unresolvedProducerInput: digest(sourceBytes)
+        } : {})
+      });
+    }
     functions.push(f);
   });
   const byId = new Map(functions.map(f => [f.id, f]));
+
+  function bare(n) {
+    while (n && ['ImplicitCastExpr', 'ParenExpr'].includes(n.kind) && n.inner?.length === 1) n = n.inner[0];
+    return n;
+  }
+
+  function functionValue(n) {
+    while (n && n.inner?.length === 1 && (['ImplicitCastExpr', 'ParenExpr', 'CStyleCastExpr'].includes(n
+        .kind) || (n.kind === 'UnaryOperator' && n.opcode === '&'))) {
+      if (n.kind === 'CStyleCastExpr') {
+        const shape = resolver.resolve(n.type);
+        if (shape.kind !== 'pointer' || shape.to?.kind !== 'function') return null;
+      }
+      n = n.inner[0];
+    }
+    return n?.kind === 'DeclRefExpr' && n.referencedDecl?.kind === 'FunctionDecl' ? n.referencedDecl : null;
+  }
+
+  function memberEvidence(n) {
+    n = bare(n);
+    while (n?.kind === 'CStyleCastExpr' && n.inner?.length === 1) n = bare(n.inner[0]);
+    if (n?.kind !== 'MemberExpr') return null;
+    let base = resolver.resolve(n.inner?.[0]?.type);
+    if (base.kind === 'pointer') base = base.to;
+    return {
+      name: n.name,
+      ownerType: resolver.fingerprint(base)
+    };
+  }
+  // Bounded immutable local callback initializer; mutation/escape/other use stays unresolved.
+  const localCallbackOwners = new Map(),
+    variableReferences = new Map(),
+    variableInvocations = new Map();
+
+  function localInventory(n, owner) {
+    if (n.kind === 'FunctionDecl' && (n.inner || []).some(x => x.kind === 'CompoundStmt')) owner = n.name;
+    if (n.kind === 'VarDecl' && owner) localCallbackOwners.set(n.id, owner);
+    if (n.kind === 'DeclRefExpr' && n.referencedDecl?.kind === 'VarDecl') variableReferences.set(n
+      .referencedDecl.id, (variableReferences.get(n.referencedDecl.id) || 0) + 1);
+    if (n.kind === 'CallExpr') {
+      const x = bare(n.inner?.[0]);
+      if (x?.referencedDecl?.kind === 'VarDecl') variableInvocations.set(x.referencedDecl.id, (
+        variableInvocations.get(x.referencedDecl.id) || 0) + 1);
+    }
+    for (const x of n.inner || []) localInventory(x, owner);
+  }
+  localInventory(ast, null);
+
+  function localCallback(n, owner) {
+    const x = bare(n),
+      id = x?.referencedDecl?.kind === 'VarDecl' ? x.referencedDecl.id : null;
+    if (!id || localCallbackOwners.get(id) !== owner || variableReferences.get(id) !== variableInvocations
+      .get(id)) return null;
+    const declaration = nodes.get(id),
+      refs = [],
+      others = [];
+    if (declaration?.storageClass === 'static' || /\bvolatile\b/.test(declaration?.type?.qualType || '') || (
+        declaration?.inner || []).some(n => /Attr$/.test(n.kind))) return null;
+    walk(declaration || {}, r => {
+      if (r.kind === 'DeclRefExpr') {
+        if (r.referencedDecl?.kind === 'FunctionDecl') refs.push(r.referencedDecl);
+        else others.push(r.referencedDecl);
+      }
+    });
+    const value = functionValue(declaration?.inner?.find(n => !/Attr$/.test(n.kind)));
+    return value ? byId.get(value.id) : null;
+  }
+
   function visit(n, owner) {
     if (n.kind === 'FunctionDecl' && (n.inner || []).some(c => c.kind === 'CompoundStmt')) owner = n.name;
+    if (n.kind === 'BinaryOperator' && n.opcode === '=') {
+      const left = bare(n.inner?.[0]),
+        right = bare(n.inner?.[1]),
+        member = memberEvidence(left);
+      if (member && right?.referencedDecl?.kind === 'ParmVarDecl') {
+        const definition = functions.find(f => f.definition && f.name === owner),
+          params = (nodes.get(definition?.id)?.inner || []).filter(x => x.kind === 'ParmVarDecl');
+        const index = params.findIndex(p => p.id === right.referencedDecl.id);
+        if (index >= 0) stores.push({
+          owner,
+          member,
+          parameterIndex: index,
+          ...callAnchor(sourceBytes, n)
+        });
+      }
+    }
     if (n.kind === 'CallExpr') {
       let callee = n.inner?.[0];
-      while (callee && ['ImplicitCastExpr','ParenExpr'].includes(callee.kind) && callee.inner?.length === 1) callee = callee.inner[0];
-      const referenced = callee?.kind === 'DeclRefExpr' && callee.referencedDecl?.kind === 'FunctionDecl' ? callee.referencedDecl : null;
+      const expressionType = resolver.resolve(callee?.type);
+      const invoked = expressionType.kind === 'pointer' ? expressionType.to : expressionType;
+      while (callee && ['ImplicitCastExpr', 'ParenExpr'].includes(callee.kind) && callee.inner?.length === 1)
+        callee = callee.inner[0];
+      const referenced = callee?.kind === 'DeclRefExpr' && callee.referencedDecl?.kind === 'FunctionDecl' ?
+        callee.referencedDecl : null;
       const decl = referenced && byId.get(referenced.id);
-      calls.push({ owner, offset: n.range?.begin?.offset, end: n.range?.end?.offset, name: referenced?.name || null,
-        declaration: decl || null, count: Math.max(0, (n.inner?.length || 1) - 1),
-        ...callAnchor(sourceBytes,n),
-        expressionSha256: digest(sourceBytes.subarray(n.range?.begin?.offset || 0, (n.range?.end?.offset || 0) + (n.range?.end?.tokLen || 1))) });
+      const functionReferences = [],
+        otherReferences = [];
+      if (!referenced) walk(n.inner?.[0] || {}, x => {
+        if (x.kind === 'DeclRefExpr') {
+          if (x.referencedDecl?.kind === 'FunctionDecl') functionReferences.push(x.referencedDecl);
+          else otherReferences.push(x.referencedDecl);
+        }
+      });
+      const knownValue = functionValue(n.inner?.[0]);
+      const addressedDeclaration = knownValue ? byId.get(knownValue.id) : localCallback(n.inner?.[0], owner);
+      calls.push({
+        owner,
+        offset: n.range?.begin?.offset,
+        end: n.range?.end?.offset,
+        name: referenced?.name || null,
+        declaration: decl || null,
+        addressedDeclaration,
+        member: memberEvidence(n.inner?.[0]),
+        argumentFunctions: (n.inner || []).slice(1).map(arg => functionValue(arg)?.name || null),
+        invoked,
+        invokedCanonical: {
+          fingerprint: resolver.fingerprint(invoked),
+          spelling: n.inner?.[0]?.type?.qualType
+        },
+        count: Math.max(0, (n.inner?.length || 1) - 1),
+        ...callAnchor(sourceBytes, n),
+        expressionSha256: digest(sourceBytes.subarray(n.range?.begin?.offset || 0, (n.range?.end
+          ?.offset || 0) + (n.range?.end?.tokLen || 1)))
+      });
     }
     for (const c of n.inner || []) visit(c, owner);
   }
   visit(ast, null);
+  const assemblyTransfers = [];
+  walk(ast, n => {
+    if (!['GCCAsmStmt', 'FileScopeAsmDecl'].includes(n.kind)) return;
+    const text = sourceBytes.subarray(n.range?.begin?.offset || 0, (n.range?.end?.offset || 0) + (n.range
+      ?.end?.tokLen || 1)).toString('utf8');
+    for (const match of text.matchAll(/\b(?:jal|j)\s+([A-Za-z_]\w*)/g)) assemblyTransfers.push({
+      name: match[1],
+      ...callAnchor(sourceBytes, n)
+    });
+  });
   const occurrences = new Map();
-  for (const call of calls) { const key = `${call.owner}:${call.anchor}`; call.occurrence = (occurrences.get(key) || 0) + 1; occurrences.set(key,call.occurrence);
-    if(call.anchorError)unsupported.push({reason:'call-anchor-incomplete',owner:call.owner,anchor:call.anchor,occurrence:call.occurrence,detail:call.anchorError}); }
-  return { functions, calls, unsupported };
+  for (const call of calls) {
+    const key = `${call.owner}:${call.anchor}`;
+    call.occurrence = (occurrences.get(key) || 0) + 1;
+    occurrences.set(key, call.occurrence);
+    if (call.anchorError) unsupported.push({
+      reason: 'call-anchor-incomplete',
+      owner: call.owner,
+      anchor: call.anchor,
+      occurrence: call.occurrence,
+      detail: call.anchorError
+    });
+  }
+  return {
+    functions,
+    calls,
+    unsupported,
+    stores,
+    assemblyTransfers,
+    typeRecords: resolver.records
+  };
 }
 function parse(executable, file, source) {
   const result = cp.spawnSync(executable, [...FLAGS, file], { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024, windowsHide: true, env: { SystemRoot: process.env.SystemRoot, TEMP: process.env.TEMP, TMP: process.env.TMP } });
@@ -156,95 +388,301 @@ function parse(executable, file, source) {
   catch (error) { fail(`invalid AST output: ${error.message}`); }
 }
 function cleanFunction(f) { return { name: f.name, local: f.local, offset: f.offset, mode: f.mode, returnType: f.returnType, params: f.params }; }
-function analyze(units, linked, authority = { absoluteSymbols: [], overlayReservations: [] }) {
-  const findings = [], gaps = [], edges = [];
-  const symbolMap = new Map();
-  for (const s of linked.symbols) if ([1,2].includes(s.binding) && s.sectionIndex > 0) {
-    const list = symbolMap.get(s.name) || []; list.push(s); symbolMap.set(s.name, list);
+function analyze(units, linked, authority = {
+  absoluteSymbols: [],
+  overlayReservations: []
+}) {
+  const findings = [],
+    gaps = [],
+    edges = [],
+    comparisons = [];
+
+  function compare(u, p, d, call) {
+    if (!d.contract || !p.fn.contract) return;
+    comparisons.push({
+      caller: u.identity.source,
+      provider: p.unit.identity.source,
+      providerName: p.fn.name,
+      name: d.name,
+      owner: call?.owner,
+      anchor: call?.anchor,
+      occurrence: call?.occurrence,
+      linkedIdentity: {
+        section: linked.sections[p.symbol.sectionIndex]?.name,
+        value: p.symbol.value
+      },
+      declaration: d.contractCanonical,
+      definition: p.fn.contractCanonical,
+      result: contractTypes.compare(d.contract, p.fn.contract, u.analysis.typeRecords, p.unit.analysis
+        .typeRecords)
+    });
   }
+  const symbolMap = new Map();
+  for (const s of linked.symbols)
+    if ([1, 2].includes(s.binding) && s.sectionIndex > 0) {
+      const list = symbolMap.get(s.name) || [];
+      list.push(s);
+      symbolMap.set(s.name, list);
+    }
   const location = s => `${s.sectionIndex}:${s.value}`;
   const providers = new Map();
-  for (const u of units) for (const f of u.analysis.functions.filter(f => f.definition && !f.local)) {
-    const emitted = u.entries.filter(e => e.symbol === f.name && e.binding === 'GLOBAL');
-    const matches = symbolMap.get(f.linkerName) || [];
-    if (emitted.length !== 1 || matches.length !== 1 || !u.sections.includes(linked.sections[matches[0]?.sectionIndex]?.name)) {
-      gaps.push({ producer: u.identity, reason: 'definition-linker-identity-unresolved', name: f.name }); continue;
+  for (const u of units)
+    for (const f of u.analysis.functions.filter(f => f.definition && !f.local)) {
+      const emitted = u.entries.filter(e => e.symbol === f.name && e.binding === 'GLOBAL');
+      const matches = symbolMap.get(f.linkerName) || [];
+      if (emitted.length !== 1 || matches.length !== 1 || !u.sections.includes(linked.sections[matches[0]
+          ?.sectionIndex]?.name)) {
+        gaps.push({
+          producer: u.identity,
+          reason: 'definition-linker-identity-unresolved',
+          name: f.name
+        });
+        continue;
+      }
+      const key = location(matches[0]),
+        prior = providers.get(key) || [];
+      prior.push({
+        unit: u,
+        fn: f,
+        symbol: matches[0]
+      });
+      providers.set(key, prior);
     }
-    const key = location(matches[0]), prior = providers.get(key) || [];
-    prior.push({ unit: u, fn: f, symbol: matches[0] }); providers.set(key, prior);
-  }
+
   function report(u, provider, evidence) {
-    const finding = { caller: u.identity, callerEntries: u.entries.map(e=>({name:e.symbol,binding:e.binding})), callerSections: u.sections,
-      provider: provider.unit.identity, linkedIdentity: { section: linked.sections[provider.symbol.sectionIndex]?.name, value: provider.symbol.value }, ...evidence };
-    findings.push({ id: debtId(finding), ...finding });
+    const finding = {
+      caller: u.identity,
+      callerEntries: u.entries.map(e => ({
+        name: e.symbol,
+        binding: e.binding
+      })),
+      callerSections: u.sections,
+      provider: provider.unit.identity,
+      linkedIdentity: {
+        section: linked.sections[provider.symbol.sectionIndex]?.name,
+        value: provider.symbol.value
+      },
+      ...evidence
+    };
+    findings.push({
+      id: debtId(finding),
+      ...finding
+    });
   }
+
   function resolve(u, declaration, name) {
     if (declaration?.local) {
       const own = u.analysis.functions.filter(f => f.definition && f.name === name && f.local);
-      return own.length === 1 ? { unit: u, fn: own[0], symbol: { sectionIndex: 0, value: 0 } } : null;
+      return own.length === 1 ? {
+        unit: u,
+        fn: own[0],
+        symbol: {
+          sectionIndex: 0,
+          value: 0
+        }
+      } : null;
     }
     const symbols = symbolMap.get(declaration?.linkerName || name) || [];
     if (symbols.length !== 1) return null;
     let symbol = symbols[0];
     if (symbol.sectionIndex === 0xFFF1) {
-      const admitted = authority.absoluteSymbols.filter(s=>s.name===symbol.name && Number(s.address)===symbol.value);
-      if (admitted.length !== 1 || !(u.relocations || []).some(r=>r.symbol===symbol.name && r.type==='R_MIPS_26')) return null;
-      const containing = linked.sections.filter(s=>(s.flags&2) && s.size>0 && symbol.value>=s.address && symbol.value<s.address+s.size);
-      if (containing.length !== 1 || !(containing[0].flags&4)) return null;
+      const admitted = authority.absoluteSymbols.filter(s => s.name === symbol.name && Number(s.address) ===
+        symbol.value);
+      if (admitted.length !== 1 || !(u.relocations || []).some(r => r.symbol === symbol.name && r.type ===
+          'R_MIPS_26')) return null;
+      const containing = linked.sections.filter(s => (s.flags & 2) && s.size > 0 && symbol.value >= s
+        .address && symbol.value < s.address + s.size);
+      if (containing.length !== 1 || !(containing[0].flags & 4)) return null;
       const section = containing[0];
-      if (authority.overlayReservations.some(r=>section.address<r.vram_end_exclusive && r.vram_start<section.address+section.size)) return null;
-      const entries=linked.symbols.filter(s=>s.binding===1 && s.symbolType===2 && s.sectionIndex===section.index && s.value===symbol.value && s.size>0);
-      if (entries.length!==1 || entries[0].value!==section.address) return null;
-      symbol=entries[0];
+      if (authority.overlayReservations.some(r => section.address < r.vram_end_exclusive && r.vram_start <
+          section.address + section.size)) return null;
+      const entries = linked.symbols.filter(s => s.binding === 1 && s.symbolType === 2 && s.sectionIndex ===
+        section.index && s.value === symbol.value && s.size > 0);
+      if (entries.length !== 1 || entries[0].value !== section.address) return null;
+      symbol = entries[0];
     }
     const resolved = providers.get(location(symbol)) || [];
     return resolved.length === 1 ? resolved[0] : null;
   }
   for (const u of units) {
-    if (u.analysis.status !== 'parsed') { gaps.push({ producer: u.identity, reason: 'unparsed-producer', unparsedInputSha256:u.analysis.unparsedInputSha256, diagnostics: u.analysis.diagnostics }); continue; }
-    for (const gap of u.analysis.unsupported) gaps.push({ producer: u.identity, ...gap });
+    if (u.analysis.status !== 'parsed') {
+      gaps.push({
+        producer: u.identity,
+        reason: 'unparsed-producer',
+        unparsedInputSha256: u.analysis.unparsedInputSha256,
+        diagnostics: u.analysis.diagnostics
+      });
+      continue;
+    }
+    for (const gap of u.analysis.unsupported) gaps.push({
+      producer: u.identity,
+      ...gap
+    });
     for (const d of u.analysis.functions.filter(f => !f.definition)) {
       const p = resolve(u, d, d.name);
       if (!p) continue;
-      const left = cleanFunction(d), right = cleanFunction(p.fn);
+      compare(u, p, d, null);
+      const left = cleanFunction(d),
+        right = cleanFunction(p.fn);
       if (d.returnType.known && p.fn.returnType.known && d.returnType.spelling !== p.fn.returnType.spelling)
-        report(u, p, { kind: 'return-type', declaration: left, definition: right });
-      if (!d.returnType.known || !p.fn.returnType.known) gaps.push({ producer: u.identity, reason: 'unsupported-return-type', name: d.name, types:[d.returnType,p.fn.returnType],provider:p.unit.identity.source });
-      if (['fixed','variadic','definition-empty'].includes(d.mode) && p.fn.mode !== 'old-style') {
-        if (d.params.length !== p.fn.params.length || (d.mode === 'variadic') !== (p.fn.mode === 'variadic')) report(u, p, { kind: 'prototype-arity', declaration: left, definition: right });
-        else d.params.forEach((t, i) => {
-          if (t.known && p.fn.params[i].known && t.spelling !== p.fn.params[i].spelling) report(u, p, { kind: 'parameter-type', index: i, declaration: left, definition: right });
-          else if (!t.known || !p.fn.params[i].known) gaps.push({ producer: u.identity, reason: 'unsupported-parameter-type', name: d.name, index: i, types:[t,p.fn.params[i]],provider:p.unit.identity.source });
+        report(u, p, {
+          kind: 'return-type',
+          declaration: left,
+          definition: right
         });
-      } else gaps.push({ producer: u.identity, reason: 'unspecified-or-unsupported-prototype', name: d.name, definition:{params:p.fn.params,returnType:p.fn.returnType,mode:p.fn.mode},declaration:{params:d.params,returnType:d.returnType,mode:d.mode} });
+      if (!d.returnType.known || !p.fn.returnType.known) gaps.push({
+        producer: u.identity,
+        reason: 'unsupported-return-type',
+        name: d.name,
+        types: [d.returnType, p.fn.returnType],
+        provider: p.unit.identity.source
+      });
+      if (['fixed', 'variadic', 'definition-empty'].includes(d.mode) && p.fn.mode !== 'old-style') {
+        if (d.params.length !== p.fn.params.length || (d.mode === 'variadic') !== (p.fn.mode === 'variadic'))
+          report(u, p, {
+            kind: 'prototype-arity',
+            declaration: left,
+            definition: right
+          });
+        else d.params.forEach((t, i) => {
+          if (t.known && p.fn.params[i].known && t.spelling !== p.fn.params[i].spelling) report(u, p, {
+            kind: 'parameter-type',
+            index: i,
+            declaration: left,
+            definition: right
+          });
+          else if (!t.known || !p.fn.params[i].known) gaps.push({
+            producer: u.identity,
+            reason: 'unsupported-parameter-type',
+            name: d.name,
+            index: i,
+            types: [t, p.fn.params[i]],
+            provider: p.unit.identity.source
+          });
+        });
+      } else gaps.push({
+        producer: u.identity,
+        reason: 'unspecified-or-unsupported-prototype',
+        name: d.name,
+        definition: {
+          params: p.fn.params,
+          returnType: p.fn.returnType,
+          mode: p.fn.mode
+        },
+        declaration: {
+          params: d.params,
+          returnType: d.returnType,
+          mode: d.mode
+        }
+      });
     }
     for (const c of u.analysis.calls) {
-      if (!c.name || !c.declaration) { gaps.push({ producer: u.identity, reason: c.name ? 'implicit-function-declaration' : 'indirect-call', offset: c.offset,owner:c.owner,anchor:c.anchor,occurrence:c.occurrence }); continue; }
-      const p = resolve(u, c.declaration, c.name);
-      if (!p) { gaps.push({ producer: u.identity, reason: 'callee-without-unique-analyzed-C-provider', name: c.name, offset: c.offset,owner:c.owner,anchor:c.anchor,occurrence:c.occurrence }); continue; }
-      const edge = { caller: u.identity, provider: p.unit.identity, name: c.name, owner: c.owner, offset: c.offset, count: c.count, expressionSha256: c.expressionSha256, anchor: c.anchor, occurrence: c.occurrence };
-      edges.push(edge);
-      if (p.fn.mode === 'variadic' ? c.count < p.fn.params.length : c.count !== p.fn.params.length)
-        report(u, p, { kind: 'call-arity', call: edge, definition: cleanFunction(p.fn) });
-      const d=c.declaration, mismatches=[];
-      let incomplete=!d.returnType.known || !p.fn.returnType.known;
-      if(!incomplete && d.returnType.spelling!==p.fn.returnType.spelling)mismatches.push('return-type');
-      if(['fixed','variadic','definition-empty'].includes(d.mode) && p.fn.mode!=='old-style') {
-        if((d.mode==='variadic')!==(p.fn.mode==='variadic'))mismatches.push('variadic-mode');
-        if(d.params.length===p.fn.params.length) d.params.forEach((t,i)=> {
-          if(!t.known || !p.fn.params[i].known)incomplete=true;
-          else if(t.spelling!==p.fn.params[i].spelling)mismatches.push(`parameter-${i}`);
+      if (!c.name && c.addressedDeclaration) {
+        const p = resolve(u, c.addressedDeclaration, c.addressedDeclaration.name);
+        if (p) compare(u, p, {
+          ...c.addressedDeclaration,
+          contract: c.invoked,
+          contractCanonical: c.invokedCanonical
+        }, c);
+      }
+      if (!c.name || !c.declaration) {
+        gaps.push({
+          producer: u.identity,
+          reason: c.name ? 'implicit-function-declaration' : 'indirect-call',
+          offset: c.offset,
+          owner: c.owner,
+          anchor: c.anchor,
+          occurrence: c.occurrence
         });
-      } else incomplete=true;
-      if(mismatches.length)report(u,p,{kind:'call-signature',mismatches,call:edge,declaration:cleanFunction(d),definition:cleanFunction(p.fn)});
-      if(incomplete)gaps.push({producer:u.identity,reason:'call-type-analysis-incomplete',name:c.name,owner:c.owner,anchor:c.anchor,occurrence:c.occurrence,
-        declaration:{params:d.params,returnType:d.returnType,mode:d.mode},definition:{params:p.fn.params,returnType:p.fn.returnType,mode:p.fn.mode}});
+        continue;
+      }
+      const p = resolve(u, c.declaration, c.name);
+      if (!p) {
+        gaps.push({
+          producer: u.identity,
+          reason: 'callee-without-unique-analyzed-C-provider',
+          name: c.name,
+          offset: c.offset,
+          owner: c.owner,
+          anchor: c.anchor,
+          occurrence: c.occurrence
+        });
+        continue;
+      }
+      const edge = {
+        caller: u.identity,
+        provider: p.unit.identity,
+        name: c.name,
+        owner: c.owner,
+        offset: c.offset,
+        count: c.count,
+        expressionSha256: c.expressionSha256,
+        anchor: c.anchor,
+        occurrence: c.occurrence
+      };
+      edges.push(edge);
+      compare(u, p, c.declaration, c);
+      if (p.fn.mode === 'variadic' ? c.count < p.fn.params.length : c.count !== p.fn.params.length)
+        report(u, p, {
+          kind: 'call-arity',
+          call: edge,
+          definition: cleanFunction(p.fn)
+        });
+      const d = c.declaration,
+        mismatches = [];
+      let incomplete = !d.returnType.known || !p.fn.returnType.known;
+      if (!incomplete && d.returnType.spelling !== p.fn.returnType.spelling) mismatches.push('return-type');
+      if (['fixed', 'variadic', 'definition-empty'].includes(d.mode) && p.fn.mode !== 'old-style') {
+        if ((d.mode === 'variadic') !== (p.fn.mode === 'variadic')) mismatches.push('variadic-mode');
+        if (d.params.length === p.fn.params.length) d.params.forEach((t, i) => {
+          if (!t.known || !p.fn.params[i].known) incomplete = true;
+          else if (t.spelling !== p.fn.params[i].spelling) mismatches.push(`parameter-${i}`);
+        });
+      } else incomplete = true;
+      if (mismatches.length) report(u, p, {
+        kind: 'call-signature',
+        mismatches,
+        call: edge,
+        declaration: cleanFunction(d),
+        definition: cleanFunction(p.fn)
+      });
+      if (incomplete) gaps.push({
+        producer: u.identity,
+        reason: 'call-type-analysis-incomplete',
+        name: c.name,
+        owner: c.owner,
+        anchor: c.anchor,
+        occurrence: c.occurrence,
+        declaration: {
+          params: d.params,
+          returnType: d.returnType,
+          mode: d.mode
+        },
+        definition: {
+          params: p.fn.params,
+          returnType: p.fn.returnType,
+          mode: p.fn.mode
+        }
+      });
       // Arguments already undergo C conversions at the call's visible declaration.
       // Do not compare raw expression types (e.g. short supplied to int).
     }
   }
-  const unique = [...new Map(findings.map(f => [f.id,f])).values()].sort((a,b) => a.id.localeCompare(b.id));
-  return { findings: unique, gaps, edges, coverage: { producers: units.length, parsed: units.filter(u => u.analysis.status === 'parsed').length, unparsed: units.filter(u => u.analysis.status !== 'parsed').length, calls: units.reduce((n,u)=>n+u.analysis.calls.length,0), resolvedCalls: edges.length, limitations: gaps.length } };
+  const unique = [...new Map(findings.map(f => [f.id, f])).values()].sort((a, b) => a.id.localeCompare(b.id));
+  return {
+    findings: unique,
+    gaps,
+    edges,
+    comparisons,
+    coverage: {
+      producers: units.length,
+      parsed: units.filter(u => u.analysis.status === 'parsed').length,
+      unparsed: units.filter(u => u.analysis.status !== 'parsed').length,
+      calls: units.reduce((n, u) => n + u.analysis.calls.length, 0),
+      resolvedCalls: edges.length,
+      limitations: gaps.length
+    }
+  };
 }
 function debtId(finding) {
   const signature = f => f && { name: f.name, local: f.local, mode: f.mode, returnType: f.returnType, params: f.params };
@@ -311,23 +749,39 @@ function loadBuild(output, report, root) {
   }
   return { units: [...bySource.values()], linked, authority };
 }
-function run(root, output, buildReport, config, baseline) {
-  const start = performance.now(), executable = authenticate(root,config);
+function run(root, output, buildReport, config, baseline, prospectiveOptions = {}) {
+  const start = performance.now(),
+    executable = authenticate(root, config);
   let baselineBytes;
   if (baseline) {
-    baselineBytes=fs.readFileSync(path.join(root,'config/c-interface-baseline.json'));
-    if(digest(JSON.parse(baselineBytes))!==digest(baseline))fail('baseline differs from configured reviewed input');
+    baselineBytes = fs.readFileSync(path.join(root, 'config/c-interface-baseline.json'));
+    if (digest(JSON.parse(baselineBytes)) !== digest(baseline)) fail(
+      'baseline differs from configured reviewed input');
   }
-  const { units, linked, authority } = loadBuild(output,buildReport,root);
-  for (const u of units) u.analysis = parse(executable,u.file,u.source);
-  const report = { schemaVersion: 1, evidence: 'source-interface-consistency-not-ROM-equivalence', frontend: digest(config), producers: units.map(u=>u.identity), ...analyze(units,linked,authority) };
-  report.verdict = baseline ? compareBaseline(report,baseline) : null;
+  const {
+    units,
+    linked,
+    authority
+  } = loadBuild(output, buildReport, root);
+  for (const u of units) u.analysis = parse(executable, u.file, u.source);
+  const report = {
+    schemaVersion: 1,
+    evidence: 'source-interface-consistency-not-ROM-equivalence',
+    frontend: digest(config),
+    producers: units.map(u => u.identity),
+    ...analyze(units, linked, authority)
+  };
+  report.verdict = baseline ? compareBaseline(report, baseline) : null;
+  const prospective = require('./c_interface_prospective');
+  prospective.enforce(root, output, buildReport, report, units, linked, prospectiveOptions);
   // Detect changed inputs/tool after the scan, including mutations during subprocesses.
-  authenticate(root,config);
-  if (baselineBytes && !fs.readFileSync(path.join(root,'config/c-interface-baseline.json')).equals(baselineBytes)) fail('baseline changed during scan');
-  const closing = loadBuild(output,buildReport,root);
-  if (JSON.stringify(closing.units.map(u=>u.identity)) !== JSON.stringify(report.producers)) fail('input drift during scan');
-  report.elapsedMs = performance.now()-start;
+  authenticate(root, config);
+  if (baselineBytes && !fs.readFileSync(path.join(root, 'config/c-interface-baseline.json')).equals(
+      baselineBytes)) fail('baseline changed during scan');
+  const closing = loadBuild(output, buildReport, root);
+  if (JSON.stringify(closing.units.map(u => u.identity)) !== JSON.stringify(report.producers)) fail(
+    'input drift during scan');
+  report.elapsedMs = performance.now() - start;
   return report;
 }
 module.exports = { FLAGS, digest, callTokens, callAnchor, debtId, checkedFile, authenticate, extract, parse, analyze, compareBaseline, limitation, loadBuild, run };

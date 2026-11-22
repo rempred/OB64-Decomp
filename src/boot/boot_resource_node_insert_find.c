@@ -1,20 +1,10 @@
-typedef unsigned int u32;
-
-typedef struct Node28 {
-    u32 field_00;
-    void *field_04;
-    u32 field_08;
-    void *field_0C;
-    u32 field_10;
-    struct Node28 *field_14;
-    struct Node28 *field_18;
-} Node28;
+#include "game/boot_archive_record.h"
 
 extern void *func_80071288(u32 bytes);
 extern void func_00023780(void *destination, u32 bytes);
-extern Node28 *g_node28_current;
+extern ResourceNode28 *g_node28_current;
 
-Node28 *boot_resource_node_insert_find(Node28 *node, u32 key)
+ResourceNode28 *boot_resource_node_insert_find(ResourceNode28 *node, u32 key)
 {
     if (node != 0) {
         if (key == node->field_00) {

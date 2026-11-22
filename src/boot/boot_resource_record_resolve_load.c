@@ -1,7 +1,7 @@
 #include "game/boot_archive_stream.h"
 
 extern void *func_00001330(u32 size);
-extern void func_0000F450(void *scratch, const u8 *path);
+extern u8 *func_0000F450(u8 *scratch, const u8 *path);
 extern u32 func_0000BE98(void *context, void *output, u32 size, u32 record_value,
                        void *scratch_or_zero, u32 match_count_or_flag);
 extern int func_00092F50(const u8 *record_suffix, const void *directory_entry, u32 limit);

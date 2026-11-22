@@ -59,7 +59,7 @@ extern Scene *D_8022A974;
 extern Resident *D_801CE8BC;
 extern s32 D_801CE8FC;
 extern u8 D_8022F2CC;
-extern s32 func_0020C120(BodyUnit *unit);
+extern s32 func_0020C120(void *unit);
 extern void *func_0002CD70(void *destination, s32 value, u32 count);
 extern void func_00023780(void *destination, u32 count);
 extern s32 func_00045934(s32 item0, s32 item1, s32 item2, s32 item3);

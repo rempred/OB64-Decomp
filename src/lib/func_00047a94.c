@@ -19,8 +19,9 @@ extern volatile s32 D_80197B10;
 extern void *volatile D_80197B18;
 extern void *volatile D_80197B1C;
 
-s32 func_00047a94(s32 arg0)
+s32 func_00047a94(void)
 {
+    s32 arg0;
     volatile s32 *active_flags;
     s32 var_s2_25;
     union EndMarker end_marker;

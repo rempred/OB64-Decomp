@@ -1,8 +1,13 @@
+#include "game/battle_roster_record.h"
+#include "game/battle_record_flag.h"
+#include "game/battle_panel_record.h"
+
 /* Private whole-owner reconstruction. A matching command stays in the loop;
  * mismatch counters form the separate final branch.
  * ROM 21EBBC..2213DC includes the 988-byte continuation.
  * Raw command and field names do not assert gameplay meaning. */
 #include "game/class_field_lookups.h"
+#include "game/character_record.h"
 
 typedef struct Func001F0E64Record {
     int field_00;
@@ -25,6 +30,7 @@ typedef struct {
 } Func001F197CState;
 
 typedef union TerminalCommandPose {
+    Panel1F panel;
     struct { Func001F0E64Record record; u8 tail4C[4]; } view;
     struct { Func001F197CState state; u8 tail48[8]; } calculation;
     u32 words[20];
@@ -100,7 +106,7 @@ extern u8 D_800EB290[];
 extern u16 D_801CEF14, D_801CEF16;
 extern u16 D_80196A70;
 extern u8 D_801976DC, D_801976E8;
-extern u8 D_801971F2[], D_80193BC0[], D_80195560[];
+extern u8 D_801971F2[];
 extern u8 D_801CEAAC, D_801CEAAD, D_801CEAAE, D_801CEAA9;
 
 /* These function symbols are used only as opaque stored addresses here.
@@ -116,38 +122,36 @@ extern void func_80093380(void *, u32);
 extern float vec3_distance(TerminalCommandVector *, TerminalCommandVector *);
 extern void func_0004196c(int, int);
 extern int func_00044340(int);
-extern void func_00044aa4(void *), func_00045d78(int, int);
+extern void func_00045d78(int, int);
 extern void func_000466f4(void), func_00048294(void);
 /* Director2069 binds the compatible return view to a future combined source
  * correction; accepted 4813C remains void until that integration. */
 extern int func_0004813C(int);
-extern void func_001F0E04(void *, int);
 extern void func_001F0E64(Func001F0E64Record *, u32);
 extern void func_001F0F90(void *), func_001F1050(void *);
 extern int func_001F197C(void *, Func001F197CState *, int *);
-extern void func_001F2BC0(int, int), func_001F2F9C(void *, void *);
+extern void func_001F2BC0(int, int), func_001F2F9C(u8 *, u8 *);
 extern void func_001F3078(int);
 extern void func_001FF868(s16, s16, s16, s16, u8);
-extern u8 func_002014C4(int), func_00201584(int, int);
+extern u8 func_002014C4(unsigned int), func_00201584(int, int);
 extern u8 func_00201838(int, int), func_002018A0(int, int);
 extern void func_00208DC8(void *, int), func_0020BD5C(int);
 extern int func_0020BF34(int), func_0020BF50(int);
 extern int func_0020BF7C(void), func_0020BF8C(void), func_0020BFE4(void);
 extern int func_0020BFF8(void *), func_0020C014(void *);
-extern int func_0020C0CC(void *), func_0020C104(void *), func_0020C2C0(void *);
-extern int func_0020C2F4(void *), func_0020C310(void *), func_0020C32C(void *);
+extern int func_0020C0CC(void *);
 extern int func_0020C348(void *);
 extern void *func_0020C478(u32);
 extern void func_0020C4B8(int, int, int, int *, int *);
 extern u8 func_0020D434(int);
-extern int func_0020D444(u16, u16), func_0020D4C8(void *, int);
+extern int func_0020D444(int, int), func_0020D4C8(void *, int);
 extern int func_0020D72C(void *), func_0020F80C(void);
 extern void func_0020FA04(void *, int), func_002158E4(void);
 extern void func_0021AE6C(float, int), func_0021C074(void *), func_0021C140(void *);
 extern u32 func_0021C970(u32);
 extern void func_0021D784(void *), func_0021D7A8(void *), func_0021D7CC(void *);
 extern void func_0021D7F0(TerminalMotionState *, int, int);
-extern void func_0021DCA4(TerminalMotionState *, TerminalMotionActor *);
+extern void func_0021DCA4(TerminalMotionState *, BattleRosterRecord *);
 extern void func_0021E070(TerminalMotionState *, TerminalMotionActor *);
 extern void func_0021E2C4(TerminalMotionState *, float, float, u8);
 extern void func_0021E50C(TerminalMotionState *);
@@ -208,7 +212,7 @@ void func_0021EBBC(void)
     s16 interpolationOutput[4];
     s16 interpolationInput[9];
     TerminalCommandVector firstVector, secondVector;
-    TerminalCommandRecord firstCopy, secondCopy;
+    BattleRosterRecord firstCopy, secondCopy;
     struct { int x, y; } firstOutput;
     TerminalCommandPose copiedPose;
     int secondOutputX, secondOutputY;
@@ -395,7 +399,7 @@ wait_command:
             break;
         case 1: { /* 21F280: all three slots, no mask/null guard */
             u32 index;
-            for (index = 0; index < 3u; index++) func_001F0E04(POSE(record->first[index]), 0);
+            for (index = 0; index < 3u; index++) func_001F0E04(&record->first[index]->pose.panel, 0);
             break;
         }
         case 2: { /* 21F2B4 */
@@ -483,7 +487,7 @@ wait_command:
             if (func_0020BFE4() == 0) {
                 memcpy(record, &firstCopy, 248);
                 func_0022EF50(&firstCopy);
-                func_002267A8(record, 14, firstCopy.word7C);
+                func_002267A8(record, 14, (int)firstCopy.field7C);
             }
             break;
         case 7: /* 21F6AC */
@@ -492,12 +496,12 @@ wait_command:
             if (func_0020BFE4() == 0) {
                 memcpy(record, &secondCopy, 248);
                 func_0022EF50(&secondCopy);
-                func_002267A8(record, 14, secondCopy.word7C);
+                func_002267A8(record, 14, (int)secondCopy.field7C);
             }
             break;
         case 0x21: { /* 21F734 */
             TerminalCommandRecord *target = func_0020C478(record->byteA7);
-            func_0021DCA4((TerminalMotionState *)record->first[0], (TerminalMotionActor *)target);
+            func_0021DCA4((TerminalMotionState *)record->first[0], (BattleRosterRecord *)target);
             func_001F0E64(POSE(record->first[0]), record->byteA6);
             record->word74 = 0x21;
             break;
@@ -840,7 +844,7 @@ after_record_dispatch:
             func_002267A8(record, 12, 0);
             record->byte32 = 0;
             func_0021C140(record);
-            func_00044aa4(D_80193BC0 + record->byteF6 * 56);
+            func_00044aa4(&D_80193BC0[record->byteF6].record);
             func_0021C074(record);
             break;
         case 0x2E: /* 220A78 */
@@ -908,7 +912,7 @@ after_record_dispatch:
                 func_0020FA04(other, mode);
             }
             record->word74 = 0x39; other->word74 = 1;
-            func_001F2F9C(record, other);
+            func_001F2F9C((u8 *)record, (u8 *)other);
             break;
         }
         case 0x3A: { /* 220DC0 */
@@ -933,11 +937,11 @@ after_record_dispatch:
             if (record->extra18 != 0) record->extra18->owner = record;
             if (record->extra1C != 0) record->extra1C->owner = record;
             if (func_0020C014(record) != 0) {
-                if (D_801976DC < 30) unit = D_80193BC0 + record->byteF6 * 56;
-                else unit = D_80195560 + record->byteF6 * 52;
+                if (D_801976DC < 30) unit = (u8 *)D_80193BC0 + record->byteF6 * 56;
+                else unit = (u8 *)D_80195560 + record->byteF6 * 52;
             } else {
-                if (D_801976E8 < 30) unit = D_80193BC0 + record->byteF6 * 56;
-                else unit = D_80195560 + record->byteF6 * 52;
+                if (D_801976E8 < 30) unit = (u8 *)D_80193BC0 + record->byteF6 * 56;
+                else unit = (u8 *)D_80195560 + record->byteF6 * 52;
             }
             {
                 int secondValue;

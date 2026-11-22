@@ -1,6 +1,6 @@
-typedef signed int s32;
-s32 func_00046694();
-void func_000465c0(void) {
-    func_00046694();
+int func_00046694(int mask);
+
+void func_000465c0(int mask, int unused, int value)
+{
+    func_00046694(mask);
 }
-s32 func_00046694(s32 mask);

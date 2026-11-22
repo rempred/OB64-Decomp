@@ -1,17 +1,12 @@
+#include "common/os_message_queue.h"
+
 typedef signed short s16;
 typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
+typedef MessageQueue OSMesgQueue;
 typedef struct {
     u32 type;
     u32 flags;
@@ -57,7 +52,6 @@ extern u32 D_800A9E80;
 extern u32 D_800A9E70;
 extern u16 D_800A9E90;
 extern OSMesgQueue D_800E8B4C;
-s32 func_00023C10(OSMesgQueue *mq, OSMesg msg, s32 flag);
 u32 osSetIntMask(u32 mask);
 void osWritebackDCacheAll(void);
 void func_00019c04(void *gfxList_ptr, u32 gfxListSize, u32 ucode, u32 flag) {

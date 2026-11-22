@@ -4,25 +4,37 @@
  * Complete functions use the existing whole-producer group's GLOBAL binding.
  */
 #include "common/event_message.h"
+#include "common/os_message_queue.h"
+#include "common/os_thread.h"
 
 typedef struct Task Task;
 typedef struct Client Client;
 typedef struct Scheduler Scheduler;
-typedef struct { unsigned int words[6]; } MessageQueue;
 typedef struct { unsigned char bytes[80]; } ViMode;
-typedef struct {
+typedef struct SpTaskView {
     unsigned int type;
-    unsigned char unknown_04[0x24];
-    void *output_buffer;
-    unsigned long long *output_size;
-    unsigned char unknown_30[0x10];
-} TaskWork;
+    unsigned int flags;
+    void *field_08;
+    unsigned int field_0C;
+    void *field_10;
+    unsigned int field_14;
+    void *field_18;
+    unsigned int field_1C;
+    void *field_20;
+    unsigned int field_24;
+    void *outputBuffer;
+    unsigned long long *outputSize;
+    void *field_30;
+    unsigned int field_34;
+    void *field_38;
+    unsigned int field_3C;
+} SpTaskView;
 struct Task {
     Task *next;
     unsigned int state;
     unsigned int flags;
     void *framebuffer;
-    TaskWork work;
+    SpTaskView work;
     MessageQueue *queue;
     void *message;
 };
@@ -36,7 +48,7 @@ struct Scheduler {
     void *interrupt_messages[8];
     MessageQueue command_queue;
     void *command_messages[8];
-    unsigned char thread[0x1B0];
+    Thread thread;
     Client *clients;
     Task *audio_head;
     Task *graphics_head;
@@ -51,23 +63,18 @@ extern ViMode osViModeTable[];
 extern int D_800AA774;
 extern int D_800AA778;
 extern int D_800AA77C;
-extern void osCreateMesgQueue(MessageQueue *, void **, int);
-extern int osRecvMesg(MessageQueue *, void **, int);
-extern int osSendMesg(MessageQueue *, void *, int);
 extern void osCreateViManager(int);
-extern void osViSetMode(ViMode *);
-extern void osViBlack(int);
-extern void osViSetEvent(MessageQueue *, void *, unsigned short);
-extern void osCreateThread(void *, int, void (*)(void *), void *, void *, int);
-extern void osStartThread(void *);
+extern void osViSetMode(void *);
+extern void osViBlack(unsigned char);
+extern void osViSetEvent(void *, void *, unsigned int);
 extern unsigned int osSetIntMask(unsigned int);
-extern int osSpTaskYielded(TaskWork *);
+extern unsigned int osSpTaskYielded(SpTaskView *);
 extern void *osViGetCurrentFramebuffer(void);
 extern void *osViGetNextFramebuffer(void);
 extern void osViSwapBuffer(void *);
 extern void osWritebackDCacheAll(void);
-extern void osSpTaskLoad(TaskWork *);
-extern void osSpTaskStartGo(TaskWork *);
+extern void osSpTaskLoad(SpTaskView *);
+extern void osSpTaskStartGo(SpTaskView *);
 extern int osDpSetNextBuffer(void *, unsigned long long);
 extern void osSpTaskYield(void);
 void func_000242e8(void *);
@@ -102,8 +109,8 @@ void func_000240b0(Scheduler *sc, void *stack, int priority,
     osSetEventMesg(9, &sc->interrupt_queue, (void *)0x29C);
     osSetEventMesg(14, &sc->interrupt_queue, (void *)0x29D);
     osViSetEvent(&sc->interrupt_queue, (void *)0x29A, retrace_count);
-    osCreateThread(sc->thread, 4, func_000242e8, sc, stack, priority);
-    osStartThread(sc->thread);
+    osCreateThread(&sc->thread, 4, func_000242e8, sc, stack, priority);
+    osStartThread(&sc->thread);
 }
 
 void func_000241f8(Scheduler *sc, Client *client, MessageQueue *queue)
@@ -134,10 +141,9 @@ void func_00024250(Scheduler *sc, Client *client)
     osSetIntMask(mask);
 }
 
-/* Keep the accepted protected getter's existing project C expression. */
-int func_000242e0(int value)
+MessageQueue *func_000242e0(Scheduler *scheduler)
 {
-    return value + 0x78;
+    return &scheduler->command_queue;
 }
 
 void func_000242e8(void *argument)
@@ -161,14 +167,14 @@ void func_000242e8(void *argument)
 
 void func_000243ec(Scheduler *sc)
 {
-    Task *task;
+    void *message;
     Task *rsp = 0;
     Task *rdp = 0;
     int available;
     Client *client;
     sc->retraces++;
-    while (osRecvMesg(&sc->command_queue, (void **)&task, 0) != -1)
-        func_0002474C(sc, task);
+    while (osRecvMesg(&sc->command_queue, &message, 0) != -1)
+        func_0002474C(sc, message);
     if (sc->do_audio && sc->rsp_task != 0)
         func_00024874(sc);
     else {
@@ -280,7 +286,7 @@ void func_000247a4(Scheduler *sc, Task *rsp, Task *rdp)
             sc->rdp_task = rdp;
     }
     if (rdp != 0 && rdp != rsp) {
-        osDpSetNextBuffer(rdp->work.output_buffer, *rdp->work.output_size);
+        osDpSetNextBuffer(rdp->work.outputBuffer, *rdp->work.outputSize);
         D_800AA774 = 1;
         D_800AA778 = 0;
         sc->rdp_task = rdp;

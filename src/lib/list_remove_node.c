@@ -1,13 +1,12 @@
 /* Pointer-to-link traversal follows ROM25000..25034; native tail is preserved. */
-typedef struct Thread Thread;
-struct Thread { Thread *next; };
+#include "common/os_thread.h"
 
-void func_00025000(Thread **head, Thread *thread)
+void func_00025000(ThreadQueueNode **head, Thread *thread)
 {
-    Thread **link = head;
-    Thread *current = *link;
+    ThreadQueueNode **link = head;
+    ThreadQueueNode *current = *link;
     while (current != 0) {
-        if (current == thread) {
+        if (current == (ThreadQueueNode *)thread) {
             *link = current->next;
             return;
         }

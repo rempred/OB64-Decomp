@@ -2,8 +2,8 @@ typedef signed char s8;
 typedef signed short s16;
 typedef signed int s32;
 
-s32 func_00047a94(s32 arg0);
-s32 func_00047dd8(s32 arg0);
+s32 func_00047a94(void);
+s32 func_00047dd8(void);
 
 extern s16 D_80197B06;
 extern volatile s32 D_80197B0C;
@@ -36,9 +36,9 @@ s32 func_0004813C(s32 arg0)
         }
         *(s8 *)0x80197B01 = 0;
         *(s16 *)0x80197B04 = 0;
-        return func_00047a94(arg0);
+        return func_00047a94();
     } else {
         *(s16 *)0x80197B04 = 0;
-        return func_00047dd8(arg0);
+        return func_00047dd8();
     }
 }

@@ -18,16 +18,14 @@ extern RosterTable *D_801CE8BC;
 extern u8 D_801971F0[];
 extern u16 D_8019532C[];
 extern u8 D_80195480[];
-extern s32 func_0020C0E8(RosterRow *);
-extern u8 func_00043dc4(u8, u8);
-extern void func_0020CBDC(RosterRow *, s32);
-extern void func_001F0F6C(void *);
-extern void func_001F102C(void *);
+extern u8 func_00043dc4(s32, s32);
+extern void func_001F0F6C(void *record);
+extern void func_001F102C(void *record);
 extern void *func_0020C478(unsigned int index);
 extern u16 func_0020C448(void *);
-extern u32 func_002015C8(s32, s32, s32, s32);
+extern s32 func_002015C8(s32, s32, s32, s32);
 extern void func_00207658(s32 *, s32 *, s32 *, s32 *, s32 *, u32);
-extern void func_001F114C(RosterRow *);
+extern void func_001F114C(void *);
 
 /* The retail frame holds six parallel arrays of 18 words. They collect
  * distinct row descriptors, sort by the returned key, and submit equal-key

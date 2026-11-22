@@ -4,7 +4,7 @@ extern u16 g_state_slot_status;
 extern u16 D_8018F1A2;
 void func_00048294(void);
 void func_000466f4(void);
-void func_0004813c(s32 arg);
+s32 func_0004813c(s32 arg);
 s32 D_8019BCEC(void);
 void func_00048268(void);
 extern s32 D_8018FB34;

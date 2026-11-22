@@ -236,7 +236,7 @@ extern void *func_00261560(s32 value);
 extern void func_00260CE0(u16 code, s32 key04, s32 key08);
 extern void func_00022e90(float matrix[4][4], float first, float second, float third);
 extern void guMtxCatF(float first[4][4], float second[4][4], float output[4][4]);
-extern void func_001F0F6C(s32 recordWord);
+extern void func_001F0F6C(void *record);
 extern void func_80093380(void *destination, u32 bytes);
 extern void *func_00260B0C(u16 code, s32 key04, s32 key08);
 extern void *func_002611F4(s32 key04);

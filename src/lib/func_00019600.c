@@ -1,50 +1,39 @@
+#include "common/os_message_queue.h"
+#include "game/nu_sc_client.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
-typedef struct {
-    u64 pad[0x1B0 / 8];
-} OSThread;
-typedef struct {
-    u32 type;
-    u32 flags;
-    u64 *ucode_boot;
-    u32 ucode_boot_size;
-    u64 *ucode;
-    u32 ucode_size;
-    u64 *ucode_data;
-    u32 ucode_data_size;
-    u64 *dram_stack;
-    u32 dram_stack_size;
-    u64 *output_buff;
-    u64 *output_buff_size;
-    u64 *data_ptr;
-    u32 data_size;
-    u64 *yield_data_ptr;
-    u32 yield_data_size;
-} OSTask;
+typedef MessageQueue OSMesgQueue;
+typedef Thread OSThread;
+typedef struct SpTaskView {
+    unsigned int type;
+    unsigned int flags;
+    void *field_08;
+    unsigned int field_0C;
+    void *field_10;
+    unsigned int field_14;
+    void *field_18;
+    unsigned int field_1C;
+    void *field_20;
+    unsigned int field_24;
+    void *outputBuffer;
+    unsigned long long *outputSize;
+    void *field_30;
+    unsigned int field_34;
+    void *field_38;
+    unsigned int field_3C;
+} SpTaskView;
 typedef s16 NUScMsg;
-typedef struct NUScClient_s {
-    struct NUScClient_s *next;
-    OSMesgQueue *msgQ;
-    NUScMsg msgType;
-} NUScClient;
 typedef struct NUScTask_s {
     struct NUScTask_s *next;
     u32 state;
     u32 flags;
     void *framebuffer;
-    OSTask list;
+    SpTaskView list;
     OSMesgQueue *msgQ;
     OSMesg msg;
 } NUScTask;
@@ -76,22 +65,20 @@ typedef struct {
 } NUSched;
 extern NUSched D_800E8B10;
 extern u8 D_800C4800;
-s32 func_00023AE0(OSMesgQueue *mq, OSMesg *msg, s32 flag);
-s32 func_00023C10(OSMesgQueue *mq, OSMesg msg, s32 flag);
 void osWritebackDCacheAll(void);
 u32 __osSpGetStatus(void);
 void osSpTaskYield(void);
-s32 osSpTaskYielded(OSTask *task);
-void osSpTaskLoad(OSTask *task);
-void osSpTaskStartGo(OSTask *task);
+u32 osSpTaskYielded(SpTaskView *task);
+void osSpTaskLoad(SpTaskView *task);
+void osSpTaskStartGo(SpTaskView *task);
 void func_00019600(void *arg);
 void func_00019600(void *arg) {
     NUScTask *gfxTask;
-    NUScTask *audioTask;
+    OSMesg audioTask;
     OSMesg msg;
     u32 yieldFlag;
     while (1) {
-        func_00023AE0(&D_800E8B10.audioRequestMQ, (OSMesg *)&audioTask, 1);
+        func_00023AE0(&D_800E8B10.audioRequestMQ, &audioTask, 1);
         if (!(D_800C4800 & 2)) {
             osWritebackDCacheAll();
             yieldFlag = 0;
@@ -105,8 +92,8 @@ void func_00019600(void *arg) {
                 }
             }
             D_800E8B10.curAudioTask = audioTask;
-            osSpTaskLoad(&audioTask->list);
-            osSpTaskStartGo(&audioTask->list);
+            osSpTaskLoad(&((NUScTask *)audioTask)->list);
+            osSpTaskStartGo(&((NUScTask *)audioTask)->list);
             func_00023AE0(&D_800E8B10.rspMQ, &msg, 1);
             D_800E8B10.curAudioTask = ((void *)0);
             if (yieldFlag == 1) {
@@ -116,6 +103,6 @@ void func_00019600(void *arg) {
                 func_00023C10(&D_800E8B10.rspMQ, &msg, 1);
             }
         }
-        func_00023C10(audioTask->msgQ, audioTask->msg, 1);
+        func_00023C10(((NUScTask *)audioTask)->msgQ, ((NUScTask *)audioTask)->msg, 1);
     }
 }

@@ -1,15 +1,17 @@
+#include "game/sound_channel.h"
+
 #include "game/cutscene_panels.h"
 
 extern u16 D_800C4B28;
 extern u16 D_800E79B0;
 extern u16 D_800E8100;
 extern u16 D_800E8700;
-extern u8 D_800EB1F0[];
+extern SoundChannel D_800EB1F0;
 
 extern Panel *func_000552c0(void);
 extern void func_00052284(Panel *);
 extern void func_00286544(void);
-extern void func_800EA604(void *, s32);
+extern void func_800EA604(SoundChannel *, s32);
 
 s32 func_002993EC(void)
 {
@@ -56,7 +58,7 @@ contentReady:
             content->field5F0 = 1;
         } else if (content->field5F1 + content->field5F4 < content->field5F5) {
             if (D_800E8100 & 0x8000) {
-                func_800EA604(D_800EB1F0, 3);
+                func_800EA604(&D_800EB1F0, 3);
                 content->field5FC = 0;
                 content->field5F1 += content->field5F4;
             }
@@ -65,7 +67,7 @@ contentReady:
         } else {
             u16 buttons = D_800E8100;
             if (buttons & 0xC000) {
-                func_800EA604(D_800EB1F0, 1);
+                func_800EA604(&D_800EB1F0, 1);
                 content->field5F0 = 3;
                 result = -2;
             } else if ((buttons & 0x2020) && D_8023DE34->field64 == 1) {
@@ -101,7 +103,7 @@ contentReady:
             content->field5F1 = value;
         }
         if (oldValue != content->field5F1) {
-            func_800EA604(D_800EB1F0, 2);
+            func_800EA604(&D_800EB1F0, 2);
         }
         return result;
     }
@@ -115,7 +117,7 @@ contentReady:
             goto resetState;
         }
         if (((u16 *)D_8018FDC0)[0xD0 / 2] & 1) {
-            func_800EA604(D_800EB1F0, 2);
+            func_800EA604(&D_800EB1F0, 2);
             content->field5F1++;
         }
         break;

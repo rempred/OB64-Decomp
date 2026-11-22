@@ -1,13 +1,8 @@
+#include "game/boot_archive_record.h"
+
 #include "game/character_record.h"
 
-typedef struct ResourceArchiveInput {
-    u32 field_00;
-    u32 field_04;
-    u8 *field_08;
-    u32 field_0C;
-} ResourceArchiveInput;
-
-extern ResourceArchiveInput D_801D16B0;
+extern ResourceArchiveTemplate D_801D16B0;
 extern u8 D_80193670, D_80193671, D_80193672;
 extern u8 D_801936A8;
 extern u16 D_80197B60;
@@ -27,8 +22,6 @@ extern u8 D_801974DE[];
 extern void *func_0002DFB8(void *destination, u32 key);
 extern u32 func_0002DEF4(u32 key);
 extern void *resource_free(void *resource);
-extern void boot_resource_archive_load_many(ResourceArchiveInput *first,
-                                            ResourceArchiveInput *second, s32 count);
 extern void memcpy_aligned(void *destination, const void *source, s32 count);
 extern void memset_00023780(void *destination, s32 count);
 extern void func_00048294(void);
@@ -86,7 +79,8 @@ extern void func_000466f4(void);
 void func_0023A5EC(void)
 {
     u8 record[0x23];
-    ResourceArchiveInput first, second;
+    ResourceArchiveInput first;
+    ResourceArchiveRequest second;
     u32 *link;
     u32 inner_key;
     s32 record_index;
@@ -115,18 +109,18 @@ void func_0023A5EC(void)
         return;
     }
 
-    first = D_801D16B0;
-    second = D_801D16B0;
+    first = D_801D16B0.input;
+    second = D_801D16B0.request;
     link = (u32 *)func_0002DFB8(0, 0x021AE74C);
     inner_key = *link;
     resource_free(link);
-    first.field_0C = func_0002DEF4(inner_key);
-    first.field_08 = (u8 *)func_0002DFB8(0, inner_key);
-    second.field_04 = 0;
+    first.size = func_0002DEF4(inner_key);
+    first.buffer = (u8 *)func_0002DFB8(0, inner_key);
+    second.record_index = 0;
     boot_resource_archive_load_many(&first, &second, 1);
-    resource_free(first.field_08);
-    memcpy_aligned(record, second.field_08 + record_index * 0x23, 0x23);
-    resource_free(second.field_08);
+    resource_free(first.buffer);
+    memcpy_aligned(record, second.buffer + record_index * 0x23, 0x23);
+    resource_free(second.buffer);
     group = record;
 
     (*state) = 0x1E;

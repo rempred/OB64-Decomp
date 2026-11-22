@@ -1,12 +1,9 @@
-typedef unsigned char u8;
-typedef signed short s16;
-typedef signed int s32;
+#include "game/battle_callbacks.h"
+
 u8 *func_0020F2A8(s32 a, s32 x, s32 y, s32 z);
-void func_001F7148();
-void func_001F89B4();
 extern s32 D_801CE8FC;
 typedef struct Fx20B {
-    void (*fn)();
+    BattleChildCallback fn;
     u8 unk04[0x10];
     u8 b14;
     u8 unk15[0x1F];

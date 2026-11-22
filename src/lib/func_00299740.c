@@ -12,7 +12,7 @@ extern s32 func_00298B70(Panel *, PanelSlot *);
 extern s32 func_00299218(Panel *);
 extern s32 func_002993EC(void);
 extern s32 func_00283DF0(void);
-extern s32 func_002953E0(s32);
+extern s16 func_002953E0(s32);
 extern u8 *func_0028ab74(s32);
 extern void func_80093380(void *, u32);
 extern void memcpy_aligned(void *, const void *, s32);

@@ -1,18 +1,14 @@
+#include "common/os_pi_handle.h"
+
 typedef unsigned int u32;
 typedef unsigned char u8;
 typedef unsigned long long u64;
 typedef struct { u32 words[4]; } Vector16;
-typedef struct {
-    u8 unknown_00[4];
-    u8 field_04, field_05, field_06, field_07, field_08;
-} SpeedParamPrefix;
-
 extern u32 D_800E82C0;
 extern u64 D_800ABAC0;
 extern u32 D_800ABAC8;
 extern u8 D_8000031C[];
 extern Vector16 osException_vector;
-extern SpeedParamPrefix __Dom1SpeedParam, __Dom2SpeedParam;
 extern u32 __osGetSR(void);
 extern void __osSetSR(u32);
 extern void __osSetFpcCsr(u32);
@@ -71,14 +67,14 @@ void read_pi_registers(void)
     u32 f = *(volatile u32 *)0xA4600028;
     u32 g = *(volatile u32 *)0xA460002C;
     u32 h = *(volatile u32 *)0xA4600030;
-    __Dom1SpeedParam.field_04 = 7;
-    __Dom2SpeedParam.field_04 = 7;
-    __Dom1SpeedParam.field_05 = a;
-    __Dom1SpeedParam.field_08 = b;
-    __Dom1SpeedParam.field_06 = c;
-    __Dom1SpeedParam.field_07 = d;
-    __Dom2SpeedParam.field_05 = e;
-    __Dom2SpeedParam.field_08 = f;
-    __Dom2SpeedParam.field_06 = g;
-    __Dom2SpeedParam.field_07 = h;
+    __Dom1SpeedParam.type = 7;
+    __Dom2SpeedParam.type = 7;
+    __Dom1SpeedParam.latency = a;
+    __Dom1SpeedParam.pulse = b;
+    __Dom1SpeedParam.pageSize = c;
+    __Dom1SpeedParam.releaseDuration = d;
+    __Dom2SpeedParam.latency = e;
+    __Dom2SpeedParam.pulse = f;
+    __Dom2SpeedParam.pageSize = g;
+    __Dom2SpeedParam.releaseDuration = h;
 }

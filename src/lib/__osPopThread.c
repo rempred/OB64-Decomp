@@ -1,13 +1,9 @@
-typedef struct OSThread OSThread;
+#include "common/os_thread.h"
 
-struct OSThread {
-    OSThread *next;
-};
-
-OSThread *__osPopThread(OSThread **queue)
+ThreadQueueNode *__osPopThread(ThreadQueueNode **queue)
 {
-    OSThread *head = *queue;
-    register OSThread *next asm("$25") = head->next;
+    ThreadQueueNode *head = *queue;
+    register ThreadQueueNode *next asm("$25") = head->next;
 
     *queue = next;
     return head;

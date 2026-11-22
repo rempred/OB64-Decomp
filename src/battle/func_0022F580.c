@@ -1,3 +1,5 @@
+#include "game/battle_resolution_record.h"
+
 #include "game/battle_record_flag.h"
 
 #include "game/combat_selector.h"
@@ -122,47 +124,39 @@ extern void func_00023780(void *, u32);
 extern void func_00023460(const void *, void *, u32);
 extern unsigned int func_00022e60(void);
 extern int rand(void);
-extern int func_0020C2C0(ResolutionObject *);
-extern int func_0020C32C(ResolutionObject *);
-extern int func_0020C2F4(ResolutionObject *);
-extern int func_0020C310(ResolutionObject *);
 extern int func_0020C364(int);
 extern int func_0020C1B4(ResolutionObject *);
 extern void *func_0020C478(unsigned int index);
-extern int func_0020D434(int);
+extern u8 func_0020D434(int);
 extern int func_0020D4C8(ResolutionObject *, int);
 extern int func_0020D72C(void *);
-extern int func_0020D814(ResolutionObject *);
 extern int func_0020F8DC(void);
 extern int func_0020BFE4(void);
-extern u8 func_002014C4(void);
+extern u8 func_002014C4(unsigned int);
 extern int func_00201798(int, int, int, int);
 extern int func_00044130(int, int, int);
 extern void func_0021D200(int, int, void *);
 extern void func_0021D230(int, int, void *, int);
 extern void func_0021D2C0(int, int, void *, int, int, int, int);
 extern void func_0021D334(int, int, void *, int, int, int, int, int, int);
-extern void func_0022A7B8(ResolutionObject *, int, int, int, int, int);
-extern void func_0022B06C(ResolutionObject *, u8 *);
-extern void func_0022EF50(ResolutionObject *);
-extern int func_0022F2BC(ResolutionObject *, int *);
+extern void func_0022A7B8(void *, int, int, int, int, int);
+extern void func_0022B06C(void *, u8 *);
+extern void func_0022EF50(void *);
+extern int func_0022F2BC(void *, int *);
 extern int func_00233210(ResolutionObject *, ResolutionObject *);
 extern int func_00233568(ResolutionObject *);
-extern int func_00233F94(ResolutionObject *);
 extern int func_002340EC(ResolutionObject *);
-extern void func_0023422C(ResolutionObject *, int);
 extern int func_002363FC(ResolutionObject *);
 extern int func_002365BC(ResolutionObject *, ResolutionObject *, int, int);
-extern int func_002379AC(int, ResolutionObject *);
 extern int func_00237AF8(ResolutionObject *, int);
 extern void func_00237D5C(int, int *, int *);
 extern void func_00237E2C(ResolutionDescriptor *, int, int);
 extern int func_0023887C(int, int, int, int);
 extern void func_00239338(ResolutionDescriptor *, ResolutionObject *, ResolutionObject *, ResolutionObject *);
 extern u8 func_002397D4(ResolutionRecord *, u32, u8 *);
-extern int func_0025FD00(int);
+extern int func_0025FD00(u16);
 
-int func_0022F580(ResolutionObject **input, int *outTime)
+int func_0022F580(BattleResolutionRecord *input, int *outTime)
 {
     ResolutionScratch local;
     ResolutionObject *excluded;
@@ -234,7 +228,7 @@ int func_0022F580(ResolutionObject **input, int *outTime)
     excluded = 0;
     suppress = 0;
     maximum = 0;
-    if (func_0020C014(input[0]) != 0)
+    if (func_0020C014((ResolutionObject *)input->objects[0]) != 0)
         initial = &D_801971F0[D_801976DC];
     else
         initial = &D_801971F0[D_801976E8];
@@ -249,7 +243,7 @@ int func_0022F580(ResolutionObject **input, int *outTime)
     survivors = 0;
     selectedCount = 0;
     for (i = 0; i < 3; ++i) {
-        earlyObject = input[i];
+        earlyObject = (ResolutionObject *)input->objects[i];
         if (func_0020C2C0(earlyObject) != 0 || func_0020C32C(earlyObject) != 0 ||
             func_0020C2F4(earlyObject) != 0 || func_0020C310(earlyObject) != 0)
             continue;
@@ -267,7 +261,7 @@ int func_0022F580(ResolutionObject **input, int *outTime)
                 if (func_0020C364(earlyObject->field80) != 0)
                     earlyObject->field68 = func_002340EC(earlyObject);
                 else
-                    earlyObject->field68 = func_00233F94(earlyObject);
+                    earlyObject->field68 = func_00233F94((BattleRosterRecord *)earlyObject);
                 local.selectedList.values[selectedCount++] = earlyObject;
             }
         }
@@ -307,7 +301,7 @@ int func_0022F580(ResolutionObject **input, int *outTime)
     quotientWork = rawResult;
     if (quotientWork == 0xFF)
         return 0;
-    rawInput = func_002014C4();
+    rawInput = func_002014C4(quotientWork);
     if (selectedCount == 2 && survivors == 3) {
         func_0022F2BC(excluded, outTime);
         if (func_0020F8DC() != 0)
@@ -347,7 +341,7 @@ int func_0022F580(ResolutionObject **input, int *outTime)
         side = func_0020C014(local.selectedList.values[0]) == 0;
         producer = func_0023887C(producer, local.tail.fields.mode, side, rawResultWord);
     } else {
-        producer = func_00233F94(local.selectedList.values[0]);
+        producer = func_00233F94((BattleRosterRecord *)local.selectedList.values[0]);
         side = func_0020C014(local.selectedList.values[0]);
         producer = func_0023887C(producer, local.tail.fields.mode, side, rawResultWord);
     }

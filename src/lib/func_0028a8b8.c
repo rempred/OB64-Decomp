@@ -1,4 +1,4 @@
-void func_0028a8b8(signed char value)
+void func_0028a8b8(unsigned char value)
 {
-    *(signed char *)0x8023DF0C = value;
+    *(unsigned char *)0x8023DF0C = value;
 }

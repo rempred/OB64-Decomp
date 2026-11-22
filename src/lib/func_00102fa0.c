@@ -28,7 +28,12 @@ void func_8009DA50(u32 rom_address, u8 *destination, u32 bytes);
 void func_800EA604(SoundChannel *channel, s32 request);
 void func_800EA76C(void);
 void func_800EA7E4(SoundChannel *channel, s32 gain);
-void func_8016C5BC(void*);
+typedef struct {
+    u16 year;
+    u8 month;
+    u8 day;
+} Date420;
+s32 func_8016C5BC(Date420 *date);
 void func_801707F4(void);
 s32 func_8017223C(s32);
 void func_8017BED4(void);
@@ -234,7 +239,8 @@ extern void *D_801E7DE4[];
 extern u8 D_800E8350[][168], D_801971F2[][25], D_80193BD1[][56], D_801969B8[][11];
 extern f32 D_8018F814[][3];
 extern f32 D_801F0DC8[6];
-extern u8 D_80196A30[], D_80214C84[], D_800EB0B0[], D_800EB240[];
+extern Date420 D_80196A30;
+extern u8 D_80214C84[], D_800EB0B0[], D_800EB240[];
 extern u8 s102_a_icache_start[], s102_a_icache_end[], s102_a_dcache_start[], s102_a_dcache_end[], s102_a_rom_start[], s102_a_rom_end[], s102_a_dma_destination[], s102_a_bss_start[], s102_a_bss_end[];
 extern u8 s102_b_icache_start[], s102_b_icache_end[], s102_b_dcache_start[], s102_b_dcache_end[], s102_b_rom_start[], s102_b_rom_end[], s102_b_dma_destination[], s102_b_bss_start[], s102_b_bss_end[];
 extern u8 s102_c_icache_start[], s102_c_icache_end[], s102_c_dcache_start[], s102_c_dcache_end[], s102_c_rom_start[], s102_c_rom_end[], s102_c_dma_destination[], s102_c_bss_start[], s102_c_bss_end[];
@@ -1043,7 +1049,7 @@ block_177:
                     D_801969B8[0][10] = 0xA;
                 }
                 func_801D5A60();
-                func_8016C5BC(D_80196A30);
+                func_8016C5BC(&D_80196A30);
                 if (func_8017223C(0x20) != 0) {
                     D_80186FF0 = -1;
                     var_s3 = 4;
@@ -1062,7 +1068,7 @@ block_177:
                 if (func_801DC054() == 0) {
                     if (func_80186210(0x11) != 0) {
                         var_s3 = -2;
-                        func_8016C5BC(D_80196A30);
+                        func_8016C5BC(&D_80196A30);
                         func_801DB718(3);
                     } else {
                         var_s3 = D_80186FF0;

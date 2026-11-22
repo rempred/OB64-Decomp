@@ -1,12 +1,4 @@
-typedef struct {
-    unsigned int field00;
-    void *queue;
-    int channel;
-    unsigned char field0c[0x44];
-    int field50;
-    unsigned char field54[8];
-    unsigned int field5c;
-} PfsState;
+#include "common/os_pfs.h"
 
 typedef struct {
     unsigned int field00;
@@ -17,12 +9,11 @@ typedef struct {
     unsigned char field10[16];
 } DirectoryEntry;
 
-extern int func_00027bd4(PfsState *state);
 extern int func_00027fd0(void *queue, int channel, unsigned short address,
                          unsigned char *data);
 extern int func_000272c0(void *queue, int channel);
 
-int func_00026bc0(PfsState *state, unsigned short company,
+int func_00026bc0(OSPfs *state, unsigned short company,
                   unsigned int game, const unsigned char *name,
                   const unsigned char *extension, int *file)
 {
@@ -32,14 +23,14 @@ int func_00026bc0(PfsState *state, unsigned short company,
     int j;
     int different;
 
-    if (!(state->field00 & 1))
+    if (!(state->status & 1))
         return 5;
     result = func_00027bd4(state);
     if (result != 0)
         return result;
-    for (i = 0; i < state->field50; i++) {
+    for (i = 0; i < state->dir_size; i++) {
         result = func_00027fd0(state->queue, state->channel,
-                              (unsigned short)(state->field5c + i),
+                              (unsigned short)((unsigned int)state->dir_table + i),
                               (unsigned char *)&entry);
         if (result != 0)
             return result;

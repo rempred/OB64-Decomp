@@ -1,3 +1,7 @@
+#include "game/unit_record_lookup.h"
+
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -14,13 +18,11 @@ extern RuntimeUnit *D_801F0CB0[];
 extern void *resource_alloc(u32 bytes);
 extern void *resource_free(void *object);
 extern void func_00126D24(RuntimeUnit *unit);
-extern s32 func_0012E8EC(RuntimeUnit *unit);
 extern void func_00106CE0(f32 *first, f32 *second, f32 step);
 extern s32 func_00107E38(MovementAux *aux);
-extern void func_001072B8(RuntimeUnit *unit);
 extern s32 *func_00107D60(s32 first, s32 last, s32 *predecessors);
 extern void func_0011AECC(RuntimeUnit *unit);
-extern void func_0012C788(u8 selector, RuntimeUnit *unit, s32 context, s32 mode);
+extern void func_0012C788(s32 selector, RuntimeUnit *unit, s32 context, s32 mode);
 
 static inline s32 current_goal(RuntimeUnit *unit)
 {

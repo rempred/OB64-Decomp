@@ -1,19 +1,8 @@
-typedef struct PiHandleView {
-    struct PiHandleView *next;
-    unsigned char type;
-    unsigned char latency;
-    unsigned char pageSize;
-    unsigned char releaseDuration;
-    unsigned char pulse;
-    unsigned char domain;
-    unsigned short field_0A;
-    unsigned int baseAddress;
-} PiHandleView;
-extern PiHandleView *__osCurrentHandle[];
+#include "common/os_pi_handle.h"
 
-int osEPiRawReadIo(PiHandleView *handle, unsigned int address, unsigned int *value)
+int osEPiRawReadIo(OSPiHandle *handle, unsigned int address, unsigned int *value)
 {
-    PiHandleView *current;
+    PiTimingState *current;
     unsigned int domain;
     while (*(volatile unsigned int *)0xA4600010 & 3)
         ;

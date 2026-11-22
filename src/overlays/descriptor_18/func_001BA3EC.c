@@ -1,8 +1,9 @@
+#include "game/boot_command_stream.h"
+
 typedef signed int s32;
 extern s32 *D_8022A214;
 void D_80079618(s32 handle, s32 flags);
 extern s32 D_8022A210;
-void *func_0000978C(s32 file, s32 id, s32 a, s32 b);
 void func_001BA3EC(s32 id) {
     if (D_8022A210 != id) {
         if (D_8022A210 != -1) {

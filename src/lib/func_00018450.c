@@ -159,7 +159,7 @@ typedef struct ALParam_s {
         s32 i;
     } yetstillmoredata;
 } ALParam;
-typedef struct {
+typedef struct N_ALVoice {
     ALLink node;
     N_PVoice *pvoice;
     ALWaveTable *table;

@@ -1,23 +1,6 @@
-typedef struct {
-    unsigned int field00;
-    void *queue;
-    int channel;
-    unsigned char field0c[0x44];
-    int field50;
-    unsigned char field54[8];
-    unsigned int field5c;
-    int field60;
-    unsigned char field64;
-    unsigned char field65;
-} PfsState;
+#include "common/os_pfs.h"
 
-typedef union {
-    unsigned short value;
-    struct {
-        unsigned char byte00;
-        unsigned char byte01;
-    } bytes;
-} Node;
+typedef PfsInode Node;
 
 typedef struct {
     unsigned int field00;
@@ -29,21 +12,17 @@ typedef struct {
     unsigned char field10[16];
 } DirectoryEntry;
 
-extern int func_00027bd4(PfsState *state);
-extern int func_000274d0(PfsState *state, unsigned char bank);
 extern int func_00027fd0(void *queue, int channel, unsigned short address,
                          unsigned char *data);
 extern int func_000281c0(void *queue, int channel, unsigned short address,
                          unsigned char *data, int mode);
-extern int func_00027c8c(PfsState *state, unsigned short *table, unsigned char mode,
-                         unsigned char bank);
 extern int func_000272c0(void *queue, int channel);
 
-#define VALID_NODE(s, n) ((n)->value >= (s)->field60 && \
-                         (n)->bytes.byte00 < (s)->field64 && \
+#define VALID_NODE(s, n) ((n)->value >= (s)->inode_start_page && \
+                         (n)->bytes.byte00 < (s)->banks && \
                          (n)->bytes.byte01 != 0 && (n)->bytes.byte01 < 128)
 
-static inline int next_node(PfsState *state, unsigned short *table,
+static inline int next_node(OSPfs *state, unsigned short *table,
                             unsigned char *bank, Node *node)
 {
     int result;
@@ -63,7 +42,7 @@ static inline int next_node(PfsState *state, unsigned short *table,
     return 0;
 }
 
-int func_000265e0(PfsState *state, int file, unsigned char mode,
+int func_000265e0(OSPfs *state, int file, unsigned char mode,
                   int offset, int size, unsigned char *data)
 {
     DirectoryEntry entry;
@@ -76,23 +55,23 @@ int func_000265e0(PfsState *state, int file, unsigned char mode,
     int address;
     int blockOffset;
 
-    if (file >= state->field50 || file < 0)
+    if (file >= state->dir_size || file < 0)
         return 5;
     if (size <= 0 || (size & 31))
         return 5;
     if (offset < 0 || (offset & 31))
         return 5;
-    if (!(state->field00 & 1))
+    if (!(state->status & 1))
         return 5;
     if (func_00027bd4(state) == 2)
         return 2;
-    if (state->field65 != 0) {
+    if (state->activebank != 0) {
         result = func_000274d0(state, 0);
         if (result != 0)
             return result;
     }
     result = func_00027fd0(state->queue, state->channel,
-                          (unsigned short)(state->field5c + file),
+                          (unsigned short)((unsigned int)state->dir_table + file),
                           (unsigned char *)&entry);
     if (result != 0)
         return result;
@@ -123,7 +102,7 @@ int func_000265e0(PfsState *state, int file, unsigned char mode,
                 return result;
             blockOffset = 0;
         }
-        if (state->field65 != node.bytes.byte00) {
+        if (state->activebank != node.bytes.byte00) {
             result = func_000274d0(state, node.bytes.byte00);
             if (result != 0)
                 return result;
@@ -142,13 +121,13 @@ int func_000265e0(PfsState *state, int file, unsigned char mode,
     }
     if (mode == 1 && !(entry.field08 & 2)) {
         entry.field08 |= 2;
-        if (state->field65 != 0) {
+        if (state->activebank != 0) {
             result = func_000274d0(state, 0);
             if (result != 0)
                 return result;
         }
         result = func_000281c0(state->queue, state->channel,
-                              (unsigned short)(state->field5c + file),
+                              (unsigned short)((unsigned int)state->dir_table + file),
                               (unsigned char *)&entry, 0);
         if (result != 0)
             return result;

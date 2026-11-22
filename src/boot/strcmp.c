@@ -1,7 +1,7 @@
 typedef unsigned char u8;
 typedef signed int s32;
-s32 strcmp(u8 *a, u8 *b);
-s32 strcmp(u8 *a, u8 *b) {
+s32 strcmp(const u8 *a, const u8 *b);
+s32 strcmp(const u8 *a, const u8 *b) {
     u8 c1 = *a++;
     u8 c2 = *b++;
     if (c1 != c2) {

@@ -8,7 +8,7 @@ extern u32 func_8009DAF4(u32);
 extern void *func_80071C04(u32);
 extern void *func_8009DBB8(void *, unsigned int);
 extern void *func_0002E138(u32);
-extern u32 *func_0002E348(u32);
+extern void *func_0002E348(u32);
 extern void func_00023460(const void *, void *, u32);
 
 #define RECORD_BYTES(token) (*(u8 *)(0x801CEEE0 + (token)))

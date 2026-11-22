@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -13,7 +15,6 @@ extern u16 D_8019532C[];
 extern u8 D_80195480[];
 extern RuntimeUnit *D_801F0CB0[];
 extern void func_80093380(void *destination, s32 bytes);
-extern void func_0010746C(RuntimeUnit *unit);
 
 void func_0012A828(s32 source_index)
 {

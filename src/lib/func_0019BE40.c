@@ -1,3 +1,5 @@
+#include "game/boot_command_stream.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -9,7 +11,6 @@ extern u16 *D_80219F20;
 
 extern void *resource_alloc(u32 size);
 extern void memset_00023780(void *destination, s32 size);
-extern u8 *boot_command_stream_dispatch(u32 key, s32 mode, s32 submode, s32 index);
 extern void boot_command_stream_resource_node_dispatch(u32 key, s32 mode, s32 submode);
 
 #define READ_BE16(bytes) ((u16)(((u16)(bytes)[0] << 8) | (bytes)[1]))

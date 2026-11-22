@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -23,17 +25,17 @@ extern inline s32 func_0020C0CC(BattleUnit *u) {
     }
     return (u->flags >> 12) & 1;
 }
-extern inline s32 func_0020C2C0(BattleUnit *u) {
-    if (u == ((void *)0)) {
+extern inline int func_0020C2C0(void *record) {
+    if (record == 0) {
         return 1;
     }
-    return u->flags & 1;
+    return *(const unsigned int *)((const unsigned char *)record + 0x40) & 1;
 }
-extern inline s32 func_0020C32C(BattleUnit *u) {
-    if (u == ((void *)0)) {
+extern inline int func_0020C32C(void *record) {
+    if (record == 0) {
         return 0;
     }
-    return (u->flags >> 1) & 1;
+    return (*(const unsigned int *)((const unsigned char *)record + 0x40) >> 1) & 1;
 }
 extern inline BattleUnit *BattleGetUnit(u32 i) {
     u8 *base = D_801CE8BC;

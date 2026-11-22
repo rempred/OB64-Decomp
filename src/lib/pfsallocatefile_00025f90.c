@@ -1,23 +1,6 @@
-typedef struct {
-    unsigned int field00;
-    void *queue;
-    int channel;
-    unsigned char field0c[0x44];
-    int field50;
-    unsigned char field54[8];
-    unsigned int field5c;
-    int field60;
-    unsigned char field64;
-    unsigned char field65;
-} PfsState;
+#include "common/os_pfs.h"
 
-typedef union {
-    unsigned short value;
-    struct {
-        unsigned char byte00;
-        unsigned char byte01;
-    } bytes;
-} Node;
+typedef PfsInode Node;
 
 typedef struct {
     unsigned int field00;
@@ -29,20 +12,15 @@ typedef struct {
     unsigned char field10[16];
 } DirectoryEntry;
 
-extern int func_00026bc0(PfsState *state, unsigned short field04,
-                        unsigned int field00, const unsigned char *field10,
-                        const unsigned char *field0c, int *file);
-extern int func_00026d80(PfsState *state, int *bytes);
-extern int func_00027c8c(PfsState *state, Node *table, unsigned char mode,
-                        unsigned char bank);
+extern int func_00026d80(OSPfs *state, int *bytes);
 extern void func_00023460(const void *source, void *destination,
                          unsigned int bytes);
 extern int func_000281c0(void *queue, int channel, unsigned short address,
                         unsigned char *data, int mode);
-int func_0002629c(PfsState *state, Node *table, int pages, int *first,
+int func_0002629c(OSPfs *state, Node *table, int pages, int *first,
                   unsigned char bank, int *count, int *last);
 
-int func_00025f90(PfsState *state, unsigned short field04,
+int func_00025f90(OSPfs *state, unsigned short field04,
                   unsigned int field00, const unsigned char *field10,
                   const unsigned char *field0c, int size, int *file)
 {
@@ -83,7 +61,7 @@ int func_00025f90(PfsState *state, unsigned short field04,
     }
     if (*file == -1)
         return 8;
-    for (bank = 0; bank < state->field64; bank++) {
+    for (bank = 0; bank < state->banks; bank++) {
         result = func_00027c8c(state, table, 0, bank);
         if (result != 0)
             return result;
@@ -127,11 +105,11 @@ int func_00025f90(PfsState *state, unsigned short field04,
     func_00023460(field10, entry.field10, 16);
     func_00023460(field0c, entry.field0c, 4);
     return func_000281c0(state->queue, state->channel,
-                         (unsigned short)(state->field5c + *file),
+                         (unsigned short)((unsigned int)state->dir_table + *file),
                          (unsigned char *)&entry, 0);
 }
 
-int func_0002629c(PfsState *state, Node *table, int pages, int *first,
+int func_0002629c(OSPfs *state, Node *table, int pages, int *first,
                   unsigned char bank, int *count, int *last)
 {
     int start;
@@ -143,7 +121,7 @@ int func_0002629c(PfsState *state, Node *table, int pages, int *first,
     start = 1;
     result = 0;
     if (bank == 0)
-        start = state->field60;
+        start = state->inode_start_page;
     for (i = start; i < 128; i++) {
         if (table[i].value == 3)
             break;

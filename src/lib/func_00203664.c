@@ -1,10 +1,6 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef struct { u8 magic0, magic1, kind, flags; u16 width, height; } Header;
-extern Header *func_00203414(Header *, u32);
-extern void *func_00203570(Header *, u32);
+#include "game/descriptor_10_resource_header.h"
+
+typedef Descriptor10ResourceHeader Header;
 extern u32 func_00201E38(s32, u32);
 extern void *resource_alloc_tree_scan(u32);
 extern void *resource_free(void *);
@@ -99,20 +95,20 @@ Header *func_00203664(Header *header, u32 index)
     primaryBytes = primaryStride * (s32)height;
     alphaBytes = alphaStride * (s32)height;
     record = func_00203414(header, index);
-    if (index == record->kind) {
+    if (index == record->field_02) {
         u32 size = 16;
         if (record->flags & 1) size += primaryBytes;
         if (record->flags & 2) size += alphaBytes;
         if (record->flags & 4) size += 512;
         result = resource_alloc_tree_scan(size);
         memcpy(header, result, 8);
-        result->kind = 1;
+        result->field_02 = 1;
         memcpy(record, result + 1, size - 8);
-        ((Header *)(result + 1))->kind = 0;
+        ((Header *)(result + 1))->field_02 = 0;
         return result;
     } else {
         u32 size;
-        previous = func_00203664(header, record->kind);
+        previous = func_00203664(header, record->field_02);
         size = 16;
         if (record->flags & 1) size += primaryBytes;
         if (record->flags & 2) size += alphaBytes;
@@ -120,9 +116,9 @@ Header *func_00203664(Header *header, u32 index)
         result = resource_alloc_tree_scan(size);
         memcpy(header, result, 8);
         resultRecord = result + 1;
-        result->kind = 1;
+        result->field_02 = 1;
         memcpy(record, resultRecord, 8);
-        resultRecord->kind = 0;
+        resultRecord->field_02 = 0;
         if (header->flags & 2) {
             u32 *deltaData = (u32 *)primary_data(header, index);
             u32 *previousData = (u32 *)primary_data(previous, 0);

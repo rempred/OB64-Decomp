@@ -30,7 +30,7 @@ typedef struct {
     BObj *objs[1];
 } Battle;
 extern Battle *D_8022A974;
-s16 func_002A13C4(s32 i) {
+s32 func_002A13C4(s32 i) {
     if (D_8022A974->objs[i] == ((void *)0)) {
         return 0;
     }

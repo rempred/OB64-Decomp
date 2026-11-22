@@ -9,7 +9,7 @@ typedef struct TextNode {
     u8 value;
 } TextNode;
 extern TextNode *D_80190F4C;
-u8 func_00050ce8(s32 id) {
+s32 func_00050ce8(s32 id) {
     TextNode *p;
     for (p = D_80190F4C; p != ((void *)0); p = p->next) {
         if (p->id == id) {

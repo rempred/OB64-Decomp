@@ -13,7 +13,7 @@ extern void func_8020122C(void *data);
 extern void func_80200DD0(s32 x, s32 y, s32 size);
 extern void func_80203558(s32 x0, s32 y0, s32 x1, s32 y1);
 extern void func_80093380(void *data, s32 size);
-extern void func_800934B0(void *data, void *format, void *text);
+extern int func_800934B0(char *buffer, const char *format, ...);
 extern void func_80179034(void *text, s32 x, s32 y);
 
 #define COMMAND(a,b) { \
@@ -63,8 +63,8 @@ void func_0019AB44(Panel *window, s32 slot)
     func_80200DD0(inner_x, inner_y, 28);
     func_80203558(inner_x, inner_y, x + 46, y + 54);
     func_80093380(buffer, 33);
-    func_800934B0(buffer, D_80219DB8,
-                 D_80193BC0[D_801971F2[D_801F3658][0]]);
+    func_800934B0(buffer, (const char *)D_80219DB8,
+                 (const char *)D_80193BC0[D_801971F2[D_801F3658][0]]);
     func_80179034(buffer, x + 52, inner_y);
     count = D_80219C28[(s8)window->field22][1];
     start = D_80219C28[(s8)window->field22][0];

@@ -1,13 +1,6 @@
 #include "game/effect_math_e04.h"
-typedef struct TerminalMotionActor {
-    unsigned char prefix[0x48];
-    int sourceArt;
-    int ownerContext;
-    unsigned char gap50[0xC];
-    unsigned int word5C;
-    unsigned int word60;
-    unsigned int word64;
-} TerminalMotionActor;
+#include "game/battle_roster_record.h"
+#include "game/class_field_lookups.h"
 
 /* Each observed profile has at most seven entries in the 0x84 allocation. */
 typedef struct TerminalProfile {
@@ -34,7 +27,7 @@ typedef struct TerminalMotionState {
     short currentY;
     short currentZ;
     unsigned char gap22[0x1E];
-    TerminalMotionActor *actor;
+    BattleRosterRecord *actor;
     unsigned char gap44[0x54];
     float destinationX;
     float destinationZ;
@@ -52,9 +45,6 @@ float func_00201670(int sourceArt, int ownerContext);
 float func_0002d3e0(float z, float x);
 double cos(double angle);
 double sin(double angle);
-unsigned char func_00043ad8(int sourceArt, int ownerContext);
-typedef struct TerminalObject TerminalObject;
-int func_00222190(TerminalObject *object, int x0, int z0, int x1, int z1);
 void *resource_free(void *resource);
 void *resource_alloc(unsigned int bytes);
 void memset_00023780(void *destination, int bytes);
@@ -90,7 +80,7 @@ void func_0021D7F0(TerminalMotionState *state, int x, int z)
     state->destinationZ = (float)z;
     dx = (float)(int)((unsigned int)x - state->currentX);
     dz = (float)(int)((unsigned int)z - state->currentZ);
-    speed = func_00201670(state->actor->sourceArt, state->actor->ownerContext);
+    speed = func_00201670(state->actor->class48.word, state->actor->variant4C.word);
     incrementX = dx;
     if (dx != 0.0f) {
         angle = func_0002d3e0(dz, dx);
@@ -117,9 +107,9 @@ void func_0021D7F0(TerminalMotionState *state, int x, int z)
     state->startX = (float)state->currentX;
     state->startZ = (float)state->currentZ;
 
-    if (func_00043ad8(state->actor->sourceArt & 0xFF,
-                     state->actor->ownerContext & 0xFF) == 1) {
-        duration = func_00222190((TerminalObject *)state->actor,
+    if (func_00043ad8(state->actor->class48.word & 0xFF,
+                     state->actor->variant4C.word & 0xFF) == 1) {
+        duration = func_00222190(state->actor,
             state->currentX, state->currentZ, x, z);
         /* Combining this increment with the call adds a saved GPR in GCC. */
         duration++;
@@ -134,7 +124,7 @@ void func_0021D7F0(TerminalMotionState *state, int x, int z)
         ((TerminalProfileContext *)D_801CE8BC)->nextProfile++;
         state->profile = ((TerminalProfileContext *)D_801CE8BC)->profiles[slot];
 
-        selector = state->actor->ownerContext;
+        selector = state->actor->variant4C.word;
         /* Preserve the retail predicate groups with the pinned compiler. */
         if (selector == 0x4A) {
             count = 5;

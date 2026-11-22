@@ -28,9 +28,9 @@ extern s16 D_80190F76;
 extern u16 D_80190C88[][4];
 
 extern u8 func_00042c30(void);
-extern u8 func_0004f2e4(u8 code, u8 small);
+extern u8 func_0004f2e4(u8 code, s32 small);
 extern s32 func_00050620(u8 **text);
-extern void *func_000507e8(s32 glyph);
+extern u8 *func_000507e8(s32 glyph);
 extern s32 func_00050ce8(s32 glyph);
 
 #define RECT_X(x) COMBAT_DRAW_FIELD(x, 12, 12)

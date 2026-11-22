@@ -1,3 +1,5 @@
+#include "game/battle_roster_record.h"
+
 #include "game/class_field_lookups.h"
 typedef struct BattleObj {
     u8 unk00[0x18];
@@ -5,65 +7,30 @@ typedef struct BattleObj {
     u8 unk1C[0x28];
     s32 unk44;
 } BattleObj;
-typedef struct BattleUnit {
-    struct BattleObj *obj;
-    u8 unk04[0x1C];
-    u16 hp;
-    u16 maxHp;
-    u16 str;
-    u16 vit;
-    u8 unk28[6];
-    u16 dex;
-    u8 unk30;
-    u8 unk31[2];
-    u8 unk33;
-    u8 unk34[2];
-    u16 items[4];
-    u8 unk3E;
-    u8 unk3F;
-    u32 flags;
-    u8 unk44[4];
-    s32 unk48;
-    s32 cls;
-    s32 unk50;
-    s32 lane;
-    s32 unk58;
-    u8 unk5C[0xC];
-    s32 target;
-    s32 actsUsed;
-    s32 actsMax;
-    u8 unk74[4];
-    u8 actionKind;
-    u8 unk79[3];
-    s32 attack;
-    s32 unk80;
-    u8 unk84[0x10];
-    s32 unk94;
-    u8 unk98[0x60];
-} BattleUnit;
 u8 D_801C9FA4(s32 a);
 int D_801C8B68(void *record);
-s32 D_801C8BA4(BattleUnit *u);
+s32 D_801C8BA4(void *record);
 s32 D_801BE138(s32 a, s32 cls, s32 c, s32 d);
-void D_801E15E0(BattleUnit *u, s32 cls);
-inline void func_0023422C(BattleUnit *u, s32 cls) {
+void D_801E15E0(u8 *record, s32 cls);
+inline void func_0023422C(void *record, s32 cls) {
+    BattleRosterRecord *u = record;
     BattleObj *o;
     s32 v;
     s32 x;
-    if (u->cls == u->unk48) {
-        u->unk48 = cls;
+    if (u->variant4C.word == u->class48.word) {
+        u->class48.word = cls;
     }
-    u->cls = cls;
-    u->items[0] = D_8016DF88((u8)u->unk48, (u8)cls);
-    u->items[1] = D_8016DFDC((u8)u->unk48, (u8)cls);
-    u->items[2] = D_8016E030((u8)u->unk48, (u8)cls);
-    u->items[3] = D_8016E084((u8)u->unk48, (u8)cls);
-    u->actsMax = (u8)D_8016E338((u8)u->unk48, (u8)u->cls, D_801C9FA4(u->unk58));
+    u->variant4C.word = cls;
+    u->field_36 = D_8016DF88((u8)u->class48.word, (u8)cls);
+    u->field_38 = D_8016DFDC((u8)u->class48.word, (u8)cls);
+    u->field_3A = D_8016E030((u8)u->class48.word, (u8)cls);
+    u->field_3C = D_8016E084((u8)u->class48.word, (u8)cls);
+    u->field70 = (u8)D_8016E338((u8)u->class48.word, (u8)u->variant4C.word, D_801C9FA4(u->row58));
     x = D_801C8B68(u);
-    v = D_801BE138(u->unk48, cls, x, D_801C8BA4(u));
-    o = u->obj;
-    u->unk50 = v;
+    v = D_801BE138(u->class48.word, cls, x, D_801C8BA4(u));
+    o = u->links[0];
+    u->handle50 = v;
     o->unk44 = v;
     o->unk18 = v;
-    D_801E15E0(u, cls);
+    D_801E15E0((u8 *)u, cls);
 }

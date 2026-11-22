@@ -1,24 +1,7 @@
 #include "game/record_name_selection.h"
 
 #include "game/character_record.h"
-
-typedef struct Func0019554CTemplate {
-    u8 field_00;
-    u8 field_01;
-    u16 field_02;
-    s16 field_04;
-    u8 field_06;
-    u8 field_07;
-    u8 field_08;
-    u16 field_09;
-    s16 field_0B;
-    u8 field_0D[3];
-    u8 field_10;
-    u8 field_11;
-    u16 field_12;
-    s16 field_14;
-    u8 field_16[13];
-} __attribute__((packed)) Func0019554CTemplate;
+#include "game/character_template.h"
 
 extern u8 g_func_0019554C_base_level;
 extern const char g_func_0019554C_string[];
@@ -29,11 +12,12 @@ extern unsigned char *func_0002C950(unsigned char *destination, const unsigned c
 
 void func_0019554C(
     int record_index,
-    const Func0019554CTemplate *source,
+    const CharacterTemplate *source,
     int selector,
     u8 flag,
-    u8 source_index)
+    int source_index_word)
 {
+    u8 source_index = (u8)source_index_word;
     u8 class_id;
     u8 class_value;
     unsigned int bounded_source_index;

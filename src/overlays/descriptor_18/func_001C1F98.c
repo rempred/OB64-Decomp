@@ -2,8 +2,9 @@ typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
 typedef signed int s32;
-void *D_8017F334(u16 id);
-void D_8017C2FC(void *p);
+struct Node;
+struct Node *D_8017F334(u16 id);
+void D_8017C2FC(struct Node *p);
 typedef struct {
     s32 used;
     void *text;

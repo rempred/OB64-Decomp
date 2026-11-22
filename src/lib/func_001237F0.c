@@ -1,3 +1,5 @@
+#include "game/unit_record_lookup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -17,7 +19,6 @@ extern u16 D_80195214;
 extern u16 D_80195238;
 extern u16 D_801952A4;
 extern char D_801EE638[];
-extern s32 func_0012E8EC(RuntimeUnit *unit);
 extern s32 func_00123458(s32 row, RuntimeUnit *unit);
 extern void func_0005c090(s32 index, s32 value);
 extern s32 func_0005c110(s32 index);

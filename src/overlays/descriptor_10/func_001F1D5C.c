@@ -12,10 +12,10 @@ extern f32 D_801D0814;
 extern s32 D_801D0838;
 extern s32 D_801D0734;
 extern s32 D_801D070C;
-extern void *D_801CEAB0;
-s32 func_00201B4C(void *p);
-s32 func_00201B6C(void *p);
-s32 func_00201B8C(void *p);
+extern s32 D_801CEAB0;
+s32 func_00201B4C(s32 index);
+s32 func_00201B6C(s32 index);
+s32 func_00201B8C(s32 index);
 void func_001F1D5C(void) {
     s32 v;
     D_801D0838 = func_00201B4C(D_801CEAB0);

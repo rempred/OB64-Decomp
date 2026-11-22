@@ -1,13 +1,8 @@
-typedef struct PiManagerView {
-    int field_00;
-    void *field_04;
-    void *commandQueue;
-} PiManagerView;
-extern PiManagerView D_800AA400;
+#include "common/os_pi_manager.h"
 
-void *func_00029cc0(void)
+MessageQueue *func_00029cc0(void)
 {
-    if (!D_800AA400.field_00)
+    if (!D_800AA400.active)
         return 0;
-    return D_800AA400.commandQueue;
+    return D_800AA400.command_queue;
 }

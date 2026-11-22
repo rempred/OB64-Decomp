@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 #include "common/types.h"
 typedef float f32;
 typedef struct Q7Unit Q7Unit;
@@ -9,7 +11,6 @@ extern u8 D_801F365D;
 extern s32 D_801F0DE8, D_801F0DE0, D_801F1074;
 extern u8 D_80210219;
 extern void func_00109C04(void);
-extern void func_001072B8(Q7Unit *);
 
 static __inline__ u32 clear_flag(u32 value, u32 flag)
 {

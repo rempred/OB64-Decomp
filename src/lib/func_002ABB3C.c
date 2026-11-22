@@ -1,4 +1,5 @@
 #include "game/battle_record_flag.h"
+#include "game/battle_roster_record.h"
 #include "game/class_comparison.h"
 
 typedef signed char s8;
@@ -11,11 +12,8 @@ extern u8 *D_8022A974;    /* Director scene block; actor pointers at +0x18 */
 extern s8 D_8022AC80;     /* Director scene mode */
 extern s16 D_8022A994;    /* current scenario id */
 
-extern s32 func_0020C0E8(char *unit);
-extern s32 func_0020C32C(char *unit);
-extern u8 func_002AD574(char *unit);
+extern u8 func_002AD574(void *unit);
 extern void *func_0002CD70(void *destination, int value, unsigned int count);
-extern void func_002AB810(volatile s32 *slots, char *unit, s32 index, s32 flip, s32 classId, s32 variant, s32 seenLeader);
 extern s32 func_002A9364(s32 slot, s32 classId, s32 variant, s32 animation,
                         s32 arg5, s32 arg6, u8 keep145, u8 keepUnit);
 extern void func_0029E70C(u8 *actor);
@@ -30,8 +28,11 @@ extern void func_002AB574(void);
  */
 s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
 {
-    /* Retail reads each slot again when passing it to the placement call. */
-    volatile s32 slots[4];
+    /* Keep retail reloads when reading the slots written by func_002AB810. */
+    union {
+        s32 write[4];
+        volatile s32 read[4];
+    } slots;
     s32 want[2];
     char *unit;
     u8 *actor;
@@ -98,8 +99,8 @@ s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
             flip = j;
         }
         flip = *(s32 *)(unit + 0x58) < 4;
-        func_0002CD70((void *)slots, 0xFF, 0x10);
-        func_002AB810(slots, unit, i, flip, *(s32 *)(unit + 0x48), *(s32 *)(unit + 0x4C), seenLeader);
+        func_0002CD70(slots.write, 0xFF, 0x10);
+        func_002AB810(slots.write, (BattleRosterRecord *)unit, i, flip, *(s32 *)(unit + 0x48), *(s32 *)(unit + 0x4C), seenLeader);
         if (*(s32 *)(unit + 0x48) == 0x87) {
             seenLeader = 1;
         }
@@ -110,7 +111,7 @@ s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
         } else if (D_8022A994 == 0x1E4 || D_8022A994 == 0x1E5) {
             flip = 1 - flip;
         }
-        if (slots[0] == -1) continue;
+        if (slots.read[0] == -1) continue;
         /* Compute this in the outer body so KMC keeps the saved mode live. */
         isSix = mode == -6;
         slotIndex = 0;
@@ -120,18 +121,18 @@ s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
              * failure edge to default placement. */
             s32 allow = 0;
             if (func_0020C32C(unit) && (!func_0020BFF8(unit) || !func_0020C0E8(unit))) {
-                actor = *(u8 **)(D_8022A974 + slots[slotIndex] * 4 + 0x18);
-                func_002A9364(slots[slotIndex], -1, -1, *(s16 *)(actor + 0x138) + 0x1C, -1, -1, 0, 1);
+                actor = *(u8 **)(D_8022A974 + slots.read[slotIndex] * 4 + 0x18);
+                func_002A9364(slots.read[slotIndex], -1, -1, *(s16 *)(actor + 0x138) + 0x1C, -1, -1, 0, 1);
                 func_0029E70C(actor);
             } else if ((isNine || isSix) && (allow = ((flip == 1) & (flagC == 0))) != 0) {
-                actor = *(u8 **)(D_8022A974 + slots[slotIndex] * 4 + 0x18);
-                func_002A9364(slots[slotIndex], -1, -1, *(s16 *)(actor + 0x138) + 0x1A, -1, -1, 0, 1);
+                actor = *(u8 **)(D_8022A974 + slots.read[slotIndex] * 4 + 0x18);
+                func_002A9364(slots.read[slotIndex], -1, -1, *(s16 *)(actor + 0x138) + 0x1A, -1, -1, 0, 1);
                 func_0029E70C(actor);
             } else {
-                func_002A9364(slots[slotIndex], -1, -1, -1, -1, -1, 0, 1);
+                func_002A9364(slots.read[slotIndex], -1, -1, -1, -1, -1, 0, 1);
             }
             slotIndex++;
-        } while (slots[slotIndex] != -1);
+        } while (slots.read[slotIndex] != -1);
     }
     func_002AB574();
     return 0;

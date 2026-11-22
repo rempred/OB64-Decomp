@@ -1,5 +1,9 @@
 typedef signed int s32;
-void func_000564d0(s32 a, s32 b, s32 c, s32 d);
-void func_000564b4(s32 a, s32 b, s32 c) {
-    func_000564d0(a, b, c, 0);
+typedef unsigned char u8;
+
+void func_000564d0(u8 *buffer, s32 mode, s32 item, s32 option);
+
+void func_000564b4(u8 *buffer, s32 mode, s32 item)
+{
+    func_000564d0(buffer, mode, item, 0);
 }

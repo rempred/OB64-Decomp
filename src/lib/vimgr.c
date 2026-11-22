@@ -1,13 +1,13 @@
+#include "common/os_message_queue.h"
+
 #include "common/event_message.h"
 
-typedef struct Thread Thread;
-typedef struct MesgQueue MesgQueue;
 typedef struct DevMgrView {
     int active;
     Thread *thread;
-    MesgQueue *commandQueue;
-    MesgQueue *eventQueue;
-    MesgQueue *accessQueue;
+    MessageQueue *commandQueue;
+    MessageQueue *eventQueue;
+    MessageQueue *accessQueue;
     void *dma;
     void *epiDma;
 } DevMgrView;
@@ -15,7 +15,7 @@ typedef struct ViMessageView {
     unsigned short type;
     unsigned char priority;
     unsigned char status;
-    MesgQueue *returnQueue;
+    MessageQueue *returnQueue;
     unsigned char remaining[16];
 } ViMessageView;
 typedef struct ViContextView {
@@ -24,30 +24,25 @@ typedef struct ViContextView {
     void *framebuffer;
     void *mode;
     unsigned int control;
-    MesgQueue *queue;
+    MessageQueue *queue;
     void *message;
 } ViContextView;
 extern DevMgrView D_800AA7C0;
 extern Thread D_800C35B8;
 extern unsigned char D_800C3770[4096];
-extern MesgQueue D_800C4770;
+extern MessageQueue D_800C4770;
 extern void *D_800C4788[5];
 extern ViMessageView D_800C47A0, D_800C47B8;
 extern unsigned short D_800C35B0;
 extern unsigned int __additional_scanline, __osViIntrCount, __osBaseCounter;
 extern unsigned long long __osCurrentTime;
 extern void __osTimerServicesInit(void);
-extern void osCreateMesgQueue(MesgQueue *, void **, int);
 extern int osGetThreadPri(Thread *);
 extern void osSetThreadPri(Thread *, int);
 extern unsigned int __osDisableInt(void);
 extern void __osRestoreInt(unsigned int);
-extern void osCreateThread(Thread *, int, void (*)(void *), void *, void *, int);
 extern void __osViInit(void);
-extern void osStartThread(Thread *);
 extern ViContextView *__osViGetCurrentContext(void);
-extern int osRecvMesg(MesgQueue *, void **, int);
-extern int osSendMesg(MesgQueue *, void *, int);
 extern void __osViSwapContext(void);
 extern unsigned int osGetCount(void);
 extern void __osTimerInterrupt(void);
@@ -97,7 +92,8 @@ void func_00025620(int priority)
 void func_000257c0(void *argument)
 {
     DevMgrView *manager;
-    ViMessageView *message = 0;
+    void *received = 0;
+    ViMessageView *message;
     ViContextView *context;
     unsigned int first;
     unsigned int count;
@@ -107,7 +103,8 @@ void func_000257c0(void *argument)
     first = 0;
     manager = argument;
     for (;;) {
-        osRecvMesg(manager->eventQueue, (void **)&message, 1);
+        osRecvMesg(manager->eventQueue, &received, 1);
+        message = received;
         switch (message->type) {
         case 13:
             __osViSwapContext();

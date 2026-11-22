@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef signed int s32;
@@ -19,7 +21,6 @@ extern void *func_000016C4(void *pointer);
 extern void func_0011B344(RuntimeUnit *unit);
 extern void func_00106F34(RuntimeUnit *unit);
 extern void func_00131828(RuntimeUnit *unit);
-extern void func_001072B8(RuntimeUnit *unit);
 extern s32 func_0012FB64(RuntimeUnit *unit, s32 index);
 
 static inline f32 float_word(u32 word)

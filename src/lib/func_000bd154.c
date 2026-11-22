@@ -1,4 +1,4 @@
-typedef unsigned char u8;
+#include "game/class_field_lookups.h"
 
 typedef struct AssignmentEntry {
     u8 bytes[54];
@@ -16,7 +16,6 @@ typedef struct CharacterEntry {
     u8 unk_13[0x25];
 } CharacterEntry;
 
-extern u8 func_0016DBD8(u8, u8);
 extern int func_0016B088(u8, u8, u8, u8, u8);
 extern CharacterEntry D_80193BC0[];
 

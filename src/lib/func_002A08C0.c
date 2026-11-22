@@ -41,7 +41,7 @@ void *func_8009C970(void *destination, int value, unsigned int count);
 void func_8022E9E8(Func002A08C0Actor *actor);
 
 s32 func_002A08C0(s32 slot, s32 source, s32 animation, s32 facing,
-                  f32 x, f32 y, f32 z, s32 variant)
+                  f32 x, f32 y, f32 z, s32 variant, s32 commandWord)
 {
     Func002A08C0Actor *actor;
     register s32 actor_source asm("$18") = source;

@@ -34,7 +34,7 @@ struct L4Wave {
     command->word1 = (length); \
 }
 
-extern void mem_byte_copy(void *, void *, int);
+extern void mem_byte_copy(const void *, void *, int);
 L4Command *func_0001dbac(L4Command *, L4Load *, int, int, short, int, int);
 
 L4Command *func_0001d220(void *filter, short *output, int count, int offset,

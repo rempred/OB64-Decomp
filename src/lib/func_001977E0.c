@@ -1,3 +1,5 @@
+#include "game/sound_channel.h"
+
 #include "game/panel_constructor.h"
 #include "game/indexed_record_lookup.h"
 #include "game/scenario_source_record.h"
@@ -108,7 +110,7 @@ extern u8 D_801971F2[][25];
 extern u8 D_801971FD[][25];
 extern ShopValueRecord56 D_80193BC0[];
 extern f64 D_80219DA0, D_80219DA8;
-extern u8 D_800EB1F0;
+extern SoundChannel D_800EB1F0;
 extern void D_80216164(Panel *panel, s32 slot);
 extern void D_80216C54(Panel *panel, s32 slot);
 extern void D_8021794C(Panel *panel, s32 slot);
@@ -122,7 +124,8 @@ extern void *resource_free(void *resource);
 extern u8 func_0019B1B0(u32 equipment_id);
 extern void func_0019B800(s32 count);
 extern void func_0019BB34(void);
-extern void func_0019ADF0(void *object, s32 item, s32 mode);
+typedef struct ShopWindowBufferView ShopWindowBufferView;
+extern void func_0019ADF0(ShopWindowBufferView *window, s32 item, u8 mode);
 extern s32 func_801DCF90(void *unit);
 extern s32 func_0005148c(void *record);
 extern void func_0019BAB4(void);
@@ -131,14 +134,14 @@ extern u8 func_802189BC(u8 category);
 extern u32 func_0019BD14(void);
 extern u8 func_0019B26C(u16 selected, u8 mode);
 extern signed char *func_000454b0(s32 value);
-extern void func_0019BAE4(u8 quantity, void *payload);
+extern void func_0019BAE4(s32 quantity, u8 *payload);
 extern void func_0019B710(u8 *quantity, u8 value);
-extern void func_0019B4C4(u16 selected, u8 quantity, s32 consumable);
+extern void func_0019B4C4(u16 selected, u32 quantity, u8 consumable);
 extern u8 func_001349BC(u8, void *, void *, s32, s32, s32, s32);
 extern u32 func_0014F300(s32 source_word);
-extern void func_0003fb94(const void *, s32);
+extern void func_0003fb94(SoundChannel *, s32);
 extern s32 func_00134830(u8, void *, s32, s32, u8, s32);
-extern void func_0019B63C(u16 selected, u8 count);
+extern void func_0019B63C(u16 selected, u32 count);
 extern void func_00052284(void *object);
 extern void func_0019BCA0(void);
 extern void func_0005219c(void *, s32, s16, s32, s32);

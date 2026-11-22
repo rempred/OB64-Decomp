@@ -162,7 +162,7 @@ typedef struct ALParam_s {
 typedef struct ALPlayer_s {
     struct ALPlayer_s *next;
     void *clientData;
-    void *handler;
+    s32 (*handler)(void *);
     s32 callTime;
     s32 samplesLeft;
 } ALPlayer;

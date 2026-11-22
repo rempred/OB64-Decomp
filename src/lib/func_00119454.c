@@ -1,6 +1,12 @@
+#include "game/unit_record_lookup.h"
+
+#include "game/sound_channel.h"
+
+#include "game/unit_cleanup.h"
+
 #include "common/types.h"
 typedef float f32;
-typedef struct Q7Unit Q7Unit;
+typedef struct RuntimeUnit Q7Unit;
 #define FIELD(p, type, offset) (*(type *)((u32)(p) + (offset)))
 extern u8 D_801939CC, D_801976D8, D_801976E8, D_8018F481;
 extern u8 D_801F365D, D_801974DF, D_80193672, D_80193673;
@@ -12,28 +18,25 @@ extern u8 D_801969B8[][11], D_801969BA[][11], D_801969C1[][11], D_801969C2[][11]
 extern u16 D_80195578[][26], D_80193BD8[][28], D_80193BD6[][28], D_8019532C[];
 extern s8 D_801F1039[];
 extern u16 D_801F1042[], D_801951CC[][18];
-extern u8 D_801F1052[], D_800EB1F0[];
+extern u8 D_801F1052[];
+extern SoundChannel D_800EB1F0;
 extern void func_80186190(s32, s32);
 extern s32 func_80186210(s32);
-extern void func_0010746C(Q7Unit *);
 extern void func_801F69FC(Q7Unit *);
 extern void func_00118D0C(Q7Unit *);
 extern void func_0012A958(Q7Unit *);
 extern s32 func_0012ECDC(s32);
-extern s32 func_0012E968(Q7Unit *);
 extern s32 func_0012F010(s32);
-extern void func_800EA604(void *, s32);
+extern void func_800EA604(SoundChannel *, s32);
 extern void func_00127154(s32, s32, s32);
 extern void func_00118E44(Q7Unit *, Q7Unit *);
 extern s32 func_801DD2B0(Q7Unit *);
-extern s32 func_0012DA9C(Q7Unit *);
-extern s32 func_0012DA10(Q7Unit *);
-extern void func_0012F140(Q7Unit *);
+struct DeploymentUnit;
+extern void func_0012F140(struct DeploymentUnit *);
 extern s32 func_001305B4(Q7Unit *);
 extern void func_001191CC(s32);
-extern u8 func_00129068(u8 *);
+extern int func_00129068(u8 *);
 extern u8 func_001291B4(u8 *);
-extern s32 func_0012E8EC(Q7Unit *);
 extern s32 func_0012FBB8(s32, s32);
 
 static __inline__ void clear_field_20000(Q7Unit *unit)
@@ -80,7 +83,9 @@ s32 func_00119454(void)
     s32 index = 0;
     s32 result;
     s32 first_index, second_index;
-    Q7Unit *first_unit, *second_unit;
+    Q7Unit *first_unit;
+    /* Both interfaces receive the same aligned unit-bank record. */
+    void *second_unit;
     s32 secondary_result;
     s32 primary_filter, secondary_filter;
     u8 first_state;
@@ -230,7 +235,7 @@ s32 func_00119454(void)
         if (primary_result == 0) {
             func_0010746C(first_unit);
             FIELD(first_unit, u32, 0) &= ~0x10U;
-            func_800EA604(D_800EB1F0, 0x289);
+            func_800EA604(&D_800EB1F0, 0x289);
             func_00118D0C(first_unit);
             func_0012A958(first_unit);
             goto after_actions;
@@ -248,7 +253,7 @@ s32 func_00119454(void)
                 if (secondary_result) {
                     func_0010746C(first_unit);
             FIELD(first_unit, u32, 0) &= ~0x10U;
-            func_800EA604(D_800EB1F0, 0x289);
+            func_800EA604(&D_800EB1F0, 0x289);
             func_00118D0C(first_unit);
                     func_0012A958(first_unit);
             goto after_actions;
@@ -266,7 +271,7 @@ s32 func_00119454(void)
                 if (secondary_result) {
                     func_0010746C(first_unit);
             FIELD(first_unit, u32, 0) &= ~0x10U;
-            func_800EA604(D_800EB1F0, 0x289);
+            func_800EA604(&D_800EB1F0, 0x289);
             func_00118D0C(first_unit);
                     func_0012A958(first_unit);
             goto after_actions;
@@ -283,7 +288,7 @@ s32 func_00119454(void)
             if (secondary_result) {
                 func_0010746C(first_unit);
             FIELD(first_unit, u32, 0) &= ~0x10U;
-            func_800EA604(D_800EB1F0, 0x289);
+            func_800EA604(&D_800EB1F0, 0x289);
             func_00118D0C(first_unit);
                 func_0012A958(first_unit);
             goto after_actions;
@@ -303,7 +308,7 @@ transfer_pair:
             if (secondary_result) {
                 func_0010746C(first_unit);
             FIELD(first_unit, u32, 0) &= ~0x10U;
-            func_800EA604(D_800EB1F0, 0x289);
+            func_800EA604(&D_800EB1F0, 0x289);
             func_00118D0C(first_unit);
                 func_0012A958(first_unit);
             goto after_actions;
@@ -317,7 +322,7 @@ reset_both:
                 func_0012A958(first_unit);
                 func_0010746C(second_unit);
                 FIELD(second_unit, u32, 0) &= mask;
-                func_800EA604(D_800EB1F0, 0x289);
+                func_800EA604(&D_800EB1F0, 0x289);
                 func_00118D0C(second_unit);
                 func_0012A958(second_unit);
             }

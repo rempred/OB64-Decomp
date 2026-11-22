@@ -3,8 +3,7 @@ typedef signed short s16;
 typedef signed int s32;
 typedef float f32;
 extern u8 *D_801B3E20;
-void func_000fd23c(u8 *p);
-void func_000fd23c(u8 *p);
+void func_000fd23c(void *data);
 s32 func_00100328(void) {
     u8 *p = D_801B3E20;
     func_000fd23c(p + 0x1E4);

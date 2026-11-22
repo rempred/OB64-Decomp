@@ -17,7 +17,7 @@ extern s32 D_8022A794;
 extern s32 D_8022A798;
 extern s32 D_8022A79C;
 extern s32 D_8022A7A0;
-void func_00284288(void);
+s32 func_00284288(void);
 void func_00282FE0(void) {
     if (!D_8018FC19) {
         D_8022A740 = 0;

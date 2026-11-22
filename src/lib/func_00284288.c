@@ -1,3 +1,5 @@
+#include "game/battle_panel_record.h"
+
 /* Command-stream dispatcher, ROM 00284288..002861C8.
 * Numeric commands and field offsets retain uncertainty in their meanings.
 * Cursor updates after mode-dependent blocks are deliberately shared: KMC
@@ -14,10 +16,9 @@ void func_0001a050(void);
 void func_00045cb0(s8);
 s32 func_00045df4(s16);
 void func_000466f4();
-void func_00048024();
+s32 func_00048024(void);
 void func_00048294();
 void func_0004ecfc();
-void func_001F0E04(s32, s32);
 s32 func_0026285C(void *, u16);
 void func_0028308C(s32, s32, s32);
 void func_002831E0(s32, s32);
@@ -31,18 +32,18 @@ void func_00283740(void);
 void func_00283748(s32);
 void func_002838AC(s32, s32, s32, s32, s32, s32);
 void func_002839A8();
-s32 func_002839C4();
+s32 func_002839C4(void);
 void func_00283B30(void);
 s32 func_00283E14(s32);
 void func_00283FA8(s32, s32);
 s32 func_002861C8(s32 *nesting, s32 cursor, s32 *stream, s32 value, s32 skip, s32 scan_mode);
 s32 func_002864F8(s32);
-void func_0029A4C0(void *);
+void func_0029A4C0(s32 *);
 void func_0029A59C(s32, s32, s32, s32);
 void func_0029A7C4(u8, s32, s32, s32, s32, s32, s32, s32, s32);
 void func_0029AC44(s32);
 void func_0029AF24();
-void func_0029B78C(void *);
+void func_0029B78C(s32 *);
 void func_0029B9E0(s32);
 void func_0029BA80(s32, s32, s32, s32, s32, s32, s32, s32, s32);
 s32 func_0029BDC4(s32);
@@ -98,14 +99,14 @@ void func_002AF5C4();
 void func_002AF6C0(void *);
 void func_002AAC60(s32);
 void func_002AB2A8(s16);
-s16 func_002AB4DC();
+s32 func_002AB4DC(void);
 void func_00297CC8(s32, s32);
 void func_002AB508(s32);
-void func_002B0D30(s32, s32);
+s16 func_002B0D30(s32, s32);
 void func_002B0E8C(s32, s32, s32);
 s32 func_002B1014(void);
 void func_002B1028(s32, s32, s32);
-void func_002ABB3C(s32, s32, s32);
+s32 func_002ABB3C(s32, s32, s32);
 s32 func_002ABF64(s32);
 void func_002ABFD4(s32);
 void func_00298914(s32, s32);
@@ -462,7 +463,7 @@ s32 func_00284288(void) {
             command_result = func_002a3efc(*(s32 *)((s8 *)(((s32 *)(cursor * 4 + (s32)stream))) + (0xC)));
             break;
         case 0x28:
-            func_0029B78C((u8 *)stream + (cursor_byte_offset + 4));
+            func_0029B78C((s32 *)((u8 *)stream + (cursor_byte_offset + 4)));
             cursor += 8;
             break;
         case 0x29:
@@ -534,7 +535,7 @@ s32 func_00284288(void) {
             cursor += 7;
             break;
         case 0x36:
-            func_0029A4C0((u8 *)stream + (cursor * 4 + 4));
+            func_0029A4C0((s32 *)((u8 *)stream + (cursor * 4 + 4)));
             cursor += 7;
             break;
         case 0x39:
@@ -596,7 +597,7 @@ s32 func_00284288(void) {
             func_002AB2A8(args_3d);
             break;
         case 0x3E:
-            command_result = func_002AB4DC();
+            command_result = (s16)func_002AB4DC();
             scan_mode = 0;
             break;
         case 0x3F:
@@ -757,14 +758,14 @@ s32 func_00284288(void) {
             { s32 *args = (s32 *)(cursor * 4 + (s32)stream);
                 s32 index = args[1];
                 s32 value = args[2];
-                func_001F0E04(D_801D07D0 + index * 0x64 + 0x14, value);
+                func_001F0E04((struct Panel1F *)(D_801D07D0 + index * 0x64 + 0x14), value);
                 cursor += 2;
             }
             break;
         case 0x61:
             cursor += 2;
             func_001F0E04(
-                *(s32 *)((*(s32 *)((u8 *)command_address + 4) * 0xF8) + D_801D07D8) + 0x44,
+                (struct Panel1F *)(*(s32 *)((*(s32 *)((u8 *)command_address + 4) * 0xF8) + D_801D07D8) + 0x44),
                 *(s32 *)((u8 *)command_address + 8));
             break;
         case 0x62:

@@ -1,3 +1,7 @@
+#include "game/sound_channel.h"
+
+#include "game/unit_cleanup.h"
+
 /* Private complete-body PURE_C control. Both switch matrices follow retail
  * table entries; the exact hybrid remains the reference/fallback. */
 typedef signed char s8;
@@ -17,13 +21,12 @@ typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
-M2C_UNK func_0005c090(M2C_UNK, M2C_UNK);
+void func_0005c090(s32, s32);
 s32 func_0005c110(M2C_UNK);
 f32 func_000F315C(u8, f32, f32);
-M2C_UNK func_001072B8(s32);
 M2C_UNK func_0010D484(f32, f32, f32, s32, s32);
 extern void func_00121DA8(RuntimeUnit *unit);
-M2C_UNK func_00127154(M2C_UNK, M2C_UNK, M2C_UNK);
+void func_00127154(s32, s32, s32);
 s32 func_00127BFC();
 u8 func_00127C50();
 M2C_UNK func_0012EA80(s32, f32 *);
@@ -35,7 +38,7 @@ s32 func_00139CE8();
 s32 func_00139D74();
 M2C_UNK func_00139DC0(u32, f32 *, u16 *, s8 *);
 M2C_UNK func_800EA6B0(void *, M2C_UNK, M2C_UNK, M2C_UNK);
-M2C_UNK func_800EA6C8(void *);
+void func_800EA6C8(SoundChannel *);
 M2C_UNK func_802173B0(M2C_UNK);
 M2C_UNK memset_00023780(void *, s32);
 M2C_UNK os_inval_dcache(void *, s32);
@@ -80,7 +83,7 @@ extern u8 overlay_c_dma_rom_start[];
 extern u8 overlay_c_dma_rom_end[];
 extern u8 overlay_c_dma_text_start[];
 extern void *scenario_state_slot;
-extern s32 D_801F0CB0[];
+extern void *D_801F0CB0[];
 extern u8 D_800EB0DC[];
 extern u8 D_8018F481;
 extern volatile s32 D_8018F58C;
@@ -574,7 +577,7 @@ block_124: {
     if (D_8018F481 != 0x36) {
         return 1;
     }
-    func_800EA6C8(final_state - 0x2C);
+    func_800EA6C8((SoundChannel *)(final_state - 0x2C));
 }
 block_128:
     return 1;

@@ -1,6 +1,6 @@
-extern void func_00283FA8(void *arg0, int arg1);
+extern void func_00283FA8(int selector, int continuation);
 
-void func_00284210(void *arg0)
+void func_00284210(int selector)
 {
-    func_00283FA8(arg0, 1);
+    func_00283FA8(selector, 1);
 }

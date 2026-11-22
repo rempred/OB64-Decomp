@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 #include "game/effect_commands_e09.h"
 #include "game/effect_adapters_e08.h"
 #include "common/types.h"
@@ -49,7 +51,6 @@ extern void func_00262B68(void);
 
 
 extern void *func_0020C478(unsigned int);
-extern s32 func_0020C32C(void *);
 
 extern float sinf(float);
 extern float func_00020bf0(float);

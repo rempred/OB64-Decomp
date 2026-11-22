@@ -1,18 +1,6 @@
-typedef struct PiHandleView {
-    struct PiHandleView *next;
-    unsigned char type;
-    unsigned char latency;
-    unsigned char pageSize;
-    unsigned char releaseDuration;
-    unsigned char pulse;
-    unsigned char domain;
-    unsigned short field_0A;
-    unsigned int baseAddress;
-    unsigned int speed;
-    unsigned char transfer[0x60];
-} PiHandleView;
-extern PiHandleView __CartRomHandle;
-extern PiHandleView *__osPiTable;
+#include "common/os_pi_handle.h"
+extern OSPiHandle __CartRomHandle;
+extern OSPiHandle *__osPiTable;
 extern int D_800AA430;
 extern void __osPiGetAccess(void);
 extern void __osPiRelAccess(void);
@@ -20,7 +8,7 @@ extern void bzero(void *memory, int bytes);
 extern unsigned int __osDisableInt(void);
 extern void __osRestoreInt(unsigned int mask);
 
-PiHandleView *func_0001c130(void)
+OSPiHandle *func_0001c130(void)
 {
     unsigned int latency, pageSize, releaseDuration, pulse, config, mask;
     __osPiGetAccess();

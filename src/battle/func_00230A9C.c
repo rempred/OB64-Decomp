@@ -1,10 +1,11 @@
+#include "game/battle_panel_record.h"
+
+#include "game/battle_resolution_record.h"
+
 #include "game/combat_selector.h"
 #include "game/combat_evaluator.h"
 #include "game/battle_record_flag.h"
 
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
 typedef unsigned long long u64;
 
 typedef struct A9CObject {
@@ -52,6 +53,7 @@ typedef union A9CWork {
         union {
             A9CStateBlock blocks[5];
             Func001F0E64Record record;
+            Panel1F panel;
             Func001F197CState evaluator;
         } state;
     } fields;
@@ -64,24 +66,14 @@ extern void func_00023780(void *, u32);
 extern unsigned int func_00022e60(void);
 extern int rand(void);
 extern int func_000454E0(int);
-extern int func_0020C104(A9CObject *);
-extern int func_0020C2C0(A9CObject *);
-extern int func_0020C32C(A9CObject *);
-extern int func_0020C2F4(A9CObject *);
-extern int func_0020C310(A9CObject *);
-extern int func_00233ED4(A9CObject *);
 extern void *func_0020C478(unsigned int index);
-extern int func_0022F2BC(A9CObject *, int *);
+extern int func_0022F2BC(void *, int *);
 extern int func_0020F8DC(void);
-extern int func_0020D814(A9CObject *);
-extern void func_0022EF50(A9CObject *);
+extern void func_0022EF50(void *);
 extern int func_0020BFE4(void);
-extern u16 func_0020C448(A9CObject *);
+extern u16 func_0020C448(void *);
 extern u8 func_00201584(int, int);
 extern int func_00201798(int, int, int, int);
-extern void func_001F0E04(void *, int);
-extern int func_0022222C(A9CObject *, A9CObject *, int, int);
-extern int func_002223E0(A9CObject *, A9CObject *, int, int, int, int);
 extern void func_0021D200(int, int, void *);
 extern void func_0021D230(int, int, void *, int);
 extern void func_0021D25C(int, int, void *, int, int);
@@ -93,10 +85,10 @@ extern int func_002363FC(A9CObject *);
 extern int func_002365BC(A9CObject *, A9CObject *, int, int);
 extern int func_00235754(A9CObject *, A9CObject *);
 extern int func_0023697C(A9CObject *, A9CObject *, float, int, int, int);
-extern int func_0022A4E0(A9CObject *);
-extern void func_0022ADFC(A9CObject *, int, int, int, int, int, int, int);
+extern int func_0022A4E0(void *);
+extern void func_0022ADFC(void *, int, int, int, int, u8, int, int);
 
-int func_00230A9C(A9CObject **input, int *outTime)
+int func_00230A9C(BattleResolutionRecord *input, int *outTime)
 {
     int raw[3];
     A9CObject *selected[3];
@@ -160,53 +152,53 @@ int func_00230A9C(A9CObject **input, int *outTime)
     auxiliaryGuard = 0;
     for (i = 0; i < 3; ++i) {
         raw[i] = -1;
-        if (func_0020C104(input[i]) == 0)
+        if (func_0020C104(input->objects[i]) == 0)
             continue;
-        if (func_0020C2C0(input[i]) != 0)
+        if (func_0020C2C0(input->objects[i]) != 0)
             continue;
-        if (func_0020C32C(input[i]) != 0)
+        if (func_0020C32C(input->objects[i]) != 0)
             continue;
-        if (func_0020C2F4(input[i]) != 0)
+        if (func_0020C2F4(input->objects[i]) != 0)
             continue;
-        if (func_0020C310(input[i]) != 0)
+        if (func_0020C310(input->objects[i]) != 0)
             continue;
-        if (input[i]->field6C != D_801CE8C0->field00)
+        if (((A9CObject *)input->objects[i])->field6C != D_801CE8C0->field00)
             continue;
-        if (input[i]->field6C >= input[i]->field70)
+        if (((A9CObject *)input->objects[i])->field6C >= ((A9CObject *)input->objects[i])->field70)
             continue;
-        firstResult = func_00233ED4(input[i]);
-        firstDestination = input[i];
+        firstResult = func_00233ED4(input->objects[i]);
+        firstDestination = ((A9CObject *)input->objects[i]);
         raw[i] = firstResult;
         firstDestination->field68 = firstResult;
     }
 
     if (raw[0] != -1 && raw[0] == raw[1] && raw[0] == raw[2]) {
         for (i = 0; i < 3; ++i)
-            selected[i] = input[i];
+            selected[i] = ((A9CObject *)input->objects[i]);
         selectedCount = 3;
         pendingTarget = func_0020C478(raw[0]);
         target = pendingTarget;
     } else {
         if (raw[0] != -1 && raw[0] == raw[1]) {
             raw[2] = -1;
-            selected[0] = input[0];
-            selected[1] = input[1];
+            selected[0] = (A9CObject *)input->objects[0];
+            selected[1] = (A9CObject *)input->objects[1];
             pendingTarget = func_0020C478(raw[0]);
-            excluded = input[2];
+            excluded = (A9CObject *)input->objects[2];
         } else if (raw[0] != -1 && raw[0] == raw[2]) {
             raw[1] = -1;
-            selected[0] = input[0];
-            selected[1] = input[2];
+            selected[0] = (A9CObject *)input->objects[0];
+            selected[1] = (A9CObject *)input->objects[2];
             pendingTarget = func_0020C478(raw[0]);
-            excluded = input[1];
+            excluded = (A9CObject *)input->objects[1];
         } else {
             if (raw[1] == -1 || raw[1] != raw[2])
                 return 0;
             raw[0] = -1;
-            selected[0] = input[1];
-            selected[1] = input[2];
+            selected[0] = (A9CObject *)input->objects[1];
+            selected[1] = (A9CObject *)input->objects[2];
             pendingTarget = func_0020C478(raw[1]);
-            excluded = input[0];
+            excluded = (A9CObject *)input->objects[0];
         }
         selectedCount = 2;
         target = pendingTarget;
@@ -231,7 +223,7 @@ int func_00230A9C(A9CObject **input, int *outTime)
         base = target->field94;
     if (func_0020BFE4() != 0) {
         for (i = 0; i < selectedCount; ++i) {
-            values[i] = func_0022222C(selected[i], target,
+            values[i] = func_0022222C((BattleRosterRecord *)selected[i], (BattleRosterRecord *)target,
                                      selected[i]->field5C, selected[i]->field64);
             scheduled[i] = base - values[i];
         }
@@ -403,7 +395,7 @@ int func_00230A9C(A9CObject **input, int *outTime)
             *destination++ = *source++;
         } while (source != sourceEnd);
         failureState = work.fields.state.blocks;
-        func_001F0E04(failureState, followup == 0 ? 0x17 : 0x15);
+        func_001F0E04(&work.fields.state.panel, followup == 0 ? 0x17 : 0x15);
         firstEvaluation = func_001F197C(target, &work.fields.state.evaluator, 0);
         func_0021D230(0xE, scheduled[0] + values[0] + work.words[0], target, 0xFF);
         objectTime = scheduled[0] + values[0] + work.words[0] + firstEvaluation;
@@ -428,7 +420,7 @@ int func_00230A9C(A9CObject **input, int *outTime)
     for (i = 0; i < selectedCount; ++i) {
         secondEvaluation = 0;
         if (func_0020BFE4() != 0) {
-            secondEvaluation = func_002223E0(selected[i], target, byte57, byte5B,
+            secondEvaluation = func_002223E0((BattleRosterRecord *)selected[i], (BattleRosterRecord *)target, byte57, byte5B,
                                              selected[i]->field5C, selected[i]->field64);
             func_0021D25C(8, scheduled[i] + values[i] + duration, selected[i], 0xFF, 11);
             func_0021D25C(9, scheduled[i] + values[i] + duration + secondEvaluation,

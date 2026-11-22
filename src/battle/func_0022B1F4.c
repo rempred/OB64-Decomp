@@ -1,7 +1,10 @@
+#include "game/battle_roster_record.h"
+
 #include "game/combat_selector.h"
 #include "game/combat_evaluator.h"
 #include "game/battle_record_flag.h"
 #include "game/battle_art_lookup.h"
+#include "game/class_field_lookups.h"
 
 #include "common/types.h"
 
@@ -20,14 +23,9 @@ typedef struct {
     s32 buffer[6];
 } LocalData;
 unsigned int func_00022e60(void);
-s32 func_00043ad8(u8, u8);
 s32 func_000454e0(s32);
 s32 func_00201798(s32, s32, s32, UnknownWord);
 s32 func_0020BFE4();
-s32 func_0020C104(s32 *);
-s32 func_0020C164(s32 *);
-s32 func_0020C2C0(s32 *);
-s32 func_0020C32C(s32 *);
 u16 func_0020C448(void *);
 void *func_0020C478(unsigned int index);
 s32 func_0020D72C(void *);
@@ -36,26 +34,20 @@ void func_0021D230(UnknownWord, s32, void *, s32);
 void func_0021D25C(s32, s32, void *, s32, s32);
 void func_0021D28C(s32, s32, void *, s32, s32, s32);
 void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
-s32 func_0022222C(s32 *, s32 *, s32, s32);
-s32 func_002223E0(s32 *, s32 *, u8, u8, s32, s32);
-s32 func_0022257C(s32, UnknownWord, UnknownWord);
-s32 func_0022A4E0(s32 *);
-UnknownWord func_0022ADFC(s32 *, UnknownWord, s32, s32, s32, s32, s32, s32);
+s32 func_0022257C(void *, s32, s32 *);
+s32 func_0022A4E0(void *);
+void func_0022ADFC(void *, s32, s32, s32, s32, u8, s32, s32);
 u32 func_00233210(s32 *, s32 *);
-s32 func_00233ED4(s32 *);
 UnknownWord func_0023431C(s32 *, s32, u8);
 s32 func_00235754(s32 *, s32 *);
 s32 func_002361EC(s32 *);
 s32 func_002363FC(s32 *);
 u32 func_002365BC(s32 *, s32 *, s32, s32);
 s32 func_0023697C(s32 *, s32 *, f32, UnknownWord, s32, s32);
-s32 func_00237750(s32 *, s32 *, UnknownWord, UnknownWord, s32);
-s32 func_00237810(s32 *, s32 *);
-s32 func_00237890(s32 *, s32 *);
 u8 func_00237AF8(s32 *, UnknownWord);
 UnknownWord memset_00023780(s32 *, UnknownWord);
 int rand(void);
-s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
+s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
     LocalData data;
     u32 actionByte;
     s32 *last;
@@ -76,7 +68,7 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
     u8 *var_v1_366;
     UnknownWord var_a3_341;
     UnknownWord var_s1_507;
-    s32 *temp_v0_169;
+    BattleRosterRecord *temp_v0_169;
     s32 temp_a0_203;
     s32 temp_a0_37;
     s32 temp_a0_446;
@@ -243,7 +235,8 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
             } else {
                 func_0021D28C(2, temp_s6_230, sourceWords, 0xFF, (*(s32 *)((s8 *)(sourceWords) + (0x68))), 5);
             }
-            if ((func_00043ad8((*(u8 *)((s8 *)(sourceWords) + (0x4B))), (*(u8 *)((s8 *)(sourceWords) + (0x4F)))) & 0xFF) != 1) {
+            if (func_00043ad8(*(u8 *)((s8 *)sourceWords + 0x4B),
+                                *(u8 *)((s8 *)sourceWords + 0x4F)) != 1) {
                 temp_v0_257 = (*(s32 *)((s8 *)(sourceWords) + (0)));
                 data.state.copy = *(LocalCopy *)(temp_v0_257 + 0x44);
                 func_001F0E64(&data.state.record, 6);
@@ -252,12 +245,12 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
                 var_s8_30 += temp_s1_280;
             }
         }
-        temp_s0_294 = func_002361EC(sourceWords);
-        temp_s3_301 = func_002365BC(sourceWords, temp_v0_169, temp_s0_294, func_002363FC(temp_v0_169));
+        temp_s0_294 = func_002361EC((s32 *)sourceWords);
+        temp_s3_301 = func_002365BC((s32 *)sourceWords, (s32 *)temp_v0_169, temp_s0_294, func_002363FC((s32 *)temp_v0_169));
         temp_s0_303 = rand();
         temp_s1_305 = rand();
         temp_s3_301 = (u32) ((((temp_s0_303 << 0x12) & 0x0C000000) | (temp_s1_305 << 0xF) | rand()) % 100) < temp_s3_301;
-        data.state.copy = *(LocalCopy *)(*sourceWords + 0x44);
+        data.state.copy = *(LocalCopy *)((u8 *)sourceWords->links[0] + 0x44);
         var_a3_341 = 0;
         if (temp_s3_301 == 0) {
             if (func_00201584((*(s32 *)((s8 *)(temp_v0_169) + (0x48))), (*(s32 *)((s8 *)(temp_v0_169) + (0x4C)))) & 0xFF) {
@@ -354,18 +347,18 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
             if (func_0020C104(sourceWords) != 0) {
                 index = 0;
                 do {
-                    if (sourceWords[index] != 0) {
-                        temp_s0_568 = func_002361EC(sourceWords);
-                        temp_s0_575 = func_002365BC(sourceWords, temp_v0_169, temp_s0_568, func_002363FC(temp_v0_169));
+                    if (sourceWords->links[index] != 0) {
+                        temp_s0_568 = func_002361EC((s32 *)sourceWords);
+                        temp_s0_575 = func_002365BC((s32 *)sourceWords, (s32 *)temp_v0_169, temp_s0_568, func_002363FC((s32 *)temp_v0_169));
                         var_s5_548 += ((s32)func_00022e60() % 100) < (s32) temp_s0_575;
                     }
                     index += 1;
                 } while ((u32)index < 3U);
-                spE4 = func_0023697C(sourceWords, temp_v0_169, (f32) (s32) ((f32) func_00235754(sourceWords, temp_v0_169) * (*(f32 *)((s8 *)(((var_s5_548 * 4) + 0x801F0000)) + (0x68D0)))), 0, 0, 0);
+                spE4 = func_0023697C((s32 *)sourceWords, (s32 *)temp_v0_169, (f32) (s32) ((f32) func_00235754((s32 *)sourceWords, (s32 *)temp_v0_169) * (*(f32 *)((s8 *)(((var_s5_548 * 4) + 0x801F0000)) + (0x68D0)))), 0, 0, 0);
             } else {
                 spE4 = func_00237750(sourceWords, temp_v0_169, 0, 0, 0);
             }
-            temp_s7_636 = func_0022257C((*(s32 *)((s8 *)(temp_v0_169) + (0))) + 0x44, 0x11, 0);
+            temp_s7_636 = func_0022257C((u8 *)temp_v0_169->links[0] + 0x44, 0x11, 0);
             for (index = 0; index < entryCount - 1; index++) {
                 if (func_0020C32C(temp_v0_169) != 0) {
                     func_0021D230(0x2D, temp_s6_230 + var_s8_30 + data.buffer[index], temp_v0_169, 0xFFU);
@@ -388,7 +381,7 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
                 spE4 *= 2;
             }
             if (spBF == 2) {
-                spD7 = func_00237AF8(temp_v0_169, 2);
+                spD7 = func_00237AF8((s32 *)temp_v0_169, 2);
             }
             actionByte = spBF;
             {
@@ -406,14 +399,14 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
             temp_s0_754 = temp_s6_230 + var_s8_30;
             func_0022ADFC(temp_v0_169, 0, temp_s0_754 + *last, spE4, actionByte, temp_s3_301 & 0xFF, 1, var_v1_742);
             if ((func_0020C2C0(temp_v0_169) != 0) && (func_0020C014(sourceWords) != 0) && (func_0020C104(sourceWords) == 0)) {
-                temp_v0_771 = func_00233210(sourceWords, temp_v0_169);
+                temp_v0_771 = func_00233210((s32 *)sourceWords, (s32 *)temp_v0_169);
                 if (temp_v0_771 != 0) {
                     (*(u8 *)((s8 *)(sourceWords) + (0x34))) = (u8) ((*(u8 *)((s8 *)(sourceWords) + (0x34))) + temp_v0_771);
                     func_0021D230(0x3F, temp_s0_754 + sp9C, sourceWords, temp_v0_771);
                 }
             }
             if ((spD7 != 0) && (func_0020C2C0(temp_v0_169) == 0) && (func_0020C32C(temp_v0_169) == 0)) {
-                func_0023431C(temp_v0_169, temp_s6_230 + var_s8_30 + data.buffer[entryCount - 1], spD7);
+                func_0023431C((s32 *)temp_v0_169, temp_s6_230 + var_s8_30 + data.buffer[entryCount - 1], spD7);
                 temp_v1_803 = (*(s32 *)((s8 *)(temp_v0_169) + (0x94)));
                 if (spB4 < temp_v1_803) {
                     spB4 = temp_v1_803;
@@ -432,7 +425,7 @@ hit_bound_update:
             goto after_bound_update;
         } else {
             temp_s1_815 = func_00201584((*(s32 *)((s8 *)(temp_v0_169) + (0x48))), (*(s32 *)((s8 *)(temp_v0_169) + (0x4C)))) & 0xFF;
-            data.state.copy = *(LocalCopy *)(*temp_v0_169 + 0x44);
+            data.state.copy = *(LocalCopy *)((u8 *)temp_v0_169->links[0] + 0x44);
             func_001F0E64(&data.state.record, ((0 - (temp_s1_815 == 0)) & 0x17) | 0x15);
             temp_s3_301 = func_001F197C(temp_v0_169, &data.state.evaluator, 0);
             temp_s0_846 = temp_s6_230 + var_s8_30;

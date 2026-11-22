@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -28,7 +30,6 @@ extern u8 D_801971F1[];
 
 f32 func_000F315C(u8, f32, f32);                    /* extern */
 f32 func_000F3428(u8, f32, f32);                    /* extern */
-void func_001072B8(void *);                      /* extern */
 void func_0012EA80(s32, f32 *);                  /* extern */
 
 

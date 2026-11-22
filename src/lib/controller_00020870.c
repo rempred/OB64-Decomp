@@ -1,3 +1,5 @@
+#include "common/os_message_queue.h"
+
 typedef unsigned long long Ticks;
 typedef struct Timer Timer;
 struct Timer {
@@ -5,11 +7,6 @@ struct Timer {
     Ticks interval, value;
     void *queue, *message;
 };
-typedef struct {
-    void *receiveWaiters, *sendWaiters;
-    int validCount, first, capacity;
-    void **messages;
-} MessageQueue;
 typedef struct {
     unsigned char dummy, txBytes, rxBytes, command;
     unsigned char typeLow, typeHigh, status, terminal;
@@ -25,9 +22,7 @@ extern unsigned char __osContLastCmd, __osMaxControllers;
 extern MessageQueue __osEepromTimerQ;
 extern void *__osEepromTimerMsg;
 extern Ticks osGetTime(void);
-extern void osCreateMesgQueue(MessageQueue *, void **, int);
-extern int osSetTimer(Timer *, Ticks, Ticks, MessageQueue *, void *);
-extern int osRecvMesg(MessageQueue *, void **, int);
+extern int osSetTimer(Timer *, Ticks, Ticks, void *, void *);
 extern int __osSiRawStartDma(int, void *);
 extern void __osSiCreateAccessQueue(void);
 void func_00020a0c(unsigned char *, ControllerStatus *);

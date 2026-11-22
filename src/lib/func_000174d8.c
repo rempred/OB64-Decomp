@@ -102,7 +102,7 @@ typedef struct ALParam_s {
         s32 i;
     } yetstillmoredata;
 } ALParam;
-void mem_byte_copy(void *src, void *dest, s32 len);
+void mem_byte_copy(const void *src, void *dest, s32 len);
 void func_000174d8(void *filter, s32 paramID, void *param) {
     N_PVoice *a = (N_PVoice *)filter;
     switch (paramID) {

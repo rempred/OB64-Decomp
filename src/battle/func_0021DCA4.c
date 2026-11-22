@@ -1,13 +1,5 @@
 #include "game/effect_math_e04.h"
-typedef struct TerminalMotionActor {
-    unsigned char prefix[0x48];
-    int sourceArt;
-    int ownerContext;
-    unsigned char gap50[0xC];
-    unsigned int word5C;
-    unsigned int word60;
-    unsigned int word64;
-} TerminalMotionActor;
+#include "game/battle_roster_record.h"
 
 /* Each observed profile has at most seven entries in the 0x84 allocation. */
 typedef struct TerminalProfile {
@@ -34,7 +26,7 @@ typedef struct TerminalMotionState {
     short currentY;
     short currentZ;
     unsigned char gap22[0x1E];
-    TerminalMotionActor *actor;
+    BattleRosterRecord *actor;
     unsigned char gap44[0x54];
     float destinationX;
     float destinationZ;
@@ -52,8 +44,6 @@ float func_00201670(int sourceArt, int ownerContext);
 float func_0002d3e0(float z, float x);
 double cos(double angle);
 double sin(double angle);
-typedef struct TerminalObject TerminalObject;
-int func_0022222C(TerminalObject *source, TerminalObject *target, int x, int z);
 void *resource_free(void *resource);
 void *resource_alloc(unsigned int bytes);
 void memset_00023780(void *destination, int bytes);
@@ -63,7 +53,7 @@ typedef struct TerminalTriple { float values[3]; } TerminalTriple;
 extern TerminalTriple D_801E6C30;
 extern TerminalTriple D_801E6C3C;
 
-void func_0021DCA4(TerminalMotionState *state, TerminalMotionActor *target)
+void func_0021DCA4(TerminalMotionState *state, BattleRosterRecord *target)
 {
     float dx;
     float dz;
@@ -83,7 +73,7 @@ void func_0021DCA4(TerminalMotionState *state, TerminalMotionActor *target)
     state->destinationZ = (float)(int)target->word64;
     dx = (float)(int)(target->word5C - state->currentX);
     dz = (float)(int)(target->word64 - state->currentZ);
-    speed = func_00201670(state->actor->sourceArt, state->actor->ownerContext);
+    speed = func_00201670(state->actor->class48.word, state->actor->variant4C.word);
     speed += speed;
     incrementX = dx;
     if (dx != 0.0f) {
@@ -111,8 +101,8 @@ void func_0021DCA4(TerminalMotionState *state, TerminalMotionActor *target)
     state->startX = (float)state->currentX;
     state->startZ = (float)state->currentZ;
 
-    queryResult = func_0022222C((TerminalObject *)state->actor,
-        (TerminalObject *)target, state->currentX, state->currentZ);
+    queryResult = func_0022222C(state->actor,
+        target, state->currentX, state->currentZ);
     {
         TerminalTriple first = D_801E6C30;
         TerminalTriple second = D_801E6C3C;

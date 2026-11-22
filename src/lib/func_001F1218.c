@@ -12,7 +12,7 @@ extern u32 func_00204F34(int, int, int, int, u32, u32, u8 *, u8 *, u8 *);
 extern u32 func_002050AC(u32, u32, u32, u8 *, u8 *, u8 *);
 extern void func_00208DC8(void *, int);
 extern int func_0020C014(void *);
-extern void func_0020C4B8(int, int, int, int *, int);
+extern void func_0020C4B8(int, int, int, int *, int *);
 extern void func_80093380(void *, unsigned int);
 extern void *func_0002CD70(void *, int, unsigned int);
 extern int rand(void);

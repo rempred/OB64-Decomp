@@ -10,7 +10,7 @@ typedef struct {
     s32 field600;
 } ShopBufferView;
 
-typedef struct {
+typedef struct ShopWindowBufferView {
     u8 gap00[0xD0];
     ShopBufferView *fieldD0;
 } ShopWindowBufferView;
@@ -19,7 +19,7 @@ extern u8 D_80219C20[];
 extern void *func_80070F30(unsigned int size);
 extern void func_80093380(void *buffer, s32 size);
 extern void func_80093060(void *source, void *destination, s32 size);
-extern void func_801805B4(void *buffer, s32 mode, s32 item);
+extern void func_801805B4(u8 *buffer, s32 mode, s32 item);
 
 void func_0019ADF0(ShopWindowBufferView *window, s32 item, u8 mode)
 {

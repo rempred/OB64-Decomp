@@ -1,0 +1,16 @@
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const stage=path.resolve(__dirname,'..'),root=process.env.OB64_INTERFACE_TEST_ROOT||stage;
+const checker=require('../tools/lib/c_interfaces'),policy=require('../tools/lib/c_interface_prospective'),sites=require('../tools/lib/c_interface_site_evidence');
+const state=JSON.parse(fs.readFileSync(process.env.OB64_INTERFACE_REFERENCE_STATE||path.join(root,'build/current/state.json')));
+assert.equal(state.fingerprint,'54C0617BD0A9E241DF5736F72FD8B79728E90F8B1D43220D91E3F6FBDCFEC344');
+const buildBytes=fs.readFileSync(state.report);assert.equal(checker.digest(buildBytes),state.buildReport.sha256);
+const build=JSON.parse(buildBytes),loaded=checker.loadBuild(state.output,build,null),config=JSON.parse(fs.readFileSync(path.join(root,'config/c-interface-frontend.json'))),exe=checker.authenticate(root,config);
+const reference=policy.reference(stage,null),unparsed=new Set(reference.inventory.filter(u=>u.status!=='parsed').map(u=>u.source));
+const alias=loaded.linked.symbols.find(s=>s.name==='func_000016C4');assert(alias);const canonical=loaded.linked.symbols.filter(s=>s.value===alias.value&&s.symbolType===2&&s.binding===1&&s.sectionIndex!==65521);assert.equal(canonical.length,1);const targets=build.targetReplacements.filter(r=>r.symbol===canonical[0].name);assert.equal(targets.length,1);
+const providerSource=targets[0].source;
+for(const unit of loaded.units)unit.analysis=unparsed.has(unit.identity.source)||unit.identity.source===providerSource?checker.parse(exe,unit.file,unit.source):{status:'parsed',functions:[],calls:[],assemblyTransfers:[]};
+const changed=loaded.units.find(u=>u.identity.source===providerSource).analysis.functions.filter(f=>f.definition&&f.name===canonical[0].name).map(f=>providerSource+'#'+f.name);
+const observations=sites.assemblyEvidence(root,state.output,build,loaded.units,loaded.linked,{mode:'changed-functions-and-visible-declarations',changedFunctions:changed});
+const incoming=observations.filter(row=>row.kind==='unparsed-C-incoming-call');assert.equal(new Set(incoming.map(row=>row.unparsedCaller.source)).size,4);
+const scratch=process.env.OB64_INTERFACE_TEST_SCRATCH||path.join(stage,'build/c-interface-tests');fs.mkdirSync(scratch,{recursive:true});fs.writeFileSync(path.join(scratch,'unparsed-incoming.json'),JSON.stringify({status:'pass',checks:1,accepted:state.fingerprint,incoming},null,2));console.log(JSON.stringify({status:'pass',checks:1,callers:4,sites:incoming.length}));

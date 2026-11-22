@@ -13,7 +13,7 @@ typedef struct {
     u8 bB;
 } StFC10;
 extern StFC10 *D_8018FC10;
-s16 func_002839C4(void) {
+int func_002839C4(void) {
     if (D_8018FC10 != ((void *)0)) {
         return *(s16 *)D_8018FC10;
     }

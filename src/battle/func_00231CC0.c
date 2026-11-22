@@ -1,25 +1,9 @@
+#include "game/battle_record_flag.h"
+
+#include "game/battle_resolution_record.h"
+
 typedef unsigned char u8;
-typedef unsigned short u16;
 typedef unsigned int u32;
-
-typedef struct ResolutionObject {
-    u8 unknown00[0x2C];
-    u16 field2C;
-    u8 unknown2E[0x12];
-    u32 field40;
-    u8 unknown44[0x14];
-    int field58;
-    u8 unknown5C[0x10];
-    int field6C;
-    int field70;
-} ResolutionObject;
-
-typedef struct ResolutionRecord {
-    ResolutionObject *objects[3];
-    int field0C;
-    int field10;
-    u32 unknown14[4];
-} ResolutionRecord;
 
 typedef struct ResolutionContext {
     int field00;
@@ -28,24 +12,23 @@ typedef struct ResolutionContext {
 extern ResolutionContext *D_801CE8C0;
 extern void func_00023780(void *base, u32 bytes);
 extern void *func_0020C478(unsigned int index);
-extern int func_0020C2C0(void *object);
 
-static inline int object_qualified(ResolutionObject *object)
+static inline int object_qualified(BattleRosterRecord *object)
 {
     if (object == 0)
         return 0;
-    if ((object->field40 & 3) != 0)
+    if ((object->flags40 & 3) != 0)
         return 0;
     if (object->field6C >= object->field70)
         return 0;
     return object->field6C == D_801CE8C0->field00;
 }
 
-void func_00231CC0(ResolutionRecord *records)
+void func_00231CC0(BattleResolutionRecord *records)
 {
-    ResolutionObject *object;
-    ResolutionObject *previous;
-    ResolutionRecord temporary;
+    BattleRosterRecord *object;
+    BattleRosterRecord *previous;
+    BattleResolutionRecord temporary;
     int i;
     int slot;
     int below;
@@ -67,7 +50,7 @@ void func_00231CC0(ResolutionRecord *records)
             continue;
 
         /* The raw slot domain is an upstream precondition of the original path. */
-        slot = object->field58;
+        slot = object->row58;
         if (slot >= 6)
             slot -= 3;
 
@@ -76,7 +59,7 @@ void func_00231CC0(ResolutionRecord *records)
             continue;
         }
         previous = records[slot].objects[0];
-        if (previous->field2C < object->field2C) {
+        if (previous->field_2C < object->field_2C) {
             records[slot].objects[0] = object;
             object = previous;
         }
@@ -86,7 +69,7 @@ void func_00231CC0(ResolutionRecord *records)
             continue;
         }
         previous = records[slot].objects[1];
-        if (previous->field2C < object->field2C) {
+        if (previous->field_2C < object->field_2C) {
             records[slot].objects[1] = object;
             object = previous;
         }
@@ -98,24 +81,24 @@ void func_00231CC0(ResolutionRecord *records)
         if (object_qualified(records[i].objects[0])) {
             if (object_qualified(records[i].objects[1])) {
                 if (object_qualified(records[i].objects[2])) {
-                    score = records[i].objects[2]->field2C +
-                        ((records[i].objects[1]->field2C + records[i].objects[0]->field2C) >> 1);
+                    score = records[i].objects[2]->field_2C +
+                        ((records[i].objects[1]->field_2C + records[i].objects[0]->field_2C) >> 1);
                 } else {
-                    score = records[i].objects[1]->field2C + records[i].objects[0]->field2C;
+                    score = records[i].objects[1]->field_2C + records[i].objects[0]->field_2C;
                 }
             } else if (object_qualified(records[i].objects[2])) {
-                score = records[i].objects[2]->field2C + records[i].objects[0]->field2C;
+                score = records[i].objects[2]->field_2C + records[i].objects[0]->field_2C;
             } else {
-                score = records[i].objects[0]->field2C;
+                score = records[i].objects[0]->field_2C;
             }
         } else if (object_qualified(records[i].objects[1])) {
             if (object_qualified(records[i].objects[2])) {
-                score = records[i].objects[2]->field2C + records[i].objects[1]->field2C;
+                score = records[i].objects[2]->field_2C + records[i].objects[1]->field_2C;
             } else {
-                score = records[i].objects[1]->field2C;
+                score = records[i].objects[1]->field_2C;
             }
         } else if (object_qualified(records[i].objects[2])) {
-            score = records[i].objects[2]->field2C;
+            score = records[i].objects[2]->field_2C;
         } else {
             score = 0;
         }
@@ -144,9 +127,9 @@ void func_00231CC0(ResolutionRecord *records)
         /* KMC reverses the two ADD operands for ordinary indexed pointers here.
          * Form the real 36-byte offsets first to retain the original order;
          * both category indices have already been bounded to 0..5. */
-        ResolutionRecord *aboveRecord = (ResolutionRecord *)
+        BattleResolutionRecord *aboveRecord = (BattleResolutionRecord *)
             ((u32)(above * 0x24) + (u32)records);
-        ResolutionRecord *belowRecord = (ResolutionRecord *)
+        BattleResolutionRecord *belowRecord = (BattleResolutionRecord *)
             ((u32)(below * 0x24) + (u32)records);
         int aboveScore = aboveRecord->field0C;
         int belowScore = belowRecord->field0C;

@@ -4,7 +4,9 @@ typedef unsigned char u8;
 typedef signed int s32;
 extern u8 *D_8022A974;
 extern u8 *D_801CE8BC;
-void func_002AC84C(u8 slot, u8 kind) {
+void func_002AC84C(s32 slotWord, s32 kindWord) {
+    u8 slot = slotWord;
+    u8 kind = kindWord;
     s32 i;
     s32 k;
     s32 id;

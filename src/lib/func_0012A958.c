@@ -1,3 +1,7 @@
+#include "game/unit_record_lookup.h"
+
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -13,12 +17,9 @@ extern u8 D_80193AC0[];
 extern u16 D_8019532C[], D_80190EBC[];
 extern RuntimeUnit *D_801F0CB0[];
 extern u32 func_0014F300(s32 source_word);
-extern s32 func_0012E968(RuntimeUnit *unit);
 extern s32 func_0012E9F4(RuntimeUnit *unit);
-extern s32 func_0010746C(void *unit);
-extern u8 func_00129068(u8 *record);
+extern int func_00129068(u8 *record);
 extern s32 func_00040f88(u8, u8, u8, u8, u8);
-extern s32 func_0012E8EC(RuntimeUnit *unit);
 extern void func_00128E80(void);
 
 void func_0012A958(RuntimeUnit *unit)

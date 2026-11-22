@@ -1,4 +1,5 @@
 #include "game/battle_record_flag.h"
+#include "game/battle_roster_record.h"
 
 typedef signed char s8;
 typedef unsigned char u8;
@@ -10,16 +11,9 @@ typedef float f32;
 /* Local partial views: offsets come from this owner's accesses, not a complete
  * description of the scene or deployed-unit records. */
 typedef struct BodySource {
-    u8 pad00[0x28];
+    u8 pad_00[0x28];
     s16 x, y, z;
 } BodySource;
-typedef struct BodyUnit {
-    BodySource *sources[3];
-    u8 pad0C[0x3C];
-    s32 classId;
-    s32 variant;
-    u8 pad50[0xA8];
-} BodyUnit;
 typedef struct BodyActor {
     u8 pad000[0x11C];
     f32 x, y, z;
@@ -38,7 +32,7 @@ typedef struct BodyScene {
 } BodyScene;
 typedef struct BodyResident {
     u8 pad000[0x1C4];
-    BodyUnit units[20];
+    BattleRosterRecord units[20];
 } BodyResident;
 
 extern BodyScene *D_8022A974;
@@ -50,16 +44,14 @@ extern void *resource_alloc(u32 bytes);
 extern void *resource_free(void *pointer);
 extern void *func_0002E138(u32 key);
 extern void *func_0002CD70(void *destination, s32 value, u32 count);
-extern s32 func_0020C120(BodyUnit *unit);
+extern s32 func_0020C120(void *unit);
 extern f32 func_00201670(s32 classId, s32 variant);
-extern u8 func_002AD574(BodyUnit *unit);
+extern u8 func_002AD574(void *unit);
 extern s16 func_002A0A68(BodyActor *actor, f32 x, f32 z, f32 a, f32 b);
 extern void func_002A0B14(s32 slot, f32 startX, f32 startY, f32 targetX,
                          f32 targetY, s32 duration, s32 scaledDuration);
 extern s32 func_002A9364(s32 slot, s32 classId, s32 variant, s32 animation,
                         s32 arg5, s32 arg6, u8 keep145, u8 keepUnit);
-extern s32 func_002AB810(s32 *slots, BodyUnit *unit, s32 index, s32 flip,
-                         s32 classId, s32 variant, u8 seenLeader);
 
 /* A unit already represented in the scene is rejected; otherwise retain the
  * last free slot. The signed-short result preserves the retail narrowing. */
@@ -79,11 +71,11 @@ static __inline__ s16 find_free_slot(s32 unitIndex)
     return lastFree;
 }
 
-void func_002AAC60(void)
+void func_002AAC60(s32 commandWord)
 {
     u8 *initialStates;
     BodyActor *actor;
-    BodyUnit *unit;
+    BattleRosterRecord *unit;
     BodySource *sub;
     void *block;
     s16 *entry;
@@ -134,19 +126,19 @@ void func_002AAC60(void)
         isLeader = func_0020BFF8(unit) != 0;
         if (func_0020C120(unit) == 1 && actor->sourceIndex == 1) {
             state = 0x3B;
-        } else if (unit->classId == 0x87) {
+        } else if (unit->class48.word == 0x87) {
             states[i] = 4;
             continue;
-        } else if (unit->classId == 0xA1) {
+        } else if (unit->class48.word == 0xA1) {
             states[i] = 4;
             continue;
-        } else if (unit->classId == 0x88) {
+        } else if (unit->class48.word == 0x88) {
             states[i] = 4;
             continue;
         }
-        func_002A9364(i, unit->classId, unit->variant, state,
+        func_002A9364(i, unit->class48.word, unit->variant4C.word, state,
                       isLeader, isLeader, 0, 1);
-        sub = unit->sources[actor->sourceIndex];
+        sub = unit->links[actor->sourceIndex];
         if ((s16)func_002A0A68(actor, actor->x, actor->z, sub->x, sub->z) == 3) {
             states[i] = 5;
         } else {
@@ -156,7 +148,7 @@ void func_002AAC60(void)
     for (u = 0; u < 20; u++) {
         func_0002CD70(&work[4], 0xFF, 0x10);
         unit = &D_801CE8BC->units[u];
-        if (unit->classId == 0) continue;
+        if (unit->class48.word == 0) continue;
         if ((D_8022AC80 == -3 || D_8022AC80 == -10) &&
             func_002AD574(unit) == 1) continue;
         i = find_free_slot(u);
@@ -173,14 +165,14 @@ void func_002AAC60(void)
             isLeader = 0;
         }
         func_002AB810(&work[4], unit, u, isLeader,
-                      unit->classId, unit->variant, seenLeader);
-        if (unit->classId == 0x87) seenLeader = 1;
+                      unit->class48.word, unit->variant4C.word, seenLeader);
+        if (unit->class48.word == 0x87) seenLeader = 1;
         for (isLeader = 0; work[isLeader + 4] != -1; isLeader++) {
             i = work[isLeader + 4];
             actor = D_8022A974->actors[i];
             states[i] = 2;
             func_002A0B14(i, startX, startY, actor->x, actor->z, 0,
-                          (s32)(555.0f * func_00201670(unit->classId, unit->variant)));
+                          (s32)(555.0f * func_00201670(unit->class48.word, unit->variant4C.word)));
             if (actor->animation == 10) {
                 func_002A9364(i, -1, -1, 5, -1, -1, 0, 1);
             } else {

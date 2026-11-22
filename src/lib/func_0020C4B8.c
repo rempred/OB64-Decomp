@@ -5,8 +5,8 @@ typedef union DrawMatrix {
 
 extern void guTranslate(DrawMatrix *, float, float, float);
 extern void guScale(DrawMatrix *, float, float, float);
-extern void func_00028740(DrawMatrix *, DrawMatrix *, DrawMatrix *);
-extern void func_00023018(DrawMatrix *, float, float, float);
+extern void func_00028740(void *, void *, void *);
+extern void func_00023018(void *, float, float, float);
 extern void guMtxL2F(float [4][4], DrawMatrix *);
 extern void func_00210200(float *, float *, float [4][4],
                          float *, float *, float *, float);

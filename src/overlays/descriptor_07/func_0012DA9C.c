@@ -1,8 +1,8 @@
+#include "game/unit_record_lookup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
-typedef unsigned int u32;
-typedef float f32;
 typedef struct {
     u8 unk00[0x11];
     u8 cls;
@@ -38,36 +38,11 @@ typedef struct {
     Character c;
     u8 unk34[4];
 } PlayerChar;
-typedef struct {
-    u32 flags;
-    u8 squad;
-    u8 unk05[3];
-    f32 x;
-    f32 y;
-    f32 z;
-    s32 unk14;
-    u8 unk18[0x34];
-    f32 savedX;
-    f32 savedY;
-    f32 savedZ;
-    u8 unk58[0xC];
-    s32 unk64;
-    u8 unk68[0x18];
-    s32 unk80;
-    s32 unk84;
-    u8 unk88[9];
-    u8 unk91;
-    u8 unk92;
-    u8 unk93[0x15];
-    s32 *ids;
-    u8 unkAC[0xE];
-    u8 unkBA;
-} MapUnit;
 extern SquadRec g_func_001957D0_source_records[];
 extern PlayerChar D_80193BC0_copy[];
 extern Character D_80195560_copy[];
-inline s32 func_0012DA9C(MapUnit *u) {
-    u8 sq = u->squad;
+inline s32 func_0012DA9C(void *unit) {
+    u8 sq = ((const u8 *)unit)[4];
     s32 leader = g_func_001957D0_source_records[sq].members[0];
     u8 st;
     if (leader == 0 || leader >= 100) {

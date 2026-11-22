@@ -15,8 +15,8 @@ extern void func_00023940(const char *format, ...);
 extern void func_0000553C(void);
 extern void func_8016CDF4(void *record);
 extern void func_00005D9C(s32 id, void *record);
-extern void func_00005CFC(void *record);
-extern void func_00005B8C(s32 id, void *record);
+extern void func_00005CFC(const void *record);
+extern void func_00005B8C(s32 id, const void *record);
 extern void func_00004FF0(u32 key);
 /* Separate fields in the retained table, whose entries are 0x1C bytes apart. */
 extern u8 D_800A8254[];

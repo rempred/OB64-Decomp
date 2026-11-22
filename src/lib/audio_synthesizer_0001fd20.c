@@ -14,7 +14,7 @@ extern void *alHeapDBAlloc(void *, int, void *, int, int);
 extern void alSaveNew(L4Save *);
 extern void alAuxBusNew(L4Bus *, L4Filter **, int);
 extern void alMainBusNew(L4Bus *, L4Filter **, int);
-extern void *alSynAllocFX(void *, int, void *, void *);
+extern void *alSynAllocFX(L4Synth *, short, void *, void *);
 extern int alMainBusParam(L4Bus *, int, L4Filter *);
 extern void alLink(L4Link *, L4Link *);
 extern void alUnlink(L4Link *);

@@ -2,7 +2,7 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
 void bcopy(const void *src, void *dst, s32 n);
-void *resource_alloc_mode1_wrapper(s32 size);
+void *resource_alloc_mode1_wrapper(unsigned int size);
 void boot_state_slot_payload_alloc_copy(u8 kind, void *src, u16 n, u8 **out) {
     u8 *p;
     if (n == 0) {

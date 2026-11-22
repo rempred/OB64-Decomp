@@ -1,4 +1,5 @@
 #include "game/battle_record_flag.h"
+#include "game/battle_roster_record.h"
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -60,25 +61,19 @@ typedef struct InputRecord { u8 bytes[16]; } InputRecord;
 extern const InputRecord D_8018AA80[];
 extern void func_00023780(void *, u32);
 extern int rand(void);
-extern void func_0020D870(DispatchObject *, int);
-extern int func_00233F94(DispatchObject *);
 extern int func_0023887C(int, int, int, int);
 extern void func_00237E2C(DispatchDescriptor *, int, int);
-extern void func_00239338(DispatchDescriptor *, DispatchObject *, DispatchObject *, DispatchObject *);
-extern int func_0025FD00(int);
+extern void func_00239338(DispatchDescriptor *, BattleRosterRecord *, BattleRosterRecord *, BattleRosterRecord *);
+extern int func_0025FD00(u16);
 extern void func_0021D1CC(int, int);
 extern void *func_0020C478(unsigned int index);
-extern int func_0020C2C0(DispatchObject *);
 extern int func_0020C0CC(DispatchObject *);
-extern int func_0020C32C(DispatchObject *);
 extern int func_002363FC(DispatchObject *);
-extern int func_002365BC(DispatchObject *, DispatchObject *, int, int);
-extern int func_002379AC(int, DispatchObject *);
-extern void func_0022A7B8(DispatchObject *, int, int, int, int, int);
+extern int func_002365BC(BattleRosterRecord *, DispatchObject *, int, int);
+extern void func_0022A7B8(void *, int, int, int, int, int);
 extern int func_00237AF8(DispatchObject *, int);
 extern void func_0021D334(int, int, void *, int, int, int, int, int, int);
-extern void func_0023422C(DispatchObject *, int);
-extern void func_0022B06C(DispatchObject *, u8 *);
+extern void func_0022B06C(void *, u8 *);
 extern int func_0020D72C(void *);
 extern void func_0021D2C0(int, int, void *, int, int, int, int);
 extern void func_0021D230(int, int, void *, int);
@@ -87,7 +82,7 @@ int func_00232458(u8 *input, int *outTime)
 {
     DispatchDescriptor descriptor;
     DispatchLists lists;
-    DispatchObject *temporary;
+    BattleRosterRecord *temporary;
     DispatchObject *object;
     DispatchObject *scanObject;
     u8 *global;
@@ -134,13 +129,13 @@ int func_00232458(u8 *input, int *outTime)
     global = D_801CE8BC;
     offset = 0x1C4;
     for (; i < 20; ++i, offset += 0xF8) {
-        temporary = (DispatchObject *)(global + offset);
-        if (temporary->field48 == 0 && temporary->field4C == 0)
+        temporary = (BattleRosterRecord *)(global + offset);
+        if (temporary->class48.word == 0 && temporary->variant4C.word == 0)
             break;
     }
     func_0020D870(temporary, 1);
-    temporary->field58 = 7;
-    temporary->field54 = 1;
+    temporary->row58 = 7;
+    temporary->column54 = 1;
     initialInput2 = input[2];
     temporary->field78 = 3;
     temporary->field7C = initialInput2;
@@ -300,7 +295,7 @@ int func_00232458(u8 *input, int *outTime)
             continue;
         if (func_0020C0CC(scanObject) != 0)
             continue;
-        if (func_0020BFF8(scanObject) == 0 && temporary != scanObject)
+        if (func_0020BFF8(scanObject) == 0 && (void *)temporary != scanObject)
             break;
     }
     lists.single[0] = func_0020D72C(scanObject);

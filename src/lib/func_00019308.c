@@ -1,3 +1,6 @@
+#include "common/os_message_queue.h"
+#include "game/nu_sc_client.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
@@ -5,17 +8,8 @@ typedef unsigned int u32;
 typedef unsigned long long u64;
 typedef float f32;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
-typedef struct {
-    u64 pad[0x1B0 / 8];
-} OSThread;
+typedef MessageQueue OSMesgQueue;
+typedef Thread OSThread;
 typedef struct {
     u32 type;
     u32 flags;
@@ -35,11 +29,6 @@ typedef struct {
     u32 yield_data_size;
 } OSTask;
 typedef s16 NUScMsg;
-typedef struct NUScClient_s {
-    struct NUScClient_s *next;
-    OSMesgQueue *msgQ;
-    NUScMsg msgType;
-} NUScClient;
 typedef struct NUScTask_s {
     struct NUScTask_s *next;
     u32 state;
@@ -79,7 +68,6 @@ extern NUSched D_800E8B10;
 extern u8 D_800C4800;
 extern u32 D_800C4BCC;
 extern void (*D_800A9E60)(void);
-s32 func_00023AE0(OSMesgQueue *mq, OSMesg *msg, s32 flag);
 s32 func_00028430(void);
 void func_00025b80(f32 scale);
 void func_00019fe4(u8 active);

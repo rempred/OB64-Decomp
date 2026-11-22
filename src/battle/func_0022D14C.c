@@ -1,3 +1,7 @@
+#include "game/battle_record_flag.h"
+
+#include "game/battle_roster_record.h"
+
 #include "game/battle_position_lookup.h"
 typedef signed char s8;
 typedef unsigned char u8;
@@ -18,18 +22,12 @@ typedef union { u8 bytes[128]; u16 halves[64]; s32 words[32]; } LocalPacket;
 u8 func_00043ad8(s32, s32);
 s32 func_00044130(s32, s32, s32);
 s32 func_0020144C(u8);
-s32 func_002014C4(u8);
+u8 func_002014C4(u32);
 int func_00201798(s32, s32, s32, M2C_UNK);
 s32 func_0020BF50(M2C_UNK);
 s32 func_0020BFE4();
-s32 func_0020C014(void *);
-s32 func_0020C104(void *);
 s32 func_0020C1B4(void *);
 s32 func_0020C24C(void *);
-s32 func_0020C2C0(void *);
-s32 func_0020C2F4(void *);
-s32 func_0020C310(void *);
-s32 func_0020C32C(void *);
 s32 func_0020C3B4(void *);
 void *func_0020C478(unsigned int index);
 u8 func_0020D434(s32);
@@ -43,21 +41,16 @@ void func_0021D28C(s32, s32, void *, s32, s32, s32);
 void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
 void func_0021D334(s32, s32, void *, s32, s32, s32, s32, s32, s32);
 void func_0021D7CC(void *);
-s32 func_00222190(void *, s32, s32, s32, s32);
-s32 func_00222344(void *, s32, s32, s32, s32);
 s32 func_002224F4(void);
 s32 func_0022257C(void *, s32, s32 *);
 void func_0022A7B8(void *, s32, s32, s32, s32, s32);
 void func_0022B06C(void *, u8 *);
 u32 func_00233210(void *, void *);
 u8 func_00233568(void *);
-M2C_UNK func_0023422C(void *, s32);
 s32 func_002363FC(void *);
 u32 func_002365BC(void *, void *, u16, s32);
-s32 func_00237750(void *, void *, M2C_UNK, u32, s32);
-s32 func_002379AC(u8, void *);
 s32 func_00237AF8(void *, s32);
-M2C_UNK func_00237D5C(s32, s32 *, s32 *);
+void func_00237D5C(s32, s32 *, s32 *);
 M2C_UNK func_00238D94(void *, u8, void *);
 M2C_UNK func_00239338(void *, void *, M2C_UNK, M2C_UNK);
 M2C_UNK memset_00023780(s32 *, M2C_UNK);
@@ -810,7 +803,7 @@ mode_done:;
             func_0021D334(0x1F, temp_s0_1586 + prefix.buffer[0], arg0, 0, temp_v0_1568 >> 8, (s32) ((u8)sp1BC), (s32) sp1C7, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
             func_0022A7B8(arg0, 0, temp_s0_1586 + prefix.buffer[0], (u32) sp1BC, (s32) sp1C7, 0);
         } else if (prefix.packet.bytes[5] == 2) {
-            temp_v0_1607 = func_00237750(arg0, var_s3_51, 1, (u32) sp1BC, 0);
+            temp_v0_1607 = func_00237750(arg0, var_s3_51, 1, sp1BC, 0);
             sp1BC = temp_v0_1607;
             func_0021D334(0x1F, sp16C + sp184 + prefix.buffer[0], arg0, 2, temp_v0_1607 >> 8, (s32) ((u8)sp1BC), (s32) sp1C7, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
             (*(u16 *)((s8 *)(arg0) + (0x20))) = (u16) ((*(u16 *)((s8 *)(arg0) + (0x20))) + func_0020D4C8(arg0, (u32) sp1BC));

@@ -24,7 +24,7 @@ extern void func_002ACA3C(s32 unitSelector);
  * roster unit (event property FD). Field meanings are structural observations,
  * not verified semantics.
  */
-void func_002ACF08(void)
+void func_002ACF08(s32 commandWord)
 {
     s32 rowIndex;
     u32 linkIndex;

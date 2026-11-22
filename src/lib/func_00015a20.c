@@ -1,4 +1,4 @@
-void func_00015a20(int value)
+void func_00015a20(void *scheduler)
 {
-    *(int *)0x800B18A0 = value;
+    *(void **)0x800B18A0 = scheduler;
 }

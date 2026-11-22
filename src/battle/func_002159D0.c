@@ -19,7 +19,7 @@ s32 func_0020BF7C();
 s32 func_0020BF8C();
 s32 func_0020F80C();
 void func_0021C3B0(void);
-s32 func_0021C970();
+u32 func_0021C970(u32 offset);
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
 void *func_80070F30(u32);
@@ -142,7 +142,7 @@ block_22:
         *(u8 *)((s8 *)field_ptr + 0x13) = D_801E5C70[temp_a1_87];
     }
 block_23:
-    var_a0_75 = func_0021C970();
+    var_a0_75 = (s32)func_0021C970((u32)var_a0_75);
     if (var_a0_75 >= 0) {
         goto loop_5;
     }

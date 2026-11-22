@@ -20,15 +20,18 @@ typedef struct CombatPoseIndexedRecord {
     unsigned char index;
 } CombatPoseIndexedRecord;
 
-/* Preserve the bounds callers' 0x28-byte local buffer. Only the decoded
- * prefix is accessed; the extra storage has no established field meaning.
- */
+/* Preserve the bounds callers' 0x28-byte local buffer. The image lookup
+ * can access the +0x20 index when the decoded flags select it. */
 typedef union CombatPoseScratch {
     CombatPoseRecord record;
+    CombatPoseIndexedRecord indexed;
     int storage[10];
 } CombatPoseScratch;
 
 extern int func_00205608(int handle, int directoryIndex, u32 selected,
                        CombatPoseRecord *out);
+
+void *func_00206340(int a, int b, CombatPoseIndexedRecord *request,
+                   int d, int c, int variant, unsigned char *valueOut);
 
 #endif

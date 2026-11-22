@@ -27,7 +27,7 @@ void *func_00261DA8(void *value)
     payload = e03AllocatePool80();
     if (payload != 0) {
         *(s32 *)payload = (s32)value;
-        func_001F0F6C((s32)payload);
+        func_001F0F6C(payload);
     }
     return payload;
 }

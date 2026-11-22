@@ -1,38 +1,10 @@
-typedef struct {
-    unsigned int field00;
-    void *queue;
-    int channel;
-    unsigned char field0c[32];
-    unsigned char field2c[32];
-    int field4c;
-    int field50;
-    int field54;
-    int field58;
-    unsigned int field5c;
-    int field60;
-    unsigned char field64;
-    unsigned char field65;
-} PfsState;
+#include "common/os_pfs.h"
 
-typedef union {
-    unsigned short value;
-    struct { unsigned char byte00, byte01; } bytes;
-} Node;
+typedef OSPfs PfsState;
 
-typedef struct {
-    unsigned int field00;
-    unsigned int field04;
-    unsigned long long field08;
-    unsigned long long field10;
-    unsigned short field18;
-    unsigned char field1a;
-    unsigned char field1b;
-    unsigned short field1c;
-    unsigned short field1e;
-} PakHeader;
+typedef PfsInode Node;
 
 extern unsigned int func_0002aae0(void);
-extern int func_000274d0(PfsState *state, unsigned char bank);
 extern int func_00027fd0(void *queue, int channel, unsigned short address,
                         unsigned char *data);
 extern int func_000281c0(void *queue, int channel, unsigned short address,
@@ -46,12 +18,6 @@ extern Node D_800E8110[128];
 inline unsigned short func_00027540(const unsigned char *data, int bytes);
 inline int func_00027574(PakHeader *header, unsigned short *sum,
                         unsigned short *inverse);
-int func_000275b8(PfsState *state, PakHeader *oldHeader, PakHeader *newHeader);
-int func_000278a4(PfsState *state, PakHeader *header);
-int func_00027a08(PfsState *state);
-int func_00027bd4(PfsState *state);
-int func_00027c8c(PfsState *state, Node *table, unsigned char mode,
-                  unsigned char bank);
 
 inline unsigned short func_00027540(const unsigned char *data, int bytes)
 {
@@ -98,7 +64,7 @@ int func_000275b8(PfsState *state, PakHeader *oldHeader, PakHeader *newHeader)
     newHeader->field08 = oldHeader->field08;
     newHeader->field10 = oldHeader->field10;
     bank = 0;
-    if (state->field65 != 0) {
+    if (state->activebank != 0) {
         result = func_000274d0(state, 0);
         if (result != 0)
             return result;
@@ -136,7 +102,7 @@ int func_000275b8(PfsState *state, PakHeader *oldHeader, PakHeader *newHeader)
                 break;
         }
     } while (++bank < 62);
-    if (state->field65 != 0) {
+    if (state->activebank != 0) {
         result = func_000274d0(state, 0);
         if (result != 0)
             return result;
@@ -177,7 +143,7 @@ int func_000278a4(PfsState *state, PakHeader *header)
     int i;
     int result;
 
-    if (state->field65 != 0) {
+    if (state->activebank != 0) {
         result = func_000274d0(state, 0);
         if (result != 0)
             return result;
@@ -217,7 +183,7 @@ int func_00027a08(PfsState *state)
     PakHeader *active;
     int result;
 
-    if (state->field65 != 0) {
+    if (state->activebank != 0) {
         result = func_000274d0(state, 0);
         if (result != 0)
             return result;
@@ -247,15 +213,15 @@ int func_00027a08(PfsState *state)
         if (!(active->field18 & 1))
             return 11;
     }
-    func_80093060(active, state->field0c, 32);
-    state->field4c = active->field1b;
-    state->field64 = active->field1a;
-    state->field60 = state->field64 * 2 + 3;
-    state->field50 = 16;
-    state->field54 = 8;
-    state->field58 = (state->field64 + 1) * 8;
-    state->field5c = state->field58 + state->field64 * 8;
-    result = func_00027fd0(state->queue, state->channel, 7, state->field2c);
+    func_80093060(active, state->id, 32);
+    state->version = active->field1b;
+    state->banks = active->field1a;
+    state->inode_start_page = state->banks * 2 + 3;
+    state->dir_size = 16;
+    state->inode_table = 8;
+    state->minode_table = (state->banks + 1) * 8;
+    state->dir_table = state->minode_table + state->banks * 8;
+    result = func_00027fd0(state->queue, state->channel, 7, state->label);
     if (result != 0)
         return result;
     return 0;
@@ -266,7 +232,7 @@ int func_00027bd4(PfsState *state)
     unsigned char header[32];
     int result;
 
-    if (state->field65 != 0) {
+    if (state->activebank != 0) {
         result = func_000274d0(state, 0);
         if (result == 2)
             result = func_000274d0(state, 0);
@@ -281,10 +247,10 @@ int func_00027bd4(PfsState *state)
         if (result != 0)
             return result;
     }
-    return func_00023350(state->field0c, header, 32) != 0 ? 2 : 0;
+    return func_00023350(state->id, header, 32) != 0 ? 2 : 0;
 }
 
-int func_00027c8c(PfsState *state, Node *table, unsigned char mode,
+int func_00027c8c(PfsState *state, void *table, unsigned char mode,
                   unsigned char bank)
 {
     int start;
@@ -297,27 +263,27 @@ int func_00027c8c(PfsState *state, Node *table, unsigned char mode,
         func_80093060(D_800E8110, table, 256);
         return 0;
     }
-    if (state->field65 != 0) {
+    if (state->activebank != 0) {
         result = func_000274d0(state, 0);
         if (result != 0)
             return result;
     }
     start = 1;
     if (bank == 0)
-        start = state->field60;
+        start = state->inode_start_page;
     if (mode == 1)
-        table[0].bytes.byte01 = func_00027540((unsigned char *)&table[start],
+        ((unsigned char *)table)[1] = func_00027540((unsigned char *)table + start * 2,
                                              (128 - start) * 2);
     for (i = 0; i < 8; i++) {
         block = (unsigned char *)table + i * 32;
         if (mode == 1) {
             func_000281c0(state->queue, state->channel,
-                          state->field54 + bank * 8 + i, block, 0);
+                          state->inode_table + bank * 8 + i, block, 0);
             result = func_000281c0(state->queue, state->channel,
-                                   state->field58 + bank * 8 + i, block, 0);
+                                   state->minode_table + bank * 8 + i, block, 0);
         } else {
             result = func_00027fd0(state->queue, state->channel,
-                                   state->field54 + bank * 8 + i, block);
+                                   state->inode_table + bank * 8 + i, block);
         }
         if (result != 0)
             return result;
@@ -338,7 +304,7 @@ int func_00027c8c(PfsState *state, Node *table, unsigned char mode,
         sumIndex = 0;
         for (; sumIndex < bytes; sumIndex++)
             checksum += *data++;
-        if ((unsigned char)checksum != table[0].bytes.byte01) {
+        if ((unsigned char)checksum != ((unsigned char *)table)[1]) {
             {
                 int bankOffset;
                 i = 0;
@@ -346,7 +312,7 @@ int func_00027c8c(PfsState *state, Node *table, unsigned char mode,
                 block = (unsigned char *)table;
                 for (; i < 8; i++) {
                     func_00027fd0(state->queue, state->channel,
-                                  state->field58 + bankOffset + i, block);
+                                  state->minode_table + bankOffset + i, block);
                     block += 32;
                 }
             }
@@ -364,7 +330,7 @@ int func_00027c8c(PfsState *state, Node *table, unsigned char mode,
                 sumIndex = 0;
                 for (; sumIndex < bytes; sumIndex++)
                     checksum += *data++;
-                if ((unsigned char)checksum != table[0].bytes.byte01)
+                if ((unsigned char)checksum != ((unsigned char *)table)[1])
                     return 3;
             }
             {
@@ -374,7 +340,7 @@ int func_00027c8c(PfsState *state, Node *table, unsigned char mode,
                 block = (unsigned char *)table;
                 for (; i < 8; i++) {
                     func_000281c0(state->queue, state->channel,
-                                  state->field54 + bankOffset + i, block, 0);
+                                  state->inode_table + bankOffset + i, block, 0);
                     block += 32;
                 }
             }

@@ -6,7 +6,7 @@
 extern ClassEntry D_80187C40[];
 extern unsigned char *func_8009C550(unsigned char *destination, const unsigned char *source);
 extern u8 func_8016F5C8(s32 value);
-extern u8 func_8016DE70(u8 first, u8 second);
+extern u8 func_8016DE70(s32 first, s32 second);
 extern int func_8009C7CC(void);
 
 void func_0023A3A0(CharacterRecord *record, u32 kind, s32 value,
@@ -60,7 +60,7 @@ void func_0023A3A0(CharacterRecord *record, u32 kind, s32 value,
     }
     func_8016F11C(record, (u8)value);
     func_000FC120(1, record - D_80195560);
-    final_category = func_8016DE70(kind, related);
+    final_category = func_8016DE70((u8)kind, (u8)related);
     if (final_category == 3) {
         record->field_14 = 0;
     } else if (final_category == 4) {

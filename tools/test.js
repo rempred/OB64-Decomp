@@ -7,6 +7,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const ROUTINE_TESTS = [
+  ['c-interface-policy', 'tests/c_interface_policy.js'],
   // Synthetic interface fixtures; retained-ROM historical replay remains opt-in.
   ["c-interface-publication","tests/c_interface_publication.js"],
   ["c-interfaces","tests/c_interfaces.js",{"OB64_INTERFACE_REAL_BUILD":""}],

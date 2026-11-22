@@ -15,8 +15,9 @@ typedef struct {
     u8 unk2A[2];
     u16 cond;
 } ScriptCtx;
-void *D_8017F334(u16 id);
-void D_8017C2FC(void *o);
+struct Node;
+struct Node *D_8017F334(u16 id);
+void D_8017C2FC(struct Node *o);
 void D_8017C384(void *o);
 s32 func_001BB4AC(ScriptCtx *c) {
     void *o = D_8017F334(c->pc[3] | 0x5200);

@@ -1,20 +1,22 @@
+#include "common/os_message_queue.h"
+
 typedef struct {
     unsigned char dummy, txBytes, rxBytes, command;
     unsigned short buttons;
     signed char stickX, stickY;
 } ReadPacket;
 typedef struct {
-    unsigned short buttons;
-    signed char stickX, stickY;
-    unsigned char error;
-} PadData;
+    unsigned short button;
+    signed char stick_x;
+    signed char stick_y;
+    unsigned char errno;
+} OSContPad;
 typedef struct { unsigned int words[15]; unsigned int status; } PifRam;
 
 extern PifRam __osContPifRam;
 extern unsigned char __osContLastCmd, __osMaxControllers;
 extern void __osSiGetAccess(void), __osSiRelAccess(void);
 extern int __osSiRawStartDma(int direction, void *buffer);
-extern int osRecvMesg(void *queue, void **message, int flags);
 void func_000207b4(void);
 
 int func_00020690(void *queue)
@@ -32,18 +34,18 @@ int func_00020690(void *queue)
     return result;
 }
 
-void func_00020718(PadData *pad)
+void func_00020718(OSContPad *pad)
 {
     unsigned char *cursor = (unsigned char *)&__osContPifRam;
     ReadPacket packet;
     int channel;
     for (channel = 0; channel < __osMaxControllers; channel++, cursor += sizeof(ReadPacket), pad++) {
         packet = *(ReadPacket *)cursor;
-        pad->error = (packet.rxBytes & 0xC0) >> 4;
-        if (pad->error == 0) {
-            pad->buttons = packet.buttons;
-            pad->stickX = packet.stickX;
-            pad->stickY = packet.stickY;
+        pad->errno = (packet.rxBytes & 0xC0) >> 4;
+        if (pad->errno == 0) {
+            pad->button = packet.buttons;
+            pad->stick_x = packet.stickX;
+            pad->stick_y = packet.stickY;
         }
     }
 }

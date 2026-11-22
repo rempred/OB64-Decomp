@@ -4,7 +4,7 @@ typedef signed short s16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-typedef struct {
+typedef struct Func0004ED60Launch {
     s16 terminal_class;
     s16 environment;
     s16 field_4;
@@ -18,7 +18,8 @@ void *func_800712C4(void *pointer);
 u32 func_8007A7E0(const u8 *source);
 u32 func_8007A110(u8 *destination, const u8 *source);
 
-s32 func_0004ed60(s32 selector, Func0004ED60Launch *launch)
+s32 func_0004ed60(s32 selector, Func0004ED60Launch *launch,
+                   const Func0004ED60Launch *defaults, s32 selector_copy)
 {
     register u32 *buffer asm("$17");
     u32 flags;

@@ -28,7 +28,7 @@ extern RuntimeUnit *D_801F0CB0[];
 extern DeploymentRow11 D_801969B8[];
 extern SourceRecord25 g_func_001957D0_source_records[];
 extern u8 D_801971F1[][25];
-extern u8 func_00129068(u8 *record);
+extern int func_00129068(u8 *record);
 extern s32 func_00040f88(u8, u8, u8, u8, u8);
 
 void func_00129268(void)

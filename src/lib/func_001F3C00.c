@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 #include "game/combat_draw.h"
 #include "game/combat_draw_commands.h"
 #include "game/combat_pose_record.h"
@@ -40,7 +42,6 @@ extern int func_00205484(int, int, int, int, int, u32, CombatPoseIndexedRecord *
 extern void func_00205760(int);
 extern void func_00205778(int);
 extern void *func_00206BE0(int, int, CombatPoseIndexedRecord *, int, int, int, u8 *);
-extern int func_0020BFF8(void *);
 extern int func_0020C034(void *);
 extern u16 func_0020C448(void *);
 extern void guMtxF2L(float [4][4], DrawMatrix *);
@@ -72,7 +73,7 @@ static __inline__ u32 line_field(u32 width) { width += 7; width >>= 3; width &= 
 
 extern u8 func_00205794(void);
 extern int func_00201D8C(u32);
-extern u32 func_00201E08(int, u32, u32);
+extern int func_00201E08(int, int, int);
 extern void *func_00206888(int, CombatPoseIndexedRecord *, u32, u8 *);
 extern void *func_00206340(int, int, CombatPoseIndexedRecord *, int, int, int, u8 *);
 extern void *D_801CE8BC;

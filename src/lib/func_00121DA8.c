@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef signed int s32;
@@ -9,8 +11,6 @@ typedef struct { u8 bytes[18]; } WakeRecord18;
 
 extern u8 D_801971F1[][25];
 extern WakeRecord18 D_801F0E76[];
-extern void func_0010746C(RuntimeUnit *unit);
-extern void func_001072B8(RuntimeUnit *unit);
 extern void func_00121F38(RuntimeUnit *unit, WakeRecord18 *record);
 
 void func_00121DA8(RuntimeUnit *unit)

@@ -1,20 +1,14 @@
+#include "common/os_message_queue.h"
+#include "game/nu_sc_client.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
-typedef struct {
-    u64 pad[0x1B0 / 8];
-} OSThread;
+typedef MessageQueue OSMesgQueue;
+typedef Thread OSThread;
 typedef struct {
     u32 type;
     u32 flags;
@@ -34,11 +28,6 @@ typedef struct {
     u32 yield_data_size;
 } OSTask;
 typedef s16 NUScMsg;
-typedef struct NUScClient_s {
-    struct NUScClient_s *next;
-    OSMesgQueue *msgQ;
-    NUScMsg msgType;
-} NUScClient;
 typedef struct NUScTask_s {
     struct NUScTask_s *next;
     u32 state;
@@ -77,27 +66,25 @@ typedef struct {
 extern NUSched D_800E8B10;
 extern u8 D_800C4800;
 extern OSMesgQueue D_800B9C40;
-s32 func_00023AE0(OSMesgQueue *mq, OSMesg *msg, s32 flag);
-s32 func_00023C10(OSMesgQueue *mq, OSMesg msg, s32 flag);
 void osWritebackDCacheAll(void);
 void func_000197c0(void *arg);
 void func_0001989c(NUScTask *task);
 void func_000197c0(void *arg) {
     OSMesg msg;
-    NUScTask *gfxTask;
+    OSMesg gfxTask;
     while (1) {
-        func_00023AE0(&D_800E8B10.graphicsRequestMQ, (OSMesg *)&gfxTask, 1);
+        func_00023AE0(&D_800E8B10.graphicsRequestMQ, &gfxTask, 1);
         if (!(D_800C4800 & 2)) {
             func_0001989c(gfxTask);
             osWritebackDCacheAll();
             func_00023C10(&D_800B9C40, gfxTask, 1);
             func_00023AE0(&D_800E8B10.rspMQ, &msg, 1);
             func_00023C10(&D_800B9C40, ((void *)0), 1);
-            if (!(gfxTask->flags & 2)) {
+            if (!(((NUScTask *)gfxTask)->flags & 2)) {
                 func_00023AE0(&D_800E8B10.rdpMQ, &msg, 1);
             }
         }
-        func_00023C10(gfxTask->msgQ, gfxTask, 1);
+        func_00023C10(((NUScTask *)gfxTask)->msgQ, gfxTask, 1);
     }
 }
 void func_0001989c(NUScTask *task);

@@ -15,7 +15,7 @@ void func_00019e10(void);
 void boot_mode_message_select(s32 a);
 void func_00019fc0(void);
 void func_00025a10(u32 f);
-void D_8016CD50(s32 a);
+void D_8016CD50(signed char a);
 void func_001CF3EC(void) {
     u8 **raw = D_801B8088;
     void **fb;

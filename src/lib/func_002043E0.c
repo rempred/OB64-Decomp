@@ -1,16 +1,10 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef struct { u8 magic0, magic1, kind, flags; u16 width, height; } Header;
-extern Header *func_00203664(Header *, u32);
-extern void *func_00203414(Header *, u32);
+#include "game/descriptor_10_resource_header.h"
+
+typedef Descriptor10ResourceHeader Header;
 extern u32 func_00201E38(s32, u32);
 extern void *resource_alloc(u32);
 extern void *resource_free(void *);
 extern void memcpy(void *source, void *destination, u32 size);
-extern void func_00203030(Header *);
-extern void func_002032B8(Header *);
 
 static __inline__ u8 *primary_data(Header *header)
 {
@@ -67,7 +61,7 @@ static __inline__ u32 expand_alpha(u32 pixel, u32 alpha)
     result |= alpha;
     return result;
 }
-Header *func_002043E0(Header *input, u32 argument1, u16 *table, u8 *valueOut, u32 options)
+void *func_002043E0(void *input, u32 argument1, u16 *table, u8 *valueOut, u32 options)
 {
     Header *source = func_00203664(input, argument1);
     s32 sourceStride;
@@ -98,7 +92,7 @@ Header *func_002043E0(Header *input, u32 argument1, u16 *table, u8 *valueOut, u3
     result = resource_alloc(primaryBytes + 8);
     result->magic0 = 0x36;
     result->magic1 = 0x34;
-    result->kind = 0;
+    result->field_02 = 0;
     result->flags = 3;
     result->width = width;
     result->height = height;

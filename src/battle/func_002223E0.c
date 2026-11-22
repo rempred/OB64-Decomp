@@ -1,11 +1,4 @@
-typedef struct TerminalObject {
-    unsigned char prefix[0x48];
-    int sourceArt;
-    int ownerContext;
-    int word50;
-    int word54;
-    int word58;
-} TerminalObject;
+#include "game/battle_roster_record.h"
 
 int func_0020BF50(int value);
 int func_0020BF34(int value);
@@ -14,7 +7,7 @@ unsigned char func_002018A0(int sourceArt, int ownerContext);
 float vec3_distance(const float first[3], const float second[3]);
 float func_002016F4(int sourceArt, int ownerContext);
 
-int func_002223E0(TerminalObject *source, TerminalObject *target, int mapZ, int mapX, int x, int z)
+int func_002223E0(BattleRosterRecord *source, BattleRosterRecord *target, int mapZ, int mapX, int x, int z)
 {
     float first[3];
     float second[3];
@@ -34,10 +27,10 @@ int func_002223E0(TerminalObject *source, TerminalObject *target, int mapZ, int 
     second[1] = 0.0f;
     second[2] = (float)mappedZ;
     distance = vec3_distance(first, second);
-    sourceAdjustment = func_00201838(source->sourceArt, source->ownerContext);
-    targetAdjustment = func_002018A0(target->sourceArt, target->ownerContext);
+    sourceAdjustment = func_00201838(source->class48.word, source->variant4C.word);
+    targetAdjustment = func_002018A0(target->class48.word, target->variant4C.word);
     adjustment = (int)sourceAdjustment + (int)targetAdjustment;
     distance -= (float)adjustment;
-    distance /= func_002016F4(source->sourceArt, source->ownerContext);
+    distance /= func_002016F4(source->class48.word, source->variant4C.word);
     return (int)distance;
 }

@@ -1,20 +1,5 @@
-typedef struct DmaIoMessage {
-    unsigned short type;
-    unsigned char priority;
-    unsigned char status;
-    void *return_queue;
-    void *dram_address;
-    unsigned int device_address;
-    unsigned int size;
-    void *device_handle;
-} DmaIoMessage;
-typedef struct PiManagerView {
-    int active;
-} PiManagerView;
-extern PiManagerView D_800AA400;
-extern void *func_00029cc0(void);
-extern int osJamMesg(void *queue, void *message, int flags);
-extern int osSendMesg(void *queue, void *message, int flags);
+#include "common/os_pi_manager.h"
+#include "game/boot_dma_platform.h"
 
 int func_0001c040(void *handle, DmaIoMessage *message, int direction)
 {

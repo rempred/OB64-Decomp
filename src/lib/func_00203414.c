@@ -1,8 +1,6 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef struct { u8 unknown0[2]; u8 count; u8 flags; u16 width; u16 height; } Header;
+#include "game/descriptor_10_resource_header.h"
+
+typedef Descriptor10ResourceHeader Header;
 extern u32 func_00201E38(s32, u32);
 
 void *func_00203414(Header *header, u32 index)
@@ -46,7 +44,7 @@ void *func_00203414(Header *header, u32 index)
     }
 
     offset = 8;
-    count = header->count;
+    count = header->field_02;
     record = (u8 *)header + offset;
     for (i = 0; i < count; i++) {
         if (i == index) return record;

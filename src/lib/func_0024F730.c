@@ -1,3 +1,5 @@
+#include "game/effect_presentation_p06_internal.h"
+
 #include "game/effect_adapters_e08.h"
 #include "game/effect_math_e04.h"
 #include "common/types.h"
@@ -38,13 +40,14 @@ extern void func_00262C64(s16, s16);
 extern void func_00262C80(void);
 
 
-extern void func_0024C7A4(P01Vec3 *, P01Vec3 *, P01Vec3 *);
 
 extern float func_001FF7EC(s16, s16);
 extern u32 func_00022e60(void);
 
-s32 func_0024F730(u16 message, P01F730State *state)
+s32 func_0024F730(u32 command, void *payload)
 {
+    u16 message = (u16)command;
+    P01F730State *state = payload;
     P01Vec3 initial;
     P01Vec3 *point;
     s16 index;

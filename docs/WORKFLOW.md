@@ -212,6 +212,46 @@ The reviewed legacy baseline is not permission to retain a known incompatibility
 new or changed function. This prospective requirement adds no per-function build or
 routine review gate and does not claim that the scanner proves unsupported cases.
 
+The acceptance scan requires zero original definite interface findings regardless of edits to
+ordinary baseline rows. Its richer C90 comparison uses actual expanded declarations and
+linked provider identities. Incoming references to changed functions, changed visible
+declarations and changed call sites must agree. A body-only change counts; an unrelated
+function edit in the same translation unit does not make an unchanged outgoing call new.
+Ordinary legal argument conversions are not declaration conflicts.
+
+Round 18 is a transition reference only. Before the final wave's single canonical run,
+independent tooling review ratifies the exact projected final reference and any unchanged
+rich disagreements outside that wave. Permanent verification checks all known rich pairs
+against that exact code-pinned set. Each exception binds the definition, declaration and
+actual uses; changed evidence is not grandfathered. An edited ordinary baseline cannot
+restore an exception. If a later wave clears one, the old exception becomes stale and must
+be removed through the same reviewed tooling change before that wave's canonical run.
+This is a subset-only ratchet, not permission to add new debt.
+
+The portable compressed reference contains fingerprints, not source or compiler output.
+Its independently reviewed verifier pin supplies the same permanent floor on cold and warm
+checkouts; permanent mode never falls back to Round 18. The prior verified companion
+provides newer change attribution without weakening that floor. Missing trusted scope
+requires a conservative all-known comparison, never an assumption that nothing changed.
+Historical selected-input readers keep their original contracts.
+
+`tools/project_c_interface_epoch.js` prepares ignored reference/exception proposals from
+an exact reviewed interface report, without another compiler or ROM run. It does not install
+or authorize them. The integrator installs independently reviewed pins and artifacts before
+the canonical audit; the resulting scan must reproduce the exact exception set. If no rich
+debt remains, use the global-zero policy instead of carrying an exception set.
+
+Known indirect relationships that need facts beyond the AST are recorded narrowly in
+`config/c-interface-sites.json`. The verifier rechecks their source anchors, original
+linked target, instruction windows, ordered relocations and actual invoked types. This file
+is evidence, not an exemption: removing a still-present known relationship or retaining stale
+evidence fails. Preserve unproved suppliers and overlay attribution as uncertainties.
+Assembly register windows are diagnostic facts, not C type deductions. The recorded
+assembly return-consumption check rejects a void target where the original caller consumes
+its unmodified result. Other argument and control-flow questions still require the bounded
+source/linked investigation above; the scanner does not perform general points-to or ABI
+inference. No extra ROM build is added.
+
 Final verification also scans the exact authenticated expanded C consumed by KMC,
 using the separately pinned diagnostic Clang frontend. Provision it with
 `node tools/setup_c_interfaces.js --clang <exact-clang.exe>` or

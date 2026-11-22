@@ -1,13 +1,15 @@
+#include "game/sound_channel.h"
+
 #include "game/cutscene_panels.h"
 
 extern u8 D_8022A99A;
 extern u16 D_800E8100;
 extern u16 D_800E8700;
-extern u8 D_800EB1F0[];
+extern SoundChannel D_800EB1F0;
 
 extern void func_00052284(Panel *);
 extern s32 func_00045df4(s16);
-extern void func_800EA604(void *, s32);
+extern void func_800EA604(SoundChannel *, s32);
 
 s32 func_00298948(Panel *panel)
 {
@@ -62,14 +64,14 @@ s32 func_00298948(Panel *panel)
         if (buttons & 0x8000) {
             status = (s8)panel->field22;
             status += func_00045df4(1) != 1;
-            func_800EA604(D_800EB1F0, 3);
+            func_800EA604(&D_800EB1F0, 3);
             goto submitted;
         }
         if (buttons & 0x4000) {
             u8 selected = (u8)panel->field24;
             panel->field22 = selected;
             status = (s8)selected;
-            func_800EA604(D_800EB1F0, 13);
+            func_800EA604(&D_800EB1F0, 13);
         submitted:
             D_8022A99A = 5;
             content->field5F0 = 4;
@@ -107,7 +109,7 @@ s32 func_00298948(Panel *panel)
         ((volatile Panel *)panel)->field22 = nextSelection;
         /* Compare the signed new selection with the unsigned prior byte. */
         if ((s8)nextSelection != (u8)previous) {
-            func_800EA604(D_800EB1F0, 2);
+            func_800EA604(&D_800EB1F0, 2);
         }
         parameters = D_8023DE34;
         selectionValue = (s8)panel->field22;

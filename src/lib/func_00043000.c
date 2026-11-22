@@ -8,9 +8,9 @@ extern void boot_bitstream_descriptor_encode(u8 *buffer, BitRecordSet *set);
 extern void *func_00001330(unsigned int size);
 extern void *func_000016C4(void *pointer);
 extern void func_00023460(void *source, void *destination, int size);
-extern void func_00050918(u8 *bytes, void *record);
+extern void func_00050918(u8 *bytes, u8 *record);
 
-void func_00043000(u8 *buffer)
+void func_00043000(void *buffer)
 {
     u8 **saved;
     int i;
@@ -19,7 +19,7 @@ void func_00043000(u8 *buffer)
     for (i = 0; i < 100; i++) {
         saved[i] = func_00001330(16);
         func_00023460(&g_func_0019554C_records_52[i], saved[i], 16);
-        func_00050918(saved[i], &g_func_0019554C_records_52[i]);
+        func_00050918(saved[i], g_func_0019554C_records_52[i].bytes);
     }
     boot_bitstream_descriptor_encode(buffer, &D_80187618);
     for (i = 0; i < 100; i++) {

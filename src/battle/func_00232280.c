@@ -1,18 +1,9 @@
+#include "game/battle_record_flag.h"
+
+#include "game/battle_resolution_record.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
-
-typedef struct ResolutionObject {
-    u8 unknown00[0x6C];
-    int field6C;
-} ResolutionObject;
-
-/* All nine words are retained when these records are exchanged. */
-typedef struct ResolutionRecord {
-    ResolutionObject *objects[3];
-    u32 field0C;
-    u32 field10;
-    u32 unknown14[4];
-} ResolutionRecord;
 
 typedef struct ResolutionGlobal {
     u8 unknown00[0x6074];
@@ -22,14 +13,11 @@ typedef struct ResolutionGlobal {
 extern ResolutionGlobal *D_801CE8BC;
 extern int func_0020BF6C(void);
 extern void *func_0020C478(unsigned int index);
-extern int func_0020C2C0(void *object);
-extern int func_0020C014(void *object);
-extern void func_00231CC0(ResolutionRecord *records);
 
-void func_00232280(ResolutionRecord *records)
+void func_00232280(BattleResolutionRecord *records)
 {
-    ResolutionObject *object;
-    ResolutionRecord temporary;
+    BattleRosterRecord *object;
+    BattleResolutionRecord temporary;
     int i;
     u32 j;
 

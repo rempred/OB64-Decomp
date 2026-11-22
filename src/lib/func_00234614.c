@@ -46,9 +46,9 @@ typedef struct BattleUnit {
     u8 unk98[0x60];
 } BattleUnit;
 u8 D_801C9FA4(s32 a);
-u8 D_8016E458(u8 a);
+s32 D_8016E458(s32 a);
 extern s8 D_801F6A30[][3];
 s8 func_00234614(BattleUnit *u) {
     u8 a = D_801C9FA4(u->unk58);
-    return D_801F6A30[D_8016E458(((u8 *)u)[0x7F])][a];
+    return D_801F6A30[(u8)D_8016E458(((u8 *)u)[0x7F])][a];
 }

@@ -1,14 +1,16 @@
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
 s32 func_0020C1B4(void *record);
-s32 func_0020C2C0(void *record);
 void *func_0020C478(unsigned int index);
 void func_0021D230(s32 record, s32 arg1, void *arg2, s32 arg3);
 void func_0021D25C(s32 record, s32 arg1, void *arg2, s32 arg3, s32 arg4);
 s32 func_002224F4(void);
 s32 func_0022257C(void *record, s32 arg1, s32 *arg2);
-s32 func_00239AA4(void *record, u16 arg1);
+struct BattleUnit;
+s32 func_00239AA4(struct BattleUnit *record, unsigned int flags);
 void func_0022A280(void *record, s32 arg1, u8 arg2)
 {
     s32 flags;

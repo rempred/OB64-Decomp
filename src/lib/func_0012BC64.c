@@ -20,7 +20,7 @@ extern f64 D_801EE858, D_801EE860;
 extern s32 func_0012E950(s32 value);
 extern f32 func_0011AE34(void *record);
 extern void func_00126D24(RuntimeUnit *unit);
-extern void func_00129948(RuntimeUnit *unit);
+extern void func_00129948(const void *unit);
 extern void func_0012D6FC(RuntimeUnit *unit, u8 selector, s32 *state);
 extern void func_0012B1C4(RuntimeUnit *owner, void *unused, RuntimeUnit *unit, f32 *point);
 extern s32 func_0012B440(RuntimeUnit *first, RuntimeUnit *second, s32 selector,

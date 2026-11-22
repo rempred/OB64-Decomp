@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -243,32 +245,32 @@ void func_001070F4(RuntimeUnit *unit)
 extern void *func_000016C4(void *allocation);
 extern void func_001C6C04(void *object);
 
-void func_001072B8(CleanupObject *object)
+void func_001072B8(void *object)
 {
-    if (object->field_A0 != 0) {
-        if (object->field_A0->field_1C != 0) {
-            func_000016C4(object->field_A0->field_1C);
-            object->field_A0->field_1C = 0;
-            func_000016C4(object->field_A0->field_20);
-            object->field_A0->field_20 = 0;
-            func_000016C4(object->field_A0->field_24);
-            object->field_A0->field_24 = 0;
-            func_000016C4(object->field_A0->field_30);
-            object->field_A0->field_30 = 0;
-            if (object->field_A0->field_3C != 0) {
-                func_000016C4(object->field_A0->field_3C);
-                object->field_A0->field_3C = 0;
+    if (FIELD(object, CleanupResource *, 0xA0) != 0) {
+        if (FIELD(object, CleanupResource *, 0xA0)->field_1C != 0) {
+            func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_1C);
+            FIELD(object, CleanupResource *, 0xA0)->field_1C = 0;
+            func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_20);
+            FIELD(object, CleanupResource *, 0xA0)->field_20 = 0;
+            func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_24);
+            FIELD(object, CleanupResource *, 0xA0)->field_24 = 0;
+            func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_30);
+            FIELD(object, CleanupResource *, 0xA0)->field_30 = 0;
+            if (FIELD(object, CleanupResource *, 0xA0)->field_3C != 0) {
+                func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_3C);
+                FIELD(object, CleanupResource *, 0xA0)->field_3C = 0;
             }
         }
-        func_000016C4(object->field_A0);
-        object->field_A0 = 0;
+        func_000016C4(FIELD(object, CleanupResource *, 0xA0));
+        FIELD(object, CleanupResource *, 0xA0) = 0;
     }
-    if (object->field_68 != 0) {
-        func_000016C4(object->field_68);
-        object->field_68 = 0;
+    if (FIELD(object, void *, 0x68) != 0) {
+        func_000016C4(FIELD(object, void *, 0x68));
+        FIELD(object, void *, 0x68) = 0;
     }
     func_001C6C04(object);
-    object->field_88 = 0;
+    FIELD(object, s32, 0x88) = 0;
 }
 
 extern void *func_000016C4(void *allocation);
@@ -307,37 +309,37 @@ void func_0010738C(CleanupObject *object)
 extern void *func_000016C4(void *allocation);
 extern void func_001C6C04(void *object);
 
-void func_0010746C(CleanupObject *object)
+void func_0010746C(void *object)
 {
-    object->field_00 &= ~2u;
-    object->field_6C = 0;
+    FIELD(object, u32, 0x00) &= ~2u;
+    FIELD(object, u32, 0x6C) = 0;
     *((unsigned char *)object + 0x20) = 0;
-    object->field_00 &= ~4u;
-    object->field_00 &= ~0x200u;
-    if (object->field_A0 != 0) {
-        if (object->field_A0->field_1C != 0) {
-            func_000016C4(object->field_A0->field_1C);
-            object->field_A0->field_1C = 0;
-            func_000016C4(object->field_A0->field_20);
-            object->field_A0->field_20 = 0;
-            func_000016C4(object->field_A0->field_24);
-            object->field_A0->field_24 = 0;
-            func_000016C4(object->field_A0->field_30);
-            object->field_A0->field_30 = 0;
-            if (object->field_A0->field_3C != 0) {
-                func_000016C4(object->field_A0->field_3C);
-                object->field_A0->field_3C = 0;
+    FIELD(object, u32, 0x00) &= ~4u;
+    FIELD(object, u32, 0x00) &= ~0x200u;
+    if (FIELD(object, CleanupResource *, 0xA0) != 0) {
+        if (FIELD(object, CleanupResource *, 0xA0)->field_1C != 0) {
+            func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_1C);
+            FIELD(object, CleanupResource *, 0xA0)->field_1C = 0;
+            func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_20);
+            FIELD(object, CleanupResource *, 0xA0)->field_20 = 0;
+            func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_24);
+            FIELD(object, CleanupResource *, 0xA0)->field_24 = 0;
+            func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_30);
+            FIELD(object, CleanupResource *, 0xA0)->field_30 = 0;
+            if (FIELD(object, CleanupResource *, 0xA0)->field_3C != 0) {
+                func_000016C4(FIELD(object, CleanupResource *, 0xA0)->field_3C);
+                FIELD(object, CleanupResource *, 0xA0)->field_3C = 0;
             }
         }
-        func_000016C4(object->field_A0);
-        object->field_A0 = 0;
+        func_000016C4(FIELD(object, CleanupResource *, 0xA0));
+        FIELD(object, CleanupResource *, 0xA0) = 0;
     }
-    if (object->field_68 != 0) {
-        func_000016C4(object->field_68);
-        object->field_68 = 0;
+    if (FIELD(object, void *, 0x68) != 0) {
+        func_000016C4(FIELD(object, void *, 0x68));
+        FIELD(object, void *, 0x68) = 0;
     }
     func_001C6C04(object);
-    object->field_88 = 0;
+    FIELD(object, s32, 0x88) = 0;
 }
 
 extern s32 D_801F367C;

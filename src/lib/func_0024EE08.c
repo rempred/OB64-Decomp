@@ -13,7 +13,7 @@ extern void func_00262830(s16);
 
 extern void func_00262C64(s16, s16);
 extern void *func_00262AB0(void *);
-extern s32 func_0024EA70(u16, void *);
+extern s32 func_0024EA70(u32 command, void *payload);
 
 
 

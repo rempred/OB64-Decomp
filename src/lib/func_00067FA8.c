@@ -5,12 +5,17 @@ typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-typedef struct {
+typedef struct Func0004ED60Launch {
     s16 terminal_class;
     s16 environment;
     s16 field_4;
     s16 field_6;
-} Func00067FA8Launch __attribute__((packed));
+} Func0004ED60Launch;
+
+typedef union {
+    Func0004ED60Launch record;
+    struct { u8 bytes[8]; } raw;
+} Func00067FA8Launch;
 
 extern Func00067FA8Launch D_8019A64C;
 extern u16 D_8018F1A0;
@@ -18,8 +23,8 @@ extern void *D_8018FC14;
 extern s8 D_80196AED;
 extern u8 D_801976D9;
 
-void func_80178E60(s32 selector, Func00067FA8Launch *launch,
-                   Func00067FA8Launch *defaults, s32 selector_copy);
+s32 func_80178E60(s32 selector, struct Func0004ED60Launch *launch,
+                  const struct Func0004ED60Launch *defaults, s32 selector_copy);
 u32 func_8009DAF4(u32 resource);
 void *func_80070F30(u32 size);
 void *func_8009DBB8(void *destination, u32 resource);
@@ -43,14 +48,14 @@ s32 func_00067fa8(void)
 
     selector = *request;
     defaults = &D_8019A64C;
-    launch = *defaults;
+    launch.raw = defaults->raw;
     request_flags = *(volatile u16 *)request;
     D_8018FC14 = 0;
     selector &= 0x3FFF;
     if ((request_flags & 0x8000) == 0) {
-        func_80178E60(selector, &launch, defaults, selector);
-        environment = launch.environment;
-        terminal_class = launch.terminal_class;
+        func_80178E60(selector, &launch.record, &defaults->record, selector);
+        environment = launch.record.environment;
+        terminal_class = launch.record.terminal_class;
         if (environment >= -1) {
             if ((u32)(terminal_class - 4) < 2) {
                 table = func_80070F30(func_8009DAF4(0x016B3D18));

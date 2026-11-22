@@ -1,35 +1,8 @@
+#include "game/character_record.h"
+#include "game/character_template.h"
 #include "game/scenario_source_record.h"
 
-typedef struct Func001957D0Template {
-    u8 field_00;
-    u8 field_01;
-    u16 field_02;
-    s8 field_04[2];
-    u8 field_06;
-    u8 field_07;
-    u8 field_08;
-    u16 field_09;
-    s8 field_0B[2];
-    u8 field_0D[3];
-    u8 field_10;
-    u8 field_11;
-    u16 field_12;
-    s8 field_14[2];
-    u8 field_16[13];
-} __attribute__((packed)) Func001957D0Template;
-typedef struct Func001957D0Record52 {
-    u8 field_00[0x12];
-    u8 field_12;
-    u8 field_13[0x21];
-} Func001957D0Record52;
-typedef struct Func001957D0Record56 {
-    u8 field_00[0x12];
-    u8 field_12;
-    u8 field_13[0x25];
-} Func001957D0Record56;
 extern u8 g_func_001957D0_active_source_ids[];
-extern Func001957D0Record52 g_func_0019554C_records_52[];
-extern Func001957D0Record56 g_func_0019554C_records_56[];
 extern u16 g_func_001957D0_special_slots[];
 extern u16 g_func_001957D0_normal_slots[];
 extern u16 g_func_001957D0_special_slot_seed;
@@ -40,16 +13,10 @@ extern const char g_func_001957D0_record_error[];
 extern const char g_func_001957D0_slot_error[];
 extern void func_00023780(void *destination, int size);
 extern void func_00023940(const char *message);
-extern void func_0019554C(
-    int record_index,
-    Func001957D0Template *source,
-    int selector,
-    int flag,
-    int source_index);
 extern u8 func_001957D0_finalize(Func001957D0SourceRecord *record);
-void func_001957D0(Func001957D0Template *incoming_source, int source_index)
+void func_001957D0(const CharacterTemplate *incoming_source, int source_index)
 {
-    Func001957D0Template *source;
+    const CharacterTemplate *source;
     u8 special_source_value;
     register u8 source_byte;
     u32 source_record_index;
@@ -72,6 +39,7 @@ void func_001957D0(Func001957D0Template *incoming_source, int source_index)
     u8 source_field_10;
     u16 *slot_cursor;
     Func001957D0SourceRecord *source_record;
+    /* The packed-field read form retains KMC register allocation in the slot loops. */
     u32 source_work;
     source_byte = (u8)source_index;
     special_source_value = source_byte >> 7;
@@ -137,7 +105,7 @@ main_records_56:
     {
     u32 helper_source_index;
     int special_pool;
-    Func001957D0Template *call_source;
+    const CharacterTemplate *call_source;
 main_record_done:
     if (main_record_index < 0) {
         func_00023940(g_func_001957D0_record_error);
@@ -176,7 +144,7 @@ main_record_done:
         saved_s7 = g_func_001957D0_normal_slots;
         source_work = (u32)source;
 field_07_slot_outer:
-        if (((Func001957D0Template *)source_work)->field_0D[0] != 0) {
+        if (((CharacterTemplate *)source_work)->field_0D[0] != 0) {
             scan_index = 0;
             if (special_pool != 0) {
                 switch (member_index) {
@@ -233,7 +201,7 @@ field_07_slot_scan_done:
                 member_index++;
                 member_entry[2] = field_07_slot_index + 100;
                 member_entry[7] =
-                    ((Func001957D0Template *)source_work)->field_0D[0] - 1;
+                    ((CharacterTemplate *)source_work)->field_0D[0] - 1;
                 source_offset++;
             }
             source_work++;
@@ -250,7 +218,7 @@ field_07_slot_scan_done:
         special_pool |= pool_compare;
         source_work = (u32)source;
 field_07_record_outer:
-        if (((Func001957D0Template *)source_work)->field_0D[0] != 0) {
+        if (((CharacterTemplate *)source_work)->field_0D[0] != 0) {
             scan_index = 1;
             if (special_pool != 0) {
                 record_offset = 52;
@@ -304,7 +272,7 @@ field_07_record_scan_done:
                 member_index++;
                 ((u8 *)slot_cursor)[2] = field_07_record_index;
                 field_07_member_value =
-                    ((Func001957D0Template *)source_work)->field_0D[0];
+                    ((CharacterTemplate *)source_work)->field_0D[0];
                 if (saved_s7) {
                     source_offset++;
                 } else {
@@ -332,7 +300,7 @@ field_07_record_scan_done:
         normal_slot_base = (u32)g_func_001957D0_normal_slots;
         source_work = (u32)source;
 field_10_slot_outer:
-        if (((Func001957D0Template *)source_work)->field_16[0] != 0) {
+        if (((CharacterTemplate *)source_work)->field_16[0] != 0) {
             scan_index = 0;
             if (slot_special != 0) {
                 slot_cursor = (u16 *)field_10_special_slots;
@@ -376,7 +344,7 @@ field_10_slot_scan_done:
             member_entry = (u8 *)source_record + member_index;
             member_entry[2] = field_10_slot_index + 100;
             member_entry[7] =
-                ((Func001957D0Template *)source_work)->field_16[0] - 1;
+                ((CharacterTemplate *)source_work)->field_16[0] - 1;
             source_work++;
             member_index++;
             if ((int)source_work < (int)((u32)source + 3)) {
@@ -398,7 +366,7 @@ field_10_slot_scan_done:
         source_work = (u32)source;
         record_special = pool_byte | record_compare;
 field_10_record_outer:
-        if (((Func001957D0Template *)source_work)->field_16[0] != 0) {
+        if (((CharacterTemplate *)source_work)->field_16[0] != 0) {
             scan_index = 1;
             if (record_special != 0) {
                 record_offset = 52;
@@ -453,7 +421,7 @@ field_10_record_scan_done:
                 member_entry = (u8 *)source_record + member_index;
                 member_entry[2] = record_index;
                 member_entry[7] =
-                    ((Func001957D0Template *)source_work)->field_16[0] - 1;
+                    ((CharacterTemplate *)source_work)->field_16[0] - 1;
                 source_work++;
             }
             member_index++;

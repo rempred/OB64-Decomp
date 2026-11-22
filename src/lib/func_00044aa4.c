@@ -1,16 +1,13 @@
 #include "game/character_record.h"
-
-typedef s32 (*EquipmentSelector)(u8, u8);
-
-extern EquipmentSelector g_func_0018B494_equipment_selectors[];
+#include "game/class_field_lookups.h"
 extern s32 rand(void);
-extern s8 func_000457e4(s32);
-extern s8 func_00045820(s32);
-extern s8 func_00045840(s32);
-extern s8 func_0004585c(s32);
-extern s8 func_00045878(s32);
-extern s8 func_00045898(s32);
-extern s8 func_000458b8(s32);
+extern u32 func_000457e4(s32);
+extern s32 func_00045820(s32);
+extern s32 func_00045840(s32);
+extern u32 func_0004585c(s32);
+extern s32 func_00045878(s32);
+extern s32 func_00045898(s32);
+extern s32 func_000458b8(s32);
 
 void func_00044aa4(CharacterRecord *arg0)
 {
@@ -205,14 +202,14 @@ void func_00044aa4(CharacterRecord *arg0)
             if (equipment_id == 0) {
                 goto equipment_advance;
             }
-            growth_0A += func_000457e4(equipment_id);
-            growth_0E += func_000457e4(equipment_id);
-            growth_16 += func_00045820(equipment_id);
-            growth_1E += func_00045840(equipment_id);
-            growth_22 += func_0004585c(equipment_id);
-            growth_12 += func_00045878(equipment_id);
-            growth_1A += func_00045898(equipment_id);
-            luck_delta += func_000458b8(equipment_id);
+            growth_0A += (s8)func_000457e4(equipment_id);
+            growth_0E += (s8)func_000457e4(equipment_id);
+            growth_16 += (s8)func_00045820(equipment_id);
+            growth_1E += (s8)func_00045840(equipment_id);
+            growth_22 += (s8)func_0004585c(equipment_id);
+            growth_12 += (s8)func_00045878(equipment_id);
+            growth_1A += (s8)func_00045898(equipment_id);
+            luck_delta += (s8)func_000458b8(equipment_id);
 
 equipment_advance:
             loop_index += 1;

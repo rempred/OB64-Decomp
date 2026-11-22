@@ -1,17 +1,17 @@
+#include "game/unit_record_lookup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
 typedef signed int s32;
 
-typedef struct { u32 flags; u8 source_index; } RuntimeUnit;
-
 extern u8 D_801971F2[][25];
 extern u16 D_80193BD8[][28];
 extern u16 D_80195578[][26];
 
-s32 func_0012DA10(RuntimeUnit *unit)
+s32 func_0012DA10(void *unit)
 {
-    u32 source_index = unit->source_index;
+    u32 source_index = ((const u8 *)unit)[4];
     s32 member = D_801971F2[source_index][0];
     s32 result;
 

@@ -1,3 +1,8 @@
+#include "game/unit_record_lookup.h"
+
+#include "game/sound_channel.h"
+#include "game/unit_cleanup.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -18,28 +23,26 @@ void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
 void func_0005c090(s32, s32);
 M2C_UNK func_000ec838(M2C_UNK, s32, M2C_UNK, M2C_UNK, s32, s32, s32, s32, s32);
 void func_000f6b10(void *, f32 *, f32 *, f32 *);
-void func_0010746C(void *);
-M2C_UNK func_00109C04();
-M2C_UNK func_00109C3C(void *);
+void func_00109C04(void);
+struct RuntimeUnit;
+void func_00109C3C(struct RuntimeUnit *);
 f32 func_00118500(void *, void *);
-M2C_UNK func_0011BB4C();
-M2C_UNK func_00129948(void *);
-s32 func_0012DA10(void *);
-s32 func_0012DA9C(void *);
+void func_0011BB4C(void);
+void func_00129948(const void *unit);
 void *func_0012E7E8(void *);
-s32 func_0012E968(void *);
 void func_0012EA80(s32, f32 *);
-M2C_UNK func_0012F140(void *);
+struct DeploymentUnit;
+void func_0012F140(struct DeploymentUnit *);
 s32 func_0012F530(void *);
-M2C_UNK func_0012F8C0(void *);
+void func_0012F8C0(struct DeploymentUnit *);
 s32 func_0012FBB8(s32, s32);
 extern void func_00130E60(u16, u8);
 extern void func_00131050(void);
-M2C_UNK func_0013109C(u16);
+void func_0013109C(s32);
 M2C_UNK func_00132B80(u16);
 M2C_UNK func_00147BDC(s32 *);
 void func_0015DF10(u32 value);
-void func_800EA604(void *, s32);
+void func_800EA604(SoundChannel *channel, s32 id);
 s32 func_801DCF90(void *);
 s32 func_801DD2B0(void *);
 void memset_00023780(void *, s32);
@@ -113,7 +116,7 @@ extern u8 D_80196A38[];
 extern u8 D_8018F520[];
 extern u8 D_8018F481;
 extern u8 D_800E9C16;
-extern u8 g_func_0015DF10_match[];
+extern SoundChannel g_func_0015DF10_match;
 extern u8 D_00171EA0[];
 extern u8 D_00177ED0[];
 extern u8 D_0017F9C0[];
@@ -842,7 +845,7 @@ block_90:
 block_92:
     var_a0_821 = D_801F0CB0[D_801969BA[func_0012E968(current_object) * 0xB]];
 block_93:
-    func_00109C3C(var_a0_821);
+    func_00109C3C((struct RuntimeUnit *)var_a0_821);
     D_801F0DE0 = 4;
     
     D_801F0FE1 = func_0012F530(current_object);
@@ -1376,7 +1379,7 @@ block_180:
 block_181:
     func_00131050();
     func_000ec838(0, (D_801F36D0 + func_801DCF90(current_object)) & 0xFFFF, 0xA0, 0x78, 0xA0, 0x32, (s32) (*(u8 *)((s8 *)((((*(u8 *)((s8 *)(((var_s1_1877 * 0x19) + 0x80190000)) + (0x71F2))) * 0x38) + 0x80190000)) + (0x3BD1))), 0, 0);
-    func_0012F140(current_object);
+    func_0012F140((struct DeploymentUnit *)current_object);
     goto function_return;
 dispatch_case_23:
     case23_index_v0 = D_801F0E00;
@@ -1427,7 +1430,7 @@ block_185:
     D_801F36D0 = var_v0_1977;
     func_00131050();
     func_000ec838(0, (D_801F36D0 + func_801DCF90(current_object)) & 0xFFFF, 0xA0, 0x78, 0xA0, 0x32, (s32) (*(u8 *)((s8 *)((((*(u8 *)((s8 *)((((*(u8 *)((s8 *)(current_object) + (4))) * 0x19) + 0x80190000)) + (0x71F2))) * 0x38) + 0x80190000)) + (0x3BD1))), 0, 0);
-    func_0012F8C0(current_object);
+    func_0012F8C0((struct DeploymentUnit *)current_object);
     goto function_return;
 dispatch_case_26:
     current_object = D_801F0CB0[D_801F0E00];
@@ -1530,7 +1533,7 @@ block_205:
 dispatch_case_2a: {
     register s32 case2a_mode_v1;
     register s32 case2a_expected_v0;
-    register void *case2a_arg_a0;
+    register SoundChannel *case2a_arg_a0;
     register u8 *case2a_flags_a2;
     register s32 case2a_flags_v1;
     register s32 case2a_call_a1;
@@ -1545,7 +1548,7 @@ dispatch_case_2a: {
     }
     case2a_flags_a2 = D_8018F520;
     case2a_flags_v1 = *case2a_flags_a2;
-    case2a_arg_a0 = (void *)g_func_0015DF10_match;
+    case2a_arg_a0 = &g_func_0015DF10_match;
     case2a_call_a1 = 0x28A;
     
     *(s8 *)0x8018F56C = 1;

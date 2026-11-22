@@ -1,3 +1,5 @@
+#include "common/os_message_queue.h"
+
 typedef struct { unsigned int words[15]; unsigned int status; } PifRam;
 typedef struct {
     unsigned char dummy, txBytes, rxBytes, command;
@@ -11,7 +13,6 @@ extern PifRam __osPfsPifRam;
 extern unsigned char __osContLastCmd, __osMaxControllers;
 extern void __osSiGetAccess(void), __osSiRelAccess(void);
 extern int __osSiRawStartDma(int, void *);
-extern int osRecvMesg(void *, void **, int);
 void func_0002b90c(unsigned char);
 void func_0002b9b0(unsigned char *, ControllerStatus *);
 

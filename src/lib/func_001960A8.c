@@ -1,4 +1,8 @@
+#include "game/unit_record_lookup.h"
+
+#include "game/boot_command_stream.h"
 #include "game/character_record.h"
+#include "game/character_template.h"
 #include "game/record_name_selection.h"
 
 extern unsigned char D_8018F481_check1[];
@@ -131,22 +135,19 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-u8 *boot_command_stream_dispatch(M2C_UNK, M2C_UNK, M2C_UNK, u8);
 M2C_UNK boot_command_stream_resource_node_dispatch(M2C_UNK, M2C_UNK, M2C_UNK);
 s32 func_0005c110(M2C_UNK);
 f32 func_000F315C(u8, f32, f32);
 f32 func_000F3428(u8, f32, f32);
 extern void func_00121DA8(RuntimeUnit *unit);
-M2C_UNK func_00128E80();
-s8 func_001291B4(s32);
-M2C_UNK func_0012967C(u8);
-s32 func_0012E8EC(s32);
+void func_00128E80(void);
+u8 func_001291B4(u8 *);
+void func_0012967C(s32);
 M2C_UNK func_0012EA80(s32, f32 *);
 M2C_UNK func_0012EA80_row(s32, f32 *);
 s32 func_00130794(void);
 extern void func_00130E60(u16, u8);
 M2C_UNK func_00131B50(u16);
-void func_001957D0(void *, s32);
 void func_00195D9C(u8, u8, u8, u8);
 M2C_UNK func_801CC480(void *, f32, f32, f32, s32);
 M2C_UNK memset_00023780(M2C_UNK, M2C_UNK);
@@ -205,7 +206,7 @@ void func_001960A8(void) {
     s32 var_a2_952;
     s32 var_s0_1138;
     s32 var_s0_1183;
-    s32 var_s1_1137;
+    u8 *group_row;
     s32 var_s1_403;
     s32 var_s1_565;
     s32 var_s2_1301;
@@ -585,7 +586,8 @@ first_row:
                 if ((scenarioId == 4) & (templateId == 0x205)) {
                     (*(u8 *)((s8 *)(cursor0) + (0))) |= 0x80;
                 }
-                func_001957D0(templates + ((templateId - 1) * 0x23), (*(u8 *)((s8 *)(cursor0) + (0))));
+                func_001957D0((const CharacterTemplate *)(templates + (templateId - 1) * 0x23),
+                              *(u8 *)cursor0);
                 temp_v1_711 = (*(u8 *)((s8 *)(cursor0) + (0))) & 0x7F;
                 (*(u8 *)((s8 *)(cursor0) + (0))) = temp_v1_711;
                 (*(u8 *)(D_801971FC + ((temp_v1_711 * 0x19)))) = (u8) (*(u8 *)((s8 *)(cursor0) + (9)));
@@ -761,14 +763,14 @@ block_118:
         index = 0;
         var_s4_619 = (s32)D_801F0CB0;
         activeValue = 0xB;
-        var_s1_1137 = ((u32)D_801969B8);
+        group_row = D_801969B8;
         var_s0_1138 = 0;
         do {
             if ((*(u8 *)(D_801969B9 + var_s0_1138)) & 1) {
-                (*(s8 *)(D_801969C1 + (var_s0_1138))) = func_001291B4(var_s1_1137);
-                (*(s8 *)(D_801969C2 + (var_s0_1138))) = (s8) (activeValue - func_0012E8EC((*(s32 *)((s8 *)(((*(u8 *)(D_801969BA + (var_s0_1138))) * 4)) + (((u32)var_s4_619))))));
+                (*(s8 *)(D_801969C1 + (var_s0_1138))) = func_001291B4(group_row);
+                (*(s8 *)(D_801969C2 + (var_s0_1138))) = (s8) (activeValue - func_0012E8EC((*(RuntimeUnit **)((s8 *)(((*(u8 *)(D_801969BA + (var_s0_1138))) * 4)) + (((u32)var_s4_619))))));
             }
-            var_s1_1137 += 0xB;
+            group_row += 0xB;
             index += 1;
             var_s0_1138 += 0xB;
         } while (index < 0xA);

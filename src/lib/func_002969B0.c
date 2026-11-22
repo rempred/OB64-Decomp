@@ -17,8 +17,13 @@ void memcpy_aligned(void *dst, void *src, s32 n);
 void memcpy_aligned(void *dst, void *src, s32 n);
 void bzero(void *p, s32 n);
 u8 func_00295E20(s32 a, u8 *p, s32 b);
-u8 *func_002969B0(u8 *o, s32 kind, u8 *src) {
+struct Panel;
+struct PanelContent;
+
+struct PanelContent *func_002969B0(struct Panel *panel, s32 kind, void *src, unsigned short selection) {
+    u8 *o = (u8 *)panel;
     u8 *p;
+    (void)selection;
     *(u8 **)(o + 0xD0) = func_00001330(0x604);
     bzero(*(u8 **)(o + 0xD0), 0x604);
     p = *(u8 **)(o + 0xD0);
@@ -41,5 +46,5 @@ u8 *func_002969B0(u8 *o, s32 kind, u8 *src) {
     }
     ((u8 *)D_8023DE34)[0x64] = 0;
     p[0x5F5] = func_00295E20(0, p, 0);
-    return p;
+    return (struct PanelContent *)p;
 }

@@ -26,7 +26,7 @@ extern f32 D_801F0D98[];
 extern f32 D_801F0D9C[];
 extern f32 D_801F0DA0[];
 extern f32 D_801F0DA4[];
-extern void func_00129948(RuntimeUnit *unit);
+extern void func_00129948(const void *unit);
 
 /* Complete logical body; original four-byte physical lead stays in ASM. */
 void func_00120BC0(RuntimeUnit *unit, f32 arg1, f32 arg2, f32 arg3, s32 arg4)

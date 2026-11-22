@@ -1,4 +1,4 @@
-void func_00290810(signed char value)
+void func_00290810(int value)
 {
     void *state = *(void **)0x8023DE30;
 

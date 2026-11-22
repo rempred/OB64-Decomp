@@ -1,9 +1,11 @@
 #include "game/class_field_lookups.h"
+#include "game/battle_roster_record.h"
+#include "game/battle_callbacks.h"
 
 typedef struct SupplementActor SupplementActor;
 typedef struct SupplementChild SupplementChild;
 struct SupplementChild {
-    void (*callback)(void);
+    BattleChildCallback callback;
     unsigned char field_04[0x10];
     unsigned char field_14, field_15[0x1F];
     short field_34;
@@ -33,10 +35,8 @@ extern unsigned char func_0020D434(int);
 extern float func_001BC35C(short, short);
 extern int func_002015C8(int, int, int, int);
 extern void func_0020C4B8(int, int, int, int *, int *);
-extern int func_0020D444(u16, u16);
+extern int func_0020D444(int, int);
 extern SupplementChild *func_0020F2A8(int, int, int, int);
-extern void func_001F7148(void);
-extern void func_001F89B4(void);
 extern int D_801CE8FC;
 extern const int D_801CEDFC[6];
 
@@ -87,7 +87,7 @@ static __inline__ SupplementChild *allocate_child(int resource, int x, int y, in
 }
 static __inline__ void finish_pair(SupplementActor *actor,
     SupplementChild *primary, SupplementChild *secondary,
-    void (*firstCallback)(void), void (*secondCallback)(void),
+    BattleChildCallback firstCallback, BattleChildCallback secondCallback,
     int primaryFactor, int secondaryFactor)
 {
     secondary->actor = actor;
@@ -105,7 +105,7 @@ static __inline__ void finish_pair(SupplementActor *actor,
  * local to preserve the measured temporary lifetimes. */
 static __inline__ void finish_loop_pair(SupplementActor *actor,
     SupplementChild *primary, SupplementChild *secondary,
-    void (*firstCallback)(void),
+    BattleChildCallback firstCallback,
     int secondaryFactor)
 {
     secondary->actor = actor;
@@ -133,8 +133,9 @@ static __inline__ void finish_loop_pair(SupplementActor *actor,
     FINISH_PAIR(); \
 }
 
-void func_0020CBDC(SupplementActor *actor, int mode)
+void func_0020CBDC(BattleRosterRecord *record, int mode)
 {
+    SupplementActor *actor = (SupplementActor *)record;
     int screenX, screenY;
     int position = actor->field_58;
     int source = actor->field_48;

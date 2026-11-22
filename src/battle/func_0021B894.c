@@ -1,3 +1,6 @@
+#include "game/battle_record_flag.h"
+#include "game/battle_roster_record.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -17,39 +20,35 @@ M2C_UNK func_00041674();
 M2C_UNK func_0005a0f4();
 M2C_UNK func_001F0B40();
 M2C_UNK func_001F1E18();
-M2C_UNK func_001FFE80();
-M2C_UNK func_002071F4();
-M2C_UNK func_00208D80();
+void func_001FFE80(void);
+void func_002071F4(void);
+void func_00208D80(void);
 void func_00208DC8(void *channel, s32 request);
-M2C_UNK func_00208EB0();
+void func_00208EB0(void);
 void func_0020BD5C(s32 selector);
-s32 func_0020BF6C();
+s32 func_0020BF6C(void);
 s32 func_0020BF7C();
 s32 func_0020BFF8(void *);
-s32 func_0020C2C0(void *);
-s32 func_0020C32C(void *);
 void *func_0020C478(unsigned int index);
-void *func_0020C788();
-void *func_0020C810(s32);
-M2C_UNK func_00215CF0();
-M2C_UNK func_00217BA8();
-M2C_UNK func_0021840C();
-M2C_UNK func_00218B58();
+void func_00215CF0(void);
+void func_00217BA8(void);
+void func_0021840C(void);
+void func_00218B58(void);
 M2C_UNK func_00219470();
 M2C_UNK func_00219A14();
 M2C_UNK func_00219F0C();
 M2C_UNK func_0021A438();
 M2C_UNK func_0021A5C8();
 M2C_UNK func_0021A9B4();
-M2C_UNK func_0021B0A0();
+void func_0021B0A0(void);
 M2C_UNK func_0021B2E0();
-M2C_UNK func_0021B438();
-M2C_UNK func_0021B770();
+void func_0021B438(void);
+void func_0021B770(void);
 void func_0021C3B0(void);
 void func_002215D0(void);
-M2C_UNK func_002224F4();
+s32 func_002224F4(void);
 M2C_UNK func_00226AFC();
-M2C_UNK func_0025FCB4();
+void func_0025FCB4(void);
 M2C_UNK memset_00023780(void *, M2C_UNK);
 extern u8 *volatile D_801CE8BC;
 extern u16 D_800E8100;
@@ -278,7 +277,6 @@ loop_48:
             var_s3_33 = 6;
         }
     } else {
-        var_a0_0 = 1;
         var_s3_33 = 5;
     }
 block_52:
@@ -296,7 +294,7 @@ block_54:
 block_56:
     flag_ptr = &D_80193670;
     *flag_ptr = (u8) (*flag_ptr | 1);
-    temp_v0_341 = func_0020C810(var_a0_0);
+    temp_v0_341 = func_0020C810();
     if (temp_v0_341 == 0) {
         goto block_69;
     }

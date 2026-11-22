@@ -1,4 +1,4 @@
-typedef unsigned char u8;
+#include "game/class_field_lookups.h"
 
 typedef struct ClassEntry {
     u8 unk_00[0x28];

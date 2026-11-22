@@ -1,13 +1,4 @@
-typedef unsigned int u32;
-
-typedef struct ContextNode24 {
-    u32 field_00;
-    void *field_04;
-    u32 field_08;
-    u32 field_0C;
-    struct ContextNode24 *field_10;
-    struct ContextNode24 *field_14;
-} ContextNode24;
+#include "game/boot_archive_record.h"
 
 /* The separate search body accesses +0x14/+0x18. Its pointed storage view
  * differs from the primary helper's 24-byte allocation and +0x10/+0x14 links. */
@@ -22,7 +13,6 @@ typedef struct SlotSearchNode {
 } SlotSearchNode;
 
 extern void *func_80071288(u32 bytes);
-extern ContextNode24 *g_boot_resource_context;
 
 ContextNode24 *boot_resource_node_recursive_insert_slot_search(ContextNode24 *node, u32 key)
 {

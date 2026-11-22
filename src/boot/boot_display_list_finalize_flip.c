@@ -13,7 +13,7 @@ void boot_display_list_finalize_flip(void);
 extern u8 D_800A81F0;
 extern FbSet *D_800E9BE0;
 extern u8 D_800C4808;
-void func_00019c04(Gfx *start, s32 size, u8 a, s32 b);
+void func_00019c04(void *start, u32 size, u32 ucode, u32 flag);
 void boot_display_list_counter_step(void);
 extern Gfx *gTitleCardDisplayListCursor;
 extern u8 D_80186E70[];

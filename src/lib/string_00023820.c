@@ -9,9 +9,9 @@ signed char *strchr(const signed char *text, int value)
     return (signed char *)text;
 }
 
-int strlen(signed char *text)
+int strlen(const signed char *text)
 {
-    signed char *end = text;
+    const signed char *end = text;
     if (*text != 0) {
         do {
             end++;

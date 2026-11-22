@@ -1,16 +1,16 @@
 #include "game/shop_price_interface.h"
 
-typedef struct ShopDate {
+typedef struct {
     u16 year;
     u8 month;
     u8 day;
-} ShopDate;
+} Date420;
 
 extern u16 D_80196A30;
 extern u8 D_80196A32;
 extern u8 D_80196A33;
 /* The accepted shop-overlay call target maps to func_000424bc at this live address. */
-extern void func_8016C5BC(ShopDate *date);
+extern s32 func_8016C5BC(Date420 *date);
 
 u32 func_0019BD14(void)
 {
@@ -18,7 +18,7 @@ u32 func_0019BD14(void)
     s32 month = D_80196A32;
     s32 day = D_80196A33;
     s32 elapsed = 0;
-    ShopDate date;
+    Date420 date;
     s32 increment;
     s32 price;
 

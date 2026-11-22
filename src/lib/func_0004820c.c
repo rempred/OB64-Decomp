@@ -6,7 +6,7 @@ extern unsigned char D_80197B01;
 extern unsigned char D_80197B02;
 extern unsigned short D_80197B04;
 
-void func_80171B94(void);
+int func_80171B94(void);
 
 void func_0004820c(short state, int slot0, int slot1)
 {

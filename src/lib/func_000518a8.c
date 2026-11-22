@@ -1,12 +1,12 @@
 typedef unsigned char u8;
 typedef signed int s32;
 extern s32 D_801977C8;
-void func_00042714(u8 *p);
+void func_00042714(void);
 void D_801A101C(void);
 void D_801B7FA0(u8 *p);
 void D_8019B040(s32 a);
 void func_000518a8(u8 *p) {
-    func_00042714(p);
+    func_00042714();
     switch (D_801977C8) {
         case 0:
             break;

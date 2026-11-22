@@ -10,7 +10,6 @@ extern u32 func_00201E38(int, u32);
 extern int func_00201E08(int, int, int);
 extern void *func_00001330(u32);
 extern void func_00023780(void *, u32);
-extern void *func_00206340(int, int, CombatPoseRecord *, int, int, int, u8 *);
 
 #define BLEND_PIXEL(n) \
     ((u16 *)destinationRow)[n] = (((((u16 *)destinationRow)[n] & 0xF800) * (255 - (int)alpha) / 255 + \
@@ -79,8 +78,8 @@ void *func_00207E30(int a, int b, int directoryIndex, int d, int c,
     output->width = outputMask->width = width;
     output->height = outputMask->height = height;
 
-    while (func_00205608(handle, directoryIndex, index, &scratch.record)) {
-        input = func_00206340(a, b, &scratch.record, d, c, variant, 0);
+    while (func_00205608(handle, directoryIndex, index, &scratch.indexed.record)) {
+        input = func_00206340(a, b, &scratch.indexed, d, c, variant, 0);
         sourceRow = (u16 *)(input + 1);
         maskBase = (CombatImage *)((u8 *)input +
                     func_00201E08(input->field_03, input->width, input->height));

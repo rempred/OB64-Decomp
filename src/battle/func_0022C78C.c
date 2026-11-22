@@ -1,3 +1,7 @@
+#include "game/battle_record_flag.h"
+
+#include "game/battle_roster_record.h"
+
 #include "game/combat_selector.h"
 #include "game/combat_evaluator.h"
 #include "game/battle_art_lookup.h"
@@ -14,11 +18,6 @@ s32 func_00045480(s32);
 s32 func_000454e0(s32);
 s32 func_00201798(s32, s32, s32, s32);
 s32 func_0020BFE4(void);
-s32 func_0020BFF8(void *);
-s32 func_0020C014(void *);
-s32 func_0020C104(void *);
-s32 func_0020C2C0(void *);
-s32 func_0020C32C(void *);
 u16 func_0020C448(void *);
 void *func_0020C478(unsigned int index);
 s32 func_0020D72C(void *);
@@ -27,19 +26,13 @@ void func_0021D230(s32, s32, void *, s32);
 void func_0021D25C(s32, s32, void *, s32, s32);
 void func_0021D28C(s32, s32, void *, s32, s32, s32);
 void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
-s32 func_0022222C(void *, void *, s32, s32);
-s32 func_002223E0(void *, void *, s32, s32, s32, s32);
 s32 func_0022A4E0(void *);
 void func_0022ADFC(void *, s32, s32, s32, s32, u8, s32, s32);
 s32 func_00233210(void *, void *);
-s32 func_00233ED4(void *);
 void func_0023431C(void *, s32, s32);
 s32 func_002361EC(void *);
 s32 func_002363FC(void *);
 u32 func_002365BC(void *, void *, s32, s32);
-s32 func_00237750(void *, void *, s32, s32, s32);
-s32 func_00237810(void *, void *);
-s32 func_00237890(void *, void *);
 s32 func_00237AF8(void *, s32);
 void memset_00023780(s32 *, s32);
 s32 rand(void);

@@ -2,7 +2,7 @@ typedef signed int s32;
 typedef unsigned int u32;
 typedef unsigned char u8;
 
-u8 func_000bbd80(s32 arg0)
+s32 func_000bbd80(s32 arg0)
 {
     u32 index;
     u8 result;

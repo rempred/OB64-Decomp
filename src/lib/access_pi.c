@@ -1,10 +1,8 @@
-typedef struct MesgQueue MesgQueue;
-extern MesgQueue D_800C4CC8;
+#include "common/os_message_queue.h"
+
+extern MessageQueue D_800C4CC8;
 extern void *D_800C3550[];
 extern int D_800AA440;
-extern void osCreateMesgQueue(MesgQueue *queue, void **messages, int count);
-extern int osSendMesg(MesgQueue *queue, void *message, int flags);
-extern int osRecvMesg(MesgQueue *queue, void **message, int flags);
 
 /* The callable initializer is also embedded in the access acquisition body. */
 __inline__ void func_0001c670(void)

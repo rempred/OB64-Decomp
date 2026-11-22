@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef signed int s32;
@@ -415,10 +417,9 @@ extern void func_00106CE0(f32 *first, f32 *second, f32 step);
 extern s32 func_00125298(RuntimeUnit *unit);
 extern s32 func_00107E38(MovementAux *aux);
 extern void func_00125460(s32 selector, RuntimeUnit *unit);
-extern void func_001072B8(RuntimeUnit *unit);
 extern void func_001289BC(RuntimeUnit *unit);
 extern s32 func_0012469C(RuntimeUnit *unit, f32 *point);
-extern s32 *func_00107D60(s32 first, s32 second, void *predecessors);
+extern s32 *func_00107D60(s32 first, s32 last, s32 *predecessors);
 extern void func_0011AECC(RuntimeUnit *unit);
 
 /* The complete owner contains the return delay and a four-byte original
@@ -640,7 +641,7 @@ unavailable_target:
         target = *(volatile s32 *)((u32)unit + (position << 2) + 0x54);
         if (visited[target] != 0) {
 construct_path:
-        path = func_00107D60(FIELD(unit, s32, 0x14), target, FIELD(aux, void *, 0x24));
+        path = func_00107D60(FIELD(unit, s32, 0x14), target, FIELD(aux, s32 *, 0x24));
             goto path_ready;
         }
     }

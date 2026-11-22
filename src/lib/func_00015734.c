@@ -1,15 +1,10 @@
+#include "common/os_message_queue.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
+typedef MessageQueue OSMesgQueue;
 typedef struct DmaBuffer {
     struct DmaBuffer *prev;
     struct DmaBuffer *next;
@@ -21,7 +16,6 @@ extern DmaBuffer *D_800B1860;
 extern DmaBuffer *D_800B1864;
 extern s32 D_800B1878;
 extern OSMesgQueue D_800B1880;
-s32 func_00023AE0(OSMesgQueue *mq, OSMesg *msg, s32 flag);
 void func_00015734(void) {
     OSMesg msg;
     DmaBuffer *dmaPtr, *next;

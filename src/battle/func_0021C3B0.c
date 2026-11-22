@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -11,12 +13,7 @@ extern u8 D_801976E8;
 
 void *func_0020C478(unsigned int index);
 s32 func_801D0880(void);
-s32 func_0020BFF8(void *actor);
-s32 func_0020C0E8(void *actor);
-s32 func_0020C32C(void *actor);
 s32 func_0020C0CC(void *actor);
-s32 func_0020C014(void *actor);
-s32 func_0020C2C0(void *actor);
 
 void func_0021C3B0(void)
 {

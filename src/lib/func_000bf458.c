@@ -7,7 +7,7 @@ typedef unsigned int u32;
 typedef s32 (*ClassCheck)(s32, s32);
 
 s32 func_000415fc(s32);
-s32 func_000bedb8(s32, s32, u8);
+s32 func_000bedb8(s32, s32);
 extern u8 D_80193BC0[];
 extern ClassCheck D_801EF288[];
 
@@ -70,8 +70,7 @@ void func_000bf458(void)
                 goto accepted_class;
             }
             if (func_000bedb8(index & 0xFF,
-                              selected_class & 0xFF,
-                              record_class) & 0xFF) {
+                              selected_class & 0xFF) & 0xFF) {
                 eligible_count += 1;
 accepted_class:
                 available_count += 1;

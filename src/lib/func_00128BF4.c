@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef signed int s32;
@@ -7,7 +9,6 @@ typedef struct RuntimeUnit RuntimeUnit;
 #define UNIT_FIELD(type, offset) (*(type *)((u8 *)unit + (offset)))
 #define RECORD_FIELD(record, type, offset) (*(type *)((u8 *)(record) + (offset)))
 extern RuntimeUnit *D_801F0CB0[];
-extern void func_001072B8(RuntimeUnit *unit);
 
 void func_00128BF4(RuntimeUnit *unit, s32 index, s32 mode)
 {

@@ -1,41 +1,15 @@
-typedef unsigned int u32;
-
-typedef struct ResourceNode28 {
-    u32 field_00;
-    u32 *field_04;
-    u32 field_08;
-    void *field_0C;
-    struct ResourceNode28 *field_10;
-    struct ResourceNode28 *field_14;
-    struct ResourceNode28 *field_18;
-} ResourceNode28;
-
-typedef struct ResourceContext {
-    u32 field_00;
-    void *field_04;
-    u32 field_08;
-    u32 field_0C;
-} ResourceContext;
+#include "game/boot_archive_record.h"
 
 extern ResourceNode28 *g_command_resource_root;
 extern ResourceNode28 *g_node28_current;
-extern ResourceContext *g_boot_resource_context;
 extern void *g_resource_context_output;
-extern ResourceNode28 *boot_resource_node_insert_find(ResourceNode28 *node, u32 key);
-extern ResourceNode28 *boot_resource_node_payload_materialize(ResourceNode28 *node);
-extern void boot_resource_node_context_materialize(ResourceNode28 *node, u32 mode);
-extern void func_00009EFC(ResourceNode28 *node);
-extern void boot_resource_node_overlay_context_materialize(ResourceNode28 *node);
 extern void *func_000016C4(void *pointer);
 
 #define NEXT_WORD(cursor) \
     ((cursor) = (char *)(((u32)(cursor) + 3) & ~3U) + 4, *(u32 *)((cursor) - 4))
 
-/* KMC's legacy ellipsis parameter spills all four argument words. The original
- * first word is passed directly to the initial lookup: an early local copy
- * extends its register lifetime and moves the retail pre-frame load/stores. */
-void *boot_command_stream_dispatch(__builtin_va_alist)
-u32 __builtin_va_alist; ...
+/* Use the original first word directly, then start the optional-word cursor after it. */
+void *boot_command_stream_dispatch(u32 resourceKey, ...)
 {
     u32 key;
     char *cursor;
@@ -43,13 +17,13 @@ u32 __builtin_va_alist; ...
     u32 result;
     u32 index;
 
-    g_command_resource_root = boot_resource_node_insert_find(g_command_resource_root, __builtin_va_alist);
-    cursor = (char *)__builtin_next_arg();
+    g_command_resource_root = boot_resource_node_insert_find(g_command_resource_root, resourceKey);
+    cursor = (char *)__builtin_next_arg(resourceKey);
     key = NEXT_WORD(cursor);
     while (key < (u32)-23) {
         ResourceNode28 *current = g_node28_current;
         boot_resource_node_payload_materialize(current);
-        current->field_10 = boot_resource_node_insert_find(current->field_10, current->field_04[key]);
+        current->field_10 = boot_resource_node_insert_find(current->field_10, ((u32 *)current->field_04)[key]);
         key = NEXT_WORD(cursor);
     }
 
@@ -84,7 +58,7 @@ u32 __builtin_va_alist; ...
     case (u32)-2:
         result = node->field_08 >> 2;
         for (index = 0; index < result; index++) {
-            node->field_10 = boot_resource_node_insert_find(node->field_10, node->field_04[index]);
+            node->field_10 = boot_resource_node_insert_find(node->field_10, ((u32 *)node->field_04)[index]);
             boot_resource_node_payload_materialize(g_node28_current);
             switch (key) {
             case (u32)-8:

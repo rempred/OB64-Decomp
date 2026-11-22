@@ -15,9 +15,10 @@ typedef struct {
     u8 unk2A[2];
     u16 cond;
 } ScriptCtx;
-u8 *func_001BF274(u8 id);
+typedef struct { s32 used; u8 b[0x58]; } ScriptRes;
+ScriptRes *func_001BF274(unsigned int id);
 s32 func_001BB578(ScriptCtx *ctx) {
-    u8 *o = func_001BF274(ctx->pc[3]);
+    u8 *o = (u8 *)func_001BF274(ctx->pc[3]);
     o[0x10] &= ~ctx->pc[2];
     ctx->pc += 4;
     return 0;

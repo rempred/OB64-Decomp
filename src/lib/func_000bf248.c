@@ -5,7 +5,7 @@ typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-s32 func_000bedb8(u8, s16);
+s32 func_000bedb8(s32, s32);
 extern u8 D_801EF288[];
 
 void func_000bf248(void)

@@ -32,7 +32,7 @@ typedef struct BodyActor {
     u8 sourceIndex;
 } BodyActor;
 
-extern s32 func_0020C120(BodyUnit *unit);
+extern s32 func_0020C120(void *unit);
 extern f32 func_00201670(s32 sourceArt, s32 ownerContext);
 extern f32 func_002016F4(s32 sourceArt, s32 ownerContext);
 extern void func_002A0B14(s32 slot, f32 startX, f32 startZ, f32 targetX,

@@ -1,3 +1,5 @@
+#include "game/boot_command_stream.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -9,7 +11,6 @@ extern u8 D_801951B0[];
 extern u8 D_801E7E15[], D_80196A38[], D_801EE7D0[];
 extern s32 D_801F1070, D_801F367C;
 extern u8 *D_801F0CB0[];
-extern u8 *boot_command_stream_dispatch(u32, s32, s32, s32);
 extern void boot_command_stream_resource_node_dispatch(u32, s32, s32);
 extern char *strncpy(char *, const char *, u32);
 extern void *resource_alloc(u32);

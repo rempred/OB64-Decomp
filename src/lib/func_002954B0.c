@@ -9,7 +9,7 @@ typedef struct {
     u8 lo;
 } TimeStamp;
 TimeStamp *func_0028ab74(u8 i);
-s16 func_002954B0(s32 n) {
+s32 func_002954B0(s32 n) {
     s32 g = 0;
     u8 mid = 0;
     u16 hi = 0;
@@ -36,5 +36,6 @@ s16 func_002954B0(s32 n) {
         }
         r++;
     }
-    return r;
+    /* The caller consumes the complete sign-extended result. */
+    return (s16)r;
 }

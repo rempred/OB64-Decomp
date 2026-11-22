@@ -1,3 +1,6 @@
+#include "game/battle_record_flag.h"
+#include "game/battle_roster_record.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -16,10 +19,7 @@ typedef s64 M2C_UNK64;
 M2C_UNK func_0020019C();
 void func_0020BD5C(s32 selector);
 s32 func_0020BFE4();
-s32 func_0020C32C(s32);
-s32 func_0020C788();
-s32 func_0020C810();
-M2C_UNK func_002159D0(void);
+void func_002159D0(void);
 void func_0021C3B0(void);
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
@@ -42,8 +42,8 @@ extern s16 D_801D0760;
 
 void func_00217BA8(void) {
     s32 temp_s2_120;
-    s32 temp_v0_41;
-    s32 temp_v0_55;
+    struct RosterRow *temp_v0_41;
+    struct RosterRow *temp_v0_55;
     s32 temp_v1_71;
     s32 var_a2_84;
     u16 temp_v0_107;

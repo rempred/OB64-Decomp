@@ -1,18 +1,10 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "common/os_message_queue.h"
+#include "common/types.h"
+
 typedef unsigned long long u64;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
+typedef MessageQueue OSMesgQueue;
+typedef struct Scheduler Scheduler;
 typedef struct {
     u32 type;
     u32 flags;
@@ -46,9 +38,9 @@ typedef struct {
     s16 type;
     s8 misc[30];
 } OSScMsg;
-typedef struct OSScClient_s {
-    struct OSScClient_s *next;
-    OSMesgQueue *msgQ;
+typedef struct Client {
+    struct Client *next;
+    MessageQueue *queue;
 } OSScClient;
 typedef struct {
     OSScClient client;
@@ -63,13 +55,11 @@ typedef struct {
     u64 *ucode;
     u64 *ucode_data;
 } MusTask;
-extern void *D_800B18A0;
+extern Scheduler *D_800B18A0;
 extern MusSchedData *D_800B18A4;
 extern u64 D_8009ECB0[];
 extern u64 D_8009ED80[];
-s32 func_00023AE0(OSMesgQueue *mq, OSMesg *msg, s32 flag);
-s32 func_00023C10(OSMesgQueue *mq, OSMesg msg, s32 flag);
-OSMesgQueue *func_000242e0(void *sc);
+MessageQueue *func_000242e0(Scheduler *scheduler);
 void func_00015af0(MusTask *task) {
     OSScTask t;
     OSScMsg msg;

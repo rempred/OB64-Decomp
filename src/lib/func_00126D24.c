@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -15,7 +17,6 @@ extern f32 func_800907F0(f32 value);
 extern f32 func_80092DB0(f32 value);
 extern f32 func_801A66C8(s32 selector, f32 x, f32 z);
 extern f32 func_801A63FC(s32 selector, f32 x, f32 z);
-extern void func_001072B8(RuntimeUnit *unit);
 extern s32 func_801DBE74(RuntimeUnit *unit);
 extern void func_801D376C(RuntimeUnit *unit);
 extern void func_00106F34(RuntimeUnit *unit);

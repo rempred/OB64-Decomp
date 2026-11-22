@@ -5,7 +5,7 @@ typedef signed int s32;
 typedef unsigned int u32;
 
 s32 func_00041638(s32);
-s32 func_00043100(u8, u8);
+u8 func_00043100(s32, s32);
 
 extern u8 D_80193AC0[];
 extern u8 D_80193BC0[];
@@ -87,7 +87,7 @@ scan_loop:
         }
     }
     index += 1;
-    total += func_00043100(class_a, class_b) & 0xFF;
+    total += func_00043100(class_a, class_b);
     asm volatile(
         "# Hybrid scope: this zero-byte local label is the invalid-entry branch target and starts the C loop test.\n"
         ".Lbcee4_scan_test:");

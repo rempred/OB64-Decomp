@@ -1,20 +1,14 @@
+#include "common/os_message_queue.h"
+#include "game/nu_sc_client.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
-typedef struct {
-    u64 pad[0x1B0 / 8];
-} OSThread;
+typedef MessageQueue OSMesgQueue;
+typedef Thread OSThread;
 typedef struct {
     u32 type;
     u32 flags;
@@ -34,11 +28,6 @@ typedef struct {
     u32 yield_data_size;
 } OSTask;
 typedef s16 NUScMsg;
-typedef struct NUScClient_s {
-    struct NUScClient_s *next;
-    OSMesgQueue *msgQ;
-    NUScMsg msgType;
-} NUScClient;
 typedef struct NUScTask_s {
     struct NUScTask_s *next;
     u32 state;
@@ -75,14 +64,9 @@ typedef struct {
     u8 frameBufferNum;
 } NUSched;
 extern NUSched D_800E8B10;
-s32 func_00023AE0(OSMesgQueue *mq, OSMesg *msg, s32 flag);
 void *osViGetCurrentFramebuffer(void);
 void *osViGetNextFramebuffer(void);
-void func_00019454(NUScClient *c, OSMesgQueue *mq, NUScMsg msgType);
-void func_00019524(NUScClient *c);
 void func_0001989c(NUScTask *task);
-void func_00019454(NUScClient *c, OSMesgQueue *mq, NUScMsg msgType);
-void func_00019524(NUScClient *c);
 void func_0001989c(NUScTask *task) {
     NUScClient client;
     void *fb = task->framebuffer;

@@ -16,7 +16,7 @@ extern ShopCallback D_80219D28[], D_80219D40[];
 extern u8 *D_801F36C0, *D_801F0B90;
 extern u8 D_80210258[], D_80210298[], D_802102B8[], D_80212948[], D_802129D0[];
 extern u8 func_0019B21C(u8 category);
-extern u8 func_8016F500(u32 item), func_8016F540(u32 item);
+extern u8 func_8016F500(s32 item), func_8016F540(s32 item);
 extern u8 func_8016F5C8(s32 item);
 extern s32 func_8016F580(s32 item), func_8016F5E0(s32 item);
 extern u8 func_8016F598(s32 item);
@@ -25,7 +25,7 @@ extern void func_8017C4B4(s32 value);
 extern void func_80179034(void *text, s32 x, s32 y);
 extern unsigned char *func_8009C550(unsigned char *destination, const unsigned char *source);
 extern u8 *func_8009C620(u8 *, const u8 *);
-extern s32 func_80093460(void *text);
+extern s32 func_80093460(const signed char *text);
 extern void func_802027DC(void);
 extern void func_802012D8(void *data);
 extern void func_802001A8(s32 x, s32 y, s32 value, s32 digits);
@@ -301,7 +301,7 @@ void func_001994B4(Panel *panel, s32 slot)
             func_8009C550(tail, D_80219BF8);
             func_8009C620((u8 *)buffer, D_80219DB0);
             func_8009C620((u8 *)buffer, D_80187BD4[(u8)func_8016F5E0(argument_item)]);
-            length = func_80093460(buffer);
+            length = func_80093460((const signed char *)buffer);
             buffer[length] = 15;
             tail[length] = 0;
             func_80179034(buffer, x + 2, y + 16);
@@ -342,7 +342,7 @@ void func_001994B4(Panel *panel, s32 slot)
                     goto display_secondary_text;
                 }
                 func_8009C620((u8 *)append_base, suffix);
-                length = func_80093460(buffer);
+                length = func_80093460((const signed char *)buffer);
                 delimiter = buffer;
                 delimiter += length;
                 flag_index = 15;

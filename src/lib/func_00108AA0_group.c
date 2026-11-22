@@ -1,3 +1,5 @@
+#include "game/unit_record_lookup.h"
+
 /* Private complete-NINE candidate preparation under Director2457.
  * Numeric fields and existing aliases only. No group compilation or
  * matching acceptance is established by this authored source. */
@@ -106,7 +108,6 @@ extern f32 sinf(f32);
 extern s32 func_801DD244(void);
 extern void func_0010ADB8(s32);
 extern u8 D_801969BA[][11];
-extern s32 func_0012E968(RuntimeUnit *);
 extern ResourceRecord D_801951B0[];
 extern f64 D_801EE110;
 extern Bounds D_801F0D98;
@@ -114,8 +115,6 @@ extern u8 D_801F0FE2;
 extern u8 D_801F1004[], D_801F1014[], D_801F1024[];
 extern u8 D_80196A38[];
 extern void func_00118644(u8, s32);
-extern s32 func_0012DA9C(RuntimeUnit *);
-extern s32 func_0012DA10(RuntimeUnit *);
 extern s32 func_0004813c(s32);
 extern s32 func_801DD2B0(RuntimeUnit *);
 extern u8 *D_801F361C;

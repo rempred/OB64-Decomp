@@ -13,7 +13,7 @@ extern void *resource_free(void *resource);
 extern void func_00048294(void);
 extern s32 func_0004813C(s32 request);
 
-s32 func_00047dd8(s32 unused)
+s32 func_00047dd8(void)
 {
     s32 request;
     s32 result;

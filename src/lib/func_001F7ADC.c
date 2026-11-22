@@ -16,13 +16,12 @@ typedef struct DrawPose {
     u8 items[1];
 } DrawPose;
 extern void func_00022e90(float [4][4], float, float, float);
-extern void func_00023018(DrawMatrix *, float, float, float);
+extern void func_00023018(void *, float, float, float);
 extern float func_0002d3b0(float);
 extern u8 func_00043d1c(int, int);
 extern u32 func_00201E38(int, u32);
 extern u32 func_00201E9C(int, u32);
 extern int func_00205484(int, int, int, int, int, u32, CombatPoseIndexedRecord *);
-extern void *func_00206340(int, int, CombatPoseIndexedRecord *, int, int, int, int);
 extern int func_0020BFF8(void *);
 extern int func_0020C034(void *);
 extern u16 func_0020C448(void *);

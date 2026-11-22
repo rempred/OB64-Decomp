@@ -1,8 +1,8 @@
-typedef unsigned int u32;
+#include "common/types.h"
 
-extern u32 func_002043E0(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4);
+extern void *func_002043E0(void *input, u32 index, u16 *table, u8 *value_out, u32 options);
 
-u32 func_002043C4(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
+void *func_002043C4(void *input, u32 index, u16 *table, u8 *value_out)
 {
-    return func_002043E0(arg0, arg1, arg2, arg3, 0);
+    return func_002043E0(input, index, table, value_out, 0);
 }

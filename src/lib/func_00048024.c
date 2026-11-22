@@ -13,9 +13,8 @@ extern void *func_8009DBB8(void *destination, u32 resource);
 extern void *func_0002e138(u32 resource);
 extern void *resource_free(void *resource);
 extern s32 func_00046854(s32 program);
-/* The retail calls leave a0 unspecified. Both callees ignore the incoming value. */
-extern s32 func_00047a94();
-extern s32 func_00047dd8();
+extern s32 func_00047a94(void);
+extern s32 func_00047dd8(void);
 
 s32 func_00048024(void)
 {

@@ -1,7 +1,6 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef struct { u8 unknown0[3]; u8 format; u16 width; u16 height; } Header;
+#include "game/descriptor_10_resource_header.h"
+
+typedef Descriptor10ResourceHeader Header;
 typedef struct { u8 red, green, blue, alpha; } Color;
 
 static __inline__ u32 row_stride(u32 width, u32 format)
@@ -48,15 +47,15 @@ void func_00203030(Header *header)
     u32 width = header->width;
     u32 height = header->height;
 
-    stride = row_stride(width, header->format);
-    if (header->format == 3) {
+    stride = row_stride(width, header->flags);
+    if (header->flags == 3) {
         row32 = (u8 *)(header + 1);
         for (y = 0; y < height; y++, row32 += stride) {
             for (x = 0; x < width; x++) {
                 ((u32 *)row32)[x] = convert32(((u32 *)row32)[x]);
             }
         }
-    } else if (header->format == 2) {
+    } else if (header->flags == 2) {
         row16 = (u8 *)(header + 1);
         for (y = 0; y < height; y++, row16 += stride) {
             for (x = 0; x < width; x++) {

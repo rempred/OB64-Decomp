@@ -3,7 +3,7 @@
 #include "game/effect_presentation_p04.h"
 
 extern s32 (*D_80209700[])(u8);
-extern s32 func_0020D654(s32, s32);
+extern s32 func_0020D654(u32, s32);
 
 static __inline__ u8 p05_index_kind(u8 index)
 {

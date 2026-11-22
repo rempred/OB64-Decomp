@@ -1,3 +1,5 @@
+#include "game/boot_command_stream.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
@@ -83,7 +85,6 @@ extern void func_000E659C(void);
 extern void func_000E65DC(void);
 extern void func_000E6620(s32);
 extern void memset_00023780(void *, s32);
-extern u8 *boot_command_stream_dispatch(u32, s32, s32, s32);
 extern void func_000ea930(void);
 extern u16 func_000e98bc(u8 *, s32);
 extern u16 func_000e9528(u8 *);

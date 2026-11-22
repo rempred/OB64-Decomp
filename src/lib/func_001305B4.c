@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -7,7 +9,6 @@ typedef struct RuntimeUnit RuntimeUnit;
 #define FIELD(object, type, offset) (*(type *)((u8 *)(object) + (offset)))
 extern u8 D_801971F2[];
 extern u8 D_80193BD8[], D_80195578[];
-extern void func_0010746C(RuntimeUnit *unit);
 
 /* Numeric views preserve the observed 25/56/52-byte strides and the two
  * independent descriptor queries. They establish no array capacity. */

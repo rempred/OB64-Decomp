@@ -1,3 +1,5 @@
+#include "common/os_message_queue.h"
+
 /* Complete timer producer reconstructed from ROM251E0..254E0.
  * The list pointer stays in the original data owner at RAM800AA7B0;
  * this producer introduces no second copy of its initialized storage.
@@ -19,7 +21,6 @@ extern unsigned int __osViIntrCount;
 extern unsigned int __osTimerCounter;
 extern unsigned int osGetCount(void);
 extern void __osSetCompare(unsigned int count);
-extern int osSendMesg(void *queue, void *message, int flags);
 extern unsigned int __osDisableInt(void);
 extern void __osRestoreInt(unsigned int mask);
 void func_00025370(TimerTicks value);

@@ -1,13 +1,9 @@
-typedef struct TerminalObject {
-    unsigned char prefix[0x48];
-    int sourceArt;
-    int ownerContext;
-} TerminalObject;
+#include "game/battle_roster_record.h"
 
 float vec3_distance(const float first[3], const float second[3]);
 float func_00201670(int sourceArt, int ownerContext);
 
-int func_00222190(TerminalObject *object, int x0, int z0, int x1, int z1)
+int func_00222190(BattleRosterRecord *object, int x0, int z0, int x1, int z1)
 {
     float first[3];
     float second[3];
@@ -27,6 +23,6 @@ int func_00222190(TerminalObject *object, int x0, int z0, int x1, int z1)
     second[1] = 0.0f;
     second[2] = (float)z1;
     distance = vec3_distance(first, second);
-    distance /= func_00201670(object->sourceArt, object->ownerContext);
+    distance /= func_00201670(object->class48.word, object->variant4C.word);
     return (int)distance;
 }

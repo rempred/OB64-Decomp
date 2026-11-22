@@ -1,16 +1,5 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/boot_archive_record.h"
 
-typedef struct ResourceArchiveInput {
-    u32 field_00;
-    u32 field_04;
-    u8 *field_08;
-    u32 field_0C;
-} ResourceArchiveInput;
 
 /* Offsets describe the observed scratch storage. Record walks use the
  * complete object view so they preserve overlap with adjacent temporary fields. */
@@ -20,12 +9,12 @@ typedef struct ScenarioRecordScratch {
     u8 source_record[0x23];
     u8 gap_53[5];
     ResourceArchiveInput first;
-    ResourceArchiveInput second;
+    ResourceArchiveRequest second;
     u8 gap_78[7];
     u8 apply_flag;
 } ScenarioRecordScratch;
 
-extern ResourceArchiveInput D_801D7C78;
+extern ResourceArchiveTemplate D_801D7C78;
 extern u16 D_80187C42[][36];
 extern u16 D_80187C44[][36];
 extern u16 D_80187C46[][36];
@@ -33,8 +22,6 @@ extern u16 D_80187C48[][36];
 extern void *func_0002DFB8(void *destination, u32 key);
 extern u32 func_0002DEF4(u32 key);
 extern void *resource_free(void *resource);
-extern void boot_resource_archive_load_many(ResourceArchiveInput *first,
-                                            ResourceArchiveInput *second, s32 count);
 extern void memcpy_aligned(void *destination, const void *source, s32 size);
 extern void memset_00023780(void *destination, s32 size);
 extern u8 func_000454c8(s32 selector);
@@ -50,25 +37,25 @@ s32 func_00249A14(s32 record_index, s32 option, u8 apply_flag)
     s32 retained_option;
     u8 slot_count;
 
-    scratch.first = D_801D7C78;
-    scratch.second = D_801D7C78;
+    scratch.first = D_801D7C78.input;
+    scratch.second = D_801D7C78.request;
     scratch.apply_flag = apply_flag;
     retained_option = option;
 
     link = (u32 *)func_0002DFB8(0, 0x021AE74C);
     inner_key = *link;
     resource_free(link);
-    scratch.first.field_0C = func_0002DEF4(inner_key);
-    scratch.first.field_08 = (u8 *)func_0002DFB8(0, inner_key);
-    scratch.second.field_04 = 0;
+    scratch.first.size = func_0002DEF4(inner_key);
+    scratch.first.buffer = (u8 *)func_0002DFB8(0, inner_key);
+    scratch.second.record_index = 0;
     boot_resource_archive_load_many(&scratch.first, &scratch.second, 1);
     group = 0;
-    resource_free(scratch.first.field_08);
+    resource_free(scratch.first.buffer);
 
     memcpy_aligned(scratch.source_record,
-                   scratch.second.field_08 + record_index * 0x23, 0x23);
+                   scratch.second.buffer + record_index * 0x23, 0x23);
     slot_count = 1;
-    resource_free(scratch.second.field_08);
+    resource_free(scratch.second.buffer);
     memset_00023780(scratch.staged, 0x28);
 
     scratch.staged[0] = scratch.source_record[0];

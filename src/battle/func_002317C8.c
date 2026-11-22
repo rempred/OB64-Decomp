@@ -1,5 +1,7 @@
 #include "game/battle_record_flag.h"
 
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 
@@ -22,17 +24,15 @@ extern SideContext *D_801CE8C0;
 extern u8 *D_801CE8BC;
 extern int func_002335E0(int);
 extern void *func_0020C478(unsigned int index);
-extern int func_0020C2C0(SideObject *);
 extern void func_00023780(void *, u32);
-extern void func_0020D870(SideObject *, int);
+extern void func_0020D870(BattleRosterRecord *, int);
 extern u8 func_00043b2c(int, int);
-extern int func_00237750(SideObject *, SideObject *, int, int, int);
 extern int func_002331AC(const void *, const void *);
 extern void func_002101DC(void *, int, int, int (*)(const void *, const void *));
 extern void func_0021D2C0(int, int, void *, int, int, int, int);
 extern void func_0021D230(int, int, void *, int);
-extern int func_002344B4(SideObject *, int);
-extern void func_0022ADFC(SideObject *, int, int, int, int, u8, int, int);
+extern int func_002344B4(BattleRosterRecord *, int);
+extern void func_0022ADFC(void *, int, int, int, int, u8, int, int);
 
 int func_002317C8(int *outTime, int selector)
 {
@@ -126,7 +126,7 @@ int func_002317C8(int *outTime, int selector)
         bit = context->field82E | 2;
         context->field82E = bit;
     } else {
-        func_0020D870(&temporary, 0);
+        func_0020D870(&temporary.roster, 0);
         context = D_801CE8C0;
         bit = context->field82E | 1;
         context->field82E = bit;
@@ -139,7 +139,7 @@ int func_002317C8(int *outTime, int selector)
     for (i = 0; i < count; ++i) {
         if (maximum < selected[i]->roster.field94)
             maximum = selected[i]->roster.field94;
-        value = countOrAmount * func_00237750(&temporary, selected[i], 0, 0, 0);
+        value = countOrAmount * func_00237750(&temporary.roster, &selected[i]->roster, 0, 0, 0);
         calculated[i] = value;
         if (value <= 0)
             value = 1;
@@ -183,13 +183,13 @@ int func_002317C8(int *outTime, int selector)
     /* Keep the capture, index reset and unconditional copy separate.
        The explicit positive-count entry avoids KMC folding the index test
        and moving its reset past the return-value capture. */
-    capturedDuration = func_002344B4(&temporary, 15);
+    capturedDuration = func_002344B4(&temporary.roster, 15);
     i = 0;
     objectDuration = capturedDuration;
     if (count > 0) {
         do {
             object = selected[i];
-            duration[i] = func_002344B4(object, 15);
+            duration[i] = func_002344B4(&object->roster, 15);
             stepValue = calculated[i];
             prior[i] = object->roster.field94;
             stepTime = maximum + duration[i];

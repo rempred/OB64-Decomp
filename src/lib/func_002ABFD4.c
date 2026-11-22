@@ -29,7 +29,7 @@ void func_801C5CE0(void);
 void func_801AECA4(u8 selector);
 void func_8020B29C(void);
 
-void func_002ABFD4(void)
+void func_002ABFD4(s32 commandWord)
 {
     u8 *snapshot;
     s32 byte_offset;

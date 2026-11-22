@@ -1,14 +1,4 @@
-typedef struct {
-    unsigned int field00;
-    void *queue;
-    int channel;
-    unsigned char field0c[0x44];
-    int field50;
-    unsigned char field54[8];
-    unsigned int field5c;
-    unsigned char field60[5];
-    unsigned char field65;
-} PfsState;
+#include "common/os_pfs.h"
 
 typedef struct {
     unsigned int field00;
@@ -16,32 +6,30 @@ typedef struct {
     unsigned char field06[26];
 } DirectoryEntry;
 
-extern int func_00027bd4(PfsState *state);
-extern int func_000274d0(PfsState *state, unsigned char bank);
 extern int func_00027fd0(void *queue, int channel, unsigned short address,
                          unsigned char *data);
 extern int func_000272c0(void *queue, int channel);
 
-int func_00026e90(PfsState *state, int *maxFiles, int *usedFiles)
+int func_00026e90(OSPfs *state, int *maxFiles, int *usedFiles)
 {
     DirectoryEntry entry;
     int result;
     int used = 0;
     int i;
 
-    if (!(state->field00 & 1))
+    if (!(state->status & 1))
         return 5;
     result = func_00027bd4(state);
     if (result != 0)
         return result;
-    if (state->field65 != 0) {
+    if (state->activebank != 0) {
         result = func_000274d0(state, 0);
         if (result != 0)
             return result;
     }
-    for (i = 0; i < state->field50; i++) {
+    for (i = 0; i < state->dir_size; i++) {
         result = func_00027fd0(state->queue, state->channel,
-                              (unsigned short)(state->field5c + i),
+                              (unsigned short)((unsigned int)state->dir_table + i),
                               (unsigned char *)&entry);
         if (result != 0)
             return result;
@@ -49,6 +37,6 @@ int func_00026e90(PfsState *state, int *maxFiles, int *usedFiles)
             used++;
     }
     *usedFiles = used;
-    *maxFiles = state->field50;
+    *maxFiles = state->dir_size;
     return func_000272c0(state->queue, state->channel);
 }

@@ -69,6 +69,16 @@ and identify the caller sites you checked. Existing reviewed debt does not waive
 requirement for a new or changed function. See the
 [caller compatibility workflow](docs/WORKFLOW.md#c-interface-consistency-at-the-complete-wave-boundary).
 
+Final acceptance requires zero original definite findings, independent of baseline edits.
+The richer check rejects incompatible new or changed boundaries. Any unchanged rich debt
+outside the cleanup has an independently reviewed exact exception in the verifier policy;
+changing its definition, declaration or use invalidates it. Clearing one requires retiring
+that exception before acceptance, so a later revert fails on both fresh and existing
+checkouts. The permanent reference cannot fall back to the Round 18 transition reference.
+Known callback and assembly relationships use small source- and link-bound facts in
+`config/c-interface-sites.json`, with actual types read from expanded C. An unknown
+supplier remains a limitation, never an implied match.
+
 When the complete set is ready, run `node tools/verify.js` once. For each matching function, the verifier must confirm `PURE_C`, sole ownership of the target section by the C object, correct placement and relocations, and exact linked bytes. The complete rebuilt ROM must also equal the normalized US Rev 0 input byte for byte. Inline assembly is classified as `HYBRID_C`, even when the bytes match. [Source policy](docs/SOURCE_POLICY.md)
 
 In the PR, identify the commit you tested. If you used a different compiler or compared individual functions, give the compiler, byte ranges and results. A first differing offset or exact error is enough for a maintainer to start reproducing a failure.

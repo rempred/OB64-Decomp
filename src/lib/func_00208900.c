@@ -13,7 +13,6 @@ extern CombatBounds func_00205378(int, int);
 extern u32 func_00201E38(int, u32);
 extern int func_00201E08(int, int, int);
 extern void func_00208508(CombatImage *, int);
-extern void *func_00206340(int, int, CombatPoseRecord *, int, int, int, u8 *);
 
 void *func_00208900(int slot, int key, int variant, int directoryIndex,
                    int arg5, int arg6, int selected)
@@ -86,8 +85,8 @@ void *func_00208900(int slot, int key, int variant, int directoryIndex,
             byteBase[0x98] = 15;
         }
         index = 0;
-        while (func_00205608(handle, directoryIndex, index, &scratch.record)) {
-            input = func_00206340(key, variant, &scratch.record, arg5, arg6, selected, 0);
+        while (func_00205608(handle, directoryIndex, index, &scratch.indexed.record)) {
+            input = func_00206340(key, variant, &scratch.indexed, arg5, arg6, selected, 0);
             maskBase = (CombatImage *)((u8 *)input +
                 func_00201E08(input->field_03, input->width, input->height));
             sourceStride = func_00201E38(2, input->width);

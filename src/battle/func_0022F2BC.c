@@ -1,3 +1,6 @@
+#include "game/battle_roster_record.h"
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
@@ -6,12 +9,9 @@ extern u8 *D_801CE8BC;
 /* Retail byte access at 0x801CE8F8; the original data ASM owns its storage. */
 extern u8 D_801CE8F8;
 s32 func_0020C120(void *);
-s32 func_0020C2C0(void *);
-s32 func_0020C32C(void *);
 void *func_0020C478(u32);
 s32 func_00214BDC(void *);
 void func_0021D200(s32, s32, void *);
-s32 func_0022B1F4(void *, s32 *);
 s32 func_0022BFF8(void *, s32 *);
 s32 func_0022C78C(void *, s32 *);
 s32 func_0022D14C(void *, s32 *);

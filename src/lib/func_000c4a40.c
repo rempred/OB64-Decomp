@@ -24,7 +24,7 @@ typedef struct Func000C4A40ClassRecord {
 void func_000c54c0(s32);
 void func_000c4e5c(void *, void *, s16, s16);
 u8 func_000bbad0(void);
-u8 func_0016dec4(u8, u8);
+u8 func_0016dec4(s32, s32);
 extern u8 * volatile D_80196AF8;
 extern void *g_func_000c4a40_dispatch_table[];
 extern ClassCallback g_func_000c4a40_callbacks[];

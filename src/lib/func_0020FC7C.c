@@ -1,21 +1,18 @@
+#include "game/battle_roster_record.h"
+
 #include "game/combat_types.h"
 
-typedef struct SupplementFlagRecord {
-    void *children[3];
-    unsigned char field_0C[0x34];
-    u32 flags;
-} SupplementFlagRecord;
 struct Func001F0E64Record;
 extern void func_001F0E64(struct Func001F0E64Record *, u32);
-extern void func_0020FA04(SupplementFlagRecord *, int);
+extern void func_0020FA04(void *, int);
 
-static __inline__ int flag(SupplementFlagRecord *record, int bit)
+static __inline__ int flag(BattleRosterRecord *record, int bit)
 {
     if (!record) return 0;
-    return (record->flags >> bit) & 1;
+    return (record->flags40 >> bit) & 1;
 }
 
-void func_0020FC7C(SupplementFlagRecord *record)
+void func_0020FC7C(BattleRosterRecord *record)
 {
     u32 selector = 0;
     int code = 0;
@@ -33,7 +30,7 @@ void func_0020FC7C(SupplementFlagRecord *record)
     if (code) {
         func_0020FA04(record, code);
         for (index = 0; index < 3; index++) {
-            void *child = record->children[index];
+            void *child = record->links[index];
             if (child) {
                 func_001F0E64((struct Func001F0E64Record *)((unsigned char *)child + 0x44), selector);
             }

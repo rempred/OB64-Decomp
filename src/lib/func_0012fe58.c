@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 #include "common/types.h"
 typedef struct Q7Unit Q7Unit;
 #define FIELD(p, type, offset) (*(type *)((u32)(p) + (offset)))
@@ -6,9 +8,8 @@ extern u8 D_80193BC0[], D_80195560[];
 extern u8 D_801971F0[], D_801971F2[], D_801969B8[];
 extern u8 D_80193BD8[], D_80195578[];
 extern Q7Unit *D_801F0CB0[];
-extern u8 func_00129068(u8 *);
+extern int func_00129068(u8 *);
 extern u8 func_001291B4(u8 *);
-extern void func_0010746C(Q7Unit *);
 extern void func_801F6C48(Q7Unit *);
 
 static __inline__ s32 value_present(Q7Unit *unit)

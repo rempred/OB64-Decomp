@@ -1,3 +1,5 @@
+#include "game/battle_roster_record.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -49,15 +51,14 @@ s32 func_00235754(BattleUnit *a, BattleUnit *b);
 s32 func_00235BB0(BattleUnit *a, BattleUnit *b);
 s32 func_00235DC8(BattleUnit *a, BattleUnit *b);
 s32 func_0023697C(BattleUnit *a, BattleUnit *b, f32 power, s32 c, s32 d, s32 e);
-s32 func_00237750(BattleUnit *a, BattleUnit *b, s32 c, s32 d, s32 e);
-s32 func_00237750(BattleUnit *a, BattleUnit *b, s32 c, s32 d, s32 e) {
+s32 func_00237750(BattleRosterRecord *a, BattleRosterRecord *b, s32 c, s32 d, s32 e) {
     f32 p;
-    if ((u8)(a->actionKind - 4) < 2) {
-        p = func_00235BB0(a, b);
-    } else if (a->actionKind == 3) {
-        p = func_00235DC8(a, b);
+    if ((u8)(a->field78 - 4) < 2) {
+        p = func_00235BB0((BattleUnit *)a, (BattleUnit *)b);
+    } else if (a->field78 == 3) {
+        p = func_00235DC8((BattleUnit *)a, (BattleUnit *)b);
     } else {
-        p = func_00235754(a, b);
+        p = func_00235754((BattleUnit *)a, (BattleUnit *)b);
     }
-    return func_0023697C(a, b, p, c, d, e);
+    return func_0023697C((BattleUnit *)a, (BattleUnit *)b, p, c, d, e);
 }

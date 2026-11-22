@@ -1,3 +1,7 @@
+#include "game/unit_record_lookup.h"
+
+#include "game/unit_cleanup.h"
+
 #include "common/types.h"
 typedef float f32;
 typedef struct Q7Unit Q7Unit;
@@ -16,11 +20,8 @@ extern void func_00113C28(void);
 extern void *resource_alloc(u32);
 extern void func_00105498(s32);
 extern s32 func_00119454(void);
-extern s32 func_0012DA9C(Q7Unit *);
-extern s32 func_0012DA10(Q7Unit *);
 extern s32 func_801DD2B0(Q7Unit *);
 extern void *func_0012E7E8(Q7Unit *);
-extern void func_0010746C(Q7Unit *);
 extern u32 func_00022E60(void);
 extern void func_00132B80(s32);
 extern void func_00130E60(u16, u8);

@@ -1,8 +1,12 @@
+#include "game/unit_record_lookup.h"
+
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef signed int s32;
 
-typedef struct {
+typedef struct DeploymentUnit {
     u32 flags;
     u8 source_index;
     u8 pad05[0x6F];
@@ -20,9 +24,7 @@ extern DeploymentRow11 D_801969B8[];
 extern u8 D_801969BA[][11];
 extern u8 D_801971F1[][25];
 extern RuntimeUnit *D_801F0CB0[];
-extern void func_0010746C(RuntimeUnit *unit);
 extern u8 func_001291B4(u8 *row);
-extern s32 func_0012E968(RuntimeUnit *unit);
 
 static inline s32 row_index_for_unit(RuntimeUnit *unit)
 {

@@ -1,10 +1,12 @@
+#include "game/sound_channel.h"
+
 #include "game/cutscene_panels.h"
 
 extern u16 D_800C4B28;
 extern u16 D_800E8700;
-extern u8 D_800EB1F0[];
+extern SoundChannel D_800EB1F0;
 extern void func_00052284(Panel *);
-extern void func_800EA604(void *, s32);
+extern void func_800EA604(SoundChannel *, s32);
 extern s32 func_00295574(s32);
 extern void func_002950A0(PanelContent *, u8, PanelSlot *);
 extern void func_00294B8C(PanelContent *, u8, PanelSlot *);
@@ -44,9 +46,9 @@ s32 func_00298B70(Panel *panel, PanelSlot *slot)
         /* The selection byte is unsigned. The cancel status below is signed. */
         status = content->field5FC;
         content->field5F0 = 3;
-        func_800EA604(D_800EB1F0, 3);
+        func_800EA604(&D_800EB1F0, 3);
     } else if (buttons & 0x4000) {
-        func_800EA604(D_800EB1F0, 1);
+        func_800EA604(&D_800EB1F0, 1);
         status = panel->field24;
         if (content->field5FD == 16) {
             PanelSlot *other = D_8022A974->slots[5];
@@ -72,10 +74,10 @@ s32 func_00298B70(Panel *panel, PanelSlot *slot)
                         goto restoreSelection;
                     }
                     content->field5FC -= func_00295574(selected);
-                    func_800EA604(D_800EB1F0, 2);
+                    func_800EA604(&D_800EB1F0, 2);
                     goto clampStart;
                 }
-                func_800EA604(D_800EB1F0, 2);
+                func_800EA604(&D_800EB1F0, 2);
             }
 
 clampStart:
@@ -105,7 +107,7 @@ resetStart:
             if (content->field5F5 != selected + 1) {
                 u8 next = selected + 1;
                 content->field5FC = next;
-                func_800EA604(D_800EB1F0, 2);
+                func_800EA604(&D_800EB1F0, 2);
                 if (content->field5FD == 16) {
                     content->field5FC += func_00295574(content->field5FC);
                 }
@@ -136,7 +138,7 @@ resetStart:
                 u8 selected;
                 u8 start;
 
-                func_800EA604(D_800EB1F0, 2);
+                func_800EA604(&D_800EB1F0, 2);
                 start = content->field5F1 + 1;
                 selected = content->field5FC;
                 content->field5F1 = start;
@@ -161,7 +163,7 @@ resetStart:
                 u8 selected;
                 u8 start;
 
-                func_800EA604(D_800EB1F0, 2);
+                func_800EA604(&D_800EB1F0, 2);
                 start = content->field5F1 - 1;
                 selected = content->field5FC;
                 content->field5F1 = start;
@@ -198,7 +200,7 @@ resetStart:
                 if (content->field5FC < next) {
                     content->field5FC = next;
                 }
-                func_800EA604(D_800EB1F0, 2);
+                func_800EA604(&D_800EB1F0, 2);
                 refresh = 1;
                 if (content->field5FD == 16) {
                     step = (s32)((u32)(u16)func_00295574(content->field5FC) << 16) >> 16;
@@ -213,7 +215,7 @@ resetStart:
                 if (content->field5FC < next) {
                     content->field5FC = next;
                 }
-                func_800EA604(D_800EB1F0, 2);
+                func_800EA604(&D_800EB1F0, 2);
                 refresh = 1;
                 if (content->field5FD == 16) {
                     content->field5FC += func_00295574(content->field5FC);
@@ -234,7 +236,7 @@ resetStart:
                 if (content->field5FC >= rowCount + (u8)next) {
                     content->field5FC = next + rowCount - 1;
                 }
-                func_800EA604(D_800EB1F0, 2);
+                func_800EA604(&D_800EB1F0, 2);
                 refresh = 1;
                 if (content->field5FD == 16) {
                     step = (s32)((u32)(u16)func_00295574(content->field5FC) << 16) >> 16;
@@ -254,7 +256,7 @@ resetStart:
                     if (content->field5FC >= rowCount) {
                         content->field5FC = rowCount - 1;
                     }
-                    func_800EA604(D_800EB1F0, 2);
+                    func_800EA604(&D_800EB1F0, 2);
                     if (content->field5FD != 16) {
                         goto refreshContent;
                     }

@@ -1,4 +1,7 @@
+#include "game/unit_record_lookup.h"
+
 #include "common/types.h"
+#include "game/unit_cleanup.h"
 typedef float f32;
 typedef struct Q7Unit Q7Unit;
 #define FIELD(p, type, offset) (*(type *)((u32)(p) + (offset)))
@@ -21,8 +24,6 @@ extern void func_00131050(void);
 extern s32 func_801DCF90(Q7Unit *);
 extern void func_000ec838(s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_0013A3D8(Q7Unit *, s32);
-extern void func_001072B8(Q7Unit *);
-extern s32 func_0012E968(Q7Unit *);
 
 void func_0011BB4C(void)
 {

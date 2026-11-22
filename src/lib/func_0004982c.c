@@ -42,7 +42,7 @@ extern s32 D_80190F20;
 extern u8 *D_801977CC;
 void func_00003564(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 s32 func_0000735C(s32 a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g);
-void *resource_alloc_mode1_wrapper(s32 size);
+void *resource_alloc_mode1_wrapper(unsigned int size);
 extern s32 D_801951A4;
 void func_0004982c(void) {
     func_00003564(0, 1, 1, 0x80, 1, 0x80, 0x2000);

@@ -1,17 +1,10 @@
 /* State store and queue yield reconstructed from ROM25040..25090. */
-typedef struct Thread Thread;
-struct Thread {
-    Thread *next;
-    int priority;
-    Thread **queue;
-    Thread *active_next;
-    unsigned short state;
-};
+#include "common/os_thread.h"
+
 extern unsigned int __osDisableInt(void);
 extern void __osRestoreInt(unsigned int mask);
 extern Thread *__osRunningThread;
-extern Thread *__osRunQueue;
-extern void __osEnqueueAndYield(Thread **queue);
+extern ThreadQueueNode *__osRunQueue;
 
 void func_00025040(void)
 {

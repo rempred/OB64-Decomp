@@ -1,7 +1,8 @@
 #include "game/cutscene_panels.h"
 
 extern void func_00052284(Panel *);
-extern void func_000521fc(Panel *);
+struct Node;
+extern void func_000521fc(struct Node *);
 
 void func_00299CA8(u8 slot, s32 mode)
 {
@@ -15,7 +16,7 @@ void func_00299CA8(u8 slot, s32 mode)
                 if ((u8)mode == 0) {
                     func_00052284(panel);
                 } else {
-                    func_000521fc(panel);
+                    func_000521fc((struct Node *)panel);
                 }
                 content->field5F0 = 3;
             }

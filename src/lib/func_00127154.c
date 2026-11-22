@@ -1,3 +1,5 @@
+#include "game/unit_cleanup.h"
+
 #include "common/types.h"
 typedef float f32;
 typedef double f64;
@@ -10,7 +12,6 @@ extern f32 D_801F3A38;
 extern s8 D_801F1039[];
 extern u16 D_801F1042[];
 extern u8 D_801F1052[];
-extern void func_001072B8(Q7Unit *);
 extern f32 func_8009CFE0(f32, f32);
 extern f32 func_00126770(Q7Unit *, Q7Unit *);
 

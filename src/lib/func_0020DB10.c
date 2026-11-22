@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 #include "game/battle_roster_record.h"
 
 typedef unsigned char u8;
@@ -11,10 +13,10 @@ extern u8 D_80193BC0[];
 extern u8 D_80190F80[];
 extern u8 D_80195560[];
 extern u8 D_801953F0[];
-extern void func_0020D9C4(void);
+extern int func_0020D9C4(void *);
 extern void func_00023780(void *, u32);
-extern void func_001F0F6C(int);
-extern void func_001F102C(int);
+extern void func_001F0F6C(void *);
+extern void func_001F102C(void *);
 extern void func_001F114C(void *);
 extern u8 func_00043dc4(int, int);
 extern int func_00044238(int, int, int);
@@ -22,10 +24,8 @@ extern int func_00045934(int, int, int, int);
 extern int func_002015C8(int, int, int, int);
 extern void func_00207658(int *, int *, int *, int *, int *, u32);
 extern void func_002073CC(int, int);
-extern void func_0020CBDC(void *, int);
 extern u8 func_0020D434(int);
-extern int func_0020C014(void *);
-extern void func_0020FC7C(void *);
+extern void func_0020FC7C(BattleRosterRecord *);
 extern int func_0021062C(int, int, int);
 extern void func_0021088C(void);
 extern void func_00210930(void);
@@ -33,6 +33,7 @@ extern void func_00210930(void);
 #define BYTE(p,o) (*(u8 *)((u8 *)(p) + (o)))
 #define HALF(p,o) (*(u16 *)((u8 *)(p) + (o)))
 #define WORD(p,o) (*(int *)((u8 *)(p) + (o)))
+#define POINTER(p,o) (*(void **)((u8 *)(p) + (o)))
 #define FLAGS(p) (*(u32 *)((u8 *)(p) + 0x40))
 #define FLAG(p,b) ((p) ? ((FLAGS(p) >> (b)) & 1) : 0)
 
@@ -111,8 +112,8 @@ static __inline__ void *find_peer(int inverseSide)
 #define SUBMIT_POINTERS(actor) { \
     index = 0; \
     do { \
-        if (WORD(actor,0)) func_001F0F6C(WORD(actor,0)); \
-        if (WORD(actor,0xC)) func_001F102C(WORD(actor,0xC)); \
+        if (POINTER(actor,0)) func_001F0F6C(POINTER(actor,0)); \
+        if (POINTER(actor,0xC)) func_001F102C(POINTER(actor,0xC)); \
         index++; \
         (actor) = (u8 *)(actor) + 4; \
     } while (index < 3); \
@@ -176,7 +177,7 @@ void func_0020DB10(int selector)
     WORD(D_801CE8BC,0x5128) = -0x11D0;
     WORD(D_801CE8BC,0x512C) = -0x11D0;
     WORD(D_801CE8BC,0x5130) = -0x11D0;
-    func_001F0F6C((int)((u8 *)D_801CE8BC + 0x5124));
+    func_001F0F6C((u8 *)D_801CE8BC + 0x5124);
     outputCount = 0;
     latch = 0;
 

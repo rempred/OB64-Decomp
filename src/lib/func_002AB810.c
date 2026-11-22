@@ -1,3 +1,7 @@
+#include "game/battle_record_flag.h"
+
+#include "game/battle_roster_record.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -16,14 +20,6 @@ typedef struct BodySource {
     u8 pad_00[0x28];
     s16 x, y, z;
 } BodySource;
-
-typedef struct BodyUnit {
-    BodySource *sources[3];
-    u8 pad_0C[0x3C];
-    s32 classId;
-    s32 variant;
-    u8 pad_50[0xA8];
-} BodyUnit;
 
 typedef struct SceneBody {
     u8 pad_000[0xE0];
@@ -66,8 +62,7 @@ typedef struct SceneManager {
 extern SceneManager *D_8022A974;
 extern s32 D_801CE8FC;
 extern u8 D_8022F2CC;
-extern s32 func_0020C104(BodyUnit *unit);
-extern s32 func_0020C120(BodyUnit *unit);
+extern s32 func_0020C120(void *unit);
 extern void *resource_alloc(unsigned int size);
 extern void func_00023780(void *destination, s32 size);
 extern void *func_0002CD70(void *record, s32 arg1, unsigned int arg2);
@@ -124,7 +119,7 @@ static __inline__ void initialize_body(SceneBody *record, s32 state,
     } while (0);
 }
 
-s32 func_002AB810(s32 *slots, BodyUnit *unit, s32 index, s32 flip,
+s32 func_002AB810(s32 *slots, BattleRosterRecord *unit, s32 index, s32 flip,
                   s32 classId, s32 variant, u8 seenLeader)
 {
     SceneBody *record;
@@ -158,7 +153,7 @@ s32 func_002AB810(s32 *slots, BodyUnit *unit, s32 index, s32 flip,
     fillSize = 0x10;
     i = 0;
     do {
-        if (unit->sources[i] != 0) {
+        if (unit->links[i] != 0) {
             for (slot = 0; slot < 0x1C; slot++) {
                 if (D_8022A974->records[slot] == 0) {
                     break;
@@ -191,13 +186,13 @@ s32 func_002AB810(s32 *slots, BodyUnit *unit, s32 index, s32 flip,
                             fillSize, sceneWord, kind);
             record->field_146 = flip;
             record->facing = 0;
-            record->x = unit->sources[i]->x;
-            record->z = unit->sources[i]->z;
+            record->x = ((BodySource *)unit->links[i])->x;
+            record->z = ((BodySource *)unit->links[i])->z;
             do { specialKind = 4; } while (0);
             if (kind != specialKind) {
                 record->y = (s16)func_001FF7EC(record->x, record->z);
             } else {
-                record->y = unit->sources[i]->y;
+                record->y = ((BodySource *)unit->links[i])->y;
             }
             for (slot = 0; slot < 3; slot++) {
                 record->scale[slot] = 1.0f;

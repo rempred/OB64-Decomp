@@ -1,15 +1,6 @@
-typedef struct {
-    unsigned int field00;
-    void *queue;
-    int channel;
-    unsigned char field0c[0x44];
-    int field50;
-    unsigned char field54[8];
-    unsigned int field5c;
-    int field60;
-    unsigned char field64;
-    unsigned char field65;
-} PfsState;
+#include "common/os_pfs.h"
+
+typedef OSPfs PfsState;
 
 typedef struct {
     unsigned int field00;
@@ -20,33 +11,15 @@ typedef struct {
     unsigned char field10[16];
 } DirectoryEntry;
 
-typedef struct {
-    unsigned int field00;
-    unsigned int field04;
-    unsigned short field08;
-    unsigned char field0a[4];
-    unsigned char field0e[16];
-} FileState;
+typedef PfsInode Node;
 
-typedef union {
-    unsigned short value;
-    struct {
-        unsigned char byte00;
-        unsigned char byte01;
-    } bytes;
-} Node;
-
-extern int func_00027bd4(PfsState *state);
-extern int func_000274d0(PfsState *state, unsigned char bank);
 extern int func_00027fd0(void *queue, int channel, unsigned short address,
                          unsigned char *data);
-extern int func_00027c8c(PfsState *state, unsigned short *table, unsigned char mode,
-                         unsigned char bank);
 extern void func_00023460(const void *source, void *destination,
                           unsigned int bytes);
 extern int func_000272c0(void *queue, int channel);
 
-int func_00026a20(PfsState *state, int file, FileState *output)
+int func_00026a20(PfsState *state, int file, OSPfsFileState *output)
 {
     unsigned short table[128];
     DirectoryEntry entry;
@@ -55,20 +28,20 @@ int func_00026a20(PfsState *state, int file, FileState *output)
     Node node;
     unsigned char bank;
 
-    if (file >= state->field50 || file < 0)
+    if (file >= state->dir_size || file < 0)
         return 5;
-    if (!(state->field00 & 1))
+    if (!(state->status & 1))
         return 5;
     result = func_00027bd4(state);
     if (result != 0)
         return result;
-    if (state->field65 != 0) {
+    if (state->activebank != 0) {
         result = func_000274d0(state, 0);
         if (result != 0)
             return result;
     }
     result = func_00027fd0(state->queue, state->channel,
-                          (unsigned short)(state->field5c + file),
+                          (unsigned short)((u32)state->dir_table + file),
                           (unsigned char *)&entry);
     if (result != 0)
         return result;
@@ -79,7 +52,7 @@ int func_00026a20(PfsState *state, int file, FileState *output)
     bank = 0xff;
     /* Keep the exit check at the head of the traversal. */
     for (;;) {
-        if (node.value < state->field60)
+        if (node.value < state->inode_start_page)
             goto traversal_done;
         if (node.bytes.byte00 != bank) {
             bank = node.bytes.byte00;
@@ -93,10 +66,10 @@ int func_00026a20(PfsState *state, int file, FileState *output)
 traversal_done:
     if (node.value != 1)
         return 3;
-    output->field00 = count << 8;
-    output->field08 = entry.field04;
-    output->field04 = entry.field00;
-    func_00023460(entry.field10, output->field0e, 16);
-    func_00023460(entry.field0c, output->field0a, 4);
+    output->size = count << 8;
+    output->company_code = entry.field04;
+    output->game_code = entry.field00;
+    func_00023460(entry.field10, output->name, 16);
+    func_00023460(entry.field0c, output->extension, 4);
     return func_000272c0(state->queue, state->channel);
 }

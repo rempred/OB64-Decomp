@@ -14,7 +14,7 @@ extern u8 D_800E7A0C;
 void func_00019e10(void);
 void boot_mode_message_select(s32 a);
 void func_00019fc0(void);
-void D_8016CD50(s32 a);
+void D_8016CD50(signed char a);
 extern void *D_800A8204[3];
 extern void *D_800C4BB8;
 void *func_000016C4(void *p);

@@ -1,12 +1,10 @@
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef int s32;
-typedef struct Func001072B8Object Func001072B8Object;
 
-/* Retain the existing opaque object interface. This caller observes only
- * the signed word at +0x88; its wider meaning remains uncertain. */
-extern void func_001072B8(Func001072B8Object *object);
-
-void func_00128980(Func001072B8Object *object)
+/* This test uses the signed word at +0x88. */
+void func_00128980(void *object)
 {
     s32 *field_88 = (s32 *)((u8 *)object + 0x88);
 

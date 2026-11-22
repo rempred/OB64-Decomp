@@ -14,4 +14,10 @@ typedef struct {
 
 extern BattleCallbacks *D_801D0810;
 
+/* Installed in the descriptor 10 child callback slot at +0x00. */
+typedef int (*BattleChildCallback)(void *child);
+
+int func_001F7148(void *child);
+int func_001F89B4(void *child);
+
 #endif

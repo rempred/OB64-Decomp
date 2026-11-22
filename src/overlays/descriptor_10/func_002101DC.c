@@ -1,5 +1,8 @@
-typedef signed int s32;
-void func_0020FEEC(s32 a, s32 b, s32 c);
-void func_002101DC(s32 a, s32 b, s32 c) {
-    func_0020FEEC(a, c, b);
+typedef int (*Comparator)(const void *, const void *);
+
+void func_0020FEEC(void *base, int size, int count, Comparator compare);
+
+void func_002101DC(void *base, int count, int size, Comparator compare)
+{
+    func_0020FEEC(base, size, count, compare);
 }

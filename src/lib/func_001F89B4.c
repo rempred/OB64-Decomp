@@ -1,3 +1,5 @@
+#include "game/battle_callbacks.h"
+
 extern int func_001F7ADC(void *, float, float, float, short);
 /* Named float objects retain the compiler's floating-point loads before
  * transfer to the integer argument registers. Literal pointer accesses

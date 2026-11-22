@@ -1,50 +1,38 @@
+#include "common/os_message_queue.h"
+#include "game/nu_sc_client.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
 typedef unsigned int u32;
-typedef unsigned long long u64;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
-typedef struct {
-    u64 pad[0x1B0 / 8];
-} OSThread;
-typedef struct {
-    u32 type;
-    u32 flags;
-    u64 *ucode_boot;
-    u32 ucode_boot_size;
-    u64 *ucode;
-    u32 ucode_size;
-    u64 *ucode_data;
-    u32 ucode_data_size;
-    u64 *dram_stack;
-    u32 dram_stack_size;
-    u64 *output_buff;
-    u64 *output_buff_size;
-    u64 *data_ptr;
-    u32 data_size;
-    u64 *yield_data_ptr;
-    u32 yield_data_size;
-} OSTask;
+typedef MessageQueue OSMesgQueue;
+typedef Thread OSThread;
+typedef struct SpTaskView {
+    unsigned int type;
+    unsigned int flags;
+    void *field_08;
+    unsigned int field_0C;
+    void *field_10;
+    unsigned int field_14;
+    void *field_18;
+    unsigned int field_1C;
+    void *field_20;
+    unsigned int field_24;
+    void *outputBuffer;
+    unsigned long long *outputSize;
+    void *field_30;
+    unsigned int field_34;
+    void *field_38;
+    unsigned int field_3C;
+} SpTaskView;
 typedef s16 NUScMsg;
-typedef struct NUScClient_s {
-    struct NUScClient_s *next;
-    OSMesgQueue *msgQ;
-    NUScMsg msgType;
-} NUScClient;
 typedef struct NUScTask_s {
     struct NUScTask_s *next;
     u32 state;
     u32 flags;
     void *framebuffer;
-    OSTask list;
+    SpTaskView list;
     OSMesgQueue *msgQ;
     OSMesg msg;
 } NUScTask;
@@ -76,21 +64,20 @@ typedef struct {
 } NUSched;
 extern NUSched D_800E8B10;
 extern OSMesgQueue D_800B9C40;
-s32 func_00023AE0(OSMesgQueue *mq, OSMesg *msg, s32 flag);
 u32 __osSpGetStatus(void);
-void osSpTaskLoad(OSTask *task);
-void osSpTaskStartGo(OSTask *task);
+void osSpTaskLoad(SpTaskView *task);
+void osSpTaskStartGo(SpTaskView *task);
 void func_00019758(void *arg);
 void func_00019758(void *arg) {
-    NUScTask *task;
+    OSMesg task;
     while (1) {
-        func_00023AE0(&D_800B9C40, (OSMesg *)&task, 1);
+        func_00023AE0(&D_800B9C40, &task, 1);
         while (!(__osSpGetStatus() & 1)) {
         }
         D_800E8B10.curGraphicsTask = task;
         if (task != ((void *)0)) {
-            osSpTaskLoad(&task->list);
-            osSpTaskStartGo(&task->list);
+            osSpTaskLoad(&((NUScTask *)task)->list);
+            osSpTaskStartGo(&((NUScTask *)task)->list);
         }
     }
 }

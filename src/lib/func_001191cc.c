@@ -1,3 +1,5 @@
+#include "game/unit_record_lookup.h"
+
 #include "common/types.h"
 
 typedef struct Q7Unit Q7Unit;
@@ -9,8 +11,8 @@ extern u8 D_801971F2[];
 extern u8 D_801971FD[];
 extern u16 D_80190F80[], D_801953F0[];
 extern u8 D_80193AC2[], D_80193AC0[];
-extern s32 func_0012E968(Q7Unit *);
-extern void func_0012F8C0(Q7Unit *);
+struct DeploymentUnit;
+extern void func_0012F8C0(struct DeploymentUnit *);
 extern u32 func_0014F300(s32);
 extern s32 func_8016B738(s32);
 
@@ -63,7 +65,7 @@ void func_001191CC(s32 source_index)
                                 if (!(flags & 0x8000))
                                     FIELD(unit, u32, 0x78) = flags | 0x40000;
                             } else {
-                                func_0012F8C0(unit);
+                                func_0012F8C0((struct DeploymentUnit *)unit);
                             }
                         }
                     }

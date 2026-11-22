@@ -1,18 +1,8 @@
+#include "game/battle_resolution_record.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
-
-typedef struct ResolutionObject {
-    u8 unknown00[0x94];
-    int field94;
-} ResolutionObject;
-
-typedef struct ResolutionRecord {
-    ResolutionObject *objects[3];
-    int field0C;
-    int field10;
-    u32 unknown14[4];
-} ResolutionRecord;
 
 typedef struct ResolutionContext {
     int field00;
@@ -38,7 +28,8 @@ extern void func_0021088C(void);
 extern void func_00210930(void);
 extern void func_00023780(void *, u32);
 extern void *func_0020C478(unsigned int index);
-extern u8 *func_001F21A4(int);
+struct Opt1F;
+extern struct Opt1F *func_001F21A4(int);
 extern int func_0020BF7C(void);
 /* The getter produces a full zero-extended word, as declared by its existing callers. */
 extern int func_0020BF8C(void);
@@ -46,12 +37,8 @@ extern int func_0020F8DC(void);
 extern int func_0020F80C(void);
 extern int func_002335E0(int);
 extern int func_0023370C(void);
-extern void func_00231CC0(ResolutionRecord *);
-extern void func_00232280(ResolutionRecord *);
 extern int func_00232458(u8 *, int *);
 extern int func_002317C8(int *, int);
-extern int func_00230A9C(ResolutionRecord *, int *);
-extern int func_0022F580(ResolutionRecord *, int *);
 extern int func_0022F2BC(void *, int *);
 extern void func_0021D1CC(int, int);
 
@@ -67,11 +54,11 @@ static inline void resolve_side(int *outTime, int side)
 void func_00232D7C(void)
 {
     struct {
-        ResolutionRecord records[6];
+        BattleResolutionRecord records[6];
         int outTime;
     } work;
-    ResolutionRecord selected;
-    ResolutionObject *object;
+    BattleResolutionRecord selected;
+    BattleRosterRecord *object;
     ResolutionContext *initialContext;
     ResolutionContext *finalContext;
     ResolutionContext *clearContext;
@@ -112,7 +99,7 @@ void func_00232D7C(void)
     descriptorIndex = *(u16 *)(D_801CE8BC + 0x6076);
     work.outTime = 0;
     if (descriptorIndex != 0) {
-        descriptor = func_001F21A4(descriptorIndex & 0xFF);
+        descriptor = (u8 *)func_001F21A4(descriptorIndex & 0xFF);
         /* The original has no local bit-index guard; its byte domain is upstream. */
         D_801939CC &= ~(1u << descriptor[0]);
         func_00232458(descriptor, &work.outTime);

@@ -1,3 +1,7 @@
+#include "game/battle_record_flag.h"
+
+#include "game/battle_callbacks.h"
+
 typedef struct Func001F0E64Record {
     int field_00;
     unsigned short field_04;
@@ -15,7 +19,7 @@ typedef struct TerminalPayload {
 } TerminalPayload;
 
 typedef struct TerminalDispatchChild {
-    void *word00;
+    BattleChildCallback callback;
     int scaledX, scaledY, scaledZ;
     unsigned char gap10[0xC];
     short currentX, currentY, currentZ;
@@ -60,14 +64,11 @@ extern int D_801CE8C4;
 extern unsigned int D_801CE8C8;
 /* Only the signed byte reference is established; capacity is unknown. */
 extern unsigned char D_801E5E0F[];
-extern void func_001F7148(void);
 void func_001F0E64(Func001F0E64Record *, unsigned int);
 float func_001FF7EC(short, short);
 int func_0020BFE4(void);
-int func_0020C014(void *);
-int func_0020C32C(void *);
 void *func_0020C478(unsigned int);
-void func_0020C6C4(void *, int *, int *);
+void func_0020C6C4(unsigned char *, int *, int *);
 void func_0020F3D4(void);
 void func_0021E99C(TerminalCopyState *, TerminalCopyState *);
 void func_0021EBBC(void);
@@ -278,7 +279,7 @@ void func_002215D0(void)
                 if (((context->activeMask >> i) & 1) != 0) {
                     first = context->first[i];
                     if (first != 0) {
-                        func_0020C6C4(&first->record, &output0, &output1);
+                        func_0020C6C4((unsigned char *)&first->record, &output0, &output1);
                         if ((short)first->record.field_0A == output1) {
                             phase = (unsigned int)first->phase + 12u;
                             if (phase < 256) {
@@ -290,7 +291,7 @@ void func_002215D0(void)
                                  * form keeps the shared address invariant and its allocation
                                  * priority; the arithmetic disappears before emission. A named
                                  * address temporary instead moves the loads into each case. */
-                                first->word00 = (void *)(
+                                first->callback = (BattleChildCallback)(
                                     ((unsigned int)func_001F7148 | (unsigned int)phase)
                                     & (unsigned int)func_001F7148);
                                 context->state = 1;
@@ -309,7 +310,7 @@ void func_002215D0(void)
                     first = context->first[i];
                     if (first != 0) {
                         record = &first->record;
-                        func_0020C6C4(record, &otherOutput0, &otherOutput1);
+                        func_0020C6C4((unsigned char *)record, &otherOutput0, &otherOutput1);
                         if ((int)((unsigned int)first->phase + 12u) < 256) {
                             if (func_0020BFE4() != 0)
                                 first->phase = (unsigned int)first->phase + 12u;
@@ -318,7 +319,7 @@ void func_002215D0(void)
                             record->field_08 = 3;
                         } else {
                             first->phase = 0;
-                            first->word00 = (void *)func_001F7148;
+                            first->callback = func_001F7148;
                             context->state = 1;
                             first->record.field_08 = 0;
                         }

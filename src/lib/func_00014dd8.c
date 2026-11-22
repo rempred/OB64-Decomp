@@ -1,6 +1,12 @@
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
+typedef unsigned int u32;
+
+typedef struct {
+    u32 w0;
+    u32 w1;
+} Acmd;
 typedef struct {
     s32 maxVVoices;
     s32 maxPVoices;
@@ -58,8 +64,8 @@ extern AlGlobalsLike *D_800A9E54;
 void *alHeapDBAlloc(void *file, s32 line, void *hp, s32 num, s32 size);
 void alLink(void *ln, void *to);
 void func_0001658c(void *pv, void *dma, void *hp);
-s32 func_00017990(void);
-s32 func_00016100(void);
+Acmd *func_00017990(s32 sampleOffset, Acmd *p);
+Acmd *func_00016100(s32 sampleOffset, Acmd *p);
 s32 func_00015048(s16 idx, MusSynConfig *c, void *hp);
 void func_00014dd8(MusSynConfig *c);
 void func_00014dd8(MusSynConfig *c) {
@@ -84,9 +90,9 @@ void func_00014dd8(MusSynConfig *c) {
     D_800A9E54->mainBus = alHeapDBAlloc(((void *)0), 0, hp, 1, 0x14);
     if (c->fxType != 0) {
         D_800A9E54->unk34->unk20 = (void *)func_00015048(0, c, hp);
-        D_800A9E54->mainBus->handler = func_00017990;
+        D_800A9E54->mainBus->handler = (void *)func_00017990;
     } else {
-        D_800A9E54->mainBus->handler = func_00016100;
+        D_800A9E54->mainBus->handler = (void *)func_00016100;
     }
     D_800A9E54->pFreeList.next = ((void *)0);
     D_800A9E54->pFreeList.prev = ((void *)0);

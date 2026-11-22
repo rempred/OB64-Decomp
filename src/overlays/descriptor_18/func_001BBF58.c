@@ -1,5 +1,6 @@
 typedef unsigned char u8;
 typedef unsigned short u16;
+typedef signed short s16;
 typedef signed int s32;
 typedef struct {
     u8 unk00;
@@ -15,9 +16,9 @@ typedef struct {
     u8 unk2A[2];
     u16 cond;
 } ScriptCtx;
-void func_001C2714(s32 arg);
+void func_001C2714(s16 *list);
 s32 func_001BBF58(ScriptCtx *ctx) {
-    func_001C2714(*(s32 *)(ctx->pc + 4));
+    func_001C2714(*(s16 **)(ctx->pc + 4));
     ctx->pc += 8;
     return 0;
 }

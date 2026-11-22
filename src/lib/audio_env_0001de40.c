@@ -6,8 +6,8 @@ typedef unsigned char u8;
 #include "common/audio_filter.h"
 
 extern short powerTable[128];
-extern void *alGlobals;
-extern void _freePVoice(void *, void *);
+extern L4Synth *alGlobals;
+extern void _freePVoice(L4Synth *, L4Voice *);
 extern void __freeParam(L4Param *);
 extern u32 osVirtualToPhysical(void *);
 
@@ -111,7 +111,7 @@ L4Command *func_0001de40(void *filter, short *output, int count, int offset,
             break;
         case 0: {
             /* Capture both owners before clearing the voice field. */
-            void *synth = alGlobals;
+            L4Synth *synth = alGlobals;
             L4Param *param = env->head;
             ((L4Voice *)param->data.pointer)->env.field4c = 0;
             _freePVoice(synth, param->data.pointer);

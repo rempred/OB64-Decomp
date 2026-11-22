@@ -1,6 +1,6 @@
 #include "common/types.h"
 
-extern u8 *func_00283808(s32);
+extern void *func_00283808(s32);
 extern u8 rodata_0029a070[];
 
 u8 *func_00296CE0(s16 subject)

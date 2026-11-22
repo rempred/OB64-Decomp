@@ -1,20 +1,6 @@
-typedef struct {
-    unsigned int field00;
-    void *queue;
-    int channel;
-    unsigned char field0c[0x44];
-    int field50;
-    unsigned char field54[8];
-    unsigned int field5c;
-    int field60;
-    unsigned char field64;
-    unsigned char field65;
-} PfsState;
+#include "common/os_pfs.h"
 
-typedef union {
-    unsigned short value;
-    struct { unsigned char byte00, byte01; } bytes;
-} Node;
+typedef PfsInode Node;
 
 typedef struct {
     unsigned int field00;
@@ -32,21 +18,16 @@ typedef struct {
     unsigned char field101[256];
 } CheckerState;
 
-extern int func_00027bd4(PfsState *state);
-extern int func_00027a08(PfsState *state);
-extern int func_000274d0(PfsState *state, unsigned char bank);
-extern int func_00027c8c(PfsState *state, Node *table,
-                        unsigned char mode, unsigned char bank);
 extern int func_00027fd0(void *queue, int channel, unsigned short address,
                         unsigned char *data);
 extern int func_000281c0(void *queue, int channel, unsigned short address,
                         unsigned char *data, int mode);
 extern void func_00023780(void *data, unsigned int bytes);
-int func_0002b070(PfsState *state);
-int func_0002b4d0(PfsState *state, CheckerState *scratch);
-int func_0002b628(PfsState *state, Node node, CheckerState *scratch);
+int func_0002b070(OSPfs *state);
+int func_0002b4d0(OSPfs *state, CheckerState *scratch);
+int func_0002b628(OSPfs *state, Node node, CheckerState *scratch);
 
-int func_0002b070(PfsState *state)
+int func_0002b070(OSPfs *state)
 {
     Node table[128];
     Node previous[128];
@@ -71,9 +52,9 @@ int func_0002b070(PfsState *state)
     result = func_0002b4d0(state, &scratch);
     if (result != 0)
         return result;
-    for (slot = 0; slot < state->field50; slot++) {
+    for (slot = 0; slot < state->dir_size; slot++) {
         result = func_00027fd0(state->queue, state->channel,
-                               state->field5c + slot,
+                               (unsigned int)state->dir_table + slot,
                                (unsigned char *)&entry);
         if (result != 0)
             return result;
@@ -89,8 +70,8 @@ int func_0002b070(PfsState *state)
                 node = entry.field06;
                 expected = 0;
                 bank = 255;
-                while (node.value >= state->field60 &&
-                       node.bytes.byte00 < state->field64 &&
+                while (node.value >= state->inode_start_page &&
+                       node.bytes.byte00 < state->banks &&
                        ((node.bytes.byte01 > 0) & (node.bytes.byte01 < 128))) {
                     if (bank != node.bytes.byte00) {
                         bank = node.bytes.byte00;
@@ -112,44 +93,44 @@ int func_0002b070(PfsState *state)
         }
         if (mismatch != 0 || node.value != 1) {
             func_00023780(&entry, 32);
-            if (state->field65 != 0) {
+            if (state->activebank != 0) {
                 result = func_000274d0(state, 0);
                 if (result != 0)
                     return result;
             }
             result = func_000281c0(state->queue, state->channel,
-                                   state->field5c + slot,
+                                   (unsigned int)state->dir_table + slot,
                                    (unsigned char *)&entry, 0);
             if (result != 0)
                 return result;
             changed++;
         }
     }
-    for (slot = 0; slot < state->field50; slot++) {
+    for (slot = 0; slot < state->dir_size; slot++) {
         result = func_00027fd0(state->queue, state->channel,
-                               state->field5c + slot,
+                               (unsigned int)state->dir_table + slot,
                                (unsigned char *)&entry);
         if (result != 0)
             return result;
         if (entry.field04 != 0 && entry.field00 != 0 &&
-            entry.field06.value >= (unsigned short)state->field60)
+            entry.field06.value >= (unsigned short)state->inode_start_page)
             starts[slot].value = entry.field06.value;
         else
             starts[slot].value = 0;
     }
-    for (bank = 0; bank < state->field64; bank++) {
+    for (bank = 0; bank < state->banks; bank++) {
         result = func_00027c8c(state, previous, 0, bank);
         if ((result != 0) & (result != 3))
             return result;
-        start = bank == 0 ? state->field60 : 1;
+        start = bank == 0 ? state->inode_start_page : 1;
         for (slot = 0; slot < start; slot++)
             table[slot].value = previous[slot].value;
         for (; slot < 128; slot++)
             table[slot].value = 3;
-        for (slot = 0; slot < state->field50; slot++) {
+        for (slot = 0; slot < state->dir_size; slot++) {
             while (starts[slot].bytes.byte00 == bank) {
                 Node next;
-                if (starts[slot].value < (unsigned short)state->field60)
+                if (starts[slot].value < (unsigned short)state->inode_start_page)
                     break;
                 /* Snapshot once before either destination is updated. */
                 next = previous[starts[slot].bytes.byte01];
@@ -162,13 +143,13 @@ int func_0002b070(PfsState *state)
             return result;
     }
     if (changed != 0)
-        state->field00 |= 2;
+        state->status |= 2;
     else
-        state->field00 &= ~2U;
+        state->status &= ~2U;
     return 0;
 }
 
-int func_0002b4d0(PfsState *state, CheckerState *scratch)
+int func_0002b4d0(OSPfs *state, CheckerState *scratch)
 {
     Node table[128];
     int i;
@@ -191,15 +172,15 @@ int func_0002b4d0(PfsState *state, CheckerState *scratch)
         clearAddress--;
     }
     scratch->field100 = 255;
-    for (bank = 0; bank < state->field64; bank++) {
+    for (bank = 0; bank < state->banks; bank++) {
         bankIndex = bank;
-        start = bankIndex == 0 ? state->field60 : 1;
+        start = bankIndex == 0 ? state->inode_start_page : 1;
         result = func_00027c8c(state, table, 0, bankIndex);
         if ((result != 0) & (result != 3))
             return result;
         for (i = start; i < 128; i++) {
             value = table[i].value;
-            if (value >= state->field60 && (value >> 8) != (unsigned char)bankIndex) {
+            if (value >= state->inode_start_page && (value >> 8) != (unsigned char)bankIndex) {
                 /* Preserve the two-step index accumulation order. */
                 mapIndex = (value & 127) >> 2;
                 mapIndex += ((value >> 8) & 7) * 32;
@@ -211,7 +192,7 @@ int func_0002b4d0(PfsState *state, CheckerState *scratch)
 }
 
 /* The aggregate parameter lets the pinned compiler emit the entry shift. */
-int func_0002b628(PfsState *state, Node node, CheckerState *scratch)
+int func_0002b628(OSPfs *state, Node node, CheckerState *scratch)
 {
     unsigned char bank;
     int count = 0;
@@ -223,9 +204,9 @@ int func_0002b628(PfsState *state, Node node, CheckerState *scratch)
     int mapIndex = (node.bytes.byte01 >> 2) +
                    ((node.bytes.byte00 & 7) * 32);
 
-    for (bank = 0; bank < state->field64; bank++) {
+    for (bank = 0; bank < state->banks; bank++) {
         bankIndex = bank;
-        start = bankIndex == 0 ? state->field60 : 1;
+        start = bankIndex == 0 ? state->inode_start_page : 1;
         if (bankIndex == node.bytes.byte00 ||
             ((scratch->field101[mapIndex] >> (bankIndex & 7)) & 1)) {
             if (bankIndex != scratch->field100) {

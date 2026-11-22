@@ -1,3 +1,5 @@
+#include "common/os_message_queue.h"
+
 typedef struct {
     unsigned char dummy, txBytes, rxBytes, command;
     unsigned char addressHigh, addressLow;
@@ -10,7 +12,6 @@ extern unsigned char __osContLastCmd;
 extern int __osPfsLastChannel;
 extern void __osSiGetAccess(void), __osSiRelAccess(void);
 extern int __osSiRawStartDma(int, void *);
-extern int osRecvMesg(void *, void **, int);
 extern unsigned char __osContAddressCrc(unsigned short);
 extern unsigned char __osContDataCrc(unsigned char *);
 extern int __osPfsGetStatus(void *, int);

@@ -1,3 +1,7 @@
+#include "game/unit_record_lookup.h"
+
+#include "game/unit_cleanup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -226,17 +230,14 @@ s32 func_0012469C(RuntimeUnit *unit, f32 *output)
 }
 
 
-typedef struct Func001072B8Object Func001072B8Object;
 
 extern u8 D_801971F0[][25];
 extern f32 D_801F0D9C, D_801F0DA0, D_801F0DA4;
-extern s32 func_0012DA10(RuntimeUnit *unit);
 extern s32 func_00123E38(s32 source_word, s32 member);
 extern s32 func_00124018(s32 source_word, s32 selector, s32 member);
 extern s32 func_00124328(s32 source_word, s32 member);
 extern s32 func_00124520(void *unit, s32 selector, s32 member);
 extern s32 func_0012469C(RuntimeUnit *unit, f32 *point);
-extern void func_001072B8(Func001072B8Object *unit);
 extern void func_00121DA8(RuntimeUnit *unit);
 
 s32 func_00124B98(RuntimeUnit *unit)
@@ -309,12 +310,12 @@ s32 func_00124B98(RuntimeUnit *unit)
                 x = point[0];
                 y = point[1];
                 z = point[2];
-                func_001072B8((Func001072B8Object *)unit);
+                func_001072B8(unit);
             } else {
                 x = point[0];
                 y = point[1];
                 z = point[2];
-                func_001072B8((Func001072B8Object *)unit);
+                func_001072B8(unit);
             }
             UNIT(u8, 0x91) = 0;
             UNIT(s32, 0x84) = -1;

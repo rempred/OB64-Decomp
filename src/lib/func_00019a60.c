@@ -1,19 +1,12 @@
+#include "common/os_message_queue.h"
+
 typedef signed short s16;
 typedef signed int s32;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
-typedef struct {
-    u64 pad[0x1B0 / 8];
-} OSThread;
+typedef MessageQueue OSMesgQueue;
+typedef Thread OSThread;
 typedef struct {
     u32 type;
     u32 flags;
@@ -55,8 +48,6 @@ extern u64 D_8009ED80[];
 extern u64 D_800E8710[];
 extern u64 D_800C7970[];
 extern u64 D_800C6D70[];
-void osCreateThread(void *t, s32 id, void (*entry)(void *), void *arg, void *sp, s32 pri);
-void osStartThread(void *t);
 void func_00019fc0(void);
 void func_00019940(void *arg);
 void func_00019a60(void) {

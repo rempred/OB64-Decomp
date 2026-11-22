@@ -1,3 +1,6 @@
+#include "common/os_message_queue.h"
+#include "game/nu_sc_client.h"
+
 #include "common/event_message.h"
 
 typedef unsigned char u8;
@@ -6,17 +9,8 @@ typedef signed int s32;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 typedef void *OSMesg;
-typedef struct {
-    void *mtqueue;
-    void *fullqueue;
-    s32 validCount;
-    s32 first;
-    s32 msgCount;
-    OSMesg *msg;
-} OSMesgQueue;
-typedef struct {
-    u64 pad[0x1B0 / 8];
-} OSThread;
+typedef MessageQueue OSMesgQueue;
+typedef Thread OSThread;
 typedef struct {
     u32 type;
     u32 flags;
@@ -36,11 +30,6 @@ typedef struct {
     u32 yield_data_size;
 } OSTask;
 typedef s16 NUScMsg;
-typedef struct NUScClient_s {
-    struct NUScClient_s *next;
-    OSMesgQueue *msgQ;
-    NUScMsg msgType;
-} NUScClient;
 typedef struct NUScTask_s {
     struct NUScTask_s *next;
     u32 state;
@@ -86,12 +75,9 @@ extern OSMesgQueue D_800B9C40;
 extern OSMesg D_800B9C58[];
 extern u8 osViModeTable[];
 extern s32 osTvType;
-void osCreateMesgQueue(OSMesgQueue *mq, OSMesg *msg, s32 count);
 void osCreateViManager(s32 pri);
 void osViSetMode(void *mode);
-void osViSetEvent(OSMesgQueue *mq, OSMesg msg, u32 retraceCount);
-void osCreateThread(void *t, s32 id, void (*entry)(void *), void *arg, void *sp, s32 pri);
-void osStartThread(void *t);
+void osViSetEvent(void *mq, void *msg, u32 retraceCount);
 void func_00019fe4(u8 active);
 void func_00019308(void *arg);
 void func_00019600(void *arg);
