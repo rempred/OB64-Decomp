@@ -1,5 +1,6 @@
 #include "game/combat_selector.h"
 #include "game/combat_evaluator.h"
+#include "game/battle_record_flag.h"
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -75,7 +76,6 @@ extern int func_0020F8DC(void);
 extern int func_0020D814(A9CObject *);
 extern void func_0022EF50(A9CObject *);
 extern int func_0020BFE4(void);
-extern int func_0020BFF8(A9CObject *);
 extern u16 func_0020C448(A9CObject *);
 extern u8 func_00201584(int, int);
 extern u8 func_00201798(int, int, int, int);

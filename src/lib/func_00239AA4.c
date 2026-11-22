@@ -46,7 +46,7 @@ typedef struct BattleUnit {
 } BattleUnit;
 s32 D_801C8B84(BattleUnit *u);
 s32 D_801C8C58(BattleUnit *u);
-s32 D_801C8B68(BattleUnit *u);
+int D_801C8B68(void *record);
 s32 D_801C8B08(BattleUnit *u);
 u8 D_8016FF5C(u8 a, u8 b);
 s32 func_00239AA4(BattleUnit *u, u32 f) {

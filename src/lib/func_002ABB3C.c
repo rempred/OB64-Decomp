@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -8,7 +10,6 @@ extern u8 *D_8022A974;    /* Director scene block; actor pointers at +0x18 */
 extern s8 D_8022AC80;     /* Director scene mode */
 extern s16 D_8022A994;    /* current scenario id */
 
-extern s32 func_0020BFF8(char *unit);
 extern s32 func_0020C0E8(char *unit);
 extern s32 func_0020C32C(char *unit);
 extern u8 func_002AD574(char *unit);

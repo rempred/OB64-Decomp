@@ -1,10 +1,6 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/resource_arena.h"
 
 extern u32 func_0002def4(u32 key);
-extern void *resource_alloc_tree_scan(s32 size);
 extern void *func_0002dfb8(void *data, u32 key);
 extern void *resource_alloc(u32 size);
 extern void memcpy(void *source, void *destination, u32 size);

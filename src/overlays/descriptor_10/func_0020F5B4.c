@@ -1,6 +1,5 @@
-typedef unsigned char u8;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/resource_arena.h"
+
 void *func_000016C4(void *p);
 void *func_00001330(unsigned int size);
 typedef struct {
@@ -15,7 +14,6 @@ void *D_8009DBB8(void *dst, unsigned int id);
 u32 func_0000ABE0(const u8 *p);
 u32 func_0000A510(u8 *dst, const u8 *src);
 void boot_resource_archive_load_many(void *arc, void *reqs, s32 n);
-void *resource_alloc_tree_scan(s32 size);
 void *func_0020F5B4(s32 id) {
     s32 size = D_8009DAF4(id);
     u8 *raw = resource_alloc_tree_scan(size);

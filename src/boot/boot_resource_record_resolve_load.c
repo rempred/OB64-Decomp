@@ -1,11 +1,8 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
+#include "game/boot_archive_stream.h"
 
 extern void *func_00001330(u32 size);
-extern void *func_0000F4E4(void *scratch, const u8 *template_data, void *buffer, u32 size);
 extern void func_0000F450(void *scratch, const u8 *path);
-extern u32 func_0000BE98(void *context, void *buffer, u32 size, u32 record_value,
+extern u32 func_0000BE98(void *context, void *output, u32 size, u32 record_value,
                        void *scratch_or_zero, u32 match_count_or_flag);
 extern int func_00092F50(const u8 *record_suffix, const void *directory_entry, u32 limit);
 extern void func_0000BF90(const u8 *message, void *scratch);
@@ -19,12 +16,12 @@ extern const u8 g_resource_missing_entry[];
 extern const u8 g_resource_other_type[];
 extern void *g_resource_directory_table[];
 
-void func_0000BC8C(void *context, u8 *record)
+void func_0000BC8C(ArcFile *context, u8 *record)
 {
     /* This function observes only the offsets used below; the record's complete
        layout and the reporting fields' meanings remain unresolved. */
     u8 scratch[0x108];
-    void *buffer;
+    ArcFile *output;
     void **directory;
     u32 match_count;
     const u8 *path;
@@ -34,12 +31,12 @@ void func_0000BC8C(void *context, u8 *record)
 
     path = record + 0x16;
     if (record[0] & 0x80) {
-        buffer = func_0000F4E4(scratch, g_resource_template,
+        output = func_0000F4E4(scratch, g_resource_template,
                              func_00001330(*(u32 *)(record + 0x0C)),
-                             *(u32 *)(record + 0x0C));
-        func_0000BE98(context, buffer, *(u32 *)(record + 0x0C),
+                             (s32)*(u32 *)(record + 0x0C));
+        func_0000BE98(context, output, *(u32 *)(record + 0x0C),
                      *(u32 *)(record + 0x08), 0, record[0] & 0x7F);
-        *(u8 *)buffer = 0;
+        output->open = 0;
         return;
     }
 
@@ -74,23 +71,23 @@ void func_0000BC8C(void *context, u8 *record)
             }
             match_count++;
         }
-        buffer = func_0000F4E4(scratch, g_resource_template,
+        output = func_0000F4E4(scratch, g_resource_template,
                              func_00001330(*(u32 *)(record + 0x0C)),
-                             *(u32 *)(record + 0x0C));
+                             (s32)*(u32 *)(record + 0x0C));
         {
             /* Keeping the first guard as a Boolean-result phase prevents KMC's
                first CSE pass from deleting the later retail null check. */
-            u32 available = buffer != 0;
+            u32 available = output != 0;
             if (available != 1) {
                 return;
             }
         }
-        status = func_0000BE98(context, buffer, *(u32 *)(record + 0x0C),
+        status = func_0000BE98(context, output, *(u32 *)(record + 0x0C),
                               *(u32 *)(record + 0x08), scratch, match_count);
         /* Clear before the repeated guard so KMC places this real store in the
            branch delay slot, after the dispatch-result copy. */
-        *(u8 *)buffer = 0;
-        if ((u32)buffer == 0) {
+        output->open = 0;
+        if ((u32)output == 0) {
             return;
         }
         if (*(u32 *)(record + 0x118) == 0 ||

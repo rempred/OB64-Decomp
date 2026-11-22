@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed short s16;
@@ -69,7 +71,6 @@ extern void func_0021D1CC(int, int);
 extern void *func_0020C478(unsigned int index);
 extern int func_0020C2C0(DispatchObject *);
 extern int func_0020C0CC(DispatchObject *);
-extern int func_0020BFF8(DispatchObject *);
 extern int func_0020C32C(DispatchObject *);
 extern int func_002363FC(DispatchObject *);
 extern int func_002365BC(DispatchObject *, DispatchObject *, int, int);

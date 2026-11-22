@@ -1,9 +1,7 @@
-typedef unsigned char u8;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/resource_arena.h"
+
 void *func_000016C4(void *p);
 u32 D_8009DAF4(u32 id);
-void *resource_alloc_tree_scan(s32 size);
 void *D_8009DBB8(void *dst, unsigned int id);
 u32 func_0000ABE0(const u8 *p);
 u32 func_0000A510(u8 *dst, const u8 *src);

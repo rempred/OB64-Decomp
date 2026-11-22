@@ -1,7 +1,7 @@
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
-s32 D_801C8B68(u8 *u);
+int D_801C8B68(void *record);
 s32 D_801C8BA4(u8 *u);
 u16 D_801C8FB8(u8 *u);
 void D_801C41C8(s32 *a, s32 *b, s32 *c, s32 *d, s32 *e, s32 f);

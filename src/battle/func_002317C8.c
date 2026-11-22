@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 
@@ -28,7 +30,6 @@ extern int func_002335E0(int);
 extern void *func_0020C478(unsigned int index);
 extern int func_0020C2C0(SideObject *);
 extern int func_0020C014(SideObject *);
-extern int func_0020BFF8(SideObject *);
 extern void func_00023780(void *, u32);
 extern void func_0020C908(SideObject *, int);
 extern void func_0020D870(SideObject *, int);

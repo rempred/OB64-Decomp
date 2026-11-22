@@ -1,43 +1,10 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-
-/* Partial views derived from this owner's actual memory accesses. */
-typedef struct InputView {
-    u8 unknown00[8];
-    u8 *buffer;
-    int limit;
-    int position;
-} InputView;
-
-typedef struct ResourceRecord {
-    u8 byte00;
-    u8 bytes01[5];
-    u8 unknown06[2];
-    u32 word08;
-    u32 word0C;
-    u32 word10;
-    u8 byte14;
-    u8 byte15;
-    u8 bytes16[0x100];
-    u16 half116;
-    u32 word118;
-    u8 byte11C;
-    u8 byte11D;
-    u8 unknown11E[2];
-    u32 word120;
-    u16 half124;
-    u16 half126;
-    u16 half128;
-    u8 unknown12A[2];
-} ResourceRecord;
+#include "game/boot_archive_record.h"
 
 extern u8 *D_800AF390;
 extern const u8 D_800AE0E8[];
 extern const u8 D_800AE108[];
 extern const u8 g_boot_resource_lzss_error_anchor[];
 extern void func_80093380(void *, u32);
-extern u32 func_0000F970(void *, u32, u32, InputView *);
 extern void func_00023460(const void *, void *, u32);
 extern void func_0000BFC0(const u8 *);
 extern u8 *func_0000C938(u8 *, u8);
@@ -50,14 +17,14 @@ static u32 func_0000BB44(void);
 static void func_0000BBA8(u8 *, int);
 static void func_0000BC3C(u8 *, int);
 
-#define INPUT_BYTE(input) ((input)->buffer[(input)->position++])
+#define INPUT_BYTE(input) ((input)->extent.buf[(input)->pos++])
 
-static inline u32 input_byte(InputView *input)
+static inline u32 input_byte(ArcFile *input)
 {
     return INPUT_BYTE(input);
 }
 
-int boot_resource_tag_record_decode(InputView *input, ResourceRecord *record)
+int boot_resource_tag_record_decode(ArcFile *input, ResourceRecord *record)
 {
     u8 raw[0x1000];
     u8 prefix[0x400];
@@ -72,7 +39,7 @@ int boot_resource_tag_record_decode(InputView *input, ResourceRecord *record)
     int extension_marker;
 
     func_80093380(record, 0x12C);
-    tag = input->position < input->limit ? INPUT_BYTE(input) : -1;
+    tag = input->pos < input->extent.size ? INPUT_BYTE(input) : -1;
     if (tag == -1) {
         goto invalid_record;
     }
@@ -102,14 +69,14 @@ int boot_resource_tag_record_decode(InputView *input, ResourceRecord *record)
         return 1;
     }
 
-    if (func_0000F970(raw + 1, 1, tag - 1, input) < (u32)(tag - 1)) {
+    if ((u32)func_0000F970(raw + 1, 1, tag - 1, input) < (u32)(tag - 1)) {
         failure_message = D_800AE0E8;
         goto report_read_error;
     }
     D_800AF390 = raw + 0x15;
     record->byte15 = raw[0x14];
     if (record->byte15 != 2) {
-        if (func_0000F970(raw + tag, 1, 2, input) < 2) {
+        if ((u32)func_0000F970(raw + tag, 1, 2, input) < 2u) {
             /* This is the same 0x800AE0E8 message as the first read failure.
              * Distinct existing address forms keep KMC from combining the two
              * setup stubs before their shared reporting call. */
@@ -184,7 +151,7 @@ invalid_record:
             }
             if (record->byte15 != 2) {
                 if (((int)raw - (int)D_800AF390) + (int)sizeof(raw) < tag ||
-                    func_0000F970(D_800AF390, 1, tag, input) < (u32)tag) {
+                    (u32)func_0000F970(D_800AF390, 1, tag, input) < (u32)tag) {
                     failure_message = D_800AE108;
 report_read_error:
                     func_0000BFC0(failure_message);

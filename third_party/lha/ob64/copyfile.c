@@ -18,10 +18,10 @@
 long func_0000C990(void *f1, void *f2, long size, int crc_flg)
 {
     unsigned short xsize;
-    char *buf;
+    unsigned char *buf;
     long rsize = 0;
 
-    if ((buf = (char *)func_00001330(2048)) == 0)
+    if ((buf = func_00001330(2048)) == 0)
         func_00023940(g_lha_diag_format, g_lha_diag_prefix,
                      g_lha_diag_context, g_lha_err_alloc);
     g_lha_crc = 0;
@@ -36,7 +36,7 @@ long func_0000C990(void *f1, void *f2, long size, int crc_flg)
                              g_lha_diag_context, g_lha_err_write);
         }
         if (crc_flg) {
-            calccrc((unsigned char *)buf, xsize);
+            calccrc(buf, xsize);
         }
         rsize += xsize;
         size -= xsize;

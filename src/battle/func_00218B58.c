@@ -1,4 +1,5 @@
 #include "game/combat_selector.h"
+#include "game/battle_record_flag.h"
 
 typedef signed char s8;
 typedef unsigned char u8;
@@ -18,7 +19,6 @@ typedef s64 M2C_UNK64;
 f32 func_001FF7EC(s16, s16);                                    
 f32 func_002016F4(s32, s32);                                    
 void func_0020BD5C(s32 selector);                                 
-s32 func_0020BFF8(void **);                                     
 s32 func_0020C014(void **);                                     
 s32 func_0020C0CC(void **);                                     
 s32 func_0020C2C0(void **);                                     

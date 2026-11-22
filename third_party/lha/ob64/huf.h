@@ -13,7 +13,6 @@ extern unsigned short *g_lha_c_table;  /* 0x800AF40C */
 extern unsigned short *g_lha_pt_table; /* 0x800AF410 */
 extern char g_lha_diag_format[], g_lha_diag_prefix[], g_lha_diag_context[];
 extern char g_lha_err_alloc[], g_lha_err_read[], g_lha_err_write[];
-extern unsigned int func_0000F970(void *, unsigned int, unsigned int, void *);
 extern void func_0000C024(short, unsigned char *, short, unsigned short *);
 void func_0000CB4C(short nn, short nbit, short i_special);
 void func_0000CEB8(void);

@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
@@ -30,7 +32,6 @@ typedef struct BodyActor {
     u8 sourceIndex;
 } BodyActor;
 
-extern s32 func_0020BFF8(BodyUnit *unit);
 extern s32 func_0020C120(BodyUnit *unit);
 extern f32 func_00201670(s32 sourceArt, s32 ownerContext);
 extern f32 func_002016F4(s32 sourceArt, s32 ownerContext);

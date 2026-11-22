@@ -45,7 +45,7 @@ typedef struct BattleUnit {
     u8 unk98[0x60];
 } BattleUnit;
 u8 D_801C9FA4(s32 a);
-s32 D_801C8B68(BattleUnit *u);
+int D_801C8B68(void *record);
 u16 D_8016DF88(u8 a, u8 cls);
 u16 D_8016DFDC(u8 a, u8 cls);
 u16 D_8016E030(u8 a, u8 cls);

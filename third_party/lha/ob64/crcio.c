@@ -22,7 +22,7 @@ fwrite_crc(unsigned char *p, int n, void *fp)
 {
     calccrc(p, n);
     if (fp) {
-        if (fwrite(p, 1, n, fp) < n)
+        if ((unsigned int)fwrite(p, 1, n, fp) < (unsigned int)n)
             lha_printf(lha_fatal_format, lha_fatal_prefix, lha_empty_string, lha_write_error);
     }
 }

@@ -1,13 +1,10 @@
-typedef unsigned char u8;
-typedef signed short s16;
-typedef signed int s32;
+#include "game/resource_arena.h"
 
 extern void *D_8018FC14;
 extern u8 D_8022A997;
 extern u8 *D_8022A974;
 
 unsigned int func_8009DAF4(unsigned int resource);
-void *func_80071C04(s32 size);
 void *func_8009DBB8(void *destination, unsigned int resource);
 void *func_800712C4(void *pointer);
 void *func_8023BDDC(void *resource);

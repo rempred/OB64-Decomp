@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
@@ -34,7 +36,6 @@ extern u8 D_801976E8;
 extern u8 D_801971F2[][25];
 extern BodyScene *D_8022A974;
 extern BodyResident *D_801CE8BC;
-extern s32 func_0020BFF8(BodyUnit *unit);
 
 void func_002AD434(s32 destination, s32 memberPosition)
 {

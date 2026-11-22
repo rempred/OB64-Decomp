@@ -34,4 +34,8 @@ extern ArenaNode *func_00001E3C(ArenaNode *root, u32 bytes);
 extern void func_00001E74(void);
 extern s32 func_00001F9C(void *pointer);
 
+extern void *resource_alloc_tree_scan(u32 requested);
+/* Resident address spelling used by existing callers. */
+extern void *func_80071C04(u32 requested);
+
 #endif

@@ -24,14 +24,11 @@
 #define DELIM2 0xff
 #define UPDATE_CRC(c) crc = crctable[(crc ^ (c)) & 0xFF] ^ (crc >> CHAR_BIT)
 
-/* Local change: input is an in-memory stream, and getc() reads its buffer. */
-typedef struct LhaStream {
-    unsigned char pad_00[8];
-    unsigned char *buf;                  /* +0x08 */
-    unsigned char pad_0C[4];
-    int pos;                             /* +0x10 */
-} LhaStream;
-#define getc(fp) ((fp)->buf[(fp)->pos++])
+#include "game/boot_archive_stream.h"
+
+/* The game adaptation reads bytes from the shared in-memory stream. */
+typedef ArcFile LhaStream;
+#define getc(fp) ((fp)->extent.buf[(fp)->pos++])
 
 struct interfacing {
     LhaStream *infile;
@@ -125,7 +122,6 @@ void fwrite_crc(unsigned char *p, int n, void *fp);
 extern void *malloc(unsigned int size);
 extern void *free(void *ptr);
 extern void *memset(void *s, int c, unsigned int n);
-extern unsigned int fwrite(const void *p, unsigned int size, unsigned int n, void *fp);
 extern void lha_printf(const char *fmt, ...);
 
 

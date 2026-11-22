@@ -16,7 +16,9 @@ typedef struct {
     u8 unk5C[0x14];
     s32 actsMax;
 } BattleUnit;
-extern inline s32 func_0020BFF8(BattleUnit *u) {
+extern inline s32 func_0020BFF8(void *record) {
+    BattleUnit *u = record;
+
     if (u == ((void *)0)) {
         return 0;
     }

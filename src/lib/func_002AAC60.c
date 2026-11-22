@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -48,7 +50,6 @@ extern void *resource_alloc(u32 bytes);
 extern void *resource_free(void *pointer);
 extern void *func_0002E138(u32 key);
 extern void *func_0002CD70(void *destination, s32 value, u32 count);
-extern s32 func_0020BFF8(BodyUnit *unit);
 extern s32 func_0020C120(BodyUnit *unit);
 extern f32 func_00201670(s32 classId, s32 variant);
 extern u8 func_002AD574(BodyUnit *unit);
