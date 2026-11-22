@@ -242,6 +242,20 @@ The script lead also owns the sibling lookup `001BBFB0`, its three callers and t
 
 The class comparison uses the roster byte at `0x80193BC0 + 0x11 + 0x38*i`. The write in `001960A8` and the reads in `00048928` and `00290820` identify a separate storage-typing follow-up. The selector `0020BF98` has two open findings in `00222604`, where its full result is compared with `0xFF` before the class comparison.
 
+[Round 12 passed canonical verification](https://github.com/rempred/OB64-Decomp/commit/9809ee7dc0a3da51f67192de40983fe2997c4440). It cleared all 54 assigned conflicts. The full retail ROM, all 2,650 targets and both battle switch tables matched. The script callback still carries its indirect-call limitation. The class predicate produces zero or one. Its seven compiled caller sites mask the result before use; both a byte return and a word return with explicit caller narrowing reproduced that behavior. The accepted shared declaration uses a byte return.
+
+## Round 13
+
+The accepted Round 12 census has 978 definite findings across 261 linked entries. The next three assignments cover 36 findings in 13 complete source files. Three providers tied at 11 findings. The boot transfer comes first in linked-section order.
+
+| Source lead | Provider | Findings | Complete files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Battle art lookup | `func_00201584` | 13 | 4 | Follow the two words at battle-record offsets `0x48` and `0x4C` through the provider's index selection, then check the result consumed by `0022BFF8`. Compare both arms and the caller's byte mask. |
+| Item pose lookup | `func_0020156C` | 12 | 5 | Trace the low 16 bits of the item selector and the byte returned from the table through a pose update. Test parameter width and return width separately in the four pose producers. |
+| Boot DMA transfer | `func_0001a4f0` | 11 | 4 | Follow the ROM address and destination pointer from the checksum and probe loops into the I/O message. Check how the direction chooses cache handling before submission and completion. |
+
+The neighboring battle and pose lookup functions read separate table pointers at `0x801D0684` and `0x801D0680`. Check the table declarations and their actual read/write paths before sharing a type. The four original files in the boot assignment own 11 compiled target entries. The checksum-chain producer includes eight source fragments. The boot lead also owns `boot_resource_probe_chunk_callback_walk`, which stores the DMA function in a volatile callback field. Its two address relocations at offsets `0x28` and `0x2C` bind the existing alias. Check the indirect call in its mode-one loop and retain the generic indirect-call limitation. This adds one complete source file without adding a counted finding, bringing the round to 14 files.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
