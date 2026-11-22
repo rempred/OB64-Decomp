@@ -37,7 +37,7 @@ typedef struct {
 extern Func002A08C0Scene * volatile D_8022A974;
 
 s16 func_80231BBC(s32 source, s32 animation, s32 facing, s32 arg3);
-void func_8009C970(Func002A08C0Actor *actor, s32 arg1, s32 arg2);
+void *func_8009C970(void *destination, int value, unsigned int count);
 void func_8022E9E8(Func002A08C0Actor *actor);
 
 s32 func_002A08C0(s32 slot, s32 source, s32 animation, s32 facing,

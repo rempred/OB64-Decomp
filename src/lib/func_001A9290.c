@@ -1,4 +1,5 @@
 #include "game/panel_constructor.h"
+#include "game/indexed_record_lookup.h"
 #include "game/scenario_item_views.h"
 typedef float f32;
 typedef double f64;
@@ -55,7 +56,6 @@ extern s32 func_8016B738(s32);
 extern u8 func_00045440(s32);
 extern s32 func_801FE190(u8);
 extern s32 func_801DA228(ScenarioUnit *), func_8009C7CC(void);
-extern void *func_8016F4E0(u8);
 extern u8 func_801E027C(s32, void *, s32, s32, s32, s32, s32);
 extern s32 func_801E00F0(u8, s32, s32, s32, s32, s32);
 extern void func_8021DC08(u16, s32, s32, s32, u8);
@@ -476,7 +476,7 @@ resize_item:
             if (unit->field00 & 0x40)
                 D_8021E36C = &D_80193BC0[D_801971F2[LOCATION_BYTE(func_801DA228(unit))].members[0]];
             else D_8021E36C = &D_80193BC0[D_801971F2[D_8021E3B4].members[0]];
-        } else D_8021E36C = func_8016F4E0(selected);
+        } else D_8021E36C = func_8016F4E0((u8)selected);
         D_8021E194 = 0x100;
         break;
     case 0x100:

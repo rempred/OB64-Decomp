@@ -14,7 +14,7 @@ extern s16 D_8022A994;    /* current scenario id */
 extern s32 func_0020C0E8(char *unit);
 extern s32 func_0020C32C(char *unit);
 extern u8 func_002AD574(char *unit);
-extern void func_0002CD70(volatile void *pointer, s32 value, s32 size);
+extern void *func_0002CD70(void *destination, int value, unsigned int count);
 extern void func_002AB810(volatile s32 *slots, char *unit, s32 index, s32 flip, s32 classId, s32 variant, s32 seenLeader);
 extern s32 func_002A9364(s32 slot, s32 classId, s32 variant, s32 animation,
                         s32 arg5, s32 arg6, u8 keep145, u8 keepUnit);
@@ -98,7 +98,7 @@ s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
             flip = j;
         }
         flip = *(s32 *)(unit + 0x58) < 4;
-        func_0002CD70(slots, 0xFF, 0x10);
+        func_0002CD70((void *)slots, 0xFF, 0x10);
         func_002AB810(slots, unit, i, flip, *(s32 *)(unit + 0x48), *(s32 *)(unit + 0x4C), seenLeader);
         if (*(s32 *)(unit + 0x48) == 0x87) {
             seenLeader = 1;

@@ -1,4 +1,5 @@
 #include "game/cutscene_panels.h"
+#include "game/indexed_record_lookup.h"
 #include "game/shop_price_interface.h"
 
 typedef struct { u32 w0; u32 w1; } ShopGfx;
@@ -33,7 +34,6 @@ extern void func_8020E7F4(s32 x, s32 width, s32 y0, s32 y1, u32 alpha);
 extern void func_80204050(s32 value);
 extern void func_8017A704(void);
 extern void func_8017A714(void);
-extern void *func_8016F4E0(u32 item);
 extern signed char *func_8016F5B0(s32 item);
 extern void func_80179034(void *text, s32 x, s32 y);
 extern void func_801818A0(s32 x, s32 y);

@@ -1,9 +1,8 @@
-typedef unsigned char u8;
-typedef unsigned int u32;
+#include "game/resource_arena.h"
+
 extern u8 D_80243DB0[];
 void func_00003798(void);
 void func_00001314(void);
-void resource_arena_init(void *p, u32 size);
 void D_8009DAEC(void);
 void D_80179060(void);
 void D_8017BDC0(void);
@@ -18,7 +17,7 @@ static void func_001CFA18(void);
 void func_001CF9C0(void) {
     func_00003798();
     func_00001314();
-    resource_arena_init(D_80243DB0, 0x80400000 - (u32)D_80243DB0);
+    resource_arena_init(D_80243DB0, 0x80400000U - (u32)D_80243DB0);
     D_8009DAEC();
     D_80179060();
     D_8017BDC0();

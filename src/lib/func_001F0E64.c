@@ -3,7 +3,7 @@
 #include "game/combat_selector.h"
 
 extern int rand(void);
-extern void func_8009C970(void *, int, unsigned int);
+extern void *func_8009C970(void *destination, int value, unsigned int count);
 extern void func_80093380(void *, unsigned int);
 
 /* Keeping the unsigned remainder in this inline result gives the caller the

@@ -1,3 +1,4 @@
+#include "game/indexed_record_lookup.h"
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -13,7 +14,6 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-s32 func_000453e0(s32);
 s32 func_00045df4(s16);
 M2C_UNK func_00054e24();
 M2C_UNK func_00055114(M2C_UNK, M2C_UNK, s8, M2C_UNK, s32, s32, s32, s32, s32, s32, s32, s32);
@@ -29,7 +29,7 @@ M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
 void *func_80070F30(u32);
 void *func_800712C4(void *);
-M2C_UNK func_000238B0(void *, const void *, s32);
+int func_000238B0(char *buffer, const char *format, ...);
 extern unsigned char *func_0002C950(unsigned char *destination, const unsigned char *source);
 
 extern const f64 D_801E66A8;
@@ -48,7 +48,7 @@ extern s32 D_801CE8C4;
 extern u8 D_801CE902[];
 extern s16 D_801CE904[];
 extern u8 D_80197207[];
-extern u8 D_801E6694[];
+extern const char D_801E6694[];
 
 void func_00215CF0(void) {
     u8 sp30[0x100];
@@ -418,7 +418,7 @@ state_7:
             if (func_00055234(0x10B) == 0) {
                 func_00054e24(0x46077, 0xB, 0x96, 0x28, 0xAA, 0x3C, 0x1E, 0x1E, 0x122, 0x46);
                 temp_s0_653 = func_00055234(0x10B);
-                func_000238B0(sp30, D_801E6694, func_000453e0((u8) (*(s8 *)((s8 *)(D_801CE8BC) + (0x57DC))) + 0x27));
+                func_000238B0((char *)sp30, D_801E6694, func_000453e0((u8) (*(s8 *)((s8 *)(D_801CE8BC) + (0x57DC))) + 0x27));
                 func_0002C950((*(void **)((s8 *)(temp_s0_653) + (0xD0))), sp30);
                 temp_v0_664 = (*(void **)((s8 *)(temp_s0_653) + (0xD0)));
                 (*(void **)((s8 *)(temp_v0_664) + (0x530))) = temp_v0_664;

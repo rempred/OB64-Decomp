@@ -16,7 +16,7 @@ typedef struct {
     u8 b46;
     u8 b47;
 } Panel1F;
-void *func_0002CD70(void *p, s32 c, s32 n);
+void *func_0002CD70(void *destination, int value, unsigned int count);
 void bzero(void *p, s32 n);
 void func_001F0E04(Panel1F *p, s16 a) {
     p->h4 = a;

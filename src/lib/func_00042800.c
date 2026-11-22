@@ -23,7 +23,8 @@ extern u8 D_801936AC;
 extern u8 D_801936AD;
 extern u8 D_80196AA4;
 extern u8 D_80197810[];
-void *func_0002CD70(void *p, s32 c, s32 n);
+void *func_0002CD70(void *destination, int value, unsigned int count);
+void func_00042a08(void *p);
 void func_00042800(void) {
     u16 *p;
     func_00042a08(D_80196A28);
@@ -47,4 +48,3 @@ void func_00042800(void) {
     D_80196AA4 = 2;
     func_0002CD70(D_80197810, 0xFF, 0x2D6);
 }
-void func_00042a08(void *p);

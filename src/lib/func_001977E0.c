@@ -1,4 +1,5 @@
 #include "game/panel_constructor.h"
+#include "game/indexed_record_lookup.h"
 #include "game/scenario_source_record.h"
 
 typedef double f64;
@@ -129,7 +130,6 @@ extern void func_0015DF10(u32 value);
 extern u8 func_802189BC(u8 category);
 extern u32 func_0019BD14(void);
 extern u8 func_0019B26C(u16 selected, u8 mode);
-extern s32 func_000453e0(u16 value);
 extern signed char *func_000454b0(s32 value);
 extern void func_0019BAE4(u8 quantity, void *payload);
 extern void func_0019B710(u8 *quantity, u8 value);
@@ -408,7 +408,7 @@ u8 func_001977E0(void)
         if (mask & input_words[0]) {
             if (D_8021A121 == D_8021A122) {
                 D_80219F00.arg_10 =
-                    (void *)func_000453e0((u16)D_80219F00.selected_id);
+                    func_000453e0((u16)D_80219F00.selected_id);
             } else {
                 D_80219F00.arg_10 =
                     func_000454b0((u16)D_80219F00.selected_id);
@@ -462,7 +462,7 @@ u8 func_001977E0(void)
             u8 selector = D_801971F2[D_801F3658][0];
             D_80219F00.arg_10 = &D_80193BC0[selector];
             D_80219F00.arg_14 =
-                (void *)func_000453e0((u16)D_80219F00.selected_id);
+                func_000453e0((u16)D_80219F00.selected_id);
             D_80219F00.prompt_code = 0x55;
             D_80219D24 = 8;
         }
@@ -554,7 +554,7 @@ u8 func_001977E0(void)
         if (mask & input_words[0]) {
             func_0019BAB4();
             D_80219F00.arg_10 =
-                (void *)func_000453e0((u16)D_80219F00.selected_id);
+                func_000453e0((u16)D_80219F00.selected_id);
             D_80219F00.prompt_code = 0x58;
             D_80219F00.prompt_variant = 2;
             D_80219D24 = 12;
@@ -612,7 +612,7 @@ u8 func_001977E0(void)
     case 13: {
         if (D_80219F00.tick >= 9) {
             D_80219F00.arg_10 =
-                (void *)func_000453e0((u16)D_80219F00.selected_id);
+                func_000453e0((u16)D_80219F00.selected_id);
             D_80219F00.prompt_code = 0x57;
             D_80219F00.prompt_variant = 2;
             D_80219D24 = 11;

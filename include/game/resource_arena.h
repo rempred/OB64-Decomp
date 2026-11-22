@@ -38,4 +38,6 @@ extern void *resource_alloc_tree_scan(u32 requested);
 /* Resident address spelling used by existing callers. */
 extern void *func_80071C04(u32 requested);
 
+extern void resource_arena_init(void *start, u32 size);
+
 #endif
