@@ -45,15 +45,20 @@ typedef struct BattleUnit {
     u8 unk98[0x60];
 } BattleUnit;
 s32 D_801C8D84(BattleUnit *u);
-u8 D_8016F580(u16 id);
+s32 D_8016F580(s32 id);
 s32 func_0023466C(BattleUnit *a, BattleUnit *b) {
     s32 r = 0;
     if (D_801C8D84(b)) {
         if (a->cls == 20) {
             r = 5;
-        } else if ((D_8016F580(a->items[0]) | D_8016F580(a->items[1]) | D_8016F580(a->items[2]) |
-                    D_8016F580(a->items[3])) & 1) {
-            r = 5;
+        } else {
+            u8 first = D_8016F580(a->items[0]);
+            u8 second = D_8016F580(a->items[1]);
+            u8 third = D_8016F580(a->items[2]);
+            u8 fourth = D_8016F580(a->items[3]);
+            if ((first | second | third | fourth) & 1) {
+                r = 5;
+            }
         }
     }
     return r;

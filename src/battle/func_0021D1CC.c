@@ -1,4 +1,4 @@
-extern void func_801D98F4(int, int, int, int, int, int, int, int, int);
+extern void func_801D98F4(int, int, void *, int, int, int, int, int, int);
 
 void func_0021D1CC(int arg0, int arg1)
 {

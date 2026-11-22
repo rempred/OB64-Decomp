@@ -25,7 +25,7 @@ void func_0021D200(s32, s32, void *);
 void func_0021D230(s32, s32, void *, s32);
 void func_0021D25C(s32, s32, void *, s32, s32);
 void func_0021D28C(s32, s32, void *, s32, s32, s32);
-void func_0021D2C0(s32, s32, s32, s32, s32, s32, s32);
+void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
 s32 func_0022222C(void *, void *, s32, s32);
 s32 func_002223E0(void *, void *, s32, s32, s32, s32);
 s32 func_0022A4E0(void *);

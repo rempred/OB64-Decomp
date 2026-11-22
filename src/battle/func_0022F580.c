@@ -121,7 +121,7 @@ extern int func_0020C1B4(ResolutionObject *);
 extern void *func_0020C478(unsigned int index);
 extern int func_0020D434(int);
 extern int func_0020D4C8(ResolutionObject *, int);
-extern int func_0020D72C(ResolutionObject *);
+extern int func_0020D72C(void *);
 extern ResolutionObject *func_0020D770(int, int);
 extern int func_0020D814(ResolutionObject *);
 extern int func_0020F8DC(void);
@@ -131,10 +131,10 @@ extern u8 func_00201798(int, int, int, int);
 extern int func_00044130(int, int, int);
 extern void func_001F0E64(void *, int);
 extern int func_001F197C(ResolutionObject *, void *, int *);
-extern void func_0021D200(int, int, ResolutionObject *);
+extern void func_0021D200(int, int, void *);
 extern void func_0021D230(int, int, void *, int);
-extern void func_0021D2C0(int, int, ResolutionObject *, int, u32, u32, u32);
-extern void func_0021D334(int, int, ResolutionObject *, int, int, int, int, int, int);
+extern void func_0021D2C0(int, int, void *, int, int, int, int);
+extern void func_0021D334(int, int, void *, int, int, int, int, int, int);
 extern void func_0022A7B8(ResolutionObject *, int, int, int, int, int);
 extern void func_0022B06C(ResolutionObject *, u8 *);
 extern void func_0022EF50(ResolutionObject *);
@@ -670,7 +670,7 @@ int func_0022F580(ResolutionObject **input, int *outTime)
     local.tail.fields.flags[outputCount] = -1;
     local.tail.fields.ids[outputCount] = -1;
     func_0021D2C0(0x16, time + local.tail.words[0], 0, rawResult,
-        (u32)local.tail.fields.selectedIds, (u32)local.tail.fields.ids, (u32)local.tail.fields.flags);
+        (int)local.tail.fields.selectedIds, (int)local.tail.fields.ids, (int)local.tail.fields.flags);
     if (maximum < time + local.tail.words[0])
         maximum = time + local.tail.words[0];
     for (i = 0; i < selectedCount; ++i) {

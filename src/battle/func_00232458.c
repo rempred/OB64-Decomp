@@ -76,11 +76,11 @@ extern int func_002365BC(DispatchObject *, DispatchObject *, int, int);
 extern int func_002379AC(int, DispatchObject *);
 extern void func_0022A7B8(DispatchObject *, int, int, int, int, int);
 extern int func_00237AF8(DispatchObject *, int);
-extern void func_0021D334(int, int, DispatchObject *, int, int, int, int, int, int);
+extern void func_0021D334(int, int, void *, int, int, int, int, int, int);
 extern void func_0023422C(DispatchObject *, int);
 extern void func_0022B06C(DispatchObject *, u8 *);
-extern int func_0020D72C(DispatchObject *);
-extern void func_0021D2C0(int, int, int, int, int *, int *, int *);
+extern int func_0020D72C(void *);
+extern void func_0021D2C0(int, int, void *, int, int, int, int);
 extern void func_0021D230(int, int, void *, int);
 
 int func_00232458(u8 *input, int *outTime)
@@ -312,7 +312,8 @@ int func_00232458(u8 *input, int *outTime)
     }
     lists.flags[i] = -1;
     lists.ids[i] = -1;
-    func_0021D2C0(0x16, time, 0, input[1], lists.single, lists.ids, lists.flags);
+    func_0021D2C0(0x16, time, 0, input[1],
+        (int)lists.single, (int)lists.ids, (int)lists.flags);
     func_0021D230(0x3E, time, scanObject, 8);
     /* This final maximum update is otherwise dead. KMC late jump cleanup
        leaves its spill reload in the retail code; it does not set outTime. */

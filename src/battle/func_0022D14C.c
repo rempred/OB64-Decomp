@@ -36,12 +36,12 @@ s32 func_0020D4C8(void *, u32);
 s32 func_0020D6F8(void *, void *);
 s32 func_0020D72C(void *);
 void *func_0020D770(s32, s32);
-void func_0021D200(s32, s32, s32);
+void func_0021D200(s32, s32, void *);
 void func_0021D230(s32, s32, void *, s32);
-void func_0021D25C(s32, s32, s32, s32, s32);
-void func_0021D28C(s32, s32, s32, s32, s32, s32);
-void func_0021D2C0(s32, s32, s32, s32, s32, s32, s32);
-void func_0021D334(s32, s32, s32, s32, s32, s32, s32, s32, s32);
+void func_0021D25C(s32, s32, void *, s32, s32);
+void func_0021D28C(s32, s32, void *, s32, s32, s32);
+void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
+void func_0021D334(s32, s32, void *, s32, s32, s32, s32, s32, s32);
 void func_0021D7CC(void *);
 s32 func_00222190(void *, s32, s32, s32, s32);
 s32 func_00222344(void *, s32, s32, s32, s32);
@@ -280,7 +280,7 @@ s32 func_0022D14C(void *arg0, s32 *arg1) {
                     ? (u32)var_v1_171 : emptyGlobalBound;
             }
             (*(s32 *)((s8 *)(arg0) + (0x94))) = (s32) var_a1_182;
-            func_0021D200(0x1C, (s32) var_a1_182, (s32)(arg0));
+            func_0021D200(0x1C, (s32) var_a1_182, arg0);
             (*(s32 *)((s8 *)(arg0) + (0x6C))) = (s32) ((*(s32 *)((s8 *)(arg0) + (0x6C))) + 1);
             *sp15C = (*(s32 *)((s8 *)(arg0) + (0x94)));
             return 0;
@@ -408,7 +408,7 @@ block_65:
             ? (u32)var_v1_457 : globalBound;
     }
     (*(s32 *)((s8 *)(arg0) + (0x94))) = (s32) var_a1_468;
-    func_0021D200(0x1C, (s32) var_a1_468, (s32)(arg0));
+    func_0021D200(0x1C, (s32) var_a1_468, arg0);
     sp16C = (*(s32 *)((s8 *)(arg0) + (0x94)));
     sp174 = sp16C;
     (*(s32 *)((s8 *)(arg0) + (0x6C))) = (s32) ((*(s32 *)((s8 *)(arg0) + (0x6C))) + 1);
@@ -427,22 +427,22 @@ block_65:
             temp_a2_513 = func_0020D434((*(s32 *)((s8 *)(arg0) + (0x58)))) & 0xFF;
             sp174 = type5SumValue;
             temp_s0_523 = func_00044130((*(u8 *)((s8 *)(arg0) + (0x4B))), (*(u8 *)((s8 *)(arg0) + (0x4F))), temp_a2_513);
-            func_0021D28C(4, sp16C, (s32)(arg0), 0xFF, prefix.packet.words[4], (s32) temp_s0_504);
-            func_0021D25C(5, sp174 - sp18C, (s32)(arg0), 0xFF, 6);
-            func_0021D2C0(0xB, sp174, (s32)(arg0), 0xFF, temp_s0_523 & 0xFF, sp164, sp1B7);
+            func_0021D28C(4, sp16C, arg0, 0xFF, prefix.packet.words[4], (s32) temp_s0_504);
+            func_0021D25C(5, sp174 - sp18C, arg0, 0xFF, 6);
+            func_0021D2C0(0xB, sp174, arg0, 0xFF, temp_s0_523 & 0xFF, sp164, sp1B7);
             goto event_b_done;
         }
         normalEmitCode = func_00044130((*(u8 *)((s8 *)(arg0) + (0x4B))), (*(u8 *)((s8 *)(arg0) + (0x4F))), func_0020D434((*(s32 *)((s8 *)(arg0) + (0x58)))) & 0xFF) & 0xFF;
         emitExtra = sp1B7;
-        func_0021D2C0(0xB, sp16C, (s32)(arg0), 0xFF, normalEmitCode, sp164, emitExtra);
+        func_0021D2C0(0xB, sp16C, arg0, 0xFF, normalEmitCode, sp164, emitExtra);
         if ((*(s32 *)((s8 *)(arg0) + (0x48))) == 0x87) {
-            func_0021D2C0(0xB, sp16C, (s32)(arg0 + 0xF8), 0xFF, normalEmitCode, sp164, emitExtra);
+            func_0021D2C0(0xB, sp16C, (u8 *)arg0 + 0xF8, 0xFF, normalEmitCode, sp164, emitExtra);
         }
     } else {
         emitCode = func_00044130((*(u8 *)((s8 *)(arg0) + (0x4B))), (*(u8 *)((s8 *)(arg0) + (0x4F))), func_0020D434((*(s32 *)((s8 *)(arg0) + (0x58)))) & 0xFF) & 0xFF;
-        func_0021D2C0(0xB, sp16C, (s32)(arg0), 0, emitCode, sp164, 0);
+        func_0021D2C0(0xB, sp16C, arg0, 0, emitCode, sp164, 0);
         if ((*(s32 *)((s8 *)(arg0) + (0x48))) == 0x87) {
-            func_0021D2C0(0xB, sp16C, (s32)(arg0 + 0xF8), 0, emitCode, sp164, 0);
+            func_0021D2C0(0xB, sp16C, (u8 *)arg0 + 0xF8, 0, emitCode, sp164, 0);
         }
     }
 event_b_done:
@@ -652,13 +652,13 @@ event_b_done:
                                 }
                             }
                             if ((sp1E4 != 0) && (func_0020C2C0(var_s3_51) == 0) && (func_0020C32C(var_s3_51) == 0)) {
-                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 0xD, (s32) sp1BC >> 8, (s32) ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), (s32) ((u8)sp1E4));
+                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xD, (s32) sp1BC >> 8, (s32) ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), (s32) ((u8)sp1E4));
                                 func_0023422C(var_s3_51, sp1E4);
                             } else {
                                 if (var_s1_844 != 0) {
                                     func_0022B06C(var_s3_51, &coords.value);
                                 }
-                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 0, (s32)sp1BC >> 8, ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
+                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0, (s32)sp1BC >> 8, ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
                             }
                             (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
                         } else {
@@ -670,7 +670,7 @@ event_b_done:
                             if ((s32) sp1BC >= 0x2710) {
                                 sp1BC = 0x270F;
                             }
-                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 1, (s32) sp1BC >> 8, (s32) ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
+                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 1, (s32) sp1BC >> 8, (s32) ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
                             func_0022A7B8(var_s3_51, 0, temp_s7_700 + prefix.buffer[0], sp1BC, sp1F4, 0);
                             (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
                         }
@@ -685,7 +685,7 @@ event_b_done:
                     } else if (prefix.packet.bytes[1] == 2) {
                         (*(u16 *)((s8 *)(var_s3_51) + (0x20))) = (u16) ((*(u16 *)((s8 *)(var_s3_51) + (0x20))) + func_0020D4C8(var_s3_51, sp1BC));
                         func_0022B06C(var_s3_51, &coords.value);
-                        func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 2, (s32)sp1BC >> 8, ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
+                        func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 2, (s32)sp1BC >> 8, ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
                         (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
                         goto mode_done;
 
@@ -695,16 +695,16 @@ event_b_done:
                             if (var_s1_844 != 0) {
                                 func_0022B06C(var_s3_51, &coords.value);
                             }
-                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 3, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
+                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 3, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
                         } else if ((func_0020C32C(var_s3_51) != 0) || (func_0020C2F4(var_s3_51) != 0) || (func_0020C310(var_s3_51) != 0)) {
                             /* Retain the real buffer copy before reusing the scalar
                              * for argument nine; this preserves local allocation. */
                             s32 mode8Extra = prefix.buffer[0];
                             s32 mode8Buffer = mode8Extra;
                             mode8Extra = 0xD;
-                            func_0021D334(0x1F, temp_s7_700 + mode8Buffer, (s32)(var_s3_51), 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), mode8Extra);
+                            func_0021D334(0x1F, temp_s7_700 + mode8Buffer, var_s3_51, 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), mode8Extra);
                         } else {
-                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
+                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
                         }
                         (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
                         goto mode_done;
@@ -716,15 +716,15 @@ event_b_done:
                             if (var_s1_844 != 0) {
                                 func_0022B06C(var_s3_51, &coords.value);
                             }
-                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 7, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
+                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 7, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
                         } else if ((func_0020C32C(var_s3_51) != 0) || (func_0020C2F4(var_s3_51) != 0) || (func_0020C310(var_s3_51) != 0)) {
                             /* Same real buffer/extra phases as the mode8 arm. */
                             s32 mode10Extra = prefix.buffer[0];
                             s32 mode10Buffer = mode10Extra;
                             mode10Extra = 0xD;
-                            func_0021D334(0x1F, temp_s7_700 + mode10Buffer, (s32)(var_s3_51), 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), mode10Extra);
+                            func_0021D334(0x1F, temp_s7_700 + mode10Buffer, var_s3_51, 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), mode10Extra);
                         } else {
-                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
+                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
                         }
                         (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
                         goto mode_done;
@@ -735,13 +735,13 @@ event_b_done:
                             if (var_s1_844 != 0) {
                                 func_0022B06C(var_s3_51, &coords.value);
                             }
-                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 4, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
+                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 4, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
                         } else if ((func_0020C32C(var_s3_51) != 0) || (func_0020C2F4(var_s3_51) != 0) || (func_0020C310(var_s3_51) != 0)) {
-                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0xD);
+                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0xD);
                         } else {
                             /* Keep each default call in its real mode arm. Sharing the call
                              * in C changes later scratch-register choices in GCC 2.7.2. */
-                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
+                            func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
 
                         }
                         (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
@@ -752,14 +752,14 @@ event_b_done:
                             temp_v0_1409 = func_00237AF8(var_s3_51, 0);
                             sp1E4 = temp_v0_1409;
                             if (temp_v0_1409 != 0) {
-                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 0xE, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), (s32) ((u8)sp1E4));
+                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xE, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), (s32) ((u8)sp1E4));
                                 func_0023422C(var_s3_51, sp1E4);
                             } else {
                                 (*(s32 *)((s8 *)(var_s3_51) + (0x40))) = (s32) ((*(s32 *)((s8 *)(var_s3_51) + (0x40))) | 2);
                                 if (var_s1_844 != 0) {
                                     func_0022B06C(var_s3_51, &coords.value);
                                 }
-                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 0xB, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
+                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xB, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
                             }
                             (*(s32 *)((s8 *)(var_s3_51) + (0x94))) = (s32) (temp_s7_700 + prefix.buffer[0]);
                             temp_v0_1467 = func_002224F4();
@@ -778,9 +778,9 @@ loop_241:
                             }
                         } else {
                             if ((func_0020C32C(var_s3_51) != 0) || (func_0020C2F4(var_s3_51) != 0) || (func_0020C310(var_s3_51) != 0)) {
-                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0xD);
+                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0xD);
                             } else {
-                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], (s32)(var_s3_51), 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
+                                func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
 
                             }
                         (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
@@ -807,12 +807,12 @@ mode_done:;
             temp_v0_1568 = func_00237750(arg0, var_s3_51, 1, sp1BC, 0);
             sp1BC = temp_v0_1568;
             temp_s0_1586 = sp16C + sp184;
-            func_0021D334(0x1F, temp_s0_1586 + prefix.buffer[0], (s32)(arg0), 0, temp_v0_1568 >> 8, (s32) ((u8)sp1BC), (s32) sp1C7, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
+            func_0021D334(0x1F, temp_s0_1586 + prefix.buffer[0], arg0, 0, temp_v0_1568 >> 8, (s32) ((u8)sp1BC), (s32) sp1C7, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
             func_0022A7B8(arg0, 0, temp_s0_1586 + prefix.buffer[0], (u32) sp1BC, (s32) sp1C7, 0);
         } else if (prefix.packet.bytes[5] == 2) {
             temp_v0_1607 = func_00237750(arg0, var_s3_51, 1, (u32) sp1BC, 0);
             sp1BC = temp_v0_1607;
-            func_0021D334(0x1F, sp16C + sp184 + prefix.buffer[0], (s32)(arg0), 2, temp_v0_1607 >> 8, (s32) ((u8)sp1BC), (s32) sp1C7, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
+            func_0021D334(0x1F, sp16C + sp184 + prefix.buffer[0], arg0, 2, temp_v0_1607 >> 8, (s32) ((u8)sp1BC), (s32) sp1C7, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
             (*(u16 *)((s8 *)(arg0) + (0x20))) = (u16) ((*(u16 *)((s8 *)(arg0) + (0x20))) + func_0020D4C8(arg0, (u32) sp1BC));
         }
     }
@@ -844,7 +844,7 @@ output_copy:
     func_0021D2C0(0x16, temp_s0_1700 + prefix.buffer[0], 0, sp164, (s32) &pair[0], (s32) &ids[0], (s32)&effects[0]);
     if ((func_0020BFE4() != 0) && ((*(u8 *)((s8 *)(arg0) + (0x78))) == 5) && (func_0020C24C(arg0) == 0)) {
         sp194 = func_00222344(arg0, sp19C, sp1A4, (*(s32 *)((s8 *)(arg0) + (0x5C))), (*(s32 *)((s8 *)(arg0) + (0x64))));
-        func_0021D28C(0xA, temp_s0_1700 + sp17C, (s32)(arg0), 0xFF, 0xB, sp194);
+        func_0021D28C(0xA, temp_s0_1700 + sp17C, arg0, 0xFF, 0xB, sp194);
         sp194 += func_0022257C( (void *)((*(s32 *)((s8 *)(arg0) + (0))) + 0x44), 0xCU, 0);
     }
     temp_v1_1746 = sp16C + sp184 + prefix.buffer[0];

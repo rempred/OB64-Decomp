@@ -2,7 +2,7 @@ typedef signed char s8;
 typedef unsigned char u8;
 typedef unsigned short u16;
 
-u8 func_000454e0(int value);
+int func_000454e0(int value);
 int func_00045934(int value0, int value1, int value2, u16 value3);
 int func_00045a50(int value0, int value1, int value2, u16 value3);
 

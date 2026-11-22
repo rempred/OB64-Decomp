@@ -4,21 +4,23 @@ typedef signed int s32;
 typedef unsigned int u32;
 
 extern void func_00093540(void *, ...);
-extern s32 func_001CA29C(s32);
+extern s32 func_001CA29C(void *);
 extern void func_001CD01C(void *, void *, s32);
 extern u32 func_801D96A0(u32);
 extern u8 * volatile D_801CE8C0;
 extern u8 D_801E6AE0[];
 extern u8 D_801E6B08[];
 
+/* Command 0x16 reads three list addresses from payload words 5 through 7.
+ * Other commands may serialize the low byte of those same words. */
 void func_0021CBC4(
     s32 arg0,
     s32 arg1,
-    s32 arg2,
+    void *arg2,
     s32 arg3,
-    s32 *arg4,
-    s32 *arg5,
-    s32 *arg6,
+    s32 arg4,
+    s32 arg5,
+    s32 arg6,
     s32 arg7,
     s32 arg8)
 {
@@ -98,16 +100,16 @@ void func_0021CBC4(
 
 type_16_size:
     var_s3_29 = 5;
-    var_a0_38 = arg4 + 1;
-    if (*arg4 != -1) {
+    var_a0_38 = (s32 *)arg4 + 1;
+    if (*(s32 *)arg4 != -1) {
         do {
             var_s3_29 += 1;
         } while (*var_a0_38++ != -1);
     }
     var_s3_29 += 1;
     var_a1_48 = 0;
-    var_a0_38 = arg5 + 1;
-    if (*arg5 != -1) {
+    var_a0_38 = (s32 *)arg5 + 1;
+    if (*(s32 *)arg5 != -1) {
         do {
             var_a1_48 += 1;
         } while (*var_a0_38++ != -1);
@@ -173,15 +175,15 @@ check_cursor:
     case 0x16:
         temp_s1_23[var_s0_73++] = var_s3_29 - 4;
         temp_s1_23[var_s0_73++] = arg3;
-        var_a0_178 = arg4;
-        if (*arg4 != -1) {
+        var_a0_178 = (s32 *)arg4;
+        if (*(s32 *)arg4 != -1) {
             do {
                 temp_s1_23[var_s0_73++] = *var_a0_178;
                 var_a0_178 += 1;
             } while (*var_a0_178 != -1);
         }
         temp_s1_23[var_s0_73++] = 0xFF;
-        var_a0_194 = arg5;
+        var_a0_194 = (s32 *)arg5;
         var_a1_201 = 0;
         if (*var_a0_194 != -1) {
             do {
@@ -192,7 +194,7 @@ check_cursor:
             } while (*var_a0_194 != -1);
         }
         temp_s1_23[var_s0_73++] = 0xFF;
-        var_a0_218 = arg6;
+        var_a0_218 = (s32 *)arg6;
         if (var_a1_201-- != 0) {
             var_v1_222 = (u8 *)((s32)var_s0_73 - -(u32)temp_s1_23);
             do {

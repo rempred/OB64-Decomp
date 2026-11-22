@@ -16,7 +16,7 @@ typedef struct {
     u8 unk5C[0x14];
     s32 actsMax;
 } BattleUnit;
-s32 func_00195410_helper(u16 id);
+u8 func_00195410_helper(s32 id);
 s32 func_0020C3B4(BattleUnit *u) {
     s32 r;
     if ((u8)(func_00195410_helper(u->items[0]) - 14) < 2) {

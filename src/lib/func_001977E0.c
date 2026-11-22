@@ -130,7 +130,7 @@ extern u8 func_802189BC(u8 category);
 extern u32 func_0019BD14(void);
 extern u8 func_0019B26C(u16 selected, u8 mode);
 extern s32 func_000453e0(u16 value);
-extern s32 func_000454b0(u16 value);
+extern signed char *func_000454b0(s32 value);
 extern void func_0019BAE4(u8 quantity, void *payload);
 extern void func_0019B710(u8 *quantity, u8 value);
 extern void func_0019B4C4(u16 selected, u8 quantity, s32 consumable);
@@ -411,7 +411,7 @@ u8 func_001977E0(void)
                     (void *)func_000453e0((u16)D_80219F00.selected_id);
             } else {
                 D_80219F00.arg_10 =
-                    (void *)func_000454b0((u16)D_80219F00.selected_id);
+                    func_000454b0((u16)D_80219F00.selected_id);
             }
             func_0019BAE4(D_8021A123 & 0x7F,
                             D_80219F00.payload_18);

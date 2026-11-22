@@ -45,8 +45,8 @@ typedef struct BattleUnit {
     u8 unk98[0x60];
 } BattleUnit;
 u16 D_801C8FB8(BattleUnit *u);
-u8 D_8016F580(u16 id);
-u8 D_8016F598(u16 id);
+s32 D_8016F580(s32 id);
+u8 D_8016F598(s32 id);
 s32 D_801CD19C(s32 a, s32 cls, s32 flag);
 u8 func_00237890(BattleUnit *a, BattleUnit *b) {
     u8 inflict;
@@ -55,7 +55,7 @@ u8 func_00237890(BattleUnit *a, BattleUnit *b) {
     inflict = 0;
     protect = 0;
     if (id != 0) {
-        inflict = D_8016F580(id);
+        inflict = D_8016F580((u16)id);
     }
     if (b->items[0] != 0) {
         protect = D_8016F598(b->items[0]);

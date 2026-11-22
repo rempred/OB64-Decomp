@@ -51,7 +51,7 @@ s32 D_801C8D24(BattleUnit *u);
 s32 D_801C8E30(BattleUnit *u);
 void *D_801C8FE8(unsigned int index);
 s32 D_801CA038(BattleUnit *u, s32 amount);
-s32 D_801CA29C(BattleUnit *u);
+s32 D_801CA29C(void *u);
 s32 func_002340EC(BattleUnit *self) {
     s32 selfIdx = D_801CA29C(self);
     s32 best = -1;

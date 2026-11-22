@@ -36,7 +36,7 @@ extern u8 func_00043b2c(int, int);
 extern int func_00237750(SideObject *, SideObject *, int, int, int);
 extern int func_002331AC(const void *, const void *);
 extern void func_002101DC(void *, int, int, int (*)(const void *, const void *));
-extern void func_0021D2C0(int, int, SideObject *, int, int, int, int);
+extern void func_0021D2C0(int, int, void *, int, int, int, int);
 extern void func_0021D230(int, int, void *, int);
 extern int func_002344B4(SideObject *, int);
 extern void func_0022ADFC(SideObject *, int, int, int, int, u8, int, int);

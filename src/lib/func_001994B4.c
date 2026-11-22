@@ -17,8 +17,9 @@ extern u8 *D_801F36C0, *D_801F0B90;
 extern u8 D_80210258[], D_80210298[], D_802102B8[], D_80212948[], D_802129D0[];
 extern u8 func_0019B21C(u8 category);
 extern u8 func_8016F500(u32 item), func_8016F540(u32 item);
-extern u8 func_8016F5C8(u32 item), func_8016F5E0(u32 item);
-extern u32 func_8016F580(u32 item), func_8016F598(u32 item);
+extern u8 func_8016F5C8(s32 item);
+extern s32 func_8016F580(s32 item), func_8016F5E0(s32 item);
+extern u8 func_8016F598(s32 item);
 extern s32 func_8017B58C(void *text);
 extern void func_8017C4B4(s32 value);
 extern void func_80179034(void *text, s32 x, s32 y);
@@ -299,7 +300,7 @@ void func_001994B4(Panel *panel, s32 slot)
             buffer[0] = 14;
             func_8009C550(tail, D_80219BF8);
             func_8009C620(buffer, D_80219DB0);
-            func_8009C620(buffer, D_80187BD4[func_8016F5E0(argument_item)]);
+            func_8009C620(buffer, D_80187BD4[(u8)func_8016F5E0(argument_item)]);
             length = func_80093460(buffer);
             buffer[length] = 15;
             tail[length] = 0;
@@ -353,7 +354,7 @@ void func_001994B4(Panel *panel, s32 slot)
             func_80179034(buffer, x + 8, y + 29);
         } else {
             func_80179034(D_80219BF8, x + 4, y + 16);
-            func_80179034(D_80187BD4[func_8016F5E0(argument_item)], x + 32, y + 29);
+            func_80179034(D_80187BD4[(u8)func_8016F5E0(argument_item)], x + 32, y + 29);
         }
     }
     func_802027DC();

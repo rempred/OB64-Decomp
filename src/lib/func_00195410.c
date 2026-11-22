@@ -24,15 +24,15 @@ typedef struct Func00195410ClassRecord {
 } Func00195410ClassRecord;
 
 extern Func00195410ClassRecord g_func_0019554C_class_records[];
-extern int func_00195410_helper(u16 value);
+extern u8 func_00195410_helper(int value);
 
 void func_00195410(u16 value, Func00195410Record *record)
 {
-    int initial_result;
+    u8 initial_result;
     u8 class_id;
     Func00195410ClassRecord *class_record;
 
-    initial_result = func_00195410_helper(value);
+    initial_result = func_00195410_helper((u16)value);
     class_id = record->field_11;
     if (g_func_0019554C_class_records[class_id].field_45 != 0) {
         class_record = &g_func_0019554C_class_records[record->field_12];

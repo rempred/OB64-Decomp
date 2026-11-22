@@ -34,7 +34,7 @@ extern void func_80204050(s32 value);
 extern void func_8017A704(void);
 extern void func_8017A714(void);
 extern void *func_8016F4E0(u32 item);
-extern void *func_8016F5B0(u32 item);
+extern signed char *func_8016F5B0(s32 item);
 extern void func_80179034(void *text, s32 x, s32 y);
 extern void func_801818A0(s32 x, s32 y);
 extern void func_8020E0F0(s32 x, s32 y, u32 value, s32 digits);

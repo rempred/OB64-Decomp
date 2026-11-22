@@ -23,7 +23,7 @@ extern u16 func_8016DF88(u8 first, u8 second);
 extern u16 func_8016DFDC(u8 first, u8 second);
 extern u16 func_8016E030(u8 first, u8 second);
 extern u16 func_8016E084(u8 first, u8 second);
-extern u8 func_8016F5C8(u16 value);
+extern u8 func_8016F5C8(s32 value);
 extern void func_8016F11C(LinkRecord *record, u8 value);
 extern void func_000FC120(s32 first, u8 index);
 extern u8 func_8016DE70(u8 first, u8 second);
@@ -49,7 +49,7 @@ void func_0023A3A0(u8 *record, u32 kind, s32 value,
     ((LinkRecord *)record)->field_30 = func_8016E084(kind, related);
 
     if (field_a != 0) {
-        category = func_8016F5C8(field_a);
+        category = func_8016F5C8((u16)field_a);
         if (func_8016F5C8(((LinkRecord *)record)->field_2A) == category) {
             ((LinkRecord *)record)->field_2A = field_a;
         }
@@ -64,7 +64,7 @@ void func_0023A3A0(u8 *record, u32 kind, s32 value,
         }
     }
     if (field_b != 0) {
-        category = func_8016F5C8(field_b);
+        category = func_8016F5C8((u16)field_b);
         if (func_8016F5C8(((LinkRecord *)record)->field_2A) == category) {
             ((LinkRecord *)record)->field_2A = field_b;
         }
