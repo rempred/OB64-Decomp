@@ -222,6 +222,20 @@ The sprite lead also owns the complete panel initializer `func_0028ad2c`, shop d
 
 The pre-NMI path in the event provider passes the registered queue to `osSendMesg`. Check its declaration against the provider's `struct MessageQueue *` parameter. The separate VI setting at ROM `0x241A0` still has two scheduler findings for the ranked backlog.
 
+[Round 11 passed canonical verification](https://github.com/rempred/OB64-Decomp/commit/811c283da57b89c682fa63cfdaed6d9f29f4f968). Its 47 assigned findings cleared, all 2,650 target contracts passed and the rebuilt ROM matched retail byte-for-byte. The menu cursor's existing halfword interface and an alternative with explicit narrowing both reproduced the two tested owners. The accepted change keeps the existing provider interface. The two VI scheduler findings remain in the census.
+
+## Round 12
+
+The accepted Round 11 census has 1,032 definite findings across 266 linked entries. The three assignments below cover 42 distinct findings in 20 complete source files. Two entries tied at 13. The class comparison comes first by linked section order.
+
+| Source lead | Provider | Findings | Complete files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Battle record bit test | `func_0020C014` | 15 | 5 | Trace a null record and both states of bit 8 in the word at offset `0x40`. Compare the result tested in `0021840C` with the result forwarded by `001F2F9C`. |
+| Script record lookup | `func_001BBFFC` | 14 | 8 | Trace the script operand in descriptor 18 through the full-word index calculation, the `0x76`-byte record stride and the first access through the returned pointer. |
+| Class comparison | `func_00045e5c` | 13 | 7 | Compare the return consumed by the equality check in `00048928` with the two branches in `002ABB3C`. Check byte normalization at the input and result independently. |
+
+The battle lead also inspects 33 additional caller files for compatible declarations, inline definitions and address aliases. Establish the active overlay before attributing a raw address to the provider. The script-record lead checks the table symbol against storage used by the script consumers. The class lead checks the `D_8016FF5C` call in `00239AA4` and the code that consumes its return.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
