@@ -272,6 +272,18 @@ The item-pose lead kept the provider's unsigned-byte result and unsigned-halfwor
 
 The memory-fill lead also owns `func_00042800`. Its unparsed source contains a linked fill of 726 bytes at ROM `0x428DC`. Move the existing `func_00042a08` declaration before its first use and check which findings and coverage become visible. The record-lookup lead also owns `func_00215CF0`. It forwards the full returned address to the resident formatted-print function for the same-slab format `%s cannot be used.` The linked C provider defines `int sprintf(char *, const char *, ...)`. Its two fixed parameters use plain `char`. The formatter separately reads the variadic string pointer for `%s`. Two existing findings in this battle caller cover the parameter count and call signature, bringing the assignment to 34 findings in 16 translation units. The integrator also checks all 22 source files that consume the revised arena header, including the existing hybrid target.
 
+## Round 15
+
+[Round 14 acceptance](https://github.com/rempred/OB64-Decomp/commit/95ea2d85f8da7f185f541889bc076441dc21afef) cleared all 34 assigned findings and reproduced the complete retail ROM. Its canonical report has 906 remaining findings across 255 linked entries. Eight providers tie for first at ten findings each. The assignments cover all 80 findings across 18 distinct source files.
+
+| Source lead | Provider scope | Assigned findings | Assigned files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Record name selection | `func_00041c20` and the shared class callers | 42 | 5 | Follow mode and index into the 52-byte and 56-byte record arrays. Check the retry loop and the caller’s use of the register left by the final string copy. |
+| Related class fields | `00043e88`, `00043edc`, `00043f30`, `00043f84`, `000440dc`, `00044238` | 28 | 10 | Compare a related-class match with a fallback at real callers. Check each field width, the returned pointer and the third selector’s sentinel handling. |
+| Combat pose metadata | `func_002050AC` | 10 | 3 | Trace a selected variable-length record through its byte outputs and return to a real caller. Check all five functions in the metadata source and its final alignment. |
+
+The record-name lead owns `func_0023a3a0.c` and `func_00249290.c` throughout the round. Those two files account for 32 of the 60 findings at the six class providers. The class lead establishes their shared declarations, and the Director relays them to the record-name lead. The integrator checks the final declarations against both sets of complete sources.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
