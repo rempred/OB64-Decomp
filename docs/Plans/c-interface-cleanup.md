@@ -96,6 +96,18 @@ The resource decoder contains an inline header reader with two further findings 
 
 Seven further files share the battle callback table. Four descriptor-10 routines repeat its declaration. One of them, `func_0020BCE0`, sets the root to `&D_801CFC74`. Two other routines publish different tables, and `func_0020BD8C` reads the slot at +0x0C through the literal root address. The callback lead owns these complete sources and proposes the common declaration. The integrator checks both the original symbol bindings and the literal address. On two identified load paths, the callback at +0x10 consumes a second argument. Check those paths individually and preserve the other four slots. The heap initializer, getter and their two callers add four more files. The initializer and allocator access the fields of the same heap object that the getter returns. Use one compatible layout for these accesses and check the getter's declaration in its caller. Preserve how the audio configuration passes the object on. Round 5 now covers 47 distinct source files and 107 recorded findings.
 
+## Round 6
+
+[Round 5 acceptance](https://github.com/rempred/OB64-Decomp/commit/39f09624b0410b6e548607d6c58da94f8306b52f) cleared 107 findings with an exact retail ROM. The accepted scan has 1,613 findings across 298 linked function entries. The five largest counts are 31, 30, 28, 27 and 27. Three leads cover all five with disjoint ownership of 33 complete source files.
+
+| Source lead | Functions and findings against each | Owned findings | Assigned files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Equipment lookup | `func_00041638` (31), `func_000415fc` (28) | 59 | 16 | Trace the key into both equipment tables. Compare a caller that uses the returned index with one that checks the `0x1FF` miss value. Three shop files call both functions. |
+| Sound request dispatch | `func_00208DC8` (30), `func_0015DF10` (27) | 37 | 9 | Follow the match and default paths, check the argument that reaches each service and preserve the hybrid selector's jumps and delay slots. |
+| Battle callback at +0x08 | `func_0020BD5C` (27), plus sound calls in two shared files | 47 | 8 | Trace the function installed in the third callback slot in each supported load context. Compare callers with different argument and return declarations and preserve the verified +0x10 slot. |
+
+The battle lead owns the complete `func_00215CF0.c` and `func_0021B894.c`, including 20 findings against the sound services. The sound lead supplies the verified declaration through the Director so both interfaces can be corrected together. This assigns all 143 findings exactly once.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
