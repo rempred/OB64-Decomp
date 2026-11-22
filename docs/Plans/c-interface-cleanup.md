@@ -80,7 +80,7 @@ The header reader also calls the resident DMA routine `func_0001A380` at ROM `0x
 
 ### Battle dispatcher follow-up
 
-Trace the eight wrappers that feed `func_0021CBC4` before changing the dispatcher's definition. Its six calls through `func_001CA29C` reach the pointer-to-index lookup `func_0020D72C` on the identified descriptor-10 load path. The lookup compares its input with up to 20 record addresses. Its 27 named C calls span 13 files. Four absolute-address calls still need load-context evidence. Two table words at ROM `0xDC78C` and `0xDC790` have the address of the `func_0021D2F8` wrapper in a different loaded region. Establish what they select before attributing a dynamic caller. The Director owns scheduling this family against the remaining ranked work.
+Trace the eight wrappers that feed `func_0021CBC4` before changing the dispatcher's definition. Its six calls through `func_001CA29C` reach the pointer-to-index lookup `func_0020D72C` on the identified descriptor-10 load path. The lookup compares its input with up to 20 record addresses. Its 27 named C calls span 13 files. Four absolute-address calls still need load-context evidence. Round 7 resolved the two table words at ROM `0xDC78C` and `0xDC790`. The six-way switch in `func_000c6678` reads both entries from its own loaded region. Cases 1 and 2 branch to ROM `0xC6A88` inside the switch reader. The dispatcher wrapper `func_0021D2F8` occupies that address when a different region is loaded. [Round 7 assignment](#round-7)
 
 ## Round 5
 
@@ -121,7 +121,7 @@ The accepted Round 6 scan has 1,468 definite findings across 293 linked entries.
 | Source lead | Owned findings | Complete files | First comparison |
 | --- | ---: | ---: | --- |
 | Record table lookups | 75 | 21 | Compare calls to `func_000454c8` and `func_000454e0` in the shop. The five accessors share a 16-bit index and a 32-byte stride. Check the consumers of each return, including the word read in `func_000454b0` and the alternate byte used by `func_000454e0`. |
-| Battle dispatcher wrappers | 91 | 21 | Trace all eight wrappers into `func_0021CBC4` and its record-index call. At the wrappers, distinguish record pointers, output pointers, full-width masks and zero-filled argument slots. Preserve overlay uncertainty for unproved absolute calls and table entries. |
+| Battle dispatcher wrappers | 91 | 21 | Trace all eight wrappers into `func_0021CBC4` and its record-index call. At the wrappers, distinguish record pointers, output pointers, full-width masks and zero-filled argument slots. Preserve overlay uncertainty for unproved absolute calls. |
 | Battle coordinate result | 24 | 12 | The wrapper `func_001FF7EC` currently declares a void result. Battle callers convert a floating-point return to a coordinate word. Follow the result register from `func_001FF5EC` through the wrapper to those conversions, preserving its two coordinates and three forwarded globals. |
 
 The five record accessors account for 85 findings. Ten belong to the battle lead because `func_0022BFF8.c` and `func_0022C78C.c` also call the dispatcher wrappers. The record lead supplies the two supported declarations, and the battle lead makes both sets of edits to those complete files. The four disputed wrappers account for the other 81 battle findings. Together the three assignments cover 190 distinct findings. The record lead also owns the four wrapper declarations and the record-index declaration in its existing `func_00230A9C.c`. Its callers pass object pointers or null.
