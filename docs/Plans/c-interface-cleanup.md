@@ -136,7 +136,21 @@ The coordinate wrapper forwards the floating-point result from the original asse
 
 ### Resident string append follow-up
 
-The changed array index in `func_001994B4` sits inside an existing call to `func_8009C620`. That outer call still reaches the original assembly owner `strcat_0002ca20`. Its 80-byte section begins at ROM `0x2CA20`, VRAM `0x8009C620`, and its return delay slot copies the destination pointer into `v0`. The shop declares the parameters as two `void *` values. `func_00296754` declares a byte pointer and a pointer to const bytes. Both ignore the return value. The Director will assign the caller declarations with a subsequent interface group, including a census of other spellings and return uses. The boot C implementation of `strcat` has its own entry at ROM `0xF808`. Round 7 retains the outer call and its existing assembly-provider coverage limit.
+The changed array index in `func_001994B4` sits inside an existing call to `func_8009C620`. That outer call still reaches the original assembly owner `strcat_0002ca20`. Its 80-byte section begins at ROM `0x2CA20`, VRAM `0x8009C620`, and its return delay slot copies the destination pointer into `v0`. The shop declares the parameters as two `void *` values. `func_00296754` declares a byte pointer and a pointer to const bytes. Both ignore the return value. The Round 8 random-result lead owns both callers. The integrator checks other spellings and return uses. The boot C implementation of `strcat` has its own entry at ROM `0xF808`. Round 7 retains the outer call and its existing assembly-provider coverage limit.
+
+## Round 8
+
+[Round 7 acceptance](https://github.com/rempred/OB64-Decomp/commit/56f081e010a58e71300845b78c01f2b3fafb2a30) removed exactly 190 findings and left 1,278 across 283 linked entries. The full US Rev 0 ROM and linked ELF matched their accepted hashes. The three highest remaining entries account for 66 findings.
+
+| Source lead | Provider | Findings against provider | Complete files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Combat record selector | `func_001F0E64` | 23 | 6 | Follow the incoming selector through the low-byte sentinel test and the full-word zero test. Compare inputs 0 and 0x100 with the random-selection flag set. |
+| Five-value priority lookup | `func_00040f88` | 22 | 6 | Trace the fifth argument through its stack slot at the named caller and the `func_0016B088` alias. Check where a byte conversion affects the instructions. |
+| Random word result | `func_00022e60` | 21 | 6 | Trace the logical right shift into the returned word. Compare the signed remainder instructions used by actual callers under alternate declarations. |
+
+The selector lead owns the complete `func_0022B1F4`, `func_0022F580` and `func_00230A9C` sources, which also contain six of the random-result findings. This gives the three leads 29, 22 and 15 assigned finding IDs respectively. The random-result lead supplies the grounded declaration and any caller conversions needed in those three files. The existing `rand()` called by the combat selector is a separate provider.
+
+The random-result lead also checks both callers of the [resident string append routine](#resident-string-append-follow-up) in a separate packet. This adds two complete files to the opening scope. Their declaration difference first appeared in coverage review and adds no definite findings to the opening count.
 
 ## Matching and acceptance
 
