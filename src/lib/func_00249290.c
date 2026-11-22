@@ -1,4 +1,6 @@
 #include "common/types.h"
+#include "game/class_field_lookups.h"
+#include "game/record_name_selection.h"
 #include "game/class_entry.h"
 
 typedef struct LinkRecord56 {
@@ -36,14 +38,9 @@ extern u8 D_801936AC;
 extern LinkValueEntry D_80196B00[];
 extern void memset_00023780(void *destination, s32 size);
 extern u8 func_8016C048(void);
-extern u32 func_8016DF88(u8 first, u8 second);
-extern u32 func_8016DFDC(u8 first, u8 second);
-extern u32 func_8016E030(u8 first, u8 second);
-extern u32 func_8016E084(u8 first, u8 second);
 extern s32 func_8016B6FC(s32 value);
 extern void func_8016F11C(LinkRecord56 *record, u8 value);
 extern void func_801D4CC0(LinkRecord56 *record);
-extern void func_000FC120(s32 first, u8 index);
 extern void func_8016C0C8(u8 index);
 
 /* Each site has the same native inline update, including the bounded free-entry

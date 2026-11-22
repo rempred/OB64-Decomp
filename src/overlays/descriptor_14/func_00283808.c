@@ -8,7 +8,7 @@ typedef struct {
 } PChar282;
 extern EChar282 D_80195560_copy[];
 extern PChar282 D_80193BC0_copy[];
-extern void *D_8018EA00[];
+extern char *D_8018EA00[];
 void *func_00283808(s32 id) {
     s32 i;
     for (i = 0; i < 100; i++) {

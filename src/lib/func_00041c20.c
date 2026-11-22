@@ -1,3 +1,5 @@
+#include "game/record_name_selection.h"
+
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef signed int s32;
@@ -18,7 +20,7 @@ extern unsigned char *func_0002C950(unsigned char *destination, const unsigned c
 extern s32 func_0002C9E0(const char *first, const char *second);
 extern void *resource_free(void *resource);
 
-void func_00041c20(u8 mode, u8 record_index)
+void func_00041c20(s32 raw_mode, u8 record_index)
 {
     u8 *record;
     s32 code;
@@ -26,7 +28,7 @@ void func_00041c20(u8 mode, u8 record_index)
     u32 selector;
     u32 keys[3];
 
-    if (mode == 0) {
+    if ((u8)raw_mode == 0) {
         record = g_func_0019554C_records_56[record_index].bytes;
     } else {
         record = g_func_0019554C_records_52[record_index].bytes;
@@ -37,7 +39,7 @@ void func_00041c20(u8 mode, u8 record_index)
       attempts = 0x20;
       /* Keep the byte mode as a word outside the retry loop. KMC otherwise
        * leaves the mode-one constant inside the conditional second scan. */
-      selector = mode;
+      selector = (u8)raw_mode;
       do {
         u8 *decoded;
         u8 *chosen;

@@ -1,8 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed short s16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/class_field_lookups.h"
 typedef float f32;
 
 enum {
@@ -66,10 +62,6 @@ extern u8 D_8022F2CC;
 extern s32 func_0020C120(BodyUnit *unit);
 extern void *func_0002CD70(void *destination, s32 value, u32 count);
 extern void func_00023780(void *destination, u32 count);
-extern u16 func_00043e88(s32 classId, s32 variant);
-extern u16 func_00043edc(s32 classId, s32 variant);
-extern u16 func_00043f30(s32 classId, s32 variant);
-extern u16 func_00043f84(s32 classId, s32 variant);
 extern s32 func_00045934(s32 item0, s32 item1, s32 item2, s32 item3);
 extern void func_00207658(s32 *, s32 *, s32 *, s32 *, s32 *, u32 count);
 extern void func_8022E9E8(Actor *actor);

@@ -1,7 +1,8 @@
 typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
-u8 func_002050AC(u32 a, s32 w, s32 i, u8 *c, u8 *d1, u8 *d2);
+extern u32 func_002050AC(u32 handle, u32 directoryIndex, u32 selected,
+                         u8 *out0, u8 *out1, u8 *out2);
 void func_0020C6C4(u8 *t, s32 *prev, s32 *last) {
     u8 c;
     u8 d1;

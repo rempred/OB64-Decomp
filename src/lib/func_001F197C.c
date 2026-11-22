@@ -4,7 +4,8 @@ typedef signed char s8;
 typedef unsigned char u8;
 typedef short s16;
 
-extern int func_00204F34(int, int, int, int, int, int, u8 *, u8 *, u8 *);
+extern unsigned int func_00204F34(int, int, int, int, unsigned int, unsigned int,
+                                 u8 *, u8 *, u8 *);
 extern int func_0020BFF8(void *);
 extern int func_0020C034(void *);
 extern void *func_0002CD70(void *, int, unsigned int);

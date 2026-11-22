@@ -1,7 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/class_field_lookups.h"
 typedef struct BattleObj {
     u8 unk00[0x18];
     s32 unk18;
@@ -46,11 +43,6 @@ typedef struct BattleUnit {
 } BattleUnit;
 u8 D_801C9FA4(s32 a);
 int D_801C8B68(void *record);
-u16 D_8016DF88(u8 a, u8 cls);
-u16 D_8016DFDC(u8 a, u8 cls);
-u16 D_8016E030(u8 a, u8 cls);
-u16 D_8016E084(u8 a, u8 cls);
-u8 D_8016E338(u8 a, u8 cls, u8 c);
 s32 D_801C8BA4(BattleUnit *u);
 s32 D_801BE138(s32 a, s32 cls, s32 c, s32 d);
 void D_801E15E0(BattleUnit *u, s32 cls);
@@ -62,11 +54,11 @@ inline void func_0023422C(BattleUnit *u, s32 cls) {
         u->unk48 = cls;
     }
     u->cls = cls;
-    u->items[0] = D_8016DF88(u->unk48, cls);
-    u->items[1] = D_8016DFDC(u->unk48, cls);
-    u->items[2] = D_8016E030(u->unk48, cls);
-    u->items[3] = D_8016E084(u->unk48, cls);
-    u->actsMax = D_8016E338(u->unk48, u->cls, D_801C9FA4(u->unk58));
+    u->items[0] = D_8016DF88((u8)u->unk48, (u8)cls);
+    u->items[1] = D_8016DFDC((u8)u->unk48, (u8)cls);
+    u->items[2] = D_8016E030((u8)u->unk48, (u8)cls);
+    u->items[3] = D_8016E084((u8)u->unk48, (u8)cls);
+    u->actsMax = (u8)D_8016E338((u8)u->unk48, (u8)u->cls, D_801C9FA4(u->unk58));
     x = D_801C8B68(u);
     v = D_801BE138(u->unk48, cls, x, D_801C8BA4(u));
     o = u->obj;

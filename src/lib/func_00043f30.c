@@ -1,9 +1,8 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
+#include "game/class_field_lookups.h"
 
 #include "game/class_entry.h"
 
-u16 func_00043f30(int arg0, int arg1)
+u32 func_00043f30(s32 arg0, s32 arg1)
 {
     ClassEntry *classes;
     int primary_class;

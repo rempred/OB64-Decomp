@@ -1,4 +1,4 @@
-#include "game/combat_types.h"
+#include "game/class_field_lookups.h"
 
 typedef struct SupplementActor SupplementActor;
 typedef struct SupplementChild SupplementChild;
@@ -30,13 +30,8 @@ struct SupplementActor {
 struct Func001F0E64Record;
 extern void func_001F0E64(struct Func001F0E64Record *, u32);
 extern unsigned char func_0020D434(int);
-extern int func_00044238(int, int, int);
 extern float func_001BC35C(short, short);
 extern int func_002015C8(int, int, int, int);
-extern u16 func_00043e88(int, int);
-extern u16 func_00043edc(int, int);
-extern u16 func_00043f30(int, int);
-extern u16 func_00043f84(int, int);
 extern void func_0020C4B8(int, int, int, int *, int *);
 extern int func_0020D444(u16, u16);
 extern SupplementChild *func_0020F2A8(int, int, int, int);

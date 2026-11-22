@@ -2,7 +2,7 @@ typedef unsigned int u32;
 typedef unsigned char u8;
 
 extern int func_002015C8(int, int, int, int);
-extern u32 *func_00206174(u32);
+extern u32 *func_00206174(int);
 
 /* The leading byte indexes the record-length table in descriptor 10. */
 #define RECORD_BYTES(token) (*(u8 *)(0x801CEEE0 + (token)))

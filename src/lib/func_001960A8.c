@@ -1,3 +1,5 @@
+#include "game/record_name_selection.h"
+
 extern unsigned char D_8018F481_check1[];
 extern unsigned char D_8018F481_check2[];
 extern unsigned char D_8018F481_check3[];
@@ -137,7 +139,6 @@ typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 u8 *boot_command_stream_dispatch(M2C_UNK, M2C_UNK, M2C_UNK, u8);
 M2C_UNK boot_command_stream_resource_node_dispatch(M2C_UNK, M2C_UNK, M2C_UNK);
-M2C_UNK func_00041c20(M2C_UNK, s32);
 void func_0004501C(void *, s32);
 s32 func_0005c110(M2C_UNK);
 f32 func_000F315C(u8, f32, f32);

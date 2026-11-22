@@ -1,4 +1,4 @@
-typedef unsigned char u8;
+#include "game/class_field_lookups.h"
 
 typedef struct ClassEntry {
     u8 unk_00[0x0C];
@@ -12,7 +12,7 @@ typedef struct ClassEntry {
     u8 unk_1A[0x2E];
 } ClassEntry;
 
-int func_00044238(int arg0, int arg1, int arg2)
+s32 func_00044238(s32 arg0, s32 arg1, s32 arg2)
 {
     ClassEntry *classes;
     int selected_class;

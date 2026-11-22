@@ -1,3 +1,5 @@
+#include "game/record_name_selection.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed short s16;
@@ -55,7 +57,6 @@ extern const char g_func_0019554C_string[];
 
 extern void func_0004501C(Func0019554CRecord *record, u8 level);
 extern void func_00195410(u16 value, Func0019554CRecord *record);
-extern void func_000FC120(int first, u8 second);
 extern int func_0016C454(void);
 extern void func_00023780(void *destination, int size);
 extern unsigned char *func_0002C950(unsigned char *destination, const unsigned char *source);

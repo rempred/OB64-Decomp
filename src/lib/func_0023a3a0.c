@@ -1,4 +1,6 @@
 #include "common/types.h"
+#include "game/class_field_lookups.h"
+#include "game/record_name_selection.h"
 #include "game/class_entry.h"
 
 typedef struct LinkRecord {
@@ -17,15 +19,9 @@ typedef struct LinkRecord {
 
 extern ClassEntry D_80187C40[];
 extern LinkRecord D_80195560[];
-extern const void *func_8016E1DC(u8 first, u8 second);
 extern unsigned char *func_8009C550(unsigned char *destination, const unsigned char *source);
-extern u16 func_8016DF88(u8 first, u8 second);
-extern u16 func_8016DFDC(u8 first, u8 second);
-extern u16 func_8016E030(u8 first, u8 second);
-extern u16 func_8016E084(u8 first, u8 second);
 extern u8 func_8016F5C8(s32 value);
 extern void func_8016F11C(LinkRecord *record, u8 value);
-extern void func_000FC120(s32 first, u8 index);
 extern u8 func_8016DE70(u8 first, u8 second);
 extern int func_8009C7CC(void);
 
@@ -39,14 +35,14 @@ void func_0023A3A0(u8 *record, u32 kind, s32 value,
     if (related == 0) {
         related = kind;
     }
-    func_8009C550(record, func_8016E1DC(kind, related));
+    func_8009C550(record, func_8016E1DC((u8)kind, (u8)related));
     ((LinkRecord *)record)->class_11 = kind;
     ((LinkRecord *)record)->class_12 = related;
     ((LinkRecord *)record)->field_13 = value;
-    ((LinkRecord *)record)->field_2A = func_8016DF88(kind, related);
-    ((LinkRecord *)record)->field_2C = func_8016DFDC(kind, related);
-    ((LinkRecord *)record)->field_2E = func_8016E030(kind, related);
-    ((LinkRecord *)record)->field_30 = func_8016E084(kind, related);
+    ((LinkRecord *)record)->field_2A = func_8016DF88((u8)kind, (u8)related);
+    ((LinkRecord *)record)->field_2C = func_8016DFDC((u8)kind, (u8)related);
+    ((LinkRecord *)record)->field_2E = func_8016E030((u8)kind, (u8)related);
+    ((LinkRecord *)record)->field_30 = func_8016E084((u8)kind, (u8)related);
 
     if (field_a != 0) {
         category = func_8016F5C8((u16)field_a);

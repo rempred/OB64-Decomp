@@ -1,7 +1,6 @@
 #include "game/battle_record_flag.h"
 
-typedef unsigned char u8;
-typedef signed int s32;
+#include "game/class_field_lookups.h"
 extern u8 D_801976DC;
 typedef struct {
     u8 b[0x38];
@@ -12,9 +11,8 @@ typedef struct {
 extern PChar1F D_80193BC0_copy[];
 extern EChar1F D_80195560_copy[];
 extern u8 D_801976E8;
-extern signed char D_801CE890[];
-s32 D_8016E1DC(u8 a, u8 b);
-s32 func_000238B0(signed char *buf, const signed char *fmt, ...);
+extern const char D_801CE890[];
+int func_000238B0(char *buf, const char *fmt, ...);
 void func_001F2E48(signed char *s, s32 side);
 void func_001F2F9C(u8 *u, u8 *a) {
     signed char buf[64];
@@ -32,6 +30,6 @@ void func_001F2F9C(u8 *u, u8 *a) {
     } else {
         rec = D_80195560_copy[u[0xF6]].b;
     }
-    func_000238B0(buf, D_801CE890, rec, D_8016E1DC(a[0x4B], a[0x4F]));
+    func_000238B0((char *)buf, D_801CE890, rec, D_8016E1DC(a[0x4B], a[0x4F]));
     func_001F2E48(buf, func_0020C014(u));
 }

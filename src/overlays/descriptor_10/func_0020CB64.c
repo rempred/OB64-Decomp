@@ -1,7 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/class_field_lookups.h"
 typedef struct {
     u8 unk00[0x36];
     u16 items[4];
@@ -16,7 +13,6 @@ typedef struct {
     u8 unk5C[0x14];
     s32 actsMax;
 } BattleUnit;
-u8 D_8016E338(u8 a, u8 cls, u8 c);
 u8 func_0020D434(s32 idx);
 void func_0020CB64(BattleUnit *u, BattleUnit *t) {
     u32 f;
@@ -26,7 +22,7 @@ void func_0020CB64(BattleUnit *u, BattleUnit *t) {
                 f = t->flags;
                 if (!(f & 1)) {
                     if (!((f >> 1) & 1)) {
-                        u->actsMax = D_8016E338(u->unk48, u->cls, func_0020D434(u->unk58)) + 1;
+                        u->actsMax = (u8)D_8016E338((u8)u->unk48, (u8)u->cls, func_0020D434(u->unk58)) + 1;
                     }
                 }
             }

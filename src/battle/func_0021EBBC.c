@@ -2,11 +2,7 @@
  * mismatch counters form the separate final branch.
  * ROM 21EBBC..2213DC includes the 988-byte continuation.
  * Raw command and field names do not assert gameplay meaning. */
-typedef unsigned char u8;
-typedef signed char s8;
-typedef unsigned short u16;
-typedef short s16;
-typedef unsigned int u32;
+#include "game/class_field_lookups.h"
 
 typedef struct Func001F0E64Record {
     int field_00;
@@ -119,9 +115,7 @@ extern void memcpy(void *source, void *destination, u32 size);
 extern void func_80093380(void *, u32);
 extern float vec3_distance(TerminalCommandVector *, TerminalCommandVector *);
 extern void func_0004196c(int, int);
-extern u16 func_00043e88(int, int), func_00043edc(int, int);
-extern u16 func_00043f30(int, int), func_00043f84(int, int);
-extern int func_00044238(int, int, int), func_00044340(int);
+extern int func_00044340(int);
 extern void func_00044aa4(void *), func_00045d78(int, int);
 extern void func_000466f4(void), func_00048294(void);
 /* Director2069 binds the compatible return view to a future combined source

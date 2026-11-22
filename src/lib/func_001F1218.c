@@ -8,8 +8,8 @@ typedef int s32;
 typedef unsigned int u32;
 
 extern u8 func_00043d70(int, int);
-extern int func_00204F34(int, int, int, int, int, int, u8 *, u8 *, u8 *);
-extern int func_002050AC(int, int, int, u8 *, u8 *, u8 *);
+extern u32 func_00204F34(int, int, int, int, u32, u32, u8 *, u8 *, u8 *);
+extern u32 func_002050AC(u32, u32, u32, u8 *, u8 *, u8 *);
 extern void func_00208DC8(void *, int);
 extern int func_0020C014(void *);
 extern void func_0020C4B8(int, int, int, int *, int);
