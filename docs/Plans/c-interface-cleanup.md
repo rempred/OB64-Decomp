@@ -328,7 +328,7 @@ The synth clears a halfword at ROM `0x2003C` and passes its address at `0x2012C`
 | Unit state update | `00121DA8` | Trace the unit pointer, flags and state stores. Check the return register in all four caller files and preserve the second flag read and the switch behavior. |
 | Battle action stream lookup | `00201798` | Follow the class, context, action and mode into the descriptor-10 table and the 0x28 fallback. Compare all callers that keep the result in a word before masking or forwarding it. |
 
-The unit lead is the sole editor of `001960A8`, which also calls the class initializer three times. Both leads coordinate its shared declaration through the Director. The battle lead checks the six `0020C448` findings deferred in Round 16 against the newly assigned callers before proposing a scope addition.
+The unit lead is the sole editor of `001960A8`, which also calls the class initializer three times. Both leads coordinate its shared declaration through the Director. The battle lead also owns the six `0020C448` findings deferred in Round 16. Three calls in `22B1F4` and `22C78C` use the low halfword returned by the wrapper. Compare all three with the accepted Round 16 caller in `22EF50`. This brings the round to 30 findings in the same 12 files.
 
 ## Matching and acceptance
 
