@@ -274,9 +274,9 @@ The memory-fill lead also owns `func_00042800`. Its unparsed source contains a l
 
 ## Round 15
 
-[Round 14 acceptance](https://github.com/rempred/OB64-Decomp/commit/95ea2d85f8da7f185f541889bc076441dc21afef) cleared all 34 assigned findings and reproduced the complete retail ROM. Its canonical report has 906 remaining findings across 255 linked entries. Eight providers tie for first at ten findings each. The assignments cover all 80 findings across 18 distinct source files.
+[Round 14 acceptance](https://github.com/rempred/OB64-Decomp/commit/95ea2d85f8da7f185f541889bc076441dc21afef) cleared all 34 assigned findings and reproduced the complete retail ROM. Its canonical report has 906 remaining findings across 255 linked entries. Eight providers tie for first at ten findings each. The opening assignments covered those 80 findings across 18 distinct source files.
 
-| Source lead | Provider scope | Assigned findings | Assigned files | First comparison |
+| Source lead | Provider scope | Opening findings | Opening files | First comparison |
 | --- | --- | ---: | ---: | --- |
 | Record name selection | `func_00041c20` and the shared class callers | 42 | 5 | Follow mode and index into the 52-byte and 56-byte record arrays. Check the retry loop and the caller’s use of the register left by the final string copy. |
 | Related class fields | `00043e88`, `00043edc`, `00043f30`, `00043f84`, `000440dc`, `00044238` | 28 | 10 | Compare a related-class match with a fallback at real callers. Check each field width, the returned pointer and the third selector’s sentinel handling. |
@@ -284,7 +284,13 @@ The memory-fill lead also owns `func_00042800`. Its unparsed source contains a l
 
 The record-name lead owns `func_0023a3a0.c` and `func_00249290.c` throughout the round. Those two files account for 32 of the 60 findings at the six class providers. The class lead establishes their shared declarations, and the Director relays them to the record-name lead. The integrator checks the final declarations against both sets of complete sources. The initial class comparison keeps word parameters and tests halfword results at all four scalar getters. In `0023a3a0`, distinguish the two masked call inputs from the original class-table index. In `00249290`, compare the result move and halfword mask at ROM `0x24944C`. The record-name lead owns the proposed header for the two `00041c20` spellings.
 
-The pose lead also owns `func_001F197C.c`. Both state updaters call `func_00204F34`, a sibling of `func_002050AC` in the same compiler section. Their declarations account for eight further findings. Three transfers from the metadata source to `func_00206174` account for four findings involving its signed handle parameter. The pose assignment now covers 22 findings across four source files, bringing Round 15 to 92 findings across 19 files. Check the directory pointer, low-byte dispatch and the five original bodies in the metadata source.
+The pose lead also owns `func_001F197C.c`. Both state updaters call `func_00204F34`, a sibling of `func_002050AC` in the same compiler section. Their declarations account for eight further findings. Three transfers from the metadata source to `func_00206174` account for four findings involving its signed handle parameter. The pose assignment now covers 22 findings across four source files. Check the directory pointer, low-byte dispatch and the five original bodies in the metadata source.
+
+The record-name lead also owns `00283808`. It and `00041c20` load pointers from the same `D_8018EA00` table. The accessed entries include NUL-terminated names. The descriptor-14 wrapper can also return a record address. Both original symbol references and that mixed return are part of the comparison. The word-mode declaration for record selection reproduced all 644 bytes of `0019554C` and its 31 relocations. A byte-mode declaration produced 656 bytes.
+
+The class lead owns the three formatter findings at `001F2F9C`. The accepted variadic `sprintf` uses plain `char` for its fixed buffer and format parameters. The format at ROM `0x211D20` has one `%s`, which consumes the record pointer. The game also evaluates the class lookup and passes its result in the fourth register. The string copy in `0023a3a0` directly consumes a class lookup result.
+
+At all four scalar getter calls in `00249290`, retail keeps the full return in a saved register before masking its low halfword. The unsigned word declaration reproduced all 1,924 bytes and 133 ordered relocations. The halfword declaration produced 1,908 bytes. The class lead also tests complete callers `0021EBBC`, `0020CBDC` and `002A9364`, whose existing declarations return halfwords. The six record-name files account for 42 findings, the thirteen class files for 31 and the four pose files for 22. The integrator checks all 95 findings and both adjacent 88-byte pose switch tables in the combined build.
 
 ## Matching and acceptance
 
