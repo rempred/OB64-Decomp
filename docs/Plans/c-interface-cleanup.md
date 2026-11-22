@@ -186,6 +186,18 @@ Three consumers compare the current framebuffer pointer, `D_800C4BB8`, against e
 
 The lookup lead also owns the complete `func_001F1218`, `func_001F114C` and `func_001FFE80` sources. The two callers supply the wider state in five places. Check the pointer field at state +0x4C at each enclosing-object offset, preserving the smaller views used by the selector and evaluator. The dispatch lead owns all six C files making the nine named calls to the resident string copy routine. Preserve its original assembly owner and both call spellings, and check which callers use the returned destination. These nine related files add no definite IDs to the opening count. [Battle state evidence](#related-0x50-byte-state) · [Resident string copy evidence](#resident-string-copy-follow-up)
 
+## Round 10
+
+[Round 9](https://github.com/rempred/OB64-Decomp/commit/982b976d951d41404d9e24bd59f4d022fc8dc460) removed exactly its 58 assigned findings. The canonical scan has 1,148 remaining across 275 linked entries. All 2,650 targets and the complete retail ROM matched. The opening Round 10 assignments cover 47 distinct findings in 14 source files. Five entries tied at 15. The boot archive stream comes first in linked-section order.
+
+| Source lead | Provider | Findings | Complete files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Resource arena allocation | `resource_alloc_tree_scan` | 16 | 6 | Follow the unsigned request through 16-byte alignment, the zero-size exit and the returned payload address. Check size arithmetic and pointer use in a caller of the resident address alias. |
+| Battle record flag | `func_0020BFF8` | 16 | 4 | Follow the supplied record pointer through the null check and the bit test on the word at +0x40. Compare how the actual callers pass the pointer and consume the zero-or-one result. |
+| Boot archive stream | `boot_io_open_stream` | 15 | 4 | Trace the four arguments and the returned slot through the three archive callers. Compare read mode with the other mode path and check the result when each slot is occupied. |
+
+The allocator has 24 named transfers across 14 caller files and the battle flag has 51 across 36. Check compatible declarations, address aliases and aggregate types in the remaining callers before changing a provider. The three archive callers share four named transfers to `func_0000F4E4`. Trace its two stream objects into the code that consumes the returned handles before selecting a shared declaration.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
