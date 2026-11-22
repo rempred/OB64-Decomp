@@ -7,7 +7,7 @@
 typedef struct {
     s32 (*f0)(void);
     void (*f1)(void);
-    void (*f2)(void);
+    void (*f2)(s32);
     void (*f3)(s16);
     void (*f4)(s16, s32);
 } BattleCallbacks;

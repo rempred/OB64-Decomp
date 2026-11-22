@@ -4,7 +4,7 @@ typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-s32 func_00041638(u16);
+s32 func_00041638(s32);
 s32 func_00043100(u8, u8);
 
 extern u8 D_80193AC0[];

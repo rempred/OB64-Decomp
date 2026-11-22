@@ -125,7 +125,7 @@ extern void func_0019ADF0(void *object, s32 item, s32 mode);
 extern s32 func_801DCF90(void *unit);
 extern s32 func_0005148c(void *record);
 extern void func_0019BAB4(void);
-extern void func_0015DF10(s32 value);
+extern void func_0015DF10(u32 value);
 extern u8 func_802189BC(u8 category);
 extern u32 func_0019BD14(void);
 extern u8 func_0019B26C(u16 selected, u8 mode);

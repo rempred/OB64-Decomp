@@ -19,8 +19,8 @@ M2C_UNK func_00054e24();
 M2C_UNK func_00055114(M2C_UNK, M2C_UNK, s8, M2C_UNK, s32, s32, s32, s32, s32, s32, s32, s32);
 void *func_00055234();
 s32 func_001F21A4(u8, void *, void *);
-M2C_UNK func_00208DC8();
-M2C_UNK func_0020BD5C(M2C_UNK);
+void func_00208DC8(void *channel, s32 request);
+void func_0020BD5C(s32 selector);
 s32 func_0020BF6C();
 M2C_UNK func_002159D0(void);
 M2C_UNK func_0021AE6C(f32, M2C_UNK, void *);
@@ -162,7 +162,7 @@ state_3:
             (*(u8 *)((s8 *)(temp_a1_14) + (0x606E))) = 0U;
             (*(u8 *)((s8 *)(D_801CE8BC) + (0x6072))) = 0U;
             D_801CE8C4 = 1;
-            func_00208DC8(D_800EB1F0, 1, temp_a2_8);
+            func_00208DC8(D_800EB1F0, 1);
             var_a0_resource = 0x6094;
             goto block_122;
         }
@@ -185,7 +185,7 @@ block_25:
             } else {
                 (*(u8 *)((s8 *)(temp_a2_8) + (0x6073))) = 0U;
             }
-            func_00208DC8(D_800EB1F0, 2, temp_a2_8);
+            func_00208DC8(D_800EB1F0, 2);
             return;
         }
         if (!(temp_a0_122 & 0x8000)) {
@@ -239,7 +239,7 @@ block_25:
                     } else {
                         (*(s8 *)((s8 *)(D_801CE8BC) + (0x606E))) = 0;
                         (*(u8 *)((s8 *)(D_801CE8BC) + (0x6072))) = 0U;
-                        func_00208DC8(D_800EB1F0, 0, temp_a2_8);
+                        func_00208DC8(D_800EB1F0, 0);
                         temp_v1_302 = D_801CE8BC;
                         (*(u32 *)((s8 *)(temp_v1_302) + (0x1B0))) -= 2;
                         if ((f64) (*(f32 *)((s8 *)(temp_v1_302) + (0x1AC))) == D_801E66B0) {
@@ -300,7 +300,7 @@ block_53:
                 (*(u8 *)((s8 *)(temp_a2_410) + (0x6072))) = temp_v0_417;
                 temp_a2_410 += temp_v0_417 & 0xFF;
                 (*(s8 *)((s8 *)(temp_a2_410) + (0x606E))) = 7;
-                func_00208DC8(D_800EB1F0, 0, temp_a2_410);
+                func_00208DC8(D_800EB1F0, 0);
                 return;
             }
         }
@@ -435,7 +435,7 @@ state_7:
                 goto block_90;
             }
             (*(s32 *)((s8 *)(temp_a2_8) + (0x57D8))) = 0;
-            func_00208DC8(D_800EB1F0, 1, temp_a2_8);
+            func_00208DC8(D_800EB1F0, 1);
             temp_v1_684 = D_801CE8BC;
             (*(s16 *)((s8 *)(temp_v1_684) + (0x6076))) = 0;
             (*(s8 *)((s8 *)(temp_v1_684) + (0x6072))) = (*(u8 *)((s8 *)(temp_v1_684) + (0x6072))) - 1;

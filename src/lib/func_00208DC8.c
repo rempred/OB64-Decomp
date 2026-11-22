@@ -16,8 +16,8 @@ typedef struct {
     s32 pending;
 } SoundChannel;
 
-extern const unsigned char g_func_0015DF10_match[];
-extern const unsigned char g_func_0015DF10_default[];
+extern unsigned char g_func_0015DF10_match[];
+extern unsigned char g_func_0015DF10_default[];
 extern unsigned char D_800EB0B0[];
 extern unsigned char D_800EB100[];
 extern unsigned char D_800EB150[];

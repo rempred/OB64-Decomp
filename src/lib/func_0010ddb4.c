@@ -38,7 +38,7 @@ M2C_UNK func_00131050();
 M2C_UNK func_0013109C(u16);
 M2C_UNK func_00132B80(u16);
 M2C_UNK func_00147BDC(s32 *);
-M2C_UNK func_0015DF10(M2C_UNK);
+void func_0015DF10(u32 value);
 void func_800EA604(void *, s32);
 s32 func_801DCF90(void *);
 s32 func_801DD2B0(void *);

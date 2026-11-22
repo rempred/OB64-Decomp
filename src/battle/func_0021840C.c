@@ -32,7 +32,7 @@ struct _m2c_stack_func_0021840C {
 };                                                                   
 
 M2C_UNK func_001F0E64(void *, M2C_UNK);                         
-M2C_UNK func_0020BD5C(M2C_UNK);                                 
+void func_0020BD5C(s32 selector);                                 
 s32 func_0020BF7C();                                            
 s32 func_0020BF8C();                                            
 s32 func_0020BFE4();                                            

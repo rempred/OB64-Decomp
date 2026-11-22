@@ -58,14 +58,14 @@ typedef struct PoseActor {
 extern PoseResident *D_801CE8BC;
 extern u16 D_801CF3F0[], D_801CF3F2[], D_801CF3F4[];
 extern u16 D_801CEF10[], D_801CEF12[];
-extern const u8 g_func_0015DF10_match[], g_func_0015DF10_default[];
+extern u8 g_func_0015DF10_match[], g_func_0015DF10_default[];
 extern const struct {
     u8 prefix[0xC0];
     Vec3f position;
 } float_002a89b0;
 extern s32 func_002a3198(s32, s32, s32, s32, u8 *, u8 *, u8 *);
 extern u32 func_00204F34(s32, s32, s32, s32, u32, u32, u8 *, u8 *, u8 *);
-extern void func_00208DC8(const void *, s32);
+extern void func_00208DC8(void *, s32);
 extern void func_0029CD64(Vec3f *, f32 *, void *);
 extern void func_0029DF5C(void *, s32, s32, s32, s32, s32);
 extern void *func_0002CD70(void *, s32, u32);
@@ -178,7 +178,7 @@ specialArt:
             case 18:
             case 20:
                 if (actor->alternate == 0) {
-                    const void *recipient;
+                    void *recipient;
                     s32 index;
                     s32 positionX;
                     s32 value;

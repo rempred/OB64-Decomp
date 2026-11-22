@@ -51,7 +51,7 @@ extern void func_8020CDA0(s32), func_8020DDD0(ScenarioCursor *);
 extern void *func_800712C4(void *);
 extern void func_8017C384(Panel *);
 extern void func_8021997C(Panel *, s16, s16, s16, s32);
-extern u8 func_8016B738(u16);
+extern s32 func_8016B738(s32);
 extern u8 func_00045440(s32);
 extern s32 func_801FE190(u8);
 extern s32 func_801DA228(ScenarioUnit *), func_8009C7CC(void);
@@ -89,7 +89,8 @@ u32 func_001A9290(s32 mode, s32 group, u16 *item, u8 *target)
             for (i = 21; i < 24; i++) {
                 u8 inventory;
                 D_8021E3AB[i] = 0;
-                inventory = func_8016B738(i);
+                /* This menu tests the low byte of the 0x1FF miss result. */
+                inventory = func_8016B738((u16)i);
                 if (inventory != 0xFF && D_80193AC0[inventory].field03 != 0) {
                     D_8021E3A0.field06++;
                     D_8021E3C0[D_8021E3A0.field06] = i;

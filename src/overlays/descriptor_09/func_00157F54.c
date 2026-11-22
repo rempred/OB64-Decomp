@@ -3,7 +3,7 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
 extern u8 *D_80213778;
-void func_0015DF10(s32 a);
+void func_0015DF10(unsigned int value);
 extern u16 *D_800C4C4C;
 extern u8 *D_80213778;
 s8 func_00157F54(s8 cur) {

@@ -1,7 +1,7 @@
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
-u16 D_8016B6FC(u16 a);
+s32 D_8016B6FC(s32 a);
 typedef struct { u16 id; u8 count; u8 unk3; } InvEntry;
 extern InvEntry D_80196B00[];
 s32 func_0004883c(u16 id) {

@@ -6,8 +6,8 @@ extern u16 D_8018E6D2[];
 extern u16 D_8018C414[];
 extern u8 D_80193AC3[];
 extern u8 D_80196B03[];
-extern u16 func_8016B738(u16 item_id);
-extern u16 func_0016B6FC(u16 item_id);
+extern s32 func_8016B738(s32 item_id);
+extern s32 func_0016B6FC(s32 item_id);
 
 u8 func_0019B26C(u16 item_id, u8 kind)
 {

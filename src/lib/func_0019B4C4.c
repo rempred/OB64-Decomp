@@ -8,8 +8,8 @@ typedef struct {
 
 extern ShopEntry D_80193AC0[];
 extern ShopEntry D_80196B00[];
-extern u16 func_8016B738(u16 item);
-extern u16 func_8016B6FC(u16 item);
+extern s32 func_8016B738(s32 item);
+extern s32 func_8016B6FC(s32 item);
 
 void func_0019B4C4(u16 item, u32 amount, u8 mode)
 {

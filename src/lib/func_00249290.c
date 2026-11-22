@@ -40,7 +40,7 @@ extern u32 func_8016DF88(u8 first, u8 second);
 extern u32 func_8016DFDC(u8 first, u8 second);
 extern u32 func_8016E030(u8 first, u8 second);
 extern u32 func_8016E084(u8 first, u8 second);
-extern u16 func_8016B6FC(u16 value);
+extern s32 func_8016B6FC(s32 value);
 extern void func_8016F11C(LinkRecord56 *record, u8 value);
 extern void func_801D4CC0(LinkRecord56 *record);
 extern void func_000FC120(s32 first, u8 index);

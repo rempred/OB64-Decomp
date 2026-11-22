@@ -12,7 +12,7 @@ extern u8 D_80193AC2[], D_80193AC0[];
 extern s32 func_0012E968(Q7Unit *);
 extern void func_0012F8C0(Q7Unit *);
 extern u32 func_0014F300(s32);
-extern u16 func_8016B738(u16);
+extern s32 func_8016B738(s32);
 
 void func_001191CC(s32 source_index)
 {

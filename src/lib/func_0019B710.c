@@ -1,7 +1,7 @@
 #include "common/types.h"
 
 extern u16 *D_800C4C4C;
-extern void func_8020CDA0(s32 value);
+extern void func_8020CDA0(u32 value);
 
 void func_0019B710(u8 *value, u8 maximum)
 {

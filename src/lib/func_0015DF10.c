@@ -1,11 +1,14 @@
+#include "game/sound_channel.h"
+
 typedef unsigned short u16;
 typedef unsigned int u32;
 typedef unsigned char u8;
+typedef signed int s32;
 
 extern u16 g_func_0015DF10_table[];
-extern const u8 g_func_0015DF10_match[];
-extern const u8 g_func_0015DF10_default[];
-extern void func_000EA604(const void *argument);
+extern u8 g_func_0015DF10_match[];
+extern u8 g_func_0015DF10_default[];
+extern void func_000EA604(SoundChannel *channel, s32 request);
 
 void func_0015DF10(u32 value)
 {
@@ -39,7 +42,9 @@ void func_0015DF10(u32 value)
         break;
     }
     asm volatile(".set noreorder");
-    func_000EA604(g_func_0015DF10_default);
+    /* The match path jumps to this call with its channel in $4.
+     * Both paths pass the original request in $5. */
+    func_000EA604((SoundChannel *)g_func_0015DF10_default, (s32)saved_value);
     asm volatile("nop\n.set reorder" : : : "memory");
     asm volatile("" : : : "memory");
 }

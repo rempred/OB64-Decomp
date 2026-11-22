@@ -42,7 +42,7 @@ extern u8 D_80213781;
 extern signed char D_80214D10[];
 s32 func_0000735C(s32 a, void *fn, s32 b, s32 c, s32 d, s32 e, s32 f);
 void func_0015709C();
-void func_0015DF10(s32 a);
+void func_0015DF10(unsigned int value);
 void func_00023940(const signed char *fmt, ...);
 s32 func_00156E90(u8 a) {
     u8 *f = &D_80213780;

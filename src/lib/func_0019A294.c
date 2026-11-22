@@ -18,8 +18,8 @@ extern u8 *D_801F36C0, *D_801F0B90, *D_8021A12C;
 extern void *D_8021A128;
 extern u8 func_0019B21C(u8 category);
 extern u8 func_0019B26C(u16 selected, u8 mode);
-extern u16 func_8016B738(u16 item);
-extern u16 func_8016B6FC(u16 item);
+extern s32 func_8016B738(s32 item);
+extern s32 func_8016B6FC(s32 item);
 extern u8 func_8016F520(u16 item);
 extern void func_8017C4B4(s32 value);
 extern void func_80200F70(void *a, void *b, s32 width, s32 height, s32 mode);
@@ -105,7 +105,8 @@ void func_0019A294(Panel *window, s32 slot)
     }
     if (D_8021A121 == D_8021A122) {
         item &= 0xFFFF;
-        index = func_8016B738(item);
+        /* This cast lets KMC reuse the masked key for the later call. */
+        index = (u16)func_8016B738((u16)item);
         if (index == 511) {
             s32 line_y = y + 39;
             func_802004C4(x + 12, line_y, 0, 2);
@@ -118,7 +119,7 @@ void func_0019A294(Panel *window, s32 slot)
         }
     } else {
         s32 resource_x;
-        item = func_8016B6FC((u16)item);
+        item = (u16)func_8016B6FC((u16)item);
         resource_x = x + 12;
         if (item == 511) {
             s32 line_y = y + 39;

@@ -14,7 +14,7 @@ typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 M2C_UNK func_0020019C();
-M2C_UNK func_0020BD5C(M2C_UNK, u8);
+void func_0020BD5C(s32 selector);
 s32 func_0020BFE4();
 s32 func_0020C32C(s32);
 s32 func_0020C788();
@@ -154,7 +154,7 @@ void func_00217BA8(void) {
             D_801CEAAB = (u8)(temp_a1_185 - 5);
         }
         if (D_801CEAAB == 0) {
-            func_0020BD5C(1, temp_a1_185);
+            func_0020BD5C(1);
             return;
         }
         goto block_23;

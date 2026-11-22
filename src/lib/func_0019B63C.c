@@ -7,7 +7,7 @@ typedef struct {
 } ShopEntry;
 
 extern ShopEntry D_80193AC0[];
-extern u16 func_8016B738(u16 item);
+extern s32 func_8016B738(s32 item);
 
 void func_0019B63C(u16 item, u32 amount)
 {
