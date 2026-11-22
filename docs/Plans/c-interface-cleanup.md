@@ -106,7 +106,11 @@ Seven further files share the battle callback table. Four descriptor-10 routines
 | Sound request dispatch | `func_00208DC8` (30), `func_0015DF10` (27) | 37 | 9 | Follow the match and default paths, check the argument that reaches each service and preserve the hybrid selector's jumps and delay slots. |
 | Battle callback at +0x08 | `func_0020BD5C` (27), plus sound calls in two shared files | 47 | 8 | Trace the function installed in the third callback slot in each supported load context. Compare callers with different argument and return declarations and preserve the verified +0x10 slot. |
 
-The battle lead owns the complete `func_00215CF0.c` and `func_0021B894.c`, including 20 findings against the sound services. The sound lead supplies the verified declaration through the Director so both interfaces can be corrected together. This assigns all 143 findings exactly once.
+The battle lead owns the complete `func_00215CF0.c` and `func_0021B894.c`, including 20 findings against the sound services. The sound lead supplies the verified declaration through the Director so both interfaces can be corrected together. This assigns the initial 143 findings exactly once.
+
+Two additional findings are in the sound selector itself. Both its match and default paths reach the same resident sound call with a channel address and the saved selector word. The sound worker checks the declaration and explicit forwarding in that file. Its existing hybrid assembly and both symbol spellings supply the comparison.
+
+The battle callback at +0x08 receives a full-word selector on the loaded battle path. One installed routine uses it to select among 13 cases; the cold-boot implementation returns immediately. The callback worker owns the cold stub in `func_0023B244.c` and proposes the common slot declaration. The integrator verifies all eight consumers of `battle_callbacks.h`, including the seven outside the original source assignments. These additions bring the round to 145 recorded findings and 41 complete files including controls.
 
 ## Matching and acceptance
 
