@@ -1,9 +1,9 @@
+#include "game/combat_pose_lookup.h"
 #include "game/combat_pose_pool.h"
 #include "game/combat_pose_record.h"
 
 extern int func_002015C8(int, int, int, int);
 extern int func_0020161C(int, int, int, int);
-extern int func_0020156C(int);
 extern int func_000454E0(int);
 extern void *func_0002E138(u32);
 extern void *func_00204A70(void *, u32, u16 *, u8 *, u32);

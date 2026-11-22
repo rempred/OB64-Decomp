@@ -1,6 +1,6 @@
 #ifndef CHECKSUM_CHAIN_PRIVATE_INTERFACES_H
 #define CHECKSUM_CHAIN_PRIVATE_INTERFACES_H
-#include "common/types.h"
+#include "game/boot_resource_dma.h"
 
 /* Numeric prefix view, independently supported by the observed accesses. */
 typedef struct ProbeRecordPrefix {
@@ -12,7 +12,6 @@ typedef struct ProbeRecordPrefix {
 extern void *resource_alloc(u32 bytes);
 extern void *resource_free(void *record);
 extern void func_0000539C(s32 id);
-extern void func_0001A4F0(s32 offset, void *destination, u32 bytes, s32 mode);
 extern s32 func_00023350(const void *first, const void *second, u32 bytes);
 /* The accepted copy sources discard the callee's observed A1 return value. */
 extern void func_00023460(const void *source, void *destination, u32 bytes);

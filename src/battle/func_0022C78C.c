@@ -1,5 +1,6 @@
 #include "game/combat_selector.h"
 #include "game/combat_evaluator.h"
+#include "game/battle_art_lookup.h"
 
 typedef unsigned char u8;
 typedef signed short s16;
@@ -11,7 +12,6 @@ typedef unsigned int u32;
 typedef struct { u32 words[20]; } LocalCopy;
 s32 func_00045480(s32);
 s32 func_000454e0(s32);
-s32 func_00201584(s32, s32);
 s32 func_00201798(s32, s32, s32, s32);
 s32 func_0020BFE4(void);
 s32 func_0020BFF8(void *);

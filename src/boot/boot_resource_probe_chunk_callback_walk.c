@@ -1,15 +1,12 @@
-#include "common/types.h"
-
-typedef void (*ProbeChunkCallback)(s32 offset, void *buffer, u32 bytes, s32 mode);
+#include "game/boot_resource_dma.h"
 
 typedef struct ProbeChunkRecord {
     /* Together with the byte input below, preserve the observed store/read order. */
-    ProbeChunkCallback volatile callback;
+    BootResourceDmaCallback volatile callback;
 } ProbeChunkRecord;
 
 extern void *resource_alloc(u32 bytes);
 extern void *resource_free(void *record);
-extern void func_0001A4F0(s32 offset, void *destination, u32 bytes, s32 mode);
 /* Fixed external RAM input. Volatile retains the retail ordering with KMC GCC. */
 extern volatile u8 D_800C4800;
 

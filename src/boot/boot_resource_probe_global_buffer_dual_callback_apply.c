@@ -1,4 +1,4 @@
-#include "common/types.h"
+#include "game/boot_resource_dma.h"
 
 typedef void (*ProbeCallback)(void *);
 
@@ -8,7 +8,6 @@ typedef struct ProbeRecordPrefix {
 
 extern void *resource_alloc(u32 bytes);
 extern void *resource_free(void *record);
-extern void func_0001A4F0(s32 offset, void *destination, u32 bytes, s32 mode);
 extern void func_00023460(const void *source, void *destination, u32 bytes);
 extern u8 *D_800A83B8;
 /* Separate observed fields in the retained table, at 0x1C-byte entry stride. */

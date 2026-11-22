@@ -1,6 +1,7 @@
 #include "game/combat_selector.h"
 #include "game/combat_evaluator.h"
 #include "game/battle_record_flag.h"
+#include "game/battle_art_lookup.h"
 
 #include "common/types.h"
 
@@ -21,7 +22,6 @@ typedef struct {
 unsigned int func_00022e60(void);
 s32 func_00043ad8(u8, u8);
 s32 func_000454e0(s32);
-s32 func_00201584(s32, s32);
 s32 func_00201798(s32, s32, s32, UnknownWord);
 s32 func_0020BFE4();
 s32 func_0020C104(s32 *);

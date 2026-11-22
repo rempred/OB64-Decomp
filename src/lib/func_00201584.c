@@ -1,3 +1,5 @@
+#include "game/battle_art_lookup.h"
+
 unsigned char func_00201584(int sourceArt, int ownerContext)
 {
     unsigned char *entry;

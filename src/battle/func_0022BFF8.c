@@ -1,3 +1,5 @@
+#include "game/battle_art_lookup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -5,7 +7,6 @@ typedef unsigned int u32;
 
 s32 func_00045480(s32);
 s32 func_000454e0(s32);
-s32 func_00201584(s32, s32);
 s32 func_00201798(s32, s32, s32, s32);
 s32 func_0020BFE4(void);
 s32 func_0020BFF8(void *);

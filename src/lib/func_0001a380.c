@@ -1,37 +1,12 @@
-#include "common/types.h"
+#include "game/boot_dma_platform.h"
 
-/* Local views of the message queue and EPI message storage used by this owner.
- * These layouts retain the observed queue at sp+0x28 and message at sp+0x10. */
-typedef struct DmaQueue {
-    void *receive_thread;
-    void *send_thread;
-    s32 valid_count;
-    s32 first;
-    s32 capacity;
-    void **messages;
-} DmaQueue;
-
-typedef struct DmaIoMessage {
-    u16 type;
-    u8 priority;
-    u8 status;
-    DmaQueue *return_queue;
-    void *dram_address;
-    u32 device_address;
-    u32 size;
-    void *device_handle;
-} DmaIoMessage;
-
-extern void *D_800E7A20;
-extern void func_00023970(DmaQueue *, void **, u32);
-extern void os_inval_dcache(void *, u32);
-extern s32 func_0001c040(void *, DmaIoMessage *, s32);
-extern s32 func_00023AE0(DmaQueue *, void **, s32);
+extern struct OSPiHandle_s *D_800E7A20;
+extern void os_inval_dcache(void *, s32);
 
 void func_0001a380(u32 rom_address, u8 *destination, u32 remaining)
 {
     DmaIoMessage io;
-    DmaQueue queue;
+    MessageQueue queue;
     void *message;
     u32 chunk;
 
