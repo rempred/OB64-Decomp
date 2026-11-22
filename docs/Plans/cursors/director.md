@@ -1,6 +1,6 @@
 # Director handoff — November 22, 2026
 
-**Current assignment.** [Round 17](https://github.com/rempred/OB64-Decomp/commit/6f998635847807a918192f5a937ef57c8189364b) is published. Its three leads and reviewer are released. Round 18 assigns class records to `01a203c1-4fd9-70f2-a150-940cdce23c2d`, unit updates to `01a203c1-5b2a-7e21-bc39-f6f7dfbfda81`, and battle streams to `01a203c1-7d71-7000-9a6e-d1b1994c1de4`. The unit lead alone edits shared caller `1960A8` using the checked class record declaration. The class lead also owns the three callers and helpers listed in the scope. The battle lead also owns the six filter-wrapper findings and the three remaining stream lookup callers. Independent review of tree `a90c74cd` and its baseline found all 30 assigned fixes. A separate checkout scan reproduced all 9,011 resolved calls. Integrator `01a1f5b1-14d1-7b63-b104-a03f9e0830a7` owns the full linked comparisons. Send their results to the reviewer before releasing production verification. After Round 18 acceptance, assign all remaining findings in the [final wave](../c-interface-cleanup.md#final-wave) to three fresh source workers and the same integrator. [Round 18 scope](../c-interface-cleanup.md#round-18) | [Queue](../../NEXT_STEPS.md)
+**Current assignment.** [Round 18](https://github.com/rempred/OB64-Decomp/commit/1c497184c618c2398990dc6f9beb7ca1085ee93d) passed the fresh verifier and all 30 assigned fixes were accepted. Its workers are released. The [final wave](../c-interface-cleanup.md#final-wave) has 684 findings. The class and battle lead is `01a20416-a55e-7810-abcc-7b3d0f0ceee4`, the overlay and runtime lead is `01a20416-e728-7cd0-aeac-f45ac5516313`, and the script and unit lead is `01a20417-042b-7a03-92f9-f913e1e87230`. Integrator `01a1f5b1-14d1-7b63-b104-a03f9e0830a7` owns the final build and the private matching inputs. The caller rule applies to the final wave and future changes. The tooling author tests the verifier and one independent Astra 6.2 Extra High reviewer checks the change. Workers can query saved Total Resolver traces concurrently. The Director approves and schedules live captures one at a time. [Queue](../../NEXT_STEPS.md)
 
 The [two audio corrections](../c-interface-verification.md#accepted-audio-corrections) passed the full retail verification and all 64 replay cases at `b4278919`. The Editor received them for playback and export.
 
@@ -10,22 +10,9 @@ The [story event program](../story-event-continuation.md) closed at `9be88806`. 
 
 The [cutscene preview program](../cutscene-preview-services-draft.md) closed on main at `2447f1d5`. The [actor placement and mission-briefing program](../actor-placement-briefing-program.md) previously closed at `3ac73120`.
 
-## Released cutscene chats
+The [Editor handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) reached the Editor director on November 18. The accepted cutscene program retains its four retired delivery records under `~/.local/share/codex-thread-monitors/cutscene-preview-261117-*`.
 
-The three cutscene workers and integrator finished their assignments. The four retired monitors retain their delivery records under `~/.local/share/codex-thread-monitors/cutscene-preview-261117-*`.
-
-| Role | Chat | First wave / route suffix |
-| --- | --- | --- |
-| Matching 1 | `01a1ecea-4461-7391-9450-0209f3c2bee8` | Q1 / q1 |
-| Matching 2 | `01a1ecea-3ceb-7173-abd1-499259192f6e` | P1 / p1 |
-| Matching 3 | `01a1ecea-481f-7a72-91ad-f8cdcf49cfb5` | T1 / t1 |
-| Production | `01a1ecea-4071-7b73-a5b0-0baa66dd3b92` | integration |
-
-## Editor handoff
-
-The [requested handoff](../cutscene-preview-services-draft.md#editor-handoff-after-program-acceptance) reached local Editor director chat `01a1eae5-90a2-7c31-956d-6ed447687e40` at 09:42 Eastern on November 18. Its turn `01a1ef1c-102e-77b2-b668-381e7ecb9eaf` started with the Editor import and preview inventory. The request covers every affected Editor feature, the help-token correction, playback checks, and reporting results and remaining dependencies to Director `01a1eb8b-d5e6-7083-bb49-8e6648ef3e0b`.
-
-## Accepted baseline
+## Accepted cutscene baseline
 
 The [final acceptance roster](../../../build/integration/cutscene-preview/program-acceptance-evidence.json) binds all assigned owners and sources to CURRENT `8412D50E1A2CDD150C75409B585A92DBF5748C5F5FE16C9530EDCEFB15B7ECF3`. The rebuilt ROM SHA-256 is `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. The two retained four-byte ASM suffixes and three linked C switch tables are itemized in the roster. The [integration closeout](cutscene-preview-integration.md) links each wave and the [T2 replay](../../../build/integration/cutscene-preview/t2-accepted-traces.json) covers chapter reveal completion with controlled assets and randomness.
 
