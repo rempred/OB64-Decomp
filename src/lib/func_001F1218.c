@@ -1,3 +1,5 @@
+#include "game/combat_state.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef short s16;
@@ -25,16 +27,6 @@ extern u8 D_80193BD4[];
 extern u8 D_80195574[];
 extern u8 D_801976DC;
 extern u8 D_801976E8;
-
-typedef struct {
-    s32 field00;
-    s16 field04, field06, field08, field0A, field0C, field0E, field10;
-    u8 field12[16];
-    s8 field22[16];
-    u8 field32[4], field36[4], field3A[4], field3E[4], field42[4];
-    u8 field46, field47, field48, pad49[3];
-    void *field4C;
-} Func001F1218State;
 
 void func_001F1218(Func001F1218State *state, int arg1, int arg2, int arg3, int arg4)
 {

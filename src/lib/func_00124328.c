@@ -8,7 +8,7 @@ extern u8 D_801971F0[][25];
 extern RuntimeUnit *D_801F0CB0[];
 extern u32 func_0014F300(s32 source_word);
 extern void func_00131388(void *record);
-extern s32 func_00131050();
+extern void func_00131050(void);
 extern void func_00147FB8(int unused_first, int source_word);
 extern void func_0015DF10(u32 value);
 

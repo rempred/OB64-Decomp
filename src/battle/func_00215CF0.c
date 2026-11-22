@@ -30,7 +30,7 @@ M2C_UNK func_00023460(void *, void *, M2C_UNK);
 void *func_80070F30(u32);
 void *func_800712C4(void *);
 M2C_UNK func_000238B0(void *, const void *, s32);
-M2C_UNK func_0002C950(void *, const void *);
+extern unsigned char *func_0002C950(unsigned char *destination, const unsigned char *source);
 
 extern const f64 D_801E66A8;
 extern const f64 D_801E66B0;

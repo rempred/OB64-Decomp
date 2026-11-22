@@ -1,11 +1,12 @@
+#include "game/framebuffer_list.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 extern u8 D_8023DF0C;
 extern u8 D_8023DE3C;
 extern u8 D_800E7A0C;
-extern u8 D_8018FC00[];
+extern void *D_8018FC00[2];
 void func_00019e10(void);
-void func_00019eb0(void *p, s32 n);
 void D_8016CD5C(s32 a);
 extern u8 *D_8023DE30;
 void *func_00001330(unsigned int size);

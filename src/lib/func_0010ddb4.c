@@ -34,7 +34,7 @@ s32 func_0012F530(void *);
 M2C_UNK func_0012F8C0(void *);
 s32 func_0012FBB8(s32, s32);
 extern void func_00130E60(u16, u8);
-M2C_UNK func_00131050();
+extern void func_00131050(void);
 M2C_UNK func_0013109C(u16);
 M2C_UNK func_00132B80(u16);
 M2C_UNK func_00147BDC(s32 *);

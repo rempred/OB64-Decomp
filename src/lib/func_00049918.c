@@ -39,7 +39,7 @@ typedef struct {
 extern Scene g_state_slot_records[];
 extern s32 D_80190F20;
 extern u8 *D_801977CC;
-extern u8 *D_800C4BB8;
+extern void *D_800C4BB8;
 extern u16 g_state_slot_status;
 void func_00019fc0(void);
 void bcopy(const void *src, void *dst, s32 n);

@@ -14,7 +14,7 @@ extern char *D_8018EA00[];
 extern void *func_0002E138(u32 key);
 extern s32 rand(void);
 extern void func_80093380(void *destination, s32 size);
-extern char *func_0002C950(char *destination, const char *source);
+extern unsigned char *func_0002C950(unsigned char *destination, const unsigned char *source);
 extern s32 func_0002C9E0(const char *first, const char *second);
 extern void *resource_free(void *resource);
 
@@ -58,7 +58,7 @@ void func_00041c20(u8 mode, u8 record_index)
         }
 
         func_80093380(record, 0x11);
-        func_0002C950((char *)record, (const char *)chosen);
+        func_0002C950(record, chosen);
         resource_free(decoded);
         attempts--;
 
@@ -86,6 +86,6 @@ void func_00041c20(u8 mode, u8 record_index)
         attempts &= -(duplicate != 0);
       } while (attempts != 0);
     } else {
-        func_0002C950((char *)record, D_8018EA00[(u8)code]);
+        func_0002C950(record, (const u8 *)D_8018EA00[(u8)code]);
     }
 }

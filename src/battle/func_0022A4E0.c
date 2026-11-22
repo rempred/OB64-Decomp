@@ -1,3 +1,4 @@
+#include "game/battle_position_lookup.h"
 typedef unsigned char u8;
 typedef signed int s32;
 
@@ -5,7 +6,6 @@ s32 func_0020C014(void *);
 s32 func_0020C24C(void *);
 s32 func_0020C284(void *);
 s32 func_0020C2C0(void *);
-void *func_0020D770(s32, s32);
 
 s32 func_0022A4E0(void *record)
 {

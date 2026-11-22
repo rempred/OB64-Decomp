@@ -23,7 +23,7 @@ extern u8 func_8016F598(s32 item);
 extern s32 func_8017B58C(void *text);
 extern void func_8017C4B4(s32 value);
 extern void func_80179034(void *text, s32 x, s32 y);
-extern void func_8009C550(void *dest, void *source);
+extern unsigned char *func_8009C550(unsigned char *destination, const unsigned char *source);
 extern u8 *func_8009C620(u8 *, const u8 *);
 extern s32 func_80093460(void *text);
 extern void func_802027DC(void);

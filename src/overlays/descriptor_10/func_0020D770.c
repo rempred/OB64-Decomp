@@ -1,3 +1,5 @@
+#include "game/battle_position_lookup.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -28,7 +30,7 @@ extern inline BattleUnit *BattleGetUnit(u32 i) {
     }
     return ((void *)0);
 }
-BattleUnit *func_0020D770(u32 lane, s32 row) {
+void *func_0020D770(u32 lane, s32 row) {
     s32 i;
     BattleUnit *u;
     if (lane >= 3 || row < 0) {

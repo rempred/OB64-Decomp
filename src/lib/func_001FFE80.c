@@ -1,4 +1,5 @@
 #include "game/combat_selector.h"
+#include "game/combat_state.h"
 
 typedef signed char s8;
 typedef unsigned char u8;
@@ -16,21 +17,24 @@ typedef struct {
     u16 upper_x;
     u16 upper_y;
     u16 flags;
-    u8 unk_12[0xE];
-    s16 offset_x;
-    s16 offset_y;
+    u8 unk_12[2];
+    Func001F1218State state;
 } PrimaryRecord;
+
+typedef union {
+    Func001F1218State update;
+    Func001F0E64Record selector;
+} SecondaryState;
 
 typedef struct {
     u8 unk_00[0x1E];
     s16 position;
     u8 unk_20[0x24];
-    Func001F0E64Record record;
+    SecondaryState state;
 } SecondaryCore;
 
 typedef struct {
     SecondaryCore core;
-    u8 unk_90[4];
     u32 flags;
 } SecondaryRecord;
 
@@ -66,7 +70,6 @@ extern s16 D_801D080A;
 extern s8 D_801D080C;
 extern s8 D_801D080D;
 
-void func_001F1218(void *object, s32 extent, s32 arg2, s32 arg3, s32 arg4);
 void func_001FF8E0(void);
 void func_002013D0(void);
 
@@ -118,12 +121,12 @@ void func_001FFE80(void)
         var_s1_19 = 0;
         do {
             temp_s0_27 = (PrimaryRecord *)(D_801D07D0 + var_s1_19);
-            func_001F1218((u8 *)temp_s0_27 + 0x14, 0x100, 0, 0, 0);
+            func_001F1218(&temp_s0_27->state, 0x100, 0, 0, 0);
             if (temp_s0_27->flags & 1) {
                 original_short = temp_s0_27->lower_x;
-                temp_v1_35 = temp_s0_27->offset_x;
+                temp_v1_35 = temp_s0_27->state.field0C;
                 if (original_short > temp_s0_27->origin_x + temp_v1_35) {
-                    temp_s0_27->offset_x =
+                    temp_s0_27->state.field0C =
                         (s16)(temp_s0_27->upper_x + temp_v1_35 - original_short);
                 }
                 temp_v0_47 = (s16)*(u16 *)((s8 *)temp_s0_27 + 0xC);
@@ -134,9 +137,9 @@ void func_001FFE80(void)
                               temp_a0_48 - temp_v0_47);
                 }
                 temp_a0_60 = temp_s0_27->lower_y;
-                temp_v1_61 = temp_s0_27->offset_y;
+                temp_v1_61 = temp_s0_27->state.field0E;
                 if (temp_a0_60 > temp_s0_27->origin_y + temp_v1_61) {
-                    temp_s0_27->offset_y =
+                    temp_s0_27->state.field0E =
                         (s16)(temp_s0_27->upper_y + temp_v1_61 - temp_a0_60);
                 }
                 temp_v0_73 = (s16)*(u16 *)((s8 *)temp_s0_27 + 0xE);
@@ -158,9 +161,9 @@ void func_001FFE80(void)
         do {
             temp_v0_101 = (SecondaryEntry *)(var_s4_97 + D_801D07D8);
             temp_a0_102 = temp_v0_101->record;
-            temp_s0_103 = temp_a0_102->core.record.field_04;
+            temp_s0_103 = temp_a0_102->core.state.selector.field_04;
             /* This call also reads the pointer at enclosing offset 0x90. */
-            func_001F1218((u8 *)temp_a0_102 + 0x44,
+            func_001F1218(&temp_a0_102->core.state.update,
                           temp_v0_101->extent,
                           0,
                           0,
@@ -180,7 +183,7 @@ void func_001FFE80(void)
                 }
             }
             temp_v0_118 = temp_a0_117->position;
-            temp_v1_119 = (s16)temp_a0_117->record.field_0E;
+            temp_v1_119 = (s16)temp_a0_117->state.selector.field_0E;
             temp_a3_120 = (SecondaryEntry *)temp_a1_112;
             original_short = (s16)temp_v0_118;
             temp_s3_123 = temp_v1_119;
@@ -196,23 +199,23 @@ void func_001FFE80(void)
                     goto next_entry;
                 }
             }
-            temp_v1_125 = (s16)temp_a0_117->record.field_04;
+            temp_v1_125 = (s16)temp_a0_117->state.selector.field_04;
             if (temp_v1_125 != temp_s0_103) {
                 temp_v0_126 = temp_a3_120->reset_base;
-                temp_a0_117->record.field_0C = 0;
-                temp_a0_117->record.field_10 = 0;
-                temp_a0_117->record.field_0E = (s16)(temp_v0_126 - original_short);
+                temp_a0_117->state.selector.field_0C = 0;
+                temp_a0_117->state.selector.field_10 = 0;
+                temp_a0_117->state.selector.field_0E = (s16)(temp_v0_126 - original_short);
                 goto next_entry;
             }
             if (temp_v1_125 < ((SecondaryEntry *)temp_a1_112)->frame_limit) {
-                temp_s0_140 = temp_s2_113->core.record.field_0C;
-                temp_s1_141 = temp_s2_113->core.record.field_10;
-                func_001F0E64(&temp_s2_113->core.record,
+                temp_s0_140 = temp_s2_113->core.state.selector.field_0C;
+                temp_s1_141 = temp_s2_113->core.state.selector.field_10;
+                func_001F0E64(&temp_s2_113->core.state.selector,
                              temp_v1_125 +
                                  ((SecondaryEntry *)temp_a1_112)->frame_step);
-                temp_s2_113->core.record.field_0C = temp_s0_140;
-                temp_s2_113->core.record.field_0E = temp_s3_123;
-                temp_s2_113->core.record.field_10 = temp_s1_141;
+                temp_s2_113->core.state.selector.field_0C = temp_s0_140;
+                temp_s2_113->core.state.selector.field_0E = temp_s3_123;
+                temp_s2_113->core.state.selector.field_10 = temp_s1_141;
             }
 next_entry:
             index++;

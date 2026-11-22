@@ -58,7 +58,7 @@ extern void func_00195410(u16 value, Func0019554CRecord *record);
 extern void func_000FC120(int first, u8 second);
 extern int func_0016C454(void);
 extern void func_00023780(void *destination, int size);
-extern char *func_0002C950(char *destination, const char *source);
+extern unsigned char *func_0002C950(unsigned char *destination, const unsigned char *source);
 
 void func_0019554C(
     int record_index,
@@ -155,7 +155,7 @@ void func_0019554C(
     if (func_0016C454() != 0) {
         if ((bounded_source_index == 30) & (selector == 0)) {
             func_00023780(late_record, 17);
-            func_0002C950((char *)late_record, g_func_0019554C_string);
+            func_0002C950(late_record->field_00, (const u8 *)g_func_0019554C_string);
         }
     }
 

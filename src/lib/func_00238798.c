@@ -46,7 +46,7 @@ typedef struct BattleUnit {
 } BattleUnit;
 s32 D_801C8B84(BattleUnit *u);
 s32 D_801C8E30(BattleUnit *u);
-BattleUnit *D_801CA2E0(s32 lane, s32 row);
+void *D_801CA2E0(unsigned int lane, int row);
 s32 func_00238798(BattleUnit *u) {
     if (D_801C8B84(u)) {
         if (u->unk58 == 6) {

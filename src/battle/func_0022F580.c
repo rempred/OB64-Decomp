@@ -1,5 +1,7 @@
 #include "game/combat_selector.h"
 #include "game/combat_evaluator.h"
+#include "game/battle_position_lookup.h"
+
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -129,7 +131,6 @@ extern void *func_0020C478(unsigned int index);
 extern int func_0020D434(int);
 extern int func_0020D4C8(ResolutionObject *, int);
 extern int func_0020D72C(void *);
-extern ResolutionObject *func_0020D770(int, int);
 extern int func_0020D814(ResolutionObject *);
 extern int func_0020F8DC(void);
 extern int func_0020BFE4(void);

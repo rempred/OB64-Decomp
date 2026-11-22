@@ -18,7 +18,7 @@ typedef struct LinkRecord {
 extern ClassEntry D_80187C40[];
 extern LinkRecord D_80195560[];
 extern const void *func_8016E1DC(u8 first, u8 second);
-extern void func_8009C550(void *destination, const void *source);
+extern unsigned char *func_8009C550(unsigned char *destination, const unsigned char *source);
 extern u16 func_8016DF88(u8 first, u8 second);
 extern u16 func_8016DFDC(u8 first, u8 second);
 extern u16 func_8016E030(u8 first, u8 second);
