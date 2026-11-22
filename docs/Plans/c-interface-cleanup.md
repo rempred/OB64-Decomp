@@ -82,6 +82,18 @@ The header reader also calls the resident DMA routine `func_0001A380` at ROM `0x
 
 Trace the eight wrappers that feed `func_0021CBC4` before changing the dispatcher's definition. Its six calls through `func_001CA29C` reach the pointer-to-index lookup `func_0020D72C` on the identified descriptor-10 load path. The lookup compares its input with up to 20 record addresses. Its 27 named C calls span 13 files. Four absolute-address calls still need load-context evidence. Two table words at ROM `0xDC78C` and `0xDC790` have the address of the `func_0021D2F8` wrapper in a different loaded region. Establish what they select before attributing a dynamic caller. The Director owns scheduling this family against the remaining ranked work.
 
+## Round 5
+
+[Round 4 acceptance](https://github.com/rempred/OB64-Decomp/commit/a54ea775b1750683034b30372ef7472f29fea83c) cleared 140 findings with an exact retail ROM. The accepted scan has 1,720 remaining across 301 linked entries. The three highest-ranked functions have disjoint assignments spanning 35 complete source files.
+
+| Source lead | Provider | Findings against provider | Assigned files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Resource decoding | `func_0002e138` | 38 | 11 | Follow the archive key and returned decoded pointer through a caller. Check how the caller uses that pointer after the temporary buffer is freed. |
+| Audio heap allocation | `bump_alloc` | 35 | 7 | Trace the heap, allocation count and element size through an exact fit and a failed allocation. Check declarations at the expanded audio library call sites. |
+| Battle callback arguments | `func_0020BDCC` | 32 | 17 | Trace the argument from a retail caller into the optional callback at offset +0x10. Identify the installed callback and compare what happens when the slot is empty. |
+
+The resource decoder contains an inline header reader with two further findings about the destination argument of `func_0001A380`. Its worker owns both, bringing the round to 107 distinct findings. The seven heap files produce 15 accepted targets. Preserve their group membership during comparison.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
