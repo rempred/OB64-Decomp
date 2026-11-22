@@ -152,7 +152,11 @@ The selector lead owns the complete `func_0022B1F4`, `func_0022F580` and `func_0
 
 The random-result lead also checks both callers of the [resident string append routine](#resident-string-append-follow-up) in a separate packet. Their declaration difference first appeared in coverage review and adds no definite findings to the opening count.
 
-The selector lead also owns three complete callers found by the linked scan. Six named calls in `func_0022257C`, `func_0022C78C` and `func_001FFE80` reach the same selector. The first two pass local copies of 0x50 bytes. The third passes the record region starting at +0x44 within an enclosing object. Check its overlapping fields and the complete copy before choosing a compatible record declaration. These callers and the two string append callers bring the round to 23 complete files.
+The selector lead also owns three complete callers found by the linked scan. Six named calls in `func_0022257C`, `func_0022C78C` and `func_001FFE80` reach the same selector. The first two pass local copies of 0x50 bytes. The third passes the record region starting at +0x44 within an enclosing object. The selector lead will use the provider's tagged 0x4C-byte record and full unsigned selector in one shared declaration. The accepted layout in `func_002215D0` puts that record at +0x44 with four bytes remaining before +0x94. In `func_001FFE80`, the code also reads the frame and offset as signed halfwords and restores fields at +0x50, +0x52 and +0x54. Check these uses and the entire 0x50-byte copies with the proposed header installed. The seven callers that already declare the compatible tag serve as controls. These callers under repair and the two string append callers bring the round to 23 complete files.
+
+### Battle evaluator follow-up
+
+The same copied bytes subsequently reach `func_001F197C`, which uses a distinct 0x48-byte state view. The accepted Round 7 census has 16 named calls across six files, including six definite findings in `func_0022B1F4`. Other callers have unsupported aggregate declarations. The Director will group these findings with their callers when ranking subsequent work. `func_0021EBBC` supplies a compatible evaluator declaration and shows how both typed views fit in the 0x50-byte copy. Preserve the evaluator's signed field accesses, output array and scalar return during the selector repair.
 
 ## Matching and acceptance
 
