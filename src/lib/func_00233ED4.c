@@ -44,7 +44,7 @@ typedef struct BattleUnit {
     s32 unk94;
     u8 unk98[0x60];
 } BattleUnit;
-s32 D_801C8B84(BattleUnit *u);
+int D_801C8B84(void *record);
 s32 D_801CA29C(void *u);
 s32 func_002337E4(BattleUnit **out, s32 start, s32 lane);
 BattleUnit *func_00233D0C(BattleUnit *self, BattleUnit **list, s32 n);

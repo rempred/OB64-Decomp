@@ -1,6 +1,5 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
+#include "overlays/descriptor_18_script_records.h"
+
 void func_001BD378(u8 *p, u16 mask, u8 v) {
     u16 bit = 1;
     u32 i;

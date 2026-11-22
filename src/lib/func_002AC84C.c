@@ -1,8 +1,9 @@
+#include "game/class_comparison.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 extern u8 *D_8022A974;
 extern u8 *D_801CE8BC;
-u8 D_8016FF5C(u8 a, u8 b);
 void func_002AC84C(u8 slot, u8 kind) {
     s32 i;
     s32 k;

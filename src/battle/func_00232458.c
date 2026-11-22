@@ -62,7 +62,6 @@ extern void func_00023780(void *, u32);
 extern int rand(void);
 extern void func_0020D870(DispatchObject *, int);
 extern int func_00233F94(DispatchObject *);
-extern int func_0020C014(DispatchObject *);
 extern int func_0023887C(int, int, int, int);
 extern void func_00237E2C(DispatchDescriptor *, int, int);
 extern void func_00239338(DispatchDescriptor *, DispatchObject *, DispatchObject *, DispatchObject *);

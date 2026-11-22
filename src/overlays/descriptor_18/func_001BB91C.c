@@ -1,6 +1,5 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
+#include "overlays/descriptor_18_script_records.h"
+
 typedef struct {
     u8 unk00;
     u8 state;
@@ -15,7 +14,6 @@ typedef struct {
     u8 unk2A[2];
     u16 cond;
 } ScriptCtx;
-u8 *func_001BBFFC(u16 id);
 s32 func_001BB91C(ScriptCtx *ctx) {
     *func_001BBFFC(*(u16 *)(ctx->pc + 2)) = 0;
     ctx->pc += 4;

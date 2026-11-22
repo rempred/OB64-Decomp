@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 #include "game/combat_selector.h"
 #include "game/combat_evaluator.h"
 #include "game/battle_position_lookup.h"
@@ -120,7 +122,6 @@ extern void func_00023780(void *, u32);
 extern void func_00023460(const void *, void *, u32);
 extern unsigned int func_00022e60(void);
 extern int rand(void);
-extern int func_0020C014(ResolutionObject *);
 extern int func_0020C2C0(ResolutionObject *);
 extern int func_0020C32C(ResolutionObject *);
 extern int func_0020C2F4(ResolutionObject *);

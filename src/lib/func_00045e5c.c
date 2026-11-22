@@ -1,6 +1,7 @@
+#include "game/class_comparison.h"
+
 typedef unsigned char u8;
-typedef signed int s32;
-s32 func_00045e5c(u8 a, u8 b) {
+u8 func_00045e5c(u8 a, u8 b) {
     if (a == b) {
         return 1;
     }

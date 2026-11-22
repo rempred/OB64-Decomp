@@ -1,3 +1,5 @@
+#include "game/class_comparison.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -27,7 +29,6 @@ typedef struct {
     u8 unk34[4];
 } PlayerChar;
 extern PlayerChar D_80193BC0_copy[];
-u8 D_8016FF5C(u8 cls, u8 x);
 s32 func_00290820(u8 x) {
     u8 i;
     for (i = 0; i < 100; i++) {

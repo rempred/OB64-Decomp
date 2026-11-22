@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -16,13 +18,13 @@ typedef struct {
     u8 unk5C[0x14];
     s32 actsMax;
 } BattleUnit;
-s32 func_0020C014(BattleUnit *u);
 void *func_0020C478(unsigned int index);
-extern inline s32 func_0020C014(BattleUnit *u) {
-    if (u == ((void *)0)) {
+extern inline int func_0020C014(void *record) {
+    if (record == ((void *)0)) {
         return 0;
     }
-    return ((u->flags >> 8) ^ 1) & 1;
+
+    return ((((BattleUnit *)record)->flags >> 8) ^ 1) & 1;
 }
 s32 func_0020C050(u8 a, u8 b) {
     return func_0020C014(func_0020C478(a)) ^ func_0020C014(func_0020C478(b));

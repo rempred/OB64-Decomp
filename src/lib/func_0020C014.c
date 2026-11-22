@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 int func_0020C014(void *object)
 {
     if (object == 0) {

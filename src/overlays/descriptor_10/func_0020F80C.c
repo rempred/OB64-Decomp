@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -17,8 +19,9 @@ typedef struct {
     s32 actsMax;
 } BattleUnit;
 extern u8 *D_801CE8BC;
-s32 func_0020C014(BattleUnit *u);
-extern inline s32 func_0020C014(BattleUnit *u) {
+extern inline int func_0020C014(void *record) {
+    BattleUnit *u = record;
+
     if (u == ((void *)0)) {
         return 0;
     }

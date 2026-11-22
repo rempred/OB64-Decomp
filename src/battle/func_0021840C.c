@@ -1,3 +1,5 @@
+#include "game/battle_record_flag.h"
+
 #include "game/combat_selector.h"
 
 typedef signed char s8;
@@ -37,7 +39,6 @@ void func_0020BD5C(s32 selector);
 s32 func_0020BF7C();                                            
 s32 func_0020BF8C();                                            
 s32 func_0020BFE4();                                            
-s32 func_0020C014(void **);                                     
 s32 func_0020C2C0(void **);                                     
 s32 func_0020C32C(void **);                                     
 void *func_0020C478(unsigned int index);                                      

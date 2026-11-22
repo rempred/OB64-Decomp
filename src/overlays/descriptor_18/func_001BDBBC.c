@@ -4,7 +4,7 @@ typedef unsigned int u32;
 typedef struct { u8 b[0x76]; } ScriptObj;
 extern ScriptObj D_8022A2E8[];
 void func_001BDBBC();
-typedef void (*ScriptObjFn)(ScriptObj *o);
+typedef void (*ScriptObjFn)(u8 *o);
 typedef struct {
     u32 w0;
     u32 w1;
@@ -22,7 +22,7 @@ void func_001BDBBC(void) {
     for (i = 0; i < 4; i++) {
         fn = D_80229FA4[D_8022A2E8[i].b[0]];
         if (fn != ((void *)0)) {
-            fn(&D_8022A2E8[i]);
+            fn(D_8022A2E8[i].b);
         }
     }
 }

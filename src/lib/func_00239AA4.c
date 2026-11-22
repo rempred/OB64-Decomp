@@ -1,3 +1,5 @@
+#include "game/class_comparison.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -44,11 +46,10 @@ typedef struct BattleUnit {
     s32 unk94;
     u8 unk98[0x60];
 } BattleUnit;
-s32 D_801C8B84(BattleUnit *u);
+int D_801C8B84(void *record);
 s32 D_801C8C58(BattleUnit *u);
 int D_801C8B68(void *record);
 s32 D_801C8B08(BattleUnit *u);
-u8 D_8016FF5C(u8 a, u8 b);
 s32 func_00239AA4(BattleUnit *u, u32 f) {
     s32 r = 0;
     s32 k = D_801C8B08(u);

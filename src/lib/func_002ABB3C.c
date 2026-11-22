@@ -1,4 +1,5 @@
 #include "game/battle_record_flag.h"
+#include "game/class_comparison.h"
 
 typedef signed char s8;
 typedef unsigned char u8;
@@ -13,7 +14,6 @@ extern s16 D_8022A994;    /* current scenario id */
 extern s32 func_0020C0E8(char *unit);
 extern s32 func_0020C32C(char *unit);
 extern u8 func_002AD574(char *unit);
-extern u8 func_00045e5c(u8 wanted, u8 classId);
 extern void func_0002CD70(volatile void *pointer, s32 value, s32 size);
 extern void func_002AB810(volatile s32 *slots, char *unit, s32 index, s32 flip, s32 classId, s32 variant, s32 seenLeader);
 extern s32 func_002A9364(s32 slot, s32 classId, s32 variant, s32 animation,

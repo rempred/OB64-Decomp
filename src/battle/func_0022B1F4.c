@@ -24,7 +24,6 @@ s32 func_000454e0(s32);
 s32 func_00201584(s32, s32);
 s32 func_00201798(s32, s32, s32, UnknownWord);
 s32 func_0020BFE4();
-s32 func_0020C014(s32 *);
 s32 func_0020C104(s32 *);
 s32 func_0020C164(s32 *);
 s32 func_0020C2C0(s32 *);

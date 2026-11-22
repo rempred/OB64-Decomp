@@ -44,7 +44,6 @@ extern void func_0020CBDC(RosterRow *, s32);
 extern void func_001F0F6C(void *);
 extern void func_001F102C(void *);
 extern void *func_0020C478(unsigned int index);
-extern s32 func_0020C014(RosterRow *);
 extern u16 func_0020C448(RosterRow *);
 extern u32 func_002015C8(s32, s32, s32, s32);
 extern void func_00207658(s32 *, s32 *, s32 *, s32 *, s32 *, u32);
