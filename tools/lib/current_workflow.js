@@ -844,7 +844,7 @@ function currentVerificationState(context) {
   } catch (error) { inputSet.rethrow(error, inputs); return { exact: false, state }; }
   try {
     const interfaces = require('./c_interface_companion').validate({root:ROOT,state,fresh:readJson(state.freshCompilationReport),read:inputs?file=>inputSet.read(inputs,file):undefined,selectedInputs:inputs});
-    if (interfaces.version !== 1) return { exact: false, state };
+    if (![1, 2].includes(interfaces.version)) return { exact: false, state };
   } catch (error) { inputSet.rethrow(error, inputs); return { exact: false, state }; }
   const rom = path.join(state.output, 'phase8.us_rev0.z64');
   const exact = fs.existsSync(rom) && fs.statSync(rom).size === context.model.config.rom.bytes

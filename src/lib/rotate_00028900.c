@@ -1,3 +1,5 @@
+#include "common/matrix_float.h"
+
 extern float sinf(float);
 extern float func_00020bf0(float);
 extern void guNormalize(float *, float *, float *);

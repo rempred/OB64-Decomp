@@ -1,3 +1,4 @@
+#include "game/runtime_unit_source.h"
 #include "game/unit_record_lookup.h"
 
 #include "game/sound_channel.h"
@@ -29,11 +30,9 @@ void func_00109C3C(struct RuntimeUnit *);
 f32 func_00118500(void *, void *);
 void func_0011BB4C(void);
 void func_00129948(const void *unit);
-void *func_0012E7E8(void *);
 void func_0012EA80(s32, f32 *);
 struct DeploymentUnit;
 void func_0012F140(struct DeploymentUnit *);
-s32 func_0012F530(void *);
 void func_0012F8C0(struct DeploymentUnit *);
 s32 func_0012FBB8(s32, s32);
 extern void func_00130E60(u16, u8);

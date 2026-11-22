@@ -2,6 +2,7 @@
 #define OB64_GAME_CUTSCENE_PANELS_H
 
 #include "common/types.h"
+#include "game/combat_draw.h"
 
 typedef struct PanelParameters {
     u16 *field00;
@@ -69,9 +70,25 @@ typedef struct Panel {
     s32 field50;
     s32 field54;
     s32 field58;
-    u8 pad5C[0x74];
+    u8 pad5C[0x34];
+    CombatDrawVertex vertices[4]; /* +0x90..0xCF */
     PanelContent *content;
+    u8 padD4[0x14];
 } Panel;
+
+/* The list head is its own 0xD8 allocation; +0 is a count, not a
+ * previous-panel pointer. Each inserted 0xE8 Panel has ordinary prev/next links.
+ * Unobserved head fields include the matrices and resource addresses. */
+typedef struct PanelList {
+    u16 count;
+    u8 pad02[2];
+    Panel *link04;
+    u8 pad08[0xC8];
+    u16 fieldD0;
+    u8 fieldD2;
+    u8 padD3;
+    u32 fieldD4;
+} PanelList;
 
 typedef struct PanelSlot {
     s32 key;
@@ -103,10 +120,17 @@ typedef struct PanelPositionState {
 
 extern PanelParameters *D_8023DE34;
 extern PanelScene *D_8022A974;
-extern Panel *D_8018FDC0;
+extern PanelList *D_8018FDC0;
 extern PanelPositionState *D_8023DE30;
 
 typedef void (*PanelCallback)(Panel *, s32);
+
+Panel *func_00055234(u16 id);
+Panel *func_0005526c(u16 id);
+Panel *func_000552c0(void);
+void func_000521fc(Panel *panel);
+void func_00056a1c(Panel *panel, s16 x0, s16 y0, s16 x1, s16 y1);
+void D_80180B1C(Panel *panel, s16 x0, s16 y0, s16 x1, s16 y1);
 
 void func_00297CC8(s32 slot, s32 preset);
 void func_00283748(s32 slot);

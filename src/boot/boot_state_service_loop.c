@@ -1,7 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/clock420.h"
 typedef struct {
     u32 w0;
     u32 w1;
@@ -29,7 +26,7 @@ extern u8 D_800A8214;
 extern u8 D_800A81FC;
 extern u8 D_800AEFA0;
 extern u32 D_800AEFA4;
-extern u8 D_80196A28[];
+extern Clock420 D_80196A28;
 u8 boot_status_flag_test(void);
 void func_00019fc0(void);
 void boot_resource_window_cache_update(void);
@@ -42,7 +39,6 @@ void boot_display_list_finalize_flip(void);
 void boot_state_slot_render_callback_walk(void);
 void D_80180BDC(void);
 void boot_table_mask_reconcile(void);
-void D_8016CB44(void *t);
 void D_8007FD10(void);
 void func_000071C8(void);
 void boot_state_slot_callback_dispatch(void);

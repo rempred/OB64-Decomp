@@ -1,10 +1,7 @@
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-void D_80180B1C(u8 *n, s16 x0, s16 y0, s16 x1, s16 y1);
+#include "game/cutscene_panels.h"
+
 typedef struct {
-    s32 used;
+    Panel *panel;
     void *text;
     u8 flags;
     u8 state;
@@ -24,11 +21,11 @@ extern Rec698 D_8022A698[];
 void func_001C1DF4(void) {
     s32 i;
     Rec698 *r;
-    u8 *n;
+    Panel *n;
     s32 st;
     for (i = 0; i < 4; i++) {
         r = &D_8022A698[i];
-        if (r->used == 0) {
+        if (r->panel == 0) {
             continue;
         }
         st = r->state;
@@ -52,7 +49,7 @@ void func_001C1DF4(void) {
         if (!(r->flags & 2)) {
             continue;
         }
-        n = (u8 *)r->used;
+        n = r->panel;
         (*(s32 *)((u8 *)(n) + (0x2C))) = r->hA - r->h10 / 2;
         (*(s32 *)((u8 *)(n) + (0x30))) = r->hC - 11;
         (*(s32 *)((u8 *)(n) + (0x34))) = (*(s32 *)((u8 *)(n) + (0x2C))) + r->h10;

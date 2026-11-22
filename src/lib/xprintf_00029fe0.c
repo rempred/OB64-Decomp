@@ -1,21 +1,12 @@
 typedef unsigned int u32;
-typedef struct {
-    union { long long s; unsigned long long u; double d; unsigned short h[4]; } value;
-    signed char *buffer;
-    int n0, nz0, n1, nz1, n2, nz2;
-    int precision, width;
-    unsigned int count;
-    int flags;
-    signed char qualifier;
-} FormatRecord;
+#include "common/format_record.h"
+
 typedef void *(*PrintOutput)(void *, const signed char *, unsigned int);
 extern const signed char D_800AEA80[], D_800AEAA0[];
 extern const int D_800AEA88[];
 extern const signed char D_800ABB20[], D_800ABB44[];
 extern signed char *strchr(const signed char *, int);
 extern int strlen(const signed char *);
-extern void func_0002ba70(FormatRecord *, signed char);
-extern void func_0002bcc0(FormatRecord *, signed char);
 void func_0002a560(FormatRecord *, signed char **, signed char, signed char *);
 
 #define NEXT_ARG(ap, type) \

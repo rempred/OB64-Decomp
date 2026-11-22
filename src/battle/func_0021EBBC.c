@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/battle_roster_record.h"
 #include "game/battle_record_flag.h"
 #include "game/battle_panel_record.h"
@@ -139,8 +140,6 @@ extern void func_00208DC8(void *, int), func_0020BD5C(int);
 extern int func_0020BF34(int), func_0020BF50(int);
 extern int func_0020BF7C(void), func_0020BF8C(void), func_0020BFE4(void);
 extern int func_0020BFF8(void *), func_0020C014(void *);
-extern int func_0020C0CC(void *);
-extern int func_0020C348(void *);
 extern void *func_0020C478(u32);
 extern void func_0020C4B8(int, int, int, int *, int *);
 extern u8 func_0020D434(int);

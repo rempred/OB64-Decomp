@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/battle_record_flag.h"
 
 #include "game/battle_roster_record.h"
@@ -26,13 +27,10 @@ u8 func_002014C4(u32);
 int func_00201798(s32, s32, s32, M2C_UNK);
 s32 func_0020BF50(M2C_UNK);
 s32 func_0020BFE4();
-s32 func_0020C1B4(void *);
 s32 func_0020C24C(void *);
-s32 func_0020C3B4(void *);
 void *func_0020C478(unsigned int index);
 u8 func_0020D434(s32);
 s32 func_0020D4C8(void *, u32);
-s32 func_0020D6F8(void *, void *);
 s32 func_0020D72C(void *);
 void func_0021D200(s32, s32, void *);
 void func_0021D230(s32, s32, void *, s32);

@@ -156,7 +156,7 @@ function controller(change) {
 for (const change of ['conflict', 'source', 'header', 'baseline', 'tool', 'output', 'raw-report', null])
   controller(change);
 
-function stateControl(change, selected = false) {
+function stateControl(change, selected = false, version = 1) {
   const interfaces = {
       schemaVersion: 1,
       verdict: {
@@ -199,9 +199,7 @@ function stateControl(change, selected = false) {
     } : name === './c_interface_companion' ? {
       validate: () => {
         if (change) throw Error('companion rejected');
-        return {
-          version: 1
-        };
+        return { version };
       }
     } : {
       readJson: file => file === 'state' ? state : file === 'interfaces' ? (change === 'failed' ? {
@@ -241,11 +239,13 @@ function stateControl(change, selected = false) {
       }
     }
   });
-  assert.strictEqual(status.exact, !change);
+  assert.strictEqual(status.exact, !change && (version === 1 || version === 2));
   assertions++;
 }
-for (const selected of [false, true])
-  for (const change of [null, 'stale', 'failed', 'missing']) stateControl(change, selected);
+for (const selected of [false, true]) {
+  for (const version of [0, 1, 2]) stateControl(null, selected, version);
+  for (const change of ['stale', 'failed', 'missing']) stateControl(change, selected);
+}
 console.log(JSON.stringify({
   status: 'pass',
   assertions,

@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/effect_math_e04.h"
 
 typedef struct {
@@ -7,7 +8,6 @@ typedef struct {
 } E04Vec3;
 
 extern int func_0020BFF8(void *);
-extern int func_0020C2D8(void *);
 
 void func_0026C4EC(void *object, void *outputView)
 {

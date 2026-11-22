@@ -1,21 +1,10 @@
-typedef signed short s16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "common/mus_effect.h"
 typedef signed long long s64;
 typedef struct {
     u32 w0;
     u32 w1;
 } Acmd;
-typedef struct {
-    s16 fc;
-    s16 fgain;
-    union {
-        s16 fccoef[16];
-        s64 force_aligned;
-    } fcvec;
-    s16 *fstate;
-    s32 first;
-} ALLowPass;
+
 u32 osVirtualToPhysical(void *addr);
 Acmd *func_000182e0(ALLowPass *lp, s32 buff, Acmd *p);
 Acmd *func_000182e0(ALLowPass *lp, s32 buff, Acmd *p) {

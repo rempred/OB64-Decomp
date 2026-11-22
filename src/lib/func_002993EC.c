@@ -15,8 +15,8 @@ extern void func_800EA604(SoundChannel *, s32);
 
 s32 func_002993EC(void)
 {
-    /* The list head uses a halfword at +0xD0. Ordinary panels hold a content pointer there. */
-    Panel *head = D_8018FDC0;
+    /* The independent list head has a halfword counter at +0xD0. */
+    PanelList *head = D_8018FDC0;
     Panel *panel;
     PanelContent *content;
     s32 result = -1;
@@ -46,7 +46,7 @@ contentReady:
             goto done;
         }
         if ((panel->flags & 4) && content->field5FC < content->field5F4) {
-            if (((u16 *)D_8018FDC0)[0xD0 / 2] % content->field5FE == 0) {
+            if (D_8018FDC0->fieldD0 % content->field5FE == 0) {
                 content->field5FD++;
             }
             if (content->field5FD >= content->field5F3) {
@@ -116,7 +116,7 @@ contentReady:
         if (content->field5F1 >= content->field5F2) {
             goto resetState;
         }
-        if (((u16 *)D_8018FDC0)[0xD0 / 2] & 1) {
+        if (D_8018FDC0->fieldD0 & 1) {
             func_800EA604(&D_800EB1F0, 2);
             content->field5F1++;
         }

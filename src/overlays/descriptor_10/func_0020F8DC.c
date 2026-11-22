@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/battle_record_flag.h"
 
 typedef unsigned char u8;
@@ -19,11 +20,12 @@ typedef struct {
     s32 actsMax;
 } BattleUnit;
 extern u8 *D_801CE8BC;
-extern inline s32 func_0020C0CC(BattleUnit *u) {
+extern inline s32 func_0020C0CC(void *record) {
+    BattleRosterRecord *u = record;
     if (u == ((void *)0)) {
         return 0;
     }
-    return (u->flags >> 12) & 1;
+    return (u->flags40 >> 12) & 1;
 }
 extern inline int func_0020C2C0(void *record) {
     if (record == 0) {

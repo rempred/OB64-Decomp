@@ -1,15 +1,16 @@
+#include "game/sound_channel_services.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
 extern s32 e09_byte_80220F68;
 extern s32 e09_pointer_80220F6C;
-extern u8 D_800EB1F0[];
+extern SoundChannel D_800EB1F0;
 void D_8020DFB8(void);
 void D_8020DC80(short state);
 void D_8020DD34(u16 state);
 void D_8020E0B4(s32 a, s32 b);
 void D_801F8E50(u8 id, u8 *s);
-void D_800EA604(u8 *a, s32 b);
 extern u8 D_80225810[];
 extern u8 D_80225816[];
 extern u8 D_8022581C[];
@@ -26,7 +27,7 @@ s32 func_00278FC0(u16 msg, u8 *o) {
             D_8020DC80(0x1002);
             break;
         case 0x1002:
-            D_800EA604(D_800EB1F0, 0x2E0);
+            D_800EA604(&D_800EB1F0, 0x2E0);
             D_801F8E50(*(*(u8 * *)((u8 *)(o) + (4))), D_80225810);
             D_8020E0B4(9, 0x1003);
             break;

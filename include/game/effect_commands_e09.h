@@ -35,7 +35,7 @@ void func_0025DAB0(u8 value, const Func0025DAB0Input *input);
 void func_0025DB00(void *value, const Func0025DAB0Input *input);
 s32 func_0025DB50(u16 command, u8 *state);
 s32 func_0025DC4C(u16 command, struct E09StateDC4C *state);
-s32 func_002700B0(u16 command, struct E09State700B0 *state);
+s32 func_002700B0(u32 command, void *payload);
 s32 func_00272790(u16 command, struct E09State72790 *state);
 
 #endif

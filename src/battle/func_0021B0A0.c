@@ -1,20 +1,13 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/cutscene_panels.h"
+#include "game/battle_predicates.h"
 typedef signed long long s64;
 typedef unsigned long long u64;
 typedef float f32;
 typedef double f64;
 typedef s32 M2C_UNK;
 
-struct Node;
-void func_000521fc(struct Node *);
 s32 func_0020BFE4();
 s32 func_0020C014(void *);
-s32 func_0020C0CC(void *);
 void *func_0020C478(unsigned int index);
 M2C_UNK func_0021AE6C(f32, M2C_UNK);
 
@@ -26,9 +19,9 @@ extern u16 D_8019532C[];
 void func_0021B0A0(void)
 {
     f32 var_f12_147;
-    struct Node *temp_a0_113;
-    struct Node *temp_a0_130;
-    struct Node *temp_a0_96;
+    Panel *temp_a0_113;
+    Panel *temp_a0_130;
+    Panel *temp_a0_96;
     s32 temp_count;
     s32 var_s1_9;
     s32 var_v0_38;
@@ -86,7 +79,7 @@ void func_0021B0A0(void)
     if (temp_v0_90 != 0) {
         *(u8 *)((s8 *)temp_a0_89 + 0x5744) = temp_v0_90 - 1;
     } else {
-        temp_a0_96 = *(struct Node **)((s8 *)temp_a0_89 + 0x5748);
+        temp_a0_96 = *(Panel **)((s8 *)temp_a0_89 + 0x5748);
         if (temp_a0_96 != 0) {
             func_000521fc(temp_a0_96);
             *(s32 *)((s8 *)D_801CE8BC + 0x5748) = 0;
@@ -98,7 +91,7 @@ void func_0021B0A0(void)
     if (temp_v0_107 != 0) {
         *(u8 *)((s8 *)temp_a0_106 + 0x5745) = temp_v0_107 - 1;
     } else {
-        temp_a0_113 = *(struct Node **)((s8 *)temp_a0_106 + 0x574C);
+        temp_a0_113 = *(Panel **)((s8 *)temp_a0_106 + 0x574C);
         if (temp_a0_113 != 0) {
             func_000521fc(temp_a0_113);
             *(s32 *)((s8 *)D_801CE8BC + 0x574C) = 0;
@@ -110,7 +103,7 @@ void func_0021B0A0(void)
     if (temp_v0_124 != 0) {
         *(u8 *)((s8 *)temp_a0_123 + 0x57D0) = temp_v0_124 - 1;
     } else {
-        temp_a0_130 = *(struct Node **)((s8 *)temp_a0_123 + 0x57D4);
+        temp_a0_130 = *(Panel **)((s8 *)temp_a0_123 + 0x57D4);
         if (temp_a0_130 != 0) {
             func_000521fc(temp_a0_130);
             *(s32 *)((s8 *)D_801CE8BC + 0x57D4) = 0;

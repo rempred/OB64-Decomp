@@ -1,7 +1,7 @@
+#include "game/runtime_unit_source.h"
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef signed int s32;
-typedef struct { u32 flags; u8 source_index; } RuntimeUnit;
 typedef struct { u8 bytes[25]; } SourceRecord25;
 typedef struct { u8 bytes[52]; } Record52;
 typedef struct { u8 bytes[56]; } Record56;
@@ -10,8 +10,9 @@ extern SourceRecord25 g_func_001957D0_source_records[];
 extern Record52 D_80195560[];
 extern Record56 D_80193BC0[];
 
-void *func_0012E7E8(RuntimeUnit *unit)
+void *func_0012E7E8(void *unitView)
 {
+    RuntimeUnitSource *unit = unitView;
     s32 slot;
     u8 *source = g_func_001957D0_source_records[unit->source_index].bytes;
     /* Keep base + slot before the two-byte field displacement; folding the

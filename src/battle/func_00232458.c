@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/battle_record_flag.h"
 #include "game/battle_roster_record.h"
 
@@ -67,7 +68,6 @@ extern void func_00239338(DispatchDescriptor *, BattleRosterRecord *, BattleRost
 extern int func_0025FD00(u16);
 extern void func_0021D1CC(int, int);
 extern void *func_0020C478(unsigned int index);
-extern int func_0020C0CC(DispatchObject *);
 extern int func_002363FC(DispatchObject *);
 extern int func_002365BC(BattleRosterRecord *, DispatchObject *, int, int);
 extern void func_0022A7B8(void *, int, int, int, int, int);

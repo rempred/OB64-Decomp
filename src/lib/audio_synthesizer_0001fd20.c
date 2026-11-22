@@ -2,13 +2,6 @@
  * Original-owned global pointer and protected companions retain their roles. */
 #include "common/audio_filter.h"
 
-struct L4Client {
-    struct L4Client *next;
-    void *field04;
-    int (*handler)(struct L4Client *);
-    void *field0c;
-    int sampleTime;
-};
 extern L4Synth *alGlobals;
 extern void *alHeapDBAlloc(void *, int, void *, int, int);
 extern void alSaveNew(L4Save *);
@@ -16,8 +9,6 @@ extern void alAuxBusNew(L4Bus *, L4Filter **, int);
 extern void alMainBusNew(L4Bus *, L4Filter **, int);
 extern void *alSynAllocFX(L4Synth *, short, void *, void *);
 extern int alMainBusParam(L4Bus *, int, L4Filter *);
-extern void alLink(L4Link *, L4Link *);
-extern void alUnlink(L4Link *);
 extern void alLoadNew(L4Load *, L4DmaConstructor, void *);
 extern void alLoadParam(void *, int, void *);
 extern void alResampleNew(L4Resample *, void *);
@@ -58,11 +49,11 @@ void func_0001fd20(L4Synth *s, L4Config *config)
     else
         alMainBusParam(s->mainBus, 2, &s->slots->bus.filter);
     s->freeVoices.next = 0;
-    s->freeVoices.previous = 0;
+    s->freeVoices.prev = 0;
     s->lameVoices.next = 0;
-    s->lameVoices.previous = 0;
+    s->lameVoices.prev = 0;
     s->allocatedVoices.next = 0;
-    s->allocatedVoices.previous = 0;
+    s->allocatedVoices.prev = 0;
     voices = alHeapDBAlloc(0, 0, heap, config->maxVoices, sizeof(L4Voice));
     for (i = 0; i < config->maxVoices; i++) {
         L4Voice *voice = &voices[i];

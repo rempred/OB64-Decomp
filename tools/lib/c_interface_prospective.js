@@ -15,17 +15,17 @@ const POLICY = 'zero-definite-and-affected-interfaces-v2';
 // Transition evidence is diagnostic and cannot publish verified CURRENT.
 const ACCEPTANCE_EPOCH = {
   "phase": "permanent",
-  "richPolicy": "exact-legacy-exceptions",
+  "richPolicy": "global-zero",
   "exceptions": {
     "path": "config/c-interface-exceptions.json",
-    "sha256": "A2B8B305F4084A15D3AB29691DFF4279BD77704925AC273A66A03BD15B90DC4F"
+    "sha256": "F30F0632AC22E9F125E33E750763121BEE8C0408DA416CDDB5801775DA8CE752"
   }
 };
 // Transition pin only. Independent final-wave ratification replaces it before publication.
 const BOOTSTRAP = {
   "path": "config/c-interface-reference.json.gz",
-  "sha256": "57F197A618BACCC8D86D6BF6437DB30DBA035AEF5ADF8DFBA55CFABD6738DCE1",
-  "commit": "5d7ee19bc0d8c23ba59aeed12eb17a050beaecd7"
+  "sha256": "37E98EC9420B9B3C8B2DD14B54AA93524623BD953F84C5F759E4752A86FB3815",
+  "commit": "a959ee02349c2a59563d794994b393aef1597754"
 };
 
 function linkageFingerprint(build) {

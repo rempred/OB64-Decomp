@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/battle_record_flag.h"
 
 typedef unsigned char u8;
@@ -13,7 +14,6 @@ extern u8 D_801976E8;
 
 void *func_0020C478(unsigned int index);
 s32 func_801D0880(void);
-s32 func_0020C0CC(void *actor);
 
 void func_0021C3B0(void)
 {

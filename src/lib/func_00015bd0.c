@@ -1,74 +1,14 @@
+#include "common/mus_config.h"
+#include "common/mus_synth.h"
 #include "common/os_thread.h"
 
 #include "common/audio_heap.h"
 
-typedef unsigned char u8;
-typedef signed short s16;
-typedef signed int s32;
-typedef unsigned int u32;
 typedef struct {
     u32 w0;
     u32 w1;
 } Acmd;
-typedef struct {
-    s32 maxVVoices;
-    s32 maxPVoices;
-    s32 maxUpdates;
-    s32 maxFXbusses;
-    void *dmaproc;
-    void *heap;
-    s32 outputRate;
-    u8 fxType;
-    s32 *params;
-} ALSynConfig;
-typedef struct {
-    u32 base_u;
-    s32 len;
-    u8 type;
-    u8 flags;
-    u32 loop;
-    u32 book;
-} MusWave;
-typedef struct {
-    u8 pad00[0x10];
-    s32 flags;
-    u8 pad14[0xC];
-    s32 count;
-    u8 *basenote;
-    u8 *detune;
-    MusWave **waves;
-} MusBank;
-typedef struct {
-    s32 unk00;
-    s32 count;
-    u8 pad08[4];
-    s32 flags;
-    void *ptrbank;
-    u32 unk14;
-    struct {
-        u32 ptr;
-        u32 unk4;
-    } entries[1];
-} MusFxBank;
-typedef struct {
-    u32 control_flag;
-    s32 channels;
-    void *sched;
-    s32 thread_priority;
-    u8 *heap;
-    s32 heap_length;
-    MusBank *ptr;
-    u8 *wbk;
-    MusFxBank *default_fxbank;
-    s32 fifo_length;
-    s32 syn_updates;
-    s32 syn_output_rate;
-    s32 syn_rsp_cmds;
-    s32 syn_retraceCount;
-    s32 syn_num_dma_bufs;
-    s32 syn_dma_buf_size;
-    s32 diskrom_handle;
-} MusConfig;
+
 typedef struct {
     s16 *ptr;
     u32 len;
@@ -77,10 +17,8 @@ extern Thread D_800B18B0;
 extern u8 *D_800B1A60;
 extern AudioBuffer *D_800B1A64;
 extern Acmd *D_800B1A68;
-extern u8 D_800E7D18[];
-void *func_000155c0(s32 count, s32 length);
+extern AlGlobalsLike D_800E7D18;
 L4Heap *func_00015f24(void);
-void func_00014d70(void *g, ALSynConfig *c);
 u32 func_00015fd0(u32 retrace, u32 output_rate, u32 vsyncs_per_second, u32 extra_ratio);
 void *func_00015edc(s32 size);
 s32 func_0001c830(u32 frequency);
@@ -95,7 +33,7 @@ void func_00015bd0(MusConfig *config, s32 vsyncs_per_second, s32 fx_type) {
     audio_config.fxType = fx_type;
     audio_config.outputRate = func_0001c830(config->syn_output_rate);
     audio_config.heap = func_00015f24();
-    func_00014d70(D_800E7D18, &audio_config);
+    func_00014d70(&D_800E7D18, &audio_config);
     frame_size = func_00015fd0(config->syn_retraceCount, audio_config.outputRate, vsyncs_per_second, 20);
     D_800B1A68 = func_00015edc(config->syn_rsp_cmds * sizeof(Acmd));
     D_800B1A64 = func_00015edc(3 * sizeof(AudioBuffer));

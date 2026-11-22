@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/battle_resolution_record.h"
 
 #include "game/battle_record_flag.h"
@@ -125,7 +126,6 @@ extern void func_00023460(const void *, void *, u32);
 extern unsigned int func_00022e60(void);
 extern int rand(void);
 extern int func_0020C364(int);
-extern int func_0020C1B4(ResolutionObject *);
 extern void *func_0020C478(unsigned int index);
 extern u8 func_0020D434(int);
 extern int func_0020D4C8(ResolutionObject *, int);
@@ -145,7 +145,6 @@ extern void func_0022EF50(void *);
 extern int func_0022F2BC(void *, int *);
 extern int func_00233210(ResolutionObject *, ResolutionObject *);
 extern int func_00233568(ResolutionObject *);
-extern int func_002340EC(ResolutionObject *);
 extern int func_002363FC(ResolutionObject *);
 extern int func_002365BC(ResolutionObject *, ResolutionObject *, int, int);
 extern int func_00237AF8(ResolutionObject *, int);

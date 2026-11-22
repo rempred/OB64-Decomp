@@ -1,9 +1,9 @@
+#include "game/battle_predicates.h"
 #include "game/battle_record_flag.h"
 
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
-s32 func_0020C1B4(void *record);
 void *func_0020C478(unsigned int index);
 void func_0021D230(s32 record, s32 arg1, void *arg2, s32 arg3);
 void func_0021D25C(s32 record, s32 arg1, void *arg2, s32 arg3, s32 arg4);

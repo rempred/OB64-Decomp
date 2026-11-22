@@ -1,12 +1,5 @@
-typedef struct {
-    union { long long s; unsigned long long u; double d; unsigned short h[4]; } value;
-    signed char *buffer;
-    int n0, nz0, n1, nz1, n2, nz2;
-    int precision, width;
-    unsigned int count;
-    int flags;
-    signed char qualifier;
-} FormatRecord;
+#include "common/format_record.h"
+
 typedef struct { long quot, rem; } DivResult;
 extern DivResult func_0002c790(long, long);
 extern void *memcpy_00023884(void *, const void *, unsigned int);

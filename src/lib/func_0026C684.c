@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/effect_math_e04.h"
 
 typedef struct {
@@ -8,7 +9,6 @@ typedef struct {
 
 extern void func_00028C40(float [4][4]);
 extern int func_0020BFF8(void *);
-extern int func_0020C2D8(void *);
 
 /* The separate helper scopes reproduce the intermediate vector storage seen
  * in C310 and C55C. Their original source identity remains unproved. */

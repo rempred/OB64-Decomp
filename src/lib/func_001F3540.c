@@ -1,7 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/cutscene_panels.h"
 
 extern void *D_801CE8BC;
 extern u8 D_80190F80[];
@@ -16,8 +13,6 @@ void func_00201D24(void);
 void func_0025FC48(void);
 void func_001FF108(void);
 void func_80093380(void *pointer, s32 size);
-struct Node;
-void func_000521fc(struct Node *pointer);
 void func_00205228(void);
 void func_00204F2C(void);
 void func_002057DC(void);
@@ -32,7 +27,7 @@ void func_001F3540(void)
     u8 value;
     u32 cleanup_index;
     s32 cleanup_offset;
-    void *pointer;
+    Panel *pointer;
 
     if (D_801CE8BC != 0) {
         if ((func_0020BF7C() != 0) || (func_0020BF8C() != 0)) {
@@ -77,15 +72,15 @@ void func_001F3540(void)
 
         func_80093380(D_801CE8BC, 0xC0);
 
-        pointer = *(void **)((u8 *)D_801CE8BC + 0x5748);
+        pointer = *(Panel **)((u8 *)D_801CE8BC + 0x5748);
         if (pointer != 0) {
             func_000521fc(pointer);
         }
-        pointer = *(void **)((u8 *)D_801CE8BC + 0x574C);
+        pointer = *(Panel **)((u8 *)D_801CE8BC + 0x574C);
         if (pointer != 0) {
             func_000521fc(pointer);
         }
-        pointer = *(void **)((u8 *)D_801CE8BC + 0x57D4);
+        pointer = *(Panel **)((u8 *)D_801CE8BC + 0x57D4);
         if (pointer != 0) {
             func_000521fc(pointer);
         }

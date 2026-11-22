@@ -1,3 +1,4 @@
+#include "common/mus_dma.h"
 #include "common/os_message_queue.h"
 #include "common/types.h"
 
@@ -33,8 +34,7 @@ extern MessageQueue D_800B1880;
 extern OSPiHandle *D_800B1898;
 void *func_00015edc(s32 size);
 void func_00015f30(void *dest, u8 value, u32 length);
-void *func_00015804(void *state);
-void *func_000155c0(s32 count, s32 length) {
+ALDMANew func_000155c0(s32 count, s32 length) {
     s32 i;
     DmaBuffer *b;
     D_800B1898 = func_0001c130();
@@ -58,4 +58,3 @@ void *func_000155c0(s32 count, s32 length) {
     osCreateMesgQueue(&D_800B1880, D_800B1870, count * 2);
     return func_00015804;
 }
-void *func_00015804(void *state);

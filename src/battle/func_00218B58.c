@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/combat_selector.h"
 #include "game/battle_record_flag.h"
 
@@ -19,7 +20,6 @@ typedef s64 M2C_UNK64;
 f32 func_001FF7EC(s16, s16);                                    
 f32 func_002016F4(s32, s32);                                    
 void func_0020BD5C(s32 selector);                                 
-s32 func_0020C0CC(void **);                                     
 void *func_0020C478(unsigned int index);                                      
 void func_0021824C(s32 *, s32 *, s32 *, s32 *);
 extern void *D_801CE8BC;
@@ -40,8 +40,8 @@ void func_00218B58(void)
     s32 var_s3_221;
     s32 var_s2_24;
     s32 var_v1_72;
-    void **temp_v0_138;
-    void **temp_v0_27;
+    BattleRosterRecord *temp_v0_138;
+    BattleRosterRecord *temp_v0_27;
     s8 *var_s0_270;
     s8 *var_s0_40;
     void *temp_a0_352;

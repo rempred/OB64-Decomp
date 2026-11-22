@@ -1,20 +1,5 @@
-typedef unsigned char u8;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef struct {
-    s32 unk00;
-    s32 count;
-    u8 pad08[4];
-    s32 flags;
-    void *ptrbank;
-    u32 unk14;
-    struct {
-        u32 ptr;
-        u32 unk4;
-    } entries[1];
-} MusFxBank;
+#include "common/mus_bank.h"
 extern MusFxBank *D_800B1838;
-void func_0001237c(MusFxBank *bank);
 void func_0001237c(MusFxBank *bank)
 {
   u32 base = (u32) bank;

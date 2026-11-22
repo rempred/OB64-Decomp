@@ -1,6 +1,4 @@
-typedef unsigned char u8;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "common/mus_dma.h"
 typedef struct DmaBuffer {
     struct DmaBuffer *prev;
     struct DmaBuffer *next;
@@ -10,8 +8,9 @@ typedef struct DmaBuffer {
 } DmaBuffer;
 u32 osVirtualToPhysical(void *addr);
 DmaBuffer *func_0001587c(u32 addr, s32 len);
-s32 func_00015810(u32 addr, s32 len, void *state);
-s32 func_00015810(u32 addr, s32 len, void *state) {
+s32 func_00015810(s32 address, s32 len, void *state) {
+    /* Callback arguments carry the address bits; calculations are unsigned. */
+    u32 addr = address;
     DmaBuffer *dmaPtr = func_0001587c(addr, len);
     if (dmaPtr == ((void *)0)) {
         return osVirtualToPhysical((void *)addr);

@@ -1,5 +1,4 @@
-struct L4Synth;
-struct L4Config;
+#include "common/audio_filter.h"
 
 /* ROM 1FBA0..1FC50; writable pointer storage stays with original ASM.
  * The 800AA710 binding is independently visible in both entry bodies and
@@ -8,11 +7,6 @@ extern struct L4Synth *data_800AA710;
 #define L4_GLOBALS data_800AA710
 extern void func_0001fd20(struct L4Synth *, struct L4Config *);
 extern void func_00020360(void);
-
-typedef struct L4Link {
-    struct L4Link *next;
-    struct L4Link *previous;
-} L4Link;
 
 void func_0001fba0(struct L4Synth *globals, struct L4Config *config)
 {
@@ -33,17 +27,17 @@ void func_0001fbcc(void)
 void list_insert_head(L4Link *link, L4Link *head)
 {
     link->next = head->next;
-    link->previous = head;
+    link->prev = head;
     if (head->next)
-        head->next->previous = link;
+        head->next->prev = link;
     head->next = link;
 }
 
 void list_unlink(L4Link *link)
 {
     if (link->next)
-        link->next->previous = link->previous;
-    if (link->previous)
-        link->previous->next = link->next;
+        link->next->prev = link->prev;
+    if (link->prev)
+        link->prev->next = link->next;
 }
 

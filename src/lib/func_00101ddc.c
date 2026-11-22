@@ -1,3 +1,4 @@
+#include "game/runtime_unit_source.h"
 #include "game/unit_record_lookup.h"
 
 #include "game/unit_cleanup.h"
@@ -21,12 +22,10 @@ extern void *resource_alloc(u32);
 extern void func_00105498(s32);
 extern s32 func_00119454(void);
 extern s32 func_801DD2B0(Q7Unit *);
-extern void *func_0012E7E8(Q7Unit *);
 extern u32 func_00022E60(void);
 extern void func_00132B80(s32);
 extern void func_00130E60(u16, u8);
 extern s32 func_00130794(void);
-extern s32 func_0012F530(Q7Unit *);
 extern void *func_0002e138(u32);
 extern void *boot_command_stream_dispatch(u32, ...);
 extern void func_8020E9A4(void);

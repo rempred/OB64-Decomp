@@ -1,9 +1,5 @@
-typedef unsigned char u8;
-typedef struct {
-    u8 pad0[0xC];
-    void *framebuffer;
-} NUScTaskFb;
+#include "common/task_framebuffer.h"
 void osViSwapBuffer(void *frameBufPtr);
-void func_0001b510(NUScTaskFb *gfxTask) {
+void func_0001b510(NUScTask *gfxTask) {
     osViSwapBuffer(gfxTask->framebuffer);
 }

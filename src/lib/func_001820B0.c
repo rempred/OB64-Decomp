@@ -1,3 +1,5 @@
+#include "game/sound_channel_services.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
@@ -52,13 +54,12 @@ typedef struct {
 extern Ovl17F9C0Ctx *D_8021AF00;
 extern u8 D_8021AF04;
 extern Camera *D_8018F58C;
-extern u8 g_func_0015DF10_default[];
+extern SoundChannel g_func_0015DF10_default;
 extern u8 D_801F365D;
 extern u8 D_800E7A90[];
 extern s32 D_801F3620;
 void *func_00001330(unsigned int size);
 void *func_000016C4(void *p);
-void D_800EA604(void *ch, s32 sound);
 s32 func_00181520(void);
 void D_801DFF50(void);
 void D_801DFF80(void);
@@ -81,7 +82,7 @@ extern inline void func_8021751C_ovl_17F9C0(void) {
 extern inline void func_802175B0_ovl_17F9C0(void) {
     Ovl17F9C0Ctx *ctx = D_8021AF00;
     if (ctx->timer == 0) {
-        D_800EA604(g_func_0015DF10_default, 0x288);
+        D_800EA604(&g_func_0015DF10_default, 0x288);
     }
     D_8021AF00->timer++;
     ctx->alphaPtr = &D_8021AF00->alpha;

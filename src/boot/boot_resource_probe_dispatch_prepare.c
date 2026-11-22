@@ -1,4 +1,4 @@
-#include "common/types.h"
+#include "game/resource_probe_bits.h"
 
 typedef void (*ProbeCallback)(void *);
 typedef struct ProbeRecord {
@@ -13,7 +13,6 @@ extern void *func_000016C4(void *record);
 extern void func_00023780(void *record, u32 bytes);
 extern void func_00023940(const char *format, ...);
 extern void func_0000553C(void);
-extern void func_8016CDF4(void *record);
 extern void func_00005D9C(s32 id, void *record);
 extern void func_00005CFC(const void *record);
 extern void func_00005B8C(s32 id, const void *record);
@@ -25,7 +24,7 @@ extern const char D_800ADF08[];
 
 void boot_resource_probe_dispatch_prepare(s32 id)
 {
-    ProbeRecord *small;
+    ProbeBitsRecord *small;
     ProbeRecord *record;
     u32 generation;
     s32 count;
@@ -37,7 +36,7 @@ void boot_resource_probe_dispatch_prepare(s32 id)
     } else if (id == 14) {
         small = func_00001330(0x10);
         func_00023780(small, 0x10);
-        func_8016CDF4(&small->field0C);
+        func_8016CDF4(&small->bits);
         func_00005D9C(14, small);
         func_00005CFC(small);
         func_000016C4(small);

@@ -1,6 +1,4 @@
-typedef unsigned char u8;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "common/task_framebuffer.h"
 typedef struct {
     u32 w0;
     u32 w1;
@@ -13,7 +11,6 @@ extern u8 D_000A9EF0[];
 void func_0001b4b0(void);
 void func_00019eb0(void **framebuf, u32 num);
 void func_00019dd0(void *func);
-void func_0001b510(void *gfxTask);
 void func_00019a60(void);
 void func_00019c04(void *gfxList_ptr, u32 gfxListSize, u32 ucode, u32 flag);
 void func_00019e10(void);

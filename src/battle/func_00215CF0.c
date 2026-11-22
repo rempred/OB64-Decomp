@@ -1,10 +1,5 @@
+#include "game/cutscene_panels.h"
 #include "game/indexed_record_lookup.h"
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
 typedef signed long long s64;
 typedef unsigned long long u64;
 typedef float f32;
@@ -17,8 +12,6 @@ typedef s64 M2C_UNK64;
 s32 func_00045df4(s16);
 M2C_UNK func_00054e24();
 M2C_UNK func_00055114(M2C_UNK, M2C_UNK, s8, M2C_UNK, s32, s32, s32, s32, s32, s32, s32, s32);
-struct Node;
-struct Node *func_00055234(u16 id);
 struct Opt1F;
 struct Opt1F *func_001F21A4(s32 i);
 void func_00208DC8(void *channel, s32 request);
@@ -41,7 +34,6 @@ extern u16 D_800E8100;
 extern u16 D_800E8700;
 extern u8 D_800E9C12;
 extern u8 D_800EB1F0[];
-extern u8 *D_8018FDC0;
 extern u8 D_801936E0;
 extern u8 D_801976DC;
 extern u8 *D_801CE8BC;
@@ -89,14 +81,14 @@ void func_00215CF0(void) {
     void *temp_a2_76;
     void *temp_a2_8;
     void *temp_s0_325;
-    void *temp_s0_653;
+    Panel *temp_s0_653;
     void *temp_s0_850;
     void *temp_v0_217;
     void *temp_v0_47;
     void *temp_v0_517;
-    void *temp_v0_533;
+    Panel *temp_v0_533;
     void *temp_v0_615;
-    void *temp_v0_664;
+    PanelContent *temp_v0_664;
     void *temp_v0_836;
     void *temp_v1_189;
     void *temp_v1_302;
@@ -337,7 +329,7 @@ state_4:
         if (temp_v1_15 != 4) {
             goto state_5;
         }
-        temp_a0_477 = (*(u32 *)((s8 *)(D_8018FDC0) + (0xD4)));
+        temp_a0_477 = D_8018FDC0->fieldD4;
         if (temp_a0_477 == -2U) {
             (*(u8 *)((s8 *)(temp_a1_14) + (0x606E))) = 6U;
             return;
@@ -361,7 +353,7 @@ state_4:
             temp_v0_533 = func_00055234(0x100A);
             if (temp_v0_533 != 0) {
                 var_a1_272 = 0xC;
-                temp_v1_539 = (*(s8 *)((s8 *)(temp_v0_533) + (0x22)));
+                temp_v1_539 = (s8)temp_v0_533->field22;
                 var_a2_287 = 0x78;
                 var_a0_271 = (temp_v1_539 + 0xF) | 0x32000;
                 var_a3_274 = (temp_v1_539 * 0x14) + 0x5F;
@@ -421,10 +413,10 @@ state_7:
                 func_00054e24(0x46077, 0xB, 0x96, 0x28, 0xAA, 0x3C, 0x1E, 0x1E, 0x122, 0x46);
                 temp_s0_653 = func_00055234(0x10B);
                 func_000238B0((char *)sp30, D_801E6694, func_000453e0((u8) (*(s8 *)((s8 *)(D_801CE8BC) + (0x57DC))) + 0x27));
-                func_0002C950((*(void **)((s8 *)(temp_s0_653) + (0xD0))), sp30);
-                temp_v0_664 = (*(void **)((s8 *)(temp_s0_653) + (0xD0)));
-                (*(void **)((s8 *)(temp_v0_664) + (0x530))) = temp_v0_664;
-                (*(s8 *)((s8 *)((*(void **)((s8 *)(temp_s0_653) + (0xD0)))) + (0x5F5))) = 1;
+                func_0002C950(temp_s0_653->content->text, sp30);
+                temp_v0_664 = temp_s0_653->content;
+                temp_v0_664->rows[0] = temp_v0_664->text;
+                temp_s0_653->content->field5F5 = 1;
                 var_v1_251 = D_801CE8BC;
                 var_v0_253 = (*(u8 *)((s8 *)(var_v1_251) + (0x6072)));
                 var_a0_247 = D_800EB1F0;
@@ -576,7 +568,7 @@ block_123:
         func_0021C3B0();
         return;
 state_11_tail:
-        temp_v1_902 = (*(u32 *)((s8 *)(D_8018FDC0) + (0xD4)));
+        temp_v1_902 = D_8018FDC0->fieldD4;
         if (temp_v1_902 < 2U) {
             D_800E9C12 = (u8) (temp_v1_902 == 0);
         }

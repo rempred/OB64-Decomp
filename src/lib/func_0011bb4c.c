@@ -1,3 +1,4 @@
+#include "game/runtime_unit_source.h"
 #include "game/unit_record_lookup.h"
 
 #include "common/types.h"
@@ -19,7 +20,6 @@ extern u8 D_801971F2[], D_80193BD1[];
 extern void func_0012EA80_row(s32, f32 *);
 extern u32 func_801E5730(Q7Unit *);
 extern void func_0011D8D4(s32);
-extern void *func_0012E7E8(Q7Unit *);
 extern void func_00131050(void);
 extern s32 func_801DCF90(Q7Unit *);
 extern void func_000ec838(s32, s32, s32, s32, s32, s32, s32, s32, s32);

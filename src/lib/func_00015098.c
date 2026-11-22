@@ -1,19 +1,6 @@
+#include "common/mus_synth.h"
 #include "common/audio_filter.h"
 
-typedef unsigned char u8;
-typedef signed int s32;
-typedef struct {
-    s32 maxVVoices;
-    s32 maxPVoices;
-    s32 maxUpdates;
-    s32 maxFXbusses;
-    void *dmaproc;
-    void *heap;
-    s32 outputRate;
-    u8 fxType;
-    s32 *params;
-} MusSynConfig;
-void func_00015098(void **out, MusSynConfig *c, void *hp);
 void *alHeapDBAlloc(void *file, s32 line, void *hp, s32 num, s32 size);
 extern int func_0001f2b8(L4Effect *, int, int *);
 typedef struct {

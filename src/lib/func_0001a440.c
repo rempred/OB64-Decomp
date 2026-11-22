@@ -1,40 +1,6 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef struct {
-    u32 errStatus;
-    void *dramAddr;
-    void *C2Addr;
-    u32 sectorSize;
-    u32 C1ErrNum;
-    u32 C1ErrSector[4];
-} __OSBlockInfo;
-typedef struct {
-    u32 cmdType;
-    u16 transferMode;
-    u16 blockNum;
-    s32 sectorNum;
-    u32 devAddr;
-    u32 bmCtlShadow;
-    u32 seqCtlShadow;
-    __OSBlockInfo block[2];
-} __OSTranxInfo;
-typedef struct OSPiHandle_s {
-    struct OSPiHandle_s *next;
-    u8 type;
-    u8 latency;
-    u8 pageSize;
-    u8 relDuration;
-    u8 pulse;
-    u8 domain;
-    u32 baseAddress;
-    u32 speed;
-    __OSTranxInfo transferInfo;
-} OSPiHandle;
+#include "common/pi_handle.h"
 extern OSPiHandle *D_800E79AC;
 extern OSPiHandle D_800BE110;
-s32 func_0001c0e0(OSPiHandle *eph);
 void bzero(void *p, s32 n);
 void func_0001a440(void) {
     if (D_800BE110.baseAddress == 0xA8000000) {

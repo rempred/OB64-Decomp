@@ -1,3 +1,5 @@
+#include "common/matrix_float.h"
+
 /* Includes the entry preamble at 28850 before any output is stored. */
 void mtx_apply_vec3(float m[4][4], float x, float y, float z, float *ox, float *oy, float *oz)
 {

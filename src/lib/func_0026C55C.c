@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 #include "game/effect_math_e04.h"
 
 typedef struct {
@@ -35,7 +36,6 @@ static __inline__ void e04_c230_inline(E04Vec3 *vector, float matrix[4][4])
 }
 
 extern int func_0020BFF8(void *);
-extern int func_0020C2D8(void *);
 
 static __inline__ void e04_flag_vector(void *object, E04Vec3 *output)
 {

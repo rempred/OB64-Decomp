@@ -1,23 +1,16 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef struct Node {
-    struct Node *prev;
-    struct Node *next;
-    u8 unk08[0xE];
-    u16 id;
-} Node;
-extern Node *D_8018FDC0;
-Node *func_000552c0(void);
-inline Node *func_000552c0(void) {
-    Node *n;
+#include "game/cutscene_panels.h"
+
+Panel *func_000552c0(void);
+inline Panel *func_000552c0(void) {
+    Panel *n;
     if (D_8018FDC0 == ((void *)0)) {
         return ((void *)0);
     }
-    n = D_8018FDC0->next;
-    if (n != ((void *)0) && n->next != ((void *)0)) {
+    n = D_8018FDC0->link04;
+    if (n != ((void *)0) && n->link04 != ((void *)0)) {
         do {
-            n = n->next;
-        } while (n->next != ((void *)0));
+            n = n->link04;
+        } while (n->link04 != ((void *)0));
     }
     return n;
 }

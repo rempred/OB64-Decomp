@@ -1,11 +1,5 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
+#include "game/clock420.h"
 typedef unsigned long long u64;
-typedef struct {
-    u16 hours;
-    u8 minutes;
-    u8 seconds;
-} Clock420;
 u64 osGetTime(void);
 void func_00042a44(Clock420 *c) {
     u64 s = osGetTime() / 46875000;

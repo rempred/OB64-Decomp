@@ -1,11 +1,7 @@
 typedef unsigned int u32;
 typedef unsigned long long u64;
-typedef struct {
-    union { long long s; u64 u; double d; } value;
-    char *buffer;
-    int n0, nz0, n1, nz1, n2, nz2;
-    int precision, width, field_2C, flags;
-} FormatRecord;
+#include "common/format_record.h"
+
 typedef struct { long long quot, rem; } DivResult64;
 extern const unsigned char D_800ABC30[], D_800ABC44[];
 extern DivResult64 func_0002c814(long long, long long);

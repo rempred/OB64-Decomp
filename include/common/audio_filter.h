@@ -28,9 +28,9 @@ struct L4Param {
     L4Param *next;
     int time;
     short type, field0a;
-    union {
-        struct { int value, time; } general;
-        struct {
+    union L4ParamData {
+        struct L4ParamGeneral { int value, time; } general;
+        struct L4ParamStart {
             int pitch;
             short volume;
             unsigned char pan, effect;
@@ -57,13 +57,23 @@ typedef struct L4Envelope {
 typedef struct L4Resample {
     L4Filter filter;
     void *state;
-    union { float value; int bits; } ratio;
+    union L4ResampleRatio { float value; int bits; } ratio;
     int field1c;
     float fraction;
     int first, field28, field2c, field30;
 } L4Resample;
 
 typedef struct L4Wave L4Wave;
+
+typedef struct L4Loop { unsigned int start, end, count; short state[16]; } L4Loop;
+typedef struct L4Book { int field00, field04; short entries[1]; } L4Book;
+struct L4Wave {
+    unsigned char *base;
+    int length;
+    unsigned char type, field09, field0a, field0b;
+    L4Loop *loop;
+    L4Book *book;
+};
 typedef unsigned int (*L4Dma)(unsigned char *, int, void *);
 /* The L4 factory is supplied indirectly through the synth configuration. */
 typedef void *(*L4DmaConstructor)(int *);
@@ -129,9 +139,7 @@ typedef struct L4EffectSlot {
     L4Effect effect;
 } L4EffectSlot;
 
-typedef struct L4Link {
-    struct L4Link *next, *previous;
-} L4Link;
+#include "common/audio_link.h"
 
 typedef struct L4Voice {
     L4Link link;
@@ -143,6 +151,13 @@ typedef struct L4Voice {
 } L4Voice;
 
 typedef struct L4Client L4Client;
+struct L4Client {
+    struct L4Client *next;
+    void *field04;
+    int (*handler)(struct L4Client *);
+    void *field0c;
+    int sampleTime;
+};
 typedef struct L4Synth {
     L4Client *clients;
     L4Link freeVoices, allocatedVoices, lameVoices;

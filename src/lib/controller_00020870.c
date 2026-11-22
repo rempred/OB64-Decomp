@@ -1,3 +1,4 @@
+#include "common/controller_status.h"
 #include "common/os_message_queue.h"
 
 typedef unsigned long long Ticks;
@@ -11,10 +12,6 @@ typedef struct {
     unsigned char dummy, txBytes, rxBytes, command;
     unsigned char typeLow, typeHigh, status, terminal;
 } QueryPacket;
-typedef struct {
-    unsigned short type;
-    unsigned char status, error;
-} ControllerStatus;
 typedef struct { unsigned int words[15]; unsigned int status; } PifRam;
 extern PifRam __osContPifRam;
 extern int __osContinitialized;

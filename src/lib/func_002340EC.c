@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -52,7 +53,8 @@ s32 D_801C8E30(BattleUnit *u);
 void *D_801C8FE8(unsigned int index);
 s32 D_801CA038(BattleUnit *u, s32 amount);
 s32 D_801CA29C(void *u);
-s32 func_002340EC(BattleUnit *self) {
+s32 func_002340EC(void *record) {
+    BattleUnit *self = record;
     s32 selfIdx = D_801CA29C(self);
     s32 best = -1;
     s32 bestIdx = -1;

@@ -30,7 +30,7 @@ void func_00299740(void)
         return;
     }
 
-    ((u8 *)D_8018FDC0)[0xD2] = 0;
+    D_8018FDC0->fieldD2 = 0;
     if (panel->field16 & 4) {
         panel = func_0005526c(0x100);
     }
@@ -140,5 +140,5 @@ void func_00299740(void)
         }
         ++slot;
     } while (slot < 14);
-    ((u8 *)D_8018FDC0)[0xD2] = 1;
+    D_8018FDC0->fieldD2 = 1;
 }

@@ -3,15 +3,6 @@ typedef unsigned int u32;
 typedef unsigned short u16;
 typedef unsigned char u8;
 #include "common/audio_filter.h"
-typedef struct L4Loop { u32 start, end, count; short state[16]; } L4Loop;
-typedef struct L4Book { int field00, field04; short entries[1]; } L4Book;
-struct L4Wave {
-    u8 *base;
-    int length;
-    u8 type, field09, field0a, field0b;
-    L4Loop *loop;
-    L4Book *book;
-};
 
 #define L4_SET_BUFFER(packet, in, out, length) { \
     L4Command *command = (packet); \

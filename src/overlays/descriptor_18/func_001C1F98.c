@@ -1,10 +1,5 @@
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-struct Node;
-struct Node *D_8017F334(u16 id);
-void D_8017C2FC(struct Node *p);
+#include "game/panel_list_aliases.h"
+
 typedef struct {
     s32 used;
     void *text;

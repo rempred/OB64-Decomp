@@ -7,7 +7,7 @@
       "caller": {
         "source": "src/lib/audio_synthesizer_0001fd20.c",
         "owner": "func_0001ffec",
-        "functionFingerprint": "691A01B3201F607CC50BCCBC1C66EF6D1514B7B4DDEDBAEA03D8B44399151FB0",
+        "functionFingerprint": "4350491B8F56FAAD57CF86DF4B880A2FF5F4F0D67B48929FC8F61DF6F368D0C9",
         "anchor": "990CD5A03A4CE6FA6304FAE63154F94F398825444803E173C5305BC08BACDAA0",
         "occurrence": 1
       },
@@ -25,7 +25,7 @@
         {
           "source": "src/lib/audio_synthesizer_0001fd20.c",
           "owner": "func_0001ffec",
-          "functionFingerprint": "691A01B3201F607CC50BCCBC1C66EF6D1514B7B4DDEDBAEA03D8B44399151FB0"
+          "functionFingerprint": "4350491B8F56FAAD57CF86DF4B880A2FF5F4F0D67B48929FC8F61DF6F368D0C9"
         }
       ],
       "target": {
@@ -145,7 +145,7 @@
       "caller": {
         "source": "src/lib/audio_driver_0001c9f0.c",
         "owner": "func_0001cfe4",
-        "functionFingerprint": "DF92373F8D9F76D270AD5F8D3C348D52EC00324AC303FE80BF26060F1B6764F0",
+        "functionFingerprint": "90FD0495B5B080A0774EF98DD7E4DA99BA7F9150A04DC01BE913CE580DDD3A3E",
         "anchor": "86F6A0DEE5637DC697C7E043D3ED516F8A6E457E3697D2B3D77577A682D1B644",
         "occurrence": 1
       },
@@ -153,7 +153,7 @@
         {
           "source": "src/lib/audio_driver_0001c9f0.c",
           "owner": "func_0001cfe4",
-          "functionFingerprint": "DF92373F8D9F76D270AD5F8D3C348D52EC00324AC303FE80BF26060F1B6764F0"
+          "functionFingerprint": "90FD0495B5B080A0774EF98DD7E4DA99BA7F9150A04DC01BE913CE580DDD3A3E"
         }
       ],
       "windows": [
@@ -208,7 +208,7 @@
       "caller": {
         "source": "src/lib/audio_synthesizer_0001fd20.c",
         "owner": "func_0001ffec",
-        "functionFingerprint": "691A01B3201F607CC50BCCBC1C66EF6D1514B7B4DDEDBAEA03D8B44399151FB0",
+        "functionFingerprint": "4350491B8F56FAAD57CF86DF4B880A2FF5F4F0D67B48929FC8F61DF6F368D0C9",
         "anchor": "4C67C354779C4B7215D72883220CADA7184FC109CC44057BE094903081A014E7",
         "occurrence": 1
       },
@@ -226,7 +226,7 @@
         {
           "source": "src/lib/audio_synthesizer_0001fd20.c",
           "owner": "func_0001ffec",
-          "functionFingerprint": "691A01B3201F607CC50BCCBC1C66EF6D1514B7B4DDEDBAEA03D8B44399151FB0"
+          "functionFingerprint": "4350491B8F56FAAD57CF86DF4B880A2FF5F4F0D67B48929FC8F61DF6F368D0C9"
         }
       ],
       "target": {

@@ -1,6 +1,8 @@
 #ifndef GAME_EFFECT_GEOMETRY_E05_INTERNAL_H
 #define GAME_EFFECT_GEOMETRY_E05_INTERNAL_H
 
+#include "common/matrix_float.h"
+
 #include "game/effect_geometry_e05.h"
 #include "game/combat_draw.h"
 #include "game/combat_draw_commands.h"
@@ -212,7 +214,6 @@ extern float func_800907F0(float);
 extern void func_800988A0(void *, void *);
 extern void func_80093380(void *, u32);
 extern void func_80093060(const void *, void *, u32);
-extern void func_80098450(void *, float, float, float, float *, float *, float *);
 extern void func_80098B60(void *, float, float, float);
 extern void func_800989A0(void *, void *, void *);
 extern void func_80098C20(void *, float, float, float);

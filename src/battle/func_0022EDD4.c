@@ -1,3 +1,4 @@
+#include "game/battle_predicates.h"
 typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
@@ -6,7 +7,6 @@ s32 func_0002CBCC(void);
 void func_0021D200(s32 record, s32 out_time, void *arg2);
 void func_0021D230(s32 record, s32 out_time, void *arg2, s32 arg3);
 s32 func_0022257C(void *record, s32 out_time, s32 *arg2);
-s32 func_0020C348(void *record);
 
 s32 func_0022EDD4(void *record, s32 *out_time)
 {

@@ -90,7 +90,7 @@ void func_00297CC8(s32 slot, s32 preset)
         if (D_8018FDC0->link04 != panel) {
             Panel *link04 = panel->link04;
             Panel *link00 = panel->link00;
-            Panel *list;
+            PanelList *list;
             if (link04 != 0) {
                 link04->link00 = link00;
             }
@@ -261,7 +261,7 @@ void func_00297CC8(s32 slot, s32 preset)
         if (D_8018FDC0->link04 != panel) {
             Panel *link04 = panel->link04;
             Panel *link00 = panel->link00;
-            Panel *list;
+            PanelList *list;
             if (link04 != 0) {
                 link04->link00 = link00;
             }

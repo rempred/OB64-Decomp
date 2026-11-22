@@ -1,10 +1,10 @@
+#include "common/controller_status.h"
 #include "common/os_message_queue.h"
 
 extern void __osSiGetAccess(void);
 extern void __osSiRelAccess(void);
 extern int __osSiRawStartDma(int direction, void *buffer);
 extern void __osPackRequestData(unsigned char command);
-extern void __osContGetInitData(unsigned char *bits, void *status);
 extern unsigned char __osContLastCmd;
 extern unsigned char __osContPifRam[64];
 

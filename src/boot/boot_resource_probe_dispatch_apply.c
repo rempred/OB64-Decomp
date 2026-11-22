@@ -1,4 +1,4 @@
-#include "common/types.h"
+#include "game/resource_probe_bits.h"
 
 typedef void (*ProbeCallback)(void *);
 
@@ -6,7 +6,6 @@ extern void *func_00001330(u32 bytes);
 extern void *func_000016C4(void *record);
 extern void func_00005624(void);
 extern void func_000050F0(void *record, u32 offset, u32 bytes);
-extern void func_8016CDCC(void *record);
 extern void func_00004FF0(u32 key);
 /* Separate fields in the retained table, whose entries are 0x1C bytes apart. */
 extern u8 D_800A8250[];
@@ -14,7 +13,7 @@ extern u8 D_800A8258[];
 
 void boot_resource_probe_dispatch_apply(s32 id)
 {
-    u8 *small;
+    ProbeBitsRecord *small;
     u8 *record;
     s32 count;
     s32 tableOffset;
@@ -25,7 +24,7 @@ void boot_resource_probe_dispatch_apply(s32 id)
     } else if (id == 14) {
         small = func_00001330(0x10);
         func_000050F0(small, 0, 0x10);
-        func_8016CDCC(small + 0xC);
+        func_8016CDCC(&small->bits);
         func_000016C4(small);
     } else {
         record = func_00001330(0x1850);
