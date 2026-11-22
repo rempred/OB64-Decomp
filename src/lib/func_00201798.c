@@ -1,4 +1,4 @@
-unsigned char func_00201798(int sourceArt, int ownerContext, int actionId, int rawMode)
+int func_00201798(int sourceArt, int ownerContext, int actionId, int rawMode)
 {
     unsigned char *table = *(unsigned char **)0x801D0694;
     unsigned char *entry;

@@ -1,12 +1,4 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-
-typedef struct ResourceRow {
-    u8 bytes[0x34];
-} ResourceRow;
+#include "game/character_record.h"
 
 typedef struct ResourceArchiveInput {
     u32 field_00;
@@ -22,7 +14,6 @@ extern u16 D_80197B60;
 extern u8 D_801976E8, D_801976DC, D_801976D8;
 extern u8 D_801971F0[];
 extern u8 D_80193BD3[][0x38];
-extern ResourceRow D_80195560[];
 extern u8 D_80195593[];
 extern u8 D_801953F0[];
 extern u16 D_80195576;
@@ -40,8 +31,6 @@ extern void boot_resource_archive_load_many(ResourceArchiveInput *first,
                                             ResourceArchiveInput *second, s32 count);
 extern void memcpy_aligned(void *destination, const void *source, s32 count);
 extern void memset_00023780(void *destination, s32 count);
-extern void func_0023A3A0(u8 *row, u32 kind, s32 adjustment,
-                          u32 field_a, u32 field_b);
 extern void func_00048294(void);
 extern s32 func_0004813C(s32 value);
 extern void func_000466f4(void);
@@ -74,11 +63,11 @@ extern void func_000466f4(void);
         D_801953F0[0xF4 + free_index] = 1;                                        \
         (result) = (s32)free_index + 0x64;                                  \
     } else {                                                                \
-        ResourceRow *row = &D_80195560[1];                                   \
+        CharacterRecord *row = &D_80195560[1];                                   \
         if (D_801955A5 != 0) {                                              \
-            do { row++; } while (row->bytes[0x11] != 0);                     \
+            do { row++; } while (row->field_11 != 0);                     \
         }                                                                   \
-        func_0023A3A0(row->bytes, kind_value, adjustment,                 \
+        func_0023A3A0(row, kind_value, adjustment,                 \
                       field_a, field_b);                                   \
         (result) = (s32)(row - D_80195560);                                  \
     }                                                                       \
@@ -161,7 +150,7 @@ void func_0023A5EC(void)
     memset_00023780(D_801953F0, 0x16C);
     D_801953F0[0] = 0x78;
     D_801953F0[1] = 0x78;
-    func_0023A3A0(D_80195560[0].bytes, 1, limit, 0, 0);
+    func_0023A3A0(&D_80195560[0], 1, limit, 0, 0);
     D_801953F2 = D_80195576;
     memset_00023780(output, 0x19);
 

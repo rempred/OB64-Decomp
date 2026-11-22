@@ -19,7 +19,7 @@ u8 func_00043ad8(s32, s32);
 s32 func_00044130(s32, s32, s32);
 s32 func_0020144C(u8);
 s32 func_002014C4(u8);
-u8 func_00201798(s32, s32, s32, M2C_UNK);
+int func_00201798(s32, s32, s32, M2C_UNK);
 s32 func_0020BF50(M2C_UNK);
 s32 func_0020BFE4();
 s32 func_0020C014(void *);

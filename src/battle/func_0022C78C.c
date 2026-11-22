@@ -19,7 +19,7 @@ s32 func_0020C014(void *);
 s32 func_0020C104(void *);
 s32 func_0020C2C0(void *);
 s32 func_0020C32C(void *);
-s32 func_0020C448(void *);
+u16 func_0020C448(void *);
 void *func_0020C478(unsigned int index);
 s32 func_0020D72C(void *);
 void func_0021D200(s32, s32, void *);

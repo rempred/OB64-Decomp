@@ -136,7 +136,7 @@ extern int func_0020D814(ResolutionObject *);
 extern int func_0020F8DC(void);
 extern int func_0020BFE4(void);
 extern u8 func_002014C4(void);
-extern u8 func_00201798(int, int, int, int);
+extern int func_00201798(int, int, int, int);
 extern int func_00044130(int, int, int);
 extern void func_0021D200(int, int, void *);
 extern void func_0021D230(int, int, void *, int);
@@ -418,7 +418,7 @@ int func_0022F580(ResolutionObject **input, int *outTime)
                               ((u8 *)&local.selectedList.values[i]->field4C)[3],
                               func_0020D434(local.selectedList.values[i]->field58) & 0xFF);
         actionResult = func_00201798(local.selectedList.values[i]->field48,
-                                    local.selectedList.values[i]->field4C, action, 0);
+                                    local.selectedList.values[i]->field4C, action, 0) & 0xFF;
         earlyObject = local.selectedList.values[i];
         objectTime = earlyObject->field94;
         if (objectTime < time)

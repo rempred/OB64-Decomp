@@ -1,59 +1,6 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
+#include "game/character_record.h"
 
-typedef struct Func0004501CRecord {
-    u8 field_00[0x11];
-    u8 field_11;
-    u8 field_12;
-    u8 field_13;
-    u8 field_14;
-    u8 field_15;
-    u16 field_16;
-    u16 field_18;
-    u8 field_1A;
-    u8 field_1B;
-    u16 field_1C;
-    u16 field_1E;
-    u16 field_20;
-    u16 field_22;
-    u16 field_24;
-    u16 field_26;
-    u8 field_28;
-} Func0004501CRecord;
-
-typedef struct Func0004501CClassRecord {
-    u8 field_00[0x05];
-    u8 field_05;
-    u8 field_06[0x02];
-    u16 field_08;
-    u8 field_0A[0x02];
-    u16 field_0C;
-    u8 field_0E[0x02];
-    u16 field_10;
-    u8 field_12[0x02];
-    u16 field_14;
-    u8 field_16[0x02];
-    u16 field_18;
-    u8 field_1A[0x02];
-    u16 field_1C;
-    u8 field_1E[0x02];
-    u16 field_20;
-    u8 field_22;
-    u8 field_23;
-    u8 field_24;
-    u8 field_25[0x1C];
-    u8 field_41;
-    u8 field_42;
-    u8 field_43;
-    u8 field_44;
-    u8 field_45;
-    u8 field_46;
-    u8 field_47;
-} Func0004501CClassRecord;
-
-extern Func0004501CClassRecord g_func_0019554C_class_records[];
 extern int func_0002CBCC(void);
-extern void func_00044aa4(Func0004501CRecord *record);
 
 static __inline__ u8 func_0004501C_select_loop(u8 original_class, u8 alternate_class, int original_offset, int alternate_value, int current_level, int invalid_class)
 {
@@ -80,7 +27,7 @@ transition_done:
     return class_index;
 }
 
-void func_0004501C(Func0004501CRecord *record, int level)
+void func_0004501C(CharacterRecord *record, int level)
 {
     u8 original_class;
     u8 alternate_class;
@@ -98,8 +45,8 @@ void func_0004501C(Func0004501CRecord *record, int level)
     int invalid_class;
     int initial_scaled_raw;
     int initial_offset_value;
-    Func0004501CClassRecord *class_record;
-    Func0004501CRecord *record_alias;
+    CharacterClassRecord *class_record;
+    CharacterRecord *record_alias;
 
     original_class = record->field_11;
     alternate_class = record->field_12;

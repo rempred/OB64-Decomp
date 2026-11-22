@@ -1,35 +1,6 @@
 #include "game/record_name_selection.h"
 
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed short s16;
-
-typedef struct Func0019554CRecord {
-    u8 field_00[0x11];
-    u8 field_11;
-    u8 field_12;
-    u8 field_13[0x17];
-    u16 field_2A;
-    u16 field_2C;
-    u16 field_2E;
-    u16 field_30;
-    u8 field_32;
-    u8 field_33;
-    u8 field_34;
-    u8 field_35;
-    u8 field_36;
-    u8 field_37;
-} Func0019554CRecord;
-
-typedef struct Func0019554CRecord52 {
-    u8 bytes[0x34];
-} Func0019554CRecord52;
-
-typedef struct Func0019554CClassRecord {
-    u8 field_00[0x45];
-    u8 field_45;
-    u8 field_46[2];
-} Func0019554CClassRecord;
+#include "game/character_record.h"
 
 typedef struct Func0019554CTemplate {
     u8 field_00;
@@ -49,14 +20,9 @@ typedef struct Func0019554CTemplate {
     u8 field_16[13];
 } __attribute__((packed)) Func0019554CTemplate;
 
-extern Func0019554CRecord g_func_0019554C_records_56[];
-extern Func0019554CRecord52 g_func_0019554C_records_52[];
-extern Func0019554CClassRecord g_func_0019554C_class_records[];
 extern u8 g_func_0019554C_base_level;
 extern const char g_func_0019554C_string[];
 
-extern void func_0004501C(Func0019554CRecord *record, u8 level);
-extern void func_00195410(u16 value, Func0019554CRecord *record);
 extern int func_0016C454(void);
 extern void func_00023780(void *destination, int size);
 extern unsigned char *func_0002C950(unsigned char *destination, const unsigned char *source);
@@ -75,14 +41,14 @@ void func_0019554C(
     s16 combined_value;
     u8 low_value;
     s16 shifted_value;
-    Func0019554CRecord *record;
-    Func0019554CRecord *call_record;
-    Func0019554CRecord *late_record;
+    CharacterRecord *record;
+    CharacterRecord *call_record;
+    CharacterRecord *late_record;
 
     if ((flag != 0) | (source_index >= 30)) {
-        record = (Func0019554CRecord *)&g_func_0019554C_records_52[record_index];
+        record = &g_func_0019554C_records_52[record_index];
     } else {
-        record = &g_func_0019554C_records_56[record_index];
+        record = &g_func_0019554C_records_56[record_index].record;
     }
 
     if (selector == 0) {
@@ -101,11 +67,11 @@ void func_0019554C(
     record->field_12 = class_value;
 
     if (selector == 0) {
-        func_0004501C(record, g_func_0019554C_base_level + source->field_01);
+        func_0004501C(record, (u8)(g_func_0019554C_base_level + source->field_01));
     } else if (selector == 1) {
-        func_0004501C(record, g_func_0019554C_base_level + source->field_08);
+        func_0004501C(record, (u8)(g_func_0019554C_base_level + source->field_08));
     } else {
-        func_0004501C(record, g_func_0019554C_base_level + source->field_11);
+        func_0004501C(record, (u8)(g_func_0019554C_base_level + source->field_11));
     }
 
     record->field_2A = 0;
@@ -161,9 +127,11 @@ void func_0019554C(
     }
 
     if ((flag == 0) & (source_index < 30)) {
-        late_record->field_34 = record_index;
-        late_record->field_35 = 0;
-        late_record->field_36 = 0;
-        late_record->field_37 = 0;
+        CharacterRecord56 *full_record = (CharacterRecord56 *)late_record;
+
+        full_record->field_34 = record_index;
+        full_record->field_35 = 0;
+        full_record->field_36 = 0;
+        full_record->field_37 = 0;
     }
 }

@@ -1,53 +1,7 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-
-typedef struct CharacterRecord {
-    u8 unk_00[0x11];
-    u8 class_11;
-    u8 class_12;
-    u8 level_13;
-    u8 unk_14[2];
-    u16 stat_16;
-    u8 unk_18[4];
-    u16 stat_1C;
-    u16 stat_1E;
-    u16 stat_20;
-    u16 stat_22;
-    u16 stat_24;
-    u16 stat_26;
-    u8 luck_28;
-    u8 unk_29;
-    u16 equipment_2A;
-    u16 equipment_2C;
-    u16 equipment_2E;
-    u16 equipment_30;
-} CharacterRecord;
-
-typedef struct ClassRecord {
-    u8 unk_00[0x0A];
-    u8 growth_0A;
-    u8 unk_0B[3];
-    u8 growth_0E;
-    u8 unk_0F[3];
-    u8 growth_12;
-    u8 unk_13[3];
-    u8 growth_16;
-    u8 unk_17[3];
-    u8 growth_1A;
-    u8 unk_1B[3];
-    u8 growth_1E;
-    u8 unk_1F[3];
-    u8 growth_22;
-    u8 unk_23[0x25];
-} ClassRecord;
+#include "game/character_record.h"
 
 typedef s32 (*EquipmentSelector)(u8, u8);
 
-extern ClassRecord g_func_0019554C_class_records[];
 extern EquipmentSelector g_func_0018B494_equipment_selectors[];
 extern s32 rand(void);
 extern s8 func_000457e4(s32);
@@ -103,7 +57,7 @@ void func_00044aa4(CharacterRecord *arg0)
     u16 luck_result;
     s32 level;
     s32 class_id;
-    ClassRecord *class_record;
+    CharacterClassRecord *class_record;
 
     class_id = *((u8 *)arg0 + 0x12);
     level = *((u8 *)arg0 + 0x13);
@@ -229,23 +183,23 @@ void func_00044aa4(CharacterRecord *arg0)
             equipment = 0;
             switch (slot) {
             case 0:
-                equipment = arg0->equipment_2A;
+                equipment = arg0->field_2A;
                 break;
             case 1:
-                equipment = arg0->equipment_2C;
+                equipment = arg0->field_2C;
                 break;
             case 2:
-                equipment = arg0->equipment_2E;
+                equipment = arg0->field_2E;
                 break;
             case 3:
-                equipment = arg0->equipment_30;
+                equipment = arg0->field_30;
                 break;
             }
 
             equipment_value = equipment & 0xFFFF;
             if (equipment_value == 0) {
                 equipment = g_func_0018B494_equipment_selectors[equipment_index & 0xFF](
-                    arg0->class_11, arg0->class_12);
+                    arg0->field_11, arg0->field_12);
             }
             equipment_id = equipment & 0xFFFF;
             if (equipment_id == 0) {
@@ -264,79 +218,79 @@ equipment_advance:
             loop_index += 1;
         } while (loop_index < 4);
 
-        current = arg0->stat_16;
+        current = arg0->field_16;
         result_16 = (current + growth_0A) < 1000;
         if (result_16 != 0) {
             result_16 = current + growth_0A;
         } else {
             result_16 = 999;
         }
-        arg0->stat_16 = result_16;
+        arg0->field_16 = result_16;
 
-        current = arg0->stat_1C;
+        current = arg0->field_1C;
         result_1C = (current + growth_0E) < 1000;
         if (result_1C != 0) {
             result_1C = current + growth_0E;
         } else {
             result_1C = 999;
         }
-        arg0->stat_1C = result_1C;
+        arg0->field_1C = result_1C;
 
-        current = arg0->stat_1E;
+        current = arg0->field_1E;
         result_1E = (current + (growth_12 & 0xFFFF)) < 1000;
         if (result_1E != 0) {
             result_1E = current + growth_12;
         } else {
             result_1E = 999;
         }
-        arg0->stat_1E = result_1E;
+        arg0->field_1E = result_1E;
 
-        current = arg0->stat_20;
+        current = arg0->field_20;
         result_20 = (current + (growth_16 & 0xFFFF)) < 1000;
         if (result_20 != 0) {
             result_20 = current + growth_16;
         } else {
             result_20 = 999;
         }
-        arg0->stat_20 = result_20;
+        arg0->field_20 = result_20;
 
-        current = arg0->stat_22;
+        current = arg0->field_22;
         result_22 = (current + (growth_1A & 0xFFFF)) < 1000;
         if (result_22 != 0) {
             result_22 = current + growth_1A;
         } else {
             result_22 = 999;
         }
-        arg0->stat_22 = result_22;
+        arg0->field_22 = result_22;
 
-        current = arg0->stat_24;
+        current = arg0->field_24;
         result_24 = (current + (growth_1E & 0xFFFF)) < 1000;
         if (result_24 != 0) {
             result_24 = current + growth_1E;
         } else {
             result_24 = 999;
         }
-        arg0->stat_24 = result_24;
+        arg0->field_24 = result_24;
 
-        current = arg0->stat_26;
+        current = arg0->field_26;
         result_26 = (current + (growth_22 & 0xFFFF)) < 1000;
         if (result_26 != 0) {
             result_26 = current + growth_22;
         } else {
             result_26 = 999;
         }
-        arg0->stat_26 = result_26;
+        arg0->field_26 = result_26;
 
-        if ((arg0->luck_28 + luck_delta) < 0) {
-            arg0->luck_28 = 0;
+        if ((arg0->field_28 + luck_delta) < 0) {
+            arg0->field_28 = 0;
             return;
         }
-        luck_result = (arg0->luck_28 + luck_delta) < 101;
+        luck_result = (arg0->field_28 + luck_delta) < 101;
         if (luck_result != 0) {
-            luck_result = arg0->luck_28 + luck_delta;
+            luck_result = arg0->field_28 + luck_delta;
         } else {
             luck_result = 100;
         }
-        arg0->luck_28 = luck_result;
+        arg0->field_28 = luck_result;
     }
 }

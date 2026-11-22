@@ -28,7 +28,7 @@ s32 func_0020C104(s32 *);
 s32 func_0020C164(s32 *);
 s32 func_0020C2C0(s32 *);
 s32 func_0020C32C(s32 *);
-s32 func_0020C448(s32 *);
+u16 func_0020C448(void *);
 void *func_0020C478(unsigned int index);
 s32 func_0020D72C(void *);
 void func_0021D200(s32, s32, void *);

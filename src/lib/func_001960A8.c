@@ -1,3 +1,4 @@
+#include "game/character_record.h"
 #include "game/record_name_selection.h"
 
 extern unsigned char D_8018F481_check1[];
@@ -23,7 +24,6 @@ extern unsigned char D_8019367C[];
 extern unsigned char D_801936AC[];
 extern unsigned char D_80193AB0[];
 extern unsigned char D_80193AC0[];
-extern unsigned char D_80193BC0[];
 extern unsigned char D_80193BD1[];
 extern unsigned char D_80193BD2[];
 extern unsigned char D_80193BD3[];
@@ -34,7 +34,6 @@ extern unsigned char D_80193BF0[];
 extern unsigned char D_80193C09[];
 extern unsigned char D_801953F0[];
 extern unsigned char D_801953F2[];
-extern unsigned char D_80195560[];
 extern unsigned char D_80195571[];
 extern unsigned char D_80195572[];
 extern unsigned char D_80195573[];
@@ -122,28 +121,22 @@ extern unsigned char D_802172D0[];
 
 typedef struct LoaderBytes17 { unsigned char bytes[17]; } LoaderBytes17;
 extern LoaderBytes17 D_80195560_copy, D_80193BC0_copy, D_802172D0_copy_a, D_802172D0_copy_b;
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
 typedef signed long long s64;
 typedef unsigned long long u64;
 typedef float f32;
 typedef double f64;
 typedef s32 M2C_UNK;
+typedef struct RuntimeUnit RuntimeUnit;
 typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 u8 *boot_command_stream_dispatch(M2C_UNK, M2C_UNK, M2C_UNK, u8);
 M2C_UNK boot_command_stream_resource_node_dispatch(M2C_UNK, M2C_UNK, M2C_UNK);
-void func_0004501C(void *, s32);
 s32 func_0005c110(M2C_UNK);
 f32 func_000F315C(u8, f32, f32);
 f32 func_000F3428(u8, f32, f32);
-M2C_UNK func_00121DA8(void *);
+extern void func_00121DA8(RuntimeUnit *unit);
 M2C_UNK func_00128E80();
 s8 func_001291B4(s32);
 M2C_UNK func_0012967C(u8);
@@ -267,7 +260,7 @@ void func_001960A8(void) {
     void *temp_a1_79;
     void *temp_a1_84;
     void *temp_a1_90;
-    void *temp_s0_1321;
+    CharacterRecord56 *temp_s0_1321;
     void *temp_s0_244;
     void *temp_s0_249;
     void *temp_s0_254;
@@ -501,7 +494,7 @@ health_iteration:
         var_a2_465 = 1;
     }
     temp_v0_496 = (*(u8 *)((s8 *)((void *)((u32)D_801F1035)) + (0)));
-    func_0004501C((void *)((u32)D_80195560), (*(u8 *)((u32)D_80195572) = var_a2_465, *(u8 *)((u32)D_80195573) = temp_v0_496));
+    func_0004501C(&D_80195560[0], (*(u8 *)((u32)D_80195572) = var_a2_465, *(u8 *)((u32)D_80195573) = temp_v0_496));
     *(s16 *)((u32)D_8019558A) = 0;
     *(s16 *)((u32)D_8019558C) = 0;
     *(s16 *)((u32)D_8019558E) = 0;
@@ -517,7 +510,7 @@ health_iteration:
             var_a2_525 = 1;
         }
         temp_v0_555 = (*(u8 *)((s8 *)((void *)((u32)D_801F1035_second)) + (0)));
-        func_0004501C((void *)((u32)D_80193BC0), (*(u8 *)((u32)D_80193BD2) = var_a2_525, *(u8 *)((u32)D_80193BD3) = temp_v0_555));
+        func_0004501C(&D_80193BC0[0].record, (*(u8 *)((u32)D_80193BD2) = var_a2_525, *(u8 *)((u32)D_80193BD3) = temp_v0_555));
     }
     var_s1_565 = ((u32)D_801F2700);
     memset_00023780(((u32)D_801F2700), 0xF00);
@@ -856,10 +849,10 @@ block_133:
                                     var_s1_1306 += 1;
                                 } while ((*(u8 *)(D_80193BD1 + (var_v1_1307))) != 0);
                             }
-                            temp_s0_1321 = (void *)((var_s1_1306 * 0x38) + ((u32)D_80193BC0));
+                            temp_s0_1321 = &D_80193BC0[var_s1_1306];
                             (*(u8 *)((s8 *)(temp_s0_1321) + (0x11))) = temp_s3_1299;
                             (*(u8 *)((s8 *)(temp_s0_1321) + (0x12))) = temp_s3_1299;
-                            func_0004501C(temp_s0_1321, (*(u8 *)((s8 *)((void *)((u32)D_801F1035)) + (0))));
+                            func_0004501C(&temp_s0_1321->record, (*(u8 *)((s8 *)((void *)((u32)D_801F1035)) + (0))));
                             (*(s16 *)((s8 *)(temp_s0_1321) + (0x30))) = 0;
                             (*(s16 *)((s8 *)(temp_s0_1321) + (0x2E))) = 0;
                             (*(s16 *)((s8 *)(temp_s0_1321) + (0x2C))) = 0;

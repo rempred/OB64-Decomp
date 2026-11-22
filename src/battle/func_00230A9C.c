@@ -78,7 +78,7 @@ extern void func_0022EF50(A9CObject *);
 extern int func_0020BFE4(void);
 extern u16 func_0020C448(A9CObject *);
 extern u8 func_00201584(int, int);
-extern u8 func_00201798(int, int, int, int);
+extern int func_00201798(int, int, int, int);
 extern void func_001F0E04(void *, int);
 extern int func_0022222C(A9CObject *, A9CObject *, int, int);
 extern int func_002223E0(A9CObject *, A9CObject *, int, int, int, int);
