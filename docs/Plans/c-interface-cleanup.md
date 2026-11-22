@@ -196,7 +196,9 @@ The lookup lead also owns the complete `func_001F1218`, `func_001F114C` and `fun
 | Battle record flag | `func_0020BFF8` | 16 | 4 | Follow the supplied record pointer through the null check and the bit test on the word at +0x40. Compare how the actual callers pass the pointer and consume the zero-or-one result. |
 | Boot archive stream | `boot_io_open_stream` | 15 | 4 | Trace the four arguments and the returned slot through the three archive callers. Compare read mode with the other mode path and check the result when each slot is occupied. |
 
-The allocator has 24 named transfers across 14 caller files and the battle flag has 51 across 36. Check compatible declarations, address aliases and aggregate types in the remaining callers before changing a provider. The three archive callers share four named transfers to `func_0000F4E4`. Trace its two stream objects into the code that consumes the returned handles before selecting a shared declaration.
+The allocator has 23 named transfers across 13 caller files. The file-level analysis also counts a call inside the allocator to its local tree-search helper. For the battle flag, 48 transfers use the provider name and three use the address alias. Check compatible declarations, address aliases and aggregate types in the remaining callers before changing a provider. The three archive callers share four named transfers to `func_0000F4E4`. Trace its two stream objects into the code that consumes the returned handles before selecting a shared declaration.
+
+The battle lead also owns nine complete source files that declare the flag query with a pointer to a local record type. Together they emit ten calls to the named entry. Three descriptor-10 files reproduce the bit test inline and declare that definition with external linkage. They are separate checks: align the external parameter type, preserve the local record access and confirm the compiler still emits the test inline. The original 47 definite findings remain the acceptance target across 26 files. The three calls through `D_801C8B68` require load-context evidence because other code occupies the same address.
 
 ## Matching and acceptance
 
