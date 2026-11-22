@@ -218,6 +218,10 @@ The accepted Round 10 census has 1,079 definite findings across 270 linked entri
 | Class sprite resource lookup | `func_00045ae0` | 15 | 5 | Trace the returned allocation to its consumer and the separate pixel address through the output slot. Compare a real class and variant lookup with the missing-resource path, including the address aliases. |
 | Menu cursor state stack | `func_000ae30c` | 15 | 3 | Trace the saved and incoming triples through a menu transition and the restoring consumer. Compare argument widths at the caller and the three halfword stores at the provider. |
 
+The sprite lead also owns the complete panel initializer `func_0028ad2c`, shop display routine `func_0019AB44` and adjacent byte-buffer lookup `func_00291130`. The shop passes the address of `D_8021A134` to the sprite lookup and later loads its contents for display. It separately keeps and frees the returned allocation at `D_8021A130`. Both panel initializers likewise store the pixel pointer at offset zero and the returned allocation at `+0x10`. Check those as distinct objects. The adjacent lookup writes a byte pointer at `+4` and returns a buffer stored at `+8`. Its declaration in `func_0028adf4` accounts for two additional findings. The revised scope is 47 findings in 17 source files.
+
+The pre-NMI path in the event provider passes the registered queue to `osSendMesg`. Check its declaration against the provider's `struct MessageQueue *` parameter. The separate VI setting at ROM `0x241A0` still has two scheduler findings for the ranked backlog.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
