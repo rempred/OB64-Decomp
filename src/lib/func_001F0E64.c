@@ -1,16 +1,6 @@
 #include "game/combat_types.h"
 
-typedef struct Func001F0E64Record {
-    int field_00;
-    u16 field_04;
-    short field_06;
-    u16 field_08, field_0A;
-    u16 field_0C, field_0E, field_10;
-    unsigned char field_12[16];
-    unsigned char field_22[16];
-    unsigned char field_32[20];
-    unsigned char field_46, field_47, field_48;
-} Func001F0E64Record;
+#include "game/combat_selector.h"
 
 extern int rand(void);
 extern void func_8009C970(void *, int, unsigned int);

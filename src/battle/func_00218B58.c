@@ -1,3 +1,5 @@
+#include "game/combat_selector.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -13,7 +15,6 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-M2C_UNK func_001F0E64(void *, M2C_UNK);                         
 f32 func_001FF7EC(s16, s16);                                    
 f32 func_002016F4(s32, s32);                                    
 void func_0020BD5C(s32 selector);                                 
@@ -47,7 +48,7 @@ void func_00218B58(void)
     s8 *var_s0_270;
     s8 *var_s0_40;
     void *temp_a0_352;
-    void *temp_a0_91;
+    Func001F0E64Record *temp_a0_91;
     void *temp_v0_335;
     void *temp_v1_288;
     void *temp_v1_296;
@@ -114,7 +115,7 @@ block_18:
     }
 block_22:
     var_a1_89 = 5;
-    temp_a0_91 = (s8 *) (*(void **) var_s0_40) + 0x44;
+    temp_a0_91 = (Func001F0E64Record *)((s8 *) (*(void **) var_s0_40) + 0x44);
     if (var_v1_72 != first_one) {
         goto block_24;
     }

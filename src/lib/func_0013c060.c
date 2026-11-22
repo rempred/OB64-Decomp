@@ -18,7 +18,7 @@ extern u8 D_800E7A90[];
 extern u8 D_801ED740[], D_801ED760[], D_801ED77E[], D_801F0AA0[];
 extern s32 func_0016C454(void);
 extern s32 func_0005c110(s32);
-extern s32 func_00022e60(void);
+extern u32 func_00022e60(void);
 extern void func_00023940(void *, ...);
 extern void func_0010D484(f32, f32, f32, s32, s32);
 extern s32 func_801D935C(void *), func_801D92D0(void *);
@@ -109,7 +109,7 @@ void func_0013C060(void)
     if (!enabled) {
         threshold = 10;
     }
-    if ((u32)func_00022e60() % interval > threshold) {
+    if (func_00022e60() % interval > threshold) {
         return;
     }
     /* The scope placement also retains the reverse pointer's retail
@@ -144,7 +144,7 @@ void func_0013C060(void)
         last = 29;
     candidate_loop:
         do {
-            index = func_00022e60() % remaining;
+            index = (s32)func_00022e60() % remaining;
         } while (0);
         selected = candidate_base[index];
         if ((u32)selected >= 30) {
@@ -159,7 +159,7 @@ void func_0013C060(void)
             if (func_001314D0(unit, 0xF2)) {
                 weight *= 2;
             }
-            if (func_00022e60() % 100 < weight) {
+            if ((s32)func_00022e60() % 100 < weight) {
                 s32 random;
                 s32 kind;
                 u8 *values;
@@ -170,7 +170,7 @@ void func_0013C060(void)
                  * retains the dividend-first parity ADD. */
                 do {
                     row = D_801E7E18[D_8018F481 * 12] - 3;
-                    random = func_00022e60();
+                    random = (s32)func_00022e60();
                     offset = FIELD(unit, s32, 0x14);
                     offset = lookup[offset];
                     kind = D_801ED760[offset];

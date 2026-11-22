@@ -13,7 +13,7 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-s32 func_00022e60();
+extern u32 func_00022e60(void);
 void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
 void func_0005c090(s32, s32);
 M2C_UNK func_000ec838(M2C_UNK, s32, M2C_UNK, M2C_UNK, s32, s32, s32, s32, s32);
@@ -1104,7 +1104,7 @@ block_132:
     } else if (case0f_secondary_word != 0) {
         D_801F36D0 = 0x236;
     } else {
-        case0f_helper_word = func_00022e60();
+        case0f_helper_word = (s32)func_00022e60();
         case0f_helper_word %= 100;
         if (case0f_helper_word < 0x15) {
             D_801F36D0 = 0x204;

@@ -21,7 +21,7 @@ void func_80079618(u32,s32);
 void func_80090010(void*,s32);
 void func_800900C0(void*,s32);
 f32 func_800907F0(f32);
-void func_80092A60(void);
+extern u32 func_80092A60(void);
 f32 func_80092DB0(f32);
 void func_80093380(void*,s32);
 void func_8009DA50(u32 rom_address, u8 *destination, u32 bytes);

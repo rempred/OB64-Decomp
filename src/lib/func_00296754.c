@@ -7,7 +7,7 @@ extern void func_80080998(void *, void *, s32);
 extern u8 *func_002839E8(u32, s32);
 extern u8 *func_00296CE0(s16);
 extern void func_8009C550(u8 *, const u8 *);
-extern void func_8009C620(u8 *, const u8 *);
+extern u8 *func_8009C620(u8 *, const u8 *);
 
 PanelContent *func_00296754(Panel *panel, s32 section)
 {

@@ -24,7 +24,7 @@ extern s32 func_8017B58C(void *text);
 extern void func_8017C4B4(s32 value);
 extern void func_80179034(void *text, s32 x, s32 y);
 extern void func_8009C550(void *dest, void *source);
-extern void func_8009C620(void *dest, void *source);
+extern u8 *func_8009C620(u8 *, const u8 *);
 extern s32 func_80093460(void *text);
 extern void func_802027DC(void);
 extern void func_802012D8(void *data);
@@ -299,8 +299,8 @@ void func_001994B4(Panel *panel, s32 slot)
             tail = buffer + 1;
             buffer[0] = 14;
             func_8009C550(tail, D_80219BF8);
-            func_8009C620(buffer, D_80219DB0);
-            func_8009C620(buffer, D_80187BD4[(u8)func_8016F5E0(argument_item)]);
+            func_8009C620((u8 *)buffer, D_80219DB0);
+            func_8009C620((u8 *)buffer, D_80187BD4[(u8)func_8016F5E0(argument_item)]);
             length = func_80093460(buffer);
             buffer[length] = 15;
             tail[length] = 0;
@@ -321,7 +321,7 @@ void func_001994B4(Panel *panel, s32 slot)
                     buffer[0] = 14;
                     tail = buffer + 1;
                     func_8009C550(tail, D_80213140[flag_index]);
-                    func_8009C620(buffer, D_80219DB4);
+                    func_8009C620((u8 *)buffer, D_80219DB4);
                     append_base = buffer;
                     suffix = D_80219C04;
                 } else if (byte_or_final_sync_word != 0) {
@@ -335,13 +335,13 @@ void func_001994B4(Panel *panel, s32 slot)
                     buffer[0] = 14;
                     tail = buffer + 1;
                     func_8009C550(tail, D_80213140[flag_index]);
-                    func_8009C620(buffer, D_80219DB4);
+                    func_8009C620((u8 *)buffer, D_80219DB4);
                     append_base = buffer;
                     suffix = D_80219C0C;
                 } else {
                     goto display_secondary_text;
                 }
-                func_8009C620(append_base, suffix);
+                func_8009C620((u8 *)append_base, suffix);
                 length = func_80093460(buffer);
                 delimiter = buffer;
                 delimiter += length;

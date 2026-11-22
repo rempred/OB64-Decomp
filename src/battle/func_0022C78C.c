@@ -1,3 +1,6 @@
+#include "game/combat_selector.h"
+#include "game/combat_evaluator.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
@@ -8,8 +11,6 @@ typedef unsigned int u32;
 typedef struct { u32 words[20]; } LocalCopy;
 s32 func_00045480(s32);
 s32 func_000454e0(s32);
-void func_001F0E64(LocalCopy *, u32);
-s32 func_001F197C(void *, LocalCopy *, s32 *);
 s32 func_00201584(s32, s32);
 s32 func_00201798(s32, s32, s32, s32);
 s32 func_0020BFE4(void);
@@ -44,7 +45,11 @@ void memset_00023780(s32 *, s32);
 s32 rand(void);
 
 s32 func_0022C78C(void *record, s32 *out_time) {
-    LocalCopy local_copy;
+    union {
+        LocalCopy copy;
+        Func001F0E64Record record;
+        Func001F197CState evaluator;
+    } local;
     s32 local_buffer[6];
     s32 * time_out;
     s32 local_duration;
@@ -133,7 +138,7 @@ s32 func_0022C78C(void *record, s32 *out_time) {
     sample0 = rand();
     sample1 = rand();
     check_value = (u32) ((((sample0 << 0x12) & 0x0C000000) | (sample1 << 0xF) | rand()) % 100) < check_value;
-    local_copy = *(LocalCopy *)((u8 *)*(void **)(record) + 0x44);
+    local.copy = *(LocalCopy *)((u8 *)*(void **)(record) + 0x44);
     mode0 = 0;
     if (check_value == 0) {
         if (func_00201584(*(s32 *)((u8 *)target + 0x48), *(s32 *)((u8 *)target + 0x4C)) & 0xFF) {
@@ -143,8 +148,8 @@ s32 func_0022C78C(void *record, s32 *out_time) {
         }
     }
     stream_code0 = func_00201798(*(s32 *)((u8 *)record + 0x48), *(s32 *)((u8 *)record + 0x4C), *(s32 *)((u8 *)record + 0x7C), mode0);
-    func_001F0E64(&local_copy, stream_code0 & 0xFF);
-    func_001F197C(record, &local_copy, local_buffer);
+    func_001F0E64(&local.record, stream_code0 & 0xFF);
+    func_001F197C(record, &local.evaluator, local_buffer);
     if (func_0020BFE4() != 0) {
         entry0 = (*(void **)((u8 *)(record) + (4)));
         time = func_0022222C(record, target, *(s16 *)((u8 *)entry0 + 0x1C), *(s16 *)((u8 *)entry0 + 0x20));
@@ -181,7 +186,7 @@ s32 func_0022C78C(void *record, s32 *out_time) {
         func_0021D28C(2, time + local_buffer[0], record, 2, *(s32 *)((u8 *)record + 0x68), 5);
     }
     entry1 = (*(void **)((u8 *)(record) + (4)));
-    local_copy = *(LocalCopy *)((u8 *)*(void **)((u8 *)record + 4) + 0x44);
+    local.copy = *(LocalCopy *)((u8 *)*(void **)((u8 *)record + 4) + 0x44);
     mode1 = 0;
     if (check_value == 0) {
         if (func_00201584(*(s32 *)((u8 *)target + 0x48), *(s32 *)((u8 *)target + 0x4C)) & 0xFF) {
@@ -192,8 +197,8 @@ s32 func_0022C78C(void *record, s32 *out_time) {
     }
     time2 = time + offset;
     stream_code1 = func_00201798(*(s32 *)((u8 *)record + 0x48), *(s32 *)((u8 *)record + 0x4C), *(s32 *)((u8 *)record + 0x7C), mode1) & 0xFF;
-    func_001F0E64(&local_copy, stream_code1);
-    local_duration = func_001F197C(record, &local_copy, local_buffer);
+    func_001F0E64(&local.record, stream_code1);
+    local_duration = func_001F197C(record, &local.evaluator, local_buffer);
     if (func_0020BFE4() != 0) {
         if (check_value != 0) {
             func_0021D28C(6, time2, record, 2, stream_code1, *(s32 *)((u8 *)record + 0x7C));
@@ -311,18 +316,18 @@ merge_event_end:
     } else {
         selector0 = func_00201584(*(s32 *)((u8 *)target + 0x48), *(s32 *)((u8 *)target + 0x4C)) & 0xFF;
         time3 = time + offset + local_buffer[0];
-        local_copy = *(LocalCopy *)((u8 *)*(void **)(target) + 0x44);
-        func_001F0E64(&local_copy, ((0 - (selector0 == 0)) & 0x17) | 0x15);
-        check_value = func_001F197C(target, &local_copy, 0);
+        local.copy = *(LocalCopy *)((u8 *)*(void **)(target) + 0x44);
+        func_001F0E64(&local.record, ((0 - (selector0 == 0)) & 0x17) | 0x15);
+        check_value = func_001F197C(target, &local.evaluator, 0);
         func_0021D230(0xE, time3, target, 0xFF);
         time4 = time3 + check_value;
-        local_copy = *(LocalCopy *)((u8 *)*(void **)(target) + 0x44);
+        local.copy = *(LocalCopy *)((u8 *)*(void **)(target) + 0x44);
         bridge_selector = 0x18;
         if (selector0 != 0) {
             bridge_selector = 0x16;
         }
-        func_001F0E64(&local_copy, bridge_selector);
-        duration0 = func_001F197C(target, &local_copy, 0);
+        func_001F0E64(&local.record, bridge_selector);
+        duration0 = func_001F197C(target, &local.evaluator, 0);
         func_0021D230(0xF, time4, target, 0xFF);
         check_value += duration0;
         candidate_end_time = time4 + check_value;

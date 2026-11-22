@@ -1,3 +1,5 @@
+#include "game/combat_selector.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -31,7 +33,6 @@ struct _m2c_stack_func_0021840C {
                char pad1C[0x34];
 };                                                                   
 
-M2C_UNK func_001F0E64(void *, M2C_UNK);                         
 void func_0020BD5C(s32 selector);                                 
 s32 func_0020BF7C();                                            
 s32 func_0020BF8C();                                            
@@ -144,14 +145,14 @@ void func_0021840C(void) {
                         if (var_a0_102 != 0) {
                             if (func_0020C014(temp_v0_54) != 0) {
                                 if (sp10 == 0) {
-                                    func_001F0E64((s8 *) (*(void **) var_s0_92) + 0x44, 8);
+                                    func_001F0E64((Func001F0E64Record *)((s8 *) (*(void **) var_s0_92) + 0x44), 8);
                                 } else if (sp10 == terminal_state) {
-                                    func_001F0E64((s8 *) (*(void **) var_s0_92) + 0x44, 0x24);
+                                    func_001F0E64((Func001F0E64Record *)((s8 *) (*(void **) var_s0_92) + 0x44), 0x24);
                                 }
                             } else if (sp14 == 0) {
-                                func_001F0E64((s8 *) (*(void **) var_s0_92) + 0x44, 8);
+                                func_001F0E64((Func001F0E64Record *)((s8 *) (*(void **) var_s0_92) + 0x44), 8);
                             } else if (sp14 == terminal_state) {
-                                func_001F0E64((s8 *) (*(void **) var_s0_92) + 0x44, 0x24);
+                                func_001F0E64((Func001F0E64Record *)((s8 *) (*(void **) var_s0_92) + 0x44), 0x24);
                             }
                         }
                     }

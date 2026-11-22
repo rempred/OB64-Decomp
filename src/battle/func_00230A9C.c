@@ -1,3 +1,6 @@
+#include "game/combat_selector.h"
+#include "game/combat_evaluator.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -45,7 +48,11 @@ typedef union A9CWork {
     int words[22];
     struct {
         int output[2];
-        A9CStateBlock state[5];
+        union {
+            A9CStateBlock blocks[5];
+            Func001F0E64Record record;
+            Func001F197CState evaluator;
+        } state;
     } fields;
 } A9CWork;
 
@@ -53,7 +60,7 @@ extern A9CContext *D_801CE8C0;
 /* The ten accessed words span both existing original data owners. */
 extern const float D_801F68D0[];
 extern void func_00023780(void *, u32);
-extern int func_00022e60(void);
+extern unsigned int func_00022e60(void);
 extern int rand(void);
 extern int func_000454E0(int);
 extern int func_0020C104(A9CObject *);
@@ -73,8 +80,6 @@ extern u16 func_0020C448(A9CObject *);
 extern u8 func_00201584(int, int);
 extern u8 func_00201798(int, int, int, int);
 extern void func_001F0E04(void *, int);
-extern void func_001F0E64(void *, int);
-extern int func_001F197C(A9CObject *, void *, int *);
 extern int func_0022222C(A9CObject *, A9CObject *, int, int);
 extern int func_002223E0(A9CObject *, A9CObject *, int, int, int, int);
 extern void func_0021D200(int, int, void *);
@@ -273,12 +278,12 @@ int func_00230A9C(A9CObject **input, int *outTime)
                          selected[i]->field68, 5);
         source = (A9CStateBlock *)(selected[0]->pointers[0] + 0x44);
         sourceEnd = (A9CStateBlock *)(selected[0]->pointers[0] + 0x94);
-        destination = work.fields.state;
+        destination = work.fields.state.blocks;
         do {
             *destination++ = *source++;
         } while (source != sourceEnd);
-        func_001F0E64(work.fields.state, 6);
-        base = func_001F197C(selected[0], work.fields.state, 0);
+        func_001F0E64(&work.fields.state.record, 6);
+        base = func_001F197C(selected[0], &work.fields.state.evaluator, 0);
         for (i = 0; i < selectedCount; ++i) {
             func_0021D25C(5, scheduled[i] + values[i], selected[i], 0xFF, 6);
             values[i] += base;
@@ -297,7 +302,7 @@ int func_00230A9C(A9CObject **input, int *outTime)
     decision = mixed < (u32)decision;
     source = (A9CStateBlock *)(selected[0]->pointers[0] + 0x44);
     sourceEnd = (A9CStateBlock *)(selected[0]->pointers[0] + 0x94);
-    destination = work.fields.state;
+    destination = work.fields.state.blocks;
     do {
         *destination++ = *source++;
     } while (source != sourceEnd);
@@ -310,8 +315,8 @@ int func_00230A9C(A9CObject **input, int *outTime)
     }
     selector = (u8)func_00201798(selected[0]->field48, selected[0]->field4C,
                                 selected[0]->field7C, rawMode);
-    func_001F0E64(work.fields.state, selector);
-    duration = func_001F197C(selected[0], work.fields.state, work.words);
+    func_001F0E64(&work.fields.state.record, selector);
+    duration = func_001F197C(selected[0], &work.fields.state.evaluator, work.words);
     if (func_0020BFE4() == 0) {
         duration = 15;
         work.words[0] = 10;
@@ -370,7 +375,7 @@ int func_00230A9C(A9CObject **input, int *outTime)
                     threshold = func_002363FC(target);
                     innerResult = func_002365BC(selected[0], target,
                                               innerOperand, threshold);
-                    randomWord = func_00022e60();
+                    randomWord = (int)func_00022e60();
                     randomWord %= 100;
                     hitCount += randomWord < innerResult;
                 }
@@ -393,13 +398,13 @@ int func_00230A9C(A9CObject **input, int *outTime)
         followup = (u8)func_00201584(target->field48, target->field4C);
         source = (A9CStateBlock *)(target->pointers[0] + 0x44);
         sourceEnd = (A9CStateBlock *)(target->pointers[0] + 0x94);
-        destination = work.fields.state;
+        destination = work.fields.state.blocks;
         do {
             *destination++ = *source++;
         } while (source != sourceEnd);
-        failureState = work.fields.state;
+        failureState = work.fields.state.blocks;
         func_001F0E04(failureState, followup == 0 ? 0x17 : 0x15);
-        firstEvaluation = func_001F197C(target, failureState, 0);
+        firstEvaluation = func_001F197C(target, &work.fields.state.evaluator, 0);
         func_0021D230(0xE, scheduled[0] + values[0] + work.words[0], target, 0xFF);
         objectTime = scheduled[0] + values[0] + work.words[0] + firstEvaluation;
         source = (A9CStateBlock *)(target->pointers[0] + 0x44);
@@ -408,11 +413,11 @@ int func_00230A9C(A9CObject **input, int *outTime)
             *failureState++ = *source++;
         } while (source != failureSourceEnd);
         failureSelector = 0x18;
-        failureState = work.fields.state;
+        failureState = work.fields.state.blocks; /* Keeps the state-address load in the retail branch delay slot. */
         if (followup != 0)
             failureSelector = 0x16;
-        func_001F0E64(failureState, failureSelector);
-        secondEvaluation = func_001F197C(target, failureState, 0);
+        func_001F0E64(&work.fields.state.record, failureSelector);
+        secondEvaluation = func_001F197C(target, &work.fields.state.evaluator, 0);
         func_0021D230(0xF, objectTime, target, 0xFF);
         firstEvaluation += secondEvaluation;
         if (target->field94 < objectTime + firstEvaluation)

@@ -1,17 +1,8 @@
+#include "game/combat_evaluator.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef short s16;
-typedef unsigned short u16;
-
-typedef struct {
-    int field00;
-    u16 field04;
-    s16 field06, field08, field0A, field0C, field0E, field10;
-    u8 field12[16];
-    s8 field22[16];
-    u8 field32[4], field36[4], field3A[4], field3E[4], field42[4];
-    u8 field46, field47;
-} Func001F197CState;
 
 extern int func_00204F34(int, int, int, int, int, int, u8 *, u8 *, u8 *);
 extern int func_0020BFF8(void *);

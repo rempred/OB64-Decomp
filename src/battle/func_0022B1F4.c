@@ -1,3 +1,6 @@
+#include "game/combat_selector.h"
+#include "game/combat_evaluator.h"
+
 #include "common/types.h"
 
 typedef float f32;
@@ -6,12 +9,17 @@ typedef s32 UnknownWord;
 typedef struct { s32 words[20]; } LocalCopy;
 /* Retail clears six words beside the 80-byte work copy. The sentinel walk
  * retains that layout; a bound on all runtime program lengths is not inferred. */
-typedef struct { LocalCopy copy; s32 buffer[6]; } LocalData;
-s32 func_00022e60();
+typedef struct {
+    union {
+        LocalCopy copy;
+        Func001F0E64Record record;
+        Func001F197CState evaluator;
+    } state;
+    s32 buffer[6];
+} LocalData;
+unsigned int func_00022e60(void);
 s32 func_00043ad8(u8, u8);
 s32 func_000454e0(s32);
-void func_001F0E64(LocalCopy *, s32);
-s32 func_001F197C(s32 *, LocalCopy *, s32 *);
 s32 func_00201584(s32, s32);
 s32 func_00201798(s32, s32, s32, UnknownWord);
 s32 func_0020BFE4();
@@ -177,10 +185,10 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
         (*(s32 *)((s8 *)(sourceWords) + (0x6C))) = (s32) ((*(s32 *)((s8 *)(sourceWords) + (0x6C))) + 1);
         if (func_0020BFE4() != 0) {
             temp_v0_104 = (*(s32 *)((s8 *)(sourceWords) + (0)));
-            data.copy = *(LocalCopy *)(temp_v0_104 + 0x44);
+            data.state.copy = *(LocalCopy *)(temp_v0_104 + 0x44);
             temp_s0_125 = func_00201798((*(s32 *)((s8 *)(sourceWords) + (0x48))), (*(s32 *)((s8 *)(sourceWords) + (0x4C))), (*(s32 *)((s8 *)(sourceWords) + (0x7C))), 0) & 0xFF;
-            func_001F0E64(&data.copy, temp_s0_125);
-            sp9C = func_001F197C(sourceWords, &data.copy, 0);
+            func_001F0E64(&data.state.record, temp_s0_125);
+            sp9C = func_001F197C(sourceWords, &data.state.evaluator, 0);
             func_0021D25C(0x1D, temp_s6_230, sourceWords, 0xFF, temp_s0_125);
         } else {
             sp9C = 0xA;
@@ -238,9 +246,9 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
             }
             if ((func_00043ad8((*(u8 *)((s8 *)(sourceWords) + (0x4B))), (*(u8 *)((s8 *)(sourceWords) + (0x4F)))) & 0xFF) != 1) {
                 temp_v0_257 = (*(s32 *)((s8 *)(sourceWords) + (0)));
-                data.copy = *(LocalCopy *)(temp_v0_257 + 0x44);
-                func_001F0E64(&data.copy, 6);
-                temp_s1_280 = func_001F197C(sourceWords, &data.copy, 0);
+                data.state.copy = *(LocalCopy *)(temp_v0_257 + 0x44);
+                func_001F0E64(&data.state.record, 6);
+                temp_s1_280 = func_001F197C(sourceWords, &data.state.evaluator, 0);
                 func_0021D25C(5, temp_s6_230 + var_s8_30, sourceWords, 0xFF, 6);
                 var_s8_30 += temp_s1_280;
             }
@@ -250,7 +258,7 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
         temp_s0_303 = rand();
         temp_s1_305 = rand();
         temp_s3_301 = (u32) ((((temp_s0_303 << 0x12) & 0x0C000000) | (temp_s1_305 << 0xF) | rand()) % 100) < temp_s3_301;
-        data.copy = *(LocalCopy *)(*sourceWords + 0x44);
+        data.state.copy = *(LocalCopy *)(*sourceWords + 0x44);
         var_a3_341 = 0;
         if (temp_s3_301 == 0) {
             if (func_00201584((*(s32 *)((s8 *)(temp_v0_169) + (0x48))), (*(s32 *)((s8 *)(temp_v0_169) + (0x4C)))) & 0xFF) {
@@ -260,8 +268,8 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
             }
         }
         temp_v0_352 = func_00201798((*(s32 *)((s8 *)(sourceWords) + (0x48))), (*(s32 *)((s8 *)(sourceWords) + (0x4C))), (*(s32 *)((s8 *)(sourceWords) + (0x7C))), var_a3_341);
-        func_001F0E64(&data.copy, temp_v0_352 & 0xFF);
-        temp_v0_360 = func_001F197C(sourceWords, &data.copy, &data.buffer[0]);
+        func_001F0E64(&data.state.record, temp_v0_352 & 0xFF);
+        temp_v0_360 = func_001F197C(sourceWords, &data.state.evaluator, &data.buffer[0]);
         entryCount = 0;
         sp9C = temp_v0_360;
         if (data.buffer[0] >= 0) {
@@ -350,7 +358,7 @@ s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
                     if (sourceWords[index] != 0) {
                         temp_s0_568 = func_002361EC(sourceWords);
                         temp_s0_575 = func_002365BC(sourceWords, temp_v0_169, temp_s0_568, func_002363FC(temp_v0_169));
-                        var_s5_548 += (func_00022e60() % 100) < (s32) temp_s0_575;
+                        var_s5_548 += ((s32)func_00022e60() % 100) < (s32) temp_s0_575;
                     }
                     index += 1;
                 } while ((u32)index < 3U);
@@ -425,20 +433,20 @@ hit_bound_update:
             goto after_bound_update;
         } else {
             temp_s1_815 = func_00201584((*(s32 *)((s8 *)(temp_v0_169) + (0x48))), (*(s32 *)((s8 *)(temp_v0_169) + (0x4C)))) & 0xFF;
-            data.copy = *(LocalCopy *)(*temp_v0_169 + 0x44);
-            func_001F0E64(&data.copy, ((0 - (temp_s1_815 == 0)) & 0x17) | 0x15);
-            temp_s3_301 = func_001F197C(temp_v0_169, &data.copy, 0);
+            data.state.copy = *(LocalCopy *)(*temp_v0_169 + 0x44);
+            func_001F0E64(&data.state.record, ((0 - (temp_s1_815 == 0)) & 0x17) | 0x15);
+            temp_s3_301 = func_001F197C(temp_v0_169, &data.state.evaluator, 0);
             temp_s0_846 = temp_s6_230 + var_s8_30;
             func_0021D230(0xE, temp_s0_846 + data.buffer[0], temp_v0_169, 0xFFU);
             temp_v0_854 = (*(s32 *)((s8 *)(temp_v0_169) + (0)));
             temp_s0_856 = temp_s0_846 + data.buffer[entryCount - 1] + temp_s3_301;
-            data.copy = *(LocalCopy *)(temp_v0_854 + 0x44);
+            data.state.copy = *(LocalCopy *)(temp_v0_854 + 0x44);
             var_a1_872 = 0x18;
             if (temp_s1_815 != 0) {
                 var_a1_872 = 0x16;
             }
-            func_001F0E64(&data.copy, var_a1_872);
-            temp_s1_280 = func_001F197C(temp_v0_169, &data.copy, 0);
+            func_001F0E64(&data.state.record, var_a1_872);
+            temp_s1_280 = func_001F197C(temp_v0_169, &data.state.evaluator, 0);
             func_0021D230(0xF, temp_s0_856, temp_v0_169, 0xFFU);
             temp_s3_301 += temp_s1_280;
             temp_a1_889 = temp_s0_856 + temp_s3_301;

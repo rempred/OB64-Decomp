@@ -1,3 +1,5 @@
+#include "game/combat_selector.h"
+
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed short s16;
@@ -23,17 +25,12 @@ typedef struct {
     u8 unk_00[0x1E];
     s16 position;
     u8 unk_20[0x24];
-    u8 payload[4];
-    s16 frame;
-    u8 unk_4A[6];
-    u16 saved_50;
-    s16 offset_52;
-    u16 saved_54;
+    Func001F0E64Record record;
 } SecondaryCore;
 
 typedef struct {
     SecondaryCore core;
-    u8 unk_56[0x3E];
+    u8 unk_90[4];
     u32 flags;
 } SecondaryRecord;
 
@@ -69,7 +66,6 @@ extern s16 D_801D080A;
 extern s8 D_801D080C;
 extern s8 D_801D080D;
 
-void func_001F0E64(void *record, u32 selector);
 void func_001F1218(void *object, s32 extent, s32 arg2, s32 arg3, s32 arg4);
 void func_001FF8E0(void);
 void func_002013D0(void);
@@ -162,8 +158,9 @@ void func_001FFE80(void)
         do {
             temp_v0_101 = (SecondaryEntry *)(var_s4_97 + D_801D07D8);
             temp_a0_102 = temp_v0_101->record;
-            temp_s0_103 = temp_a0_102->core.frame;
-            func_001F1218(temp_a0_102->core.payload,
+            temp_s0_103 = temp_a0_102->core.record.field_04;
+            /* This call also reads the pointer at enclosing offset 0x90. */
+            func_001F1218((u8 *)temp_a0_102 + 0x44,
                           temp_v0_101->extent,
                           0,
                           0,
@@ -183,7 +180,7 @@ void func_001FFE80(void)
                 }
             }
             temp_v0_118 = temp_a0_117->position;
-            temp_v1_119 = temp_a0_117->offset_52;
+            temp_v1_119 = (s16)temp_a0_117->record.field_0E;
             temp_a3_120 = (SecondaryEntry *)temp_a1_112;
             original_short = (s16)temp_v0_118;
             temp_s3_123 = temp_v1_119;
@@ -199,23 +196,23 @@ void func_001FFE80(void)
                     goto next_entry;
                 }
             }
-            temp_v1_125 = temp_a0_117->frame;
+            temp_v1_125 = (s16)temp_a0_117->record.field_04;
             if (temp_v1_125 != temp_s0_103) {
                 temp_v0_126 = temp_a3_120->reset_base;
-                temp_a0_117->saved_50 = 0;
-                temp_a0_117->saved_54 = 0;
-                temp_a0_117->offset_52 = (s16)(temp_v0_126 - original_short);
+                temp_a0_117->record.field_0C = 0;
+                temp_a0_117->record.field_10 = 0;
+                temp_a0_117->record.field_0E = (s16)(temp_v0_126 - original_short);
                 goto next_entry;
             }
             if (temp_v1_125 < ((SecondaryEntry *)temp_a1_112)->frame_limit) {
-                temp_s0_140 = temp_s2_113->core.saved_50;
-                temp_s1_141 = temp_s2_113->core.saved_54;
-                func_001F0E64(temp_s2_113->core.payload,
+                temp_s0_140 = temp_s2_113->core.record.field_0C;
+                temp_s1_141 = temp_s2_113->core.record.field_10;
+                func_001F0E64(&temp_s2_113->core.record,
                              temp_v1_125 +
                                  ((SecondaryEntry *)temp_a1_112)->frame_step);
-                temp_s2_113->core.saved_50 = temp_s0_140;
-                temp_s2_113->core.offset_52 = temp_s3_123;
-                temp_s2_113->core.saved_54 = temp_s1_141;
+                temp_s2_113->core.record.field_0C = temp_s0_140;
+                temp_s2_113->core.record.field_0E = temp_s3_123;
+                temp_s2_113->core.record.field_10 = temp_s1_141;
             }
 next_entry:
             index++;

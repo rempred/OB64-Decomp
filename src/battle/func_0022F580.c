@@ -1,3 +1,6 @@
+#include "game/combat_selector.h"
+#include "game/combat_evaluator.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed short s16;
@@ -97,7 +100,11 @@ typedef struct ResolutionScratch {
     ResolutionRecord records[3];
     u8 unknown27;
     ResolutionDescriptor descriptor;
-    StateBlock copiedState[5];
+    union {
+        StateBlock blocks[5];
+        Func001F0E64Record record;
+        Func001F197CState evaluator;
+    } copiedState;
     ResolutionTail tail;
 } ResolutionScratch;
 
@@ -109,7 +116,7 @@ extern u8 D_801976E8;
 extern const ResolutionPointers D_801F6C74;
 extern void func_00023780(void *, u32);
 extern void func_00023460(const void *, void *, u32);
-extern int func_00022e60(void);
+extern unsigned int func_00022e60(void);
 extern int rand(void);
 extern int func_0020C014(ResolutionObject *);
 extern int func_0020C2C0(ResolutionObject *);
@@ -129,8 +136,6 @@ extern int func_0020BFE4(void);
 extern u8 func_002014C4(void);
 extern u8 func_00201798(int, int, int, int);
 extern int func_00044130(int, int, int);
-extern void func_001F0E64(void *, int);
-extern int func_001F197C(ResolutionObject *, void *, int *);
 extern void func_0021D200(int, int, void *);
 extern void func_0021D230(int, int, void *, int);
 extern void func_0021D2C0(int, int, void *, int, int, int, int);
@@ -231,7 +236,7 @@ int func_0022F580(ResolutionObject **input, int *outTime)
         initial = &D_801971F0[D_801976DC];
     else
         initial = &D_801971F0[D_801976E8];
-    identifier = func_00022e60();
+    identifier = (int)func_00022e60();
     /* The real quotient and later guard share one work word. This keeps
      * KMC's guard promotion in the retail register without an extra move. */
     quotientWork = identifier / 100;
@@ -377,15 +382,15 @@ int func_0022F580(ResolutionObject **input, int *outTime)
     func_00239338(&local.descriptor, local.selectedList.values[0], local.selectedList.values[1], local.selectedList.values[2]);
     narrowed = func_0025FD00(rawResult);
     source = (StateBlock *)(local.selectedList.values[0]->nested + 0x44);
-    destination = local.copiedState;
+    destination = local.copiedState.blocks;
     sourceEnd = (StateBlock *)(local.selectedList.values[0]->nested + 0x94);
     do {
         *destination++ = *source++;
     } while (source != sourceEnd);
-    func_001F0E64(local.copiedState,
+    func_001F0E64(&local.copiedState.record,
         func_00201798(local.selectedList.values[0]->field48, local.selectedList.values[0]->field4C,
                       local.selectedList.values[0]->field7C, 0) & 0xFF);
-    duration = func_001F197C(local.selectedList.values[0], local.copiedState, local.tail.words);
+    duration = func_001F197C(local.selectedList.values[0], &local.copiedState.evaluator, local.tail.words);
     if (func_0020BFE4() == 0) {
         duration = 10;
         local.tail.words[0] = 5;

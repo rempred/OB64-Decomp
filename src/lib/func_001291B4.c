@@ -4,7 +4,7 @@ typedef struct { u8 bytes[25]; } Record25;
 
 extern Record25 g_func_001957D0_source_records[];
 extern u8 func_00129068(u8 *record);
-extern int func_00040f88(int, int, int, int, int);
+extern int func_00040f88(u8, u8, u8, u8, u8);
 
 u8 func_001291B4(u8 *record)
 {

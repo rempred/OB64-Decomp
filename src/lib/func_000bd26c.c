@@ -9,7 +9,7 @@ typedef struct Data {
     Entry entries[1];
 } Data;
 
-extern int func_0016B088(u8, u8, u8, u8, int);
+extern int func_0016B088(u8, u8, u8, u8, u8);
 extern u8 *D_80196AF8;
 
 int func_000bd26c(int arg0)

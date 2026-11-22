@@ -17,7 +17,7 @@ typedef struct CharacterEntry {
 } CharacterEntry;
 
 extern u8 func_0016DBD8(u8, u8);
-extern int func_0016B088(u8, u8, u8, u8, int);
+extern int func_0016B088(u8, u8, u8, u8, u8);
 extern CharacterEntry D_80193BC0[];
 
 int func_000bd154(int arg0)

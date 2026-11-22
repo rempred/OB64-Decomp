@@ -5,7 +5,7 @@ typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-s32 func_00022e60(void);
+extern u32 func_00022e60(void);
 extern u8 g_func_001957D0_source_records[];
 
 s32 func_0012FBB8(s32 arg0, s32 arg1) {
@@ -77,7 +77,7 @@ divide_average:
     alignment = (s32)(alignment & 0xFFFF) / member_count;
 average_ready:
 
-    random_value = func_00022e60();
+    random_value = (s32)func_00022e60();
     work_value = random_value % 8;
     average_value = alignment & 0xFFFF;
     morale_value = site_morale & 0xFFFF;

@@ -8,7 +8,7 @@ extern u8 D_8018F481;
 extern Record52 g_func_0019554C_records_52[];
 extern Record56 g_func_0019554C_records_56[];
 extern Record72 g_func_0019554C_class_records[];
-extern int func_00040f88(int, int, int, int, int);
+extern int func_00040f88(u8, u8, u8, u8, u8);
 
 u8 func_00129068(u8 *record)
 {

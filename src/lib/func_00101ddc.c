@@ -21,7 +21,7 @@ extern s32 func_0012DA10(Q7Unit *);
 extern s32 func_801DD2B0(Q7Unit *);
 extern void *func_0012E7E8(Q7Unit *);
 extern void func_0010746C(Q7Unit *);
-extern s32 func_00022E60(void);
+extern u32 func_00022E60(void);
 extern void func_00132B80(s32);
 extern void func_00130E60(u16, u8);
 extern s32 func_00130794(void);
@@ -291,7 +291,7 @@ void func_00101DDC(void)
                     goto table_compare;
             } while (0);
 table_end:;
-            code = FIELD(D_801EDB1A, u16, (index * 4 + func_00022E60() % 3) * 2);
+            code = FIELD(D_801EDB1A, u16, (index * 4 + (s32)func_00022E60() % 3) * 2);
             if (!(D_80193670 & 0x10))
                 goto reset_state;
             if (!func_0012DA10(other))
@@ -336,7 +336,7 @@ table_end:;
             }
             if (blocked || !(code & 0x7FFF))
                 goto reset_state;
-            if (func_00022E60() % 100 >= 80)
+            if ((s32)func_00022E60() % 100 >= 80)
                 goto reset_state;
             D_801F0DE0 = 30;
             D_801F0DE8 = -1;
@@ -357,7 +357,7 @@ table_end:;
             }
             if (source_index == 30 || !(code & 0x7FFF))
                 goto reset_state;
-            if (!func_00130794() && func_00022E60() % 100 >= 80)
+            if (!func_00130794() && (s32)func_00022E60() % 100 >= 80)
                 goto reset_state;
             D_801F0DE8 = -1;
             D_801F0DE0 = 30;
