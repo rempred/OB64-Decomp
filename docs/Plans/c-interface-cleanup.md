@@ -134,6 +134,10 @@ Four additional battle files call the record-index lookup through `D_801CA29C`. 
 
 The coordinate wrapper forwards the floating-point result from the original assembly routine at ROM `0x1FF5EC`. Two further callers already declare the address alias `func_001BC35C` with a float return. `func_0020CBDC` converts the result to an integer, while `func_002A0B14` stores it as a float. Both are unchanged verification cases. Their different load contexts remain part of the overlay evidence.
 
+### Resident string append follow-up
+
+The changed array index in `func_001994B4` sits inside an existing call to `func_8009C620`. That outer call still reaches the original assembly owner `strcat_0002ca20`. Its 80-byte section begins at ROM `0x2CA20`, VRAM `0x8009C620`, and its return delay slot copies the destination pointer into `v0`. The shop declares the parameters as two `void *` values. `func_00296754` declares a byte pointer and a pointer to const bytes. Both ignore the return value. The Director will assign the caller declarations with a subsequent interface group, including a census of other spellings and return uses. The boot C implementation of `strcat` has its own entry at ROM `0xF808`. Round 7 retains the outer call and its existing assembly-provider coverage limit.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
