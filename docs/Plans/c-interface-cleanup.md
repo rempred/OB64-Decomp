@@ -314,6 +314,10 @@ The `00045934` supplement covers six findings in `0020C448` and two in the item 
 | Archive DMA destination | `0001a380` | 4 | Follow the destination from archive reads into the DMA message and through the byte increments between chunks. Check the three additional callers with compatible declarations and preserve the Round 13 queue and cache behavior. |
 | Audio filter initialization | `0001eaf0` | 2 | Check all seven constructor calls, the two callback fields, and the seven fourth-argument values against the fields that later code reads. Compare all eight bodies in the constructor source. |
 
+The constructor passes seven filter tags in the fourth argument and stores callback addresses in the filter. The audio lead also owns the eight engine sources that install or invoke the callbacks and the three resident callers `15560`, `20370` and `15098`. This adds 22 constructor findings, four direct `1f2a4` findings and one `1f2b8` finding. The expanded audio scope is 35 findings in 13 complete files. Across all three leads the scope is now 51 findings in 22 files.
+
+The synth clears a halfword at ROM `0x2003C` and passes its address at `0x2012C` before the indirect call at `0x20130`. Both `15098` and the effect constructor store the `1f2b8` address at field offset `0x28`. Check these consumers against the actual function types, including the load handler's void return and the command pointer returned by pull callbacks. Keep the interpretation of the full word at `+0x10` bounded by its observed uses.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
