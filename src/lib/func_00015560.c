@@ -1,3 +1,5 @@
+#include "common/audio_filter.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 typedef struct MusLink {
@@ -41,14 +43,17 @@ extern AlGlobalsLike *D_800E8298;
 s32 func_00015560(s32 fx);
 extern s32 D_800A9B60;
 void func_000151e0(s32 *param);
-void func_0001f2a4(void *fx, s32 id, void *param);
+extern int func_0001f2a4(L4Filter *, int, void *);
 void func_000151e0(s32 *param);
 extern s32 *D_800A9B64[];
 s32 func_00015560(s32 fx) {
     s32 r;
     if (fx < D_800A9B60) {
+        L4Effect *effect;
+
         func_000151e0(D_800A9B64[fx]);
-        func_0001f2a4(D_800E8298->unk34->unk20, 1, D_800E8298->unk34);
+        effect = D_800E8298->unk34->unk20;
+        func_0001f2a4(&effect->filter, 1, D_800E8298->unk34);
         r = 0;
     } else {
         r = 1;

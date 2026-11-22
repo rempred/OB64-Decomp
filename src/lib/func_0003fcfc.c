@@ -15,11 +15,11 @@ typedef struct {
     s32 pending;
 } SoundChannel;
 extern SoundChannel D_800EB0B0[];
-void func_00011d08(s32 a, s32 b);
+void func_00011d08(unsigned int flags, int speed);
 void func_0003fcfc(void) {
     D_800EB0B0[0].saved[0] = 0;
     D_800EB0B0[1].saved[0] = 0;
     D_800EB0B0[2].saved[0] = 0;
     D_800EB0B0[3].saved[0] = 0;
-    func_00011d08(2, 0);
+    func_00011d08(2U, 0);
 }

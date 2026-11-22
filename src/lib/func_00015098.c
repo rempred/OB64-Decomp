@@ -1,3 +1,5 @@
+#include "common/audio_filter.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 typedef struct {
@@ -13,7 +15,7 @@ typedef struct {
 } MusSynConfig;
 void func_00015098(void **out, MusSynConfig *c, void *hp);
 void *alHeapDBAlloc(void *file, s32 line, void *hp, s32 num, s32 size);
-s32 func_0001f2b8(void *fx, s32 id, void *param);
+extern int func_0001f2b8(L4Effect *, int, int *);
 typedef struct {
     void *unkA8;
     void *unkAC;
@@ -27,9 +29,9 @@ s32 func_000154d8(void);
 s32 func_0001551c(void);
 void func_000151e0(s32 *param);
 void func_00015098(void **out, MusSynConfig *c, void *hp) {
-    s32 *fx = alHeapDBAlloc(((void *)0), 0, hp, 1, 0x2C);
+    L4Effect *fx = alHeapDBAlloc(((void *)0), 0, hp, 1, 0x2C);
     *out = fx;
-    fx[10] = (s32)func_0001f2b8;
+    fx->paramHandler = func_0001f2b8;
     D_800E82A8.unkA8 = alHeapDBAlloc(((void *)0), 0, hp, func_000154d8(), 0x28);
     D_800E82A8.unkAC = alHeapDBAlloc(((void *)0), 0, hp, func_0001551c(), 2);
     D_800E82A8.unkB0 = alHeapDBAlloc(((void *)0), 0, hp, 1, 0x34);

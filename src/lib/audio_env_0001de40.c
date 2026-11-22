@@ -3,39 +3,8 @@
 typedef unsigned int u32;
 typedef unsigned short u16;
 typedef unsigned char u8;
-typedef struct L4Command { u32 word0, word1; } L4Command;
-typedef struct L4Filter L4Filter;
-struct L4Filter {
-    L4Filter *input;
-    L4Command *(*pull)(void *, short *, int, int, L4Command *);
-    int (*param)(void *, int, void *);
-    short field0c, field0e;
-    int field10;
-};
-typedef struct L4Param L4Param;
-struct L4Param {
-    L4Param *next;
-    int time;
-    short type, field0a;
-    union {
-        struct { int value, time; } general;
-        struct { int pitch; short volume; u8 pan, effect; int samples; void *wave; } start;
-        void *pointer;
-    } data;
-};
-typedef struct L4Envelope {
-    L4Filter filter;
-    void *state;
-    short pan, volume, left, right, dry, wet;
-    u16 leftFraction;
-    short leftRate, leftTarget;
-    u16 rightFraction;
-    short rightRate, rightTarget;
-    int elapsed, duration, first;
-    L4Param *head, *tail;
-    int field44, playing;
-} L4Envelope;
-typedef struct L4Voice { char fields00[0xd8]; int fieldd8; } L4Voice;
+#include "common/audio_filter.h"
+
 extern short powerTable[128];
 extern void *alGlobals;
 extern void _freePVoice(void *, void *);
@@ -78,9 +47,9 @@ L4Command *func_0001de40(void *filter, short *output, int count, int offset,
             L4Param *param = env->head;
             L4Filter *control = &env->filter;
             if (param->field0a)
-                env->filter.param(env, 8, 0);
-            env->filter.param(env, 5, param->data.start.wave);
-            env->filter.param(env, 9, 0);
+                ((L4EnvelopeParam)env->filter.param)(env, 8, 0);
+            ((L4EnvelopeParam)env->filter.param)(env, 5, param->data.start.wave);
+            ((L4EnvelopeParam)env->filter.param)(env, 9, 0);
             env->first = 1;
             env->elapsed = 0;
             env->duration = param->data.start.samples;
@@ -96,7 +65,7 @@ L4Command *func_0001de40(void *filter, short *output, int count, int offset,
                 env->right = (env->volume * powerTable[127-env->pan]) >> 15;
             }
             if (control->input)
-                control->input->param(control->input, 7, (void *)param->data.start.pitch);
+                ((L4ResampleParam)control->input->param)(control->input, 7, (void *)param->data.start.pitch);
             break;
         }
         case 11:
@@ -131,26 +100,26 @@ L4Command *func_0001de40(void *filter, short *output, int count, int offset,
         case 14: {
             L4Param *param = env->head;
             if (param->field0a)
-                env->filter.param(env, 8, 0);
-            env->filter.param(env, 5, param->data.pointer);
-            env->filter.param(env, 9, 0);
+                ((L4EnvelopeParam)env->filter.param)(env, 8, 0);
+            ((L4EnvelopeParam)env->filter.param)(env, 5, param->data.pointer);
+            ((L4EnvelopeParam)env->filter.param)(env, 9, 0);
             break;
         }
         case 15:
             commands = func_0001e414(env, &inputBuffer, &outputBuffer, delta, offset, commands);
-            env->filter.param(env, 4, 0);
+            ((L4EnvelopeParam)env->filter.param)(env, 4, 0);
             break;
         case 0: {
             /* Capture both owners before clearing the voice field. */
             void *synth = alGlobals;
             L4Param *param = env->head;
-            ((L4Voice *)param->data.pointer)->fieldd8 = 0;
+            ((L4Voice *)param->data.pointer)->env.field4c = 0;
             _freePVoice(synth, param->data.pointer);
             break;
         }
         default:
             commands = func_0001e414(env, &inputBuffer, &outputBuffer, delta, offset, commands);
-            env->filter.param(env, env->head->type, env->head->data.pointer);
+            ((L4EnvelopeParam)env->filter.param)(env, env->head->type, env->head->data.pointer);
             break;
         }
         count -= delta;
@@ -186,18 +155,18 @@ int func_0001e340(void *filter, int selector, void *value)
         env->playing = 0;
         env->volume = 1;
         if (source)
-            source->param(source, 4, value);
+            ((L4ResampleParam)source->param)(source, 4, value);
         break;
     case 9:
         source = env->filter.input;
         env->playing = 1;
         if (source)
-            source->param(source, 9, value);
+            ((L4ResampleParam)source->param)(source, 9, value);
         break;
     default:
         filter = ((L4Filter *)filter)->input;
         if (filter)
-            ((L4Filter *)filter)->param(filter, selector, value);
+            ((L4ResampleParam)((L4Filter *)filter)->param)(filter, selector, value);
         break;
     }
     return 0;

@@ -2,23 +2,7 @@
 typedef unsigned int u32;
 typedef unsigned short u16;
 typedef unsigned char u8;
-typedef struct L4Command { u32 word0, word1; } L4Command;
-typedef struct L4Filter L4Filter;
-struct L4Filter {
-    L4Filter *input;
-    L4Command *(*pull)(void *, short *, int, int, L4Command *);
-    int (*param)(void *, int, void *);
-    short field0c, field0e;
-    int field10;
-};
-typedef struct L4Resample {
-    L4Filter filter;
-    void *state;
-    union { float value; int bits; } ratio;
-    int field1c;
-    float fraction;
-    int first, field28, field2c, field30;
-} L4Resample;
+#include "common/audio_filter.h"
 
 extern u32 osVirtualToPhysical(void *);
 
@@ -83,13 +67,13 @@ int func_0001ee6c(L4Filter *filter, int selector, void *value)
         resample->field1c = 0;
         filter = filter->input;
         if (filter)
-            filter->param(filter, 4, 0);
+            ((L4LoadParam)filter->param)(filter, 4, 0);
         break;
     case 9:
         resample->field30 = 1;
         filter = filter->input;
         if (filter)
-            filter->param(filter, 9, 0);
+            ((L4LoadParam)filter->param)(filter, 9, 0);
         break;
     case 7:
         resample->ratio.bits = (int)value;
@@ -100,7 +84,7 @@ int func_0001ee6c(L4Filter *filter, int selector, void *value)
     default:
         filter = filter->input;
         if (filter)
-            filter->param(filter, selector, value);
+            ((L4LoadParam)filter->param)(filter, selector, value);
         break;
     }
     return 0;

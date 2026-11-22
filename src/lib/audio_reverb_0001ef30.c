@@ -3,48 +3,8 @@
 typedef unsigned int u32;
 typedef unsigned short u16;
 typedef unsigned char u8;
-typedef struct L4Command { u32 word0, word1; } L4Command;
-typedef struct L4Filter L4Filter;
-struct L4Filter {
-    L4Filter *input;
-    L4Command *(*pull)(void *, short *, int, int, L4Command *);
-    int (*param)(void *, int, void *);
-    short field0c, field0e;
-    int field10;
-};
-typedef struct L4Lowpass {
-    short cutoff, gain;
-    int field04;
-    short coefficients[16];
-    void *state;
-    int first;
-} L4Lowpass;
-typedef struct L4Resample {
-    L4Filter filter;
-    void *state;
-    float ratio;
-    int field1c;
-    float fraction;
-    int first, field28, field2c, field30;
-} L4Resample;
-typedef struct L4Delay {
-    u32 input, output;
-    short field08, field0a, field0c, field0e;
-    float rate, ratio;
-    int field18;
-    float depth;
-    L4Lowpass *lowpass;
-    L4Resample *resample;
-} L4Delay;
-typedef struct L4Effect {
-    L4Filter filter;
-    short *buffer, *cursor;
-    u32 length;
-    L4Delay *delays;
-    u8 count, pad25[3];
-    void *paramHandler;
-} L4Effect;
-typedef struct L4Synth { char fields00[0x44]; int outputRate; } L4Synth;
+#include "common/audio_filter.h"
+
 extern L4Synth *alGlobals;
 extern u32 osVirtualToPhysical(void *);
 extern void _init_lpfilter(L4Lowpass *);

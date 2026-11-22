@@ -1,68 +1,31 @@
 /* Whole producer ROM 1FD20..20360, independently reconstructed from ROM.
  * Original-owned global pointer and protected companions retain their roles. */
-typedef struct L4Command { unsigned int word0, word1; } L4Command;
-typedef struct L4Link { struct L4Link *next, *previous; } L4Link;
-typedef struct L4Filter L4Filter;
-struct L4Filter {
-    L4Filter *input;
-    L4Command *(*pull)(void *, short *, int, int, L4Command *);
-    int (*param)(void *, int, void *);
-    short field0c, field0e;
-    void *state;
-};
-typedef struct L4Load { L4Filter filter; char fields14[52]; } L4Load;
-typedef struct L4Resample { L4Filter filter; char fields14[32]; } L4Resample;
-typedef struct L4Env { L4Filter filter; char fields14[60]; } L4Env;
-typedef struct L4Voice {
-    L4Link link;
-    int field08;
-    L4Filter *filter;
-    L4Load load;
-    L4Resample resample;
-    L4Env env;
-} L4Voice;
-typedef struct L4Param { struct L4Param *next; char fields04[24]; } L4Param;
-typedef struct L4Client {
+#include "common/audio_filter.h"
+
+struct L4Client {
     struct L4Client *next;
     void *field04;
     int (*handler)(struct L4Client *);
     void *field0c;
     int sampleTime;
-} L4Client;
-typedef struct L4Synth {
-    L4Client *clients;
-    L4Link freeVoices, allocatedVoices, lameVoices;
-    int nextSample, currentSample;
-    void *dmaConstructor;
-    void *heap;
-    L4Param *freeParams;
-    L4Filter *mainBus, *auxBus, *save;
-    int maxVoices, field40, outputRate, maxBlock;
-} L4Synth;
-typedef struct L4Config {
-    int field00, maxVoices, maxParams, field0c;
-    void *dmaConstructor;
-    void *heap;
-    int outputRate;
-    unsigned char fxType;
-} L4Config;
+};
 extern L4Synth *alGlobals;
 extern void *alHeapDBAlloc(void *, int, void *, int, int);
-extern void alSaveNew(void *);
-extern void alAuxBusNew(void *, void *, int);
-extern void alMainBusNew(void *, void *, int);
+extern void alSaveNew(L4Save *);
+extern void alAuxBusNew(L4Bus *, L4Filter **, int);
+extern void alMainBusNew(L4Bus *, L4Filter **, int);
 extern void *alSynAllocFX(void *, int, void *, void *);
-extern int alMainBusParam(void *, int, void *);
+extern int alMainBusParam(L4Bus *, int, L4Filter *);
 extern void alLink(L4Link *, L4Link *);
 extern void alUnlink(L4Link *);
-extern void alLoadNew(void *, void *, void *);
+extern void alLoadNew(L4Load *, L4DmaConstructor, void *);
 extern void alLoadParam(void *, int, void *);
-extern void alResampleNew(void *, void *);
-extern int alResampleParam(void *, int, void *);
-extern void alEnvmixerNew(void *, void *);
+extern void alResampleNew(L4Resample *, void *);
+extern int alResampleParam(L4Filter *, int, void *);
+extern void alEnvmixerNew(L4Envelope *, void *);
 extern int alEnvmixerParam(void *, int, void *);
-extern int alAuxBusParam(void *, int, void *);
-extern int alSaveParam(void *, int, void *);
+extern int alAuxBusParam(L4Bus *, int, L4Filter *);
+extern int alSaveParam(L4Save *, int, void *);
 int func_00020308(L4Synth *, L4Client **);
 int func_00020274(L4Synth *, int);
 void func_000201e0(L4Synth *);
@@ -70,7 +33,7 @@ void func_000201e0(L4Synth *);
 void func_0001fd20(L4Synth *s, L4Config *config)
 {
     void *heap = config->heap;
-    L4Filter *save;
+    L4Save *save;
     L4Voice *voices;
     L4Param *params;
     int i;
@@ -85,15 +48,15 @@ void func_0001fd20(L4Synth *s, L4Config *config)
     save = alHeapDBAlloc(0, 0, heap, 1, 28);
     alSaveNew(save);
     s->save = save;
-    s->auxBus = alHeapDBAlloc(0, 0, heap, 1, 76);
+    s->slots = alHeapDBAlloc(0, 0, heap, 1, 76);
     s->field40 = 1;
-    alAuxBusNew(s->auxBus, alHeapDBAlloc(0, 0, heap, config->maxVoices, 4), config->maxVoices);
+    alAuxBusNew(&s->slots->bus, alHeapDBAlloc(0, 0, heap, config->maxVoices, 4), config->maxVoices);
     s->mainBus = alHeapDBAlloc(0, 0, heap, 1, 32);
     alMainBusNew(s->mainBus, alHeapDBAlloc(0, 0, heap, config->maxVoices, 4), config->maxVoices);
     if (config->fxType)
         alSynAllocFX(s, 0, config, heap);
     else
-        alMainBusParam(s->mainBus, 2, s->auxBus);
+        alMainBusParam(s->mainBus, 2, &s->slots->bus.filter);
     s->freeVoices.next = 0;
     s->freeVoices.previous = 0;
     s->lameVoices.next = 0;
@@ -105,19 +68,19 @@ void func_0001fd20(L4Synth *s, L4Config *config)
         L4Voice *voice = &voices[i];
         L4Load *load = &voice->load;
         L4Resample *resample = &voice->resample;
-        L4Env *env = &voice->env;
+        L4Envelope *env = &voice->env;
         alLink(&voice->link, &s->freeVoices);
         voice->field08 = 0;
-        alLoadNew(load, s->dmaConstructor, heap);
+        alLoadNew(load, (L4DmaConstructor)s->dmaConstructor, heap);
         alLoadParam(load, 1, 0);
         alResampleNew(resample, heap);
-        alResampleParam(resample, 1, load);
+        alResampleParam(&resample->filter, 1, &load->filter);
         alEnvmixerNew(env, heap);
-        alEnvmixerParam(env, 1, resample);
-        alAuxBusParam(s->auxBus, 2, env);
+        alEnvmixerParam(env, 1, &resample->filter);
+        alAuxBusParam(&s->slots->bus, 2, &env->filter);
         voice->filter = &env->filter;
     }
-    alSaveParam(save, 1, s->mainBus);
+    alSaveParam(save, 1, &s->mainBus->filter);
     params = alHeapDBAlloc(0, 0, heap, config->maxParams, sizeof(L4Param));
     s->freeParams = 0;
     for (i = 0; i < config->maxParams; i++) {
@@ -149,7 +112,7 @@ L4Command *func_0001ffec(L4Command *inputCommands, int *length, short *outputBuf
     s->nextSample &= ~15;
     while (samples > 0) {
         int count = s->maxBlock;
-        L4Filter *save;
+        L4Save *save;
         if (samples < count)
             count = samples;
         {
@@ -158,9 +121,9 @@ L4Command *func_0001ffec(L4Command *inputCommands, int *length, short *outputBuf
             commands->word1 = 0;
         }
         save = s->save;
-        save->param(save, 6, output);
+        ((L4SaveParam)save->filter.param)(save, 6, output);
         samples -= count;
-        commands = save->pull(save, &dmemOutput, count, s->currentSample, commands + 1);
+        commands = save->filter.pull(save, &dmemOutput, count, s->currentSample, commands + 1);
         output += count * 2;
         s->currentSample += count;
     }

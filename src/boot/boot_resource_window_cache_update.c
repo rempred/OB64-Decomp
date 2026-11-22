@@ -10,7 +10,7 @@ extern s32 D_800EB1CC;
 extern s32 D_800EB21C;
 extern s32 D_800EB26C;
 extern s32 D_800EB2BC;
-void func_00011d08(s32 a, s32 b);
+void func_00011d08(unsigned int flags, int speed);
 static s32 func_00004358(void);
 void boot_resource_window_cache_update(void) {
     if (D_800A81F4 == 0) {
@@ -21,7 +21,7 @@ void boot_resource_window_cache_update(void) {
         D_800EB21C = 0;
         D_800EB26C = 0;
         D_800EB2BC = 0;
-        func_00011d08(3, 12);
+        func_00011d08(3U, 12);
         D_800A81F4 = 12;
         D_800A81F8 = D_800C4BCC;
     }

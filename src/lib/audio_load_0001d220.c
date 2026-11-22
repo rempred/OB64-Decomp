@@ -2,31 +2,16 @@
 typedef unsigned int u32;
 typedef unsigned short u16;
 typedef unsigned char u8;
-typedef struct L4Command { u32 word0, word1; } L4Command;
+#include "common/audio_filter.h"
 typedef struct L4Loop { u32 start, end, count; short state[16]; } L4Loop;
 typedef struct L4Book { int field00, field04; short entries[1]; } L4Book;
-typedef struct L4Wave {
+struct L4Wave {
     u8 *base;
     int length;
     u8 type, field09, field0a, field0b;
     L4Loop *loop;
     L4Book *book;
-} L4Wave;
-typedef struct L4Load {
-    void *input;
-    L4Command *(*pull)(void *, short *, int, int, L4Command *);
-    void *param;
-    short field0c, field0e;
-    int field10;
-    void *state14, *state18;
-    u32 loopStart, loopEnd, loopCount;
-    L4Wave *wave;
-    int bookBytes;
-    u32 (*dma)(u8 *, int, void *);
-    void *dmaState;
-    u32 position;
-    int previousSamples, first, field44;
-} L4Load;
+};
 
 #define L4_SET_BUFFER(packet, in, out, length) { \
     L4Command *command = (packet); \
@@ -173,7 +158,7 @@ L4Command *func_0001d664(void *filter, short *output, int count, int offset,
         n = load->loopEnd - load->position;
         if (n > 0) {
             bytes = n << 1;
-            address = load->dma((u8 *)load->field44, bytes, load->dmaState);
+            address = load->dma((u8 *)load->field44, bytes, (void *)load->dmaState);
             delta = address & 7;
             bytes += delta;
             L4_SET_BUFFER(commands++, *output, 0, bytes + 8 - (bytes & 7));
@@ -193,7 +178,7 @@ L4Command *func_0001d664(void *filter, short *output, int count, int offset,
             n = (u32)count < load->loopEnd - load->loopStart
               ? count : load->loopEnd - load->loopStart;
             bytes = n << 1;
-            address = load->dma((u8 *)load->field44, bytes, load->dmaState);
+            address = load->dma((u8 *)load->field44, bytes, (void *)load->dmaState);
             delta = address & 7;
             bytes += delta;
             if (destination & 7)
@@ -222,7 +207,7 @@ L4Command *func_0001d664(void *filter, short *output, int count, int offset,
         if (overflow < bytes) {
             if (count > 0) {
                 bytes -= overflow;
-                address = load->dma((u8 *)load->field44, bytes, load->dmaState);
+                address = load->dma((u8 *)load->field44, bytes, (void *)load->dmaState);
                 delta = address & 7;
                 bytes += delta;
                 L4_SET_BUFFER(commands++, *output, 0, bytes + 8 - (bytes & 7));
@@ -256,7 +241,7 @@ void func_0001da00(void *filter, int selector, void *value)
         load->position = 0;
         switch (load->wave->type) {
         case 0:
-            load->pull = func_0001d220;
+            load->filter.pull = func_0001d220;
             load->wave->length = load->wave->length / 9 * 9;
             load->bookBytes = load->wave->book->field00 *
                              (load->wave->book->field04 << 1) << 3;
@@ -272,7 +257,7 @@ void func_0001da00(void *filter, int selector, void *value)
             }
             break;
         case 1:
-            load->pull = func_0001d664;
+            load->filter.pull = func_0001d664;
             if (load->wave->loop) {
                 load->loopStart = load->wave->loop->start;
                 load->loopEnd = load->wave->loop->end;
@@ -311,7 +296,7 @@ L4Command *func_0001dbac(L4Command *commands, L4Load *load, int samples,
     short buffer = input;
 
     if (bytes > 0) {
-        address = load->dma((u8 *)load->field44, bytes, load->dmaState);
+        address = load->dma((u8 *)load->field44, bytes, (void *)load->dmaState);
         delta = address & 7;
         bytes += delta;
         L4_SET_BUFFER(commands++, input, 0, bytes + 8 - (bytes & 7));
