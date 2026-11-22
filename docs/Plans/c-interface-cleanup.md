@@ -140,7 +140,7 @@ The changed array index in `func_001994B4` sits inside an existing call to `func
 
 ### Resident string copy follow-up
 
-Six C files declare the resident copy routine through `func_0002C950` or `func_8009C550`. Their declarations disagree on the pointer types and return value. Nine named linked transfers reach the same 64-byte assembly owner at ROM `0x2C950`, VRAM `0x8009C550`. It reads and writes bytes, writes a terminating zero, and returns the original destination in `v0`. A sweep of the accepted executable sections found 53 direct transfers in total. The Director will group the six callers for review after Round 8, including the shop and panel callers that also use string append. Check how the remaining direct callers consume the result before choosing a common declaration. [Original assembly](../../asm/original/rev0/lib/strcpy_0002c950.s)
+Six C files declare the resident copy routine through `func_0002C950` or `func_8009C550`. Their declarations disagree on the pointer types and return value. Nine named linked transfers reach the same 64-byte assembly owner at ROM `0x2C950`, VRAM `0x8009C550`. It reads and writes bytes, writes a terminating zero, and returns the original destination in `v0`. A sweep of the accepted executable sections found 53 direct transfers in total. The Round 9 dispatch lead owns the six callers for review, including the shop and panel callers that also use string append. Check how the remaining direct callers consume the result before choosing a common declaration. [Original assembly](../../asm/original/rev0/lib/strcpy_0002c950.s)
 
 ## Round 8
 
@@ -166,7 +166,19 @@ The pinned compiler distinguishes two source forms of the final copy loop in `fu
 
 ### Related 0x50-byte state
 
-`func_001F1218` uses a third state view. A word load at ROM `0x1F12AC` reads the pointer at state offset +0x4C, just beyond the embedded selector. The second call from `func_001FFE80` is at ROM `0x1FFFF8`. Its delay slot adds +0x44 to the enclosing record address, so the callee's pointer field is at +0x90. The independent flags word follows at +0x94. Round 8 keeps the wider routine's boundary explicit at this call. The Director will group its full declaration and storage repair with the +0x14 call in the same file and three further calls in `func_001F114C`. The current analysis retains five incomplete calls and two unsupported declarations for that interface.
+`func_001F1218` uses a third state view. A word load at ROM `0x1F12AC` reads the pointer at state offset +0x4C, just beyond the embedded selector. The second call from `func_001FFE80` is at ROM `0x1FFFF8`. Its delay slot adds +0x44 to the enclosing record address, so the callee's pointer field is at +0x90. The independent flags word follows at +0x94. Round 8 keeps the wider routine's boundary explicit at this call. The Round 9 lookup lead owns its declaration and storage repair, including the +0x14 call in the same file and three further calls in `func_001F114C`. The current analysis retains five incomplete calls and two unsupported declarations for that interface.
+
+## Round 9
+
+[Round 8](https://github.com/rempred/OB64-Decomp/commit/9746f2637fd6cb00e74bfddeefb3798ae4e5c580) cleared exactly 72 assigned findings and left 1,206 across 279 linked entries. All 2,650 targets and the complete US Rev 0 ROM matched. The three highest remaining entries account for 55 findings in 16 disjoint source files.
+
+| Source lead | Provider | Findings | Complete files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Battle position lookup | `func_0020D770` | 20 | 4 | Trace the unsigned lane, signed row and nullable record pointer in the three battle callers. Compare a negative row, an out-of-range lane and a successful lookup. |
+| Framebuffer list setup | `func_00019eb0` | 18 | 7 | Trace the pointer array and full count into the loop, then the byte conversion at the setter. Compare callers supplying equal and distinct adjacent buffers. |
+| Fifty-entry dispatch | `func_00131050` | 17 | 5 | Check each caller for incoming arguments and use of the return register. Follow the final call to D_801B2B78 through loop exit to distinguish a declared result from a value left in the register. |
+
+The lookup lead also owns the complete `func_001F1218`, `func_001F114C` and `func_001FFE80` sources. The two callers supply the wider state in five places. Check the pointer field at state +0x4C at each enclosing-object offset, preserving the smaller views used by the selector and evaluator. The dispatch lead owns all six C files making the nine named calls to the resident string copy routine. Preserve its original assembly owner and both call spellings, and check which callers use the returned destination. These nine related files add no definite IDs to the opening count. [Battle state evidence](#related-0x50-byte-state) · [Resident string copy evidence](#resident-string-copy-follow-up)
 
 ## Matching and acceptance
 
