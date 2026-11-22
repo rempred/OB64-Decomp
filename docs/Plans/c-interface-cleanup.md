@@ -258,6 +258,8 @@ The neighboring battle and pose lookup functions read separate table pointers at
 
 Both DMA producers pass a 24-byte I/O message to the same EPI entry. The named call at ROM `0x1A404` and the address-alias call at `0x1A574` reach `func_0001c040`. The boot lead also owns the complete `func_0001a380` caller and its two queue-creation findings. Check the signed queue capacity and the actual queue and message member types in both producers. Keep the compatible EPI and queue providers as controls. The boot lead owns changes to the actual included checksum declarations. The four item-pose callers keep their complete `.ob64.r3985` switch contributions in the integrator's linked comparison. The expanded round covers 38 findings in 15 complete source files.
 
+The item-pose lead kept the provider's unsigned-byte result and unsigned-halfword argument. All four width combinations reproduced each of the four complete caller objects, including 336 switch-table bytes. Removing the low-16-bit truncation from the provider eliminated its recorded mask and shortened the function by one instruction. The mask establishes how the provider uses the selector. The exact caller objects allow more than one source declaration.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
