@@ -344,6 +344,14 @@ The three rosters were verified against the census published at [Round 18](https
 
 The workers can check complete groups privately as soon as their inputs are ready. The integrator combines all three assignments and checks that the original findings have cleared, no new definite conflicts have appeared, and changes in analysis coverage are explained. Final acceptance requires the reviewed baseline, exact target ownership and relocations, and a full rebuild identical to US Rev 0. A finding that lacks enough evidence for a repair stays open with its concrete dependency recorded.
 
+### Final wave result
+
+[The accepted source and verifier](https://github.com/rempred/OB64-Decomp/commit/6da7ec50b141088740650e69b1e7a428f77c080c) cleared all 684 original findings in one combined wave after Round 18. The installed structural audit passed on its first run in 32 minutes 28 seconds. The fresh build compiled 2,519 inputs, verified all 2,650 target contracts and reproduced the accepted executable and the complete US Rev 0 ROM. The ROM SHA-256 is `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. [Local acceptance record](../../build/intf-final-cut23/canonical-acceptance.json)
+
+The permanent caller check found zero conflicts at changed boundaries. It carries 70 individually reviewed disagreements at unchanged boundaries. Changing an affected function or how a caller uses it invalidates the corresponding allowance. A later fix retires that allowance. Compiler and source checks supplied positive evidence for the original cases whose types the scanner could not establish. Four compiler inputs still have known parser limitations, and some assembly and indirect transfers retain uncertain targets.
+
+The declarations at `func_00299CA8` and `func_000521fc` now agree. The caller passes a `Panel *` as a `struct Node *`. Both views place the links at +0 and +4, and the callee accesses content at +0xD0. Establishing the effective type of the allocated object remains a separate source question. [Current queue](../NEXT_STEPS.md)
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
