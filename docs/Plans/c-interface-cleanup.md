@@ -178,6 +178,8 @@ The pinned compiler distinguishes two source forms of the final copy loop in `fu
 | Framebuffer list setup | `func_00019eb0` | 18 | 7 | Trace the pointer array and full count into the loop, then the byte conversion at the setter. Compare callers supplying equal and distinct adjacent buffers. |
 | Fifty-entry dispatch | `func_00131050` | 17 | 5 | Check each caller for incoming arguments and use of the return register. Follow the final call to D_801B2B78 through loop exit to distinguish a declared result from a value left in the register. |
 
+The framebuffer lead also owns `set_byte_800f918d`. Two calls and one declaration in the setup routine disagree with the setter on the signedness of its byte parameter. Retail masks the dynamic count to eight bits at ROM `0x19EF4` and passes the literal one at `0x19F44`. Compare the two declarations in the full caller and verify the 12-byte setter. These three findings bring the round to 58.
+
 The lookup lead also owns the complete `func_001F1218`, `func_001F114C` and `func_001FFE80` sources. The two callers supply the wider state in five places. Check the pointer field at state +0x4C at each enclosing-object offset, preserving the smaller views used by the selector and evaluator. The dispatch lead owns all six C files making the nine named calls to the resident string copy routine. Preserve its original assembly owner and both call spellings, and check which callers use the returned destination. These nine related files add no definite IDs to the opening count. [Battle state evidence](#related-0x50-byte-state) · [Resident string copy evidence](#resident-string-copy-follow-up)
 
 ## Matching and acceptance
