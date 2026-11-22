@@ -270,6 +270,8 @@ The item-pose lead kept the provider's unsigned-byte result and unsigned-halfwor
 | Indexed record lookup | `func_000453e0` | 11 | 4 | Follow a shop selection through the low 16-bit index and 12-byte record stride. Trace the loaded word into its consumer to establish whether the field holds a pointer. |
 | Resource arena initialization | `resource_arena_init` | 10 | 5 | Follow the descriptor-15 arena base and size to the aligned endpoints. Compare unaligned inputs and the first node's next pointer and available-byte count. |
 
+The memory-fill lead also owns `func_00042800`. Its unparsed source contains a linked fill of 726 bytes at ROM `0x428DC`. Move the existing `func_00042a08` declaration before its first use and check which findings and coverage become visible. The record-lookup lead also owns `func_00215CF0`. It forwards the full returned address to the resident formatted-print function for the same-slab format `%s cannot be used.` Check the variadic declaration against the other C caller and the original implementation. These two callers bring the assigned scope to 16 translation units.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
