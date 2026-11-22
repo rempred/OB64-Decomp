@@ -1,3 +1,5 @@
+#include "common/event_message.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
@@ -88,7 +90,6 @@ void osCreateMesgQueue(OSMesgQueue *mq, OSMesg *msg, s32 count);
 void osCreateViManager(s32 pri);
 void osViSetMode(void *mode);
 void osViSetEvent(OSMesgQueue *mq, OSMesg msg, u32 retraceCount);
-void osSetEventMesg(s32 event, OSMesgQueue *mq, OSMesg msg);
 void osCreateThread(void *t, s32 id, void (*entry)(void *), void *arg, void *sp, s32 pri);
 void osStartThread(void *t);
 void func_00019fe4(u8 active);

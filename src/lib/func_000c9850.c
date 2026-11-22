@@ -1,4 +1,5 @@
 #include "game/scenario_item_views.h"
+#include "game/menu_cursor_stack.h"
 
 extern u8 *D_80196AF8;
 extern u16 D_800E8100;
@@ -16,7 +17,6 @@ extern void func_000c54c0(s32);
 extern void func_000c6fe8(u16);
 extern u16 func_000c8d28(s16 *);
 extern void func_000c8f04(s16 *);
-extern void func_000ae30c(s32,s32,s32);
 extern void func_000b1f00(void);
 extern void func_000b1f4c(s32,s32,s32);
 extern void func_000b4a70(u32);

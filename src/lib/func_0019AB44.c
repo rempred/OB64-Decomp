@@ -2,7 +2,8 @@
 
 typedef struct { u32 w0, w1; } ShopGfx;
 extern u32 *D_800E9BA0;
-extern void *D_8021A134, *D_8021A130;
+extern u16 *D_8021A134;
+extern void *D_8021A130;
 extern s32 D_801F3658;
 extern u8 D_801971F2[][25], D_80193BC0[][56];
 extern u8 D_80219DB8[], D_80219C28[][2];

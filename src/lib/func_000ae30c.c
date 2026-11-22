@@ -1,6 +1,5 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
+#include "game/menu_cursor_stack.h"
+
 typedef struct {
     u16 v[3];
 } Cursor3;

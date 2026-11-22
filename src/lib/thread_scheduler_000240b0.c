@@ -3,6 +3,8 @@
  * Original writable storage remains external; no second data copy is emitted.
  * Complete functions use the existing whole-producer group's GLOBAL binding.
  */
+#include "common/event_message.h"
+
 typedef struct Task Task;
 typedef struct Client Client;
 typedef struct Scheduler Scheduler;
@@ -55,7 +57,6 @@ extern int osSendMesg(MessageQueue *, void *, int);
 extern void osCreateViManager(int);
 extern void osViSetMode(ViMode *);
 extern void osViBlack(int);
-extern void osSetEventMesg(int, MessageQueue *, void *);
 extern void osViSetEvent(MessageQueue *, void *, unsigned short);
 extern void osCreateThread(void *, int, void (*)(void *), void *, void *, int);
 extern void osStartThread(void *);

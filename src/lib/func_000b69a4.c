@@ -1,10 +1,8 @@
-typedef unsigned char u8;
-typedef signed short s16;
-typedef signed int s32;
+#include "game/menu_cursor_stack.h"
+
 extern u8 *D_80196AF8;
 u8 D_801D8B58(void);
 u8 D_801D8AE0(void);
-void func_000ae30c(s32 a, s32 b, s32 c);
 extern void (*D_801EF1E0[])(void);
 void func_000b69a4(void) {
     if (D_801D8B58()) {

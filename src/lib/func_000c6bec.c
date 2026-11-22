@@ -1,9 +1,5 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/class_sprite.h"
+
 typedef signed long long s64;
 typedef unsigned long long u64;
 typedef float f32;
@@ -13,7 +9,6 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-s32 func_00045ae0(s32, u8, u16 **);
 void *resource_free(void *);
 extern u8 * volatile D_80196AF8;
 
@@ -23,23 +18,23 @@ void func_000c6bec(s32 arg0, s32 arg1) {
     u8 *data;
     register u8 *early_data asm("$3");
     u16 active_index;
-    s32 resource;
+    void *resource;
     u32 index;
 
     early_data = D_80196AF8;
     active_index = *(u16 *)(early_data + 0x24EC);
-    resource = *(s32 *)(early_data + (active_index * 4) + 0x68);
+    resource = *(void **)(early_data + (active_index * 4) + 0x68);
     if (resource != 0) {
-        resource_free((void *)resource);
+        resource_free(resource);
         early_data = D_80196AF8;
         active_index = *(u16 *)(early_data + 0x24EC);
-        *(s32 *)(early_data + (active_index * 4) + 0x68) = 0;
+        *(void **)(early_data + (active_index * 4) + 0x68) = 0;
     }
 
     resource = func_00045ae0(arg0 & 0xFF, *(u8 *)0x801939D3, &loaded_pixels);
     data = D_80196AF8;
     active_index = *(u16 *)(data + 0x24EC);
-    *(s32 *)(data + (active_index * 4) + 0x68) = resource;
+    *(void **)(data + (active_index * 4) + 0x68) = resource;
     active_index = *(u16 *)(data + 0x24EC);
     asm volatile(
         "# Hybrid boundary: resource lifecycle, the 80-pixel grayscale transform, clamping, packing, and loop control remain C.\n"

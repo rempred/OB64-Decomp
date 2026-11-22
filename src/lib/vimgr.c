@@ -1,3 +1,5 @@
+#include "common/event_message.h"
+
 typedef struct Thread Thread;
 typedef struct MesgQueue MesgQueue;
 typedef struct DevMgrView {
@@ -36,7 +38,6 @@ extern unsigned int __additional_scanline, __osViIntrCount, __osBaseCounter;
 extern unsigned long long __osCurrentTime;
 extern void __osTimerServicesInit(void);
 extern void osCreateMesgQueue(MesgQueue *, void **, int);
-extern void osSetEventMesg(int, MesgQueue *, void *);
 extern int osGetThreadPri(Thread *);
 extern void osSetThreadPri(Thread *, int);
 extern unsigned int __osDisableInt(void);

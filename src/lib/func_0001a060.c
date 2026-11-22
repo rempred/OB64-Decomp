@@ -1,3 +1,5 @@
+#include "common/event_message.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -24,7 +26,6 @@ extern OSMesg D_800BBE60[];
 extern OSThread D_800BBE80;
 extern u64 D_800BE030[];
 void osCreateMesgQueue(OSMesgQueue *mq, OSMesg *msg, s32 count);
-void osSetEventMesg(s32 event, OSMesgQueue *mq, OSMesg msg);
 s32 func_00020870(OSMesgQueue *mq, u8 *bitpattern, OSContStatus *status);
 void osCreateThread(OSThread *t, s32 id, void (*entry)(void *), void *arg, void *sp, s32 pri);
 void osStartThread(OSThread *t);

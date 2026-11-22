@@ -1,12 +1,16 @@
 /* Event table stores and pre-NMI registration follow ROM 0x23D40. */
+#include "common/event_message.h"
+
+struct MessageQueue;
+
 typedef struct EventState {
-    void *queue;
+    struct MessageQueue *queue;
     void *message;
 } EventState;
 
 extern unsigned int __osDisableInt(void);
 extern void __osRestoreInt(unsigned int status);
-extern int osSendMesg(void *queue, void *message, int flags);
+extern int osSendMesg(struct MessageQueue *queue, void *message, int flags);
 extern EventState __osEventStateTab[];
 extern int __osShutdown;
 extern int D_800AA760;

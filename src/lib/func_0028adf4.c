@@ -1,3 +1,5 @@
+#include "game/class_sprite.h"
+#include "game/cutscene_panel_resource.h"
 #include "game/cutscene_panels.h"
 #include "game/story_event_entry.h"
 
@@ -20,8 +22,6 @@ extern void *func_00070F30(u32 size);
 extern void *func_0002dfb8(void *buffer, u32 key);
 extern void *func_0002e138(u32 key);
 extern void *resource_free(void *buffer);
-extern void *func_8016FBE0(u32 field, s32 mode, void *output);
-extern void *func_00291130(u8 **payloadEnd);
 extern void func_800EA6B0(void *state, s32 arg1, s32 arg2);
 extern void func_00283FA8(s32 scenario, s32 mode);
 extern void func_00286620(void);
@@ -45,7 +45,7 @@ void func_0028adf4(void)
     D_8023DE34->field14 = func_0002e138(keys[19]);
     resource_free((u8 *)keys);
 
-    D_8023DE34->field10 = func_8016FBE0(0x7D, 0, D_8023DE34);
+    D_8023DE34->field10 = func_8016FBE0(0x7D, 0, &D_8023DE34->field00);
     D_8023DE34->field08 = func_00291130(&D_8023DE34->field04);
     D_8023DE34->field0C = func_0002e138(0x01885534);
     func_800EA6B0(D_800EB0B0, 7, 5);
