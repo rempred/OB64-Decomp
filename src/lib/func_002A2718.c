@@ -24,7 +24,7 @@ extern Rec2A *D_802395B0;
 extern u8 *D_8022A974;
 void *func_00001330(u32 size);
 void *func_000016C4(void *p);
-s32 D_8009DAF4(s32 id);
+u32 D_8009DAF4(u32 id);
 void *D_8009DBB8(void *dst, u32 id);
 void *resource_alloc_tree_scan(u32 size);
 u32 func_0000ABE0(const u8 *p);

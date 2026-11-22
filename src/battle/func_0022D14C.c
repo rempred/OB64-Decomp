@@ -37,7 +37,7 @@ s32 func_0020D6F8(void *, void *);
 s32 func_0020D72C(void *);
 void *func_0020D770(s32, s32);
 void func_0021D200(s32, s32, s32);
-void func_0021D230(s32, s32, s32, s32);
+void func_0021D230(s32, s32, void *, s32);
 void func_0021D25C(s32, s32, s32, s32, s32);
 void func_0021D28C(s32, s32, s32, s32, s32, s32);
 void func_0021D2C0(s32, s32, s32, s32, s32, s32, s32);
@@ -61,7 +61,7 @@ M2C_UNK func_00237D5C(s32, s32 *, s32 *);
 M2C_UNK func_00238D94(void *, u8, void *);
 M2C_UNK func_00239338(void *, void *, M2C_UNK, M2C_UNK);
 M2C_UNK memset_00023780(s32 *, M2C_UNK);
-u32 rand(void);
+int rand(void);
 s32 func_0022D14C(void *arg0, s32 *arg1) {
     struct { LocalPacket packet; s32 buffer[6]; void *excluded[6]; } prefix;
     struct { s32 x0, y0, x1, y1; u8 value; } coords;
@@ -413,9 +413,9 @@ block_65:
     sp174 = sp16C;
     (*(s32 *)((s8 *)(arg0) + (0x6C))) = (s32) ((*(s32 *)((s8 *)(arg0) + (0x6C))) + 1);
     if ((*(s32 *)((s8 *)(arg0) + (0x4C))) == 0xA4) {
-        func_0021D230(0x3E, sp16C, (s32)(arg0), 8);
+        func_0021D230(0x3E, sp16C, arg0, 8);
     } else {
-        func_0021D230(0x3E, sp16C, (s32)(arg0), sp1C7);
+        func_0021D230(0x3E, sp16C, arg0, sp1C7);
     }
     if (func_0020BFE4() != 0) {
         s32 normalEmitCode;
@@ -481,7 +481,7 @@ event_b_done:
                 if (var_a1_676 < temp_v1_674) {
                     var_a1_676 = temp_v1_674;
                 }
-                func_0021D230(0x2E, var_a1_676, (s32)(temp_a2_668), 0xFFU);
+                func_0021D230(0x2E, var_a1_676, temp_a2_668, 0xFFU);
                 var_s5_693 += 1;
             } while (var_s5_693 < sp1CC);
         }
@@ -678,7 +678,7 @@ event_b_done:
                             temp_v0_1142 = func_00233210(arg0, var_s3_51);
                             if (temp_v0_1142 != 0) {
                                 (*(u8 *)((s8 *)(arg0) + (0x34))) = (u8) ((*(u8 *)((s8 *)(arg0) + (0x34))) + temp_v0_1142);
-                                func_0021D230(0x3F, sp174, (s32)(arg0), temp_v0_1142);
+                                func_0021D230(0x3F, sp174, arg0, temp_v0_1142);
                             }
                         }
                         goto mode_done;
@@ -869,7 +869,7 @@ output_copy:
                 temp_s0_1806 = rand();
                 temp_s1_1808 = rand();
                 temp_s1_1826 = *sp15C + ((((temp_s0_1806 << 0x12) & 0x0C000000) | (temp_s1_1808 << 0xF) | rand()) % 6);
-                func_0021D230(0x2F, temp_s1_1826, (s32)(prefix.excluded[var_s5_693]), 0xFFU);
+                func_0021D230(0x2F, temp_s1_1826, prefix.excluded[var_s5_693], 0xFFU);
                 (*(s32 *)((u8 *)prefix.excluded[var_s5_693] + 0x94)) = temp_s1_1826 + 0xA;
                 temp_v1_1834 = (*(s32 *)((u8 *)prefix.excluded[var_s5_693] + 0x94));
                 if (sp16C < temp_v1_1834) {

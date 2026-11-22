@@ -25,7 +25,7 @@ s32 func_0020C448(s32 *);
 void *func_0020C478(unsigned int index);
 s32 func_0020D72C(s32 *);
 void func_0021D200(UnknownWord, s32, s32 *);
-void func_0021D230(UnknownWord, s32, s32 *, u32);
+void func_0021D230(UnknownWord, s32, void *, s32);
 void func_0021D25C(UnknownWord, s32, s32 *, UnknownWord, s32);
 void func_0021D28C(UnknownWord, s32, s32 *, UnknownWord, s32, s32);
 void func_0021D2C0(UnknownWord, s32, UnknownWord, UnknownWord, s32, s32, s32);
@@ -47,7 +47,7 @@ s32 func_00237810(s32 *, s32 *);
 s32 func_00237890(s32 *, s32 *);
 u8 func_00237AF8(s32 *, UnknownWord);
 UnknownWord memset_00023780(s32 *, UnknownWord);
-u32 rand(void);
+int rand(void);
 s32 func_0022B1F4(s32 *sourceWords, s32 *outWord) {
     LocalData data;
     u32 actionByte;

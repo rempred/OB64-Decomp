@@ -23,7 +23,7 @@ void *func_00001330(u32 size);
 void bzero(void *p, s32 n);
 void *func_000016C4(void *p);
 Rec2A *func_002A2458(s32 id, s32 kind);
-s32 D_8009DAF4(s32 id);
+u32 D_8009DAF4(u32 id);
 void *D_8009DBB8(void *dst, u32 id);
 void *D_8009DD38(s32 id);
 void bcopy(void *src, void *dst, s32 n);

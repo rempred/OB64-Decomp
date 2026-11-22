@@ -7,7 +7,7 @@ extern u32 D_800ABD74;
 extern u32 D_800ABD70;
 extern u32 D_800C47E0;
 extern u8 resource_archive_rom_base[];
-extern void func_0001A380(u32 rom_address, void *destination, u32 bytes);
+extern void func_0001A380(u32 rom_address, u8 *destination, u32 bytes);
 
 u32 func_0002def4(u32 key)
 {

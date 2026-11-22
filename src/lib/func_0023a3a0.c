@@ -27,7 +27,7 @@ extern u8 func_8016F5C8(u16 value);
 extern void func_8016F11C(LinkRecord *record, u8 value);
 extern void func_000FC120(s32 first, u8 index);
 extern u8 func_8016DE70(u8 first, u8 second);
-extern u32 func_8009C7CC(void);
+extern int func_8009C7CC(void);
 
 void func_0023A3A0(u8 *record, u32 kind, s32 value,
                    u32 field_a, u32 field_b)

@@ -9,7 +9,7 @@ void func_001BDBBC();
 void *func_000016C4(void *p);
 u8 *D_8017C074(u16 a, u8 b, void *fn, s16 c, s16 d, s16 e, s16 f);
 extern void *D_8022A260[];
-s32 D_8009DAF4(s32 id);
+unsigned int D_8009DAF4(unsigned int id);
 void *D_8009DBB8(void *dst, unsigned int id);
 void func_001BDBBC(void);
 void func_001BDD70(void) {
@@ -18,7 +18,7 @@ void func_001BDD70(void) {
     s32 i;
     bzero(D_8022A260, 0x88);
     bzero(D_8022A2E8, 0x10);
-    i = D_8009DAF4(0x21BFEDC);
+    i = (s32)D_8009DAF4(0x21BFEDC);
     n = 34;
     if (i / 4 != n) {
         for (;;);

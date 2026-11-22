@@ -57,7 +57,7 @@ extern DispatchContext *D_801CE8C0;
 typedef struct InputRecord { u8 bytes[16]; } InputRecord;
 extern const InputRecord D_8018AA80[];
 extern void func_00023780(void *, u32);
-extern u32 rand(void);
+extern int rand(void);
 extern void func_0020D870(DispatchObject *, int);
 extern int func_00233F94(DispatchObject *);
 extern int func_0020C014(DispatchObject *);
@@ -81,7 +81,7 @@ extern void func_0023422C(DispatchObject *, int);
 extern void func_0022B06C(DispatchObject *, u8 *);
 extern int func_0020D72C(DispatchObject *);
 extern void func_0021D2C0(int, int, int, int, int *, int *, int *);
-extern void func_0021D230(int, int, DispatchObject *, int);
+extern void func_0021D230(int, int, void *, int);
 
 int func_00232458(u8 *input, int *outTime)
 {

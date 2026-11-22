@@ -10,7 +10,7 @@ typedef struct {
     s32 size;
 } Arc16_20BCE0;
 extern Arc16_20BCE0 D_801D0640;
-s32 D_8009DAF4(s32 id);
+u32 D_8009DAF4(u32 id);
 void *D_8009DBB8(void *dst, unsigned int id);
 u32 func_0000ABE0(const u8 *p);
 u32 func_0000A510(u8 *dst, const u8 *src);

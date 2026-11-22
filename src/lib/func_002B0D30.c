@@ -6,7 +6,7 @@ extern void *D_8018FC14;
 extern u8 D_8022A997;
 extern u8 *D_8022A974;
 
-s32 func_8009DAF4(s32 resource);
+unsigned int func_8009DAF4(unsigned int resource);
 void *func_80071C04(s32 size);
 void *func_8009DBB8(void *destination, unsigned int resource);
 void *func_800712C4(void *pointer);
@@ -24,7 +24,7 @@ s16 func_002B0D30(s32 selector, s32 count_override)
 
     selector *= 4;
     selector += (s32)group_table;
-    packed_size = func_8009DAF4(*(s32 *)selector);
+    packed_size = (s32)func_8009DAF4(*(s32 *)selector);
     group = func_80071C04(packed_size);
     packed_size /= 4;
     func_8009DBB8(group, *(s32 *)selector);

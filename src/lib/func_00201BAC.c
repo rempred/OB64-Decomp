@@ -3,7 +3,7 @@ typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-extern s32 func_0002def4(u32 key);
+extern u32 func_0002def4(u32 key);
 extern void *resource_alloc_tree_scan(s32 size);
 extern void *func_0002dfb8(void *data, u32 key);
 extern void *resource_alloc(u32 size);

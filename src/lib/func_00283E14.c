@@ -3,7 +3,7 @@ typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
 
-extern s32 func_0002def4(s32);
+extern u32 func_0002def4(u32);
 extern s32 resource_alloc_tree_scan(s32);
 extern void *func_0002dfb8(void *, unsigned int);
 extern void *resource_free(void *);
