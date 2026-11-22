@@ -4,14 +4,12 @@
 
 Updated November 22, 2026.
 
-- **Retire the inherited caller exceptions.** Three source workers are reconciling audio, battle and unit records, and panels and runtime. The integrator owns the combined checkout and the single audit. Acceptance requires positive evidence for every old boundary, an empty exception list, and a byte-identical US Rev 0 ROM. [Assignment](Plans/c-interface-cleanup.md#inherited-caller-exceptions)
 - **Boot display-list ownership.** The Decomp side owns a structural follow-up for `emit_rdp_setup_displaylist`. Confirm how to preserve the global and local labels at the same entry before activating its C source. The boot assembly remains the verified owner. [PR #3 closeout and evidence](https://github.com/rempred/OB64-Decomp/pull/3#issuecomment-7068054145)
 - **Open Editor requests.** Contributors can choose from [six verified function families](Plans/editor-function-families-20261120.md) or browse the [workbench target list](../config/matching-priorities.json). Start with mission suspend/restore for the largest immediate Editor benefit or story sound command `0x6E` for a small, testable match. The list also covers battle amounts, army record ownership, target selection and strike timing. Follow the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target) to coordinate a claim.
 - **Editor follow-up.** The Editor Director received all 39 accepted PR #3 functions for integration and feature work and will flag issues with the accepted C. Existing work includes the two audio corrections in cutscene preview and ROM export, audible story playback with resident audio state, and the alternate directional-input mode for branch previews. [PR #3 merge](https://github.com/rempred/OB64-Decomp/commit/fa42b5e8465332ffd9731acbfd37c3fbdf3791cc) · [Audio corrections](Plans/c-interface-verification.md#accepted-audio-corrections) · [Prior Editor closeout](https://github.com/rempred/LordlyCaliber/pull/14#issuecomment-7031488087)
 
 ## Unresolved source and research scope
 
-- **Panel list storage.** Determine how the allocation passed from `func_00299CA8` to `func_000521fc` represents its list links at +0 and +4 and its content pointer at +0xD0. The function declarations agree. The effective type of the underlying object remains open. [Final interface wave and remaining scope](Plans/c-interface-cleanup.md#final-wave-result)
 - The [descriptor serialization program](Plans/descriptor-serialization-program.md)
   accepted a revised D1 result with a HYBRID_C exact encoder. Its PURE_C objective
   and unknown sixteen-byte tail remain unresolved; future work needs a fresh
@@ -34,7 +32,7 @@ Updated November 22, 2026.
 
 ## Tooling and research follow-ups
 
-The [permanent caller check](Plans/c-interface-cleanup.md#final-wave-result) is active. Use the current
+The [permanent caller check](Plans/c-interface-cleanup.md#inherited-caller-exceptions) enforces an empty exception list. Use the current
 [private diagnostic workflow](WORKFLOW.md#private-candidate-workers) for candidate
 iteration; it now limits work to the target and consumed inputs. The October 2
 throughput reports describe an older execution path, not a current bottleneck list.
