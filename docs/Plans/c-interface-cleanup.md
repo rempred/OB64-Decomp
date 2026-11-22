@@ -298,11 +298,11 @@ At all four scalar getter calls in `00249290`, retail keeps the full return in a
 
 | Source lead | Provider | Findings | Complete source files | Evidence to check |
 | --- | --- | ---: | ---: | --- |
-| Battle item selection | `0004440c`, `00045a50`, and the `00045934` filter declaration | 26 | 5 | Follow four item values into the 32-byte table rows. At `0022EF50`, compare the selected byte written through a pointer with the separately returned kind. Keep the word filter contract and halfword reads in `0020C448`. |
+| Battle item selection | `0004440c`, `00045a50`, and the `00045934` filter declaration | 28 | 5 | Follow four item values into the 32-byte table rows. At `0022EF50`, compare the selected byte written through a pointer with the separately returned kind. Keep the word filter contract and halfword reads in `0020C448`. |
 | Battle roster record copy | `0020C908` | 9 | 4 | Follow the index into the 52-byte source row, the full 248-byte destination clear, and the index byte stored at offset `0xF6`. Check the actual destination types, including the stack record in `002317C8`. |
 | Battle roster update | `0021C3B0` | 9 | 5 | Check how each caller uses the return register after the call. Preserve the scan of 20 slots, the 52- and 56-byte roster strides, and the existing updates to fields and flags. |
 
-The `00045934` supplement covers six findings in `0020C448` and two in the item lead's existing `00044370`. The adjacent roster-copy supplement adds a complete source file with a named transfer at ROM `0x231924`. Its two existing type-analysis limitations require an explicit disposition in the combined census. The integrator checks the complete code and switch-table contributions for `0022EF50` and `0021B894`.
+The `00045934` supplement covers six findings in `0020C448` and two in the item lead's existing `00044370`. The existing `0020C448` wrapper returns a halfword. At ROM `0x22F1B8`, the item lead also reconciles the two findings in its `0022EF50` caller. The roster-copy lead owns the compatible pointer declaration in `002ACA3C` at `0x2ACC7C`. Six existing findings at this wrapper in `0022B1F4` and `0022C78C` remain for later work. The adjacent roster-copy supplement adds a complete source file with a named transfer at ROM `0x231924`. Its two existing type-analysis limitations require an explicit disposition in the combined census. The integrator checks the complete code and switch-table contributions for `0022EF50` and `0021B894`.
 
 ## Matching and acceptance
 
