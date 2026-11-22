@@ -304,6 +304,16 @@ At all four scalar getter calls in `00249290`, retail keeps the full return in a
 
 The `00045934` supplement covers six findings in `0020C448` and two in the item lead's existing `00044370`. The existing `0020C448` wrapper returns a halfword. At ROM `0x22F1B8`, the item lead also reconciles the two findings in its `0022EF50` caller. The roster-copy lead owns the compatible pointer declaration in `002ACA3C` at `0x2ACC7C`. Six existing findings at this wrapper in `0022B1F4` and `0022C78C` remain for later work. The adjacent roster-copy supplement adds a complete source file with a named transfer at ROM `0x231924`. Its two existing type-analysis limitations require an explicit disposition in the combined census. The integrator checks the complete code and switch-table contributions for `0022EF50` and `0021B894`.
 
+## Round 17
+
+[Round 16](https://github.com/rempred/OB64-Decomp/commit/c3ddb12a8dcc0e2e612c89b1a574632cf2d281d5) cleared 46 findings and reproduced the full Rev 0 ROM byte for byte. The accepted census has 765 findings across 240 linked entries. Six providers tie at eight findings each. The first three by linked section have disjoint source ownership. Together they cover 24 findings in 11 complete source files.
+
+| Source lead | Provider | Complete files | Evidence to check |
+| --- | --- | ---: | --- |
+| Music channel flags | `00011d08` | 5 | Follow flag bits 1 and 2 and the separate speed value through the channel loop. Compare all four callers, including the cache update that supplies speed 12. |
+| Archive DMA destination | `0001a380` | 4 | Follow the destination from archive reads into the DMA message and through the byte increments between chunks. Check the three additional callers with compatible declarations and preserve the Round 13 queue and cache behavior. |
+| Audio filter initialization | `0001eaf0` | 2 | Check all seven constructor calls, the two callback fields, and the seven fourth-argument values against the fields that later code reads. Compare all eight bodies in the constructor source. |
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
