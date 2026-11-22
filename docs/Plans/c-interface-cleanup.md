@@ -260,6 +260,16 @@ Both DMA producers pass a 24-byte I/O message to the same EPI entry. The named c
 
 The item-pose lead kept the provider's unsigned-byte result and unsigned-halfword argument. All four width combinations reproduced each of the four complete caller objects, including 336 switch-table bytes. Removing the low-16-bit truncation from the provider eliminated its recorded mask and shortened the function by one instruction. The mask establishes how the provider uses the selector. The exact caller objects allow more than one source declaration.
 
+## Round 14
+
+[Round 13 acceptance](https://github.com/rempred/OB64-Decomp/commit/c9010a6a1df800d253546c8f6945c035ee18690a) removed its 38 assigned findings and reproduced the full retail ROM. The accepted report has 940 remaining findings across 258 linked entries. The three highest-ranked providers account for 32 findings in 14 disjoint translation units.
+
+| Source lead | Provider | Findings | Assigned files | First comparison |
+| --- | --- | ---: | ---: | --- |
+| Resident memory fill | `func_0002CD70` | 11 | 5 | Follow the descriptor-10 mark reset through the byte stores. Compare the full count, the stored low byte and the original destination returned by the existing hybrid provider. |
+| Indexed record lookup | `func_000453e0` | 11 | 4 | Follow a shop selection through the low 16-bit index and 12-byte record stride. Trace the loaded word into its consumer to establish whether the field holds a pointer. |
+| Resource arena initialization | `resource_arena_init` | 10 | 5 | Follow the descriptor-15 arena base and size to the aligned endpoints. Compare unaligned inputs and the first node's next pointer and available-byte count. |
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
