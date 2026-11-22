@@ -236,6 +236,12 @@ The accepted Round 11 census has 1,032 definite findings across 266 linked entri
 
 The battle lead also inspects 33 additional caller files for compatible declarations, inline definitions and address aliases. Establish the active overlay before attributing a raw address to the provider. The script-record lead checks the table symbol against storage used by the script consumers. The class lead checks the `D_8016FF5C` call in `00239AA4` and the code that consumes its return.
 
+The battle lead also owns four callers with eight named transfers and five descriptor-10 sources that define the bit test inline. One of those five, `0020BFA4`, calls the external function at ROM `0x20BFB8` before its inline definition. Preserve that transfer and compare all five emitted objects. Add the declaration beside the positive-bit accessor in `battle_record_flag.h` and check its 13 existing consumers. Four further callers of `D_801C8B84` are reserved for checks against the active battle load. The fifth, `00239AA4`, stays with the class lead. The store in `00270BF4` and comparison in `0026F1E0` provide a separate use of the full result word.
+
+The script lead also owns the sibling lookup `001BBFB0`, its three callers and the record update `001BD378`. The sibling clears and returns one record from the same table. All three callers of the update use the lookup result and supply a literal zero or one for the byte written at offset `0x16` within the selected slot. Together these two interfaces contribute 12 more findings. Compare the record layout with the four existing direct table users. Round 12 now covers 54 definite findings in 38 complete files, counting the four reserved battle callers.
+
+The class comparison uses the roster byte at `0x80193BC0 + 0x11 + 0x38*i`. The write in `001960A8` and the reads in `00048928` and `00290820` identify a separate storage-typing follow-up. The selector `0020BF98` has two open findings in `00222604`, where its full result is compared with `0xFF` before the class comparison.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
