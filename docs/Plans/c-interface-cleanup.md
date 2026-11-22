@@ -138,6 +138,10 @@ The coordinate wrapper forwards the floating-point result from the original asse
 
 The changed array index in `func_001994B4` sits inside an existing call to `func_8009C620`. That outer call still reaches the original assembly owner `strcat_0002ca20`. Its 80-byte section begins at ROM `0x2CA20`, VRAM `0x8009C620`, and its return delay slot copies the destination pointer into `v0`. The shop declares the parameters as two `void *` values. `func_00296754` declares a byte pointer and a pointer to const bytes. Both ignore the return value. The Round 8 random-result lead owns both callers. The integrator checks other spellings and return uses. The boot C implementation of `strcat` has its own entry at ROM `0xF808`. Round 7 retains the outer call and its existing assembly-provider coverage limit.
 
+### Resident string copy follow-up
+
+Six C files declare the resident copy routine through `func_0002C950` or `func_8009C550`. Their declarations disagree on the pointer types and return value. Nine named linked transfers reach the same 64-byte assembly owner at ROM `0x2C950`, VRAM `0x8009C550`. It reads and writes bytes, writes a terminating zero, and returns the original destination in `v0`. A sweep of the accepted executable sections found 53 direct transfers in total. The Director will group the six callers for review after Round 8, including the shop and panel callers that also use string append. Check how the remaining direct callers consume the result before choosing a common declaration. [Original assembly](../../asm/original/rev0/lib/strcpy_0002c950.s)
+
 ## Round 8
 
 [Round 7 acceptance](https://github.com/rempred/OB64-Decomp/commit/56f081e010a58e71300845b78c01f2b3fafb2a30) removed exactly 190 findings and left 1,278 across 283 linked entries. The full US Rev 0 ROM and linked ELF matched their accepted hashes. The three highest remaining entries account for 66 findings.
