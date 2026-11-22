@@ -352,6 +352,12 @@ The permanent caller check found zero conflicts at changed boundaries. It carrie
 
 The declarations at `func_00299CA8` and `func_000521fc` now agree. The caller passes a `Panel *` as a `struct Node *`. Both views place the links at +0 and +4, and the callee accesses content at +0xD0. Establishing the effective type of the allocated object remains a separate source question. [Current queue](../NEXT_STEPS.md)
 
+## Inherited caller exceptions
+
+Joe assigned all 70 disagreements retained by the [preceding wave](#final-wave-result) to one follow-up. The starting list is pinned to [the accepted verifier](https://github.com/rempred/OB64-Decomp/blob/6da7ec50b141088740650e69b1e7a428f77c080c/config/c-interface-exceptions.json). The audio worker owns 23 pairs, the battle and unit worker owns 22, and the panels and runtime worker owns 25. Their starting assignments have 26, 26, and 38 source files respectively, with no file shared between authors. Local rosters are under `build/legacy70/`.
+
+Follow the actual definitions, caller-visible declarations and uses through aliases and known callbacks. For the panel selectors, trace the returned object to its storage before choosing a common type. Each retirement needs positive evidence at its original linked boundary. The integrator will combine the complete sources and headers, project the empty allowance, and submit the exact verification inputs for the existing independent review. One installed audit must reproduce the retail ROM and enforce zero caller disagreements before publication.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
