@@ -292,6 +292,18 @@ The class lead owns the three formatter findings at `001F2F9C`. The accepted var
 
 At all four scalar getter calls in `00249290`, retail keeps the full return in a saved register before masking its low halfword. The unsigned word declaration reproduced all 1,924 bytes and 133 ordered relocations. The halfword declaration produced 1,908 bytes. The class lead also tests complete callers `0021EBBC`, `0020CBDC` and `002A9364`, whose existing declarations return halfwords. The six record-name files account for 42 findings, the thirteen class files for 31 and the four pose files for 22. The integrator checks all 95 findings and both adjacent 88-byte pose switch tables in the combined build.
 
+## Round 16
+
+[Round 15 acceptance](https://github.com/rempred/OB64-Decomp/commit/cee6dc015368b3b05aaacfe10920f6a0380136ea) cleared all 95 assigned findings. The complete Rev 0 ROM and accepted ELF reproduced byte for byte. The verified census has 811 remaining findings across 245 linked entries. Four providers tie for first at nine findings each. Two are coupled through the same item-selection caller.
+
+| Source lead | Provider | Findings | Complete source files | Evidence to check |
+| --- | --- | ---: | ---: | --- |
+| Battle item selection | `0004440c`, `00045a50`, and the `00045934` filter declaration | 26 | 5 | Follow four item values into the 32-byte table rows. At `0022EF50`, compare the selected byte written through a pointer with the separately returned kind. Keep the word filter contract and halfword reads in `0020C448`. |
+| Battle roster record copy | `0020C908` | 9 | 4 | Follow the index into the 52-byte source row, the full 248-byte destination clear, and the index byte stored at offset `0xF6`. Check the actual destination types, including the stack record in `002317C8`. |
+| Battle roster update | `0021C3B0` | 9 | 5 | Check how each caller uses the return register after the call. Preserve the scan of 20 slots, the 52- and 56-byte roster strides, and the existing updates to fields and flags. |
+
+The `00045934` supplement covers six findings in `0020C448` and two in the item lead's existing `00044370`. The adjacent roster-copy supplement adds a complete source file with a named transfer at ROM `0x231924`. Its two existing type-analysis limitations require an explicit disposition in the combined census. The integrator checks the complete code and switch-table contributions for `0022EF50` and `0021B894`.
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)
