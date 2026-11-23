@@ -362,6 +362,10 @@ The single production audit passed in 22 minutes 24 seconds. It rebuilt from 2,5
 
 The panel storage question from the preceding wave is closed for the traced path. `func_00297CC8` stores the panel returned by `func_00051f74` or by `func_00051eb0`, which returns the same allocation. The allocator requests 0xE8 bytes. The full panel has list links at +0 and +4 and a content pointer at +0xD0. The list head has a separate 0xD8 allocation. `func_00299CA8` now passes its stored panel directly to the unlinker. [Slot producer](../../src/lib/func_00297CC8.c) · [Allocator](../../asm/original/rev0/lib/func_00051f74.s) · [Panel declarations](../../include/game/cutscene_panels.h) · [Unlinker](../../src/lib/func_000521fc.c)
 
+## Four remaining compiler inputs
+
+A private source trial replaced the legacy variadic definitions with named first arguments and moved three existing declarations before their first calls. All four files parsed, and KMC emitted identical assembly. This exposed 21 incompatible caller/provider pairs. Joe assigned their repair to the printing, dispatcher-caller and resource-node authors, with a dedicated integrator. All 2,519 compiler inputs must parse, the exception list must remain empty and the combined audit must reproduce US Rev 0 byte for byte. The Editor Director received the [preceding accepted source](https://github.com/rempred/OB64-Decomp/commit/87530794db28903f4d21a6a215518c286aceca55) for a separate intake. [Trial](../../build/parser-four-feasibility-mnqqedn6/projection.json)
+
 ## Matching and acceptance
 
 1. The Director ranks the findings in the latest accepted report and selects the highest remaining dependency-ready providers. The integrator prepares verified inputs and guarded preflights for the complete memberships. The Director confirms each worker is running with its own private root and tested native message and stop routes. [Private candidate workflow](../WORKFLOW.md#private-candidate-workers)

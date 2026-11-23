@@ -1,6 +1,6 @@
 # Director handoff — November 22, 2026
 
-**Program closed.** All 70 inherited caller disagreements are resolved in [the accepted source commit](https://github.com/rempred/OB64-Decomp/commit/87530794db28903f4d21a6a215518c286aceca55). The single combined audit verified the empty exception list, all 2,650 targets and a byte-identical US Rev 0 ROM. The audio, battle, runtime, integration and review assignments are released. [Result and remaining analysis limits](../c-interface-cleanup.md#inherited-caller-exceptions) · [Current queue](../../NEXT_STEPS.md)
+**Current assignment.** Close [the last four parser gaps and 21 caller disagreements](../c-interface-cleanup.md#four-remaining-compiler-inputs) with three source authors and one production integrator. Printing `01a206c1-9e6c-7723-b873-0154bebb3588`, dispatcher callers `01a206c1-ade2-7341-ba35-1b71d24cba3e`, resource nodes `01a206c1-c91b-7502-acbf-dc7d1d994852`, integration `01a206c1-d739-75a2-a7b2-4260f9f79e3e`. The four roles have private continuation records under `build/parse21` or `build/matching/parse21-*`. The Director owns the retail L4 capture-path investigation. [Preceding accepted wave](https://github.com/rempred/OB64-Decomp/commit/87530794db28903f4d21a6a215518c286aceca55) · [Queue](../../NEXT_STEPS.md)
 
 The [two audio corrections](../c-interface-verification.md#accepted-audio-corrections) passed the full retail verification and all 64 replay cases at `b4278919`. The Editor received them for playback and export.
 
