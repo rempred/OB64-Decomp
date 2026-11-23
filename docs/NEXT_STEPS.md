@@ -2,12 +2,11 @@
 
 ## Current queue
 
-Updated November 22, 2026.
+Updated November 23, 2026.
 
-- **Complete the C interface census.** Three source authors are reconciling the 21 disagreements exposed when the last four files parse. The integrator owns the combined retail audit. The Editor Director has the previously published source through `87530794` for intake. [Assignment](Plans/c-interface-cleanup.md#four-remaining-compiler-inputs)
 - **Boot display-list ownership.** The Decomp side owns a structural follow-up for `emit_rdp_setup_displaylist`. Confirm how to preserve the global and local labels at the same entry before activating its C source. The boot assembly remains the verified owner. [PR #3 closeout and evidence](https://github.com/rempred/OB64-Decomp/pull/3#issuecomment-7068054145)
 - **Open Editor requests.** Contributors can choose from [six verified function families](Plans/editor-function-families-20261120.md) or browse the [workbench target list](../config/matching-priorities.json). Start with mission suspend/restore for the largest immediate Editor benefit or story sound command `0x6E` for a small, testable match. The list also covers battle amounts, army record ownership, target selection and strike timing. Follow the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target) to coordinate a claim.
-- **Editor follow-up.** The Editor Director received all 39 accepted PR #3 functions for integration and feature work and will flag issues with the accepted C. Existing work includes the two audio corrections in cutscene preview and ROM export, audible story playback with resident audio state, and the alternate directional-input mode for branch previews. [PR #3 merge](https://github.com/rempred/OB64-Decomp/commit/fa42b5e8465332ffd9731acbfd37c3fbdf3791cc) · [Audio corrections](Plans/c-interface-verification.md#accepted-audio-corrections) · [Prior Editor closeout](https://github.com/rempred/LordlyCaliber/pull/14#issuecomment-7031488087)
+- **Editor follow-up.** The Editor Director integrated Decomp `87530794` in local editor commit `5b46b47`, with an exact retail export and a corrected class-comparison declaration. The Editor Director previously received all 39 accepted PR #3 functions for integration and feature work and will flag issues with the accepted C. Existing work includes the two audio corrections in cutscene preview and ROM export, audible story playback with resident audio state, and the alternate directional-input mode for branch previews. [PR #3 merge](https://github.com/rempred/OB64-Decomp/commit/fa42b5e8465332ffd9731acbfd37c3fbdf3791cc) · [Audio corrections](Plans/c-interface-verification.md#accepted-audio-corrections) · [Prior Editor closeout](https://github.com/rempred/LordlyCaliber/pull/14#issuecomment-7031488087)
 
 ## Unresolved source and research scope
 
@@ -33,7 +32,7 @@ Updated November 22, 2026.
 
 ## Tooling and research follow-ups
 
-The [permanent caller check](Plans/c-interface-cleanup.md#inherited-caller-exceptions) enforces an empty exception list. Use the current
+The [permanent caller check](Plans/c-interface-cleanup.md#four-remaining-compiler-inputs) parses every current compiler input and enforces an empty exception list. The [L4 DMA supplier](Plans/c-interface-cleanup.md#retail-l4-dma-capture) remains a research question pending natural execution of its factory call. Use the current
 [private diagnostic workflow](WORKFLOW.md#private-candidate-workers) for candidate
 iteration; it now limits work to the target and consumed inputs. The October 2
 throughput reports describe an older execution path, not a current bottleneck list.

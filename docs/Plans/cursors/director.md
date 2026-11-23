@@ -1,6 +1,8 @@
-# Director handoff — November 22, 2026
+# Director handoff — November 23, 2026
 
-**Current assignment.** Close [the last four parser gaps and 21 caller disagreements](../c-interface-cleanup.md#four-remaining-compiler-inputs) with three source authors and one production integrator. Printing `01a206c1-9e6c-7723-b873-0154bebb3588`, dispatcher callers `01a206c1-ade2-7341-ba35-1b71d24cba3e`, resource nodes `01a206c1-c91b-7502-acbf-dc7d1d994852`, integration `01a206c1-d739-75a2-a7b2-4260f9f79e3e`. The four roles have private continuation records under `build/parse21` or `build/matching/parse21-*`. The Director owns the retail L4 capture-path investigation. [Preceding accepted wave](https://github.com/rempred/OB64-Decomp/commit/87530794db28903f4d21a6a215518c286aceca55) · [Queue](../../NEXT_STEPS.md)
+**Accepted.** The [C interface census](../c-interface-cleanup.md#four-remaining-compiler-inputs) closed at `662d6b24`. All 2,519 compiler inputs parsed, the exception list is empty and the single audit reproduced US Rev 0 byte for byte. The three source workers, integrator and independent reviewer have released their assignments. Their local records remain under `build/parse21` and `build/matching/parse21-*`. [Canonical audit](../../../build/parse21/checked/canonical-acceptance.json) · [Current queue](../../NEXT_STEPS.md)
+
+The Editor Director integrated the preceding revision `87530794` locally as `5b46b47` and verified the retail export. The [L4 capture notes](../c-interface-cleanup.md#retail-l4-dma-capture) identify the two execution breakpoints. Existing traces and static references do not identify a retail scene that reaches them.
 
 The [two audio corrections](../c-interface-verification.md#accepted-audio-corrections) passed the full retail verification and all 64 replay cases at `b4278919`. The Editor received them for playback and export.
 
