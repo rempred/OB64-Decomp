@@ -8235,13 +8235,13 @@
           "sha256": "76B9DC16459AD310DB247498C5BC67E431F8F8ED0F080E3510EB7C81AC26E273"
         },
         {
-          "name": "func_00044aa4",
-          "file": "asm/original/rev0/lib/func_00044aa4.s",
+          "name": "character_apply_level_up",
+          "file": "asm/original/rev0/lib/character_apply_level_up.s",
           "romStart": "0x00044AA4",
           "romEndExclusive": "0x0004501C",
           "bytes": 1400,
-          "textBytes": 27173,
-          "sha256": "F8552882DB4E09B48416E75812FAB7650B5B8925A4455C7BF3E0133FC6927E11"
+          "textBytes": 27195,
+          "sha256": "4A9635AB248A9F675227E69C07ADC2EFABD93685FB6409DFB8C92FE441570393"
         },
         {
           "name": "func_0004501c",
@@ -10764,8 +10764,8 @@
           "sha256": "69922F34328C66C188005EF43685BB07CE7D4A1B1A332374F2AB8B9C5152367C"
         }
       ],
-      "textBytes": 1387159,
-      "sha256": "5C3A991FB9DE94DD8414401A725A1F91C2CF042ED14209B902BCE12B7C85BC70"
+      "textBytes": 1387181,
+      "sha256": "F9E5E46419447DA91CE01C5A7FA59F55910CB3E98681E6FCF6A9B90C24E2CA13"
     },
     {
       "file": "asm/original/rev0/code_00051000_00061000.s",

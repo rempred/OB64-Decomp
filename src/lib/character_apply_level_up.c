@@ -9,7 +9,7 @@ extern s32 func_00045878(s32);
 extern s32 func_00045898(s32);
 extern s32 func_000458b8(s32);
 
-void func_00044aa4(CharacterRecord *arg0)
+void character_apply_level_up(CharacterRecord *arg0)
 {
     s16 luck_delta;
     s32 class_index;

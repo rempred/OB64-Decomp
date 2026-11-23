@@ -9,8 +9,8 @@
 .text
 
 /* prologue func (addiu sp,-0x48, has jalr); single jr $ra at 0x45014, restore 0x45018 */
-/* function boundary candidate: func_00044AA4, size=1400, kind=prologue */
-func_00044AA4:
+/* function boundary candidate: character_apply_level_up, size=1400, kind=prologue */
+character_apply_level_up:
 /* 0x00044AA4 0x800B46A4 0x27BDFFB8 */ .word 0x27BDFFB8 # addiu $sp, $sp, -0x48
 /* 0x00044AA8 0x800B46A8 0xAFB10024 */ .word 0xAFB10024 # sw $s1, 0x24($sp)
 /* 0x00044AAC 0x800B46AC 0x00808821 */ .word 0x00808821 # move $s1, $a0

@@ -7,7 +7,7 @@ extern u16 D_801953F2;
 extern u16 D_8019532C[];
 extern s32 rand(void);
 struct CharacterRecord;
-extern void func_00044aa4(struct CharacterRecord *);
+extern void character_apply_level_up(struct CharacterRecord *);
 
 /* Parameterized remainder retains the signed division used by this compiler. */
 static inline s32 random_bounded(s32 divisor)
@@ -93,7 +93,7 @@ heal:
         break;
     case 9:
         if (!apply) { rand(); result = 1; }
-        else { func_00044aa4((struct CharacterRecord *)character); result = 0; }
+        else { character_apply_level_up((struct CharacterRecord *)character); result = 0; }
         break;
     /* Separate cases preserve the compiler-shared generation and clamp tails. */
     case 10:

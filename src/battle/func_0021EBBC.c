@@ -843,7 +843,7 @@ after_record_dispatch:
             func_002267A8(record, 12, 0);
             record->byte32 = 0;
             func_0021C140(record);
-            func_00044aa4(&D_80193BC0[record->byteF6].record);
+            character_apply_level_up(&D_80193BC0[record->byteF6].record);
             func_0021C074(record);
             break;
         case 0x2E: /* 220A78 */

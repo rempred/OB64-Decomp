@@ -2772,7 +2772,7 @@
         {
           "offset": "0x0000031C",
           "type": "R_MIPS_26",
-          "symbol": "func_00044aa4",
+          "symbol": "character_apply_level_up",
           "section": ".rel.text"
         },
         {

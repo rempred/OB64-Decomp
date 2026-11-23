@@ -1074,6 +1074,7 @@ function runTests(model = loadAcceptedModel()) {
   // Preserve every physical row, other slice (including743/790), reservation and29 slabs.
   const digest = value => sha256Buffer(Buffer.from(JSON.stringify(value)));
   // Exact reviewed profiles; no unknown-identity fallback.
+  const characterLevelUpProfile = '46A61CECDC8D8C0DAEC98AB222B20B8B414006AD08D3C04F61111ED51D3863BA';
   function checkProfile() {
     checkCuts();
     const identity = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json'];
@@ -1081,8 +1082,10 @@ function runTests(model = loadAcceptedModel()) {
       '6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1',
       'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204',
       'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68',
+      characterLevelUpProfile,
     ].includes(identity), 'unknown boot-test semantic identity: ' + identity);
-    const l4Successor = identity === 'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68';
+    const characterLevelUp = identity === characterLevelUpProfile;
+    const l4Successor = characterLevelUp || identity === 'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68';
     const row566Successor = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json']
       === 'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204';
     assert.strictEqual(digest(model.rows.flatMap(owner => testedCuts.some(cut => cut.rowIndex === owner.index) ? [{
@@ -1108,7 +1111,8 @@ function runTests(model = loadAcceptedModel()) {
     assert.strictEqual(digest(priorSlices.filter(slice => slice.rowIndex !== 789)),
       l4Successor ? '2EFCE6BCEC2234F5555C396AD6CE621A04659523E1B33F670BB3FB14A1D4DAA5' : row566Successor ? '6B459839D42684025BA9B9C919EFDD9480D56AD2DAAD2A49476E89E8023B9EFE'
         : '8897472E14020BB65D6CD7EBBD1716F503C2232D52F7E662D8E739605A4D873B');
-    assert.strictEqual(digest(model.rows.map(({ slices, retainedPadding, ...metadata }) => metadata)), l4Successor
+    assert.strictEqual(digest(model.rows.map(({ slices, retainedPadding, ...metadata }) => metadata)), characterLevelUp
+      ? '165F4BB698F2955C81FB552C170211B8E5588145A2781D3F8E41DB2828CA6B8D' : l4Successor
       ? '6915B2433009A1E6E0DDF57DB571BB9D37621A7A486985A7C9D5CC124076C385' : row566Successor
       ? 'A83A62A26E54CD29A50AAF0FE6286867CD34E5B62AE43D49CC0316C6499076C2'
       : '4F5EE5011B086824ED4256B53BCD214106AE1D38392A3029788C667383E2E315');
@@ -1155,7 +1159,7 @@ function runTests(model = loadAcceptedModel()) {
   for (const identity of ['0'.repeat(64),
     '6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1',
     'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204',
-    'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68']) {
+    'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68', characterLevelUpProfile]) {
     if (identity !== model.config.acceptedInputSha256[identityKey])
       profileMutation(model.config.acceptedInputSha256, identityKey, identity);
   }

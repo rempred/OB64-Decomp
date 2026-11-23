@@ -138,7 +138,7 @@ loop_body:
 
     record_alias->field_12 = loop_class;
     record_alias->field_11 = loop_class;
-    func_00044aa4(record_alias);
+    character_apply_level_up(record_alias);
     loop_counter++;
     if (loop_counter < (u8)level) {
         goto loop_body;

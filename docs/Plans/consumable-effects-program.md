@@ -31,7 +31,7 @@ tables and other data retain their existing ownership. ROM interval ends are exc
 | C02 | `func_001AD8CC` | `0x1AD8CC..0x1ADB8C` | `0x802195BC` | 704 | Scenario eligibility for IDs 1–19, including special-pool checks, recursive member checks, stat caps and alignment endpoints. |
 | C02 | `func_001AD0E4` | `0x1AD0E4..0x1AD8CC` | `0x80218DD4` | 2,024 | Item-specific detail/availability dispatcher; selects explanations using the item and eligibility result. |
 | C02 | `func_001A9290` | `0x1A9290..0x1AB72C` | `0x80214F80` | 9,372 | General scenario/character-data state dispatcher containing scenario item-use flows and Flag of Unity handling. Its complete non-item branches remain part of this assignment. |
-| KEEP | `func_00044aa4` | `0x44AA4..0x4501C` | `0x8016EBA4` | 1,400 | Accepted general level-up calculation called by Champion Statuette. |
+| KEEP | `character_apply_level_up` | `0x44AA4..0x4501C` | `0x8016EBA4` | 1,400 | Accepted general level-up calculation called by Champion Statuette. |
 | KEEP | `func_00045440` | `0x45440..0x45460` | `0x8016F540` | 32 | Accepted consumable metadata byte accessor used for single/group targeting scope. |
 
 The KEEP entries are preserved dependencies, not additional matching assignments.
@@ -97,7 +97,7 @@ Original sources:
 - [Scenario eligibility](../../asm/original/rev0/lib/func_001AD8CC.s),
   [item details](../../asm/original/rev0/lib/func_001AD0E4.s) and
   [scenario dispatcher](../../asm/original/rev0/lib/func_001A9290.s).
-- Existing [level-up C](../../src/lib/func_00044aa4.c) and
+- Existing [level-up C](../../src/lib/character_apply_level_up.c) and
   [metadata accessor C](../../src/lib/func_00045440.c).
 
 Relevant local parent-project research is the

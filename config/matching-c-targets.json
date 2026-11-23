@@ -1817,8 +1817,8 @@
       "source": "src/lib/func_00044130.c"
     },
     {
-      "symbol": "func_00044aa4",
-      "source": "src/lib/func_00044aa4.c"
+      "symbol": "character_apply_level_up",
+      "source": "src/lib/character_apply_level_up.c"
     },
     {
       "symbol": "func_000bd318",
