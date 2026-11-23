@@ -1,10 +1,10 @@
-/* Retail stubs retain the legacy variadic register-save ABI. */
-void func_00023940(__builtin_va_alist)
-int __builtin_va_alist; ...
+#include "common/syncprintf.h"
+
+/* A named format argument keeps the retail four-register variadic save ABI. */
+void func_00023940(const char *format, ...)
 {
 }
 
-void func_00023954(__builtin_va_alist)
-int __builtin_va_alist; ...
+void func_00023954(const char *format, ...)
 {
 }

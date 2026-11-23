@@ -1,3 +1,5 @@
+#include "game/boot_command_stream.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 extern u8 *D_8022A234;
@@ -9,7 +11,6 @@ void func_001C1FF4(void);
 void func_001C1488(void);
 void func_001BDF2C(void);
 void func_001BDCF8(void);
-void D_80079618(s32 handle, s32 flags);
 void func_001BADD0(void) {
     if (D_801936E0) {
         func_000016C4(D_8022A234);

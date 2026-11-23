@@ -1,3 +1,4 @@
+#include "common/syncprintf.h"
 #include "game/character_record.h"
 #include "game/character_template.h"
 #include "game/scenario_source_record.h"
@@ -12,7 +13,6 @@ extern u8 g_func_001957D0_normal_slot_state[];
 extern const char g_func_001957D0_record_error[];
 extern const char g_func_001957D0_slot_error[];
 extern void func_00023780(void *destination, int size);
-extern void func_00023940(const char *message);
 extern u8 func_001957D0_finalize(Func001957D0SourceRecord *record);
 void func_001957D0(const CharacterTemplate *incoming_source, int source_index)
 {

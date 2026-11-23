@@ -135,7 +135,6 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-M2C_UNK boot_command_stream_resource_node_dispatch(M2C_UNK, M2C_UNK, M2C_UNK);
 s32 func_0005c110(M2C_UNK);
 f32 func_000F315C(u8, f32, f32);
 f32 func_000F3428(u8, f32, f32);

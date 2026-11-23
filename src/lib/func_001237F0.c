@@ -1,3 +1,4 @@
+#include "common/syncprintf.h"
 #include "game/unit_record_lookup.h"
 
 typedef unsigned char u8;
@@ -22,7 +23,6 @@ extern char D_801EE638[];
 extern s32 func_00123458(s32 row, RuntimeUnit *unit);
 extern void func_0005c090(s32 index, s32 value);
 extern s32 func_0005c110(s32 index);
-extern void func_00023940(char *message);
 
 s32 func_001237F0(RuntimeUnit *unit)
 {

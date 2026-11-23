@@ -1,3 +1,5 @@
+#include "game/boot_command_stream.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 typedef struct {
@@ -6,7 +8,6 @@ typedef struct {
 extern u8 D_8019EE50[];
 extern SceneSlot D_800E82CA[];
 s32 func_00007714(void *p);
-void D_80079618();
 void func_000496d0(void) {
     s32 i = func_00007714(D_8019EE50);
     if (i >= 0) {

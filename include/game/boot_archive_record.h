@@ -62,7 +62,8 @@ void func_8007ACB0(ResourceArchiveInput *input,
                    ResourceArchiveRequest *requests, s32 count);
 void func_0000BFF4(const u8 *name, const u8 *message);
 
-/* Only the insertion helper uses these links at +0x10 and +0x14. */
+/* The 0x18-byte child/context nodes are allocated by the context insertion
+ * helper. The cleanup family follows the same +0x10 and +0x14 links. */
 typedef struct ContextNode24 {
     u32 field_00;
     void *field_04;
@@ -95,5 +96,11 @@ void func_00009EFC(ResourceNode28 *node);
 
 ContextNode24 *boot_resource_node_recursive_insert_slot_search(ContextNode24 *node, u32 key);
 ContextNode24 *func_00009CB4(ContextNode24 *node, u32 key);
+
+ResourceNode28 *boot_resource_node_recursive_cleanup_free(ResourceNode28 *node);
+void func_0000A1F8(ResourceNode28 *node);
+void boot_resource_node_recursive_field0c_rewrite(ResourceNode28 *node);
+ContextNode24 *boot_resource_node_recursive_child_free(ContextNode24 *node);
+void boot_resource_node_recursive_key_field_clear(ContextNode24 *node, u32 key);
 
 #endif

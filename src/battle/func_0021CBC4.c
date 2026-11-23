@@ -1,9 +1,9 @@
+#include "common/syncprintf.h"
 typedef signed char s8;
 typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
 
-extern void func_00093540(void *, ...);
 extern s32 func_001CA29C(void *);
 extern void func_001CD01C(void *, void *, s32);
 extern u32 func_801D96A0(u32);
@@ -331,7 +331,7 @@ block_51:
         var_s0_73 += 1;
         goto block_54;
     default:
-        func_00093540(D_801E6AE0, arg0);
+        func_00093540((const char *)D_801E6AE0, arg0);
 loop_53:
         goto loop_53;
     }
@@ -340,7 +340,7 @@ block_54:
     if (var_s0_73 < *(u32 *)(D_801CE8C0 + 0x814)) {
         var_v0_74 = (u8 *)(var_s0_73 + (u32)temp_s1_23);
         if (*(volatile u8 *)(var_v0_74 + 2) < var_s4_13) {
-            func_00093540(D_801E6B08);
+            func_00093540((const char *)D_801E6B08);
 loop_57:
             goto loop_57;
         }

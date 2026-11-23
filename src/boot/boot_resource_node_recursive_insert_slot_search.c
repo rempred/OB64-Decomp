@@ -1,17 +1,5 @@
 #include "game/boot_archive_record.h"
 
-/* The separate search body accesses +0x14/+0x18. Its pointed storage view
- * differs from the primary helper's 24-byte allocation and +0x10/+0x14 links. */
-typedef struct SlotSearchNode {
-    u32 field_00;
-    u32 field_04;
-    u32 field_08;
-    u32 field_0C;
-    u32 field_10;
-    struct SlotSearchNode *field_14;
-    struct SlotSearchNode *field_18;
-} SlotSearchNode;
-
 extern void *func_80071288(u32 bytes);
 
 ContextNode24 *boot_resource_node_recursive_insert_slot_search(ContextNode24 *node, u32 key)
@@ -39,10 +27,10 @@ ContextNode24 *boot_resource_node_recursive_insert_slot_search(ContextNode24 *no
     return node;
 }
 
-static SlotSearchNode **func_0000A160(SlotSearchNode **slot, u32 key)
+static ResourceNode28 **func_0000A160(ResourceNode28 **slot, u32 key)
 {
     while (*slot != 0) {
-        SlotSearchNode *node = *slot;
+        ResourceNode28 *node = *slot;
         if (key == node->field_00) {
             break;
         }

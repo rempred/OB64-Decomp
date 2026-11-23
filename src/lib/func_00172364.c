@@ -1,3 +1,5 @@
+#include "game/boot_command_stream.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
@@ -18,7 +20,6 @@ typedef struct {
     s32 w7C;
 } Ctx17;
 extern Ctx17 *D_8021AA70;
-void D_80079618();
 void func_00172364(void) {
     if (D_8021AA70->w70 != 0) {
         D_80079618(0x218E9B4, 0x16, -0x11);

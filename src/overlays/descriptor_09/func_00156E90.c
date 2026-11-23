@@ -1,3 +1,4 @@
+#include "common/syncprintf.h"
 typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
@@ -43,7 +44,6 @@ extern signed char D_80214D10[];
 s32 func_0000735C(s32 a, void *fn, s32 b, s32 c, s32 d, s32 e, s32 f);
 void func_0015709C();
 void func_0015DF10(unsigned int value);
-void func_00023940(const signed char *fmt, ...);
 s32 func_00156E90(u8 a) {
     u8 *f = &D_80213780;
     s32 i;
@@ -56,7 +56,7 @@ s32 func_00156E90(u8 a) {
         func_0015DF10(6);
         r = 1;
     } else {
-        func_00023940(D_80214D10);
+        func_00023940((const char *)D_80214D10);
         r = 0;
     }
     return r;

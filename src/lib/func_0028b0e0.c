@@ -1,3 +1,5 @@
+#include "game/boot_command_stream.h"
+
 #include "game/cutscene_panels.h"
 
 extern void *D_8018FC08;
@@ -7,7 +9,6 @@ extern void func_00284184(void);
 extern void func_0004ef58(void);
 extern void func_0004ef18(void);
 extern void *resource_free(void *buffer);
-extern void func_80079618(s32 command, ...);
 extern void func_00291104(void);
 extern void func_0028364C(void);
 

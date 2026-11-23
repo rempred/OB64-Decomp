@@ -1,3 +1,5 @@
+#include "game/boot_command_stream.h"
+
 #include "game/sound_channel.h"
 
 typedef signed char s8;
@@ -17,7 +19,6 @@ typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 void func_0002de50(u32 rom_address, u8 *destination, u32 bytes);
 void *func_800712C4(void *);
-void func_80079618(u32,s32);
 void func_80090010(void*,s32);
 void func_800900C0(void*,s32);
 f32 func_800907F0(f32);

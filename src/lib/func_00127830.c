@@ -1,3 +1,4 @@
+#include "common/syncprintf.h"
 #include "game/boot_command_stream.h"
 
 typedef unsigned char u8;
@@ -11,12 +12,10 @@ extern u8 D_801951B0[];
 extern u8 D_801E7E15[], D_80196A38[], D_801EE7D0[];
 extern s32 D_801F1070, D_801F367C;
 extern u8 *D_801F0CB0[];
-extern void boot_command_stream_resource_node_dispatch(u32, s32, s32);
 extern char *strncpy(char *, const char *, u32);
 extern void *resource_alloc(u32);
 extern void *resource_free(void *);
 extern void memset_00023780(void *, s32);
-extern void func_00023940(void *, ...);
 extern s32 func_0005c110(s32);
 extern s32 func_0016C454(void);
 
@@ -173,7 +172,7 @@ site_loop:
                     allocation = resource_alloc(count + 1);
                     FIELD((void *)(0x80190000U + offset), u8 *volatile, 0x51C8) = allocation;
                     if (!allocation) {
-                        func_00023940(D_801EE7D0);
+                        func_00023940((const char *)D_801EE7D0);
                     }
                     /* A separate pointer keeps the terminator's lifetime out
                      * of the reverse-copy loop's pointer quantity. */

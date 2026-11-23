@@ -1,3 +1,4 @@
+#include "common/syncprintf.h"
 #include "game/boot_command_stream.h"
 
 typedef unsigned char u8;
@@ -88,7 +89,6 @@ extern void memset_00023780(void *, s32);
 extern void func_000ea930(void);
 extern u16 func_000e98bc(u8 *, s32);
 extern u16 func_000e9528(u8 *);
-extern void func_00023940(char *, ...);
 
 void func_000E5968(s16 windowId)
 {

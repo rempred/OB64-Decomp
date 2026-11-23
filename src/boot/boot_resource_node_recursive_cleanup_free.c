@@ -1,16 +1,5 @@
-typedef struct ChildNode24 ChildNode24;
+#include "game/boot_archive_record.h"
 
-typedef struct ResourceNode28 {
-    unsigned int field_00;
-    void *field_04;
-    unsigned int field_08;
-    ChildNode24 *field_0C;
-    struct ResourceNode28 *field_10;
-    struct ResourceNode28 *field_14;
-    struct ResourceNode28 *field_18;
-} ResourceNode28;
-
-extern ChildNode24 *boot_resource_node_recursive_child_free(ChildNode24 *node);
 extern void *func_000016C4(void *pointer);
 
 ResourceNode28 *boot_resource_node_recursive_cleanup_free(ResourceNode28 *node)

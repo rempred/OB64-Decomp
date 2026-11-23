@@ -1,3 +1,4 @@
+#include "common/syncprintf.h"
 #include "game/unit_cleanup.h"
 
 typedef unsigned char u8;
@@ -412,7 +413,6 @@ extern u8 D_801EE740[];
 extern void *resource_alloc(u32 bytes);
 extern void *resource_free(void *object);
 extern void func_80093380(void *destination, s32 bytes);
-extern void func_80093540(const void *message);
 extern void func_00106CE0(f32 *first, f32 *second, f32 step);
 extern s32 func_00125298(RuntimeUnit *unit);
 extern s32 func_00107E38(MovementAux *aux);
@@ -515,7 +515,7 @@ target_ready:
         }
         if (aux == 0 || FIELD(aux, void *, 0x1C) == 0 || FIELD(aux, void *, 0x20) == 0 ||
             FIELD(aux, void *, 0x24) == 0 || ((FIELD(aux, void *, 0x30) == 0) | (ready == 0))) {
-            func_80093540(D_801EE740);
+            func_80093540((const char *)D_801EE740);
             if (aux != 0) {
                 if (FIELD(aux, void *, 0x1C) != 0) {
                     resource_free(FIELD(aux, void *, 0x1C));

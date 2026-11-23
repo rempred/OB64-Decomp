@@ -1,42 +1,18 @@
-typedef unsigned int u32;
-
-typedef struct ChildNode24 {
-    u32 field_00;
-    void *field_04;
-    u32 field_08;
-    void *field_0C;
-    struct ChildNode24 *field_10;
-    struct ChildNode24 *field_14;
-} ChildNode24;
-
-typedef struct ResourceNode28 {
-    u32 field_00;
-    u32 *field_04;
-    u32 field_08;
-    ChildNode24 *field_0C;
-    struct ResourceNode28 *field_10;
-    struct ResourceNode28 *field_14;
-    struct ResourceNode28 *field_18;
-} ResourceNode28;
+#include "game/boot_archive_record.h"
+#include "game/boot_command_stream.h"
 
 extern ResourceNode28 *g_command_resource_root;
 extern ResourceNode28 **func_0000A160(ResourceNode28 **slot, u32 key);
-extern ResourceNode28 *boot_resource_node_recursive_cleanup_free(ResourceNode28 *node);
-extern void func_0000A1F8(ResourceNode28 *node);
-extern void boot_resource_node_recursive_field0c_rewrite(ResourceNode28 *node);
-extern ChildNode24 *boot_resource_node_recursive_child_free(ChildNode24 *node);
-extern void boot_resource_node_recursive_key_field_clear(ChildNode24 *node, u32 key);
 extern void *func_000016C4(void *pointer);
 
 #define NEXT_WORD(cursor) \
     ((cursor) = (char *)(((u32)(cursor) + 3) & ~3U) + 4, *(u32 *)((cursor) - 4))
 
-/* The KMC old-style variable-argument parameter preserves the retail four
- * argument stores before the frame. Each consumed argument is a 32-bit word. */
-void boot_command_stream_resource_node_dispatch(__builtin_va_alist)
-u32 __builtin_va_alist; ...
+/* KMC spills all four argument words before the frame. The named first word
+ * selects the resource or whole-tree operation; optional words follow it. */
+void boot_command_stream_resource_node_dispatch(u32 resourceKey, ...)
 {
-    u32 key = __builtin_va_alist;
+    u32 key = resourceKey;
     char *cursor;
     ResourceNode28 **slot;
     ResourceNode28 *node;
@@ -57,11 +33,11 @@ u32 __builtin_va_alist; ...
     if (*slot == 0) {
         return;
     }
-    cursor = (char *)__builtin_next_arg();
+    cursor = (char *)__builtin_next_arg(resourceKey);
     key = NEXT_WORD(cursor);
     while (key < (u32)-23) {
         ResourceNode28 *nested_node = *slot;
-        slot = func_0000A160(&nested_node->field_10, nested_node->field_04[key]);
+        slot = func_0000A160(&nested_node->field_10, ((u32 *)nested_node->field_04)[key]);
         if (*slot == 0) {
             return;
         }

@@ -1,3 +1,5 @@
+#include "game/boot_command_stream.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 typedef float f32;
@@ -12,13 +14,14 @@ extern f32 D_801CE8F0;
 extern f32 D_801CE8F4;
 void D_801BE894(void);
 void D_800EA76C(void);
-void D_80079618(s32 a);
 void D_8020B098(void);
 void D_801BBC78(void);
 void D_801B0020(void);
 void D_801C1D98(void);
 void D_801C1A9C(void);
 void D_801C234C(void);
+void func_0027CDE0(void);
+void func_0027FCF0(void);
 void func_0027B450(void) {
     if (D_801CE8BC != ((void *)0)) {
         D_801BE894();
@@ -49,5 +52,3 @@ void func_0027B450(void) {
         D_801CE8BC = ((void *)0);
     }
 }
-void func_0027CDE0(void);
-void func_0027FCF0(void);
