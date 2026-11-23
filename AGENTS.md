@@ -240,6 +240,10 @@ justify symbol-specific bypasses, fabricated bytes, or source-policy/compiler ex
 
 Independently derive readable C from the ROM and project evidence. Prefer structured control flow,
 evidence-backed shared types, fields, and constants, then run an early linked diff.
+Name locals and parameters for their observed roles. When the game meaning is uncertain,
+use the role visible in the code, such as `slot_index` or `bytes_remaining`.
+When a function's purpose is known, describe it in one line above its definition.
+Keep existing function symbols and aliases during ordinary matching and readability work.
 Keep uncertain meanings explicit. Explain necessary compiler workarounds near the affected C.
 Ordinary readability cleanup under existing contracts uses the normal wave gates; it adds no review ceremony.
 
