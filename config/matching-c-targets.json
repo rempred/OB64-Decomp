@@ -10607,6 +10607,10 @@
     {
       "symbol": "func_002A8E44",
       "source": "src/lib/func_002A8E44.c"
+    },
+    {
+      "symbol": "func_0012EC6C",
+      "source": "src/lib/func_0012EC6C.c"
     }
   ]
 }
