@@ -89,9 +89,9 @@ extern CharacterRecord g_func_0019554C_records_52[];
 extern CharacterRecord56 g_func_0019554C_records_56[];
 extern CharacterClassRecord g_func_0019554C_class_records[];
 
-void func_0004501C(CharacterRecord *record, int level);
-void func_8016F11C(CharacterRecord *record, int level);
-void character_apply_level_up(CharacterRecord *record);
+void func_0004501C(CharacterRecord *character, int target_level);
+void func_8016F11C(CharacterRecord *character, int target_level);
+void character_apply_level_up(CharacterRecord *character);
 void func_00195410(u16 value, CharacterRecord *record);
 void func_0023A3A0(CharacterRecord *record, u32 kind, s32 value, u32 field_a, u32 field_b);
 

@@ -1,5 +1,6 @@
 #include "game/character_record.h"
 #include "game/class_field_lookups.h"
+
 extern s32 rand(void);
 extern u32 func_000457e4(s32);
 extern s32 func_00045820(s32);
@@ -9,285 +10,294 @@ extern s32 func_00045878(s32);
 extern s32 func_00045898(s32);
 extern s32 func_000458b8(s32);
 
-void character_apply_level_up(CharacterRecord *arg0)
+/* Apply one level of class and equipment growth to a character below level 99. */
+void character_apply_level_up(CharacterRecord *character)
 {
     s16 luck_delta;
-    s32 class_index;
-    u8 class_value;
-    s32 random_value;
-    s32 second_random;
-    s32 modulo_temp;
-    s32 second_random_1;
-    s32 modulo_temp_1;
-    s32 second_random_2;
-    s32 modulo_temp_2;
-    s32 second_random_3;
-    s32 modulo_temp_3;
-    s32 second_random_4;
-    s32 modulo_temp_4;
-    s32 second_random_5;
-    s32 modulo_temp_5;
-    s32 second_random_6;
-    s32 modulo_temp_6;
-    s32 growth_12;
-    s32 growth_16;
-    s32 growth_1A;
-    s32 growth_1E;
-    s32 growth_22;
-    u8 equipment_index;
-    s32 loop_index;
-    s32 equipment_id;
-    u16 growth_0A;
-    u16 growth_0E;
-    u8 growth_22_base;
-    s32 equipment;
-    u16 current;
-    u16 equipment_value;
+    s32 growth_class_index;
+    u8 growth_class_byte;
+    s32 growth_roll;
+    s32 max_hp_second_roll;
+    s32 max_hp_parity_temp;
+    s32 strength_second_roll;
+    s32 strength_parity_temp;
+    s32 vitality_second_roll;
+    s32 vitality_parity_temp;
+    s32 intelligence_second_roll;
+    s32 intelligence_parity_temp;
+    s32 mentality_second_roll;
+    s32 mentality_parity_temp;
+    s32 agility_second_roll;
+    s32 agility_parity_temp;
+    s32 dexterity_second_roll;
+    s32 dexterity_parity_temp;
+
+    s32 vitality_gain;
+    s32 intelligence_gain;
+    s32 mentality_gain;
+    s32 agility_gain;
+    s32 dexterity_gain;
+
+    u8 equipment_slot;
+    s32 slot_index;
+    s32 growth_item_id;
+    u16 max_hp_gain;
+    u16 strength_gain;
+    u8 base_dexterity_gain;
+    s32 equipped_item_id;
+    u16 current_stat;
+    u16 equipped_item_value;
     u16 value;
-    u16 result_16;
-    u16 result_1C;
-    u16 result_1E;
-    u16 result_20;
-    u16 result_22;
-    u16 result_24;
-    u16 result_26;
-    u16 luck_result;
-    s32 level;
-    s32 class_id;
-    CharacterClassRecord *class_record;
 
-    class_id = *((u8 *)arg0 + 0x12);
-    level = *((u8 *)arg0 + 0x13);
-    if (level < 99U) {
-        *((u8 *)arg0 + 0x13) = level + 1;
-        class_value = class_id;
-        class_index = class_value & 0xFF;
-        class_record = &g_func_0019554C_class_records[class_index];
+    u16 new_max_hp;
+    u16 new_strength;
+    u16 new_vitality;
+    u16 new_intelligence;
+    u16 new_mentality;
+    u16 new_agility;
+    u16 new_dexterity;
+    u16 new_luck;
 
-        random_value = class_index == 1
+    s32 current_level;
+    s32 growth_class_id;
+    CharacterClassRecord *growth_class;
+
+    growth_class_id = *((u8 *)character + 0x12);
+    current_level = *((u8 *)character + 0x13);
+    if (current_level < 99U) {
+        *((u8 *)character + 0x13) = current_level + 1;
+        growth_class_byte = growth_class_id;
+        growth_class_index = growth_class_byte & 0xFF;
+        growth_class = &g_func_0019554C_class_records[growth_class_index];
+
+        /* Soldiers get a fixed +1. Other classes roll twice for each of the seven gains. */
+        growth_roll = growth_class_index == 1
             ? 1
-            : (random_value = rand(),
-               second_random = rand(),
-               modulo_temp = (s32)((u32)random_value >> 31),
-               modulo_temp = (random_value + modulo_temp) >> 1,
-               modulo_temp = modulo_temp << 1,
-               random_value = random_value - modulo_temp,
-               modulo_temp = (s32)((u32)second_random >> 31),
-               modulo_temp = (second_random + modulo_temp) >> 1,
-               modulo_temp = modulo_temp << 1,
-               second_random = second_random - modulo_temp,
-               random_value + second_random);
-        growth_0A = class_record->growth_0A + random_value;
+            : (growth_roll = rand(),
+               max_hp_second_roll = rand(),
+               max_hp_parity_temp = (s32)((u32)growth_roll >> 31),
+               max_hp_parity_temp = (growth_roll + max_hp_parity_temp) >> 1,
+               max_hp_parity_temp = max_hp_parity_temp << 1,
+               growth_roll = growth_roll - max_hp_parity_temp,
+               max_hp_parity_temp = (s32)((u32)max_hp_second_roll >> 31),
+               max_hp_parity_temp = (max_hp_second_roll + max_hp_parity_temp) >> 1,
+               max_hp_parity_temp = max_hp_parity_temp << 1,
+               max_hp_second_roll = max_hp_second_roll - max_hp_parity_temp,
+               growth_roll + max_hp_second_roll);
+        max_hp_gain = growth_class->growth_0A + growth_roll;
 
-        random_value = (u8)class_value == 1
+        growth_roll = (u8)growth_class_byte == 1
             ? 1
-            : (random_value = rand(),
-               second_random_1 = rand(),
-               modulo_temp_1 = (s32)((u32)random_value >> 31),
-               modulo_temp_1 = (random_value + modulo_temp_1) >> 1,
-               modulo_temp_1 = modulo_temp_1 << 1,
-               random_value = random_value - modulo_temp_1,
-               modulo_temp_1 = (s32)((u32)second_random_1 >> 31),
-               modulo_temp_1 = (second_random_1 + modulo_temp_1) >> 1,
-               modulo_temp_1 = modulo_temp_1 << 1,
-               second_random_1 = second_random_1 - modulo_temp_1,
-               random_value + second_random_1);
-        growth_0E = class_record->growth_0E + random_value;
+            : (growth_roll = rand(),
+               strength_second_roll = rand(),
+               strength_parity_temp = (s32)((u32)growth_roll >> 31),
+               strength_parity_temp = (growth_roll + strength_parity_temp) >> 1,
+               strength_parity_temp = strength_parity_temp << 1,
+               growth_roll = growth_roll - strength_parity_temp,
+               strength_parity_temp = (s32)((u32)strength_second_roll >> 31),
+               strength_parity_temp = (strength_second_roll + strength_parity_temp) >> 1,
+               strength_parity_temp = strength_parity_temp << 1,
+               strength_second_roll = strength_second_roll - strength_parity_temp,
+               growth_roll + strength_second_roll);
+        strength_gain = growth_class->growth_0E + growth_roll;
 
-        random_value = (u8)class_value == 1
+        growth_roll = (u8)growth_class_byte == 1
             ? 1
-            : (random_value = rand(),
-               second_random_2 = rand(),
-               modulo_temp_2 = (s32)((u32)random_value >> 31),
-               modulo_temp_2 = (random_value + modulo_temp_2) >> 1,
-               modulo_temp_2 = modulo_temp_2 << 1,
-               random_value = random_value - modulo_temp_2,
-               modulo_temp_2 = (s32)((u32)second_random_2 >> 31),
-               modulo_temp_2 = (second_random_2 + modulo_temp_2) >> 1,
-               modulo_temp_2 = modulo_temp_2 << 1,
-               second_random_2 = second_random_2 - modulo_temp_2,
-               random_value + second_random_2);
-        growth_12 = class_record->growth_12 + random_value;
+            : (growth_roll = rand(),
+               vitality_second_roll = rand(),
+               vitality_parity_temp = (s32)((u32)growth_roll >> 31),
+               vitality_parity_temp = (growth_roll + vitality_parity_temp) >> 1,
+               vitality_parity_temp = vitality_parity_temp << 1,
+               growth_roll = growth_roll - vitality_parity_temp,
+               vitality_parity_temp = (s32)((u32)vitality_second_roll >> 31),
+               vitality_parity_temp = (vitality_second_roll + vitality_parity_temp) >> 1,
+               vitality_parity_temp = vitality_parity_temp << 1,
+               vitality_second_roll = vitality_second_roll - vitality_parity_temp,
+               growth_roll + vitality_second_roll);
+        vitality_gain = growth_class->growth_12 + growth_roll;
 
-        random_value = (u8)class_value == 1
+        growth_roll = (u8)growth_class_byte == 1
             ? 1
-            : (random_value = rand(),
-               second_random_3 = rand(),
-               modulo_temp_3 = (s32)((u32)random_value >> 31),
-               modulo_temp_3 = (random_value + modulo_temp_3) >> 1,
-               modulo_temp_3 = modulo_temp_3 << 1,
-               random_value = random_value - modulo_temp_3,
-               modulo_temp_3 = (s32)((u32)second_random_3 >> 31),
-               modulo_temp_3 = (second_random_3 + modulo_temp_3) >> 1,
-               modulo_temp_3 = modulo_temp_3 << 1,
-               second_random_3 = second_random_3 - modulo_temp_3,
-               random_value + second_random_3);
-        growth_16 = class_record->growth_16 + random_value;
+            : (growth_roll = rand(),
+               intelligence_second_roll = rand(),
+               intelligence_parity_temp = (s32)((u32)growth_roll >> 31),
+               intelligence_parity_temp = (growth_roll + intelligence_parity_temp) >> 1,
+               intelligence_parity_temp = intelligence_parity_temp << 1,
+               growth_roll = growth_roll - intelligence_parity_temp,
+               intelligence_parity_temp = (s32)((u32)intelligence_second_roll >> 31),
+               intelligence_parity_temp = (intelligence_second_roll + intelligence_parity_temp) >> 1,
+               intelligence_parity_temp = intelligence_parity_temp << 1,
+               intelligence_second_roll = intelligence_second_roll - intelligence_parity_temp,
+               growth_roll + intelligence_second_roll);
+        intelligence_gain = growth_class->growth_16 + growth_roll;
 
-        random_value = (u8)class_value == 1
+        growth_roll = (u8)growth_class_byte == 1
             ? 1
-            : (random_value = rand(),
-               second_random_4 = rand(),
-               modulo_temp_4 = (s32)((u32)random_value >> 31),
-               modulo_temp_4 = (random_value + modulo_temp_4) >> 1,
-               modulo_temp_4 = modulo_temp_4 << 1,
-               random_value = random_value - modulo_temp_4,
-               modulo_temp_4 = (s32)((u32)second_random_4 >> 31),
-               modulo_temp_4 = (second_random_4 + modulo_temp_4) >> 1,
-               modulo_temp_4 = modulo_temp_4 << 1,
-               second_random_4 = second_random_4 - modulo_temp_4,
-               random_value + second_random_4);
-        growth_1A = class_record->growth_1A + random_value;
+            : (growth_roll = rand(),
+               mentality_second_roll = rand(),
+               mentality_parity_temp = (s32)((u32)growth_roll >> 31),
+               mentality_parity_temp = (growth_roll + mentality_parity_temp) >> 1,
+               mentality_parity_temp = mentality_parity_temp << 1,
+               growth_roll = growth_roll - mentality_parity_temp,
+               mentality_parity_temp = (s32)((u32)mentality_second_roll >> 31),
+               mentality_parity_temp = (mentality_second_roll + mentality_parity_temp) >> 1,
+               mentality_parity_temp = mentality_parity_temp << 1,
+               mentality_second_roll = mentality_second_roll - mentality_parity_temp,
+               growth_roll + mentality_second_roll);
+        mentality_gain = growth_class->growth_1A + growth_roll;
 
-        random_value = (u8)class_value == 1
+        growth_roll = (u8)growth_class_byte == 1
             ? 1
-            : (random_value = rand(),
-               second_random_5 = rand(),
-               modulo_temp_5 = (s32)((u32)random_value >> 31),
-               modulo_temp_5 = (random_value + modulo_temp_5) >> 1,
-               modulo_temp_5 = modulo_temp_5 << 1,
-               random_value = random_value - modulo_temp_5,
-               modulo_temp_5 = (s32)((u32)second_random_5 >> 31),
-               modulo_temp_5 = (second_random_5 + modulo_temp_5) >> 1,
-               modulo_temp_5 = modulo_temp_5 << 1,
-               second_random_5 = second_random_5 - modulo_temp_5,
-               random_value + second_random_5);
-        growth_1E = class_record->growth_1E + random_value;
+            : (growth_roll = rand(),
+               agility_second_roll = rand(),
+               agility_parity_temp = (s32)((u32)growth_roll >> 31),
+               agility_parity_temp = (growth_roll + agility_parity_temp) >> 1,
+               agility_parity_temp = agility_parity_temp << 1,
+               growth_roll = growth_roll - agility_parity_temp,
+               agility_parity_temp = (s32)((u32)agility_second_roll >> 31),
+               agility_parity_temp = (agility_second_roll + agility_parity_temp) >> 1,
+               agility_parity_temp = agility_parity_temp << 1,
+               agility_second_roll = agility_second_roll - agility_parity_temp,
+               growth_roll + agility_second_roll);
+        agility_gain = growth_class->growth_1E + growth_roll;
 
-        random_value = (u8)class_value == 1
+        growth_roll = (u8)growth_class_byte == 1
             ? 1
-            : (random_value = rand(),
-               second_random_6 = rand(),
-               modulo_temp_6 = (s32)((u32)random_value >> 31),
-               modulo_temp_6 = (random_value + modulo_temp_6) >> 1,
-               modulo_temp_6 = modulo_temp_6 << 1,
-               random_value = random_value - modulo_temp_6,
-               modulo_temp_6 = (s32)((u32)second_random_6 >> 31),
-               modulo_temp_6 = (second_random_6 + modulo_temp_6) >> 1,
-               modulo_temp_6 = modulo_temp_6 << 1,
-               second_random_6 = second_random_6 - modulo_temp_6,
-               random_value + second_random_6);
-        growth_22_base = class_record->growth_22;
+            : (growth_roll = rand(),
+               dexterity_second_roll = rand(),
+               dexterity_parity_temp = (s32)((u32)growth_roll >> 31),
+               dexterity_parity_temp = (growth_roll + dexterity_parity_temp) >> 1,
+               dexterity_parity_temp = dexterity_parity_temp << 1,
+               growth_roll = growth_roll - dexterity_parity_temp,
+               dexterity_parity_temp = (s32)((u32)dexterity_second_roll >> 31),
+               dexterity_parity_temp = (dexterity_second_roll + dexterity_parity_temp) >> 1,
+               dexterity_parity_temp = dexterity_parity_temp << 1,
+               dexterity_second_roll = dexterity_second_roll - dexterity_parity_temp,
+               growth_roll + dexterity_second_roll);
+        base_dexterity_gain = growth_class->growth_22;
         luck_delta = 0;
-        loop_index = 0;
-        growth_22 = growth_22_base + random_value;
+        slot_index = 0;
+        dexterity_gain = base_dexterity_gain + growth_roll;
 
+        /* An empty equipment slot uses its class default when one is available. */
         do {
             s32 slot;
 
-            equipment_index = loop_index;
-            slot = equipment_index & 0xFF;
-            equipment = 0;
+            equipment_slot = slot_index;
+            slot = equipment_slot & 0xFF;
+            equipped_item_id = 0;
             switch (slot) {
             case 0:
-                equipment = arg0->field_2A;
+                equipped_item_id = character->field_2A;
                 break;
             case 1:
-                equipment = arg0->field_2C;
+                equipped_item_id = character->field_2C;
                 break;
             case 2:
-                equipment = arg0->field_2E;
+                equipped_item_id = character->field_2E;
                 break;
             case 3:
-                equipment = arg0->field_30;
+                equipped_item_id = character->field_30;
                 break;
             }
 
-            equipment_value = equipment & 0xFFFF;
-            if (equipment_value == 0) {
-                equipment = g_func_0018B494_equipment_selectors[equipment_index & 0xFF](
-                    arg0->field_11, arg0->field_12);
+            equipped_item_value = equipped_item_id & 0xFFFF;
+            if (equipped_item_value == 0) {
+                equipped_item_id = g_func_0018B494_equipment_selectors[equipment_slot & 0xFF](
+                    character->field_11, character->field_12);
             }
-            equipment_id = equipment & 0xFFFF;
-            if (equipment_id == 0) {
+            growth_item_id = equipped_item_id & 0xFFFF;
+            if (growth_item_id == 0) {
                 goto equipment_advance;
             }
-            growth_0A += (s8)func_000457e4(equipment_id);
-            growth_0E += (s8)func_000457e4(equipment_id);
-            growth_16 += (s8)func_00045820(equipment_id);
-            growth_1E += (s8)func_00045840(equipment_id);
-            growth_22 += (s8)func_0004585c(equipment_id);
-            growth_12 += (s8)func_00045878(equipment_id);
-            growth_1A += (s8)func_00045898(equipment_id);
-            luck_delta += (s8)func_000458b8(equipment_id);
+            max_hp_gain += (s8)func_000457e4(growth_item_id);
+            strength_gain += (s8)func_000457e4(growth_item_id);
+            intelligence_gain += (s8)func_00045820(growth_item_id);
+            agility_gain += (s8)func_00045840(growth_item_id);
+            dexterity_gain += (s8)func_0004585c(growth_item_id);
+            vitality_gain += (s8)func_00045878(growth_item_id);
+            mentality_gain += (s8)func_00045898(growth_item_id);
+            luck_delta += (s8)func_000458b8(growth_item_id);
 
 equipment_advance:
-            loop_index += 1;
-        } while (loop_index < 4);
+            slot_index += 1;
+        } while (slot_index < 4);
 
-        current = arg0->field_16;
-        result_16 = (current + growth_0A) < 1000;
-        if (result_16 != 0) {
-            result_16 = current + growth_0A;
+        /* Apply the gains after equipment bonuses, capping each stat at 999. */
+        current_stat = character->field_16;
+        new_max_hp = (current_stat + max_hp_gain) < 1000;
+        if (new_max_hp != 0) {
+            new_max_hp = current_stat + max_hp_gain;
         } else {
-            result_16 = 999;
+            new_max_hp = 999;
         }
-        arg0->field_16 = result_16;
+        character->field_16 = new_max_hp;
 
-        current = arg0->field_1C;
-        result_1C = (current + growth_0E) < 1000;
-        if (result_1C != 0) {
-            result_1C = current + growth_0E;
+        current_stat = character->field_1C;
+        new_strength = (current_stat + strength_gain) < 1000;
+        if (new_strength != 0) {
+            new_strength = current_stat + strength_gain;
         } else {
-            result_1C = 999;
+            new_strength = 999;
         }
-        arg0->field_1C = result_1C;
+        character->field_1C = new_strength;
 
-        current = arg0->field_1E;
-        result_1E = (current + (growth_12 & 0xFFFF)) < 1000;
-        if (result_1E != 0) {
-            result_1E = current + growth_12;
+        current_stat = character->field_1E;
+        new_vitality = (current_stat + (vitality_gain & 0xFFFF)) < 1000;
+        if (new_vitality != 0) {
+            new_vitality = current_stat + vitality_gain;
         } else {
-            result_1E = 999;
+            new_vitality = 999;
         }
-        arg0->field_1E = result_1E;
+        character->field_1E = new_vitality;
 
-        current = arg0->field_20;
-        result_20 = (current + (growth_16 & 0xFFFF)) < 1000;
-        if (result_20 != 0) {
-            result_20 = current + growth_16;
+        current_stat = character->field_20;
+        new_intelligence = (current_stat + (intelligence_gain & 0xFFFF)) < 1000;
+        if (new_intelligence != 0) {
+            new_intelligence = current_stat + intelligence_gain;
         } else {
-            result_20 = 999;
+            new_intelligence = 999;
         }
-        arg0->field_20 = result_20;
+        character->field_20 = new_intelligence;
 
-        current = arg0->field_22;
-        result_22 = (current + (growth_1A & 0xFFFF)) < 1000;
-        if (result_22 != 0) {
-            result_22 = current + growth_1A;
+        current_stat = character->field_22;
+        new_mentality = (current_stat + (mentality_gain & 0xFFFF)) < 1000;
+        if (new_mentality != 0) {
+            new_mentality = current_stat + mentality_gain;
         } else {
-            result_22 = 999;
+            new_mentality = 999;
         }
-        arg0->field_22 = result_22;
+        character->field_22 = new_mentality;
 
-        current = arg0->field_24;
-        result_24 = (current + (growth_1E & 0xFFFF)) < 1000;
-        if (result_24 != 0) {
-            result_24 = current + growth_1E;
+        current_stat = character->field_24;
+        new_agility = (current_stat + (agility_gain & 0xFFFF)) < 1000;
+        if (new_agility != 0) {
+            new_agility = current_stat + agility_gain;
         } else {
-            result_24 = 999;
+            new_agility = 999;
         }
-        arg0->field_24 = result_24;
+        character->field_24 = new_agility;
 
-        current = arg0->field_26;
-        result_26 = (current + (growth_22 & 0xFFFF)) < 1000;
-        if (result_26 != 0) {
-            result_26 = current + growth_22;
+        current_stat = character->field_26;
+        new_dexterity = (current_stat + (dexterity_gain & 0xFFFF)) < 1000;
+        if (new_dexterity != 0) {
+            new_dexterity = current_stat + dexterity_gain;
         } else {
-            result_26 = 999;
+            new_dexterity = 999;
         }
-        arg0->field_26 = result_26;
+        character->field_26 = new_dexterity;
 
-        if ((arg0->field_28 + luck_delta) < 0) {
-            arg0->field_28 = 0;
+        /* Only equipment contributes to the luck gain. Clamp the result to 0 through 100. */
+        if ((character->field_28 + luck_delta) < 0) {
+            character->field_28 = 0;
             return;
         }
-        luck_result = (arg0->field_28 + luck_delta) < 101;
-        if (luck_result != 0) {
-            luck_result = arg0->field_28 + luck_delta;
+        new_luck = (character->field_28 + luck_delta) < 101;
+        if (new_luck != 0) {
+            new_luck = character->field_28 + luck_delta;
         } else {
-            luck_result = 100;
+            new_luck = 100;
         }
-        arg0->field_28 = luck_result;
+        character->field_28 = new_luck;
     }
 }

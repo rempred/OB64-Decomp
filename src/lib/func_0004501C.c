@@ -2,157 +2,169 @@
 
 extern int func_0002CBCC(void);
 
-static __inline__ u8 func_0004501C_select_loop(u8 original_class, u8 alternate_class, int original_offset, int alternate_value, int current_level, int invalid_class)
+/* Select the growth class for the current level from the class-history thresholds. */
+static __inline__ u8 func_0004501C_select_loop(
+    u8 primary_class_id, u8 secondary_class_id, int primary_class_offset,
+    int secondary_class_byte, int current_level, int no_transition_level)
 {
-    u8 class_index;
-    u8 selector_level;
+    u8 growth_class_index;
+    u8 history_level;
 
-    selector_level = current_level;
-    if (*((u8 *)g_func_0019554C_class_records + original_offset + 0x45) != alternate_value) {
-        class_index = alternate_class;
+    history_level = current_level;
+    if (*((u8 *)g_func_0019554C_class_records + primary_class_offset + 0x45) != secondary_class_byte) {
+        growth_class_index = secondary_class_id;
     } else {
-        class_index = original_class;
+        growth_class_index = primary_class_id;
     }
 
-    if (g_func_0019554C_class_records[class_index].field_42 != (invalid_class + invalid_class - invalid_class) &&
-        (u8)selector_level < g_func_0019554C_class_records[class_index].field_42) {
-        class_index = g_func_0019554C_class_records[class_index].field_41;
+    if (g_func_0019554C_class_records[growth_class_index].field_42 != (no_transition_level + no_transition_level - no_transition_level) &&
+        (u8)history_level < g_func_0019554C_class_records[growth_class_index].field_42) {
+        growth_class_index = g_func_0019554C_class_records[growth_class_index].field_41;
         goto transition_done;
     }
-    if (g_func_0019554C_class_records[class_index].field_44 != invalid_class &&
-        (u8)selector_level < g_func_0019554C_class_records[class_index].field_44) {
-        class_index = g_func_0019554C_class_records[class_index].field_43;
+    if (g_func_0019554C_class_records[growth_class_index].field_44 != no_transition_level &&
+        (u8)history_level < g_func_0019554C_class_records[growth_class_index].field_44) {
+        growth_class_index = g_func_0019554C_class_records[growth_class_index].field_43;
     }
 transition_done:
-    return class_index;
+    return growth_class_index;
 }
 
-void func_0004501C(CharacterRecord *record, int level)
+/* Initialize character stats at level one and replay class growth to the requested level. */
+void func_0004501C(CharacterRecord *character, int target_level)
 {
-    u8 original_class;
-    u8 alternate_class;
-    u8 class_index;
+    u8 primary_class_id;
+    u8 secondary_class_id;
+    u8 growth_class_index;
     u8 selected_class;
-    u8 class_value;
-    u8 initial_class_value;
-    int field_1B_value;
-    u8 loop_class;
+
+    u8 class_element;
+    u8 class_alignment;
+    int starting_alignment;
+    u8 level_growth_class;
     int counter;
-    int loop_counter;
+    int levels_reached;
     int current_level;
-    int original_offset;
-    int alternate_value;
-    int invalid_class;
-    int initial_scaled_raw;
-    int initial_offset_value;
-    CharacterClassRecord *class_record;
-    CharacterRecord *record_alias;
+    int primary_class_offset;
+    int secondary_class_byte;
+    int no_transition_level;
+    int class_lookup_value;
+    int class_lookup_offset_or_code;
 
-    original_class = record->field_11;
-    alternate_class = record->field_12;
+    CharacterClassRecord *starting_class;
+    CharacterRecord *character_to_level;
 
-    if (g_func_0019554C_class_records[original_class].field_45 != alternate_class) {
-        class_index = alternate_class;
+    primary_class_id = character->field_11;
+    secondary_class_id = character->field_12;
+
+    if (g_func_0019554C_class_records[primary_class_id].field_45 != secondary_class_id) {
+        growth_class_index = secondary_class_id;
     } else {
-        class_index = original_class;
+        growth_class_index = primary_class_id;
     }
 
-    if (g_func_0019554C_class_records[class_index].field_42 != 0xFF) {
-        int first_minimum_level;
+    if (g_func_0019554C_class_records[growth_class_index].field_42 != 0xFF) {
+        int first_start_level;
 
-        first_minimum_level = 1;
-        if ((u8)first_minimum_level < g_func_0019554C_class_records[class_index].field_42) {
-            class_index = g_func_0019554C_class_records[class_index].field_41;
+        first_start_level = 1;
+        if ((u8)first_start_level < g_func_0019554C_class_records[growth_class_index].field_42) {
+            growth_class_index = g_func_0019554C_class_records[growth_class_index].field_41;
             goto initial_transition_done;
         }
     }
-    if (g_func_0019554C_class_records[class_index].field_44 != 0xFF) {
-        int second_minimum_level;
+    if (g_func_0019554C_class_records[growth_class_index].field_44 != 0xFF) {
+        int second_start_level;
 
-        second_minimum_level = 1;
-        if ((u8)second_minimum_level < g_func_0019554C_class_records[class_index].field_44) {
-            class_index = g_func_0019554C_class_records[class_index].field_43;
+        second_start_level = 1;
+        if ((u8)second_start_level < g_func_0019554C_class_records[growth_class_index].field_44) {
+            growth_class_index = g_func_0019554C_class_records[growth_class_index].field_43;
             goto initial_transition_done;
         }
     }
 initial_transition_done:
-    initial_scaled_raw = (class_index << 3) + class_index;
-    initial_offset_value = initial_scaled_raw << 3;
-    counter = class_index;
+    class_lookup_value = (growth_class_index << 3) + growth_class_index;
+    class_lookup_offset_or_code = class_lookup_value << 3;
+    counter = growth_class_index;
     do {
-        initial_scaled_raw = *((u8 *)g_func_0019554C_class_records + initial_offset_value + 5);
-        initial_offset_value = (u8)initial_scaled_raw;
+        class_lookup_value = *((u8 *)g_func_0019554C_class_records + class_lookup_offset_or_code + 5);
+        class_lookup_offset_or_code = (u8)class_lookup_value;
     } while (0);
 
-    if (initial_offset_value == 3) {
-        record->field_14 = 0;
-    } else if (initial_offset_value == 4) {
-        record->field_14 = func_0002CBCC() & 1;
+    if (class_lookup_offset_or_code == 3) {
+        character->field_14 = 0;
+    } else if (class_lookup_offset_or_code == 4) {
+        character->field_14 = func_0002CBCC() & 1;
     } else {
-        record->field_14 = initial_scaled_raw;
+        character->field_14 = class_lookup_value;
     }
 
-    class_record = &g_func_0019554C_class_records[counter];
-    record->field_16 = class_record->field_08;
-    record->field_1C = class_record->field_0C;
-    record->field_1E = class_record->field_10;
-    record->field_20 = class_record->field_14;
-    record->field_22 = class_record->field_18;
-    record->field_24 = class_record->field_1C;
-    record->field_26 = class_record->field_20;
+    /* Seed the level-one stats from the starting class in the character's history. */
+    starting_class = &g_func_0019554C_class_records[counter];
+    character->field_16 = starting_class->field_08;
+    character->field_1C = starting_class->field_0C;
+    character->field_1E = starting_class->field_10;
+    character->field_20 = starting_class->field_14;
+    character->field_22 = starting_class->field_18;
+    character->field_24 = starting_class->field_1C;
+    character->field_26 = starting_class->field_20;
 
-    if (g_func_0019554C_class_records[original_class].field_45 == alternate_class) {
-        class_value = g_func_0019554C_class_records[original_class].field_46;
+    if (g_func_0019554C_class_records[primary_class_id].field_45 == secondary_class_id) {
+        class_element = g_func_0019554C_class_records[primary_class_id].field_46;
     } else {
-        class_value = g_func_0019554C_class_records[alternate_class].field_46;
+        class_element = g_func_0019554C_class_records[secondary_class_id].field_46;
     }
-    record_alias = record;
-    if (class_value == 0xFF) {
-        record_alias->field_1A = (func_0002CBCC() % 4) + 1;
+    character_to_level = character;
+    if (class_element == 0xFF) {
+        character_to_level->field_1A = (func_0002CBCC() % 4) + 1;
     } else {
-        record_alias->field_1A = class_value;
+        character_to_level->field_1A = class_element;
     }
 
-    if (g_func_0019554C_class_records[original_class].field_45 == alternate_class) {
-        initial_class_value = g_func_0019554C_class_records[original_class].field_24;
-        field_1B_value = initial_class_value;
+    if (g_func_0019554C_class_records[primary_class_id].field_45 == secondary_class_id) {
+        class_alignment = g_func_0019554C_class_records[primary_class_id].field_24;
+        starting_alignment = class_alignment;
         counter = 1;
     } else {
-        initial_class_value = g_func_0019554C_class_records[alternate_class].field_24;
-        field_1B_value = initial_class_value;
+        class_alignment = g_func_0019554C_class_records[secondary_class_id].field_24;
+        starting_alignment = class_alignment;
         counter = 1;
     }
-    loop_counter = counter;
-    record_alias->field_1B = field_1B_value;
-    record_alias->field_13 = 1;
+    levels_reached = counter;
+    character_to_level->field_1B = starting_alignment;
+    character_to_level->field_13 = 1;
 
-    if (loop_counter >= (u8)level) {
+    /* Use the historical class for each level, then restore the original class IDs. */
+    if (levels_reached >= (u8)target_level) {
         goto loop_done;
     }
-    original_offset = original_class * 0x48;
-    alternate_value = (u8)alternate_class;
-    invalid_class = 0xFF;
-loop_body:
-    current_level = loop_counter;
-    loop_class = func_0004501C_select_loop(original_class, alternate_class, original_offset, alternate_value, current_level, invalid_class);
+    primary_class_offset = primary_class_id * 0x48;
+    secondary_class_byte = (u8)secondary_class_id;
+    no_transition_level = 0xFF;
 
-    record_alias->field_12 = loop_class;
-    record_alias->field_11 = loop_class;
-    character_apply_level_up(record_alias);
-    loop_counter++;
-    if (loop_counter < (u8)level) {
+loop_body:
+    current_level = levels_reached;
+    level_growth_class = func_0004501C_select_loop(
+        primary_class_id, secondary_class_id, primary_class_offset,
+        secondary_class_byte, current_level, no_transition_level);
+
+    character_to_level->field_12 = level_growth_class;
+    character_to_level->field_11 = level_growth_class;
+    character_apply_level_up(character_to_level);
+    levels_reached++;
+    if (levels_reached < (u8)target_level) {
         goto loop_body;
     }
+
 loop_done:
     ;
 
-    record_alias->field_18 = record_alias->field_16;
-    record_alias->field_11 = original_class;
-    record_alias->field_12 = alternate_class;
+    character_to_level->field_18 = character_to_level->field_16;
+    character_to_level->field_11 = primary_class_id;
+    character_to_level->field_12 = secondary_class_id;
 
-    if (g_func_0019554C_class_records[original_class].field_45 == alternate_class) {
-        record_alias->field_28 = g_func_0019554C_class_records[original_class].field_23;
+    if (g_func_0019554C_class_records[primary_class_id].field_45 == secondary_class_id) {
+        character_to_level->field_28 = g_func_0019554C_class_records[primary_class_id].field_23;
     } else {
-        record_alias->field_28 = g_func_0019554C_class_records[alternate_class].field_23;
+        character_to_level->field_28 = g_func_0019554C_class_records[secondary_class_id].field_23;
     }
 }
