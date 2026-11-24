@@ -28,7 +28,7 @@ s32 func_00233210(void *, void *);
 s32 func_0023431C(void *, s32, s32);
 s32 func_002361EC(void *);
 s32 func_002363FC(void *);
-u32 func_002365BC(void *, void *, s32, s32);
+s32 func_002365BC(void *, void *, s32, s32);
 s32 func_00237AF8(void *, s32);
 s32 memset_00023780(s32 *, s32);
 s32 rand(void);

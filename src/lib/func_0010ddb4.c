@@ -39,7 +39,7 @@ extern void func_00130E60(u16, u8);
 extern void func_00131050(void);
 void func_0013109C(s32);
 M2C_UNK func_00132B80(u16);
-M2C_UNK func_00147BDC(s32 *);
+void func_00147BDC(s32 *);
 void func_0015DF10(u32 value);
 void func_800EA604(SoundChannel *channel, s32 id);
 s32 func_801DCF90(void *);

@@ -37,14 +37,14 @@ void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
 s32 func_0022257C(void *, s32, s32 *);
 s32 func_0022A4E0(void *);
 void func_0022ADFC(void *, s32, s32, s32, s32, u8, s32, s32);
-u32 func_00233210(s32 *, s32 *);
+s32 func_00233210(s32 *, s32 *);
 UnknownWord func_0023431C(s32 *, s32, u8);
 s32 func_00235754(s32 *, s32 *);
 s32 func_002361EC(s32 *);
 s32 func_002363FC(s32 *);
-u32 func_002365BC(s32 *, s32 *, s32, s32);
+s32 func_002365BC(s32 *, s32 *, s32, s32);
 s32 func_0023697C(s32 *, s32 *, f32, UnknownWord, s32, s32);
-u8 func_00237AF8(s32 *, UnknownWord);
+s32 func_00237AF8(s32 *, UnknownWord);
 UnknownWord memset_00023780(s32 *, UnknownWord);
 int rand(void);
 s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {

@@ -16,7 +16,7 @@ extern u8 func_002AD574(void *actor);
 extern void *func_0002CD70(void *destination, int value, unsigned int count);
 extern s32 func_002A9364(s32 slot, s32 primary_class_id, s32 variant, s32 animation,
                         s32 arg5, s32 arg6, u8 keep145, u8 keepUnit);
-extern void func_0029E70C(u8 *scene_body);
+extern s32 func_0029E70C(u8 *scene_body);
 extern void func_002AB574(void);
 
 /*

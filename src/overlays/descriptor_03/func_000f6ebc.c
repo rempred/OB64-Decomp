@@ -38,11 +38,11 @@ typedef struct {
     u8 unkA4[4];
 } Scene;
 extern Scene g_state_slot_records[];
-void func_000f6b10(s32 a, s32 b, f32 *x, f32 *y);
-void func_000f6ebc(s32 i, s32 a, s32 b, f32 *x, f32 *y) {
+void func_000f6b10(void *camera, f32 *point, f32 *x, f32 *y);
+void func_000f6ebc(s32 i, void *camera, f32 *point, f32 *x, f32 *y) {
     f32 sx;
     f32 sy;
-    func_000f6b10(a, b, &sx, &sy);
+    func_000f6b10(camera, point, &sx, &sy);
     *x = sx / 320.0f * (g_state_slot_records[i].x2 - g_state_slot_records[i].x + 1);
     *y = sy / 240.0f * (g_state_slot_records[i].y2 - g_state_slot_records[i].y + 1);
 }

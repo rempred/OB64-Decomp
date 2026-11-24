@@ -70,7 +70,7 @@ void func_0012D170(RuntimeUnit *, u8, s32 *, s32);
 s32 func_0012E950(s32);
 M2C_UNK func_0012EA80(M2C_UNK, f32 *);
 s32 func_00131480(void *, M2C_UNK);
-M2C_UNK func_00147BDC(void *);
+void func_00147BDC(void *);
 void func_00195D9C(u8, u8, u8, u8);
 void func_800EA604(SoundChannel *, s32);
 M2C_UNK func_801CC480(void *, f32, f32, f32, s32);

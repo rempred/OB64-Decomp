@@ -18,7 +18,7 @@ typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 M2C_UNK func_00041674();
 M2C_UNK func_0005a0f4();
-M2C_UNK func_001F0B40();
+void func_001F0B40(void);
 M2C_UNK func_001F1E18();
 void func_001FFE80(void);
 void func_002071F4(void);

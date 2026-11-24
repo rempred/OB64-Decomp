@@ -140,7 +140,7 @@ extern void func_0019B4C4(u16 selected, u32 quantity, u8 consumable);
 extern u8 func_001349BC(u8, void *, void *, s32, s32, s32, s32);
 extern u32 func_0014F300(s32 source_word);
 extern void func_0003fb94(SoundChannel *, s32);
-extern s32 func_00134830(u8, void *, s32, s32, u8, s32);
+extern s32 func_00134830(s32, s32, s32, s32, s32, s32);
 extern void func_0019B63C(u16 selected, u32 count);
 extern void func_00052284(void *object);
 extern void func_0019BCA0(void);

@@ -16,7 +16,7 @@ typedef struct {
     u8 unk88[0x100];
     s32 size;
 } BgJob_20FDC0;
-void func_002114F4(s8 type, u16 w, u16 h, u8 *data, u8 a, u8 b);
+s32 func_002114F4(s8 type, u16 w, u16 h, u8 *data, u8 a, u8 b);
 s32 func_00211B94(u8 *data, u8 a, u8 b) {
     u8 *p = data;
     s8 type = p[2];
