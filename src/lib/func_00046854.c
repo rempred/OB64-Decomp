@@ -42,7 +42,7 @@ extern void memmove_0002cc00(void *, const void *, u32);
 extern void func_8016FE78(s32, s32);
 extern u8 func_0004890C(u8);
 extern void func_00048928(s32 mode, s32 kind, s32 value, u8 extra);
-extern void func_00048fbc(u8, s32, u32);
+extern void func_00048fbc(u8, u8, u8);
 extern void func_000490ec(void);
 extern void func_000491e0(s16);
 extern s32 func_000492a0(s32);

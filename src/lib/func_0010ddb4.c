@@ -38,8 +38,8 @@ s32 func_0012FBB8(s32, s32);
 extern void func_00130E60(u16, u8);
 extern void func_00131050(void);
 void func_0013109C(s32);
-M2C_UNK func_00132B80(u16);
-M2C_UNK func_00147BDC(s32 *);
+void func_00132B80(int);
+void func_00147BDC(void *);
 void func_0015DF10(u32 value);
 void func_800EA604(SoundChannel *channel, s32 id);
 s32 func_801DCF90(void *);
@@ -1631,7 +1631,7 @@ dispatch_case_2d:
     D_801F36A2 = (u16) final_v1;
     goto block_219;
 block_218:
-    func_00132B80(D_801F0FE4[D_801F0E04]);
+    func_00132B80((unsigned short)(D_801F0FE4[D_801F0E04]));
 block_219:
     func_00130E60(D_801F0FE4[D_801F0E04], 0);
     final_a0 = D_801F1024[D_801F0E04];

@@ -24,12 +24,12 @@ void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
 s32 func_0022257C(void *, s32, s32 *);
 s32 func_0022A4E0(void *);
 void func_0022ADFC(void *, s32, s32, s32, s32, u8, s32, s32);
-s32 func_00233210(void *, void *);
+int func_00233210(BattleRosterRecord *, BattleRosterRecord *);
 s32 func_0023431C(void *, s32, s32);
 s32 func_002361EC(void *);
-s32 func_002363FC(void *);
-u32 func_002365BC(void *, void *, s32, s32);
-s32 func_00237AF8(void *, s32);
+int func_002363FC(BattleRosterRecord *);
+int func_002365BC(BattleRosterRecord *, BattleRosterRecord *, int, int);
+int func_00237AF8(BattleRosterRecord *, int);
 s32 memset_00023780(s32 *, s32);
 s32 rand(void);
 
@@ -146,7 +146,7 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
     time = ((BattleRosterRecord *)record)->scheduled_time;
     ((BattleRosterRecord *)record)->actions_used = (((BattleRosterRecord *)record)->actions_used + 1);
     source_value = func_002361EC(record);
-    check_value = func_002365BC(record, target, source_value, func_002363FC(target));
+    check_value = func_002365BC(record, target,  source_value,  func_002363FC(target));
     sample0 = rand();
     sample1 = rand();
     check_value = (u32) ((((sample0 << 0x12) & 0x0C000000) | (sample1 << 0xF) | rand()) % 100) < check_value;
@@ -192,7 +192,7 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
             secondary_selector = 0 - ((aux_value & 0xFF) != 8);
         }
         if (secondary_selector != -1) {
-            secondary_result = func_00237AF8(target, secondary_selector);
+            secondary_result = func_00237AF8(target,  secondary_selector);
         }
         aux_value = 0;
         if (secondary_result == 0) {

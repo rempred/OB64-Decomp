@@ -1,4 +1,4 @@
-typedef unsigned char u8;
-u8 func_0023B3D4(u8 *p) {
-    return p[0xA4];
+#include "game/battle_callbacks.h"
+int func_0023B3D4(BattleRosterRecord *p) {
+    return ((unsigned char *)p)[0xA4];
 }

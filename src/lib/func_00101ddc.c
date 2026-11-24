@@ -23,7 +23,7 @@ extern void func_00105498(s32);
 extern s32 func_00119454(void);
 extern s32 func_801DD2B0(Q7Unit *);
 extern u32 func_00022E60(void);
-extern void func_00132B80(s32);
+void func_00132B80(int);
 extern void func_00130E60(u16, u8);
 extern s32 func_00130794(void);
 extern void *func_0002e138(u32);

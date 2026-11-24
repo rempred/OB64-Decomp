@@ -2,6 +2,7 @@
 #define GAME_BATTLE_CALLBACKS_H
 
 #include "common/types.h"
+#include "game/battle_roster_types.h"
 
 /* Prefix shared by the descriptor 10 callback dispatchers. */
 typedef struct {
@@ -10,6 +11,7 @@ typedef struct {
     void (*f2)(s32);
     void (*f3)(s16);
     void (*f4)(s16, s32);
+    int (*f5)(BattleRosterRecord *actor);
 } BattleCallbacks;
 
 extern BattleCallbacks *D_801D0810;

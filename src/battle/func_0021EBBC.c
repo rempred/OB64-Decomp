@@ -124,7 +124,7 @@ extern void memcpy(void *source, void *destination, u32 size);
 extern void func_80093380(void *, u32);
 extern float vec3_distance(TerminalCommandVector *, TerminalCommandVector *);
 extern void func_0004196c(int, int);
-extern int func_00044340(int);
+extern char *func_00044340(int);
 extern void func_00045d78(int, int);
 extern void func_000466f4(void), func_00048294(void);
 /* Director2069 binds the compatible return view to a future combined source
@@ -133,7 +133,7 @@ extern int func_0004813C(int);
 extern void func_001F0E64(Func001F0E64Record *, u32);
 extern void func_001F0F90(void *), func_001F1050(void *);
 extern int func_001F197C(void *, Func001F197CState *, int *);
-extern void func_001F2BC0(int, int);
+extern void func_001F2BC0(void *, int);
 extern void func_001F3078(int);
 extern void func_001FF868(s16, s16, s16, s16, u8);
 extern u8 func_002014C4(unsigned int), func_00201584(int, int);
@@ -530,7 +530,8 @@ wait_command:
             record->word68 = -1; record->word74 = 10;
             break;
         case 11: { /* 21F888 */
-            int effect, side;
+            char *effect;
+            int side;
             if (record->byteA8 != 0)
                 SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), record->byteA8);
             if (func_0020BFE4() == 0)

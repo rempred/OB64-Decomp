@@ -1,10 +1,10 @@
-typedef unsigned char u8;
+#include "common/task_framebuffer.h"
 typedef struct {
     u8 unk00[0x7E];
     u8 step;
 } Seq20F;
 extern Seq20F *D_801D06E0;
-void func_00211028(void) {
+void func_00211028(NUScTask *task) {
     if (D_801D06E0->step == 1) {
         D_801D06E0->step++;
     }

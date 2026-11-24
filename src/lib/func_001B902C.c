@@ -1,0 +1,40 @@
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+u32 D_8009DAF4(u32 handle);
+void *D_8009DBB8(void *dst, u32 handle);
+void *func_00001330(unsigned int);
+void *func_000016C4(void *ptr);
+typedef struct {
+    u16 sec0;
+    u16 unk02;
+    u16 sec1;
+    u8 unk06[0x10];
+    u16 size;
+} TblHdr;
+extern TblHdr *D_8021C9E8;
+extern u8 *D_8021C9E0;
+extern u8 *D_8021C9E4;
+void bzero(void *p, s32 n);
+void bcopy(const void *src, void *dst, s32 n);
+void *func_001B8CDC(s32 a, s32 b, s32 c, s32 d, s32 e);
+void **func_001B902C(void) {
+    TblHdr *tmp = func_00001330(D_8009DAF4(0x315736));
+    void **r;
+    s32 one = 1;
+    u32 o;
+    D_8009DBB8(tmp, 0x315736);
+    D_8021C9E8 = func_00001330(tmp->size);
+    bcopy(tmp, D_8021C9E8, tmp->size);
+    o = D_8021C9E8->sec0;
+    D_8021C9E0 = (u8 *)D_8021C9E8 + o;
+    o = D_8021C9E8->sec1;
+    D_8021C9E4 = (u8 *)D_8021C9E8 + o;
+    func_000016C4(tmp);
+    r = func_00001330(8);
+    bzero(r, 8);
+    r[0] = func_001B8CDC(1, 1, 0, 1, one);
+    r[1] = func_001B8CDC(1, 1, 0, 0, one);
+    return r;
+}

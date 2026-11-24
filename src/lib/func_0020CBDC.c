@@ -36,7 +36,7 @@ extern float func_001BC35C(short, short);
 extern int func_002015C8(int, int, int, int);
 extern void func_0020C4B8(int, int, int, int *, int *);
 extern int func_0020D444(int, int);
-extern SupplementChild *func_0020F2A8(int, int, int, int);
+extern unsigned char *func_0020F2A8(int, int, int, int);
 extern int D_801CE8FC;
 extern const int D_801CEDFC[6];
 
@@ -81,7 +81,7 @@ static __inline__ int offset_kind(SupplementActor *actor)
 #define COORD(field, delta) ((int)((u32)actor->field + (u32)(delta)))
 static __inline__ SupplementChild *allocate_child(int resource, int x, int y, int z)
 {
-    SupplementChild *child = func_0020F2A8(resource, x, y, z);
+    SupplementChild *child = (SupplementChild *)func_0020F2A8(resource, x, y, z);
     child->field_14 = 0;
     return child;
 }

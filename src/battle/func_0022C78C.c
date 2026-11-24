@@ -28,12 +28,12 @@ void func_0021D28C(s32, s32, void *, s32, s32, s32);
 void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
 s32 func_0022A4E0(void *);
 void func_0022ADFC(void *, s32, s32, s32, s32, u8, s32, s32);
-s32 func_00233210(void *, void *);
+int func_00233210(BattleRosterRecord *, BattleRosterRecord *);
 void func_0023431C(void *, s32, s32);
 s32 func_002361EC(void *);
-s32 func_002363FC(void *);
-u32 func_002365BC(void *, void *, s32, s32);
-s32 func_00237AF8(void *, s32);
+int func_002363FC(BattleRosterRecord *);
+int func_002365BC(BattleRosterRecord *, BattleRosterRecord *, int, int);
+int func_00237AF8(BattleRosterRecord *, int);
 void memset_00023780(s32 *, s32);
 s32 rand(void);
 
@@ -127,7 +127,7 @@ s32 func_0022C78C(void *record, s32 *out_time) {
     local_field57 = *(u8 *)((u8 *)target + 0x57);
     local_field5B = *(u8 *)((u8 *)target + 0x5B);
     source_value = func_002361EC(record);
-    check_value = func_002365BC(record, target, source_value, func_002363FC(target));
+    check_value = func_002365BC(record, target,  source_value,  func_002363FC(target));
     sample0 = rand();
     sample1 = rand();
     check_value = (u32) ((((sample0 << 0x12) & 0x0C000000) | (sample1 << 0xF) | rand()) % 100) < check_value;
@@ -276,7 +276,7 @@ merge_event_end:
             secondary_selector = 0 - ((selector0 & 0xFF) != 8);
         }
         if (secondary_selector != -1) {
-            local_effect = func_00237AF8(target, secondary_selector);
+            local_effect = func_00237AF8(target,  secondary_selector);
         }
         aux_value = 0;
         if (local_effect == 0) {

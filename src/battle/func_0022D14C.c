@@ -43,11 +43,11 @@ s32 func_002224F4(void);
 s32 func_0022257C(void *, s32, s32 *);
 void func_0022A7B8(void *, s32, s32, s32, s32, s32);
 void func_0022B06C(void *, u8 *);
-u32 func_00233210(void *, void *);
+int func_00233210(BattleRosterRecord *, BattleRosterRecord *);
 u8 func_00233568(void *);
-s32 func_002363FC(void *);
-u32 func_002365BC(void *, void *, u16, s32);
-s32 func_00237AF8(void *, s32);
+int func_002363FC(BattleRosterRecord *);
+int func_002365BC(BattleRosterRecord *, BattleRosterRecord *, int, int);
+int func_00237AF8(BattleRosterRecord *, int);
 void func_00237D5C(s32, s32 *, s32 *);
 M2C_UNK func_00238D94(void *, u8, void *);
 M2C_UNK func_00239338(void *, void *, M2C_UNK, M2C_UNK);
@@ -529,7 +529,7 @@ event_b_done:
                     u32 mixedRandomWord;
                     s32 helperResult363 = func_002363FC(var_s3_51);
                     temp_s2_769 = (void *)((u32)(var_s5_693 * 2) + (u32)sp1FC);
-                    temp_s8_775 = func_002365BC(arg0, var_s3_51, (*(u16 *)((s8 *)(temp_s2_769) + (0x38))), helperResult363);
+                    temp_s8_775 = func_002365BC(arg0, var_s3_51,  (*(u16 *)((s8 *)(temp_s2_769) + (0x38))),  helperResult363);
                     temp_s0_777 = rand();
                     temp_s1_779 = rand();
                     mixedRandomWord = ((temp_s0_777 << 0x12) & 0x0C000000) | (temp_s1_779 << 0xF) | rand();
@@ -639,7 +639,7 @@ event_b_done:
                                     } while (var_a0_990 < prefix.packet.words[3]);
                                 }
                                 if ((var_a1_992 ^ 1) == 0) {
-                                    sp1E4 = func_00237AF8(var_s3_51, var_s0_965);
+                                    sp1E4 = func_00237AF8(var_s3_51,  var_s0_965);
                                 }
                             }
                             if ((sp1E4 != 0) && (battle_actor_is_absent_or_has_flag_0(var_s3_51) == 0) && (battle_actor_has_flag_1(var_s3_51) == 0)) {
@@ -740,7 +740,7 @@ event_b_done:
 
                     } else if (prefix.packet.bytes[1] == 3) {
                         if (var_s2_802 != 0) {
-                            temp_v0_1409 = func_00237AF8(var_s3_51, 0);
+                            temp_v0_1409 = func_00237AF8(var_s3_51,  0);
                             sp1E4 = temp_v0_1409;
                             if (temp_v0_1409 != 0) {
                                 func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xE, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), (s32) ((u8)sp1E4));

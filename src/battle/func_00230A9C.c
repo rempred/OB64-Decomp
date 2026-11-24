@@ -81,9 +81,9 @@ extern void func_0021D28C(int, int, void *, int, int, int);
 extern void func_0021D2C0(int, int, void *, int, int, int, int);
 extern int battle_roster_find_actor_index(void *);
 extern int func_002361EC(A9CObject *);
-extern int func_002363FC(A9CObject *);
-extern int func_002365BC(A9CObject *, A9CObject *, int, int);
-extern int func_00235754(A9CObject *, A9CObject *);
+int func_002363FC(BattleRosterRecord *);
+int func_002365BC(BattleRosterRecord *, BattleRosterRecord *, int, int);
+int func_00235754(BattleRosterRecord *, BattleRosterRecord *);
 extern int func_0023697C(A9CObject *, A9CObject *, float, int, int, int);
 extern int func_0022A4E0(void *);
 extern void func_0022ADFC(void *, int, int, int, int, u8, int, int);
@@ -283,9 +283,9 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
     }
 
     firstOperand = func_002361EC(selected[0]);
-    threshold = func_002363FC(target);
+    threshold = func_002363FC((BattleRosterRecord *)target);
     /* The cutoff is consumed before this word becomes the decision. */
-    decision = func_002365BC(selected[0], target, firstOperand, threshold);
+    decision = func_002365BC((BattleRosterRecord *)selected[0], (BattleRosterRecord *)target,  firstOperand,  threshold);
     first = rand();
     second = rand();
     third = rand();
@@ -364,16 +364,16 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
             for (j = 0; j < 3; ++j) {
                 if (selected[i]->primary_children[j] != 0) {
                     innerOperand = func_002361EC(selected[0]);
-                    threshold = func_002363FC(target);
-                    innerResult = func_002365BC(selected[0], target,
-                                              innerOperand, threshold);
+                    threshold = func_002363FC((BattleRosterRecord *)target);
+                    innerResult = func_002365BC((BattleRosterRecord *)selected[0], (BattleRosterRecord *)target, 
+                                              innerOperand,  threshold);
                     randomWord = (int)func_00022e60();
                     randomWord %= 100;
                     hitCount += randomWord < innerResult;
                 }
             }
         }
-        rounded = (float)(int)((float)func_00235754(selected[0], target) *
+        rounded = (float)(int)((float)func_00235754((BattleRosterRecord *)selected[0], (BattleRosterRecord *)target) *
                               D_801F68D0[hitCount]);
         /* Retail has a zero guard separate from the one-word result.
          * The guard's original source-level purpose is unknown. */

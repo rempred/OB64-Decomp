@@ -1,0 +1,82 @@
+unsigned int D_8009DD28(unsigned int resource);
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+void D_8009DA50(unsigned int, unsigned char *, unsigned int);
+u32 D_8009DAF4(u32 handle);
+void *resource_alloc_mode1_wrapper(u32 size);
+typedef struct TextNode {
+    struct TextNode *next;
+    struct TextNode *prev;
+    u8 data[0x70];
+    u16 id;
+    u8 value;
+    u8 pad7B[5];
+} TextNode;
+extern void *D_8018FC68;
+extern TextNode *D_80190F4C;
+extern TextNode *D_80190F48;
+void func_0004ef7c(s32 a);
+void func_0004f254(void);
+void func_0004f254();
+extern u8 *D_80190F50;
+extern u8 D_8018FC6C;
+extern u8 *D_8018FC70;
+extern u8 *D_8018FC74;
+extern u8 D_8018FC6C;
+extern u32 D_80190F40;
+extern u32 D_80190F44;
+extern u8 *D_80190F50;
+extern u16 *D_80190F54;
+extern s32 D_80190F70;
+extern s32 D_80190F78;
+extern u8 *D_8018FC70;
+extern u8 *D_8018FC74;
+void bzero(void *p, s32 n);
+extern u8 D_8018FC6C;
+extern u32 D_80190F40;
+extern u32 D_80190F44;
+extern u8 *D_80190F50;
+extern u16 *D_80190F54;
+extern s32 D_80190F70;
+extern s32 D_80190F78;
+extern u8 *D_8018FC70;
+extern u8 *D_8018FC74;
+void bzero(void *p, s32 n);
+void func_0004ef7c(s32 n) {
+    s32 i;
+    D_8018FC6C = 0;
+    D_80190F40 = D_8009DD28(0x0218C4FA);
+    D_80190F70 = D_8009DAF4(0x0218C450);
+    D_80190F78 = D_8009DAF4(0x0218DE48);
+    D_80190F44 = D_8009DAF4(0x0216C9DE);
+    D_80190F48 = D_8018FC68 =
+        resource_alloc_mode1_wrapper(n * 0x80 + 0x200 + ((D_80190F70 + 7) & ~7) + ((D_80190F78 + 7) & ~7) + D_80190F44);
+    for (i = 0; i < n; i++) {
+        TextNode *p = D_80190F48;
+        p->value = 0;
+        p->next = p - 1;
+        p->prev = p + 1;
+        p->id = 0x1FFF;
+        D_80190F48++;
+    }
+    D_80190F48 = D_8018FC68;
+    D_80190F48->next = ((void *)0);
+    D_80190F4C = (TextNode *)((u8 *)D_8018FC68 + (n * 0x80 - 0x80));
+    D_80190F4C->prev = ((void *)0);
+    D_80190F50 = (u8 *)D_8018FC68 + n * 0x80;
+    bzero(D_80190F50, 0x200);
+    D_8018FC70 = D_80190F50 + 0x200;
+    D_8009DA50(D_8009DD28(0x0218C450), D_8018FC70, D_80190F70);
+    D_8018FC74 = D_80190F50 + (((D_80190F70 + 7) & ~7) + 0x200);
+    D_8009DA50(D_8009DD28(0x0218DE48), D_8018FC74, D_80190F78);
+    D_80190F54 = (u16 *)(D_80190F50 + (((D_80190F70 + 7) & ~7) + 0x200) +
+                                    ((D_80190F78 + 7) & ~7));
+    D_8009DA50(D_8009DD28(0x0216C9DE), (u8 *)D_80190F54, D_80190F44);
+    func_0004f254();
+}
+void func_0004f254(void);
+extern u32 D_80190F40;
+extern u32 D_80190F44;
+extern u16 *D_80190F54;

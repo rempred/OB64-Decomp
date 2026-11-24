@@ -6,7 +6,7 @@ typedef struct {
 extern u8 D_8019EE50[];
 extern SceneSlot D_800E82CA[];
 void func_00003564(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
-s32 func_0000735C(s32 a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g);
+int func_0000735C(unsigned short, void *, short, short, unsigned short, unsigned short, unsigned short);
 void func_0004f1bc(void);
 void func_0004ef60(void);
 extern u8 D_8018F481;

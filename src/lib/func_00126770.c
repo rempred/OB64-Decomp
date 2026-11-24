@@ -8,7 +8,7 @@ typedef struct RuntimeUnit RuntimeUnit;
 #define FIELD(object, type, offset) (*(type *)((u8 *)(object) + (offset)))
 extern u8 D_801969B8[];
 extern RuntimeUnit *D_801F0CB0[];
-extern s32 func_0012E9F4(RuntimeUnit *unit);
+extern s32 func_0012E9F4(void *unit);
 extern s32 func_0012E950(s32 index);
 
 /* Keep the original eleven-byte group stride and unchecked row/member

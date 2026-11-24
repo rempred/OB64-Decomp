@@ -7,9 +7,9 @@ typedef struct { u8 bytes[11]; } DeploymentRow11;
 
 extern DeploymentRow11 D_801969B8[];
 
-s32 func_0012E9F4(RuntimeUnit *unit)
+s32 func_0012E9F4(void *unit)
 {
-    u32 source_index = unit->source_index;
+    u32 source_index = ((u8 *)unit)[4];
     s32 row_index;
     for (row_index = 0; row_index < 10; row_index++) {
         DeploymentRow11 *row = &D_801969B8[row_index];
@@ -18,7 +18,7 @@ s32 func_0012E9F4(RuntimeUnit *unit)
         if (!(flags & 1)) {
             continue;
         }
-        if (unit->flags & 8) {
+        if (*(u32 *)unit & 8) {
             if (flags & 0x80) {
                 continue;
             }

@@ -37,14 +37,14 @@ void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
 s32 func_0022257C(void *, s32, s32 *);
 s32 func_0022A4E0(void *);
 void func_0022ADFC(void *, s32, s32, s32, s32, u8, s32, s32);
-u32 func_00233210(s32 *, s32 *);
+int func_00233210(BattleRosterRecord *, BattleRosterRecord *);
 UnknownWord func_0023431C(s32 *, s32, u8);
-s32 func_00235754(s32 *, s32 *);
+int func_00235754(BattleRosterRecord *, BattleRosterRecord *);
 s32 func_002361EC(s32 *);
-s32 func_002363FC(s32 *);
-u32 func_002365BC(s32 *, s32 *, s32, s32);
+int func_002363FC(BattleRosterRecord *);
+int func_002365BC(BattleRosterRecord *, BattleRosterRecord *, int, int);
 s32 func_0023697C(s32 *, s32 *, f32, UnknownWord, s32, s32);
-u8 func_00237AF8(s32 *, UnknownWord);
+int func_00237AF8(BattleRosterRecord *, int);
 UnknownWord memset_00023780(s32 *, UnknownWord);
 int rand(void);
 s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
@@ -246,7 +246,7 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
             }
         }
         temp_s0_294 = func_002361EC((s32 *)sourceWords);
-        temp_s3_301 = func_002365BC((s32 *)sourceWords, (s32 *)temp_v0_169, temp_s0_294, func_002363FC((s32 *)temp_v0_169));
+        temp_s3_301 = func_002365BC(sourceWords, temp_v0_169,  temp_s0_294,  func_002363FC(temp_v0_169));
         temp_s0_303 = rand();
         temp_s1_305 = rand();
         temp_s3_301 = (u32) ((((temp_s0_303 << 0x12) & 0x0C000000) | (temp_s1_305 << 0xF) | rand()) % 100) < temp_s3_301;
@@ -349,12 +349,12 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
                 do {
                     if (sourceWords->primary_children[index] != 0) {
                         temp_s0_568 = func_002361EC((s32 *)sourceWords);
-                        temp_s0_575 = func_002365BC((s32 *)sourceWords, (s32 *)temp_v0_169, temp_s0_568, func_002363FC((s32 *)temp_v0_169));
+                        temp_s0_575 = func_002365BC(sourceWords, temp_v0_169,  temp_s0_568,  func_002363FC(temp_v0_169));
                         var_s5_548 += ((s32)func_00022e60() % 100) < (s32) temp_s0_575;
                     }
                     index += 1;
                 } while ((u32)index < 3U);
-                spE4 = func_0023697C((s32 *)sourceWords, (s32 *)temp_v0_169, (f32) (s32) ((f32) func_00235754((s32 *)sourceWords, (s32 *)temp_v0_169) * (*(f32 *)((s8 *)(((var_s5_548 * 4) + 0x801F0000)) + (0x68D0)))), 0, 0, 0);
+                spE4 = func_0023697C((s32 *)sourceWords, (s32 *)temp_v0_169, (f32) (s32) ((f32) func_00235754(sourceWords, temp_v0_169) * (*(f32 *)((s8 *)(((var_s5_548 * 4) + 0x801F0000)) + (0x68D0)))), 0, 0, 0);
             } else {
                 spE4 = func_00237750(sourceWords, temp_v0_169, 0, 0, 0);
             }
@@ -381,7 +381,7 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
                 spE4 *= 2;
             }
             if (spBF == 2) {
-                spD7 = func_00237AF8((s32 *)temp_v0_169, 2);
+                spD7 = func_00237AF8(temp_v0_169,  2);
             }
             actionByte = spBF;
             {
@@ -399,7 +399,7 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
             temp_s0_754 = temp_s6_230 + var_s8_30;
             func_0022ADFC(temp_v0_169, 0, temp_s0_754 + *last, spE4, actionByte, temp_s3_301 & 0xFF, 1, var_v1_742);
             if ((battle_actor_is_absent_or_has_flag_0(temp_v0_169) != 0) && (battle_actor_is_side_zero(sourceWords) != 0) && (battle_actor_secondary_class_is_one(sourceWords) == 0)) {
-                temp_v0_771 = func_00233210((s32 *)sourceWords, (s32 *)temp_v0_169);
+                temp_v0_771 = func_00233210(sourceWords, temp_v0_169);
                 if (temp_v0_771 != 0) {
                     (sourceWords->alignment) = (u8) ((sourceWords->alignment) + temp_v0_771);
                     func_0021D230(0x3F, temp_s0_754 + sp9C, sourceWords, temp_v0_771);

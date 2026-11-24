@@ -22,7 +22,7 @@ typedef struct {
     s16 fade;
 } Ctx23;
 extern Ctx23 *D_801EFE48;
-void func_0023DB24(s16 id);
+void func_0023DB24(s32 id);
 void func_0023DC6C(void) {
     s32 i;
     for (i = 0; i < 4; i++) {

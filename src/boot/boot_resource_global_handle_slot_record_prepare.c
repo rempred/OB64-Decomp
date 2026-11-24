@@ -62,7 +62,7 @@ extern inline u16 SceneFindAfterLast(void) {
 static u16 func_00007258(void);
 static u16 func_000072AC(u16 start);
 static u16 func_00007300(void);
-static u16 func_0000735C(u16 flags, void *fn, s16 x, s16 y, u16 x2, u16 y2, u16 z);
+static int func_0000735C(u16 flags, void *fn, s16 x, s16 y, u16 x2, u16 y2, u16 z);
 static u16 func_0000745C(u16 flags, void *fn, s16 x, s16 y, u16 x2, u16 y2, u16 z);
 void boot_resource_global_handle_slot_record_prepare(void) {
     D_800AF0B0 = D_80173B60(D_800AF0B0);
@@ -97,7 +97,7 @@ static u16 func_00007300(void) {
     for (;;) {
     }
 }
-static u16 func_0000735C(u16 flags, void *fn, s16 x, s16 y, u16 x2, u16 y2, u16 z) {
+static int func_0000735C(u16 flags, void *fn, s16 x, s16 y, u16 x2, u16 y2, u16 z) {
     u16 i = SceneFindFree();
     g_state_slot_records[i].flags = flags;
     g_state_slot_records[i].owner = fn;

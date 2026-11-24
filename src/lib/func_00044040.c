@@ -6,9 +6,9 @@ typedef struct ClassEntry {
     u8 unknown_0E[0x3A];
 } ClassEntry;
 
-int func_00044340(int class_id);
+char *func_00044340(int class_id);
 
-int func_00044040(int unused, int class_id)
+char *func_00044040(int unused, int class_id)
 {
     ClassEntry *classes = (ClassEntry *)0x80187C40;
     u8 value;

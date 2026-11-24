@@ -67,7 +67,7 @@ extern s32 func_002a3198(s32, s32, s32, s32, u8 *, u8 *, u8 *);
 extern u32 func_00204F34(s32, s32, s32, s32, u32, u32, u8 *, u8 *, u8 *);
 extern void func_00208DC8(void *, s32);
 extern void func_0029CD64(Vec3f *, f32 *, void *);
-extern void func_0029DF5C(void *, s32, s32, s32, s32, s32);
+extern void func_0029DF5C(u8 *, s32, s32, u8, u8, u8);
 extern void *func_0002CD70(void *, s32, u32);
 
 u8 func_0029E218(PoseActor *actor)

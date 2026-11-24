@@ -1,8 +1,8 @@
-typedef unsigned char u8;
-typedef signed int s32;
-u8 func_00213B24(u8 *p) {
-    if (*(s32 *)(p + 0x48) == 0x101) {
-        return p[0x33];
+#include "game/battle_callbacks.h"
+
+int func_00213B24(BattleRosterRecord *p) {
+    if (p->primary_class_id.word == 0x101) {
+        return p->element;
     }
-    return p[0xA4];
+    return ((unsigned char *)p)[0xA4];
 }

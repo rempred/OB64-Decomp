@@ -1,10 +1,11 @@
+typedef struct FrustumF63 { float eye[3]; float dir[3]; float corner[4][3]; float plane[4][3]; float min[3]; float max[3]; } FrustumF63;
 typedef unsigned char u8;
 typedef signed int s32;
 typedef float f32;
 f32 *D_80080040(f32 *out, f32 *a, f32 *b);
 f32 *D_8007FEE0(f32 *out, f32 *a, f32 *b);
-void func_000f6810(f32 a, f32 b, f32 *p, f32 *q, f32 *axis, f32 c, s32 d);
-void func_000F07FC(s32 arg, u8 *o) {
+void func_000f6810(f32 a, f32 b, f32 *p, f32 *q, f32 *axis, f32 c, FrustumF63 *d);
+void func_000F07FC(FrustumF63 *arg, u8 *o) {
     f32 d[3];
     f32 c[3];
     f32 n[3];

@@ -1,8 +1,5 @@
+#include "game/sound_channel_table.h"
 typedef signed int s32;
-extern s32 D_8022A8A8[];
-void D_800EA86C(s32 ch, s32 v);
-void D_800EA89C(s32 ch, s32 v);
-void D_800EA8B4(s32 ch, s32 v);
 void func_00283564(s32 i, s32 a, s32 b, s32 c) {
     s32 k = 0;
     s32 end;

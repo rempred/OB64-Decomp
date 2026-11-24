@@ -7,7 +7,7 @@ extern u8 D_8021AFB2;
 extern s8 D_8021AFB3;
 extern u8 D_8021AFB4;
 extern u8 D_80214E84;
-void func_0000735C(s32 a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g);
+int func_0000735C(unsigned short, void *, short, short, unsigned short, unsigned short, unsigned short);
 void func_00171F1C(void);
 void func_00171EA0(s16 a, u8 b, u8 c, u8 d) {
     D_8021AFB0 = a;

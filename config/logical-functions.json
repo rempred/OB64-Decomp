@@ -207,6 +207,12 @@
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
     },
     {
+      "romStart": 1435244,
+      "romEndExclusive": 1435248,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original return and delay slot end at ROM 0x15E66C; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+    },
+    {
       "romStart": 2177864,
       "romEndExclusive": 2177872,
       "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
@@ -217,6 +223,12 @@
       "romEndExclusive": 2339808,
       "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
       "evidence": "Complete original return and delay slot end at ROM 0x23B3DC; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+    },
+    {
+      "romStart": 2364940,
+      "romEndExclusive": 2364944,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Complete original return and delay slot end at ROM 0x24160C; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
     },
     {
       "romStart": 2419308,
@@ -4231,6 +4243,34 @@
       ]
     },
     {
+      "romStart": 1434776,
+      "romEndExclusive": 1435244,
+      "symbol": "func_0015E498",
+      "aliases": [],
+      "expectedBytesSha256": "EF5D023709D7EC72CA7F791BE2029AC55D21B12961BBD8C255F9BDAEB0FB1FA4",
+      "evidence": {
+        "caseId": "routine-row2786-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original return and delay slot end at ROM 0x15E66C; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+      },
+      "fragments": [
+        {
+          "rowIndex": 2786,
+          "romStart": 1434776,
+          "romEndExclusive": 1435244,
+          "ownerOffset": 0,
+          "bytes": 468,
+          "vramStart": 2149634856,
+          "sectionName": ".ob64.r2786.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 9,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0015E498.s",
+          "sha256": "519915996776050545024DB3219E7D1CDBC64B1E39B04CA3A34F5CBD0D0D7477"
+        }
+      ]
+    },
+    {
       "romStart": 1540800,
       "romEndExclusive": 1541148,
       "evidence": {
@@ -5016,6 +5056,34 @@
           "loadSlabId": "cold-boot-loader-0023b220",
           "file": "asm/original/rev0/lib/func_0023B3D4.s",
           "sha256": "8B4127C0067DC54744CBB6BCD2B23E9191B9E706447451A904032101A140128C"
+        }
+      ]
+    },
+    {
+      "romStart": 2364564,
+      "romEndExclusive": 2364940,
+      "symbol": "func_00241494",
+      "aliases": [],
+      "expectedBytesSha256": "7DD90BC2C401D684F63FEE829DF4EE59AA3A709B043B78ACC0792338197A47B4",
+      "evidence": {
+        "caseId": "routine-row4320-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "Complete original return and delay slot end at ROM 0x24160C; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
+      },
+      "fragments": [
+        {
+          "rowIndex": 4320,
+          "romStart": 2364564,
+          "romEndExclusive": 2364940,
+          "ownerOffset": 0,
+          "bytes": 376,
+          "vramStart": 2149503524,
+          "sectionName": ".ob64.r4320.s0",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "cold-boot-loader-0023b220",
+          "file": "asm/original/rev0/lib/func_00241494.s",
+          "sha256": "B01B52DB7844148E206356D4B6F8F79DE01018619D615F678EC37F02F23754FA"
         }
       ]
     },

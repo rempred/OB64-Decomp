@@ -143,11 +143,11 @@ extern void func_0022A7B8(void *, int, int, int, int, int);
 extern void func_0022B06C(void *, u8 *);
 extern void func_0022EF50(void *);
 extern int func_0022F2BC(void *, int *);
-extern int func_00233210(ResolutionObject *, ResolutionObject *);
+int func_00233210(BattleRosterRecord *, BattleRosterRecord *);
 extern int func_00233568(ResolutionObject *);
-extern int func_002363FC(ResolutionObject *);
-extern int func_002365BC(ResolutionObject *, ResolutionObject *, int, int);
-extern int func_00237AF8(ResolutionObject *, int);
+int func_002363FC(BattleRosterRecord *);
+int func_002365BC(BattleRosterRecord *, BattleRosterRecord *, int, int);
+int func_00237AF8(BattleRosterRecord *, int);
 extern void func_00237D5C(int, int *, int *);
 extern void func_00237E2C(ResolutionDescriptor *, int, int);
 extern int func_0023887C(int, int, int, int);
@@ -473,12 +473,12 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
             --local.descriptor.count;
             continue;
         }
-        initialThreshold = func_002363FC(object);
+        initialThreshold = func_002363FC((BattleRosterRecord *)object);
         /* The real halfword address stays live through the three random calls. */
         halfAddress = i * 2;
         halfAddress += (int)&local;
-        threshold = func_002365BC(local.selectedList.values[0], object,
-                                  ((u16 *)halfAddress)[48], initialThreshold);
+        threshold = func_002365BC((BattleRosterRecord *)local.selectedList.values[0], (BattleRosterRecord *)object, 
+                                  ((u16 *)halfAddress)[48],  initialThreshold);
         mainFirst = rand();
         mainSecond = rand();
         third = rand();
@@ -559,7 +559,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
                     for (repeatedIndex = i, repeated = 0; repeatedIndex < local.descriptor.count; ++repeatedIndex)
                         repeated += repeatedDescriptor->ids[i] == repeatedDescriptor->ids[repeatedIndex];
                     if ((repeated ^ 1) == 0)
-                        special = func_00237AF8(object, mode);
+                        special = func_00237AF8((BattleRosterRecord *)object,  mode);
                 }
                 if (special != 0 && battle_actor_is_absent_or_has_flag_0(object) == 0 && battle_actor_has_flag_1(object) == 0) {
                     func_0021D334(0x1F, time + local.tail.words[0], object, 13,
@@ -588,7 +588,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
             }
             if (battle_actor_is_absent_or_has_flag_0(object) != 0 && battle_actor_is_side_zero(local.selectedList.values[0]) != 0) {
                 for (transferIndex = 0; transferIndex < selectedCount; ++transferIndex) {
-                    k = func_00233210(local.selectedList.values[transferIndex], object);
+                    k = func_00233210((BattleRosterRecord *)local.selectedList.values[transferIndex], (BattleRosterRecord *)object);
                     if (k != 0) {
                         local.selectedList.values[transferIndex]->alignment += k;
                         func_0021D230(0x3F, local.tail.fields.selectedTimes[transferIndex], local.selectedList.values[transferIndex], k);

@@ -68,10 +68,10 @@ extern void func_00239338(DispatchDescriptor *, BattleRosterRecord *, BattleRost
 extern int func_0025FD00(u16);
 extern void func_0021D1CC(int, int);
 extern void *battle_roster_lookup_actor(unsigned int index);
-extern int func_002363FC(DispatchObject *);
-extern int func_002365BC(BattleRosterRecord *, DispatchObject *, int, int);
+int func_002363FC(BattleRosterRecord *);
+int func_002365BC(BattleRosterRecord *, BattleRosterRecord *, int, int);
 extern void func_0022A7B8(void *, int, int, int, int, int);
-extern int func_00237AF8(DispatchObject *, int);
+int func_00237AF8(BattleRosterRecord *, int);
 extern void func_0021D334(int, int, void *, int, int, int, int, int, int);
 extern void func_0022B06C(void *, u8 *);
 extern int battle_roster_find_actor_index(void *);
@@ -180,9 +180,9 @@ int func_00232458(u8 *input, int *outTime)
             --descriptor.count;
             continue;
         }
-        threshold = func_002363FC(actor);
+        threshold = func_002363FC((BattleRosterRecord *)actor);
         valueAddress = (u8 *)(i * 2 + (int)&descriptor);
-        threshold = func_002365BC(temporary_actor, actor, ((u16 *)valueAddress)[28], threshold);
+        threshold = func_002365BC((BattleRosterRecord *)temporary_actor, (BattleRosterRecord *)actor,  ((u16 *)valueAddress)[28],  threshold);
         mainFirst = rand();
         mainSecond = rand();
         third = rand();
@@ -262,7 +262,7 @@ int func_00232458(u8 *input, int *outTime)
                 }
                 repeatPredicate = repeated ^ 1;
                 if (repeatPredicate == 0)
-                    special = func_00237AF8(actor, mode);
+                    special = func_00237AF8((BattleRosterRecord *)actor,  mode);
             }
             if (special != 0 && battle_actor_is_absent_or_has_flag_0(actor) == 0 && battle_actor_has_flag_1(actor) == 0) {
                 func_0021D334(0x1F, time, actor, 13, value >> 8, value & 0xFF,

@@ -12,8 +12,8 @@ typedef struct {
     void **list;
     u32 *age;
     u8 *p24;
-    s32 w28;
-    s32 w2C;
+    u8 *w28;
+    u8 *w2C;
     u8 *w30;
     u8 *p34;
     void *p38;
@@ -51,8 +51,8 @@ Rec2A *func_002A2458(s32 id, s32 kind) {
     r->p08 = func_00001330(D_8009DAF4(r->chunk));
     D_8009DBB8(r->p08, r->chunk);
     func_000016C4(tbl);
-    r->w2C = (s32)D_8009DD38(r->p08[0]);
-    r->w28 = (s32)D_8009DD38(r->p08[1]);
+    r->w2C = D_8009DD38(r->p08[0]);
+    r->w28 = D_8009DD38(r->p08[1]);
     hdr = D_8009DD38(r->p08[2]);
     r->p38 = D_8009DD38(r->p08[3]);
     r->kind = kind;

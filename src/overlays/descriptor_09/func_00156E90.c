@@ -41,7 +41,7 @@ extern Scene g_state_slot_records[];
 extern u8 D_80213780;
 extern u8 D_80213781;
 extern signed char D_80214D10[];
-s32 func_0000735C(s32 a, void *fn, s32 b, s32 c, s32 d, s32 e, s32 f);
+int func_0000735C(unsigned short, void *, short, short, unsigned short, unsigned short, unsigned short);
 void func_0015709C();
 void func_0015DF10(unsigned int value);
 s32 func_00156E90(u8 a) {

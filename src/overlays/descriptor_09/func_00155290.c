@@ -37,7 +37,7 @@ typedef struct {
     u8 unkA4[4];
 } Scene;
 extern Scene g_state_slot_records[];
-s32 func_0000735C(s32 a, void *fn, s32 b, s32 c, s32 d, s32 e, s32 f);
+int func_0000735C(unsigned short, void *, short, short, unsigned short, unsigned short, unsigned short);
 extern s32 *D_80214E60;
 extern u8 D_80214EB8;
 extern u8 D_80214EB9;
