@@ -1,15 +1,12 @@
-int func_0020C180(int arg0) {
-    int var_a1_13;
+#include "common/types.h"
 
-    var_a1_13 = 0;
-    if ((((unsigned int) (arg0 - 0x2D) < 2U) | (arg0 == 0x2F)) != 0) {
-        goto block_2;
+/* Whether value is one of 0x2D to 0x30. */
+s32 func_0020C180(s32 value)
+{
+    s32 result = 0;
+
+    if ((u32)(value - 0x2D) < 2 || value == 0x2F || value == 0x30) {
+        result = 1;
     }
-    if (arg0 != 0x30) {
-        goto block_3;
-    }
-block_2:
-    var_a1_13 = 1;
-block_3:
-    return var_a1_13;
+    return result;
 }

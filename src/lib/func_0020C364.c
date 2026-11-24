@@ -1,9 +1,14 @@
-int func_0020C364(int arg0) {
-    int var_a1_13;
+#include "common/types.h"
 
-    var_a1_13 = 0;
-    if (((((unsigned int) (arg0 - 0x20) < 2U) | (arg0 == 0x22)) != 0) || (((arg0 == 0x23) | (arg0 == 0x67)) != 0)) {
-        var_a1_13 = 1;
+/* Whether value is one of 0x20 to 0x23, or 0x67. */
+s32 func_0020C364(s32 value)
+{
+    s32 result = 0;
+
+    if ((u32)(value - 0x20) < 2 || value == 0x22) {
+        result = 1;
+    } else if (value == 0x23 || value == 0x67) {
+        result = 1;
     }
-    return var_a1_13;
+    return result;
 }

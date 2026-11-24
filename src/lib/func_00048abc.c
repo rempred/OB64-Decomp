@@ -1,13 +1,11 @@
-int func_00048abc(int arg0) {
-    int temp_a0_7;
-    int temp_v1_8;
-    int var_v0_10;
+#include "common/types.h"
 
-    temp_a0_7 = arg0 & 0xFF;
-    temp_v1_8 = temp_a0_7 - 1;
-    var_v0_10 = temp_v1_8;
-    if (temp_v1_8 < 0) {
-        var_v0_10 = temp_a0_7 + 6;
-    }
-    return ((int) (*(unsigned char *)((signed char *)(((var_v0_10 >> 3) + 0x80190000)) + (0x6A81))) >> (temp_v1_8 & 7)) & 1;
+/* One bit per entry, numbered from 1, at a fixed address. */
+#define NUMBERED_FLAGS ((u8 *)0x80196A81)
+
+s32 func_00048abc(s32 number)
+{
+    s32 bit = (u8)number - 1;
+
+    return (NUMBERED_FLAGS[bit / 8] >> (bit & 7)) & 1;
 }

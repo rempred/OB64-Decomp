@@ -16,10 +16,9 @@ static __inline__ u8 p04_index_kind(u8 index)
 
 void func_0024E8DC(u8 index, s32 value)
 {
-    u32 complemented;
+    s16 found = D_80209700[p04_index_kind(index)](index) >= 0;
 
-    complemented = ~D_80209700[p04_index_kind(index)](index);
-    value = value * 2 + (complemented >> 31);
+    value = value * 2 + found;
     func_00208DC8(D_80209770[D_8020A2D4], D_801CEF10[value]);
     if (++D_8020A2D4 >= 2) {
         D_8020A2D4 = 0;
