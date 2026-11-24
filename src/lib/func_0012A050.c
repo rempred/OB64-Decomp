@@ -19,8 +19,8 @@ extern void memset_00023780(void *destination, s32 bytes);
 void func_0012A050(void)
 {
     s32 index;
-    u8 *record;
-    u8 *flag;
+    u8 *character_bytes;
+    u8 *status_flags;
     s32 offset;
     u32 address;
     u8 *last_record;
@@ -40,15 +40,16 @@ void func_0012A050(void)
     index = 1;
     /* An integer base preserves the shared address before both byte offsets.
        Pointer CSE instead folds the base into a cursor and drops a retail instruction. */
+    /* The character cursor starts at slot 1 and the flag cursor at its +0x33 status byte. */
     address = (u32)D_80195560;
-    flag = (u8 *)(address + 0x67);
-    record = (u8 *)(address + 0x34);
+    status_flags = (u8 *)(address + 0x67);
+    character_bytes = (u8 *)(address + 0x34);
     for (; index < 99; index++) {
-        memset_00023780(record, 0x34);
-        record += 0x34;
+        memset_00023780(character_bytes, 0x34);
+        character_bytes += 0x34;
         /* Keep the flag publication after the clear call, as in the ROM. */
-        *flag &= 0x7F;
-        flag += 0x34;
+        *status_flags &= 0x7F;
+        status_flags += 0x34;
     }
 
     for (index = 119; index >= 0; index--) {

@@ -29,14 +29,15 @@ typedef struct {
     u8 unk34[4];
 } PlayerChar;
 extern PlayerChar D_80193BC0_copy[];
-s32 func_00290820(u8 x) {
-    u8 i;
-    for (i = 0; i < 100; i++) {
-        if (D_8016FF5C(D_80193BC0_copy[i].c.cls, x)) {
-            if (D_80193BC0_copy[i].c.status & 4) {
+/* Check HP and status bit 2 for the first matching class. */
+s32 func_00290820(u8 class_id) {
+    u8 character_index;
+    for (character_index = 0; character_index < 100; character_index++) {
+        if (D_8016FF5C(D_80193BC0_copy[character_index].c.cls, class_id)) {
+            if (D_80193BC0_copy[character_index].c.status & 4) {
                 return 1;
             }
-            return D_80193BC0_copy[i].c.hp == 0;
+            return D_80193BC0_copy[character_index].c.hp == 0;
         }
     }
     return 0;

@@ -74,19 +74,19 @@ u16 func_0021B894(s32 arg0) {
     s32 temp_s0_30;
     u8 temp_v0_156;
     u8 temp_v0_528;
-    u8 var_s2_513;
+    u8 last_secondary_class_id;
     u8 var_v0_378;
     u8 var_v0_417;
     void *temp_a0_234;
     void *temp_a0_80;
-    void *temp_s1_525;
+    void *source_record;
     void *temp_v0_341;
     void *temp_v0_399;
     void *temp_v0_461;
     void *temp_v1_144;
     void *temp_v1_22;
     void *var_v0_150;
-    u8 *fill_base;
+    u8 *character_table;
     volatile u8 *flag_ptr;
 
     temp_v1_22 = D_801CE8BC;
@@ -414,23 +414,23 @@ block_92:
     if (func_0020BF6C() == 0) {
         goto block_99;
     }
-    var_s2_513 = 0;
+    last_secondary_class_id = 0;
     temp_s0_30 = 0;
-    fill_base = D_80195560;
-    temp_s1_525 = (D_801976E8 * 0x19) + g_func_001957D0_source_records;
+    character_table = D_80195560;
+    source_record = (D_801976E8 * 0x19) + g_func_001957D0_source_records;
     for (; (u32) temp_s0_30 < 5U; temp_s0_30++) {
-        temp_v0_528 = (*(u8 *)((s8 *)(temp_s1_525 + temp_s0_30) + (2)));
+        temp_v0_528 = (*(u8 *)((s8 *)(source_record + temp_s0_30) + (2)));
         if (temp_v0_528 == 0) {
             continue;
         }
         temp_a0_535 = temp_v0_528 * 0x34;
-        var_s2_513 = D_80195560[temp_a0_535 + 0x12];
-        temp_a0_535 += (s32) fill_base;
+        last_secondary_class_id = D_80195560[temp_a0_535 + 0x12];
+        temp_a0_535 += (s32) character_table;
         memset_00023780((void *) temp_a0_535, 0x34);
     }
-    memset_00023780(temp_s1_525, 0x19);
+    memset_00023780(source_record, 0x19);
     D_80193671 = 0;
-    D_801976E8 = var_s2_513;
+    D_801976E8 = last_secondary_class_id;
 block_99:
     (*(u16 *)((s8 *)D_801CE8BC + (0x606C))) = var_s3_33;
 block_100:

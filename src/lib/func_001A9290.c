@@ -139,8 +139,8 @@ u32 func_001A9290(s32 mode, s32 group, u16 *item, u8 *target)
                 *item = D_8021E3C0[D_8021E3A0.field00];
             else
                 *item = D_801971F2[D_8021E3B4].items[D_8021E3A0.field00];
-            D_8021E3C4 = D_80193BC0[D_801971F2[D_8021E3B4].members[0]].field18;
-            D_8021E3C8 = D_80193BC0[D_801971F2[D_8021E3B4].members[0]].field33;
+            D_8021E3C4 = D_80193BC0[D_801971F2[D_8021E3B4].members[0]].hp;
+            D_8021E3C8 = D_80193BC0[D_801971F2[D_8021E3B4].members[0]].status_flags;
             if (*item != 0) {
                 if (*item >= 24) {
                     D_8021E194 = 0x400;
@@ -171,7 +171,7 @@ u32 func_001A9290(s32 mode, s32 group, u16 *item, u8 *target)
                         i = 1;
                         count = 0;
                         for (; i < 100; i++)
-                            if (D_80193BC0[i].field11 != 0) count++;
+                            if (D_80193BC0[i].primary_class_id != 0) count++;
                         if (count >= 94) {
                             D_8021E194 = 0x400;
                             D_8021E368 = 0x52;
@@ -405,8 +405,8 @@ refresh_item:
             D_8021E3B8 = position;
             selected = D_801971F2[D_8021E3B4].members[D_8021E3AA.field00];
             if (selected < 100) {
-                D_8021E3C4 = D_80193BC0[selected].field18;
-                D_8021E3C8 = D_80193BC0[selected].field33;
+                D_8021E3C4 = D_80193BC0[selected].hp;
+                D_8021E3C8 = D_80193BC0[selected].status_flags;
             } else {
                 D_8021E3C4 = D_80190EBC[selected];
                 D_8021E3C8 = POOL_FLAG(selected);
@@ -506,9 +506,9 @@ resize_item:
                                     member = D_801971F2[D_8021E3B4].members[i];
                                     if (member != 0) {
                                         if (member < 100) {
-                                            current = D_80193BC0[member].field18;
-                                            cap = D_80193BC0[member].field16;
-                                            blocked = D_80193BC0[member].field33 & 4;
+                                            current = D_80193BC0[member].hp;
+                                            cap = D_80193BC0[member].max_hp;
+                                            blocked = D_80193BC0[member].status_flags & 4;
                                         } else {
                                             u32 segments, total;
                                             u16 third;
@@ -533,8 +533,8 @@ resize_item:
                             } else {
                                 s32 gain;
                                 if (member < 100) {
-                                    current = D_80193BC0[member].field18;
-                                    cap = D_80193BC0[member].field16;
+                                    current = D_80193BC0[member].hp;
+                                    cap = D_80193BC0[member].max_hp;
                                 } else {
                                     u32 segments, total;
                                     u16 third;
@@ -557,8 +557,8 @@ resize_item:
                                 member = D_801971F2[D_8021E3B4].members[i];
                                 if (member != 0) {
                                     if (member < 100) {
-                                        current = D_80193BC0[member].field18;
-                                        blocked = D_80193BC0[member].field33 & 4;
+                                        current = D_80193BC0[member].hp;
+                                        blocked = D_80193BC0[member].status_flags & 4;
                                     } else {
                                         current = D_80190EBC[member];
                                         blocked = POOL_FLAG(member) & 4;
@@ -686,8 +686,8 @@ advance_frame:
                             u16 current;
                             s32 blocked;
                             if (member < 100) {
-                                current = D_80193BC0[member].field18;
-                                blocked = D_80193BC0[member].field33 & 4;
+                                current = D_80193BC0[member].hp;
+                                blocked = D_80193BC0[member].status_flags & 4;
                             } else {
                                 current = D_80190EBC[member];
                                 blocked = POOL_FLAG(member) & 4;

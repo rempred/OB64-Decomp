@@ -17,14 +17,14 @@ static __inline__ u8 func_0004501C_select_loop(
         growth_class_index = primary_class_id;
     }
 
-    if (g_func_0019554C_class_records[growth_class_index].field_42 != (no_transition_level + no_transition_level - no_transition_level) &&
-        (u8)history_level < g_func_0019554C_class_records[growth_class_index].field_42) {
-        growth_class_index = g_func_0019554C_class_records[growth_class_index].field_41;
+    if (g_func_0019554C_class_records[growth_class_index].first_history_level_cutoff != (no_transition_level + no_transition_level - no_transition_level) &&
+        (u8)history_level < g_func_0019554C_class_records[growth_class_index].first_history_level_cutoff) {
+        growth_class_index = g_func_0019554C_class_records[growth_class_index].first_history_class_id;
         goto transition_done;
     }
-    if (g_func_0019554C_class_records[growth_class_index].field_44 != no_transition_level &&
-        (u8)history_level < g_func_0019554C_class_records[growth_class_index].field_44) {
-        growth_class_index = g_func_0019554C_class_records[growth_class_index].field_43;
+    if (g_func_0019554C_class_records[growth_class_index].second_history_level_cutoff != no_transition_level &&
+        (u8)history_level < g_func_0019554C_class_records[growth_class_index].second_history_level_cutoff) {
+        growth_class_index = g_func_0019554C_class_records[growth_class_index].second_history_class_id;
     }
 transition_done:
     return growth_class_index;
@@ -54,30 +54,30 @@ void func_0004501C(CharacterRecord *character, int target_level)
     CharacterClassRecord *starting_class;
     CharacterRecord *character_to_level;
 
-    primary_class_id = character->field_11;
-    secondary_class_id = character->field_12;
+    primary_class_id = character->primary_class_id;
+    secondary_class_id = character->secondary_class_id;
 
-    if (g_func_0019554C_class_records[primary_class_id].field_45 != secondary_class_id) {
+    if (g_func_0019554C_class_records[primary_class_id].related_class_id != secondary_class_id) {
         growth_class_index = secondary_class_id;
     } else {
         growth_class_index = primary_class_id;
     }
 
-    if (g_func_0019554C_class_records[growth_class_index].field_42 != 0xFF) {
+    if (g_func_0019554C_class_records[growth_class_index].first_history_level_cutoff != 0xFF) {
         int first_start_level;
 
         first_start_level = 1;
-        if ((u8)first_start_level < g_func_0019554C_class_records[growth_class_index].field_42) {
-            growth_class_index = g_func_0019554C_class_records[growth_class_index].field_41;
+        if ((u8)first_start_level < g_func_0019554C_class_records[growth_class_index].first_history_level_cutoff) {
+            growth_class_index = g_func_0019554C_class_records[growth_class_index].first_history_class_id;
             goto initial_transition_done;
         }
     }
-    if (g_func_0019554C_class_records[growth_class_index].field_44 != 0xFF) {
+    if (g_func_0019554C_class_records[growth_class_index].second_history_level_cutoff != 0xFF) {
         int second_start_level;
 
         second_start_level = 1;
-        if ((u8)second_start_level < g_func_0019554C_class_records[growth_class_index].field_44) {
-            growth_class_index = g_func_0019554C_class_records[growth_class_index].field_43;
+        if ((u8)second_start_level < g_func_0019554C_class_records[growth_class_index].second_history_level_cutoff) {
+            growth_class_index = g_func_0019554C_class_records[growth_class_index].second_history_class_id;
             goto initial_transition_done;
         }
     }
@@ -91,47 +91,47 @@ initial_transition_done:
     } while (0);
 
     if (class_lookup_offset_or_code == 3) {
-        character->field_14 = 0;
+        character->gender = 0;
     } else if (class_lookup_offset_or_code == 4) {
-        character->field_14 = func_0002CBCC() & 1;
+        character->gender = func_0002CBCC() & 1;
     } else {
-        character->field_14 = class_lookup_value;
+        character->gender = class_lookup_value;
     }
 
     /* Seed the level-one stats from the starting class in the character's history. */
     starting_class = &g_func_0019554C_class_records[counter];
-    character->field_16 = starting_class->field_08;
-    character->field_1C = starting_class->field_0C;
-    character->field_1E = starting_class->field_10;
-    character->field_20 = starting_class->field_14;
-    character->field_22 = starting_class->field_18;
-    character->field_24 = starting_class->field_1C;
-    character->field_26 = starting_class->field_20;
+    character->max_hp = starting_class->base_max_hp;
+    character->strength = starting_class->base_strength;
+    character->vitality = starting_class->base_vitality;
+    character->intelligence = starting_class->base_intelligence;
+    character->mentality = starting_class->base_mentality;
+    character->agility = starting_class->base_agility;
+    character->dexterity = starting_class->base_dexterity;
 
-    if (g_func_0019554C_class_records[primary_class_id].field_45 == secondary_class_id) {
-        class_element = g_func_0019554C_class_records[primary_class_id].field_46;
+    if (g_func_0019554C_class_records[primary_class_id].related_class_id == secondary_class_id) {
+        class_element = g_func_0019554C_class_records[primary_class_id].element;
     } else {
-        class_element = g_func_0019554C_class_records[secondary_class_id].field_46;
+        class_element = g_func_0019554C_class_records[secondary_class_id].element;
     }
     character_to_level = character;
     if (class_element == 0xFF) {
-        character_to_level->field_1A = (func_0002CBCC() % 4) + 1;
+        character_to_level->element = (func_0002CBCC() % 4) + 1;
     } else {
-        character_to_level->field_1A = class_element;
+        character_to_level->element = class_element;
     }
 
-    if (g_func_0019554C_class_records[primary_class_id].field_45 == secondary_class_id) {
-        class_alignment = g_func_0019554C_class_records[primary_class_id].field_24;
+    if (g_func_0019554C_class_records[primary_class_id].related_class_id == secondary_class_id) {
+        class_alignment = g_func_0019554C_class_records[primary_class_id].base_alignment;
         starting_alignment = class_alignment;
         counter = 1;
     } else {
-        class_alignment = g_func_0019554C_class_records[secondary_class_id].field_24;
+        class_alignment = g_func_0019554C_class_records[secondary_class_id].base_alignment;
         starting_alignment = class_alignment;
         counter = 1;
     }
     levels_reached = counter;
-    character_to_level->field_1B = starting_alignment;
-    character_to_level->field_13 = 1;
+    character_to_level->alignment = starting_alignment;
+    character_to_level->level = 1;
 
     /* Use the historical class for each level, then restore the original class IDs. */
     if (levels_reached >= (u8)target_level) {
@@ -147,8 +147,8 @@ loop_body:
         primary_class_id, secondary_class_id, primary_class_offset,
         secondary_class_byte, current_level, no_transition_level);
 
-    character_to_level->field_12 = level_growth_class;
-    character_to_level->field_11 = level_growth_class;
+    character_to_level->secondary_class_id = level_growth_class;
+    character_to_level->primary_class_id = level_growth_class;
     character_apply_level_up(character_to_level);
     levels_reached++;
     if (levels_reached < (u8)target_level) {
@@ -158,13 +158,13 @@ loop_body:
 loop_done:
     ;
 
-    character_to_level->field_18 = character_to_level->field_16;
-    character_to_level->field_11 = primary_class_id;
-    character_to_level->field_12 = secondary_class_id;
+    character_to_level->hp = character_to_level->max_hp;
+    character_to_level->primary_class_id = primary_class_id;
+    character_to_level->secondary_class_id = secondary_class_id;
 
-    if (g_func_0019554C_class_records[primary_class_id].field_45 == secondary_class_id) {
-        character_to_level->field_28 = g_func_0019554C_class_records[primary_class_id].field_23;
+    if (g_func_0019554C_class_records[primary_class_id].related_class_id == secondary_class_id) {
+        character_to_level->luck = g_func_0019554C_class_records[primary_class_id].base_luck;
     } else {
-        character_to_level->field_28 = g_func_0019554C_class_records[secondary_class_id].field_23;
+        character_to_level->luck = g_func_0019554C_class_records[secondary_class_id].base_luck;
     }
 }

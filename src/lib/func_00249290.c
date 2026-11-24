@@ -46,18 +46,19 @@ extern void func_8016C0C8(u8 index);
     }                                                                       \
 }
 
-#define APPLY_VALUE(getter_, field_) {                                       \
-    value = getter_(record->record.field_11, record->record.field_12);                       \
+#define APPLY_VALUE(getter_, equipment_field_) {                            \
+    value = getter_(record->record.primary_class_id,                       \
+                    record->record.secondary_class_id);                    \
     if ((u16)value != 0) {                                                   \
         ADD_VALUE(value);                                                   \
-        if (record->record.field_ == (u16)value) {                                   \
-            record->record.field_ = 0;                                              \
+        if (record->record.equipment_field_ == (u16)value) {                \
+            record->record.equipment_field_ = 0;                            \
         }                                                                   \
     }                                                                       \
     {                                                                       \
         /* Test before assigning the persistent value, preserving the        \
          * compiler's scheduled copy in the lookup call's delay slot. */     \
-        u32 selected_value = record->record.field_;                                 \
+        u32 selected_value = record->record.equipment_field_;              \
         if ((u16)selected_value != 0) {                                      \
             value = selected_value;                                         \
             ADD_VALUE(value);                                               \
@@ -65,15 +66,16 @@ extern void func_8016C0C8(u8 index);
     }                                                                       \
 }
 
+/* Reserve a class-1 pool entry or initialize a new 0x38-byte character. */
 /* Both final inputs are consumed as bytes. Their widths also preserve the
  * compiler's initial argument lifetimes and saved-register allocation. */
-u32 func_00249290(u16 kind, u16 *selected, s8 modifier, u8 option)
+u32 func_00249290(u16 class_id, u16 *equipment_overrides, s8 level_offset, u8 apply_extra_setup)
 {
     CharacterRecord56 *record;
     u32 index;
     u32 value;
 
-    if (kind == 1) {
+    if (class_id == 1) {
         u8 remaining;
         for (index = 0; (u8)index < 0x78; index++) {
             if (D_80190F80.selected[(u8)index] == 0) {
@@ -94,32 +96,32 @@ u32 func_00249290(u16 kind, u16 *selected, s8 modifier, u8 option)
     }
 
     for (index = 1; (u8)index < 100; index++) {
-        if (D_80193BC0[(u8)index].record.field_11 == 0) {
+        if (D_80193BC0[(u8)index].record.primary_class_id == 0) {
             break;
         }
     }
     record = &D_80193BC0[(u8)index];
     memset_00023780(record, 0x38);
     record->field_34 = func_8016C048();
-    record->record.field_11 = kind;
-    record->record.field_12 = D_80187C40[kind].related_class_19;
-    if (record->record.field_12 == 0) {
-        record->record.field_12 = record->record.field_11;
+    record->record.primary_class_id = class_id;
+    record->record.secondary_class_id = D_80187C40[class_id].related_class_19;
+    if (record->record.secondary_class_id == 0) {
+        record->record.secondary_class_id = record->record.primary_class_id;
     }
-    record->record.field_13 = D_801936AC + modifier + 1;
-    if (selected != 0) {
-        record->record.field_2A = selected[0];
-        record->record.field_2C = selected[1];
-        record->record.field_2E = selected[2];
-        record->record.field_30 = selected[3];
+    record->record.level = D_801936AC + level_offset + 1;
+    if (equipment_overrides != 0) {
+        record->record.equipment_slot_0 = equipment_overrides[0];
+        record->record.equipment_slot_1 = equipment_overrides[1];
+        record->record.equipment_slot_2 = equipment_overrides[2];
+        record->record.equipment_slot_3 = equipment_overrides[3];
     }
 
-    APPLY_VALUE(func_8016DF88, field_2A);
-    APPLY_VALUE(func_8016DFDC, field_2C);
-    APPLY_VALUE(func_8016E030, field_2E);
-    APPLY_VALUE(func_8016E084, field_30);
-    func_8016F11C(&record->record, record->record.field_13);
-    if ((u8)option == 1) {
+    APPLY_VALUE(func_8016DF88, equipment_slot_0);
+    APPLY_VALUE(func_8016DFDC, equipment_slot_1);
+    APPLY_VALUE(func_8016E030, equipment_slot_2);
+    APPLY_VALUE(func_8016E084, equipment_slot_3);
+    func_8016F11C(&record->record, record->record.level);
+    if ((u8)apply_extra_setup == 1) {
         func_801D4CC0(record);
     }
     func_000FC120(0, (u8)index);

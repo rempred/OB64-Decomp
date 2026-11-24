@@ -16,10 +16,11 @@ extern u16 D_80193BD8[][28];
 extern u8 D_80195593[][52];
 extern u8 D_80193BF3[][56];
 
+/* Check for nonzero member HP and clear status bit 2 on zero-HP entries. */
 s32 func_0012ECDC(s32 source_index)
 {
     s32 result;
-    s32 first_group;
+    s32 uses_56_byte_table;
     /* Share the first-member temporary between the two special cases;
     keep their clear cursors separate from the later scan. */
     u32 first;
@@ -80,7 +81,7 @@ s32 func_0012ECDC(s32 source_index)
         result = 0;
     }
 
-    first_group = source_index < 30;
+    uses_56_byte_table = source_index < 30;
     {
         u16 *extra_first = D_80190EBC;
         u16 *extra_second = D_8019532C;
@@ -92,7 +93,7 @@ s32 func_0012ECDC(s32 source_index)
             s32 member = *cursor;
             if (member != 0) {
                 if (member >= 100) {
-                    if (first_group) {
+                    if (uses_56_byte_table) {
                         if (extra_first[member] != 0) {
                             result = 1;
                         } else {
@@ -105,7 +106,7 @@ s32 func_0012ECDC(s32 source_index)
                             D_80195480[member] &= ~4;
                         }
                     }
-                } else if (first_group) {
+                } else if (uses_56_byte_table) {
                     if (D_80193BD8[member][0] != 0) {
                         result = 1;
                     } else {

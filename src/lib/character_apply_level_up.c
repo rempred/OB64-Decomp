@@ -84,7 +84,7 @@ void character_apply_level_up(CharacterRecord *character)
                max_hp_parity_temp = max_hp_parity_temp << 1,
                max_hp_second_roll = max_hp_second_roll - max_hp_parity_temp,
                growth_roll + max_hp_second_roll);
-        max_hp_gain = growth_class->growth_0A + growth_roll;
+        max_hp_gain = growth_class->max_hp_growth + growth_roll;
 
         growth_roll = (u8)growth_class_byte == 1
             ? 1
@@ -99,7 +99,7 @@ void character_apply_level_up(CharacterRecord *character)
                strength_parity_temp = strength_parity_temp << 1,
                strength_second_roll = strength_second_roll - strength_parity_temp,
                growth_roll + strength_second_roll);
-        strength_gain = growth_class->growth_0E + growth_roll;
+        strength_gain = growth_class->strength_growth + growth_roll;
 
         growth_roll = (u8)growth_class_byte == 1
             ? 1
@@ -114,7 +114,7 @@ void character_apply_level_up(CharacterRecord *character)
                vitality_parity_temp = vitality_parity_temp << 1,
                vitality_second_roll = vitality_second_roll - vitality_parity_temp,
                growth_roll + vitality_second_roll);
-        vitality_gain = growth_class->growth_12 + growth_roll;
+        vitality_gain = growth_class->vitality_growth + growth_roll;
 
         growth_roll = (u8)growth_class_byte == 1
             ? 1
@@ -129,7 +129,7 @@ void character_apply_level_up(CharacterRecord *character)
                intelligence_parity_temp = intelligence_parity_temp << 1,
                intelligence_second_roll = intelligence_second_roll - intelligence_parity_temp,
                growth_roll + intelligence_second_roll);
-        intelligence_gain = growth_class->growth_16 + growth_roll;
+        intelligence_gain = growth_class->intelligence_growth + growth_roll;
 
         growth_roll = (u8)growth_class_byte == 1
             ? 1
@@ -144,7 +144,7 @@ void character_apply_level_up(CharacterRecord *character)
                mentality_parity_temp = mentality_parity_temp << 1,
                mentality_second_roll = mentality_second_roll - mentality_parity_temp,
                growth_roll + mentality_second_roll);
-        mentality_gain = growth_class->growth_1A + growth_roll;
+        mentality_gain = growth_class->mentality_growth + growth_roll;
 
         growth_roll = (u8)growth_class_byte == 1
             ? 1
@@ -159,7 +159,7 @@ void character_apply_level_up(CharacterRecord *character)
                agility_parity_temp = agility_parity_temp << 1,
                agility_second_roll = agility_second_roll - agility_parity_temp,
                growth_roll + agility_second_roll);
-        agility_gain = growth_class->growth_1E + growth_roll;
+        agility_gain = growth_class->agility_growth + growth_roll;
 
         growth_roll = (u8)growth_class_byte == 1
             ? 1
@@ -174,7 +174,7 @@ void character_apply_level_up(CharacterRecord *character)
                dexterity_parity_temp = dexterity_parity_temp << 1,
                dexterity_second_roll = dexterity_second_roll - dexterity_parity_temp,
                growth_roll + dexterity_second_roll);
-        base_dexterity_gain = growth_class->growth_22;
+        base_dexterity_gain = growth_class->dexterity_growth;
         luck_delta = 0;
         slot_index = 0;
         dexterity_gain = base_dexterity_gain + growth_roll;
@@ -188,23 +188,23 @@ void character_apply_level_up(CharacterRecord *character)
             equipped_item_id = 0;
             switch (slot) {
             case 0:
-                equipped_item_id = character->field_2A;
+                equipped_item_id = character->equipment_slot_0;
                 break;
             case 1:
-                equipped_item_id = character->field_2C;
+                equipped_item_id = character->equipment_slot_1;
                 break;
             case 2:
-                equipped_item_id = character->field_2E;
+                equipped_item_id = character->equipment_slot_2;
                 break;
             case 3:
-                equipped_item_id = character->field_30;
+                equipped_item_id = character->equipment_slot_3;
                 break;
             }
 
             equipped_item_value = equipped_item_id & 0xFFFF;
             if (equipped_item_value == 0) {
                 equipped_item_id = g_func_0018B494_equipment_selectors[equipment_slot & 0xFF](
-                    character->field_11, character->field_12);
+                    character->primary_class_id, character->secondary_class_id);
             }
             growth_item_id = equipped_item_id & 0xFFFF;
             if (growth_item_id == 0) {
@@ -224,80 +224,80 @@ equipment_advance:
         } while (slot_index < 4);
 
         /* Apply the gains after equipment bonuses, capping each stat at 999. */
-        current_stat = character->field_16;
+        current_stat = character->max_hp;
         new_max_hp = (current_stat + max_hp_gain) < 1000;
         if (new_max_hp != 0) {
             new_max_hp = current_stat + max_hp_gain;
         } else {
             new_max_hp = 999;
         }
-        character->field_16 = new_max_hp;
+        character->max_hp = new_max_hp;
 
-        current_stat = character->field_1C;
+        current_stat = character->strength;
         new_strength = (current_stat + strength_gain) < 1000;
         if (new_strength != 0) {
             new_strength = current_stat + strength_gain;
         } else {
             new_strength = 999;
         }
-        character->field_1C = new_strength;
+        character->strength = new_strength;
 
-        current_stat = character->field_1E;
+        current_stat = character->vitality;
         new_vitality = (current_stat + (vitality_gain & 0xFFFF)) < 1000;
         if (new_vitality != 0) {
             new_vitality = current_stat + vitality_gain;
         } else {
             new_vitality = 999;
         }
-        character->field_1E = new_vitality;
+        character->vitality = new_vitality;
 
-        current_stat = character->field_20;
+        current_stat = character->intelligence;
         new_intelligence = (current_stat + (intelligence_gain & 0xFFFF)) < 1000;
         if (new_intelligence != 0) {
             new_intelligence = current_stat + intelligence_gain;
         } else {
             new_intelligence = 999;
         }
-        character->field_20 = new_intelligence;
+        character->intelligence = new_intelligence;
 
-        current_stat = character->field_22;
+        current_stat = character->mentality;
         new_mentality = (current_stat + (mentality_gain & 0xFFFF)) < 1000;
         if (new_mentality != 0) {
             new_mentality = current_stat + mentality_gain;
         } else {
             new_mentality = 999;
         }
-        character->field_22 = new_mentality;
+        character->mentality = new_mentality;
 
-        current_stat = character->field_24;
+        current_stat = character->agility;
         new_agility = (current_stat + (agility_gain & 0xFFFF)) < 1000;
         if (new_agility != 0) {
             new_agility = current_stat + agility_gain;
         } else {
             new_agility = 999;
         }
-        character->field_24 = new_agility;
+        character->agility = new_agility;
 
-        current_stat = character->field_26;
+        current_stat = character->dexterity;
         new_dexterity = (current_stat + (dexterity_gain & 0xFFFF)) < 1000;
         if (new_dexterity != 0) {
             new_dexterity = current_stat + dexterity_gain;
         } else {
             new_dexterity = 999;
         }
-        character->field_26 = new_dexterity;
+        character->dexterity = new_dexterity;
 
         /* Only equipment contributes to the luck gain. Clamp the result to 0 through 100. */
-        if ((character->field_28 + luck_delta) < 0) {
-            character->field_28 = 0;
+        if ((character->luck + luck_delta) < 0) {
+            character->luck = 0;
             return;
         }
-        new_luck = (character->field_28 + luck_delta) < 101;
+        new_luck = (character->luck + luck_delta) < 101;
         if (new_luck != 0) {
-            new_luck = character->field_28 + luck_delta;
+            new_luck = character->luck + luck_delta;
         } else {
             new_luck = 100;
         }
-        character->field_28 = new_luck;
+        character->luck = new_luck;
     }
 }

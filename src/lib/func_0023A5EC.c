@@ -30,23 +30,23 @@ extern void func_000466f4(void);
 
 
 /* Every optional source count constructs another output index. */
-#define RESOLVE_SOURCE(group, kind, limit, result) {            \
-    s32 adjustment; \
-    u32 field_a, field_b; \
+#define RESOLVE_SOURCE(group, kind, base_level, result) {            \
+    s32 target_level; \
+    u32 first_equipment_override, second_equipment_override; \
     u32 high_b, low_a, low_b; \
     u32 shifted_a, shifted_b; \
     s32 kind_value; \
     high_a = (group)[2]; \
-    delta = (s8)(group)[1]; \
+    level_offset = (s8)(group)[1]; \
     high_b = (group)[4]; \
     low_a = (group)[3]; \
     low_b = (group)[5]; \
     kind_value = (kind); \
     shifted_a = high_a << 8; \
     shifted_b = high_b << 8; \
-    adjustment = delta + (limit); \
-    field_b = shifted_b + low_b; \
-    field_a = shifted_a + low_a; \
+    target_level = level_offset + (base_level); \
+    second_equipment_override = shifted_b + low_b; \
+    first_equipment_override = shifted_a + low_a; \
     if (kind_value == 1) {                                                      \
         u32 free_index = 0;                                                 \
         while (free_index < 0x78 && (D_801953F0[0xF4 + free_index] & 1)) {         \
@@ -56,26 +56,27 @@ extern void func_000466f4(void);
         D_801953F0[0xF4 + free_index] = 1;                                        \
         (result) = (s32)free_index + 0x64;                                  \
     } else {                                                                \
-        CharacterRecord *row = &D_80195560[1];                                   \
+        CharacterRecord *character = &D_80195560[1];                                   \
         if (D_801955A5 != 0) {                                              \
-            do { row++; } while (row->field_11 != 0);                     \
+            do { character++; } while (character->primary_class_id != 0);                     \
         }                                                                   \
-        func_0023A3A0(row, kind_value, adjustment,                 \
-                      field_a, field_b);                                   \
-        (result) = (s32)(row - D_80195560);                                  \
+        func_0023A3A0(character, kind_value, target_level,                 \
+                      first_equipment_override, second_equipment_override);                                   \
+        (result) = (s32)(character - D_80195560);                                  \
     }                                                                       \
 }
 
-#define EMIT_OPTION(group, kind, field, limit, output_count) {           \
+#define EMIT_OPTION(group, kind, field, base_level, output_count) {           \
     if ((group)[field] != 0) {                                               \
         s32 selected_index;                                                 \
-        RESOLVE_SOURCE((group), (kind), (limit), selected_index);         \
+        RESOLVE_SOURCE((group), (kind), (base_level), selected_index);         \
         *(output + (output_count) + 2) = (u8)selected_index;               \
         *(output + (output_count) + 7) = (u8)((group)[field] - 1);          \
         (output_count)++;                                                   \
     }                                                                       \
 }
 
+/* Load a scenario record and construct its selected character entries. */
 void func_0023A5EC(void)
 {
     u8 record[0x23];
@@ -84,8 +85,8 @@ void func_0023A5EC(void)
     u32 *link;
     u32 inner_key;
     s32 record_index;
-    s32 limit;
-    s32 maximum;
+    s32 base_level;
+    s32 highest_member_level;
     s32 selected_index;
     u32 i;
     u8 *group;
@@ -96,11 +97,11 @@ void func_0023A5EC(void)
     /* Share these actual byte values across constructor sites. GCC 2.7.2
      * otherwise swaps the adjustment and low-byte temporaries. Keep each
      * site's kind, shifts and sums single-set to preserve the schedule. */
-    s32 delta;
+    s32 level_offset;
     u32 high_a;
 
     record_index = (D_80193670 << 8) | D_80193671;
-    limit = 0x63;
+    base_level = 0x63;
     if (D_80197B60 != 0) {
         record_index = D_80197B60 & 0x7FFF;
     }
@@ -124,19 +125,19 @@ void func_0023A5EC(void)
     group = record;
 
     (*state) = 0x1E;
-    maximum = 0;
+    highest_member_level = 0;
     scan_row = &D_801971F0[D_801976DC * 0x19];
     for (i = 0; i < 5; i++) {
         u8 value = *(scan_row + i + 2);
         if (value != 0 && value < 0x64) {
             u8 candidate = D_80193BD3[value][0];
-            if (maximum < candidate) {
-                maximum = candidate;
+            if (highest_member_level < candidate) {
+                highest_member_level = candidate;
             }
         }
     }
-    if ((u32)maximum < (u32)limit) {
-        limit = maximum;
+    if ((u32)highest_member_level < (u32)base_level) {
+        base_level = highest_member_level;
     }
 
     i = 0;
@@ -144,11 +145,11 @@ void func_0023A5EC(void)
     memset_00023780(D_801953F0, 0x16C);
     D_801953F0[0] = 0x78;
     D_801953F0[1] = 0x78;
-    func_0023A3A0(&D_80195560[0], 1, limit, 0, 0);
+    func_0023A3A0(&D_80195560[0], 1, base_level, 0, 0);
     D_801953F2 = D_80195576;
     memset_00023780(output, 0x19);
 
-    RESOLVE_SOURCE(group, group[0], limit, selected_index);
+    RESOLVE_SOURCE(group, group[0], base_level, selected_index);
     *(output + i + 2) = (u8)selected_index;
     D_80195593[(u8)selected_index * 0x34] = 2;
     output[1] = 0x81;
@@ -158,15 +159,15 @@ void func_0023A5EC(void)
     i++;
     group += 7;
     if (group[0] != 0 && (group[6] != 0 || group[7] != 0 || group[8] != 0)) {
-        EMIT_OPTION(group, group[0], 6, limit, i);
-        EMIT_OPTION(group, group[0], 7, limit, i);
-        EMIT_OPTION(group, group[0], 8, limit, i);
+        EMIT_OPTION(group, group[0], 6, base_level, i);
+        EMIT_OPTION(group, group[0], 7, base_level, i);
+        EMIT_OPTION(group, group[0], 8, base_level, i);
     }
     group += 9;
     if (group[0] != 0 && (group[6] != 0 || group[7] != 0 || group[8] != 0)) {
-        EMIT_OPTION(group, group[0], 6, limit, i);
-        EMIT_OPTION(group, group[0], 7, limit, i);
-        EMIT_OPTION(group, group[0], 8, limit, i);
+        EMIT_OPTION(group, group[0], 6, base_level, i);
+        EMIT_OPTION(group, group[0], 7, base_level, i);
+        EMIT_OPTION(group, group[0], 8, base_level, i);
     }
 
     if (D_801976D8 & 8) {

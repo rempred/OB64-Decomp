@@ -28,21 +28,22 @@ typedef struct {
 extern PlayerChar D_80193BC0_copy[];
 extern Character D_80195560_copy[];
 void func_00152C6C(u8 enemy, u8 idx, u8 *cls, u8 *base);
-void func_00152C6C(u8 enemy, u8 idx, u8 *cls, u8 *base)
+/* Read the two class IDs from the selected persistent character. */
+void func_00152C6C(u8 table_mode, u8 character_index, u8 *cls, u8 *secondary_class_out)
 {
-  Character *c;
-  if (idx >= 100)
+  Character *character;
+  if (character_index >= 100)
   {
-    idx = 0;
+    character_index = 0;
   }
-  if (!enemy)
+  if (!table_mode)
   {
-    c = &D_80193BC0_copy[idx].c;
+    character = &D_80193BC0_copy[character_index].c;
   }
   else
   {
-    c = &D_80195560_copy[idx];
+    character = &D_80195560_copy[character_index];
   }
-  *cls = c->cls;
-  *base = c->baseCls;
+  *cls = character->cls;
+  *secondary_class_out = character->baseCls;
 }

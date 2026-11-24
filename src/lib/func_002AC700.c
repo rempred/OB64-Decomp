@@ -9,13 +9,14 @@ extern u8 D_80193BD4[];
 extern u8 D_80195574[];
 extern StoryOverride table_002868F0[];
 
+/* Combine the persistent gender with the actor's alignment band for the profile query. */
 s32 func_002AC700(s32 slot)
 {
     QueryActor *actor = D_8022A974->actors[slot];
     ActorInput *input;
     s32 profile;
     s32 gender;
-    s32 i;
+    s32 override_index;
     s32 artKey;
 
     if (actor == 0) {
@@ -41,13 +42,13 @@ s32 func_002AC700(s32 slot)
     /* Keep the first key test separate so KMC reloads the loop base. */
     if (*(u8 *)0x8022A921 != 0xFF) {
         artKey = input->artKey;
-        i = 0;
+        override_index = 0;
         do {
-            if (table_002868F0[i].artKey == artKey) {
-                profile = table_002868F0[i].profile;
+            if (table_002868F0[override_index].artKey == artKey) {
+                profile = table_002868F0[override_index].profile;
             }
-            i++;
-        } while (table_002868F0[i].artKey != 0xFF);
+            override_index++;
+        } while (table_002868F0[override_index].artKey != 0xFF);
     }
 
     return profile;

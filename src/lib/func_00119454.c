@@ -177,6 +177,7 @@ s32 func_00119454(void)
     if (primary_result == 0 && D_8018F481 == 0x3F) {
         u32 first = D_801971F2[first_index][0];
         primary_result = 1;
+        /* Copy the first member's maximum HP into its current HP. */
         D_80193BD8[first][0] = D_80193BD6[first][0];
     }
     secondary_result = 0;

@@ -24,10 +24,10 @@ void func_000bf458(void)
     u32 group_limit;
     u8 alternate_class;
     s32 current_class;
-    s32 record_class;
+    s32 primary_class_id;
     s32 class_offset;
     s32 group_class;
-    u8 compared_class;
+    u8 secondary_class_id;
     u8 *data;
     register void *cursor asm("$17");
     register s32 total asm("$3");
@@ -38,10 +38,10 @@ void func_000bf458(void)
     index = 1;
     cursor = D_80193BC0 + 0x38;
     do {
-        record_class = ((u8 *)cursor)[0x11];
-        class_id = record_class & 0xFF;
+        primary_class_id = ((u8 *)cursor)[0x11];
+        class_id = primary_class_id & 0xFF;
         alternate_class = *(u8 *)(class_id + 0x801EF3B8);
-        compared_class = ((u8 *)cursor)[0x12];
+        secondary_class_id = ((u8 *)cursor)[0x12];
         if (alternate_class != 0) {
             class_offset = class_id * 0x48;
             asm volatile(
@@ -59,13 +59,13 @@ void func_000bf458(void)
                 : "=r" (current_class)
                 : "r" (class_offset)
                 : "$1");
-            if (current_class == compared_class) {
-                compared_class = alternate_class;
+            if (current_class == secondary_class_id) {
+                secondary_class_id = alternate_class;
             }
         }
-        if (record_class != 0) {
+        if (primary_class_id != 0) {
             selected_class = *(u16 *)(*(u8 **)0x80196AF8 + 0x5E8);
-            if (compared_class == selected_class) {
+            if (secondary_class_id == selected_class) {
                 exact_class_count += 1;
                 goto accepted_class;
             }

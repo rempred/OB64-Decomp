@@ -2,8 +2,8 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
 typedef struct { u8 bytes[25]; } Record25;
-typedef struct { u8 pad[24]; u16 field18; u8 tail[26]; } Record52;
-typedef struct { u8 pad[24]; u16 field18; u8 tail[30]; } Record56;
+typedef struct { u8 pad[24]; u16 hp; u8 tail[26]; } Record52;
+typedef struct { u8 pad[24]; u16 hp; u8 tail[30]; } Record56;
 typedef struct { u8 bytes[192]; } Record192;
 
 extern Record25 g_func_001957D0_source_records[];
@@ -17,59 +17,60 @@ extern int func_00129068(u8 *);
 
 #define WORD(p, o) (*(u32 *)((p) + (o)))
 
+/* Seed a runtime unit from its source record and check its members' HP. */
 void func_0012967C(int index)
 {
-    u8 *record;
+    u8 *source_record;
     u8 *object;
     u32 flags = 0;
-    int any;
-    int first;
-    int alternate;
-    int i;
-    int value;
-    int field;
-    u8 *member;
+    int has_member_with_hp;
+    int first_member_unavailable;
+    int uses_52_byte_table;
+    int member_slot;
+    int member_index;
+    int member_hp;
+    u8 *member_entry;
 
-    record = g_func_001957D0_source_records[index].bytes;
-    record[1] &= 0xFB;
+    source_record = g_func_001957D0_source_records[index].bytes;
+    source_record[1] &= 0xFB;
     object = D_801F1080[index].bytes;
     func_80093380(object, 192);
-    any = 0;
-    first = 0;
-    alternate = index >= 30;
-    if (record[1] & 1) {
-        for (i = 0; i < 5; i++) {
-            member = record + i;
-            value = member[2];
-            if (value != 0) {
-                if (value >= 100) {
-                    if (alternate)
-                        field = D_8019532C[value];
+    has_member_with_hp = 0;
+    first_member_unavailable = 0;
+    uses_52_byte_table = index >= 30;
+    if (source_record[1] & 1) {
+        for (member_slot = 0; member_slot < 5; member_slot++) {
+            member_entry = source_record + member_slot;
+            member_index = member_entry[2];
+            if (member_index != 0) {
+                if (member_index >= 100) {
+                    if (uses_52_byte_table)
+                        member_hp = D_8019532C[member_index];
                     else
-                        field = D_80190EBC[value];
-                    if (field != 0)
-                        any = 1;
+                        member_hp = D_80190EBC[member_index];
+                    if (member_hp != 0)
+                        has_member_with_hp = 1;
                     else
-                        member[2] = 0;
+                        member_entry[2] = 0;
                 } else {
-                    if (alternate)
-                        field = g_func_0019554C_records_52[value].field18;
+                    if (uses_52_byte_table)
+                        member_hp = g_func_0019554C_records_52[member_index].hp;
                     else
-                        field = g_func_0019554C_records_56[value].field18;
-                    if (field != 0)
-                        any = 1;
+                        member_hp = g_func_0019554C_records_56[member_index].hp;
+                    if (member_hp != 0)
+                        has_member_with_hp = 1;
                 }
-                if ((i == 0) && (any == 0))
-                    first = 1;
+                if ((member_slot == 0) && (has_member_with_hp == 0))
+                    first_member_unavailable = 1;
             }
         }
     }
-    if (any)
+    if (has_member_with_hp)
         flags |= 0x10;
-    if (!first)
+    if (!first_member_unavailable)
         flags |= 0x100;
     flags |= 0x40020;
-    if (!(record[1] & 0x80))
+    if (!(source_record[1] & 0x80))
         flags |= 8;
     else
         flags &= ~0x20;
@@ -102,7 +103,7 @@ void func_0012967C(int index)
     WORD(object, 0x64) = 0;
     WORD(object, 0x68) = 0;
     WORD(object, 0x6c) = 0;
-    WORD(object, 0x70) = func_00129068(record);
+    WORD(object, 0x70) = func_00129068(source_record);
     WORD(object, 0x74) = -1;
     WORD(object, 0x78) = 0;
     WORD(object, 0x7C) = -1;

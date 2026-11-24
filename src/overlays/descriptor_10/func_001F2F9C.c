@@ -14,22 +14,23 @@ extern u8 D_801976E8;
 extern const char D_801CE890[];
 int func_000238B0(char *buf, const char *fmt, ...);
 void func_001F2E48(signed char *s, s32 side);
-void func_001F2F9C(u8 *u, u8 *a) {
-    signed char buf[64];
-    u8 *rec;
-    s32 player;
-    if (func_0020C014(u)) {
-        s32 sq = D_801976DC;
-        player = sq < 30;
+/* Format the persistent character's name for the side selected by the battle actor. */
+void func_001F2F9C(u8 *actor, u8 *other_actor) {
+    signed char message[64];
+    u8 *character_bytes;
+    s32 uses_56_byte_table;
+    if (func_0020C014(actor)) {
+        s32 source_index = D_801976DC;
+        uses_56_byte_table = source_index < 30;
     } else {
-        s32 sq = D_801976E8;
-        player = sq < 30;
+        s32 source_index = D_801976E8;
+        uses_56_byte_table = source_index < 30;
     }
-    if (player) {
-        rec = D_80193BC0_copy[u[0xF6]].b;
+    if (uses_56_byte_table) {
+        character_bytes = D_80193BC0_copy[actor[0xF6]].b;
     } else {
-        rec = D_80195560_copy[u[0xF6]].b;
+        character_bytes = D_80195560_copy[actor[0xF6]].b;
     }
-    func_000238B0((char *)buf, D_801CE890, rec, D_8016E1DC(a[0x4B], a[0x4F]));
-    func_001F2E48(buf, func_0020C014(u));
+    func_000238B0((char *)message, D_801CE890, character_bytes, D_8016E1DC(other_actor[0x4B], other_actor[0x4F]));
+    func_001F2E48(message, func_0020C014(actor));
 }

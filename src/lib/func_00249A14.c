@@ -25,9 +25,10 @@ extern void *resource_free(void *resource);
 extern void memcpy_aligned(void *destination, const void *source, s32 size);
 extern void memset_00023780(void *destination, s32 size);
 extern u8 func_000454c8(s32 selector);
-extern u32 func_00249290(u16 slot, u16 *selected, s8 modifier, u8 option);
+extern u32 func_00249290(u16 class_id, u16 *equipment_overrides, s8 level_offset, u8 apply_extra_setup);
 extern s32 func_002488D0(u8 *staged, u32 selector);
 
+/* Stage character-template members and build each persistent row. */
 s32 func_00249A14(s32 record_index, s32 option, u8 apply_flag)
 {
     ScenarioRecordScratch scratch;
@@ -94,22 +95,22 @@ s32 func_00249A14(s32 record_index, s32 option, u8 apply_flag)
             group = 0;
             while ((u8)group < 2) {
                 u8 *slot = (u8 *)&scratch + ((u8)member * 8);
-                u8 value = func_000454c8(*(u16 *)(slot + 4 + (u8)group * 2));
-                u8 cls = slot[0];
+                u8 equipment_category = func_000454c8(*(u16 *)(slot + 4 + (u8)group * 2));
+                u8 class_id = slot[0];
                 s32 match;
                 u8 index;
-                if (func_000454c8(D_80187C42[cls][0]) == value) {
+                if (func_000454c8(D_80187C42[class_id][0]) == equipment_category) {
                     match = 1;
-                } else if (func_000454c8(D_80187C44[cls][0]) == value) {
+                } else if (func_000454c8(D_80187C44[class_id][0]) == equipment_category) {
                     match = 2;
-                } else if (func_000454c8(D_80187C46[cls][0]) == value) {
+                } else if (func_000454c8(D_80187C46[class_id][0]) == equipment_category) {
                     match = 3;
                 } else {
                     /* Keep the final probe in the word-sized result before
                      * narrowing the selected index. This preserves the pinned
                      * compiler's branch and delay-slot ordering. */
-                    match = func_000454c8(D_80187C48[cls][0]);
-                    if (match == value) {
+                    match = func_000454c8(D_80187C48[class_id][0]);
+                    if (match == equipment_category) {
                         match = 4;
                     } else {
                         match = 0;

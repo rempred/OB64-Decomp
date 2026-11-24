@@ -9,19 +9,20 @@ extern u8 D_801971F2[][25];
 extern u16 D_80193BD8[][28];
 extern u16 D_80195578[][26];
 
+/* Check the first member's HP in the selected persistent table. */
 s32 func_0012DA10(void *unit)
 {
     u32 source_index = ((const u8 *)unit)[4];
-    s32 member = D_801971F2[source_index][0];
+    s32 member_index = D_801971F2[source_index][0];
     s32 result;
 
-    if ((member == 0) | (member >= 100)) {
+    if ((member_index == 0) | (member_index >= 100)) {
         return 0;
     }
     if (source_index < 30) {
-        result = D_80193BD8[member][0] != 0;
+        result = D_80193BD8[member_index][0] != 0;
     } else {
-        result = D_80195578[member][0] != 0;
+        result = D_80195578[member_index][0] != 0;
     }
     return result;
 }

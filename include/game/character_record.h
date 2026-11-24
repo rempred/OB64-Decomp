@@ -3,79 +3,83 @@
 
 #include "common/types.h"
 
+/* The common character row. Some tables append four bytes after this prefix. */
 typedef struct CharacterRecord {
-    u8 field_00[0x11];
-    u8 field_11;
-    u8 field_12;
-    u8 field_13;
-    u8 field_14;
+    u8 name[0x11];
+    u8 primary_class_id;
+    u8 secondary_class_id;
+    u8 level;
+    u8 gender;
     u8 field_15;
-    u16 field_16;
-    u16 field_18;
-    u8 field_1A;
-    u8 field_1B;
-    u16 field_1C;
-    u16 field_1E;
-    u16 field_20;
-    u16 field_22;
-    u16 field_24;
-    u16 field_26;
-    u8 field_28;
+    u16 max_hp;
+    u16 hp;
+    u8 element;
+    u8 alignment;
+    u16 strength;
+    u16 vitality;
+    u16 intelligence;
+    u16 mentality;
+    u16 agility;
+    u16 dexterity;
+    u8 luck;
     u8 field_29;
-    u16 field_2A;
-    u16 field_2C;
-    u16 field_2E;
-    u16 field_30;
-    u8 field_32;
-    u8 field_33;
+    u16 equipment_slot_0;
+    u16 equipment_slot_1;
+    u16 equipment_slot_2;
+    u16 equipment_slot_3;
+    u8 fatigue;
+    u8 status_flags;
 } CharacterRecord;
 
+/* Extended character row with a separate experience byte at +0x35. */
 typedef struct CharacterRecord56 {
     CharacterRecord record;
     u8 field_34;
-    u8 field_35;
+    u8 experience;
     u8 field_36;
     u8 field_37;
 } CharacterRecord56;
 
+/* Class defaults and growth data, indexed by a character's class ID. */
 typedef struct CharacterClassRecord {
     u8 field_00[0x05];
-    u8 field_05;
+    u8 body_code;
     u8 field_06[2];
-    u16 field_08;
-    u8 growth_0A;
+    u16 base_max_hp;
+    u8 max_hp_growth;
     u8 field_0B;
-    u16 field_0C;
-    u8 growth_0E;
+    u16 base_strength;
+    u8 strength_growth;
     u8 field_0F;
-    u16 field_10;
-    u8 growth_12;
+    u16 base_vitality;
+    u8 vitality_growth;
     u8 field_13;
-    u16 field_14;
-    u8 growth_16;
+    u16 base_intelligence;
+    u8 intelligence_growth;
     u8 field_17;
-    u16 field_18;
-    u8 growth_1A;
+    u16 base_mentality;
+    u8 mentality_growth;
     u8 field_1B;
-    u16 field_1C;
-    u8 growth_1E;
+    u16 base_agility;
+    u8 agility_growth;
     u8 field_1F;
-    u16 field_20;
-    u8 growth_22;
-    u8 field_23;
-    u8 field_24;
+    u16 base_dexterity;
+    u8 dexterity_growth;
+    u8 base_luck;
+    u8 base_alignment;
+    /* Covers the resistance bytes and movement type at +0x2C. */
     u8 field_25[9];
-    u16 field_2E;
-    u16 field_30;
-    u16 field_32;
-    u16 field_34;
+    u16 default_equipment_slot_0;
+    u16 default_equipment_slot_1;
+    u16 default_equipment_slot_2;
+    u16 default_equipment_slot_3;
     u8 field_36[0x0B];
-    u8 field_41;
-    u8 field_42;
-    u8 field_43;
-    u8 field_44;
-    u8 field_45;
-    u8 field_46;
+    u8 first_history_class_id;
+    u8 first_history_level_cutoff;
+    u8 second_history_class_id;
+    u8 second_history_level_cutoff;
+    u8 related_class_id;
+    u8 element;
     u8 field_47;
 } CharacterClassRecord;
 
@@ -92,7 +96,8 @@ extern CharacterClassRecord g_func_0019554C_class_records[];
 void func_0004501C(CharacterRecord *character, int target_level);
 void func_8016F11C(CharacterRecord *character, int target_level);
 void character_apply_level_up(CharacterRecord *character);
-void func_00195410(u16 value, CharacterRecord *record);
-void func_0023A3A0(CharacterRecord *record, u32 kind, s32 value, u32 field_a, u32 field_b);
+void func_00195410(u16 equipment_id, CharacterRecord *character);
+void func_0023A3A0(CharacterRecord *character, u32 class_id, s32 target_level,
+                   u32 first_equipment_override, u32 second_equipment_override);
 
 #endif

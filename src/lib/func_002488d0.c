@@ -45,6 +45,7 @@ s32 func_002488D0(u8 *staged, u32 selector)
         }
     }
     record->bytes[0x18] = func_801D4880(selector);
+    /* Mark status bit 1 on the first persistent character. */
     D_80193BF3[record->bytes[2]][0] |= 2;
     func_8016C150(selector);
     return 0;

@@ -44,18 +44,19 @@ s32 func_00123458(s32 row, RuntimeUnit *unit)
         }
         return 0;
     } else if (kind == 25) {
+        /* Inspect the persistent member's HP, fatigue and status. */
         s32 valid = 1;
         u8 *member = D_801971F2[UNIT_FIELD(u8, 0x04)];
         u8 *end = member + 5;
         do {
-            s32 id = *member;
-            if (id != 0) {
-                u32 present;
-                if (id >= 100) goto next_member;
-                present = D_80195578[id][0];
-                if (present != 0 && !(D_80195593[id][0] & 4)) {
-                    valid &= -(present >= D_80195576[id][0]);
-                    valid &= -(D_80195592[id][0] == 0);
+            s32 member_index = *member;
+            if (member_index != 0) {
+                u32 hp;
+                if (member_index >= 100) goto next_member;
+                hp = D_80195578[member_index][0];
+                if (hp != 0 && !(D_80195593[member_index][0] & 4)) {
+                    valid &= -(hp >= D_80195576[member_index][0]);
+                    valid &= -(D_80195592[member_index][0] == 0);
                 }
             }
 next_member:

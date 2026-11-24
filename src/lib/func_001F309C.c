@@ -41,7 +41,7 @@ void func_0020BD5C(s32 selector);
 void func_001F309C(void)
 {
     u8 *snapshot;
-    s32 byte_offset;
+    s32 character_byte_offset;
     s32 index;
     u16 *halfword_cursor;
     u8 *owner;
@@ -67,17 +67,17 @@ void func_001F309C(void)
         snapshot = func_80070F30(0x298);
         func_80080998(snapshot, D_80190F80, 0x16C);
         index = 0;
-        byte_offset = 0;
+        character_byte_offset = 0;
         halfword_cursor = (u16 *)snapshot;
         do {
             u8 *row = snapshot + index;
 
             index++;
             halfword_cursor[0xB6] =
-                *(u16 *)((u8 *)D_80193BD8 + byte_offset);
+                *(u16 *)((u8 *)D_80193BD8 + character_byte_offset);
             row[0x234] =
-                *(u8 *)((u8 *)D_80193BF3 + byte_offset);
-            byte_offset += 0x38;
+                *(u8 *)((u8 *)D_80193BF3 + character_byte_offset);
+            character_byte_offset += 0x38;
             halfword_cursor++;
         } while (index < 100);
         *(void **)((u8 *)D_801CE8BC + 0x607C) = snapshot;

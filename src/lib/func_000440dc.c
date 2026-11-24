@@ -1,5 +1,6 @@
 #include "game/class_field_lookups.h"
 
+/* Return the name from the class selected by the character's two class IDs. */
 const u8 *func_000440dc(s32 primary_class, s32 alternate_class)
 {
     s8 *primary_record;

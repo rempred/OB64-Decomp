@@ -16,8 +16,8 @@ typedef struct Func000C4A40Entry {
 
 typedef struct Func000C4A40ClassRecord {
     u8 unused_00[0x11];
-    u8 field_11;
-    u8 field_12;
+    u8 primary_class_id;
+    u8 secondary_class_id;
     u8 unused_13[0x25];
 } Func000C4A40ClassRecord;
 
@@ -138,7 +138,7 @@ mode_0_1_5_6:
                 output[9]++;
                 output[0x18]++;
             } else {
-                if ((func_0016dec4(class_record->field_11, class_record->field_12) & 0xFF) == 0) {
+                if ((func_0016dec4(class_record->primary_class_id, class_record->secondary_class_id) & 0xFF) == 0) {
                     output[0x10]++;
                 }
                 output[9]++;

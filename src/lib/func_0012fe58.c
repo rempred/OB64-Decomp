@@ -49,7 +49,7 @@ void func_0012FE58(s32 mode)
     u8 old_values[2];
     u8 new_values[2];
     s32 entry, side, index, slot, group_index;
-    u8 *record, *source, *cursor, *group;
+    u8 *character_bytes, *source, *cursor, *group;
     Q7Unit *unit;
     /* Real scalar phases keep the first reset sentinel and later record
      * address in one saved register; a pointer-copy alias loses that allocation. */
@@ -83,18 +83,19 @@ void func_0012FE58(s32 mode)
         old_values[1] = 0x2C;
         new_values[1] = 0x2B;
     }
+    /* Update the class IDs in the 0x38-byte table and refresh their source units. */
     entry = 1;
     word_work = (u32)-1;
     for (; entry < 100; ++entry) {
-        record = D_80193BC0 + entry * 56;
+        character_bytes = D_80193BC0 + entry * 56;
         for (side = 0; side < 2; ++side) {
-            if (!record[0x11])
+            if (!character_bytes[0x11])
                 continue;
-            if (record[0x12] != old_values[side])
+            if (character_bytes[0x12] != old_values[side])
                 continue;
-            record[0x12] = new_values[side];
+            character_bytes[0x12] = new_values[side];
             if (side == 0)
-                record[0x11] = new_values[0];
+                character_bytes[0x11] = new_values[0];
             index = 0;
             cursor = D_801971F0;
             for (; index < 30; ++index, cursor += 25) {
@@ -215,6 +216,7 @@ after_primary:;
     }
     if (mode == 3)
         return;
+    /* Apply the corresponding class updates to the 0x34-byte table. */
     for (entry = 1; entry < 100; ++entry) {
         word_work = (u32)(D_80195560 + entry * 52);
         for (side = 0; side < 2; ++side) {

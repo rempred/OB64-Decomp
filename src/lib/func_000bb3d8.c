@@ -5,24 +5,25 @@ typedef signed int s32;
 extern u8 D_80193BC0[];
 extern u8 D_80195560[];
 
-u16 func_000bb3d8(s32 arg0, u8 index, u8 slot)
+/* Read an equipment halfword from the selected persistent character table. */
+u16 func_000bb3d8(s32 table_mode, u8 character_index, u8 slot)
 {
-    u8 *record;
+    u8 *character_bytes;
 
-    if ((arg0 & 0xFF) == 0) {
-        record = D_80193BC0 + ((s32)index * 0x38);
+    if ((table_mode & 0xFF) == 0) {
+        character_bytes = D_80193BC0 + ((s32)character_index * 0x38);
     } else {
-        record = D_80195560 + ((s32)index * 0x34);
+        character_bytes = D_80195560 + ((s32)character_index * 0x34);
     }
 
     switch (slot) {
     case 1:
-        return *(u16 *)(record + 0x2A);
+        return *(u16 *)(character_bytes + 0x2A);
     case 2:
-        return *(u16 *)(record + 0x2C);
+        return *(u16 *)(character_bytes + 0x2C);
     case 3:
-        return *(u16 *)(record + 0x2E);
+        return *(u16 *)(character_bytes + 0x2E);
     default:
-        return *(u16 *)(record + 0x30);
+        return *(u16 *)(character_bytes + 0x30);
     }
 }

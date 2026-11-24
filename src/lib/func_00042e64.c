@@ -11,23 +11,24 @@ extern void func_00023460(void *source, void *destination, int size);
 extern void func_00050918(u8 *bytes, u8 *record);
 extern void func_8016BA10(int value);
 
-void func_00042e64(void *buffer)
+/* Encode the 56-byte character table, then restore the live names. */
+void func_00042e64(void *save_buffer)
 {
-    u8 **saved;
-    int i;
+    u8 **saved_names;
+    int record_index;
 
     func_8016BA10(0);
-    saved = func_00001330(100 * sizeof(*saved));
-    for (i = 0; i < 100; i++) {
-        saved[i] = func_00001330(16);
-        func_00023460(&g_func_0019554C_records_56[i], saved[i], 16);
-        func_00050918(saved[i], g_func_0019554C_records_56[i].bytes);
+    saved_names = func_00001330(100 * sizeof(*saved_names));
+    for (record_index = 0; record_index < 100; record_index++) {
+        saved_names[record_index] = func_00001330(16);
+        func_00023460(&g_func_0019554C_records_56[record_index], saved_names[record_index], 16);
+        func_00050918(saved_names[record_index], g_func_0019554C_records_56[record_index].bytes);
     }
-    boot_bitstream_descriptor_encode(buffer, &D_80187444);
-    for (i = 0; i < 100; i++) {
-        func_00023460(saved[i], &g_func_0019554C_records_56[i], 16);
-        func_000016C4(saved[i]);
+    boot_bitstream_descriptor_encode(save_buffer, &D_80187444);
+    for (record_index = 0; record_index < 100; record_index++) {
+        func_00023460(saved_names[record_index], &g_func_0019554C_records_56[record_index], 16);
+        func_000016C4(saved_names[record_index]);
     }
-    func_000016C4(saved);
+    func_000016C4(saved_names);
     func_8016BA10(1);
 }

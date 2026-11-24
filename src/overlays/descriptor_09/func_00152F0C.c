@@ -27,28 +27,29 @@ typedef struct {
 } PlayerChar;
 extern PlayerChar D_80193BC0_copy[];
 extern Character D_80195560_copy[];
-u16 func_00152F0C(u8 side, u8 idx, u8 slot) {
-    Character *c;
-    u16 v;
-    if (side == 0) {
-        c = &D_80193BC0_copy[idx].c;
+/* Read an equipment slot directly from the persistent character. */
+u16 func_00152F0C(u8 table_mode, u8 character_index, u8 equipment_slot) {
+    Character *character;
+    u16 equipment_id;
+    if (table_mode == 0) {
+        character = &D_80193BC0_copy[character_index].c;
     } else {
-        c = &D_80195560_copy[idx];
+        character = &D_80195560_copy[character_index];
     }
-    v = 0;
-    switch (slot) {
+    equipment_id = 0;
+    switch (equipment_slot) {
         case 1:
-            v = c->items[0];
+            equipment_id = character->items[0];
             break;
         case 2:
-            v = c->items[1];
+            equipment_id = character->items[1];
             break;
         case 3:
-            v = c->items[2];
+            equipment_id = character->items[2];
             break;
         case 4:
-            v = c->items[3];
+            equipment_id = character->items[3];
             break;
     }
-    return v;
+    return equipment_id;
 }

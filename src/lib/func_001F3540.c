@@ -22,7 +22,7 @@ void func_001F3540(void)
 {
     u8 *snapshot;
     s32 index;
-    s32 byte_offset;
+    s32 character_byte_offset;
     u16 *halfword_cursor;
     u8 value;
     u32 cleanup_index;
@@ -36,15 +36,16 @@ void func_001F3540(void)
 
             index = 0;
             halfword_cursor = (u16 *)snapshot;
-            byte_offset = 0;
+            /* Restore the per-character HP and status saved after the special-pool data. */
+            character_byte_offset = 0;
             do {
-                *(u16 *)((u8 *)D_80193BD8 + byte_offset) =
+                *(u16 *)((u8 *)D_80193BD8 + character_byte_offset) =
                     halfword_cursor[0xB6];
                 value = *(u8 *)((u32)snapshot + index + 0x234);
                 halfword_cursor++;
                 index++;
-                *(u8 *)((u8 *)D_80193BF3 + byte_offset) = value;
-                byte_offset += 0x38;
+                *(u8 *)((u8 *)D_80193BF3 + character_byte_offset) = value;
+                character_byte_offset += 0x38;
             } while (index < 100);
 
             func_800712C4(*(void **)((u8 *)D_801CE8BC + 0x607C));

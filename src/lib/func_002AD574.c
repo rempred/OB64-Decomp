@@ -20,14 +20,15 @@ extern u16 D_8019532C[];
 extern u8 D_80195480[];
 extern s32 func_0020C014(void *unit);
 
+/* Filter battle actors using persistent HP and status. */
 u8 func_002AD574(void *unit)
 {
     BodyFilterRow *row = unit;
     u8 context;
     u8 excluded;
-    s32 rosterBelow30;
+    s32 uses_56_byte_table;
     u8 member;
-    s32 offset;
+    s32 member_byte_offset;
     s32 blocked;
 
     /* Keep this byte load in the folded entry. */
@@ -37,18 +38,18 @@ u8 func_002AD574(void *unit)
         return 0;
     }
     if (func_0020C014(unit) != 0) {
-        rosterBelow30 = D_801976DC < 30;
+        uses_56_byte_table = D_801976DC < 30;
     } else {
-        rosterBelow30 = D_801976E8 < 30;
+        uses_56_byte_table = D_801976E8 < 30;
     }
-    if (rosterBelow30) {
+    if (uses_56_byte_table) {
         member = row->memberIndex;
         if (member < 100) {
-            offset = member * 0x38;
-            if (*(u16 *)((u8 *)D_80193BD8 + offset) == 0) {
+            member_byte_offset = member * 0x38;
+            if (*(u16 *)((u8 *)D_80193BD8 + member_byte_offset) == 0) {
                 excluded = 1;
             }
-            blocked = D_80193BF3[offset] & 4;
+            blocked = D_80193BF3[member_byte_offset] & 4;
         } else {
             if (D_80190EBC[member] == 0) {
                 excluded = 1;
@@ -58,11 +59,11 @@ u8 func_002AD574(void *unit)
     } else {
         member = row->memberIndex;
         if (member < 100) {
-            offset = member * 0x34;
-            if (*(u16 *)((u8 *)D_80195578 + offset) == 0) {
+            member_byte_offset = member * 0x34;
+            if (*(u16 *)((u8 *)D_80195578 + member_byte_offset) == 0) {
                 excluded = 1;
             }
-            blocked = D_80195593[offset] & 4;
+            blocked = D_80195593[member_byte_offset] & 4;
         } else {
             if (D_8019532C[member] == 0) {
                 excluded = 1;

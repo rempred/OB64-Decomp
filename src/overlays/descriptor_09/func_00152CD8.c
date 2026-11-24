@@ -29,35 +29,36 @@ extern PlayerChar D_80193BC0_copy[];
 extern Character D_80195560_copy[];
 extern u16 (*D_80213068[])(u8 cls, u8 base);
 u16 func_00152CD8(u8 side, u8 idx, u8 slot);
-u16 func_00152CD8(u8 side, u8 idx, u8 slot) {
-    Character *c;
-    u16 v;
+/* Read an equipment slot with a class-default fallback. */
+u16 func_00152CD8(u8 table_mode, u8 character_index, u8 equipment_slot) {
+    Character *character;
+    u16 equipment_id;
     u8 cls;
-    u8 base;
-    if (side == 0) {
-        c = &D_80193BC0_copy[idx].c;
+    u8 secondary_class_id;
+    if (table_mode == 0) {
+        character = &D_80193BC0_copy[character_index].c;
     } else {
-        c = &D_80195560_copy[idx];
+        character = &D_80195560_copy[character_index];
     }
-    cls = c->cls;
-    base = c->baseCls;
-    v = 0;
-    switch (slot) {
+    cls = character->cls;
+    secondary_class_id = character->baseCls;
+    equipment_id = 0;
+    switch (equipment_slot) {
         case 1:
-            v = c->items[0];
+            equipment_id = character->items[0];
             break;
         case 2:
-            v = c->items[1];
+            equipment_id = character->items[1];
             break;
         case 3:
-            v = c->items[2];
+            equipment_id = character->items[2];
             break;
         case 4:
-            v = c->items[3];
+            equipment_id = character->items[3];
             break;
     }
-    if (v == 0 && (slot != 0 & slot < 5)) {
-        v = D_80213068[slot](cls, base);
+    if (equipment_id == 0 && (equipment_slot != 0 & equipment_slot < 5)) {
+        equipment_id = D_80213068[equipment_slot](cls, secondary_class_id);
     }
-    return v;
+    return equipment_id;
 }

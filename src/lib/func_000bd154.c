@@ -11,15 +11,16 @@ typedef struct Data {
 
 typedef struct CharacterEntry {
     u8 unk_00[0x11];
-    u8 class_11;
-    u8 class_12;
+    u8 primary_class_id;
+    u8 secondary_class_id;
     u8 unk_13[0x25];
 } CharacterEntry;
 
 extern int func_0016B088(u8, u8, u8, u8, u8);
 extern CharacterEntry D_80193BC0[];
 
-int func_000bd154(int arg0)
+/* Collect member class results for the selected nine-slot assignment. */
+int func_000bd154(int assignment_index)
 {
     u8 values[5];
     register int index asm("$16");
@@ -28,15 +29,15 @@ int func_000bd154(int arg0)
     u8 *output;
     u8 *end;
     u8 *entry;
-    u8 item;
+    u8 character_index;
     CharacterEntry *characters;
     CharacterEntry *character;
     u8 result;
 
     index = 4;
     clear_output = &values[4];
-    arg0 &= 0xFFFF;
-    entry = (*(Data **)0x80196AF8)->entries[arg0].bytes;
+    assignment_index &= 0xFFFF;
+    entry = (*(Data **)0x80196AF8)->entries[assignment_index].bytes;
     do {
         *clear_output = 0;
         index--;
@@ -48,8 +49,8 @@ int func_000bd154(int arg0)
     output = values;
     end = values + 5;
     do {
-        item = (entry + index)[4];
-        should_process = (item != 0xFF) & ((int)output < (int)end);
+        character_index = (entry + index)[4];
+        should_process = (character_index != 0xFF) & ((int)output < (int)end);
         asm volatile("# Hybrid scope: retail uses a branch-likely so only the rejected path increments here.\n"
                      "# If should_process in $v0 is zero, beql skips the C success block and its annulled\n"
                      "# delay slot increments the $s0 entry index; the accepted path increments at the call.\n"
@@ -60,14 +61,14 @@ int func_000bd154(int arg0)
                      "# Restore normal assembler scheduling after the rejected-path branch.\n"
                      ".set reorder\n"
                      : "=r" (index) : "r" (should_process), "0" (index));
-        if (item >= 100) {
+        if (character_index >= 100) {
             character = D_80193BC0;
         } else {
-            character = (CharacterEntry *)((item * sizeof(CharacterEntry))
+            character = (CharacterEntry *)((character_index * sizeof(CharacterEntry))
                                             + (int)characters);
         }
-        result = func_0016DBD8(character->class_11,
-                               character->class_12);
+        result = func_0016DBD8(character->primary_class_id,
+                               character->secondary_class_id);
         index++;
         *output = result;
         output++;

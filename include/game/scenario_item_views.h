@@ -3,18 +3,19 @@
 
 #include "common/types.h"
 
-/* Shared address views used by the scenario item paths. Field names encode only
- * observed offsets; these are not complete behavioral type identifications. */
+/* Shared address views used by the scenario item paths. Members without a
+ * confirmed role retain their offset names. */
 typedef struct { s16 field00, field02, field04, field06; u16 field08; } ScenarioCursor;
 typedef struct {
     u8 members[5], positions[5], field0A, items[8], remaining[6];
 } ScenarioGroup;
 typedef struct {
-    u8 pad00[0x11], field11, field12, field13, pad14[2];
-    u16 field16, field18;
-    u8 pad1A, field1B;
-    u16 fields1C[6];
-    u8 field28, pad29[9], field32, field33, pad34[4];
+    /* The 0x38-byte character stride; +0x1C contains STR, VIT, INT, MEN, AGI and DEX. */
+    u8 name[0x11], primary_class_id, secondary_class_id, level, pad14[2];
+    u16 max_hp, hp;
+    u8 element, alignment;
+    u16 stats_1C[6];
+    u8 luck, pad29[9], fatigue, status_flags, pad34[4];
 } ScenarioCharacter;
 
 typedef struct { u16 field00; u8 field02, field03; } ScenarioInventory;

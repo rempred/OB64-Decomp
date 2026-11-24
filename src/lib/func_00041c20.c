@@ -20,74 +20,75 @@ extern unsigned char *func_0002C950(unsigned char *destination, const unsigned c
 extern s32 func_0002C9E0(const char *first, const char *second);
 extern void *resource_free(void *resource);
 
-void func_00041c20(s32 raw_mode, u8 record_index)
+/* Assign a character name and check randomly chosen names for collisions. */
+void func_00041c20(s32 table_mode, u8 record_index)
 {
-    u8 *record;
-    s32 code;
-    s32 attempts;
-    u32 selector;
+    u8 *character_bytes;
+    s32 primary_class_id;
+    s32 attempts_left;
+    u32 table_selector;
     u32 keys[3];
 
-    if ((u8)raw_mode == 0) {
-        record = g_func_0019554C_records_56[record_index].bytes;
+    if ((u8)table_mode == 0) {
+        character_bytes = g_func_0019554C_records_56[record_index].bytes;
     } else {
-        record = g_func_0019554C_records_52[record_index].bytes;
+        character_bytes = g_func_0019554C_records_52[record_index].bytes;
     }
 
-    code = record[0x11];
-    if (((u8)code < 0x51) || ((u32)(code - 0x72) < 3)) {
-      attempts = 0x20;
+    primary_class_id = character_bytes[0x11];
+    if (((u8)primary_class_id < 0x51) || ((u32)(primary_class_id - 0x72) < 3)) {
+      attempts_left = 0x20;
       /* Keep the byte mode as a word outside the retry loop. KMC otherwise
        * leaves the mode-one constant inside the conditional second scan. */
-      selector = (u8)raw_mode;
+      table_selector = (u8)table_mode;
       do {
-        u8 *decoded;
-        u8 *chosen;
-        s32 skip;
-        s32 duplicate;
-        s32 candidate;
-        u32 *key;
+        u8 *name_table;
+        u8 *chosen_name;
+        s32 names_to_skip;
+        s32 duplicate_name;
+        s32 other_index;
+        u32 *name_resource_key;
 
-        key = &keys[record[0x14]];
+        name_resource_key = &keys[character_bytes[0x14]];
         *(ResourceKeys *)keys = D_8018FEAC;
-        decoded = func_0002E138(*key);
-        skip = rand() % 256;
-        chosen = decoded;
-        while (skip != 0) {
-            while (*chosen++ != 0) {
+        name_table = func_0002E138(*name_resource_key);
+        names_to_skip = rand() % 256;
+        chosen_name = name_table;
+        while (names_to_skip != 0) {
+            while (*chosen_name++ != 0) {
             }
-            skip--;
+            names_to_skip--;
         }
 
-        func_80093380(record, 0x11);
-        func_0002C950(record, chosen);
-        resource_free(decoded);
-        attempts--;
+        func_80093380(character_bytes, 0x11);
+        func_0002C950(character_bytes, chosen_name);
+        resource_free(name_table);
+        attempts_left--;
 
-        duplicate = 0;
-        for (candidate = 1; candidate < 100; candidate++) {
-            if ((selector == 0) && (record_index != candidate) &&
-                (g_func_0019554C_records_56[candidate].bytes[0x11] != 0) &&
-                (func_0002C9E0((const char *)record,
-                                 (const char *)g_func_0019554C_records_56[candidate].bytes) == 0)) {
-                duplicate++;
+        duplicate_name = 0;
+        for (other_index = 1; other_index < 100; other_index++) {
+            if ((table_selector == 0) && (record_index != other_index) &&
+                (g_func_0019554C_records_56[other_index].bytes[0x11] != 0) &&
+                (func_0002C9E0((const char *)character_bytes,
+                                 (const char *)g_func_0019554C_records_56[other_index].bytes) == 0)) {
+                duplicate_name++;
                 break;
             }
         }
-        if (duplicate == 0) {
-            for (candidate = 1; candidate < 100; candidate++) {
-                if ((selector == 1) && (record_index != candidate) &&
-                    (g_func_0019554C_records_52[candidate].bytes[0x11] != 0) &&
-                    (func_0002C9E0((const char *)record,
-                                     (const char *)g_func_0019554C_records_52[candidate].bytes) == 0)) {
-                    duplicate++;
+        if (duplicate_name == 0) {
+            for (other_index = 1; other_index < 100; other_index++) {
+                if ((table_selector == 1) && (record_index != other_index) &&
+                    (g_func_0019554C_records_52[other_index].bytes[0x11] != 0) &&
+                    (func_0002C9E0((const char *)character_bytes,
+                                     (const char *)g_func_0019554C_records_52[other_index].bytes) == 0)) {
+                    duplicate_name++;
                     break;
                 }
             }
         }
-        attempts &= -(duplicate != 0);
-      } while (attempts != 0);
+        attempts_left &= -(duplicate_name != 0);
+      } while (attempts_left != 0);
     } else {
-        func_0002C950(record, (const u8 *)D_8018EA00[(u8)code]);
+        func_0002C950(character_bytes, (const u8 *)D_8018EA00[(u8)primary_class_id]);
     }
 }

@@ -1,4 +1,5 @@
 #include "game/scenario_item_views.h"
+/* These aliases address 0x38-byte persistent characters by member index. */
 #define CHARACTER_BYTE(id, offset) (*(u8 *)(0x80193BC0U + (id) * 56 + (offset)))
 #define CHARACTER_HALF(id, offset) (*(u16 *)(0x80193BC0U + (id) * 56 + (offset)))
 

@@ -40,14 +40,15 @@ extern SquadRec g_func_001957D0_source_records[];
 extern PlayerChar D_80193BC0_copy[];
 extern Character D_80195560_copy[];
 u8 *D_801E14C0(s32 side);
+/* Compare the first members' intelligence, favoring the side with a record when only one exists. */
 s32 func_0023370C(void) {
-    u8 *a = D_801E14C0(0);
-    u8 *b = D_801E14C0(1);
-    if (a != ((void *)0) && b == ((void *)0)) {
+    u8 *first_source = D_801E14C0(0);
+    u8 *second_source = D_801E14C0(1);
+    if (first_source != ((void *)0) && second_source == ((void *)0)) {
         return 0;
     }
-    if (a == ((void *)0) && b != ((void *)0)) {
+    if (first_source == ((void *)0) && second_source != ((void *)0)) {
         return 1;
     }
-    return D_80193BC0_copy[g_func_001957D0_source_records[a[2]].members[0]].c.intl < D_80195560_copy[g_func_001957D0_source_records[b[2]].members[0]].intl;
+    return D_80193BC0_copy[g_func_001957D0_source_records[first_source[2]].members[0]].c.intl < D_80195560_copy[g_func_001957D0_source_records[second_source[2]].members[0]].intl;
 }

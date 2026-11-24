@@ -36,12 +36,12 @@ static inline s32 descriptor_flag_present(RuntimeUnit *unit)
     if ((value == 0) | (value >= 100))
         return 0;
     {
-        s32 flags;
+        s32 status_bit;
         if (id < 30)
-            flags = FIELD(D_80193BD8 + value * 56, u8, 0x1B) & 4;
+            status_bit = FIELD(D_80193BD8 + value * 56, u8, 0x1B) & 4;
         else
-            flags = FIELD(D_80195578 + value * 52, u8, 0x1B) & 4;
-        result = flags != 0;
+            status_bit = FIELD(D_80195578 + value * 52, u8, 0x1B) & 4;
+        result = status_bit != 0;
     }
     return result;
 }

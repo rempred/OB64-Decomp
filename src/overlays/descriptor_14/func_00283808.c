@@ -9,20 +9,21 @@ typedef struct {
 extern EChar282 D_80195560_copy[];
 extern PChar282 D_80193BC0_copy[];
 extern char *D_8018EA00[];
-void *func_00283808(s32 id) {
-    s32 i;
-    for (i = 0; i < 100; i++) {
-        if (D_80195560_copy[i].b[0x11] == id) {
-            return &D_80195560_copy[i];
+/* Find a persistent character by primary class ID, with the fixed name table as fallback. */
+void *func_00283808(s32 primary_class_id) {
+    s32 character_index;
+    for (character_index = 0; character_index < 100; character_index++) {
+        if (D_80195560_copy[character_index].b[0x11] == primary_class_id) {
+            return &D_80195560_copy[character_index];
         }
     }
-    for (i = 0; i < 100; i++) {
-        if (D_80193BC0_copy[i].b[0x11] == id) {
-            return &D_80193BC0_copy[i];
+    for (character_index = 0; character_index < 100; character_index++) {
+        if (D_80193BC0_copy[character_index].b[0x11] == primary_class_id) {
+            return &D_80193BC0_copy[character_index];
         }
     }
-    if (id >= 0x54) {
-        return D_8018EA00[id];
+    if (primary_class_id >= 0x54) {
+        return D_8018EA00[primary_class_id];
     }
     return ((void *)0);
 }

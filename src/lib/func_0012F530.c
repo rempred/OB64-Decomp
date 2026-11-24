@@ -41,6 +41,7 @@ static inline s32 row_index_for_unit(RuntimeUnitSource *unit)
     return -1;
 }
 
+/* A first member within the character tables is present when its HP is nonzero. */
 static inline s32 first_record_present(RuntimeUnitSource *unit)
 {
     u32 source_index = unit->source_index;

@@ -39,35 +39,35 @@ extern void func_00210930(void);
 
 /* These source rows and scene actors have distinct, neutral byte layouts. */
 #define COPY_ROW(actor, source, sourceId) { \
-    u8 *copyRow = (source); u8 copied1B; int copiedClass, classIsOne; \
+    u8 *characterBytes = (source); u8 copiedAlignment; int secondaryClassId, classIsOne; \
     func_00023780((actor), 0xF8); \
-    WORD(actor,0x48) = BYTE(copyRow,0x11); \
-    copiedClass = BYTE(copyRow,0x12); \
+    WORD(actor,0x48) = BYTE(characterBytes,0x11); \
+    secondaryClassId = BYTE(characterBytes,0x12); \
     BYTE(actor,0xF6) = (sourceId); \
-    WORD(actor,0x4C) = copiedClass; \
-    BYTE(actor,0x31) = BYTE(copyRow,0x13); \
-    BYTE(actor,0x33) = BYTE(copyRow,0x1A); \
-    HALF(actor,0x22) = HALF(copyRow,0x16); \
-    HALF(actor,0x20) = HALF(copyRow,0x18); \
-    HALF(actor,0x24) = HALF(copyRow,0x1C); \
-    HALF(actor,0x26) = HALF(copyRow,0x1E); \
-    HALF(actor,0x28) = HALF(copyRow,0x20); \
-    HALF(actor,0x2A) = HALF(copyRow,0x22); \
-    HALF(actor,0x2C) = HALF(copyRow,0x24); \
-    HALF(actor,0x2E) = HALF(copyRow,0x26); \
-    BYTE(actor,0x30) = BYTE(copyRow,0x28); \
-    copied1B = BYTE(copyRow,0x1B); BYTE(actor,0x3F) = copied1B; \
-    BYTE(actor,0x34) = copied1B; \
-    HALF(actor,0x36) = HALF(copyRow,0x2A); \
-    HALF(actor,0x38) = HALF(copyRow,0x2C); \
-    HALF(actor,0x3A) = HALF(copyRow,0x2E); \
-    HALF(actor,0x3C) = HALF(copyRow,0x30); \
-    BYTE(actor,0x3E) = BYTE(copyRow,0x32); \
+    WORD(actor,0x4C) = secondaryClassId; \
+    BYTE(actor,0x31) = BYTE(characterBytes,0x13); \
+    BYTE(actor,0x33) = BYTE(characterBytes,0x1A); \
+    HALF(actor,0x22) = HALF(characterBytes,0x16); \
+    HALF(actor,0x20) = HALF(characterBytes,0x18); \
+    HALF(actor,0x24) = HALF(characterBytes,0x1C); \
+    HALF(actor,0x26) = HALF(characterBytes,0x1E); \
+    HALF(actor,0x28) = HALF(characterBytes,0x20); \
+    HALF(actor,0x2A) = HALF(characterBytes,0x22); \
+    HALF(actor,0x2C) = HALF(characterBytes,0x24); \
+    HALF(actor,0x2E) = HALF(characterBytes,0x26); \
+    BYTE(actor,0x30) = BYTE(characterBytes,0x28); \
+    copiedAlignment = BYTE(characterBytes,0x1B); BYTE(actor,0x3F) = copiedAlignment; \
+    BYTE(actor,0x34) = copiedAlignment; \
+    HALF(actor,0x36) = HALF(characterBytes,0x2A); \
+    HALF(actor,0x38) = HALF(characterBytes,0x2C); \
+    HALF(actor,0x3A) = HALF(characterBytes,0x2E); \
+    HALF(actor,0x3C) = HALF(characterBytes,0x30); \
+    BYTE(actor,0x3E) = BYTE(characterBytes,0x32); \
     if (!(actor)) { classIsOne = 0; } else { classIsOne = WORD(actor,0x4C) == 1; } \
     if (classIsOne) BYTE(actor,0x3E) = 0; \
-    if (BYTE(copyRow,0x33) & 2) FLAGS(actor) |= 0x200; \
-    if (BYTE(copyRow,0x33) & 4) FLAGS(actor) |= 2; \
-    BYTE(actor,0x32) = BYTE(copyRow,0x35); \
+    if (BYTE(characterBytes,0x33) & 2) FLAGS(actor) |= 0x200; \
+    if (BYTE(characterBytes,0x33) & 4) FLAGS(actor) |= 2; \
+    BYTE(actor,0x32) = BYTE(characterBytes,0x35); \
 }
 
 /* Each search observes presence, side, and enable in their original order. */

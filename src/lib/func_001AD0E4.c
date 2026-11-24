@@ -31,12 +31,12 @@ void func_001AD0E4(u16 item, s32 x, s32 y)
         eligible = 1;
         func_802027DC();
         if ((u8)member < 100) {
-            maximum = D_80193BC0[(u8)member].field16;
-            current = D_80193BC0[(u8)member].field18;
+            maximum = D_80193BC0[(u8)member].max_hp;
+            current = D_80193BC0[(u8)member].hp;
             cap = maximum;
             {
                 s32 usable = current != 0;
-                if (D_80193BC0[(u8)member].field33 & 4)
+                if (D_80193BC0[(u8)member].status_flags & 4)
                     usable = 0;
                 eligible = usable;
             }
@@ -151,17 +151,17 @@ void func_001AD0E4(u16 item, s32 x, s32 y)
         func_802027DC();
         func_80200DD0(x + 6, y + 0x42, 1);
         {
-            s32 number_x = D_80193BC0[member].field13 < 10 ? x + 0x30 : x + 0x2D;
-            u32 shown_field;
+            s32 number_x = D_80193BC0[member].level < 10 ? x + 0x30 : x + 0x2D;
+            u32 shown_level;
             masked_member = member & 0xFF;
-            shown_field = D_80193BC0[masked_member].field13;
+            shown_level = D_80193BC0[masked_member].level;
 
-            func_802001A8(number_x, y + 0x42, shown_field, 0);
+            func_802001A8(number_x, y + 0x42, shown_level, 0);
 
         }
         {
-            u16 shown_current = D_80193BC0[masked_member].field18;
-            u16 shown_maximum = D_80193BC0[masked_member].field16;
+            u16 shown_current = D_80193BC0[masked_member].hp;
+            u16 shown_maximum = D_80193BC0[masked_member].max_hp;
             func_802028A4(x + 6, y + 0x4C, shown_current, shown_maximum);
         }
         i = 0;

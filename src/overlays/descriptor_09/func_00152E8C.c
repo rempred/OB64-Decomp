@@ -29,12 +29,13 @@ extern PlayerChar D_80193BC0_copy[];
 extern Character D_80195560_copy[];
 extern u16 (*D_80213068[])(u8 cls, u8 base);
 u16 func_00152E8C(u8 side, u8 idx, u8 stat);
-u16 func_00152E8C(u8 side, u8 idx, u8 stat) {
-    Character *c;
-    if (side == 0) {
-        c = &D_80193BC0_copy[idx].c;
+/* Read the selected class default through the class lookup table. */
+u16 func_00152E8C(u8 table_mode, u8 character_index, u8 selector) {
+    Character *character;
+    if (table_mode == 0) {
+        character = &D_80193BC0_copy[character_index].c;
     } else {
-        c = &D_80195560_copy[idx];
+        character = &D_80195560_copy[character_index];
     }
-    return D_80213068[stat](c->cls, c->baseCls);
+    return D_80213068[selector](character->cls, character->baseCls);
 }

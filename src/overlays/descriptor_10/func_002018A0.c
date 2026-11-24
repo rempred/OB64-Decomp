@@ -32,16 +32,16 @@ typedef struct {
     u8 physDefense;
     u8 magicDefense;
     u8 promotions[4];
-    u8 baseClass;
+    u8 related_class_id;
     u8 element;
     u8 squadSlots;
 } ClassData;
 extern ClassData g_func_0019554C_class_records[];
 extern u8 (*D_801D068C)[2];
-u8 func_002018A0(s32 cls, s32 base) {
-    if (g_func_0019554C_class_records[cls].baseClass == base && D_801D068C[cls][1] == 0xFF &&
-        D_801D068C[base][1] == 0xFF) {
+u8 func_002018A0(s32 primary_class_id, s32 secondary_class_id) {
+    if (g_func_0019554C_class_records[primary_class_id].related_class_id == secondary_class_id && D_801D068C[primary_class_id][1] == 0xFF &&
+        D_801D068C[secondary_class_id][1] == 0xFF) {
         return 0;
     }
-    return D_801D068C[base][1];
+    return D_801D068C[secondary_class_id][1];
 }

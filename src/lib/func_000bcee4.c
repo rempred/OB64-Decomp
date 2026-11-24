@@ -21,7 +21,7 @@ void func_000bcee4(s32 character_slot)
     s32 record_offset;
     s32 final_offset;
     s32 sentinel;
-    u8 *class_table;
+    u8 *characters;
     u8 *equipment_table;
     register u8 *data asm("$2");
     register u8 *final_data asm("$4");
@@ -31,8 +31,8 @@ void func_000bcee4(s32 character_slot)
     u8 *equipment_cursor;
     u8 *character;
     u32 item;
-    u8 class_a;
-    u8 class_b;
+    u8 primary_class_id;
+    u8 secondary_class_id;
     u8 equipment_count;
     u16 value;
 
@@ -40,7 +40,7 @@ void func_000bcee4(s32 character_slot)
     index = 0;
     record_stride = (character_slot & 0xFF) * 54;
     sentinel = 0xFF;
-    class_table = D_80193BC0;
+    characters = D_80193BC0;
     record_offset = (character_slot & 0xFFFF) * 54;
     record_offset += 0x117C;
     record = *(u8 **)0x80196AF8 + record_offset;
@@ -77,17 +77,17 @@ scan_loop:
             "xori %1,%1,1 # invert that temporary so it means item is at least 100\n"
             "or %0,%0,%1 # combine zero and out-of-range into the invalid-item predicate\n"
             : "=r" (item_is_zero), "=r" (item_is_out_of_range));
-        class_b = 1;
+        secondary_class_id = 1;
         if (item_is_zero != 0) {
-            class_a = 1;
+            primary_class_id = 1;
         } else {
-            character = (u8 *)(item * 56 + (u32)class_table);
-            class_a = character[0x11];
-            class_b = character[0x12];
+            character = (u8 *)(item * 56 + (u32)characters);
+            primary_class_id = character[0x11];
+            secondary_class_id = character[0x12];
         }
     }
     index += 1;
-    total += func_00043100(class_a, class_b);
+    total += func_00043100(primary_class_id, secondary_class_id);
     asm volatile(
         "# Hybrid scope: this zero-byte local label is the invalid-entry branch target and starts the C loop test.\n"
         ".Lbcee4_scan_test:");

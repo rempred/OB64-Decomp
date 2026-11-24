@@ -41,17 +41,18 @@ typedef struct {
 extern SquadRec g_func_001957D0_source_records[];
 extern PlayerChar D_80193BC0_copy[];
 extern Character D_80195560_copy[];
+/* Check status bit 2 on the source's first persistent character. */
 inline s32 func_0012DA9C(void *unit) {
-    u8 sq = ((const u8 *)unit)[4];
-    s32 leader = g_func_001957D0_source_records[sq].members[0];
-    u8 st;
-    if (leader == 0 || leader >= 100) {
+    u8 source_index = ((const u8 *)unit)[4];
+    s32 member_index = g_func_001957D0_source_records[source_index].members[0];
+    u8 status_bit;
+    if (member_index == 0 || member_index >= 100) {
         return 0;
     }
-    if (sq < 30) {
-        st = D_80193BC0_copy[leader].c.status & 4;
+    if (source_index < 30) {
+        status_bit = D_80193BC0_copy[member_index].c.status & 4;
     } else {
-        st = D_80195560_copy[leader].status & 4;
+        status_bit = D_80195560_copy[member_index].status & 4;
     }
-    return st != 0;
+    return status_bit != 0;
 }

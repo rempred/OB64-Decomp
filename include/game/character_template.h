@@ -3,28 +3,29 @@
 
 #include "common/types.h"
 
+/* Packed scenario input used to construct runtime characters. */
 typedef struct CharacterTemplate {
-    u8 field_00;
-    u8 field_01;
-    u16 field_02;
-    s16 field_04;
-    u8 field_06;
-    u8 field_07;
-    u8 field_08;
-    u16 field_09;
-    s16 field_0B;
+    u8 main_class_id;
+    u8 main_level_offset;
+    u16 main_equipment_02;
+    s16 main_equipment_04;
+    u8 main_position;
+    u8 second_class_id;
+    u8 second_level_offset;
+    u16 second_equipment_09;
+    s16 second_equipment_0B;
     u8 field_0D[3];
-    u8 field_10;
-    u8 field_11;
-    u16 field_12;
-    s16 field_14;
+    u8 third_class_id;
+    u8 third_level_offset;
+    u16 third_equipment_12;
+    s16 third_equipment_14;
     u8 field_16[13];
 } __attribute__((packed)) CharacterTemplate;
 
 typedef char CharacterTemplate_size[sizeof(CharacterTemplate) == 0x23 ? 1 : -1];
 
-void func_0019554C(int record_index, const CharacterTemplate *source, int selector,
-                   u8 flag, int source_index);
+void func_0019554C(int record_index, const CharacterTemplate *source, int template_member,
+                   u8 force_52_byte_pool, int source_index);
 void func_001957D0(const CharacterTemplate *source, int source_index);
 
 #endif

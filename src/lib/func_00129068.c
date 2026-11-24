@@ -10,13 +10,14 @@ extern Record56 g_func_0019554C_records_56[];
 extern Record72 g_func_0019554C_class_records[];
 extern int func_00040f88(u8, u8, u8, u8, u8);
 
-int func_00129068(u8 *record)
+/* Combine movement types for the members of a source record. */
+int func_00129068(u8 *source_record)
 {
-    u8 values[5];
-    int i;
-    unsigned int value;
+    u8 movement_types[5];
+    int member_slot;
+    unsigned int member_or_class_id;
 
-    if (record[0] == 0x1F && D_8018F481 != 8) {
+    if (source_record[0] == 0x1F && D_8018F481 != 8) {
         return 7;
     }
     switch (D_8018F481) {
@@ -25,26 +26,26 @@ int func_00129068(u8 *record)
     case 0x2E:
     case 0x2F:
     case 0x3C:
-        if (record[0] == 0x20) {
+        if (source_record[0] == 0x20) {
             return 7;
         }
         break;
     }
-    for (i = 0; i < 5; i++) {
+    for (member_slot = 0; member_slot < 5; member_slot++) {
         /* This address form keeps the retail base/index order in addu. */
-        value = *(u8 *)((u32)record + i + 2);
-        if (value == 0) {
-            values[i] = 0;
-        } else if (value >= 100) {
-            values[i] = 2;
+        member_or_class_id = *(u8 *)((u32)source_record + member_slot + 2);
+        if (member_or_class_id == 0) {
+            movement_types[member_slot] = 0;
+        } else if (member_or_class_id >= 100) {
+            movement_types[member_slot] = 2;
         } else {
-            if (record[0] >= 0x1F) {
-                value = g_func_0019554C_records_52[value].bytes[0x12];
+            if (source_record[0] >= 0x1F) {
+                member_or_class_id = g_func_0019554C_records_52[member_or_class_id].bytes[0x12];
             } else {
-                value = g_func_0019554C_records_56[value].bytes[0x12];
+                member_or_class_id = g_func_0019554C_records_56[member_or_class_id].bytes[0x12];
             }
-            values[i] = g_func_0019554C_class_records[value].bytes[0x2C];
+            movement_types[member_slot] = g_func_0019554C_class_records[member_or_class_id].bytes[0x2C];
         }
     }
-    return (u8)func_00040f88(values[0], values[1], values[2], values[3], values[4]);
+    return (u8)func_00040f88(movement_types[0], movement_types[1], movement_types[2], movement_types[3], movement_types[4]);
 }

@@ -67,7 +67,7 @@ struct TerminalCommandRecord {
     TerminalCommandChild *first[3], *second[3], *extra18, *extra1C;
     u16 half20, half22;
     u8 gap24[12];
-    u8 byte30, byte31, byte32, byte33, byte34, byte35;
+    u8 byte30, byte31, experience, byte33, byte34, byte35;
     u16 half36, half38, half3A, half3C;
     u8 gap3E[2];
     u32 flags;
@@ -834,15 +834,16 @@ after_record_dispatch:
             record->byte34 += record->byteA5;
             break;
         case 0x35: /* 2209F4 */
-            record->byte32 += record->byteA5;
+            record->experience += record->byteA5;
             break;
         case 0x36: /* 220A08 */
             func_002267A8(record, record->byteA5, (record->byteA6 << 8) | record->byteA7);
             break;
         case 0x37: /* 220A2C */
             func_002267A8(record, 12, 0);
-            record->byte32 = 0;
+            record->experience = 0;
             func_0021C140(record);
+            /* Write back the battle state before leveling the persistent character. */
             character_apply_level_up(&D_80193BC0[record->byteF6].record);
             func_0021C074(record);
             break;
@@ -916,7 +917,7 @@ after_record_dispatch:
         }
         case 0x3A: { /* 220DC0 */
             int destinationIndex, sourceIndex;
-            u8 *unit;
+            u8 *character_bytes;
             destinationIndex = func_0020D72C(record);
             sourceIndex = record->byteA5;
             func_001F0F90(record->first[0]); func_001F1050(record->second[0]);
@@ -936,19 +937,19 @@ after_record_dispatch:
             if (record->extra18 != 0) record->extra18->owner = record;
             if (record->extra1C != 0) record->extra1C->owner = record;
             if (func_0020C014(record) != 0) {
-                if (D_801976DC < 30) unit = (u8 *)D_80193BC0 + record->byteF6 * 56;
-                else unit = (u8 *)D_80195560 + record->byteF6 * 52;
+                if (D_801976DC < 30) character_bytes = (u8 *)D_80193BC0 + record->byteF6 * 56;
+                else character_bytes = (u8 *)D_80195560 + record->byteF6 * 52;
             } else {
-                if (D_801976E8 < 30) unit = (u8 *)D_80193BC0 + record->byteF6 * 56;
-                else unit = (u8 *)D_80195560 + record->byteF6 * 52;
+                if (D_801976E8 < 30) character_bytes = (u8 *)D_80193BC0 + record->byteF6 * 56;
+                else character_bytes = (u8 *)D_80195560 + record->byteF6 * 52;
             }
             {
-                int secondValue;
-                unit[0x11] = record->word48;
-                secondValue = record->word4C;
-                SHORT_AT(unit, 0x30) = 0; SHORT_AT(unit, 0x2E) = 0;
-                SHORT_AT(unit, 0x2C) = 0; SHORT_AT(unit, 0x2A) = 0;
-                unit[0x12] = secondValue;
+                int secondaryClassId;
+                character_bytes[0x11] = record->word48;
+                secondaryClassId = record->word4C;
+                SHORT_AT(character_bytes, 0x30) = 0; SHORT_AT(character_bytes, 0x2E) = 0;
+                SHORT_AT(character_bytes, 0x2C) = 0; SHORT_AT(character_bytes, 0x2A) = 0;
+                character_bytes[0x12] = secondaryClassId;
             }
             record->half36 = func_00043e88(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
             record->half38 = func_00043edc(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));

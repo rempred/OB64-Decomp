@@ -33,8 +33,8 @@ s32 func_000bf9c8(s32 arg0, s32 arg1)
     register s32 matched asm("$3");
     register s32 sum_offset asm("$2");
     register u32 arg3 asm("$7");
-    u8 class_a;
-    u8 class_b;
+    u8 primary_class_id;
+    u8 secondary_class_id;
     u16 first_value;
 
     func_00023780(&stack_data, 8);
@@ -101,12 +101,12 @@ first_default:
 first_selected:
         arg3 = offset_or_count + table_or_sentinel;
         *(volatile u16 *)slot_or_item = first_value;
-        class_a = ((u8 *)arg3)[0x11];
-        class_b = ((u8 *)arg3)[0x12];
+        primary_class_id = ((u8 *)arg3)[0x11];
+        secondary_class_id = ((u8 *)arg3)[0x12];
         asm volatile(
             "# Hybrid scope: this zero-byte barrier keeps the two class-byte loads before the following selector mask.\n"
             "# The input constraints emit no instructions; they only preserve retail's argument-load schedule.\n"
-            : : "r" (class_a), "r" (class_b));
+            : : "r" (primary_class_id), "r" (secondary_class_id));
 
         selector = first_selector & 0xFF;
         if (selector == two_or_value_base) {
@@ -141,7 +141,7 @@ second_selected:
             ((selector != 0) & ((u32)selector < 5U))) {
             arg3 = (*(s32 (**)(u8, u8, u32, u32))
                 (0x801EF284 + (selector * 4)))(
-                    class_a, class_b, selector, arg3);
+                    primary_class_id, secondary_class_id, selector, arg3);
         }
         asm volatile(
             "# Hybrid scope: these five instructions store the generated value and remove an unchanged duplicate.\n"

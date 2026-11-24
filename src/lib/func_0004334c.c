@@ -10,15 +10,15 @@ typedef struct ClassEntry {
 } ClassEntry;
 
 
-u16 func_0004334c(int arg0, int arg1)
+u16 func_0004334c(int primary_class_id, int secondary_class_id)
 {
     ClassEntry *classes;
     int primary_class;
     int alternate_class;
 
     classes = (ClassEntry *)0x80187C18;
-    primary_class = arg0 & 0xFF;
-    alternate_class = arg1 & 0xFF;
+    primary_class = primary_class_id & 0xFF;
+    alternate_class = secondary_class_id & 0xFF;
     if (classes[primary_class].related_class_41 == alternate_class) {
         return classes[primary_class].base_hp_04;
     }

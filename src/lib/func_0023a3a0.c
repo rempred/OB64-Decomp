@@ -5,67 +5,68 @@
 
 extern ClassEntry D_80187C40[];
 extern unsigned char *func_8009C550(unsigned char *destination, const unsigned char *source);
-extern u8 func_8016F5C8(s32 value);
-extern u8 func_8016DE70(s32 first, s32 second);
+extern u8 func_8016F5C8(s32 target_level);
+extern u8 func_8016DE70(s32 primary_class_id, s32 secondary_class_id);
 extern int func_8009C7CC(void);
 
-void func_0023A3A0(CharacterRecord *record, u32 kind, s32 value,
-                   u32 field_a, u32 field_b)
+/* Build a 0x34-byte character from class defaults and optional overrides. */
+void func_0023A3A0(CharacterRecord *character, u32 class_id, s32 target_level,
+                   u32 first_equipment_override, u32 second_equipment_override)
 {
-    u32 related = D_80187C40[kind].related_class_19;
-    u8 category;
-    u32 final_category;
+    u32 secondary_class_id = D_80187C40[class_id].related_class_19;
+    u8 equipment_category;
+    u32 body_code;
 
-    if (related == 0) {
-        related = kind;
+    if (secondary_class_id == 0) {
+        secondary_class_id = class_id;
     }
-    func_8009C550(record->field_00, func_8016E1DC((u8)kind, (u8)related));
-    record->field_11 = kind;
-    record->field_12 = related;
-    record->field_13 = value;
-    record->field_2A = func_8016DF88((u8)kind, (u8)related);
-    record->field_2C = func_8016DFDC((u8)kind, (u8)related);
-    record->field_2E = func_8016E030((u8)kind, (u8)related);
-    record->field_30 = func_8016E084((u8)kind, (u8)related);
+    func_8009C550(character->name, func_8016E1DC((u8)class_id, (u8)secondary_class_id));
+    character->primary_class_id = class_id;
+    character->secondary_class_id = secondary_class_id;
+    character->level = target_level;
+    character->equipment_slot_0 = func_8016DF88((u8)class_id, (u8)secondary_class_id);
+    character->equipment_slot_1 = func_8016DFDC((u8)class_id, (u8)secondary_class_id);
+    character->equipment_slot_2 = func_8016E030((u8)class_id, (u8)secondary_class_id);
+    character->equipment_slot_3 = func_8016E084((u8)class_id, (u8)secondary_class_id);
 
-    if (field_a != 0) {
-        category = func_8016F5C8((u16)field_a);
-        if (func_8016F5C8(record->field_2A) == category) {
-            record->field_2A = field_a;
+    if (first_equipment_override != 0) {
+        equipment_category = func_8016F5C8((u16)first_equipment_override);
+        if (func_8016F5C8(character->equipment_slot_0) == equipment_category) {
+            character->equipment_slot_0 = first_equipment_override;
         }
-        if (func_8016F5C8(record->field_2C) == category) {
-            record->field_2C = field_a;
+        if (func_8016F5C8(character->equipment_slot_1) == equipment_category) {
+            character->equipment_slot_1 = first_equipment_override;
         }
-        if (func_8016F5C8(record->field_2E) == category) {
-            record->field_2E = field_a;
+        if (func_8016F5C8(character->equipment_slot_2) == equipment_category) {
+            character->equipment_slot_2 = first_equipment_override;
         }
-        if (func_8016F5C8(record->field_30) == category) {
-            record->field_30 = field_a;
-        }
-    }
-    if (field_b != 0) {
-        category = func_8016F5C8((u16)field_b);
-        if (func_8016F5C8(record->field_2A) == category) {
-            record->field_2A = field_b;
-        }
-        if (func_8016F5C8(record->field_2C) == category) {
-            record->field_2C = field_b;
-        }
-        if (func_8016F5C8(record->field_2E) == category) {
-            record->field_2E = field_b;
-        }
-        if (func_8016F5C8(record->field_30) == category) {
-            record->field_30 = field_b;
+        if (func_8016F5C8(character->equipment_slot_3) == equipment_category) {
+            character->equipment_slot_3 = first_equipment_override;
         }
     }
-    func_8016F11C(record, (u8)value);
-    func_000FC120(1, record - D_80195560);
-    final_category = func_8016DE70((u8)kind, (u8)related);
-    if (final_category == 3) {
-        record->field_14 = 0;
-    } else if (final_category == 4) {
-        record->field_14 = func_8009C7CC() & 1;
+    if (second_equipment_override != 0) {
+        equipment_category = func_8016F5C8((u16)second_equipment_override);
+        if (func_8016F5C8(character->equipment_slot_0) == equipment_category) {
+            character->equipment_slot_0 = second_equipment_override;
+        }
+        if (func_8016F5C8(character->equipment_slot_1) == equipment_category) {
+            character->equipment_slot_1 = second_equipment_override;
+        }
+        if (func_8016F5C8(character->equipment_slot_2) == equipment_category) {
+            character->equipment_slot_2 = second_equipment_override;
+        }
+        if (func_8016F5C8(character->equipment_slot_3) == equipment_category) {
+            character->equipment_slot_3 = second_equipment_override;
+        }
+    }
+    func_8016F11C(character, (u8)target_level);
+    func_000FC120(1, character - D_80195560);
+    body_code = func_8016DE70((u8)class_id, (u8)secondary_class_id);
+    if (body_code == 3) {
+        character->gender = 0;
+    } else if (body_code == 4) {
+        character->gender = func_8009C7CC() & 1;
     } else {
-        record->field_14 = final_category;
+        character->gender = body_code;
     }
 }

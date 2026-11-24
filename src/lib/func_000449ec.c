@@ -1,33 +1,34 @@
 #include "game/character_record.h"
 #include "game/class_field_lookups.h"
 
-s32 func_000449ec(CharacterRecord *arg0, s32 arg1)
+/* Return the selected slot's equipment, falling back to the class default. */
+s32 func_000449ec(CharacterRecord *character, s32 slot_word)
 {
     s32 slot;
-    s32 equipment;
-    u16 equipment_value;
+    s32 equipment_id;
+    u16 equipped_id;
 
-    slot = arg1 & 0xFF;
-    equipment = 0;
+    slot = slot_word & 0xFF;
+    equipment_id = 0;
     switch (slot) {
     case 0:
-        equipment = arg0->field_2A;
+        equipment_id = character->equipment_slot_0;
         break;
     case 1:
-        equipment = arg0->field_2C;
+        equipment_id = character->equipment_slot_1;
         break;
     case 2:
-        equipment = arg0->field_2E;
+        equipment_id = character->equipment_slot_2;
         break;
     case 3:
-        equipment = arg0->field_30;
+        equipment_id = character->equipment_slot_3;
         break;
     }
 
-    equipment_value = equipment & 0xFFFF;
-    if (equipment_value == 0) {
-        equipment = g_func_0018B494_equipment_selectors[arg1 & 0xFF](
-            arg0->field_11, arg0->field_12);
+    equipped_id = equipment_id & 0xFFFF;
+    if (equipped_id == 0) {
+        equipment_id = g_func_0018B494_equipment_selectors[slot_word & 0xFF](
+            character->primary_class_id, character->secondary_class_id);
     }
-    return equipment & 0xFFFF;
+    return equipment_id & 0xFFFF;
 }
