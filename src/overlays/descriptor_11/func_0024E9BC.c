@@ -14,9 +14,8 @@ static __inline__ u8 e08_index_kind(u8 index)
 
 void func_0024E9BC(s32 argument, u8 index, s32 value)
 {
-    u32 complemented;
+    s16 found = D_80209700[e08_index_kind(index)](index) >= 0;
 
-    complemented = ~D_80209700[e08_index_kind(index)](index);
-    value = value * 2 + (complemented >> 31);
+    value = value * 2 + found;
     func_00208DC8((void *)argument, D_801CEF10[value]);
 }

@@ -17,19 +17,15 @@ void func_0024C428(u8 *output, u8 index)
 {
     s16 i;
     s16 count;
-    s32 base;
-    u8 position;
-    u8 kind;
+    s32 found = D_80209700[p05_index_kind(index)](index) >= 0;
+    s32 base = found * 18 + 20;
 
-    kind = p05_index_kind(index);
-    base = ((u32)~D_80209700[kind](index) >> 31) * 18 + 20;
-    i = 0;
-    count = 0;
-    do {
-        position = i + base;
+    for (i = 0, count = 0; i < 9; i++) {
+        u8 position = i + base;
+
         if (func_0020D654((position - 20) % 3, (position - 20) / 3) == -1) {
             output[count++] = position;
         }
-    } while (++i < 9);
+    }
     output[count] = 0xFF;
 }

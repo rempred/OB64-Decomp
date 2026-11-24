@@ -1,11 +1,9 @@
-int func_0005c110(int arg0) {
-    int temp_v1_11;
-    int var_v1_8;
+#include "common/types.h"
 
-    var_v1_8 = arg0;
-    if (arg0 < 0) {
-        var_v1_8 = arg0 + 7;
-    }
-    temp_v1_11 = var_v1_8 >> 3;
-    return ((int) (*(unsigned char *)((signed char *)((temp_v1_11 + 0x80190000)) + (0x7168))) >> (arg0 - (temp_v1_11 * 8))) & 1;
+/* Game flags, one bit per flag, at a fixed address. */
+#define GAME_FLAGS ((u8 *)0x80197168)
+
+s32 func_0005c110(s32 flag)
+{
+    return (GAME_FLAGS[flag / 8] >> (flag % 8)) & 1;
 }
