@@ -19,7 +19,7 @@ typedef struct P02State27109C {
     s32 value_24;
 } P02State27109C;
 
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 
 
 extern void func_0020BDCC(s16, s32);
@@ -38,7 +38,7 @@ void  func_0027109C(void *stateView)
     s32 value;
 
     func_0026C834(state->value_1C, &position);
-    func_0020C478(state->value_1C);
+    battle_roster_lookup_actor(state->value_1C);
     func_0025F058(D_80220EE0, matrix);
     object = func_00269798(0x5A);
     destination = object->value_1C;

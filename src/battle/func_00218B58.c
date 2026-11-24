@@ -20,7 +20,7 @@ typedef s64 M2C_UNK64;
 f32 func_001FF7EC(s16, s16);                                    
 f32 func_002016F4(s32, s32);                                    
 void func_0020BD5C(s32 selector);                                 
-void *func_0020C478(unsigned int index);                                      
+void *battle_roster_lookup_actor(unsigned int index);
 void func_0021824C(s32 *, s32 *, s32 *, s32 *);
 extern void *D_801CE8BC;
 extern u8 D_801CEAAB;
@@ -61,11 +61,11 @@ void func_00218B58(void)
     }
     first_one = 1;
 loop_2:
-    actor = func_0020C478(var_s2_24);
-    if (func_0020C2C0(actor) != 0) {
+    actor = battle_roster_lookup_actor(var_s2_24);
+    if (battle_actor_is_absent_or_has_flag_0(actor) != 0) {
         goto block_26;
     }
-    if (func_0020C32C(actor) != 0) {
+    if (battle_actor_has_flag_1(actor) != 0) {
         goto block_26;
     }
     if ((actor->hp) != 0) {
@@ -75,7 +75,7 @@ loop_2:
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != first_one) {
         goto block_7;
     }
-    if (func_0020C014(actor) != 0) {
+    if (battle_actor_is_side_zero(actor) != 0) {
         child_slot = (s8 *) actor;
         goto block_10;
     }
@@ -83,7 +83,7 @@ block_7:
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != 2) {
         goto block_26;
     }
-    if (func_0020BFF8(actor) == 0) {
+    if (battle_actor_is_side_one(actor) == 0) {
         goto block_26;
     }
     child_slot = (s8 *) actor;
@@ -93,7 +93,7 @@ loop_11:
     if (*(void **) child_slot == 0) {
         goto block_25;
     }
-    if (func_0020C014(actor) == 0) {
+    if (battle_actor_is_side_zero(actor) == 0) {
         goto block_16;
     }
     var_v1_72 = sp10;
@@ -101,7 +101,7 @@ loop_11:
         goto block_22;
     }
 block_16:
-    if (func_0020BFF8(actor) != 0) {
+    if (battle_actor_is_side_one(actor) != 0) {
         goto block_18;
     }
     goto block_25;
@@ -160,11 +160,11 @@ block_35:
 block_37:
     var_s3_221 = 0;
 loop_38:
-    checked_actor = func_0020C478(var_s3_221);
-    if (func_0020C2C0(checked_actor) != 0) {
+    checked_actor = battle_roster_lookup_actor(var_s3_221);
+    if (battle_actor_is_absent_or_has_flag_0(checked_actor) != 0) {
         goto block_50;
     }
-    if (func_0020C32C(checked_actor) != 0) {
+    if (battle_actor_has_flag_1(checked_actor) != 0) {
         goto block_50;
     }
     if ((checked_actor->hp) != 0) {
@@ -173,25 +173,25 @@ loop_38:
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != 1) {
         goto block_43;
     }
-    if (func_0020C014(checked_actor) != 0) {
+    if (battle_actor_is_side_zero(checked_actor) != 0) {
         goto block_45;
     }
 block_43:
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != 2) {
         goto block_50;
     }
-    if (func_0020BFF8(checked_actor) == 0) {
+    if (battle_actor_is_side_one(checked_actor) == 0) {
         goto block_50;
     }
 block_45:
-    if (func_0020C014(checked_actor) == 0) {
+    if (battle_actor_is_side_zero(checked_actor) == 0) {
         goto block_47;
     }
     if (((sp10 == 0) | (sp10 == 3)) != 0) {
         goto block_50;
     }
 block_47:
-    if (func_0020BFF8(checked_actor) == 0) {
+    if (battle_actor_is_side_one(checked_actor) == 0) {
         goto block_49;
     }
     if (((sp14 == 0) | (sp14 == 3)) != 0) {
@@ -222,14 +222,14 @@ block_55:
     later_one = 1;
     later_two = 2;
 loop_56:
-    actor = func_0020C478(var_s3_221);
-    if (func_0020C2C0(actor) != 0) {
+    actor = battle_roster_lookup_actor(var_s3_221);
+    if (battle_actor_is_absent_or_has_flag_0(actor) != 0) {
         goto block_81;
     }
-    if (func_0020C32C(actor) != 0) {
+    if (battle_actor_has_flag_1(actor) != 0) {
         goto block_81;
     }
-    if (func_0020C0CC(actor) != 0) {
+    if (battle_actor_has_flag_12(actor) != 0) {
         goto block_81;
     }
     if ((actor->hp) != 0) {
@@ -238,14 +238,14 @@ loop_56:
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != later_one) {
         goto block_62;
     }
-    if (func_0020C014(actor) != 0) {
+    if (battle_actor_is_side_zero(actor) != 0) {
         goto block_64;
     }
 block_62:
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != later_two) {
         goto block_81;
     }
-    if (func_0020BFF8(actor) == 0) {
+    if (battle_actor_is_side_one(actor) == 0) {
         goto block_81;
     }
 block_64:
@@ -255,7 +255,7 @@ loop_65:
     if ((*(void **)((s8 *)(raised_child_slot) + (0))) == 0) {
         goto block_80;
     }
-    if (func_0020C014(actor) == 0) {
+    if (battle_actor_is_side_zero(actor) == 0) {
         goto block_71;
     }
     if (sp10 != later_one) {

@@ -27,8 +27,8 @@ extern void func_00262830(s16);
 extern void func_00262C64(s16, s16);
 
 extern s32 func_0026285C(void *, u16);
-extern void *func_0020C478(u32);
-extern s32 func_0020C014(void *);
+extern void *battle_roster_lookup_actor(u32);
+extern s32 battle_actor_is_side_zero(void *);
 
 typedef struct P02StateD918 P02StateD918;
 extern u8 *p01_context_80220F68;
@@ -72,7 +72,7 @@ s32 func_0026ee18(u16 message, P02RootState *state)
         func_0026285C(temporary, 0x1007);
         state->value_18 = temporary;
         state->value_20 = func_0026F548(
-            func_0020C014(func_0020C478(state->value_04[0])), 20);
+            battle_actor_is_side_zero(battle_roster_lookup_actor(state->value_04[0])), 20);
         state->value_0C = state->value_10 = state->value_14 = 0;
         value = 0x38;
         switch (state->value_00) {

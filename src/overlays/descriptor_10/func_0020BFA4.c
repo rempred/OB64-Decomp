@@ -24,10 +24,10 @@ u8 func_0020BFA4(BattleUnit *u) {
     if (u == ((void *)0)) {
         return 0;
     }
-    p = func_0020C014(u) ? D_801976DC[0].b : D_801976DC[1].b;
+    p = battle_actor_is_side_zero(u) ? D_801976DC[0].b : D_801976DC[1].b;
     return p[1] & 2;
 }
-extern inline int func_0020C014(void *record) {
+extern inline int battle_actor_is_side_zero(void *record) {
     BattleUnit *u = record;
 
     if (u == ((void *)0)) {

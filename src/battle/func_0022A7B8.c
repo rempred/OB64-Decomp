@@ -5,9 +5,9 @@ typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-s32 func_0020C104(void *record);
-s32 func_0020C2C0(void *record);
-void *func_0020C478(unsigned int index);
+s32 battle_actor_secondary_class_is_one(void *record);
+s32 battle_actor_is_absent_or_has_flag_0(void *record);
+void *battle_roster_lookup_actor(unsigned int index);
 s32 func_0020D444(s32, s32);
 s32 func_002224F4(void);
 void func_0022A414(void *record);
@@ -23,7 +23,7 @@ void func_0022A7B8(void *record, s32 unused1, s32 field94, s32 amount, s32 unuse
     s32 remaining;
     s32 updated;
     BattleRosterRecord *entry;
-    if (func_0020C104(record) != 0) {
+    if (battle_actor_secondary_class_is_one(record) != 0) {
         remaining = ((BattleRosterRecord *)record)->hp;
         if (amount >= remaining) {
             clearIndex = 0;
@@ -76,8 +76,8 @@ store_remaining:
     first = 0;
     if ((u16)result) {
         do {
-            entry = func_0020C478(first);
-            result = func_0020C2C0(entry);
+            entry = battle_roster_lookup_actor(first);
+            result = battle_actor_is_absent_or_has_flag_0(entry);
             first++;
             if (result == 0) {
                 entry->actions_used = entry->action_limit;

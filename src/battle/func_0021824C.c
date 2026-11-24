@@ -2,9 +2,9 @@ typedef signed int s32;
 typedef unsigned char u8;
 typedef unsigned short u16;
 
-s32 func_0020BFF8(void *);
+s32 battle_actor_is_side_one(void *);
 s32 func_0020C24C(void *record);
-void *func_0020C478(unsigned int index);
+void *battle_roster_lookup_actor(unsigned int index);
 
 void func_0021824C(s32 *out0, s32 *out1, s32 *out2, s32 *out3)
 {
@@ -79,8 +79,8 @@ void func_0021824C(s32 *out0, s32 *out1, s32 *out2, s32 *out3)
 
     i = 0;
     do {
-        record = func_0020C478(i);
-        if (func_0020BFF8(record) != 0) {
+        record = battle_roster_lookup_actor(i);
+        if (battle_actor_is_side_one(record) != 0) {
             if (func_0020C24C(record) != 0) {
                 if (*(u16 *)(*(u8 **)0x801CE8BC + 0x606A) == 0) {
                     *out1 = 0;

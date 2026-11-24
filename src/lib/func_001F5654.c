@@ -33,8 +33,8 @@ extern int func_00205484(int, int, int, int, int, u32, CombatPoseIndexedRecord *
 extern void func_00205760(int);
 extern void func_00205778(int);
 extern void *func_00206BE0(int, int, CombatPoseIndexedRecord *, int, int, int, u8 *);
-extern int func_0020BFF8(void *);
-extern int func_0020C034(void *);
+extern int battle_actor_is_side_one(void *);
+extern int battle_actor_has_flag_10(void *);
 extern u16 func_0020C448(void *);
 extern void guMtxF2L(float [4][4], DrawMatrix *);
 extern void guScale(DrawMatrix *, float, float, float);
@@ -106,16 +106,16 @@ int func_001F5654(void *object)
     PAIR(0xF2000000 | FIELD((0u - (D_801CE8BC->field6080 & 15)) << 2, 0, 12),
          0x01040000 | FIELD((0u - ((D_801CE8BC->field6080 & 15) + 16)) << 2, 0, 12));
     while (1) {
-        bit10 = func_0020C034(actor);
-        if (!func_00205484(firstId, secondId, bit10, func_0020BFF8(actor),
+        bit10 = battle_actor_has_flag_10(actor);
+        if (!func_00205484(firstId, secondId, bit10, battle_actor_is_side_one(actor),
                            poseId, index, &decoded)) {
             break;
         }
         if (pose->items[index] != 0) {
             func_00205778(2);
-            bit8 = func_0020BFF8(actor);
+            bit8 = battle_actor_is_side_one(actor);
             image = (u8 *)func_00206BE0(firstId, secondId, &decoded, bit8,
-                                  func_0020C034(actor), variant, 0);
+                                  battle_actor_has_flag_10(actor), variant, 0);
             func_00205760(2);
             header = (DrawImage *)image;
             capacity = 3840 / (int)func_00201E38(header->format, header->width);

@@ -67,7 +67,7 @@ extern unsigned char D_801E5E0F[];
 void func_001F0E64(Func001F0E64Record *, unsigned int);
 float func_001FF7EC(short, short);
 int func_0020BFE4(void);
-void *func_0020C478(unsigned int);
+void *battle_roster_lookup_actor(unsigned int);
 void func_0020C6C4(unsigned char *, int *, int *);
 void func_0020F3D4(void);
 void func_0021E99C(TerminalCopyState *, TerminalCopyState *);
@@ -83,10 +83,10 @@ int func_002213DC(TerminalUpdateContext *);
                 phase = first->phase; \
                 if (phase < 3) { \
                     x = first->currentX; \
-                    first->currentX = func_0020C014(context) ? x + 2 : x - 2; \
+                    first->currentX = battle_actor_is_side_zero(context) ? x + 2 : x - 2; \
                 } else if (phase < 6) { \
                     x = first->currentX; \
-                    first->currentX = func_0020C014(context) ? x - 2 : x + 2; \
+                    first->currentX = battle_actor_is_side_zero(context) ? x - 2 : x + 2; \
                 } \
                 first->phase = (unsigned int)first->phase + 1u; \
             } \
@@ -116,7 +116,7 @@ void func_002215D0(void)
         D_801CE8C8++;
     }
     for (index = 0; index < 20; index++) {
-        context = func_0020C478(index);
+        context = battle_roster_lookup_actor(index);
         if (context == 0) continue;
         switch (context->state) {
         case 1:
@@ -161,7 +161,7 @@ void func_002215D0(void)
         }
         case 12: {
             TerminalDispatchChild *first; int phase, x;
-            if (func_0020C32C(context) != 0) {
+            if (battle_actor_has_flag_1(context) != 0) {
                 WOBBLE_CHILDREN();
             }
             break;
@@ -169,7 +169,7 @@ void func_002215D0(void)
         case 50: {
             int flag; unsigned int j;
             flag = 0;
-            if (func_0020C014(context) != 0) {
+            if (battle_actor_is_side_zero(context) != 0) {
                 for (j = 0; j < 3u; j++) {
                     TerminalDispatchChild *first;
                     first = context->first[j];
@@ -363,7 +363,7 @@ void func_002215D0(void)
         }
         case 57: {
             TerminalDispatchContext *target; TerminalDispatchChild *first, *second; int value;
-            target = func_0020C478(context->byteA6);
+            target = battle_roster_lookup_actor(context->byteA6);
             {
                 TerminalDispatchChild *payloadSource = context->first[0];
                 if (payloadSource->payload.bytes[1] != 0)

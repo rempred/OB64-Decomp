@@ -6,8 +6,8 @@ typedef short s16;
 
 extern unsigned int func_00204F34(int, int, int, int, unsigned int, unsigned int,
                                  u8 *, u8 *, u8 *);
-extern int func_0020BFF8(void *);
-extern int func_0020C034(void *);
+extern int battle_actor_is_side_one(void *);
+extern int battle_actor_has_flag_10(void *);
 extern void *func_0002CD70(void *, int, unsigned int);
 extern void func_80093380(void *, unsigned int);
 
@@ -25,10 +25,10 @@ int func_001F197C(void *object, Func001F197CState *state, int *out)
     if ((s16)((s16)state->field04 % 50) != 0) {
         do {
             ++state->field06;
-            mode = func_0020C034(object);
+            mode = battle_actor_has_flag_10(object);
             switch (func_00204F34(*(int *)((u8 *)object + 0x48),
                                   *(int *)((u8 *)object + 0x4C), mode,
-                                  func_0020BFF8(object), (s16)state->field04,
+                                  battle_actor_is_side_one(object), (s16)state->field04,
                                   state->field06, &byte0, &byte1, &byte2) & 255) {
             case 1:
                 total += byte1;

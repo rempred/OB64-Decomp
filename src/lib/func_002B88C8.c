@@ -24,8 +24,8 @@ typedef struct BriefingScene {
 
 extern u8 *D_801CE8BC;
 extern BriefingScene *D_8022A974;
-extern s32 func_0020BFF8(void *row);
-extern s32 func_0020C0E8(void *row);
+extern s32 battle_actor_is_side_one(void *row);
+extern s32 battle_actor_has_flag_9(void *row);
 extern void func_002B867C(BriefingRow *row, s32 rowIndex, s32 mode, s32 field48,
                          s32 field4C, u8 anchor, s16 animation);
 
@@ -38,8 +38,8 @@ s32 func_002B88C8(s16 anchor, s16 animation)
     do {
         BriefingRow *row = (BriefingRow *)(D_801CE8BC + 0x1C4 + rowIndex * (s32)sizeof(BriefingRow));
 
-        if (row->field48 != 0 && func_0020BFF8(row) == 0 &&
-            func_0020C0E8(row) != 0 &&
+        if (row->field48 != 0 && battle_actor_is_side_one(row) == 0 &&
+            battle_actor_has_flag_9(row) != 0 &&
             *(BriefingActor **)((u8 *)D_8022A974->actors + anchorOffset) != 0) {
             func_002B867C(row, rowIndex, row->field58 < 4, row->field48,
                           row->field4C, anchorByte, animation);

@@ -7,7 +7,7 @@ void *func_80070F30(unsigned int size);
 void *func_800712C4(void *pointer);
 void func_00023460(void *destination, void *source, int size);
 void func_801EFAAC(void);
-void func_0021C3B0(void);
+void battle_roster_write_back_members(void);
 
 void func_002158E4(void)
 {
@@ -40,5 +40,5 @@ void func_002158E4(void)
     func_00023460(snapshot + 0x52C0, (u8 *)D_801CE8BC + 0x52C0, 0x400);
     *(int *)((u8 *)D_801CE8BC + 0x56C0) = *(int *)(snapshot + 0x56C0);
     func_800712C4(snapshot);
-    func_0021C3B0();
+    battle_roster_write_back_members();
 }

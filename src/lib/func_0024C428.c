@@ -3,7 +3,7 @@
 #include "game/effect_presentation_p04.h"
 
 extern s32 (*D_80209700[])(u8);
-extern s32 func_0020D654(u32, s32);
+extern s32 battle_roster_find_actor_index_at_position(u32, s32);
 
 static __inline__ u8 p05_index_kind(u8 index)
 {
@@ -27,7 +27,7 @@ void func_0024C428(u8 *output, u8 index)
     count = 0;
     do {
         position = i + base;
-        if (func_0020D654((position - 20) % 3, (position - 20) / 3) == -1) {
+        if (battle_roster_find_actor_index_at_position((position - 20) % 3, (position - 20) / 3) == -1) {
             output[count++] = position;
         }
     } while (++i < 9);

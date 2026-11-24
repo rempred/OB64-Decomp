@@ -12,7 +12,7 @@ u8 func_0004440c(u8 *, s32, s32, s32, u8, u16, u16, u16, u16);
 s32 func_000454e0(s32);
 s32 func_0020144C(u8);
 u16 func_0020C448(void *);
-void *func_0020C478(u32);
+void *battle_roster_lookup_actor(u32);
 u8 func_0020D434(s32);
 void func_0022EF50(void *record)
 {
@@ -51,7 +51,7 @@ void func_0022EF50(void *record)
     initial_code = selected_code;
     if ((u32) (initial_code - 0x31) < 2U) {
         *(s8 *)((u8 *)record + 0x78) = 3;
-        other_record = func_0020C478(func_00233F94(record));
+        other_record = battle_roster_lookup_actor(func_00233F94(record));
         selected_code = 0x39;
         if (other_record != 0) {
             *(s32 *)((u8 *)record + 0x7C) = 0x39;

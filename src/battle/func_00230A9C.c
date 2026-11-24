@@ -66,7 +66,7 @@ extern void func_00023780(void *, u32);
 extern unsigned int func_00022e60(void);
 extern int rand(void);
 extern int func_000454E0(int);
-extern void *func_0020C478(unsigned int index);
+extern void *battle_roster_lookup_actor(unsigned int index);
 extern int func_0022F2BC(void *, int *);
 extern int func_0020F8DC(void);
 extern void func_0022EF50(void *);
@@ -79,7 +79,7 @@ extern void func_0021D230(int, int, void *, int);
 extern void func_0021D25C(int, int, void *, int, int);
 extern void func_0021D28C(int, int, void *, int, int, int);
 extern void func_0021D2C0(int, int, void *, int, int, int, int);
-extern int func_0020D72C(void *);
+extern int battle_roster_find_actor_index(void *);
 extern int func_002361EC(A9CObject *);
 extern int func_002363FC(A9CObject *);
 extern int func_002365BC(A9CObject *, A9CObject *, int, int);
@@ -152,15 +152,15 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
     auxiliaryGuard = 0;
     for (i = 0; i < 3; ++i) {
         raw[i] = -1;
-        if (func_0020C104(input->actors[i]) == 0)
+        if (battle_actor_secondary_class_is_one(input->actors[i]) == 0)
             continue;
-        if (func_0020C2C0(input->actors[i]) != 0)
+        if (battle_actor_is_absent_or_has_flag_0(input->actors[i]) != 0)
             continue;
-        if (func_0020C32C(input->actors[i]) != 0)
+        if (battle_actor_has_flag_1(input->actors[i]) != 0)
             continue;
-        if (func_0020C2F4(input->actors[i]) != 0)
+        if (battle_actor_has_flag_3(input->actors[i]) != 0)
             continue;
-        if (func_0020C310(input->actors[i]) != 0)
+        if (battle_actor_has_flag_2(input->actors[i]) != 0)
             continue;
         if (((A9CObject *)input->actors[i])->actions_used != D_801CE8C0->field00)
             continue;
@@ -176,20 +176,20 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         for (i = 0; i < 3; ++i)
             selected[i] = ((A9CObject *)input->actors[i]);
         selectedCount = 3;
-        pendingTarget = func_0020C478(raw[0]);
+        pendingTarget = battle_roster_lookup_actor(raw[0]);
         target = pendingTarget;
     } else {
         if (raw[0] != -1 && raw[0] == raw[1]) {
             raw[2] = -1;
             selected[0] = (A9CObject *)input->actors[0];
             selected[1] = (A9CObject *)input->actors[1];
-            pendingTarget = func_0020C478(raw[0]);
+            pendingTarget = battle_roster_lookup_actor(raw[0]);
             excluded = (A9CObject *)input->actors[2];
         } else if (raw[0] != -1 && raw[0] == raw[2]) {
             raw[1] = -1;
             selected[0] = (A9CObject *)input->actors[0];
             selected[1] = (A9CObject *)input->actors[2];
-            pendingTarget = func_0020C478(raw[0]);
+            pendingTarget = battle_roster_lookup_actor(raw[0]);
             excluded = (A9CObject *)input->actors[1];
         } else {
             if (raw[1] == -1 || raw[1] != raw[2])
@@ -197,7 +197,7 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
             raw[0] = -1;
             selected[0] = (A9CObject *)input->actors[1];
             selected[1] = (A9CObject *)input->actors[2];
-            pendingTarget = func_0020C478(raw[1]);
+            pendingTarget = battle_roster_lookup_actor(raw[1]);
             excluded = (A9CObject *)input->actors[0];
         }
         selectedCount = 2;
@@ -210,7 +210,7 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
     }
     if (func_0020D814(selected[0]) == 1)
         return 0;
-    if (func_0020C2C0(target) != 0)
+    if (battle_actor_is_absent_or_has_flag_0(target) != 0)
         return 0;
     formation_column_low = target->formation_column_low;
     formation_row_low = target->formation_row_low;
@@ -335,7 +335,7 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
     endpoint = startTime + work.words[0] - 5;
     if (decision != 0) {
         if (func_0020BFE4() != 0) {
-            helperResult = func_0020D72C(selected[0]);
+            helperResult = battle_roster_find_actor_index(selected[0]);
             func_0021D2C0(0x17, endpoint, 0, 0x5D, (u8)narrowed,
                          helperResult, selected[0]->target_actor_index);
         }
@@ -345,9 +345,9 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         if (endTime < successExtra + endpoint)
             endTime = successExtra + endpoint;
     } else if (func_00201584(target->primary_class_id, target->secondary_class_id) != 0) {
-        subtype = func_0020BFF8(target) != 0 ? 0x60 : 0x5F;
+        subtype = battle_actor_is_side_one(target) != 0 ? 0x60 : 0x5F;
         if (func_0020BFE4() != 0) {
-            helperResult = func_0020D72C(selected[0]);
+            helperResult = battle_roster_find_actor_index(selected[0]);
             func_0021D2C0(0x17, endpoint, 0, subtype, (u8)narrowed,
                          helperResult, selected[0]->target_actor_index);
         }

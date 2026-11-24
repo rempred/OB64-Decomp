@@ -88,7 +88,7 @@ void func_002ACFD8(s32 mode)
             continue;
         }
         unit = &D_801CE8BC->units[actor->unitIndex];
-        isLeader = func_0020BFF8(unit) != 0;
+        isLeader = battle_actor_is_side_one(unit) != 0;
         if (mode < 3) {
             if (isLeader == 0) {
                 continue;
@@ -97,10 +97,10 @@ void func_002ACFD8(s32 mode)
             continue;
         }
         if (filter == 1) {
-            if (func_0020C0E8(unit) == 0) {
+            if (battle_actor_has_flag_9(unit) == 0) {
                 continue;
             }
-        } else if (filter == 2 && func_0020C0E8(unit) != 0) {
+        } else if (filter == 2 && battle_actor_has_flag_9(unit) != 0) {
             continue;
         }
         source = unit->sources[actor->sourceIndex];

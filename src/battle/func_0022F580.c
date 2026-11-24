@@ -126,10 +126,10 @@ extern void func_00023460(const void *, void *, u32);
 extern unsigned int func_00022e60(void);
 extern int rand(void);
 extern int func_0020C364(int);
-extern void *func_0020C478(unsigned int index);
+extern void *battle_roster_lookup_actor(unsigned int index);
 extern u8 func_0020D434(int);
 extern int func_0020D4C8(ResolutionObject *, int);
-extern int func_0020D72C(void *);
+extern int battle_roster_find_actor_index(void *);
 extern int func_0020F8DC(void);
 extern int func_0020BFE4(void);
 extern u8 func_002014C4(unsigned int);
@@ -227,7 +227,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     excluded = 0;
     suppress = 0;
     maximum = 0;
-    if (func_0020C014((ResolutionObject *)input->actors[0]) != 0)
+    if (battle_actor_is_side_zero((ResolutionObject *)input->actors[0]) != 0)
         initial = &D_801971F0[D_801976DC];
     else
         initial = &D_801971F0[D_801976E8];
@@ -243,8 +243,8 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     selectedCount = 0;
     for (i = 0; i < 3; ++i) {
         first_actor = (ResolutionObject *)input->actors[i];
-        if (func_0020C2C0(first_actor) != 0 || func_0020C32C(first_actor) != 0 ||
-            func_0020C2F4(first_actor) != 0 || func_0020C310(first_actor) != 0)
+        if (battle_actor_is_absent_or_has_flag_0(first_actor) != 0 || battle_actor_has_flag_1(first_actor) != 0 ||
+            battle_actor_has_flag_3(first_actor) != 0 || battle_actor_has_flag_2(first_actor) != 0)
             continue;
         if (first_actor->actions_used != D_801CE8C0->field00 || first_actor->actions_used >= first_actor->action_limit)
             continue;
@@ -337,11 +337,11 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     local.descriptor.header[7] = D_8018AA80[rawInput].bytes[9];
     if (func_0020C364(rawResultWord) != 0) {
         producer = func_002340EC(local.selectedList.values[0]);
-        side = func_0020C014(local.selectedList.values[0]) == 0;
+        side = battle_actor_is_side_zero(local.selectedList.values[0]) == 0;
         producer = func_0023887C(producer, local.tail.fields.mode, side, rawResultWord);
     } else {
         producer = func_00233F94((BattleRosterRecord *)local.selectedList.values[0]);
-        side = func_0020C014(local.selectedList.values[0]);
+        side = battle_actor_is_side_zero(local.selectedList.values[0]);
         producer = func_0023887C(producer, local.tail.fields.mode, side, rawResultWord);
     }
     local.descriptor.header[8] = local.tail.fields.mode;
@@ -397,10 +397,10 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     for (i = 0; i < local.descriptor.count; ++i) {
         descriptorId = local.descriptor.ids[i];
         if (descriptorId < 20)
-            resolved_actor = func_0020C478(descriptorId);
+            resolved_actor = battle_roster_lookup_actor(descriptorId);
         else {
             func_00237D5C(descriptorId, &local.tail.fields.out0, &local.tail.fields.out1);
-            resolved_actor = func_0020D770(local.tail.fields.out0, local.tail.fields.out1);
+            resolved_actor = battle_roster_find_actor_at_position(local.tail.fields.out0, local.tail.fields.out1);
         }
         if (time < resolved_actor->scheduled_time)
             time = resolved_actor->scheduled_time;
@@ -443,8 +443,8 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
             suppress = 1;
         else if (producer >= 20) {
             func_00237D5C(producer, &local.tail.fields.out2, &local.tail.fields.out3);
-            first_actor = func_0020D770(local.tail.fields.out2, local.tail.fields.out3);
-            if (func_0020C2C0(first_actor) != 0)
+            first_actor = battle_roster_find_actor_at_position(local.tail.fields.out2, local.tail.fields.out3);
+            if (battle_actor_is_absent_or_has_flag_0(first_actor) != 0)
                 suppress = 1;
         }
     }
@@ -453,10 +453,10 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
         idOffset = i * 4;
         /* The actual ID address, then the later secondary result, share a word. */
         secondary = idOffset + (int)&local;
-        object = func_0020C478(((int *)secondary)[14]);
+        object = battle_roster_lookup_actor(((int *)secondary)[14]);
         if (object == 0)
             continue;
-        if (func_0020C2C0(object) != 0) {
+        if (battle_actor_is_absent_or_has_flag_0(object) != 0) {
             deletionIndex = i;
             if (deletionIndex < local.descriptor.count - 1) {
                 copyWord = secondary;
@@ -486,7 +486,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
         value = ((s16 *)halfAddress)[68];
         primary = (u32)threshold > (mainMix % 100U);
         if (local.descriptor.header[3] == 9) {
-            if (func_0020C1B4(object) != 0) {
+            if (battle_actor_secondary_class_is_45_to_48(object) != 0) {
                 value = 0;
                 primary = 0;
             }
@@ -561,10 +561,10 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
                     if ((repeated ^ 1) == 0)
                         special = func_00237AF8(object, mode);
                 }
-                if (special != 0 && func_0020C2C0(object) == 0 && func_0020C32C(object) == 0) {
+                if (special != 0 && battle_actor_is_absent_or_has_flag_0(object) == 0 && battle_actor_has_flag_1(object) == 0) {
                     func_0021D334(0x1F, time + local.tail.words[0], object, 13,
                         value >> 8, value & 0xFF, narrowed, D_801CE8C0->field823, (u8)special);
-                    func_0023422C(object, special);
+                    battle_roster_change_actor_secondary_class(object, special);
                 } else {
                     if (secondary != 0)
                         func_0022B06C(object, &local.tail.fields.modifier);
@@ -586,7 +586,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
                 func_0022A7B8(object, 0, time + local.tail.words[0], value, narrowed, 0);
                 object->scheduled_time = time + local.tail.words[0];
             }
-            if (func_0020C2C0(object) != 0 && func_0020C014(local.selectedList.values[0]) != 0) {
+            if (battle_actor_is_absent_or_has_flag_0(object) != 0 && battle_actor_is_side_zero(local.selectedList.values[0]) != 0) {
                 for (transferIndex = 0; transferIndex < selectedCount; ++transferIndex) {
                     k = func_00233210(local.selectedList.values[transferIndex], object);
                     if (k != 0) {
@@ -654,7 +654,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     --time;
     outputCount = 0;
     for (i = 0; i < selectedCount; ++i)
-        local.tail.fields.selectedIds[i] = func_0020D72C(local.selectedList.values[i]);
+        local.tail.fields.selectedIds[i] = battle_roster_find_actor_index(local.selectedList.values[i]);
     local.tail.fields.selectedIds[i] = -1;
     if (local.descriptor.header[8] != 8 && local.descriptor.header[8] != 9 &&
         local.descriptor.header[8] != 10) {

@@ -10,7 +10,7 @@ s32 func_002ABF64(s32 body_slot)
         return 0;
     }
 
-    if (func_0020BFF8(&D_801CE8BC->roster[battle_roster_index]) == 0) {
+    if (battle_actor_is_side_one(&D_801CE8BC->roster[battle_roster_index]) == 0) {
         return 1;
     }
     return 2;

@@ -30,7 +30,7 @@ typedef struct {
 extern Gfx *gTitleCardDisplayListCursor;
 void func_00240D20(void);
 extern Gfx D_801F0380[];
-s32 D_801C8C74(u8 *u);
+s32 battle_actor_secondary_class_is_one(void *u);
 s32 D_801C8C90(u8 *u);
 void func_00240964(s32 spr, s16 x, s16 y);
 void func_00240D20(void) {
@@ -39,7 +39,7 @@ void func_00240D20(void) {
     { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = ((unsigned int)(((unsigned int)(0xDE) & ((0x01 << (8)) - 1)) << (24))); _g->w1 = (unsigned int)(D_801F0380); };
     { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = (((unsigned int)(((unsigned int)(0xFA) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)(0) & ((0x01 << (8)) - 1)) << (8))) | ((unsigned int)(((unsigned int)(0) & ((0x01 << (8)) - 1)) << (0)))); _g->w1 = (((unsigned int)(((unsigned int)(0) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)(0) & ((0x01 << (8)) - 1)) << (16))) | ((unsigned int)(((unsigned int)(0) & ((0x01 << (8)) - 1)) << (8))) | ((unsigned int)(((unsigned int)((*(u8 *)((u8 *)(c) + (0x653)))) & ((0x01 << (8)) - 1)) << (0)))); };
     target = &(*(u8 * *)((u8 *)(c) + (0x5D4)));
-    if (D_801C8C74((*(u8 * *)((u8 *)(c) + (0x5D4))))) {
+    if (battle_actor_secondary_class_is_one((*(u8 * *)((u8 *)(c) + (0x5D4))))) {
         func_00240964((*(s32 *)((u8 *)(c) + (0x5D8))), (*(s16 *)((u8 *)(c) + (0x5EC))) - 10, (*(s16 *)((u8 *)(c) + (0x5EE))) - 5);
         func_00240964((*(s32 *)((u8 *)(c) + (0x5D8))), (*(s16 *)((u8 *)(c) + (0x5EC))) + 10, (*(s16 *)((u8 *)(c) + (0x5EE))));
         func_00240964((*(s32 *)((u8 *)(c) + (0x5D8))), (*(s16 *)((u8 *)(c) + (0x5EC))) - 3, (*(s16 *)((u8 *)(c) + (0x5EE))) + 5);

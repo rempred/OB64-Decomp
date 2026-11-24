@@ -123,7 +123,7 @@ void func_002AAC60(s32 commandWord)
         if (actor->unitIndex == 0xFF) continue;
         state = 9;
         unit = &D_801CE8BC->units[actor->unitIndex];
-        isLeader = func_0020BFF8(unit) != 0;
+        isLeader = battle_actor_is_side_one(unit) != 0;
         if (func_0020C120(unit) == 1 && actor->sourceIndex == 1) {
             state = 0x3B;
         } else if (unit->primary_class_id.word == 0x87) {
@@ -153,7 +153,7 @@ void func_002AAC60(s32 commandWord)
             func_002AD574(unit) == 1) continue;
         i = find_free_slot(u);
         if (i == -1) continue;
-        if (func_0020BFF8(unit)) {
+        if (battle_actor_is_side_one(unit)) {
             startX = work[0];
             startY = work[1];
             /* Keep this after both loads: moving it earlier swaps KMC's

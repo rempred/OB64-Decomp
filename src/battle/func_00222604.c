@@ -6,9 +6,9 @@ typedef unsigned char u8;
 typedef signed int s32;
 
 s32 func_0020BF98(void);
-s32 func_0020BFF8(void *record);
-s32 func_0020C014(void *record);
-s32 func_0020C0E8(void *record);
+s32 battle_actor_is_side_one(void *record);
+s32 battle_actor_is_side_zero(void *record);
+s32 battle_actor_has_flag_9(void *record);
 
 s32 func_00222604(void *record, s32 incoming_flags)
 {
@@ -24,16 +24,16 @@ s32 func_00222604(void *record, s32 incoming_flags)
     if (flags & 0x8000) {
         return 0;
     }
-    if (func_0020C014(record) != 0 && (flags & 0x400) != 0) {
+    if (battle_actor_is_side_zero(record) != 0 && (flags & 0x400) != 0) {
         result = 1;
     }
-    if (func_0020BFF8(record) != 0 && (flags & 0x400) == 0) {
+    if (battle_actor_is_side_one(record) != 0 && (flags & 0x400) == 0) {
         result = 1;
     }
     result &= 0 - (selector != 0);
     if (result != 0) {
         if (selector == 0xFF) {
-            predicate = func_0020C0E8(record) != 0;
+            predicate = battle_actor_has_flag_9(record) != 0;
         } else {
             predicate = func_00045e5c(((BattleRosterRecord *)record)->primary_class_id.bytes.low, selector) != 0;
         }

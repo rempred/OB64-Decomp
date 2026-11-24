@@ -1194,7 +1194,7 @@
     "allDescriptorFields16ByteAligned": true,
     "sourceSplit": {
       "manifestPath": "asm/original/rev0/manifest.json",
-      "manifestSha256": "2B2913B60D31445CA43B139F6E8E0DE26EE88D60B61A899B06C5AC51C15A01FB",
+      "manifestSha256": "781C247A901A46C9D4BA595D55BD5EC828B3FBCCD28CA2B2377C79A9C0957C69",
       "owners": [
         {
           "name": "overlay_descriptors_000387c0",

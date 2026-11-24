@@ -13,7 +13,7 @@ extern u8 func_00043d70(int, int);
 extern u32 func_00204F34(int, int, int, int, u32, u32, u8 *, u8 *, u8 *);
 extern u32 func_002050AC(u32, u32, u32, u8 *, u8 *, u8 *);
 extern void func_00208DC8(void *, int);
-extern int func_0020C014(void *);
+extern int battle_actor_is_side_zero(void *);
 extern void func_0020C4B8(int, int, int, int *, int *);
 extern void func_80093380(void *, unsigned int);
 extern void *func_0002CD70(void *, int, unsigned int);
@@ -139,7 +139,7 @@ void func_001F1218(Func001F1218State *state, int arg1, int arg2, int arg3, int a
                             case 0:
                             case 1:
                             case 4:
-                                if (func_0020C014(*(void **)((u8 *)state->field4C + 0x40)))
+                                if (battle_actor_is_side_zero(*(void **)((u8 *)state->field4C + 0x40)))
                                     classValue = D_801976DC < 30;
                                 else classValue = D_801976E8 < 30;
                                 if (classValue)

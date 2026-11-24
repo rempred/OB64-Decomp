@@ -6,8 +6,8 @@ typedef unsigned int u32;
 
 extern u8 D_801976E8;
 
-extern void *func_0020C478(unsigned int index);
-extern s32 func_0020BFF8(void *actor);
+extern void *battle_roster_lookup_actor(unsigned int index);
+extern s32 battle_actor_is_side_one(void *actor);
 extern void func_00207C08(s32 handle);
 extern void func_001F0F90(void *primary_child);
 extern void func_001F1050(void *primary_child);
@@ -19,7 +19,7 @@ extern void func_002ACA3C(s32 unitSelector);
 /*
  * Director opcode 0x96 roster reset.
  *
- * Walks the twenty Actor-input rows. For each row that func_0020BFF8 selects,
+ * Walks the twenty Actor-input rows. For each row that battle_actor_is_side_one selects,
  * releases the handle at +0x50, clears and releases the three linked object
  * pairs at +0x0/+0xC, +0x4/+0x10, and +0x8/+0x14, and zeroes the 0xF8-byte row.
  * Then appends deployed unit selector 30 and records it as the current second
@@ -35,8 +35,8 @@ void func_002ACF08(s32 commandWord)
 
     actor_index = 0;
     do {
-        actor = func_0020C478(actor_index);
-        if (func_0020BFF8(actor) != 0) {
+        actor = battle_roster_lookup_actor(actor_index);
+        if (battle_actor_is_side_one(actor) != 0) {
             func_00207C08(actor->body_resource_key);
             /* Indexing from one base keeps the partner access as an offset of
              * the same strength-reduced pointer; a second cursor would need

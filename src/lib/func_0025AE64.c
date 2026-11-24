@@ -23,7 +23,7 @@ extern void func_00262B68(void);
 
 
 
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 extern s32 func_0020C24C(void *);
 extern void func_0020BDCC(s16, s32);
 
@@ -67,7 +67,7 @@ s32 func_0025AE64(u16 message, P05TableRootState *state)
         u8 value;
 
         func_0024DA10(state->value_0C, &D_8020A0E2[1]);
-        if (func_0020C24C(func_0020C478(state->values[state->index])) == 0) {
+        if (func_0020C24C(battle_roster_lookup_actor(state->values[state->index])) == 0) {
             func_0025D394(state->values + state->index);
         }
         value = state->values[state->index];

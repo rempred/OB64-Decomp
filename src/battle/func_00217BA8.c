@@ -20,7 +20,7 @@ M2C_UNK func_0020019C();
 void func_0020BD5C(s32 selector);
 s32 func_0020BFE4();
 void func_002159D0(void);
-void func_0021C3B0(void);
+void battle_roster_write_back_members(void);
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
 void *func_80070F30(u32 requested);
@@ -77,13 +77,13 @@ void func_00217BA8(void) {
         D_801CEAAC = 0;
         (*(u8 *)((s8 *)(temp_v1_8) + (0x6089))) = 0U;
         D_801CE8BC[0x608A] = 0U;
-        temp_v0_41 = func_0020C810();
-        if ((temp_v0_41 != 0) && (func_0020C32C(temp_v0_41) != 0)) {
+        temp_v0_41 = battle_roster_find_first_side_zero_with_flag_9();
+        if ((temp_v0_41 != 0) && (battle_actor_has_flag_1(temp_v0_41) != 0)) {
             temp_v1_50 = D_801CE8BC;
             (*(u8 *)((s8 *)(temp_v1_50) + (0x6089))) = (u8) ((*(u8 *)((s8 *)(temp_v1_50) + (0x6089))) | 4);
         }
-        temp_v0_55 = func_0020C788();
-        if ((temp_v0_55 != 0) && (func_0020C32C(temp_v0_55) != 0)) {
+        temp_v0_55 = battle_roster_find_first_side_one_with_flag_9();
+        if ((temp_v0_55 != 0) && (battle_actor_has_flag_1(temp_v0_55) != 0)) {
             temp_v1_64 = D_801CE8BC;
             (*(u8 *)((s8 *)(temp_v1_64) + (0x608A))) = (u8) ((*(u8 *)((s8 *)(temp_v1_64) + (0x608A))) | 4);
         }
@@ -140,7 +140,7 @@ void func_00217BA8(void) {
         func_00023460(temp_s0_128 + 0x52C0, D_801CE8BC + 0x52C0, 0x400);
         *(s32 *)(D_801CE8BC + 0x56C0) = *(s32 *)((s8 *)temp_s0_128 + 0x56C0);
         func_800712C4(temp_s0_128);
-        func_0021C3B0();
+        battle_roster_write_back_members();
         func_0020019C();
     }
     temp_a0_178 = D_801CE8BC;

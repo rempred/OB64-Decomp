@@ -40,8 +40,8 @@ extern int func_00205484(int, int, int, int, int, u32, CombatPoseIndexedRecord *
 extern void func_00205760(int);
 extern void func_00205778(int);
 extern void *func_00206BE0(int, int, CombatPoseIndexedRecord *, int, int, int, u8 *);
-extern int func_0020BFF8(void *);
-extern int func_0020C034(void *);
+extern int battle_actor_is_side_one(void *);
+extern int battle_actor_has_flag_10(void *);
 extern u16 func_0020C448(void *);
 extern void guMtxF2L(float [4][4], DrawMatrix *);
 extern void guScale(DrawMatrix *, float, float, float);
@@ -185,16 +185,16 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
     }
     index = 0;
     while (1) {
-        bit10 = func_0020C034(actor);
-        if (!func_00205484(firstId, secondId, bit10, func_0020BFF8(actor),
+        bit10 = battle_actor_has_flag_10(actor);
+        if (!func_00205484(firstId, secondId, bit10, battle_actor_is_side_one(actor),
                            poseId, index, &decoded)) {
             break;
         }
         if (pose->items[index] != 0) {
             func_00205778(2);
-            bit8 = func_0020BFF8(actor);
+            bit8 = battle_actor_is_side_one(actor);
             image = (u8 *)func_00206BE0(firstId, secondId, &decoded, bit8,
-                                  func_0020C034(actor), variant, &blendState.amount);
+                                  battle_actor_has_flag_10(actor), variant, &blendState.amount);
             func_00205760(2);
             alpha = factor * pose->items[index] / 255;
             currentRed = blendState.red;

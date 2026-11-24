@@ -31,6 +31,6 @@ typedef struct QueryResident {
 extern QueryScene *D_8022A974;
 extern QueryResident *D_801CE8BC;
 
-s32 func_0020BFF8(void *input);
+s32 battle_actor_is_side_one(void *input);
 
 #endif

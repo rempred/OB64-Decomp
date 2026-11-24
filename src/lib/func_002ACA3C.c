@@ -21,7 +21,7 @@ extern u8 D_80195480[];
 extern u8 func_00043dc4(s32, s32);
 extern void func_001F0F6C(void *record);
 extern void func_001F102C(void *record);
-extern void *func_0020C478(unsigned int index);
+extern void *battle_roster_lookup_actor(unsigned int index);
 extern u16 func_0020C448(void *);
 extern s32 func_002015C8(s32, s32, s32, s32);
 extern void func_00207658(s32 *, s32 *, s32 *, s32 *, s32 *, u32);
@@ -64,17 +64,17 @@ void func_002ACA3C(s32 squad_source_index)
             if (D_801CE8BC->rows[free_actor_index].primary_class_id.word == 0) break;
         }
         actor = &D_801CE8BC->rows[free_actor_index];
-        if (func_0020C0E8(actor) &&
+        if (battle_actor_has_flag_9(actor) &&
             func_00043dc4(actor->primary_class_id.bytes.low, actor->secondary_class_id.bytes.low) == 2) {
             special = 1;
         }
         if (squad_source[member_slot + 2] < 100U) {
-            func_0020C908(actor, squad_source[member_slot + 2]);
+            battle_roster_init_actor_from_scenario_member(actor, squad_source[member_slot + 2]);
             actor->formation_column = (u8)(squad_source[member_slot + 7] % 3U);
             actor->formation_row = (u8)(squad_source[member_slot + 7] / 3U);
             func_0020CBDC(actor, 0);
         } else {
-            func_0020C908(actor, 0);
+            battle_roster_init_actor_from_scenario_member(actor, 0);
             actor->formation_column = (u8)(squad_source[member_slot + 7] % 3U);
             actor->formation_row = (u8)(squad_source[member_slot + 7] / 3U);
             actor->member_index = squad_source[member_slot + 2];
@@ -90,10 +90,10 @@ void func_002ACA3C(s32 squad_source_index)
 
     count = 0;
     for (actor_or_resource_index = 0; actor_or_resource_index < 20; actor_or_resource_index++) {
-        candidate = func_0020C478(actor_or_resource_index);
-        if (!candidate || func_0020C014(candidate)) continue;
+        candidate = battle_roster_lookup_actor(actor_or_resource_index);
+        if (!candidate || battle_actor_is_side_zero(candidate)) continue;
         tag = func_0020C448(candidate);
-        resource_flag_b = func_0020BFF8(candidate);
+        resource_flag_b = battle_actor_is_side_one(candidate);
         resource_flag_a = resource_flag_b;
         for (index = 0; index < count; index++) {
             if (candidate->primary_class_id.word == classes[index] && tag == tags[index] &&
@@ -131,8 +131,8 @@ void func_002ACA3C(s32 squad_source_index)
                 &flagsB[actor_or_resource_index], &flagsA[actor_or_resource_index], &tags[actor_or_resource_index], run);
         }
         for (final_actor_index = 0; final_actor_index < 20; final_actor_index++) {
-            current = func_0020C478(final_actor_index);
-            if (current && !func_0020C014(current)) func_001F114C(current);
+            current = battle_roster_lookup_actor(final_actor_index);
+            if (current && !battle_actor_is_side_zero(current)) func_001F114C(current);
         }
     }
 }

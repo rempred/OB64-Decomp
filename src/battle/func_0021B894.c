@@ -28,8 +28,8 @@ void func_00208EB0(void);
 void func_0020BD5C(s32 selector);
 s32 func_0020BF6C(void);
 s32 func_0020BF7C();
-s32 func_0020BFF8(void *);
-void *func_0020C478(unsigned int index);
+s32 battle_actor_is_side_one(void *);
+void *battle_roster_lookup_actor(unsigned int index);
 void func_00215CF0(void);
 void func_00217BA8(void);
 void func_0021840C(void);
@@ -43,8 +43,8 @@ M2C_UNK func_0021A9B4();
 void func_0021B0A0(void);
 M2C_UNK func_0021B2E0();
 void func_0021B438(void);
-void func_0021B770(void);
-void func_0021C3B0(void);
+void battle_roster_reset_member_fatigue(void);
+void battle_roster_write_back_members(void);
 void func_002215D0(void);
 s32 func_002224F4(void);
 M2C_UNK func_00226AFC();
@@ -294,7 +294,7 @@ block_54:
 block_56:
     flag_ptr = &D_80193670;
     *flag_ptr = (u8) (*flag_ptr | 1);
-    temp_v0_341 = func_0020C810();
+    temp_v0_341 = battle_roster_find_first_side_zero_with_flag_9();
     if (temp_v0_341 == 0) {
         goto block_69;
     }
@@ -310,7 +310,7 @@ block_60:
     if (temp_v0_341 == 0) {
         goto block_69;
     }
-    if (func_0020C32C(temp_v0_341) == 0) {
+    if (battle_actor_has_flag_1(temp_v0_341) == 0) {
         goto block_64;
     }
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6089))) & 4) {
@@ -323,7 +323,7 @@ block_64:
     if (temp_v0_341 == 0) {
         goto block_69;
     }
-    if (func_0020C32C(temp_v0_341) != 0) {
+    if (battle_actor_has_flag_1(temp_v0_341) != 0) {
         goto block_69;
     }
     if (!((*(u8 *)((s8 *)D_801CE8BC + (0x6089))) & 4)) {
@@ -334,7 +334,7 @@ block_64:
 block_68:
     *flag_ptr = var_v0_378;
 block_69:
-    temp_v0_399 = func_0020C788();
+    temp_v0_399 = battle_roster_find_first_side_one_with_flag_9();
     if (temp_v0_399 == 0) {
         goto block_82;
     }
@@ -351,7 +351,7 @@ block_73:
     if (temp_v0_399 == 0) {
         goto block_82;
     }
-    if (func_0020C32C(temp_v0_399) == 0) {
+    if (battle_actor_has_flag_1(temp_v0_399) == 0) {
         goto block_77;
     }
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x608A))) & 4) {
@@ -364,7 +364,7 @@ block_77:
     if (temp_v0_399 == 0) {
         goto block_82;
     }
-    if (func_0020C32C(temp_v0_399) != 0) {
+    if (battle_actor_has_flag_1(temp_v0_399) != 0) {
         goto block_82;
     }
     if (!((*(u8 *)((s8 *)D_801CE8BC + (0x608A))) & 4)) {
@@ -379,17 +379,17 @@ block_82:
         goto block_90;
     }
     for (actor_index = 0; actor_index < 0x14; actor_index++) {
-        actor = func_0020C478(actor_index);
+        actor = battle_roster_lookup_actor(actor_index);
         if (actor == 0) {
             continue;
         }
-        if (func_0020BFF8(actor) == 0) {
+        if (battle_actor_is_side_one(actor) == 0) {
             continue;
         }
-        if (func_0020C2C0(actor) != 0) {
+        if (battle_actor_is_absent_or_has_flag_0(actor) != 0) {
             continue;
         }
-        if (func_0020C32C(actor) == 0) {
+        if (battle_actor_has_flag_1(actor) == 0) {
             break;
         }
     }
@@ -400,7 +400,7 @@ block_82:
     *flag_ptr = (u8) (*flag_ptr | 0x10);
 block_90:
     func_00041674();
-    func_0021B770();
+    battle_roster_reset_member_fatigue();
     func_0020BD5C(0x64);
     goto block_92;
 block_91:
@@ -409,7 +409,7 @@ block_92:
     if (var_s3_33 == 0) {
         goto block_100;
     }
-    func_0021C3B0();
+    battle_roster_write_back_members();
     func_002224F4();
     if (func_0020BF6C() == 0) {
         goto block_99;

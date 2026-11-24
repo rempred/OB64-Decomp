@@ -29,7 +29,7 @@ s32 func_002AC700(s32 slot)
     }
 
     profile = actor_record->alignment;
-    if (func_0020BFF8(actor_record) == 0) {
+    if (battle_actor_is_side_one(actor_record) == 0) {
         gender = D_80193BD4[actor_record->member_index * 56];
     } else {
         gender = D_80195574[actor_record->member_index * 52];

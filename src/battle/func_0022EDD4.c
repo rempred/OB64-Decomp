@@ -50,7 +50,7 @@ s32 func_0022EDD4(void *record, s32 *out_time)
         func_0021D230(0x26, time, record, 0xFF);
         *(s32 *)((u8 *)record + 0x40) &= ~4;
         time += func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x23, 0);
-        if (func_0020C348(record) != 0) {
+        if (battle_actor_has_flag_4(record) != 0) {
             func_0021D230(0x27, time, record, 0xFF);
         }
         result = 1;

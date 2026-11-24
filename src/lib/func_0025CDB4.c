@@ -50,7 +50,7 @@ extern void func_00262B68(void);
 
 
 
-extern void *func_0020C478(unsigned int);
+extern void *battle_roster_lookup_actor(unsigned int);
 
 extern float sinf(float);
 extern float func_00020bf0(float);
@@ -90,7 +90,7 @@ s32 func_0025CDB4(u16 message, P05StateCDB4 *state)
         for (i = 0; state->values[(s16)i] != 0xFF; i++) {
             u8 current;
 
-            state->entries[(s16)i].actor = func_0020C478(state->values[(s16)i]);
+            state->entries[(s16)i].actor = battle_roster_lookup_actor(state->values[(s16)i]);
             state->entries[(s16)i].value_04 =
                 p05_angleCDB4(value, func_0024C3EC(state->values[(s16)i]));
             current = state->values[(s16)i];
@@ -120,7 +120,7 @@ s32 func_0025CDB4(u16 message, P05StateCDB4 *state)
                 p05_byte_80220F6A = second - first;
                 func_00262AB0((void *)func_0025C8D0);
             }
-            if (func_0020C32C(state->entries[state->value_50].actor) == 0) {
+            if (battle_actor_has_flag_1(state->entries[state->value_50].actor) == 0) {
                 func_0026C8AC((void **)state->entries[state->value_50].actor, 0x11);
             }
             state->value_4E--;
@@ -135,7 +135,7 @@ s32 func_0025CDB4(u16 message, P05StateCDB4 *state)
 
         if (state->value_4C >= state->value_4E + 0x25) {
             for (i = 0; state->values[(s16)i] != 0xFF; i++) {
-                if (func_0020C32C(state->entries[(s16)i].actor) == 0) {
+                if (battle_actor_has_flag_1(state->entries[(s16)i].actor) == 0) {
                     func_0026C8AC((void **)state->entries[(s16)i].actor, 0x12);
                 }
             }

@@ -16,7 +16,7 @@ typedef struct P07State72A2C {
     u32 value_00, value_04;
     P07Render *value_08, *value_0C, *value_10;
 } P07State72A2C;
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 
 
 static __inline__ void *p07_matrix_55C(void *actor, P07Render *object)
@@ -50,7 +50,7 @@ s32 func_00272A2C(u16 message, P07State72A2C *state)
         void *actor;
         void *destination;
         P07Render *object;
-        actor = func_0020C478(state->value_04);
+        actor = battle_roster_lookup_actor(state->value_04);
         func_0026C7C4(actor, &position);
         state->value_08 = func_00269798(0x19A);
         destination = p07_matrix_55C(actor, state->value_08);
@@ -64,7 +64,7 @@ s32 func_00272A2C(u16 message, P07State72A2C *state)
     }
     case 0x1001: {
         P07Vec3 position;
-        void *actor = func_0020C478(state->value_04);
+        void *actor = battle_roster_lookup_actor(state->value_04);
         func_0026C7C4(actor, &position);
         p07_phase_1001(state, actor, &position);
         break;

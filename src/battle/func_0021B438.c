@@ -4,8 +4,8 @@ typedef unsigned int u32;
 typedef unsigned char u8;
 typedef float f32;
 
-extern void *func_0020C478(unsigned int index);
-extern s32 func_0020C2C0(void *record);
+extern void *battle_roster_lookup_actor(unsigned int index);
+extern s32 battle_actor_is_absent_or_has_flag_0(void *record);
 
 void func_0021B438(void)
 {
@@ -32,8 +32,8 @@ void func_0021B438(void)
     s16 current;
 
     for (owner_index = 0; owner_index < 20; owner_index++) {
-        owner = (u8 *)func_0020C478(owner_index);
-        if (func_0020C2C0(owner) != 0) {
+        owner = (u8 *)battle_roster_lookup_actor(owner_index);
+        if (battle_actor_is_absent_or_has_flag_0(owner) != 0) {
             continue;
         }
         owner_check = owner;
@@ -99,8 +99,8 @@ void func_0021B438(void)
 
             strongest_adjustment = 0;
             for (other_index = 0; other_index < 20; other_index++) {
-                other = (u8 *)func_0020C478(other_index);
-                if (func_0020C2C0(other) != 0) {
+                other = (u8 *)battle_roster_lookup_actor(other_index);
+                if (battle_actor_is_absent_or_has_flag_0(other) != 0) {
                     continue;
                 }
                 if (owner == other || (*(s32 *)(other + 0x40) & 0x800) != 0) {

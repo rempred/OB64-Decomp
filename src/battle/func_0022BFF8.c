@@ -14,8 +14,8 @@ s32 func_000454e0(s32);
 s32 func_00201798(s32, s32, s32, s32);
 s32 func_0020BFE4(void);
 u16 func_0020C448(void *);
-void *func_0020C478(unsigned int index);
-s32 func_0020D72C(void *);
+void *battle_roster_lookup_actor(unsigned int index);
+s32 battle_roster_find_actor_index(void *);
 void func_0021D200(s32, s32, void *);
 void func_0021D230(s32, s32, void *, s32);
 void func_0021D25C(s32, s32, void *, s32, s32);
@@ -105,7 +105,7 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
         *time_out = ((BattleRosterRecord *)record)->scheduled_time;
         return 0;
     }
-    target = func_0020C478(target_index);
+    target = battle_roster_lookup_actor(target_index);
     stream_code = func_00201798(((BattleRosterRecord *)record)->primary_class_id.word, ((BattleRosterRecord *)record)->secondary_class_id.word, *(s32 *)((u8 *)record + 0x7C), 0) & 0xFF;
     duration = func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, stream_code, buffer);
     if (func_0020BFE4() != 0) {
@@ -161,8 +161,8 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
     end_time = time + duration;
     first_time = time + buffer[0];
     if (func_0020BFE4() != 0) {
-        source_code0 = func_0020D72C(record);
-        func_0021D2C0(0x17, time + buffer[0], 0, 0x5E, field_code & 0xFF, source_code0, func_0020D72C(target));
+        source_code0 = battle_roster_find_actor_index(record);
+        func_0021D2C0(0x17, time + buffer[0], 0, 0x5E, field_code & 0xFF, source_code0, battle_roster_find_actor_index(target));
     }
     value = func_00237750(record, target, 0, 0, 0);
     if (check_value != 0) {
@@ -174,7 +174,7 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
                 distance = target58_0 - record58_0;
             }
         } else { distance = 0; }
-        check_value = func_00237810(record, target);
+        check_value = battle_actor_roll_luck_advantage(record, target);
         if (check_value != 0) {
             if (func_0020BFE4() != 0) {
                 func_0021D200(0x33, (time + buffer[0] + distance) - 0xA, target);
@@ -206,17 +206,17 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
         }
         func_0022ADFC(target, 0, time + buffer[0] + distance, value, action_byte, aux_value & 0xFF, 1, adjust);
         if (func_0020BFE4() != 0) {
-            source_code1 = func_0020D72C(record);
-            func_0021D2C0(0x17, (time + buffer[0] + distance) - 3, 0, 0x5D, field_code & 0xFF, source_code1, func_0020D72C(target));
+            source_code1 = battle_roster_find_actor_index(record);
+            func_0021D2C0(0x17, (time + buffer[0] + distance) - 3, 0, 0x5D, field_code & 0xFF, source_code1, battle_roster_find_actor_index(target));
         }
-        if ((func_0020C2C0(target) != 0) && (func_0020C014(record) != 0) && (func_0020C104(record) == 0)) {
+        if ((battle_actor_is_absent_or_has_flag_0(target) != 0) && (battle_actor_is_side_zero(record) != 0) && (battle_actor_secondary_class_is_one(record) == 0)) {
             increment = func_00233210(record, target);
             if (increment != 0) {
                 ((BattleRosterRecord *)record)->alignment = (((BattleRosterRecord *)record)->alignment + increment);
                 func_0021D230(0x3F, time + buffer[0] + distance, record, increment);
             }
         }
-        if ((secondary_result != 0) && (func_0020C2C0(target) == 0) && (func_0020C32C(target) == 0)) {
+        if ((secondary_result != 0) && (battle_actor_is_absent_or_has_flag_0(target) == 0) && (battle_actor_has_flag_1(target) == 0)) {
             func_0023431C(target, time + buffer[0] + distance, secondary_result);
             target_time2 = target->scheduled_time;
             if (end_time < target_time2) {
@@ -241,11 +241,11 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
         func_0021D230(0xE, check_value, target, 0xFF);
         value = func_0022257C((u8 *)target->primary_children[0] + 0x44, ((0 - (aux_value == 0)) & 0x17) | 0x15, 0);
         if ((func_00201584(target->primary_class_id.word, target->secondary_class_id.word) & 0xFF) && (func_0020BFE4() != 0)) {
-            if (func_0020BFF8(target) != 0) {
+            if (battle_actor_is_side_one(target) != 0) {
                 event_selector = 0x60;
             } else { event_selector = 0x5F; }
-            source_code2 = func_0020D72C(record);
-            func_0021D2C0(0x17, check_value, 0, event_selector, field_code & 0xFF, source_code2, func_0020D72C(target));
+            source_code2 = battle_roster_find_actor_index(record);
+            func_0021D2C0(0x17, check_value, 0, event_selector, field_code & 0xFF, source_code2, battle_roster_find_actor_index(target));
         }
         func_0021D230(0xF, check_value + value, target, 0xFF);
         bridge_data = (u8 *)target->primary_children[0] + 0x44;

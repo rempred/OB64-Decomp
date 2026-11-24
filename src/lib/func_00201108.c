@@ -21,10 +21,10 @@ extern u8 D_801976DC;
 extern u8 D_801976E8;
 extern SourceRecord g_func_001957D0_source_records[];
 
-void *func_0020C478(unsigned int index);
-s32 func_0020C014(void *actor);
-s32 func_0020BFF8(void *actor);
-s32 func_0020C2C0(void *actor);
+void *battle_roster_lookup_actor(unsigned int index);
+s32 battle_actor_is_side_zero(void *actor);
+s32 battle_actor_is_side_one(void *actor);
+s32 battle_actor_is_absent_or_has_flag_0(void *actor);
 
 void func_00201108(void)
 {
@@ -49,10 +49,10 @@ void func_00201108(void)
         if (record->id != 0) {
             entry = (void *)record;
             do {
-                actor = func_0020C478(actor_index);
-                if (actor != 0 && func_0020C014(actor) != 0 &&
+                actor = battle_roster_lookup_actor(actor_index);
+                if (actor != 0 && battle_actor_is_side_zero(actor) != 0 &&
                     actor->member_index == *(u8 *)((s8 *)entry + 2)) {
-                    if (func_0020C2C0(actor) != 0) {
+                    if (battle_actor_is_absent_or_has_flag_0(actor) != 0) {
                         *(u8 *)((s8 *)entry + 2) = 0;
                     } else {
                         *(s8 *)((s8 *)entry + 7) =
@@ -77,10 +77,10 @@ void func_00201108(void)
         if (record->id != 0) {
             entry = (void *)record;
             do {
-                actor = func_0020C478(actor_index);
-                if (actor != 0 && func_0020BFF8(actor) != 0 &&
+                actor = battle_roster_lookup_actor(actor_index);
+                if (actor != 0 && battle_actor_is_side_one(actor) != 0 &&
                     actor->member_index == *(u8 *)((s8 *)entry + 2)) {
-                    if (func_0020C2C0(actor) != 0) {
+                    if (battle_actor_is_absent_or_has_flag_0(actor) != 0) {
                         *(u8 *)((s8 *)entry + 2) = 0;
                     } else {
                         *(s8 *)((s8 *)entry + 7) =

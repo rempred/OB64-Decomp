@@ -40,7 +40,7 @@ s32 func_00275FF0(u16 message, P06State75FF0 *state)
         func_00262830(0x1000);
         break;
     case 0x1000:
-        if (func_0020C014(func_0020C478(state->value_00[0]))) {
+        if (battle_actor_is_side_zero(battle_roster_lookup_actor(state->value_00[0]))) {
             state->value_19 = 1;
         } else {
             state->value_19 = 0;

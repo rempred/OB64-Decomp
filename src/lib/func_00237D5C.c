@@ -44,10 +44,10 @@ typedef struct BattleUnit {
     s32 unk94;
     u8 unk98[0x60];
 } BattleUnit;
-BattleUnit *D_801C8FE8(s32 actor_index);
+void *battle_roster_lookup_actor(unsigned int actor_index);
 void func_00237D5C(s32 actor_index, s32 *out_formation_column, s32 *out_formation_row) {
     if (actor_index < 20) {
-        BattleUnit *actor = D_801C8FE8(actor_index);
+        BattleUnit *actor = battle_roster_lookup_actor(actor_index);
         *out_formation_column = actor->lane;
         *out_formation_row = actor->unk58;
     } else if (actor_index < 47) {

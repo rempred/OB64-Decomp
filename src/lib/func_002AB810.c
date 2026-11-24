@@ -137,7 +137,7 @@ s32 func_002AB810(s32 *slots, BattleRosterRecord *actor, s32 actor_index, s32 fl
 
     first_body_slot = 0;
     kind = 0;
-    if (func_0020C104(actor) == 1) {
+    if (battle_actor_secondary_class_is_one(actor) == 1) {
         kind = 1;
     } else if (func_0020C120(actor) == 1) {
         kind = 2;

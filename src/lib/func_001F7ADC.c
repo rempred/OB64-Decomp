@@ -24,8 +24,8 @@ extern u8 func_00043d1c(int, int);
 extern u32 func_00201E38(int, u32);
 extern u32 func_00201E9C(int, u32);
 extern int func_00205484(int, int, int, int, int, u32, CombatPoseIndexedRecord *);
-extern int func_0020BFF8(void *);
-extern int func_0020C034(void *);
+extern int battle_actor_is_side_one(void *);
+extern int battle_actor_has_flag_10(void *);
 extern u16 func_0020C448(void *);
 extern void guMtxF2L(float [4][4], DrawMatrix *);
 extern void guScale(DrawMatrix *, float, float, float);
@@ -118,15 +118,15 @@ int func_001F7ADC(void *object, float referenceX, float scaleInput,
     PAIR(0xDA380001, (u32)D_801969B0++);
     PAIR(0xDE000000, (u32)D_801CE9E0);
     while (1) {
-        bit10 = func_0020C034(actor);
-        if (!func_00205484(firstId, secondId, bit10, func_0020BFF8(actor),
+        bit10 = battle_actor_has_flag_10(actor);
+        if (!func_00205484(firstId, secondId, bit10, battle_actor_is_side_one(actor),
                            poseId, index, &decoded)) {
             break;
         }
         if (pose->items[index] != 0 && !(decoded.record.field_14 & 4)) {
-            bit8 = func_0020BFF8(actor);
+            bit8 = battle_actor_is_side_one(actor);
             header = (DrawImage *)func_00206340(firstId, secondId, &decoded, bit8,
-                                               func_0020C034(actor), variant, 0);
+                                               battle_actor_has_flag_10(actor), variant, 0);
             stride = func_00201E38(header->format, header->width);
             if (header->format == 2) {
                 header = (DrawImage *)((u8 *)header + 8 + stride * header->height);

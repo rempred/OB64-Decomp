@@ -247,7 +247,10 @@ the code that fills the field, and the code that reads it. See [Naming identifie
 When naming a struct field, also check its consumers for proven raw accesses.
 Try the named member and verify the match, or flag the exact site for follow-up.
 When a function's purpose is known, describe it in one line above its definition.
-Keep existing function symbols and aliases during ordinary matching and readability work.
+During ordinary matching and readability work, keep existing function symbols and flag
+address-named functions whose purpose you can prove. When a symbol rename is assigned,
+use the canonical name at its definition and every live reference, including calls inside
+other functions. Follow [Naming sidecar](docs/WORKFLOW.md#naming-sidecar) for the evidence and verification.
 Keep uncertain meanings explicit. Explain necessary compiler workarounds near the affected C.
 Ordinary readability cleanup under existing contracts uses the normal wave gates; it adds no review ceremony.
 

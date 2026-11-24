@@ -9,7 +9,7 @@ extern u8 *D_801CE8BC;
 /* Retail byte access at 0x801CE8F8; the original data ASM owns its storage. */
 extern u8 D_801CE8F8;
 s32 func_0020C120(void *);
-void *func_0020C478(u32);
+void *battle_roster_lookup_actor(u32);
 s32 func_00214BDC(void *);
 void func_0021D200(s32, s32, void *);
 s32 func_0022BFF8(void *, s32 *);
@@ -47,7 +47,7 @@ s32 func_0022F2BC(void *record, s32 *out_time)
 
     global = D_801CE8C0;
     global[0x818]++;
-    if (func_0020C2C0(record) != 0 || func_0020C32C(record) != 0) {
+    if (battle_actor_is_absent_or_has_flag_0(record) != 0 || battle_actor_has_flag_1(record) != 0) {
         current = ((BattleRosterRecord *)record)->scheduled_time;
         requested = *out_time;
         if (current < requested) current = requested;
@@ -93,8 +93,8 @@ s32 func_0022F2BC(void *record, s32 *out_time)
     if (func_00214BDC(record) != 0) {
         scan_index = 0;
         do {
-            entry = func_0020C478(scan_index);
-            predicate = func_0020C2C0(entry);
+            entry = battle_roster_lookup_actor(scan_index);
+            predicate = battle_actor_is_absent_or_has_flag_0(entry);
             scan_index++;
             if (predicate == 0) entry->actions_used = entry->action_limit;
         } while (scan_index < 20);

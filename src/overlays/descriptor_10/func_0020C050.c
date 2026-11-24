@@ -18,8 +18,8 @@ typedef struct {
     u8 unk5C[0x14];
     s32 actsMax;
 } BattleUnit;
-void *func_0020C478(unsigned int index);
-extern inline int func_0020C014(void *record) {
+void *battle_roster_lookup_actor(unsigned int index);
+extern inline int battle_actor_is_side_zero(void *record) {
     if (record == ((void *)0)) {
         return 0;
     }
@@ -27,6 +27,6 @@ extern inline int func_0020C014(void *record) {
     return ((((BattleUnit *)record)->flags >> 8) ^ 1) & 1;
 }
 s32 func_0020C050(u8 a, u8 b) {
-    return func_0020C014(func_0020C478(a)) ^ func_0020C014(func_0020C478(b));
+    return battle_actor_is_side_zero(battle_roster_lookup_actor(a)) ^ battle_actor_is_side_zero(battle_roster_lookup_actor(b));
 }
-void *func_0020C478(unsigned int index);
+void *battle_roster_lookup_actor(unsigned int index);

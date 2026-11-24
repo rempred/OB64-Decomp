@@ -5,8 +5,8 @@ typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-s32 func_0020C104(void *);
-s32 func_0020C32C(void *);
+s32 battle_actor_secondary_class_is_one(void *);
+s32 battle_actor_has_flag_1(void *);
 s32 func_0020D444(s32, s32);
 void func_0021D230(s32, s32, void *, s32);
 void func_0021D2C0(s32, s32, void *, s32, s32, s32, s32);
@@ -28,7 +28,7 @@ void func_0022ADFC(void *record, s32 offset, s32 time, s32 amount, s32 parameter
     u32 index;
     u8 *cursor;
 
-    if (func_0020C32C(record) == 0) {
+    if (battle_actor_has_flag_1(record) == 0) {
         delta = func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, ((0 - (mode == 0)) & 0x19) | 0x11, 0) + offset;
         if (mode != 0) {
             if (adjust == 0) {
@@ -50,7 +50,7 @@ adjust_record:
 emit_event:
         func_0021D2C0(event_code, time, record, 0xFF, amount >> 8, amount & 0xFF, parameter);
     }
-    if (func_0020C104(record) != 0) {
+    if (battle_actor_secondary_class_is_one(record) != 0) {
         field20 = ((BattleRosterRecord *)record)->hp;
         if (amount >= (s32) field20) {
             goto zero_remaining;

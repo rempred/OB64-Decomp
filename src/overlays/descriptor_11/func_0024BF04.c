@@ -12,7 +12,7 @@ extern E08ScalarCallback g_func_0024BCE8_callbacks[];
 extern E08ScalarCallback g_func_0024BF04_callbacks_08[];
 
 struct SupplementBoundsRecord;
-extern void *func_0020C478(u32 index);
+extern void *battle_roster_lookup_actor(u32 index);
 extern s32 func_0020D590(struct SupplementBoundsRecord *record);
 extern float func_001FF7EC(s16 first, s16 second);
 
@@ -49,11 +49,11 @@ void func_0024BF04(u8 value, P01Vec3 *output, s32 flags)
     output->z = third;
 
     if (index == 0) {
-        output->y = (float)func_0025F7A0(value);
+        output->y = (float)battle_roster_get_actor_world_y(value);
         if (flagBits & 0x20) {
-            output->y += (float)func_0020D590(func_0020C478(value));
+            output->y += (float)func_0020D590(battle_roster_lookup_actor(value));
         } else if (flagBits & 0x10) {
-            output->y += (float)(func_0020D590(func_0020C478(value)) / 2);
+            output->y += (float)(func_0020D590(battle_roster_lookup_actor(value)) / 2);
         }
     } else {
         float second = func_001FF7EC((s16)(s32)output->x, (s16)(s32)third);

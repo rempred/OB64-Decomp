@@ -50,12 +50,12 @@ void func_002AB574(void)
         if (func_0020C120(unit) == 1 && actor->animation >= 0x32) {
             continue;
         }
-        if (func_0020C0E8(unit) == 0) {
+        if (battle_actor_has_flag_9(unit) == 0) {
             continue;
         }
 
         /* Keep temporaries local to each swap for KMC register allocation. */
-        if (func_0020BFF8(unit) != 0) {
+        if (battle_actor_is_side_one(unit) != 0) {
             BodyScene *scene;
             s32 slot;
             BodyActor *moving;

@@ -5,7 +5,7 @@ typedef unsigned short u16;
 typedef unsigned int u32;
 typedef signed int s32;
 
-s32 func_0020C014(void *record);
+s32 battle_actor_is_side_zero(void *record);
 
 void func_0022A414(void *record)
 {
@@ -14,7 +14,7 @@ void func_0022A414(void *record)
     u8 *cursor;
     u8 *entry;
 
-    mode = func_0020C014(record);
+    mode = battle_actor_is_side_zero(record);
     index = 0;
     if (mode != 0) {
         ((BattleRosterRecord *)record)->formation_row += 1;

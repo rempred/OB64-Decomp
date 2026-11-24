@@ -12,7 +12,7 @@ typedef struct ResolutionGlobal {
 
 extern ResolutionGlobal *D_801CE8BC;
 extern int func_0020BF6C(void);
-extern void *func_0020C478(unsigned int index);
+extern void *battle_roster_lookup_actor(unsigned int index);
 
 /* Move the selected actor's row to the front, rebuilding the list if needed. */
 void func_00232280(BattleResolutionRecord *records)
@@ -28,8 +28,8 @@ void func_00232280(BattleResolutionRecord *records)
         return;
 
     for (i = 0; i < 20; ++i) {
-        actor = func_0020C478(i);
-        if (!func_0020C2C0(actor) && !func_0020C014(actor))
+        actor = battle_roster_lookup_actor(i);
+        if (!battle_actor_is_absent_or_has_flag_0(actor) && !battle_actor_is_side_zero(actor))
             break;
     }
     if (i >= 20)

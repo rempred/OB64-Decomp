@@ -2391,10 +2391,6 @@
       "address": "0x80089A10"
     },
     {
-      "name": "func_001CA29C",
-      "address": "0x801CA29C"
-    },
-    {
       "name": "func_001CD01C",
       "address": "0x801CD01C"
     },
@@ -11515,72 +11511,24 @@
       "address": "0x801C8B08"
     },
     {
-      "name": "D_801C8B68",
-      "address": "0x801C8B68"
-    },
-    {
-      "name": "D_801C8B84",
-      "address": "0x801C8B84"
-    },
-    {
-      "name": "D_801C8BA4",
-      "address": "0x801C8BA4"
-    },
-    {
       "name": "D_801C8BC0",
       "address": "0x801C8BC0"
-    },
-    {
-      "name": "D_801C8C3C",
-      "address": "0x801C8C3C"
-    },
-    {
-      "name": "D_801C8C58",
-      "address": "0x801C8C58"
     },
     {
       "name": "D_801C8C90",
       "address": "0x801C8C90"
     },
     {
-      "name": "D_801C8D24",
-      "address": "0x801C8D24"
-    },
-    {
       "name": "D_801C8D84",
       "address": "0x801C8D84"
-    },
-    {
-      "name": "D_801C8E30",
-      "address": "0x801C8E30"
-    },
-    {
-      "name": "D_801C8E64",
-      "address": "0x801C8E64"
-    },
-    {
-      "name": "D_801C8E80",
-      "address": "0x801C8E80"
-    },
-    {
-      "name": "D_801C8E9C",
-      "address": "0x801C8E9C"
     },
     {
       "name": "D_801C8EAC",
       "address": "0x801C8EAC"
     },
     {
-      "name": "D_801C8EB8",
-      "address": "0x801C8EB8"
-    },
-    {
       "name": "D_801C8FB8",
       "address": "0x801C8FB8"
-    },
-    {
-      "name": "D_801C8FE8",
-      "address": "0x801C8FE8"
     },
     {
       "name": "D_801C9FA4",
@@ -11589,18 +11537,6 @@
     {
       "name": "D_801CA038",
       "address": "0x801CA038"
-    },
-    {
-      "name": "D_801CA1C4",
-      "address": "0x801CA1C4"
-    },
-    {
-      "name": "D_801CA29C",
-      "address": "0x801CA29C"
-    },
-    {
-      "name": "D_801CA2E0",
-      "address": "0x801CA2E0"
     },
     {
       "name": "D_801CBD48",
@@ -13061,10 +12997,6 @@
     {
       "name": "D_801BE978",
       "address": "0x801BE978"
-    },
-    {
-      "name": "D_801C8C74",
-      "address": "0x801C8C74"
     },
     {
       "name": "D_801C9AA4",
@@ -27399,7 +27331,7 @@
         {
           "offset": "0x0000005C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -27494,7 +27426,7 @@
         {
           "offset": "0x0000004C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         }
       ]
@@ -28252,7 +28184,7 @@
       ]
     },
     {
-      "symbol": "func_0020D870",
+      "symbol": "battle_roster_init_actor_from_army_member",
       "expectedRelocations": [
         { "offset": "0x00000020", "type": "R_MIPS_HI16", "symbol": "D_80193BC0", "section": ".rel.text" },
         { "offset": "0x00000024", "type": "R_MIPS_LO16", "symbol": "D_80193BC0", "section": ".rel.text" },
@@ -28270,7 +28202,7 @@
         { "offset": "0x00000000", "type": "R_MIPS_HI16", "symbol": "D_8022A7F0", "section": ".rel.text" },
         { "offset": "0x00000004", "type": "R_MIPS_LO16", "symbol": "D_8022A7F0", "section": ".rel.text" },
         { "offset": "0x00000028", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
-        { "offset": "0x00000030", "type": "R_MIPS_26", "symbol": "func_0020C014", "section": ".rel.text" },
+        { "offset": "0x00000030", "type": "R_MIPS_26", "symbol": "battle_actor_is_side_zero", "section": ".rel.text" },
         { "offset": "0x00000040", "type": "R_MIPS_HI16", "symbol": "D_801976DC", "section": ".rel.text" },
         { "offset": "0x00000044", "type": "R_MIPS_LO16", "symbol": "D_801976DC", "section": ".rel.text" },
         { "offset": "0x00000048", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
@@ -28305,8 +28237,8 @@
         { "offset": "0x00000048", "type": "R_MIPS_HI16", "symbol": "D_801CE8BC", "section": ".rel.text" },
         { "offset": "0x0000004C", "type": "R_MIPS_LO16", "symbol": "D_801CE8BC", "section": ".rel.text" },
         { "offset": "0x0000005C", "type": "R_MIPS_26", "symbol": "func_0020C120", "section": ".rel.text" },
-        { "offset": "0x0000007C", "type": "R_MIPS_26", "symbol": "func_0020C0E8", "section": ".rel.text" },
-        { "offset": "0x0000008C", "type": "R_MIPS_26", "symbol": "func_0020BFF8", "section": ".rel.text" },
+        { "offset": "0x0000007C", "type": "R_MIPS_26", "symbol": "battle_actor_has_flag_9", "section": ".rel.text" },
+        { "offset": "0x0000008C", "type": "R_MIPS_26", "symbol": "battle_actor_is_side_one", "section": ".rel.text" },
         { "offset": "0x000000A4", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x000000A8", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x000000D8", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
@@ -28323,7 +28255,7 @@
         { "offset": "0x00000048", "type": "R_MIPS_LO16", "symbol": "D_801971F2", "section": ".rel.text" },
         { "offset": "0x00000064", "type": "R_MIPS_HI16", "symbol": "D_801CE8BC", "section": ".rel.text" },
         { "offset": "0x00000068", "type": "R_MIPS_LO16", "symbol": "D_801CE8BC", "section": ".rel.text" },
-        { "offset": "0x00000078", "type": "R_MIPS_26", "symbol": "func_0020BFF8", "section": ".rel.text" },
+        { "offset": "0x00000078", "type": "R_MIPS_26", "symbol": "battle_actor_is_side_one", "section": ".rel.text" },
         { "offset": "0x000000A0", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x000000A4", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x000000E8", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
@@ -28335,8 +28267,8 @@
       "expectedRelocations": [
         { "offset": "0x0000003C", "type": "R_MIPS_HI16", "symbol": "D_801CE8BC", "section": ".rel.text" },
         { "offset": "0x00000040", "type": "R_MIPS_LO16", "symbol": "D_801CE8BC", "section": ".rel.text" },
-        { "offset": "0x00000054", "type": "R_MIPS_26", "symbol": "func_0020BFF8", "section": ".rel.text" },
-        { "offset": "0x00000064", "type": "R_MIPS_26", "symbol": "func_0020C0E8", "section": ".rel.text" },
+        { "offset": "0x00000054", "type": "R_MIPS_26", "symbol": "battle_actor_is_side_one", "section": ".rel.text" },
+        { "offset": "0x00000064", "type": "R_MIPS_26", "symbol": "battle_actor_has_flag_9", "section": ".rel.text" },
         { "offset": "0x00000074", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x00000078", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x000000A8", "type": "R_MIPS_26", "symbol": "func_002B867C", "section": ".rel.text" },
@@ -28553,7 +28485,7 @@
     {
       "symbol": "func_002AB0F8",
       "expectedRelocations": [
-        { "offset": "0x00000028", "type": "R_MIPS_26", "symbol": "func_0020BFF8", "section": ".rel.text" },
+        { "offset": "0x00000028", "type": "R_MIPS_26", "symbol": "battle_actor_is_side_one", "section": ".rel.text" },
         { "offset": "0x00000074", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
         { "offset": "0x000000BC", "type": "R_MIPS_26", "symbol": "func_00201670", "section": ".rel.text" },
         { "offset": "0x000000C4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
@@ -28575,11 +28507,11 @@
         { "offset": "0x000000B8", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x000000E8", "type": "R_MIPS_HI16", "symbol": "D_801CE8BC", "section": ".rel.text" },
         { "offset": "0x000000EC", "type": "R_MIPS_LO16", "symbol": "D_801CE8BC", "section": ".rel.text" },
-        { "offset": "0x000000FC", "type": "R_MIPS_26", "symbol": "func_0020BFF8", "section": ".rel.text" },
+        { "offset": "0x000000FC", "type": "R_MIPS_26", "symbol": "battle_actor_is_side_one", "section": ".rel.text" },
         { "offset": "0x0000011C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
-        { "offset": "0x00000134", "type": "R_MIPS_26", "symbol": "func_0020C0E8", "section": ".rel.text" },
+        { "offset": "0x00000134", "type": "R_MIPS_26", "symbol": "battle_actor_has_flag_9", "section": ".rel.text" },
         { "offset": "0x00000144", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
-        { "offset": "0x00000154", "type": "R_MIPS_26", "symbol": "func_0020C0E8", "section": ".rel.text" },
+        { "offset": "0x00000154", "type": "R_MIPS_26", "symbol": "battle_actor_has_flag_9", "section": ".rel.text" },
         { "offset": "0x000001A8", "type": "R_MIPS_26", "symbol": "func_002A0A68", "section": ".rel.text" },
         { "offset": "0x000001C4", "type": "R_MIPS_26", "symbol": "func_0020C120", "section": ".rel.text" },
         { "offset": "0x00000204", "type": "R_MIPS_26", "symbol": "func_002A9364", "section": ".rel.text" }
@@ -28611,7 +28543,7 @@
     {
       "symbol": "func_002AB810",
       "expectedRelocations": [
-        { "offset": "0x00000050", "type": "R_MIPS_26", "symbol": "func_0020C104", "section": ".rel.text" },
+        { "offset": "0x00000050", "type": "R_MIPS_26", "symbol": "battle_actor_secondary_class_is_one", "section": ".rel.text" },
         { "offset": "0x00000064", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
         { "offset": "0x0000006C", "type": "R_MIPS_26", "symbol": "func_0020C120", "section": ".rel.text" },
         { "offset": "0x0000008C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
@@ -28651,7 +28583,7 @@
         { "offset": "0x000000F0", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x00000124", "type": "R_MIPS_HI16", "symbol": "D_801CE8BC", "section": ".rel.text" },
         { "offset": "0x00000128", "type": "R_MIPS_LO16", "symbol": "D_801CE8BC", "section": ".rel.text" },
-        { "offset": "0x00000138", "type": "R_MIPS_26", "symbol": "func_0020BFF8", "section": ".rel.text" },
+        { "offset": "0x00000138", "type": "R_MIPS_26", "symbol": "battle_actor_is_side_one", "section": ".rel.text" },
         { "offset": "0x00000144", "type": "R_MIPS_26", "symbol": "func_0020C120", "section": ".rel.text" },
         { "offset": "0x00000160", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
         { "offset": "0x00000188", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
@@ -28666,7 +28598,7 @@
         { "offset": "0x000002A4", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x000002A8", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x000002C4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
-        { "offset": "0x000002F0", "type": "R_MIPS_26", "symbol": "func_0020BFF8", "section": ".rel.text" },
+        { "offset": "0x000002F0", "type": "R_MIPS_26", "symbol": "battle_actor_is_side_one", "section": ".rel.text" },
         { "offset": "0x00000304", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
         { "offset": "0x0000033C", "type": "R_MIPS_26", "symbol": "func_002AB810", "section": ".rel.text" },
         { "offset": "0x00000374", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
@@ -29629,7 +29561,7 @@
       ]
     },
     {
-      "symbol": "func_0020C908",
+      "symbol": "battle_roster_init_actor_from_scenario_member",
       "expectedRelocations": [
         {
           "offset": "0x00000028",
@@ -31037,13 +30969,13 @@
         {
           "offset": "0x00000A98",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000AA4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -31055,13 +30987,13 @@
         {
           "offset": "0x00000AE4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000AF0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
@@ -32284,13 +32216,13 @@
         {
           "offset": "0x000000B0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000BC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -32754,7 +32686,7 @@
         {
           "offset": "0x00000378",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -33396,13 +33328,13 @@
         {
           "offset": "0x00000030",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000003C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
@@ -48931,11 +48863,11 @@
       ]
     },
     {
-      "symbol": "func_0020BFF8",
+      "symbol": "battle_actor_is_side_one",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C478",
+      "symbol": "battle_roster_lookup_actor",
       "expectedRelocations": [
         {
           "offset": "0x0000000C",
@@ -49282,7 +49214,7 @@
         {
           "offset": "0x00000058",
           "type": "R_MIPS_26",
-          "symbol": "func_0020DB10",
+          "symbol": "battle_roster_build_scene_actors",
           "section": ".rel.text"
         }
       ]
@@ -53509,7 +53441,7 @@
         {
           "offset": "0x000003FC",
           "type": "R_MIPS_26",
-          "symbol": "func_001CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -53521,7 +53453,7 @@
         {
           "offset": "0x00000470",
           "type": "R_MIPS_26",
-          "symbol": "func_001CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -53533,7 +53465,7 @@
         {
           "offset": "0x000004C4",
           "type": "R_MIPS_26",
-          "symbol": "func_001CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -53545,7 +53477,7 @@
         {
           "offset": "0x00000508",
           "type": "R_MIPS_26",
-          "symbol": "func_001CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -53557,7 +53489,7 @@
         {
           "offset": "0x0000053C",
           "type": "R_MIPS_26",
-          "symbol": "func_001CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -53569,7 +53501,7 @@
         {
           "offset": "0x00000560",
           "type": "R_MIPS_26",
-          "symbol": "func_001CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -54977,7 +54909,7 @@
         {
           "offset": "0x000001AC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020DB10",
+          "symbol": "battle_roster_build_scene_actors",
           "section": ".rel.text"
         },
         {
@@ -55479,19 +55411,19 @@
         {
           "offset": "0x00000164",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000178",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000198",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -55515,19 +55447,19 @@
         {
           "offset": "0x00000218",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000022C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000024C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -55771,7 +55703,7 @@
         {
           "offset": "0x000000D0",
           "type": "R_MIPS_26",
-          "symbol": "func_0021C3B0",
+          "symbol": "battle_roster_write_back_members",
           "section": ".rel.text"
         }
       ]
@@ -55950,7 +55882,7 @@
         {
           "offset": "0x000000EC",
           "type": "R_MIPS_26",
-          "symbol": "func_0021C3B0",
+          "symbol": "battle_roster_write_back_members",
           "section": ".rel.text"
         },
         {
@@ -56393,13 +56325,13 @@
         {
           "offset": "0x00000088",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C810",
+          "symbol": "battle_roster_find_first_side_zero_with_flag_9",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000098",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -56417,13 +56349,13 @@
         {
           "offset": "0x000000BC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C788",
+          "symbol": "battle_roster_find_first_side_one_with_flag_9",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000CC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -56693,7 +56625,7 @@
         {
           "offset": "0x0000027C",
           "type": "R_MIPS_26",
-          "symbol": "func_0021C3B0",
+          "symbol": "battle_roster_write_back_members",
           "section": ".rel.text"
         },
         {
@@ -56903,12 +56835,12 @@
       ]
     },
     {
-      "symbol": "func_0021C3B0",
+      "symbol": "battle_roster_write_back_members",
       "expectedRelocations": [
         {
           "offset": "0x00000020",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -56920,31 +56852,31 @@
         {
           "offset": "0x00000038",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000048",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0E8",
+          "symbol": "battle_actor_has_flag_9",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000058",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000080",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0CC",
+          "symbol": "battle_actor_has_flag_12",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000090",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -57034,7 +56966,7 @@
         {
           "offset": "0x0000013C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -57052,13 +56984,13 @@
         {
           "offset": "0x00000188",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000198",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -57807,7 +57739,7 @@
         {
           "offset": "0x00000564",
           "type": "R_MIPS_26",
-          "symbol": "func_0021C3B0",
+          "symbol": "battle_roster_write_back_members",
           "section": ".rel.text"
         },
         {
@@ -58809,7 +58741,7 @@
         {
           "offset": "0x00000D04",
           "type": "R_MIPS_26",
-          "symbol": "func_0021C3B0",
+          "symbol": "battle_roster_write_back_members",
           "section": ".rel.text"
         },
         {
@@ -58850,7 +58782,7 @@
         {
           "offset": "0x00000008",
           "type": "R_MIPS_26",
-          "symbol": "func_0021C3B0",
+          "symbol": "battle_roster_write_back_members",
           "section": ".rel.text"
         },
         {
@@ -58921,13 +58853,13 @@
         {
           "offset": "0x00000128",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000134",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -58939,7 +58871,7 @@
       ]
     },
     {
-      "symbol": "func_0021B770",
+      "symbol": "battle_roster_reset_member_fatigue",
       "expectedRelocations": [
         {
           "offset": "0x00000010",
@@ -58968,37 +58900,37 @@
         {
           "offset": "0x0000002C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000040",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000050",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0CC",
+          "symbol": "battle_actor_has_flag_12",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000060",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000070",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000008C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -59045,19 +58977,19 @@
         {
           "offset": "0x0000002C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000040",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0CC",
+          "symbol": "battle_actor_has_flag_12",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000005C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -59248,19 +59180,19 @@
         {
           "offset": "0x0000004C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000058",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000068",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -59278,7 +59210,7 @@
         {
           "offset": "0x00000098",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -59296,19 +59228,19 @@
         {
           "offset": "0x000000C0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000E4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000108",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -59356,19 +59288,19 @@
         {
           "offset": "0x000001CC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001D8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001E8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -59386,7 +59318,7 @@
         {
           "offset": "0x0000021C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -59404,19 +59336,19 @@
         {
           "offset": "0x00000244",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000254",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000280",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -59434,25 +59366,25 @@
         {
           "offset": "0x00000314",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000320",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000330",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000340",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0CC",
+          "symbol": "battle_actor_has_flag_12",
           "section": ".rel.text"
         },
         {
@@ -59470,7 +59402,7 @@
         {
           "offset": "0x00000370",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -59488,7 +59420,7 @@
         {
           "offset": "0x00000394",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -59500,7 +59432,7 @@
         {
           "offset": "0x000003D8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -59619,19 +59551,19 @@
         {
           "offset": "0x000000B0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000BC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000CC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -59655,7 +59587,7 @@
         {
           "offset": "0x00000184",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -59793,13 +59725,13 @@
         {
           "offset": "0x00000314",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000328",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -64577,11 +64509,11 @@
       ]
     },
     {
-      "symbol": "func_0020C014",
+      "symbol": "battle_actor_is_side_zero",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C034",
+      "symbol": "battle_actor_has_flag_10",
       "expectedRelocations": []
     },
     {
@@ -66366,13 +66298,13 @@
         {
           "offset": "0x00000354",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000360",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -66390,13 +66322,13 @@
         {
           "offset": "0x000003C0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x000003CC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
@@ -67205,13 +67137,13 @@
         {
           "offset": "0x0000056C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000578",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -67229,13 +67161,13 @@
         {
           "offset": "0x000005D8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x000005E4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
@@ -67907,7 +67839,7 @@
       ]
     },
     {
-      "symbol": "func_0020DB10",
+      "symbol": "battle_roster_build_scene_actors",
       "expectedRelocations": [
         {
           "offset": "0x00000000",
@@ -68068,7 +68000,7 @@
         {
           "offset": "0x0000036C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C908",
+          "symbol": "battle_roster_init_actor_from_scenario_member",
           "section": ".rel.text"
         },
         {
@@ -68152,7 +68084,7 @@
         {
           "offset": "0x00000554",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C908",
+          "symbol": "battle_roster_init_actor_from_scenario_member",
           "section": ".rel.text"
         },
         {
@@ -68434,7 +68366,7 @@
         {
           "offset": "0x0000076C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C908",
+          "symbol": "battle_roster_init_actor_from_scenario_member",
           "section": ".rel.text"
         },
         {
@@ -68638,7 +68570,7 @@
         {
           "offset": "0x00000C90",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C908",
+          "symbol": "battle_roster_init_actor_from_scenario_member",
           "section": ".rel.text"
         },
         {
@@ -68968,7 +68900,7 @@
         {
           "offset": "0x00000FC8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C908",
+          "symbol": "battle_roster_init_actor_from_scenario_member",
           "section": ".rel.text"
         },
         {
@@ -69112,7 +69044,7 @@
         {
           "offset": "0x000014C4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -69369,13 +69301,13 @@
         {
           "offset": "0x000004C8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
           "offset": "0x000004D4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -69387,13 +69319,13 @@
         {
           "offset": "0x00000538",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000544",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C034",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
@@ -81698,13 +81630,13 @@
         {
           "offset": "0x0000001C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000028",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -81781,49 +81713,49 @@
         {
           "offset": "0x0000009C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000B4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000CC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000DC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0E8",
+          "symbol": "battle_actor_has_flag_9",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000F8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000108",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0E8",
+          "symbol": "battle_actor_has_flag_9",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000120",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000138",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -81895,19 +81827,19 @@
         {
           "offset": "0x000002CC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x000002DC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x000002EC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0E8",
+          "symbol": "battle_actor_has_flag_9",
           "section": ".rel.text"
         },
         {
@@ -82002,7 +81934,7 @@
         {
           "offset": "0x000000A0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0E8",
+          "symbol": "battle_actor_has_flag_9",
           "section": ".rel.text"
         },
         {
@@ -82014,7 +81946,7 @@
         {
           "offset": "0x000000DC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C908",
+          "symbol": "battle_roster_init_actor_from_scenario_member",
           "section": ".rel.text"
         },
         {
@@ -82026,7 +81958,7 @@
         {
           "offset": "0x0000012C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C908",
+          "symbol": "battle_roster_init_actor_from_scenario_member",
           "section": ".rel.text"
         },
         {
@@ -82074,13 +82006,13 @@
         {
           "offset": "0x0000021C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000230",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -82092,7 +82024,7 @@
         {
           "offset": "0x0000024C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -82110,13 +82042,13 @@
         {
           "offset": "0x00000460",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000474",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -88946,13 +88878,13 @@
         {
           "offset": "0x00000030",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000003C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -88994,13 +88926,13 @@
         {
           "offset": "0x000000C8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000D4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -90626,7 +90558,7 @@
         {
           "offset": "0x0000049C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C810",
+          "symbol": "battle_roster_find_first_side_zero_with_flag_9",
           "section": ".rel.text"
         },
         {
@@ -90674,7 +90606,7 @@
         {
           "offset": "0x000004F4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -90710,7 +90642,7 @@
         {
           "offset": "0x00000538",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -90740,7 +90672,7 @@
         {
           "offset": "0x00000574",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C788",
+          "symbol": "battle_roster_find_first_side_one_with_flag_9",
           "section": ".rel.text"
         },
         {
@@ -90776,7 +90708,7 @@
         {
           "offset": "0x000005C8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -90812,7 +90744,7 @@
         {
           "offset": "0x0000060C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -90848,25 +90780,25 @@
         {
           "offset": "0x00000658",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000066C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000067C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000068C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -90890,7 +90822,7 @@
         {
           "offset": "0x000006D0",
           "type": "R_MIPS_26",
-          "symbol": "func_0021B770",
+          "symbol": "battle_roster_reset_member_fatigue",
           "section": ".rel.text"
         },
         {
@@ -90914,7 +90846,7 @@
         {
           "offset": "0x000006F8",
           "type": "R_MIPS_26",
-          "symbol": "func_0021C3B0",
+          "symbol": "battle_roster_write_back_members",
           "section": ".rel.text"
         },
         {
@@ -97234,7 +97166,7 @@
         {
           "offset": "0x00000014",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -97252,7 +97184,7 @@
         {
           "offset": "0x00000058",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -97264,13 +97196,13 @@
         {
           "offset": "0x00000090",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000009C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -97336,7 +97268,7 @@
         {
           "offset": "0x00000160",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C1B4",
+          "symbol": "battle_actor_secondary_class_is_45_to_48",
           "section": ".rel.text"
         }
       ],
@@ -97500,25 +97432,25 @@
         {
           "offset": "0x00000168",
           "section": ".rel.text",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00000174",
           "section": ".rel.text",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00000184",
           "section": ".rel.text",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00000194",
           "section": ".rel.text",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "type": "R_MIPS_26"
         },
         {
@@ -97560,7 +97492,7 @@
         {
           "offset": "0x00000354",
           "section": ".rel.text",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "type": "R_MIPS_26"
         },
         {
@@ -97572,7 +97504,7 @@
         {
           "offset": "0x00000394",
           "section": ".rel.text",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "type": "R_MIPS_26"
         },
         {
@@ -97596,13 +97528,13 @@
         {
           "offset": "0x00000428",
           "section": ".rel.text",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x0000045C",
           "section": ".rel.text",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "type": "R_MIPS_26"
         },
         {
@@ -97668,7 +97600,7 @@
         {
           "offset": "0x0000060C",
           "section": ".rel.text",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "type": "R_MIPS_26"
         },
         {
@@ -97686,7 +97618,7 @@
         {
           "offset": "0x00000628",
           "section": ".rel.text",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "type": "R_MIPS_26"
         },
         {
@@ -97806,13 +97738,13 @@
         {
           "offset": "0x000008E4",
           "section": ".rel.text",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x000008F0",
           "section": ".rel.text",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "type": "R_MIPS_26"
         },
         {
@@ -97848,13 +97780,13 @@
         {
           "offset": "0x00000A00",
           "section": ".rel.text",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00000A14",
           "section": ".rel.text",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "type": "R_MIPS_26"
         },
         {
@@ -97896,7 +97828,7 @@
         {
           "offset": "0x00000BB0",
           "section": ".rel.text",
-          "symbol": "func_0020C1B4",
+          "symbol": "battle_actor_secondary_class_is_45_to_48",
           "type": "R_MIPS_26"
         },
         {
@@ -98022,13 +97954,13 @@
         {
           "offset": "0x00000E80",
           "section": ".rel.text",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00000E90",
           "section": ".rel.text",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "type": "R_MIPS_26"
         },
         {
@@ -98040,7 +97972,7 @@
         {
           "offset": "0x00000EEC",
           "section": ".rel.text",
-          "symbol": "func_0023422C",
+          "symbol": "battle_roster_change_actor_secondary_class",
           "type": "R_MIPS_26"
         },
         {
@@ -98088,19 +98020,19 @@
         {
           "offset": "0x00001018",
           "section": ".rel.text",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00001028",
           "section": ".rel.text",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00001038",
           "section": ".rel.text",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "type": "R_MIPS_26"
         },
         {
@@ -98160,19 +98092,19 @@
         {
           "offset": "0x00001164",
           "section": ".rel.text",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00001174",
           "section": ".rel.text",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00001184",
           "section": ".rel.text",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "type": "R_MIPS_26"
         },
         {
@@ -98214,19 +98146,19 @@
         {
           "offset": "0x00001284",
           "section": ".rel.text",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00001294",
           "section": ".rel.text",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x000012A4",
           "section": ".rel.text",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "type": "R_MIPS_26"
         },
         {
@@ -98262,19 +98194,19 @@
         {
           "offset": "0x000013A0",
           "section": ".rel.text",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x000013B0",
           "section": ".rel.text",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x000013C0",
           "section": ".rel.text",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "type": "R_MIPS_26"
         },
         {
@@ -98298,7 +98230,7 @@
         {
           "offset": "0x00001470",
           "section": ".rel.text",
-          "symbol": "func_0023422C",
+          "symbol": "battle_roster_change_actor_secondary_class",
           "type": "R_MIPS_26"
         },
         {
@@ -98334,13 +98266,13 @@
         {
           "offset": "0x00001510",
           "section": ".rel.text",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x0000151C",
           "section": ".rel.text",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "type": "R_MIPS_26"
         },
         {
@@ -98352,19 +98284,19 @@
         {
           "offset": "0x00001548",
           "section": ".rel.text",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00001558",
           "section": ".rel.text",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00001568",
           "section": ".rel.text",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "type": "R_MIPS_26"
         },
         {
@@ -98424,7 +98356,7 @@
         {
           "offset": "0x00001764",
           "section": ".rel.text",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "type": "R_MIPS_26"
         },
         {
@@ -98704,7 +98636,7 @@
         {
           "offset": "0x000000EC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -98944,19 +98876,19 @@
         {
           "offset": "0x00000038",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000050",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000084",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0E8",
+          "symbol": "battle_actor_has_flag_9",
           "section": ".rel.text"
         },
         {
@@ -98985,13 +98917,13 @@
         {
           "offset": "0x0000005C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000068",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99027,7 +98959,7 @@
         {
           "offset": "0x00000108",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C1B4",
+          "symbol": "battle_actor_secondary_class_is_45_to_48",
           "section": ".rel.text"
         },
         {
@@ -99062,7 +98994,7 @@
         {
           "offset": "0x0000000C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -99085,19 +99017,19 @@
         {
           "offset": "0x00000038",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000058",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000060",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99109,37 +99041,37 @@
         {
           "offset": "0x00000088",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000090",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000A8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000B0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000D0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000D8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99151,13 +99083,13 @@
         {
           "offset": "0x000000F0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000FC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99169,13 +99101,13 @@
         {
           "offset": "0x00000124",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000130",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99193,13 +99125,13 @@
         {
           "offset": "0x00000178",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000180",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99217,37 +99149,37 @@
         {
           "offset": "0x000001B0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001B8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001D0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001D8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001F8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000200",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99259,13 +99191,13 @@
         {
           "offset": "0x00000218",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000224",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99277,13 +99209,13 @@
         {
           "offset": "0x0000024C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000258",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99295,13 +99227,13 @@
         {
           "offset": "0x0000028C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000298",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99318,7 +99250,7 @@
         {
           "offset": "0x00000028",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {
@@ -99366,13 +99298,13 @@
         {
           "offset": "0x0000015C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000168",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         }
       ]
@@ -99383,7 +99315,7 @@
         {
           "offset": "0x00000034",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -99413,19 +99345,19 @@
         {
           "offset": "0x0000009C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000AC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000BC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -99461,7 +99393,7 @@
         {
           "offset": "0x00000174",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C348",
+          "symbol": "battle_actor_has_flag_4",
           "section": ".rel.text"
         },
         {
@@ -99473,7 +99405,7 @@
         {
           "offset": "0x000001A8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -99503,13 +99435,13 @@
         {
           "offset": "0x00000238",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000244",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -99539,13 +99471,13 @@
         {
           "offset": "0x000002D4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x000002E4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
@@ -99569,19 +99501,19 @@
         {
           "offset": "0x0000035C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000036C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000037C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
@@ -99605,13 +99537,13 @@
         {
           "offset": "0x000003DC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x000003EC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
@@ -99629,7 +99561,7 @@
         {
           "offset": "0x00000420",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
@@ -99652,7 +99584,7 @@
         {
           "offset": "0x00000044",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -99700,7 +99632,7 @@
         {
           "offset": "0x000000F8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {
@@ -99795,7 +99727,7 @@
         {
           "offset": "0x000000C0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -99915,13 +99847,13 @@
         {
           "offset": "0x00000308",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000314",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -99951,7 +99883,7 @@
         {
           "offset": "0x00000394",
           "type": "R_MIPS_26",
-          "symbol": "func_00237810",
+          "symbol": "battle_actor_roll_luck_advantage",
           "section": ".rel.text"
         },
         {
@@ -100023,13 +99955,13 @@
         {
           "offset": "0x000004C8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
           "offset": "0x000004D4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -100041,19 +99973,19 @@
         {
           "offset": "0x0000050C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000051C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000052C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {
@@ -100071,13 +100003,13 @@
         {
           "offset": "0x0000057C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000058C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -100137,19 +100069,19 @@
         {
           "offset": "0x00000684",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000698",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
           "offset": "0x000006A4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -100202,7 +100134,7 @@
         {
           "offset": "0x000000C4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -100388,7 +100320,7 @@
         {
           "offset": "0x00000484",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -100418,7 +100350,7 @@
         {
           "offset": "0x000004F4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -100430,7 +100362,7 @@
         {
           "offset": "0x00000518",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -100448,7 +100380,7 @@
         {
           "offset": "0x00000588",
           "type": "R_MIPS_26",
-          "symbol": "func_00237810",
+          "symbol": "battle_actor_roll_luck_advantage",
           "section": ".rel.text"
         },
         {
@@ -100526,19 +100458,19 @@
         {
           "offset": "0x000006C8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000006D8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x000006E8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {
@@ -100556,13 +100488,13 @@
         {
           "offset": "0x00000734",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000744",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -100687,7 +100619,7 @@
         {
           "offset": "0x0000012C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
@@ -100711,7 +100643,7 @@
         {
           "offset": "0x00000168",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C348",
+          "symbol": "battle_actor_has_flag_4",
           "section": ".rel.text"
         },
         {
@@ -100764,7 +100696,7 @@
         {
           "offset": "0x0000012C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C348",
+          "symbol": "battle_actor_has_flag_4",
           "section": ".rel.text"
         },
         {
@@ -100793,13 +100725,13 @@
         {
           "offset": "0x00000054",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000064",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -100877,13 +100809,13 @@
         {
           "offset": "0x0000016C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000178",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -119860,7 +119792,7 @@
         {
           "offset": "0x00000034",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {
@@ -120957,7 +120889,7 @@
         {
           "offset": "0x00000128",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -120993,37 +120925,37 @@
         {
           "offset": "0x00000184",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000190",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001A8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001B4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001C4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
           "offset": "0x000001F8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -121107,13 +121039,13 @@
         {
           "offset": "0x000002CC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x000002D8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -121125,13 +121057,13 @@
         {
           "offset": "0x00000310",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000031C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -121149,13 +121081,13 @@
         {
           "offset": "0x00000398",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000003B8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0CC",
+          "symbol": "battle_actor_has_flag_12",
           "section": ".rel.text"
         },
         {
@@ -121263,7 +121195,7 @@
         {
           "offset": "0x000005B8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -121311,7 +121243,7 @@
         {
           "offset": "0x00000624",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -121359,7 +121291,7 @@
         {
           "offset": "0x00000728",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -121413,7 +121345,7 @@
         {
           "offset": "0x000008B4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -121437,13 +121369,13 @@
         {
           "offset": "0x00000920",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000095C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -121551,7 +121483,7 @@
         {
           "offset": "0x00000B78",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -121665,7 +121597,7 @@
         {
           "offset": "0x00000D5C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -121683,7 +121615,7 @@
         {
           "offset": "0x00000DBC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -121719,7 +121651,7 @@
         {
           "offset": "0x00000E74",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -121731,7 +121663,7 @@
         {
           "offset": "0x00000E94",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -121767,7 +121699,7 @@
         {
           "offset": "0x00000ED0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -121827,7 +121759,7 @@
         {
           "offset": "0x00000F60",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -121851,7 +121783,7 @@
         {
           "offset": "0x00000FDC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -121881,7 +121813,7 @@
         {
           "offset": "0x0000106C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -121893,7 +121825,7 @@
         {
           "offset": "0x0000108C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -121929,7 +121861,7 @@
         {
           "offset": "0x000010C8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -122121,7 +122053,7 @@
         {
           "offset": "0x00001380",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -122133,7 +122065,7 @@
         {
           "offset": "0x000013A0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -122223,7 +122155,7 @@
         {
           "offset": "0x000015A4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {
@@ -122277,7 +122209,7 @@
         {
           "offset": "0x000016DC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -122355,7 +122287,7 @@
         {
           "offset": "0x00001784",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -122367,7 +122299,7 @@
         {
           "offset": "0x00001798",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -122487,7 +122419,7 @@
         {
           "offset": "0x00001970",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -122517,7 +122449,7 @@
         {
           "offset": "0x00001A0C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -122613,13 +122545,13 @@
         {
           "offset": "0x00001BD4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x00001BE4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
@@ -122637,13 +122569,13 @@
         {
           "offset": "0x00001C38",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x00001C48",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
@@ -122691,19 +122623,19 @@
         {
           "offset": "0x00001D00",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x00001D10",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
           "offset": "0x00001D20",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
@@ -123027,7 +122959,7 @@
         {
           "offset": "0x00002144",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
@@ -123039,13 +122971,13 @@
         {
           "offset": "0x0000215C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000216C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
@@ -123057,19 +122989,19 @@
         {
           "offset": "0x00002184",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
           "offset": "0x00002194",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
           "offset": "0x000021A4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C348",
+          "symbol": "battle_actor_has_flag_4",
           "section": ".rel.text"
         },
         {
@@ -123087,7 +123019,7 @@
         {
           "offset": "0x000021F4",
           "type": "R_MIPS_26",
-          "symbol": "func_001F2F9C",
+          "symbol": "battle_show_class_change_message",
           "section": ".rel.text"
         },
         {
@@ -123099,7 +123031,7 @@
         {
           "offset": "0x00002204",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -123153,7 +123085,7 @@
         {
           "offset": "0x000022CC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -123303,7 +123235,7 @@
         {
           "offset": "0x000024B8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -123321,7 +123253,7 @@
         {
           "offset": "0x000024D0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -123357,7 +123289,7 @@
         {
           "offset": "0x000025B8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -123495,13 +123427,13 @@
         {
           "offset": "0x00002700",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000270C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -124564,7 +124496,7 @@
         {
           "offset": "0x00000248",
           "section": ".rel.text",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "type": "R_MIPS_26"
         },
         {
@@ -124582,7 +124514,7 @@
         {
           "offset": "0x00000288",
           "section": ".rel.text",
-          "symbol": "func_0020C164",
+          "symbol": "battle_actor_secondary_class_is_71_or_72",
           "type": "R_MIPS_26"
         },
         {
@@ -124600,7 +124532,7 @@
         {
           "offset": "0x0000032C",
           "section": ".rel.text",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "type": "R_MIPS_26"
         },
         {
@@ -124702,7 +124634,7 @@
         {
           "offset": "0x0000054C",
           "section": ".rel.text",
-          "symbol": "func_0020C164",
+          "symbol": "battle_actor_secondary_class_is_71_or_72",
           "type": "R_MIPS_26"
         },
         {
@@ -124774,7 +124706,7 @@
         {
           "offset": "0x000006A0",
           "section": ".rel.text",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "type": "R_MIPS_26"
         },
         {
@@ -124804,7 +124736,7 @@
         {
           "offset": "0x00000714",
           "section": ".rel.text",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "type": "R_MIPS_26"
         },
         {
@@ -124816,7 +124748,7 @@
         {
           "offset": "0x00000738",
           "section": ".rel.text",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "type": "R_MIPS_26"
         },
         {
@@ -124834,13 +124766,13 @@
         {
           "offset": "0x000007B0",
           "section": ".rel.text",
-          "symbol": "func_00237810",
+          "symbol": "battle_actor_roll_luck_advantage",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x000007BC",
           "section": ".rel.text",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "type": "R_MIPS_26"
         },
         {
@@ -124900,7 +124832,7 @@
         {
           "offset": "0x00000914",
           "section": ".rel.text",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "type": "R_MIPS_26"
         },
         {
@@ -124978,19 +124910,19 @@
         {
           "offset": "0x00000ABC",
           "section": ".rel.text",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00000ACC",
           "section": ".rel.text",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00000ADC",
           "section": ".rel.text",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "type": "R_MIPS_26"
         },
         {
@@ -125008,13 +124940,13 @@
         {
           "offset": "0x00000B28",
           "section": ".rel.text",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "type": "R_MIPS_26"
         },
         {
           "offset": "0x00000B38",
           "section": ".rel.text",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "type": "R_MIPS_26"
         },
         {
@@ -127616,7 +127548,7 @@
         {
           "offset": "0x0000006C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -127670,25 +127602,25 @@
         {
           "offset": "0x00000114",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000124",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000134",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000144",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
@@ -127976,7 +127908,7 @@
         {
           "offset": "0x00000550",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -127994,7 +127926,7 @@
         {
           "offset": "0x00000578",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -128084,7 +128016,7 @@
         {
           "offset": "0x00000784",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -128102,7 +128034,7 @@
         {
           "offset": "0x000007A0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
@@ -128198,25 +128130,25 @@
         {
           "offset": "0x00000960",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D770",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000968",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000009AC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x000009C0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -128258,7 +128190,7 @@
         {
           "offset": "0x00000B18",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C1B4",
+          "symbol": "battle_actor_secondary_class_is_45_to_48",
           "section": ".rel.text"
         },
         {
@@ -128396,13 +128328,13 @@
         {
           "offset": "0x00000E34",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000E44",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -128426,7 +128358,7 @@
         {
           "offset": "0x00000E9C",
           "type": "R_MIPS_26",
-          "symbol": "func_0023422C",
+          "symbol": "battle_roster_change_actor_secondary_class",
           "section": ".rel.text"
         },
         {
@@ -128498,13 +128430,13 @@
         {
           "offset": "0x00000FA8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000FB8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -128708,7 +128640,7 @@
         {
           "offset": "0x000012F8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -128865,31 +128797,31 @@
         {
           "offset": "0x00000054",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000068",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000007C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000090",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2F4",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000A4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C310",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
@@ -128913,7 +128845,7 @@
         {
           "offset": "0x00000158",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -128925,7 +128857,7 @@
         {
           "offset": "0x00000194",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -128937,7 +128869,7 @@
         {
           "offset": "0x000001CC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -128949,7 +128881,7 @@
         {
           "offset": "0x0000020C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -128973,7 +128905,7 @@
         {
           "offset": "0x00000258",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -129183,7 +129115,7 @@
         {
           "offset": "0x000007BC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -129213,7 +129145,7 @@
         {
           "offset": "0x00000838",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -129225,7 +129157,7 @@
         {
           "offset": "0x0000085C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -129422,19 +129354,19 @@
         {
           "offset": "0x00000084",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000090",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000A8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -129446,7 +129378,7 @@
         {
           "offset": "0x000000B8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
@@ -129488,7 +129420,7 @@
         {
           "offset": "0x0000015C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C908",
+          "symbol": "battle_roster_init_actor_from_scenario_member",
           "section": ".rel.text"
         },
         {
@@ -129512,7 +129444,7 @@
         {
           "offset": "0x00000178",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D870",
+          "symbol": "battle_roster_init_actor_from_army_member",
           "section": ".rel.text"
         },
         {
@@ -129602,13 +129534,13 @@
         {
           "offset": "0x0000039C",
           "type": "R_MIPS_26",
-          "symbol": "func_002344B4",
+          "symbol": "battle_actor_scaled_distance_from_center_row",
           "section": ".rel.text"
         },
         {
           "offset": "0x000003C4",
           "type": "R_MIPS_26",
-          "symbol": "func_002344B4",
+          "symbol": "battle_actor_scaled_distance_from_center_row",
           "section": ".rel.text"
         },
         {
@@ -129637,13 +129569,13 @@
         {
           "offset": "0x00000050",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000064",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -129762,19 +129694,19 @@
         {
           "offset": "0x00000038",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000044",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000054",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -129929,7 +129861,7 @@
         {
           "offset": "0x00000150",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D870",
+          "symbol": "battle_roster_init_actor_from_army_member",
           "section": ".rel.text"
         },
         {
@@ -129941,7 +129873,7 @@
         {
           "offset": "0x00000190",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -130013,13 +129945,13 @@
         {
           "offset": "0x0000027C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000290",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -130163,13 +130095,13 @@
         {
           "offset": "0x00000638",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000648",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -130193,7 +130125,7 @@
         {
           "offset": "0x0000069C",
           "type": "R_MIPS_26",
-          "symbol": "func_0023422C",
+          "symbol": "battle_roster_change_actor_secondary_class",
           "section": ".rel.text"
         },
         {
@@ -130259,31 +130191,31 @@
         {
           "offset": "0x000007B8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x000007C4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x000007D4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C0CC",
+          "symbol": "battle_actor_has_flag_12",
           "section": ".rel.text"
         },
         {
           "offset": "0x000007E4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000080C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D72C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -130510,7 +130442,7 @@
         {
           "offset": "0x00000088",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -130738,7 +130670,7 @@
         {
           "offset": "0x00000318",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -171519,7 +171451,7 @@
         {
           "offset": "0x00000394",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -171806,13 +171738,13 @@
         {
           "offset": "0x00000184",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000018C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -172731,7 +172663,7 @@
         {
           "offset": "0x00000410",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -172964,13 +172896,13 @@
         {
           "offset": "0x00000184",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000018C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -173387,7 +173319,7 @@
         {
           "offset": "0x000002BC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -173561,7 +173493,7 @@
         {
           "offset": "0x00000634",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -173847,13 +173779,13 @@
         {
           "offset": "0x00000184",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000018C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -174121,13 +174053,13 @@
         {
           "offset": "0x000000B4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000C8",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -175487,7 +175419,7 @@
         {
           "offset": "0x000004EC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -175744,13 +175676,13 @@
         {
           "offset": "0x00000178",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000180",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -176047,7 +175979,7 @@
         {
           "offset": "0x0000002C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -176681,13 +176613,13 @@
         {
           "offset": "0x00000178",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000180",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -177463,13 +177395,13 @@
         {
           "offset": "0x00000184",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000018C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -177880,7 +177812,7 @@
         {
           "offset": "0x00000008",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -177892,34 +177824,34 @@
       ]
     },
     {
-      "symbol": "func_0025F778",
+      "symbol": "battle_roster_get_actor_world_x",
       "expectedRelocations": [
         {
           "offset": "0x00000008",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         }
       ]
     },
     {
-      "symbol": "func_0025F7A0",
+      "symbol": "battle_roster_get_actor_world_y",
       "expectedRelocations": [
         {
           "offset": "0x00000008",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         }
       ]
     },
     {
-      "symbol": "func_0025F7C8",
+      "symbol": "battle_roster_get_actor_world_z",
       "expectedRelocations": [
         {
           "offset": "0x00000008",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         }
       ]
@@ -178064,13 +177996,13 @@
         {
           "offset": "0x00000014",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000020",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2D8",
+          "symbol": "battle_actor_has_flag_5",
           "section": ".rel.text"
         },
         {
@@ -178087,13 +178019,13 @@
         {
           "offset": "0x00000018",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000028",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2D8",
+          "symbol": "battle_actor_has_flag_5",
           "section": ".rel.text"
         },
         {
@@ -178134,13 +178066,13 @@
         {
           "offset": "0x00000018",
           "type": "R_MIPS_26",
-          "symbol": "func_0020BFF8",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000028",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2D8",
+          "symbol": "battle_actor_has_flag_5",
           "section": ".rel.text"
         },
         {
@@ -178204,7 +178136,7 @@
         {
           "offset": "0x00000010",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -178244,7 +178176,7 @@
         {
           "offset": "0x00000018",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -178272,7 +178204,7 @@
         {
           "offset": "0x0000000C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -185708,7 +185640,7 @@
         {
           "offset": "0x000000D4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D654",
+          "symbol": "battle_roster_find_actor_index_at_position",
           "section": ".rel.text"
         }
       ]
@@ -189329,13 +189261,13 @@
         {
           "offset": "0x0000001C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000028",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -192263,7 +192195,7 @@
         {
           "offset": "0x000001A4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -192471,7 +192403,7 @@
         {
           "offset": "0x00000074",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C104",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {
@@ -192570,7 +192502,7 @@
         {
           "offset": "0x00000110",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -192678,7 +192610,7 @@
         {
           "offset": "0x000002E4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -192702,7 +192634,7 @@
         {
           "offset": "0x000003A4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
@@ -197499,13 +197431,13 @@
         {
           "offset": "0x000000BC",
           "type": "R_MIPS_26",
-          "symbol": "func_0025F7A0",
+          "symbol": "battle_roster_get_actor_world_y",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000DC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -197523,7 +197455,7 @@
         {
           "offset": "0x00000110",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -197616,19 +197548,19 @@
         {
           "offset": "0x00000058",
           "type": "R_MIPS_26",
-          "symbol": "func_0020D654",
+          "symbol": "battle_roster_find_actor_index_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000078",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000080",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C2C0",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         }
       ]
@@ -197639,7 +197571,7 @@
         {
           "offset": "0x00000008",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         }
       ]
@@ -199572,7 +199504,7 @@
         {
           "offset": "0x00000068",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -201046,7 +200978,7 @@
           "offset": "0x00000044",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x00000054",
@@ -201147,7 +201079,7 @@
           "offset": "0x00000044",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x00000054",
@@ -201195,7 +201127,7 @@
           "offset": "0x000000C0",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x000000D4",
@@ -201307,7 +201239,7 @@
           "offset": "0x00000030",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x00000040",
@@ -201426,7 +201358,7 @@
           "offset": "0x00000048",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x00000058",
@@ -201521,7 +201453,7 @@
           "offset": "0x0000004C",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x0000005C",
@@ -201563,7 +201495,7 @@
           "offset": "0x000000A0",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x000000AC",
@@ -201587,7 +201519,7 @@
           "offset": "0x000000E4",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x000000F8",
@@ -201629,7 +201561,7 @@
           "offset": "0x0000015C",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x00000168",
@@ -201659,7 +201591,7 @@
           "offset": "0x000001AC",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x000001C0",
@@ -203256,7 +203188,7 @@
           "offset": "0x00000030",
           "section": ".rel.text",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478"
+          "symbol": "battle_roster_lookup_actor"
         },
         {
           "offset": "0x00000040",
@@ -208460,13 +208392,13 @@
         {
           "offset": "0x000000EC",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000F4",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -211486,13 +211418,13 @@
         {
           "offset": "0x00000084",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x0000008C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -212839,7 +212771,7 @@
         {
           "offset": "0x0000005C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -263727,12 +263659,12 @@
       ]
     },
     {
-      "symbol": "func_001F2F9C",
+      "symbol": "battle_show_class_change_message",
       "expectedRelocations": [
         {
           "offset": "0x00000018",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -263822,7 +263754,7 @@
         {
           "offset": "0x000000B0",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -265242,7 +265174,7 @@
         {
           "offset": "0x00000014",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -265265,7 +265197,7 @@
         {
           "offset": "0x00000014",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -265277,7 +265209,7 @@
         {
           "offset": "0x0000003C",
           "type": "R_MIPS_26",
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -265289,23 +265221,23 @@
       ]
     },
     {
-      "symbol": "func_0020C0CC",
+      "symbol": "battle_actor_has_flag_12",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C0E8",
+      "symbol": "battle_actor_has_flag_9",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C104",
+      "symbol": "battle_actor_secondary_class_is_one",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C164",
+      "symbol": "battle_actor_secondary_class_is_71_or_72",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C1B4",
+      "symbol": "battle_actor_secondary_class_is_45_to_48",
       "expectedRelocations": []
     },
     {
@@ -265338,27 +265270,27 @@
       ]
     },
     {
-      "symbol": "func_0020C2C0",
+      "symbol": "battle_actor_is_absent_or_has_flag_0",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C2D8",
+      "symbol": "battle_actor_has_flag_5",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C2F4",
+      "symbol": "battle_actor_has_flag_3",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C310",
+      "symbol": "battle_actor_has_flag_2",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C32C",
+      "symbol": "battle_actor_has_flag_1",
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020C348",
+      "symbol": "battle_actor_has_flag_4",
       "expectedRelocations": []
     },
     {
@@ -265408,7 +265340,7 @@
       ]
     },
     {
-      "symbol": "func_0020C788",
+      "symbol": "battle_roster_find_first_side_one_with_flag_9",
       "expectedRelocations": [
         {
           "offset": "0x00000000",
@@ -265425,7 +265357,7 @@
       ]
     },
     {
-      "symbol": "func_0020C810",
+      "symbol": "battle_roster_find_first_side_zero_with_flag_9",
       "expectedRelocations": [
         {
           "offset": "0x00000000",
@@ -265442,7 +265374,7 @@
       ]
     },
     {
-      "symbol": "func_0020C89C",
+      "symbol": "battle_roster_find_first_side_one",
       "expectedRelocations": [
         {
           "offset": "0x00000000",
@@ -265537,7 +265469,7 @@
       "expectedRelocations": []
     },
     {
-      "symbol": "func_0020D654",
+      "symbol": "battle_roster_find_actor_index_at_position",
       "expectedRelocations": [
         {
           "offset": "0x00000024",
@@ -265571,7 +265503,7 @@
       ]
     },
     {
-      "symbol": "func_0020D72C",
+      "symbol": "battle_roster_find_actor_index",
       "expectedRelocations": [
         {
           "offset": "0x00000008",
@@ -265594,7 +265526,7 @@
       ]
     },
     {
-      "symbol": "func_0020D770",
+      "symbol": "battle_roster_find_actor_at_position",
       "expectedRelocations": [
         {
           "offset": "0x00000024",
@@ -266557,13 +266489,13 @@
         {
           "offset": "0x0000001C",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8B68",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000028",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8BA4",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
@@ -266669,19 +266601,19 @@
         {
           "offset": "0x000000A8",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8E9C",
+          "symbol": "battle_actor_has_flag_1",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000C8",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8E64",
+          "symbol": "battle_actor_has_flag_3",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000E8",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8EB8",
+          "symbol": "battle_actor_has_flag_4",
           "section": ".rel.text"
         },
         {
@@ -266693,7 +266625,7 @@
         {
           "offset": "0x00000108",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8E80",
+          "symbol": "battle_actor_has_flag_2",
           "section": ".rel.text"
         },
         {
@@ -266716,7 +266648,7 @@
         {
           "offset": "0x0000000C",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8B84",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -266740,7 +266672,7 @@
         {
           "offset": "0x0000004C",
           "type": "R_MIPS_26",
-          "symbol": "D_801CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         }
       ]
@@ -266751,7 +266683,7 @@
         {
           "offset": "0x0000000C",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8B84",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -266775,7 +266707,7 @@
         {
           "offset": "0x00000044",
           "type": "R_MIPS_26",
-          "symbol": "D_801CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         }
       ]
@@ -266786,7 +266718,7 @@
         {
           "offset": "0x0000000C",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8B84",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -266804,7 +266736,7 @@
         {
           "offset": "0x0000003C",
           "type": "R_MIPS_26",
-          "symbol": "D_801CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
@@ -266821,25 +266753,25 @@
         {
           "offset": "0x00000018",
           "type": "R_MIPS_26",
-          "symbol": "D_801CA29C",
+          "symbol": "battle_roster_find_actor_index",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000030",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8FE8",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000044",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8E30",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000054",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8C3C",
+          "symbol": "battle_actor_has_flag_12",
           "section": ".rel.text"
         },
         {
@@ -266851,7 +266783,7 @@
         {
           "offset": "0x00000078",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8D24",
+          "symbol": "battle_actor_secondary_class_is_45_to_48",
           "section": ".rel.text"
         },
         {
@@ -266869,7 +266801,7 @@
       ]
     },
     {
-      "symbol": "func_0023422C",
+      "symbol": "battle_roster_change_actor_secondary_class",
       "expectedRelocations": [
         {
           "offset": "0x00000038",
@@ -266910,13 +266842,13 @@
         {
           "offset": "0x00000094",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8B68",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000A0",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8BA4",
+          "symbol": "battle_actor_has_flag_10",
           "section": ".rel.text"
         },
         {
@@ -266934,7 +266866,7 @@
       ]
     },
     {
-      "symbol": "func_002344B4",
+      "symbol": "battle_actor_scaled_distance_from_center_row",
       "expectedRelocations": [
         {
           "offset": "0x00000018",
@@ -267131,7 +267063,7 @@
       ]
     },
     {
-      "symbol": "func_00237810",
+      "symbol": "battle_actor_roll_luck_advantage",
       "expectedRelocations": [
         {
           "offset": "0x00000030",
@@ -267283,7 +267215,7 @@
         {
           "offset": "0x00000020",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8FE8",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         },
         {
@@ -267316,7 +267248,7 @@
         {
           "offset": "0x0000000C",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8B84",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
@@ -267328,13 +267260,13 @@
         {
           "offset": "0x00000048",
           "type": "R_MIPS_26",
-          "symbol": "D_801CA2E0",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000050",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8E30",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -267346,13 +267278,13 @@
         {
           "offset": "0x00000090",
           "type": "R_MIPS_26",
-          "symbol": "D_801CA2E0",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000098",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8E30",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -267364,13 +267296,13 @@
         {
           "offset": "0x000000B8",
           "type": "R_MIPS_26",
-          "symbol": "D_801CA2E0",
+          "symbol": "battle_roster_find_actor_at_position",
           "section": ".rel.text"
         },
         {
           "offset": "0x000000C0",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8E30",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
           "section": ".rel.text"
         },
         {
@@ -267393,19 +267325,19 @@
         {
           "offset": "0x00000038",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8B84",
+          "symbol": "battle_actor_is_side_zero",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000050",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8B68",
+          "symbol": "battle_actor_is_side_one",
           "section": ".rel.text"
         },
         {
           "offset": "0x00000084",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8C58",
+          "symbol": "battle_actor_has_flag_9",
           "section": ".rel.text"
         },
         {
@@ -267457,7 +267389,7 @@
         {
           "offset": "0x0000000C",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8FE8",
+          "symbol": "battle_roster_lookup_actor",
           "section": ".rel.text"
         }
       ]
@@ -267994,7 +267926,7 @@
         {
           "offset": "0x00000030",
           "type": "R_MIPS_26",
-          "symbol": "D_801CA1C4",
+          "symbol": "battle_roster_find_actor_index_at_position",
           "section": ".rel.text"
         }
       ]
@@ -283564,7 +283496,7 @@
         {
           "offset": "0x00000060",
           "type": "R_MIPS_26",
-          "symbol": "D_801C8C74",
+          "symbol": "battle_actor_secondary_class_is_one",
           "section": ".rel.text"
         },
         {

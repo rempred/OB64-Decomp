@@ -44,7 +44,7 @@ extern void func_00262830(s16);
 
 
 extern void func_00262C94(void *, s32, s32);
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 
 extern void func_0020BDCC(s16, s32);
 extern u8 *p01_context_80220F68;
@@ -61,7 +61,7 @@ static __inline__ void p02_message_1009(P02StateE64C *state)
     P02RenderE64C *object;
     s32 value;
 
-    pointer = func_0020C478(state->value_1C);
+    pointer = battle_roster_lookup_actor(state->value_1C);
     func_0026C7C4(pointer, &target);
     object = func_00269798(0x44);
     matrix = object->value_1C;
@@ -162,7 +162,7 @@ s32 func_0026e64c(u32 command, void *payload)
         P02MotionE64C *motion;
         void *actor;
         func_0026241C(state->value_24, 13, 25);
-        actor = func_0020C478(state->value_1C);
+        actor = battle_roster_lookup_actor(state->value_1C);
         func_0026C7C4(actor, &target);
         target.y += (float)(func_0020D590((struct SupplementBoundsRecord *)actor) / 2);
         motion = state->value_2C;

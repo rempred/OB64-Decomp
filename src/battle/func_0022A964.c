@@ -6,7 +6,7 @@ typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
 
-void *func_0020C478(unsigned int index);
+void *battle_roster_lookup_actor(unsigned int index);
 void func_0021D200(s32, s32, void *);
 void func_0021D230(s32, s32, void *, s32);
 void func_0021D25C(s32, s32, void *, s32, s32);
@@ -30,7 +30,7 @@ void func_0022A964(void *record, s32 initial_time, s32 mode, s32 parameter, u8 f
     u32 field30;
     BattleRosterRecord *entry;
     time = initial_time;
-    if (func_0020C32C(record) == 0) {
+    if (battle_actor_has_flag_1(record) == 0) {
         event_code = 0x12;
         if (mode != 0) {
             event_code = 0xD;
@@ -41,9 +41,9 @@ void func_0022A964(void *record, s32 initial_time, s32 mode, s32 parameter, u8 f
         func_0021D200(0x2C, time, record);
     }
     if (mode != 0) {
-        if (func_0020C310(record) != 0) {
-            if (func_0020C2F4(record) == 0) {
-                if (func_0020C32C(record) == 0) {
+        if (battle_actor_has_flag_2(record) != 0) {
+            if (battle_actor_has_flag_3(record) == 0) {
+                if (battle_actor_has_flag_1(record) == 0) {
                     field30 = ((BattleRosterRecord *)record)->luck;
                     sample0 = func_0002CBCC();
                     sample1 = func_0002CBCC();
@@ -51,7 +51,7 @@ void func_0022A964(void *record, s32 initial_time, s32 mode, s32 parameter, u8 f
                         func_0021D230(0x26, time, record, 0xFF);
                         *(s32 *)((u8 *)record + 0x40) = (*(s32 *)((u8 *)record + 0x40) & ~4);
                         time += func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x23, 0);
-                        if (func_0020C348(record) != 0) {
+                        if (battle_actor_has_flag_4(record) != 0) {
                             func_0021D230(0x27, time, record, 0xFF);
                         }
                     }
@@ -62,7 +62,7 @@ void func_0022A964(void *record, s32 initial_time, s32 mode, s32 parameter, u8 f
     mode_bits = flags & 0xE;
     if (mode_bits != 0) {
         if (flags & 8) {
-            if (func_0020C32C(record) == 0) {
+            if (battle_actor_has_flag_1(record) == 0) {
                 func_0021D230(0x23, time, record, 0xFF);
                 time += func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x26, 0);
                 time += 0x16;
@@ -76,8 +76,8 @@ void func_0022A964(void *record, s32 initial_time, s32 mode, s32 parameter, u8 f
                 if (scan_mask & 0xFFFF) {
                     index = 0;
                     do {
-                        entry = func_0020C478(index);
-                        scan_result = func_0020C2C0(entry);
+                        entry = battle_roster_lookup_actor(index);
+                        scan_result = battle_actor_is_absent_or_has_flag_0(entry);
                         index += 1;
                         if (scan_result == 0) {
                             entry->actions_used = entry->action_limit;
@@ -95,7 +95,7 @@ void func_0022A964(void *record, s32 initial_time, s32 mode, s32 parameter, u8 f
                 goto default_path;
             }
         } else if (flags & 4) {
-            if ((func_0020C32C(record) == 0) && (func_0020C2F4(record) == 0)) {
+            if ((battle_actor_has_flag_1(record) == 0) && (battle_actor_has_flag_3(record) == 0)) {
                 func_0021D28C(0x1A, time, record, 0xFF, time + 0x64, parameter & 0xFF);
                 time = time + func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x20, 0);
                 *(s32 *)((u8 *)record + 0x40) = ((*(s32 *)((u8 *)record + 0x40) & ~0x14) | 8);
@@ -105,7 +105,7 @@ void func_0022A964(void *record, s32 initial_time, s32 mode, s32 parameter, u8 f
             } else {
                 goto default_path;
             }
-        } else if ((flags & 2) && (func_0020C32C(record) == 0) && (func_0020C2F4(record) == 0) && (func_0020C310(record) == 0)) {
+        } else if ((flags & 2) && (battle_actor_has_flag_1(record) == 0) && (battle_actor_has_flag_3(record) == 0) && (battle_actor_has_flag_2(record) == 0)) {
             func_0021D230(0x25, time, record, 0xFF);
             time = time + func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x22, 0);
             *(s32 *)((u8 *)record + 0x40) = ((*(s32 *)((u8 *)record + 0x40) & ~0x10) | 4);
@@ -117,11 +117,11 @@ void func_0022A964(void *record, s32 initial_time, s32 mode, s32 parameter, u8 f
         }
     } else {
 default_path:
-        if (func_0020C32C(record) == 0) {
-            if (func_0020C2F4(record) != 0) {
+        if (battle_actor_has_flag_1(record) == 0) {
+            if (battle_actor_has_flag_3(record) != 0) {
                 func_0021D25C(0x1D, time, record, 0xFF, 0x20);
                 time += func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x20, 0);
-            } else if (func_0020C310(record) != 0) {
+            } else if (battle_actor_has_flag_2(record) != 0) {
                 func_0021D25C(0x1D, time, record, 0xFF, 0x22);
                 time += func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x22, 0);
             }

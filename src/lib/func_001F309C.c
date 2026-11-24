@@ -30,7 +30,7 @@ void func_001FFA8C(void);
 void func_001FFAD0(void);
 void func_001FB32C(void);
 void func_001F1F20(void *owner);
-void func_0020DB10(s32 selector);
+void battle_roster_build_scene_actors(s32 selector);
 void func_00200480(void);
 void func_0025FBE0(void);
 void func_0020F0BC(void);
@@ -99,7 +99,7 @@ void func_001F309C(void)
     state[0] = 0;
     state[1] = 0;
     state[2] = 0;
-    func_0020DB10(0);
+    battle_roster_build_scene_actors(0);
     func_00200480();
     func_0025FBE0();
     func_0020F0BC();

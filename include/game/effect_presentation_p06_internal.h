@@ -24,8 +24,8 @@ void func_002623C4(void *object);
 void *func_00261560(s32 value);
 void func_00260C24(void *data);
 void func_0024C7A4(void *output, void *first, void *second);
-void *func_0020C478(u32 index);
-s32 func_0020C014(void *object);
+void *battle_roster_lookup_actor(u32 index);
+s32 battle_actor_is_side_zero(void *object);
 void *resource_alloc(u32 bytes);
 void *resource_free(void *pointer);
 

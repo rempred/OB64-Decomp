@@ -4,7 +4,7 @@
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
-void *func_0020C478(unsigned int actor_index);
+void *battle_roster_lookup_actor(unsigned int actor_index);
 void func_0021D230(s32 actor, s32 start_time, void *event_flags, s32 arg3);
 void func_0021D25C(s32 actor, s32 start_time, void *event_flags, s32 arg3, s32 arg4);
 s32 func_002224F4(void);
@@ -28,8 +28,8 @@ void func_0022A280(void *actor, s32 start_time, u8 event_flags)
     actor_index = 0;
     if ((u16)result != 0) {
         do {
-            other_actor = func_0020C478(actor_index);
-            result = func_0020C2C0(other_actor);
+            other_actor = battle_roster_lookup_actor(actor_index);
+            result = battle_actor_is_absent_or_has_flag_0(other_actor);
             actor_index++;
             if (result == 0) {
                 other_actor->actions_used = other_actor->action_limit;
@@ -45,7 +45,7 @@ void func_0022A280(void *actor, s32 start_time, u8 event_flags)
         }
     }
     duration = func_0022257C((u8 *)((BattleRosterRecord *)actor)->primary_children[0] + 0x44, 0x1D, 0);
-    if (func_0020C1B4(actor) != 0 && (event_flags & 0x10)) {
+    if (battle_actor_secondary_class_is_45_to_48(actor) != 0 && (event_flags & 0x10)) {
         func_0021D230(0x30, start_time, actor, 0xFF);
         func_0021D230(0x31, start_time + duration, actor, 0xFF);
     } else {

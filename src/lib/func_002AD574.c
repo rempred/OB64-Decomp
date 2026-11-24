@@ -18,7 +18,7 @@ extern u16 D_80195578[];
 extern u8 D_80195593[];
 extern u16 D_8019532C[];
 extern u8 D_80195480[];
-extern s32 func_0020C014(void *actor);
+extern s32 battle_actor_is_side_zero(void *actor);
 
 /* Filter battle actors using persistent HP and status. */
 u8 func_002AD574(void *actor)
@@ -37,7 +37,7 @@ u8 func_002AD574(void *actor)
     if (context == 1) {
         return 0;
     }
-    if (func_0020C014(actor) != 0) {
+    if (battle_actor_is_side_zero(actor) != 0) {
         uses_army_roster = D_801976DC < 30;
     } else {
         uses_army_roster = D_801976E8 < 30;

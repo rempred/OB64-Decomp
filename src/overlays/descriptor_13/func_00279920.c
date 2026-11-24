@@ -7,7 +7,7 @@ s32 func_00279920(u8 value)
         return -1;
     switch (kind) {
     case 0:
-        return func_00279A50(func_0020C478(value));
+        return func_00279A50(battle_roster_lookup_actor(value));
     case 1:
         return func_0024BD60(value);
     case 2:

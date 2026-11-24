@@ -4,7 +4,7 @@ typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
 
-extern s32 func_001CA29C(void *);
+extern s32 battle_roster_find_actor_index(void *);
 extern void func_001CD01C(void *, void *, s32);
 extern u32 func_801D96A0(u32);
 extern u8 * volatile D_801CE8C0;
@@ -236,7 +236,7 @@ check_cursor:
         temp_s1_23[var_s0_73++] = arg3;
         goto block_54;
     case 0x1F:
-        temp_s1_23[var_s0_73++] = func_001CA29C(arg2);
+        temp_s1_23[var_s0_73++] = battle_roster_find_actor_index(arg2);
         temp_s1_23[var_s0_73++] = arg3;
         temp_s1_23[var_s0_73++] = (u8)arg4;
         temp_s1_23[var_s0_73++] = (u8)arg5;
@@ -249,7 +249,7 @@ check_cursor:
     case 0x10:
     case 0x32:
     case 0x3B:
-        temp_s1_23[var_s0_73++] = func_001CA29C(arg2);
+        temp_s1_23[var_s0_73++] = battle_roster_find_actor_index(arg2);
         temp_s1_23[var_s0_73++] = arg3;
         temp_s1_23[var_s0_73++] = (u8)arg4;
         temp_s1_23[var_s0_73++] = (u8)arg5;
@@ -265,7 +265,7 @@ check_cursor:
     case 0x1A:
     case 0x21:
     case 0x36:
-        temp_s1_23[var_s0_73++] = func_001CA29C(arg2);
+        temp_s1_23[var_s0_73++] = battle_roster_find_actor_index(arg2);
         temp_s1_23[var_s0_73++] = arg3;
         temp_s1_23[var_s0_73++] = (u8)arg4;
         temp_s1_23[var_s0_73++] = (u8)arg5;
@@ -277,7 +277,7 @@ check_cursor:
     case 0x1D:
     case 0x34:
     case 0x39:
-        temp_s1_23[var_s0_73++] = func_001CA29C(arg2);
+        temp_s1_23[var_s0_73++] = battle_roster_find_actor_index(arg2);
         temp_s1_23[var_s0_73++] = arg3;
         temp_s1_23[var_s0_73++] = (u8)arg4;
         goto block_54;
@@ -311,7 +311,7 @@ check_cursor:
     case 0x3D:
     case 0x3E:
     case 0x3F:
-        temp_s1_23[var_s0_73++] = func_001CA29C(arg2);
+        temp_s1_23[var_s0_73++] = battle_roster_find_actor_index(arg2);
         temp_s1_23[var_s0_73++] = arg3;
         goto block_54;
     case 0x1C:
@@ -319,7 +319,7 @@ check_cursor:
     case 0x2C:
     case 0x33:
     case 0x37:
-        var_v0_242 = func_001CA29C(arg2);
+        var_v0_242 = battle_roster_find_actor_index(arg2);
         var_v1_240 = temp_s1_23 + var_s0_73;
         goto block_51;
     case 0x1E:

@@ -41,7 +41,7 @@ void func_0020BD5C(s32 selector);
 s32 func_0020BF7C();                                            
 s32 func_0020BF8C();                                            
 s32 func_0020BFE4();                                            
-void *func_0020C478(unsigned int index);                                      
+void *battle_roster_lookup_actor(unsigned int index);
 void func_0021824C(s32 *, s32 *, s32 *, s32 *);
 struct TerminalBridgeState;
 void func_0021EAF0(struct TerminalBridgeState *);
@@ -106,8 +106,8 @@ void func_0021840C(void) {
         state_22 = 0x22;
         terminal_state = 3;
         do {
-            temp_v0_54 = func_0020C478(var_s3_49);
-            if ((func_0020C2C0(temp_v0_54) == 0) && (func_0020C32C(temp_v0_54) == 0)) {
+            temp_v0_54 = battle_roster_lookup_actor(var_s3_49);
+            if ((battle_actor_is_absent_or_has_flag_0(temp_v0_54) == 0) && (battle_actor_has_flag_1(temp_v0_54) == 0)) {
                 func_0021EAF0((struct TerminalBridgeState *)temp_v0_54);
                 var_s1_67 = 0;
                 var_s0_68 = (s8 *) temp_v0_54;
@@ -145,7 +145,7 @@ void func_0021840C(void) {
                             }
                         }
                         if (var_a0_102 != 0) {
-                            if (func_0020C014(temp_v0_54) != 0) {
+                            if (battle_actor_is_side_zero(temp_v0_54) != 0) {
                                 if (sp10 == 0) {
                                     func_001F0E64((Func001F0E64Record *)((s8 *) (*(void **) var_s0_92) + 0x44), 8);
                                 } else if (sp10 == terminal_state) {
@@ -203,9 +203,9 @@ void func_0021840C(void) {
     if (((func_0020BF8C() != 0) || (func_0020BF7C() != 0)) && ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) == 1)) {
         var_s1_224 = 0;
         do {
-            temp_v0_226 = func_0020C478(var_s1_224);
+            temp_v0_226 = battle_roster_lookup_actor(var_s1_224);
             if (temp_v0_226 != 0) {
-                if (func_0020C014(temp_v0_226) != 0) {
+                if (battle_actor_is_side_zero(temp_v0_226) != 0) {
                     ((BattleRosterRecord *)temp_v0_226)->hp = 0;
                 }
             }

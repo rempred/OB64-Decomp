@@ -50,7 +50,7 @@ s32 func_002AB0F8(BodyActor *actor, BodyUnit *unit)
     s32 scaledDuration;
     s32 paired;
 
-    isLeader = func_0020BFF8(unit) != 0;
+    isLeader = battle_actor_is_side_one(unit) != 0;
     source = unit->sources[actor->sourceIndex];
     x = source->x;
     z = source->z;

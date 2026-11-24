@@ -37,7 +37,7 @@ extern void func_00023780(void *, s32);
 
 
 
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 
 extern void func_0020BDCC(s16, s32);
 
@@ -52,7 +52,7 @@ static __inline__ void p02_phase_1005(P02State2705EC *state)
     s32 value;
 
     func_002623C4(state->value_28);
-    pointer = func_0020C478(state->value_1C);
+    pointer = battle_roster_lookup_actor(state->value_1C);
     func_0026C7C4(pointer, &target);
     object = func_00269798(0x52);
     object->flags_0A |= 0x8000;

@@ -46,9 +46,9 @@ typedef struct BattleUnit {
     s32 unk94;
     u8 unk98[0x60];
 } BattleUnit;
-int D_801C8B84(void *record);
-s32 D_801C8C58(BattleUnit *actor);
-int D_801C8B68(void *record);
+int battle_actor_is_side_zero(void *record);
+s32 battle_actor_has_flag_9(void *actor);
+int battle_actor_is_side_one(void *record);
 s32 D_801C8B08(BattleUnit *actor);
 s32 func_00239AA4(BattleUnit *actor, u32 flags) {
     s32 r = 0;
@@ -56,10 +56,10 @@ s32 func_00239AA4(BattleUnit *actor, u32 flags) {
     if (flags & 0x8000) {
         return 0;
     }
-    if (D_801C8B84(actor) && (flags & 0x400)) {
+    if (battle_actor_is_side_zero(actor) && (flags & 0x400)) {
         r = 1;
     }
-    if (D_801C8B68(actor) && !(flags & 0x400)) {
+    if (battle_actor_is_side_one(actor) && !(flags & 0x400)) {
         r = 1;
     }
     if (k == 0) {
@@ -67,7 +67,7 @@ s32 func_00239AA4(BattleUnit *actor, u32 flags) {
     }
     if (r) {
         if (k == 0xFF) {
-            if (!D_801C8C58(actor)) {
+            if (!battle_actor_has_flag_9(actor)) {
                 r = 0;
             }
         } else if (!D_8016FF5C(actor->unk48, k)) {

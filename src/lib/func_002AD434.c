@@ -62,7 +62,7 @@ void func_002AD434(s32 destination, s32 memberPosition)
 
     for (; i < 20; i++) {
         unit = &D_801CE8BC->units[i];
-        if (func_0020BFF8(unit) == 0) {
+        if (battle_actor_is_side_one(unit) == 0) {
             continue;
         }
         if (unit->memberIndex != wantedMember) {

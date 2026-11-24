@@ -293,8 +293,8 @@
       "source": "src/lib/func_0020FC7C.c"
     },
     {
-      "symbol": "func_0020C908",
-      "source": "src/lib/func_0020C908.c"
+      "symbol": "battle_roster_init_actor_from_scenario_member",
+      "source": "src/lib/battle_roster_init_actor_from_scenario_member.c"
     },
     {
       "symbol": "func_0020D590",
@@ -2229,12 +2229,12 @@
       "source": "src/lib/func_0028422C.c"
     },
     {
-      "symbol": "func_0020BFF8",
-      "source": "src/lib/func_0020BFF8.c"
+      "symbol": "battle_actor_is_side_one",
+      "source": "src/lib/battle_actor_is_side_one.c"
     },
     {
-      "symbol": "func_0020C478",
-      "source": "src/lib/func_0020C478.c"
+      "symbol": "battle_roster_lookup_actor",
+      "source": "src/lib/battle_roster_lookup_actor.c"
     },
     {
       "symbol": "func_0029DF04",
@@ -2437,8 +2437,8 @@
       "source": "src/battle/func_00217BA8.c"
     },
     {
-      "symbol": "func_0021C3B0",
-      "source": "src/battle/func_0021C3B0.c"
+      "symbol": "battle_roster_write_back_members",
+      "source": "src/battle/battle_roster_write_back_members.c"
     },
     {
       "symbol": "func_002224F4",
@@ -2449,8 +2449,8 @@
       "source": "src/battle/func_0021824C.c"
     },
     {
-      "symbol": "func_0021B770",
-      "source": "src/battle/func_0021B770.c"
+      "symbol": "battle_roster_reset_member_fatigue",
+      "source": "src/battle/battle_roster_reset_member_fatigue.c"
     },
     {
       "symbol": "func_0021B0A0",
@@ -2681,12 +2681,12 @@
       "source": "src/lib/func_00208900.c"
     },
     {
-      "symbol": "func_0020C014",
-      "source": "src/lib/func_0020C014.c"
+      "symbol": "battle_actor_is_side_zero",
+      "source": "src/lib/battle_actor_is_side_zero.c"
     },
     {
-      "symbol": "func_0020C034",
-      "source": "src/lib/func_0020C034.c"
+      "symbol": "battle_actor_has_flag_10",
+      "source": "src/lib/battle_actor_has_flag_10.c"
     },
     {
       "symbol": "func_0020C448",
@@ -2721,8 +2721,8 @@
       "source": "src/lib/func_001F6098.c"
     },
     {
-      "symbol": "func_0020DB10",
-      "source": "src/lib/func_0020DB10.c"
+      "symbol": "battle_roster_build_scene_actors",
+      "source": "src/lib/battle_roster_build_scene_actors.c"
     },
     {
       "symbol": "func_001F7ADC",
@@ -5229,16 +5229,16 @@
       "source": "src/lib/func_0025F74C.c"
     },
     {
-      "symbol": "func_0025F778",
-      "source": "src/lib/func_0025F778.c"
+      "symbol": "battle_roster_get_actor_world_x",
+      "source": "src/lib/battle_roster_get_actor_world_x.c"
     },
     {
-      "symbol": "func_0025F7A0",
-      "source": "src/lib/func_0025F7A0.c"
+      "symbol": "battle_roster_get_actor_world_y",
+      "source": "src/lib/battle_roster_get_actor_world_y.c"
     },
     {
-      "symbol": "func_0025F7C8",
-      "source": "src/lib/func_0025F7C8.c"
+      "symbol": "battle_roster_get_actor_world_z",
+      "source": "src/lib/battle_roster_get_actor_world_z.c"
     },
     {
       "symbol": "func_0026C1F0",
@@ -6689,8 +6689,8 @@
       "source": "src/lib/func_000c9850.c"
     },
     {
-      "symbol": "func_0020D870",
-      "source": "src/lib/func_0020D870.c"
+      "symbol": "battle_roster_init_actor_from_army_member",
+      "source": "src/lib/battle_roster_init_actor_from_army_member.c"
     },
     {
       "symbol": "func_0020C120",
@@ -9389,8 +9389,8 @@
       "source": "src/overlays/descriptor_10/func_001F2214.c"
     },
     {
-      "symbol": "func_001F2F9C",
-      "source": "src/overlays/descriptor_10/func_001F2F9C.c"
+      "symbol": "battle_show_class_change_message",
+      "source": "src/overlays/descriptor_10/battle_show_class_change_message.c"
     },
     {
       "symbol": "func_001F3078",
@@ -9509,24 +9509,24 @@
       "source": "src/overlays/descriptor_10/func_0020C050.c"
     },
     {
-      "symbol": "func_0020C0CC",
-      "source": "src/overlays/descriptor_10/func_0020C0CC.c"
+      "symbol": "battle_actor_has_flag_12",
+      "source": "src/overlays/descriptor_10/battle_actor_has_flag_12.c"
     },
     {
-      "symbol": "func_0020C0E8",
-      "source": "src/overlays/descriptor_10/func_0020C0E8.c"
+      "symbol": "battle_actor_has_flag_9",
+      "source": "src/overlays/descriptor_10/battle_actor_has_flag_9.c"
     },
     {
-      "symbol": "func_0020C104",
-      "source": "src/overlays/descriptor_10/func_0020C104.c"
+      "symbol": "battle_actor_secondary_class_is_one",
+      "source": "src/overlays/descriptor_10/battle_actor_secondary_class_is_one.c"
     },
     {
-      "symbol": "func_0020C164",
-      "source": "src/overlays/descriptor_10/func_0020C164.c"
+      "symbol": "battle_actor_secondary_class_is_71_or_72",
+      "source": "src/overlays/descriptor_10/battle_actor_secondary_class_is_71_or_72.c"
     },
     {
-      "symbol": "func_0020C1B4",
-      "source": "src/overlays/descriptor_10/func_0020C1B4.c"
+      "symbol": "battle_actor_secondary_class_is_45_to_48",
+      "source": "src/overlays/descriptor_10/battle_actor_secondary_class_is_45_to_48.c"
     },
     {
       "symbol": "func_0020C1F8",
@@ -9545,28 +9545,28 @@
       "source": "src/overlays/descriptor_10/func_0020C284.c"
     },
     {
-      "symbol": "func_0020C2C0",
-      "source": "src/overlays/descriptor_10/func_0020C2C0.c"
+      "symbol": "battle_actor_is_absent_or_has_flag_0",
+      "source": "src/overlays/descriptor_10/battle_actor_is_absent_or_has_flag_0.c"
     },
     {
-      "symbol": "func_0020C2D8",
-      "source": "src/overlays/descriptor_10/func_0020C2D8.c"
+      "symbol": "battle_actor_has_flag_5",
+      "source": "src/overlays/descriptor_10/battle_actor_has_flag_5.c"
     },
     {
-      "symbol": "func_0020C2F4",
-      "source": "src/overlays/descriptor_10/func_0020C2F4.c"
+      "symbol": "battle_actor_has_flag_3",
+      "source": "src/overlays/descriptor_10/battle_actor_has_flag_3.c"
     },
     {
-      "symbol": "func_0020C310",
-      "source": "src/overlays/descriptor_10/func_0020C310.c"
+      "symbol": "battle_actor_has_flag_2",
+      "source": "src/overlays/descriptor_10/battle_actor_has_flag_2.c"
     },
     {
-      "symbol": "func_0020C32C",
-      "source": "src/overlays/descriptor_10/func_0020C32C.c"
+      "symbol": "battle_actor_has_flag_1",
+      "source": "src/overlays/descriptor_10/battle_actor_has_flag_1.c"
     },
     {
-      "symbol": "func_0020C348",
-      "source": "src/overlays/descriptor_10/func_0020C348.c"
+      "symbol": "battle_actor_has_flag_4",
+      "source": "src/overlays/descriptor_10/battle_actor_has_flag_4.c"
     },
     {
       "symbol": "func_0020C3B4",
@@ -9577,16 +9577,16 @@
       "source": "src/overlays/descriptor_10/func_0020C6C4.c"
     },
     {
-      "symbol": "func_0020C788",
-      "source": "src/overlays/descriptor_10/func_0020C788.c"
+      "symbol": "battle_roster_find_first_side_one_with_flag_9",
+      "source": "src/overlays/descriptor_10/battle_roster_find_first_side_one_with_flag_9.c"
     },
     {
-      "symbol": "func_0020C810",
-      "source": "src/overlays/descriptor_10/func_0020C810.c"
+      "symbol": "battle_roster_find_first_side_zero_with_flag_9",
+      "source": "src/overlays/descriptor_10/battle_roster_find_first_side_zero_with_flag_9.c"
     },
     {
-      "symbol": "func_0020C89C",
-      "source": "src/overlays/descriptor_10/func_0020C89C.c"
+      "symbol": "battle_roster_find_first_side_one",
+      "source": "src/overlays/descriptor_10/battle_roster_find_first_side_one.c"
     },
     {
       "symbol": "func_0020CA68",
@@ -9605,20 +9605,20 @@
       "source": "src/overlays/descriptor_10/func_0020D490.c"
     },
     {
-      "symbol": "func_0020D654",
-      "source": "src/overlays/descriptor_10/func_0020D654.c"
+      "symbol": "battle_roster_find_actor_index_at_position",
+      "source": "src/overlays/descriptor_10/battle_roster_find_actor_index_at_position.c"
     },
     {
       "symbol": "func_0020D6F8",
       "source": "src/overlays/descriptor_10/func_0020D6F8.c"
     },
     {
-      "symbol": "func_0020D72C",
-      "source": "src/overlays/descriptor_10/func_0020D72C.c"
+      "symbol": "battle_roster_find_actor_index",
+      "source": "src/overlays/descriptor_10/battle_roster_find_actor_index.c"
     },
     {
-      "symbol": "func_0020D770",
-      "source": "src/overlays/descriptor_10/func_0020D770.c"
+      "symbol": "battle_roster_find_actor_at_position",
+      "source": "src/overlays/descriptor_10/battle_roster_find_actor_at_position.c"
     },
     {
       "symbol": "func_0020D814",
@@ -9745,12 +9745,12 @@
       "source": "src/lib/func_002340EC.c"
     },
     {
-      "symbol": "func_0023422C",
-      "source": "src/lib/func_0023422C.c"
+      "symbol": "battle_roster_change_actor_secondary_class",
+      "source": "src/lib/battle_roster_change_actor_secondary_class.c"
     },
     {
-      "symbol": "func_002344B4",
-      "source": "src/lib/func_002344B4.c"
+      "symbol": "battle_actor_scaled_distance_from_center_row",
+      "source": "src/lib/battle_actor_scaled_distance_from_center_row.c"
     },
     {
       "symbol": "func_00234614",
@@ -9777,8 +9777,8 @@
       "source": "src/lib/func_00237750.c"
     },
     {
-      "symbol": "func_00237810",
-      "source": "src/lib/func_00237810.c"
+      "symbol": "battle_actor_roll_luck_advantage",
+      "source": "src/lib/battle_actor_roll_luck_advantage.c"
     },
     {
       "symbol": "func_00237890",

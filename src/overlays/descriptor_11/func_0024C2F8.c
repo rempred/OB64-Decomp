@@ -8,8 +8,8 @@ typedef struct P01Vec3 {
     float z;
 } P01Vec3;
 
-extern s32 func_0020D654(u32 first, s32 second);
-extern void *func_0020C478(u32 index);
+extern s32 battle_roster_find_actor_index_at_position(u32 first, s32 second);
+extern void *battle_roster_lookup_actor(u32 index);
 
 s16 func_0024C2F8(P01Vec3 *position)
 {
@@ -19,9 +19,9 @@ s16 func_0024C2F8(P01Vec3 *position)
 
     first += 1.0f;
     second += 4.0f;
-    result = func_0020D654((s32)first, (s32)second);
+    result = battle_roster_find_actor_index_at_position((s32)first, (s32)second);
     if (result != -1) {
-        if (func_0020C2C0(func_0020C478(result)) != 0) {
+        if (battle_actor_is_absent_or_has_flag_0(battle_roster_lookup_actor(result)) != 0) {
             result = -1;
         }
     }

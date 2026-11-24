@@ -19,7 +19,7 @@ void func_0020BD5C(s32 selector);
 s32 func_0020BF6C(void);
 void func_002159D0(void);
 M2C_UNK func_0021AE6C(f32, M2C_UNK, void *);
-void func_0021C3B0(void);
+void battle_roster_write_back_members(void);
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
 void *func_80070F30(u32);
@@ -257,7 +257,7 @@ block_25:
                         func_00023460(temp_s0_325 + 0x52C0, D_801CE8BC + 0x52C0, 0x400);
                         (*(s32 *)((s8 *)(D_801CE8BC) + (0x56C0))) = (s32) (*(s32 *)((s8 *)(temp_s0_325) + (0x56C0)));
                         func_800712C4(temp_s0_325);
-                        func_0021C3B0();
+                        battle_roster_write_back_members();
                         func_0020BD5C(1);
                         return;
                     }
@@ -565,7 +565,7 @@ block_122:
         (*(s32 *)((s8 *)(D_801CE8BC) + (0x56C0))) = (s32) (*(s32 *)((s8 *)(temp_s0_850) + (0x56C0)));
         func_800712C4(temp_s0_850);
 block_123:
-        func_0021C3B0();
+        battle_roster_write_back_members();
         return;
 state_11_tail:
         temp_v1_902 = D_8018FDC0->fieldD4;

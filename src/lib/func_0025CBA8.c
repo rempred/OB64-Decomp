@@ -6,7 +6,7 @@
 
 
 
-extern s32 func_0020C104(void *);
+extern s32 battle_actor_secondary_class_is_one(void *);
 extern s32 func_0020C120(void *);
 /* Preserve the observed table reloads across writes through child pointers. */
 
@@ -26,7 +26,7 @@ void func_0025CBA8(P05PairActor *actor, P05IntegerTriplet *values)
         }
     }
 
-    if (func_0020C104(actor) != 0) {
+    if (battle_actor_secondary_class_is_one(actor) != 0) {
         for (i = 0; i < 3; i++) {
             if (actor->primary[(s16)i] != 0) {
                 s32 *offsets = p05_s32_801CEDFC + (s16)i * 2;

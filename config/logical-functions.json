@@ -264,7 +264,7 @@
       "romStart": 2488296,
       "romEndExclusive": 2488304,
       "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
-      "evidence": "Complete original body ROM 0x0025F7C8..0x0025F7E8 includes JR ra at 0x0025F7E0 and stack-restoring delay at 0x0025F7E4. Two following zero words remain executable original ASM through 0x0025F7F0. Complete original-name GLOBAL native func_0025F7C8 covers all 32 preceding bytes. No native-padding provenance or numeric/runtime absence claim."
+      "evidence": "Complete original body ROM 0x0025F7C8..0x0025F7E8 includes JR ra at 0x0025F7E0 and stack-restoring delay at 0x0025F7E4. Two following zero words remain executable original ASM through 0x0025F7F0. Complete GLOBAL native battle_roster_get_actor_world_z covers all 32 preceding bytes. No native-padding provenance or numeric/runtime absence claim."
     },
     {
       "romStart": 2491420,
@@ -5221,9 +5221,9 @@
       "evidence": {
         "caseId": "attack-e04-row4629-terminal",
         "status": "known-entry-or-ownership",
-        "rationale": "Complete original body ROM 0x0025F7C8..0x0025F7E8 includes JR ra at 0x0025F7E0 and stack-restoring delay at 0x0025F7E4. Two following zero words remain executable original ASM through 0x0025F7F0. Complete original-name GLOBAL native func_0025F7C8 covers all 32 preceding bytes. No native-padding provenance or numeric/runtime absence claim."
+        "rationale": "Complete original body ROM 0x0025F7C8..0x0025F7E8 includes JR ra at 0x0025F7E0 and stack-restoring delay at 0x0025F7E4. Two following zero words remain executable original ASM through 0x0025F7F0. Complete GLOBAL native battle_roster_get_actor_world_z covers all 32 preceding bytes. No native-padding provenance or numeric/runtime absence claim."
       },
-      "symbol": "func_0025F7C8",
+      "symbol": "battle_roster_get_actor_world_z",
       "aliases": [],
       "expectedBytesSha256": "9313F3D91A4AF6B89161C7AA861C1A79F919E3E642E7732C8B4E402BEE1BC9B5",
       "fragments": [
@@ -5238,8 +5238,8 @@
           "placementKind": "overlay",
           "overlayDescriptorId": 12,
           "loadSlabId": null,
-          "file": "asm/original/rev0/lib/func_0025F7C8.s",
-          "sha256": "C8435FDA518E9EDE98310FF2E214DF323DBACA276C1C3EDCBEE8988D9A37C615"
+          "file": "asm/original/rev0/lib/battle_roster_get_actor_world_z.s",
+          "sha256": "6F5CC16EB09B6DDC6AE68FE2CE82858DD2970C261DFB47B7675CD170608DF70C"
         }
       ]
     },

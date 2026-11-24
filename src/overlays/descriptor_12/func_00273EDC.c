@@ -17,7 +17,7 @@ typedef struct P07State73EDC {
     u32 value_04;
     P07Render *value_08, *value_0C, *value_10;
 } P07State73EDC;
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 
 
 /* Keep the matrix call together and the subsequent position copy in the caller.
@@ -45,7 +45,7 @@ s32 func_00273EDC(u16 message, P07State73EDC *state)
     void *destination;
     P07Render *object;
     if (message == 0x1000) {
-        actor = func_0020C478(state->value_04);
+        actor = battle_roster_lookup_actor(state->value_04);
         func_0026C7C4(actor, &position);
         state->value_08 = func_00269798(state->value_00[0]);
         destination = p07_matrix_55C(actor, state->value_08);

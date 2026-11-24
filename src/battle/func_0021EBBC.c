@@ -141,12 +141,12 @@ extern u8 func_00201838(int, int), func_002018A0(int, int);
 extern void func_00208DC8(void *, int), func_0020BD5C(int);
 extern int func_0020BF34(int), func_0020BF50(int);
 extern int func_0020BF7C(void), func_0020BF8C(void), func_0020BFE4(void);
-extern int func_0020BFF8(void *), func_0020C014(void *);
-extern void *func_0020C478(u32);
+extern int battle_actor_is_side_one(void *), battle_actor_is_side_zero(void *);
+extern void *battle_roster_lookup_actor(u32);
 extern void func_0020C4B8(int, int, int, int *, int *);
 extern u8 func_0020D434(int);
 extern int func_0020D444(int, int), func_0020D4C8(void *, int);
-extern int func_0020D72C(void *), func_0020F80C(void);
+extern int battle_roster_find_actor_index(void *), func_0020F80C(void);
 extern void func_0020FA04(void *, int), func_002158E4(void);
 extern void func_0021AE6C(float, int), func_0021C074(void *), func_0021C140(void *);
 extern u32 func_0021C970(u32);
@@ -174,8 +174,8 @@ extern void func_0025FD90(s16, s16 *, s16 *);
     (child)->half30 = D_801D0738[(selector) * 3 + 1]; \
     (child)->half32 = D_801D0738[(selector) * 3 + 2]
 #define ACCOUNT_VALUE() \
-    if (func_0020C014(record) != 0) func_0021AE6C(0.0f, value); \
-    if (func_0020C014(record) != 0) WORD_AT(D_801CE8BC, 0x6060) += value; \
+    if (battle_actor_is_side_zero(record) != 0) func_0021AE6C(0.0f, value); \
+    if (battle_actor_is_side_zero(record) != 0) WORD_AT(D_801CE8BC, 0x6060) += value; \
     else WORD_AT(D_801CE8BC, 0x6064) += value
 #define CLEAR_PAIRS() \
     SELECTED_CHILDREN() { \
@@ -253,7 +253,7 @@ void func_0021EBBC(void)
             D_801CE8C0->byte821 = command[5];
             D_801CE8C0->byte822 = 1;
             D_801CE8C0->byte820 = command[4];
-            source = func_0020C478(D_801CE8C0->byte821);
+            source = battle_roster_lookup_actor(D_801CE8C0->byte821);
             memcpy(command + 5, source->bytesD2, 12);
             memcpy(firstEnd + 1, source->bytesDE, 12);
             memcpy(secondEnd + 1, source->bytesEA, 12);
@@ -262,11 +262,11 @@ void func_0021EBBC(void)
                 u32 sourceIndex;
                 for (sourceIndex = 0; sourceIndex < 20u; sourceIndex++) {
                     TerminalCommandRecord *other;
-                    other = func_0020C478(sourceIndex);
-                    if (func_0020C2C0(other) != 0 || other == source) continue;
-                    firstSide = func_0020C014(other);
-                    if (firstSide == func_0020C014(source)) {
-                        source->bytesD2[count] = func_0020D72C(other);
+                    other = battle_roster_lookup_actor(sourceIndex);
+                    if (battle_actor_is_absent_or_has_flag_0(other) != 0 || other == source) continue;
+                    firstSide = battle_actor_is_side_zero(other);
+                    if (firstSide == battle_actor_is_side_zero(source)) {
+                        source->bytesD2[count] = battle_roster_find_actor_index(other);
                         count++;
                     }
                 }
@@ -276,7 +276,7 @@ void func_0021EBBC(void)
                     ((u32)count | (u32)firstEnd) & (u32)count] = 255;
             }
             if (source->bytesDE[0] == 255) {
-                source->bytesDE[0] = func_0020C014(source) ? 0x18 : 0x2A;
+                source->bytesDE[0] = battle_actor_is_side_zero(source) ? 0x18 : 0x2A;
                 source->bytesDE[1] = 255;
             }
             func_0025FC94(command[4], source->bytesD2, source->bytesDE, source->bytesEA);
@@ -302,8 +302,8 @@ void func_0021EBBC(void)
             D_801CE8C0->byte823++;
             for (i = 0; i < 20u; i++) {
                     TerminalCommandRecord *other;
-                other = func_0020C478(i);
-                if (func_0020C2C0(other) == 0) {
+                other = battle_roster_lookup_actor(i);
+                if (battle_actor_is_absent_or_has_flag_0(other) == 0) {
                     other->byteD0 = 0; other->byteD1 = 0;
                 }
             }
@@ -311,8 +311,8 @@ void func_0021EBBC(void)
                 for (i = 0, flag = 0; i < 20u; i++, flag = 0) {
                     TerminalCommandRecord *other;
                     TerminalCommandChild *child;
-                    other = func_0020C478(i);
-                    if (func_0020C014(other) != 0) {
+                    other = battle_roster_lookup_actor(i);
+                    if (battle_actor_is_side_zero(other) != 0) {
                         int skipMode;
                         mode = D_801CE8C0->byte820;
                         skipMode = ((mode == 7) | (mode == 15)) ||
@@ -320,8 +320,8 @@ void func_0021EBBC(void)
                             ((mode == 38) | (mode == 46));
                         if (skipMode != 0) continue;
                     }
-                    if (func_0020C2C0(other) != 0) continue;
-                    if (source->primary_class_id.word == 0x87 && func_0020C0CC(other) != 0) flag = 1;
+                    if (battle_actor_is_absent_or_has_flag_0(other) != 0) continue;
+                    if (source->primary_class_id.word == 0x87 && battle_actor_has_flag_12(other) != 0) flag = 1;
                     for (slot = 0; source->bytesD2[slot] != 255; slot++)
                         if (source->bytesD2[slot] == i) { flag = 1; break; }
                     for (slot = 0; source->bytesDE[slot] != 255; slot++)
@@ -366,7 +366,7 @@ void func_0021EBBC(void)
             goto advance_command;
         }
         case 0x17: { /* 21F174 */
-            TerminalCommandRecord *source = func_0020C478(command[5]);
+            TerminalCommandRecord *source = battle_roster_lookup_actor(command[5]);
             memcpy(command + 5, source->bytesD2, 12);
             memcpy(command + 7, source->bytesDE, 12);
             func_0025FC94(command[3], source->bytesD2, source->bytesDE, 0);
@@ -382,7 +382,7 @@ void func_0021EBBC(void)
             break;
         }
 
-        record = func_0020C478(command[3]);
+        record = battle_roster_lookup_actor(command[3]);
         waitLimit = command[1];
         if (record != 0) {
             if (raw != 0x33) {
@@ -411,7 +411,7 @@ wait_command:
             float distance, shortened, xIncrement, zIncrement;
             SELECTED_CHILDREN() {
                 record->word68 = record->byteA6;
-                target = func_0020C478(record->byteA6);
+                target = battle_roster_lookup_actor(record->byteA6);
                 child = record->primary_children[i];
                 sourceAdjustment = func_00201838(child->owner->primary_class_id.word, child->owner->secondary_class_id.word);
                 targetAdjustment = func_002018A0(target->primary_class_id.word, target->secondary_class_id.word);
@@ -437,7 +437,7 @@ wait_command:
             SELECTED_CHILDREN() {
                 TerminalCommandRecord *target;
                 record->word68 = record->byteA6;
-                target = func_0020C478(record->byteA6);
+                target = battle_roster_lookup_actor(record->byteA6);
                 func_0021E070((TerminalMotionState *)record->primary_children[i], (TerminalMotionActor *)target);
                 func_001F0E64(POSE(record->primary_children[i]), record->byteA7);
             }
@@ -449,13 +449,13 @@ wait_command:
             int deltaX, deltaZ, x, z, travel;
             SELECTED_CHILDREN() {
                 record->word68 = record->byteA6;
-                target = func_0020C478(record->byteA6);
+                target = battle_roster_lookup_actor(record->byteA6);
                 child = record->primary_children[i];
                 deltaX = (u32)target->world_x - child->owner->world_x;
                 if (deltaX <= 0) deltaX = (u32)child->owner->world_x - target->world_x;
                 deltaZ = (u32)target->world_z - child->owner->world_z;
                 if (deltaZ <= 0) deltaZ = (u32)child->owner->world_z - target->world_z;
-                x = func_0020BF50(func_0020C014(child->owner) ? 5 : 3);
+                x = func_0020BF50(battle_actor_is_side_zero(child->owner) ? 5 : 3);
                 if ((int)((u32)x - child->owner->world_x) > 0) {
                     travel = (u32)x - child->owner->world_x;
                 } else {
@@ -501,7 +501,7 @@ wait_command:
             }
             break;
         case 0x21: { /* 21F734 */
-            TerminalCommandRecord *target = func_0020C478(record->byteA7);
+            TerminalCommandRecord *target = battle_roster_lookup_actor(record->byteA7);
             func_0021DCA4((TerminalMotionState *)record->primary_children[0], (BattleRosterRecord *)target);
             func_001F0E64(POSE(record->primary_children[0]), record->byteA6);
             record->word74 = 0x21;
@@ -536,7 +536,7 @@ wait_command:
             if (func_0020BFE4() == 0)
                 func_002267A8(record, 14, func_002014C4(record->byteA7) & 255);
             effect = func_00044340(func_002014C4(record->byteA7) & 255);
-            side = func_0020C014(record);
+            side = battle_actor_is_side_zero(record);
             func_001F2BC0(effect, side);
             break;
         }
@@ -545,7 +545,7 @@ wait_command:
             record->wordA0 = 10;
             SELECTED_CHILDREN() {
                 TerminalCommandChild *child = record->primary_children[i];
-                if (func_0020C32C(record) == 0) {
+                if (battle_actor_has_flag_1(record) == 0) {
                     func_001F0E64(POSE(child), 17);
                 } else {
                     child->phase = 0;
@@ -558,7 +558,7 @@ wait_command:
                 else record->hp -= value;
                 ACCOUNT_VALUE();
             }
-            if (func_0020C32C(record) != 0)
+            if (battle_actor_has_flag_1(record) != 0)
                 func_00208DC8(D_800EB290, record->word98 < 160 ? D_801CEF14 : D_801CEF16);
             record->word74 = 12;
             break;
@@ -568,14 +568,14 @@ wait_command:
             record->wordA0 = 10;
             SELECTED_CHILDREN() {
                 TerminalCommandChild *child = record->primary_children[i];
-                if (func_0020C32C(record) == 0) {
+                if (battle_actor_has_flag_1(record) == 0) {
                     func_001F0E64(POSE(child), 17);
                 } else {
                     child->phase = 0;
                 }
                 COPY_TRIPLE(child, record->byteA8);
             }
-            firstOutput.x = func_0020C014(record) ? (u32)record->world_x + 38 : (u32)record->world_x - 38;
+            firstOutput.x = battle_actor_is_side_zero(record) ? (u32)record->world_x + 38 : (u32)record->world_x - 38;
             func_0020C4B8(firstOutput.x, record->world_y, record->world_z, &firstOutput.x, &firstOutput.y);
             {
                 int x = firstOutput.x, y = firstOutput.y;
@@ -588,7 +588,7 @@ wait_command:
                 else record->hp -= value;
                 ACCOUNT_VALUE();
             }
-            if (func_0020C32C(record) != 0)
+            if (battle_actor_has_flag_1(record) != 0)
                 func_00208DC8(D_800EB290, record->word98 < 160 ? D_801CEF14 : D_801CEF16);
             record->word74 = 0x32;
             break;
@@ -656,7 +656,7 @@ wait_command:
                 child->phase = 255 / divisor;
             }
             record->word74 = 19;
-            if (func_0020C104(record) == 0 || func_0020D444(record->hp, record->max_hp) == 0) {
+            if (battle_actor_secondary_class_is_one(record) == 0 || func_0020D444(record->hp, record->max_hp) == 0) {
                 TerminalCommandChild *child;
                 int selector;
                 child = record->extra18;
@@ -684,7 +684,7 @@ wait_command:
             record->hp = 0;
             record->battle_flags = (record->battle_flags & ~0x3Eu) | 1;
             if (raw != 0x31 || func_0020BF7C() != 0 || func_0020BF8C() != 0) break;
-            if (func_0020C014(record) != 0) {
+            if (battle_actor_is_side_zero(record) != 0) {
                 u16 *counter = &D_80196A70;
                 int counterValue = *counter + 1;
                 if (counterValue >= 10000) counterValue = 9999;
@@ -705,8 +705,8 @@ wait_command:
             }
             func_00045d78(event, 1);
 after_record_dispatch:
-            func_0004196c(func_0020BFF8(record) & 255, record->member_index);
-            side = func_0020C014(record);
+            func_0004196c(battle_actor_is_side_one(record) & 255, record->member_index);
+            side = battle_actor_is_side_zero(record);
             /* Keep the common reset separate from the per-arm write that
              * must precede the selector byte read in this compiler. */
             record->secondary_class_id.word = 0;
@@ -748,13 +748,13 @@ after_record_dispatch:
             record->wordA0 = 10;
             SELECTED_CHILDREN() {
                 TerminalCommandChild *child = record->primary_children[i];
-                if (func_0020C32C(record) == 0) func_001F0E64(POSE(child), 32);
+                if (battle_actor_has_flag_1(record) == 0) func_001F0E64(POSE(child), 32);
                 COPY_TRIPLE(child, record->byteA7);
             }
             record->battle_flags |= 8;
             record->word74 = 0x1A;
             func_002267A8(record, 6, 0);
-            if (func_0020C32C(record) == 0) func_0020FA04(record, 9);
+            if (battle_actor_has_flag_1(record) == 0) func_0020FA04(record, 9);
             break;
         case 0x1B: { /* 2205E8 */
             u32 clearedFlags;
@@ -788,12 +788,12 @@ after_record_dispatch:
             break;
         case 0x25: /* 220768 */
             SELECTED_CHILDREN() {
-                if (func_0020C32C(record) == 0 && func_0020C2F4(record) == 0)
+                if (battle_actor_has_flag_1(record) == 0 && battle_actor_has_flag_3(record) == 0)
                     func_001F0E64(POSE(record->primary_children[i]), 34);
             }
             record->battle_flags |= 4; record->word74 = 0x25;
             func_002267A8(record, 5, 0);
-            if (func_0020C32C(record) == 0 && func_0020C2F4(record) == 0)
+            if (battle_actor_has_flag_1(record) == 0 && battle_actor_has_flag_3(record) == 0)
                 func_0020FA04(record, 5);
             break;
         case 0x26: { /* 220824 */
@@ -810,7 +810,7 @@ after_record_dispatch:
             record->battle_flags |= 16;
             func_0021D7CC(record);
             func_002267A8(record, 8, 0);
-            if (func_0020C32C(record) == 0 && func_0020C2F4(record) == 0 && func_0020C310(record) == 0)
+            if (battle_actor_has_flag_1(record) == 0 && battle_actor_has_flag_3(record) == 0 && battle_actor_has_flag_2(record) == 0)
                 func_0020FA04(record, 1);
             break;
         case 0x28: /* 2208FC */
@@ -905,22 +905,22 @@ after_record_dispatch:
             }
             replacement_actor->primary_children[0]->phase = record->primary_children[0]->phase;
             mode = 0;
-            if (func_0020C2F4(record) != 0) mode = 9;
-            else if (func_0020C2F4(record) == 0 && func_0020C310(record) != 0) mode = 5;
-            else if (func_0020C2F4(record) == 0 && func_0020C310(record) == 0 && func_0020C348(record) != 0) mode = 1;
+            if (battle_actor_has_flag_3(record) != 0) mode = 9;
+            else if (battle_actor_has_flag_3(record) == 0 && battle_actor_has_flag_2(record) != 0) mode = 5;
+            else if (battle_actor_has_flag_3(record) == 0 && battle_actor_has_flag_2(record) == 0 && battle_actor_has_flag_4(record) != 0) mode = 1;
             mode &= 255;
             if (mode != 0) {
                 func_001F0E64(POSE(replacement_actor->primary_children[0]), (s16)record->primary_children[0]->pose.view.record.field_04);
                 func_0020FA04(replacement_actor, mode);
             }
             record->word74 = 0x39; replacement_actor->word74 = 1;
-            func_001F2F9C((BattleRosterRecord *)record, (BattleRosterRecord *)replacement_actor);
+            battle_show_class_change_message((BattleRosterRecord *)record, (BattleRosterRecord *)replacement_actor);
             break;
         }
         case 0x3A: { /* 220DC0 */
             int destinationIndex, sourceIndex;
             u8 *persistent_member_bytes;
-            destinationIndex = func_0020D72C(record);
+            destinationIndex = battle_roster_find_actor_index(record);
             sourceIndex = record->byteA5;
             func_001F0F90(record->primary_children[0]); func_001F1050(record->secondary_children[0]);
             record->primary_children[0]->word18 = 0; record->secondary_children[0]->word18 = 0;
@@ -938,7 +938,7 @@ after_record_dispatch:
             }
             if (record->extra18 != 0) record->extra18->owner = record;
             if (record->extra1C != 0) record->extra1C->owner = record;
-            if (func_0020C014(record) != 0) {
+            if (battle_actor_is_side_zero(record) != 0) {
                 if (D_801976DC < 30) persistent_member_bytes = (u8 *)D_80193BC0 + record->member_index * 56;
                 else persistent_member_bytes = (u8 *)D_80195560 + record->member_index * 52;
             } else {
@@ -980,11 +980,11 @@ after_record_dispatch:
                 }
                 record->word74 = 0x3B; record->byteA6 = 0;
             }
-            func_001F3078(func_0020C014(record));
+            func_001F3078(battle_actor_is_side_zero(record));
             break;
         case 0x3C: { /* 22108C */
             float x, z;
-            x = func_0020BF50((func_0020C014(record) == 0) << 3);
+            x = func_0020BF50((battle_actor_is_side_zero(record) == 0) << 3);
             z = record->world_z;
             SELECTED_CHILDREN() func_0021E2C4((TerminalMotionState *)record->primary_children[i], x, z, 15);
             record->byteA6 = 0; record->word74 = 0x3C;
@@ -994,7 +994,7 @@ after_record_dispatch:
             TerminalCommandRecord *other;
             CLEAR_PAIRS();
             for (i = 0; i < 20; i++) {
-                other = func_0020C478(i);
+                other = battle_roster_lookup_actor(i);
                 if (other != 0 && (other->battle_flags & 0x800)) other->battle_flags &= ~0x800u;
             }
             func_80093380(D_801CE8BC + 0x1C4 + command[3] * 248, 248);
@@ -1029,8 +1029,8 @@ exit_checks:
         if ((func_0020BF7C() != 0 || func_0020BF8C() != 0) &&
             func_0020F80C() == 0 && i == 0 && BYTE_AT(D_801CE8BC, 0x6087) == 0) {
             for (index = 0; index < 20; index++) {
-                TerminalCommandRecord *other = func_0020C478(index);
-                if (func_0020C2C0(other) == 0) {
+                TerminalCommandRecord *other = battle_roster_lookup_actor(index);
+                if (battle_actor_is_absent_or_has_flag_0(other) == 0) {
                     int third;
                     other->actions_used = 0;
                     third = func_0020D434(other->formation_row) & 255;

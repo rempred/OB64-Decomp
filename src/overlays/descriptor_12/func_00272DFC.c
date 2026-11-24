@@ -18,7 +18,7 @@ typedef struct P07State72DFC {
     P07Render *value_14, *value_18, *value_1C;
 } P07State72DFC;
 
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 
 
 /* Numeric view of the three original words at ROM 0x275664. */
@@ -52,7 +52,7 @@ s32 func_00272DFC(u16 message, P07State72DFC *state)
     P07Render *object;
     void *destination;
     if (message == 0x1000) {
-        actor = func_0020C478(state->value_04);
+        actor = battle_roster_lookup_actor(state->value_04);
         i = 0;
         func_0026C7C4(actor, &position);
         do {

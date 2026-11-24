@@ -1,0 +1,85 @@
+#include "game/battle_predicates.h"
+#include "game/battle_record_flag.h"
+
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef signed int s32;
+
+extern u8 D_80190F80[];
+extern u8 D_80193BC0[];
+extern u8 D_801953F0[];
+extern u8 D_80195560[];
+extern u8 D_801976DC;
+extern u8 D_801976E8;
+
+void *battle_roster_lookup_actor(unsigned int actor_index);
+s32 func_801D0880(void);
+
+/* Write back HP, current alignment and status. Army roster rows also retain experience. */
+void battle_roster_write_back_members(void)
+{
+    s32 actor_index;
+    BattleRosterRecord *actor;
+    u8 *character_bytes;
+    u8 *special_member_pool;
+    s32 squad_source_index;
+    u8 member_index;
+    u8 *special_member_data;
+
+    for (actor_index = 0; actor_index < 20; actor_index++) {
+        actor = battle_roster_lookup_actor(actor_index);
+        if (func_801D0880() != 0 &&
+            battle_actor_is_side_one(actor) != 0 &&
+            battle_actor_has_flag_9(actor) != 0 &&
+            battle_actor_has_flag_1(actor) != 0) {
+            actor->hp = 0;
+            *(s32 *)((u8 *)actor + 0x40) &= ~2;
+        }
+
+        if (actor != 0 && battle_actor_has_flag_12(actor) == 0) {
+            if (battle_actor_is_side_zero(actor) != 0) {
+                squad_source_index = D_801976DC;
+            } else {
+                squad_source_index = D_801976E8;
+            }
+
+            if (squad_source_index < 30) {
+                special_member_pool = D_80190F80;
+                character_bytes = D_80193BC0 + actor->member_index * 0x38;
+            } else {
+                special_member_pool = D_801953F0;
+                character_bytes = D_80195560 + actor->member_index * 0x34;
+            }
+
+            member_index = actor->member_index;
+            if (member_index == 0xFF) {
+                continue;
+            }
+
+            if (member_index < 100) {
+                *(u16 *)(character_bytes + 0x18) = actor->hp;
+                character_bytes[0x1B] = actor->alignment;
+                if (battle_actor_has_flag_1(actor) != 0) {
+                    character_bytes[0x33] |= 4;
+                } else {
+                    character_bytes[0x33] &= 0xFB;
+                }
+                if (squad_source_index < 30) {
+                    character_bytes[0x35] = actor->experience;
+                }
+            } else {
+                special_member_data = special_member_pool;
+                special_member_data += member_index * 2;
+                *(u16 *)(special_member_data - 0xC4) = actor->hp;
+                if (battle_actor_is_absent_or_has_flag_0(actor) == 0 &&
+                    battle_actor_has_flag_1(actor) != 0) {
+                    special_member_data = special_member_pool + actor->member_index + 0x90;
+                    *special_member_data |= 4;
+                } else {
+                    special_member_data = special_member_pool + actor->member_index + 0x90;
+                    *special_member_data &= 0xFB;
+                }
+            }
+        }
+    }
+}

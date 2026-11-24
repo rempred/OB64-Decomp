@@ -47,35 +47,35 @@ typedef struct BattleUnit {
 } BattleUnit;
 s32 rand(void);
 s32 D_801C8BC0(u8 a, u8 b);
-s32 D_801C8C3C(BattleUnit *candidate);
-s32 D_801C8D24(BattleUnit *candidate);
-s32 D_801C8E30(BattleUnit *candidate);
-void *D_801C8FE8(unsigned int index);
+s32 battle_actor_has_flag_12(void *candidate);
+s32 battle_actor_secondary_class_is_45_to_48(void *candidate);
+s32 battle_actor_is_absent_or_has_flag_0(void *candidate);
+void *battle_roster_lookup_actor(unsigned int index);
 s32 D_801CA038(BattleUnit *candidate, s32 amount);
-s32 D_801CA29C(void *candidate);
+s32 battle_roster_find_actor_index(void *candidate);
 s32 func_002340EC(void *record) {
     BattleUnit *actor = record;
-    s32 actor_index = D_801CA29C(actor);
+    s32 actor_index = battle_roster_find_actor_index(actor);
     s32 best_score = -1;
     s32 best_index = -1;
     s32 candidate_index;
     BattleUnit *candidate;
     s32 score;
     for (candidate_index = 0; candidate_index < 20; candidate_index++) {
-        candidate = D_801C8FE8(candidate_index);
+        candidate = battle_roster_lookup_actor(candidate_index);
         if (candidate == ((void *)0)) {
             continue;
         }
-        if (D_801C8E30(candidate)) {
+        if (battle_actor_is_absent_or_has_flag_0(candidate)) {
             continue;
         }
-        if (D_801C8C3C(candidate)) {
+        if (battle_actor_has_flag_12(candidate)) {
             continue;
         }
         if (D_801C8BC0(actor_index, candidate_index)) {
             continue;
         }
-        if (D_801C8D24(candidate)) {
+        if (battle_actor_secondary_class_is_45_to_48(candidate)) {
             continue;
         }
         score = D_801CA038(candidate, 999);

@@ -6,7 +6,7 @@ typedef struct {
     float z;
 } E04Vec3;
 
-extern void *func_0020C478(unsigned int);
+extern void *battle_roster_lookup_actor(unsigned int);
 extern int func_0025F770(void *);
 extern int func_0025F7C0(void *);
 extern int func_0025F798(void *);
@@ -14,7 +14,7 @@ extern int func_0025F798(void *);
 void func_0026C834(unsigned int actor_index, void *outputView)
 {
     E04Vec3 *output = (E04Vec3 *)outputView;
-    void *actor = func_0020C478(actor_index);
+    void *actor = battle_roster_lookup_actor(actor_index);
 
     output->x = (float)func_0025F770(actor);
     output->z = (float)func_0025F7C0(actor);

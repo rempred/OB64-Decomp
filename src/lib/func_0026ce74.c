@@ -42,7 +42,7 @@ extern void func_00262830(s16);
 
 
 extern void func_00262434(void *);
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 
 
 extern void func_0020BDCC(s16, s32);
@@ -58,7 +58,7 @@ static __inline__ void p02_message_1004(P02ChildState *state)
     void *ptr;
     P02RenderObject *object;
     func_002623C4(state->value_30);
-    ptr = func_0020C478(state->value_28);
+    ptr = battle_roster_lookup_actor(state->value_28);
     func_0026C7C4(ptr, &target);
     object = func_00269798(0x23);
     object->flags_0A |= 0x8000;

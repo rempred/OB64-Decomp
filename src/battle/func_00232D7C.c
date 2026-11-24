@@ -27,7 +27,7 @@ extern u8 D_801939CC;
 extern void func_0021088C(void);
 extern void func_00210930(void);
 extern void func_00023780(void *, u32);
-extern void *func_0020C478(unsigned int index);
+extern void *battle_roster_lookup_actor(unsigned int index);
 struct Opt1F;
 extern struct Opt1F *func_001F21A4(int);
 extern int func_0020BF7C(void);
@@ -91,7 +91,7 @@ void func_00232D7C(void)
     *(u16 *)(global + 0x606A) = 0;
     func_00023780(clearContext->unknown10, 0x800);
     for (i = 0; i < 20; ++i) {
-        actor = func_0020C478(i);
+        actor = battle_roster_lookup_actor(i);
         if (actor != 0)
             actor->scheduled_time = 0;
     }
@@ -194,7 +194,7 @@ record_ready:
 
     maximum = 0;
     for (i = 0; i < 20; ++i) {
-        actor = func_0020C478(i);
+        actor = battle_roster_lookup_actor(i);
         if (actor != 0 && maximum < actor->scheduled_time)
             maximum = actor->scheduled_time;
         finalTime = maximum;

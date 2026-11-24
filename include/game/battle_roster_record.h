@@ -3,14 +3,14 @@
 
 #include "game/battle_roster_types.h"
 
-void func_001F2F9C(BattleRosterRecord *actor, BattleRosterRecord *replacement_actor);
-int func_0020C164(BattleRosterRecord *record);
-BattleRosterRecord *func_0020C788(void);
-BattleRosterRecord *func_0020C810(void);
+void battle_show_class_change_message(BattleRosterRecord *actor, BattleRosterRecord *replacement_actor);
+int battle_actor_secondary_class_is_71_or_72(BattleRosterRecord *record);
+BattleRosterRecord *battle_roster_find_first_side_one_with_flag_9(void);
+BattleRosterRecord *battle_roster_find_first_side_zero_with_flag_9(void);
 void func_0020CBDC(BattleRosterRecord *record, int mode);
-void func_0020D870(BattleRosterRecord *actor, int member_index);
-int func_002344B4(BattleRosterRecord *actor, int divisor);
-void func_0020C908(BattleRosterRecord *actor, int member_index);
+void battle_roster_init_actor_from_army_member(BattleRosterRecord *actor, int member_index);
+int battle_actor_scaled_distance_from_center_row(BattleRosterRecord *actor, int divisor);
+void battle_roster_init_actor_from_scenario_member(BattleRosterRecord *actor, int member_index);
 
 /* The assembler helpers write and consume a caller-owned array of roster rows. */
 int func_002337E4(BattleRosterRecord **out, int start, int column);
@@ -19,7 +19,7 @@ BattleRosterRecord *func_00233D0C(BattleRosterRecord *source, BattleRosterRecord
 int func_00233ED4(BattleRosterRecord *source);
 int func_00233F38(BattleRosterRecord *source);
 int func_00233F94(BattleRosterRecord *source);
-int func_00237810(BattleRosterRecord *source, BattleRosterRecord *target);
+int battle_actor_roll_luck_advantage(BattleRosterRecord *source, BattleRosterRecord *target);
 
 int func_00222190(BattleRosterRecord *actor, int x0, int z0, int x1, int z1);
 int func_0022222C(BattleRosterRecord *actor, BattleRosterRecord *target, int x, int z);
@@ -29,7 +29,7 @@ int func_0022B1F4(BattleRosterRecord *source, int *outWord);
 int func_00237750(BattleRosterRecord *actor, BattleRosterRecord *target, int c, int d, int e);
 int func_00237890(void *source, void *target);
 int func_002379AC(int effect, void *record);
-void func_0023422C(void *actor_record, int new_secondary_class_id);
+void battle_roster_change_actor_secondary_class(void *actor_record, int new_secondary_class_id);
 int func_002223E0(BattleRosterRecord *actor, BattleRosterRecord *target, int formation_column, int formation_row, int x, int z);
 int func_002AB810(int *slots, BattleRosterRecord *actor, int actor_index, int flip,
                   int primary_class_id, int secondary_class_id, unsigned char seen_leader);

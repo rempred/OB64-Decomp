@@ -7,11 +7,11 @@ typedef struct C3ecRecordView {
     u32 value_58;
 } C3ecRecordView;
 
-extern void *func_0020C478(u32 index);
+extern void *battle_roster_lookup_actor(u32 index);
 
 s16 func_0024C3EC(u8 value)
 {
-    C3ecRecordView *record = func_0020C478(value);
+    C3ecRecordView *record = battle_roster_lookup_actor(value);
 
     return (s16)(record->value_58 * 3U + record->value_54 + 20U);
 }

@@ -271,11 +271,11 @@ function runTests(model = loadAcceptedModel()) {
       "romStart": 2488296,
       "romEndExclusive": 2488304,
       "edge": "terminal",
-      "sourceSha256": "C8435FDA518E9EDE98310FF2E214DF323DBACA276C1C3EDCBEE8988D9A37C615",
+      "sourceSha256": "6F5CC16EB09B6DDC6AE68FE2CE82858DD2970C261DFB47B7675CD170608DF70C",
       "expectedSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
       "compilerFunctions": [
         {
-          "symbol": "func_0025F7C8",
+          "symbol": "battle_roster_get_actor_world_z",
           "binding": "GLOBAL",
           "entryEvidence": "owner"
         }
@@ -1075,6 +1075,7 @@ function runTests(model = loadAcceptedModel()) {
   const digest = value => sha256Buffer(Buffer.from(JSON.stringify(value)));
   // Exact reviewed profiles; no unknown-identity fallback.
   const characterLevelUpProfile = '46A61CECDC8D8C0DAEC98AB222B20B8B414006AD08D3C04F61111ED51D3863BA';
+  const battleRosterProfile = 'F1CEA6EC2143610859832BC0A83223D3FF0B5712B377118C5AB4D587A5465BC8';
   function checkProfile() {
     checkCuts();
     const identity = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json'];
@@ -1082,9 +1083,10 @@ function runTests(model = loadAcceptedModel()) {
       '6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1',
       'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204',
       'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68',
-      characterLevelUpProfile,
+      characterLevelUpProfile, battleRosterProfile,
     ].includes(identity), 'unknown boot-test semantic identity: ' + identity);
-    const characterLevelUp = identity === characterLevelUpProfile;
+    const battleRoster = identity === battleRosterProfile;
+    const characterLevelUp = battleRoster || identity === characterLevelUpProfile;
     const l4Successor = characterLevelUp || identity === 'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68';
     const row566Successor = model.config.acceptedInputSha256['config/splat/us_rev0.semantic.json']
       === 'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204';
@@ -1111,7 +1113,8 @@ function runTests(model = loadAcceptedModel()) {
     assert.strictEqual(digest(priorSlices.filter(slice => slice.rowIndex !== 789)),
       l4Successor ? '2EFCE6BCEC2234F5555C396AD6CE621A04659523E1B33F670BB3FB14A1D4DAA5' : row566Successor ? '6B459839D42684025BA9B9C919EFDD9480D56AD2DAAD2A49476E89E8023B9EFE'
         : '8897472E14020BB65D6CD7EBBD1716F503C2232D52F7E662D8E739605A4D873B');
-    assert.strictEqual(digest(model.rows.map(({ slices, retainedPadding, ...metadata }) => metadata)), characterLevelUp
+    assert.strictEqual(digest(model.rows.map(({ slices, retainedPadding, ...metadata }) => metadata)), battleRoster
+      ? '7F7A51B6F8E98AF9DEF054D7FC16C1FF612F266A2B33212A3F764307443F5825' : characterLevelUp
       ? '165F4BB698F2955C81FB552C170211B8E5588145A2781D3F8E41DB2828CA6B8D' : l4Successor
       ? '6915B2433009A1E6E0DDF57DB571BB9D37621A7A486985A7C9D5CC124076C385' : row566Successor
       ? 'A83A62A26E54CD29A50AAF0FE6286867CD34E5B62AE43D49CC0316C6499076C2'
@@ -1159,7 +1162,7 @@ function runTests(model = loadAcceptedModel()) {
   for (const identity of ['0'.repeat(64),
     '6CBD65B27BD4B57E5C824D52D6F15FF98CF4616BC8BFB3F42E1BA87575A55FE1',
     'BF8C79BFDB2AB3DDBFA0B160AD14CCA9E17884813C1007D37E384DB40BBD8204',
-    'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68', characterLevelUpProfile]) {
+    'B9850563A1974FF155A16F9DCBCFB4494B6572166F894A5B5057D204AF801F68', characterLevelUpProfile, battleRosterProfile]) {
     if (identity !== model.config.acceptedInputSha256[identityKey])
       profileMutation(model.config.acceptedInputSha256, identityKey, identity);
   }

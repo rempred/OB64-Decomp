@@ -19,8 +19,8 @@ s32 func_000454e0(s32);
 s32 func_00201798(s32, s32, s32, s32);
 s32 func_0020BFE4(void);
 u16 func_0020C448(void *);
-void *func_0020C478(unsigned int index);
-s32 func_0020D72C(void *);
+void *battle_roster_lookup_actor(unsigned int index);
+s32 battle_roster_find_actor_index(void *);
 void func_0021D200(s32, s32, void *);
 void func_0021D230(s32, s32, void *, s32);
 void func_0021D25C(s32, s32, void *, s32, s32);
@@ -123,7 +123,7 @@ s32 func_0022C78C(void *record, s32 *out_time) {
         *time_out = ((BattleRosterRecord *)record)->scheduled_time;
         return 0;
     }
-    target = func_0020C478(target_index);
+    target = battle_roster_lookup_actor(target_index);
     local_field57 = *(u8 *)((u8 *)target + 0x57);
     local_field5B = *(u8 *)((u8 *)target + 0x5B);
     source_value = func_002361EC(record);
@@ -225,7 +225,7 @@ s32 func_0022C78C(void *record, s32 *out_time) {
         code_byte = allocation_value & (u32)code_byte;
         func_0021D230(0x3E, time, record, code_byte);
         if (func_0020BFE4() != 0) {
-            func_0021D2C0(0x17, event_start, 0, 0x5D, code_byte, func_0020D72C(record), *(s32 *)((u8 *)record + 0x68));
+            func_0021D2C0(0x17, event_start, 0, 0x5D, code_byte, battle_roster_find_actor_index(record), *(s32 *)((u8 *)record + 0x68));
         }
         if (event_start < local_start) {
             local_start = event_start;
@@ -239,13 +239,13 @@ s32 func_0022C78C(void *record, s32 *out_time) {
         goto merge_event_end;
     }
     if (func_00201584(target->primary_class_id.word, target->secondary_class_id.word) & 0xFF) {
-        if (func_0020BFF8(target) != 0) {
+        if (battle_actor_is_side_one(target) != 0) {
             event_selector = 0x60;
         } else {
             event_selector = 0x5F;
         }
         if (func_0020BFE4() != 0) {
-            func_0021D2C0(0x17, event_start, 0, event_selector, field_code & 0xFF, func_0020D72C(record), *(s32 *)((u8 *)record + 0x68));
+            func_0021D2C0(0x17, event_start, 0, event_selector, field_code & 0xFF, battle_roster_find_actor_index(record), *(s32 *)((u8 *)record + 0x68));
         }
         if (event_start < local_start) {
             local_start = event_start;
@@ -260,7 +260,7 @@ merge_event_end:
         }
     }
     if (check_value != 0) {
-        local_hit = func_00237810(record, target);
+        local_hit = battle_actor_roll_luck_advantage(record, target);
         check_value = func_00237750(record, target, 0, 0, 0);
         if (local_hit != 0) {
             if (func_0020BFE4() != 0) {
@@ -294,7 +294,7 @@ merge_event_end:
         allocation_value = check_value | (u32)end_time;
         check_value = allocation_value & check_value;
         func_0022ADFC(target, 0, time0 + local_buffer[0], check_value, action_byte, aux_value & 0xFF, 1, adjust);
-        if ((func_0020C2C0(target) != 0) && (func_0020C014(record) != 0) && (func_0020C104(record) == 0)) {
+        if ((battle_actor_is_absent_or_has_flag_0(target) != 0) && (battle_actor_is_side_zero(record) != 0) && (battle_actor_secondary_class_is_one(record) == 0)) {
             increment = func_00233210(record, target);
             if (increment != 0) {
                 event_time = time0 + local_duration;
@@ -302,7 +302,7 @@ merge_event_end:
                 func_0021D230(0x3F, event_time, record, increment);
             }
         }
-        if ((local_effect != 0) && (func_0020C2C0(target) == 0) && (func_0020C32C(target) == 0)) {
+        if ((local_effect != 0) && (battle_actor_is_absent_or_has_flag_0(target) == 0) && (battle_actor_has_flag_1(target) == 0)) {
             func_0023431C(target, time + offset + local_duration, local_effect);
             goto merge_target_end;
         }

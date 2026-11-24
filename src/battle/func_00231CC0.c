@@ -11,7 +11,7 @@ typedef struct ResolutionContext {
 
 extern ResolutionContext *D_801CE8C0;
 extern void func_00023780(void *base, u32 bytes);
-extern void *func_0020C478(unsigned int index);
+extern void *battle_roster_lookup_actor(unsigned int index);
 
 static inline int object_qualified(BattleRosterRecord *actor)
 {
@@ -44,8 +44,8 @@ void func_00231CC0(BattleResolutionRecord *records)
     records[5].formation_row = 8;
 
     for (i = 0; i < 20; ++i) {
-        actor = func_0020C478(i);
-        if (actor == 0 || func_0020C2C0(actor) ||
+        actor = battle_roster_lookup_actor(i);
+        if (actor == 0 || battle_actor_is_absent_or_has_flag_0(actor) ||
             actor->actions_used != D_801CE8C0->action_index ||
             actor->actions_used >= actor->action_limit)
             continue;

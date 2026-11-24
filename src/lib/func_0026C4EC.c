@@ -7,14 +7,14 @@ typedef struct {
     float z;
 } E04Vec3;
 
-extern int func_0020BFF8(void *);
+extern int battle_actor_is_side_one(void *);
 
 void func_0026C4EC(void *actor, void *outputView)
 {
     E04Vec3 *output = (E04Vec3 *)outputView;
-    int flag8 = func_0020BFF8(actor);
+    int flag8 = battle_actor_is_side_one(actor);
 
-    if (flag8 != func_0020C2D8(actor)) {
+    if (flag8 != battle_actor_has_flag_5(actor)) {
         output->x = 1.0f;
     } else {
         output->x = -1.0f;

@@ -22,7 +22,7 @@ typedef struct TerminalCopyState {
     TerminalCopyActor *actor;
 } TerminalCopyState;
 
-int func_0020C104(void *actor);
+int battle_actor_secondary_class_is_one(void *actor);
 int func_0020C120(void *actor);
 
 void func_0021E99C(TerminalCopyState *state, TerminalCopyState *second)
@@ -43,7 +43,7 @@ void func_0021E99C(TerminalCopyState *state, TerminalCopyState *second)
     second->currentZ = z;
     state->currentZ = z;
 
-    if (func_0020C104(state->actor) != 0 || func_0020C120(state->actor) != 0) {
+    if (battle_actor_secondary_class_is_one(state->actor) != 0 || func_0020C120(state->actor) != 0) {
         actor = state->actor;
         state->scaledX = actor->word5C * 30u - (actor->word5C - state->destinationX);
         state->scaledY = actor->word60 * 30u - (actor->word60 - state->destinationY);

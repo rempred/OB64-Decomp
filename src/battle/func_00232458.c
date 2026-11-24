@@ -67,14 +67,14 @@ extern void func_00237E2C(DispatchDescriptor *, int, int);
 extern void func_00239338(DispatchDescriptor *, BattleRosterRecord *, BattleRosterRecord *, BattleRosterRecord *);
 extern int func_0025FD00(u16);
 extern void func_0021D1CC(int, int);
-extern void *func_0020C478(unsigned int index);
+extern void *battle_roster_lookup_actor(unsigned int index);
 extern int func_002363FC(DispatchObject *);
 extern int func_002365BC(BattleRosterRecord *, DispatchObject *, int, int);
 extern void func_0022A7B8(void *, int, int, int, int, int);
 extern int func_00237AF8(DispatchObject *, int);
 extern void func_0021D334(int, int, void *, int, int, int, int, int, int);
 extern void func_0022B06C(void *, u8 *);
-extern int func_0020D72C(void *);
+extern int battle_roster_find_actor_index(void *);
 extern void func_0021D2C0(int, int, void *, int, int, int, int);
 extern void func_0021D230(int, int, void *, int);
 
@@ -133,14 +133,14 @@ int func_00232458(u8 *input, int *outTime)
         if (temporary_actor->primary_class_id.word == 0 && temporary_actor->secondary_class_id.word == 0)
             break;
     }
-    func_0020D870(temporary_actor, 1);
+    battle_roster_init_actor_from_army_member(temporary_actor, 1);
     temporary_actor->formation_row = 7;
     temporary_actor->formation_column = 1;
     initialInput2 = input[2];
     temporary_actor->action_kind = 3;
     temporary_actor->action_id = initialInput2;
     identifierOrNumerator = func_00233F94(temporary_actor);
-    side = func_0020C014(temporary_actor);
+    side = battle_actor_is_side_zero(temporary_actor);
     /* The real fourth producer argument and later scan limit have disjoint uses. */
     producerInputOrRepeatLimit = input[1];
     producer = func_0023887C(identifierOrNumerator, descriptor.header[8], side, producerInputOrRepeatLimit);
@@ -162,10 +162,10 @@ int func_00232458(u8 *input, int *outTime)
         idOffset = i * 4;
         /* Actual ID address precedes the random/result phase of this MIPS word. */
         secondary = idOffset + (int)&descriptor;
-        actor = func_0020C478(((int *)secondary)[4]);
+        actor = battle_roster_lookup_actor(((int *)secondary)[4]);
         if (actor == 0)
             continue;
-        if (func_0020C2C0(actor) != 0) {
+        if (battle_actor_is_absent_or_has_flag_0(actor) != 0) {
             j = i;
             if (j < descriptor.count - 1) {
                 do {
@@ -264,10 +264,10 @@ int func_00232458(u8 *input, int *outTime)
                 if (repeatPredicate == 0)
                     special = func_00237AF8(actor, mode);
             }
-            if (special != 0 && func_0020C2C0(actor) == 0 && func_0020C32C(actor) == 0) {
+            if (special != 0 && battle_actor_is_absent_or_has_flag_0(actor) == 0 && battle_actor_has_flag_1(actor) == 0) {
                 func_0021D334(0x1F, time, actor, 13, value >> 8, value & 0xFF,
                              narrowed, D_801CE8C0->field823, (u8)special);
-                func_0023422C(actor, special);
+                battle_roster_change_actor_secondary_class(actor, special);
             } else {
                 if (secondary != 0)
                     func_0022B06C(actor, &lists.modifier);
@@ -290,15 +290,15 @@ int func_00232458(u8 *input, int *outTime)
             maximum = actor->scheduled_time;
     }
     for (i = 0; i < 20; ++i) {
-        scanObject = func_0020C478(i);
-        if (func_0020C2C0(scanObject) != 0)
+        scanObject = battle_roster_lookup_actor(i);
+        if (battle_actor_is_absent_or_has_flag_0(scanObject) != 0)
             continue;
-        if (func_0020C0CC(scanObject) != 0)
+        if (battle_actor_has_flag_12(scanObject) != 0)
             continue;
-        if (func_0020BFF8(scanObject) == 0 && (void *)temporary_actor != scanObject)
+        if (battle_actor_is_side_one(scanObject) == 0 && (void *)temporary_actor != scanObject)
             break;
     }
-    lists.single[0] = func_0020D72C(scanObject);
+    lists.single[0] = battle_roster_find_actor_index(scanObject);
     lists.single[1] = -1;
     --time;
     for (i = 0; i < descriptor.count; ++i) {

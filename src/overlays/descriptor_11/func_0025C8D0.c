@@ -17,7 +17,7 @@ typedef struct E09StateC8D0 {
 extern volatile u8 e09_byte_80220F68;
 extern volatile u8 e09_byte_80220F69;
 extern volatile u8 e09_byte_80220F6A;
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 extern void func_00262B68(void);
 
 s32 func_0025C8D0(u16 command, E09StateC8D0 *state)
@@ -31,7 +31,7 @@ s32 func_0025C8D0(u16 command, E09StateC8D0 *state)
         func_00262B68();
         break;
     case 0x100:
-        state->value_00 = func_0020C478(e09_byte_80220F68);
+        state->value_00 = battle_roster_lookup_actor(e09_byte_80220F68);
         state->value_04 = e09_byte_80220F69;
         state->value_05 = e09_byte_80220F6A;
         /* KMC must retain these two initialization stores in this order. */

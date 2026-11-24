@@ -28,10 +28,10 @@ int func_00201798(s32, s32, s32, M2C_UNK);
 s32 func_0020BF50(M2C_UNK);
 s32 func_0020BFE4();
 s32 func_0020C24C(void *);
-void *func_0020C478(unsigned int index);
+void *battle_roster_lookup_actor(unsigned int index);
 u8 func_0020D434(s32);
 s32 func_0020D4C8(void *, u32);
-s32 func_0020D72C(void *);
+s32 battle_roster_find_actor_index(void *);
 void func_0021D200(s32, s32, void *);
 void func_0021D230(s32, s32, void *, s32);
 void func_0021D25C(s32, s32, void *, s32, s32);
@@ -235,8 +235,8 @@ s32 func_0022D14C(void *arg0, s32 *arg1) {
         var_s5_693 = 0;
         while (var_s5_693 < prefix.packet.words[3]) {
                 s32 *filterWordSource = prefix.packet.words + var_s5_693;
-                temp_v0_104 = func_0020C478(*(s32 *)((u8 *)filterWordSource + 0x10));
-                if ((func_0020C32C(temp_v0_104) != 0) || (func_0020C2F4(temp_v0_104) != 0) || (func_0020C310(temp_v0_104) != 0) || ((func_00043ad8((temp_v0_104->primary_class_id.bytes.low), (temp_v0_104->secondary_class_id.bytes.low)) & 0xFF) != 1)) {
+                temp_v0_104 = battle_roster_lookup_actor(*(s32 *)((u8 *)filterWordSource + 0x10));
+                if ((battle_actor_has_flag_1(temp_v0_104) != 0) || (battle_actor_has_flag_3(temp_v0_104) != 0) || (battle_actor_has_flag_2(temp_v0_104) != 0) || ((func_00043ad8((temp_v0_104->primary_class_id.bytes.low), (temp_v0_104->secondary_class_id.bytes.low)) & 0xFF) != 1)) {
                     u8 *retainedWord = (u8 *)prefix.packet.words + sp1DC * 4;
                     u8 *retainedHalf = (u8 *)prefix.packet.words + sp1DC * 2;
                     u8 *filterHalfSource = (u8 *)prefix.packet.words + var_s5_693 * 2;
@@ -294,10 +294,10 @@ block_32:
                         temp_v0_233 = (*(u8 *)((s8 *)(temp_a0_223) + (2)));
                         temp_s0_234 = temp_v0_233 & 0x3F;
                         sp1B7 = temp_s0_234;
-                        if ((temp_v0_233 & 0x80) && (func_0020D6F8(arg0, func_0020C478(prefix.packet.words[4])) == 0)) {
+                        if ((temp_v0_233 & 0x80) && (func_0020D6F8(arg0, battle_roster_lookup_actor(prefix.packet.words[4])) == 0)) {
                             sp1B7 = temp_s0_234 + 1;
                         }
-                        if (((*(u8 *)((s8 *)(((void *)((u32)var_s1_222 + (u32)*(void **)0x801D073C))) + (2))) & 0x40) && (func_0020D6F8(arg0, func_0020C478(prefix.packet.words[4])) != 0)) {
+                        if (((*(u8 *)((s8 *)(((void *)((u32)var_s1_222 + (u32)*(void **)0x801D073C))) + (2))) & 0x40) && (func_0020D6F8(arg0, battle_roster_lookup_actor(prefix.packet.words[4])) != 0)) {
                             sp1B7 += 1;
                         }
                         sp17C = func_0022257C( (void *)((*(s32 *)((s8 *)(arg0) + (0))) + 0x44), sp1B7, 0);
@@ -310,7 +310,7 @@ block_32:
         }
         if ((((BattleRosterRecord *)arg0)->action_kind) == 5) {
             if (func_0020C24C(arg0) == 0) {
-                var_s3_51 = func_0020C478(prefix.packet.words[4]);
+                var_s3_51 = battle_roster_lookup_actor(prefix.packet.words[4]);
                 temp_v1_299 = (*(s32 *)((s8 *)(var_s3_51) + (0x5C)));
                 temp_v0_300 = (*(s32 *)((s8 *)(arg0) + (0x5C)));
                 var_s1_301 = temp_v1_299 - temp_v0_300;
@@ -324,7 +324,7 @@ block_32:
                     var_s0_308 = temp_v0_307 - temp_v1_306;
                 }
                 sp19C = func_0020BF50(
-                    func_0020C014(arg0) != 0 ? 5 : 3);
+                    battle_actor_is_side_zero(arg0) != 0 ? 5 : 3);
                 temp_v1_321 = (*(s32 *)((s8 *)(arg0) + (0x5C)));
                 var_v0_323 = sp19C - temp_v1_321;
                 /* The real divide/store tails merge after reload in GCC 2.7.2.
@@ -373,10 +373,10 @@ block_65:
         do {
             temp_a0_429 = (*(s32 *)((s8 *)(var_s0_427) + (0x10)));
             if (temp_a0_429 < 0x14) {
-                var_v0_433 = func_0020C478(temp_a0_429);
+                var_v0_433 = battle_roster_lookup_actor(temp_a0_429);
             } else {
                 func_00237D5C(temp_a0_429, &coords.x0, &coords.y0);
-                var_v0_433 = func_0020D770(coords.x0, coords.y0);
+                var_v0_433 = battle_roster_find_actor_at_position(coords.x0, coords.y0);
             }
             temp_v1_444 = (var_v0_433->scheduled_time);
             if (sp16C < temp_v1_444) {
@@ -445,8 +445,8 @@ event_b_done:
         sp1D7 = 1;
     } else if (temp_a0_616 >= 0x14) {
         func_00237D5C(temp_a0_616, &coords.x1, &coords.y1);
-        temp_s0_635 = func_0020D770(coords.x1, coords.y1);
-        if (func_0020C478(prefix.packet.words[4]) != temp_s0_635) {
+        temp_s0_635 = battle_roster_find_actor_at_position(coords.x1, coords.y1);
+        if (battle_roster_lookup_actor(prefix.packet.words[4]) != temp_s0_635) {
             sp1D7 = 1;
         }
     }
@@ -487,9 +487,9 @@ event_b_done:
             u32 mainWordOffset = (u32)(var_s5_693 * 4);
             s32 *temp_s1_706 = (s32 *)(mainWordOffset + (u32)sp1FC);
             sp1E4 = 0;
-            var_s3_51 = func_0020C478((*(s32 *)((s8 *)(temp_s1_706) + (0x10))));
+            var_s3_51 = battle_roster_lookup_actor((*(s32 *)((s8 *)(temp_s1_706) + (0x10))));
             if (var_s3_51 != 0) {
-                if (func_0020C2C0(var_s3_51) != 0) {
+                if (battle_actor_is_absent_or_has_flag_0(var_s3_51) != 0) {
                     var_t2_721 = var_s5_693;
                     if (var_s5_693 < (prefix.packet.words[3] - 1)) {
                         {
@@ -546,7 +546,7 @@ event_b_done:
                         }
                     }
                     if (prefix.packet.bytes[3] == 9) {
-                        sp1BC &= 0 - (func_0020C1B4(var_s3_51) == 0);
+                        sp1BC &= 0 - (battle_actor_secondary_class_is_45_to_48(var_s3_51) == 0);
                     } else if (prefix.packet.bytes[3] == 3) {
                         var_s2_802 = func_0020C3B4(var_s3_51) == 0;
                     }
@@ -642,9 +642,9 @@ event_b_done:
                                     sp1E4 = func_00237AF8(var_s3_51, var_s0_965);
                                 }
                             }
-                            if ((sp1E4 != 0) && (func_0020C2C0(var_s3_51) == 0) && (func_0020C32C(var_s3_51) == 0)) {
+                            if ((sp1E4 != 0) && (battle_actor_is_absent_or_has_flag_0(var_s3_51) == 0) && (battle_actor_has_flag_1(var_s3_51) == 0)) {
                                 func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xD, (s32) sp1BC >> 8, (s32) ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), (s32) ((u8)sp1E4));
-                                func_0023422C(var_s3_51, sp1E4);
+                                battle_roster_change_actor_secondary_class(var_s3_51, sp1E4);
                             } else {
                                 if (var_s1_844 != 0) {
                                     func_0022B06C(var_s3_51, &coords.value);
@@ -665,7 +665,7 @@ event_b_done:
                             func_0022A7B8(var_s3_51, 0, temp_s7_700 + prefix.buffer[0], sp1BC, sp1F4, 0);
                             var_s3_51->scheduled_time = temp_s7_700 + prefix.buffer[0];
                         }
-                        if ((func_0020C2C0(var_s3_51) != 0) && (func_0020C014(arg0) != 0) && (func_0020C104(arg0) == 0)) {
+                        if ((battle_actor_is_absent_or_has_flag_0(var_s3_51) != 0) && (battle_actor_is_side_zero(arg0) != 0) && (battle_actor_secondary_class_is_one(arg0) == 0)) {
                             temp_v0_1142 = func_00233210(arg0, var_s3_51);
                             if (temp_v0_1142 != 0) {
                                 (*(u8 *)((s8 *)(arg0) + (0x34))) = (u8) ((*(u8 *)((s8 *)(arg0) + (0x34))) + temp_v0_1142);
@@ -687,7 +687,7 @@ event_b_done:
                                 func_0022B06C(var_s3_51, &coords.value);
                             }
                             func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 3, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
-                        } else if ((func_0020C32C(var_s3_51) != 0) || (func_0020C2F4(var_s3_51) != 0) || (func_0020C310(var_s3_51) != 0)) {
+                        } else if ((battle_actor_has_flag_1(var_s3_51) != 0) || (battle_actor_has_flag_3(var_s3_51) != 0) || (battle_actor_has_flag_2(var_s3_51) != 0)) {
                             /* Retain the real buffer copy before reusing the scalar
                              * for argument nine; this preserves local allocation. */
                             s32 mode8Extra = prefix.buffer[0];
@@ -708,7 +708,7 @@ event_b_done:
                                 func_0022B06C(var_s3_51, &coords.value);
                             }
                             func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 7, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
-                        } else if ((func_0020C32C(var_s3_51) != 0) || (func_0020C2F4(var_s3_51) != 0) || (func_0020C310(var_s3_51) != 0)) {
+                        } else if ((battle_actor_has_flag_1(var_s3_51) != 0) || (battle_actor_has_flag_3(var_s3_51) != 0) || (battle_actor_has_flag_2(var_s3_51) != 0)) {
                             /* Same real buffer/extra phases as the mode8 arm. */
                             s32 mode10Extra = prefix.buffer[0];
                             s32 mode10Buffer = mode10Extra;
@@ -727,7 +727,7 @@ event_b_done:
                                 func_0022B06C(var_s3_51, &coords.value);
                             }
                             func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 4, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
-                        } else if ((func_0020C32C(var_s3_51) != 0) || (func_0020C2F4(var_s3_51) != 0) || (func_0020C310(var_s3_51) != 0)) {
+                        } else if ((battle_actor_has_flag_1(var_s3_51) != 0) || (battle_actor_has_flag_3(var_s3_51) != 0) || (battle_actor_has_flag_2(var_s3_51) != 0)) {
                             func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0xD);
                         } else {
                             /* Keep each default call in its real mode arm. Sharing the call
@@ -744,7 +744,7 @@ event_b_done:
                             sp1E4 = temp_v0_1409;
                             if (temp_v0_1409 != 0) {
                                 func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xE, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), (s32) ((u8)sp1E4));
-                                func_0023422C(var_s3_51, sp1E4);
+                                battle_roster_change_actor_secondary_class(var_s3_51, sp1E4);
                             } else {
                                 (*(s32 *)((s8 *)(var_s3_51) + (0x40))) = (s32) ((*(s32 *)((s8 *)(var_s3_51) + (0x40))) | 2);
                                 if (var_s1_844 != 0) {
@@ -758,8 +758,8 @@ event_b_done:
                             var_s1_1474 = 0;
                             if (temp_v0_1467 & 0xFFFF) {
 loop_241:
-                                temp_v0_1476 = func_0020C478(var_s1_1474);
-                                if (func_0020C2C0(temp_v0_1476) == 0) {
+                                temp_v0_1476 = battle_roster_lookup_actor(var_s1_1474);
+                                if (battle_actor_is_absent_or_has_flag_0(temp_v0_1476) == 0) {
                                     (*(s32 *)((s8 *)(temp_v0_1476) + (0x6C))) = (s32) (*(s32 *)((s8 *)(temp_v0_1476) + (0x70)));
                                 }
                                 var_s1_1474 += 1;
@@ -768,7 +768,7 @@ loop_241:
                                 }
                             }
                         } else {
-                            if ((func_0020C32C(var_s3_51) != 0) || (func_0020C2F4(var_s3_51) != 0) || (func_0020C310(var_s3_51) != 0)) {
+                            if ((battle_actor_has_flag_1(var_s3_51) != 0) || (battle_actor_has_flag_3(var_s3_51) != 0) || (battle_actor_has_flag_2(var_s3_51) != 0)) {
                                 func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0xF, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0xD);
                             } else {
                                 func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
@@ -807,7 +807,7 @@ mode_done:;
             (*(u16 *)((s8 *)(arg0) + (0x20))) = (u16) ((*(u16 *)((s8 *)(arg0) + (0x20))) + func_0020D4C8(arg0, (u32) sp1BC));
         }
     }
-    pair[0] = func_0020D72C(arg0);
+    pair[0] = battle_roster_find_actor_index(arg0);
     var_a2_1641 = 0;
     sp16C -= 1;
     if ((prefix.packet.bytes[8] == 8) || (prefix.packet.bytes[8] == 9)) {

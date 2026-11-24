@@ -63,17 +63,17 @@ s32 func_002ABB3C(s32 bit8_class_filter, s32 other_class_filter, s32 flagC)
         bit8_filter = want[0];
         other_filter = want[1];
         primary_class_id = actor->primary_class_id.word;
-        if (bit8_filter == -1 && func_0020BFF8(actor)) {
+        if (bit8_filter == -1 && battle_actor_is_side_one(actor)) {
             skip = 0;
-        } else if (other_filter == -1 && !func_0020BFF8(actor)) {
+        } else if (other_filter == -1 && !battle_actor_is_side_one(actor)) {
             skip = 0;
-        } else if (bit8_filter == -2 && func_0020BFF8(actor) && func_0020C0E8(actor)) {
+        } else if (bit8_filter == -2 && battle_actor_is_side_one(actor) && battle_actor_has_flag_9(actor)) {
             skip = 0;
-        } else if (other_filter == -2 && !func_0020BFF8(actor) && func_0020C0E8(actor)) {
+        } else if (other_filter == -2 && !battle_actor_is_side_one(actor) && battle_actor_has_flag_9(actor)) {
             skip = 0;
-        } else if (bit8_filter == 0 && func_0020BFF8(actor)) {
+        } else if (bit8_filter == 0 && battle_actor_is_side_one(actor)) {
             skip = 1;
-        } else if (other_filter == 0 && !func_0020BFF8(actor)) {
+        } else if (other_filter == 0 && !battle_actor_is_side_one(actor)) {
             skip = 1;
         } else {
             classByte = primary_class_id;
@@ -120,7 +120,7 @@ s32 func_002ABB3C(s32 bit8_class_filter, s32 other_class_filter, s32 flagC)
              * comparison. Assigning in the condition retains the direct
              * failure edge to default placement. */
             s32 allow = 0;
-            if (func_0020C32C(actor) && (!func_0020BFF8(actor) || !func_0020C0E8(actor))) {
+            if (battle_actor_has_flag_1(actor) && (!battle_actor_is_side_one(actor) || !battle_actor_has_flag_9(actor))) {
                 scene_body = *(u8 **)(D_8022A974 + slots.read[child_index] * 4 + 0x18);
                 func_002A9364(slots.read[child_index], -1, -1, *(s16 *)(scene_body + 0x138) + 0x1C, -1, -1, 0, 1);
                 func_0029E70C(scene_body);

@@ -9,7 +9,7 @@ const {intake,assess,presentation,formatHuman}=require('../tools/lib/matching/in
 const policy=require('../tools/lib/source_policy');
 function run(){
  const start=Date.now(),base=path.join(ROOT,'build/research-intake-rollout-r1');fs.mkdirSync(base,{recursive:true});const root=fs.mkdtempSync(path.join(base,'tests-')),archive=path.join(root,'archives'),database=path.join(root,'absent','store.sqlite');fs.mkdirSync(archive);
- const w=loadWorkbenchModel(),a=resolveTarget(w,'resource_arena_init'),b=resolveTarget(w,'func_0020BFF8');
+ const w=loadWorkbenchModel(),a=resolveTarget(w,'resource_arena_init'),b=resolveTarget(w,'battle_actor_is_side_one');
  const source=path.join(root,'authored.c');fs.writeFileSync(source,'#include "game/combat_types.h"\nu32 fixture(u32 v) { return v+1; }\n');
  const claims={schemaVersion:1,label:'fixture',role:'effect-example',context:'Independent research context.',sourceChange:'Authored fixture.',effects:['fixture-effect'],observedEffect:'An authored claim.',remainingFailure:'No matching acceptance.',selectedBest:false,parentCandidateId:null,relatedCandidateIds:[],references:[{path:'docs/Plans/task-logs/combat-draw-wave8-r7.md'}]};
  const observation=captureIdentities(source,claims),c=policy.classifySource(source),authenticated={sourceSha256:c.sourceSha256,expanded:c.compilationInput,dependencies:c.dependencies,sourceClass:c.class,preprocessor:c.preprocessor};
@@ -42,7 +42,18 @@ function run(){
   check('concurrent writable handle unavailable without writes',()=>{const before=census(db),handle=fs.openSync(db,'r+');try{const r=intake(w,a,{...options,database:db});assert.equal(r.store.status,'error');assert.match(r.store.reason,/quiescent read guard/);}finally{fs.closeSync(handle);}assert.deepEqual(census(db),before);});
   check('corrupt store visible even without observations',()=>{const bad=path.join(root,'broken.sqlite');fs.writeFileSync(bad,'broken');assert.equal(intake(w,a,{...options,database:bad}).store.status,'error');assert.equal(intake(w,resolveTarget(w,'resource_arena_register'),{...options,database:bad}).status,'unavailable');});
   check('tracked W8 records retain old model identity without deduplicating stale observations',()=>{const r=intake(w,resolveTarget(w,'func_001F3C00'),{database});assert.equal(r.counts['target-mismatch'],13);assert.equal(r.counts.valid,undefined);assert.equal(r.store.status,'missing');});
-  check('real archived IDs without ROM binding remain reference-only',()=>{const noRom=loadWorkbenchModel({requireBaserom:false}),r=intake(noRom,resolveTarget(noRom,'func_001F3C00'),{database});assert.equal(r.targetId,null);assert.equal(r.counts['reference-only'],13);assert(!r.counts['target-mismatch']);});
+  check('no-ROM intake distinguishes current reference evidence from stale archives',()=>{
+   const noRom=loadWorkbenchModel({requireBaserom:false});
+   const current=intake(noRom,resolveTarget(noRom,b.symbol),options);
+   assert.equal(current.targetId,null);
+   assert.equal(current.counts['reference-only'],1);
+   assert(!current.counts['target-mismatch']);
+   const archived=intake(noRom,resolveTarget(noRom,'func_001F3C00'),{database,limit:13});
+   assert.equal(archived.targetId,null);
+   assert.equal(archived.counts.stale,13);
+   assert(!archived.counts['target-mismatch']);
+   assert(archived.observations.every(row=>row.reason==='research source/expanded/dependency identity drift'));
+  });
   check('grouped read allowed without mutation capability',()=>{const t={...a,compilationGroup:{id:'fixture'}};const r=intake(w,t,options);assert.equal(r.counts.valid,1);assert.match(r.historyApplicability,/grouped/);});
   check('foreign and missing relations explicitly qualified',()=>{const file=a.symbol+'-relation.observation.json',bad=clone(first);bad.authored.relatedCandidateIds=[second.candidateId,'B'.repeat(64)];write(file,bad);const r=intake(w,a,{...options,limit:1});assert(r.total>1);const all=intake(w,a,options).observations.find(x=>x.relatedCandidateIds?.length);assert.equal(all.relations.status,'invalid');assert.deepEqual(all.relations.items.map(x=>x.status),['invalid','unverified']);fs.unlinkSync(path.join(archive,file));});
   check('compact human retains census and relation warnings beyond JSON limit',()=>{const bad=clone(first);bad.authored.relatedCandidateIds=[second.candidateId];write(a.symbol+'-compact.observation.json',bad);const r=intake(w,a,{...options,limit:1});assert.equal(r.observations.length,1);assert(r.presentation.displayed>1);assert(r.presentation.observations.some(x=>x.relations==='invalid'));assert.match(formatHuman(r),/relations: invalid/);assert.equal(r.knowledge.status,'disabled');assert.deepEqual(JSON.parse(formatHuman(r,{includeDetails:true})),JSON.parse(JSON.stringify(r)));fs.unlinkSync(path.join(archive,a.symbol+'-compact.observation.json'));});
@@ -65,19 +76,19 @@ async function runCli(){
  const mocks={
   './lib/matching/target_model':{...localRequire('./lib/matching/target_model'),loadWorkbenchModel:()=>w},
   './lib/matching/store':{...localRequire('./lib/matching/store'),initializeStore:()=>{initialized++;return {}; }},
-  './lib/matching/compiler':{...localRequire('./lib/matching/compiler'),syncTargets:()=>({}),compileCandidate:(_w,t,text)=>{assert.equal(t.symbol,'func_0020BFF8');assert.equal(text,'int only_explicit_watch_input;\n');watchCalls++;return result;}},
-  './lib/matching/m2c':{...localRequire('./lib/matching/m2c'),prepareAndCompile:(_w,t,options)=>{assert.equal(t.symbol,'func_0020BFF8');assert.equal(options.compile,false);assert(!Object.hasOwn(options,'researchIntake'));prepareCalls++;return {assemblyFile:source,contextFile:null,results:[],compilations:[]};}},
+  './lib/matching/compiler':{...localRequire('./lib/matching/compiler'),syncTargets:()=>({}),compileCandidate:(_w,t,text)=>{assert.equal(t.symbol,'battle_actor_is_side_one');assert.equal(text,'int only_explicit_watch_input;\n');watchCalls++;return result;}},
+  './lib/matching/m2c':{...localRequire('./lib/matching/m2c'),prepareAndCompile:(_w,t,options)=>{assert.equal(t.symbol,'battle_actor_is_side_one');assert.equal(options.compile,false);assert(!Object.hasOwn(options,'researchIntake'));prepareCalls++;return {assemblyFile:source,contextFile:null,results:[],compilations:[]};}},
   './lib/matching/intake':{...localRequire('./lib/matching/intake'),presentation:(_symbol,options)=>{intakeOptions=options;return history;}}
  };
  const module={exports:{}};vm.runInThisContext('(function(require,module,exports,__filename,__dirname){'+fs.readFileSync(file,'utf8').replace(/^#![^\n]*/, '')+'\n})',{filename:file})(name=>mocks[name]||localRequire(name),module,module.exports,file,path.dirname(file));
  const log=console.log,oldExit=process.exitCode,printed=[];console.log=text=>printed.push(JSON.parse(text));
  try{
-  await module.exports.main(['prepare','func_0020BFF8','--no-context','--no-compile','--json']);assert.equal(printed.at(-1).researchIntake.status,'found');
+  await module.exports.main(['prepare','battle_actor_is_side_one','--no-context','--no-compile','--json']);assert.equal(printed.at(-1).researchIntake.status,'found');
   const before=structuredClone(printed.at(-1));
-  await module.exports.main(['prepare','func_0020BFF8','--no-context','--no-compile','--include-details','--json','--cross-limit','0']);assert.deepEqual(printed.at(-1),before);assert.equal(intakeOptions.crossLimit,0);
+  await module.exports.main(['prepare','battle_actor_is_side_one','--no-context','--no-compile','--include-details','--json','--cross-limit','0']);assert.deepEqual(printed.at(-1),before);assert.equal(intakeOptions.crossLimit,0);
   history={status:'unavailable',reason:'optional discovery fixture',observations:[]};
-  await module.exports.main(['watch','func_0020BFF8','--source',source,'--json']);assert.equal(printed.at(-1).status,'compiled');assert.equal(printed.at(-1).researchIntake.status,'unavailable');assert.equal(process.exitCode,oldExit);
-  await assert.rejects(()=>module.exports.main(['intake','func_0020BFF8','--symptom','not-a-symptom','--json']),/unknown symptom/);
+  await module.exports.main(['watch','battle_actor_is_side_one','--source',source,'--json']);assert.equal(printed.at(-1).status,'compiled');assert.equal(printed.at(-1).researchIntake.status,'unavailable');assert.equal(process.exitCode,oldExit);
+  await assert.rejects(()=>module.exports.main(['intake','battle_actor_is_side_one','--symptom','not-a-symptom','--json']),/unknown symptom/);
   assert.equal(watchCalls,1);assert.equal(prepareCalls,2);assert.equal(initialized,3);
  }finally{console.log=log;process.exitCode=oldExit;}
  console.log('Intake prepare/watch output wiring: PASS');

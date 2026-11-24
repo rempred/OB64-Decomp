@@ -18,7 +18,7 @@ void func_00208DC8(void *, s32);
 s32 func_0020BF7C();
 s32 func_0020BF8C();
 s32 func_0020F80C();
-void func_0021C3B0(void);
+void battle_roster_write_back_members(void);
 u32 func_0021C970(u32 offset);
 M2C_UNK func_801EFAAC();
 M2C_UNK func_00023460(void *, void *, M2C_UNK);
@@ -71,7 +71,7 @@ void func_002159D0(void)
     func_00023460(temp_s0_22 + 0x52C0, D_801CE8BC + 0x52C0, 0x400);
     *(s32 *)(D_801CE8BC + 0x56C0) = *(s32 *)((s8 *)temp_s0_22 + 0x56C0);
     func_800712C4(temp_s0_22);
-    func_0021C3B0();
+    battle_roster_write_back_members();
 block_2:
     if (func_0020F80C() != 0) {
         goto block_24;

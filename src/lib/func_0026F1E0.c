@@ -18,8 +18,8 @@ typedef struct P02StateF1E0 {
 } P02StateF1E0;
 
 extern void func_00262B68(void);
-extern void *func_0020C478(u32);
-extern s32 func_0020C014(void *);
+extern void *battle_roster_lookup_actor(u32);
+extern s32 battle_actor_is_side_zero(void *);
 extern void func_00262830(s16);
 extern s32 p02_word_80220F68[], p02_word_80220F6C[];
 
@@ -44,8 +44,8 @@ s32 func_0026F1E0(u16 message, P02StateF1E0 *state)
         state->value_54 = p02_word_80220F6C[0];
         count = 0;
         for (; i < 20; ++i) {
-            object = func_0020C478(i);
-            if (object && func_0020C014(object) == parameters[0]) {
+            object = battle_roster_lookup_actor(i);
+            if (object && battle_actor_is_side_zero(object) == parameters[0]) {
                 state->value_04[count].value_00 = object;
                 state->value_04[count].value_04 = object->value_AB;
                 state->value_04[count].value_05 = object->value_AC;

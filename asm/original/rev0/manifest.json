@@ -33552,13 +33552,13 @@
           "sha256": "E6E0BC7AE0E659DE1DF5508ADF89124DD5C7746701794CAAC9E3FD6E966F9AA4"
         },
         {
-          "name": "func_001F2F9C",
-          "file": "asm/original/rev0/lib/func_001F2F9C.s",
+          "name": "battle_show_class_change_message",
+          "file": "asm/original/rev0/lib/battle_show_class_change_message.s",
           "romStart": "0x001F2F9C",
           "romEndExclusive": "0x001F3078",
           "bytes": 220,
-          "textBytes": 4630,
-          "sha256": "38EC6A73FFA4CD5E8221BAED34232F9ABD5FF6D08CD7BAC6EA39B582EA5C7F4C"
+          "textBytes": 4668,
+          "sha256": "9EE91EC468F4528227C9A98000EECF2DD89DD9841F68BCDED2FC5DAF26FEF355"
         },
         {
           "name": "func_001F3078",
@@ -34155,8 +34155,8 @@
           "sha256": "E4CECC83541F2672590B89E8A797158DC55E90046801669F89B3E07009DE9BC5"
         }
       ],
-      "textBytes": 1291026,
-      "sha256": "05FE3C37F29C728AA282626669643FA44ABF0C523ACBC8237ED5EEF42C3090B7"
+      "textBytes": 1291113,
+      "sha256": "4314B23A1D3C6DF260AA7063AEA2CB54606831CE608F25B2C590BB2B1B388187"
     },
     {
       "file": "asm/original/rev0/code_00201000_00211000.s",
@@ -35228,8 +35228,8 @@
           "sha256": "FF4C13DFC1B030FB62E9D9279A895E671C5096971784818201A3C7A1C3DFA248"
         },
         {
-          "name": "func_0020BFF8",
-          "file": "asm/original/rev0/lib/func_0020BFF8.s",
+          "name": "battle_actor_is_side_one",
+          "file": "asm/original/rev0/lib/battle_actor_is_side_one.s",
           "romStart": "0x0020BFF8",
           "romEndExclusive": "0x0020C014",
           "bytes": 28,
@@ -35237,8 +35237,8 @@
           "sha256": "9888047448AD576BA7B6C39A4A42D1AF303BD09F5F430DC288E41E1006B85AAF"
         },
         {
-          "name": "func_0020C014",
-          "file": "asm/original/rev0/lib/func_0020C014.s",
+          "name": "battle_actor_is_side_zero",
+          "file": "asm/original/rev0/lib/battle_actor_is_side_zero.s",
           "romStart": "0x0020C014",
           "romEndExclusive": "0x0020C034",
           "bytes": 32,
@@ -35246,8 +35246,8 @@
           "sha256": "A5608501FC97C5782297B3BDFD31FCC42898A068947B174D8057836F431418DB"
         },
         {
-          "name": "func_0020C034",
-          "file": "asm/original/rev0/lib/func_0020C034.s",
+          "name": "battle_actor_has_flag_10",
+          "file": "asm/original/rev0/lib/battle_actor_has_flag_10.s",
           "romStart": "0x0020C034",
           "romEndExclusive": "0x0020C050",
           "bytes": 28,
@@ -35264,8 +35264,8 @@
           "sha256": "C58ABE54D88C9F1FA5E8ECFA75A25A0AAB2B66224427E98B17B982DDED508A40"
         },
         {
-          "name": "func_0020C0CC",
-          "file": "asm/original/rev0/lib/func_0020C0CC.s",
+          "name": "battle_actor_has_flag_12",
+          "file": "asm/original/rev0/lib/battle_actor_has_flag_12.s",
           "romStart": "0x0020C0CC",
           "romEndExclusive": "0x0020C0E8",
           "bytes": 28,
@@ -35273,8 +35273,8 @@
           "sha256": "537D5380C8294927E34D9C1FDFC4FE6684A4E8B24F8DB7B52B6FF4C02A085D19"
         },
         {
-          "name": "func_0020C0E8",
-          "file": "asm/original/rev0/lib/func_0020C0E8.s",
+          "name": "battle_actor_has_flag_9",
+          "file": "asm/original/rev0/lib/battle_actor_has_flag_9.s",
           "romStart": "0x0020C0E8",
           "romEndExclusive": "0x0020C104",
           "bytes": 28,
@@ -35282,8 +35282,8 @@
           "sha256": "BC737400FD4E189A94CD929026A94876EC6D7E3B759DC599F9F04EFCEE852FB5"
         },
         {
-          "name": "func_0020C104",
-          "file": "asm/original/rev0/lib/func_0020C104.s",
+          "name": "battle_actor_secondary_class_is_one",
+          "file": "asm/original/rev0/lib/battle_actor_secondary_class_is_one.s",
           "romStart": "0x0020C104",
           "romEndExclusive": "0x0020C120",
           "bytes": 28,
@@ -35300,8 +35300,8 @@
           "sha256": "63E13D9B8DD53481D06EDCFB40279B4567B40C1A3708D0A2C929B92A356D6AE7"
         },
         {
-          "name": "func_0020C164",
-          "file": "asm/original/rev0/lib/func_0020C164.s",
+          "name": "battle_actor_secondary_class_is_71_or_72",
+          "file": "asm/original/rev0/lib/battle_actor_secondary_class_is_71_or_72.s",
           "romStart": "0x0020C164",
           "romEndExclusive": "0x0020C180",
           "bytes": 28,
@@ -35318,8 +35318,8 @@
           "sha256": "AD95DA9E943CD28F4C141E67F66E393E74F36C24D115973447B92696B2723F94"
         },
         {
-          "name": "func_0020C1B4",
-          "file": "asm/original/rev0/lib/func_0020C1B4.s",
+          "name": "battle_actor_secondary_class_is_45_to_48",
+          "file": "asm/original/rev0/lib/battle_actor_secondary_class_is_45_to_48.s",
           "romStart": "0x0020C1B4",
           "romEndExclusive": "0x0020C1F8",
           "bytes": 68,
@@ -35363,8 +35363,8 @@
           "sha256": "C2D2A44A34E50EFDCF6D0FCBC94A9EFD48FD8BF982F0E16D919FC00C64B8D5D9"
         },
         {
-          "name": "func_0020C2C0",
-          "file": "asm/original/rev0/lib/func_0020C2C0.s",
+          "name": "battle_actor_is_absent_or_has_flag_0",
+          "file": "asm/original/rev0/lib/battle_actor_is_absent_or_has_flag_0.s",
           "romStart": "0x0020C2C0",
           "romEndExclusive": "0x0020C2D8",
           "bytes": 24,
@@ -35372,8 +35372,8 @@
           "sha256": "CFEB7881D0A7F5799D3368CDEEF3257FE5378D66F2B99942C9FF023BF4D0947D"
         },
         {
-          "name": "func_0020C2D8",
-          "file": "asm/original/rev0/lib/func_0020C2D8.s",
+          "name": "battle_actor_has_flag_5",
+          "file": "asm/original/rev0/lib/battle_actor_has_flag_5.s",
           "romStart": "0x0020C2D8",
           "romEndExclusive": "0x0020C2F4",
           "bytes": 28,
@@ -35381,8 +35381,8 @@
           "sha256": "FD4C4E3E958A6C7797702280A6EB33B39BE81325E894D43BF856E9BEB85A079D"
         },
         {
-          "name": "func_0020C2F4",
-          "file": "asm/original/rev0/lib/func_0020C2F4.s",
+          "name": "battle_actor_has_flag_3",
+          "file": "asm/original/rev0/lib/battle_actor_has_flag_3.s",
           "romStart": "0x0020C2F4",
           "romEndExclusive": "0x0020C310",
           "bytes": 28,
@@ -35390,8 +35390,8 @@
           "sha256": "CE10BD95113487BBE9FED45B14A5542C6C95A5F199815AD3833A8BF879A86581"
         },
         {
-          "name": "func_0020C310",
-          "file": "asm/original/rev0/lib/func_0020C310.s",
+          "name": "battle_actor_has_flag_2",
+          "file": "asm/original/rev0/lib/battle_actor_has_flag_2.s",
           "romStart": "0x0020C310",
           "romEndExclusive": "0x0020C32C",
           "bytes": 28,
@@ -35399,8 +35399,8 @@
           "sha256": "AE217F651EC488EB2861469A924C196A02BC7B5A3C390EA873D5AD65B61461B2"
         },
         {
-          "name": "func_0020C32C",
-          "file": "asm/original/rev0/lib/func_0020C32C.s",
+          "name": "battle_actor_has_flag_1",
+          "file": "asm/original/rev0/lib/battle_actor_has_flag_1.s",
           "romStart": "0x0020C32C",
           "romEndExclusive": "0x0020C348",
           "bytes": 28,
@@ -35408,8 +35408,8 @@
           "sha256": "B0681C6DA74205E76D8E709D3AC5CE1ADA317C5055EF4C160E89B9A736A1F32A"
         },
         {
-          "name": "func_0020C348",
-          "file": "asm/original/rev0/lib/func_0020C348.s",
+          "name": "battle_actor_has_flag_4",
+          "file": "asm/original/rev0/lib/battle_actor_has_flag_4.s",
           "romStart": "0x0020C348",
           "romEndExclusive": "0x0020C364",
           "bytes": 28,
@@ -35453,8 +35453,8 @@
           "sha256": "5A2A2F255171ACC2250EAE68032123F907272146560F075E2C58831572BC1217"
         },
         {
-          "name": "func_0020C478",
-          "file": "asm/original/rev0/lib/func_0020C478.s",
+          "name": "battle_roster_lookup_actor",
+          "file": "asm/original/rev0/lib/battle_roster_lookup_actor.s",
           "romStart": "0x0020C478",
           "romEndExclusive": "0x0020C4B8",
           "bytes": 64,
@@ -35480,8 +35480,8 @@
           "sha256": "458282170C3158880671263BE6C0B8E720EC83B64BEBA7BDA1DA5793596C398B"
         },
         {
-          "name": "func_0020C788",
-          "file": "asm/original/rev0/lib/func_0020C788.s",
+          "name": "battle_roster_find_first_side_one_with_flag_9",
+          "file": "asm/original/rev0/lib/battle_roster_find_first_side_one_with_flag_9.s",
           "romStart": "0x0020C788",
           "romEndExclusive": "0x0020C810",
           "bytes": 136,
@@ -35489,8 +35489,8 @@
           "sha256": "C1B8F1A2D7285BF27BB62DDD00D2B65A7B9CF352F3194D84408FA6DCC383BC39"
         },
         {
-          "name": "func_0020C810",
-          "file": "asm/original/rev0/lib/func_0020C810.s",
+          "name": "battle_roster_find_first_side_zero_with_flag_9",
+          "file": "asm/original/rev0/lib/battle_roster_find_first_side_zero_with_flag_9.s",
           "romStart": "0x0020C810",
           "romEndExclusive": "0x0020C89C",
           "bytes": 140,
@@ -35498,8 +35498,8 @@
           "sha256": "3881F7D0AB15CC121900EBD5FDEF6C66E4A81E5B70B53BC1F36621991127933A"
         },
         {
-          "name": "func_0020C89C",
-          "file": "asm/original/rev0/lib/func_0020C89C.s",
+          "name": "battle_roster_find_first_side_one",
+          "file": "asm/original/rev0/lib/battle_roster_find_first_side_one.s",
           "romStart": "0x0020C89C",
           "romEndExclusive": "0x0020C908",
           "bytes": 108,
@@ -35507,13 +35507,13 @@
           "sha256": "C7F95459F9188809DECCDC12A1C9140EB81F6198B0D7D1BFBB1CA9AAFD782D69"
         },
         {
-          "name": "func_0020C908",
-          "file": "asm/original/rev0/lib/func_0020C908.s",
+          "name": "battle_roster_init_actor_from_scenario_member",
+          "file": "asm/original/rev0/lib/battle_roster_init_actor_from_scenario_member.s",
           "romStart": "0x0020C908",
           "romEndExclusive": "0x0020CA68",
           "bytes": 352,
-          "textBytes": 7224,
-          "sha256": "A8D7D581AE5B0968F8A8303C1475C78008194C94D9E105A57A39C435668E67FB"
+          "textBytes": 7288,
+          "sha256": "D48CD942797165315AE6C8AA7667BD9FEA5384138EC9FAA3420D9B715033BCA1"
         },
         {
           "name": "func_0020CA68",
@@ -35588,8 +35588,8 @@
           "sha256": "E8F3F3636566AC1D6D4501CE240205AB2882EC09E76B9BEEC20AB0E3C58FA6CC"
         },
         {
-          "name": "func_0020D654",
-          "file": "asm/original/rev0/lib/func_0020D654.s",
+          "name": "battle_roster_find_actor_index_at_position",
+          "file": "asm/original/rev0/lib/battle_roster_find_actor_index_at_position.s",
           "romStart": "0x0020D654",
           "romEndExclusive": "0x0020D6F8",
           "bytes": 164,
@@ -35606,8 +35606,8 @@
           "sha256": "F7481EB952F8CB3247C988D520358EEB6ECF1F7C7CA1E653F76A68B6B51C0C2C"
         },
         {
-          "name": "func_0020D72C",
-          "file": "asm/original/rev0/lib/func_0020D72C.s",
+          "name": "battle_roster_find_actor_index",
+          "file": "asm/original/rev0/lib/battle_roster_find_actor_index.s",
           "romStart": "0x0020D72C",
           "romEndExclusive": "0x0020D770",
           "bytes": 68,
@@ -35615,8 +35615,8 @@
           "sha256": "12134A01E1142DF8705B674C63BE9479D7CAE5D19B6B84E11CF321F881D3659C"
         },
         {
-          "name": "func_0020D770",
-          "file": "asm/original/rev0/lib/func_0020D770.s",
+          "name": "battle_roster_find_actor_at_position",
+          "file": "asm/original/rev0/lib/battle_roster_find_actor_at_position.s",
           "romStart": "0x0020D770",
           "romEndExclusive": "0x0020D814",
           "bytes": 164,
@@ -35633,13 +35633,13 @@
           "sha256": "EF8DD8E94CF221E5F6F304ED23B0069E4EE22CECCA2925FD0EA94EAD70F36C1A"
         },
         {
-          "name": "func_0020D870",
-          "file": "asm/original/rev0/lib/func_0020D870.s",
+          "name": "battle_roster_init_actor_from_army_member",
+          "file": "asm/original/rev0/lib/battle_roster_init_actor_from_army_member.s",
           "romStart": "0x0020D870",
           "romEndExclusive": "0x0020D9C4",
           "bytes": 340,
-          "textBytes": 6911,
-          "sha256": "06EF0BEE46A76B3C3A96B238ADFAEB263A0AF51E658B371D8763305CEF0AE03F"
+          "textBytes": 6967,
+          "sha256": "42EBC340C8662AC5576EA0C13053A246F1A7A1C9C7362A35FFE5FFA1FB0D2C70"
         },
         {
           "name": "func_0020D9C4",
@@ -35660,13 +35660,13 @@
           "sha256": "CDC8136B9EA543507654DDDA36124F4ABA714934108153E7DDAEC56A05FCCDD2"
         },
         {
-          "name": "func_0020DB10",
-          "file": "asm/original/rev0/lib/func_0020DB10.s",
+          "name": "battle_roster_build_scene_actors",
+          "file": "asm/original/rev0/lib/battle_roster_build_scene_actors.s",
           "romStart": "0x0020DB10",
           "romEndExclusive": "0x0020F0BC",
           "bytes": 5548,
-          "textBytes": 107044,
-          "sha256": "4493C58ABF102557B2E89D98021B18968903F706B3D983227497CD101379E2FE"
+          "textBytes": 107063,
+          "sha256": "302DB7E2CE88F18F6223155A1ADF6FF3D55718C5516E7E478E540F2E195AF7F0"
         },
         {
           "name": "func_0020F0BC",
@@ -35948,8 +35948,8 @@
           "sha256": "D6C46F52E711BD61EC4F5233CAB2B0C3C4F1C416C662BA12F5EF881FF00AE2D3"
         }
       ],
-      "textBytes": 1338671,
-      "sha256": "17E5537B7D9B984B6BC64DAE68BBA94FAF1E77D9CCB25AD3E2BBDD5B5B7F792D"
+      "textBytes": 1338810,
+      "sha256": "10467FB73A49532B91E2940DD9EA7825E9D0E70DEC1731B9220B478E0F75C7D1"
     },
     {
       "file": "asm/original/rev0/code_00211000_00221000.s",
@@ -36616,13 +36616,13 @@
           "sha256": "BAEA834349FFC67063547DAFE4677A65D716BF0DD9A6A856AD4B598855D41CC5"
         },
         {
-          "name": "func_0021B770",
-          "file": "asm/original/rev0/lib/func_0021B770.s",
+          "name": "battle_roster_reset_member_fatigue",
+          "file": "asm/original/rev0/lib/battle_roster_reset_member_fatigue.s",
           "romStart": "0x0021B770",
           "romEndExclusive": "0x0021B894",
           "bytes": 292,
-          "textBytes": 6091,
-          "sha256": "F1C30C1E543520D7B6FAD78C14BC4E649418D17E73E883747F8BF03DECAC6DA8"
+          "textBytes": 6133,
+          "sha256": "49ECA3EC1767EEC971C32B6858430FA02B6EF9F75EA80343F990F1851C00A398"
         },
         {
           "name": "func_0021B894",
@@ -36652,13 +36652,13 @@
           "sha256": "187CEF10C53D8527A60A291725CE4F6346D3E62933697F25C7638762C98E9668"
         },
         {
-          "name": "func_0021C3B0",
-          "file": "asm/original/rev0/lib/func_0021C3B0.s",
+          "name": "battle_roster_write_back_members",
+          "file": "asm/original/rev0/lib/battle_roster_write_back_members.s",
           "romStart": "0x0021C3B0",
           "romEndExclusive": "0x0021C5B0",
           "bytes": 512,
-          "textBytes": 10222,
-          "sha256": "AC26C88D9544519C726190CF86C8422D2290883E4E8A1F0E5FC8E3FD2F07DFB2"
+          "textBytes": 10260,
+          "sha256": "8192B6329A53D43EDB1FD016CC0971AF627F15B4697A52DF6DFE20C300241815"
         },
         {
           "name": "func_0021C5B0",
@@ -36940,8 +36940,8 @@
           "sha256": "012A605E6F9699E7ADE44224828B62A876474B744A380394E3AF402A36586CBF"
         }
       ],
-      "textBytes": 1307531,
-      "sha256": "903876A9D5451F63E525CF0360767BBEFF056BAB34E4ADD2AFA93056C79C8977"
+      "textBytes": 1307611,
+      "sha256": "FBA79B8B28DF912019F970B1E5F92B962E62551699C2246D9EACC715FEFEA2FC"
     },
     {
       "file": "asm/original/rev0/code_00221000_00231000.s",
@@ -38222,13 +38222,13 @@
           "sha256": "331CFE70CF1484BBD6A37FF9A5DBD1196886EE90E052486756F7CCE21D2659AF"
         },
         {
-          "name": "func_0023422C",
-          "file": "asm/original/rev0/lib/func_0023422C.s",
+          "name": "battle_roster_change_actor_secondary_class",
+          "file": "asm/original/rev0/lib/battle_roster_change_actor_secondary_class.s",
           "romStart": "0x0023422C",
           "romEndExclusive": "0x0023431C",
           "bytes": 240,
-          "textBytes": 4963,
-          "sha256": "BB6B6527C016F563C71D9EB86BD468CBBA1BBF9577149FB6587663EC996FEED0"
+          "textBytes": 5021,
+          "sha256": "9CC23B8251C9948208A8B04F0DB3402DACCF0C5CFD3344981E6C5030E97A87BE"
         },
         {
           "name": "func_0023431C",
@@ -38240,13 +38240,13 @@
           "sha256": "1F94B2887DA8A9194F59EE76FC59C2679D431B71F488CF3DDE865DA847193AF1"
         },
         {
-          "name": "func_002344B4",
-          "file": "asm/original/rev0/lib/func_002344B4.s",
+          "name": "battle_actor_scaled_distance_from_center_row",
+          "file": "asm/original/rev0/lib/battle_actor_scaled_distance_from_center_row.s",
           "romStart": "0x002344B4",
           "romEndExclusive": "0x00234544",
           "bytes": 144,
-          "textBytes": 3271,
-          "sha256": "E9DA786E61EFAE27C68EA360FA936B4B858A4DC4FD40F802B9F7CD602AB378B0"
+          "textBytes": 3333,
+          "sha256": "BE248BC3F42502679998F94CEDA92EB01C34CE64261056D04F10AC1CB48D453B"
         },
         {
           "name": "func_00234544",
@@ -38456,13 +38456,13 @@
           "sha256": "0C4571C40522981E55491F63631569C36053C62E75C766E9793A987B66300A37"
         },
         {
-          "name": "func_00237810",
-          "file": "asm/original/rev0/lib/func_00237810.s",
+          "name": "battle_actor_roll_luck_advantage",
+          "file": "asm/original/rev0/lib/battle_actor_roll_luck_advantage.s",
           "romStart": "0x00237810",
           "romEndExclusive": "0x00237890",
           "bytes": 128,
-          "textBytes": 2939,
-          "sha256": "6960268C1D86914CAD59D30BD40AF3A460F3BFEBCF8871ACB13C8799CF2D9464"
+          "textBytes": 2977,
+          "sha256": "5428AB9B48773EFF6E7535EF7231F8AB26524851489D84D98ACF6236A45DB9B2"
         },
         {
           "name": "func_00237890",
@@ -39248,8 +39248,8 @@
           "sha256": "477BB0DEFF600563A533B9AF2FEC6D56AB81E02BAAE6FDF90EF2F58938B2D331"
         }
       ],
-      "textBytes": 1320232,
-      "sha256": "BDE08BDCD089685852C0322D097118F4EABEA6ED08161C5D84E1D3E0399EB806"
+      "textBytes": 1320390,
+      "sha256": "CC9B09AE7056BFD875C42510FD7BD957392A2FC364870387DB9CBD455B4600E7"
     },
     {
       "file": "asm/original/rev0/code_00241000_00251000.s",
@@ -42042,13 +42042,13 @@
           "sha256": "66E2781D004C0BF39459922C1753D5BB603A023A38764DB05A2078A005F76CDF"
         },
         {
-          "name": "func_0025F778",
-          "file": "asm/original/rev0/lib/func_0025F778.s",
+          "name": "battle_roster_get_actor_world_x",
+          "file": "asm/original/rev0/lib/battle_roster_get_actor_world_x.s",
           "romStart": "0x0025F778",
           "romEndExclusive": "0x0025F798",
           "bytes": 32,
-          "textBytes": 1036,
-          "sha256": "80AC092013528F35860CC5B897420D82681130D02305F9E0149270B814001DAB"
+          "textBytes": 1072,
+          "sha256": "ADE3C2C019F3B839D3A208E6DB141454C346180323F2A4642A3830D0A980D897"
         },
         {
           "name": "func_0025F798",
@@ -42060,13 +42060,13 @@
           "sha256": "96A15D5430BEE5DCF44080C5ACD55FDE0CCABA106115F83721308282548CD8DB"
         },
         {
-          "name": "func_0025F7A0",
-          "file": "asm/original/rev0/lib/func_0025F7A0.s",
+          "name": "battle_roster_get_actor_world_y",
+          "file": "asm/original/rev0/lib/battle_roster_get_actor_world_y.s",
           "romStart": "0x0025F7A0",
           "romEndExclusive": "0x0025F7C0",
           "bytes": 32,
-          "textBytes": 1036,
-          "sha256": "4F389DF0A070225474CB1785578A9ADC4604E7C54E6956B1F8BE4A10FB602268"
+          "textBytes": 1072,
+          "sha256": "B0AEF16B658BF57183AFB49AAF31491C53CAC65E3224D0B384A8C7FCE3492D1C"
         },
         {
           "name": "func_0025F7C0",
@@ -42078,13 +42078,13 @@
           "sha256": "022580A7FCB990B5AF64897B713CA1152B481614CBE0639E082F296C3E86531A"
         },
         {
-          "name": "func_0025F7C8",
-          "file": "asm/original/rev0/lib/func_0025F7C8.s",
+          "name": "battle_roster_get_actor_world_z",
+          "file": "asm/original/rev0/lib/battle_roster_get_actor_world_z.s",
           "romStart": "0x0025F7C8",
           "romEndExclusive": "0x0025F7F0",
           "bytes": 40,
-          "textBytes": 1215,
-          "sha256": "C8435FDA518E9EDE98310FF2E214DF323DBACA276C1C3EDCBEE8988D9A37C615"
+          "textBytes": 1251,
+          "sha256": "6F5CC16EB09B6DDC6AE68FE2CE82858DD2970C261DFB47B7675CD170608DF70C"
         },
         {
           "name": "func_0025F7F0",
@@ -42366,8 +42366,8 @@
           "sha256": "846485C2AB6C62B0AF31A35A10514B60231B5FA17135BDA8C79238C947FB6F1E"
         }
       ],
-      "textBytes": 1339369,
-      "sha256": "753B2512CB95ACD6968D76CD6834D39AB3AFB35A57DB4D887C5E9ABBDB8DBA9D"
+      "textBytes": 1339477,
+      "sha256": "D3C80735CB6683133F10117AECE29DA726CDF946CD41F78C546AB5BC25D75FCF"
     },
     {
       "file": "asm/original/rev0/code_00261000_00271000.s",

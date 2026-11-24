@@ -7,8 +7,8 @@ typedef double f64;
 typedef s32 M2C_UNK;
 
 s32 func_0020BFE4();
-s32 func_0020C014(void *);
-void *func_0020C478(unsigned int index);
+s32 battle_actor_is_side_zero(void *);
+void *battle_roster_lookup_actor(unsigned int index);
 M2C_UNK func_0021AE6C(f32, M2C_UNK);
 
 extern u8 *D_801CE8BC;
@@ -41,10 +41,10 @@ void func_0021B0A0(void)
     army_special_member_hp = D_80190EBC;
     scenario_special_member_hp = D_8019532C;
     do {
-        actor = func_0020C478(actor_index);
-        if ((actor != 0) && (func_0020C0CC(actor) == 0) &&
+        actor = battle_roster_lookup_actor(actor_index);
+        if ((actor != 0) && (battle_actor_has_flag_12(actor) == 0) &&
             (actor->member_index != 0)) {
-            if (func_0020C014(actor) != 0) {
+            if (battle_actor_is_side_zero(actor) != 0) {
                 squad_source_index = *(u8 *)0x801976DC;
                 uses_army_roster = squad_source_index < 0x1E;
             } else {

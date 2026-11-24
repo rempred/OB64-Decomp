@@ -9,7 +9,7 @@ s32 func_0002CBCC(void);
 void func_0021D200(s32 record, s32 out_time, void *arg2);
 void func_0021D230(s32 record, s32 out_time, void *arg2, s32 arg3);
 s32 func_0022257C(void *record, s32 out_time, s32 *arg2);
-s32 func_0020C310(void *record);
+s32 battle_actor_has_flag_2(void *record);
 
 s32 func_0022EC08(void *record, s32 *out_time)
 {
@@ -51,10 +51,10 @@ s32 func_0022EC08(void *record, s32 *out_time)
         func_0021D230(0x1B, time, record, 0xFF);
         *(s32 *)((u8 *)record + 0x40) &= ~8;
         time += func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x21, 0);
-        if (func_0020C310(record) != 0) {
+        if (battle_actor_has_flag_2(record) != 0) {
             func_0021D230(0x25, time, record, 0xFF);
             time += func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x22, 0);
-        } else if (func_0020C348(record) != 0) {
+        } else if (battle_actor_has_flag_4(record) != 0) {
             func_0021D230(0x27, time, record, 0xFF);
         }
         current = ((BattleRosterRecord *)record)->scheduled_time;

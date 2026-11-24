@@ -23,15 +23,15 @@ typedef struct SideContext {
 extern SideContext *D_801CE8C0;
 extern u8 *D_801CE8BC;
 extern int func_002335E0(int);
-extern void *func_0020C478(unsigned int index);
+extern void *battle_roster_lookup_actor(unsigned int index);
 extern void func_00023780(void *, u32);
-extern void func_0020D870(BattleRosterRecord *, int);
+extern void battle_roster_init_actor_from_army_member(BattleRosterRecord *, int);
 extern u8 func_00043b2c(int, int);
 extern int func_002331AC(const void *, const void *);
 extern void func_002101DC(void *, int, int, int (*)(const void *, const void *));
 extern void func_0021D2C0(int, int, void *, int, int, int, int);
 extern void func_0021D230(int, int, void *, int);
-extern int func_002344B4(BattleRosterRecord *, int);
+extern int battle_actor_scaled_distance_from_center_row(BattleRosterRecord *, int);
 extern void func_0022ADFC(void *, int, int, int, int, u8, int, int);
 
 int func_002317C8(int *outTime, int side_selector)
@@ -90,13 +90,13 @@ int func_002317C8(int *outTime, int side_selector)
     if ((u32)countOrAmount >= (u32)quantity)
         return 0;
     for (i = 0; i < 20; ++i) {
-        candidate_actor = func_0020C478(i);
-        if (func_0020C2C0(candidate_actor) != 0)
+        candidate_actor = battle_roster_lookup_actor(i);
+        if (battle_actor_is_absent_or_has_flag_0(candidate_actor) != 0)
             continue;
         if (side_selector != 0)
-            accepted = func_0020C014(candidate_actor);
+            accepted = battle_actor_is_side_zero(candidate_actor);
         else
-            accepted = func_0020BFF8(candidate_actor);
+            accepted = battle_actor_is_side_one(candidate_actor);
         if (accepted != 0) {
             selected[countOrAmount] = candidate_actor;
             ++countOrAmount;
@@ -121,12 +121,12 @@ int func_002317C8(int *outTime, int side_selector)
     func_00023780(&prior[0], 20);
     func_00023780(&temporary_actor, 0xF8);
     if (side_selector != 0) {
-        func_0020C908(&temporary_actor.roster, 0);
+        battle_roster_init_actor_from_scenario_member(&temporary_actor.roster, 0);
         context = D_801CE8C0;
         bit = context->field82E | 2;
         context->field82E = bit;
     } else {
-        func_0020D870(&temporary_actor.roster, 0);
+        battle_roster_init_actor_from_army_member(&temporary_actor.roster, 0);
         context = D_801CE8C0;
         bit = context->field82E | 1;
         context->field82E = bit;
@@ -183,13 +183,13 @@ int func_002317C8(int *outTime, int side_selector)
     /* Keep the capture, index reset and unconditional copy separate.
        The explicit positive-count entry avoids KMC folding the index test
        and moving its reset past the return-value capture. */
-    capturedDuration = func_002344B4(&temporary_actor.roster, 15);
+    capturedDuration = battle_actor_scaled_distance_from_center_row(&temporary_actor.roster, 15);
     i = 0;
     objectDuration = capturedDuration;
     if (count > 0) {
         do {
             actor = selected[i];
-            duration[i] = func_002344B4(&actor->roster, 15);
+            duration[i] = battle_actor_scaled_distance_from_center_row(&actor->roster, 15);
             stepValue = calculated[i];
             prior[i] = actor->roster.scheduled_time;
             stepTime = maximum + duration[i];

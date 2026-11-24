@@ -40,7 +40,7 @@ s32 func_00278560(u16 message, P06State78560 *state)
         *(u8 **)state = p06_pointer_80220F68;
         state->value_04 = p06_byte_80220F6C;
         neighbor = state->value_04;
-        if (func_0020C014(func_0020C478(state->value_00[0]))) {
+        if (battle_actor_is_side_zero(battle_roster_lookup_actor(state->value_00[0]))) {
             state->value_1D = 1;
             offset = 3;
         } else {

@@ -23,7 +23,7 @@ The [execution plan](../../Plans/probe-repair-and-w8-reuse.md) tracks the local 
 |---|---|---|
 | 3C00 | [func_001F3C00.c](../../../src/lib/func_001F3C00.c) | [func_001F3C00.s](../../../asm/original/rev0/lib/func_001F3C00.s) |
 | 6098 | [func_001F6098.c](../../../src/lib/func_001F6098.c) | [func_001F6098.s](../../../asm/original/rev0/lib/func_001F6098.s) |
-| DB10 | [func_0020DB10.c](../../../src/lib/func_0020DB10.c) | [func_0020DB10.s](../../../asm/original/rev0/lib/func_0020DB10.s) |
+| DB10 | [func_0020DB10.c](../../../src/lib/battle_roster_build_scene_actors.c) | [func_0020DB10.s](../../../asm/original/rev0/lib/battle_roster_build_scene_actors.s) |
 
 The renderer sources include [combat_draw.h](../../../include/game/combat_draw.h), [combat_draw_commands.h](../../../include/game/combat_draw_commands.h) and [combat_pose_record.h](../../../include/game/combat_pose_record.h). Read these before inferring argument types, side effects or macro evaluation order.
 

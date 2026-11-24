@@ -3,9 +3,9 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
-s32 func_0020C2C0(void *record);
-s32 func_0020C32C(void *record);
-void *func_0020C478(u32 index);
+s32 battle_actor_is_absent_or_has_flag_0(void *record);
+s32 battle_actor_has_flag_1(void *record);
+void *battle_roster_lookup_actor(u32 index);
 void func_0021D784(void *record);
 void func_0021D7A8(void *record);
 void func_0021D7CC(void *record);
@@ -16,13 +16,13 @@ void func_0022B06C(void *record, u8 *state)
     s32 result;
     s32 index;
     s32 flags;
-    if (func_0020C2C0(record) != 0 && *state != 7) {
+    if (battle_actor_is_absent_or_has_flag_0(record) != 0 && *state != 7) {
         *state = 0;
         return;
     }
     switch (*state) {
     case 3:
-        if (func_0020C32C(record) != 0) {
+        if (battle_actor_has_flag_1(record) != 0) {
             *state = 0;
             break;
         }
@@ -32,8 +32,8 @@ void func_0022B06C(void *record, u8 *state)
         index = 0;
         if ((u16)result != 0) {
             for (;;) {
-                record = func_0020C478(index);
-                result = func_0020C2C0(record);
+                record = battle_roster_lookup_actor(index);
+                result = battle_actor_is_absent_or_has_flag_0(record);
                 index++;
                 if (result == 0) {
                     ((BattleRosterRecord *)record)->actions_used = ((BattleRosterRecord *)record)->action_limit;
@@ -85,7 +85,7 @@ store_flags:
         func_0021D7CC(record);
         break;
     case 7:
-        if (func_0020C1B4(record) != 0) {
+        if (battle_actor_secondary_class_is_45_to_48(record) != 0) {
             break;
         }
         /* Otherwise share the state reset with case 2. */

@@ -16,7 +16,7 @@ typedef struct P07State72F50 {
     u32 value_00, value_04;
     P07Render *value_08, *value_0C, *value_10, *value_14, *value_18;
 } P07State72F50;
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 
 
 static __inline__ void *p07_matrix_55C(void *actor, P07Render *object)
@@ -56,7 +56,7 @@ s32 func_00272F50(u16 message, P07State72F50 *state)
     switch (message) {
     case 0x1000: {
         P07Vec3 position;
-        void *actor = func_0020C478(state->value_04);
+        void *actor = battle_roster_lookup_actor(state->value_04);
         void *destination;
         func_0026C7C4(actor, &position);
         state->value_08 = func_00269798(0x19F);
@@ -68,7 +68,7 @@ s32 func_00272F50(u16 message, P07State72F50 *state)
     case 0x1001: {
         P07Vec3 position;
         P07Render *object;
-        func_0026C7C4(func_0020C478(state->value_04), &position);
+        func_0026C7C4(battle_roster_lookup_actor(state->value_04), &position);
         state->value_0C = object = func_0026abc8(0x1A0);
         object->value_1C[0] = position.x;
         object->value_1C[1] = position.y;
@@ -78,7 +78,7 @@ s32 func_00272F50(u16 message, P07State72F50 *state)
     }
     case 0x1002: {
         P07Vec3 position;
-        void *actor = func_0020C478(state->value_04);
+        void *actor = battle_roster_lookup_actor(state->value_04);
         func_0026C7C4(actor, &position);
         p07_phase_1002(state, actor, &position);
         break;
@@ -86,7 +86,7 @@ s32 func_00272F50(u16 message, P07State72F50 *state)
     case 0x1003: {
         P07Vec3 position;
         P07Render *object;
-        func_0026C7C4(func_0020C478(state->value_04), &position);
+        func_0026C7C4(battle_roster_lookup_actor(state->value_04), &position);
         state->value_14 = object = func_0026abc8(0x1A1);
         object->value_1C[0] = position.x;
         object->value_1C[1] = position.y;
@@ -96,7 +96,7 @@ s32 func_00272F50(u16 message, P07State72F50 *state)
     }
     case 0x1004: {
         P07Vec3 position;
-        void *actor = func_0020C478(state->value_04);
+        void *actor = battle_roster_lookup_actor(state->value_04);
         func_0026C7C4(actor, &position);
         p07_phase_1004(state, actor, &position);
         break;

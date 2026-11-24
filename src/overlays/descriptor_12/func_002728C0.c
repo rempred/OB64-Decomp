@@ -18,7 +18,7 @@ typedef struct P07State728C0 {
     P07Render *value_14, *value_18, *value_1C;
 } P07State728C0;
 
-extern void *func_0020C478(u32);
+extern void *battle_roster_lookup_actor(u32);
 
 
 /* Numeric view of the three original words at ROM 0x275650. */
@@ -53,7 +53,7 @@ s32 func_002728C0(u16 message, P07State728C0 *state)
     void *destination;
 
     if (message == 0x1000) {
-        actor = func_0020C478(state->value_04);
+        actor = battle_roster_lookup_actor(state->value_04);
         i = 0;
         func_0026C7C4(actor, &position);
         do {

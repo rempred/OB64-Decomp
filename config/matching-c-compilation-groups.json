@@ -3405,7 +3405,7 @@
         {
           "offset": 104,
           "type": 4,
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "symbolValue": 0,
           "symbolSection": "UND",
           "word": 201326592
@@ -3485,7 +3485,7 @@
         {
           "offset": 424,
           "type": 4,
-          "symbol": "func_0020C32C",
+          "symbol": "battle_actor_has_flag_1",
           "symbolValue": 0,
           "symbolSection": "UND",
           "word": 201326592
@@ -3493,7 +3493,7 @@
         {
           "offset": 504,
           "type": 4,
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "symbolValue": 0,
           "symbolSection": "UND",
           "word": 201326592
@@ -3509,7 +3509,7 @@
         {
           "offset": 540,
           "type": 4,
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "symbolValue": 0,
           "symbolSection": "UND",
           "word": 201326592
@@ -3525,7 +3525,7 @@
         {
           "offset": 604,
           "type": 4,
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "symbolValue": 0,
           "symbolSection": "UND",
           "word": 201326592
@@ -3565,7 +3565,7 @@
         {
           "offset": 1196,
           "type": 4,
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "symbolValue": 0,
           "symbolSection": "UND",
           "word": 201326592
@@ -3581,7 +3581,7 @@
         {
           "offset": 1232,
           "type": 4,
-          "symbol": "func_0020C014",
+          "symbol": "battle_actor_is_side_zero",
           "symbolValue": 0,
           "symbolSection": "UND",
           "word": 201326592
@@ -3725,7 +3725,7 @@
         {
           "offset": 2028,
           "type": 4,
-          "symbol": "func_0020C478",
+          "symbol": "battle_roster_lookup_actor",
           "symbolValue": 0,
           "symbolSection": "UND",
           "word": 201326592

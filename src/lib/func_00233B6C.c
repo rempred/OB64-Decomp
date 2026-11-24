@@ -45,10 +45,10 @@ typedef struct BattleUnit {
     u8 unk98[0x60];
 } BattleUnit;
 s32 rand(void);
-s32 D_801C8E64(BattleUnit *u);
-s32 D_801C8E80(BattleUnit *u);
-s32 D_801C8E9C(BattleUnit *u);
-s32 D_801C8EB8(BattleUnit *u);
+s32 battle_actor_has_flag_3(void *u);
+s32 battle_actor_has_flag_2(void *u);
+s32 battle_actor_has_flag_1(void *u);
+s32 battle_actor_has_flag_4(void *u);
 s32 func_00235754(BattleUnit *a, BattleUnit *b);
 s32 func_00235BB0(BattleUnit *a, BattleUnit *b);
 s32 func_00235DC8(BattleUnit *a, BattleUnit *b);
@@ -62,13 +62,13 @@ BattleUnit *func_00233B6C(BattleUnit *self, BattleUnit **candidates, s32 candida
             func_00235BB0(candidates[candidate_index], ((void *)0));
         score *= candidates[candidate_index]->actsMax - candidates[candidate_index]->actsUsed;
         score++;
-        if (mode != 0 && D_801C8E9C(candidates[candidate_index])) {
+        if (mode != 0 && battle_actor_has_flag_1(candidates[candidate_index])) {
             score = 0;
-        } else if (mode == 8 && D_801C8E64(candidates[candidate_index])) {
+        } else if (mode == 8 && battle_actor_has_flag_3(candidates[candidate_index])) {
             score = 0;
-        } else if (mode == 10 && D_801C8EB8(candidates[candidate_index])) {
+        } else if (mode == 10 && battle_actor_has_flag_4(candidates[candidate_index])) {
             score = 0;
-        } else if (mode == 4 && D_801C8E80(candidates[candidate_index])) {
+        } else if (mode == 4 && battle_actor_has_flag_2(candidates[candidate_index])) {
             score = 0;
         }
         if (score == best_score) {

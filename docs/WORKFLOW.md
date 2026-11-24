@@ -1391,8 +1391,21 @@ Naming does not gate a machine-code match. Use exactly these evidence classes:
 During matching, inspect the body, callers, callees, strings, and data accesses
 for a possible `SUPPORTED_ALIAS`, but leave the build symbol address-named when
 evidence is insufficient. Only a `CANONICAL` name may replace it. Perform a
-canonical rename as a scoped semantic change and rerun the linked diff and
-source-policy checks. Include its complete-ROM proof in the final wave verification.
+canonical rename as a scoped semantic change. A readability pass should flag proven
+function names for review even when its assignment covers only locals or fields.
+
+For an assigned rename, use the same name in the definition, declarations, calls inside
+function bodies, and expressions that take or store its address. Rename a file named
+after the function and update live source paths, assembly labels, linker inputs, tests,
+and maintained documentation. Check same-address spellings against the linked owner
+and overlay before changing them. For a rename without aliases, retire the old exported
+name and any confirmed alternate entry spellings. Preserve the identity of other functions
+that share a load address. Dated evidence keeps the spelling observed at the time.
+
+Compare the old and new linked entry points, call targets, relocations and instruction
+bytes, then run the source-policy and interface checks and verify the full ROM against
+retail. A matching build proves byte identity. The function name also needs evidence for
+the behavior it describes.
 
 ## Stop or change workflows
 

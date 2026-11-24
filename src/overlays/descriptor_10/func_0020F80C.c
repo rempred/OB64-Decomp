@@ -20,7 +20,7 @@ typedef struct {
     s32 actsMax;
 } BattleUnit;
 extern u8 *D_801CE8BC;
-extern inline int func_0020C014(void *record) {
+extern inline int battle_actor_is_side_zero(void *record) {
     BattleUnit *u = record;
 
     if (u == ((void *)0)) {
@@ -28,26 +28,26 @@ extern inline int func_0020C014(void *record) {
     }
     return ((u->flags >> 8) ^ 1) & 1;
 }
-extern inline s32 func_0020C0CC(void *record) {
+extern inline s32 battle_actor_has_flag_12(void *record) {
     BattleRosterRecord *u = record;
     if (u == ((void *)0)) {
         return 0;
     }
     return (u->battle_flags >> 12) & 1;
 }
-extern inline int func_0020C2C0(void *record) {
+extern inline int battle_actor_is_absent_or_has_flag_0(void *record) {
     if (record == 0) {
         return 1;
     }
     return ((const BattleRosterRecord *)record)->battle_flags & 1;
 }
-extern inline int func_0020C32C(void *record) {
+extern inline int battle_actor_has_flag_1(void *record) {
     if (record == 0) {
         return 0;
     }
     return (((const BattleRosterRecord *)record)->battle_flags >> 1) & 1;
 }
-extern inline BattleUnit *BattleGetUnit(u32 actor_index) {
+extern inline BattleUnit *battle_roster_lookup_actor_inline(u32 actor_index) {
     u8 *scene_bytes = D_801CE8BC;
     s32 roster_byte_offset;
     if (actor_index < 20) {
@@ -64,17 +64,17 @@ s32 func_0020F80C(void) {
     s32 actor_index;
     BattleUnit *u;
     for (actor_index = 0; actor_index < 20; actor_index++) {
-        u = BattleGetUnit(actor_index);
-        if (func_0020C2C0(u)) {
+        u = battle_roster_lookup_actor_inline(actor_index);
+        if (battle_actor_is_absent_or_has_flag_0(u)) {
             continue;
         }
-        if (func_0020C0CC(u)) {
+        if (battle_actor_has_flag_12(u)) {
             continue;
         }
-        if (func_0020C32C(u)) {
+        if (battle_actor_has_flag_1(u)) {
             continue;
         }
-        if (func_0020C014(u)) {
+        if (battle_actor_is_side_zero(u)) {
             player++;
         } else {
             enemy++;

@@ -1,7 +1,7 @@
 #include "game/combat_state.h"
 
-extern int func_0020BFF8(void *object);
-extern int func_0020C034(void *object);
+extern int battle_actor_is_side_one(void *object);
+extern int battle_actor_has_flag_10(void *object);
 
 typedef struct {
     unsigned char prefix[0x44];
@@ -31,10 +31,10 @@ void func_001F114C(void *object)
     cursor = parent->children;
     do {
         if (*cursor != 0) {
-            flag = func_0020BFF8(parent);
+            flag = battle_actor_is_side_one(parent);
             func_001F1218(&(*cursor)->state,
                          parent->field48, parent->field4C,
-                         flag, func_0020C034(parent));
+                         flag, battle_actor_has_flag_10(parent));
         }
         index++;
         cursor++;

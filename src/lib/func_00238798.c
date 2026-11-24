@@ -44,35 +44,35 @@ typedef struct BattleUnit {
     s32 unk94;
     u8 unk98[0x60];
 } BattleUnit;
-int D_801C8B84(void *record);
-s32 D_801C8E30(BattleUnit *actor);
-void *D_801CA2E0(unsigned int lane, int row);
+int battle_actor_is_side_zero(void *record);
+s32 battle_actor_is_absent_or_has_flag_0(void *actor);
+void *battle_roster_find_actor_at_position(unsigned int lane, int row);
 s32 func_00238798(BattleUnit *actor) {
-    if (D_801C8B84(actor)) {
+    if (battle_actor_is_side_zero(actor)) {
         if (actor->unk58 == 6) {
             return 1;
         }
         if (actor->unk58 == 7) {
-            return D_801C8E30(D_801CA2E0(actor->lane, 6)) != 0;
+            return battle_actor_is_absent_or_has_flag_0(battle_roster_find_actor_at_position(actor->lane, 6)) != 0;
         }
         if (actor->unk58 == 8) {
-            if (!D_801C8E30(D_801CA2E0(actor->lane, 7))) {
+            if (!battle_actor_is_absent_or_has_flag_0(battle_roster_find_actor_at_position(actor->lane, 7))) {
                 return 0;
             }
-            return D_801C8E30(D_801CA2E0(actor->lane, 6)) != 0;
+            return battle_actor_is_absent_or_has_flag_0(battle_roster_find_actor_at_position(actor->lane, 6)) != 0;
         }
     } else {
         if (actor->unk58 == 2) {
             return 1;
         }
         if (actor->unk58 == 1) {
-            return D_801C8E30(D_801CA2E0(actor->lane, 2)) != 0;
+            return battle_actor_is_absent_or_has_flag_0(battle_roster_find_actor_at_position(actor->lane, 2)) != 0;
         }
         if (actor->unk58 == 0) {
-            if (!D_801C8E30(D_801CA2E0(actor->lane, 1))) {
+            if (!battle_actor_is_absent_or_has_flag_0(battle_roster_find_actor_at_position(actor->lane, 1))) {
                 return 0;
             }
-            return D_801C8E30(D_801CA2E0(actor->lane, 2)) != 0;
+            return battle_actor_is_absent_or_has_flag_0(battle_roster_find_actor_at_position(actor->lane, 2)) != 0;
         }
     }
     return 1;

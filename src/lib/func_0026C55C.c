@@ -35,13 +35,13 @@ static __inline__ void e04_c230_inline(E04Vec3 *vector, float matrix[4][4])
     }
 }
 
-extern int func_0020BFF8(void *);
+extern int battle_actor_is_side_one(void *);
 
 static __inline__ void e04_flag_vector(void *actor, E04Vec3 *output)
 {
-    int flag8 = func_0020BFF8(actor);
+    int flag8 = battle_actor_is_side_one(actor);
 
-    if (flag8 != func_0020C2D8(actor)) {
+    if (flag8 != battle_actor_has_flag_5(actor)) {
         output->x = 1.0f;
     } else {
         output->x = -1.0f;
