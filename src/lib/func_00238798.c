@@ -45,34 +45,34 @@ typedef struct BattleUnit {
     u8 unk98[0x60];
 } BattleUnit;
 int D_801C8B84(void *record);
-s32 D_801C8E30(BattleUnit *u);
+s32 D_801C8E30(BattleUnit *actor);
 void *D_801CA2E0(unsigned int lane, int row);
-s32 func_00238798(BattleUnit *u) {
-    if (D_801C8B84(u)) {
-        if (u->unk58 == 6) {
+s32 func_00238798(BattleUnit *actor) {
+    if (D_801C8B84(actor)) {
+        if (actor->unk58 == 6) {
             return 1;
         }
-        if (u->unk58 == 7) {
-            return D_801C8E30(D_801CA2E0(u->lane, 6)) != 0;
+        if (actor->unk58 == 7) {
+            return D_801C8E30(D_801CA2E0(actor->lane, 6)) != 0;
         }
-        if (u->unk58 == 8) {
-            if (!D_801C8E30(D_801CA2E0(u->lane, 7))) {
+        if (actor->unk58 == 8) {
+            if (!D_801C8E30(D_801CA2E0(actor->lane, 7))) {
                 return 0;
             }
-            return D_801C8E30(D_801CA2E0(u->lane, 6)) != 0;
+            return D_801C8E30(D_801CA2E0(actor->lane, 6)) != 0;
         }
     } else {
-        if (u->unk58 == 2) {
+        if (actor->unk58 == 2) {
             return 1;
         }
-        if (u->unk58 == 1) {
-            return D_801C8E30(D_801CA2E0(u->lane, 2)) != 0;
+        if (actor->unk58 == 1) {
+            return D_801C8E30(D_801CA2E0(actor->lane, 2)) != 0;
         }
-        if (u->unk58 == 0) {
-            if (!D_801C8E30(D_801CA2E0(u->lane, 1))) {
+        if (actor->unk58 == 0) {
+            if (!D_801C8E30(D_801CA2E0(actor->lane, 1))) {
                 return 0;
             }
-            return D_801C8E30(D_801CA2E0(u->lane, 2)) != 0;
+            return D_801C8E30(D_801CA2E0(actor->lane, 2)) != 0;
         }
     }
     return 1;

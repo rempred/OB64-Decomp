@@ -9,12 +9,12 @@ extern inline s32 func_0020BFF8(void *record) {
     if (u == ((void *)0)) {
         return 0;
     }
-    return (u->flags40 >> 8) & 1;
+    return (u->battle_flags >> 8) & 1;
 }
 s32 func_0020D6F8(void *first, void *second) {
     BattleRosterRecord *a = first;
     BattleRosterRecord *b = second;
-    s32 r = a->column54 > b->column54;
+    s32 r = a->formation_column > b->formation_column;
     if (func_0020BFF8(a)) {
         r = !r;
     }

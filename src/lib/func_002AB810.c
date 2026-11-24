@@ -62,7 +62,7 @@ typedef struct SceneManager {
 extern SceneManager *D_8022A974;
 extern s32 D_801CE8FC;
 extern u8 D_8022F2CC;
-extern s32 func_0020C120(void *unit);
+extern s32 func_0020C120(void *actor);
 extern void *resource_alloc(unsigned int size);
 extern void func_00023780(void *destination, s32 size);
 extern void *func_0002CD70(void *record, s32 arg1, unsigned int arg2);
@@ -70,12 +70,12 @@ extern f32 func_001FF7EC(s16 x, s16 z);
 
 static __inline__ void initialize_fields(SceneBody *record, s32 state,
                                         s32 flip, void *descriptor,
-                                        s32 fillSize, s32 *sceneWord)
+                                        s32 fill_size, s32 *scene_word)
 {
     s32 sceneValue;
 
     record->active = 1;
-    sceneValue = *sceneWord;
+    sceneValue = *scene_word;
     record->state = state;
     record->sequence = -1;
     record->sequenceTimer = 0;
@@ -88,72 +88,72 @@ static __inline__ void initialize_fields(SceneBody *record, s32 state,
     record->field_128 = 0;
     record->field_145 = 1;
     record->field_13C = sceneValue;
-    func_0002CD70(record, 0xFF, fillSize);
+    func_0002CD70(record, 0xFF, fill_size);
 }
 
 static __inline__ void initialize_body(SceneBody *record, s32 state,
-                                      s32 classId, s32 variant, s32 flip,
-                                      void *descriptor, s32 fillSize, s32 *sceneWord,
+                                      s32 primary_class_id, s32 secondary_class_id, s32 flip,
+                                      void *descriptor, s32 fill_size, s32 *scene_word,
                                       s32 kind)
 {
     /* Once-only scopes retain KMC flow notes used in register allocation.
      * Their nesting keeps the constants and output cursors in retail homes. */
     do { do { do {
         do {
-            if (classId != -1) record->source = classId;
+            if (primary_class_id != -1) record->source = primary_class_id;
         } while (0);
     } while (0); } while (0); } while (0);
     record->animation = state;
     do {
         do {
-            if (variant != -1) record->variant = variant;
+            if (secondary_class_id != -1) record->variant = secondary_class_id;
         } while (0);
         /* Keep both inline expansions for pre-reload argument scheduling.
          * KMC's late jump pass merges their identical emitted bodies. */
         if (kind) {
-            initialize_fields(record, state, flip, descriptor, fillSize, sceneWord);
+            initialize_fields(record, state, flip, descriptor, fill_size, scene_word);
         } else {
-            initialize_fields(record, state, flip, descriptor, fillSize, sceneWord);
+            initialize_fields(record, state, flip, descriptor, fill_size, scene_word);
         }
         func_00023780((u8 *)record + 0x10, 0x10);
     } while (0);
 }
 
-s32 func_002AB810(s32 *slots, BattleRosterRecord *unit, s32 index, s32 flip,
-                  s32 classId, s32 variant, u8 seenLeader)
+s32 func_002AB810(s32 *slots, BattleRosterRecord *actor, s32 actor_index, s32 flip,
+                  s32 primary_class_id, s32 secondary_class_id, u8 seen_leader)
 {
     SceneBody *record;
-    s32 firstSlot;
+    s32 first_body_slot;
     s32 kind;
     s32 i;
     s32 slot;
     s32 state;
     void *descriptor = &D_8022F2CC;
-    u8 currentIndex;
-    s32 specialKind;
-    s32 fillSize;
+    u8 stored_actor_index;
+    s32 special_body_kind;
+    s32 fill_size;
     SlotWord slotBits;
-    s32 *sceneWord;
+    s32 *scene_word;
 
-    firstSlot = 0;
+    first_body_slot = 0;
     kind = 0;
-    if (func_0020C104(unit) == 1) {
+    if (func_0020C104(actor) == 1) {
         kind = 1;
-    } else if (func_0020C120(unit) == 1) {
+    } else if (func_0020C120(actor) == 1) {
         kind = 2;
-    } else if (classId == 0x87) {
-        if (seenLeader == 1) kind = 4;
-    } else if (classId == 0xA1) {
+    } else if (primary_class_id == 0x87) {
+        if (seen_leader == 1) kind = 4;
+    } else if (primary_class_id == 0xA1) {
         kind = 2;
-    } else if (classId == 0x88) {
+    } else if (primary_class_id == 0x88) {
         kind = 2;
     }
 
-    sceneWord = &D_801CE8FC;
-    fillSize = 0x10;
+    scene_word = &D_801CE8FC;
+    fill_size = 0x10;
     i = 0;
     do {
-        if (unit->links[i] != 0) {
+        if (actor->primary_children[i] != 0) {
             for (slot = 0; slot < 0x1C; slot++) {
                 if (D_8022A974->records[slot] == 0) {
                     break;
@@ -161,7 +161,7 @@ s32 func_002AB810(s32 *slots, BattleRosterRecord *unit, s32 index, s32 flip,
             }
             slots[i] = slot;
             if (i == 0) {
-                firstSlot = slot;
+                first_body_slot = slot;
             }
             record = D_8022A974->records[slot] = resource_alloc(0x150);
             func_00023780(record, 0x150);
@@ -169,8 +169,8 @@ s32 func_002AB810(s32 *slots, BattleRosterRecord *unit, s32 index, s32 flip,
                 record->slot.value = slot & 0xFF;
                 state = 0x3C;
             } else {
-                do { specialKind = 4; } while (0);
-                if (kind == specialKind) {
+                do { special_body_kind = 4; } while (0);
+                if (kind == special_body_kind) {
                     /* Preserve the word bits through the alternate union view.
                      * KMC otherwise merges this arm with the earlier state-60 arm.
                      * This is a compiler-shape workaround, not a floating slot. */
@@ -182,27 +182,27 @@ s32 func_002AB810(s32 *slots, BattleRosterRecord *unit, s32 index, s32 flip,
                     state = 0xA;
                 }
             }
-            initialize_body(record, state, classId, variant, flip, descriptor,
-                            fillSize, sceneWord, kind);
+            initialize_body(record, state, primary_class_id, secondary_class_id, flip, descriptor,
+                            fill_size, scene_word, kind);
             record->field_146 = flip;
             record->facing = 0;
-            record->x = ((BodySource *)unit->links[i])->x;
-            record->z = ((BodySource *)unit->links[i])->z;
-            do { specialKind = 4; } while (0);
-            if (kind != specialKind) {
+            record->x = ((BodySource *)actor->primary_children[i])->x;
+            record->z = ((BodySource *)actor->primary_children[i])->z;
+            do { special_body_kind = 4; } while (0);
+            if (kind != special_body_kind) {
                 record->y = (s16)func_001FF7EC(record->x, record->z);
             } else {
-                record->y = ((BodySource *)unit->links[i])->y;
+                record->y = ((BodySource *)actor->primary_children[i])->y;
             }
             for (slot = 0; slot < 3; slot++) {
                 record->scale[slot] = 1.0f;
                 record->rotate[slot] = 0;
                 record->field_142[slot] = 0xFF;
             }
-            currentIndex = index;
-            record->field_147 = currentIndex;
+            stored_actor_index = actor_index;
+            record->field_147 = stored_actor_index;
             record->field_149 = i;
         }
     } while (++i < 3);
-    return firstSlot;
+    return first_body_slot;
 }

@@ -5,10 +5,10 @@ typedef unsigned int u32;
 extern u8 D_801976E8;
 
 extern void *func_0020C478(unsigned int index);
-extern s32 func_0020BFF8(void *row);
+extern s32 func_0020BFF8(void *actor);
 extern void func_00207C08(s32 handle);
-extern void func_001F0F90(void *object);
-extern void func_001F1050(void *object);
+extern void func_001F0F90(void *primary_child);
+extern void func_001F1050(void *primary_child);
 extern void func_00023780(void *pointer, u32 size);
 extern void func_002ACA3C(s32 unitSelector);
 
@@ -26,38 +26,38 @@ extern void func_002ACA3C(s32 unitSelector);
  */
 void func_002ACF08(s32 commandWord)
 {
-    s32 rowIndex;
-    u32 linkIndex;
-    void *row;
-    void **links; /* links[i] is an object, links[i + 3] its partner (+0xC) */
-    void *object;
+    s32 actor_index;
+    u32 child_index;
+    void *actor;
+    void **child_slots; /* links[i] is an object, links[i + 3] its partner (+0xC) */
+    void *primary_child;
 
-    rowIndex = 0;
+    actor_index = 0;
     do {
-        row = func_0020C478(rowIndex);
-        if (func_0020BFF8(row) != 0) {
-            links = (void **)row;
-            func_00207C08(WORD(row, 0x50));
+        actor = func_0020C478(actor_index);
+        if (func_0020BFF8(actor) != 0) {
+            child_slots = (void **)actor;
+            func_00207C08(WORD(actor, 0x50));
             /* Indexing from one base keeps the partner access as an offset of
              * the same strength-reduced pointer; a second cursor would need
              * another callee-saved register. */
-            linkIndex = 0;
+            child_index = 0;
             do {
-                object = links[linkIndex];
-                if (object != 0) {
-                    WORD(object, 0x18) = 0;
-                    WORD(links[linkIndex + 3], 0x18) = 0;
-                    func_001F0F90(links[linkIndex]);
-                    func_001F1050(links[linkIndex + 3]);
-                    links[linkIndex] = 0;
-                    links[linkIndex + 3] = 0;
+                primary_child = child_slots[child_index];
+                if (primary_child != 0) {
+                    WORD(primary_child, 0x18) = 0;
+                    WORD(child_slots[child_index + 3], 0x18) = 0;
+                    func_001F0F90(child_slots[child_index]);
+                    func_001F1050(child_slots[child_index + 3]);
+                    child_slots[child_index] = 0;
+                    child_slots[child_index + 3] = 0;
                 }
-                linkIndex += 1;
-            } while (linkIndex < 3);
-            func_00023780(row, 0xF8);
+                child_index += 1;
+            } while (child_index < 3);
+            func_00023780(actor, 0xF8);
         }
-        rowIndex += 1;
-    } while (rowIndex < 20);
+        actor_index += 1;
+    } while (actor_index < 20);
     func_002ACA3C(30);
     D_801976E8 = 30;
 }

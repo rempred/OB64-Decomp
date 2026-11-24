@@ -25,7 +25,7 @@ typedef struct CharacterTemplate {
 typedef char CharacterTemplate_size[sizeof(CharacterTemplate) == 0x23 ? 1 : -1];
 
 void func_0019554C(int record_index, const CharacterTemplate *source, int template_member,
-                   u8 force_52_byte_pool, int source_index);
+                   u8 force_scenario_roster, int source_index);
 void func_001957D0(const CharacterTemplate *source, int source_index);
 
 #endif

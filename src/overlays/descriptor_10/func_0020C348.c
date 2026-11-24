@@ -8,5 +8,5 @@ s32 func_0020C348(void *record) {
     if (u == ((void *)0)) {
         return 0;
     }
-    return (u->flags40 >> 4) & 1;
+    return (u->battle_flags >> 4) & 1;
 }

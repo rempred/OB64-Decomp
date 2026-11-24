@@ -46,20 +46,20 @@ typedef struct BattleUnit {
 } BattleUnit;
 s32 D_801C8D84(BattleUnit *u);
 s32 D_8016F580(s32 id);
-s32 func_0023466C(BattleUnit *a, BattleUnit *b) {
-    s32 r = 0;
-    if (D_801C8D84(b)) {
-        if (a->cls == 20) {
-            r = 5;
+s32 func_0023466C(BattleUnit *actor, BattleUnit *target) {
+    s32 result = 0;
+    if (D_801C8D84(target)) {
+        if (actor->cls == 20) {
+            result = 5;
         } else {
-            u8 first = D_8016F580(a->items[0]);
-            u8 second = D_8016F580(a->items[1]);
-            u8 third = D_8016F580(a->items[2]);
-            u8 fourth = D_8016F580(a->items[3]);
+            u8 first = D_8016F580(actor->items[0]);
+            u8 second = D_8016F580(actor->items[1]);
+            u8 third = D_8016F580(actor->items[2]);
+            u8 fourth = D_8016F580(actor->items[3]);
             if ((first | second | third | fourth) & 1) {
-                r = 5;
+                result = 5;
             }
         }
     }
-    return r;
+    return result;
 }

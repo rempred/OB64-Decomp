@@ -45,15 +45,15 @@ typedef struct BattleUnit {
     s32 unk94;
     u8 unk98[0x60];
 } BattleUnit;
-s32 func_002347B8(BattleUnit *u);
-f32 func_0023559C(BattleUnit *u) {
-    f32 base = func_002347B8(u);
+s32 func_002347B8(BattleUnit *actor);
+f32 func_0023559C(BattleUnit *actor) {
+    f32 base = func_002347B8(actor);
     s32 b = 0;
-    if (u != ((void *)0)) {
-        if (u->unk3E >= 70) {
-            if (u->unk3E < 80) {
+    if (actor != ((void *)0)) {
+        if (actor->unk3E >= 70) {
+            if (actor->unk3E < 80) {
                 b = 5;
-            } else if (u->unk3E < 90) {
+            } else if (actor->unk3E < 90) {
                 b = 18;
             } else {
                 b = 40;

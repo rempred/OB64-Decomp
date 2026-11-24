@@ -19,14 +19,14 @@ struct SupplementChild {
 struct SupplementActor {
     SupplementChild *child0, *child1, *child2, *child3, *child4, *child5;
     unsigned char field_18[8];
-    u16 field_20, field_22, field_24[9];
-    u16 field_36, field_38, field_3A, field_3C;
+    u16 hp, max_hp, field_24[9];
+    u16 equipment_slot_0, equipment_slot_1, equipment_slot_2, equipment_slot_3;
     unsigned char field_3E[2];
     u32 flags, field_44;
-    int field_48, field_4C, resource, field_54, field_58;
-    int x, y, z, field_68, field_6C, field_70;
+    int primary_class_id, secondary_class_id, resource, formation_column, formation_row;
+    int x, y, z, field_68, field_6C, action_limit;
     unsigned char field_74[0x24];
-    int field_98, field_9C;
+    int screen_x, screen_y;
     unsigned char field_A0[11], field_AB, field_AC;
 };
 struct Func001F0E64Record;
@@ -57,13 +57,13 @@ static __inline__ int flag1(SupplementActor *actor)
 static __inline__ int kind1(SupplementActor *actor)
 {
     if (!actor) return 0;
-    return actor->field_4C == 1;
+    return actor->secondary_class_id == 1;
 }
 static __inline__ int offset_kind(SupplementActor *actor)
 {
     if (!actor) return 0;
     {
-        int value = actor->field_4C;
+        int value = actor->secondary_class_id;
         int result = 0;
         if (((value == 0xA) | (value == 0x19)) || value == 0x7B) result = 1;
         return result;
@@ -87,15 +87,15 @@ static __inline__ SupplementChild *allocate_child(int resource, int x, int y, in
 }
 static __inline__ void finish_pair(SupplementActor *actor,
     SupplementChild *primary, SupplementChild *secondary,
-    BattleChildCallback firstCallback, BattleChildCallback secondCallback,
-    int primaryFactor, int secondaryFactor)
+    BattleChildCallback primary_callback, BattleChildCallback secondary_callback,
+    int primary_effect_factor, int secondary_effect_factor)
 {
     secondary->actor = actor;
     primary->actor = actor;
-    primary->callback = firstCallback;
-    secondary->callback = secondCallback;
-    primary->field_34 = primaryFactor;
-    secondary->field_34 = secondaryFactor;
+    primary->callback = primary_callback;
+    secondary->callback = secondary_callback;
+    primary->field_34 = primary_effect_factor;
+    secondary->field_34 = secondary_effect_factor;
     secondary->resource = actor->resource;
     primary->resource = secondary->resource;
     secondary->primary = primary;
@@ -105,84 +105,85 @@ static __inline__ void finish_pair(SupplementActor *actor,
  * local to preserve the measured temporary lifetimes. */
 static __inline__ void finish_loop_pair(SupplementActor *actor,
     SupplementChild *primary, SupplementChild *secondary,
-    BattleChildCallback firstCallback,
-    int secondaryFactor)
+    BattleChildCallback primary_callback,
+    int secondary_effect_factor)
 {
     secondary->actor = actor;
     primary->actor = actor;
-    primary->callback = firstCallback;
+    primary->callback = primary_callback;
     secondary->callback = func_001F89B4;
     primary->field_34 = 255;
-    secondary->field_34 = secondaryFactor;
+    secondary->field_34 = secondary_effect_factor;
     secondary->resource = actor->resource;
     primary->resource = secondary->resource;
     secondary->primary = primary;
     primary->primary = primary;
 }
-#define FINISH_PAIR() finish_pair(actor, primary, secondary, func_001F7148, func_001F89B4, 255, secondaryFactor)
+#define FINISH_PAIR() finish_pair(actor, primary, secondary, func_001F7148, func_001F89B4, 255, secondary_effect_factor)
 /* Both calls reload actor coordinates; a shared captured position would hide
  * the allocator's opportunity to change them between calls. */
 #define ALLOC_PAIR(slot, dx, dy, dz) { \
     SupplementChild *primary, *secondary; \
-    int secondaryFactor; \
+    int secondary_effect_factor; \
     primary = allocate_child(actor->resource, COORD(x, dx), COORD(y, dy), COORD(z, dz)); \
     ((SupplementChild **)actor)[(slot)] = primary; \
     secondary = allocate_child(actor->resource, COORD(x, dx), COORD(y, dy), COORD(z, dz)); \
-    secondaryFactor = D_801CE8FC; \
+    secondary_effect_factor = D_801CE8FC; \
     ((SupplementChild **)actor)[(slot) + 3] = secondary; \
     FINISH_PAIR(); \
 }
 
+/* Populate an actor's position, class resources, equipment defaults and child pairs. */
 void func_0020CBDC(BattleRosterRecord *record, int mode)
 {
     SupplementActor *actor = (SupplementActor *)record;
-    int screenX, screenY;
-    int position = actor->field_58;
-    int source = actor->field_48;
-    int context = actor->field_4C;
-    int column = actor->field_54;
-    int response, secondaryFactor;
+    int screen_x, screen_y;
+    int formation_row = actor->formation_row;
+    int primary_class_id = actor->primary_class_id;
+    int secondary_class_id = actor->secondary_class_id;
+    int formation_column = actor->formation_column;
+    int action_limit, secondary_effect_factor;
     SupplementChild *primary, *secondary;
     SupplementChild **cursor, **end;
 
-    response = func_00044238((unsigned char)source, (unsigned char)context,
-                            (unsigned char)func_0020D434(position));
-    actor->x = (int)(((u32)position - 4u) * 38u);
-    actor->field_70 = (unsigned char)response;
+    action_limit = func_00044238((unsigned char)primary_class_id, (unsigned char)secondary_class_id,
+                            (unsigned char)func_0020D434(formation_row));
+    actor->x = (int)(((u32)formation_row - 4u) * 38u);
+    actor->action_limit = (unsigned char)action_limit;
     actor->field_AC = 255;
     actor->field_AB = 255;
-    actor->z = (int)(((u32)column - 1u) * 38u);
+    actor->z = (int)(((u32)formation_column - 1u) * 38u);
     actor->y = (int)func_001BC35C(*(short *)((unsigned char *)actor + 0x5E),
                                  (short)actor->z);
-    actor->resource = func_002015C8(source, context, flag8(actor), flag8(actor));
-    if (!actor->field_36) actor->field_36 = func_00043e88((unsigned char)source, (unsigned char)context);
-    if (!actor->field_38) actor->field_38 = func_00043edc((unsigned char)source, (unsigned char)context);
-    if (!actor->field_3A) actor->field_3A = func_00043f30((unsigned char)source, (unsigned char)context);
-    if (!actor->field_3C) actor->field_3C = func_00043f84((unsigned char)source, (unsigned char)context);
-    func_0020C4B8(actor->x, actor->y, actor->z, &screenX, &screenY);
-    actor->field_98 = screenX;
-    actor->field_9C = screenY;
+    actor->resource = func_002015C8(primary_class_id, secondary_class_id, flag8(actor), flag8(actor));
+    if (!actor->equipment_slot_0) actor->equipment_slot_0 = func_00043e88((unsigned char)primary_class_id, (unsigned char)secondary_class_id);
+    if (!actor->equipment_slot_1) actor->equipment_slot_1 = func_00043edc((unsigned char)primary_class_id, (unsigned char)secondary_class_id);
+    if (!actor->equipment_slot_2) actor->equipment_slot_2 = func_00043f30((unsigned char)primary_class_id, (unsigned char)secondary_class_id);
+    if (!actor->equipment_slot_3) actor->equipment_slot_3 = func_00043f84((unsigned char)primary_class_id, (unsigned char)secondary_class_id);
+    func_0020C4B8(actor->x, actor->y, actor->z, &screen_x, &screen_y);
+    actor->screen_x = screen_x;
+    actor->screen_y = screen_y;
 
     if (kind1(actor)) {
-        int pairIndex = 0;
-        int count = func_0020D444(actor->field_20, actor->field_22);
-        while (pairIndex < count) {
+        int pair_index = 0;
+        int pair_count = func_0020D444(actor->hp, actor->max_hp);
+        while (pair_index < pair_count) {
             /* Shared indexed addresses retain one cursor per array. */
-            const int *offsets = D_801CEDFC + pairIndex * 2;
-            SupplementActor *slots = (SupplementActor *)((unsigned char *)actor + pairIndex * 4);
+            const int *offsets = D_801CEDFC + pair_index * 2;
+            SupplementActor *slots = (SupplementActor *)((unsigned char *)actor + pair_index * 4);
             SupplementChild *primary, *secondary;
-            int secondaryFactor;
+            int secondary_effect_factor;
             int dx = offsets[0], dz = offsets[1];
             primary = allocate_child(actor->resource, COORD(x, dx), actor->y, COORD(z, dz));
             slots->child0 = primary;
             secondary = allocate_child(actor->resource, COORD(x, dx), actor->y, COORD(z, dz));
-            secondaryFactor = D_801CE8FC;
+            secondary_effect_factor = D_801CE8FC;
             slots->child3 = secondary;
-            finish_loop_pair(actor, primary, secondary, func_001F7148, secondaryFactor);
+            finish_loop_pair(actor, primary, secondary, func_001F7148, secondary_effect_factor);
             if (!mode) {
                 set_pair_mode(slots, 2);
             }
-            pairIndex++;
+            pair_index++;
         }
     } else if (offset_kind(actor)) {
         SupplementChild *primary, *secondary;
@@ -192,17 +193,17 @@ void func_0020CBDC(BattleRosterRecord *record, int mode)
         ALLOC_PAIR(0, 0, 0, 0);
         ALLOC_PAIR(1, dx, 0, dz);
         set_pair_mode((SupplementActor *)((unsigned char *)actor + 4), 3);
-    } else if (actor->field_48 == 0x87) {
+    } else if (actor->primary_class_id == 0x87) {
         if (!mode) {
             ALLOC_PAIR(0, 0, 0, 0);
         } else {
-            int oldZ = actor->z;
-            actor->z = (int)((u32)oldZ + 10u);
+            int previous_world_z = actor->z;
+            actor->z = (int)((u32)previous_world_z + 10u);
             primary = allocate_child(actor->resource, COORD(x, 1), COORD(y, 57),
-                                    (int)((u32)oldZ + 48u));
+                                    (int)((u32)previous_world_z + 48u));
             actor->child0 = primary;
             secondary = allocate_child(actor->resource, COORD(x, 1), COORD(y, 57), COORD(z, 38));
-            secondaryFactor = D_801CE8FC;
+            secondary_effect_factor = D_801CE8FC;
             actor->child3 = secondary;
             FINISH_PAIR();
             actor->child0->field_8C = 1;
@@ -212,7 +213,7 @@ void func_0020CBDC(BattleRosterRecord *record, int mode)
         }
         actor->flags |= 0x800;
     } else {
-        int kind = actor->field_48;
+        int kind = actor->primary_class_id;
         if (kind == 0x88) goto shifted_pair;
         if (kind != 0xA1) goto base_pair;
 shifted_pair:

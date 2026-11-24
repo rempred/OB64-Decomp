@@ -10,7 +10,7 @@ s32 func_0020C1B4(void *u) {
     if (u == ((void *)0)) {
         return 0;
     }
-    c = ((BattleRosterRecord *)u)->variant4C.word;
+    c = ((BattleRosterRecord *)u)->secondary_class_id.word;
     r = 0;
     if ((u32)(c - 45) < 2 || c == 47) {
         r = 1;

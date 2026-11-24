@@ -6,144 +6,145 @@ typedef unsigned char u8;
 typedef unsigned int u32;
 
 typedef struct ResolutionContext {
-    int field00;
+    int action_index;
 } ResolutionContext;
 
 extern ResolutionContext *D_801CE8C0;
 extern void func_00023780(void *base, u32 bytes);
 extern void *func_0020C478(unsigned int index);
 
-static inline int object_qualified(BattleRosterRecord *object)
+static inline int object_qualified(BattleRosterRecord *actor)
 {
-    if (object == 0)
+    if (actor == 0)
         return 0;
-    if ((object->flags40 & 3) != 0)
+    if ((actor->battle_flags & 3) != 0)
         return 0;
-    if (object->field6C >= object->field70)
+    if (actor->actions_used >= actor->action_limit)
         return 0;
-    return object->field6C == D_801CE8C0->field00;
+    return actor->actions_used == D_801CE8C0->action_index;
 }
 
+/* Group eligible actors by formation row and prioritize groups by agility. */
 void func_00231CC0(BattleResolutionRecord *records)
 {
-    BattleRosterRecord *object;
-    BattleRosterRecord *previous;
-    BattleResolutionRecord temporary;
+    BattleRosterRecord *actor;
+    BattleRosterRecord *displaced_actor;
+    BattleResolutionRecord swap_record;
     int i;
-    int slot;
-    int below;
-    int above;
+    int record_index;
+    int lower_side_record;
+    int upper_side_record;
 
     func_00023780(records, 6 * sizeof(*records));
-    records[0].field10 = 0;
-    records[1].field10 = 1;
-    records[2].field10 = 2;
-    records[3].field10 = 6;
-    records[4].field10 = 7;
-    records[5].field10 = 8;
+    records[0].formation_row = 0;
+    records[1].formation_row = 1;
+    records[2].formation_row = 2;
+    records[3].formation_row = 6;
+    records[4].formation_row = 7;
+    records[5].formation_row = 8;
 
     for (i = 0; i < 20; ++i) {
-        object = func_0020C478(i);
-        if (object == 0 || func_0020C2C0(object) ||
-            object->field6C != D_801CE8C0->field00 ||
-            object->field6C >= object->field70)
+        actor = func_0020C478(i);
+        if (actor == 0 || func_0020C2C0(actor) ||
+            actor->actions_used != D_801CE8C0->action_index ||
+            actor->actions_used >= actor->action_limit)
             continue;
 
         /* The raw slot domain is an upstream precondition of the original path. */
-        slot = object->row58;
-        if (slot >= 6)
-            slot -= 3;
+        record_index = actor->formation_row;
+        if (record_index >= 6)
+            record_index -= 3;
 
-        if (records[slot].objects[0] == 0) {
-            records[slot].objects[0] = object;
+        if (records[record_index].actors[0] == 0) {
+            records[record_index].actors[0] = actor;
             continue;
         }
-        previous = records[slot].objects[0];
-        if (previous->field_2C < object->field_2C) {
-            records[slot].objects[0] = object;
-            object = previous;
+        displaced_actor = records[record_index].actors[0];
+        if (displaced_actor->agility < actor->agility) {
+            records[record_index].actors[0] = actor;
+            actor = displaced_actor;
         }
 
-        if (records[slot].objects[1] == 0) {
-            records[slot].objects[1] = object;
+        if (records[record_index].actors[1] == 0) {
+            records[record_index].actors[1] = actor;
             continue;
         }
-        previous = records[slot].objects[1];
-        if (previous->field_2C < object->field_2C) {
-            records[slot].objects[1] = object;
-            object = previous;
+        displaced_actor = records[record_index].actors[1];
+        if (displaced_actor->agility < actor->agility) {
+            records[record_index].actors[1] = actor;
+            actor = displaced_actor;
         }
-        records[slot].objects[2] = object;
+        records[record_index].actors[2] = actor;
     }
 
     for (i = 0; i < 6; ++i) {
         int score;
-        if (object_qualified(records[i].objects[0])) {
-            if (object_qualified(records[i].objects[1])) {
-                if (object_qualified(records[i].objects[2])) {
-                    score = records[i].objects[2]->field_2C +
-                        ((records[i].objects[1]->field_2C + records[i].objects[0]->field_2C) >> 1);
+        if (object_qualified(records[i].actors[0])) {
+            if (object_qualified(records[i].actors[1])) {
+                if (object_qualified(records[i].actors[2])) {
+                    score = records[i].actors[2]->agility +
+                        ((records[i].actors[1]->agility + records[i].actors[0]->agility) >> 1);
                 } else {
-                    score = records[i].objects[1]->field_2C + records[i].objects[0]->field_2C;
+                    score = records[i].actors[1]->agility + records[i].actors[0]->agility;
                 }
-            } else if (object_qualified(records[i].objects[2])) {
-                score = records[i].objects[2]->field_2C + records[i].objects[0]->field_2C;
+            } else if (object_qualified(records[i].actors[2])) {
+                score = records[i].actors[2]->agility + records[i].actors[0]->agility;
             } else {
-                score = records[i].objects[0]->field_2C;
+                score = records[i].actors[0]->agility;
             }
-        } else if (object_qualified(records[i].objects[1])) {
-            if (object_qualified(records[i].objects[2])) {
-                score = records[i].objects[2]->field_2C + records[i].objects[1]->field_2C;
+        } else if (object_qualified(records[i].actors[1])) {
+            if (object_qualified(records[i].actors[2])) {
+                score = records[i].actors[2]->agility + records[i].actors[1]->agility;
             } else {
-                score = records[i].objects[1]->field_2C;
+                score = records[i].actors[1]->agility;
             }
-        } else if (object_qualified(records[i].objects[2])) {
-            score = records[i].objects[2]->field_2C;
+        } else if (object_qualified(records[i].actors[2])) {
+            score = records[i].actors[2]->agility;
         } else {
             score = 0;
         }
-        records[i].field0C = score;
+        records[i].agility_score = score;
     }
 
-    below = -1;
-    above = -1;
+    lower_side_record = -1;
+    upper_side_record = -1;
     for (i = 0; i < 6; ++i) {
-        if (records[i].objects[0] != 0) {
-            if (records[i].field10 >= 6) {
-                if (above < 0 || records[i].field10 < records[above].field10)
-                    above = i;
+        if (records[i].actors[0] != 0) {
+            if (records[i].formation_row >= 6) {
+                if (upper_side_record < 0 || records[i].formation_row < records[upper_side_record].formation_row)
+                    upper_side_record = i;
             } else {
-                if (below < 0 || records[below].field10 < records[i].field10)
-                    below = i;
+                if (lower_side_record < 0 || records[lower_side_record].formation_row < records[i].formation_row)
+                    lower_side_record = i;
             }
         }
     }
 
-    if (above >= 0 && below < 0) {
-        i = above;
-    } else if (below >= 0 && above < 0) {
-        i = below;
-    } else if (above >= 0 && below >= 0) {
+    if (upper_side_record >= 0 && lower_side_record < 0) {
+        i = upper_side_record;
+    } else if (lower_side_record >= 0 && upper_side_record < 0) {
+        i = lower_side_record;
+    } else if (upper_side_record >= 0 && lower_side_record >= 0) {
         /* KMC reverses the two ADD operands for ordinary indexed pointers here.
          * Form the real 36-byte offsets first to retain the original order;
          * both category indices have already been bounded to 0..5. */
         BattleResolutionRecord *aboveRecord = (BattleResolutionRecord *)
-            ((u32)(above * 0x24) + (u32)records);
+            ((u32)(upper_side_record * 0x24) + (u32)records);
         BattleResolutionRecord *belowRecord = (BattleResolutionRecord *)
-            ((u32)(below * 0x24) + (u32)records);
-        int aboveScore = aboveRecord->field0C;
-        int belowScore = belowRecord->field0C;
-        i = below;
+            ((u32)(lower_side_record * 0x24) + (u32)records);
+        int aboveScore = aboveRecord->agility_score;
+        int belowScore = belowRecord->agility_score;
+        i = lower_side_record;
         if (aboveScore >= belowScore)
-            i = above;
+            i = upper_side_record;
     } else {
         i = 0;
     }
 
     while (i != 0) {
-        temporary = records[i];
+        swap_record = records[i];
         records[i] = records[i - 1];
-        records[i - 1] = temporary;
+        records[i - 1] = swap_record;
         --i;
     }
 }

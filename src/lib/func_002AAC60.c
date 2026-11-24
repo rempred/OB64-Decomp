@@ -126,19 +126,19 @@ void func_002AAC60(s32 commandWord)
         isLeader = func_0020BFF8(unit) != 0;
         if (func_0020C120(unit) == 1 && actor->sourceIndex == 1) {
             state = 0x3B;
-        } else if (unit->class48.word == 0x87) {
+        } else if (unit->primary_class_id.word == 0x87) {
             states[i] = 4;
             continue;
-        } else if (unit->class48.word == 0xA1) {
+        } else if (unit->primary_class_id.word == 0xA1) {
             states[i] = 4;
             continue;
-        } else if (unit->class48.word == 0x88) {
+        } else if (unit->primary_class_id.word == 0x88) {
             states[i] = 4;
             continue;
         }
-        func_002A9364(i, unit->class48.word, unit->variant4C.word, state,
+        func_002A9364(i, unit->primary_class_id.word, unit->secondary_class_id.word, state,
                       isLeader, isLeader, 0, 1);
-        sub = unit->links[actor->sourceIndex];
+        sub = unit->primary_children[actor->sourceIndex];
         if ((s16)func_002A0A68(actor, actor->x, actor->z, sub->x, sub->z) == 3) {
             states[i] = 5;
         } else {
@@ -148,7 +148,7 @@ void func_002AAC60(s32 commandWord)
     for (u = 0; u < 20; u++) {
         func_0002CD70(&work[4], 0xFF, 0x10);
         unit = &D_801CE8BC->units[u];
-        if (unit->class48.word == 0) continue;
+        if (unit->primary_class_id.word == 0) continue;
         if ((D_8022AC80 == -3 || D_8022AC80 == -10) &&
             func_002AD574(unit) == 1) continue;
         i = find_free_slot(u);
@@ -165,14 +165,14 @@ void func_002AAC60(s32 commandWord)
             isLeader = 0;
         }
         func_002AB810(&work[4], unit, u, isLeader,
-                      unit->class48.word, unit->variant4C.word, seenLeader);
-        if (unit->class48.word == 0x87) seenLeader = 1;
+                      unit->primary_class_id.word, unit->secondary_class_id.word, seenLeader);
+        if (unit->primary_class_id.word == 0x87) seenLeader = 1;
         for (isLeader = 0; work[isLeader + 4] != -1; isLeader++) {
             i = work[isLeader + 4];
             actor = D_8022A974->actors[i];
             states[i] = 2;
             func_002A0B14(i, startX, startY, actor->x, actor->z, 0,
-                          (s32)(555.0f * func_00201670(unit->class48.word, unit->variant4C.word)));
+                          (s32)(555.0f * func_00201670(unit->primary_class_id.word, unit->secondary_class_id.word)));
             if (actor->animation == 10) {
                 func_002A9364(i, -1, -1, 5, -1, -1, 0, 1);
             } else {

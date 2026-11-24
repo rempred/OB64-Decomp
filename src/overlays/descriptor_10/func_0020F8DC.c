@@ -25,7 +25,7 @@ extern inline s32 func_0020C0CC(void *record) {
     if (u == ((void *)0)) {
         return 0;
     }
-    return (u->flags40 >> 12) & 1;
+    return (u->battle_flags >> 12) & 1;
 }
 extern inline int func_0020C2C0(void *record) {
     if (record == 0) {
@@ -39,26 +39,26 @@ extern inline int func_0020C32C(void *record) {
     }
     return (*(const unsigned int *)((const unsigned char *)record + 0x40) >> 1) & 1;
 }
-extern inline BattleUnit *BattleGetUnit(u32 i) {
-    u8 *base = D_801CE8BC;
-    s32 off;
-    if (i < 20) {
-        off = i * 0xF8;
-        if (*(s32 *)(base + off + 0x20C) != 0) {
-            return (BattleUnit *)(base + (off + 0x1C4));
+extern inline BattleUnit *BattleGetUnit(u32 actor_index) {
+    u8 *scene_bytes = D_801CE8BC;
+    s32 roster_byte_offset;
+    if (actor_index < 20) {
+        roster_byte_offset = actor_index * 0xF8;
+        if (*(s32 *)(scene_bytes + roster_byte_offset + 0x20C) != 0) {
+            return (BattleUnit *)(scene_bytes + (roster_byte_offset + 0x1C4));
         }
     }
     return ((void *)0);
 }
 s32 func_0020F80C(void);
 s32 func_0020F8DC(void) {
-    s32 i;
+    s32 actor_index;
     BattleUnit *u;
     if (func_0020F80C()) {
         return 1;
     }
-    for (i = 0; i < 20; i++) {
-        u = BattleGetUnit(i);
+    for (actor_index = 0; actor_index < 20; actor_index++) {
+        u = BattleGetUnit(actor_index);
         if (func_0020C2C0(u)) {
             continue;
         }

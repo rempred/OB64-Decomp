@@ -34,24 +34,24 @@ extern void func_0021D230(int, int, void *, int);
 extern int func_002344B4(BattleRosterRecord *, int);
 extern void func_0022ADFC(void *, int, int, int, int, u8, int, int);
 
-int func_002317C8(int *outTime, int selector)
+int func_002317C8(int *outTime, int side_selector)
 {
-    SideObject temporary;
+    SideObject temporary_actor;
     SideObject *allocated[4];
     /* Six is a storage hypothesis, not a proved selected-count bound.
        Preserve the original uncapped scan and all consumers. */
     SideObject *selected[6];
-    int rawIndex[4];
+    int free_actor_indices[4];
     int prior[6];
     int calculated[6];
     int duration[6];
     int difference;
-    SideObject *object;
-    SideObject *selectionObject;
-    SideObject *freeObject;
-    SideObject *publicationObject;
+    SideObject *actor;
+    SideObject *candidate_actor;
+    SideObject *free_actor;
+    SideObject *scheduled_actor;
     SideContext *context;
-    u8 *global;
+    u8 *scene_bytes;
     int quantity;
     /* The growing count dies at its snapshot; this word then holds the scale. */
     int countOrAmount;
@@ -79,26 +79,26 @@ int func_002317C8(int *outTime, int selector)
     /* difference is still zero: this tests every nonzero 32-bit selector.
        KMC retains this comparison allocation after folding the test,
        preserving the retail frame without another emitted instruction. */
-    if ((u32)selector > (u32)difference)
+    if ((u32)side_selector > (u32)difference)
         bit = D_801CE8C0->field82E & 2;
     else
         bit = D_801CE8C0->field82E & 1;
     if (bit != 0)
         return 0;
-    quantity = func_002335E0(selector);
+    quantity = func_002335E0(side_selector);
     countOrAmount = 0;
     if ((u32)countOrAmount >= (u32)quantity)
         return 0;
     for (i = 0; i < 20; ++i) {
-        selectionObject = func_0020C478(i);
-        if (func_0020C2C0(selectionObject) != 0)
+        candidate_actor = func_0020C478(i);
+        if (func_0020C2C0(candidate_actor) != 0)
             continue;
-        if (selector != 0)
-            accepted = func_0020C014(selectionObject);
+        if (side_selector != 0)
+            accepted = func_0020C014(candidate_actor);
         else
-            accepted = func_0020BFF8(selectionObject);
+            accepted = func_0020BFF8(candidate_actor);
         if (accepted != 0) {
-            selected[countOrAmount] = selectionObject;
+            selected[countOrAmount] = candidate_actor;
             ++countOrAmount;
         }
     }
@@ -119,27 +119,27 @@ int func_002317C8(int *outTime, int selector)
     func_00023780(&calculated[0], 20);
     func_00023780(&duration[0], 20);
     func_00023780(&prior[0], 20);
-    func_00023780(&temporary, 0xF8);
-    if (selector != 0) {
-        func_0020C908(&temporary.roster, 0);
+    func_00023780(&temporary_actor, 0xF8);
+    if (side_selector != 0) {
+        func_0020C908(&temporary_actor.roster, 0);
         context = D_801CE8C0;
         bit = context->field82E | 2;
         context->field82E = bit;
     } else {
-        func_0020D870(&temporary.roster, 0);
+        func_0020D870(&temporary_actor.roster, 0);
         context = D_801CE8C0;
         bit = context->field82E | 1;
         context->field82E = bit;
     }
-    temporary.roster.field78 = 0;
-    temporary.roster.field7C = func_00043b2c(1, 1) & 0xFF;
+    temporary_actor.roster.action_kind = 0;
+    temporary_actor.roster.action_id = func_00043b2c(1, 1) & 0xFF;
     countOrAmount = (int)(((float)((count + 5) / (count * 2)) *
                         (float)quantity) / 12.0f);
     maximum = *outTime;
     for (i = 0; i < count; ++i) {
-        if (maximum < selected[i]->roster.field94)
-            maximum = selected[i]->roster.field94;
-        value = countOrAmount * func_00237750(&temporary.roster, &selected[i]->roster, 0, 0, 0);
+        if (maximum < selected[i]->roster.scheduled_time)
+            maximum = selected[i]->roster.scheduled_time;
+        value = countOrAmount * func_00237750(&temporary_actor.roster, &selected[i]->roster, 0, 0, 0);
         calculated[i] = value;
         if (value <= 0)
             value = 1;
@@ -153,12 +153,12 @@ int func_002317C8(int *outTime, int selector)
     objectDuration = 0;
     i = 0;
     offset = 0x1C4;
-    global = D_801CE8BC;
+    scene_bytes = D_801CE8BC;
     for (; i < 20; ++i, offset += 0xF8) {
-        freeObject = (SideObject *)(global + offset);
-        if (freeObject->roster.class48.word == 0) {
-            allocated[objectDuration] = freeObject;
-            rawIndex[objectDuration] = i;
+        free_actor = (SideObject *)(scene_bytes + offset);
+        if (free_actor->roster.primary_class_id.word == 0) {
+            allocated[objectDuration] = free_actor;
+            free_actor_indices[objectDuration] = i;
             ++objectDuration;
             if (objectDuration == requested)
                 break;
@@ -171,49 +171,49 @@ int func_002317C8(int *outTime, int selector)
         if (remaining < 0)
             chunk = quantity;
         func_0021D2C0(0x3B, maximum, allocated[i], 0xFF,
-                     chunk, selector, i);
+                     chunk, side_selector, i);
         func_0021D230(0x3C, maximum + 45, allocated[i], 0xFF);
         quantity = remaining;
     }
     maximum += 45;
-    if (selector != 0)
-        temporary.roster.row58 = 14;
+    if (side_selector != 0)
+        temporary_actor.roster.formation_row = 14;
     else
-        temporary.roster.row58 = -6;
+        temporary_actor.roster.formation_row = -6;
     /* Keep the capture, index reset and unconditional copy separate.
        The explicit positive-count entry avoids KMC folding the index test
        and moving its reset past the return-value capture. */
-    capturedDuration = func_002344B4(&temporary.roster, 15);
+    capturedDuration = func_002344B4(&temporary_actor.roster, 15);
     i = 0;
     objectDuration = capturedDuration;
     if (count > 0) {
         do {
-            object = selected[i];
-            duration[i] = func_002344B4(&object->roster, 15);
+            actor = selected[i];
+            duration[i] = func_002344B4(&actor->roster, 15);
             stepValue = calculated[i];
-            prior[i] = object->roster.field94;
+            prior[i] = actor->roster.scheduled_time;
             stepTime = maximum + duration[i];
-            func_0022ADFC(object, 0, stepTime, stepValue, 0, 0, 1, 0);
+            func_0022ADFC(actor, 0, stepTime, stepValue, 0, 0, 1, 0);
             ++i;
         } while (i < count);
     }
     for (i = 0; i < requested; ++i) {
-        publicationObject = allocated[i];
+        scheduled_actor = allocated[i];
         difference = objectDuration - duration[0];
-        func_0021D230(0x3D, maximum + objectDuration, publicationObject, 0xFF);
+        func_0021D230(0x3D, maximum + objectDuration, scheduled_actor, 0xFF);
     }
     *outTime = maximum + duration[0] + difference;
     for (i = 0; i < count; ++i) {
-        object = selected[i];
-        previousDifference = object->roster.field94 - prior[i];
+        actor = selected[i];
+        previousDifference = actor->roster.scheduled_time - prior[i];
         if (previousDifference < difference)
-            object->roster.field94 += difference - previousDifference;
-        previousDifference = object->roster.field94;
+            actor->roster.scheduled_time += difference - previousDifference;
+        previousDifference = actor->roster.scheduled_time;
         currentTime = *outTime;
         if (currentTime < (u32)previousDifference)
             *outTime = previousDifference;
         else
-            object->roster.field94 = currentTime;
+            actor->roster.scheduled_time = currentTime;
     }
     return 1;
 }

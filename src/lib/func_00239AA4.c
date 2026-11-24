@@ -47,19 +47,19 @@ typedef struct BattleUnit {
     u8 unk98[0x60];
 } BattleUnit;
 int D_801C8B84(void *record);
-s32 D_801C8C58(BattleUnit *u);
+s32 D_801C8C58(BattleUnit *actor);
 int D_801C8B68(void *record);
-s32 D_801C8B08(BattleUnit *u);
-s32 func_00239AA4(BattleUnit *u, u32 f) {
+s32 D_801C8B08(BattleUnit *actor);
+s32 func_00239AA4(BattleUnit *actor, u32 flags) {
     s32 r = 0;
-    s32 k = D_801C8B08(u);
-    if (f & 0x8000) {
+    s32 k = D_801C8B08(actor);
+    if (flags & 0x8000) {
         return 0;
     }
-    if (D_801C8B84(u) && (f & 0x400)) {
+    if (D_801C8B84(actor) && (flags & 0x400)) {
         r = 1;
     }
-    if (D_801C8B68(u) && !(f & 0x400)) {
+    if (D_801C8B68(actor) && !(flags & 0x400)) {
         r = 1;
     }
     if (k == 0) {
@@ -67,10 +67,10 @@ s32 func_00239AA4(BattleUnit *u, u32 f) {
     }
     if (r) {
         if (k == 0xFF) {
-            if (!D_801C8C58(u)) {
+            if (!D_801C8C58(actor)) {
                 r = 0;
             }
-        } else if (!D_8016FF5C(u->unk48, k)) {
+        } else if (!D_8016FF5C(actor->unk48, k)) {
             r = 0;
         }
     }

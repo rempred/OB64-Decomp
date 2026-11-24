@@ -9,28 +9,28 @@
 typedef unsigned long long u64;
 
 typedef struct A9CObject {
-    u8 *pointers[3];
+    u8 *primary_children[3];
     u8 unknown0C[0x3C];
-    int field48;
-    int field4C;
+    int primary_class_id;
+    int secondary_class_id;
     u8 unknown50[7];
-    u8 field57;
+    u8 formation_column_low;
     u8 unknown58[3];
-    u8 field5B;
-    int field5C;
+    u8 formation_row_low;
+    int world_x;
     u8 unknown60[4];
-    int field64;
-    int field68;
-    int field6C;
-    int field70;
+    int world_z;
+    int target_actor_index;
+    int actions_used;
+    int action_limit;
     u8 unknown74[8];
-    u32 field7C;
+    u32 action_id;
     u8 unknown80[4];
     int field84;
     int field88;
     int field8C;
     u8 unknown90[4];
-    int field94;
+    int scheduled_time;
 } A9CObject;
 
 typedef struct A9CContext {
@@ -145,60 +145,60 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
     int result;
     int auxiliaryGuard;
     float rounded;
-    u8 byte57;
-    u8 byte5B;
+    u8 formation_column_low;
+    u8 formation_row_low;
 
     func_00023780(work.words, 8);
     auxiliaryGuard = 0;
     for (i = 0; i < 3; ++i) {
         raw[i] = -1;
-        if (func_0020C104(input->objects[i]) == 0)
+        if (func_0020C104(input->actors[i]) == 0)
             continue;
-        if (func_0020C2C0(input->objects[i]) != 0)
+        if (func_0020C2C0(input->actors[i]) != 0)
             continue;
-        if (func_0020C32C(input->objects[i]) != 0)
+        if (func_0020C32C(input->actors[i]) != 0)
             continue;
-        if (func_0020C2F4(input->objects[i]) != 0)
+        if (func_0020C2F4(input->actors[i]) != 0)
             continue;
-        if (func_0020C310(input->objects[i]) != 0)
+        if (func_0020C310(input->actors[i]) != 0)
             continue;
-        if (((A9CObject *)input->objects[i])->field6C != D_801CE8C0->field00)
+        if (((A9CObject *)input->actors[i])->actions_used != D_801CE8C0->field00)
             continue;
-        if (((A9CObject *)input->objects[i])->field6C >= ((A9CObject *)input->objects[i])->field70)
+        if (((A9CObject *)input->actors[i])->actions_used >= ((A9CObject *)input->actors[i])->action_limit)
             continue;
-        firstResult = func_00233ED4(input->objects[i]);
-        firstDestination = ((A9CObject *)input->objects[i]);
+        firstResult = func_00233ED4(input->actors[i]);
+        firstDestination = ((A9CObject *)input->actors[i]);
         raw[i] = firstResult;
-        firstDestination->field68 = firstResult;
+        firstDestination->target_actor_index = firstResult;
     }
 
     if (raw[0] != -1 && raw[0] == raw[1] && raw[0] == raw[2]) {
         for (i = 0; i < 3; ++i)
-            selected[i] = ((A9CObject *)input->objects[i]);
+            selected[i] = ((A9CObject *)input->actors[i]);
         selectedCount = 3;
         pendingTarget = func_0020C478(raw[0]);
         target = pendingTarget;
     } else {
         if (raw[0] != -1 && raw[0] == raw[1]) {
             raw[2] = -1;
-            selected[0] = (A9CObject *)input->objects[0];
-            selected[1] = (A9CObject *)input->objects[1];
+            selected[0] = (A9CObject *)input->actors[0];
+            selected[1] = (A9CObject *)input->actors[1];
             pendingTarget = func_0020C478(raw[0]);
-            excluded = (A9CObject *)input->objects[2];
+            excluded = (A9CObject *)input->actors[2];
         } else if (raw[0] != -1 && raw[0] == raw[2]) {
             raw[1] = -1;
-            selected[0] = (A9CObject *)input->objects[0];
-            selected[1] = (A9CObject *)input->objects[2];
+            selected[0] = (A9CObject *)input->actors[0];
+            selected[1] = (A9CObject *)input->actors[2];
             pendingTarget = func_0020C478(raw[0]);
-            excluded = (A9CObject *)input->objects[1];
+            excluded = (A9CObject *)input->actors[1];
         } else {
             if (raw[1] == -1 || raw[1] != raw[2])
                 return 0;
             raw[0] = -1;
-            selected[0] = (A9CObject *)input->objects[1];
-            selected[1] = (A9CObject *)input->objects[2];
+            selected[0] = (A9CObject *)input->actors[1];
+            selected[1] = (A9CObject *)input->actors[2];
             pendingTarget = func_0020C478(raw[1]);
-            excluded = (A9CObject *)input->objects[0];
+            excluded = (A9CObject *)input->actors[0];
         }
         selectedCount = 2;
         target = pendingTarget;
@@ -212,19 +212,19 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         return 0;
     if (func_0020C2C0(target) != 0)
         return 0;
-    byte57 = target->field57;
-    byte5B = target->field5B;
+    formation_column_low = target->formation_column_low;
+    formation_row_low = target->formation_row_low;
     for (i = 0; i < selectedCount; ++i)
         func_0022EF50(selected[i]);
 
-    if ((u32)target->field94 < (u32)*outTime)
+    if ((u32)target->scheduled_time < (u32)*outTime)
         base = *outTime;
     else
-        base = target->field94;
+        base = target->scheduled_time;
     if (func_0020BFE4() != 0) {
         for (i = 0; i < selectedCount; ++i) {
             values[i] = func_0022222C((BattleRosterRecord *)selected[i], (BattleRosterRecord *)target,
-                                     selected[i]->field5C, selected[i]->field64);
+                                     selected[i]->world_x, selected[i]->world_z);
             scheduled[i] = base - values[i];
         }
     } else {
@@ -235,7 +235,7 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
     }
     base = 0;
     for (i = 0; i < selectedCount; ++i) {
-        deficitObjectTime = selected[i]->field94;
+        deficitObjectTime = selected[i]->scheduled_time;
         if (scheduled[i] < deficitObjectTime && base < deficitObjectTime - scheduled[i])
             base = deficitObjectTime - scheduled[i];
     }
@@ -245,18 +245,18 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         do {
             scheduled[i] += base;
             object = selected[i];
-            publicationTime = object->field94;
+            publicationTime = object->scheduled_time;
             if (publicationTime < scheduled[i])
                 publicationTime = scheduled[i];
-            object->field94 = publicationTime;
+            object->scheduled_time = publicationTime;
             if ((u32)D_801CE8C0->field828 < (u32)publicationTime)
                 publication = publicationTime;
             else
                 publication = D_801CE8C0->field828;
-            object->field94 = publication;
+            object->scheduled_time = publication;
             func_0021D200(0x1C, publication, object);
-            object->field6C++;
-            scheduled[i] = object->field94;
+            object->actions_used++;
+            scheduled[i] = object->scheduled_time;
             ++i;
         } while (i < selectedCount);
     }
@@ -267,9 +267,9 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
     if (func_0020BFE4() != 0) {
         for (i = 0; i < selectedCount; ++i)
             func_0021D28C(3, scheduled[i], selected[i], 0xFF,
-                         selected[i]->field68, 5);
-        source = (A9CStateBlock *)(selected[0]->pointers[0] + 0x44);
-        sourceEnd = (A9CStateBlock *)(selected[0]->pointers[0] + 0x94);
+                         selected[i]->target_actor_index, 5);
+        source = (A9CStateBlock *)(selected[0]->primary_children[0] + 0x44);
+        sourceEnd = (A9CStateBlock *)(selected[0]->primary_children[0] + 0x94);
         destination = work.fields.state.blocks;
         do {
             *destination++ = *source++;
@@ -292,21 +292,21 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
     mixed = ((first << 18) & 0x0C000000U) | (second << 15) | third;
     mixed %= 100U;
     decision = mixed < (u32)decision;
-    source = (A9CStateBlock *)(selected[0]->pointers[0] + 0x44);
-    sourceEnd = (A9CStateBlock *)(selected[0]->pointers[0] + 0x94);
+    source = (A9CStateBlock *)(selected[0]->primary_children[0] + 0x44);
+    sourceEnd = (A9CStateBlock *)(selected[0]->primary_children[0] + 0x94);
     destination = work.fields.state.blocks;
     do {
         *destination++ = *source++;
     } while (source != sourceEnd);
     rawMode = 0;
     if (decision == 0) {
-        if (func_00201584(target->field48, target->field4C) != 0)
+        if (func_00201584(target->primary_class_id, target->secondary_class_id) != 0)
             rawMode = 2;
         else
             rawMode = 1;
     }
-    selector = (u8)func_00201798(selected[0]->field48, selected[0]->field4C,
-                                selected[0]->field7C, rawMode);
+    selector = (u8)func_00201798(selected[0]->primary_class_id, selected[0]->secondary_class_id,
+                                selected[0]->action_id, rawMode);
     func_001F0E64(&work.fields.state.record, selector);
     duration = func_001F197C(selected[0], &work.fields.state.evaluator, work.words);
     if (func_0020BFE4() == 0) {
@@ -317,17 +317,17 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         if (func_0020BFE4() != 0) {
             if (decision != 0)
                 func_0021D28C(6, scheduled[i] + values[i], selected[i], 0xFF,
-                             selector, selected[i]->field7C);
+                             selector, selected[i]->action_id);
             else
                 func_0021D28C(7, scheduled[i] + values[i], selected[i], 0xFF,
-                             selector, selected[i]->field7C);
+                             selector, selected[i]->action_id);
         } else {
             if (decision != 0)
                 func_0021D28C(6, scheduled[i], selected[i], 0,
-                             0, selected[i]->field7C);
+                             0, selected[i]->action_id);
             else
                 func_0021D28C(7, scheduled[i], selected[i], 0,
-                             0, selected[i]->field7C);
+                             0, selected[i]->action_id);
         }
     }
     startTime = scheduled[0] + values[0];
@@ -337,19 +337,19 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         if (func_0020BFE4() != 0) {
             helperResult = func_0020D72C(selected[0]);
             func_0021D2C0(0x17, endpoint, 0, 0x5D, (u8)narrowed,
-                         helperResult, selected[0]->field68);
+                         helperResult, selected[0]->target_actor_index);
         }
         if (endpoint < startTime)
             startTime = endpoint;
         successExtra = func_0020BFE4() != 0 ? 25 : 5;
         if (endTime < successExtra + endpoint)
             endTime = successExtra + endpoint;
-    } else if (func_00201584(target->field48, target->field4C) != 0) {
+    } else if (func_00201584(target->primary_class_id, target->secondary_class_id) != 0) {
         subtype = func_0020BFF8(target) != 0 ? 0x60 : 0x5F;
         if (func_0020BFE4() != 0) {
             helperResult = func_0020D72C(selected[0]);
             func_0021D2C0(0x17, endpoint, 0, subtype, (u8)narrowed,
-                         helperResult, selected[0]->field68);
+                         helperResult, selected[0]->target_actor_index);
         }
         if (endpoint < startTime)
             startTime = endpoint;
@@ -362,7 +362,7 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         hitCount = 0;
         for (i = 0; i < selectedCount; ++i) {
             for (j = 0; j < 3; ++j) {
-                if (selected[i]->pointers[j] != 0) {
+                if (selected[i]->primary_children[j] != 0) {
                     innerOperand = func_002361EC(selected[0]);
                     threshold = func_002363FC(target);
                     innerResult = func_002365BC(selected[0], target,
@@ -384,12 +384,12 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
             auxiliary = 0;
         func_0022ADFC(target, 0, scheduled[0] + values[0] + work.words[0],
                      result, 0, 0, 1, auxiliary);
-        if (endTime < target->field94)
-            endTime = target->field94;
+        if (endTime < target->scheduled_time)
+            endTime = target->scheduled_time;
     } else {
-        followup = (u8)func_00201584(target->field48, target->field4C);
-        source = (A9CStateBlock *)(target->pointers[0] + 0x44);
-        sourceEnd = (A9CStateBlock *)(target->pointers[0] + 0x94);
+        followup = (u8)func_00201584(target->primary_class_id, target->secondary_class_id);
+        source = (A9CStateBlock *)(target->primary_children[0] + 0x44);
+        sourceEnd = (A9CStateBlock *)(target->primary_children[0] + 0x94);
         destination = work.fields.state.blocks;
         do {
             *destination++ = *source++;
@@ -399,8 +399,8 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         firstEvaluation = func_001F197C(target, &work.fields.state.evaluator, 0);
         func_0021D230(0xE, scheduled[0] + values[0] + work.words[0], target, 0xFF);
         objectTime = scheduled[0] + values[0] + work.words[0] + firstEvaluation;
-        source = (A9CStateBlock *)(target->pointers[0] + 0x44);
-        failureSourceEnd = (A9CStateBlock *)(target->pointers[0] + 0x94);
+        source = (A9CStateBlock *)(target->primary_children[0] + 0x44);
+        failureSourceEnd = (A9CStateBlock *)(target->primary_children[0] + 0x94);
         do {
             *failureState++ = *source++;
         } while (source != failureSourceEnd);
@@ -412,16 +412,16 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         secondEvaluation = func_001F197C(target, &work.fields.state.evaluator, 0);
         func_0021D230(0xF, objectTime, target, 0xFF);
         firstEvaluation += secondEvaluation;
-        if (target->field94 < objectTime + firstEvaluation)
-            target->field94 = objectTime + firstEvaluation;
-        if (endTime < target->field94)
-            endTime = target->field94;
+        if (target->scheduled_time < objectTime + firstEvaluation)
+            target->scheduled_time = objectTime + firstEvaluation;
+        if (endTime < target->scheduled_time)
+            endTime = target->scheduled_time;
     }
     for (i = 0; i < selectedCount; ++i) {
         secondEvaluation = 0;
         if (func_0020BFE4() != 0) {
-            secondEvaluation = func_002223E0((BattleRosterRecord *)selected[i], (BattleRosterRecord *)target, byte57, byte5B,
-                                             selected[i]->field5C, selected[i]->field64);
+            secondEvaluation = func_002223E0((BattleRosterRecord *)selected[i], (BattleRosterRecord *)target, formation_column_low, formation_row_low,
+                                             selected[i]->world_x, selected[i]->world_z);
             func_0021D25C(8, scheduled[i] + values[i] + duration, selected[i], 0xFF, 11);
             func_0021D25C(9, scheduled[i] + values[i] + duration + secondEvaluation,
                          selected[i], 0xFF, 12);
@@ -431,7 +431,7 @@ int func_00230A9C(BattleResolutionRecord *input, int *outTime)
         selected[i]->field8C = duration + secondEvaluation - selected[i]->field88;
         if (selected[i]->field8C < 0)
             selected[i]->field8C = 0;
-        selected[i]->field94 = scheduled[i] + values[i] + duration + secondEvaluation;
+        selected[i]->scheduled_time = scheduled[i] + values[i] + duration + secondEvaluation;
     }
     *outTime = scheduled[0] + selected[0]->field84 + selected[0]->field88;
     return 1;

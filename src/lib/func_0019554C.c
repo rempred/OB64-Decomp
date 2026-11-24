@@ -15,14 +15,14 @@ void func_0019554C(
     int record_index,
     const CharacterTemplate *source,
     int template_member,
-    u8 force_52_byte_pool,
+    u8 force_scenario_roster,
     int source_index_word)
 {
     u8 source_index = (u8)source_index_word;
     u8 class_id;
     u8 secondary_class_id;
     unsigned int bounded_source_index;
-    int forced_52_byte_pool;
+    int forced_scenario_roster;
     s16 equipment_word;
     u8 equipment_low_byte;
     s16 equipment_high_shifted;
@@ -31,7 +31,7 @@ void func_0019554C(
     CharacterRecord *finished_character;
 
     /* Select between the 0x34-byte and 0x38-byte character tables. */
-    if ((force_52_byte_pool != 0) | (source_index >= 30)) {
+    if ((force_scenario_roster != 0) | (source_index >= 30)) {
         character = &g_func_0019554C_records_52[record_index];
     } else {
         character = &g_func_0019554C_records_56[record_index].record;
@@ -101,9 +101,9 @@ void func_0019554C(
         finished_character->status_flags = 0x80;
     }
 
-    forced_52_byte_pool = force_52_byte_pool != 0;
+    forced_scenario_roster = force_scenario_roster != 0;
     bounded_source_index = source_index;
-    func_000FC120(forced_52_byte_pool | (bounded_source_index >= 30), (u8)record_index);
+    func_000FC120(forced_scenario_roster | (bounded_source_index >= 30), (u8)record_index);
 
     if (func_0016C454() != 0) {
         if ((bounded_source_index == 30) & (template_member == 0)) {
@@ -112,7 +112,7 @@ void func_0019554C(
         }
     }
 
-    if ((force_52_byte_pool == 0) & (source_index < 30)) {
+    if ((force_scenario_roster == 0) & (source_index < 30)) {
         CharacterRecord56 *extended_character = (CharacterRecord56 *)finished_character;
 
         extended_character->field_34 = record_index;

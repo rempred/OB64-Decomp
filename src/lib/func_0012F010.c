@@ -14,40 +14,40 @@ extern u8 D_80195593[][52];
 extern u8 D_80193BF3[][56];
 
 /* Check status bit 2 for each occupied member with nonzero HP. */
-s32 func_0012F010(s32 source_index)
+s32 func_0012F010(s32 squad_source_index)
 {
-    s32 uses_56_byte_table = source_index < 30;
-    u8 *source = g_func_001957D0_source_records[source_index].bytes + 2;
-    s32 slot;
-    for (slot = 0; slot < 5; slot++) {
-        s32 member = source[slot];
+    s32 uses_army_roster = squad_source_index < 30;
+    u8 *member_slots = g_func_001957D0_source_records[squad_source_index].bytes + 2;
+    s32 member_slot;
+    for (member_slot = 0; member_slot < 5; member_slot++) {
+        s32 member_index = member_slots[member_slot];
         s32 status_flags;
-        if (member == 0) {
+        if (member_index == 0) {
             continue;
         }
-        if (member >= 100) {
-            if (!uses_56_byte_table) {
-                if (D_8019532C[member] == 0) {
+        if (member_index >= 100) {
+            if (!uses_army_roster) {
+                if (D_8019532C[member_index] == 0) {
                     continue;
                 }
-                status_flags = D_80195480[member];
+                status_flags = D_80195480[member_index];
             } else {
-                if (D_80190EBC[member] == 0) {
+                if (D_80190EBC[member_index] == 0) {
                     continue;
                 }
-                status_flags = D_80191010[member];
+                status_flags = D_80191010[member_index];
             }
         } else {
-            if (!uses_56_byte_table) {
-                if (D_80195578[member][0] == 0) {
+            if (!uses_army_roster) {
+                if (D_80195578[member_index][0] == 0) {
                     continue;
                 }
-                status_flags = D_80195593[member][0];
+                status_flags = D_80195593[member_index][0];
             } else {
-                if (D_80193BD8[member][0] == 0) {
+                if (D_80193BD8[member_index][0] == 0) {
                     continue;
                 }
-                status_flags = D_80193BF3[member][0];
+                status_flags = D_80193BF3[member_index][0];
             }
         }
         if (!(status_flags & 4)) {

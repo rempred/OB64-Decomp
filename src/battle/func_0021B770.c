@@ -18,7 +18,7 @@ void func_0021B770(void)
 {
     s32 actor_index;
     s32 squad_source_index;
-    s32 uses_56_byte_table;
+    s32 uses_army_roster;
     void *actor;
     u8 *character_bytes;
 
@@ -33,13 +33,13 @@ void func_0021B770(void)
             (*(u16 *)((s8 *)actor + 0x20) == 0))) {
             if (func_0020C014(actor) != 0) {
                 squad_source_index = *(u8 *)0x801976DC;
-                uses_56_byte_table = squad_source_index < 0x1E;
+                uses_army_roster = squad_source_index < 0x1E;
             } else {
                 squad_source_index = *(u8 *)0x801976E8;
-                uses_56_byte_table = squad_source_index < 0x1E;
+                uses_army_roster = squad_source_index < 0x1E;
             }
 
-            if (uses_56_byte_table != 0) {
+            if (uses_army_roster != 0) {
                 character_bytes = (*(u8 *)((s8 *)actor + 0xF6) * 0x38) + D_80193BC0;
             } else {
                 character_bytes = (*(u8 *)((s8 *)actor + 0xF6) * 0x34) + D_80195560;

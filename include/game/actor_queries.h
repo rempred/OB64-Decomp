@@ -5,7 +5,7 @@
 
 typedef struct QueryActor {
     u8 pad000[0x147];
-    u8 inputIndex;
+    u8 battle_roster_index;
 } QueryActor;
 
 typedef struct QueryScene {
@@ -17,15 +17,15 @@ typedef struct ActorInput {
     u8 pad00[0x34];
     u8 alignment;
     u8 pad35[0x13];
-    s32 artKey;
+    s32 primary_class_id;
     u8 pad4C[0xAA];
-    u8 memberIndex;
+    u8 member_index;
     u8 padF7;
 } ActorInput;
 
 typedef struct QueryResident {
     u8 pad000[0x1C4];
-    ActorInput inputs[20];
+    ActorInput roster[20];
 } QueryResident;
 
 extern QueryScene *D_8022A974;

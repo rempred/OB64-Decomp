@@ -9,12 +9,12 @@ typedef struct {
 
 extern int func_0020BFF8(void *);
 
-void func_0026C4EC(void *object, void *outputView)
+void func_0026C4EC(void *actor, void *outputView)
 {
     E04Vec3 *output = (E04Vec3 *)outputView;
-    int first = func_0020BFF8(object);
+    int flag8 = func_0020BFF8(actor);
 
-    if (first != func_0020C2D8(object)) {
+    if (flag8 != func_0020C2D8(actor)) {
         output->x = 1.0f;
     } else {
         output->x = -1.0f;

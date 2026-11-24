@@ -52,35 +52,35 @@ s32 D_801C8EB8(BattleUnit *u);
 s32 func_00235754(BattleUnit *a, BattleUnit *b);
 s32 func_00235BB0(BattleUnit *a, BattleUnit *b);
 s32 func_00235DC8(BattleUnit *a, BattleUnit *b);
-BattleUnit *func_00233B6C(BattleUnit *self, BattleUnit **list, s32 n, u8 mode) {
-    s32 best = -9999;
-    s32 bestIdx = -1;
-    s32 i;
-    s32 v;
-    for (i = 0; i < n; i++) {
-        v = func_00235754(list[i], ((void *)0)) + func_00235DC8(list[i], ((void *)0)) +
-            func_00235BB0(list[i], ((void *)0));
-        v *= list[i]->actsMax - list[i]->actsUsed;
-        v++;
-        if (mode != 0 && D_801C8E9C(list[i])) {
-            v = 0;
-        } else if (mode == 8 && D_801C8E64(list[i])) {
-            v = 0;
-        } else if (mode == 10 && D_801C8EB8(list[i])) {
-            v = 0;
-        } else if (mode == 4 && D_801C8E80(list[i])) {
-            v = 0;
+BattleUnit *func_00233B6C(BattleUnit *self, BattleUnit **candidates, s32 candidate_count, u8 mode) {
+    s32 best_score = -9999;
+    s32 best_index = -1;
+    s32 candidate_index;
+    s32 score;
+    for (candidate_index = 0; candidate_index < candidate_count; candidate_index++) {
+        score = func_00235754(candidates[candidate_index], ((void *)0)) + func_00235DC8(candidates[candidate_index], ((void *)0)) +
+            func_00235BB0(candidates[candidate_index], ((void *)0));
+        score *= candidates[candidate_index]->actsMax - candidates[candidate_index]->actsUsed;
+        score++;
+        if (mode != 0 && D_801C8E9C(candidates[candidate_index])) {
+            score = 0;
+        } else if (mode == 8 && D_801C8E64(candidates[candidate_index])) {
+            score = 0;
+        } else if (mode == 10 && D_801C8EB8(candidates[candidate_index])) {
+            score = 0;
+        } else if (mode == 4 && D_801C8E80(candidates[candidate_index])) {
+            score = 0;
         }
-        if (v == best) {
-            best = v - (rand() & 1);
+        if (score == best_score) {
+            best_score = score - (rand() & 1);
         }
-        if (best < v) {
-            best = v;
-            bestIdx = i;
+        if (best_score < score) {
+            best_score = score;
+            best_index = candidate_index;
         }
     }
-    if (bestIdx < 0) {
+    if (best_index < 0) {
         return ((void *)0);
     }
-    return list[bestIdx];
+    return candidates[best_index];
 }

@@ -40,13 +40,13 @@ void func_00218B58(void)
     s32 var_s3_221;
     s32 var_s2_24;
     s32 var_v1_72;
-    BattleRosterRecord *temp_v0_138;
-    BattleRosterRecord *temp_v0_27;
-    s8 *var_s0_270;
-    s8 *var_s0_40;
+    BattleRosterRecord *checked_actor;
+    BattleRosterRecord *actor;
+    s8 *raised_child_slot;
+    s8 *child_slot;
     void *temp_a0_352;
     Func001F0E64Record *temp_a0_91;
-    void *temp_v0_335;
+    void *primary_child;
     void *temp_v1_288;
     void *temp_v1_296;
     void *temp_v1_305;
@@ -61,39 +61,39 @@ void func_00218B58(void)
     }
     first_one = 1;
 loop_2:
-    temp_v0_27 = func_0020C478(var_s2_24);
-    if (func_0020C2C0(temp_v0_27) != 0) {
+    actor = func_0020C478(var_s2_24);
+    if (func_0020C2C0(actor) != 0) {
         goto block_26;
     }
-    if (func_0020C32C(temp_v0_27) != 0) {
+    if (func_0020C32C(actor) != 0) {
         goto block_26;
     }
-    if ((*(u16 *)((s8 *)(temp_v0_27) + (0x20))) != 0) {
-        var_s0_40 = (s8 *) temp_v0_27;
+    if ((*(u16 *)((s8 *)(actor) + (0x20))) != 0) {
+        child_slot = (s8 *) actor;
         goto block_10;
     }
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != first_one) {
         goto block_7;
     }
-    if (func_0020C014(temp_v0_27) != 0) {
-        var_s0_40 = (s8 *) temp_v0_27;
+    if (func_0020C014(actor) != 0) {
+        child_slot = (s8 *) actor;
         goto block_10;
     }
 block_7:
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != 2) {
         goto block_26;
     }
-    if (func_0020BFF8(temp_v0_27) == 0) {
+    if (func_0020BFF8(actor) == 0) {
         goto block_26;
     }
-    var_s0_40 = (s8 *) temp_v0_27;
+    child_slot = (s8 *) actor;
 block_10:
-    var_s3_221 = (s32) (var_s0_40 + 0xC);
+    var_s3_221 = (s32) (child_slot + 0xC);
 loop_11:
-    if (*(void **) var_s0_40 == 0) {
+    if (*(void **) child_slot == 0) {
         goto block_25;
     }
-    if (func_0020C014(temp_v0_27) == 0) {
+    if (func_0020C014(actor) == 0) {
         goto block_16;
     }
     var_v1_72 = sp10;
@@ -101,7 +101,7 @@ loop_11:
         goto block_22;
     }
 block_16:
-    if (func_0020BFF8(temp_v0_27) != 0) {
+    if (func_0020BFF8(actor) != 0) {
         goto block_18;
     }
     goto block_25;
@@ -112,7 +112,7 @@ block_18:
     }
 block_22:
     var_a1_89 = 5;
-    temp_a0_91 = (Func001F0E64Record *)((s8 *) (*(void **) var_s0_40) + 0x44);
+    temp_a0_91 = (Func001F0E64Record *)((s8 *) (*(void **) child_slot) + 0x44);
     if (var_v1_72 != first_one) {
         goto block_24;
     }
@@ -120,8 +120,8 @@ block_22:
 block_24:
     func_001F0E64(temp_a0_91, var_a1_89);
 block_25:
-    var_s0_40 += 4;
-    if ((u32) var_s0_40 < (u32) var_s3_221) {
+    child_slot += 4;
+    if ((u32) child_slot < (u32) var_s3_221) {
         goto loop_11;
     }
 block_26:
@@ -160,45 +160,45 @@ block_35:
 block_37:
     var_s3_221 = 0;
 loop_38:
-    temp_v0_138 = func_0020C478(var_s3_221);
-    if (func_0020C2C0(temp_v0_138) != 0) {
+    checked_actor = func_0020C478(var_s3_221);
+    if (func_0020C2C0(checked_actor) != 0) {
         goto block_50;
     }
-    if (func_0020C32C(temp_v0_138) != 0) {
+    if (func_0020C32C(checked_actor) != 0) {
         goto block_50;
     }
-    if ((*(u16 *)((s8 *)(temp_v0_138) + (0x20))) != 0) {
+    if ((*(u16 *)((s8 *)(checked_actor) + (0x20))) != 0) {
         goto block_45;
     }
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != 1) {
         goto block_43;
     }
-    if (func_0020C014(temp_v0_138) != 0) {
+    if (func_0020C014(checked_actor) != 0) {
         goto block_45;
     }
 block_43:
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != 2) {
         goto block_50;
     }
-    if (func_0020BFF8(temp_v0_138) == 0) {
+    if (func_0020BFF8(checked_actor) == 0) {
         goto block_50;
     }
 block_45:
-    if (func_0020C014(temp_v0_138) == 0) {
+    if (func_0020C014(checked_actor) == 0) {
         goto block_47;
     }
     if (((sp10 == 0) | (sp10 == 3)) != 0) {
         goto block_50;
     }
 block_47:
-    if (func_0020BFF8(temp_v0_138) == 0) {
+    if (func_0020BFF8(checked_actor) == 0) {
         goto block_49;
     }
     if (((sp14 == 0) | (sp14 == 3)) != 0) {
         goto block_50;
     }
 block_49:
-    var_s1_131 &= 0 - ((u32) (((*(u16 *)((s8 *)((*(void **)((s8 *)(temp_v0_138) + (0)))) + (0x1C))) + 0x18F) & 0xFFFF) >= 0x2BBU);
+    var_s1_131 &= 0 - ((u32) (((*(u16 *)((s8 *)((*(void **)((s8 *)(checked_actor) + (0)))) + (0x1C))) + 0x18F) & 0xFFFF) >= 0x2BBU);
 block_50:
     var_s3_221 += 1;
     if (var_s3_221 < 0x14) {
@@ -222,65 +222,65 @@ block_55:
     later_one = 1;
     later_two = 2;
 loop_56:
-    temp_v0_27 = func_0020C478(var_s3_221);
-    if (func_0020C2C0(temp_v0_27) != 0) {
+    actor = func_0020C478(var_s3_221);
+    if (func_0020C2C0(actor) != 0) {
         goto block_81;
     }
-    if (func_0020C32C(temp_v0_27) != 0) {
+    if (func_0020C32C(actor) != 0) {
         goto block_81;
     }
-    if (func_0020C0CC(temp_v0_27) != 0) {
+    if (func_0020C0CC(actor) != 0) {
         goto block_81;
     }
-    if ((*(u16 *)((s8 *)(temp_v0_27) + (0x20))) != 0) {
+    if ((*(u16 *)((s8 *)(actor) + (0x20))) != 0) {
         goto block_64;
     }
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != later_one) {
         goto block_62;
     }
-    if (func_0020C014(temp_v0_27) != 0) {
+    if (func_0020C014(actor) != 0) {
         goto block_64;
     }
 block_62:
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != later_two) {
         goto block_81;
     }
-    if (func_0020BFF8(temp_v0_27) == 0) {
+    if (func_0020BFF8(actor) == 0) {
         goto block_81;
     }
 block_64:
-    var_s2_24 = (s32) (func_002016F4((*(s32 *)((s8 *)(temp_v0_27) + (0x48))), (*(s32 *)((s8 *)(temp_v0_27) + (0x4C)))) / 2.0f);
-    var_s0_270 = (s8 *) temp_v0_27;
+    var_s2_24 = (s32) (func_002016F4((*(s32 *)((s8 *)(actor) + (0x48))), (*(s32 *)((s8 *)(actor) + (0x4C)))) / 2.0f);
+    raised_child_slot = (s8 *) actor;
 loop_65:
-    if ((*(void **)((s8 *)(var_s0_270) + (0))) == 0) {
+    if ((*(void **)((s8 *)(raised_child_slot) + (0))) == 0) {
         goto block_80;
     }
-    if (func_0020C014(temp_v0_27) == 0) {
+    if (func_0020C014(actor) == 0) {
         goto block_71;
     }
     if (sp10 != later_one) {
         goto block_69;
     }
-    temp_v1_288 = (*(void **)((s8 *)(var_s0_270) + (0)));
+    temp_v1_288 = (*(void **)((s8 *)(raised_child_slot) + (0)));
     (*(u16 *)((s8 *)(temp_v1_288) + (0x1C))) = (u16) ((*(u16 *)((s8 *)(temp_v1_288) + (0x1C))) + var_s2_24);
 block_69:
     if (sp10 != later_two) {
         goto block_79;
     }
-    temp_v1_296 = (*(void **)((s8 *)(var_s0_270) + (0)));
+    temp_v1_296 = (*(void **)((s8 *)(raised_child_slot) + (0)));
     (*(u16 *)((s8 *)(temp_v1_296) + (0x1C))) = (u16) ((*(u16 *)((s8 *)(temp_v1_296) + (0x1C))) - var_s2_24);
     goto block_79;
 block_71:
     if (sp14 != later_one) {
         goto block_73;
     }
-    temp_v1_305 = (*(void **)((s8 *)(var_s0_270) + (0)));
+    temp_v1_305 = (*(void **)((s8 *)(raised_child_slot) + (0)));
     (*(u16 *)((s8 *)(temp_v1_305) + (0x1C))) = (u16) ((*(u16 *)((s8 *)(temp_v1_305) + (0x1C))) - var_s2_24);
 block_73:
     if (sp14 != later_two) {
         goto block_75;
     }
-    temp_v1_313 = (*(void **)((s8 *)(var_s0_270) + (0)));
+    temp_v1_313 = (*(void **)((s8 *)(raised_child_slot) + (0)));
     (*(u16 *)((s8 *)(temp_v1_313) + (0x1C))) = (u16) ((*(u16 *)((s8 *)(temp_v1_313) + (0x1C))) + var_s2_24);
 block_75:
     if (sp18 == 0) {
@@ -292,23 +292,23 @@ block_75:
     if (sp14 == 0) {
         goto block_79;
     }
-    var_v1_72 = *(u8 *)((s8 *)(temp_v0_27) + (0xAB));
+    var_v1_72 = *(u8 *)((s8 *)(actor) + (0xAB));
     var_v1_72 -= 4;
     if (var_v1_72 < 0) {
         var_v1_72 = 0;
     }
-    (*(u8 *)((s8 *)(temp_v0_27) + (0xAC))) = (u8) var_v1_72;
-    (*(u8 *)((s8 *)(temp_v0_27) + (0xAB))) = (u8) var_v1_72;
+    (*(u8 *)((s8 *)(actor) + (0xAC))) = (u8) var_v1_72;
+    (*(u8 *)((s8 *)(actor) + (0xAB))) = (u8) var_v1_72;
 block_79:
-    temp_v0_335 = (*(void **)((s8 *)(var_s0_270) + (0)));
-    (*(u16 *)((s8 *)((*(void **)((s8 *)(var_s0_270) + (0)))) + (0x1E))) = (u16) (s32) func_001FF7EC((s16) (*(u16 *)((s8 *)(temp_v0_335) + (0x1C))), (*(s16 *)((s8 *)(temp_v0_335) + (0x20))));
-    (*(u16 *)((s8 *)((*(void **)((s8 *)(var_s0_270) + (0xC)))) + (0x1C))) = (u16) (*(u16 *)((s8 *)((*(void **)((s8 *)(var_s0_270) + (0)))) + (0x1C)));
-    (*(u16 *)((s8 *)((*(void **)((s8 *)(var_s0_270) + (0xC)))) + (0x1E))) = (u16) (*(u16 *)((s8 *)((*(void **)((s8 *)(var_s0_270) + (0)))) + (0x1E)));
-    temp_a0_352 = (*(void **)((s8 *)(var_s0_270) + (0)));
+    primary_child = (*(void **)((s8 *)(raised_child_slot) + (0)));
+    (*(u16 *)((s8 *)((*(void **)((s8 *)(raised_child_slot) + (0)))) + (0x1E))) = (u16) (s32) func_001FF7EC((s16) (*(u16 *)((s8 *)(primary_child) + (0x1C))), (*(s16 *)((s8 *)(primary_child) + (0x20))));
+    (*(u16 *)((s8 *)((*(void **)((s8 *)(raised_child_slot) + (0xC)))) + (0x1C))) = (u16) (*(u16 *)((s8 *)((*(void **)((s8 *)(raised_child_slot) + (0)))) + (0x1C)));
+    (*(u16 *)((s8 *)((*(void **)((s8 *)(raised_child_slot) + (0xC)))) + (0x1E))) = (u16) (*(u16 *)((s8 *)((*(void **)((s8 *)(raised_child_slot) + (0)))) + (0x1E)));
+    temp_a0_352 = (*(void **)((s8 *)(raised_child_slot) + (0)));
     (*(s32 *)((s8 *)(temp_a0_352) + (4))) = (s32) ((s16) (*(u16 *)((s8 *)(temp_a0_352) + (0x1C))) * 0x1E);
 block_80:
-    var_s0_270 += 4;
-    if ((u32) var_s0_270 < (u32) ((s8 *) temp_v0_27 + 0xC)) {
+    raised_child_slot += 4;
+    if ((u32) raised_child_slot < (u32) ((s8 *) actor + 0xC)) {
         goto loop_65;
     }
 block_81:

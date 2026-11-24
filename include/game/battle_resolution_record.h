@@ -5,9 +5,9 @@
 
 /* The resolution loops reorder this entire nine-word record. */
 typedef struct BattleResolutionRecord {
-    BattleRosterRecord *objects[3];
-    int field0C;
-    int field10;
+    BattleRosterRecord *actors[3];
+    int agility_score;
+    int formation_row;
     unsigned int unknown14[4];
 } BattleResolutionRecord;
 

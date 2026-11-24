@@ -1,21 +1,22 @@
 extern unsigned char *D_801CE8BC;
 
-void *func_0020C478(unsigned int index)
+/* Look up one of the 20 scene roster slots with a nonzero primary class word. */
+void *func_0020C478(unsigned int actor_index)
 {
-    unsigned int offset;
-    unsigned char *base;
+    unsigned int roster_byte_offset;
+    unsigned char *scene_bytes;
 
-    if (index >= 20) {
+    if (actor_index >= 20) {
         goto fail;
     }
 
-    base = D_801CE8BC;
-    offset = index * 0xF8;
-    if (*(void **)(base + offset + 0x20C) == 0) {
+    scene_bytes = D_801CE8BC;
+    roster_byte_offset = actor_index * 0xF8;
+    if (*(void **)(scene_bytes + roster_byte_offset + 0x20C) == 0) {
         goto fail;
     }
 
-    return &base[offset + 0x1C4];
+    return &scene_bytes[roster_byte_offset + 0x1C4];
 
 fail:
     return 0;

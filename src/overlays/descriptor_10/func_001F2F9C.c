@@ -3,34 +3,34 @@
 #include "game/class_field_lookups.h"
 extern u8 D_801976DC;
 typedef struct {
-    u8 b[0x38];
-} PChar1F;
+    u8 record_bytes[0x38];
+} ArmyRosterNameRow;
 typedef struct {
-    u8 b[0x34];
-} EChar1F;
-extern PChar1F D_80193BC0_copy[];
-extern EChar1F D_80195560_copy[];
+    u8 record_bytes[0x34];
+} ScenarioRosterNameRow;
+extern ArmyRosterNameRow D_80193BC0_copy[];
+extern ScenarioRosterNameRow D_80195560_copy[];
 extern u8 D_801976E8;
 extern const char D_801CE890[];
 int func_000238B0(char *buf, const char *fmt, ...);
 void func_001F2E48(signed char *s, s32 side);
-/* Format the persistent character's name for the side selected by the battle actor. */
-void func_001F2F9C(u8 *actor, u8 *other_actor) {
+/* Show the class-change message with the actor's persistent name. */
+void func_001F2F9C(u8 *actor, u8 *replacement_actor) {
     signed char message[64];
-    u8 *character_bytes;
-    s32 uses_56_byte_table;
+    u8 *character_name;
+    s32 uses_army_roster;
     if (func_0020C014(actor)) {
-        s32 source_index = D_801976DC;
-        uses_56_byte_table = source_index < 30;
+        s32 squad_source_index = D_801976DC;
+        uses_army_roster = squad_source_index < 30;
     } else {
-        s32 source_index = D_801976E8;
-        uses_56_byte_table = source_index < 30;
+        s32 squad_source_index = D_801976E8;
+        uses_army_roster = squad_source_index < 30;
     }
-    if (uses_56_byte_table) {
-        character_bytes = D_80193BC0_copy[actor[0xF6]].b;
+    if (uses_army_roster) {
+        character_name = D_80193BC0_copy[actor[0xF6]].record_bytes;
     } else {
-        character_bytes = D_80195560_copy[actor[0xF6]].b;
+        character_name = D_80195560_copy[actor[0xF6]].record_bytes;
     }
-    func_000238B0((char *)message, D_801CE890, character_bytes, D_8016E1DC(other_actor[0x4B], other_actor[0x4F]));
+    func_000238B0((char *)message, D_801CE890, character_name, D_8016E1DC(replacement_actor[0x4B], replacement_actor[0x4F]));
     func_001F2E48(message, func_0020C014(actor));
 }

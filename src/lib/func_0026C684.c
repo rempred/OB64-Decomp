@@ -46,11 +46,11 @@ static __inline__ void e04_c310_inline(E04Vec3 *vector, float matrix[4][4])
     e04_c230_inline(&temporary, matrix);
 }
 
-static __inline__ void e04_flag_vector(void *object, E04Vec3 *output)
+static __inline__ void e04_flag_vector(void *actor, E04Vec3 *output)
 {
-    int first = func_0020BFF8(object);
+    int flag8 = func_0020BFF8(actor);
 
-    if (first != func_0020C2D8(object)) {
+    if (flag8 != func_0020C2D8(actor)) {
         output->x = 1.0f;
     } else {
         output->x = -1.0f;
@@ -59,11 +59,11 @@ static __inline__ void e04_flag_vector(void *object, E04Vec3 *output)
     output->z = 0.0f;
 }
 
-void func_0026C684(void *object, void *matrixView)
+void func_0026C684(void *actor, void *matrixView)
 {
     float (*matrix)[4] = (float (*)[4])matrixView;
     E04Vec3 temporary;
 
-    e04_flag_vector(object, &temporary);
+    e04_flag_vector(actor, &temporary);
     e04_c310_inline(&temporary, matrix);
 }

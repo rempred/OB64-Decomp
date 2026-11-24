@@ -6,7 +6,7 @@
 /* Private whole-owner reconstruction. A matching command stays in the loop;
  * mismatch counters form the separate final branch.
  * ROM 21EBBC..2213DC includes the 988-byte continuation.
- * Raw command and field names do not assert gameplay meaning. */
+ * Unresolved command fields keep their offset names. */
 #include "game/class_field_lookups.h"
 #include "game/character_record.h"
 
@@ -64,21 +64,21 @@ typedef struct TerminalCommandChild {
 } TerminalCommandChild;
 
 struct TerminalCommandRecord {
-    TerminalCommandChild *first[3], *second[3], *extra18, *extra1C;
-    u16 half20, half22;
+    TerminalCommandChild *primary_children[3], *secondary_children[3], *extra18, *extra1C;
+    u16 hp, max_hp;
     u8 gap24[12];
-    u8 byte30, byte31, experience, byte33, byte34, byte35;
-    u16 half36, half38, half3A, half3C;
+    u8 luck, level, experience, element, alignment, byte35;
+    u16 equipment_slot_0, equipment_slot_1, equipment_slot_2, equipment_slot_3;
     u8 gap3E[2];
-    u32 flags;
-    int word44, word48, word4C, word50, word54, word58;
-    int word5C, word60, word64, word68, word6C, word70, word74;
+    u32 battle_flags;
+    int word44, primary_class_id, secondary_class_id, body_resource_key, formation_column, formation_row;
+    int world_x, world_y, world_z, word68, actions_used, action_limit, word74;
     int word78, word7C;
     u8 gap80[24];
     int word98, word9C, wordA0;
     u8 byteA4, byteA5, byteA6, byteA7, byteA8, byteA9, byteAA, byteAB;
     int wordsAC[9];
-    u8 byteD0, byteD1, bytesD2[12], bytesDE[12], bytesEA[12], byteF6, byteF7;
+    u8 byteD0, byteD1, bytesD2[12], bytesDE[12], bytesEA[12], member_index, byteF7;
 };
 
 typedef struct TerminalCommandStream {
@@ -166,7 +166,7 @@ extern void func_0025FD90(s16, s16 *, s16 *);
 #define POSE(child) (&(child)->pose.view.record)
 #define SELECTED_CHILDREN() \
     for (i = 0; i < 3u; i++) \
-        if (((record->byteA5 >> i) & 1) != 0 && record->first[i] != 0)
+        if (((record->byteA5 >> i) & 1) != 0 && record->primary_children[i] != 0)
 #define COPY_TRIPLE(child, selector) \
     (child)->half2E = D_801D0738[(selector) * 3]; \
     (child)->half30 = D_801D0738[(selector) * 3 + 1]; \
@@ -177,11 +177,11 @@ extern void func_0025FD90(s16, s16 *, s16 *);
     else WORD_AT(D_801CE8BC, 0x6064) += value
 #define CLEAR_PAIRS() \
     SELECTED_CHILDREN() { \
-        func_001F0F90(record->first[i]); \
-        func_001F1050(record->second[i]); \
-        record->first[i]->word18 = 0; \
-        record->second[i]->word18 = 0; \
-        record->first[i] = 0; record->second[i] = 0; \
+        func_001F0F90(record->primary_children[i]); \
+        func_001F1050(record->secondary_children[i]); \
+        record->primary_children[i]->word18 = 0; \
+        record->secondary_children[i]->word18 = 0; \
+        record->primary_children[i] = 0; record->secondary_children[i] = 0; \
     }
 
 /* Give each command its own inline expansion before the compiler
@@ -319,14 +319,14 @@ void func_0021EBBC(void)
                         if (skipMode != 0) continue;
                     }
                     if (func_0020C2C0(other) != 0) continue;
-                    if (source->word48 == 0x87 && func_0020C0CC(other) != 0) flag = 1;
+                    if (source->primary_class_id == 0x87 && func_0020C0CC(other) != 0) flag = 1;
                     for (slot = 0; source->bytesD2[slot] != 255; slot++)
                         if (source->bytesD2[slot] == i) { flag = 1; break; }
                     for (slot = 0; source->bytesDE[slot] != 255; slot++)
                         if (source->bytesDE[slot] == i) { flag = 2; break; }
                     for (childIndex = 0; childIndex < 3u; childIndex++) {
                         TerminalCommandPayload *payload;
-                        child = other->first[childIndex];
+                        child = other->primary_children[childIndex];
                         if (child == 0) continue;
                         payload = &child->payload;
                         interpolationInput[0] = child->payload.bytes[1];
@@ -357,8 +357,8 @@ void func_0021EBBC(void)
                         payload->bytes[0] = 0;
                         payload->bytes[1] = 10;
                     }
-                    if (other->extra18 != 0) other->extra18->payload = other->first[0]->payload;
-                    if (other->extra1C != 0) other->extra1C->payload = other->first[0]->payload;
+                    if (other->extra18 != 0) other->extra18->payload = other->primary_children[0]->payload;
+                    if (other->extra1C != 0) other->extra1C->payload = other->primary_children[0]->payload;
                 }
             }
             goto advance_command;
@@ -391,14 +391,14 @@ void func_0021EBBC(void)
         }
         switch (raw) {
         case 0x1C: /* 21F254 */
-            record->word6C = (u32)record->word6C + 1u;
+            record->actions_used = (u32)record->actions_used + 1u;
             waitStream = D_801CE8C0;
 wait_command:
             if (waitStream->byte819 < waitLimit) waitStream->byte819 = waitLimit;
             break;
         case 1: { /* 21F280: all three slots, no mask/null guard */
             u32 index;
-            for (index = 0; index < 3u; index++) func_001F0E04(&record->first[index]->pose.panel, 0);
+            for (index = 0; index < 3u; index++) func_001F0E04(&record->primary_children[index]->pose.panel, 0);
             break;
         }
         case 2: { /* 21F2B4 */
@@ -410,23 +410,23 @@ wait_command:
             SELECTED_CHILDREN() {
                 record->word68 = record->byteA6;
                 target = func_0020C478(record->byteA6);
-                child = record->first[i];
-                sourceAdjustment = func_00201838(child->owner->word48, child->owner->word4C);
-                targetAdjustment = func_002018A0(target->word48, target->word4C);
+                child = record->primary_children[i];
+                sourceAdjustment = func_00201838(child->owner->primary_class_id, child->owner->secondary_class_id);
+                targetAdjustment = func_002018A0(target->primary_class_id, target->secondary_class_id);
                 firstVector.x = child->currentX; firstVector.y = 0.0f;
                 firstVector.z = child->currentZ;
                 adjustment = (int)sourceAdjustment + (int)targetAdjustment;
-                secondVector.x = func_0020BF50(target->word58); secondVector.y = 0.0f;
-                secondVector.z = func_0020BF34(target->word54);
+                secondVector.x = func_0020BF50(target->formation_row); secondVector.y = 0.0f;
+                secondVector.z = func_0020BF34(target->formation_column);
                 distance = vec3_distance(&firstVector, &secondVector);
                 currentX = child->currentX;
                 shortened = distance - (float)adjustment;
-                xIncrement = shortened * (float)(int)((u32)target->word5C - currentX) / distance;
-                zIncrement = shortened * (float)(int)((u32)target->word64 - child->currentZ) / distance;
+                xIncrement = shortened * (float)(int)((u32)target->world_x - currentX) / distance;
+                zIncrement = shortened * (float)(int)((u32)target->world_z - child->currentZ) / distance;
                 func_0021D7F0((TerminalMotionState *)child,
                     (int)((float)currentX + xIncrement),
                     (int)((float)child->currentZ + zIncrement));
-                func_001F0E64(POSE(record->first[i]), record->byteA7);
+                func_001F0E64(POSE(record->primary_children[i]), record->byteA7);
             }
             record->word74 = 2;
             break;
@@ -436,8 +436,8 @@ wait_command:
                 TerminalCommandRecord *target;
                 record->word68 = record->byteA6;
                 target = func_0020C478(record->byteA6);
-                func_0021E070((TerminalMotionState *)record->first[i], (TerminalMotionActor *)target);
-                func_001F0E64(POSE(record->first[i]), record->byteA7);
+                func_0021E070((TerminalMotionState *)record->primary_children[i], (TerminalMotionActor *)target);
+                func_001F0E64(POSE(record->primary_children[i]), record->byteA7);
             }
             record->word74 = 2;
             break;
@@ -448,16 +448,16 @@ wait_command:
             SELECTED_CHILDREN() {
                 record->word68 = record->byteA6;
                 target = func_0020C478(record->byteA6);
-                child = record->first[i];
-                deltaX = (u32)target->word5C - child->owner->word5C;
-                if (deltaX <= 0) deltaX = (u32)child->owner->word5C - target->word5C;
-                deltaZ = (u32)target->word64 - child->owner->word64;
-                if (deltaZ <= 0) deltaZ = (u32)child->owner->word64 - target->word64;
+                child = record->primary_children[i];
+                deltaX = (u32)target->world_x - child->owner->world_x;
+                if (deltaX <= 0) deltaX = (u32)child->owner->world_x - target->world_x;
+                deltaZ = (u32)target->world_z - child->owner->world_z;
+                if (deltaZ <= 0) deltaZ = (u32)child->owner->world_z - target->world_z;
                 x = func_0020BF50(func_0020C014(child->owner) ? 5 : 3);
-                if ((int)((u32)x - child->owner->word5C) > 0) {
-                    travel = (u32)x - child->owner->word5C;
+                if ((int)((u32)x - child->owner->world_x) > 0) {
+                    travel = (u32)x - child->owner->world_x;
                 } else {
-                    travel = (u32)child->owner->word5C - x;
+                    travel = (u32)child->owner->world_x - x;
                 }
                 /* This single-pass C loop retains KMC's loop notes around
                  * the quotient. They keep the following loads after the divide
@@ -466,71 +466,71 @@ wait_command:
                     z = (int)((u32)deltaZ * travel) / deltaX;
                 } while (0);
                 {
-                    int ownerZ = child->owner->word64;
-                    z = target->word54 < child->owner->word54
+                    int ownerZ = child->owner->world_z;
+                    z = target->formation_column < child->owner->formation_column
                         ? (u32)ownerZ - z : (u32)z + ownerZ;
                 }
                 func_0021D7F0((TerminalMotionState *)child, x, z);
-                func_001F0E64(POSE(record->first[i]), record->byteA7);
+                func_001F0E64(POSE(record->primary_children[i]), record->byteA7);
             }
             record->word74 = 2;
             break;
         }
         case 5: /* 21F5E0 */
-            SELECTED_CHILDREN() func_001F0E64(POSE(record->first[i]), record->byteA6);
+            SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), record->byteA6);
             record->word74 = 5;
             break;
         case 6: /* 21F630 */
-            SELECTED_CHILDREN() func_001F0E64(POSE(record->first[i]), record->byteA6);
+            SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), record->byteA6);
             record->word74 = 6;
             if (func_0020BFE4() == 0) {
                 memcpy(record, &firstCopy, 248);
                 func_0022EF50(&firstCopy);
-                func_002267A8(record, 14, (int)firstCopy.field7C);
+                func_002267A8(record, 14, (int)firstCopy.action_id);
             }
             break;
         case 7: /* 21F6AC */
-            SELECTED_CHILDREN() func_001F0E64(POSE(record->first[i]), record->byteA6);
+            SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), record->byteA6);
             record->word74 = 6;
             if (func_0020BFE4() == 0) {
                 memcpy(record, &secondCopy, 248);
                 func_0022EF50(&secondCopy);
-                func_002267A8(record, 14, (int)secondCopy.field7C);
+                func_002267A8(record, 14, (int)secondCopy.action_id);
             }
             break;
         case 0x21: { /* 21F734 */
             TerminalCommandRecord *target = func_0020C478(record->byteA7);
-            func_0021DCA4((TerminalMotionState *)record->first[0], (BattleRosterRecord *)target);
-            func_001F0E64(POSE(record->first[0]), record->byteA6);
+            func_0021DCA4((TerminalMotionState *)record->primary_children[0], (BattleRosterRecord *)target);
+            func_001F0E64(POSE(record->primary_children[0]), record->byteA6);
             record->word74 = 0x21;
             break;
         }
         case 8: /* 21F764 */
             SELECTED_CHILDREN() {
-                func_0021E50C((TerminalMotionState *)record->first[i]);
-                func_001F0E64(POSE(record->first[i]), record->byteA6);
+                func_0021E50C((TerminalMotionState *)record->primary_children[i]);
+                func_001F0E64(POSE(record->primary_children[i]), record->byteA6);
             }
             record->word68 = -1; record->word74 = 8;
             break;
         case 9: /* 21F7C4 */
             SELECTED_CHILDREN() {
-                func_001F0E64(POSE(record->first[i]), record->byteA6);
-                func_0021E99C((TerminalCopyState *)record->first[i], (TerminalCopyState *)record->second[i]);
+                func_001F0E64(POSE(record->primary_children[i]), record->byteA6);
+                func_0021E99C((TerminalCopyState *)record->primary_children[i], (TerminalCopyState *)record->secondary_children[i]);
             }
             record->word74 = 1;
             break;
         case 10: /* 21F81C */
             SELECTED_CHILDREN() {
-                func_0021E50C((TerminalMotionState *)record->first[i]);
-                func_001F0E64(POSE(record->first[i]), record->byteA6);
-                record->first[i]->phase = record->byteA7;
+                func_0021E50C((TerminalMotionState *)record->primary_children[i]);
+                func_001F0E64(POSE(record->primary_children[i]), record->byteA6);
+                record->primary_children[i]->phase = record->byteA7;
             }
             record->word68 = -1; record->word74 = 10;
             break;
         case 11: { /* 21F888 */
             int effect, side;
             if (record->byteA8 != 0)
-                SELECTED_CHILDREN() func_001F0E64(POSE(record->first[i]), record->byteA8);
+                SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), record->byteA8);
             if (func_0020BFE4() == 0)
                 func_002267A8(record, 14, func_002014C4(record->byteA7) & 255);
             effect = func_00044340(func_002014C4(record->byteA7) & 255);
@@ -542,7 +542,7 @@ wait_command:
             int value = (record->byteA6 << 8) + record->byteA7;
             record->wordA0 = 10;
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 if (func_0020C32C(record) == 0) {
                     func_001F0E64(POSE(child), 17);
                 } else {
@@ -552,8 +552,8 @@ wait_command:
             }
             if (value != 65535) {
                 func_002267A8(record, 1, value);
-                if (value >= record->half20) { value = record->half20; record->half20 = 0; }
-                else record->half20 -= value;
+                if (value >= record->hp) { value = record->hp; record->hp = 0; }
+                else record->hp -= value;
                 ACCOUNT_VALUE();
             }
             if (func_0020C32C(record) != 0)
@@ -565,7 +565,7 @@ wait_command:
             int value = (record->byteA6 << 8) + record->byteA7;
             record->wordA0 = 10;
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 if (func_0020C32C(record) == 0) {
                     func_001F0E64(POSE(child), 17);
                 } else {
@@ -573,8 +573,8 @@ wait_command:
                 }
                 COPY_TRIPLE(child, record->byteA8);
             }
-            firstOutput.x = func_0020C014(record) ? (u32)record->word5C + 38 : (u32)record->word5C - 38;
-            func_0020C4B8(firstOutput.x, record->word60, record->word64, &firstOutput.x, &firstOutput.y);
+            firstOutput.x = func_0020C014(record) ? (u32)record->world_x + 38 : (u32)record->world_x - 38;
+            func_0020C4B8(firstOutput.x, record->world_y, record->world_z, &firstOutput.x, &firstOutput.y);
             {
                 int x = firstOutput.x, y = firstOutput.y;
                 record->word98 = x;
@@ -582,8 +582,8 @@ wait_command:
             }
             if (value != 65535) {
                 func_002267A8(record, 1, value);
-                if (value >= record->half20) { value = record->half20; record->half20 = 0; }
-                else record->half20 -= value;
+                if (value >= record->hp) { value = record->hp; record->hp = 0; }
+                else record->hp -= value;
                 ACCOUNT_VALUE();
             }
             if (func_0020C32C(record) != 0)
@@ -592,26 +592,26 @@ wait_command:
             break;
         }
         case 0x2D: /* 21FCD0 */
-            SELECTED_CHILDREN() record->first[i]->phase = 0;
+            SELECTED_CHILDREN() record->primary_children[i]->phase = 0;
             record->word74 = 0x2D;
             func_00208DC8(D_800EB290, record->word98 < 160 ? D_801CEF14 : D_801CEF16);
             break;
         case 13: /* 21FD44 */
-            SELECTED_CHILDREN() func_001F0E64(POSE(record->first[i]), 18);
+            SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), 18);
             record->word74 = 1;
             break;
         case 14: /* 21FD90 */
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
-                u32 absent = (func_00201584(record->word48, record->word4C) & 255) == 0;
+                TerminalCommandChild *child = record->primary_children[i];
+                u32 absent = (func_00201584(record->primary_class_id, record->secondary_class_id) & 255) == 0;
                 func_001F0E64(POSE(child), ((0u - absent) & 23) | 21);
             }
             func_002267A8(record, 3, 0);
             break;
         case 15: /* 21FDF8 */
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
-                func_001F0E64(POSE(child), (func_00201584(record->word48, record->word4C) & 255) ? 22 : 24);
+                TerminalCommandChild *child = record->primary_children[i];
+                func_001F0E64(POSE(child), (func_00201584(record->primary_class_id, record->secondary_class_id) & 255) ? 22 : 24);
             }
             record->word74 = 1;
             break;
@@ -619,34 +619,34 @@ wait_command:
             int value = (record->byteA6 << 8) + record->byteA7;
             record->wordA0 = 10;
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 func_001F0E64(POSE(child), 25);
                 COPY_TRIPLE(child, record->byteA8);
             }
             func_002267A8(record, 7, value);
-            if (value >= record->half20) { value = record->half20; record->half20 = 0; }
-            else record->half20 -= value;
+            if (value >= record->hp) { value = record->hp; record->hp = 0; }
+            else record->hp -= value;
             ACCOUNT_VALUE();
             break;
         }
         case 17: /* 21FF9C */
             record->wordA0 = 10;
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 func_001F0E64(POSE(child), 25);
                 COPY_TRIPLE(child, record->byteA6);
             }
             func_002267A8(record, 13, 0);
             break;
         case 18: /* 220044 */
-            SELECTED_CHILDREN() func_001F0E64(POSE(record->first[i]), 26);
+            SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), 26);
             record->word74 = 1;
             break;
         case 19:
         case 0x30: { /* 220090 */
             int divisor;
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 func_001F0E64(POSE(child), 29);
                 copiedPose = child->pose; /* complete 80-byte 44..94 extent */
                 divisor = func_001F197C(record, &copiedPose.calculation.state, 0);
@@ -654,7 +654,7 @@ wait_command:
                 child->phase = 255 / divisor;
             }
             record->word74 = 19;
-            if (func_0020C104(record) == 0 || func_0020D444(record->half20, record->half22) == 0) {
+            if (func_0020C104(record) == 0 || func_0020D444(record->hp, record->max_hp) == 0) {
                 TerminalCommandChild *child;
                 int selector;
                 child = record->extra18;
@@ -679,8 +679,8 @@ wait_command:
             u32 lookupIndex;
             u8 *scan, *end;
             CLEAR_PAIRS();
-            record->half20 = 0;
-            record->flags = (record->flags & ~0x3Eu) | 1;
+            record->hp = 0;
+            record->battle_flags = (record->battle_flags & ~0x3Eu) | 1;
             if (raw != 0x31 || func_0020BF7C() != 0 || func_0020BF8C() != 0) break;
             if (func_0020C014(record) != 0) {
                 u16 *counter = &D_80196A70;
@@ -691,9 +691,9 @@ wait_command:
                 u8 *state = D_801CE8BC;
                 int counterIndex = BYTE_AT(state, 0x608D);
                 BYTE_AT(state, 0x608D) = counterIndex + 1;
-                BYTE_AT(state, 0x608E + counterIndex) = record->byte31;
+                BYTE_AT(state, 0x608E + counterIndex) = record->level;
             }
-            switch (record->word48) {
+            switch (record->primary_class_id) {
             case 0x58: event = 0xA4; break;
             case 0x5A: event = 0xA5; break;
             case 0x59: event = 0xA6; break;
@@ -703,19 +703,19 @@ wait_command:
             }
             func_00045d78(event, 1);
 after_record_dispatch:
-            func_0004196c(func_0020BFF8(record) & 255, record->byteF6);
+            func_0004196c(func_0020BFF8(record) & 255, record->member_index);
             side = func_0020C014(record);
             /* Keep the common reset separate from the per-arm write that
              * must precede the selector byte read in this compiler. */
-            record->word4C = 0;
+            record->secondary_class_id = 0;
             if (side != 0) {
-                *(volatile int *)&record->word48 = 0;
+                *(volatile int *)&record->primary_class_id = 0;
                 count = D_801976DC;
-                key = record->byteF6;
+                key = record->member_index;
             } else {
-                *(volatile int *)&record->word48 = 0;
+                *(volatile int *)&record->primary_class_id = 0;
                 count = D_801976E8;
-                key = record->byteF6;
+                key = record->member_index;
             }
             {
                 scan = D_801971F2 + count * 25;
@@ -734,85 +734,85 @@ after_record_dispatch:
             break;
         case 0x18: { /* 220434 */
             int value = (record->byteA6 << 8) + record->byteA7;
-            SELECTED_CHILDREN() record->first[i]->word00 = (void *)func_001F7370;
-            record->half20 += func_0020D4C8(record, value);
+            SELECTED_CHILDREN() record->primary_children[i]->word00 = (void *)func_001F7370;
+            record->hp += func_0020D4C8(record, value);
             func_002267A8(record, 2, value);
             break;
         }
         case 0x19: /* 2204B4 */
-            SELECTED_CHILDREN() record->first[i]->word00 = (void *)func_001F7148;
+            SELECTED_CHILDREN() record->primary_children[i]->word00 = (void *)func_001F7148;
             break;
         case 0x1A: /* 2204FC */
             record->wordA0 = 10;
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 if (func_0020C32C(record) == 0) func_001F0E64(POSE(child), 32);
                 COPY_TRIPLE(child, record->byteA7);
             }
-            record->flags |= 8;
+            record->battle_flags |= 8;
             record->word74 = 0x1A;
             func_002267A8(record, 6, 0);
             if (func_0020C32C(record) == 0) func_0020FA04(record, 9);
             break;
         case 0x1B: { /* 2205E8 */
             u32 clearedFlags;
-            SELECTED_CHILDREN() func_001F0E64(POSE(record->first[i]), 33);
-            clearedFlags = record->flags & ~8u;
+            SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), 33);
+            clearedFlags = record->battle_flags & ~8u;
             record->word74 = 1;
-            record->flags = clearedFlags;
+            record->battle_flags = clearedFlags;
             func_002267A8(record, 11, 0);
             update_extras(record);
             break;
         }
         case 0x23: /* 22065C */
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 child->word00 = (void *)func_001F7584; child->phase = 0;
                 func_001F0E64(POSE(child), 38);
             }
-            record->flags |= 2; record->word74 = 0x23;
+            record->battle_flags |= 2; record->word74 = 0x23;
             func_002267A8(record, 4, 0);
             update_extras(record);
             break;
         case 0x24: /* 2206DC */
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 child->word00 = (void *)func_001F7828; child->phase = 0;
                 func_001F0E64(POSE(child), 39);
                 child->pose.view.record.field_08 = 3;
             }
-            record->flags &= ~2u; record->word74 = 0x24;
+            record->battle_flags &= ~2u; record->word74 = 0x24;
             func_002267A8(record, 11, 0);
             break;
         case 0x25: /* 220768 */
             SELECTED_CHILDREN() {
                 if (func_0020C32C(record) == 0 && func_0020C2F4(record) == 0)
-                    func_001F0E64(POSE(record->first[i]), 34);
+                    func_001F0E64(POSE(record->primary_children[i]), 34);
             }
-            record->flags |= 4; record->word74 = 0x25;
+            record->battle_flags |= 4; record->word74 = 0x25;
             func_002267A8(record, 5, 0);
             if (func_0020C32C(record) == 0 && func_0020C2F4(record) == 0)
                 func_0020FA04(record, 5);
             break;
         case 0x26: { /* 220824 */
             u32 clearedFlags;
-            SELECTED_CHILDREN() func_001F0E64(POSE(record->first[i]), 35);
-            clearedFlags = record->flags & ~4u;
+            SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), 35);
+            clearedFlags = record->battle_flags & ~4u;
             record->word74 = 1;
-            record->flags = clearedFlags;
+            record->battle_flags = clearedFlags;
             func_002267A8(record, 11, 0);
             update_extras(record);
             break;
         }
         case 0x27: /* 220898 */
-            record->flags |= 16;
+            record->battle_flags |= 16;
             func_0021D7CC(record);
             func_002267A8(record, 8, 0);
             if (func_0020C32C(record) == 0 && func_0020C2F4(record) == 0 && func_0020C310(record) == 0)
                 func_0020FA04(record, 1);
             break;
         case 0x28: /* 2208FC */
-            record->flags &= ~16u;
+            record->battle_flags &= ~16u;
             func_0021D7CC(record);
             func_002267A8(record, 11, 0);
             update_extras(record);
@@ -826,12 +826,12 @@ after_record_dispatch:
             func_002267A8(record, 10, 0);
             break;
         case 0x2B: /* 220960 */
-            record->flags &= ~0x3Eu;
+            record->battle_flags &= ~0x3Eu;
             func_0021D7CC(record);
             update_extras(record);
             break;
         case 0x3F: /* 2209E0 */
-            record->byte34 += record->byteA5;
+            record->alignment += record->byteA5;
             break;
         case 0x35: /* 2209F4 */
             record->experience += record->byteA5;
@@ -844,25 +844,25 @@ after_record_dispatch:
             record->experience = 0;
             func_0021C140(record);
             /* Write back the battle state before leveling the persistent character. */
-            character_apply_level_up(&D_80193BC0[record->byteF6].record);
+            character_apply_level_up(&D_80193BC0[record->member_index].record);
             func_0021C074(record);
             break;
         case 0x2E: /* 220A78 */
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 func_001F0E64(POSE(child), 5); child->phase = 10;
             }
             record->word74 = 0x2E;
             break;
         case 0x2F: /* 220AD0 */
             SELECTED_CHILDREN() {
-                TerminalCommandChild *child = record->first[i];
+                TerminalCommandChild *child = record->primary_children[i];
                 func_001F0E64(POSE(child), 11); child->phase = 10;
             }
             record->word74 = 0x2F;
             break;
         case 0x33: /* 220B28 */
-            func_0020C4B8(record->word5C, record->word60, record->word64, &secondOutputX, &secondOutputY);
+            func_0020C4B8(record->world_x, record->world_y, record->world_z, &secondOutputX, &secondOutputY);
             secondOutputX = (u32)secondOutputX - 160;
             secondOutputY = (u32)secondOutputY - 120;
             func_001FF868((s16)(0u - secondOutputX), (s16)(0u - secondOutputY), 128, 128, 2);
@@ -887,76 +887,76 @@ after_record_dispatch:
             break;
         }
         case 0x1D: /* 220C64 */
-            SELECTED_CHILDREN() func_001F0E64(POSE(record->first[i]), record->byteA6);
+            SELECTED_CHILDREN() func_001F0E64(POSE(record->primary_children[i]), record->byteA6);
             break;
         case 0x39: { /* 220CB0 */
-            TerminalCommandRecord *other;
+            TerminalCommandRecord *replacement_actor;
             int mode;
-            record->flags |= 0x800;
-            other = func_00224930(record, record->byteA5, record->byteA6);
-            record->first[0]->phase = 8;
+            record->battle_flags |= 0x800;
+            replacement_actor = func_00224930(record, record->byteA5, record->byteA6);
+            record->primary_children[0]->phase = 8;
             {
-                TerminalCommandChild *second = other->second[0];
-                TerminalCommandChild *first = other->first[0];
+                TerminalCommandChild *second = replacement_actor->secondary_children[0];
+                TerminalCommandChild *first = replacement_actor->primary_children[0];
                 second->value34 = 0;
                 first->value34 = 0;
             }
-            other->first[0]->phase = record->first[0]->phase;
+            replacement_actor->primary_children[0]->phase = record->primary_children[0]->phase;
             mode = 0;
             if (func_0020C2F4(record) != 0) mode = 9;
             else if (func_0020C2F4(record) == 0 && func_0020C310(record) != 0) mode = 5;
             else if (func_0020C2F4(record) == 0 && func_0020C310(record) == 0 && func_0020C348(record) != 0) mode = 1;
             mode &= 255;
             if (mode != 0) {
-                func_001F0E64(POSE(other->first[0]), (s16)record->first[0]->pose.view.record.field_04);
-                func_0020FA04(other, mode);
+                func_001F0E64(POSE(replacement_actor->primary_children[0]), (s16)record->primary_children[0]->pose.view.record.field_04);
+                func_0020FA04(replacement_actor, mode);
             }
-            record->word74 = 0x39; other->word74 = 1;
-            func_001F2F9C((u8 *)record, (u8 *)other);
+            record->word74 = 0x39; replacement_actor->word74 = 1;
+            func_001F2F9C((u8 *)record, (u8 *)replacement_actor);
             break;
         }
         case 0x3A: { /* 220DC0 */
             int destinationIndex, sourceIndex;
-            u8 *character_bytes;
+            u8 *persistent_member_bytes;
             destinationIndex = func_0020D72C(record);
             sourceIndex = record->byteA5;
-            func_001F0F90(record->first[0]); func_001F1050(record->second[0]);
-            record->first[0]->word18 = 0; record->second[0]->word18 = 0;
-            record->first[0] = 0; record->second[0] = 0;
+            func_001F0F90(record->primary_children[0]); func_001F1050(record->secondary_children[0]);
+            record->primary_children[0]->word18 = 0; record->secondary_children[0]->word18 = 0;
+            record->primary_children[0] = 0; record->secondary_children[0] = 0;
             if (record->extra18 != 0) record->extra18->word18 = 0;
             if (record->extra1C != 0) record->extra1C->word18 = 0;
             memcpy(D_801CE8BC + 0x1C4 + sourceIndex * 248,
                    D_801CE8BC + 0x1C4 + destinationIndex * 248, 248);
             func_80093380(D_801CE8BC + 0x1C4 + sourceIndex * 248, 248);
             {
-                TerminalCommandChild *second = record->second[0];
-                TerminalCommandChild *first = record->first[0];
+                TerminalCommandChild *second = record->secondary_children[0];
+                TerminalCommandChild *first = record->primary_children[0];
                 second->owner = record;
                 first->owner = record;
             }
             if (record->extra18 != 0) record->extra18->owner = record;
             if (record->extra1C != 0) record->extra1C->owner = record;
             if (func_0020C014(record) != 0) {
-                if (D_801976DC < 30) character_bytes = (u8 *)D_80193BC0 + record->byteF6 * 56;
-                else character_bytes = (u8 *)D_80195560 + record->byteF6 * 52;
+                if (D_801976DC < 30) persistent_member_bytes = (u8 *)D_80193BC0 + record->member_index * 56;
+                else persistent_member_bytes = (u8 *)D_80195560 + record->member_index * 52;
             } else {
-                if (D_801976E8 < 30) character_bytes = (u8 *)D_80193BC0 + record->byteF6 * 56;
-                else character_bytes = (u8 *)D_80195560 + record->byteF6 * 52;
+                if (D_801976E8 < 30) persistent_member_bytes = (u8 *)D_80193BC0 + record->member_index * 56;
+                else persistent_member_bytes = (u8 *)D_80195560 + record->member_index * 52;
             }
             {
-                int secondaryClassId;
-                character_bytes[0x11] = record->word48;
-                secondaryClassId = record->word4C;
-                SHORT_AT(character_bytes, 0x30) = 0; SHORT_AT(character_bytes, 0x2E) = 0;
-                SHORT_AT(character_bytes, 0x2C) = 0; SHORT_AT(character_bytes, 0x2A) = 0;
-                character_bytes[0x12] = secondaryClassId;
+                int secondary_class_id;
+                persistent_member_bytes[0x11] = record->primary_class_id;
+                secondary_class_id = record->secondary_class_id;
+                SHORT_AT(persistent_member_bytes, 0x30) = 0; SHORT_AT(persistent_member_bytes, 0x2E) = 0;
+                SHORT_AT(persistent_member_bytes, 0x2C) = 0; SHORT_AT(persistent_member_bytes, 0x2A) = 0;
+                persistent_member_bytes[0x12] = secondary_class_id;
             }
-            record->half36 = func_00043e88(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
-            record->half38 = func_00043edc(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
-            record->half3A = func_00043f30(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
-            record->half3C = func_00043f84(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
-            if (record->flags & 0x800) record->flags &= ~0x800u;
-            if (record->flags & 0x2000) record->flags &= ~0x2000u;
+            record->equipment_slot_0 = func_00043e88(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
+            record->equipment_slot_1 = func_00043edc(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
+            record->equipment_slot_2 = func_00043f30(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
+            record->equipment_slot_3 = func_00043f84(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
+            if (record->battle_flags & 0x800) record->battle_flags &= ~0x800u;
+            if (record->battle_flags & 0x2000) record->battle_flags &= ~0x2000u;
             break;
         }
         case 0x3B: /* 220FB0: crosses original physical-part boundary */
@@ -967,11 +967,11 @@ after_record_dispatch:
                 D_801CE8C0->byte82E |= record->byteA7 ? 2 : 1;
                 for (i = 0; i < 3u; i++) {
                     /* Original tests bit 1 for every slot, not bit i. */
-                    if (((record->byteA5 >> 1) & 1) != 0 && record->first[i] != 0) {
+                    if (((record->byteA5 >> 1) & 1) != 0 && record->primary_children[i] != 0) {
                         TerminalCommandChild *second, *first;
-                        record->first[i]->phase = 17;
-                        second = record->second[i];
-                        first = record->first[i];
+                        record->primary_children[i]->phase = 17;
+                        second = record->secondary_children[i];
+                        first = record->primary_children[i];
                         second->value34 = 0;
                         first->value34 = 0;
                     }
@@ -983,8 +983,8 @@ after_record_dispatch:
         case 0x3C: { /* 22108C */
             float x, z;
             x = func_0020BF50((func_0020C014(record) == 0) << 3);
-            z = record->word64;
-            SELECTED_CHILDREN() func_0021E2C4((TerminalMotionState *)record->first[i], x, z, 15);
+            z = record->world_z;
+            SELECTED_CHILDREN() func_0021E2C4((TerminalMotionState *)record->primary_children[i], x, z, 15);
             record->byteA6 = 0; record->word74 = 0x3C;
             break;
         }
@@ -993,7 +993,7 @@ after_record_dispatch:
             CLEAR_PAIRS();
             for (i = 0; i < 20; i++) {
                 other = func_0020C478(i);
-                if (other != 0 && (other->flags & 0x800)) other->flags &= ~0x800u;
+                if (other != 0 && (other->battle_flags & 0x800)) other->battle_flags &= ~0x800u;
             }
             func_80093380(D_801CE8BC + 0x1C4 + command[3] * 248, 248);
             break;
@@ -1030,9 +1030,9 @@ exit_checks:
                 TerminalCommandRecord *other = func_0020C478(index);
                 if (func_0020C2C0(other) == 0) {
                     int third;
-                    other->word6C = 0;
-                    third = func_0020D434(other->word58) & 255;
-                    other->word70 = func_00044238(BYTE_AT(other, 0x4B), BYTE_AT(other, 0x4F), third) & 255;
+                    other->actions_used = 0;
+                    third = func_0020D434(other->formation_row) & 255;
+                    other->action_limit = func_00044238(BYTE_AT(other, 0x4B), BYTE_AT(other, 0x4F), third) & 255;
                 }
             }
             D_801CE8C4 = 1;

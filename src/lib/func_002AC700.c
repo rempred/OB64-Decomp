@@ -12,27 +12,27 @@ extern StoryOverride table_002868F0[];
 /* Combine the persistent gender with the actor's alignment band for the profile query. */
 s32 func_002AC700(s32 slot)
 {
-    QueryActor *actor = D_8022A974->actors[slot];
-    ActorInput *input;
+    QueryActor *scene_body = D_8022A974->actors[slot];
+    ActorInput *actor_record;
     s32 profile;
     s32 gender;
     s32 override_index;
-    s32 artKey;
+    s32 primary_class_id;
 
-    if (actor == 0) {
+    if (scene_body == 0) {
         return -1;
     }
 
-    input = &D_801CE8BC->inputs[actor->inputIndex];
-    if (input->artKey == 0) {
+    actor_record = &D_801CE8BC->roster[scene_body->battle_roster_index];
+    if (actor_record->primary_class_id == 0) {
         return -1;
     }
 
-    profile = input->alignment;
-    if (func_0020BFF8(input) == 0) {
-        gender = D_80193BD4[input->memberIndex * 56];
+    profile = actor_record->alignment;
+    if (func_0020BFF8(actor_record) == 0) {
+        gender = D_80193BD4[actor_record->member_index * 56];
     } else {
-        gender = D_80195574[input->memberIndex * 52];
+        gender = D_80195574[actor_record->member_index * 52];
     }
 
     if (profile > 98) {
@@ -41,10 +41,10 @@ s32 func_002AC700(s32 slot)
     profile = gender * 3 + profile / 33;
     /* Keep the first key test separate so KMC reloads the loop base. */
     if (*(u8 *)0x8022A921 != 0xFF) {
-        artKey = input->artKey;
+        primary_class_id = actor_record->primary_class_id;
         override_index = 0;
         do {
-            if (table_002868F0[override_index].artKey == artKey) {
+            if (table_002868F0[override_index].artKey == primary_class_id) {
                 profile = table_002868F0[override_index].profile;
             }
             override_index++;

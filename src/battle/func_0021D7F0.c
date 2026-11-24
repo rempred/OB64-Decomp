@@ -80,7 +80,7 @@ void func_0021D7F0(TerminalMotionState *state, int x, int z)
     state->destinationZ = (float)z;
     dx = (float)(int)((unsigned int)x - state->currentX);
     dz = (float)(int)((unsigned int)z - state->currentZ);
-    speed = func_00201670(state->actor->class48.word, state->actor->variant4C.word);
+    speed = func_00201670(state->actor->primary_class_id.word, state->actor->secondary_class_id.word);
     incrementX = dx;
     if (dx != 0.0f) {
         angle = func_0002d3e0(dz, dx);
@@ -107,8 +107,8 @@ void func_0021D7F0(TerminalMotionState *state, int x, int z)
     state->startX = (float)state->currentX;
     state->startZ = (float)state->currentZ;
 
-    if (func_00043ad8(state->actor->class48.word & 0xFF,
-                     state->actor->variant4C.word & 0xFF) == 1) {
+    if (func_00043ad8(state->actor->primary_class_id.word & 0xFF,
+                     state->actor->secondary_class_id.word & 0xFF) == 1) {
         duration = func_00222190(state->actor,
             state->currentX, state->currentZ, x, z);
         /* Combining this increment with the call adds a saved GPR in GCC. */
@@ -124,7 +124,7 @@ void func_0021D7F0(TerminalMotionState *state, int x, int z)
         ((TerminalProfileContext *)D_801CE8BC)->nextProfile++;
         state->profile = ((TerminalProfileContext *)D_801CE8BC)->profiles[slot];
 
-        selector = state->actor->variant4C.word;
+        selector = state->actor->secondary_class_id.word;
         /* Preserve the retail predicate groups with the pinned compiler. */
         if (selector == 0x4A) {
             count = 5;

@@ -58,7 +58,7 @@ void func_00232D7C(void)
         int outTime;
     } work;
     BattleResolutionRecord selected;
-    BattleRosterRecord *object;
+    BattleRosterRecord *actor;
     ResolutionContext *initialContext;
     ResolutionContext *finalContext;
     ResolutionContext *clearContext;
@@ -91,9 +91,9 @@ void func_00232D7C(void)
     *(u16 *)(global + 0x606A) = 0;
     func_00023780(clearContext->unknown10, 0x800);
     for (i = 0; i < 20; ++i) {
-        object = func_0020C478(i);
-        if (object != 0)
-            object->field94 = 0;
+        actor = func_0020C478(i);
+        if (actor != 0)
+            actor->scheduled_time = 0;
     }
 
     descriptorIndex = *(u16 *)(D_801CE8BC + 0x6076);
@@ -114,8 +114,8 @@ void func_00232D7C(void)
         stopped = 0;
         retries = 3;
         do {
-            if (work.records[0].objects[0] != 0) {
-                empty = work.records[0].objects[0] == 0;
+            if (work.records[0].actors[0] != 0) {
+                empty = work.records[0].actors[0] == 0;
                 goto record_ready;
             }
             D_801CE8C0->field00++;
@@ -164,7 +164,7 @@ missing_head_checked:
             oldRetry = retries;
             --retries;
         } while (oldRetry);
-        empty = work.records[0].objects[0] == 0;
+        empty = work.records[0].actors[0] == 0;
 record_ready:
         if (empty | stopped)
             break;
@@ -175,28 +175,28 @@ record_ready:
                 break;
             continue;
         }
-        if (selected.objects[0] == 0)
+        if (selected.actors[0] == 0)
             continue;
-        func_0022F2BC(selected.objects[0], &work.outTime);
+        func_0022F2BC(selected.actors[0], &work.outTime);
         if (func_0020F8DC() != 0)
             break;
-        if (selected.objects[1] == 0)
+        if (selected.actors[1] == 0)
             continue;
-        func_0022F2BC(selected.objects[1], &work.outTime);
+        func_0022F2BC(selected.actors[1], &work.outTime);
         if (func_0020F8DC() != 0)
             break;
-        if (selected.objects[2] == 0)
+        if (selected.actors[2] == 0)
             continue;
-        func_0022F2BC(selected.objects[2], &work.outTime);
+        func_0022F2BC(selected.actors[2], &work.outTime);
         if (func_0020F8DC() != 0)
             break;
     }
 
     maximum = 0;
     for (i = 0; i < 20; ++i) {
-        object = func_0020C478(i);
-        if (object != 0 && maximum < object->field94)
-            maximum = object->field94;
+        actor = func_0020C478(i);
+        if (actor != 0 && maximum < actor->scheduled_time)
+            maximum = actor->scheduled_time;
         finalTime = maximum;
     }
     globalTime = D_801CE8C0->field828;

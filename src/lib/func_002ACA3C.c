@@ -30,7 +30,7 @@ extern void func_001F114C(void *);
 /* The retail frame holds six parallel arrays of 18 words. They collect
  * distinct row descriptors, sort by the returned key, and submit equal-key
  * runs. Names retain offsets where the field meaning is not established. */
-void func_002ACA3C(s32 selector)
+void func_002ACA3C(s32 squad_source_index)
 {
     s32 classes[18];
     u32 keys[18];
@@ -38,70 +38,70 @@ void func_002ACA3C(s32 selector)
     s32 flagsA[18];
     s32 flagsB[18];
     s32 variants[18];
-    s32 member;
-    s32 freeIndex;
-    s32 finalIndex;
-    s32 link;
+    s32 member_slot;
+    s32 free_actor_index;
+    s32 final_actor_index;
+    s32 child_index;
     s32 special = 0;
-    u8 *preset = D_801971F0 + selector * 25;
+    u8 *squad_source = D_801971F0 + squad_source_index * 25;
     /* Separate pointers keep the three phases' register lifetimes distinct. */
-    RosterRow *unit;
+    RosterRow *actor;
     RosterRow *candidate;
     RosterRow *current;
     u32 count;
-    u32 rowIndex;
+    u32 actor_or_resource_index;
     u32 index;
     u32 shift;
     u32 key;
     s32 tag;
-    s32 flagA;
-    s32 flagB;
+    s32 resource_flag_a;
+    s32 resource_flag_b;
     u32 run;
 
-    for (member = 0; member < 5; member++) {
-        if (preset[member + 2] == 0) continue;
-        for (freeIndex = 0; freeIndex < 20; freeIndex++) {
-            if (D_801CE8BC->rows[freeIndex].class48.word == 0) break;
+    for (member_slot = 0; member_slot < 5; member_slot++) {
+        if (squad_source[member_slot + 2] == 0) continue;
+        for (free_actor_index = 0; free_actor_index < 20; free_actor_index++) {
+            if (D_801CE8BC->rows[free_actor_index].primary_class_id.word == 0) break;
         }
-        unit = &D_801CE8BC->rows[freeIndex];
-        if (func_0020C0E8(unit) &&
-            func_00043dc4(unit->class48.bytes.low, unit->variant4C.bytes.low) == 2) {
+        actor = &D_801CE8BC->rows[free_actor_index];
+        if (func_0020C0E8(actor) &&
+            func_00043dc4(actor->primary_class_id.bytes.low, actor->secondary_class_id.bytes.low) == 2) {
             special = 1;
         }
-        if (preset[member + 2] < 100U) {
-            func_0020C908(unit, preset[member + 2]);
-            unit->column54 = (u8)(preset[member + 7] % 3U);
-            unit->row58 = (u8)(preset[member + 7] / 3U);
-            func_0020CBDC(unit, 0);
+        if (squad_source[member_slot + 2] < 100U) {
+            func_0020C908(actor, squad_source[member_slot + 2]);
+            actor->formation_column = (u8)(squad_source[member_slot + 7] % 3U);
+            actor->formation_row = (u8)(squad_source[member_slot + 7] / 3U);
+            func_0020CBDC(actor, 0);
         } else {
-            func_0020C908(unit, 0);
-            unit->column54 = (u8)(preset[member + 7] % 3U);
-            unit->row58 = (u8)(preset[member + 7] / 3U);
-            unit->fieldF6 = preset[member + 2];
-            unit->field20 = D_8019532C[unit->fieldF6];
-            if (D_80195480[unit->fieldF6] & 4) unit->flags40 |= 2;
-            func_0020CBDC(unit, special);
+            func_0020C908(actor, 0);
+            actor->formation_column = (u8)(squad_source[member_slot + 7] % 3U);
+            actor->formation_row = (u8)(squad_source[member_slot + 7] / 3U);
+            actor->member_index = squad_source[member_slot + 2];
+            actor->hp = D_8019532C[actor->member_index];
+            if (D_80195480[actor->member_index] & 4) actor->battle_flags |= 2;
+            func_0020CBDC(actor, special);
         }
-        for (link = 0; link < 3; link++) {
-            if (unit->links[link]) func_001F0F6C(unit->links[link]);
-            if (unit->partners[link]) func_001F102C(unit->partners[link]);
+        for (child_index = 0; child_index < 3; child_index++) {
+            if (actor->primary_children[child_index]) func_001F0F6C(actor->primary_children[child_index]);
+            if (actor->secondary_children[child_index]) func_001F102C(actor->secondary_children[child_index]);
         }
     }
 
     count = 0;
-    for (rowIndex = 0; rowIndex < 20; rowIndex++) {
-        candidate = func_0020C478(rowIndex);
+    for (actor_or_resource_index = 0; actor_or_resource_index < 20; actor_or_resource_index++) {
+        candidate = func_0020C478(actor_or_resource_index);
         if (!candidate || func_0020C014(candidate)) continue;
         tag = func_0020C448(candidate);
-        flagB = func_0020BFF8(candidate);
-        flagA = flagB;
+        resource_flag_b = func_0020BFF8(candidate);
+        resource_flag_a = resource_flag_b;
         for (index = 0; index < count; index++) {
-            if (candidate->class48.word == classes[index] && tag == tags[index] &&
-                flagA == flagsA[index] && flagB == flagsB[index]) break;
+            if (candidate->primary_class_id.word == classes[index] && tag == tags[index] &&
+                resource_flag_a == flagsA[index] && resource_flag_b == flagsB[index]) break;
         }
         if (index < count) continue;
         index = 0;
-        key = func_002015C8(candidate->class48.word, candidate->variant4C.word, flagA, flagB);
+        key = func_002015C8(candidate->primary_class_id.word, candidate->secondary_class_id.word, resource_flag_a, resource_flag_b);
         for (; index < count; index++) {
             if (key < keys[index]) break;
         }
@@ -113,25 +113,25 @@ void func_002ACA3C(s32 selector)
             flagsA[shift] = flagsA[shift - 1];
             flagsB[shift] = flagsB[shift - 1];
         }
-        classes[shift] = candidate->class48.word;
-        variants[shift] = candidate->variant4C.word;
+        classes[shift] = candidate->primary_class_id.word;
+        variants[shift] = candidate->secondary_class_id.word;
         keys[shift] = key;
         tags[shift] = tag;
-        flagsA[shift] = flagA;
-        flagsB[shift] = flagB;
+        flagsA[shift] = resource_flag_a;
+        flagsB[shift] = resource_flag_b;
         count++;
     }
 
     if (count) {
-        for (rowIndex = 0; rowIndex < count; rowIndex += run) {
+        for (actor_or_resource_index = 0; actor_or_resource_index < count; actor_or_resource_index += run) {
             for (run = 1; run < count; run++) {
-                if (keys[rowIndex + run] != keys[rowIndex]) break;
+                if (keys[actor_or_resource_index + run] != keys[actor_or_resource_index]) break;
             }
-            func_00207658(&classes[rowIndex], &variants[rowIndex],
-                &flagsB[rowIndex], &flagsA[rowIndex], &tags[rowIndex], run);
+            func_00207658(&classes[actor_or_resource_index], &variants[actor_or_resource_index],
+                &flagsB[actor_or_resource_index], &flagsA[actor_or_resource_index], &tags[actor_or_resource_index], run);
         }
-        for (finalIndex = 0; finalIndex < 20; finalIndex++) {
-            current = func_0020C478(finalIndex);
+        for (final_actor_index = 0; final_actor_index < 20; final_actor_index++) {
+            current = func_0020C478(final_actor_index);
             if (current && !func_0020C014(current)) func_001F114C(current);
         }
     }

@@ -15,16 +15,16 @@ extern u8 D_801976E8;
 void *func_0020C478(unsigned int actor_index);
 s32 func_801D0880(void);
 
-/* Write back HP, alignment and status, plus experience for 0x38-byte rows. */
+/* Write back HP, current alignment and status. Army roster rows also retain experience. */
 void func_0021C3B0(void)
 {
     s32 actor_index;
     u8 *actor;
     u8 *character_bytes;
-    u8 *special_pool;
+    u8 *special_member_pool;
     s32 squad_source_index;
     u8 member_index;
-    u8 *special_entry;
+    u8 *special_member_data;
 
     for (actor_index = 0; actor_index < 20; actor_index++) {
         actor = func_0020C478(actor_index);
@@ -44,10 +44,10 @@ void func_0021C3B0(void)
             }
 
             if (squad_source_index < 30) {
-                special_pool = D_80190F80;
+                special_member_pool = D_80190F80;
                 character_bytes = D_80193BC0 + actor[0xF6] * 0x38;
             } else {
-                special_pool = D_801953F0;
+                special_member_pool = D_801953F0;
                 character_bytes = D_80195560 + actor[0xF6] * 0x34;
             }
 
@@ -68,16 +68,16 @@ void func_0021C3B0(void)
                     character_bytes[0x35] = actor[0x32];
                 }
             } else {
-                special_entry = special_pool;
-                special_entry += member_index * 2;
-                *(u16 *)(special_entry - 0xC4) = *(u16 *)(actor + 0x20);
+                special_member_data = special_member_pool;
+                special_member_data += member_index * 2;
+                *(u16 *)(special_member_data - 0xC4) = *(u16 *)(actor + 0x20);
                 if (func_0020C2C0(actor) == 0 &&
                     func_0020C32C(actor) != 0) {
-                    special_entry = special_pool + actor[0xF6] + 0x90;
-                    *special_entry |= 4;
+                    special_member_data = special_member_pool + actor[0xF6] + 0x90;
+                    *special_member_data |= 4;
                 } else {
-                    special_entry = special_pool + actor[0xF6] + 0x90;
-                    *special_entry &= 0xFB;
+                    special_member_data = special_member_pool + actor[0xF6] + 0x90;
+                    *special_member_data &= 0xFB;
                 }
             }
         }

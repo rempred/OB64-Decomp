@@ -47,46 +47,46 @@ typedef struct BattleUnit {
 } BattleUnit;
 s32 rand(void);
 s32 D_801C8BC0(u8 a, u8 b);
-s32 D_801C8C3C(BattleUnit *u);
-s32 D_801C8D24(BattleUnit *u);
-s32 D_801C8E30(BattleUnit *u);
+s32 D_801C8C3C(BattleUnit *candidate);
+s32 D_801C8D24(BattleUnit *candidate);
+s32 D_801C8E30(BattleUnit *candidate);
 void *D_801C8FE8(unsigned int index);
-s32 D_801CA038(BattleUnit *u, s32 amount);
-s32 D_801CA29C(void *u);
+s32 D_801CA038(BattleUnit *candidate, s32 amount);
+s32 D_801CA29C(void *candidate);
 s32 func_002340EC(void *record) {
-    BattleUnit *self = record;
-    s32 selfIdx = D_801CA29C(self);
-    s32 best = -1;
-    s32 bestIdx = -1;
-    s32 i;
-    BattleUnit *u;
-    s32 v;
-    for (i = 0; i < 20; i++) {
-        u = D_801C8FE8(i);
-        if (u == ((void *)0)) {
+    BattleUnit *actor = record;
+    s32 actor_index = D_801CA29C(actor);
+    s32 best_score = -1;
+    s32 best_index = -1;
+    s32 candidate_index;
+    BattleUnit *candidate;
+    s32 score;
+    for (candidate_index = 0; candidate_index < 20; candidate_index++) {
+        candidate = D_801C8FE8(candidate_index);
+        if (candidate == ((void *)0)) {
             continue;
         }
-        if (D_801C8E30(u)) {
+        if (D_801C8E30(candidate)) {
             continue;
         }
-        if (D_801C8C3C(u)) {
+        if (D_801C8C3C(candidate)) {
             continue;
         }
-        if (D_801C8BC0(selfIdx, i)) {
+        if (D_801C8BC0(actor_index, candidate_index)) {
             continue;
         }
-        if (D_801C8D24(u)) {
+        if (D_801C8D24(candidate)) {
             continue;
         }
-        v = D_801CA038(u, 999);
-        v = v * 100 / (u->hp + v);
-        if (best == v) {
-            best -= rand() & 1;
+        score = D_801CA038(candidate, 999);
+        score = score * 100 / (candidate->hp + score);
+        if (best_score == score) {
+            best_score -= rand() & 1;
         }
-        if (best < v) {
-            best = v;
-            bestIdx = i;
+        if (best_score < score) {
+            best_score = score;
+            best_index = candidate_index;
         }
     }
-    return bestIdx;
+    return best_index;
 }

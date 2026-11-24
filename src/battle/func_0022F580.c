@@ -14,33 +14,33 @@ typedef signed short s16;
 typedef unsigned int u32;
 
 typedef struct ResolutionObject {
-    u8 *nested;
+    u8 *first_primary_child;
     u8 unknown04[0x1C];
-    u16 field20;
+    u16 hp;
     u8 unknown22[0x12];
-    u8 field34;
+    u8 alignment;
     u8 unknown35[0xB];
-    u32 field40;
+    u32 battle_flags;
     u8 unknown44[4];
-    int field48;
-    int field4C;
+    int primary_class_id;
+    int secondary_class_id;
     u8 unknown50[4];
-    int field54;
-    int field58;
+    int formation_column;
+    int formation_row;
     u8 unknown5C[0xC];
-    int field68;
-    int field6C;
-    int field70;
+    int target_actor_index;
+    int actions_used;
+    int action_limit;
     u8 unknown74[4];
-    u8 field78;
+    u8 action_kind;
     u8 unknown79[3];
-    u32 field7C;
+    u32 action_id;
     int field80;
     int field84;
     int field88;
     int field8C;
     int field90;
-    int field94;
+    int scheduled_time;
     u8 unknown98[0x60];
 } ResolutionObject;
 
@@ -159,9 +159,9 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
 {
     ResolutionScratch local;
     ResolutionObject *excluded;
-    ResolutionObject *earlyObject;
+    ResolutionObject *first_actor;
     ResolutionObject *object;
-    ResolutionObject *resolvedObject;
+    ResolutionObject *resolved_actor;
     ResolutionDescriptor *repeatedDescriptor;
     const InitialRecord *initial;
     ResolutionRecord *recordPointer;
@@ -227,7 +227,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     excluded = 0;
     suppress = 0;
     maximum = 0;
-    if (func_0020C014((ResolutionObject *)input->objects[0]) != 0)
+    if (func_0020C014((ResolutionObject *)input->actors[0]) != 0)
         initial = &D_801971F0[D_801976DC];
     else
         initial = &D_801971F0[D_801976E8];
@@ -242,26 +242,26 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     survivors = 0;
     selectedCount = 0;
     for (i = 0; i < 3; ++i) {
-        earlyObject = (ResolutionObject *)input->objects[i];
-        if (func_0020C2C0(earlyObject) != 0 || func_0020C32C(earlyObject) != 0 ||
-            func_0020C2F4(earlyObject) != 0 || func_0020C310(earlyObject) != 0)
+        first_actor = (ResolutionObject *)input->actors[i];
+        if (func_0020C2C0(first_actor) != 0 || func_0020C32C(first_actor) != 0 ||
+            func_0020C2F4(first_actor) != 0 || func_0020C310(first_actor) != 0)
             continue;
-        if (earlyObject->field6C != D_801CE8C0->field00 || earlyObject->field6C >= earlyObject->field70)
+        if (first_actor->actions_used != D_801CE8C0->field00 || first_actor->actions_used >= first_actor->action_limit)
             continue;
-        func_0022EF50(earlyObject);
+        func_0022EF50(first_actor);
         ++survivors;
-        if (earlyObject->field78 != 3) {
-            excluded = earlyObject;
+        if (first_actor->action_kind != 3) {
+            excluded = first_actor;
         } else {
-            local.raw[selectedCount] = D_8018AA80[earlyObject->field7C].bytes[1];
+            local.raw[selectedCount] = D_8018AA80[first_actor->action_id].bytes[1];
             if (local.raw[selectedCount] >= 7) {
-                excluded = earlyObject;
+                excluded = first_actor;
             } else {
-                if (func_0020C364(earlyObject->field80) != 0)
-                    earlyObject->field68 = func_002340EC(earlyObject);
+                if (func_0020C364(first_actor->field80) != 0)
+                    first_actor->target_actor_index = func_002340EC(first_actor);
                 else
-                    earlyObject->field68 = func_00233F94((BattleRosterRecord *)earlyObject);
-                local.selectedList.values[selectedCount++] = earlyObject;
+                    first_actor->target_actor_index = func_00233F94((BattleRosterRecord *)first_actor);
+                local.selectedList.values[selectedCount++] = first_actor;
             }
         }
     }
@@ -270,20 +270,20 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     if (func_0020D814(local.selectedList.values[0]) == 1)
         return 0;
     if (selectedCount == 2) {
-        if (local.selectedList.values[0]->field68 != local.selectedList.values[1]->field68)
+        if (local.selectedList.values[0]->target_actor_index != local.selectedList.values[1]->target_actor_index)
             return 0;
     } else {
-        if (local.selectedList.values[0]->field68 == local.selectedList.values[1]->field68) {
-            if (local.selectedList.values[0]->field68 != local.selectedList.values[2]->field68) {
+        if (local.selectedList.values[0]->target_actor_index == local.selectedList.values[1]->target_actor_index) {
+            if (local.selectedList.values[0]->target_actor_index != local.selectedList.values[2]->target_actor_index) {
                 excluded = local.selectedList.values[2];
                 selectedCount = 2;
             }
-        } else if (local.selectedList.values[0]->field68 == local.selectedList.values[2]->field68) {
+        } else if (local.selectedList.values[0]->target_actor_index == local.selectedList.values[2]->target_actor_index) {
             excluded = local.selectedList.values[1];
             selectedCount = 2;
             local.selectedList.values[1] = local.selectedList.values[2];
-        } else if (local.selectedList.values[1]->field68 == local.selectedList.values[2]->field68 &&
-                   local.selectedList.values[0]->field68 != local.selectedList.values[2]->field68) {
+        } else if (local.selectedList.values[1]->target_actor_index == local.selectedList.values[2]->target_actor_index &&
+                   local.selectedList.values[0]->target_actor_index != local.selectedList.values[2]->target_actor_index) {
             excluded = local.selectedList.values[0];
             selectedCount = 2;
             local.selectedList.values[0] = local.selectedList.values[1];
@@ -321,7 +321,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
         func_00023460(local.tail.fields.temporaryList.values, local.selectedList.values, 12);
     }
     for (i = 0; i < selectedCount; ++i) {
-        local.raw[i] = D_8018AA80[local.selectedList.values[i]->field7C].bytes[1];
+        local.raw[i] = D_8018AA80[local.selectedList.values[i]->action_id].bytes[1];
         if (local.raw[i] == 8)
             local.raw[i] = func_00233568(local.selectedList.values[i]);
     }
@@ -349,26 +349,26 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     if (local.descriptor.count == 0) {
         for (i = 0; i < selectedCount; ++i) {
             D_801CE8C0->field818++;
-            earlyObject = local.selectedList.values[i];
+            first_actor = local.selectedList.values[i];
             {
                 int incomingTime;
                 int zeroWork;
-                zeroWork = earlyObject->field94;
+                zeroWork = first_actor->scheduled_time;
                 incomingTime = *outTime;
                 if (zeroWork < incomingTime)
                     zeroWork = incomingTime;
-                earlyObject->field94 = zeroWork;
+                first_actor->scheduled_time = zeroWork;
                 contextZero = D_801CE8C0->field828;
                 {
                     int publication = contextZero;
                     if ((u32)contextZero < (u32)zeroWork)
                         publication = zeroWork;
-                    earlyObject->field94 = publication;
-                    func_0021D200(0x1C, publication, earlyObject);
+                    first_actor->scheduled_time = publication;
+                    func_0021D200(0x1C, publication, first_actor);
                 }
             }
-            earlyObject->field6C++;
-            contextZero = earlyObject->field94;
+            first_actor->actions_used++;
+            contextZero = first_actor->scheduled_time;
             objectTime = contextZero;
             *outTime = objectTime;
         }
@@ -376,15 +376,15 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     }
     func_00239338(&local.descriptor, local.selectedList.values[0], local.selectedList.values[1], local.selectedList.values[2]);
     narrowed = func_0025FD00(rawResult);
-    source = (StateBlock *)(local.selectedList.values[0]->nested + 0x44);
+    source = (StateBlock *)(local.selectedList.values[0]->first_primary_child + 0x44);
     destination = local.copiedState.blocks;
-    sourceEnd = (StateBlock *)(local.selectedList.values[0]->nested + 0x94);
+    sourceEnd = (StateBlock *)(local.selectedList.values[0]->first_primary_child + 0x94);
     do {
         *destination++ = *source++;
     } while (source != sourceEnd);
     func_001F0E64(&local.copiedState.record,
-        func_00201798(local.selectedList.values[0]->field48, local.selectedList.values[0]->field4C,
-                      local.selectedList.values[0]->field7C, 0) & 0xFF);
+        func_00201798(local.selectedList.values[0]->primary_class_id, local.selectedList.values[0]->secondary_class_id,
+                      local.selectedList.values[0]->action_id, 0) & 0xFF);
     duration = func_001F197C(local.selectedList.values[0], &local.copiedState.evaluator, local.tail.words);
     if (func_0020BFE4() == 0) {
         duration = 10;
@@ -392,41 +392,41 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
     }
     time = *outTime - local.tail.words[0];
     for (i = 0; i < selectedCount; ++i)
-        if (time < local.selectedList.values[i]->field94)
-            time = local.selectedList.values[i]->field94;
+        if (time < local.selectedList.values[i]->scheduled_time)
+            time = local.selectedList.values[i]->scheduled_time;
     for (i = 0; i < local.descriptor.count; ++i) {
         descriptorId = local.descriptor.ids[i];
         if (descriptorId < 20)
-            resolvedObject = func_0020C478(descriptorId);
+            resolved_actor = func_0020C478(descriptorId);
         else {
             func_00237D5C(descriptorId, &local.tail.fields.out0, &local.tail.fields.out1);
-            resolvedObject = func_0020D770(local.tail.fields.out0, local.tail.fields.out1);
+            resolved_actor = func_0020D770(local.tail.fields.out0, local.tail.fields.out1);
         }
-        if (time < resolvedObject->field94)
-            time = resolvedObject->field94;
+        if (time < resolved_actor->scheduled_time)
+            time = resolved_actor->scheduled_time;
     }
     D_801CE8C0->field818++;
     for (i = 0; i < selectedCount; ++i) {
-        action = (u8)func_00044130(((u8 *)&local.selectedList.values[i]->field48)[3],
-                              ((u8 *)&local.selectedList.values[i]->field4C)[3],
-                              func_0020D434(local.selectedList.values[i]->field58) & 0xFF);
-        actionResult = func_00201798(local.selectedList.values[i]->field48,
-                                    local.selectedList.values[i]->field4C, action, 0) & 0xFF;
-        earlyObject = local.selectedList.values[i];
-        objectTime = earlyObject->field94;
+        action = (u8)func_00044130(((u8 *)&local.selectedList.values[i]->primary_class_id)[3],
+                              ((u8 *)&local.selectedList.values[i]->secondary_class_id)[3],
+                              func_0020D434(local.selectedList.values[i]->formation_row) & 0xFF);
+        actionResult = func_00201798(local.selectedList.values[i]->primary_class_id,
+                                    local.selectedList.values[i]->secondary_class_id, action, 0) & 0xFF;
+        first_actor = local.selectedList.values[i];
+        objectTime = first_actor->scheduled_time;
         if (objectTime < time)
             objectTime = time;
-        earlyObject->field94 = objectTime;
+        first_actor->scheduled_time = objectTime;
         contextSelected = D_801CE8C0->field828;
         {
             int publication = contextSelected;
             if ((u32)contextSelected < (u32)objectTime)
                 publication = objectTime;
-            earlyObject->field94 = publication;
-            func_0021D200(0x1C, publication, earlyObject);
+            first_actor->scheduled_time = publication;
+            func_0021D200(0x1C, publication, first_actor);
         }
-        earlyObject->field6C++;
-        contextSelected = earlyObject->field94;
+        first_actor->actions_used++;
+        contextSelected = first_actor->scheduled_time;
         time = contextSelected;
         local.tail.fields.selectedTimes[i] = time;
         if (func_0020BFE4() != 0)
@@ -443,8 +443,8 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
             suppress = 1;
         else if (producer >= 20) {
             func_00237D5C(producer, &local.tail.fields.out2, &local.tail.fields.out3);
-            earlyObject = func_0020D770(local.tail.fields.out2, local.tail.fields.out3);
-            if (func_0020C2C0(earlyObject) != 0)
+            first_actor = func_0020D770(local.tail.fields.out2, local.tail.fields.out3);
+            if (func_0020C2C0(first_actor) != 0)
                 suppress = 1;
         }
     }
@@ -520,7 +520,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
                 secondary = primary;
                 break;
             case 6:
-                if (primary != 0 && value >= object->field20)
+                if (primary != 0 && value >= object->hp)
                     secondary = 1;
                 break;
             case 2:
@@ -573,7 +573,7 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
                     func_0021D334(0x1F, time + local.tail.words[0], object, 0,
                         value >> 8, value & 0xFF, narrowed, D_801CE8C0->field823,
                         local.tail.fields.modifier);
-                    object->field94 = time + local.tail.words[0];
+                    object->scheduled_time = time + local.tail.words[0];
                 }
             } else {
                 value /= 2;
@@ -584,30 +584,30 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
                 func_0021D334(0x1F, time + local.tail.words[0], object, 1,
                     value >> 8, value & 0xFF, narrowed, D_801CE8C0->field823, 0);
                 func_0022A7B8(object, 0, time + local.tail.words[0], value, narrowed, 0);
-                object->field94 = time + local.tail.words[0];
+                object->scheduled_time = time + local.tail.words[0];
             }
             if (func_0020C2C0(object) != 0 && func_0020C014(local.selectedList.values[0]) != 0) {
                 for (transferIndex = 0; transferIndex < selectedCount; ++transferIndex) {
                     k = func_00233210(local.selectedList.values[transferIndex], object);
                     if (k != 0) {
-                        local.selectedList.values[transferIndex]->field34 += k;
+                        local.selectedList.values[transferIndex]->alignment += k;
                         func_0021D230(0x3F, local.tail.fields.selectedTimes[transferIndex], local.selectedList.values[transferIndex], k);
                     }
                 }
             }
         } else if (local.descriptor.header[1] == 2) {
             k = func_0020D4C8(object, value);
-            object->field20 += k;
+            object->hp += k;
             if (secondary != 0)
                 func_0022B06C(object, &local.tail.fields.modifier);
             else
                 local.tail.fields.modifier = 0;
             func_0021D334(0x1F, time + local.tail.words[0], object, 2,
                 value >> 8, value & 0xFF, narrowed, D_801CE8C0->field823, local.tail.fields.modifier);
-            object->field94 = time + local.tail.words[0];
+            object->scheduled_time = time + local.tail.words[0];
         } else if (local.descriptor.header[1] == 8) {
             if (primary != 0) {
-                object->field40 |= 8;
+                object->battle_flags |= 8;
                 if (secondary != 0)
                     func_0022B06C(object, &local.tail.fields.modifier);
                 else
@@ -618,10 +618,10 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
                 func_0021D334(0x1F, time + local.tail.words[0], object, 6,
                     0, 0, narrowed, D_801CE8C0->field823, 0);
             }
-            object->field94 = time + local.tail.words[0];
+            object->scheduled_time = time + local.tail.words[0];
         } else if (local.descriptor.header[1] == 10) {
             if (primary != 0) {
-                object->field40 |= 16;
+                object->battle_flags |= 16;
                 if (secondary != 0)
                     func_0022B06C(object, &local.tail.fields.modifier);
                 else
@@ -632,10 +632,10 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
                 func_0021D334(0x1F, time + local.tail.words[0], object, 6,
                     0, 0, narrowed, D_801CE8C0->field823, 0);
             }
-            object->field94 = time + local.tail.words[0];
+            object->scheduled_time = time + local.tail.words[0];
         } else if (local.descriptor.header[1] == 4) {
             if (primary != 0) {
-                object->field40 |= 4;
+                object->battle_flags |= 4;
                 if (secondary != 0)
                     func_0022B06C(object, &local.tail.fields.modifier);
                 else
@@ -646,10 +646,10 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
                 func_0021D334(0x1F, time + local.tail.words[0], object, 6,
                     0, 0, narrowed, D_801CE8C0->field823, local.tail.fields.modifier);
             }
-            object->field94 = time + local.tail.words[0];
+            object->scheduled_time = time + local.tail.words[0];
         }
-        if (maximum < object->field94)
-            maximum = object->field94;
+        if (maximum < object->scheduled_time)
+            maximum = object->scheduled_time;
     }
     --time;
     outputCount = 0;
@@ -680,9 +680,9 @@ int func_0022F580(BattleResolutionRecord *input, int *outTime)
         else
             local.selectedList.values[i]->field88 = maximum - time - local.tail.words[0];
         local.selectedList.values[i]->field8C = 0;
-        local.selectedList.values[i]->field94 = time + local.tail.words[0] + local.selectedList.values[i]->field88;
-        if ((u32)*outTime < (u32)local.selectedList.values[i]->field94)
-            *outTime = local.selectedList.values[i]->field94;
+        local.selectedList.values[i]->scheduled_time = time + local.tail.words[0] + local.selectedList.values[i]->field88;
+        if ((u32)*outTime < (u32)local.selectedList.values[i]->scheduled_time)
+            *outTime = local.selectedList.values[i]->scheduled_time;
     }
     *outTime += 0x200;
     D_801CE8C0->field828 = *outTime;

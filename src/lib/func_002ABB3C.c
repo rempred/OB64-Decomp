@@ -12,11 +12,11 @@ extern u8 *D_8022A974;    /* Director scene block; actor pointers at +0x18 */
 extern s8 D_8022AC80;     /* Director scene mode */
 extern s16 D_8022A994;    /* current scenario id */
 
-extern u8 func_002AD574(void *unit);
+extern u8 func_002AD574(void *actor_bytes);
 extern void *func_0002CD70(void *destination, int value, unsigned int count);
-extern s32 func_002A9364(s32 slot, s32 classId, s32 variant, s32 animation,
+extern s32 func_002A9364(s32 slot, s32 primary_class_id, s32 variant, s32 animation,
                         s32 arg5, s32 arg6, u8 keep145, u8 keepUnit);
-extern void func_0029E70C(u8 *actor);
+extern void func_0029E70C(u8 *scene_body);
 extern void func_002AB574(void);
 
 /*
@@ -26,7 +26,7 @@ extern void func_002AB574(void);
  * asks func_002AB810 for the slot list, and places each slot. Names for the
  * unit fields and callee semantics are structural observations.
  */
-s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
+s32 func_002ABB3C(s32 bit8_class_filter, s32 other_class_filter, s32 flagC)
 {
     /* Keep retail reloads when reading the slots written by func_002AB810. */
     union {
@@ -34,53 +34,53 @@ s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
         volatile s32 read[4];
     } slots;
     s32 want[2];
-    char *unit;
-    u8 *actor;
-    s32 i;
+    char *actor_bytes;
+    u8 *scene_body;
+    s32 actor_index;
     s32 j;
-    s32 classId;
+    s32 primary_class_id;
     s32 skip;
     s32 flip;
-    s32 a;
-    s32 b;
+    s32 bit8_filter;
+    s32 other_filter;
     u8 classByte;
     s32 mode;
     s32 isNine;
-    s32 seenLeader;
+    s32 seen_leader;
     s32 isSix;
-    s32 slotIndex;
+    s32 child_index;
 
-    want[1] = memberClass;
-    want[0] = leaderClass;
+    want[1] = other_class_filter;
+    want[0] = bit8_class_filter;
     mode = D_8022AC80;
     isNine = mode == -9;
-    seenLeader = 0;
-    for (i = 0; i < 20; i++) {
-        unit = D_801CE8BC + 0x1C4 + i * 0xF8;
-        if (*(s32 *)(unit + 0x48) == 0) {
+    seen_leader = 0;
+    for (actor_index = 0; actor_index < 20; actor_index++) {
+        actor_bytes = D_801CE8BC + 0x1C4 + actor_index * 0xF8;
+        if (*(s32 *)(actor_bytes + 0x48) == 0) {
             continue;
         }
-        a = want[0];
-        b = want[1];
-        classId = *(s32 *)(unit + 0x48);
-        if (a == -1 && func_0020BFF8(unit)) {
+        bit8_filter = want[0];
+        other_filter = want[1];
+        primary_class_id = *(s32 *)(actor_bytes + 0x48);
+        if (bit8_filter == -1 && func_0020BFF8(actor_bytes)) {
             skip = 0;
-        } else if (b == -1 && !func_0020BFF8(unit)) {
+        } else if (other_filter == -1 && !func_0020BFF8(actor_bytes)) {
             skip = 0;
-        } else if (a == -2 && func_0020BFF8(unit) && func_0020C0E8(unit)) {
+        } else if (bit8_filter == -2 && func_0020BFF8(actor_bytes) && func_0020C0E8(actor_bytes)) {
             skip = 0;
-        } else if (b == -2 && !func_0020BFF8(unit) && func_0020C0E8(unit)) {
+        } else if (other_filter == -2 && !func_0020BFF8(actor_bytes) && func_0020C0E8(actor_bytes)) {
             skip = 0;
-        } else if (a == 0 && func_0020BFF8(unit)) {
+        } else if (bit8_filter == 0 && func_0020BFF8(actor_bytes)) {
             skip = 1;
-        } else if (b == 0 && !func_0020BFF8(unit)) {
+        } else if (other_filter == 0 && !func_0020BFF8(actor_bytes)) {
             skip = 1;
         } else {
-            classByte = classId;
-            if (func_00045e5c(a, classByte)) {
+            classByte = primary_class_id;
+            if (func_00045e5c(bit8_filter, classByte)) {
                 want[0] = 0;
                 skip = 0;
-            } else if (func_00045e5c(b, classByte)) {
+            } else if (func_00045e5c(other_filter, classByte)) {
                 want[1] = 0;
                 skip = 0;
             } else {
@@ -90,7 +90,7 @@ s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
         if (skip == 1) {
             continue;
         }
-        if ((D_8022AC80 == -3 || D_8022AC80 == -10) && func_002AD574(unit) == 1) {
+        if ((D_8022AC80 == -3 || D_8022AC80 == -10) && func_002AD574(actor_bytes) == 1) {
             continue;
         }
         /* Retail retains this 28-step loop. The dead assignment prevents KMC
@@ -98,11 +98,11 @@ s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
         for (j = 0; j < 28; j++) {
             flip = j;
         }
-        flip = *(s32 *)(unit + 0x58) < 4;
+        flip = *(s32 *)(actor_bytes + 0x58) < 4;
         func_0002CD70(slots.write, 0xFF, 0x10);
-        func_002AB810(slots.write, (BattleRosterRecord *)unit, i, flip, *(s32 *)(unit + 0x48), *(s32 *)(unit + 0x4C), seenLeader);
-        if (*(s32 *)(unit + 0x48) == 0x87) {
-            seenLeader = 1;
+        func_002AB810(slots.write, (BattleRosterRecord *)actor_bytes, actor_index, flip, *(s32 *)(actor_bytes + 0x48), *(s32 *)(actor_bytes + 0x4C), seen_leader);
+        if (*(s32 *)(actor_bytes + 0x48) == 0x87) {
+            seen_leader = 1;
         }
         /* Separate arms preserve the constant's KMC allocation priority.
          * Combining all six cases into one test swaps saved registers. */
@@ -114,25 +114,25 @@ s32 func_002ABB3C(s32 leaderClass, s32 memberClass, s32 flagC)
         if (slots.read[0] == -1) continue;
         /* Compute this in the outer body so KMC keeps the saved mode live. */
         isSix = mode == -6;
-        slotIndex = 0;
+        child_index = 0;
         do {
             /* A separate initial value keeps KMC from hoisting the flag
              * comparison. Assigning in the condition retains the direct
              * failure edge to default placement. */
             s32 allow = 0;
-            if (func_0020C32C(unit) && (!func_0020BFF8(unit) || !func_0020C0E8(unit))) {
-                actor = *(u8 **)(D_8022A974 + slots.read[slotIndex] * 4 + 0x18);
-                func_002A9364(slots.read[slotIndex], -1, -1, *(s16 *)(actor + 0x138) + 0x1C, -1, -1, 0, 1);
-                func_0029E70C(actor);
+            if (func_0020C32C(actor_bytes) && (!func_0020BFF8(actor_bytes) || !func_0020C0E8(actor_bytes))) {
+                scene_body = *(u8 **)(D_8022A974 + slots.read[child_index] * 4 + 0x18);
+                func_002A9364(slots.read[child_index], -1, -1, *(s16 *)(scene_body + 0x138) + 0x1C, -1, -1, 0, 1);
+                func_0029E70C(scene_body);
             } else if ((isNine || isSix) && (allow = ((flip == 1) & (flagC == 0))) != 0) {
-                actor = *(u8 **)(D_8022A974 + slots.read[slotIndex] * 4 + 0x18);
-                func_002A9364(slots.read[slotIndex], -1, -1, *(s16 *)(actor + 0x138) + 0x1A, -1, -1, 0, 1);
-                func_0029E70C(actor);
+                scene_body = *(u8 **)(D_8022A974 + slots.read[child_index] * 4 + 0x18);
+                func_002A9364(slots.read[child_index], -1, -1, *(s16 *)(scene_body + 0x138) + 0x1A, -1, -1, 0, 1);
+                func_0029E70C(scene_body);
             } else {
-                func_002A9364(slots.read[slotIndex], -1, -1, -1, -1, -1, 0, 1);
+                func_002A9364(slots.read[child_index], -1, -1, -1, -1, -1, 0, 1);
             }
-            slotIndex++;
-        } while (slots.read[slotIndex] != -1);
+            child_index++;
+        } while (slots.read[child_index] != -1);
     }
     func_002AB574();
     return 0;

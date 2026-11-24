@@ -22,57 +22,57 @@ void func_0021B0A0(void)
     Panel *temp_a0_113;
     Panel *temp_a0_130;
     Panel *temp_a0_96;
-    s32 temp_count;
-    s32 var_s1_9;
-    s32 var_v0_38;
-    u8 temp_a0_46;
-    u8 temp_a0_64;
+    s32 squad_source_index;
+    s32 actor_index;
+    s32 uses_army_roster;
+    u8 army_member_index;
+    u8 scenario_member_index;
     u8 temp_v0_107;
     u8 temp_v0_124;
     u8 temp_v0_90;
     void *temp_a0_106;
     void *temp_a0_123;
     void *temp_a0_89;
-    void *temp_v0_19;
-    u16 *large_id_table_a;
-    u16 *large_id_table_b;
+    void *actor;
+    u16 *army_special_member_hp;
+    u16 *scenario_special_member_hp;
 
-    var_s1_9 = 0;
-    large_id_table_a = D_80190EBC;
-    large_id_table_b = D_8019532C;
+    actor_index = 0;
+    army_special_member_hp = D_80190EBC;
+    scenario_special_member_hp = D_8019532C;
     do {
-        temp_v0_19 = func_0020C478(var_s1_9);
-        if ((temp_v0_19 != 0) && (func_0020C0CC(temp_v0_19) == 0) &&
-            (*(u8 *)((s8 *)temp_v0_19 + 0xF6) != 0)) {
-            if (func_0020C014(temp_v0_19) != 0) {
-                temp_count = *(u8 *)0x801976DC;
-                var_v0_38 = temp_count < 0x1E;
+        actor = func_0020C478(actor_index);
+        if ((actor != 0) && (func_0020C0CC(actor) == 0) &&
+            (*(u8 *)((s8 *)actor + 0xF6) != 0)) {
+            if (func_0020C014(actor) != 0) {
+                squad_source_index = *(u8 *)0x801976DC;
+                uses_army_roster = squad_source_index < 0x1E;
             } else {
-                temp_count = *(u8 *)0x801976E8;
-                var_v0_38 = temp_count < 0x1E;
+                squad_source_index = *(u8 *)0x801976E8;
+                uses_army_roster = squad_source_index < 0x1E;
             }
-            if (var_v0_38 != 0) {
-                temp_a0_46 = *(u8 *)((s8 *)temp_v0_19 + 0xF6);
-                if (temp_a0_46 < 0x64U) {
-                    *(u16 *)((s8 *)((temp_a0_46 * 0x38) + 0x80190000) + 0x3BD8) =
-                        *(u16 *)((s8 *)temp_v0_19 + 0x20);
+            if (uses_army_roster != 0) {
+                army_member_index = *(u8 *)((s8 *)actor + 0xF6);
+                if (army_member_index < 0x64U) {
+                    *(u16 *)((s8 *)((army_member_index * 0x38) + 0x80190000) + 0x3BD8) =
+                        *(u16 *)((s8 *)actor + 0x20);
                 } else {
-                    large_id_table_a[temp_a0_46] =
-                        *(u16 *)((s8 *)temp_v0_19 + 0x20);
+                    army_special_member_hp[army_member_index] =
+                        *(u16 *)((s8 *)actor + 0x20);
                 }
             } else {
-                temp_a0_64 = *(u8 *)((s8 *)temp_v0_19 + 0xF6);
-                if (temp_a0_64 < 0x64U) {
-                    *(u16 *)((s8 *)((temp_a0_64 * 0x34) + 0x80190000) + 0x5578) =
-                        *(u16 *)((s8 *)temp_v0_19 + 0x20);
+                scenario_member_index = *(u8 *)((s8 *)actor + 0xF6);
+                if (scenario_member_index < 0x64U) {
+                    *(u16 *)((s8 *)((scenario_member_index * 0x34) + 0x80190000) + 0x5578) =
+                        *(u16 *)((s8 *)actor + 0x20);
                 } else {
-                    large_id_table_b[temp_a0_64] =
-                        *(u16 *)((s8 *)temp_v0_19 + 0x20);
+                    scenario_special_member_hp[scenario_member_index] =
+                        *(u16 *)((s8 *)actor + 0x20);
                 }
             }
         }
-        var_s1_9 += 1;
-    } while (var_s1_9 < 0x14);
+        actor_index += 1;
+    } while (actor_index < 0x14);
 
     temp_a0_89 = D_801CE8BC;
     temp_v0_90 = *(u8 *)((s8 *)temp_a0_89 + 0x5744);

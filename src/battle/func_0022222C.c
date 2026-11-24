@@ -4,33 +4,33 @@ int func_0020BF50(int value);
 int func_0020BF34(int value);
 unsigned char func_00201838(int sourceArt, int ownerContext);
 unsigned char func_002018A0(int sourceArt, int ownerContext);
-float vec3_distance(const float first[3], const float second[3]);
+float vec3_distance(const float origin[3], const float destination[3]);
 float func_00201670(int sourceArt, int ownerContext);
 
-int func_0022222C(BattleRosterRecord *source, BattleRosterRecord *target, int x, int z)
+int func_0022222C(BattleRosterRecord *actor, BattleRosterRecord *target, int x, int z)
 {
-    float first[3];
-    float second[3];
-    int mappedX;
-    int mappedZ;
+    float origin[3];
+    float destination[3];
+    int target_x;
+    int target_z;
     unsigned char sourceAdjustment;
     unsigned char targetAdjustment;
     int adjustment;
     float distance;
 
-    mappedX = func_0020BF50(target->row58);
-    mappedZ = func_0020BF34(target->column54);
-    sourceAdjustment = func_00201838(source->class48.word, source->variant4C.word);
-    targetAdjustment = func_002018A0(target->class48.word, target->variant4C.word);
+    target_x = func_0020BF50(target->formation_row);
+    target_z = func_0020BF34(target->formation_column);
+    sourceAdjustment = func_00201838(actor->primary_class_id.word, actor->secondary_class_id.word);
+    targetAdjustment = func_002018A0(target->primary_class_id.word, target->secondary_class_id.word);
     adjustment = (int)sourceAdjustment + (int)targetAdjustment;
-    first[0] = (float)x;
-    first[1] = 0.0f;
-    first[2] = (float)z;
-    second[0] = (float)mappedX;
-    second[1] = 0.0f;
-    second[2] = (float)mappedZ;
-    distance = vec3_distance(first, second);
+    origin[0] = (float)x;
+    origin[1] = 0.0f;
+    origin[2] = (float)z;
+    destination[0] = (float)target_x;
+    destination[1] = 0.0f;
+    destination[2] = (float)target_z;
+    distance = vec3_distance(origin, destination);
     distance -= (float)adjustment;
-    distance /= func_00201670(source->class48.word, source->variant4C.word);
+    distance /= func_00201670(actor->primary_class_id.word, actor->secondary_class_id.word);
     return (int)distance;
 }

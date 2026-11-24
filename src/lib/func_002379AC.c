@@ -7,52 +7,52 @@ typedef unsigned int u32;
 u8 D_8016F598(s32 id);
 s32 D_801CD19C(s32 a, s32 cls, s32 flag);
 s32 func_002379AC(s32 effect, void *record) {
-    u8 p = 0;
-    s32 r;
-    if (((BattleRosterRecord *)record)->field_36 != 0) {
-        p = D_8016F598(((BattleRosterRecord *)record)->field_36);
+    u8 protection_mask = 0;
+    s32 result;
+    if (((BattleRosterRecord *)record)->equipment_slot_0 != 0) {
+        protection_mask = D_8016F598(((BattleRosterRecord *)record)->equipment_slot_0);
     }
-    if (((BattleRosterRecord *)record)->field_38 != 0) {
-        p |= D_8016F598(((BattleRosterRecord *)record)->field_38);
+    if (((BattleRosterRecord *)record)->equipment_slot_1 != 0) {
+        protection_mask |= D_8016F598(((BattleRosterRecord *)record)->equipment_slot_1);
     }
-    if (((BattleRosterRecord *)record)->field_3A != 0) {
-        p |= D_8016F598(((BattleRosterRecord *)record)->field_3A);
+    if (((BattleRosterRecord *)record)->equipment_slot_2 != 0) {
+        protection_mask |= D_8016F598(((BattleRosterRecord *)record)->equipment_slot_2);
     }
-    if (((BattleRosterRecord *)record)->field_3C != 0) {
-        p |= D_8016F598(((BattleRosterRecord *)record)->field_3C);
+    if (((BattleRosterRecord *)record)->equipment_slot_3 != 0) {
+        protection_mask |= D_8016F598(((BattleRosterRecord *)record)->equipment_slot_3);
     }
-    if (D_801CD19C(((BattleRosterRecord *)record)->class48.word, ((BattleRosterRecord *)record)->variant4C.word, 4)) {
-        p |= 2;
+    if (D_801CD19C(((BattleRosterRecord *)record)->primary_class_id.word, ((BattleRosterRecord *)record)->secondary_class_id.word, 4)) {
+        protection_mask |= 2;
     }
-    if (D_801CD19C(((BattleRosterRecord *)record)->class48.word, ((BattleRosterRecord *)record)->variant4C.word, 8)) {
-        p |= 4;
+    if (D_801CD19C(((BattleRosterRecord *)record)->primary_class_id.word, ((BattleRosterRecord *)record)->secondary_class_id.word, 8)) {
+        protection_mask |= 4;
     }
-    if (D_801CD19C(((BattleRosterRecord *)record)->class48.word, ((BattleRosterRecord *)record)->variant4C.word, 2)) {
-        p |= 8;
+    if (D_801CD19C(((BattleRosterRecord *)record)->primary_class_id.word, ((BattleRosterRecord *)record)->secondary_class_id.word, 2)) {
+        protection_mask |= 8;
     }
-    if (D_801CD19C(((BattleRosterRecord *)record)->class48.word, ((BattleRosterRecord *)record)->variant4C.word, 0x10)) {
-        p |= 0x20;
+    if (D_801CD19C(((BattleRosterRecord *)record)->primary_class_id.word, ((BattleRosterRecord *)record)->secondary_class_id.word, 0x10)) {
+        protection_mask |= 0x20;
     }
     switch ((u32)effect) {
         case 4:
-            r = p & 2;
+            result = protection_mask & 2;
             break;
         case 3:
-            r = p & 8;
+            result = protection_mask & 8;
             break;
         case 8:
-            r = p & 4;
+            result = protection_mask & 4;
             break;
         case 10:
-            r = p & 0x20;
+            result = protection_mask & 0x20;
             break;
         default:
             return 1;
     }
-    if (r != 0) {
-        r = 0;
+    if (result != 0) {
+        result = 0;
     } else {
-        r = 1;
+        result = 1;
     }
-    return r;
+    return result;
 }

@@ -67,26 +67,26 @@ u16 func_0021B894(s32 arg0) {
     s32 temp_a0_535;
     s32 var_a0_0;
     s32 var_a1_294;
-    s32 var_s1_459;
+    s32 actor_index;
     s32 var_v1_295;
     u16 temp_v1_276;
     u16 var_s3_33;
     s32 temp_s0_30;
     u8 temp_v0_156;
-    u8 temp_v0_528;
+    u8 member_index;
     u8 last_secondary_class_id;
     u8 var_v0_378;
     u8 var_v0_417;
     void *temp_a0_234;
     void *temp_a0_80;
-    void *source_record;
+    void *prior_squad_source;
     void *temp_v0_341;
     void *temp_v0_399;
-    void *temp_v0_461;
+    void *actor;
     void *temp_v1_144;
     void *temp_v1_22;
     void *var_v0_150;
-    u8 *character_table;
+    u8 *scenario_roster_bytes;
     volatile u8 *flag_ptr;
 
     temp_v1_22 = D_801CE8BC;
@@ -378,22 +378,22 @@ block_82:
     if (func_0020BF6C() == 0) {
         goto block_90;
     }
-    for (var_s1_459 = 0; var_s1_459 < 0x14; var_s1_459++) {
-        temp_v0_461 = func_0020C478(var_s1_459);
-        if (temp_v0_461 == 0) {
+    for (actor_index = 0; actor_index < 0x14; actor_index++) {
+        actor = func_0020C478(actor_index);
+        if (actor == 0) {
             continue;
         }
-        if (func_0020BFF8(temp_v0_461) == 0) {
+        if (func_0020BFF8(actor) == 0) {
             continue;
         }
-        if (func_0020C2C0(temp_v0_461) != 0) {
+        if (func_0020C2C0(actor) != 0) {
             continue;
         }
-        if (func_0020C32C(temp_v0_461) == 0) {
+        if (func_0020C32C(actor) == 0) {
             break;
         }
     }
-    if (var_s1_459 < 0x14) {
+    if (actor_index < 0x14) {
         goto block_90;
     }
     flag_ptr = &D_80193670;
@@ -416,19 +416,20 @@ block_92:
     }
     last_secondary_class_id = 0;
     temp_s0_30 = 0;
-    character_table = D_80195560;
-    source_record = (D_801976E8 * 0x19) + g_func_001957D0_source_records;
+    /* The source index is still needed here, before the byte is reused for the class ID. */
+    scenario_roster_bytes = D_80195560;
+    prior_squad_source = (D_801976E8 * 0x19) + g_func_001957D0_source_records;
     for (; (u32) temp_s0_30 < 5U; temp_s0_30++) {
-        temp_v0_528 = (*(u8 *)((s8 *)(source_record + temp_s0_30) + (2)));
-        if (temp_v0_528 == 0) {
+        member_index = (*(u8 *)((s8 *)(prior_squad_source + temp_s0_30) + (2)));
+        if (member_index == 0) {
             continue;
         }
-        temp_a0_535 = temp_v0_528 * 0x34;
+        temp_a0_535 = member_index * 0x34;
         last_secondary_class_id = D_80195560[temp_a0_535 + 0x12];
-        temp_a0_535 += (s32) character_table;
+        temp_a0_535 += (s32) scenario_roster_bytes;
         memset_00023780((void *) temp_a0_535, 0x34);
     }
-    memset_00023780(source_record, 0x19);
+    memset_00023780(prior_squad_source, 0x19);
     D_80193671 = 0;
     D_801976E8 = last_secondary_class_id;
 block_99:

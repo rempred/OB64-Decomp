@@ -38,36 +38,36 @@ extern void func_00210930(void);
 #define FLAG(p,b) ((p) ? ((FLAGS(p) >> (b)) & 1) : 0)
 
 /* These source rows and scene actors have distinct, neutral byte layouts. */
-#define COPY_ROW(actor, source, sourceId) { \
-    u8 *characterBytes = (source); u8 copiedAlignment; int secondaryClassId, classIsOne; \
+#define COPY_ROW(actor, source, member_index_or_count) { \
+    u8 *character_bytes = (source); u8 copied_alignment; int secondary_class_id, classIsOne; \
     func_00023780((actor), 0xF8); \
-    WORD(actor,0x48) = BYTE(characterBytes,0x11); \
-    secondaryClassId = BYTE(characterBytes,0x12); \
-    BYTE(actor,0xF6) = (sourceId); \
-    WORD(actor,0x4C) = secondaryClassId; \
-    BYTE(actor,0x31) = BYTE(characterBytes,0x13); \
-    BYTE(actor,0x33) = BYTE(characterBytes,0x1A); \
-    HALF(actor,0x22) = HALF(characterBytes,0x16); \
-    HALF(actor,0x20) = HALF(characterBytes,0x18); \
-    HALF(actor,0x24) = HALF(characterBytes,0x1C); \
-    HALF(actor,0x26) = HALF(characterBytes,0x1E); \
-    HALF(actor,0x28) = HALF(characterBytes,0x20); \
-    HALF(actor,0x2A) = HALF(characterBytes,0x22); \
-    HALF(actor,0x2C) = HALF(characterBytes,0x24); \
-    HALF(actor,0x2E) = HALF(characterBytes,0x26); \
-    BYTE(actor,0x30) = BYTE(characterBytes,0x28); \
-    copiedAlignment = BYTE(characterBytes,0x1B); BYTE(actor,0x3F) = copiedAlignment; \
-    BYTE(actor,0x34) = copiedAlignment; \
-    HALF(actor,0x36) = HALF(characterBytes,0x2A); \
-    HALF(actor,0x38) = HALF(characterBytes,0x2C); \
-    HALF(actor,0x3A) = HALF(characterBytes,0x2E); \
-    HALF(actor,0x3C) = HALF(characterBytes,0x30); \
-    BYTE(actor,0x3E) = BYTE(characterBytes,0x32); \
+    WORD(actor,0x48) = BYTE(character_bytes,0x11); \
+    secondary_class_id = BYTE(character_bytes,0x12); \
+    BYTE(actor,0xF6) = (member_index_or_count); \
+    WORD(actor,0x4C) = secondary_class_id; \
+    BYTE(actor,0x31) = BYTE(character_bytes,0x13); \
+    BYTE(actor,0x33) = BYTE(character_bytes,0x1A); \
+    HALF(actor,0x22) = HALF(character_bytes,0x16); \
+    HALF(actor,0x20) = HALF(character_bytes,0x18); \
+    HALF(actor,0x24) = HALF(character_bytes,0x1C); \
+    HALF(actor,0x26) = HALF(character_bytes,0x1E); \
+    HALF(actor,0x28) = HALF(character_bytes,0x20); \
+    HALF(actor,0x2A) = HALF(character_bytes,0x22); \
+    HALF(actor,0x2C) = HALF(character_bytes,0x24); \
+    HALF(actor,0x2E) = HALF(character_bytes,0x26); \
+    BYTE(actor,0x30) = BYTE(character_bytes,0x28); \
+    copied_alignment = BYTE(character_bytes,0x1B); BYTE(actor,0x3F) = copied_alignment; \
+    BYTE(actor,0x34) = copied_alignment; \
+    HALF(actor,0x36) = HALF(character_bytes,0x2A); \
+    HALF(actor,0x38) = HALF(character_bytes,0x2C); \
+    HALF(actor,0x3A) = HALF(character_bytes,0x2E); \
+    HALF(actor,0x3C) = HALF(character_bytes,0x30); \
+    BYTE(actor,0x3E) = BYTE(character_bytes,0x32); \
     if (!(actor)) { classIsOne = 0; } else { classIsOne = WORD(actor,0x4C) == 1; } \
     if (classIsOne) BYTE(actor,0x3E) = 0; \
-    if (BYTE(characterBytes,0x33) & 2) FLAGS(actor) |= 0x200; \
-    if (BYTE(characterBytes,0x33) & 4) FLAGS(actor) |= 2; \
-    BYTE(actor,0x32) = BYTE(characterBytes,0x35); \
+    if (BYTE(character_bytes,0x33) & 2) FLAGS(actor) |= 0x200; \
+    if (BYTE(character_bytes,0x33) & 4) FLAGS(actor) |= 2; \
+    BYTE(actor,0x32) = BYTE(character_bytes,0x35); \
 }
 
 /* Each search observes presence, side, and enable in their original order. */
@@ -163,58 +163,57 @@ void func_0020DB10(int selector)
     int sources[18], contexts[18];
     u32 resources[18];
     int variants[18], flag10s[18], flag8s[18];
-    int latch, outputCount, slot, outputOffset, index;
+    int latch, actor_count, slot, outputOffset, index;
     void *actor;
-    u8 *selection, *row, *auxiliary;
-    /* Source IDs and the later collection count have disjoint lifetimes.
-     * Reuse keeps GCC's saved-register allocation; sourceByte retains the
-     * byte-width call argument from the same input load. */
-    u32 sourceId;
+    u8 *squad_source, *member_record, *special_member_pool;
+    /* The member index, resource count and final roster counter reuse one word.
+     * Keep the separate byte load for the character initializer argument. */
+    u32 member_index_or_count;
     u8 token;
-    u32 actorIndex;
+    u32 actor_or_resource_index;
 
     WORD(D_801CE8BC,0x5124) = (int)func_0020D9C4;
     WORD(D_801CE8BC,0x5128) = -0x11D0;
     WORD(D_801CE8BC,0x512C) = -0x11D0;
     WORD(D_801CE8BC,0x5130) = -0x11D0;
     func_001F0F6C((u8 *)D_801CE8BC + 0x5124);
-    outputCount = 0;
+    actor_count = 0;
     latch = 0;
 
     if (*(u8 *)0x801976D9) {
         
         slot = 0;
         while (slot < 5) {
-            u8 selected = *(u8 *)0x801976E8; u8 rowId, sourceByte;
-            selection = D_801971F0 + selected * 0x19;
-            rowId = (slot + selection)[2];
-            if (rowId) {
+            u8 squad_source_index = *(u8 *)0x801976E8; u8 member_index, member_index_arg;
+            squad_source = D_801971F0 + squad_source_index * 0x19;
+            member_index = (slot + squad_source)[2];
+            if (member_index) {
                 float position;
-                actor = (u8 *)D_801CE8BC + (outputCount * 0xF8 + 0x1C4);
-                if (selected < 30) {
-                    row = D_80193BC0 + rowId * 0x38;
-                    auxiliary = D_80190F80;
+                actor = (u8 *)D_801CE8BC + (actor_count * 0xF8 + 0x1C4);
+                if (squad_source_index < 30) {
+                    member_record = D_80193BC0 + member_index * 0x38;
+                    special_member_pool = D_80190F80;
                 } else {
-                    row = D_80195560 + rowId * 0x34;
-                    auxiliary = D_801953F0;
+                    member_record = D_80195560 + member_index * 0x34;
+                    special_member_pool = D_801953F0;
                 }
                 position = *(float *)0x801976EC;
-                token = remap_token(position, (slot + selection)[7], (double *)0x801D05E0);
-                sourceByte = (slot + selection)[2];
-                sourceId = sourceByte;
-                if (sourceId < 100) {
-                    if ((HALF(row,0x18) != 0) | (selector != 0)) {
+                token = remap_token(position, (slot + squad_source)[7], (double *)0x801D05E0);
+                member_index_arg = (slot + squad_source)[2];
+                member_index_or_count = member_index_arg;
+                if (member_index_or_count < 100) {
+                    if ((HALF(member_record,0x18) != 0) | (selector != 0)) {
                         if (*(u8 *)0x801976E8 < 30) {
-                            COPY_ROW(actor, D_80193BC0 + sourceId * 0x38, sourceId);
+                            COPY_ROW(actor, D_80193BC0 + member_index_or_count * 0x38, member_index_or_count);
                         } else {
-                            func_0020C908(actor, sourceByte);
+                            func_0020C908(actor, member_index_arg);
                         }
                         if (!BYTE(D_801CE8BC,0x6084) && (FLAGS(actor) & 2)) {
                             func_00023780(actor, 0xF8);
                             goto next_slot_0;
                         }
                         if (WORD(actor,0x48) == 0x87 || WORD(actor,0x48) == 0x88 || WORD(actor,0x48) == 0xA1) {
-                            token = (slot + selection)[7];
+                            token = (slot + squad_source)[7];
                         }
                         FLAGS(actor) |= 0x500;
                         WORD(actor,0x54) = token_column(token);
@@ -223,9 +222,9 @@ void func_0020DB10(int selector)
                         FIND_PEER(actor, 0);
                         if (WORD(actor,0x48) == 0x87) {
                             SUBMIT_POINTERS(actor);
-                            outputCount++;
-                            actor = (u8 *)D_801CE8BC + (outputCount * 0xF8 + 0x1C4);
-                            func_0020C908(actor, (slot + selection)[2]);
+                            actor_count++;
+                            actor = (u8 *)D_801CE8BC + (actor_count * 0xF8 + 0x1C4);
+                            func_0020C908(actor, (slot + squad_source)[2]);
                             WORD(actor,0x54) = token_column(token);
                             WORD(actor,0x58) = token_row(token);
                             func_0020CBDC(actor, 1);
@@ -235,7 +234,7 @@ void func_0020DB10(int selector)
                         { int enabled; if (!actor) enabled = 0; else enabled = (FLAGS(actor) >> 9) & 1; if (enabled && (func_00043dc4(BYTE(actor,0x4B), BYTE(actor,0x4F)) & 255) == 2) latch = 1; }
                     }
                 } else {
-                    if (auxiliary_value(sourceId, auxiliary)) {
+                    if (auxiliary_value(member_index_or_count, special_member_pool)) {
                         if (*(u8 *)0x801976E8 < 30) {
                             COPY_ROW(actor, D_80193BC0, 0);
                         } else {
@@ -248,16 +247,16 @@ void func_0020DB10(int selector)
                         FLAGS(actor) |= 0x500;
                         WORD(actor,0x54) = token_column(token);
                         WORD(actor,0x58) = token_row(token);
-                        BYTE(actor,0xF6) = (slot + selection)[2];
-                        HALF(actor,0x20) = auxiliary_value(BYTE(actor,0xF6), auxiliary);
-                        HALF(actor,0x22) = HALF(auxiliary,2);
-                        if (BYTE(auxiliary + BYTE(actor,0xF6),0x90) & 4) FLAGS(actor) |= 2;
+                        BYTE(actor,0xF6) = (slot + squad_source)[2];
+                        HALF(actor,0x20) = auxiliary_value(BYTE(actor,0xF6), special_member_pool);
+                        HALF(actor,0x22) = HALF(special_member_pool,2);
+                        if (BYTE(special_member_pool + BYTE(actor,0xF6),0x90) & 4) FLAGS(actor) |= 2;
                         func_0020CBDC(actor, latch);
                         FIND_PEER(actor, 0);
                     }
                 }
                 SUBMIT_POINTERS(actor);
-                outputCount++;
+                actor_count++;
             }
 next_slot_0:
             slot++;
@@ -265,36 +264,36 @@ next_slot_0:
     }
 
     {
-        int outputIndex = outputCount;
+        int roster_index = actor_count;
         latch = 0;
         slot = 0;
         while (slot < 5) {
-            u8 selected = *(u8 *)0x801976DC; u8 rowId, sourceByte;
-            selection = D_801971F0 + selected * 0x19;
-            rowId = (slot + selection)[2];
-            if (rowId) {
+            u8 squad_source_index = *(u8 *)0x801976DC; u8 member_index, member_index_arg;
+            squad_source = D_801971F0 + squad_source_index * 0x19;
+            member_index = (slot + squad_source)[2];
+            if (member_index) {
                 float position;
                 if (*(u16 *)0x80197B60 & 0x8000) {
                     if (slot != 0) goto next_slot_1;
                 }
-                actor = (u8 *)D_801CE8BC + (outputIndex * 0xF8 + 0x1C4);
-                if (selected < 30) {
-                    row = D_80193BC0 + rowId * 0x38;
-                    auxiliary = D_80190F80;
+                actor = (u8 *)D_801CE8BC + (roster_index * 0xF8 + 0x1C4);
+                if (squad_source_index < 30) {
+                    member_record = D_80193BC0 + member_index * 0x38;
+                    special_member_pool = D_80190F80;
                 } else {
-                    row = D_80195560 + rowId * 0x34;
-                    auxiliary = D_801953F0;
+                    member_record = D_80195560 + member_index * 0x34;
+                    special_member_pool = D_801953F0;
                 }
                 position = *(float *)0x801976E0;
-                token = remap_token(position, (slot + selection)[7], (double *)0x801D0610);
-                sourceByte = (slot + selection)[2];
-                sourceId = sourceByte;
-                if (sourceId < 100) {
-                    if ((HALF(row,0x18) != 0) | (selector != 0)) {
+                token = remap_token(position, (slot + squad_source)[7], (double *)0x801D0610);
+                member_index_arg = (slot + squad_source)[2];
+                member_index_or_count = member_index_arg;
+                if (member_index_or_count < 100) {
+                    if ((HALF(member_record,0x18) != 0) | (selector != 0)) {
                         if (*(u8 *)0x801976DC < 30) {
-                            COPY_ROW(actor, D_80193BC0 + sourceId * 0x38, sourceId);
+                            COPY_ROW(actor, D_80193BC0 + member_index_or_count * 0x38, member_index_or_count);
                         } else {
-                            func_0020C908(actor, sourceByte);
+                            func_0020C908(actor, member_index_arg);
                         }
                         if (!BYTE(D_801CE8BC,0x6084) && (FLAGS(actor) & 2)) {
                             func_00023780(actor, 0xF8);
@@ -310,7 +309,7 @@ next_slot_0:
                         { int enabled; if (!actor) enabled = 0; else enabled = (FLAGS(actor) >> 9) & 1; if (enabled && (func_00043dc4(BYTE(actor,0x4B), BYTE(actor,0x4F)) & 255) == 2) latch = 1; }
                     }
                 } else {
-                    if (auxiliary_value(sourceId, auxiliary)) {
+                    if (auxiliary_value(member_index_or_count, special_member_pool)) {
                         if (*(u8 *)0x801976DC < 30) {
                             COPY_ROW(actor, D_80193BC0, 0);
                         } else {
@@ -323,16 +322,16 @@ next_slot_0:
                         FLAGS(actor) &= ~0x500;
                         WORD(actor,0x54) = 2 - token_column(token);
                         WORD(actor,0x58) = 8 - token_row(token);
-                        BYTE(actor,0xF6) = (slot + selection)[2];
-                        HALF(actor,0x20) = auxiliary_value(BYTE(actor,0xF6), auxiliary);
-                        HALF(actor,0x22) = HALF(auxiliary,2);
-                        if (BYTE(auxiliary + BYTE(actor,0xF6),0x90) & 4) FLAGS(actor) |= 2;
+                        BYTE(actor,0xF6) = (slot + squad_source)[2];
+                        HALF(actor,0x20) = auxiliary_value(BYTE(actor,0xF6), special_member_pool);
+                        HALF(actor,0x22) = HALF(special_member_pool,2);
+                        if (BYTE(special_member_pool + BYTE(actor,0xF6),0x90) & 4) FLAGS(actor) |= 2;
                         func_0020CBDC(actor, latch);
                         FIND_PEER(actor, 1);
                     }
                 }
                 SUBMIT_POINTERS(actor);
-                outputIndex++;
+                roster_index++;
                 
             }
 next_slot_1:
@@ -340,30 +339,30 @@ next_slot_1:
         }
     }
 
-    sourceId = 0;
+    member_index_or_count = 0;
     {
     int sortOffset;
     sortOffset = 0;
-    actorIndex = 0;
-    while (actorIndex < 20) {
-        actor = scene_actor_ordinal(actorIndex + 1u, sortOffset);
+    actor_or_resource_index = 0;
+    while (actor_or_resource_index < 20) {
+        actor = scene_actor_ordinal(actor_or_resource_index + 1u, sortOffset);
         if (actor) {
             u32 key, shift; int context;
             int variant, flag10, flag8;
             variant = func_00045934(HALF(actor,0x36), HALF(actor,0x38), HALF(actor,0x3A), HALF(actor,0x3C)) & 0xFFFF;
             flag8 = (FLAGS(actor) >> 8) & 1;
             flag10 = (FLAGS(actor) >> 10) & 1;
-            for (index = 0; index < sourceId; index++) {
+            for (index = 0; index < member_index_or_count; index++) {
                 if (WORD(actor,0x48) == sources[index] && variant == variants[index] &&
                     flag10 == flag10s[index] && flag8 == flag8s[index]) break;
             }
-            if (index < sourceId) goto next_actor;
+            if (index < member_index_or_count) goto next_actor;
             {
                 key = func_002015C8(WORD(actor,0x48), WORD(actor,0x4C), flag10, flag8);
-                for (index = 0; index < sourceId; index++) {
+                for (index = 0; index < member_index_or_count; index++) {
                     if (key < resources[index]) break;
                 }
-                for (shift = sourceId; index < shift; shift--) {
+                for (shift = member_index_or_count; index < shift; shift--) {
                     sources[shift] = sources[shift - 1];
                     contexts[shift] = contexts[shift - 1];
                     resources[shift] = resources[shift - 1];
@@ -373,7 +372,7 @@ next_slot_1:
                 }
                 sources[shift] = WORD(actor,0x48);
                 context = WORD(actor,0x4C);
-                sourceId++;
+                member_index_or_count++;
                 resources[shift] = key;
                 variants[shift] = variant;
                 flag10s[shift] = flag10;
@@ -382,28 +381,28 @@ next_slot_1:
             }
         }
 next_actor:
-        actorIndex++;
+        actor_or_resource_index++;
         sortOffset += 0xF8;
     }
     }
-    if (sourceId) {
-        actorIndex = 0;
-        while (actorIndex < sourceId) {
+    if (member_index_or_count) {
+        actor_or_resource_index = 0;
+        while (actor_or_resource_index < member_index_or_count) {
             u32 run = 1;
             /* Retail compares run with the total count even after actorIndex advances. */
-            while (run < sourceId && resources[actorIndex + run] == resources[actorIndex]) run++;
-            func_00207658(sources + actorIndex, contexts + actorIndex, flag8s + actorIndex,
-                          flag10s + actorIndex, variants + actorIndex, run);
-            actorIndex += run;
+            while (run < member_index_or_count && resources[actor_or_resource_index + run] == resources[actor_or_resource_index]) run++;
+            func_00207658(sources + actor_or_resource_index, contexts + actor_or_resource_index, flag8s + actor_or_resource_index,
+                          flag10s + actor_or_resource_index, variants + actor_or_resource_index, run);
+            actor_or_resource_index += run;
         }
         func_002073CC(5, 0);
         func_0021088C();
         {
         int policyOffset; void *policyActor;
-        sourceId = 0;
+        member_index_or_count = 0;
         policyOffset = 0;
         do {
-            policyActor = scene_actor(sourceId, policyOffset);
+            policyActor = scene_actor(member_index_or_count, policyOffset);
             if (policyActor && !((FLAGS(policyActor) >> 1) & 1) &&
                 !func_0021062C(WORD(policyActor,0x48), WORD(policyActor,0x4C), 4)) {
                 int side = func_0020C014(policyActor);
@@ -414,17 +413,17 @@ next_actor:
                     func_0020FC7C(policyActor);
                 }
             }
-            sourceId++;
+            member_index_or_count++;
             policyOffset += 0xF8;
-        } while ((int)sourceId < 20);
+        } while ((int)member_index_or_count < 20);
         }
         func_00210930();
         {
         int updateOffset; void *updateActor;
-        actorIndex = 0;
+        actor_or_resource_index = 0;
         updateOffset = 0;
         do {
-            updateActor = scene_actor(actorIndex, updateOffset);
+            updateActor = scene_actor(actor_or_resource_index, updateOffset);
             if (updateActor) {
                 index = 0;
                 do {
@@ -432,9 +431,9 @@ next_actor:
                     index++;
                 } while (index < 10);
             }
-            actorIndex++;
+            actor_or_resource_index++;
             updateOffset += 0xF8;
-        } while ((int)actorIndex < 20);
+        } while ((int)actor_or_resource_index < 20);
         }
     }
 }

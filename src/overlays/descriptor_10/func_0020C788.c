@@ -7,12 +7,12 @@ typedef signed int s32;
 typedef unsigned int u32;
 extern u8 *D_801CE8BC;
 extern inline s32 func_0020BFF8(void *record) {
-    BattleRosterRecord *u = record;
+    BattleRosterRecord *actor = record;
 
-    if (u == ((void *)0)) {
+    if (actor == ((void *)0)) {
         return 0;
     }
-    return (u->flags40 >> 8) & 1;
+    return (actor->battle_flags >> 8) & 1;
 }
 extern inline int func_0020C0E8(void *record) {
     if (record == 0) {
@@ -20,24 +20,24 @@ extern inline int func_0020C0E8(void *record) {
     }
     return (*(const unsigned int *)((const unsigned char *)record + 0x40) >> 9) & 1;
 }
-extern inline BattleRosterRecord *BattleGetUnit(u32 i) {
-    u8 *base = D_801CE8BC;
-    s32 off;
-    if (i < 20) {
-        off = i * 0xF8;
-        if (*(s32 *)(base + off + 0x20C) != 0) {
-            return (BattleRosterRecord *)(base + (off + 0x1C4));
+extern inline BattleRosterRecord *BattleGetUnit(u32 actor_index) {
+    u8 *scene_bytes = D_801CE8BC;
+    s32 roster_byte_offset;
+    if (actor_index < 20) {
+        roster_byte_offset = actor_index * 0xF8;
+        if (*(s32 *)(scene_bytes + roster_byte_offset + 0x20C) != 0) {
+            return (BattleRosterRecord *)(scene_bytes + (roster_byte_offset + 0x1C4));
         }
     }
     return ((void *)0);
 }
 BattleRosterRecord *func_0020C788(void) {
-    s32 i;
-    BattleRosterRecord *u;
-    for (i = 0; i < 20; i++) {
-        u = BattleGetUnit(i);
-        if (func_0020BFF8(u) && func_0020C0E8(u)) {
-            return u;
+    s32 actor_index;
+    BattleRosterRecord *actor;
+    for (actor_index = 0; actor_index < 20; actor_index++) {
+        actor = BattleGetUnit(actor_index);
+        if (func_0020BFF8(actor) && func_0020C0E8(actor)) {
+            return actor;
         }
     }
     return ((void *)0);

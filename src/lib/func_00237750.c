@@ -47,18 +47,18 @@ typedef struct BattleUnit {
     s32 unk94;
     u8 unk98[0x60];
 } BattleUnit;
-s32 func_00235754(BattleUnit *a, BattleUnit *b);
-s32 func_00235BB0(BattleUnit *a, BattleUnit *b);
-s32 func_00235DC8(BattleUnit *a, BattleUnit *b);
-s32 func_0023697C(BattleUnit *a, BattleUnit *b, f32 power, s32 c, s32 d, s32 e);
-s32 func_00237750(BattleRosterRecord *a, BattleRosterRecord *b, s32 c, s32 d, s32 e) {
-    f32 p;
-    if ((u8)(a->field78 - 4) < 2) {
-        p = func_00235BB0((BattleUnit *)a, (BattleUnit *)b);
-    } else if (a->field78 == 3) {
-        p = func_00235DC8((BattleUnit *)a, (BattleUnit *)b);
+s32 func_00235754(BattleUnit *actor, BattleUnit *target);
+s32 func_00235BB0(BattleUnit *actor, BattleUnit *target);
+s32 func_00235DC8(BattleUnit *actor, BattleUnit *target);
+s32 func_0023697C(BattleUnit *actor, BattleUnit *target, f32 power, s32 c, s32 d, s32 e);
+s32 func_00237750(BattleRosterRecord *actor, BattleRosterRecord *target, s32 c, s32 d, s32 e) {
+    f32 power;
+    if ((u8)(actor->action_kind - 4) < 2) {
+        power = func_00235BB0((BattleUnit *)actor, (BattleUnit *)target);
+    } else if (actor->action_kind == 3) {
+        power = func_00235DC8((BattleUnit *)actor, (BattleUnit *)target);
     } else {
-        p = func_00235754((BattleUnit *)a, (BattleUnit *)b);
+        power = func_00235754((BattleUnit *)actor, (BattleUnit *)target);
     }
-    return func_0023697C((BattleUnit *)a, (BattleUnit *)b, p, c, d, e);
+    return func_0023697C((BattleUnit *)actor, (BattleUnit *)target, power, c, d, e);
 }

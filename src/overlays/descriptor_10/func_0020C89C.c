@@ -18,31 +18,32 @@ typedef struct {
 } BattleUnit;
 extern u8 *D_801CE8BC;
 extern inline s32 func_0020BFF8(void *record) {
-    BattleUnit *u = record;
+    BattleUnit *actor = record;
 
-    if (u == ((void *)0)) {
+    if (actor == ((void *)0)) {
         return 0;
     }
-    return (u->flags >> 8) & 1;
+    return (actor->flags >> 8) & 1;
 }
-extern inline BattleUnit *BattleGetUnit(u32 i) {
-    u8 *base = D_801CE8BC;
-    s32 off;
-    if (i < 20) {
-        off = i * 0xF8;
-        if (*(s32 *)(base + off + 0x20C) != 0) {
-            return (BattleUnit *)(base + (off + 0x1C4));
+extern inline BattleUnit *BattleGetUnit(u32 actor_index) {
+    u8 *scene_bytes = D_801CE8BC;
+    s32 roster_byte_offset;
+    if (actor_index < 20) {
+        roster_byte_offset = actor_index * 0xF8;
+        if (*(s32 *)(scene_bytes + roster_byte_offset + 0x20C) != 0) {
+            return (BattleUnit *)(scene_bytes + (roster_byte_offset + 0x1C4));
         }
     }
     return ((void *)0);
 }
+/* Find the first actor with battle flag bit 8 set. */
 BattleUnit *func_0020C89C(void) {
-    s32 i;
-    BattleUnit *u;
-    for (i = 0; i < 20; i++) {
-        u = BattleGetUnit(i);
-        if (func_0020BFF8(u)) {
-            return u;
+    s32 actor_index;
+    BattleUnit *actor;
+    for (actor_index = 0; actor_index < 20; actor_index++) {
+        actor = BattleGetUnit(actor_index);
+        if (func_0020BFF8(actor)) {
+            return actor;
         }
     }
     return ((void *)0);

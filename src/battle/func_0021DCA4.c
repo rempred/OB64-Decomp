@@ -69,11 +69,11 @@ void func_0021DCA4(TerminalMotionState *state, BattleRosterRecord *target)
     unsigned int i;
     void *allocation;
 
-    state->destinationX = (float)(int)target->word5C;
-    state->destinationZ = (float)(int)target->word64;
-    dx = (float)(int)(target->word5C - state->currentX);
-    dz = (float)(int)(target->word64 - state->currentZ);
-    speed = func_00201670(state->actor->class48.word, state->actor->variant4C.word);
+    state->destinationX = (float)(int)target->world_x;
+    state->destinationZ = (float)(int)target->world_z;
+    dx = (float)(int)(target->world_x - state->currentX);
+    dz = (float)(int)(target->world_z - state->currentZ);
+    speed = func_00201670(state->actor->primary_class_id.word, state->actor->secondary_class_id.word);
     speed += speed;
     incrementX = dx;
     if (dx != 0.0f) {

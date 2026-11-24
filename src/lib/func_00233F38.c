@@ -1,12 +1,13 @@
 #include "game/battle_roster_record.h"
 
 int D_801C8B84(void *record);
-int D_801CA29C(void *u);
-int func_00233F38(BattleRosterRecord *u) {
-    BattleRosterRecord *list[6];
-    int n = func_002337E4(list, (D_801C8B84(u) == 0) << 3, u->column54);
-    if (n != 0) {
-        return D_801CA29C(func_00233D0C(u, list, n));
+int D_801CA29C(void *actor);
+/* Pick a candidate from the actor's column and return its roster index. */
+int func_00233F38(BattleRosterRecord *actor) {
+    BattleRosterRecord *candidates[6];
+    int candidate_count = func_002337E4(candidates, (D_801C8B84(actor) == 0) << 3, actor->formation_column);
+    if (candidate_count != 0) {
+        return D_801CA29C(func_00233D0C(actor, candidates, candidate_count));
     }
     return -1;
 }

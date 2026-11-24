@@ -1,43 +1,44 @@
 #ifndef OB64_GAME_BATTLE_ROSTER_RECORD_H
 #define OB64_GAME_BATTLE_ROSTER_RECORD_H
 
-/* The scene table and the battle-side temporary both hold complete records.
- * Keep the word and low-byte views used by the roster consumers. */
+/* Scene slots and temporary battle actors use the same 0xF8-byte record.
+ * Class IDs have both a full-word and a low-byte view. */
 typedef union BattleRosterClassWord {
     int word;
     struct BattleRosterClassBytes { unsigned char high[3]; unsigned char low; } bytes;
 } BattleRosterClassWord;
 
 typedef struct RosterRow {
-    void *links[3];
-    void *partners[3];
+    void *primary_children[3];
+    void *secondary_children[3];
     unsigned char unknown18[8];
-    unsigned short field20, field_22, field_24, field_26;
-    unsigned short field_28, field_2A, field_2C, field_2E;
-    unsigned char field_30, field_31, field_32, field_33, field_34, field_35;
-    unsigned short field_36, field_38, field_3A, field_3C;
-    unsigned char field_3E, field_3F;
-    unsigned int flags40;
+    unsigned short hp, max_hp, strength, vitality;
+    unsigned short intelligence, mentality, agility, dexterity;
+    unsigned char luck, level, experience, element, alignment, field_35;
+    unsigned short equipment_slot_0, equipment_slot_1, equipment_slot_2, equipment_slot_3;
+    /* Reference alignment is kept separately from current alignment. */
+    unsigned char fatigue, reference_alignment;
+    unsigned int battle_flags;
     int unknown44;
-    BattleRosterClassWord class48;
-    BattleRosterClassWord variant4C;
-    int handle50;
-    int column54;
-    int row58;
-    unsigned int word5C;
-    unsigned char unknown60[4];
-    unsigned int word64;
-    unsigned char unknown68[4];
-    int field6C;
-    int field70;
+    BattleRosterClassWord primary_class_id;
+    BattleRosterClassWord secondary_class_id;
+    int body_resource_key;
+    int formation_column;
+    int formation_row;
+    unsigned int world_x;
+    unsigned char world_y_bytes[4];
+    unsigned int world_z;
+    unsigned char target_actor_index_bytes[4];
+    int actions_used;
+    int action_limit;
     unsigned char unknown74[4];
-    unsigned char field78;
+    unsigned char action_kind;
     unsigned char unknown79[3];
-    unsigned int field7C;
+    unsigned int action_id;
     unsigned char unknown80[0x14];
-    int field94;
+    int scheduled_time;
     unsigned char unknown98[0x5E];
-    unsigned char fieldF6;
+    unsigned char member_index;
     unsigned char unknownF7;
 } BattleRosterRecord;
 
@@ -47,9 +48,9 @@ int func_0020C164(BattleRosterRecord *record);
 BattleRosterRecord *func_0020C788(void);
 BattleRosterRecord *func_0020C810(void);
 void func_0020CBDC(BattleRosterRecord *record, int mode);
-void func_0020D870(BattleRosterRecord *record, int characterIndex);
-int func_002344B4(BattleRosterRecord *record, int divisor);
-void func_0020C908(BattleRosterRecord *record, int index);
+void func_0020D870(BattleRosterRecord *actor, int member_index);
+int func_002344B4(BattleRosterRecord *actor, int divisor);
+void func_0020C908(BattleRosterRecord *actor, int member_index);
 
 /* The assembler helpers write and consume a caller-owned array of roster rows. */
 int func_002337E4(BattleRosterRecord **out, int start, int column);
@@ -60,17 +61,17 @@ int func_00233F38(BattleRosterRecord *source);
 int func_00233F94(BattleRosterRecord *source);
 int func_00237810(BattleRosterRecord *source, BattleRosterRecord *target);
 
-int func_00222190(BattleRosterRecord *object, int x0, int z0, int x1, int z1);
-int func_0022222C(BattleRosterRecord *source, BattleRosterRecord *target, int x, int z);
-int func_00222344(BattleRosterRecord *object, int x0, int z0, int x1, int z1);
+int func_00222190(BattleRosterRecord *actor, int x0, int z0, int x1, int z1);
+int func_0022222C(BattleRosterRecord *actor, BattleRosterRecord *target, int x, int z);
+int func_00222344(BattleRosterRecord *actor, int x0, int z0, int x1, int z1);
 int func_0022B1F4(BattleRosterRecord *source, int *outWord);
 
-int func_00237750(BattleRosterRecord *source, BattleRosterRecord *target, int c, int d, int e);
+int func_00237750(BattleRosterRecord *actor, BattleRosterRecord *target, int c, int d, int e);
 int func_00237890(void *source, void *target);
 int func_002379AC(int effect, void *record);
-void func_0023422C(void *record, int classId);
-int func_002223E0(BattleRosterRecord *source, BattleRosterRecord *target, int mapZ, int mapX, int x, int z);
-int func_002AB810(int *slots, BattleRosterRecord *unit, int index, int flip,
-                  int classId, int variant, unsigned char seenLeader);
+void func_0023422C(void *actor_record, int new_secondary_class_id);
+int func_002223E0(BattleRosterRecord *actor, BattleRosterRecord *target, int formation_column, int formation_row, int x, int z);
+int func_002AB810(int *slots, BattleRosterRecord *actor, int actor_index, int flip,
+                  int primary_class_id, int secondary_class_id, unsigned char seen_leader);
 
 #endif

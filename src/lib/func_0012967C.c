@@ -18,33 +18,33 @@ extern int func_00129068(u8 *);
 #define WORD(p, o) (*(u32 *)((p) + (o)))
 
 /* Seed a runtime unit from its source record and check its members' HP. */
-void func_0012967C(int index)
+void func_0012967C(int squad_source_index)
 {
     u8 *source_record;
     u8 *object;
     u32 flags = 0;
     int has_member_with_hp;
     int first_member_unavailable;
-    int uses_52_byte_table;
+    int uses_scenario_roster;
     int member_slot;
     int member_index;
     int member_hp;
     u8 *member_entry;
 
-    source_record = g_func_001957D0_source_records[index].bytes;
+    source_record = g_func_001957D0_source_records[squad_source_index].bytes;
     source_record[1] &= 0xFB;
-    object = D_801F1080[index].bytes;
+    object = D_801F1080[squad_source_index].bytes;
     func_80093380(object, 192);
     has_member_with_hp = 0;
     first_member_unavailable = 0;
-    uses_52_byte_table = index >= 30;
+    uses_scenario_roster = squad_source_index >= 30;
     if (source_record[1] & 1) {
         for (member_slot = 0; member_slot < 5; member_slot++) {
             member_entry = source_record + member_slot;
             member_index = member_entry[2];
             if (member_index != 0) {
                 if (member_index >= 100) {
-                    if (uses_52_byte_table)
+                    if (uses_scenario_roster)
                         member_hp = D_8019532C[member_index];
                     else
                         member_hp = D_80190EBC[member_index];
@@ -53,7 +53,7 @@ void func_0012967C(int index)
                     else
                         member_entry[2] = 0;
                 } else {
-                    if (uses_52_byte_table)
+                    if (uses_scenario_roster)
                         member_hp = g_func_0019554C_records_52[member_index].hp;
                     else
                         member_hp = g_func_0019554C_records_56[member_index].hp;
@@ -76,7 +76,7 @@ void func_0012967C(int index)
         flags &= ~0x20;
     /* Retail performs these ordered field resets after clearing the full object. */
     WORD(object, 0) = flags;
-    object[4] = index;
+    object[4] = squad_source_index;
     WORD(object, 0x8) = 0;
     WORD(object, 0xc) = 0;
     WORD(object, 0x10) = 0;

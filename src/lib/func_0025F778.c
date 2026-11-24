@@ -1,10 +1,11 @@
 #include "game/effect_math_e04.h"
 
-extern void *func_0020C478(unsigned int index);
+extern void *func_0020C478(unsigned int actor_index);
 
-int func_0025F778(unsigned int index)
+/* Read the scene actor's world X coordinate. */
+int func_0025F778(unsigned int actor_index)
 {
-    unsigned char *value = func_0020C478(index);
+    unsigned char *actor_bytes = func_0020C478(actor_index);
 
-    return *(int *)(value + 0x5C);
+    return *(int *)(actor_bytes + 0x5C);
 }

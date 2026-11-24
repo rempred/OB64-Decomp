@@ -35,53 +35,53 @@ typedef struct CharacterInput {
 extern CharacterInput D_80193BC0[];
 extern void func_00023780(void *destination, u32 size);
 
-/* Initialize a battle row from a 0x38-byte persistent character. */
-void func_0020D870(BattleRosterRecord *row, s32 characterIndex)
+/* Initialize a battle actor from an Army roster member, including experience. */
+void func_0020D870(BattleRosterRecord *actor, s32 member_index)
 {
-    CharacterInput *character;
+    CharacterInput *army_character;
     s32 secondary_class_id;
-    s32 uses_class_one;
+    s32 has_secondary_class_one;
     u8 alignment;
 
-    character = &D_80193BC0[characterIndex];
-    func_00023780(row, sizeof(*row));
-    row->class48.word = character->primary_class_id;
-    secondary_class_id = character->secondary_class_id;
-    row->fieldF6 = characterIndex;
-    row->variant4C.word = secondary_class_id;
-    row->field_31 = character->level;
-    row->field_33 = character->element;
-    row->field_22 = character->max_hp;
-    row->field20 = character->hp;
-    row->field_24 = character->strength;
-    row->field_26 = character->vitality;
-    row->field_28 = character->intelligence;
-    row->field_2A = character->mentality;
-    row->field_2C = character->agility;
-    row->field_2E = character->dexterity;
-    row->field_30 = character->luck;
-    alignment = character->alignment;
-    row->field_3F = alignment;
-    row->field_34 = alignment;
-    row->field_36 = character->equipment[0];
-    row->field_38 = character->equipment[1];
-    row->field_3A = character->equipment[2];
-    row->field_3C = character->equipment[3];
-    row->field_3E = character->fatigue;
+    army_character = &D_80193BC0[member_index];
+    func_00023780(actor, sizeof(*actor));
+    actor->primary_class_id.word = army_character->primary_class_id;
+    secondary_class_id = army_character->secondary_class_id;
+    actor->member_index = member_index;
+    actor->secondary_class_id.word = secondary_class_id;
+    actor->level = army_character->level;
+    actor->element = army_character->element;
+    actor->max_hp = army_character->max_hp;
+    actor->hp = army_character->hp;
+    actor->strength = army_character->strength;
+    actor->vitality = army_character->vitality;
+    actor->intelligence = army_character->intelligence;
+    actor->mentality = army_character->mentality;
+    actor->agility = army_character->agility;
+    actor->dexterity = army_character->dexterity;
+    actor->luck = army_character->luck;
+    alignment = army_character->alignment;
+    actor->reference_alignment = alignment;
+    actor->alignment = alignment;
+    actor->equipment_slot_0 = army_character->equipment[0];
+    actor->equipment_slot_1 = army_character->equipment[1];
+    actor->equipment_slot_2 = army_character->equipment[2];
+    actor->equipment_slot_3 = army_character->equipment[3];
+    actor->fatigue = army_character->fatigue;
 
-    if (row == 0) {
-        uses_class_one = 0;
+    if (actor == 0) {
+        has_secondary_class_one = 0;
     } else {
-        uses_class_one = row->variant4C.word == 1;
+        has_secondary_class_one = actor->secondary_class_id.word == 1;
     }
-    if (uses_class_one) {
-        row->field_3E = 0;
+    if (has_secondary_class_one) {
+        actor->fatigue = 0;
     }
-    if (character->status_flags & 2) {
-        row->flags40 |= 0x200;
+    if (army_character->status_flags & 2) {
+        actor->battle_flags |= 0x200;
     }
-    if (character->status_flags & 4) {
-        row->flags40 |= 2;
+    if (army_character->status_flags & 4) {
+        actor->battle_flags |= 2;
     }
-    row->field_32 = character->experience;
+    actor->experience = army_character->experience;
 }

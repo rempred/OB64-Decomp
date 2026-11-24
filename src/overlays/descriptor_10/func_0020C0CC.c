@@ -8,5 +8,5 @@ inline s32 func_0020C0CC(void *record) {
     if (u == ((void *)0)) {
         return 0;
     }
-    return (u->flags40 >> 12) & 1;
+    return (u->battle_flags >> 12) & 1;
 }

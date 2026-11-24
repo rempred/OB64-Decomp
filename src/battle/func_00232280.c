@@ -14,9 +14,10 @@ extern ResolutionGlobal *D_801CE8BC;
 extern int func_0020BF6C(void);
 extern void *func_0020C478(unsigned int index);
 
+/* Move the selected actor's row to the front, rebuilding the list if needed. */
 void func_00232280(BattleResolutionRecord *records)
 {
-    BattleRosterRecord *object;
+    BattleRosterRecord *actor;
     BattleResolutionRecord temporary;
     int i;
     u32 j;
@@ -27,8 +28,8 @@ void func_00232280(BattleResolutionRecord *records)
         return;
 
     for (i = 0; i < 20; ++i) {
-        object = func_0020C478(i);
-        if (!func_0020C2C0(object) && !func_0020C014(object))
+        actor = func_0020C478(i);
+        if (!func_0020C2C0(actor) && !func_0020C014(actor))
             break;
     }
     if (i >= 20)
@@ -36,7 +37,7 @@ void func_00232280(BattleResolutionRecord *records)
 
     for (i = 0; i < 6; ++i) {
         for (j = 0; j < 3; ++j) {
-            if (records[i].objects[j] == object) {
+            if (records[i].actors[j] == actor) {
                 while (i != 0) {
                     temporary = records[i];
                     records[i] = records[i - 1];
@@ -49,7 +50,7 @@ void func_00232280(BattleResolutionRecord *records)
         }
     }
 
-    --object->field6C;
+    --actor->actions_used;
     func_00231CC0(records);
     func_00232280(records);
 }

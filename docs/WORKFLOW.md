@@ -484,6 +484,25 @@ injection, naked-function mechanisms, or section tricks to force a match. The
 source-policy tool classifies assembler escape hatches mechanically. If the
 assignment requires matching C, the final source must be `PURE_C`.
 
+#### Naming identifiers
+
+Choose the name that explains the decision a reader is looking at. In the battle message
+formatter, `uses_army_roster` tells the reader where the character's name comes from.
+The 56-byte stride helps establish which roster this is. Reserve names such as
+`record_stride_bytes` for values that actually hold a size.
+
+- Phrase predicates so their true branch reads naturally, such as `uses_army_roster`.
+  Keep the roster selector distinct from the `member_index` that chooses a character.
+- Name values for their roles at the point of use. Distinguish `hp` from `max_hp`, and
+  an index from a byte offset or a count. Follow the surrounding naming style.
+- Trace a shared field through its writers and readers. Two battle fields start with the
+  same alignment byte. The game writes `alignment` back to the character and compares
+  it with `reference_alignment` during battle. Those uses justify distinct names.
+  Keep a neutral or offset-based name while a field's role is unclear.
+- Apply renames to the intended declaration and its uses. A local and a member can
+  share a spelling. Review each affected use and preserve public symbols, layout, and
+  evaluation order during a readability pass.
+
 ### 3. Iterate with the canonical linked diff
 
 Run:

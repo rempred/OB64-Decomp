@@ -18,7 +18,7 @@ extern u8 func_001957D0_finalize(Func001957D0SourceRecord *record);
 void func_001957D0(const CharacterTemplate *incoming_source, int source_index)
 {
     const CharacterTemplate *source;
-    u8 force_52_byte_pool_value;
+    u8 force_scenario_roster_value;
     register u8 source_byte;
     u32 source_record_index;
     u8 second_class_id;
@@ -33,8 +33,8 @@ void func_001957D0(const CharacterTemplate *incoming_source, int source_index)
     u32 masked_source_index;
     int record_offset;
     int character_index_arg;
-    int use_52_byte_main_pool;
-    u8 force_52_byte_pool;
+    int uses_scenario_roster;
+    u8 force_scenario_roster;
     u16 *normal_slots_or_source_index;
     u32 field_10_special_slots;
     u8 third_class_id;
@@ -43,13 +43,13 @@ void func_001957D0(const CharacterTemplate *incoming_source, int source_index)
     /* The packed-field read form retains KMC register allocation in the slot loops. */
     u32 source_work;
     source_byte = (u8)source_index;
-    force_52_byte_pool_value = source_byte >> 7;
-    force_52_byte_pool_value ^= 1;
+    force_scenario_roster_value = source_byte >> 7;
+    force_scenario_roster_value ^= 1;
     source_byte = source_byte < 30;
     source_byte ^= 1;
     source_byte = -source_byte;
-    force_52_byte_pool_value &= source_byte;
-    force_52_byte_pool = force_52_byte_pool_value;
+    force_scenario_roster_value &= source_byte;
+    force_scenario_roster = force_scenario_roster_value;
     source_index &= 0x7F;
     masked_source_index = (s8)source_index;
     source_record_index = (u8)masked_source_index;
@@ -64,17 +64,17 @@ void func_001957D0(const CharacterTemplate *incoming_source, int source_index)
         source_record->field_00 = source_index;
     }
     source = incoming_source;
-    if (force_52_byte_pool != 0) {
+    if (force_scenario_roster != 0) {
         source_record->field_01 = 0x81;
     } else {
         source_record->field_01 = 1;
     }
     func_00023780(source_record->field_02, 5);
-    use_52_byte_main_pool = masked_source_index >= 30;
-    use_52_byte_main_pool |= force_52_byte_pool;
+    uses_scenario_roster = masked_source_index >= 30;
+    uses_scenario_roster |= force_scenario_roster;
     /* Class byte +0x12 marks free rows in either character pool. */
     member_index = 0;
-    if (use_52_byte_main_pool != 0) {
+    if (uses_scenario_roster != 0) {
         scan_index = 1;
         record_offset = 52;
 main_records_52:
@@ -106,7 +106,7 @@ main_records_56:
     }
     {
     u32 source_index_arg;
-    int special_pool;
+    int uses_scenario_member_pool;
     const CharacterTemplate *call_source;
 main_record_done:
     if (main_character_index < 0) {
@@ -118,12 +118,12 @@ main_record_done:
         call_source = source;
     }
     source_index_arg = (u8)masked_source_index;
-    special_pool = force_52_byte_pool;
+    uses_scenario_member_pool = force_scenario_roster;
     func_0019554C(
         character_index_arg,
         call_source,
         0,
-        special_pool,
+        uses_scenario_member_pool,
         source_index_arg);
     {
         u8 main_member_position;
@@ -142,14 +142,14 @@ main_record_done:
         source_offset = 0;
         pool_compare = source_index_arg < 30;
         pool_compare ^= 1;
-        special_pool |= pool_compare;
+        uses_scenario_member_pool |= pool_compare;
         special_slot_base = g_func_001957D0_special_slots;
         normal_slots_or_source_index = g_func_001957D0_normal_slots;
         source_work = (u32)source;
 field_07_slot_outer:
         if (((CharacterTemplate *)source_work)->field_0D[0] != 0) {
             scan_index = 0;
-            if (special_pool != 0) {
+            if (uses_scenario_member_pool != 0) {
                 switch (member_index) {
                 case 0:
                     slot_cursor = special_slot_base;
@@ -191,7 +191,7 @@ field_07_slot_scan_done:
             if (second_special_index < 0) {
                 func_00023940(g_func_001957D0_slot_error);
             }
-            if (special_pool != 0) {
+            if (uses_scenario_member_pool != 0) {
                 special_slot_base[second_special_index] = g_func_001957D0_special_slot_seed;
                 g_func_001957D0_special_slot_state[second_special_index] = 0;
             } else {
@@ -218,12 +218,12 @@ field_07_slot_scan_done:
         normal_slots_or_source_index = (u16 *)source_index_arg;
         pool_compare = source_index_arg < 30;
         pool_compare ^= 1;
-        special_pool |= pool_compare;
+        uses_scenario_member_pool |= pool_compare;
         source_work = (u32)source;
 field_07_record_outer:
         if (((CharacterTemplate *)source_work)->field_0D[0] != 0) {
             scan_index = 1;
-            if (special_pool != 0) {
+            if (uses_scenario_member_pool != 0) {
                 record_offset = 52;
 field_07_records_52:
                 second_character_index = scan_index;
@@ -257,10 +257,10 @@ field_07_record_scan_done:
             if (second_character_index < 0) {
                 func_00023940(g_func_001957D0_record_error);
                 scan_index = second_character_index;
-                helper_flag = force_52_byte_pool;
+                helper_flag = force_scenario_roster;
             } else {
                 scan_index = second_character_index;
-                helper_flag = force_52_byte_pool;
+                helper_flag = force_scenario_roster;
             }
             func_0019554C(
                 scan_index,
@@ -293,19 +293,19 @@ field_07_record_scan_done:
     third_class_id = source->third_class_id;
     if (third_class_id == 1) {
         int slot_compare;
-        int slot_special;
+        int slot_uses_scenario_roster;
         u32 normal_slot_base;
         u8 *member_entry;
         slot_compare = masked_source_index < 30;
         slot_compare ^= 1;
-        slot_special = force_52_byte_pool || slot_compare;
+        slot_uses_scenario_roster = force_scenario_roster || slot_compare;
         field_10_special_slots = (u32)g_func_001957D0_special_slots;
         normal_slot_base = (u32)g_func_001957D0_normal_slots;
         source_work = (u32)source;
 field_10_slot_outer:
         if (((CharacterTemplate *)source_work)->field_16[0] != 0) {
             scan_index = 0;
-            if (slot_special != 0) {
+            if (slot_uses_scenario_roster != 0) {
                 slot_cursor = (u16 *)field_10_special_slots;
 field_10_special_slot_scan:
                 third_special_index = scan_index;
@@ -337,7 +337,7 @@ field_10_slot_scan_done:
             if (third_special_index < 0) {
                 func_00023940(g_func_001957D0_slot_error);
             }
-            if (slot_special != 0) {
+            if (slot_uses_scenario_roster != 0) {
                 ((u16 *)field_10_special_slots)[third_special_index] = g_func_001957D0_special_slot_seed;
                 g_func_001957D0_special_slot_state[third_special_index] = 0;
             } else {
@@ -358,7 +358,7 @@ field_10_slot_scan_done:
         u32 second_source_index;
         int record_compare;
         int record_index;
-        int record_special;
+        int record_uses_scenario_roster;
         second_source_index = (u8)masked_source_index;
         if (member_index) {
             record_compare = second_source_index < 30;
@@ -367,11 +367,11 @@ field_10_slot_scan_done:
         }
         record_compare ^= 1;
         source_work = (u32)source;
-        record_special = force_52_byte_pool | record_compare;
+        record_uses_scenario_roster = force_scenario_roster | record_compare;
 field_10_record_outer:
         if (((CharacterTemplate *)source_work)->field_16[0] != 0) {
             scan_index = 1;
-            if (record_special != 0) {
+            if (record_uses_scenario_roster != 0) {
                 record_offset = 52;
 field_10_records_52:
                 if (((u8 *)g_func_0019554C_records_52)[record_offset + 0x12] == 0) {
@@ -407,10 +407,10 @@ field_10_record_scan_done:
             if (record_index < 0) {
                 func_00023940(g_func_001957D0_record_error);
                 scan_index = record_index;
-                helper_flag = force_52_byte_pool;
+                helper_flag = force_scenario_roster;
             } else {
                 scan_index = record_index;
-                helper_flag = force_52_byte_pool;
+                helper_flag = force_scenario_roster;
             }
             func_0019554C(
                 scan_index,
@@ -433,7 +433,7 @@ field_10_record_scan_done:
             }
         }
     }
-    if (force_52_byte_pool == 0) {
+    if (force_scenario_roster == 0) {
         source_record->field_18 = func_001957D0_finalize(source_record);
     } else {
         source_record->field_18 = func_001957D0_finalize(source_record);

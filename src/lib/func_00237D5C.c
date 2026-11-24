@@ -44,22 +44,22 @@ typedef struct BattleUnit {
     s32 unk94;
     u8 unk98[0x60];
 } BattleUnit;
-BattleUnit *D_801C8FE8(s32 i);
-void func_00237D5C(s32 i, s32 *x, s32 *y) {
-    if (i < 20) {
-        BattleUnit *u = D_801C8FE8(i);
-        *x = u->lane;
-        *y = u->unk58;
-    } else if (i < 47) {
-        i -= 20;
-        *x = i % 3;
-        *y = i / 3;
-    } else if (i < 87) {
-        i -= 47;
-        *x = i % 4;
-        *y = i / 4;
+BattleUnit *D_801C8FE8(s32 actor_index);
+void func_00237D5C(s32 actor_index, s32 *out_formation_column, s32 *out_formation_row) {
+    if (actor_index < 20) {
+        BattleUnit *actor = D_801C8FE8(actor_index);
+        *out_formation_column = actor->lane;
+        *out_formation_row = actor->unk58;
+    } else if (actor_index < 47) {
+        actor_index -= 20;
+        *out_formation_column = actor_index % 3;
+        *out_formation_row = actor_index / 3;
+    } else if (actor_index < 87) {
+        actor_index -= 47;
+        *out_formation_column = actor_index % 4;
+        *out_formation_row = actor_index / 4;
     } else {
-        *x = -1;
-        *y = -1;
+        *out_formation_column = -1;
+        *out_formation_row = -1;
     }
 }

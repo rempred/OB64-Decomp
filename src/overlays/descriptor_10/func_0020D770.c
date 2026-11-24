@@ -19,30 +19,31 @@ typedef struct {
     s32 actsMax;
 } BattleUnit;
 extern u8 *D_801CE8BC;
-extern inline BattleUnit *BattleGetUnit(u32 i) {
-    u8 *base = D_801CE8BC;
-    s32 off;
-    if (i < 20) {
-        off = i * 0xF8;
-        if (*(s32 *)(base + off + 0x20C) != 0) {
-            return (BattleUnit *)(base + (off + 0x1C4));
+extern inline BattleUnit *BattleGetUnit(u32 actor_index) {
+    u8 *scene_bytes = D_801CE8BC;
+    s32 roster_byte_offset;
+    if (actor_index < 20) {
+        roster_byte_offset = actor_index * 0xF8;
+        if (*(s32 *)(scene_bytes + roster_byte_offset + 0x20C) != 0) {
+            return (BattleUnit *)(scene_bytes + (roster_byte_offset + 0x1C4));
         }
     }
     return ((void *)0);
 }
-void *func_0020D770(u32 lane, s32 row) {
-    s32 i;
-    BattleUnit *u;
-    if (lane >= 3 || row < 0) {
+/* Return the first eligible actor at this formation position. */
+void *func_0020D770(u32 formation_column, s32 formation_row) {
+    s32 actor_index;
+    BattleUnit *actor;
+    if (formation_column >= 3 || formation_row < 0) {
         return ((void *)0);
     }
-    if (row >= 9) {
+    if (formation_row >= 9) {
         return ((void *)0);
     }
-    for (i = 0; i < 20; i++) {
-        u = BattleGetUnit(i);
-        if (u != ((void *)0) && !(u->flags & 1) && u->unk54 == lane && u->unk58 == row) {
-            return u;
+    for (actor_index = 0; actor_index < 20; actor_index++) {
+        actor = BattleGetUnit(actor_index);
+        if (actor != ((void *)0) && !(actor->flags & 1) && actor->unk54 == formation_column && actor->unk58 == formation_row) {
+            return actor;
         }
     }
     return ((void *)0);

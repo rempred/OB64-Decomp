@@ -45,10 +45,10 @@ typedef struct BattleUnit {
     s32 unk94;
     u8 unk98[0x60];
 } BattleUnit;
-u8 D_801C9FA4(s32 a);
-s32 D_8016E458(s32 a);
+u8 D_801C9FA4(s32 formation_group);
+s32 D_8016E458(s32 formation_group);
 extern s8 D_801F6A30[][3];
-s8 func_00234614(BattleUnit *u) {
-    u8 a = D_801C9FA4(u->unk58);
-    return D_801F6A30[(u8)D_8016E458(((u8 *)u)[0x7F])][a];
+s8 func_00234614(BattleUnit *actor) {
+    u8 formation_group = D_801C9FA4(actor->unk58);
+    return D_801F6A30[(u8)D_8016E458(((u8 *)actor)[0x7F])][formation_group];
 }

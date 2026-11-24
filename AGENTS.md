@@ -242,6 +242,8 @@ Independently derive readable C from the ROM and project evidence. Prefer struct
 evidence-backed shared types, fields, and constants, then run an early linked diff.
 Name locals and parameters for their observed roles. When the game meaning is uncertain,
 use the role visible in the code, such as `slot_index` or `bytes_remaining`.
+Prefer a proven game term to a storage detail. Use the same term in the declaration,
+the code that fills the field, and the code that reads it. See [Naming identifiers](docs/WORKFLOW.md#naming-identifiers).
 When a function's purpose is known, describe it in one line above its definition.
 Keep existing function symbols and aliases during ordinary matching and readability work.
 Keep uncertain meanings explicit. Explain necessary compiler workarounds near the affected C.

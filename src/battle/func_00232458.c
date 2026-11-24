@@ -9,19 +9,19 @@ typedef unsigned int u32;
 
 typedef struct DispatchObject {
     u8 unknown00[0x20];
-    u16 field20;
+    u16 hp;
     u8 unknown22[0x26];
-    int field48;
-    int field4C;
+    int primary_class_id;
+    int secondary_class_id;
     u8 unknown50[4];
-    int field54;
-    int field58;
+    int formation_column;
+    int formation_row;
     u8 unknown5C[0x1C];
-    u8 field78;
+    u8 action_kind;
     u8 unknown79[3];
-    u32 field7C;
+    u32 action_id;
     u8 unknown80[0x14];
-    int field94;
+    int scheduled_time;
     u8 unknown98[0x60];
 } DispatchObject;
 
@@ -82,8 +82,8 @@ int func_00232458(u8 *input, int *outTime)
 {
     DispatchDescriptor descriptor;
     DispatchLists lists;
-    BattleRosterRecord *temporary;
-    DispatchObject *object;
+    BattleRosterRecord *temporary_actor;
+    DispatchObject *actor;
     DispatchObject *scanObject;
     u8 *global;
     int i;
@@ -129,28 +129,28 @@ int func_00232458(u8 *input, int *outTime)
     global = D_801CE8BC;
     offset = 0x1C4;
     for (; i < 20; ++i, offset += 0xF8) {
-        temporary = (BattleRosterRecord *)(global + offset);
-        if (temporary->class48.word == 0 && temporary->variant4C.word == 0)
+        temporary_actor = (BattleRosterRecord *)(global + offset);
+        if (temporary_actor->primary_class_id.word == 0 && temporary_actor->secondary_class_id.word == 0)
             break;
     }
-    func_0020D870(temporary, 1);
-    temporary->row58 = 7;
-    temporary->column54 = 1;
+    func_0020D870(temporary_actor, 1);
+    temporary_actor->formation_row = 7;
+    temporary_actor->formation_column = 1;
     initialInput2 = input[2];
-    temporary->field78 = 3;
-    temporary->field7C = initialInput2;
-    identifierOrNumerator = func_00233F94(temporary);
-    side = func_0020C014(temporary);
+    temporary_actor->action_kind = 3;
+    temporary_actor->action_id = initialInput2;
+    identifierOrNumerator = func_00233F94(temporary_actor);
+    side = func_0020C014(temporary_actor);
     /* The real fourth producer argument and later scan limit have disjoint uses. */
     producerInputOrRepeatLimit = input[1];
     producer = func_0023887C(identifierOrNumerator, descriptor.header[8], side, producerInputOrRepeatLimit);
     /* Hard mode10 selects six producer iterations; later deletion only shrinks it. */
     func_00237E2C(&descriptor, descriptor.header[8], producer);
     if (descriptor.count == 0) {
-        func_00023780(temporary, 0xF8);
+        func_00023780(temporary_actor, 0xF8);
         return 0;
     }
-    func_00239338(&descriptor, temporary, temporary, temporary);
+    func_00239338(&descriptor, temporary_actor, temporary_actor, temporary_actor);
     narrowed = (s16)func_0025FD00(input[1]);
     time = 1;
     D_801CE8C0->field818++;
@@ -162,10 +162,10 @@ int func_00232458(u8 *input, int *outTime)
         idOffset = i * 4;
         /* Actual ID address precedes the random/result phase of this MIPS word. */
         secondary = idOffset + (int)&descriptor;
-        object = func_0020C478(((int *)secondary)[4]);
-        if (object == 0)
+        actor = func_0020C478(((int *)secondary)[4]);
+        if (actor == 0)
             continue;
-        if (func_0020C2C0(object) != 0) {
+        if (func_0020C2C0(actor) != 0) {
             j = i;
             if (j < descriptor.count - 1) {
                 do {
@@ -180,9 +180,9 @@ int func_00232458(u8 *input, int *outTime)
             --descriptor.count;
             continue;
         }
-        threshold = func_002363FC(object);
+        threshold = func_002363FC(actor);
         valueAddress = (u8 *)(i * 2 + (int)&descriptor);
-        threshold = func_002365BC(temporary, object, ((u16 *)valueAddress)[28], threshold);
+        threshold = func_002365BC(temporary_actor, actor, ((u16 *)valueAddress)[28], threshold);
         mainFirst = rand();
         mainSecond = rand();
         third = rand();
@@ -212,7 +212,7 @@ int func_00232458(u8 *input, int *outTime)
                 secondary = primary;
                 break;
             case 6:
-                if (primary != 0 && value >= object->field20)
+                if (primary != 0 && value >= actor->hp)
                     secondary = 1;
                 break;
             case 2:
@@ -238,11 +238,11 @@ int func_00232458(u8 *input, int *outTime)
                 break;
             }
             if (secondary != 0)
-                secondary = func_002379AC(lists.modifier, object);
+                secondary = func_002379AC(lists.modifier, actor);
         }
         descriptor.secondary[i] = secondary;
         if (primary != 0) {
-            func_0022A7B8(object, 0, time, value, narrowed, 0);
+            func_0022A7B8(actor, 0, time, value, narrowed, 0);
             mode = -1;
             if (D_8018AA80[input[2]].bytes[1] == 10)
                 mode = 1;
@@ -262,18 +262,18 @@ int func_00232458(u8 *input, int *outTime)
                 }
                 repeatPredicate = repeated ^ 1;
                 if (repeatPredicate == 0)
-                    special = func_00237AF8(object, mode);
+                    special = func_00237AF8(actor, mode);
             }
-            if (special != 0 && func_0020C2C0(object) == 0 && func_0020C32C(object) == 0) {
-                func_0021D334(0x1F, time, object, 13, value >> 8, value & 0xFF,
+            if (special != 0 && func_0020C2C0(actor) == 0 && func_0020C32C(actor) == 0) {
+                func_0021D334(0x1F, time, actor, 13, value >> 8, value & 0xFF,
                              narrowed, D_801CE8C0->field823, (u8)special);
-                func_0023422C(object, special);
+                func_0023422C(actor, special);
             } else {
                 if (secondary != 0)
-                    func_0022B06C(object, &lists.modifier);
-                func_0021D334(0x1F, time, object, 0, value >> 8, value & 0xFF,
+                    func_0022B06C(actor, &lists.modifier);
+                func_0021D334(0x1F, time, actor, 0, value >> 8, value & 0xFF,
                              narrowed, D_801CE8C0->field823, lists.modifier);
-                object->field94 = time;
+                actor->scheduled_time = time;
             }
         } else {
             value /= 2;
@@ -281,13 +281,13 @@ int func_00232458(u8 *input, int *outTime)
                 value = 1;
             if (value >= 10000)
                 value = 9999;
-            func_0021D334(0x1F, time, object, 1, value >> 8, value & 0xFF,
+            func_0021D334(0x1F, time, actor, 1, value >> 8, value & 0xFF,
                          narrowed, D_801CE8C0->field823, 0);
-            func_0022A7B8(object, 0, time, value, narrowed, 0);
-            object->field94 = time;
+            func_0022A7B8(actor, 0, time, value, narrowed, 0);
+            actor->scheduled_time = time;
         }
-        if (maximum < object->field94)
-            maximum = object->field94;
+        if (maximum < actor->scheduled_time)
+            maximum = actor->scheduled_time;
     }
     for (i = 0; i < 20; ++i) {
         scanObject = func_0020C478(i);
@@ -295,7 +295,7 @@ int func_00232458(u8 *input, int *outTime)
             continue;
         if (func_0020C0CC(scanObject) != 0)
             continue;
-        if (func_0020BFF8(scanObject) == 0 && (void *)temporary != scanObject)
+        if (func_0020BFF8(scanObject) == 0 && (void *)temporary_actor != scanObject)
             break;
     }
     lists.single[0] = func_0020D72C(scanObject);
@@ -317,6 +317,6 @@ int func_00232458(u8 *input, int *outTime)
     *outTime += 0x200;
     D_801CE8C0->field828 = *outTime;
     func_0021D230(0x20, *outTime, 0, D_801CE8C0->field823);
-    func_00023780(temporary, 0xF8);
+    func_00023780(temporary_actor, 0xF8);
     return 1;
 }
