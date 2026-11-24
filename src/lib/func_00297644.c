@@ -2,7 +2,7 @@
 #include "game/cutscene_panels.h"
 
 extern void func_002918F4(u8, s32, s32, s32, s32);
-extern void func_000523b4(s16);
+extern void func_000523b4(u32);
 extern u8 func_00042c30(void);
 extern void func_0004f2ac(u8 *text, s32 x, s32 y);
 extern void func_00052ae8(Panel *, PanelContent *);

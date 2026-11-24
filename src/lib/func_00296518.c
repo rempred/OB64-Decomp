@@ -5,7 +5,7 @@ extern void *resource_free(void *);
 extern void bzero(void *, s32);
 extern void bcopy(const void *, void *, s32);
 extern void func_80080998(void *, void *, s32);
-extern u8 *func_002839E8(u32, s32);
+extern void * func_002839E8(s32, s32);
 
 PanelContent *func_00296518(Panel *panel, s32 key)
 {

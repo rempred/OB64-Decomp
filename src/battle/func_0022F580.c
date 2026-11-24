@@ -144,7 +144,7 @@ extern void func_0022B06C(void *, u8 *);
 extern void func_0022EF50(void *);
 extern int func_0022F2BC(void *, int *);
 extern int func_00233210(ResolutionObject *, ResolutionObject *);
-extern int func_00233568(ResolutionObject *);
+extern u8 func_00233568(struct ResolutionObject *);
 extern int func_002363FC(ResolutionObject *);
 extern int func_002365BC(ResolutionObject *, ResolutionObject *, int, int);
 extern int func_00237AF8(ResolutionObject *, int);

@@ -1,0 +1,30 @@
+typedef unsigned char u8;
+typedef signed short s16;
+typedef signed int s32;
+void func_0004a038(void *v, s16 x0, s16 y0, s16 x1, s16 y1);
+s32 bcopy(s32 *, void *, s32);
+extern s32 D_8018F3A0;
+void func_0004a038(void *v, s16 x0, s16 y0, s16 x1, s16 y1) {
+    s16 w, h;
+    s16 l, t, r, b;
+    bcopy(&D_8018F3A0, v, 0x40);
+    w = ((x1 - x0 > 0) ? x1 - x0 : x0 - x1) - 1;
+    h = ((y1 - y0 > 0) ? y1 - y0 : y0 - y1) - 1;
+    r = 0xA0 - x1;
+    b = 0x78 - y1;
+    h <<= 6;
+    t = 0x78 - y0;
+    l = 0xA0 - x0;
+    (*(s16 *)((u8 *)(v) + (0x12))) = t;
+    (*(s16 *)((u8 *)(v) + (0x22))) = t;
+    (*(s16 *)((u8 *)(v) + (0))) = r;
+    (*(s16 *)((u8 *)(v) + (2))) = b;
+    (*(s16 *)((u8 *)(v) + (0xA))) = h;
+    (*(s16 *)((u8 *)(v) + (0x10))) = r;
+    (*(s16 *)((u8 *)(v) + (0x20))) = l;
+    (*(s16 *)((u8 *)(v) + (0x28))) = w << 6;
+    (*(s16 *)((u8 *)(v) + (0x30))) = l;
+    (*(s16 *)((u8 *)(v) + (0x32))) = b;
+    (*(s16 *)((u8 *)(v) + (0x38))) = w << 6;
+    (*(s16 *)((u8 *)(v) + (0x3A))) = h;
+}

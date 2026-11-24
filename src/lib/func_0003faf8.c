@@ -2,7 +2,7 @@
 #include "common/mus_bank.h"
 extern MusBank D_80104710;
 s32 func_00011f08(s32 h);
-void func_00011e54(s32 h, s32 a);
+extern s32 func_00011e54(s32, s32);
 
 s32 func_00011b70(s32 a);
 void func_0003faf8(SoundChannel *ch);

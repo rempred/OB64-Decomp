@@ -4,7 +4,7 @@ extern void *resource_free(void *);
 extern void bzero(void *, s32);
 extern void bcopy(const void *, void *, s32);
 extern void func_80080998(void *, void *, s32);
-extern u8 *func_002839E8(u32, s32);
+extern void * func_002839E8(s32, s32);
 extern u8 *func_00296CE0(s16);
 extern unsigned char *func_8009C550(unsigned char *destination, const unsigned char *source);
 extern u8 *func_8009C620(u8 *, const u8 *);

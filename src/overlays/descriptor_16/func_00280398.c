@@ -12,7 +12,7 @@ typedef struct Task27 {
     s16 h10;
     u8 unk12[0x26];
 } Task27;
-void func_0027FD7C(s32 a, Task27 *t);
+extern s32 func_0027FD7C(u16, struct Task27 *);
 Task27 *func_0027CEDC(void (*fn)(s32, Task27 *));
 void func_00280398(void) {
     func_0027CEDC(func_0027FD7C);

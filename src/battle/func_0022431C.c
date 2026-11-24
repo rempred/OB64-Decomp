@@ -1,5 +1,5 @@
 /* Same code as func_0021D25C (src/battle/func_0021D25C.c); references remapped: func_801D98F4 -> func_00224004. */
-extern void func_00224004(int, int, int, int, int, int, int, int, int);
+extern void func_00224004(unsigned char *, int, int, int, int, unsigned char, int, int, int);
 
 void func_0022431C(int arg0, int arg1, int arg2, int arg3, int arg4)
 {

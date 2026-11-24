@@ -38,7 +38,7 @@ typedef struct {
 extern CurSceneFA D_800E7A30;
 void func_000fafac(void);
 void func_00008A74(s32 x, s32 y, s32 x2, s32 y2);
-void boot_display_list_color_rect_packet_emit(s32 mode, s32 x, s32 y, s32 x2, s32 y2);
+extern void boot_display_list_color_rect_packet_emit(u16, s16, s16, s16, s16);
 void D_801768D4(s32 w, s32 h, s32 x, s32 y, s32 x2, s32 y2);
 void D_80197B70(void);
 void func_000fb104(f32 a, f32 b, s32 c, s32 d, s32 e);
