@@ -2,10 +2,11 @@
 
 ## Current queue
 
-Updated November 23, 2026.
+Updated November 24, 2026.
 
+- **Claimed by the OB64 Decomp team — army record ownership.** The team owns the [33 functions in five waves](Plans/army-record-ownership-program.md#wave-membership). The integrator prepares the workbenches. The Director coordinates existing claims and dispatches cleared waves, starting with formation and post-battle writeback.
 - **Boot display-list ownership.** The Decomp side owns a structural follow-up for `emit_rdp_setup_displaylist`. Confirm how to preserve the global and local labels at the same entry before activating its C source. The boot assembly remains the verified owner. [PR #3 closeout and evidence](https://github.com/rempred/OB64-Decomp/pull/3#issuecomment-7068054145)
-- **Open Editor requests.** Contributors can choose from [six verified function families](Plans/editor-function-families-20261120.md) or browse the [workbench target list](../config/matching-priorities.json). Start with mission suspend/restore for the largest immediate Editor benefit or story sound command `0x6E` for a small, testable match. The list also covers battle amounts, army record ownership, target selection and strike timing. Follow the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target) to coordinate a claim.
+- **Open Editor requests.** The [Editor family list](Plans/editor-function-families-20261120.md) and [workbench target list](../config/matching-priorities.json) include mission suspend/restore, story sound command `0x6E`, battle amounts, target selection and strike timing. Check the assigned army roster above and follow the [contributor guide](../CONTRIBUTING.md#find-or-request-a-target) to coordinate a claim.
 - **Editor follow-up.** The Editor Director integrated Decomp `87530794` in local editor commit `5b46b47`, with an exact retail export and a corrected class-comparison declaration. The Editor Director previously received all 39 accepted PR #3 functions for integration and feature work and will flag issues with the accepted C. Existing work includes the two audio corrections in cutscene preview and ROM export, audible story playback with resident audio state, and the alternate directional-input mode for branch previews. [PR #3 merge](https://github.com/rempred/OB64-Decomp/commit/fa42b5e8465332ffd9731acbfd37c3fbdf3791cc) · [Audio corrections](Plans/c-interface-verification.md#accepted-audio-corrections) · [Prior Editor closeout](https://github.com/rempred/LordlyCaliber/pull/14#issuecomment-7031488087)
 
 ## Unresolved source and research scope
