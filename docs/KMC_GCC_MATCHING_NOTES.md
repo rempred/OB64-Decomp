@@ -58,6 +58,8 @@ source-shape techniques and do not receive one of these lesson labels.
 | `EXACT_SINGLE_FUNCTION` | Address arithmetic folds into the wrong load tree | Materialize the supported lookup base before indexed access | `func_000bd26c` |
 | `EXACT_SINGLE_FUNCTION` | Only loop-body register fields differ | Express the proven nested scans as genuine loops | `func_002861C8`; ten loop variants matched, but this remains one owner |
 | `EXACT_SINGLE_FUNCTION` | Signed division uses the wrong correction branch | Spell the nonnegative/negative correction explicitly | `func_00283E14` for round-toward-zero division by four |
+| `REPRODUCED` | A draft tests a sign bit or divides by a power of two with shifts, such as `~f() >> 31` or `(v >> 2) * 4` after a sign fixup | Write the comparison, `/`, or `%` and let the compiler emit the shifts | `func_0024C428`, `func_0024E8DC`, `func_0024E9BC` (`>= 0`); `func_0024BEA0`, `func_0024BECC`, `func_0005c110`, `func_00048abc` (`/` by 4 and 8, `%` by 4 and 8); `func_00283E14` is the counterexample that needs its spelled-out correction |
+| `REPRODUCED` | A draft combines comparisons with `\|` and joins them with `goto` | Write `\|\|` and `if`/`else if` | `func_00130794`, `func_0020C180`, `func_0020C364` |
 | `EXACT_SINGLE_FUNCTION` | Only commutative pointer/integer operand order differs | Use an explicit 32-bit integer cast that preserves the expression tree | `func_002A05EC`; depends on the accepted 32-bit target model |
 | `REPRODUCED` | A numeric pointer produces the wrong address materialization | Use an independently supported symbol and its relocation | `func_001FFA8C` and the symbol-relative expression in `func_000490ec`; never invent a symbol for code generation |
 | `EXACT_SINGLE_FUNCTION` | A large function has the right behavior but wrong CFG/lifetime topology | Correct prototypes and joins, inspect pass dumps, then make a localized lifetime change | `func_00047a94`; its individual zero-cost source constructs are not automatic recipes |
@@ -489,6 +491,30 @@ tag = ((s32 *)decoded)[(adjusted_size >> 2) - 1];
 Use this only when the instructions prove signed round-toward-zero division by
 four or an equivalent power-of-two case. It is not a general replacement for
 the division operator.
+
+### Plain arithmetic before spelled-out sequences
+
+Evidence label: `REPRODUCED`.
+
+m2c drafts often keep the compiler's lowering of ordinary operators: a sign
+test as `~f() >> 31`, a signed division or remainder by a power of two as a
+sign fixup followed by shifts, or two comparisons combined with `|`. In these
+targets KMC GCC emitted the same instructions from the ordinary operator, and
+each is exact with the plain form:
+
+- `func_0024C428`, `func_0024E8DC`, `func_0024E9BC`: `f(index) >= 0` instead
+  of `(u32)~f(index) >> 31`.
+- `func_0024BEA0`, `func_0024BECC`: `/ 4` and `% 4` instead of the expanded
+  correction and `>> 2`.
+- `func_0005c110`: `/ 8` and `% 8` instead of the `+ 7` correction, `>> 3`,
+  and `- quotient * 8`. `func_00048abc`: `/ 8` instead of the same correction
+  and `>> 3`.
+- `func_00130794`, `func_0020C180`, `func_0020C364`: `||` and `if`/`else if`
+  instead of `|` between comparisons and `goto` joins.
+
+Try the plain operator first. Keep a spelled-out sequence only when the plain
+form does not reproduce the instructions, as in `func_00283E14` above, and say
+in a comment which instructions require it.
 
 ### Explicit pointer/integer grouping
 
