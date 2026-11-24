@@ -59,7 +59,7 @@ source-shape techniques and do not receive one of these lesson labels.
 | `EXACT_SINGLE_FUNCTION` | Only loop-body register fields differ | Express the proven nested scans as genuine loops | `func_002861C8`; ten loop variants matched, but this remains one owner |
 | `EXACT_SINGLE_FUNCTION` | Signed division uses the wrong correction branch | Spell the nonnegative/negative correction explicitly | `func_00283E14` for round-toward-zero division by four |
 | `REPRODUCED` | A draft tests a sign bit or divides by a power of two with shifts, such as `~f() >> 31` or `(v >> 2) * 4` after a sign fixup | Write the comparison, `/`, or `%` and let the compiler emit the shifts | `func_0024C428`, `func_0024E8DC`, `func_0024E9BC` (`>= 0`); `func_0024BEA0`, `func_0024BECC`, `func_0005c110`, `func_00048abc` (`/` by 4 and 8, `%` by 4 and 8); `func_00283E14` is the counterexample that needs its spelled-out correction |
-| `REPRODUCED` | A draft combines comparisons with `\|` and joins them with `goto` | Write `\|\|` and `if`/`else if` | `func_00130794`, `func_0020C180`, `func_0020C364` |
+| `REPRODUCED` | A draft combines comparisons with `\|` and joins them with `goto` | Write `\|\|` and `if`/`else if` when the right operand has no side effects | `func_00130794`, `func_0020C180`, `func_0020C364`; `\|\|` can skip a call or volatile read on the right that `\|` always evaluates |
 | `REPRODUCED` | Retail branches on each of several tests (`bnez`/`bne`), but `\|\|` makes KMC combine them with set-compares | Write separate `if`/`else if` arms that assign the same result | `func_0020C214`, `func_0020C24C`; `func_0020C180` is the opposite case, exact with `\|\|` because retail combines them |
 | `EXACT_SINGLE_FUNCTION` | A float initialized from an integer expression does not line up with retail | Compute the integer in its own `s32` local, then convert it in a separate statement | `func_000b42a0` |
 | `EXACT_SINGLE_FUNCTION` | Only commutative pointer/integer operand order differs | Use an explicit 32-bit integer cast that preserves the expression tree | `func_002A05EC`; depends on the accepted 32-bit target model |
@@ -180,7 +180,7 @@ disassembles both sides through the same objdump.
 - A `nop` between two floating-point multiplies comes from the assembler, not
   the C. The pinned assembler's VR4300 workaround separates back-to-back
   `mul.s`/`mul.d` instructions; retail has 192 such pairs, the first in
-  `euler_to_matrix3` at ROM `0x00010F14`. This is why the workbench rejects
+  `vec3_cross_product` at ROM `0x00010304`. This is why the workbench rejects
   `VR4300MUL=OFF`. With the workaround off, the missing `nop` looks like a
   source difference; do not try to reproduce it from C.
 
@@ -535,7 +535,10 @@ each is exact with the plain form:
   and `- quotient * 8`. `func_00048abc`: `/ 8` instead of the same correction
   and `>> 3`.
 - `func_00130794`, `func_0020C180`, `func_0020C364`: `||` and `if`/`else if`
-  instead of `|` between comparisons and `goto` joins.
+  instead of `|` between comparisons and `goto` joins. Here every operand is
+  a comparison on locals, so skipping the right one changes nothing. When the
+  right operand calls a function or reads a `volatile`, `|` always evaluates
+  it and `||` may not; keep `|` there unless the instructions show the skip.
 
 Try the plain operator first. Keep a spelled-out sequence only when the plain
 form does not reproduce the instructions, as in `func_00283E14` above, and say
