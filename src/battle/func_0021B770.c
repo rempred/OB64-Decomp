@@ -19,7 +19,7 @@ void func_0021B770(void)
     s32 actor_index;
     s32 squad_source_index;
     s32 uses_army_roster;
-    void *actor;
+    BattleRosterRecord *actor;
     u8 *character_bytes;
 
     actor_index = 0;
@@ -30,7 +30,7 @@ void func_0021B770(void)
             (func_0020C0CC(actor) == 0) &&
             ((func_0020C2C0(actor) != 0) ||
              (func_0020C32C(actor) != 0) ||
-            (*(u16 *)((s8 *)actor + 0x20) == 0))) {
+            (actor->hp == 0))) {
             if (func_0020C014(actor) != 0) {
                 squad_source_index = *(u8 *)0x801976DC;
                 uses_army_roster = squad_source_index < 0x1E;
@@ -40,9 +40,9 @@ void func_0021B770(void)
             }
 
             if (uses_army_roster != 0) {
-                character_bytes = (*(u8 *)((s8 *)actor + 0xF6) * 0x38) + D_80193BC0;
+                character_bytes = (actor->member_index * 0x38) + D_80193BC0;
             } else {
-                character_bytes = (*(u8 *)((s8 *)actor + 0xF6) * 0x34) + D_80195560;
+                character_bytes = (actor->member_index * 0x34) + D_80195560;
             }
             character_bytes[0x32] = 0;
         }

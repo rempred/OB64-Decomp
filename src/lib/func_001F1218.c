@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 #include "game/combat_state.h"
 
 typedef signed char s8;
@@ -141,9 +143,9 @@ void func_001F1218(Func001F1218State *state, int arg1, int arg2, int arg3, int a
                                     classValue = D_801976DC < 30;
                                 else classValue = D_801976E8 < 30;
                                 if (classValue)
-                                    classValue = D_80193BD4[*(u8 *)((u8 *)*(void **)((u8 *)state->field4C + 0x40) + 0xF6) * 56];
+                                    classValue = D_80193BD4[((BattleRosterRecord *)*(void **)((u8 *)state->field4C + 0x40))->member_index * 56];
                                 else
-                                    classValue = D_80195574[*(u8 *)((u8 *)*(void **)((u8 *)state->field4C + 0x40) + 0xF6) * 52];
+                                    classValue = D_80195574[((BattleRosterRecord *)*(void **)((u8 *)state->field4C + 0x40))->member_index * 52];
                                 if (classValue == 0) byte1 = 4;
                                 else byte1 = 5;
                                 break;

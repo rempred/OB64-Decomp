@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 #include "game/battle_record_flag.h"
 
 #include "game/combat_draw.h"
@@ -96,7 +98,7 @@ int func_001F3C00(void *input, int setup, int mode,
     struct { float red, green, blue; u8 amount; } blend;
     int index;
     DrawObject *object;
-    void *actor;
+    BattleRosterRecord *actor;
     DrawPose *pose;
     int poseId, firstId, secondId;
     int red, green, blue, factor;
@@ -115,8 +117,8 @@ int func_001F3C00(void *input, int setup, int mode,
     object = (DrawObject *)input;
     actor = object->actor;
     poseId = object->field4E;
-    firstId = WORD(actor, 0x48);
-    secondId = WORD(actor, 0x4C);
+    firstId = actor->primary_class_id.word;
+    secondId = actor->secondary_class_id.word;
     pose = (DrawPose *)((u8 *)object + 0x44);
     variant = func_0020C448(actor);
     currentState = 0;
@@ -221,13 +223,13 @@ int func_001F3C00(void *input, int setup, int mode,
         if (pose->items[index] != 0) {
         if (firstId == 0x100) {
             saved = func_00205794();
-            if (!func_00205608(WORD(actor, 0x50), poseId, index, &decoded.record)) break;
+            if (!func_00205608(actor->body_resource_key, poseId, index, &decoded.record)) break;
             if (optional) {
                 func_00205778(2);
-                image = func_00206888(WORD(actor, 0x50), &decoded, WORD(actor, 0x4C), &blend.amount);
+                image = func_00206888(actor->body_resource_key, &decoded, actor->secondary_class_id.word, &blend.amount);
                 func_00205760(saved & 255);
             } else {
-                image = func_00206888(WORD(actor, 0x50), &decoded, WORD(actor, 0x4C), &blend.amount);
+                image = func_00206888(actor->body_resource_key, &decoded, actor->secondary_class_id.word, &blend.amount);
             }
         } else if ((void *)WORD(actor, 0x18) == object || (void *)WORD(actor, 0x1C) == object) {
             if (!func_00205608(object->field18, poseId, index, &decoded.record)) break;
@@ -297,7 +299,7 @@ int func_001F3C00(void *input, int setup, int mode,
         flags = BYTE(object, 0x15) ^ (decoded.record.field_14 & 3);
         if (flags & 1) { u0 = decoded.record.field_0C - 1; u1 = 0; }
         else { u0 = 0; u1 = decoded.record.field_0C - 1; }
-        if (func_00043d1c(BYTE(actor, 0x4B), BYTE(actor, 0x4F)) == 2) {
+        if (func_00043d1c(actor->primary_class_id.bytes.low, actor->secondary_class_id.bytes.low) == 2) {
             decoded.record.field_18 *= *(double *)0x801CFE00;
             decoded.record.field_1C *= *(double *)0x801CFE00;
         }

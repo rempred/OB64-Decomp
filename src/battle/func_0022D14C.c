@@ -184,13 +184,13 @@ s32 func_0022D14C(void *arg0, s32 *arg1) {
     void *temp_a2_668;
     void *temp_s0_635;
     void *temp_s2_769;
-    void *temp_v0_104;
+    BattleRosterRecord *temp_v0_104;
     void *temp_v0_1476;
     void *temp_v0_611;
     void *temp_v1_1782;
     void *var_a2_537;
-    void *var_s3_51;
-    void *var_v0_433;
+    BattleRosterRecord *var_s3_51;
+    BattleRosterRecord *var_v0_433;
     sp15C = arg1;
     sp17C = 0;
     sp19C = 0;
@@ -236,7 +236,7 @@ s32 func_0022D14C(void *arg0, s32 *arg1) {
         while (var_s5_693 < prefix.packet.words[3]) {
                 s32 *filterWordSource = prefix.packet.words + var_s5_693;
                 temp_v0_104 = func_0020C478(*(s32 *)((u8 *)filterWordSource + 0x10));
-                if ((func_0020C32C(temp_v0_104) != 0) || (func_0020C2F4(temp_v0_104) != 0) || (func_0020C310(temp_v0_104) != 0) || ((func_00043ad8((*(u8 *)((s8 *)(temp_v0_104) + (0x4B))), (*(u8 *)((s8 *)(temp_v0_104) + (0x4F)))) & 0xFF) != 1)) {
+                if ((func_0020C32C(temp_v0_104) != 0) || (func_0020C2F4(temp_v0_104) != 0) || (func_0020C310(temp_v0_104) != 0) || ((func_00043ad8((temp_v0_104->primary_class_id.bytes.low), (temp_v0_104->secondary_class_id.bytes.low)) & 0xFF) != 1)) {
                     u8 *retainedWord = (u8 *)prefix.packet.words + sp1DC * 4;
                     u8 *retainedHalf = (u8 *)prefix.packet.words + sp1DC * 2;
                     u8 *filterHalfSource = (u8 *)prefix.packet.words + var_s5_693 * 2;
@@ -257,7 +257,7 @@ s32 func_0022D14C(void *arg0, s32 *arg1) {
     }
     if (prefix.packet.words[3] == 0) {
         if ((*(s32 *)((s8 *)(arg0) + (0x7C))) != 0x29) {
-            var_v1_171 = (*(s32 *)((s8 *)(arg0) + (0x94)));
+            var_v1_171 = (((BattleRosterRecord *)arg0)->scheduled_time);
             temp_a0_172 = *sp15C;
             if (var_v1_171 < temp_a0_172) {
                 var_v1_171 = temp_a0_172;
@@ -265,15 +265,15 @@ s32 func_0022D14C(void *arg0, s32 *arg1) {
             {
                 void *emptyStateContext = *(void **)0x801CE8C0;
                 u32 emptyGlobalBound;
-                (*(s32 *)((s8 *)(arg0) + (0x94))) = var_v1_171;
+                (((BattleRosterRecord *)arg0)->scheduled_time) = var_v1_171;
                 emptyGlobalBound = *(u32 *)((s8 *)emptyStateContext + 0x828);
                 var_a1_182 = emptyGlobalBound < (u32)var_v1_171
                     ? (u32)var_v1_171 : emptyGlobalBound;
             }
-            (*(s32 *)((s8 *)(arg0) + (0x94))) = (s32) var_a1_182;
+            (((BattleRosterRecord *)arg0)->scheduled_time) = (s32) var_a1_182;
             func_0021D200(0x1C, (s32) var_a1_182, arg0);
-            (*(s32 *)((s8 *)(arg0) + (0x6C))) = (s32) ((*(s32 *)((s8 *)(arg0) + (0x6C))) + 1);
-            *sp15C = (*(s32 *)((s8 *)(arg0) + (0x94)));
+            (((BattleRosterRecord *)arg0)->actions_used) = (s32) ((((BattleRosterRecord *)arg0)->actions_used) + 1);
+            *sp15C = (((BattleRosterRecord *)arg0)->scheduled_time);
             return 0;
         }
         goto block_32;
@@ -281,7 +281,7 @@ s32 func_0022D14C(void *arg0, s32 *arg1) {
 block_32:
     func_00239338(&prefix.packet, arg0, 0, 0);
     if (func_0020BFE4() != 0) {
-        if ((u32) ((*(u8 *)((s8 *)(arg0) + (0x78))) - 4) < 2U) {
+        if ((u32) ((((BattleRosterRecord *)arg0)->action_kind) - 4) < 2U) {
             void *scanBase073C = *(void **)0x801D073C;
             prefix.buffer[0] = 0;
             sp1B7 = 0;
@@ -290,7 +290,7 @@ block_32:
                 var_s1_222 = 0;
                 do {
                     temp_a0_223 = (void *)((u32)var_s1_222 + (u32)scanBase073C);
-                    if (((*(u8 *)((s8 *)(temp_a0_223) + (0))) == (*(s32 *)((s8 *)(arg0) + (0x7C)))) && ((*(u8 *)((s8 *)(temp_a0_223) + (1))) == (*(s32 *)((s8 *)(arg0) + (0x4C))))) {
+                    if (((*(u8 *)((s8 *)(temp_a0_223) + (0))) == (*(s32 *)((s8 *)(arg0) + (0x7C)))) && ((*(u8 *)((s8 *)(temp_a0_223) + (1))) == (((BattleRosterRecord *)arg0)->secondary_class_id.word))) {
                         temp_v0_233 = (*(u8 *)((s8 *)(temp_a0_223) + (2)));
                         temp_s0_234 = temp_v0_233 & 0x3F;
                         sp1B7 = temp_s0_234;
@@ -308,7 +308,7 @@ block_32:
                 } while (*((u8 *)((u32)var_s1_222 + (u32)scanBase073C)) != 0);
             }
         }
-        if ((*(u8 *)((s8 *)(arg0) + (0x78))) == 5) {
+        if ((((BattleRosterRecord *)arg0)->action_kind) == 5) {
             if (func_0020C24C(arg0) == 0) {
                 var_s3_51 = func_0020C478(prefix.packet.words[4]);
                 temp_v1_299 = (*(s32 *)((s8 *)(var_s3_51) + (0x5C)));
@@ -337,7 +337,7 @@ block_32:
                     sp1A4 = (s32)(var_s0_308 * var_v0_323) / var_s1_301;
                 }
                 temp_a0_350 = (*(s32 *)((s8 *)(arg0) + (0x64)));
-                if ((*(s32 *)((s8 *)(var_s3_51) + (0x54))) < (*(s32 *)((s8 *)(arg0) + (0x54)))) {
+                if ((var_s3_51->formation_column) < (((BattleRosterRecord *)arg0)->formation_column)) {
                     sp1A4 = temp_a0_350 - sp1A4;
                 } else {
                     sp1A4 += temp_a0_350;
@@ -351,8 +351,8 @@ block_32:
             }
         } else {
 block_65:
-            if ((*(u8 *)((s8 *)(arg0) + (0x78))) == 3) {
-                sp1B7 = func_00201798((*(s32 *)((s8 *)(arg0) + (0x48))), (*(s32 *)((s8 *)(arg0) + (0x4C))), func_00044130((*(u8 *)((s8 *)(arg0) + (0x4B))), (*(u8 *)((s8 *)(arg0) + (0x4F))), func_0020D434((*(s32 *)((s8 *)(arg0) + (0x58)))) & 0xFF) & 0xFF, 0);
+            if ((((BattleRosterRecord *)arg0)->action_kind) == 3) {
+                sp1B7 = func_00201798((((BattleRosterRecord *)arg0)->primary_class_id.word), (((BattleRosterRecord *)arg0)->secondary_class_id.word), func_00044130((((BattleRosterRecord *)arg0)->primary_class_id.bytes.low), (((BattleRosterRecord *)arg0)->secondary_class_id.bytes.low), func_0020D434((((BattleRosterRecord *)arg0)->formation_row)) & 0xFF) & 0xFF, 0);
                 sp17C = func_0022257C( (void *)((*(s32 *)((s8 *)(arg0) + (0))) + 0x44), sp1B7, &prefix.buffer[0]);
             }
         }
@@ -360,7 +360,7 @@ block_65:
         prefix.buffer[0] = 5;
         sp184 = 0;
     }
-    temp_a0_413 = (*(s32 *)((s8 *)(arg0) + (0x94)));
+    temp_a0_413 = (((BattleRosterRecord *)arg0)->scheduled_time);
     temp_v1_415 = *sp15C - (prefix.buffer[0] + sp184);
     temp_v1_418 = temp_v1_415 & ((s32) ~temp_v1_415 >> 0x1F);
     sp16C = temp_v1_418;
@@ -378,7 +378,7 @@ block_65:
                 func_00237D5C(temp_a0_429, &coords.x0, &coords.y0);
                 var_v0_433 = func_0020D770(coords.x0, coords.y0);
             }
-            temp_v1_444 = (*(s32 *)((s8 *)(var_v0_433) + (0x94)));
+            temp_v1_444 = (var_v0_433->scheduled_time);
             if (sp16C < temp_v1_444) {
                 sp16C = temp_v1_444;
             }
@@ -386,53 +386,53 @@ block_65:
             var_s0_427++;
         } while (var_s5_693 < prefix.packet.words[3]);
     }
-    var_v1_457 = (*(s32 *)((s8 *)(arg0) + (0x94)));
+    var_v1_457 = (((BattleRosterRecord *)arg0)->scheduled_time);
     if (var_v1_457 < sp16C) {
         var_v1_457 = sp16C;
     }
     {
         void *stateContext = *(void **)0x801CE8C0;
         u32 globalBound;
-        (*(s32 *)((s8 *)(arg0) + (0x94))) = var_v1_457;
+        (((BattleRosterRecord *)arg0)->scheduled_time) = var_v1_457;
         globalBound = *(u32 *)((s8 *)stateContext + 0x828);
         var_a1_468 = globalBound < (u32)var_v1_457
             ? (u32)var_v1_457 : globalBound;
     }
-    (*(s32 *)((s8 *)(arg0) + (0x94))) = (s32) var_a1_468;
+    (((BattleRosterRecord *)arg0)->scheduled_time) = (s32) var_a1_468;
     func_0021D200(0x1C, (s32) var_a1_468, arg0);
-    sp16C = (*(s32 *)((s8 *)(arg0) + (0x94)));
+    sp16C = (((BattleRosterRecord *)arg0)->scheduled_time);
     sp174 = sp16C;
-    (*(s32 *)((s8 *)(arg0) + (0x6C))) = (s32) ((*(s32 *)((s8 *)(arg0) + (0x6C))) + 1);
-    if ((*(s32 *)((s8 *)(arg0) + (0x4C))) == 0xA4) {
+    (((BattleRosterRecord *)arg0)->actions_used) = (s32) ((((BattleRosterRecord *)arg0)->actions_used) + 1);
+    if ((((BattleRosterRecord *)arg0)->secondary_class_id.word) == 0xA4) {
         func_0021D230(0x3E, sp16C, arg0, 8);
     } else {
         func_0021D230(0x3E, sp16C, arg0, sp1C7);
     }
     if (func_0020BFE4() != 0) {
         s32 normalEmitCode;
-        temp_s0_504 = (*(u8 *)((s8 *)(arg0) + (0x78)));
+        temp_s0_504 = (((BattleRosterRecord *)arg0)->action_kind);
         if (temp_s0_504 == 5) {
             /* Keep this local result separate across the real lookup call;
              * folding it into the persistent value changes retail registers. */
             s32 type5SumValue = sp16C + sp184;
-            temp_a2_513 = func_0020D434((*(s32 *)((s8 *)(arg0) + (0x58)))) & 0xFF;
+            temp_a2_513 = func_0020D434((((BattleRosterRecord *)arg0)->formation_row)) & 0xFF;
             sp174 = type5SumValue;
-            temp_s0_523 = func_00044130((*(u8 *)((s8 *)(arg0) + (0x4B))), (*(u8 *)((s8 *)(arg0) + (0x4F))), temp_a2_513);
+            temp_s0_523 = func_00044130((((BattleRosterRecord *)arg0)->primary_class_id.bytes.low), (((BattleRosterRecord *)arg0)->secondary_class_id.bytes.low), temp_a2_513);
             func_0021D28C(4, sp16C, arg0, 0xFF, prefix.packet.words[4], (s32) temp_s0_504);
             func_0021D25C(5, sp174 - sp18C, arg0, 0xFF, 6);
             func_0021D2C0(0xB, sp174, arg0, 0xFF, temp_s0_523 & 0xFF, sp164, sp1B7);
             goto event_b_done;
         }
-        normalEmitCode = func_00044130((*(u8 *)((s8 *)(arg0) + (0x4B))), (*(u8 *)((s8 *)(arg0) + (0x4F))), func_0020D434((*(s32 *)((s8 *)(arg0) + (0x58)))) & 0xFF) & 0xFF;
+        normalEmitCode = func_00044130((((BattleRosterRecord *)arg0)->primary_class_id.bytes.low), (((BattleRosterRecord *)arg0)->secondary_class_id.bytes.low), func_0020D434((((BattleRosterRecord *)arg0)->formation_row)) & 0xFF) & 0xFF;
         emitExtra = sp1B7;
         func_0021D2C0(0xB, sp16C, arg0, 0xFF, normalEmitCode, sp164, emitExtra);
-        if ((*(s32 *)((s8 *)(arg0) + (0x48))) == 0x87) {
+        if ((((BattleRosterRecord *)arg0)->primary_class_id.word) == 0x87) {
             func_0021D2C0(0xB, sp16C, (u8 *)arg0 + 0xF8, 0xFF, normalEmitCode, sp164, emitExtra);
         }
     } else {
-        emitCode = func_00044130((*(u8 *)((s8 *)(arg0) + (0x4B))), (*(u8 *)((s8 *)(arg0) + (0x4F))), func_0020D434((*(s32 *)((s8 *)(arg0) + (0x58)))) & 0xFF) & 0xFF;
+        emitCode = func_00044130((((BattleRosterRecord *)arg0)->primary_class_id.bytes.low), (((BattleRosterRecord *)arg0)->secondary_class_id.bytes.low), func_0020D434((((BattleRosterRecord *)arg0)->formation_row)) & 0xFF) & 0xFF;
         func_0021D2C0(0xB, sp16C, arg0, 0, emitCode, sp164, 0);
-        if ((*(s32 *)((s8 *)(arg0) + (0x48))) == 0x87) {
+        if ((((BattleRosterRecord *)arg0)->primary_class_id.word) == 0x87) {
             func_0021D2C0(0xB, sp16C, (u8 *)arg0 + 0xF8, 0, emitCode, sp164, 0);
         }
     }
@@ -536,7 +536,7 @@ event_b_done:
                     sp1BC = (u32) (*(s16 *)((s8 *)(temp_s2_769) + (0x60)));
                     var_s2_802 = temp_s8_775 > (mixedRandomWord % 100U);
                     if (prefix.packet.bytes[2] == 4) {
-                        temp_v0_804 = (u16) (*(u16 *)((s8 *)(var_s3_51) + (0x20))) >> 1;
+                        temp_v0_804 = (u16) var_s3_51->hp >> 1;
                         sp1BC = temp_v0_804;
                         if (temp_v0_804 == 0) {
                             sp1BC = 1;
@@ -576,7 +576,7 @@ event_b_done:
                             var_s1_844 = var_s2_802;
                             break;
                         case 6:
-                            if ((var_s2_802 != 0) && ((s32) sp1BC >= (s32) (*(u16 *)((s8 *)(var_s3_51) + (0x20))))) {
+                            if ((var_s2_802 != 0) && ((s32) sp1BC >= (s32) var_s3_51->hp)) {
                             case 2:
                                 var_s1_844 = 1;
                             }
@@ -651,7 +651,7 @@ event_b_done:
                                 }
                                 func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 0, (s32)sp1BC >> 8, ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), var_s1_844 ? coords.value : 0);
                             }
-                            (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
+                            var_s3_51->scheduled_time = temp_s7_700 + prefix.buffer[0];
                         } else {
                             temp_v0_1085 = (s32) sp1BC / 2;
                             sp1BC = temp_v0_1085;
@@ -663,7 +663,7 @@ event_b_done:
                             }
                             func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 1, (s32) sp1BC >> 8, (s32) ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
                             func_0022A7B8(var_s3_51, 0, temp_s7_700 + prefix.buffer[0], sp1BC, sp1F4, 0);
-                            (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
+                            var_s3_51->scheduled_time = temp_s7_700 + prefix.buffer[0];
                         }
                         if ((func_0020C2C0(var_s3_51) != 0) && (func_0020C014(arg0) != 0) && (func_0020C104(arg0) == 0)) {
                             temp_v0_1142 = func_00233210(arg0, var_s3_51);
@@ -674,10 +674,10 @@ event_b_done:
                         }
                         goto mode_done;
                     } else if (prefix.packet.bytes[1] == 2) {
-                        (*(u16 *)((s8 *)(var_s3_51) + (0x20))) = (u16) ((*(u16 *)((s8 *)(var_s3_51) + (0x20))) + func_0020D4C8(var_s3_51, sp1BC));
+                        var_s3_51->hp = (u16) (var_s3_51->hp + func_0020D4C8(var_s3_51, sp1BC));
                         func_0022B06C(var_s3_51, &coords.value);
                         func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 2, (s32)sp1BC >> 8, ((u8)sp1BC), sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
-                        (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
+                        var_s3_51->scheduled_time = temp_s7_700 + prefix.buffer[0];
                         goto mode_done;
 
                     } else if (prefix.packet.bytes[1] == 8) {
@@ -697,7 +697,7 @@ event_b_done:
                         } else {
                             func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
                         }
-                        (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
+                        var_s3_51->scheduled_time = temp_s7_700 + prefix.buffer[0];
                         goto mode_done;
 
                     } else if (prefix.packet.bytes[1] == 10) {
@@ -717,7 +717,7 @@ event_b_done:
                         } else {
                             func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), 0);
                         }
-                        (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
+                        var_s3_51->scheduled_time = temp_s7_700 + prefix.buffer[0];
                         goto mode_done;
 
                     } else if (prefix.packet.bytes[1] == 4) {
@@ -735,7 +735,7 @@ event_b_done:
                             func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
 
                         }
-                        (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
+                        var_s3_51->scheduled_time = temp_s7_700 + prefix.buffer[0];
                         goto mode_done;
 
                     } else if (prefix.packet.bytes[1] == 3) {
@@ -774,7 +774,7 @@ loop_241:
                                 func_0021D334(0x1F, temp_s7_700 + prefix.buffer[0], var_s3_51, 6, 0, 0, sp1F4, (s32) (*(u8 *)((s8 *)(*(void **)0x801CE8C0) + (0x823))), coords.value);
 
                             }
-                        (*(s32 *)((s8 *)var_s3_51 + 0x94)) = temp_s7_700 + prefix.buffer[0];
+                        var_s3_51->scheduled_time = temp_s7_700 + prefix.buffer[0];
                         goto mode_done;
 
                         }
@@ -833,7 +833,7 @@ output_copy:
     pair[1] = -1;
     temp_s0_1700 = sp16C + sp184;
     func_0021D2C0(0x16, temp_s0_1700 + prefix.buffer[0], 0, sp164, (s32) &pair[0], (s32) &ids[0], (s32)&effects[0]);
-    if ((func_0020BFE4() != 0) && ((*(u8 *)((s8 *)(arg0) + (0x78))) == 5) && (func_0020C24C(arg0) == 0)) {
+    if ((func_0020BFE4() != 0) && ((((BattleRosterRecord *)arg0)->action_kind) == 5) && (func_0020C24C(arg0) == 0)) {
         sp194 = func_00222344(arg0, sp19C, sp1A4, (*(s32 *)((s8 *)(arg0) + (0x5C))), (*(s32 *)((s8 *)(arg0) + (0x64))));
         func_0021D28C(0xA, temp_s0_1700 + sp17C, arg0, 0xFF, 0xB, sp194);
         sp194 += func_0022257C( (void *)((*(s32 *)((s8 *)(arg0) + (0))) + 0x44), 0xCU, 0);
@@ -848,7 +848,7 @@ output_copy:
         sp17C < temp_v1_1762 ? temp_v1_1762 : sp17C;
     (*(s32 *)((s8 *)(arg0) + (0x8C))) = sp194;
     temp_v0_1776 = sp16C + sp184 + prefix.buffer[0] + (*(s32 *)((s8 *)(arg0) + (0x88)));
-    (*(s32 *)((s8 *)(arg0) + (0x94))) = temp_v0_1776;
+    (((BattleRosterRecord *)arg0)->scheduled_time) = temp_v0_1776;
     temp_v0_1779 = temp_v0_1776 + 0x200;
     *sp15C = temp_v0_1779;
     temp_v1_1782 = *(void **)0x801CE8C0;

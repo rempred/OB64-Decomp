@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 #include "game/battle_record_flag.h"
 
 typedef unsigned char u8;
@@ -8,5 +10,5 @@ inline s32 func_0020C2C0(void *u) {
     if (u == ((void *)0)) {
         return 1;
     }
-    return (*(u32 *)((u8 *)u + 0x40)) & 1;
+    return (((BattleRosterRecord *)u)->battle_flags) & 1;
 }

@@ -98,7 +98,7 @@ s32 func_0022C78C(void *record, s32 *out_time) {
     register u32 early_latest_time;
     void *entry0;
     void *entry1;
-    void *target;
+    BattleRosterRecord *target;
     time = 0;
     time_out = out_time;
     local_effect = 0;
@@ -107,20 +107,20 @@ s32 func_0022C78C(void *record, s32 *out_time) {
     target_index = func_00233ED4(record);
     *(s32 *)((u8 *)record + 0x68) = target_index;
     if (target_index < 0) {
-        early_record_time = *(s32 *)((u8 *)record + 0x94);
+        early_record_time = ((BattleRosterRecord *)record)->scheduled_time;
         early_input_time = *time_out;
         if (early_record_time < early_input_time) {
             early_record_time = early_input_time;
         }
         early_loaded = *(u32 *)0x801CE8C0;
-        *(s32 *)((u8 *)record + 0x94) = early_record_time;
+        ((BattleRosterRecord *)record)->scheduled_time = early_record_time;
         early_loaded = *(u32 *)(early_loaded + 0x828);
         if (early_loaded < (u32)early_record_time) early_latest_time = early_record_time;
         else early_latest_time = early_loaded;
-        *(s32 *)((u8 *)record + 0x94) = early_latest_time;
+        ((BattleRosterRecord *)record)->scheduled_time = early_latest_time;
         func_0021D200(0x1C, (s32) early_latest_time, record);
-        *(s32 *)((u8 *)record + 0x6C) = (*(s32 *)((u8 *)record + 0x6C) + 1);
-        *time_out = *(s32 *)((u8 *)record + 0x94);
+        ((BattleRosterRecord *)record)->actions_used = (((BattleRosterRecord *)record)->actions_used + 1);
+        *time_out = ((BattleRosterRecord *)record)->scheduled_time;
         return 0;
     }
     target = func_0020C478(target_index);
@@ -131,20 +131,20 @@ s32 func_0022C78C(void *record, s32 *out_time) {
     sample0 = rand();
     sample1 = rand();
     check_value = (u32) ((((sample0 << 0x12) & 0x0C000000) | (sample1 << 0xF) | rand()) % 100) < check_value;
-    local.copy = *(LocalCopy *)((u8 *)*(void **)(record) + 0x44);
+    local.copy = *(LocalCopy *)((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44);
     mode0 = 0;
     if (check_value == 0) {
-        if (func_00201584(*(s32 *)((u8 *)target + 0x48), *(s32 *)((u8 *)target + 0x4C)) & 0xFF) {
+        if (func_00201584(target->primary_class_id.word, target->secondary_class_id.word) & 0xFF) {
             mode0 = 2;
         } else {
             mode0 = 1;
         }
     }
-    stream_code0 = func_00201798(*(s32 *)((u8 *)record + 0x48), *(s32 *)((u8 *)record + 0x4C), *(s32 *)((u8 *)record + 0x7C), mode0);
+    stream_code0 = func_00201798(((BattleRosterRecord *)record)->primary_class_id.word, ((BattleRosterRecord *)record)->secondary_class_id.word, *(s32 *)((u8 *)record + 0x7C), mode0);
     func_001F0E64(&local.record, stream_code0 & 0xFF);
     func_001F197C(record, &local.evaluator, local_buffer);
     if (func_0020BFE4() != 0) {
-        entry0 = (*(void **)((u8 *)(record) + (4)));
+        entry0 = ((BattleRosterRecord *)record)->primary_children[1];
         time = func_0022222C(record, target, *(s16 *)((u8 *)entry0 + 0x1C), *(s16 *)((u8 *)entry0 + 0x20));
     } else {
         local_buffer[0] = 0;
@@ -153,11 +153,11 @@ s32 func_0022C78C(void *record, s32 *out_time) {
     record_time = *time_out;
     time = record_time - offset;
     if (time < 0) time = 0;
-    record_time = *(s32 *)((u8 *)record + 0x94);
+    record_time = ((BattleRosterRecord *)record)->scheduled_time;
     if (time < record_time) {
         time = record_time;
     }
-    target_time0 = *(s32 *)((u8 *)target + 0x94);
+    target_time0 = target->scheduled_time;
     if ((time + offset) < target_time0) {
         time = target_time0 - offset;
     }
@@ -165,31 +165,31 @@ s32 func_0022C78C(void *record, s32 *out_time) {
         record_time = time;
     }
     loaded = *(u32 *)0x801CE8C0;
-    *(s32 *)((u8 *)record + 0x94) = record_time;
+    ((BattleRosterRecord *)record)->scheduled_time = record_time;
     loaded = *(u32 *)(loaded + 0x828);
     if (loaded < (u32)record_time) latest_time = record_time;
     else latest_time = loaded;
-    *(s32 *)((u8 *)record + 0x94) = latest_time;
+    ((BattleRosterRecord *)record)->scheduled_time = latest_time;
     func_0021D200(0x1C, (s32) latest_time, record);
-    time = *(s32 *)((u8 *)record + 0x94);
-    *(s32 *)((u8 *)record + 0x6C) = (*(s32 *)((u8 *)record + 0x6C) + 1);
+    time = ((BattleRosterRecord *)record)->scheduled_time;
+    ((BattleRosterRecord *)record)->actions_used = (((BattleRosterRecord *)record)->actions_used + 1);
     if (func_0020BFE4() != 0) {
         func_0021D25C(0x1D, time, record, 1, stream_code0 & 0xFF);
         func_0021D25C(0x1D, time, record, 2, 7);
         func_0021D28C(2, time + local_buffer[0], record, 2, *(s32 *)((u8 *)record + 0x68), 5);
     }
-    entry1 = (*(void **)((u8 *)(record) + (4)));
-    local.copy = *(LocalCopy *)((u8 *)*(void **)((u8 *)record + 4) + 0x44);
+    entry1 = ((BattleRosterRecord *)record)->primary_children[1];
+    local.copy = *(LocalCopy *)((u8 *)((BattleRosterRecord *)record)->primary_children[1] + 0x44);
     mode1 = 0;
     if (check_value == 0) {
-        if (func_00201584(*(s32 *)((u8 *)target + 0x48), *(s32 *)((u8 *)target + 0x4C)) & 0xFF) {
+        if (func_00201584(target->primary_class_id.word, target->secondary_class_id.word) & 0xFF) {
             mode1 = 2;
         } else {
             mode1 = 1;
         }
     }
     time2 = time + offset;
-    stream_code1 = func_00201798(*(s32 *)((u8 *)record + 0x48), *(s32 *)((u8 *)record + 0x4C), *(s32 *)((u8 *)record + 0x7C), mode1) & 0xFF;
+    stream_code1 = func_00201798(((BattleRosterRecord *)record)->primary_class_id.word, ((BattleRosterRecord *)record)->secondary_class_id.word, *(s32 *)((u8 *)record + 0x7C), mode1) & 0xFF;
     func_001F0E64(&local.record, stream_code1);
     local_duration = func_001F197C(record, &local.evaluator, local_buffer);
     if (func_0020BFE4() != 0) {
@@ -238,7 +238,7 @@ s32 func_0022C78C(void *record, s32 *out_time) {
         candidate_end_time = event_delta + event_start;
         goto merge_event_end;
     }
-    if (func_00201584(*(s32 *)((u8 *)target + 0x48), *(s32 *)((u8 *)target + 0x4C)) & 0xFF) {
+    if (func_00201584(target->primary_class_id.word, target->secondary_class_id.word) & 0xFF) {
         if (func_0020BFF8(target) != 0) {
             event_selector = 0x60;
         } else {
@@ -298,7 +298,7 @@ merge_event_end:
             increment = func_00233210(record, target);
             if (increment != 0) {
                 event_time = time0 + local_duration;
-                *(u8 *)((u8 *)record + 0x34) = (*(u8 *)((u8 *)record + 0x34) + increment);
+                ((BattleRosterRecord *)record)->alignment = (((BattleRosterRecord *)record)->alignment + increment);
                 func_0021D230(0x3F, event_time, record, increment);
             }
         }
@@ -307,14 +307,14 @@ merge_event_end:
             goto merge_target_end;
         }
     } else {
-        selector0 = func_00201584(*(s32 *)((u8 *)target + 0x48), *(s32 *)((u8 *)target + 0x4C)) & 0xFF;
+        selector0 = func_00201584(target->primary_class_id.word, target->secondary_class_id.word) & 0xFF;
         time3 = time + offset + local_buffer[0];
-        local.copy = *(LocalCopy *)((u8 *)*(void **)(target) + 0x44);
+        local.copy = *(LocalCopy *)((u8 *)target->primary_children[0] + 0x44);
         func_001F0E64(&local.record, ((0 - (selector0 == 0)) & 0x17) | 0x15);
         check_value = func_001F197C(target, &local.evaluator, 0);
         func_0021D230(0xE, time3, target, 0xFF);
         time4 = time3 + check_value;
-        local.copy = *(LocalCopy *)((u8 *)*(void **)(target) + 0x44);
+        local.copy = *(LocalCopy *)((u8 *)target->primary_children[0] + 0x44);
         bridge_selector = 0x18;
         if (selector0 != 0) {
             bridge_selector = 0x16;
@@ -324,11 +324,11 @@ merge_event_end:
         func_0021D230(0xF, time4, target, 0xFF);
         check_value += duration0;
         candidate_end_time = time4 + check_value;
-        if (*(s32 *)((u8 *)target + 0x94) < candidate_end_time) {
-            *(s32 *)((u8 *)target + 0x94) = candidate_end_time;
+        if (target->scheduled_time < candidate_end_time) {
+            target->scheduled_time = candidate_end_time;
         }
 merge_target_end:
-        target_time1 = *(s32 *)((u8 *)target + 0x94);
+        target_time1 = target->scheduled_time;
         if (end_time < target_time1) {
             end_time = target_time1;
         }
@@ -346,7 +346,7 @@ merge_target_end:
     if (func_0020BFE4() != 0) {
         field57 = local_field57;
         field5B = local_field5B;
-        local_returnDuration = func_002223E0(record, target, field57, field5B, (s32) (*(s16 *)((u8 *)((*(void **)((u8 *)(record) + (4)))) + (0x1C))), (s32) (*(s16 *)((u8 *)((*(void **)((u8 *)(record) + (4)))) + (0x20))));
+        local_returnDuration = func_002223E0(record, target, field57, field5B, (s32) (*(s16 *)((u8 *)(((BattleRosterRecord *)record)->primary_children[1]) + (0x1C))), (s32) (*(s16 *)((u8 *)(((BattleRosterRecord *)record)->primary_children[1]) + (0x20))));
         func_0021D25C(8, time5, record, 2, 0xB);
     }
     func_0021D25C(9, time5 + local_returnDuration, record, 2, 0xC);
@@ -361,7 +361,7 @@ merge_target_end:
     tail84 = *(s32 *)((u8 *)record + 0x84);
     tail88 = *(s32 *)((u8 *)record + 0x88);
     time5 = local_returnDuration;
-    *(s32 *)((u8 *)record + 0x94) = (time1 + local_duration + time5);
+    ((BattleRosterRecord *)record)->scheduled_time = (time1 + local_duration + time5);
     *time_out = time + tail84 + tail88;
     return 1;
 }

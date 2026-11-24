@@ -71,7 +71,9 @@ struct TerminalCommandRecord {
     u16 equipment_slot_0, equipment_slot_1, equipment_slot_2, equipment_slot_3;
     u8 gap3E[2];
     u32 battle_flags;
-    int word44, primary_class_id, secondary_class_id, body_resource_key, formation_column, formation_row;
+    int word44;
+    BattleRosterClassWord primary_class_id, secondary_class_id;
+    int body_resource_key, formation_column, formation_row;
     int world_x, world_y, world_z, word68, actions_used, action_limit, word74;
     int word78, word7C;
     u8 gap80[24];
@@ -131,7 +133,7 @@ extern int func_0004813C(int);
 extern void func_001F0E64(Func001F0E64Record *, u32);
 extern void func_001F0F90(void *), func_001F1050(void *);
 extern int func_001F197C(void *, Func001F197CState *, int *);
-extern void func_001F2BC0(int, int), func_001F2F9C(u8 *, u8 *);
+extern void func_001F2BC0(int, int);
 extern void func_001F3078(int);
 extern void func_001FF868(s16, s16, s16, s16, u8);
 extern u8 func_002014C4(unsigned int), func_00201584(int, int);
@@ -319,7 +321,7 @@ void func_0021EBBC(void)
                         if (skipMode != 0) continue;
                     }
                     if (func_0020C2C0(other) != 0) continue;
-                    if (source->primary_class_id == 0x87 && func_0020C0CC(other) != 0) flag = 1;
+                    if (source->primary_class_id.word == 0x87 && func_0020C0CC(other) != 0) flag = 1;
                     for (slot = 0; source->bytesD2[slot] != 255; slot++)
                         if (source->bytesD2[slot] == i) { flag = 1; break; }
                     for (slot = 0; source->bytesDE[slot] != 255; slot++)
@@ -411,8 +413,8 @@ wait_command:
                 record->word68 = record->byteA6;
                 target = func_0020C478(record->byteA6);
                 child = record->primary_children[i];
-                sourceAdjustment = func_00201838(child->owner->primary_class_id, child->owner->secondary_class_id);
-                targetAdjustment = func_002018A0(target->primary_class_id, target->secondary_class_id);
+                sourceAdjustment = func_00201838(child->owner->primary_class_id.word, child->owner->secondary_class_id.word);
+                targetAdjustment = func_002018A0(target->primary_class_id.word, target->secondary_class_id.word);
                 firstVector.x = child->currentX; firstVector.y = 0.0f;
                 firstVector.z = child->currentZ;
                 adjustment = (int)sourceAdjustment + (int)targetAdjustment;
@@ -603,7 +605,7 @@ wait_command:
         case 14: /* 21FD90 */
             SELECTED_CHILDREN() {
                 TerminalCommandChild *child = record->primary_children[i];
-                u32 absent = (func_00201584(record->primary_class_id, record->secondary_class_id) & 255) == 0;
+                u32 absent = (func_00201584(record->primary_class_id.word, record->secondary_class_id.word) & 255) == 0;
                 func_001F0E64(POSE(child), ((0u - absent) & 23) | 21);
             }
             func_002267A8(record, 3, 0);
@@ -611,7 +613,7 @@ wait_command:
         case 15: /* 21FDF8 */
             SELECTED_CHILDREN() {
                 TerminalCommandChild *child = record->primary_children[i];
-                func_001F0E64(POSE(child), (func_00201584(record->primary_class_id, record->secondary_class_id) & 255) ? 22 : 24);
+                func_001F0E64(POSE(child), (func_00201584(record->primary_class_id.word, record->secondary_class_id.word) & 255) ? 22 : 24);
             }
             record->word74 = 1;
             break;
@@ -693,7 +695,7 @@ wait_command:
                 BYTE_AT(state, 0x608D) = counterIndex + 1;
                 BYTE_AT(state, 0x608E + counterIndex) = record->level;
             }
-            switch (record->primary_class_id) {
+            switch (record->primary_class_id.word) {
             case 0x58: event = 0xA4; break;
             case 0x5A: event = 0xA5; break;
             case 0x59: event = 0xA6; break;
@@ -707,13 +709,13 @@ after_record_dispatch:
             side = func_0020C014(record);
             /* Keep the common reset separate from the per-arm write that
              * must precede the selector byte read in this compiler. */
-            record->secondary_class_id = 0;
+            record->secondary_class_id.word = 0;
             if (side != 0) {
-                *(volatile int *)&record->primary_class_id = 0;
+                *(volatile int *)&record->primary_class_id.word = 0;
                 count = D_801976DC;
                 key = record->member_index;
             } else {
-                *(volatile int *)&record->primary_class_id = 0;
+                *(volatile int *)&record->primary_class_id.word = 0;
                 count = D_801976E8;
                 key = record->member_index;
             }
@@ -912,7 +914,7 @@ after_record_dispatch:
                 func_0020FA04(replacement_actor, mode);
             }
             record->word74 = 0x39; replacement_actor->word74 = 1;
-            func_001F2F9C((u8 *)record, (u8 *)replacement_actor);
+            func_001F2F9C((BattleRosterRecord *)record, (BattleRosterRecord *)replacement_actor);
             break;
         }
         case 0x3A: { /* 220DC0 */
@@ -945,16 +947,16 @@ after_record_dispatch:
             }
             {
                 int secondary_class_id;
-                persistent_member_bytes[0x11] = record->primary_class_id;
-                secondary_class_id = record->secondary_class_id;
+                persistent_member_bytes[0x11] = record->primary_class_id.word;
+                secondary_class_id = record->secondary_class_id.word;
                 SHORT_AT(persistent_member_bytes, 0x30) = 0; SHORT_AT(persistent_member_bytes, 0x2E) = 0;
                 SHORT_AT(persistent_member_bytes, 0x2C) = 0; SHORT_AT(persistent_member_bytes, 0x2A) = 0;
                 persistent_member_bytes[0x12] = secondary_class_id;
             }
-            record->equipment_slot_0 = func_00043e88(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
-            record->equipment_slot_1 = func_00043edc(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
-            record->equipment_slot_2 = func_00043f30(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
-            record->equipment_slot_3 = func_00043f84(BYTE_AT(record, 0x4B), BYTE_AT(record, 0x4F));
+            record->equipment_slot_0 = func_00043e88(record->primary_class_id.bytes.low, record->secondary_class_id.bytes.low);
+            record->equipment_slot_1 = func_00043edc(record->primary_class_id.bytes.low, record->secondary_class_id.bytes.low);
+            record->equipment_slot_2 = func_00043f30(record->primary_class_id.bytes.low, record->secondary_class_id.bytes.low);
+            record->equipment_slot_3 = func_00043f84(record->primary_class_id.bytes.low, record->secondary_class_id.bytes.low);
             if (record->battle_flags & 0x800) record->battle_flags &= ~0x800u;
             if (record->battle_flags & 0x2000) record->battle_flags &= ~0x2000u;
             break;
@@ -1032,7 +1034,7 @@ exit_checks:
                     int third;
                     other->actions_used = 0;
                     third = func_0020D434(other->formation_row) & 255;
-                    other->action_limit = func_00044238(BYTE_AT(other, 0x4B), BYTE_AT(other, 0x4F), third) & 255;
+                    other->action_limit = func_00044238(other->primary_class_id.bytes.low, other->secondary_class_id.bytes.low, third) & 255;
                 }
             }
             D_801CE8C4 = 1;

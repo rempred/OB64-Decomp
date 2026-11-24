@@ -19,7 +19,7 @@ s32 func_801D0880(void);
 void func_0021C3B0(void)
 {
     s32 actor_index;
-    u8 *actor;
+    BattleRosterRecord *actor;
     u8 *character_bytes;
     u8 *special_member_pool;
     s32 squad_source_index;
@@ -32,8 +32,8 @@ void func_0021C3B0(void)
             func_0020BFF8(actor) != 0 &&
             func_0020C0E8(actor) != 0 &&
             func_0020C32C(actor) != 0) {
-            *(u16 *)(actor + 0x20) = 0;
-            *(s32 *)(actor + 0x40) &= ~2;
+            actor->hp = 0;
+            *(s32 *)((u8 *)actor + 0x40) &= ~2;
         }
 
         if (actor != 0 && func_0020C0CC(actor) == 0) {
@@ -45,38 +45,38 @@ void func_0021C3B0(void)
 
             if (squad_source_index < 30) {
                 special_member_pool = D_80190F80;
-                character_bytes = D_80193BC0 + actor[0xF6] * 0x38;
+                character_bytes = D_80193BC0 + actor->member_index * 0x38;
             } else {
                 special_member_pool = D_801953F0;
-                character_bytes = D_80195560 + actor[0xF6] * 0x34;
+                character_bytes = D_80195560 + actor->member_index * 0x34;
             }
 
-            member_index = actor[0xF6];
+            member_index = actor->member_index;
             if (member_index == 0xFF) {
                 continue;
             }
 
             if (member_index < 100) {
-                *(u16 *)(character_bytes + 0x18) = *(u16 *)(actor + 0x20);
-                character_bytes[0x1B] = actor[0x34];
+                *(u16 *)(character_bytes + 0x18) = actor->hp;
+                character_bytes[0x1B] = actor->alignment;
                 if (func_0020C32C(actor) != 0) {
                     character_bytes[0x33] |= 4;
                 } else {
                     character_bytes[0x33] &= 0xFB;
                 }
                 if (squad_source_index < 30) {
-                    character_bytes[0x35] = actor[0x32];
+                    character_bytes[0x35] = actor->experience;
                 }
             } else {
                 special_member_data = special_member_pool;
                 special_member_data += member_index * 2;
-                *(u16 *)(special_member_data - 0xC4) = *(u16 *)(actor + 0x20);
+                *(u16 *)(special_member_data - 0xC4) = actor->hp;
                 if (func_0020C2C0(actor) == 0 &&
                     func_0020C32C(actor) != 0) {
-                    special_member_data = special_member_pool + actor[0xF6] + 0x90;
+                    special_member_data = special_member_pool + actor->member_index + 0x90;
                     *special_member_data |= 4;
                 } else {
-                    special_member_data = special_member_pool + actor[0xF6] + 0x90;
+                    special_member_data = special_member_pool + actor->member_index + 0x90;
                     *special_member_data &= 0xFB;
                 }
             }

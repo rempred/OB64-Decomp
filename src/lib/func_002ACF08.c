@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
@@ -28,29 +30,27 @@ void func_002ACF08(s32 commandWord)
 {
     s32 actor_index;
     u32 child_index;
-    void *actor;
-    void **child_slots; /* links[i] is an object, links[i + 3] its partner (+0xC) */
+    BattleRosterRecord *actor;
     void *primary_child;
 
     actor_index = 0;
     do {
         actor = func_0020C478(actor_index);
         if (func_0020BFF8(actor) != 0) {
-            child_slots = (void **)actor;
-            func_00207C08(WORD(actor, 0x50));
+            func_00207C08(actor->body_resource_key);
             /* Indexing from one base keeps the partner access as an offset of
              * the same strength-reduced pointer; a second cursor would need
              * another callee-saved register. */
             child_index = 0;
             do {
-                primary_child = child_slots[child_index];
+                primary_child = actor->primary_children[child_index];
                 if (primary_child != 0) {
                     WORD(primary_child, 0x18) = 0;
-                    WORD(child_slots[child_index + 3], 0x18) = 0;
-                    func_001F0F90(child_slots[child_index]);
-                    func_001F1050(child_slots[child_index + 3]);
-                    child_slots[child_index] = 0;
-                    child_slots[child_index + 3] = 0;
+                    WORD(actor->secondary_children[child_index], 0x18) = 0;
+                    func_001F0F90(actor->primary_children[child_index]);
+                    func_001F1050(actor->secondary_children[child_index]);
+                    actor->primary_children[child_index] = 0;
+                    actor->secondary_children[child_index] = 0;
                 }
                 child_index += 1;
             } while (child_index < 3);

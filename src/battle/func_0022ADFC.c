@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -27,7 +29,7 @@ void func_0022ADFC(void *record, s32 offset, s32 time, s32 amount, s32 parameter
     u8 *cursor;
 
     if (func_0020C32C(record) == 0) {
-        delta = func_0022257C((u8 *)*(void **)record + 0x44, ((0 - (mode == 0)) & 0x19) | 0x11, 0) + offset;
+        delta = func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, ((0 - (mode == 0)) & 0x19) | 0x11, 0) + offset;
         if (mode != 0) {
             if (adjust == 0) {
                 event_code = 0xC;
@@ -49,17 +51,17 @@ emit_event:
         func_0021D2C0(event_code, time, record, 0xFF, amount >> 8, amount & 0xFF, parameter);
     }
     if (func_0020C104(record) != 0) {
-        field20 = *(u16 *)((u8 *)record + 0x20);
+        field20 = ((BattleRosterRecord *)record)->hp;
         if (amount >= (s32) field20) {
             goto zero_remaining;
         }
-        first_count = func_0020D444(field20 - amount, *(u16 *)((u8 *)record + 0x22));
-        second_count = func_0020D444(*(u16 *)((u8 *)record + 0x20), *(u16 *)((u8 *)record + 0x22));
-        *(u16 *)((u8 *)record + 0x20) = (*(u16 *)((u8 *)record + 0x20) - amount);
+        first_count = func_0020D444(field20 - amount, ((BattleRosterRecord *)record)->max_hp);
+        second_count = func_0020D444(((BattleRosterRecord *)record)->hp, ((BattleRosterRecord *)record)->max_hp);
+        ((BattleRosterRecord *)record)->hp = (((BattleRosterRecord *)record)->hp - amount);
         if (second_count != first_count) {
             changed_bits = ((1 << second_count) - 1) ^ ((1 << first_count) - 1);
             func_0021D230(0x13, time + delta, record, changed_bits);
-            delta += func_0022257C((u8 *)*(void **)record + 0x44, 0x1D, 0);
+            delta += func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x1D, 0);
             func_0021D230(0x15, time + delta, record, changed_bits);
             index = 0;
             cursor = record;
@@ -73,8 +75,8 @@ emit_event:
                 cursor += 4;
             } while (index < 3U);
             next_time = time + delta;
-            if (*(s32 *)((u8 *)record + 0x94) < next_time) {
-                *(s32 *)((u8 *)record + 0x94) = next_time;
+            if (((BattleRosterRecord *)record)->scheduled_time < next_time) {
+                ((BattleRosterRecord *)record)->scheduled_time = next_time;
             }
         }
         if (first_count != 0) {
@@ -83,9 +85,9 @@ emit_event:
             func_0022A964(record, time, mode, parameter, flags);
         }
     } else {
-        current20 = *(u16 *)((u8 *)record + 0x20);
+        current20 = ((BattleRosterRecord *)record)->hp;
         if (amount < (s32) current20) {
-            *(u16 *)((u8 *)record + 0x20) = (current20 - amount);
+            ((BattleRosterRecord *)record)->hp = (current20 - amount);
             time += delta;
             func_0022A964(record, time, mode, parameter & 0xFF, flags);
             return;

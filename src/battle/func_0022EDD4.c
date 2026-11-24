@@ -1,3 +1,5 @@
+#include "game/battle_roster_record.h"
+
 #include "game/battle_predicates.h"
 typedef unsigned char u8;
 typedef signed int s32;
@@ -20,7 +22,7 @@ s32 func_0022EDD4(void *record, s32 *out_time)
     s32 result;
 
     time = *out_time;
-    current = *(s32 *)((u8 *)record + 0x94);
+    current = ((BattleRosterRecord *)record)->scheduled_time;
     if (time < current) {
         time = current;
     }
@@ -28,7 +30,7 @@ s32 func_0022EDD4(void *record, s32 *out_time)
         current = time;
     }
     loaded = *(u32 *)0x801CE8C0;
-    *(s32 *)((u8 *)record + 0x94) = current;
+    ((BattleRosterRecord *)record)->scheduled_time = current;
     loaded = *(u32 *)(loaded + 0x828);
     if (loaded < (u32)current) {
         cap = current;
@@ -38,21 +40,21 @@ s32 func_0022EDD4(void *record, s32 *out_time)
     *(u32 *)((u8 *)record + 0x94) = cap;
     func_0021D200(0x1C, cap, record);
 
-    time = *(s32 *)((u8 *)record + 0x94);
-    chance = *(u8 *)((u8 *)record + 0x30);
-    *(s32 *)((u8 *)record + 0x6C) += 1;
+    time = ((BattleRosterRecord *)record)->scheduled_time;
+    chance = ((BattleRosterRecord *)record)->luck;
+    ((BattleRosterRecord *)record)->actions_used += 1;
     random0 = func_0002CBCC();
     random1 = func_0002CBCC();
     if (chance >= ((((random0 << 18) & 0x0C000000U) |
                     (random1 << 15) | (u32)func_0002CBCC()) % 100U)) {
         func_0021D230(0x26, time, record, 0xFF);
         *(s32 *)((u8 *)record + 0x40) &= ~4;
-        time += func_0022257C((u8 *)*(void **)record + 0x44, 0x23, 0);
+        time += func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, 0x23, 0);
         if (func_0020C348(record) != 0) {
             func_0021D230(0x27, time, record, 0xFF);
         }
         result = 1;
-        *(s32 *)((u8 *)record + 0x94) = time;
+        ((BattleRosterRecord *)record)->scheduled_time = time;
         *out_time = time;
         return result;
     }

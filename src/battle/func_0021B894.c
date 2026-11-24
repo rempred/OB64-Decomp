@@ -80,8 +80,8 @@ u16 func_0021B894(s32 arg0) {
     void *temp_a0_234;
     void *temp_a0_80;
     void *prior_squad_source;
-    void *temp_v0_341;
-    void *temp_v0_399;
+    BattleRosterRecord *temp_v0_341;
+    BattleRosterRecord *temp_v0_399;
     void *actor;
     void *temp_v1_144;
     void *temp_v1_22;
@@ -298,7 +298,7 @@ block_56:
     if (temp_v0_341 == 0) {
         goto block_69;
     }
-    if ((*(u16 *)((s8 *)(temp_v0_341) + (0x20))) != 0) {
+    if ((temp_v0_341->hp) != 0) {
         goto block_60;
     }
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6089))) & 4) {
@@ -338,7 +338,7 @@ block_69:
     if (temp_v0_399 == 0) {
         goto block_82;
     }
-    if ((*(u16 *)((s8 *)(temp_v0_399) + (0x20))) != 0) {
+    if ((temp_v0_399->hp) != 0) {
         goto block_73;
     }
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x608A))) & 4) {

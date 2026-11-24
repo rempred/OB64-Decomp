@@ -33,20 +33,18 @@ extern void func_00210930(void);
 #define BYTE(p,o) (*(u8 *)((u8 *)(p) + (o)))
 #define HALF(p,o) (*(u16 *)((u8 *)(p) + (o)))
 #define WORD(p,o) (*(int *)((u8 *)(p) + (o)))
-#define POINTER(p,o) (*(void **)((u8 *)(p) + (o)))
-#define FLAGS(p) (*(u32 *)((u8 *)(p) + 0x40))
-#define FLAG(p,b) ((p) ? ((FLAGS(p) >> (b)) & 1) : 0)
 
-/* These source rows and scene actors have distinct, neutral byte layouts. */
+/* Copy from the persistent character row into the battle actor.
+ * The remaining HALF destination forms preserve KMC's original copy order. */
 #define COPY_ROW(actor, source, member_index_or_count) { \
     u8 *character_bytes = (source); u8 copied_alignment; int secondary_class_id, classIsOne; \
     func_00023780((actor), 0xF8); \
-    WORD(actor,0x48) = BYTE(character_bytes,0x11); \
+    actor->primary_class_id.word = BYTE(character_bytes,0x11); \
     secondary_class_id = BYTE(character_bytes,0x12); \
-    BYTE(actor,0xF6) = (member_index_or_count); \
-    WORD(actor,0x4C) = secondary_class_id; \
-    BYTE(actor,0x31) = BYTE(character_bytes,0x13); \
-    BYTE(actor,0x33) = BYTE(character_bytes,0x1A); \
+    actor->member_index = (member_index_or_count); \
+    actor->secondary_class_id.word = secondary_class_id; \
+    actor->level = BYTE(character_bytes,0x13); \
+    actor->element = BYTE(character_bytes,0x1A); \
     HALF(actor,0x22) = HALF(character_bytes,0x16); \
     HALF(actor,0x20) = HALF(character_bytes,0x18); \
     HALF(actor,0x24) = HALF(character_bytes,0x1C); \
@@ -54,20 +52,20 @@ extern void func_00210930(void);
     HALF(actor,0x28) = HALF(character_bytes,0x20); \
     HALF(actor,0x2A) = HALF(character_bytes,0x22); \
     HALF(actor,0x2C) = HALF(character_bytes,0x24); \
-    HALF(actor,0x2E) = HALF(character_bytes,0x26); \
-    BYTE(actor,0x30) = BYTE(character_bytes,0x28); \
-    copied_alignment = BYTE(character_bytes,0x1B); BYTE(actor,0x3F) = copied_alignment; \
-    BYTE(actor,0x34) = copied_alignment; \
+    actor->dexterity = HALF(character_bytes,0x26); \
+    actor->luck = BYTE(character_bytes,0x28); \
+    copied_alignment = BYTE(character_bytes,0x1B); actor->reference_alignment = copied_alignment; \
+    actor->alignment = copied_alignment; \
     HALF(actor,0x36) = HALF(character_bytes,0x2A); \
-    HALF(actor,0x38) = HALF(character_bytes,0x2C); \
+    actor->equipment_slot_1 = HALF(character_bytes,0x2C); \
     HALF(actor,0x3A) = HALF(character_bytes,0x2E); \
-    HALF(actor,0x3C) = HALF(character_bytes,0x30); \
-    BYTE(actor,0x3E) = BYTE(character_bytes,0x32); \
-    if (!(actor)) { classIsOne = 0; } else { classIsOne = WORD(actor,0x4C) == 1; } \
-    if (classIsOne) BYTE(actor,0x3E) = 0; \
-    if (BYTE(character_bytes,0x33) & 2) FLAGS(actor) |= 0x200; \
-    if (BYTE(character_bytes,0x33) & 4) FLAGS(actor) |= 2; \
-    BYTE(actor,0x32) = BYTE(character_bytes,0x35); \
+    actor->equipment_slot_3 = HALF(character_bytes,0x30); \
+    actor->fatigue = BYTE(character_bytes,0x32); \
+    if (!(actor)) { classIsOne = 0; } else { classIsOne = actor->secondary_class_id.word == 1; } \
+    if (classIsOne) actor->fatigue = 0; \
+    if (BYTE(character_bytes,0x33) & 2) actor->battle_flags |= 0x200; \
+    if (BYTE(character_bytes,0x33) & 4) actor->battle_flags |= 2; \
+    actor->experience = BYTE(character_bytes,0x35); \
 }
 
 /* Each search observes presence, side, and enable in their original order. */
@@ -78,14 +76,14 @@ static __inline__ void *find_peer(int inverseSide)
     u32 search = 0;
     int searchOffset = 0;
     do {
-        void *peer = 0;
+        BattleRosterRecord *peer = 0;
         int side, enabled;
-        if (search < 20) { int present = WORD(scan,0x20C); if (present) { int actorOffset = searchOffset + 0x1C4; peer = base + actorOffset; } }
+        if (search < 20) { int present = ((BattleRosterRecord *)(scan + 0x1C4))->primary_class_id.word; if (present) { int actorOffset = searchOffset + 0x1C4; peer = (BattleRosterRecord *)(base + actorOffset); } }
         if (!peer) side = 0;
-        else side = ((FLAGS(peer) >> 8) ^ inverseSide) & 1;
+        else side = ((peer->battle_flags >> 8) ^ inverseSide) & 1;
         if (side) {
             if (!peer) enabled = 0;
-            else enabled = (FLAGS(peer) >> 9) & 1;
+            else enabled = (peer->battle_flags >> 9) & 1;
             if (enabled) return peer;
         }
         scan += 0xF8;
@@ -96,15 +94,15 @@ static __inline__ void *find_peer(int inverseSide)
 }
 
 #define FIND_PEER(actor, inverseSide) { \
-    void *peer = find_peer(inverseSide); \
+    BattleRosterRecord *peer = find_peer(inverseSide); \
     do { \
         if (!peer) break; \
         if ((actor) == peer) break; \
-        if (WORD(peer,0x4C) != 0x21) break; \
-        if (FLAGS(peer) & 1) break; \
-        if ((FLAGS(peer) >> 1) & 1) break; \
-        WORD(actor,0x70) = (u8)func_00044238(BYTE(actor,0x4B), BYTE(actor,0x4F), \
-                                          func_0020D434(WORD(actor,0x58)) & 255) + 1; \
+        if (peer->secondary_class_id.word != 0x21) break; \
+        if (peer->battle_flags & 1) break; \
+        if ((peer->battle_flags >> 1) & 1) break; \
+        actor->action_limit = (u8)func_00044238(actor->primary_class_id.bytes.low, actor->secondary_class_id.bytes.low, \
+                                          func_0020D434(actor->formation_row) & 255) + 1; \
     } while (0); \
 }
 
@@ -112,10 +110,9 @@ static __inline__ void *find_peer(int inverseSide)
 #define SUBMIT_POINTERS(actor) { \
     index = 0; \
     do { \
-        if (POINTER(actor,0)) func_001F0F6C(POINTER(actor,0)); \
-        if (POINTER(actor,0xC)) func_001F102C(POINTER(actor,0xC)); \
+        if (actor->primary_children[index]) func_001F0F6C(actor->primary_children[index]); \
+        if (actor->secondary_children[index]) func_001F102C(actor->secondary_children[index]); \
         index++; \
-        (actor) = (u8 *)(actor) + 4; \
     } while (index < 3); \
 }
 
@@ -124,7 +121,7 @@ static __inline__ void *scene_actor(u32 index, int offset)
     u8 *scene;
     if (index >= 20) return 0;
     scene = D_801CE8BC;
-    if (!WORD(scene + offset,0x20C)) return 0;
+    if (!((BattleRosterRecord *)(scene + offset + 0x1C4))->primary_class_id.word) return 0;
     return scene + (offset + 0x1C4);
 }
 /* Keep the ordinal conversion: it retains GCC's unused predicate slot while
@@ -135,7 +132,7 @@ static __inline__ void *scene_actor_ordinal(u32 visit, int offset)
     visit--;
     if (visit >= 20) return 0;
     scene = D_801CE8BC;
-    if (!WORD(scene + offset,0x20C)) return 0;
+    if (!((BattleRosterRecord *)(scene + offset + 0x1C4))->primary_class_id.word) return 0;
     return scene + (offset + 0x1C4);
 }
 /* Adjacent half-open bands reuse the boundary already loaded on that path. */
@@ -164,7 +161,7 @@ void func_0020DB10(int selector)
     u32 resources[18];
     int variants[18], flag10s[18], flag8s[18];
     int latch, actor_count, slot, outputOffset, index;
-    void *actor;
+    BattleRosterRecord *actor;
     u8 *squad_source, *member_record, *special_member_pool;
     /* The member index, resource count and final roster counter reuse one word.
      * Keep the separate byte load for the character initializer argument. */
@@ -189,7 +186,7 @@ void func_0020DB10(int selector)
             member_index = (slot + squad_source)[2];
             if (member_index) {
                 float position;
-                actor = (u8 *)D_801CE8BC + (actor_count * 0xF8 + 0x1C4);
+                actor = (BattleRosterRecord *)((u8 *)D_801CE8BC + (actor_count * 0xF8 + 0x1C4));
                 if (squad_source_index < 30) {
                     member_record = D_80193BC0 + member_index * 0x38;
                     special_member_pool = D_80190F80;
@@ -208,30 +205,30 @@ void func_0020DB10(int selector)
                         } else {
                             func_0020C908(actor, member_index_arg);
                         }
-                        if (!BYTE(D_801CE8BC,0x6084) && (FLAGS(actor) & 2)) {
+                        if (!BYTE(D_801CE8BC,0x6084) && (actor->battle_flags & 2)) {
                             func_00023780(actor, 0xF8);
                             goto next_slot_0;
                         }
-                        if (WORD(actor,0x48) == 0x87 || WORD(actor,0x48) == 0x88 || WORD(actor,0x48) == 0xA1) {
+                        if (actor->primary_class_id.word == 0x87 || actor->primary_class_id.word == 0x88 || actor->primary_class_id.word == 0xA1) {
                             token = (slot + squad_source)[7];
                         }
-                        FLAGS(actor) |= 0x500;
-                        WORD(actor,0x54) = token_column(token);
-                        WORD(actor,0x58) = token_row(token);
+                        actor->battle_flags |= 0x500;
+                        actor->formation_column = token_column(token);
+                        actor->formation_row = token_row(token);
                         func_0020CBDC(actor, 0);
                         FIND_PEER(actor, 0);
-                        if (WORD(actor,0x48) == 0x87) {
+                        if (actor->primary_class_id.word == 0x87) {
                             SUBMIT_POINTERS(actor);
                             actor_count++;
-                            actor = (u8 *)D_801CE8BC + (actor_count * 0xF8 + 0x1C4);
+                            actor = (BattleRosterRecord *)((u8 *)D_801CE8BC + (actor_count * 0xF8 + 0x1C4));
                             func_0020C908(actor, (slot + squad_source)[2]);
-                            WORD(actor,0x54) = token_column(token);
-                            WORD(actor,0x58) = token_row(token);
+                            actor->formation_column = token_column(token);
+                            actor->formation_row = token_row(token);
                             func_0020CBDC(actor, 1);
-                            WORD(actor,0x70) = 0;
-                            WORD(actor,0x6C) = 0;
+                            actor->action_limit = 0;
+                            actor->actions_used = 0;
                         }
-                        { int enabled; if (!actor) enabled = 0; else enabled = (FLAGS(actor) >> 9) & 1; if (enabled && (func_00043dc4(BYTE(actor,0x4B), BYTE(actor,0x4F)) & 255) == 2) latch = 1; }
+                        { int enabled; if (!actor) enabled = 0; else enabled = (actor->battle_flags >> 9) & 1; if (enabled && (func_00043dc4(actor->primary_class_id.bytes.low, actor->secondary_class_id.bytes.low) & 255) == 2) latch = 1; }
                     }
                 } else {
                     if (auxiliary_value(member_index_or_count, special_member_pool)) {
@@ -240,17 +237,17 @@ void func_0020DB10(int selector)
                         } else {
                             func_0020C908(actor, 0);
                         }
-                        if (!BYTE(D_801CE8BC,0x6084) && (FLAGS(actor) & 2)) {
+                        if (!BYTE(D_801CE8BC,0x6084) && (actor->battle_flags & 2)) {
                             func_00023780(actor, 0xF8);
                             goto next_slot_0;
                         }
-                        FLAGS(actor) |= 0x500;
-                        WORD(actor,0x54) = token_column(token);
-                        WORD(actor,0x58) = token_row(token);
-                        BYTE(actor,0xF6) = (slot + squad_source)[2];
-                        HALF(actor,0x20) = auxiliary_value(BYTE(actor,0xF6), special_member_pool);
-                        HALF(actor,0x22) = HALF(special_member_pool,2);
-                        if (BYTE(special_member_pool + BYTE(actor,0xF6),0x90) & 4) FLAGS(actor) |= 2;
+                        actor->battle_flags |= 0x500;
+                        actor->formation_column = token_column(token);
+                        actor->formation_row = token_row(token);
+                        actor->member_index = (slot + squad_source)[2];
+                        actor->hp = auxiliary_value(actor->member_index, special_member_pool);
+                        actor->max_hp = HALF(special_member_pool,2);
+                        if (BYTE(special_member_pool + actor->member_index,0x90) & 4) actor->battle_flags |= 2;
                         func_0020CBDC(actor, latch);
                         FIND_PEER(actor, 0);
                     }
@@ -276,7 +273,7 @@ next_slot_0:
                 if (*(u16 *)0x80197B60 & 0x8000) {
                     if (slot != 0) goto next_slot_1;
                 }
-                actor = (u8 *)D_801CE8BC + (roster_index * 0xF8 + 0x1C4);
+                actor = (BattleRosterRecord *)((u8 *)D_801CE8BC + (roster_index * 0xF8 + 0x1C4));
                 if (squad_source_index < 30) {
                     member_record = D_80193BC0 + member_index * 0x38;
                     special_member_pool = D_80190F80;
@@ -295,18 +292,18 @@ next_slot_0:
                         } else {
                             func_0020C908(actor, member_index_arg);
                         }
-                        if (!BYTE(D_801CE8BC,0x6084) && (FLAGS(actor) & 2)) {
+                        if (!BYTE(D_801CE8BC,0x6084) && (actor->battle_flags & 2)) {
                             func_00023780(actor, 0xF8);
                             goto next_slot_1;
                         }
                         
-                        FLAGS(actor) &= ~0x500;
-                        WORD(actor,0x54) = 2 - token_column(token);
-                        WORD(actor,0x58) = 8 - token_row(token);
+                        actor->battle_flags &= ~0x500;
+                        actor->formation_column = 2 - token_column(token);
+                        actor->formation_row = 8 - token_row(token);
                         func_0020CBDC(actor, 0);
                         FIND_PEER(actor, 1);
                         
-                        { int enabled; if (!actor) enabled = 0; else enabled = (FLAGS(actor) >> 9) & 1; if (enabled && (func_00043dc4(BYTE(actor,0x4B), BYTE(actor,0x4F)) & 255) == 2) latch = 1; }
+                        { int enabled; if (!actor) enabled = 0; else enabled = (actor->battle_flags >> 9) & 1; if (enabled && (func_00043dc4(actor->primary_class_id.bytes.low, actor->secondary_class_id.bytes.low) & 255) == 2) latch = 1; }
                     }
                 } else {
                     if (auxiliary_value(member_index_or_count, special_member_pool)) {
@@ -315,17 +312,17 @@ next_slot_0:
                         } else {
                             func_0020C908(actor, 0);
                         }
-                        if (!BYTE(D_801CE8BC,0x6084) && (FLAGS(actor) & 2)) {
+                        if (!BYTE(D_801CE8BC,0x6084) && (actor->battle_flags & 2)) {
                             func_00023780(actor, 0xF8);
                             goto next_slot_1;
                         }
-                        FLAGS(actor) &= ~0x500;
-                        WORD(actor,0x54) = 2 - token_column(token);
-                        WORD(actor,0x58) = 8 - token_row(token);
-                        BYTE(actor,0xF6) = (slot + squad_source)[2];
-                        HALF(actor,0x20) = auxiliary_value(BYTE(actor,0xF6), special_member_pool);
-                        HALF(actor,0x22) = HALF(special_member_pool,2);
-                        if (BYTE(special_member_pool + BYTE(actor,0xF6),0x90) & 4) FLAGS(actor) |= 2;
+                        actor->battle_flags &= ~0x500;
+                        actor->formation_column = 2 - token_column(token);
+                        actor->formation_row = 8 - token_row(token);
+                        actor->member_index = (slot + squad_source)[2];
+                        actor->hp = auxiliary_value(actor->member_index, special_member_pool);
+                        actor->max_hp = HALF(special_member_pool,2);
+                        if (BYTE(special_member_pool + actor->member_index,0x90) & 4) actor->battle_flags |= 2;
                         func_0020CBDC(actor, latch);
                         FIND_PEER(actor, 1);
                     }
@@ -349,16 +346,16 @@ next_slot_1:
         if (actor) {
             u32 key, shift; int context;
             int variant, flag10, flag8;
-            variant = func_00045934(HALF(actor,0x36), HALF(actor,0x38), HALF(actor,0x3A), HALF(actor,0x3C)) & 0xFFFF;
-            flag8 = (FLAGS(actor) >> 8) & 1;
-            flag10 = (FLAGS(actor) >> 10) & 1;
+            variant = func_00045934(actor->equipment_slot_0, actor->equipment_slot_1, actor->equipment_slot_2, actor->equipment_slot_3) & 0xFFFF;
+            flag8 = (actor->battle_flags >> 8) & 1;
+            flag10 = (actor->battle_flags >> 10) & 1;
             for (index = 0; index < member_index_or_count; index++) {
-                if (WORD(actor,0x48) == sources[index] && variant == variants[index] &&
+                if (actor->primary_class_id.word == sources[index] && variant == variants[index] &&
                     flag10 == flag10s[index] && flag8 == flag8s[index]) break;
             }
             if (index < member_index_or_count) goto next_actor;
             {
-                key = func_002015C8(WORD(actor,0x48), WORD(actor,0x4C), flag10, flag8);
+                key = func_002015C8(actor->primary_class_id.word, actor->secondary_class_id.word, flag10, flag8);
                 for (index = 0; index < member_index_or_count; index++) {
                     if (key < resources[index]) break;
                 }
@@ -370,8 +367,8 @@ next_slot_1:
                     flag10s[shift] = flag10s[shift - 1];
                     flag8s[shift] = flag8s[shift - 1];
                 }
-                sources[shift] = WORD(actor,0x48);
-                context = WORD(actor,0x4C);
+                sources[shift] = actor->primary_class_id.word;
+                context = actor->secondary_class_id.word;
                 member_index_or_count++;
                 resources[shift] = key;
                 variants[shift] = variant;
@@ -398,18 +395,18 @@ next_actor:
         func_002073CC(5, 0);
         func_0021088C();
         {
-        int policyOffset; void *policyActor;
+        int policyOffset; BattleRosterRecord *policyActor;
         member_index_or_count = 0;
         policyOffset = 0;
         do {
             policyActor = scene_actor(member_index_or_count, policyOffset);
-            if (policyActor && !((FLAGS(policyActor) >> 1) & 1) &&
-                !func_0021062C(WORD(policyActor,0x48), WORD(policyActor,0x4C), 4)) {
+            if (policyActor && !((policyActor->battle_flags >> 1) & 1) &&
+                !func_0021062C(policyActor->primary_class_id.word, policyActor->secondary_class_id.word, 4)) {
                 int side = func_0020C014(policyActor);
                 u8 *status = &D_801976E8;
                 if (side) status -= 0xC;
                 if (status[1] & 2) {
-                    FLAGS(policyActor) |= 4;
+                    policyActor->battle_flags |= 4;
                     func_0020FC7C(policyActor);
                 }
             }

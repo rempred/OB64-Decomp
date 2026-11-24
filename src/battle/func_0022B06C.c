@@ -36,7 +36,7 @@ void func_0022B06C(void *record, u8 *state)
                 result = func_0020C2C0(record);
                 index++;
                 if (result == 0) {
-                    *(s32 *)((u8 *)record + 0x6C) = *(s32 *)((u8 *)record + 0x70);
+                    ((BattleRosterRecord *)record)->actions_used = ((BattleRosterRecord *)record)->action_limit;
                 }
                 if (index >= 20) {
                     break;

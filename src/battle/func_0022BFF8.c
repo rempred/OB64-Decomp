@@ -81,7 +81,7 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
     u32 check_value;
     register u32 latest_time;
     register u32 early_latest_time;
-    void *target;
+    BattleRosterRecord *target;
     aux_value = 0;
     time_out = out_time;
     secondary_result = 0;
@@ -89,39 +89,39 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
     target_index = func_00233F38(record);
     *(s32 *)((u8 *)record + 0x68) = target_index;
     if (target_index < 0) {
-        early_record_time = *(s32 *)((u8 *)record + 0x94);
+        early_record_time = ((BattleRosterRecord *)record)->scheduled_time;
         early_input_time = *time_out;
         if (early_record_time < early_input_time) {
             early_record_time = early_input_time;
         }
         early_loaded = *(u32 *)0x801CE8C0;
-        *(s32 *)((u8 *)record + 0x94) = early_record_time;
+        ((BattleRosterRecord *)record)->scheduled_time = early_record_time;
         early_loaded = *(u32 *)(early_loaded + 0x828);
         if (early_loaded < (u32)early_record_time) early_latest_time = early_record_time;
         else early_latest_time = early_loaded;
-        *(s32 *)((u8 *)record + 0x94) = early_latest_time;
+        ((BattleRosterRecord *)record)->scheduled_time = early_latest_time;
         func_0021D200(0x1C, (s32) early_latest_time, record);
-        *(s32 *)((u8 *)record + 0x6C) = (*(s32 *)((u8 *)record + 0x6C) + 1);
-        *time_out = *(s32 *)((u8 *)record + 0x94);
+        ((BattleRosterRecord *)record)->actions_used = (((BattleRosterRecord *)record)->actions_used + 1);
+        *time_out = ((BattleRosterRecord *)record)->scheduled_time;
         return 0;
     }
     target = func_0020C478(target_index);
-    stream_code = func_00201798(*(s32 *)((u8 *)record + 0x48), *(s32 *)((u8 *)record + 0x4C), *(s32 *)((u8 *)record + 0x7C), 0) & 0xFF;
-    duration = func_0022257C((u8 *)*(void **)record + 0x44, stream_code, buffer);
+    stream_code = func_00201798(((BattleRosterRecord *)record)->primary_class_id.word, ((BattleRosterRecord *)record)->secondary_class_id.word, *(s32 *)((u8 *)record + 0x7C), 0) & 0xFF;
+    duration = func_0022257C((u8 *)((BattleRosterRecord *)record)->primary_children[0] + 0x44, stream_code, buffer);
     if (func_0020BFE4() != 0) {
-        record_time0 = *(s32 *)((u8 *)record + 0x94);
+        record_time0 = ((BattleRosterRecord *)record)->scheduled_time;
         time = *time_out - buffer[0];
         time = time & ((s32) ~time >> 0x1F);
         if (time < record_time0) {
             time = record_time0;
         }
-        target_time0 = *(s32 *)((u8 *)target + 0x94);
+        target_time0 = target->scheduled_time;
         if ((time + buffer[0]) < target_time0) {
             time = target_time0 - buffer[0];
         }
     } else {
         time = *time_out;
-        record_time1 = *(s32 *)((u8 *)record + 0x94);
+        record_time1 = ((BattleRosterRecord *)record)->scheduled_time;
         time = time & ((s32) ~time >> 0x1F);
         if (time < record_time1) {
             time = record_time1;
@@ -132,19 +132,19 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
     if (selector_id != 0) {
         field_code = func_000454e0(selector_id);
     }
-    record_time2 = *(s32 *)((u8 *)record + 0x94);
+    record_time2 = ((BattleRosterRecord *)record)->scheduled_time;
     if (record_time2 < time) {
         record_time2 = time;
     }
     loaded = *(u32 *)0x801CE8C0;
-    *(s32 *)((u8 *)record + 0x94) = record_time2;
+    ((BattleRosterRecord *)record)->scheduled_time = record_time2;
     loaded = *(u32 *)(loaded + 0x828);
     if (loaded < (u32)record_time2) latest_time = record_time2;
     else latest_time = loaded;
-    *(s32 *)((u8 *)record + 0x94) = latest_time;
+    ((BattleRosterRecord *)record)->scheduled_time = latest_time;
     func_0021D200(0x1C, (s32) latest_time, record);
-    time = *(s32 *)((u8 *)record + 0x94);
-    *(s32 *)((u8 *)record + 0x6C) = (*(s32 *)((u8 *)record + 0x6C) + 1);
+    time = ((BattleRosterRecord *)record)->scheduled_time;
+    ((BattleRosterRecord *)record)->actions_used = (((BattleRosterRecord *)record)->actions_used + 1);
     source_value = func_002361EC(record);
     check_value = func_002365BC(record, target, source_value, func_002363FC(target));
     sample0 = rand();
@@ -167,8 +167,8 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
     value = func_00237750(record, target, 0, 0, 0);
     if (check_value != 0) {
         if (func_0020BFE4() != 0) {
-            record58_0 = *(s32 *)((u8 *)record + 0x58);
-            target58_0 = *(s32 *)((u8 *)target + 0x58);
+            record58_0 = ((BattleRosterRecord *)record)->formation_row;
+            target58_0 = target->formation_row;
             distance = record58_0 - target58_0;
             if (distance <= 0) {
                 distance = target58_0 - record58_0;
@@ -212,13 +212,13 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
         if ((func_0020C2C0(target) != 0) && (func_0020C014(record) != 0) && (func_0020C104(record) == 0)) {
             increment = func_00233210(record, target);
             if (increment != 0) {
-                *(u8 *)((u8 *)record + 0x34) = (*(u8 *)((u8 *)record + 0x34) + increment);
+                ((BattleRosterRecord *)record)->alignment = (((BattleRosterRecord *)record)->alignment + increment);
                 func_0021D230(0x3F, time + buffer[0] + distance, record, increment);
             }
         }
         if ((secondary_result != 0) && (func_0020C2C0(target) == 0) && (func_0020C32C(target) == 0)) {
             func_0023431C(target, time + buffer[0] + distance, secondary_result);
-            target_time2 = *(s32 *)((u8 *)target + 0x94);
+            target_time2 = target->scheduled_time;
             if (end_time < target_time2) {
                 end_time = target_time2;
                 goto merge_end_time;
@@ -227,20 +227,20 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
             goto merge_end_time;
         }
     } else {
-        aux_value = func_00201584(*(s32 *)((u8 *)target + 0x48), *(s32 *)((u8 *)target + 0x4C)) & 0xFF;
+        aux_value = func_00201584(target->primary_class_id.word, target->secondary_class_id.word) & 0xFF;
         if (func_0020BFE4() != 0) {
-            record58_1 = *(s32 *)((u8 *)record + 0x58);
-            target58_1 = *(s32 *)((u8 *)target + 0x58);
+            record58_1 = ((BattleRosterRecord *)record)->formation_row;
+            target58_1 = target->formation_row;
             offset = record58_1 - target58_1;
             if (offset <= 0) {
                 offset = target58_1 - record58_1;
             }
         } else { offset = 4; }
-        offset = offset - ((func_00201584(*(s32 *)((u8 *)record + 0x48), *(s32 *)((u8 *)record + 0x4C)) & 0xFF) ? 4 : 3);
+        offset = offset - ((func_00201584(((BattleRosterRecord *)record)->primary_class_id.word, ((BattleRosterRecord *)record)->secondary_class_id.word) & 0xFF) ? 4 : 3);
         check_value = time + buffer[0] + offset;
         func_0021D230(0xE, check_value, target, 0xFF);
-        value = func_0022257C((u8 *)*(void **)target + 0x44, ((0 - (aux_value == 0)) & 0x17) | 0x15, 0);
-        if ((func_00201584(*(s32 *)((u8 *)target + 0x48), *(s32 *)((u8 *)target + 0x4C)) & 0xFF) && (func_0020BFE4() != 0)) {
+        value = func_0022257C((u8 *)target->primary_children[0] + 0x44, ((0 - (aux_value == 0)) & 0x17) | 0x15, 0);
+        if ((func_00201584(target->primary_class_id.word, target->secondary_class_id.word) & 0xFF) && (func_0020BFE4() != 0)) {
             if (func_0020BFF8(target) != 0) {
                 event_selector = 0x60;
             } else { event_selector = 0x5F; }
@@ -248,15 +248,15 @@ s32 func_0022BFF8(void *record, s32 *out_time) {
             func_0021D2C0(0x17, check_value, 0, event_selector, field_code & 0xFF, source_code2, func_0020D72C(target));
         }
         func_0021D230(0xF, check_value + value, target, 0xFF);
-        bridge_data = (u8 *)*(void **)target + 0x44;
+        bridge_data = (u8 *)target->primary_children[0] + 0x44;
         bridge_selector = 0x18;
         if (aux_value != 0) {
             bridge_selector = 0x16;
         }
         value += func_0022257C(bridge_data, bridge_selector, 0);
-        *(s32 *)((u8 *)target + 0x94) = check_value + value;
+        target->scheduled_time = check_value + value;
 merge_end_time:
-        target_time3 = *(s32 *)((u8 *)target + 0x94);
+        target_time3 = target->scheduled_time;
         if (end_time < target_time3) {
             end_time = target_time3;
         }
@@ -271,7 +271,7 @@ merge_end_time:
     tail_last = *(volatile s32 *)((u8 *)record + 0x88);
     result = 1;
     *(s32 *)((u8 *)record + 0x8C) = 0;
-    *(s32 *)((u8 *)record + 0x94) = time + tail_duration;
+    ((BattleRosterRecord *)record)->scheduled_time = time + tail_duration;
     *time_out = time + tail_first + tail_last;
     return result;
 }

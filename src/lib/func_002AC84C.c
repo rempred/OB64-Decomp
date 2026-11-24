@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 #include "game/class_comparison.h"
 
 typedef unsigned char u8;
@@ -17,7 +19,7 @@ void func_002AC84C(s32 requested_body_slot, s32 class_word) {
     actor_index = 0;
     roster_offset = 0x1C4;
     do {
-        primary_class_id = (*(s32 *)((u8 *)(D_801CE8BC + roster_offset) + (0x48)));
+        primary_class_id = ((BattleRosterRecord *)(D_801CE8BC + roster_offset))->primary_class_id.word;
         if (primary_class_id != 0 && D_8016FF5C(primary_class_id, class_byte)) {
             break;
         }

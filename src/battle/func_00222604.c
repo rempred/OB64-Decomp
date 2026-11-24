@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 #include "game/class_comparison.h"
 
 typedef unsigned char u8;
@@ -33,7 +35,7 @@ s32 func_00222604(void *record, s32 incoming_flags)
         if (selector == 0xFF) {
             predicate = func_0020C0E8(record) != 0;
         } else {
-            predicate = func_00045e5c(*((u8 *)record + 0x4B), selector) != 0;
+            predicate = func_00045e5c(((BattleRosterRecord *)record)->primary_class_id.bytes.low, selector) != 0;
         }
         result &= 0 - predicate;
     }

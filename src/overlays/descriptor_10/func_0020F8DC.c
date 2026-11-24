@@ -31,20 +31,20 @@ extern inline int func_0020C2C0(void *record) {
     if (record == 0) {
         return 1;
     }
-    return *(const unsigned int *)((const unsigned char *)record + 0x40) & 1;
+    return ((const BattleRosterRecord *)record)->battle_flags & 1;
 }
 extern inline int func_0020C32C(void *record) {
     if (record == 0) {
         return 0;
     }
-    return (*(const unsigned int *)((const unsigned char *)record + 0x40) >> 1) & 1;
+    return (((const BattleRosterRecord *)record)->battle_flags >> 1) & 1;
 }
 extern inline BattleUnit *BattleGetUnit(u32 actor_index) {
     u8 *scene_bytes = D_801CE8BC;
     s32 roster_byte_offset;
     if (actor_index < 20) {
         roster_byte_offset = actor_index * 0xF8;
-        if (*(s32 *)(scene_bytes + roster_byte_offset + 0x20C) != 0) {
+        if (((BattleRosterRecord *)(scene_bytes + roster_byte_offset + 0x1C4))->primary_class_id.word != 0) {
             return (BattleUnit *)(scene_bytes + (roster_byte_offset + 0x1C4));
         }
     }
@@ -68,7 +68,7 @@ s32 func_0020F8DC(void) {
         if (func_0020C0CC(u)) {
             continue;
         }
-        if ((*(s32 *)((u8 *)(u) + (0x6C))) < (*(s32 *)((u8 *)(u) + (0x70)))) {
+        if (((BattleRosterRecord *)u)->actions_used < u->actsMax) {
             return 0;
         }
     }

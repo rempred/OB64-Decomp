@@ -16,6 +16,7 @@ void *func_0020C478(u32);
 u8 func_0020D434(s32);
 void func_0022EF50(void *record)
 {
+    BattleRosterRecord *actor = record;
     u8 selected_code;
     s32 score_5d;
     s32 initial_code;
@@ -33,13 +34,13 @@ void func_0022EF50(void *record)
     u8 chosen_code;
     u8 table_code;
     initial_selection = func_00044130(
-        *(u8 *)((u8 *)record + 0x4B), *(u8 *)((u8 *)record + 0x4F),
-        func_0020D434(*(s32 *)((u8 *)record + 0x58)) & 0xFF);
+        actor->primary_class_id.bytes.low, actor->secondary_class_id.bytes.low,
+        func_0020D434(actor->formation_row) & 0xFF);
     selected_code = initial_selection;
     kind = func_00044358(initial_selection & 0xFF);
-    if (*(s32 *)((u8 *)record + 0x4C) == 0xA4) {
+    if (actor->secondary_class_id.word == 0xA4) {
         special_selection = func_00044130(
-            *(u8 *)((u8 *)record + 0x4B), 0xA4U, (*(u8 *)0x801CE8F8 % 3) & 0xFF);
+            actor->primary_class_id.bytes.low, 0xA4U, (*(u8 *)0x801CE8F8 % 3) & 0xFF);
         selected_code = special_selection;
         kind = func_00044358(special_selection & 0xFF);
     }
@@ -122,13 +123,13 @@ chosen:
             selected_kind = 4;
         } else {
             selected_kind = func_0004440c(
-                &selected_code, *(u8 *)((u8 *)record + 0x4B),
-                *(u8 *)((u8 *)record + 0x4F), initial_code,
-                (s32)*(u8 *)((u8 *)record + 0x33),
-                (s32)*(u16 *)((u8 *)record + 0x36),
-                (s32)*(u16 *)((u8 *)record + 0x38),
-                (s32)*(u16 *)((u8 *)record + 0x3A),
-                (s32)*(u16 *)((u8 *)record + 0x3C));
+                &selected_code, actor->primary_class_id.bytes.low,
+                actor->secondary_class_id.bytes.low, initial_code,
+                (s32)actor->element,
+                (s32)actor->equipment_slot_0,
+                (s32)actor->equipment_slot_1,
+                (s32)actor->equipment_slot_2,
+                (s32)actor->equipment_slot_3);
         }
         *(s8 *)((u8 *)record + 0x78) = selected_kind;
     }

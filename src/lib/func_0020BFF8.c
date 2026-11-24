@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 #include "game/battle_record_flag.h"
 
 int func_0020BFF8(void *record)
@@ -6,5 +8,5 @@ int func_0020BFF8(void *record)
         return 0;
     }
 
-    return (*(unsigned int *)((unsigned char *)record + 0x40) >> 8) & 1;
+    return (((BattleRosterRecord *)record)->battle_flags >> 8) & 1;
 }

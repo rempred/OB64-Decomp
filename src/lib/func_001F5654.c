@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 #include "game/combat_draw.h"
 #include "game/combat_draw_commands.h"
 #include "game/combat_pose_record.h"
@@ -53,7 +55,7 @@ int func_001F5654(void *object)
     CombatPoseIndexedRecord decoded;
     float matrix[4][4];
     int index;
-    void *actor;
+    BattleRosterRecord *actor;
     DrawPose *pose;
     int poseId, firstId, secondId, variant;
     u8 factor;
@@ -70,8 +72,8 @@ int func_001F5654(void *object)
 
     actor = *(void **)((u8 *)object + 0x40);
     poseId = HALF(object, 0x4E);
-    firstId = WORD(actor, 0x48);
-    secondId = WORD(actor, 0x4C);
+    firstId = actor->primary_class_id.word;
+    secondId = actor->secondary_class_id.word;
     variant = func_0020C448(actor);
     factor = BYTE(actor, 0xAB) * HALF(object, 0x34) / 255;
     drawObject = (u8 *)object;
@@ -134,7 +136,7 @@ int func_001F5654(void *object)
                 u0 = 0;
                 u1 = decoded.record.field_0C - 1;
             }
-            if (func_00043d1c(BYTE(actor, 0x4B), BYTE(actor, 0x4F)) == 2) {
+            if (func_00043d1c(actor->primary_class_id.bytes.low, actor->secondary_class_id.bytes.low) == 2) {
                 decoded.record.field_18 *= *(double *)0x801CFE08;
                 decoded.record.field_1C *= *(double *)0x801CFE08;
             }

@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 typedef unsigned char u8;
 typedef signed char s8;
 typedef signed int s32;
@@ -26,7 +28,7 @@ s32 func_0020C2C0(void *actor);
 
 void func_00201108(void)
 {
-    void *actor;
+    BattleRosterRecord *actor;
     s32 first_limit;
     void *entry;
     volatile WorkingRecord *record;
@@ -49,13 +51,13 @@ void func_00201108(void)
             do {
                 actor = func_0020C478(actor_index);
                 if (actor != 0 && func_0020C014(actor) != 0 &&
-                    *(u8 *)((s8 *)actor + 0xF6) == *(u8 *)((s8 *)entry + 2)) {
+                    actor->member_index == *(u8 *)((s8 *)entry + 2)) {
                     if (func_0020C2C0(actor) != 0) {
                         *(u8 *)((s8 *)entry + 2) = 0;
                     } else {
                         *(s8 *)((s8 *)entry + 7) =
-                            (s8)((u32)((first_limit - *(s32 *)((s8 *)actor + 0x58)) * 3) -
-                                 ((u32)*(s32 *)((s8 *)actor + 0x54) - 2));
+                            (s8)((u32)((first_limit - actor->formation_row) * 3) -
+                                 ((u32)actor->formation_column - 2));
                         break;
                     }
                 }
@@ -77,13 +79,13 @@ void func_00201108(void)
             do {
                 actor = func_0020C478(actor_index);
                 if (actor != 0 && func_0020BFF8(actor) != 0 &&
-                    *(u8 *)((s8 *)actor + 0xF6) == *(u8 *)((s8 *)entry + 2)) {
+                    actor->member_index == *(u8 *)((s8 *)entry + 2)) {
                     if (func_0020C2C0(actor) != 0) {
                         *(u8 *)((s8 *)entry + 2) = 0;
                     } else {
                         *(s8 *)((s8 *)entry + 7) =
-                            (s8)(*(s32 *)((s8 *)actor + 0x58) * 3 +
-                                 *(s32 *)((s8 *)actor + 0x54));
+                            (s8)(actor->formation_row * 3 +
+                                 actor->formation_column);
                         break;
                     }
                 }

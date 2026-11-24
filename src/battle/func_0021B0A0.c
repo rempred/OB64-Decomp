@@ -33,7 +33,7 @@ void func_0021B0A0(void)
     void *temp_a0_106;
     void *temp_a0_123;
     void *temp_a0_89;
-    void *actor;
+    BattleRosterRecord *actor;
     u16 *army_special_member_hp;
     u16 *scenario_special_member_hp;
 
@@ -43,7 +43,7 @@ void func_0021B0A0(void)
     do {
         actor = func_0020C478(actor_index);
         if ((actor != 0) && (func_0020C0CC(actor) == 0) &&
-            (*(u8 *)((s8 *)actor + 0xF6) != 0)) {
+            (actor->member_index != 0)) {
             if (func_0020C014(actor) != 0) {
                 squad_source_index = *(u8 *)0x801976DC;
                 uses_army_roster = squad_source_index < 0x1E;
@@ -52,22 +52,22 @@ void func_0021B0A0(void)
                 uses_army_roster = squad_source_index < 0x1E;
             }
             if (uses_army_roster != 0) {
-                army_member_index = *(u8 *)((s8 *)actor + 0xF6);
+                army_member_index = actor->member_index;
                 if (army_member_index < 0x64U) {
                     *(u16 *)((s8 *)((army_member_index * 0x38) + 0x80190000) + 0x3BD8) =
-                        *(u16 *)((s8 *)actor + 0x20);
+                        actor->hp;
                 } else {
                     army_special_member_hp[army_member_index] =
-                        *(u16 *)((s8 *)actor + 0x20);
+                        actor->hp;
                 }
             } else {
-                scenario_member_index = *(u8 *)((s8 *)actor + 0xF6);
+                scenario_member_index = actor->member_index;
                 if (scenario_member_index < 0x64U) {
                     *(u16 *)((s8 *)((scenario_member_index * 0x34) + 0x80190000) + 0x5578) =
-                        *(u16 *)((s8 *)actor + 0x20);
+                        actor->hp;
                 } else {
                     scenario_special_member_hp[scenario_member_index] =
-                        *(u16 *)((s8 *)actor + 0x20);
+                        actor->hp;
                 }
             }
         }

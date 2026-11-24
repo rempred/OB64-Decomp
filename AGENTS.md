@@ -244,6 +244,8 @@ Name locals and parameters for their observed roles. When the game meaning is un
 use the role visible in the code, such as `slot_index` or `bytes_remaining`.
 Prefer a proven game term to a storage detail. Use the same term in the declaration,
 the code that fills the field, and the code that reads it. See [Naming identifiers](docs/WORKFLOW.md#naming-identifiers).
+When naming a struct field, also check its consumers for proven raw accesses.
+Try the named member and verify the match, or flag the exact site for follow-up.
 When a function's purpose is known, describe it in one line above its definition.
 Keep existing function symbols and aliases during ordinary matching and readability work.
 Keep uncertain meanings explicit. Explain necessary compiler workarounds near the affected C.

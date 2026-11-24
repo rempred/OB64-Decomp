@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 #include "game/battle_position_lookup.h"
 typedef unsigned char u8;
 typedef signed int s32;
@@ -20,60 +22,60 @@ s32 func_0022A4E0(void *record)
         return 0;
     }
     if (func_0020C014(record) != 0) {
-        forward58 = *(s32 *)((u8 *)record + 0x58);
+        forward58 = ((BattleRosterRecord *)record)->formation_row;
         if (forward58 == 8) {
             result = 0;
             goto done;
         }
-        if (func_0020C2C0(func_0020D770(*(s32 *)((u8 *)record + 0x54), forward58 + 1)) == 0) {
+        if (func_0020C2C0(func_0020D770(((BattleRosterRecord *)record)->formation_column, forward58 + 1)) == 0) {
             result = 0;
             goto done;
         }
         if (func_0020C284(record) != 0) {
-            result = func_0020C2C0(func_0020D770(*(s32 *)((u8 *)record + 0x54), *(s32 *)((u8 *)record + 0x58) + 2)) != 0;
-            if (func_0020C2C0(func_0020D770(*(s32 *)((u8 *)record + 0x54) + 1, *(s32 *)((u8 *)record + 0x58) + 2)) == 0) result = 0;
-            if (func_0020C2C0(func_0020D770(*(s32 *)((u8 *)record + 0x54) - 1, *(s32 *)((u8 *)record + 0x58) + 2)) == 0) result = 0;
+            result = func_0020C2C0(func_0020D770(((BattleRosterRecord *)record)->formation_column, ((BattleRosterRecord *)record)->formation_row + 2)) != 0;
+            if (func_0020C2C0(func_0020D770(((BattleRosterRecord *)record)->formation_column + 1, ((BattleRosterRecord *)record)->formation_row + 2)) == 0) result = 0;
+            if (func_0020C2C0(func_0020D770(((BattleRosterRecord *)record)->formation_column - 1, ((BattleRosterRecord *)record)->formation_row + 2)) == 0) result = 0;
             goto done;
         }
-        entry = func_0020D770(*(s32 *)((u8 *)record + 0x54), *(s32 *)((u8 *)record + 0x58) + 2);
+        entry = func_0020D770(((BattleRosterRecord *)record)->formation_column, ((BattleRosterRecord *)record)->formation_row + 2);
         if (func_0020C2C0(entry) == 0) {
             result = func_0020C284(entry) == 0;
         }
-        entry = func_0020D770(*(s32 *)((u8 *)record + 0x54) + 1, *(s32 *)((u8 *)record + 0x58) + 2);
+        entry = func_0020D770(((BattleRosterRecord *)record)->formation_column + 1, ((BattleRosterRecord *)record)->formation_row + 2);
         if (func_0020C2C0(entry) == 0) {
             result &= 0 - (func_0020C284(entry) == 0);
         }
-        field54 = *(s32 *)((u8 *)record + 0x54);
-        field58 = *(s32 *)((u8 *)record + 0x58);
+        field54 = ((BattleRosterRecord *)record)->formation_column;
+        field58 = ((BattleRosterRecord *)record)->formation_row;
         field54--;
         field58 += 2;
         goto final_neighbor;
     }
-    back58 = *(s32 *)((u8 *)record + 0x58);
+    back58 = ((BattleRosterRecord *)record)->formation_row;
     if (back58 == 0) {
         result = 0;
         goto done;
     }
-    if (func_0020C2C0(func_0020D770(*(s32 *)((u8 *)record + 0x54), back58 - 1)) == 0) {
+    if (func_0020C2C0(func_0020D770(((BattleRosterRecord *)record)->formation_column, back58 - 1)) == 0) {
         result = 0;
         goto done;
     }
     if (func_0020C284(record) != 0) {
-        result = func_0020C2C0(func_0020D770(*(s32 *)((u8 *)record + 0x54), *(s32 *)((u8 *)record + 0x58) - 2)) != 0;
-        if (func_0020C2C0(func_0020D770(*(s32 *)((u8 *)record + 0x54) + 1, *(s32 *)((u8 *)record + 0x58) - 2)) == 0) result = 0;
-        if (func_0020C2C0(func_0020D770(*(s32 *)((u8 *)record + 0x54) - 1, *(s32 *)((u8 *)record + 0x58) - 2)) == 0) result = 0;
+        result = func_0020C2C0(func_0020D770(((BattleRosterRecord *)record)->formation_column, ((BattleRosterRecord *)record)->formation_row - 2)) != 0;
+        if (func_0020C2C0(func_0020D770(((BattleRosterRecord *)record)->formation_column + 1, ((BattleRosterRecord *)record)->formation_row - 2)) == 0) result = 0;
+        if (func_0020C2C0(func_0020D770(((BattleRosterRecord *)record)->formation_column - 1, ((BattleRosterRecord *)record)->formation_row - 2)) == 0) result = 0;
         goto done;
     }
-    entry = func_0020D770(*(s32 *)((u8 *)record + 0x54), *(s32 *)((u8 *)record + 0x58) - 2);
+    entry = func_0020D770(((BattleRosterRecord *)record)->formation_column, ((BattleRosterRecord *)record)->formation_row - 2);
     if (func_0020C2C0(entry) == 0) {
         result = func_0020C284(entry) == 0;
     }
-    entry = func_0020D770(*(s32 *)((u8 *)record + 0x54) + 1, *(s32 *)((u8 *)record + 0x58) - 2);
+    entry = func_0020D770(((BattleRosterRecord *)record)->formation_column + 1, ((BattleRosterRecord *)record)->formation_row - 2);
     if (func_0020C2C0(entry) == 0) {
         result &= 0 - (func_0020C284(entry) == 0);
     }
-    field54 = *(s32 *)((u8 *)record + 0x54);
-    field58 = *(s32 *)((u8 *)record + 0x58);
+    field54 = ((BattleRosterRecord *)record)->formation_column;
+    field58 = ((BattleRosterRecord *)record)->formation_row;
     field54--;
     field58 -= 2;
 final_neighbor:

@@ -68,7 +68,7 @@ loop_2:
     if (func_0020C32C(actor) != 0) {
         goto block_26;
     }
-    if ((*(u16 *)((s8 *)(actor) + (0x20))) != 0) {
+    if ((actor->hp) != 0) {
         child_slot = (s8 *) actor;
         goto block_10;
     }
@@ -167,7 +167,7 @@ loop_38:
     if (func_0020C32C(checked_actor) != 0) {
         goto block_50;
     }
-    if ((*(u16 *)((s8 *)(checked_actor) + (0x20))) != 0) {
+    if ((checked_actor->hp) != 0) {
         goto block_45;
     }
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != 1) {
@@ -198,7 +198,7 @@ block_47:
         goto block_50;
     }
 block_49:
-    var_s1_131 &= 0 - ((u32) (((*(u16 *)((s8 *)((*(void **)((s8 *)(checked_actor) + (0)))) + (0x1C))) + 0x18F) & 0xFFFF) >= 0x2BBU);
+    var_s1_131 &= 0 - ((u32) (((*(u16 *)((s8 *)(checked_actor->primary_children[0]) + (0x1C))) + 0x18F) & 0xFFFF) >= 0x2BBU);
 block_50:
     var_s3_221 += 1;
     if (var_s3_221 < 0x14) {
@@ -232,7 +232,7 @@ loop_56:
     if (func_0020C0CC(actor) != 0) {
         goto block_81;
     }
-    if ((*(u16 *)((s8 *)(actor) + (0x20))) != 0) {
+    if ((actor->hp) != 0) {
         goto block_64;
     }
     if ((*(u8 *)((s8 *)D_801CE8BC + (0x6087))) != later_one) {
@@ -249,7 +249,7 @@ block_62:
         goto block_81;
     }
 block_64:
-    var_s2_24 = (s32) (func_002016F4((*(s32 *)((s8 *)(actor) + (0x48))), (*(s32 *)((s8 *)(actor) + (0x4C)))) / 2.0f);
+    var_s2_24 = (s32) (func_002016F4((actor->primary_class_id.word), (actor->secondary_class_id.word)) / 2.0f);
     raised_child_slot = (s8 *) actor;
 loop_65:
     if ((*(void **)((s8 *)(raised_child_slot) + (0))) == 0) {

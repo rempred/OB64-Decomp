@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 typedef unsigned char u8;
 typedef signed int s32;
 
@@ -10,7 +12,7 @@ s32 func_0020C120(void *row)
     if (row == 0) {
         return 0;
     }
-    ownerContext = *(const s32 *)((const u8 *)row + 0x4C);
+    ownerContext = ((const BattleRosterRecord *)row)->secondary_class_id.word;
     /* Keep the null return and the ordinary-context default separate for KMC. */
     paired = 0;
     /* Retail evaluates the first two equality tests before branching. */

@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 #include "game/battle_record_flag.h"
 
 #include "game/combat_selector.h"
@@ -204,7 +206,7 @@ void func_0021840C(void) {
             temp_v0_226 = func_0020C478(var_s1_224);
             if (temp_v0_226 != 0) {
                 if (func_0020C014(temp_v0_226) != 0) {
-                    (*(s16 *)((s8 *)(temp_v0_226) + (0x20))) = 0;
+                    ((BattleRosterRecord *)temp_v0_226)->hp = 0;
                 }
             }
             var_s1_224 += 1;

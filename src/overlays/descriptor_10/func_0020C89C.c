@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -30,7 +32,7 @@ extern inline BattleUnit *BattleGetUnit(u32 actor_index) {
     s32 roster_byte_offset;
     if (actor_index < 20) {
         roster_byte_offset = actor_index * 0xF8;
-        if (*(s32 *)(scene_bytes + roster_byte_offset + 0x20C) != 0) {
+        if (((BattleRosterRecord *)(scene_bytes + roster_byte_offset + 0x1C4))->primary_class_id.word != 0) {
             return (BattleUnit *)(scene_bytes + (roster_byte_offset + 0x1C4));
         }
     }

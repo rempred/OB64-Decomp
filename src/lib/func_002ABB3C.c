@@ -12,7 +12,7 @@ extern u8 *D_8022A974;    /* Director scene block; actor pointers at +0x18 */
 extern s8 D_8022AC80;     /* Director scene mode */
 extern s16 D_8022A994;    /* current scenario id */
 
-extern u8 func_002AD574(void *actor_bytes);
+extern u8 func_002AD574(void *actor);
 extern void *func_0002CD70(void *destination, int value, unsigned int count);
 extern s32 func_002A9364(s32 slot, s32 primary_class_id, s32 variant, s32 animation,
                         s32 arg5, s32 arg6, u8 keep145, u8 keepUnit);
@@ -34,7 +34,7 @@ s32 func_002ABB3C(s32 bit8_class_filter, s32 other_class_filter, s32 flagC)
         volatile s32 read[4];
     } slots;
     s32 want[2];
-    char *actor_bytes;
+    BattleRosterRecord *actor;
     u8 *scene_body;
     s32 actor_index;
     s32 j;
@@ -56,24 +56,24 @@ s32 func_002ABB3C(s32 bit8_class_filter, s32 other_class_filter, s32 flagC)
     isNine = mode == -9;
     seen_leader = 0;
     for (actor_index = 0; actor_index < 20; actor_index++) {
-        actor_bytes = D_801CE8BC + 0x1C4 + actor_index * 0xF8;
-        if (*(s32 *)(actor_bytes + 0x48) == 0) {
+        actor = (BattleRosterRecord *)(D_801CE8BC + 0x1C4 + actor_index * 0xF8);
+        if (actor->primary_class_id.word == 0) {
             continue;
         }
         bit8_filter = want[0];
         other_filter = want[1];
-        primary_class_id = *(s32 *)(actor_bytes + 0x48);
-        if (bit8_filter == -1 && func_0020BFF8(actor_bytes)) {
+        primary_class_id = actor->primary_class_id.word;
+        if (bit8_filter == -1 && func_0020BFF8(actor)) {
             skip = 0;
-        } else if (other_filter == -1 && !func_0020BFF8(actor_bytes)) {
+        } else if (other_filter == -1 && !func_0020BFF8(actor)) {
             skip = 0;
-        } else if (bit8_filter == -2 && func_0020BFF8(actor_bytes) && func_0020C0E8(actor_bytes)) {
+        } else if (bit8_filter == -2 && func_0020BFF8(actor) && func_0020C0E8(actor)) {
             skip = 0;
-        } else if (other_filter == -2 && !func_0020BFF8(actor_bytes) && func_0020C0E8(actor_bytes)) {
+        } else if (other_filter == -2 && !func_0020BFF8(actor) && func_0020C0E8(actor)) {
             skip = 0;
-        } else if (bit8_filter == 0 && func_0020BFF8(actor_bytes)) {
+        } else if (bit8_filter == 0 && func_0020BFF8(actor)) {
             skip = 1;
-        } else if (other_filter == 0 && !func_0020BFF8(actor_bytes)) {
+        } else if (other_filter == 0 && !func_0020BFF8(actor)) {
             skip = 1;
         } else {
             classByte = primary_class_id;
@@ -90,7 +90,7 @@ s32 func_002ABB3C(s32 bit8_class_filter, s32 other_class_filter, s32 flagC)
         if (skip == 1) {
             continue;
         }
-        if ((D_8022AC80 == -3 || D_8022AC80 == -10) && func_002AD574(actor_bytes) == 1) {
+        if ((D_8022AC80 == -3 || D_8022AC80 == -10) && func_002AD574(actor) == 1) {
             continue;
         }
         /* Retail retains this 28-step loop. The dead assignment prevents KMC
@@ -98,10 +98,10 @@ s32 func_002ABB3C(s32 bit8_class_filter, s32 other_class_filter, s32 flagC)
         for (j = 0; j < 28; j++) {
             flip = j;
         }
-        flip = *(s32 *)(actor_bytes + 0x58) < 4;
+        flip = actor->formation_row < 4;
         func_0002CD70(slots.write, 0xFF, 0x10);
-        func_002AB810(slots.write, (BattleRosterRecord *)actor_bytes, actor_index, flip, *(s32 *)(actor_bytes + 0x48), *(s32 *)(actor_bytes + 0x4C), seen_leader);
-        if (*(s32 *)(actor_bytes + 0x48) == 0x87) {
+        func_002AB810(slots.write, actor, actor_index, flip, actor->primary_class_id.word, actor->secondary_class_id.word, seen_leader);
+        if (actor->primary_class_id.word == 0x87) {
             seen_leader = 1;
         }
         /* Separate arms preserve the constant's KMC allocation priority.
@@ -120,7 +120,7 @@ s32 func_002ABB3C(s32 bit8_class_filter, s32 other_class_filter, s32 flagC)
              * comparison. Assigning in the condition retains the direct
              * failure edge to default placement. */
             s32 allow = 0;
-            if (func_0020C32C(actor_bytes) && (!func_0020BFF8(actor_bytes) || !func_0020C0E8(actor_bytes))) {
+            if (func_0020C32C(actor) && (!func_0020BFF8(actor) || !func_0020C0E8(actor))) {
                 scene_body = *(u8 **)(D_8022A974 + slots.read[child_index] * 4 + 0x18);
                 func_002A9364(slots.read[child_index], -1, -1, *(s16 *)(scene_body + 0x138) + 0x1C, -1, -1, 0, 1);
                 func_0029E70C(scene_body);

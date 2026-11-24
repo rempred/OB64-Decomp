@@ -131,30 +131,30 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
     temp_v0_31 = func_00233ED4(sourceWords);
     (*(s32 *)((s8 *)(sourceWords) + (0x68))) = temp_v0_31;
     if (temp_v0_31 < 0) {
-        var_v1_36 = (*(s32 *)((s8 *)(sourceWords) + (0x94)));
+        var_v1_36 = (sourceWords->scheduled_time);
         temp_a0_37 = *outputWord;
         if (var_v1_36 < temp_a0_37) {
             var_v1_36 = temp_a0_37;
         }
         earlyLoaded = *(u32 *)0x801CE8C0;
-        (*(s32 *)((s8 *)(sourceWords) + (0x94))) = var_v1_36;
+        (sourceWords->scheduled_time) = var_v1_36;
         earlyLoaded = *(u32 *)(earlyLoaded + 0x828);
         if (earlyLoaded < (u32) var_v1_36) {
             var_a1_47 = (u32) var_v1_36;
         } else {
             var_a1_47 = earlyLoaded;
         }
-        (*(s32 *)((s8 *)(sourceWords) + (0x94))) = (s32) var_a1_47;
+        (sourceWords->scheduled_time) = (s32) var_a1_47;
         func_0021D200(0x1C, (s32) var_a1_47, sourceWords);
-        recordWord6C = (*(s32 *)((s8 *)(sourceWords) + (0x6C)));
-        var_a0_58 = (*(s32 *)((s8 *)(sourceWords) + (0x94)));
+        recordWord6C = (sourceWords->actions_used);
+        var_a0_58 = (sourceWords->scheduled_time);
         recordWord6C += 1;
-        (*(s32 *)((s8 *)(sourceWords) + (0x6C))) = recordWord6C;
+        (sourceWords->actions_used) = recordWord6C;
         *outputWord = var_a0_58;
         return 0;
     } else if (temp_s0_28 == 0) {
         temp_s6_230 = *outputWord;
-        var_v1_69 = (*(s32 *)((s8 *)(sourceWords) + (0x94)));
+        var_v1_69 = (sourceWords->scheduled_time);
         temp_s6_230 = temp_s6_230 & ((s32) ~temp_s6_230 >> 0x1F);
         if (temp_s6_230 < var_v1_69) {
             temp_s6_230 = var_v1_69;
@@ -163,21 +163,21 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
             var_v1_69 = temp_s6_230;
         }
         defaultLoaded = *(u32 *)0x801CE8C0;
-        (*(s32 *)((s8 *)(sourceWords) + (0x94))) = var_v1_69;
+        (sourceWords->scheduled_time) = var_v1_69;
         defaultLoaded = *(u32 *)(defaultLoaded + 0x828);
         if (defaultLoaded < (u32) var_v1_69) {
             var_a1_87 = (u32) var_v1_69;
         } else {
             var_a1_87 = defaultLoaded;
         }
-        (*(s32 *)((s8 *)(sourceWords) + (0x94))) = (s32) var_a1_87;
+        (sourceWords->scheduled_time) = (s32) var_a1_87;
         func_0021D200(0x1C, (s32) var_a1_87, sourceWords);
-        temp_s6_230 = (*(s32 *)((s8 *)(sourceWords) + (0x94)));
-        (*(s32 *)((s8 *)(sourceWords) + (0x6C))) = (s32) ((*(s32 *)((s8 *)(sourceWords) + (0x6C))) + 1);
+        temp_s6_230 = (sourceWords->scheduled_time);
+        (sourceWords->actions_used) = (s32) ((sourceWords->actions_used) + 1);
         if (func_0020BFE4() != 0) {
             temp_v0_104 = (*(s32 *)((s8 *)(sourceWords) + (0)));
             data.state.copy = *(LocalCopy *)(temp_v0_104 + 0x44);
-            temp_s0_125 = func_00201798((*(s32 *)((s8 *)(sourceWords) + (0x48))), (*(s32 *)((s8 *)(sourceWords) + (0x4C))), (*(s32 *)((s8 *)(sourceWords) + (0x7C))), 0) & 0xFF;
+            temp_s0_125 = func_00201798((sourceWords->primary_class_id.word), (sourceWords->secondary_class_id.word), (*(s32 *)((s8 *)(sourceWords) + (0x7C))), 0) & 0xFF;
             func_001F0E64(&data.state.record, temp_s0_125);
             sp9C = func_001F197C(sourceWords, &data.state.evaluator, 0);
             func_0021D25C(0x1D, temp_s6_230, sourceWords, 0xFF, temp_s0_125);
@@ -190,7 +190,7 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
         (*(s32 *)((s8 *)(sourceWords) + (0x88))) = sp9C;
         (*(s32 *)((s8 *)(sourceWords) + (0x84))) = 0;
         (*(s32 *)((s8 *)(sourceWords) + (0x8C))) = 0;
-        (*(s32 *)((s8 *)(sourceWords) + (0x94))) = (s32) (temp_s6_230 + sp9C);
+        (sourceWords->scheduled_time) = (s32) (temp_s6_230 + sp9C);
         var_a0_58 = temp_s6_230 + (*(s32 *)((s8 *)(sourceWords) + (0x88)));
         *outputWord = var_a0_58;
         return 1;
@@ -204,7 +204,7 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
                 var_s8_30 -= 0xF;
             }
         }
-        var_v1_193 = (*(s32 *)((s8 *)(sourceWords) + (0x94)));
+        var_v1_193 = (sourceWords->scheduled_time);
         temp_s6_230 = *outputWord - var_s8_30;
         temp_s6_230 = temp_s6_230 & ((s32) ~temp_s6_230 >> 0x1F);
         if (temp_s6_230 < var_v1_193) {
@@ -218,25 +218,25 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
             var_v1_193 = temp_s6_230;
         }
         loaded = *(u32 *)0x801CE8C0;
-        (*(s32 *)((s8 *)(sourceWords) + (0x94))) = var_v1_193;
+        (sourceWords->scheduled_time) = var_v1_193;
         loaded = *(u32 *)(loaded + 0x828);
         if (loaded < (u32) var_v1_193) {
             var_a1_219 = (u32) var_v1_193;
         } else {
             var_a1_219 = loaded;
         }
-        (*(s32 *)((s8 *)(sourceWords) + (0x94))) = (s32) var_a1_219;
+        (sourceWords->scheduled_time) = (s32) var_a1_219;
         func_0021D200(0x1C, (s32) var_a1_219, sourceWords);
-        temp_s6_230 = (*(s32 *)((s8 *)(sourceWords) + (0x94)));
-        (*(s32 *)((s8 *)(sourceWords) + (0x6C))) = (s32) ((*(s32 *)((s8 *)(sourceWords) + (0x6C))) + 1);
+        temp_s6_230 = (sourceWords->scheduled_time);
+        (sourceWords->actions_used) = (s32) ((sourceWords->actions_used) + 1);
         if (func_0020BFE4() != 0) {
             if (func_0020C104(sourceWords) != 0) {
                 func_0021D28C(3, temp_s6_230, sourceWords, 0xFF, (*(s32 *)((s8 *)(sourceWords) + (0x68))), 5);
             } else {
                 func_0021D28C(2, temp_s6_230, sourceWords, 0xFF, (*(s32 *)((s8 *)(sourceWords) + (0x68))), 5);
             }
-            if (func_00043ad8(*(u8 *)((s8 *)sourceWords + 0x4B),
-                                *(u8 *)((s8 *)sourceWords + 0x4F)) != 1) {
+            if (func_00043ad8(sourceWords->primary_class_id.bytes.low,
+                                sourceWords->secondary_class_id.bytes.low) != 1) {
                 temp_v0_257 = (*(s32 *)((s8 *)(sourceWords) + (0)));
                 data.state.copy = *(LocalCopy *)(temp_v0_257 + 0x44);
                 func_001F0E64(&data.state.record, 6);
@@ -259,7 +259,7 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
                 var_a3_341 = 1;
             }
         }
-        temp_v0_352 = func_00201798((*(s32 *)((s8 *)(sourceWords) + (0x48))), (*(s32 *)((s8 *)(sourceWords) + (0x4C))), (*(s32 *)((s8 *)(sourceWords) + (0x7C))), var_a3_341);
+        temp_v0_352 = func_00201798((sourceWords->primary_class_id.word), (sourceWords->secondary_class_id.word), (*(s32 *)((s8 *)(sourceWords) + (0x7C))), var_a3_341);
         func_001F0E64(&data.state.record, temp_v0_352 & 0xFF);
         temp_v0_360 = func_001F197C(sourceWords, &data.state.evaluator, &data.buffer[0]);
         entryCount = 0;
@@ -401,7 +401,7 @@ s32 func_0022B1F4(BattleRosterRecord *sourceWords, s32 *outWord) {
             if ((func_0020C2C0(temp_v0_169) != 0) && (func_0020C014(sourceWords) != 0) && (func_0020C104(sourceWords) == 0)) {
                 temp_v0_771 = func_00233210((s32 *)sourceWords, (s32 *)temp_v0_169);
                 if (temp_v0_771 != 0) {
-                    (*(u8 *)((s8 *)(sourceWords) + (0x34))) = (u8) ((*(u8 *)((s8 *)(sourceWords) + (0x34))) + temp_v0_771);
+                    (sourceWords->alignment) = (u8) ((sourceWords->alignment) + temp_v0_771);
                     func_0021D230(0x3F, temp_s0_754 + sp9C, sourceWords, temp_v0_771);
                 }
             }
@@ -455,7 +455,7 @@ after_bound_update:
         if (func_0020BFE4() != 0) {
             spA4 = func_002223E0(sourceWords, temp_v0_169, spC7, spCF, (*(s32 *)((s8 *)(sourceWords) + (0x5C))), (*(s32 *)((s8 *)(sourceWords) + (0x64))));
             func_0021D25C(8, temp_s6_230 + var_s8_30 + sp9C, sourceWords, 0xFF,
-                ((*(s32 *)((s8 *)(sourceWords) + (0x4C))) == 0x4A) ? 7 : 0xB);
+                ((sourceWords->secondary_class_id.word) == 0x4A) ? 7 : 0xB);
             func_0021D25C(9, temp_s6_230 + var_s8_30 + sp9C + spA4, sourceWords, 0xFF, 0xC);
         }
         (*(s32 *)((s8 *)(sourceWords) + (0x84))) = var_s8_30;
@@ -467,7 +467,7 @@ after_bound_update:
             (*(s32 *)((s8 *)(sourceWords) + (0x8C))) = 0;
         }
         var_v0_63 = 1;
-        (*(s32 *)((s8 *)(sourceWords) + (0x94))) = (s32) (temp_s6_230 + var_s8_30 + sp9C + spA4);
+        (sourceWords->scheduled_time) = (s32) (temp_s6_230 + var_s8_30 + sp9C + spA4);
         var_a0_58 = temp_s6_230 + (*(s32 *)((s8 *)(sourceWords) + (0x84))) + (*(s32 *)((s8 *)(sourceWords) + (0x88)));
     }
     *outputWord = var_a0_58;

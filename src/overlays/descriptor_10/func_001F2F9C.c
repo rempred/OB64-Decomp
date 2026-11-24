@@ -1,4 +1,5 @@
 #include "game/battle_record_flag.h"
+#include "game/battle_roster_record.h"
 
 #include "game/class_field_lookups.h"
 extern u8 D_801976DC;
@@ -15,7 +16,7 @@ extern const char D_801CE890[];
 int func_000238B0(char *buf, const char *fmt, ...);
 void func_001F2E48(signed char *s, s32 side);
 /* Show the class-change message with the actor's persistent name. */
-void func_001F2F9C(u8 *actor, u8 *replacement_actor) {
+void func_001F2F9C(BattleRosterRecord *actor, BattleRosterRecord *replacement_actor) {
     signed char message[64];
     u8 *character_name;
     s32 uses_army_roster;
@@ -27,10 +28,10 @@ void func_001F2F9C(u8 *actor, u8 *replacement_actor) {
         uses_army_roster = squad_source_index < 30;
     }
     if (uses_army_roster) {
-        character_name = D_80193BC0_copy[actor[0xF6]].record_bytes;
+        character_name = D_80193BC0_copy[actor->member_index].record_bytes;
     } else {
-        character_name = D_80195560_copy[actor[0xF6]].record_bytes;
+        character_name = D_80195560_copy[actor->member_index].record_bytes;
     }
-    func_000238B0((char *)message, D_801CE890, character_name, D_8016E1DC(replacement_actor[0x4B], replacement_actor[0x4F]));
+    func_000238B0((char *)message, D_801CE890, character_name, D_8016E1DC(replacement_actor->primary_class_id.bytes.low, replacement_actor->secondary_class_id.bytes.low));
     func_001F2E48(message, func_0020C014(actor));
 }

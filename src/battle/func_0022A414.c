@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -15,7 +17,7 @@ void func_0022A414(void *record)
     mode = func_0020C014(record);
     index = 0;
     if (mode != 0) {
-        *(s32 *)((u8 *)record + 0x58) += 1;
+        ((BattleRosterRecord *)record)->formation_row += 1;
         *(s32 *)((u8 *)record + 0x5C) += 0x26;
         cursor = record;
         do {
@@ -29,7 +31,7 @@ void func_0022A414(void *record)
             cursor += 4;
         } while (index < 3);
     } else {
-        *(s32 *)((u8 *)record + 0x58) -= 1;
+        ((BattleRosterRecord *)record)->formation_row -= 1;
         *(s32 *)((u8 *)record + 0x5C) -= 0x26;
         cursor = record;
         do {

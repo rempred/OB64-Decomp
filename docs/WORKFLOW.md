@@ -499,6 +499,12 @@ The 56-byte stride helps establish which roster this is. Reserve names such as
   same alignment byte. The game writes `alignment` back to the character and compares
   it with `reference_alignment` during battle. Those uses justify distinct names.
   Keep a neutral or offset-based name while a field's role is unclear.
+- When you name a field, check its consumers for byte indexing, pointer arithmetic, and
+  offset macros. If the base is the same record and the offset, access width, signedness,
+  and qualifiers agree, try the named access and compare the compiled result. For example,
+  a typed battle actor can use `actor->member_index` for the byte at `+0xF6`. If a parameter
+  type changes, reconcile its declarations and callers. When the conversion is outside
+  the assignment or changes the match, record the exact site and what prevented it.
 - Apply renames to the intended declaration and its uses. A local and a member can
   share a spelling. Review each affected use and preserve public symbols, layout, and
   evaluation order during a readability pass.

@@ -31,13 +31,13 @@ s32 func_0022F2BC(void *record, s32 *out_time)
     u8 mode;
     u8 *global;
     u8 *owner;
-    void *entry;
+    BattleRosterRecord *entry;
 
     if (record == 0) {
         return 0;
     }
-    initial_count = *(s32 *)((u8 *)record + 0x6C);
-    limit = *(s32 *)((u8 *)record + 0x70);
+    initial_count = ((BattleRosterRecord *)record)->actions_used;
+    limit = ((BattleRosterRecord *)record)->action_limit;
     *(s32 *)((u8 *)record + 0x8C) = 0;
     *(s32 *)((u8 *)record + 0x88) = 0;
     *(s32 *)((u8 *)record + 0x84) = 0;
@@ -48,21 +48,21 @@ s32 func_0022F2BC(void *record, s32 *out_time)
     global = D_801CE8C0;
     global[0x818]++;
     if (func_0020C2C0(record) != 0 || func_0020C32C(record) != 0) {
-        current = *(s32 *)((u8 *)record + 0x94);
+        current = ((BattleRosterRecord *)record)->scheduled_time;
         requested = *out_time;
         if (current < requested) current = requested;
         early_loaded = (u32)D_801CE8C0;
-        *(s32 *)((u8 *)record + 0x94) = current;
+        ((BattleRosterRecord *)record)->scheduled_time = current;
         early_loaded = *(u32 *)(early_loaded + 0x828);
         if (early_loaded < (u32)current) cap = current;
         else cap = early_loaded;
         *(u32 *)((u8 *)record + 0x94) = cap;
         func_0021D200(0x1C, cap, record);
-        count = *(s32 *)((u8 *)record + 0x6C);
-        return_time = *(s32 *)((u8 *)record + 0x94);
+        count = ((BattleRosterRecord *)record)->actions_used;
+        return_time = ((BattleRosterRecord *)record)->scheduled_time;
         result = 0;
         count++;
-        *(s32 *)((u8 *)record + 0x6C) = count;
+        ((BattleRosterRecord *)record)->actions_used = count;
         *out_time = return_time;
         return result;
     }
@@ -71,22 +71,22 @@ s32 func_0022F2BC(void *record, s32 *out_time)
     if (flags & 4) return func_0022EDD4(record, out_time);
 
     owner = D_801CE8C0;
-    count = *(s32 *)((u8 *)record + 0x6C);
-    if (count != *(s32 *)owner || *(s32 *)((u8 *)record + 0x70) < count) {
-        current = *(s32 *)((u8 *)record + 0x94);
+    count = ((BattleRosterRecord *)record)->actions_used;
+    if (count != *(s32 *)owner || ((BattleRosterRecord *)record)->action_limit < count) {
+        current = ((BattleRosterRecord *)record)->scheduled_time;
         requested = *out_time;
         if (current < requested) current = requested;
-        *(s32 *)((u8 *)record + 0x94) = current;
+        ((BattleRosterRecord *)record)->scheduled_time = current;
         middle_loaded = *(u32 *)(owner + 0x828);
         if (middle_loaded < (u32)current) cap = current;
         else cap = middle_loaded;
         *(u32 *)((u8 *)record + 0x94) = cap;
         func_0021D200(0x1C, cap, record);
-        count = *(s32 *)((u8 *)record + 0x6C);
-        return_time = *(s32 *)((u8 *)record + 0x94);
+        count = ((BattleRosterRecord *)record)->actions_used;
+        return_time = ((BattleRosterRecord *)record)->scheduled_time;
         result = 0;
         count++;
-        *(s32 *)((u8 *)record + 0x6C) = count;
+        ((BattleRosterRecord *)record)->actions_used = count;
         *out_time = return_time;
         return result;
     }
@@ -96,31 +96,31 @@ s32 func_0022F2BC(void *record, s32 *out_time)
             entry = func_0020C478(scan_index);
             predicate = func_0020C2C0(entry);
             scan_index++;
-            if (predicate == 0) *(s32 *)((u8 *)entry + 0x6C) = *(s32 *)((u8 *)entry + 0x70);
+            if (predicate == 0) entry->actions_used = entry->action_limit;
         } while (scan_index < 20);
-        scan_current = *(s32 *)((u8 *)record + 0x94);
+        scan_current = ((BattleRosterRecord *)record)->scheduled_time;
         scan_requested = *out_time;
         if (scan_current < scan_requested) scan_current = scan_requested;
         scan_loaded = (u32)D_801CE8C0;
-        *(s32 *)((u8 *)record + 0x94) = scan_current;
+        ((BattleRosterRecord *)record)->scheduled_time = scan_current;
         scan_loaded = *(u32 *)(scan_loaded + 0x828);
         if (scan_loaded < (u32)scan_current) scan_cap = scan_current;
         else scan_cap = scan_loaded;
         *(u32 *)((u8 *)record + 0x94) = scan_cap;
         func_0021D200(0x1C, scan_cap, record);
-        final_count = *(s32 *)((u8 *)record + 0x6C);
-        final_time = *(s32 *)((u8 *)record + 0x94);
+        final_count = ((BattleRosterRecord *)record)->actions_used;
+        final_time = ((BattleRosterRecord *)record)->scheduled_time;
         final_count++;
-        *(s32 *)((u8 *)record + 0x6C) = final_count;
+        ((BattleRosterRecord *)record)->actions_used = final_count;
         *out_time = final_time;
         return_global = D_801CE8BC;
         result = 1;
         return_global[0x6088] = 1;
         return result;
     }
-    if (*(s32 *)((u8 *)record + 0x4C) == 0xA4) D_801CE8F8++;
+    if (((BattleRosterRecord *)record)->secondary_class_id.word == 0xA4) D_801CE8F8++;
     func_0022EF50(record);
-    mode = *(u8 *)((u8 *)record + 0x78);
+    mode = ((BattleRosterRecord *)record)->action_kind;
     if (mode == 0) {
         if (func_0020C120(record) != 0) result = func_0022C78C(record, out_time);
         else result = func_0022B1F4(record, out_time);

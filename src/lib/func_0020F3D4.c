@@ -1,3 +1,5 @@
+#include "game/battle_roster_types.h"
+
 typedef struct {
     int words[20];
 } Func0020F3D4Block;
@@ -26,7 +28,7 @@ void func_0020F3D4(void)
         actor = 0;
         if (actor_index < 20U) {
             value = (unsigned int)D_801CE8BC;
-            if (*(int *)((unsigned char *)value + roster_byte_offset + 0x20C) != 0) {
+            if (((BattleRosterRecord *)((unsigned char *)value + roster_byte_offset + 0x1C4))->primary_class_id.word != 0) {
                 actor = (unsigned char *)value + (roster_byte_offset + 0x1C4);
             }
         }
