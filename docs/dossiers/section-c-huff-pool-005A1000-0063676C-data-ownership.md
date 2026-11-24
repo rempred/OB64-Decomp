@@ -7,7 +7,7 @@ readable inventory: `docs/data-index/rev0/section-c-huff-pool-005A1000-0063676C-
 **This run REACHES the configured stop `0x0063676C`** (the end of the configured code region). After it, the
 **entire code region `0x00001000..0x0063676C` is fully source-owned** (0 generated fallback chunks) — the
 data-ownership loop is complete. Final consolidated report:
-`docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.
+`docs/reviews/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.
 
 Classification: **DATA TERRITORY — Section C N64 JPEG/NJPG-style "HUFF" entropy-compressed resource pool**
 (length-linked OB64 wrapper; container header decoded; Huffman entropy stage decoded to macroblock
@@ -133,6 +133,6 @@ strengthens the data-territory classification.
 
 This is the **final data-ownership-loop run**. After it the configured code region `0x1000..0x63676C` is
 fully source-owned (100 composites / 6,181 files / **0 fallback**). **Final consolidated report:
-`docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.** Optional decode track: implement the NJPG render stage
+`docs/reviews/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.** Optional decode track: implement the NJPG render stage
 and resolve the remaining Section C directory entries. Out of scope without Joe: the structural gap
 `0x63676C..0x636784` and the LHA archive region `0x636784+`.

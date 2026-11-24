@@ -175,7 +175,7 @@ function buildRanges(profile, archives, parentCatalog) {
       start: extentEnd,
       end: codeEnd,
       source: 'config/roms/us_rev0.json executableExtent (reclassified 2026-07-09)',
-      note: 'Non-code data inside the assembly/tiling region: pre-audio asset territory, Section A audio (incl. the VADPCM bank), Section B index + cutscene music blocks, Section C NJPG pool. Byte-owned by the same tracked .word parts via the assembled blob; see docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md and docs/CODE_REGION_AUDIT.md.',
+      note: 'Non-code data inside the assembly/tiling region: pre-audio asset territory, Section A audio (incl. the VADPCM bank), Section B index + cutscene music blocks, Section C NJPG pool. Byte-owned by the same tracked .word parts via the assembled blob; see docs/reviews/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md and docs/CODE_REGION_AUDIT.md.',
     }] : []),
     {
       name: 'code_to_first_archive_gap',

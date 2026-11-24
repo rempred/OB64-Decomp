@@ -14,7 +14,7 @@ If the agent is using the local bridge, also replace `<bridge-url>`,
 ```text
 Create a review handoff document for this run under:
 
-docs/REVIEW_YYYY-MM-DD_<short-run-slug>.md
+docs/reviews/REVIEW_YYYY-MM-DD_<short-run-slug>.md
 
 The review doc must be self-contained enough that a fresh reviewer can understand
 exactly what changed, what was verified, what remains risky, and where to resume
@@ -242,7 +242,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' `
   -Uri '<bridge-url>/agent/review-complete' `
   -Body (@{
     agentName = '<gui-agent-name>'
-    reviewDoc = 'docs/REVIEW_YYYY-MM-DD_<short-run-slug>.md'
+    reviewDoc = 'docs/reviews/REVIEW_YYYY-MM-DD_<short-run-slug>.md'
     frontier = '<current-frontier>'
     message = 'Review handoff created and committed; ready for tailored next-run prompt.'
   } | ConvertTo-Json -Compress)

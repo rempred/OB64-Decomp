@@ -3,7 +3,7 @@
 Data-territory ownership (first ownership run after the survey). Machine-readable inventory:
 `docs/data-index/rev0/section-a-00301000-00341000-data-inventory.json`. Survey context:
 `docs/data-index/rev0/data-territory-survey-00301000.json` +
-`docs/REVIEW_2026-06-23_data-territory-survey.md`.
+`docs/reviews/REVIEW_2026-06-23_data-territory-survey.md`.
 
 Classification: **DATA TERRITORY — source-owned as data parts** (no code). The first slice of the
 survey's natural unit **Section A** (high-entropy asset pool `0x301000..0x4E3000`, 1,974,272 B). This

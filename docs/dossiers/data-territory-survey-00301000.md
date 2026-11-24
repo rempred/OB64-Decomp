@@ -3,7 +3,7 @@
 Survey-only (NOT an ownership claim). Canonical machine-readable inventory:
 `docs/data-index/rev0/data-territory-survey-00301000.json`. Past-data catalog:
 `docs/data-index/rev0/_data-index-catalog.json`. Review handoff:
-`docs/REVIEW_2026-06-23_data-territory-survey.md`.
+`docs/reviews/REVIEW_2026-06-23_data-territory-survey.md`.
 
 ## Scope
 

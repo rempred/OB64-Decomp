@@ -5,7 +5,7 @@
 //
 // The decomp manifest's named parts are the validated partition of the
 // executable extent (every boundary disasm-validated + gate-checked during
-// the chunk-split loop; see docs/dossiers/ and docs/REVIEW_*.md). The parent
+// the chunk-split loop; see docs/dossiers/ and docs/reviews/REVIEW_*.md). The parent
 // DB is the heuristic scan the loop repeatedly corrected (over-merges, missed
 // frameless leaves, orphaned load preambles, data mislabeled as functions —
 // see AGENTS.md "Parent Function DB Hazards").

@@ -24,7 +24,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' `
   -Body (@{
     agentName = 'Claude GUI'
     runSlug = 'chunk7-source-ownership'
-    reviewDoc = 'docs/REVIEW_2026-06-22_chunk7-source-ownership.md'
+    reviewDoc = 'docs/reviews/REVIEW_2026-06-22_chunk07-data-code-data-code.md'
     frontier = '0x00081000'
     message = 'Chunk 7 source-owned, review handoff committed; ready for coordinator review and next prompt.'
   } | ConvertTo-Json -Compress)
@@ -37,7 +37,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' `
   -Uri 'http://127.0.0.1:17776/agent/review-complete' `
   -Body (@{
     agentName = 'Claude GUI'
-    reviewDoc = 'docs/REVIEW_2026-06-22_chunk7-source-ownership.md'
+    reviewDoc = 'docs/reviews/REVIEW_2026-06-22_chunk07-data-code-data-code.md'
     frontier = '0x00081000'
     message = 'Review handoff is committed; ready for tailored next chunk prompt.'
   } | ConvertTo-Json -Compress)

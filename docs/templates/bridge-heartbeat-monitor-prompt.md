@@ -11,7 +11,7 @@ For each new event:
 
 1. If `type` is `run_complete`:
    - If `payload.reviewDoc` is present, read that review doc and inspect repo
-     status/log plus current docs: `AGENTS.md`, `docs/DECOMP_LOG.md`,
+     status/log plus current docs: `AGENTS.md`, `docs/archive/DECOMP_LOG.md`,
      `docs/NEXT_STEPS.md`, `docs/WORKFLOW.md`, and `docs/PLATFORM.md`.
    - Tailor `docs/templates/chunk-source-ownership-run-prompt.md` for the next
      two-chunk pass/frontier, including known issues from the review, current
@@ -34,7 +34,7 @@ For each new event:
      review-handoff step.
    - Read the review doc at `payload.reviewDoc`.
    - Inspect repo status/log and the relevant current docs:
-     `AGENTS.md`, `docs/DECOMP_LOG.md`, `docs/NEXT_STEPS.md`,
+     `AGENTS.md`, `docs/archive/DECOMP_LOG.md`, `docs/NEXT_STEPS.md`,
      `docs/WORKFLOW.md`, and `docs/PLATFORM.md`.
    - Tailor `docs/templates/chunk-source-ownership-run-prompt.md` for the next
      two-chunk pass/frontier, including known issues from the review, current

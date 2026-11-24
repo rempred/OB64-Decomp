@@ -19,6 +19,9 @@ Resolver work has an additional mandatory guide at
 Use `dossiers/` for stable function dossiers and `subsystems/` for notes that
 have graduated from parent-workspace experiments into decomp knowledge.
 
+File dated handoffs in [reviews](reviews/), verification reports in [audit](audit/),
+and plans in [Plans](Plans/). The [archive](archive/) holds retired procedures and logs.
+
 ## Files
 
 - `PLATFORM.md` - structural inventory and historical acceptance chronology;
@@ -36,7 +39,7 @@ have graduated from parent-workspace experiments into decomp knowledge.
   matching observations and diagnostic-loop cautions.
 - `dossiers/func-000135a0.md` - accepted exact-C example showing how source
   order, separate locals, integer widths, and expression shape affected output.
-- `DECOMP_LOG.md` - historical compact log through its stated cutoff, not a
+- [DECOMP_LOG.md](archive/DECOMP_LOG.md) - historical compact log through its stated cutoff, not a
   current-state authority.
 - `FULL_ROM_SOURCE_MANIFEST.md` - full-ROM source ownership policy and current
   generated-manifest summary.

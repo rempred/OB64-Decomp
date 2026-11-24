@@ -8,7 +8,7 @@ It keeps each type of evidence separate.
 The evidence types include static facts, runtime placement, exact execution, field hypotheses, and resource ancestry.
 
 Generated sessions, products, and bundles stay in ignored `build/total-resolver/` directories.
-The historical plan is `docs/PLAN_2026-08-17-total-resolver-r3.md`.
+The historical plan is `docs/Plans/PLAN_2026-08-17-total-resolver-r3.md`.
 The current status is `docs/total-resolver/implementation-status.md`.
 All agents must also obey `tools/total_resolver/AGENTS.md`.
 

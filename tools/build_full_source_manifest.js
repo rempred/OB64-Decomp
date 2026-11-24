@@ -108,7 +108,7 @@ function sourceFormForSpan(span) {
       kind: 'owned_data_parts',
       label: 'Data territory owned as tracked .word parts (assembled-blob-backed)',
       ambiguous: false,
-      note: 'Non-code bytes inside the assembly/tiling region, past the pinned executable extent (0x2B89B8). Byte-owned by the tracked asm/original/rev0 data parts and rebuilt from the assembled blob; classified as DATA, not MIPS. See docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md.',
+      note: 'Non-code bytes inside the assembly/tiling region, past the pinned executable extent (0x2B89B8). Byte-owned by the tracked asm/original/rev0 data parts and rebuilt from the assembled blob; classified as DATA, not MIPS. See docs/reviews/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md.',
     };
   }
   if (category === 'header') return { kind: 'raw_header', label: 'Raw N64 header/source bytes', ambiguous: false };

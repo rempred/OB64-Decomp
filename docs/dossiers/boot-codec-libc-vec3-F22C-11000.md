@@ -132,4 +132,4 @@ for the data-vs-code reclassification work when those chunks are reached.
 Chunk 1 is done: the straddler tail `[0x11000,0x11168)` became the first file of
 the chunk-1 split (`docs/dossiers/lib-chunk1-11000-21000.md`, 350 files), and the
 `tools/promote_original_mips.js` merge fix is complete. The current frontier is
-**`0x00021000` (chunk 2)**. See `docs/NEXT_STEPS.md` / `docs/DECOMP_LOG.md`.
+**`0x00021000` (chunk 2)**. See `docs/NEXT_STEPS.md` / `docs/archive/DECOMP_LOG.md`.

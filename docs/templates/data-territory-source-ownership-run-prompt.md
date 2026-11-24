@@ -94,7 +94,7 @@ unresolved gaps, unresolved schema conflicts, or credible hidden-code risk.
 3. `docs\PLATFORM.md`
 4. `docs\REV0_SCOPE.md`
 5. `docs\WORKFLOW.md`
-6. `docs\DECOMP_LOG.md`
+6. `docs\archive\DECOMP_LOG.md`
 7. `docs\NEXT_STEPS.md`
 8. `docs\CODE_REGION_AUDIT.md`
 9. `docs\FULL_ROM_SOURCE_MANIFEST.md`
@@ -303,7 +303,7 @@ Create or update a concise dossier/review summary when useful:
 
 Markdown should summarize the machine-readable data, not replace it.
 
-Update `docs\DECOMP_LOG.md`, `docs\NEXT_STEPS.md`, `docs\PLATFORM.md`,
+Update `docs\Plans\task-logs\{RUN_SLUG}.md`, `docs\NEXT_STEPS.md`, `docs\PLATFORM.md`,
 `docs\WORKFLOW.md`, and `AGENTS.md` only when durable frontier/count/workflow
 facts change.
 

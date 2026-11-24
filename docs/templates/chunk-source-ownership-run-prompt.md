@@ -74,8 +74,8 @@ drop back to a smaller unit and the full code gates for the rest of that run.
 - `{REQUIRED_REVIEW_DOCS}`: latest review handoff docs for the prior run.
 - `{KNOWN_ISSUES}`: cleanup/review issues to fix first.
 - `{REVIEW_DOC_PATH}`: review handoff doc to create for this run, e.g.
-  `docs/REVIEW_2026-06-23_chunks09-10-source-ownership.md` or
-  `docs/REVIEW_2026-06-23_chunks09-11-source-ownership.md`.
+  `docs/reviews/REVIEW_2026-06-23_chunks09-10-source-ownership.md` or
+  `docs/reviews/REVIEW_2026-06-23_chunks09-11-source-ownership.md`.
 - `{RUN_SLUG}`: bridge-safe slug such as `chunks09-10-091000-0b1000` or
   `chunks09-11-091000-0c1000`.
 - `{OPTIONAL_CHUNK_C_*}` placeholders: replace with real chunk C text in
@@ -242,7 +242,7 @@ Use full swarm capabilities. Assign agents/passes for:
 - chunk {CHUNK_A_N} code split review
 - chunk {CHUNK_A_N} data classification/indexing
 - inter-chunk boundary/straddler review
-- DECOMP_LOG prune/archive between chunks
+- Task log prune/archive between chunks
 - chunk {CHUNK_B_N} code/data classification
 - chunk {CHUNK_B_N} code split review
 - chunk {CHUNK_B_N} data classification/indexing
@@ -257,7 +257,7 @@ Use full swarm capabilities. Assign agents/passes for:
 Required reading before edits:
 1. `C:\Users\Joe\Projects\OgreBattlel64\AGENTS.md`
 2. `C:\Users\Joe\Projects\OgreBattlel64\OB64 Decomp\AGENTS.md`
-3. `docs\DECOMP_LOG.md`
+3. `docs\archive\DECOMP_LOG.md`
 4. `docs\NEXT_STEPS.md`
 5. `docs\WORKFLOW.md`
 6. `docs\PLATFORM.md`
@@ -399,7 +399,7 @@ Also check for recurring known issues:
 1. Remove or relocate root scratch artifacts. Root analysis dumps should not
    remain tracked. If still useful, move them under ignored `build/`; otherwise
    remove them from git.
-2. Update `docs\WORKFLOW.md`, `AGENTS.md`, `docs\DECOMP_LOG.md`,
+2. Update `docs\WORKFLOW.md`, `AGENTS.md`, `docs\Plans\task-logs\{RUN_SLUG}.md`,
    `docs\NEXT_STEPS.md`, and `docs\PLATFORM.md` if counts/frontiers are stale.
 3. Search for stale counts/frontiers from the previous run and fix current-state
    sections. Preserve historical sections only when clearly historical.
@@ -463,10 +463,10 @@ Mid-run gate before starting chunk {CHUNK_B_N}:
   - `node tools/assemble_original_mips.js`
   - `git diff --check`
 - Commit chunk {CHUNK_A_N} source ownership if and only if those gates pass.
-- Update `docs\DECOMP_LOG.md`, `docs\NEXT_STEPS.md`, `docs\PLATFORM.md`,
+- Update `docs\Plans\task-logs\{RUN_SLUG}.md`, `docs\NEXT_STEPS.md`, `docs\PLATFORM.md`,
   `docs\WORKFLOW.md`, `AGENTS.md`, and the chunk {CHUNK_A_N} dossier with exact
   counts/frontier.
-- Prune/archive `docs\DECOMP_LOG.md` between chunks if it has grown bulky:
+- Prune/archive `docs\Plans\task-logs\{RUN_SLUG}.md` between chunks if it has grown bulky:
   keep current summary/frontier/verification/next action concise, move bulky
   details to `docs\archive\` or the chunk dossier, and search for stale counts
   before proceeding.
@@ -554,7 +554,7 @@ Data-region handling requirements:
   implicitly covered by fallback.
 
 Running log / compaction safety:
-- Keep `docs\DECOMP_LOG.md` updated as work progresses, not only at the end.
+- Keep `docs\Plans\task-logs\{RUN_SLUG}.md` updated as work progresses, not only at the end.
 - After cleanup, record the cleanup fixes.
 - After each chunk classification, record exact region boundaries and evidence.
 - After each chunk split, record exact part counts, data/code counts, current
@@ -563,13 +563,13 @@ Running log / compaction safety:
 - Prune/archive between chunks before starting the next target chunk if the log is
   bulky. Do not delete durable facts; relocate them with clear references.
 - If interrupted or compacted, the next agent must be able to resume from
-  `AGENTS.md`, `docs\DECOMP_LOG.md`, `docs\NEXT_STEPS.md`, and the latest chunk
+  `AGENTS.md`, `docs\Plans\task-logs\{RUN_SLUG}.md`, `docs\NEXT_STEPS.md`, and the latest chunk
   dossier without guessing.
 - Never leave "continue later" without an exact address and next action.
 
 Docs required:
 - `AGENTS.md`
-- `docs\DECOMP_LOG.md`
+- `docs\Plans\task-logs\{RUN_SLUG}.md`
 - `docs\NEXT_STEPS.md`
 - `docs\PLATFORM.md`
 - `docs\WORKFLOW.md`
