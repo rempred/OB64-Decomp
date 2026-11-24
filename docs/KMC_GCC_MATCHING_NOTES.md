@@ -55,9 +55,13 @@ source-shape techniques and do not receive one of these lesson labels.
 | `EXACT_SINGLE_FUNCTION` | An otherwise exact straight-line tail has the wrong schedule | Reorder only the independent source stores | `func_000490ec` |
 | `REPRODUCED` | Retail has bottom-tested nested loop backedges | Use nested `do`/`while` only when the exact branch targets prove that structure | `func_000ba8a8`, `func_000ba918`; compatible exact shapes do not prove unique original syntax |
 | `EXACT_SINGLE_FUNCTION` | Parameter masks or switch lowering differ | Preserve narrow parameter widths when entry instructions support them | `func_000bb3d8` |
-| `EXACT_SINGLE_FUNCTION` | Address arithmetic folds into the wrong load tree | Materialize the supported lookup base before indexed access | `func_000bd26c` |
+| `REPRODUCED` | Address arithmetic folds into the wrong load tree | Materialize the supported lookup base before indexed access | `func_000bd26c`, `func_001BD430` |
 | `EXACT_SINGLE_FUNCTION` | Only loop-body register fields differ | Express the proven nested scans as genuine loops | `func_002861C8`; ten loop variants matched, but this remains one owner |
 | `EXACT_SINGLE_FUNCTION` | Signed division uses the wrong correction branch | Spell the nonnegative/negative correction explicitly | `func_00283E14` for round-toward-zero division by four |
+| `REPRODUCED` | A draft tests a sign bit or divides by a power of two with shifts, such as `~f() >> 31` or `(v >> 2) * 4` after a sign fixup | Write the comparison, `/`, or `%` and let the compiler emit the shifts | `func_0024C428`, `func_0024E8DC`, `func_0024E9BC` (`>= 0`); `func_0024BEA0`, `func_0024BECC`, `func_0005c110`, `func_00048abc` (`/` by 4 and 8, `%` by 4 and 8); `func_00283E14` is the counterexample that needs its spelled-out correction |
+| `REPRODUCED` | A draft combines comparisons with `\|` and joins them with `goto` | Write `\|\|` and `if`/`else if` when the right operand has no side effects | `func_00130794`, `func_0020C180`, `func_0020C364`; `\|\|` can skip a call or volatile read on the right that `\|` always evaluates |
+| `REPRODUCED` | Retail branches on each of several tests (`bnez`/`bne`), but `\|\|` makes KMC combine them with set-compares | Write separate `if`/`else if` arms that assign the same result | `func_0020C214`, `func_0020C24C`; `func_0020C180` is the opposite case, exact with `\|\|` because retail combines them |
+| `EXACT_SINGLE_FUNCTION` | A float initialized from an integer expression does not line up with retail | Compute the integer in its own `s32` local, then convert it in a separate statement | `func_000b42a0` |
 | `EXACT_SINGLE_FUNCTION` | Only commutative pointer/integer operand order differs | Use an explicit 32-bit integer cast that preserves the expression tree | `func_002A05EC`; depends on the accepted 32-bit target model |
 | `REPRODUCED` | A numeric pointer produces the wrong address materialization | Use an independently supported symbol and its relocation | `func_001FFA8C` and the symbol-relative expression in `func_000490ec`; never invent a symbol for code generation |
 | `EXACT_SINGLE_FUNCTION` | A large function has the right behavior but wrong CFG/lifetime topology | Correct prototypes and joins, inspect pass dumps, then make a localized lifetime change | `func_00047a94`; its individual zero-cost source constructs are not automatic recipes |
@@ -173,6 +177,12 @@ disassembles both sides through the same objdump.
 - Inverting the two tested byte conditions changed the output to the retail
   branch-likely layout, including a store in the delay slot. Why the compiler
   chose that form is a useful working explanation, not a proven general rule.
+- A `nop` between two floating-point multiplies comes from the assembler, not
+  the C. The pinned assembler's VR4300 workaround separates back-to-back
+  `mul.s`/`mul.d` instructions; retail has 192 such pairs, the first in
+  `vec3_cross_product` at ROM `0x00010304`. This is why the workbench rejects
+  `VR4300MUL=OFF`. With the workaround off, the missing `nop` looks like a
+  source difference; do not try to reproduce it from C.
 
 ## Before register-allocation experiments
 
@@ -398,12 +408,29 @@ loop repeats a fixed-address scan or why the empty loop exists.
   parameters. The narrow entry values are compatible with its observed masks
   and switch lowering. Do not narrow a parameter without caller and entry
   evidence.
-- Evidence label: `EXACT_SINGLE_FUNCTION`. `func_000bd26c` materializes its
-  supported lookup base before indexed access. This prevented KMC from folding
-  the address into a different load expression. Test this only when the base,
-  stride, and remaining CFG are already correct.
+- Evidence label: `REPRODUCED`. `func_000bd26c` materializes its supported
+  lookup base before indexed access. This prevented KMC from folding the address
+  into a different load expression. `func_001BD430` repeats it: its four stores
+  through `p + i * 6` matched once that address was kept in a local `q` (the same
+  change also respelled the flag test). Test this only when the base, stride,
+  and remaining CFG are already correct.
+- Evidence label: `REPRODUCED`. When retail tests each condition with its own
+  branch (`bnez`/`bne`) and both paths set the same result, `a || b` can be
+  combined by KMC into set-compares and an `or`. `func_0020C214` and
+  `func_0020C24C` became exact only with separate arms:
+  `r = 0; if ((u32)(c - 56) < 13) { r = 1; } else if (c == 164) { r = 1; }`.
+  `func_0020C180` shows the opposite: retail combines its tests, and `||` is
+  exact there. Decide from the branches in the retail code, not by preference.
+- Evidence label: `EXACT_SINGLE_FUNCTION`. In `func_000b42a0`, initializing a
+  float directly from an integer expression did not match. Computing the
+  integer in an `s32` local and converting it in its own statement
+  (`s32 column = ...; f32 x = column;`) did. Compare the conversion's position
+  in the diff before trying it elsewhere.
 
-Commit `574512f` contains these accepted source examples.
+Commit `574512f` contains the `func_000ba8a8`, `func_000ba918`, `func_000bb3d8`,
+and `func_000bd26c` source examples. The other cited functions are accepted
+targets contributed from vibe_ogre_decomp; the shapes were the changes that made
+each one exact there, with the same compiler.
 
 ## Genuine loop structure can change allocator weighting
 
@@ -489,6 +516,33 @@ tag = ((s32 *)decoded)[(adjusted_size >> 2) - 1];
 Use this only when the instructions prove signed round-toward-zero division by
 four or an equivalent power-of-two case. It is not a general replacement for
 the division operator.
+
+### Plain arithmetic before spelled-out sequences
+
+Evidence label: `REPRODUCED`.
+
+m2c drafts often keep the compiler's lowering of ordinary operators: a sign
+test as `~f() >> 31`, a signed division or remainder by a power of two as a
+sign fixup followed by shifts, or two comparisons combined with `|`. In these
+targets KMC GCC emitted the same instructions from the ordinary operator, and
+each is exact with the plain form:
+
+- `func_0024C428`, `func_0024E8DC`, `func_0024E9BC`: `f(index) >= 0` instead
+  of `(u32)~f(index) >> 31`.
+- `func_0024BEA0`, `func_0024BECC`: `/ 4` and `% 4` instead of the expanded
+  correction and `>> 2`.
+- `func_0005c110`: `/ 8` and `% 8` instead of the `+ 7` correction, `>> 3`,
+  and `- quotient * 8`. `func_00048abc`: `/ 8` instead of the same correction
+  and `>> 3`.
+- `func_00130794`, `func_0020C180`, `func_0020C364`: `||` and `if`/`else if`
+  instead of `|` between comparisons and `goto` joins. Here every operand is
+  a comparison on locals, so skipping the right one changes nothing. When the
+  right operand calls a function or reads a `volatile`, `|` always evaluates
+  it and `||` may not; keep `|` there unless the instructions show the skip.
+
+Try the plain operator first. Keep a spelled-out sequence only when the plain
+form does not reproduce the instructions, as in `func_00283E14` above, and say
+in a comment which instructions require it.
 
 ### Explicit pointer/integer grouping
 
