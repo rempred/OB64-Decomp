@@ -1,3 +1,4 @@
+#include "game/icon_coordinate.h"
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
@@ -9,12 +10,10 @@ typedef struct {
 extern Gfx *gTitleCardDisplayListCursor;
 extern u8 D_80213648[];
 void func_001520E0(void *pal, void *img, u16 w, u16 h, u16 mode);
-void func_00151F40(void *a, s32 b, s32 c);
-void func_00151F40(void *a, s32 y, s32 k);
 void func_001520E0(void *pal, void *img, u16 w, u16 h, u16 mode);
 extern u8 D_80210AD0[];
 extern u8 *D_80214E80;
-void func_00153F80(void *x, s32 y, u8 v) {
+void func_00153F80(s32 x, s32 y, u8 v) {
     u16 k = v / 14.285714f;
     if (k > 6) {
         k = 6;

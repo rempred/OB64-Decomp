@@ -27,7 +27,7 @@ extern void func_0029779C(Panel *, s32);
 extern void func_00052484(Panel *, s32);
 
 extern void *func_00294940(s32, u16 *, PanelSlot *);
-extern void func_00294B8C(PanelContent *, u8, PanelSlot *);
+extern void func_00294B8C(struct PanelContent *, u16, struct PanelSlot *);
 extern void *func_00294C54(s32, u8, u16 *, PanelSlot *);
 extern void *func_00294FAC(void);
 extern s16 func_00294FEC(s32);
@@ -42,7 +42,7 @@ extern PanelContent *func_0029636C(Panel *, s32);
 extern PanelContent *func_00296518(Panel *, s32);
 extern PanelContent *func_002969B0(Panel *, s32, void *, u16);
 extern PanelContent *func_00296AB4(Panel *, s32, PanelSlot *);
-extern PanelContent *func_00296C50(Panel *, s32, s32);
+extern struct PanelContent * func_00296C50(struct Panel *, s32, u8);
 extern void func_00296DB0(Panel *, s32);
 
 /* Keep separate flag-clear tails so KMC can merge them after scheduling. */

@@ -34,4 +34,7 @@ int func_002223E0(BattleRosterRecord *actor, BattleRosterRecord *target, int for
 int func_002AB810(int *slots, BattleRosterRecord *actor, int actor_index, int flip,
                   int primary_class_id, int secondary_class_id, unsigned char seen_leader);
 
+/* Read equipment-derived element, falling back to the roster element byte. */
+int func_00233568(void *record);
+
 #endif

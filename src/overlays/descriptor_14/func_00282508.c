@@ -1,9 +1,11 @@
+#include "game/boot_state_slot_callbacks.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 extern u8 D_800E7A32;
 extern u8 *D_8018FC10;
-void func_00282508(void);
-void func_00282508(void) {
+void func_00282508(int slot);
+void func_00282508(int slot) {
     u8 *f = D_8018FC10;
     if (f == ((void *)0)) {
         return;

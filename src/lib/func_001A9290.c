@@ -1,3 +1,4 @@
+struct Panel;
 #include "game/panel_constructor.h"
 #include "game/indexed_record_lookup.h"
 #include "game/scenario_item_views.h"
@@ -50,7 +51,7 @@ extern void func_8021741C(void), func_80217458(void), func_8021D97C(void);
 extern void func_80217488(Panel *, s32), func_802174CC(Panel *, s32);
 extern void func_8020CDA0(s32), func_8020DDD0(ScenarioCursor *);
 extern void *func_800712C4(void *);
-extern void func_8017C384(Panel *);
+extern void func_8017C384(struct Panel *);
 extern void func_8021997C(Panel *, s16, s16, s16, s32);
 extern s32 func_8016B738(s32);
 extern u8 func_00045440(s32);

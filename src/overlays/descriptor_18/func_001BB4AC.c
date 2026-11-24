@@ -1,3 +1,4 @@
+struct Panel;
 #include "game/panel_list_aliases.h"
 
 typedef struct {
@@ -14,7 +15,7 @@ typedef struct {
     u8 unk2A[2];
     u16 cond;
 } ScriptCtx;
-void D_8017C384(void *o);
+void D_8017C384(struct Panel *);
 s32 func_001BB4AC(ScriptCtx *c) {
     void *o = D_8017F334(c->pc[3] | 0x5200);
     if (o == ((void *)0)) {

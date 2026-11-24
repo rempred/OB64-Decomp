@@ -35,7 +35,7 @@ extern s32 D_8021B5AC;
 extern s32 D_8021B5B4;
 extern s16 D_8021B5E6;
 extern s16 D_8021B5EC;
-void D_8017C4B4(s16 a);
+void D_8017C4B4(int);
 void D_802027DC(void);
 void D_80200DD0(s32 x, s32 y, s32 icon);
 void D_802001A8(s32 x, s32 y, u16 n, s32 digits);

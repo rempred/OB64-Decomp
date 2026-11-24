@@ -6,7 +6,7 @@ extern u32 *D_800E9BA0;
 extern u8 D_80211558[], D_80213648[], D_80219C14[];
 extern void *D_8021A128;
 extern u8 D_8021A124;
-extern void func_8017C4B4(s32 value);
+extern void func_8017C4B4(int);
 extern void func_80200F70(void *a, void *b, s32 width, s32 height, s32 mode);
 extern void func_80200DD0(s32 x, s32 y, s32 size);
 extern void func_8020E0F0(s32 x, s32 y, u32 value, s32 digits);

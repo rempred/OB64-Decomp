@@ -26,7 +26,7 @@ extern s32 D_8023DE44;
 void func_0028CA1C(u8 a);
 void func_0028BCB8(u8 a, u8 b);
 void func_0028CFD8(u8 a, u8 b);
-void func_0028DC98(u8 a, u8 b);
+extern void func_0028DC98(signed short, signed short);
 void bzero(void *p, s32 n);
 void bzero(void *p, s32 n);
 void func_0028B264(void) {

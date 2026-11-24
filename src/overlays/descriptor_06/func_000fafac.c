@@ -1,3 +1,5 @@
+#include "game/boot_state_slot_callbacks.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
@@ -28,24 +30,24 @@ typedef struct {
     s16 y2;
     u16 hE;
     u8 unk10[4];
-    void (*update)(void);
-    void (*draw)(void);
-    void (*exit)(void);
+    BootStateSlotCallback update;
+    BootStateSlotCallback draw;
+    BootStateSlotCallback exit;
     u16 size;
     u8 unk22[2];
     s32 w24;
 } CurSceneFA;
 extern CurSceneFA D_800E7A30;
-void func_000fafac(void);
+void func_000fafac(int slot);
 void func_00008A74(s32 x, s32 y, s32 x2, s32 y2);
-void boot_display_list_color_rect_packet_emit(s32 mode, s32 x, s32 y, s32 x2, s32 y2);
+extern void boot_display_list_color_rect_packet_emit(u16, s16, s16, s16, s16);
 void D_801768D4(s32 w, s32 h, s32 x, s32 y, s32 x2, s32 y2);
 void D_80197B70(void);
 void func_000fb104(f32 a, f32 b, s32 c, s32 d, s32 e);
 void func_000FE5FC(Widget3390 *w);
 void func_000fb5fc(void);
 void func_000fbb6c(void);
-void func_000fafac(void) {
+void func_000fafac(int slot) {
     s32 i;
     u8 *e;
     func_00008A74(D_800E7A30.x, D_800E7A30.y, D_800E7A30.x2, D_800E7A30.y2);

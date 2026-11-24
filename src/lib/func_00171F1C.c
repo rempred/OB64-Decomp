@@ -1,3 +1,5 @@
+#include "game/boot_state_slot_callbacks.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
@@ -20,25 +22,25 @@ typedef struct {
 } Ctx17;
 extern s16 D_8021AFB0;
 extern Ctx17 *D_8021AA70;
-void func_00171F1C(void);
+void func_00171F1C(int slot);
 typedef struct {
     u16 flags;
     u8 flags2;
     u8 flags3;
     u8 unk04[0x10];
-    void (*update)(void);
-    void (*draw)(void);
-    void (*exit)(void);
+    BootStateSlotCallback update;
+    BootStateSlotCallback draw;
+    BootStateSlotCallback exit;
     u16 size;
     u8 unk22[2];
     s32 w24;
 } CurScene17;
 extern CurScene17 D_800E7A30;
 extern u8 D_800E7A33;
-void func_00171FE8(void);
-void func_00173BF8(void);
+void func_00171FE8(int slot);
+void func_00173BF8(int slot);
 void func_00172298(void);
-void func_00171F1C(void) {
+void func_00171F1C(int slot) {
     D_800E7A30.flags2 |= 8;
     D_800E7A33 |= 1;
     D_800E7A30.flags2 |= 1;
@@ -61,4 +63,4 @@ void func_00171F1C(void) {
     func_00172298();
 }
 void func_00172298(void);
-void func_00173BF8(void);
+void func_00173BF8(int slot);

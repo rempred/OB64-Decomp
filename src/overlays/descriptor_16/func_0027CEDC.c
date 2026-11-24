@@ -6,7 +6,7 @@ typedef struct Task27 {
     u8 unk00[4];
     u16 state;
     u16 next;
-    void (*fn)(s32, struct Task27 *);
+    s32 (*fn)(u16, struct Task27 *);
     s16 hC;
     s16 hE;
     s16 h10;
@@ -14,7 +14,7 @@ typedef struct Task27 {
 } Task27;
 extern u16 D_8022D0F0;
 extern Task27 *D_8022D148;
-Task27 *func_0027CEDC(void (*fn)(s32, Task27 *)) {
+Task27 *func_0027CEDC(s32 (*fn)(u16, Task27 *)) {
     Task27 *t = ((void *)0);
     if (D_8022D0F0 != 0xFFFF) {
         t = &D_8022D148[D_8022D0F0];

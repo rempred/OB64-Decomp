@@ -24,7 +24,7 @@ void *func_000016C4(void *p);
 void *func_000016C4(void *ptr);
 extern u8 g_resource_state_byte_3;
 static void func_0000377C(void);
-static u8 func_0000378C(void);
+static s32 func_0000378C(void);
 void boot_resource_buffer_reset_flags(void) {
     s32 i;
     for (i = 0; i < 2; i++) {
@@ -48,6 +48,6 @@ void boot_resource_buffer_reset_flags(void) {
 static void func_0000377C(void) {
     g_resource_state_byte_3 = 1;
 }
-static u8 func_0000378C(void) {
+static s32 func_0000378C(void) {
     return g_resource_state_byte_3;
 }

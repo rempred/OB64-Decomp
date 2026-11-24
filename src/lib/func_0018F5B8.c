@@ -1,3 +1,4 @@
+struct Panel;
 typedef unsigned char u8;
 typedef signed int s32;
 extern u8 D_8021B299[];
@@ -5,11 +6,11 @@ extern s32 D_801F0B9C;
 extern void *D_8021B174;
 extern s32 D_8021B2AC;
 extern s32 D_8021B2A4;
-void D_8017C384(void *w);
+void D_8017C384(struct Panel *);
 extern void *D_8021B174;
 extern s32 D_8021B2AC;
 extern s32 D_8021B2A4;
-void D_8017C384(void *w);
+void D_8017C384(struct Panel *);
 extern s32 D_8021B2B4;
 typedef struct {
     u8 unk0;

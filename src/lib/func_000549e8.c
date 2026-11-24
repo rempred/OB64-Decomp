@@ -1,14 +1,5 @@
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
-typedef struct Node {
-    struct Node *prev;
-    struct Node *next;
-    u8 unk08[0xE];
-    u16 id;
-} Node;
+#include "game/cutscene_panels.h"
+typedef Panel Node;
 typedef struct {
     u32 w0;
     u32 w1;

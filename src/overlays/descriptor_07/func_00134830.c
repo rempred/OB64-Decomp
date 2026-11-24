@@ -1,38 +1,20 @@
+#include "game/dialog134.h"
 #include "game/panel_constructor.h"
 
 
 
 
 
-typedef struct {
-    s32 id;
-    u8 unk04[8];
-    s32 x2;
-    s32 y2;
-    s32 w2;
-    s32 h2;
-    s32 x;
-    s32 y;
-    s32 w;
-    s32 h;
-    Panel *win;
-    u8 unk30[8];
-    void *a;
-    s32 b;
-    s32 c;
-    u8 unk44[0x1D];
-    s8 d;
-} Dialog134;
 extern Dialog134 D_801ED540;
 extern s32 D_801F0B40;
 extern u16 *D_801F0CA0;
 extern u16 *D_800C4BDC;
 void func_0013511C(Dialog134 *d);
-void func_00134CD4();
+void func_00134CD4(Panel *panel, s32 index);
 
 void D_8017C384(Panel *w);
 void D_8020CDA0(s32 se);
-s32 func_00134830(s32 id, void *a, s32 b, s32 c, s32 d, s32 x2) {
+s32 func_00134830(s32 id, void *a, void *b, void *c, s32 d, s32 x2) {
     if (D_801ED540.id == -1) {
         D_801ED540.d = d;
         D_801ED540.id = id;

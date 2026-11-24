@@ -42,7 +42,7 @@ void boot_table_mask_reconcile(void);
 void D_8007FD10(void);
 void func_000071C8(void);
 void boot_state_slot_callback_dispatch(void);
-void D_8017F490(void);
+int D_8017F490(void);
 void D_801841F4(void);
 extern FbSet *D_800E9BE0;
 extern Gfx *gTitleCardDisplayListCursor;

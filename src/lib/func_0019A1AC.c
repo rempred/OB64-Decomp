@@ -3,7 +3,7 @@
 typedef struct { u32 w0; u32 w1; } ShopGfx;
 
 extern u32 *volatile D_800E9BA0;
-extern void func_8017C4B4(s32 value);
+extern void func_8017C4B4(int);
 extern void func_80179034(void *text, s32 x, s32 y);
 
 void func_0019A1AC(Panel *window, s32 slot)

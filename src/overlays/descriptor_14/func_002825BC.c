@@ -1,3 +1,5 @@
+#include "game/boot_state_slot_callbacks.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef signed int s32;
@@ -8,13 +10,13 @@ typedef struct {
 } Gfx;
 extern Gfx *gTitleCardDisplayListCursor;
 extern u8 *D_8018FC10;
-void func_002825BC(void);
+void func_002825BC(int slot);
 extern s16 D_800E7A36;
 extern s16 D_800E7A38;
 extern s16 D_800E7A3A;
 extern s16 D_800E7A3C;
 void func_00008A74(s32 a, s32 b, s32 c, s32 d);
-void func_002825BC(void) {
+void func_002825BC(int slot) {
     u8 *f = D_8018FC10;
     if (f != ((void *)0)) {
         func_00008A74(D_800E7A36, D_800E7A38, D_800E7A3A, D_800E7A3C);

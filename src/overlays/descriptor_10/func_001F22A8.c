@@ -12,7 +12,7 @@ extern Opt1F D_801CE900[];
 extern u8 D_801939CC;
 void bzero(void *p, s32 n);
 int D_8016FEF4(signed short);
-void D_8017C4B4(s16 a);
+void D_8017C4B4(int);
 void D_80179034(void *, int, int);
 extern inline Opt1F *func_001F21A4(s32 i) {
     if (D_8016FEF4(D_801CE900[i].flag) && ((D_801939CC >> i) & 1)) {

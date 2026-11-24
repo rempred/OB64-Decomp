@@ -1,7 +1,8 @@
+struct Panel;
 #include "common/types.h"
 
 extern void *D_80219F38;
-extern void func_8017C384(void *value);
+extern void func_8017C384(struct Panel *);
 
 void func_0019BAB4(void)
 {

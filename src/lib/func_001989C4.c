@@ -24,7 +24,7 @@ extern u8 D_802115A0[], D_80212318[], D_80211DD0[];
 
 extern u8 func_0019B21C(u8 category);
 extern void func_0019AF78(s32 x, s32 y, s32 item, u32 slot);
-extern void func_8017C4B4(s32 value);
+extern void func_8017C4B4(int);
 extern void func_80201384(s32 a, s32 b, s32 c, s32 d);
 extern void func_80200F70(void *a, void *b, s32 width, s32 height, s32 mode);
 extern void func_80200DD0(s32 x, s32 y, s32 size);

@@ -37,7 +37,8 @@ extern inline s16 List27_EntryMark(List27 *l, u8 *e) {
 }
 extern u16 D_800E8100;
 extern s32 D_80196A6C;
-s32 func_0027E8B0(Obj27 *o) {
+s32 func_0027E8B0(void *record) {
+    Obj27 *o = record;
     List27 *l = (List27 *)&o->w18;
     s16 d = 0;
     if (--(*(s16 *)((u8 *)(o) + (0x1C))) > 0) {

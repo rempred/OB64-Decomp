@@ -44,7 +44,7 @@ s32 func_0022257C(void *, s32, s32 *);
 void func_0022A7B8(void *, s32, s32, s32, s32, s32);
 void func_0022B06C(void *, u8 *);
 int func_00233210(BattleRosterRecord *, BattleRosterRecord *);
-u8 func_00233568(void *);
+
 int func_002363FC(BattleRosterRecord *);
 int func_002365BC(BattleRosterRecord *, BattleRosterRecord *, int, int);
 int func_00237AF8(BattleRosterRecord *, int);
@@ -227,7 +227,7 @@ s32 func_0022D14C(void *arg0, s32 *arg1) {
             break;
         }
     } else if (sp1C7 == 8) {
-        sp1C7 = func_00233568(arg0);
+        sp1C7 = (u8)func_00233568(arg0);
     }
     if ((*(s32 *)((s8 *)(arg0) + (0x7C))) == 0x29) {
         sp1DC = 0;

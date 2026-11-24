@@ -1,3 +1,6 @@
+#include "game/boot_state_slot_callbacks.h"
+
+struct Panel;
 #include "game/panel_constructor.h"
 
 
@@ -26,17 +29,17 @@ typedef struct {
     u8 flags2;
     u8 flags3;
     u8 unk04[0x10];
-    void (*update)(void);
-    void (*draw)(void);
-    void (*exit)(void);
+    BootStateSlotCallback update;
+    BootStateSlotCallback draw;
+    BootStateSlotCallback exit;
     u16 size;
     u8 unk22[2];
     s32 w24;
 } CurScene17;
 extern CurScene17 D_800E7A30;
-void func_00171FE8(void);
+void func_00171FE8(int slot);
 
-void D_8017C384(void *w);
+void D_8017C384(struct Panel *);
 void D_8020CDA0(s32 se);
 extern u16 *D_800C4BDC;
 extern s32 D_801F1070;
@@ -44,7 +47,7 @@ extern u8 D_801951B0[][0x24];
 void func_001723B4();
 void func_001726A0();
 void func_00172364(void);
-void func_00171FE8(void) {
+void func_00171FE8(int slot) {
     u8 *loc = D_801951B0[0];
     if ((u16)D_8021AA70->h5C < D_801F1070) {
         loc = D_801951B0[(u16)D_8021AA70->h5C];

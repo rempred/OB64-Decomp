@@ -3,7 +3,7 @@ typedef signed short s16;
 typedef unsigned short u16;
 typedef signed int s32;
 void func_001C1D00(s32 id);
-void D_8017C4B4(s16 id);
+void D_8017C4B4(int);
 void func_001BDF84(s16 x0, s16 y0, s16 x1, s16 y1);
 void D_80179034(void *s, s32 x, s32 y);
 extern u8 D_8022A1D8[];

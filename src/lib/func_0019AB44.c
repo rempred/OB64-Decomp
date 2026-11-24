@@ -8,7 +8,7 @@ extern s32 D_801F3658;
 extern u8 D_801971F2[][25], D_80193BC0[][56];
 extern u8 D_80219DB8[], D_80219C28[][2];
 extern void *D_80219C5C[];
-extern void func_8017C4B4(s32 value);
+extern void func_8017C4B4(int);
 extern void func_8020122C(void *data);
 extern void func_80200DD0(s32 x, s32 y, s32 size);
 extern void func_80203558(s32 x0, s32 y0, s32 x1, s32 y1);

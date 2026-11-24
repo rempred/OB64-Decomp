@@ -1,3 +1,5 @@
+#include "game/boot_state_slot_callbacks.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
@@ -19,8 +21,8 @@ extern Widget3390 *D_801B3390;
 extern u16 g_state_slot_status;
 void func_00019e10(void);
 void func_000fbe2c(Widget3390 *p);
-void func_000fb0d0(void);
-void func_000fb0d0(void) {
+void func_000fb0d0(int slot);
+void func_000fb0d0(int slot) {
     func_00019e10();
     g_state_slot_status = 0xFFFE;
     func_000fbe2c(D_801B3390);

@@ -1,3 +1,5 @@
+#include "game/boot_state_slot_callbacks.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
@@ -28,9 +30,9 @@ typedef struct {
     s16 y2;
     u16 hE;
     u8 unk10[4];
-    void (*update)(void);
-    void (*draw)(void);
-    void (*exit)(void);
+    BootStateSlotCallback update;
+    BootStateSlotCallback draw;
+    BootStateSlotCallback exit;
     u16 size;
     u8 unk22[2];
     s32 w24;
@@ -53,9 +55,9 @@ void bzero(void *p, s32 n);
 s32 func_0000745C(s32 a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g);
 s32 D_801AB020(s32 id, s32 n);
 void *func_0000978C(u32 handle, ...);
-void func_000fa788(void);
-void func_000fafac(void);
-void func_000fb0d0(void);
+void func_000fa788(int slot);
+void func_000fafac(int slot);
+void func_000fb0d0(int slot);
 void func_000fbc80(Widget3390 *p);
 void func_000fa5e0(s32 id) {
     D_800E7A30.update = func_000fa788;
@@ -82,5 +84,5 @@ void func_000fa5e0(s32 id) {
     func_0000978C(0x209A7B4, 0, -6);
     func_000fbc80(D_801B3390);
 }
-void func_000fb0d0(void);
+void func_000fb0d0(int slot);
 void func_000fbc80(Widget3390 *o);

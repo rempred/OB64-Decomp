@@ -1,6 +1,7 @@
+struct Panel;
 #include "game/cutscene_panels.h"
 
-extern void func_00052284(Panel *);
+extern void func_00052284(struct Panel *);
 
 void func_00299CA8(u8 slot, s32 mode)
 {

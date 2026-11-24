@@ -26,7 +26,7 @@ extern Gfx *gTitleCardDisplayListCursor;
 extern u8 *D_801969B0;
 extern Gfx D_801F0090[];
 void guMtxF2L(void *mf, void *m);
-void func_0023E06C(s16 a, s32 b);
+extern void func_0023E06C(s32, u8 *);
 s32 func_0023E3C8(u8 *o) {
     Ent23 *e = (Ent23 *)o;
     {
@@ -40,7 +40,7 @@ s32 func_0023E3C8(u8 *o) {
         _g->w0 = 0xDA380000;
         _g->w1 = (u32)D_801969B0;
     }
-    func_0023E06C(e->id, (s32)e->img);
+    func_0023E06C(e->id, e->img);
     {
         Gfx *_g = gTitleCardDisplayListCursor++;
         _g->w0 = 0xD8380002;

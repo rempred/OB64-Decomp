@@ -1,6 +1,6 @@
 #include "game/cutscene_panels.h"
 
-extern void func_000523b4(s16);
+extern void func_000523b4(int);
 extern void func_0004f2ac(u8 *text, s32 x, s32 y);
 extern void func_000577a0(s32, s32);
 extern Panel *func_000552c0(void);

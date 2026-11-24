@@ -1,3 +1,5 @@
+#include "game/boot_state_slot_callbacks.h"
+
 typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
@@ -38,7 +40,7 @@ typedef struct {
 } Scene;
 extern Scene g_state_slot_records[];
 s32 func_0000745C(s32 a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g);
-void func_000f8004(s16 id);
+void func_000f8004(int slot);
 s32 func_000f7d80(s32 a, u8 b) {
     s32 i = func_0000745C(0xC000, func_000f8004, 0, 0, 0, 0, 0xF000);
     g_state_slot_records[i].unk89 = 11;
@@ -52,4 +54,4 @@ s32 func_000f7d80(s32 a, u8 b) {
     g_state_slot_records[i].unk97 = 0;
     return i;
 }
-void func_000f8004(s16 id);
+void func_000f8004(int slot);

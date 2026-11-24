@@ -1,3 +1,4 @@
+struct Panel;
 #include "game/sound_channel.h"
 
 #include "game/cutscene_panels.h"
@@ -5,11 +6,11 @@
 extern u16 D_800C4B28;
 extern u16 D_800E8700;
 extern SoundChannel D_800EB1F0;
-extern void func_00052284(Panel *);
+extern void func_00052284(struct Panel *);
 extern void func_800EA604(SoundChannel *, s32);
 extern s32 func_00295574(s32);
 extern void func_002950A0(PanelContent *, u8, PanelSlot *);
-extern void func_00294B8C(PanelContent *, u8, PanelSlot *);
+extern void func_00294B8C(struct PanelContent *, u16, struct PanelSlot *);
 extern void func_002956F8(PanelContent *, u8, PanelSlot *);
 
 s32 func_00298B70(Panel *panel, PanelSlot *slot)

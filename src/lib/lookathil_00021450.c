@@ -1,9 +1,8 @@
+#include "common/reflect_light.h"
 extern const double D_800AE910, D_800AE918, D_800AE920, D_800AE928, D_800AE930;
 extern void guMtxIdentF(float [4][4]);
 extern void guMtxF2L(float [4][4], void *);
 extern float sqrtf(float);
-typedef struct { unsigned char color[3], pad, copy[3], pad2; signed char dir[3]; unsigned char unused[5]; } ReflectLight;
-typedef struct { int x1, y1, x2, y2; } Hilite;
 #define DIR(v) ((v)*128.0f < 127.0f ? (int)((v)*128.0f) : 127)
 void func_00021450(float m[4][4], ReflectLight light[2], Hilite *hilite, float ex, float ey, float ez,
                float ax, float ay, float az, float ux, float uy, float uz,

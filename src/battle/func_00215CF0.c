@@ -1,3 +1,4 @@
+
 #include "game/cutscene_panels.h"
 #include "game/indexed_record_lookup.h"
 typedef signed long long s64;
@@ -11,7 +12,7 @@ typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
 s32 func_00045df4(s16);
 void func_00054e24(int, int, int, int, int, int, int, int, int, int);
-M2C_UNK func_00055114(M2C_UNK, M2C_UNK, s8, M2C_UNK, s32, s32, s32, s32, s32, s32, s32, s32);
+extern Panel *func_00055114(s32, u16, s32, s32, s16, s16, s16, s16, s16, s16, s16, s16);
 struct Opt1F;
 struct Opt1F *func_001F21A4(s32 i);
 void func_00208DC8(void *channel, s32 request);

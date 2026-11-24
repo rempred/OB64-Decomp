@@ -1,3 +1,4 @@
+#include "game/battle_roster_record.h"
 #include "game/battle_predicates.h"
 #include "game/battle_resolution_record.h"
 
@@ -144,7 +145,7 @@ extern void func_0022B06C(void *, u8 *);
 extern void func_0022EF50(void *);
 extern int func_0022F2BC(void *, int *);
 int func_00233210(BattleRosterRecord *, BattleRosterRecord *);
-extern int func_00233568(ResolutionObject *);
+
 int func_002363FC(BattleRosterRecord *);
 int func_002365BC(BattleRosterRecord *, BattleRosterRecord *, int, int);
 int func_00237AF8(BattleRosterRecord *, int);

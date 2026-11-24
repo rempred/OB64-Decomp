@@ -1,7 +1,9 @@
+#include "game/boot_state_slot_callbacks.h"
+
 typedef signed short s16;
 typedef signed int s32;
 s32 func_0000745C(s32 a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g);
-void func_000f8004(s16 id);
+void func_000f8004(int slot);
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef struct {

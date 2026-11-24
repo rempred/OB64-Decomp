@@ -6,7 +6,7 @@ typedef struct Task27 {
     u8 unk00[4];
     u16 state;
     u16 next;
-    void (*fn)(s32, struct Task27 *);
+    s32 (*fn)(u16, struct Task27 *);
     s16 hC;
     s16 hE;
     s16 h10;

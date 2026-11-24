@@ -21,7 +21,7 @@ extern u8 func_0019B26C(u16 selected, u8 mode);
 extern s32 func_8016B738(s32 item);
 extern s32 func_8016B6FC(s32 item);
 extern u8 func_8016F520(s32 item);
-extern void func_8017C4B4(s32 value);
+extern void func_8017C4B4(int);
 extern void func_80200F70(void *a, void *b, s32 width, s32 height, s32 mode);
 extern void func_80200DD0(s32 x, s32 y, s32 size);
 extern void func_802027DC(void);

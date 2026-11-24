@@ -1,11 +1,8 @@
+#include "game/boot_slot_payload.h"
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
 
-typedef struct BootStateSlotPayload {
-    u8 unused_00[2];
-    u16 payload_size_02;
-} BootStateSlotPayload;
 
 extern void func_00023460(void *destination, const void *source, unsigned int length);
 extern void *func_000016C4(void *pointer);
