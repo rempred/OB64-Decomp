@@ -12,7 +12,7 @@ extern u32 *D_801F0CB0[];
 extern s32 D_8018F500;
 extern s32 D_8018F504;
 extern s32 D_8018F508;
-s32 func_0012E7E8(u32 *p);
+void * func_0012E7E8(void *);
 void func_0010BD08(void) {
     u32 fl;
     u32 **u;

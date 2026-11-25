@@ -1,6 +1,8 @@
 typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
+struct Phase8PackedFields;
+struct ListMenu;
 void func_000E5780(u8 *p);
 typedef struct {
     u32 w0;
@@ -8,7 +10,7 @@ typedef struct {
 } Gfx;
 extern Gfx *gTitleCardDisplayListCursor;
 extern u8 D_8018F480;
-s32 func_000E5938(u8 *img);
+void func_000ba790(struct ListMenu *);
 void func_000E5780(u8 *img) {
     if (img[2] == 2) {
         if (D_8018F480 < 2) {
@@ -63,4 +65,4 @@ void func_000E5780(u8 *img) {
         _g->w1 = 0;
     }
 }
-s32 func_000E5938(u8 *p);
+void func_000ba790(struct ListMenu *);

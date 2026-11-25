@@ -42,6 +42,8 @@ typedef struct {
     s32 x4C;
     s32 x50;
 } Pak712;
+void func_00074374(void);
+void func_000744c0(void);
 s32 func_0007413c(void) {
     s32 i;
     s32 st;
@@ -134,5 +136,3 @@ s32 func_0007413c(void) {
     }
     return 0;
 }
-void func_00074374(void);
-void func_000744c0(void);

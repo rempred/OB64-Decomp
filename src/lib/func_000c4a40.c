@@ -4,6 +4,7 @@ typedef signed short s16;
 typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
+struct RuntimeUnit;
 
 typedef s32 (*ClassCallback)(u8, u8);
 
@@ -22,7 +23,7 @@ typedef struct Func000C4A40ClassRecord {
 } Func000C4A40ClassRecord;
 
 void func_000c54c0(s32);
-void func_000c4e5c(void *, void *, s16, s16);
+void func_0012A958(struct RuntimeUnit *);
 u8 func_000bbad0(void);
 u8 func_0016dec4(s32, s32);
 extern u8 * volatile D_80196AF8;

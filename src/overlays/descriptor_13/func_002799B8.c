@@ -5,7 +5,7 @@ typedef unsigned int u32;
 s32 D_801C8FE8(u32);
 s16 D_801F70E0(u8 k);
 s32 D_801F71CC(u8 k);
-s32 func_00279A58(u8 *p);
+s32 func_00279A58(void *);
 s32 func_002799B8(u8 k) {
     s16 r = D_801F70E0(k);
     if (r == 0xFF) {
@@ -22,4 +22,4 @@ s32 func_002799B8(u8 k) {
             return -1;
     }
 }
-s32 func_00279A58(u8 *p);
+s32 func_00279A58(void *);

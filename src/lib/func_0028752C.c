@@ -14,8 +14,8 @@ typedef struct {
     u16 h;
 } SizeCE;
 void func_0028752C(SizeCE *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-s32 func_0028ac88(u8 a, s32 b);
-s32 func_0028acdc(s32 siz, u32 w);
+s32 func_0028ac88(s32, u32);
+void func_00291194(s32, u8 *);
 void func_00286BD0(void *timg, s32 a, s32 b, s32 fmt, s32 siz, s32 stride, s32 height, s32 uls,
 s32 ult, s32 lrs, s32 lrt, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_0028752C(SizeCE *img, s32 s, s32 t, s32 w, s32 h, s32 x, s32 y) {

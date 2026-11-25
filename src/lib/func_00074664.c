@@ -1,11 +1,14 @@
 typedef unsigned char u8;
 typedef signed int s32;
+typedef unsigned int u32;
+struct NUContPakFile;
+typedef signed char s8;
 extern u8 *D_8019780C;
 void func_0001aaa0(void);
 void func_0001aac0(void);
-void func_0001afd0(void *p, s32 k);
-void func_0001b240(void *a, void *b);
-void func_0001b2e0(void *p, void *a, void *b);
+void func_0001afd0(struct NUContPakFile *, u32);
+void func_0001b240(u8 *, u8 *);
+void func_0002C950(s8 *, s8 *);
 s32 func_00074664(s32 k) {
     s32 r = 0;
     s32 o;

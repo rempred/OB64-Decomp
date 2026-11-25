@@ -5,7 +5,7 @@ typedef unsigned int u32;
 u32 D_8009DAF4(u32 handle);
 void *D_8009DBB8(void *dst, u32 handle);
 u32 func_0000ABE0(u8 *p);
-void *resource_alloc_tree_scan(s32 size);
+void * resource_alloc_tree_scan(u32);
 void *func_000016C4(void *ptr);
 typedef struct {
     void *name;

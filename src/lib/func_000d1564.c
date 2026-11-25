@@ -9,9 +9,9 @@ typedef struct {
     u16 total;
 } ListD03;
 extern u16 D_80196B00[][2];
-u16 func_000bb47c(s32 a, u8 item, u8 c);
+u16 func_000bb47c(s32, s32, s32);
 u16 func_000bb34c(s32 a, u8 item, u8 c);
-u8 func_000bc718(u16 sel);
+u16 func_000bc718(u16);
 void func_000d1564(u8 item) {
     u16 sel;
     ListD03 *l;

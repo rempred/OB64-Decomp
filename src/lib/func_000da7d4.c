@@ -2,7 +2,7 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed int s32;
 extern u8 *D_80196AF8;
-void func_000bacec(void);
+u16 func_000bacec(void);
 typedef struct {
     u8 b[0xE];
 } GroupD21;

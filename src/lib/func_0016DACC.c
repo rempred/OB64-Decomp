@@ -15,7 +15,7 @@ extern Gfx *gTitleCardDisplayListCursor;
 extern u8 D_8018F480;
 extern Gfx D_80186BD0[];
 extern Gfx D_80186D90[];
-void boot_display_list_flagged_rect_packet_emit(s32 a, s32 b, s32 c, s32 d);
+u32 func_0000ABE0(const u8 *);
 void func_0016DCE4(void);
 void func_0016DACC(void);
 void func_0016DACC(void) {

@@ -1,7 +1,8 @@
 typedef unsigned char u8;
 typedef signed int s32;
+typedef signed char s8;
 signed char *func_0002C950(signed char *dst, signed char *src);
-s32 strlen(signed char *s);
+s32 strlen(const s8 *);
 void func_0007828c(u8 *s, u8 *tmp) {
     s32 n;
     s32 i;

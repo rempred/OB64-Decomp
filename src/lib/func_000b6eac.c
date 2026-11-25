@@ -1,7 +1,8 @@
 typedef unsigned char u8;
 typedef signed int s32;
+typedef unsigned short u16;
 extern u8 *D_80196AF8;
-void func_000bacec(void);
+u16 func_000bacec(void);
 void func_000b6eac(u8 *sq) {
     u8 *m;
     u8 *p;

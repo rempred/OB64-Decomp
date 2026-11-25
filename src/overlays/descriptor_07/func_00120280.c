@@ -10,7 +10,7 @@ extern u32 *D_801F0CB0[];
 extern u8 D_801F0FDF;
 extern u8 D_801F0FE0;
 extern u8 D_801F0FE1;
-u8 func_0012F530(u32 *u);
+s32 func_0012F530(void *);
 void func_00120280(void) {
     u32 **u;
     D_801969C0[D_801F0E04 * 11] = D_80214EB8 + 1;

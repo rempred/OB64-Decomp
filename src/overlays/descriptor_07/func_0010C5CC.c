@@ -9,15 +9,15 @@ extern s8 D_801F3680;
 extern s16 D_801F36D0;
 extern u8 D_801F3674;
 extern u32 *D_801F0CB0[];
-s32 func_0012E968(u32 *u);
-s32 func_0012E950(u8 k);
+s32 func_0012E968(void *);
+s32 func_0012E950(s32);
 void D_8020CDA0(s32 k);
 extern u8 D_801969B8[];
 extern u8 D_801F0FE0;
 extern u8 D_801F0FE1;
 extern u8 D_801F0FDF;
-s32 func_00133028(u32 *u);
-u8 func_0012F530(u32 *u);
+s32 func_00133028(u8 *);
+s32 func_0012F530(void *);
 void func_0010C5CC(void) {
     u32 *u = D_801F0CB0[D_801F3658];
     if (func_00133028(u) != 0) {

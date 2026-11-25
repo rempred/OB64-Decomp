@@ -11,7 +11,7 @@ extern u8 *D_801B989C;
 extern Gfx *gTitleCardDisplayListCursor;
 void func_001EC184(void);
 extern Gfx D_801B98B8[];
-s32 func_001CE114(s32 a, s32 w, s32 h);
+void * func_001CED40(s32, s32);
 void func_001EB308(u8 *s, s32 x, s32 y);
 typedef struct {
     u8 pad[4];

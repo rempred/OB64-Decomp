@@ -13,7 +13,7 @@ extern u8 D_80214C7C;
 extern u8 D_80212518[];
 extern u8 D_80212410[];
 extern u8 D_80213648[];
-void func_001520E0(void *img, void *pal, s32 w, s32 h, s32 fmt);
+void func_001AE13C(u8 *, s32);
 void func_00151F40(s32 x, s32 y, s32 k);
 extern f64 D_80214E48;
 void func_0015F694(s32 x, s32 y) {

@@ -7,7 +7,7 @@ extern s32 D_801F3658;
 extern u32 *D_801F0CB0[];
 extern u8 D_801969BA[];
 extern s32 D_801F0E04;
-s32 func_0012E968(u32 *u);
+s32 func_0012E968(void *);
 extern s32 D_801F0DFC;
 extern s32 D_8018F58C;
 extern u8 D_801E900C;

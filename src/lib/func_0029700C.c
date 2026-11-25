@@ -3,10 +3,11 @@ typedef signed short s16;
 typedef unsigned short u16;
 typedef signed int s32;
 typedef unsigned int u32;
+struct PanelContent;
 extern u8 *D_8023DE34;
 void D_8017C4B4(u32);
 void D_801793AC(s32 a, s32 x, s32 y);
-void func_002952D4(u8 *p, u16 v);
+struct PanelContent * func_002952D4(struct PanelContent *, s32);
 void D_8017CBE8(u8 *o, u8 *p);
 void func_0029700C(u8 *o, s32 k) {
     s16 *e = (s16 *)(k * 2 + (s32)o);

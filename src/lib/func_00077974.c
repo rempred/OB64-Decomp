@@ -17,6 +17,7 @@ typedef struct {
     s32 w34;
 } Win712;
 void D_80181504(s32 x, s32 y, s32 w);
+void func_00078038(u8 *s, s32 x, s32 y, s32 slot);
 void func_00077974(u8 *o, s32 k) {
     s16 *e = (s16 *)(k * 2 + (s32)o);
     if (e[0xC] != 0) {
@@ -79,5 +80,4 @@ void func_00077974(u8 *o, s32 k) {
         }
     }
 }
-void func_00078038(u8 *s, s32 x, s32 y, s32 slot);
 void func_0007819c(u8 *s, s32 b, u8 cycle);

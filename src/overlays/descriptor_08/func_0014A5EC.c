@@ -22,7 +22,7 @@ typedef struct {
     u8 b0F;
 } Fade149;
 void func_00145DC8(s32 *p, s32 v);
-void func_00145DD0(s32 *p, s32 v);
+void func_00145DD0(void *, s32);
 void func_0014DB78(void);
 void func_0014A5EC(Rec149 *e) {
     Fade149 *f = (Fade149 *)e->data;

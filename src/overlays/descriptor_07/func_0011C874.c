@@ -2,7 +2,7 @@ typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
 extern u8 D_801969BA[];
-s32 func_0012E968(u32 *u);
+s32 func_0012E968(void *);
 s32 func_0011C874(u32 *u) {
     u8 v;
     if (!(*u & 0x40)) {

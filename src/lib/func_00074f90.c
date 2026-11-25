@@ -9,7 +9,7 @@ extern u8 *D_8019780C;
 s32 memcmp_0002cc90(void *a, void *b, s32 n);
 void func_0001aaa0(void);
 void func_0001aac0(void);
-void func_0001afd0(void *p, s32 k);
+void func_0001b0a0(void *, u8 *, u8 *, u32, s32);
 void func_0001b240(void *a, void *b);
 typedef struct {
     s16 h[13];

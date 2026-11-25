@@ -1,12 +1,12 @@
 typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
-void *resource_alloc_tree_scan(s32 size);
+void * resource_alloc_tree_scan(u32);
 void *func_000016C4(void *ptr);
 u32 D_8009DAF4(u32 handle);
 void *D_8009DBB8(void *dst, u32 handle);
 u32 func_0000ABE0(u8 *p);
-void *resource_alloc_tree_scan(s32 size);
+void * resource_alloc_tree_scan(u32);
 void func_0000A510(void *dst, void *src);
 s32 func_002B57E0(s32 i, s32 j, void **out) {
     u32 *t;

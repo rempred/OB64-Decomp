@@ -2,8 +2,9 @@ typedef unsigned char u8;
 typedef signed short s16;
 typedef unsigned short u16;
 typedef signed int s32;
+typedef unsigned int u32;
 void *func_00001330(s32 size);
-void *resource_alloc_mode1_wrapper(s32 size);
+void * resource_alloc_mode1_wrapper(u32);
 void *func_000016C4(void *ptr);
 s32 func_002436F4(s32 type, u16 w, u16 h, u8 *data, u8 a, u8 b);
 typedef struct {

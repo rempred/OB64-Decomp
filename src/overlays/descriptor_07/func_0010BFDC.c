@@ -12,8 +12,8 @@ extern u8 D_801F3674;
 extern u32 *D_801F0CB0[];
 extern u8 D_801969BA[];
 extern s32 D_801F0E04;
-s32 func_0012E968(u32 *u);
-s32 func_0012E950(u8 k);
+s32 func_0012E968(void *);
+s32 func_0012E950(s32);
 void D_8020CDA0(s32 k);
 void func_0010BFDC(void) {
     u32 *u = D_801F0CB0[D_801F3658];

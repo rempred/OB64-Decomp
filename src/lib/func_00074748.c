@@ -4,7 +4,7 @@ typedef signed int s32;
 typedef unsigned int u32;
 extern u8 *D_8019780C;
 s32 memcmp_0002cc90(void *a, void *b, s32 n);
-void func_0001b240(void *a, void *b);
+void func_0001b240(u8 *, u8 *);
 void func_00074748(void);
 typedef struct {
     s16 h[13];

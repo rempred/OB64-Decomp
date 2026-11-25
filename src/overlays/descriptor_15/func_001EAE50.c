@@ -9,7 +9,7 @@ void *func_00001330(s32 size);
 void *func_000016C4(void *ptr);
 extern u8 *D_801B989C;
 void func_001EAE50(void);
-s32 func_001CE114(s32 a, s32 w, s32 h);
+u32 func_001CE114(s32, u32, s32);
 typedef struct {
     void *name;
     s32 index;

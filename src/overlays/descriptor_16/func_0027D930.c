@@ -2,6 +2,7 @@ typedef unsigned char u8;
 typedef signed int s32;
 typedef unsigned int u32;
 typedef struct {
+struct SizeCE;
     u32 w0;
     u32 w1;
 } Gfx;
@@ -9,7 +10,7 @@ extern Gfx *gTitleCardDisplayListCursor;
 extern void *D_8022D108;
 extern u8 D_8022CA98[];
 extern u8 D_8022CAB8[];
-void func_0027D4AC(s32 x, s32 y, s32 id);
+void func_0028752C(struct SizeCE *, s32, s32, s32, s32, s32, s32);
 void func_0027D930(s32 x, s32 y, s32 mode) {
     { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = ((unsigned int)(((unsigned int)(0xDE) & ((0x01 << (8)) - 1)) << (24))); _g->w1 = (unsigned int)(D_8022CAB8); };
     { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = ((unsigned int)(((unsigned int)(0xE7) & ((0x01 << (8)) - 1)) << (24))); _g->w1 = 0; };

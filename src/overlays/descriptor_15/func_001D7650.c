@@ -9,7 +9,7 @@ typedef struct {
 } Gfx;
 extern Gfx *gTitleCardDisplayListCursor;
 extern u8 D_801B8388[];
-s32 func_001CE114(s32 a, s32 w, s32 h);
+u32 func_001CE114(s32, u32, s32);
 void func_001CF3AC(u8 *img, s16 x, s16 y);
 typedef struct {
     u8 b[4];

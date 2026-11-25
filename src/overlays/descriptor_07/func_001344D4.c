@@ -7,7 +7,7 @@ typedef struct {
 } Gfx133;
 extern Gfx133 *gTitleCardDisplayListCursor;
 extern u8 D_8018F480;
-s32 func_0013466C(u8 *img);
+s32 func_00139D74(void);
 void func_001344D4(u8 *img) {
     if (img[2] == 2) {
         if (D_8018F480 < 2) {
@@ -57,4 +57,4 @@ void func_001344D4(u8 *img) {
         }
     }
 }
-s32 func_0013466C(u8 *p);
+s32 func_00139D74(void);

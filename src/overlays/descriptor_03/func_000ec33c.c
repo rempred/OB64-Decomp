@@ -74,6 +74,8 @@ void D_80221030(void);
 void D_801F6E14(s32 a);
 void func_000ecc4c(u32 d);
 void func_000eccb8(u32 d);
+void func_000ecbe0(u32 d);
+void func_000ecf94(void);
 void func_000ec33c(void) {
     s32 i;
     D_801AB850[6] = D_800C4BE0[0][2];
@@ -111,7 +113,5 @@ void func_000ec33c(void) {
         *f |= 2;
     }
 }
-void func_000ecbe0(u32 d);
 void func_000ecc4c(u32 d);
 void func_000eccb8(u32 d);
-void func_000ecf94(void);
