@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D3D9BA4F8789F1F4B2E4AB64516F40FCA196CF1FA7397697D82F27A971C201E3",
+  "observationId": "53D4785C6E1327ACF71A34B85C0F85699629D43BED1F37B245CA891DF59F2CB2",
+  "symbol": "func_00209F74",
+  "authored": {
+    "context": "The renderer needs the same squad member for two class loads, followed by class-size and icon selection.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        }
+      ],
+      "expandedSha256": "51C02D965E70984C9A36CE5B415DEC82E43F467A5F44D6D6EFF87B525DCC565D",
+      "sourceSha256": "CFF0758708C68DA73B7B0A93F31F592B3AEC5912825BDEC9B38335B22EADED38"
+    },
+    "label": "formation-icon-index-lifetime",
+    "observedEffect": "The control reproduces the class call schedule but allocates the earlier raw member to s0 instead of t0. Seven linked words differ, starting at ROM 0x20AAD8.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/battle/func_00209F74.c",
+        "sha256": "58648BA2264AD60444ED0E6B6AD7AA29DDD99C678240782A36F5316750FF21E0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The earlier member and associated MFHI registers differ while table placement and the 409 text relocations stay exact.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control reuses one index for both loads and the secondary class result. The final source keeps the original byte index for the primary lookup while a separate word indexes and receives the secondary class."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      }
+    ],
+    "expanded": {
+      "bytes": 60350,
+      "sha256": "51C02D965E70984C9A36CE5B415DEC82E43F467A5F44D6D6EFF87B525DCC565D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CFF0758708C68DA73B7B0A93F31F592B3AEC5912825BDEC9B38335B22EADED38"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00209F74-d3d9ba4f87.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

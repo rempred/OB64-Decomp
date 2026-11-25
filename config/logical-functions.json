@@ -213,6 +213,12 @@
       "evidence": "Complete original return and delay slot end at ROM 0x15E66C; 4 following zero bytes remain executable original ASM. No historical padding origin or numeric/runtime reference absence is claimed."
     },
     {
+      "romStart": 2145492,
+      "romEndExclusive": 2145504,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "The renderer returns through JR ra and its delay slot before ROM 0x20BCD4. The remaining twelve zero bytes retain their original executable assembly owner. Descriptor 10 also places its complete native switch table in row 3985."
+    },
+    {
       "romStart": 2177864,
       "romEndExclusive": 2177872,
       "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
@@ -4955,6 +4961,34 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_001E0B60.s",
           "sha256": "5C3B9A379259D4509CF4388B5F20490B1E0D6938FC7BA2E62FB9554A557CFC81"
+        }
+      ]
+    },
+    {
+      "romStart": 2137972,
+      "romEndExclusive": 2145492,
+      "symbol": "func_00209F74",
+      "aliases": [],
+      "expectedBytesSha256": "F19687164DD541DC4A306C79AAFB86E17A2EFCCD95CDA4F77E68B9A43DF0B54A",
+      "evidence": {
+        "caseId": "formation-row3858-terminal",
+        "status": "known-entry-or-ownership",
+        "rationale": "The renderer returns through JR ra and its delay slot before ROM 0x20BCD4. The remaining twelve zero bytes retain their original executable assembly owner. Descriptor 10 also places its complete native switch table in row 3985."
+      },
+      "fragments": [
+        {
+          "rowIndex": 3858,
+          "romStart": 2137972,
+          "romEndExclusive": 2145492,
+          "ownerOffset": 0,
+          "bytes": 7520,
+          "vramStart": 2149346020,
+          "sectionName": ".ob64.r3858.s0",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 10,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00209F74.s",
+          "sha256": "11A891EAA5FD2E5202B79BB62DA578F63E68F937A0C2599EABF4362850AA426F"
         }
       ]
     },

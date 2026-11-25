@@ -1,12 +1,10 @@
-typedef unsigned char u8;
-typedef signed int s32;
+#include "game/formation_panel.h"
 
 extern void * volatile D_801CE8C0;
 extern u8 D_801976DC;
 extern u8 D_801976E8;
 
 void func_00201108(void);
-void func_00209774(s32 selector, void *state, u8 value);
 
 void func_002013D0(void)
 {

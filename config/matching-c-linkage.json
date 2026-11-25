@@ -14605,6 +14605,34 @@
     {
       "name": "func_00007894",
       "address": "0x80077494"
+    },
+    {
+      "name": "D_801CFA70",
+      "address": "0x801CFA70"
+    },
+    {
+      "name": "D_801CFAD8",
+      "address": "0x801CFAD8"
+    },
+    {
+      "name": "D_801CFB38",
+      "address": "0x801CFB38"
+    },
+    {
+      "name": "D_801CFB58",
+      "address": "0x801CFB58"
+    },
+    {
+      "name": "D_801CFBF8",
+      "address": "0x801CFBF8"
+    },
+    {
+      "name": "D_80187C14",
+      "address": "0x80187C14"
+    },
+    {
+      "name": "D_8018ECE4",
+      "address": "0x8018ECE4"
     }
   ],
   "targets": [
@@ -65861,22 +65889,7 @@
           "entries": 14,
           "expectedObjectSha256": "829046E6E5BA18E34FD4AF3EC5F92F6382804DB6971CB5FBFEFB4247D8B8266C",
           "expectedLinkedSha256": "5477E8C071236FFE39AABD2ECEFB1BE89ABEE024626E96ABE798D9EADC1ECCB2",
-          "preservedTail": {
-            "inputSection": ".ob64.r3985.tail",
-            "sectionType": "SHT_PROGBITS",
-            "sectionFlags": [
-              "SHF_ALLOC"
-            ],
-            "alignment": 1,
-            "romStart": "0x00213A00",
-            "romEndExclusive": "0x00213A40",
-            "vramStart": "0x801D0570",
-            "vramEndExclusive": "0x801D05B0",
-            "bytes": 64,
-            "expectedSha256": "7194FD3906839DDD483A38B455E65ED9CA3E62028E0F67F7928AB4DCD5CDAD66",
-            "ownerOriginalAssembly": "asm/original/rev0/lib/table_00213840.s",
-            "ownerOriginalAssemblySha256": "F95B3C731225DA4710554F31BC9284FA34F628E8C00DB863BDA62D77A5B26E34"
-          },
+          "preservedTail": null,
           "expectedRelocations": [
             {
               "offset": "0x00000000",
@@ -338266,6 +338279,2881 @@
           "section": ".rel.text",
           "symbol": "D_80196B00",
           "type": "R_MIPS_LO16"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00209774",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000000",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000004",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000064",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000A4",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000C8",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000F4",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000000FC",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000100",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000108",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000010C",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000118",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000120",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000124",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000012C",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000138",
+          "section": ".rel.text",
+          "symbol": "D_8016DE1C",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001A0",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001B0",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001CC",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000200",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000274",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000284",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000294",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000002B0",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00209F74",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000000",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000004",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000054",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000058",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000007C",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000080",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000008C",
+          "section": ".rel.text",
+          "symbol": "D_801CFBF8",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000090",
+          "section": ".rel.text",
+          "symbol": "D_801CFBF8",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000000A0",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000000A4",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000000A8",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000000AC",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000110",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000114",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000011C",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000120",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000128",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000012C",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000134",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000138",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000140",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000144",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000014C",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000150",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000160",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000164",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000001E0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000001E4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000001F8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000001FC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000020C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000210",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000220",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000224",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000022C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000230",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000238",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000023C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000024C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000250",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000260",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000264",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000308",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000030C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000310",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000314",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000360",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000003B8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000003BC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000003C0",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000003C4",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000003F4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000003F8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000400",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000404",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000040C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000410",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000424",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000428",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000438",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000043C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000044C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000450",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000458",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000045C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000464",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000468",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000478",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000047C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000048C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000490",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000510",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000514",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000560",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000564",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000058C",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000005E4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000005E8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000005EC",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000005F0",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000620",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000624",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000062C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000630",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000638",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000063C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000650",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000654",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000664",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000668",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000678",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000067C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000684",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000688",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000690",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000694",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000006A4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000006A8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000006B8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000006BC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000073C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000740",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000078C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000790",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000007B8",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000081C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000820",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000824",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000828",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000085C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000860",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000868",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000086C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000874",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000878",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000088C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000890",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000008A0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000008A4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000008B4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000008B8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000008C0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000008C4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000008CC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000008D0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000008F8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000008FC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000924",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000928",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000948",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000094C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000954",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000958",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000964",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000968",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000970",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000974",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000980",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000984",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000009A4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000009A8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000009AC",
+          "section": ".rel.text",
+          "symbol": "D_801CFAD8",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000009B0",
+          "section": ".rel.text",
+          "symbol": "D_801CFAD8",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000AA8",
+          "section": ".rel.text",
+          "symbol": ".rodata",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000AB0",
+          "section": ".rel.text",
+          "symbol": ".rodata",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000AC0",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000ACC",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000AD8",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000AE4",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000AF0",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000AFC",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000B08",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000B18",
+          "section": ".rel.text",
+          "symbol": "func_00208F90",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000B34",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000B38",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000B48",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000B4C",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000B84",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000B9C",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000BBC",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000C9C",
+          "section": ".rel.text",
+          "symbol": "func_00040FF4",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000CB8",
+          "section": ".rel.text",
+          "symbol": "func_0020934C",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000CCC",
+          "section": ".rel.text",
+          "symbol": "func_002094F8",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000D08",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000D0C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000D44",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000D48",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000D54",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000D58",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000D5C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000D60",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000D68",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000D6C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000D74",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000D78",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000D80",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000D84",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000D8C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000D90",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000D98",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000D9C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000DA4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000DA8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000DB0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000DB4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000DBC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000DC0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000E2C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000E30",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000E38",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000E3C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000E44",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000E48",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000E58",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000E5C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000E64",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000E68",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000F00",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000F04",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000F08",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000F0C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000F58",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000F68",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000F98",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000FA0",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000FA4",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000FAC",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000FB0",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00000FC0",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000FC8",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000FCC",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000FD4",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001000",
+          "section": ".rel.text",
+          "symbol": "func_00043d1c",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001010",
+          "section": ".rel.text",
+          "symbol": "func_00043e18",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001024",
+          "section": ".rel.text",
+          "symbol": "D_80187C14",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000102C",
+          "section": ".rel.text",
+          "symbol": "D_80187C14",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000104C",
+          "section": ".rel.text",
+          "symbol": "D_8018ECE4",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001054",
+          "section": ".rel.text",
+          "symbol": "D_8018ECE4",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001058",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000105C",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001074",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001078",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001090",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000010A0",
+          "section": ".rel.text",
+          "symbol": "func_0020934C",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000010B4",
+          "section": ".rel.text",
+          "symbol": "func_002094F8",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000010E4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000010E8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001118",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000111C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001120",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001124",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000112C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001130",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001138",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000113C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001144",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001148",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001150",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001154",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000115C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001160",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001168",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000116C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001174",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001178",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001180",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001184",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000118C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001190",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001204",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001208",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001214",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001218",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001220",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001224",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000012BC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000012C0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000012C4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000012C8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001308",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001318",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001324",
+          "section": ".rel.text",
+          "symbol": "func_0020934C",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001338",
+          "section": ".rel.text",
+          "symbol": "func_002094F8",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001354",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001358",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001390",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001394",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000013A0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000013A4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000013A8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000013AC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000013B4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000013B8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000013C0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000013C4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000013CC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000013D0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000013D8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000013DC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000013E4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000013E8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000013F0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000013F4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000013FC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001400",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001408",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000140C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001478",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000147C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001484",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001488",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001494",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001498",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000014A4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000014A8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001548",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000154C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001550",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001554",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001598",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000015D8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000015DC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000015EC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000015F0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001604",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001608",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001638",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000163C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001640",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001644",
+          "section": ".rel.text",
+          "symbol": "D_801CFA70",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000016C0",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000016C4",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000016CC",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000016D0",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000016D8",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000016DC",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000016E4",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000016E8",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000016F0",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000016F4",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000016FC",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001700",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001708",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000170C",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001714",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001718",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001720",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001724",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001740",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001744",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001788",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x0000178C",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001794",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001798",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000017A0",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000017A4",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000017AC",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000017B4",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000017BC",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000017DC",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000017F0",
+          "section": ".rel.text",
+          "symbol": "D_8019532C",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000017F4",
+          "section": ".rel.text",
+          "symbol": "D_8019532C",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000017F8",
+          "section": ".rel.text",
+          "symbol": "D_80190EBC",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000017FC",
+          "section": ".rel.text",
+          "symbol": "D_80190EBC",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001828",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001864",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001880",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000018B0",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000018B8",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000018BC",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000018C4",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000018C8",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000018D4",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000018DC",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000018E0",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000018E8",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000019C4",
+          "section": ".rel.text",
+          "symbol": "func_00209A74",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000019E0",
+          "section": ".rel.text",
+          "symbol": "func_00209CAC",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001A18",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001A1C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001A2C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001A30",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001A3C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001A40",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001A44",
+          "section": ".rel.text",
+          "symbol": "D_801CFB38",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001A48",
+          "section": ".rel.text",
+          "symbol": "D_801CFB38",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001A74",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001A78",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001A80",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001A84",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001A8C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001A90",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001A98",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001A9C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001AA4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001AA8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001AB0",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001AB4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001AB8",
+          "section": ".rel.text",
+          "symbol": "D_801CFB58",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001ABC",
+          "section": ".rel.text",
+          "symbol": "D_801CFB58",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001AC8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001ACC",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001AD4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001AD8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001AF4",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001AF8",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001B70",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001B74",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001B7C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001B80",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001B88",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001B8C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001B94",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001B98",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001BFC",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001C00",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001C4C",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001C50",
+          "section": ".rel.text",
+          "symbol": "D_800E9BA0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001C78",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x00001CB8",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001CBC",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001CCC",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001CD0",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001CE4",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001CE8",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001CF4",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001CF8",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00001D08",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00001D0C",
+          "section": ".rel.text",
+          "symbol": "gTitleCardDisplayListCursor",
+          "type": "R_MIPS_LO16"
+        }
+      ],
+      "auxiliarySections": [
+        {
+          "kind": "switch-table",
+          "compilerSection": ".rodata",
+          "outputSection": ".ob64.r3985",
+          "sectionType": "SHT_PROGBITS",
+          "sectionFlags": [
+            "SHF_ALLOC"
+          ],
+          "alignment": 8,
+          "romStart": "0x00213A00",
+          "romEndExclusive": "0x00213A40",
+          "vramStart": "0x801D0570",
+          "vramEndExclusive": "0x801D05B0",
+          "bytes": 64,
+          "entries": 15,
+          "expectedObjectSha256": "8102AD257CCE0ADC03C312C78F035D3AA4B497DF7AB987F054C3125A440E46BF",
+          "expectedLinkedSha256": "7194FD3906839DDD483A38B455E65ED9CA3E62028E0F67F7928AB4DCD5CDAD66",
+          "preservedTail": null,
+          "expectedRelocations": [
+            {
+              "offset": "0x00000000",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000B10",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000004",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000B04",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000008",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000AF8",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x0000000C",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000B20",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000010",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000AEC",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000014",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000B20",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000018",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000AE0",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x0000001C",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000B20",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000020",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000B20",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000024",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000AD4",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000028",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000AC8",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x0000002C",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000B20",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000030",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000B20",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000034",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000B20",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000038",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000ABC",
+              "section": ".rel.rodata"
+            }
+          ],
+          "trailingPaddingBytes": 4,
+          "expectedTrailingPaddingSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0021C140",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000074",
+          "section": ".rel.text",
+          "symbol": "func_0021D7CC",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000007C",
+          "section": ".rel.text",
+          "symbol": "battle_actor_has_flag_12",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000008C",
+          "section": ".rel.text",
+          "symbol": "battle_actor_is_side_zero",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x0000009C",
+          "section": ".rel.text",
+          "symbol": "D_801976DC",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000000A0",
+          "section": ".rel.text",
+          "symbol": "D_801976DC",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000000A4",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000AC",
+          "section": ".rel.text",
+          "symbol": "D_801976E8",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000000B0",
+          "section": ".rel.text",
+          "symbol": "D_801976E8",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000000C4",
+          "section": ".rel.text",
+          "symbol": "D_80190F80",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000000C8",
+          "section": ".rel.text",
+          "symbol": "D_80190F80",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000000D4",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000000D8",
+          "section": ".rel.text",
+          "symbol": "D_80193BC0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x000000DC",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000000E8",
+          "section": ".rel.text",
+          "symbol": "D_801953F0",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x000000EC",
+          "section": ".rel.text",
+          "symbol": "D_801953F0",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x00000104",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_HI16"
+        },
+        {
+          "offset": "0x00000108",
+          "section": ".rel.text",
+          "symbol": "D_80195560",
+          "type": "R_MIPS_LO16"
+        },
+        {
+          "offset": "0x0000018C",
+          "section": ".rel.text",
+          "symbol": "battle_actor_has_flag_1",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001A4",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001B4",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001C8",
+          "section": ".rel.text",
+          "symbol": "battle_actor_is_absent_or_has_flag_0",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001D8",
+          "section": ".rel.text",
+          "symbol": "battle_actor_has_flag_1",
+          "type": "R_MIPS_26"
+        },
+        {
+          "offset": "0x000001F4",
+          "section": ".rel.text",
+          "symbol": ".text",
+          "type": "R_MIPS_26"
         }
       ]
     }

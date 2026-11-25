@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B55014FB3D656781F47F77072D120DCAA71AD254BDFC93B24DDA9CEA7EB734A2",
+  "observationId": "E2E79EBE7B59AC11C85BAEE946A1B74D3728E5D79E00947ABD750B1A5911518B",
+  "symbol": "func_0021C140",
+  "authored": {
+    "context": "The special-member writeback computes a halfword HP address before calling the actor flag predicate.",
+    "effects": [
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 787,
+          "path": "include/game/battle_predicates.h",
+          "sha256": "8EF3994BC638824E64B67C3D8BDD51A13186459B5DEF985B50C3CC92E1AB2C53"
+        },
+        {
+          "bytes": 1067,
+          "path": "include/game/battle_record_flag.h",
+          "sha256": "12E380FB4CE6616BBE4920155074F91AF029D5DF3415010389DF5634B950640F"
+        },
+        {
+          "bytes": 2292,
+          "path": "include/game/battle_roster_record.h",
+          "sha256": "803E33A45BC33E6C5273918846185979C627C506C77C9818F22226978BFB3C09"
+        },
+        {
+          "bytes": 1693,
+          "path": "include/game/battle_roster_types.h",
+          "sha256": "FB035E8F1DB37D824FD8CB45C4408A029A063CB20C91596E89D391B8D5B64660"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        }
+      ],
+      "expandedSha256": "E90BF50B2BA5C054B0FA84AEFF0A2958A7496C1B4F6BCA674036983EF0A0C2AC",
+      "sourceSha256": "2078F88CDDD97787F6E263112A0E9688B57DD0B52DCFBB0EEAA16F496E440404"
+    },
+    "label": "hp-pool-address-order",
+    "observedEffect": "The 624-byte control reverses the two ADDU source registers at ROM 0x21C304. The direct comparison reports one differing instruction after placement.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/battle/func_0021C140.c",
+        "sha256": "D1C4696374E662FA35EAC6CFC4FF88C1070DDFF523A68138FE2B3BE588421C8C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The commutative sum uses v0,s2 in place of s2,v0.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control adds the scaled index and pool base in one expression. The accepted source stages the pool pointer and advances it with +=."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 787,
+        "path": "include/game/battle_predicates.h",
+        "sha256": "8EF3994BC638824E64B67C3D8BDD51A13186459B5DEF985B50C3CC92E1AB2C53"
+      },
+      {
+        "bytes": 1067,
+        "path": "include/game/battle_record_flag.h",
+        "sha256": "12E380FB4CE6616BBE4920155074F91AF029D5DF3415010389DF5634B950640F"
+      },
+      {
+        "bytes": 2292,
+        "path": "include/game/battle_roster_record.h",
+        "sha256": "803E33A45BC33E6C5273918846185979C627C506C77C9818F22226978BFB3C09"
+      },
+      {
+        "bytes": 1693,
+        "path": "include/game/battle_roster_types.h",
+        "sha256": "FB035E8F1DB37D824FD8CB45C4408A029A063CB20C91596E89D391B8D5B64660"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      }
+    ],
+    "expanded": {
+      "bytes": 9717,
+      "sha256": "E90BF50B2BA5C054B0FA84AEFF0A2958A7496C1B4F6BCA674036983EF0A0C2AC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2078F88CDDD97787F6E263112A0E9688B57DD0B52DCFBB0EEAA16F496E440404"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_0021C140-b55014fb3d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

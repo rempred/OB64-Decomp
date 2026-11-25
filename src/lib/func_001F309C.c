@@ -1,7 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/formation_panel.h"
 
 extern u8 D_80196AED;
 extern s32 D_801CEAB0;
@@ -35,7 +32,6 @@ void func_00200480(void);
 void func_0025FBE0(void);
 void func_0020F0BC(void);
 void func_00201108(void);
-void func_00209774(s32 selector, void *state, u8 value);
 void func_0020BD5C(s32 selector);
 
 void func_001F309C(void)

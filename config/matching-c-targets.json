@@ -11963,6 +11963,18 @@
     {
       "symbol": "func_00249D98",
       "source": "src/lib/func_00249D98.c"
+    },
+    {
+      "symbol": "func_00209774",
+      "source": "src/battle/func_00209774.c"
+    },
+    {
+      "symbol": "func_00209F74",
+      "source": "src/battle/func_00209F74.c"
+    },
+    {
+      "symbol": "func_0021C140",
+      "source": "src/battle/func_0021C140.c"
     }
   ]
 }
