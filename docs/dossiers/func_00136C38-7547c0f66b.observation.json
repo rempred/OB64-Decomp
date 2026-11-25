@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7547C0F66BECAC3563989A11AA67B2C3285E31D935BF3C6FD85B1A617063F7A1",
+  "observationId": "7CBCF7FA98360353E8E3A10FE44C9D06F5845CB235A46FDCE0119E92D8557912",
+  "symbol": "func_00136C38",
+  "authored": {
+    "context": "Setup uses SW for both side-alpha words. The update function uses LW and signed threshold tests before writing them back. The display-list consumer needs the low byte for the FB00 color command.",
+    "effects": [
+      "load-store-width-or-signedness",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "4FEBB8BD802133766BF9C58CB920F0117F484FEDF8E518AE9F525987A0CF5099",
+      "sourceSha256": "EF719FAEB7FD726567C6828F50D78DBA764E24BDA1AFA005D20285B39E34EBB8"
+    },
+    "label": "signed-word-side-alpha-and-byte-consumer",
+    "observedEffect": "KMC retains six LBU operations. Four use byte offset +3 through the selected pointer. The two direct reads end at 0x801F367B and 0x801F3687. The full comparison gains one placed word, from 1,673 to 1,674 of 2,350. The 16 JALs and the exact leader, terminal-setup and special-guard ranges stay in place.",
+    "parentCandidateId": "805BB963B7262654F30DF9AE9DB56B781DF87D75DC9C1D5EB2C5461406ABA0F6",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00136C38.s",
+        "sha256": "627D4FE0F951219885C5FBB5EAC80A1EDE3201BA2C5EC465F5A904AB6D388EDD"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0013581C.s",
+        "sha256": "E3B7E80E58EFAB1AF7F91943342B7E28319420E5A2C38EDDDAEDFF2E993C7E7B"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001361FC.s",
+        "sha256": "DCA997BBFFF3ADE1D9B6B6D83CA9C56B4CBE8BF7DC9C22A6459B4301C8777490"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-11-25-func_00136C38-805bb963b7.c",
+        "sha256": "076095F135E30359D154AD6DACBE7D239524D06C800D4423B6A0551DB4BA5604"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The direct terminal alpha reads still schedule at different positions from retail. Recovering the access width leaves the origin and marker geometry scheduling open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the two byte-array declarations with signed words, carry a pointer to the selected word, and cast the command input to u8. Apply the same cast to the two direct terminal reads."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 74795,
+      "sha256": "4FEBB8BD802133766BF9C58CB920F0117F484FEDF8E518AE9F525987A0CF5099"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EF719FAEB7FD726567C6828F50D78DBA764E24BDA1AFA005D20285B39E34EBB8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00136C38-7547c0f66b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

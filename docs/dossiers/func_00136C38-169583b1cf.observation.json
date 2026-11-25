@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "169583B1CFD6480D822DF51BD3351540887D85CCE7523D64AA37C50152829870",
+  "observationId": "FAA5FA14681CD285A2147655D1495776478114B4D332735721B8E228E69CB0A4",
+  "symbol": "func_00136C38",
+  "authored": {
+    "context": "Each terminal selection rectangle takes a signed slot index. Its layer comes from division by nine and its column from the remainder modulo three.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "1ED7329A6B333978BC8C2FBFC78CCB0ACF0B51266A099C164EB67E3BECADE0C5",
+      "sourceSha256": "B9FB4CDF7AD4A5E92A02543E18E4B61D051713ACCC27D64C4989EB50BF1FA2DF"
+    },
+    "label": "terminal-marker-layer-before-percent-three",
+    "observedEffect": "The emitted code loads the division-by-three multiplier at +0x221C and +0x2344. Both retail locations load the division-by-nine multiplier. The two rectangle JALs already match at +0x232C and +0x245C.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00136C38.s",
+        "sha256": "627D4FE0F951219885C5FBB5EAC80A1EDE3201BA2C5EC465F5A904AB6D388EDD"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Naming the layer alone leaves both reciprocal loads out of order. Overall, 1,666 of 2,350 placed words agree after relocation.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Name the layer quotient before drawing each marker and leave the column expression as slot_index % 3."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 74546,
+      "sha256": "1ED7329A6B333978BC8C2FBFC78CCB0ACF0B51266A099C164EB67E3BECADE0C5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B9FB4CDF7AD4A5E92A02543E18E4B61D051713ACCC27D64C4989EB50BF1FA2DF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00136C38-169583b1cf.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

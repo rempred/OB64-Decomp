@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4F42C27DD389DCC9B8A9DF6EDDA257AE0F7E8EE81E8C0CEDCD298E686D93C0AC",
+  "observationId": "A038E062513AA0BFAE31B5C1F8B7095D4F1283FF3C3A7E6811B72E145B4E7FD8",
+  "symbol": "func_00136C38",
+  "authored": {
+    "context": "Five words differ in the 71-word leader packet when the signed layer division appears after the tile-size store.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "9540CE7B0BAF9B76B8DDABC3CB35DD2AD33B0A818038F33C5DCC4184F4C01C78",
+      "sourceSha256": "F355D1E6EBAE86C2D58DB252ECFE9FAEF07D6E9D11A8A4B9AAAB7537A33E95EB"
+    },
+    "label": "leader-layer-quotient-before-column-quotient",
+    "observedEffect": "The layer multiplier moves to S1 and the column multiplier to T6. T3 supplies the tile-size payload, and T4 and T5 supply the render and combine payloads. All 71 words at +0x1CD8 through +0x1DF0 match after 24 relocations. The related terminal-marker candidate retains this packet.",
+    "parentCandidateId": "0EB1B8C4B78C48DBB8C2DD4CF17B4505D0A8D8BD829DC048351343F75AC839FE",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00136C38.s",
+        "sha256": "627D4FE0F951219885C5FBB5EAC80A1EDE3201BA2C5EC465F5A904AB6D388EDD"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-11-25-func_00136C38-0eb1b8c4b7.c",
+        "sha256": "4C932E932DEFFFD3EE94EE64578C81C20219D96D7EA8703F2FC5F7EFAC10412B"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-11-25-func_00136C38-805bb963b7.c",
+        "sha256": "076095F135E30359D154AD6DACBE7D239524D06C800D4423B6A0551DB4BA5604"
+      }
+    ],
+    "relatedCandidateIds": [
+      "805BB963B7262654F30DF9AE9DB56B781DF87D75DC9C1D5EB2C5461406ABA0F6"
+    ],
+    "remainingFailure": "The high-half ordering near the leader guard and the registers for the X and Y origins still differ. The complete function remains nonexact.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move only leader_layer = position / 9 to immediately after the position load, before leader_column_group = position / 3."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 74433,
+      "sha256": "9540CE7B0BAF9B76B8DDABC3CB35DD2AD33B0A818038F33C5DCC4184F4C01C78"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F355D1E6EBAE86C2D58DB252ECFE9FAEF07D6E9D11A8A4B9AAAB7537A33E95EB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00136C38-4f42c27dd3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

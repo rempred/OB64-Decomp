@@ -4,7 +4,7 @@ The [integrator](codex://threads/01a20fed-25a2-7272-9eea-c241bebda0ed) owns prod
 
 ## Current production assignment
 
-The eight-function Display wave passed the [installed structural audit](../../../build/integration/army-records/display-installed-audit.json) and its single fresh verification on CURRENT `0DC8AAC48798…`. The integrator retains production ownership pending the Director’s next complete wave. Selection continues on bundle B. Coordinate live diagnostic-contract replacements at a command boundary.
+The Director accepted Display at `183cbade`. The integrator owns production for the complete seven-function Selection wave. The [worker cursor](../../../build/matching/army-selection/cursor.md) records its remaining source work on bundle B. The four early Selection observations cover the [leader packet](../../dossiers/func_00136C38-4f42c27dd3.md), [terminal quotients](../../dossiers/func_00136C38-805bb963b7.md), [side alpha](../../dossiers/func_00136C38-7547c0f66b.md), [member-value loop](../../dossiers/func_00136C38-98a3f171e6.md). Seven preserved sources supply all four comparisons. The [research handoff](../../../build/integration/army-records/selection-early-research/published-research.json) binds their private and published identities. Await the Director’s complete-wave release. Coordinate live diagnostic-contract replacements at a command boundary.
 
 ## Accepted wave evidence
 

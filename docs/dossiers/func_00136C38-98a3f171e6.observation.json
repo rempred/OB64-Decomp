@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "98A3F171E68E23D2DA60124AC6F18379ED9C611B1BF2BB15737A2948B5C9FD70",
+  "observationId": "D02778D8CEAA1010EABA81B2DB9B994CC90FC390B1D4678157C384D873E6CF66",
+  "symbol": "func_00136C38",
+  "authored": {
+    "context": "The parent already names the within-layer remainder, calculates its row before scaling the layer, and reproduces the first ten geometry words. Its explicit maximum mask still changes the drawing-call setup.",
+    "effects": [
+      "register-allocation",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "3DA904F49057A31FA8D0A3105751A84985B568E48D06B26FE6425FAADB6EA76A",
+      "sourceSha256": "CAD722B2576D7D6625FF89FB185675D48A97F9FD17495040D6F55B3DB22B9DA4"
+    },
+    "label": "member-value-layer-remainder-and-maximum-forwarding",
+    "observedEffect": "The call delay slot again moves T1 into A3 at +0x1C2C. The entire 117-word member-value region at +0x1A8C through +0x1C5C now matches after 19 relocations, including both drawing calls and the loop branch. The parent matched 87 words in the same region.",
+    "parentCandidateId": "023F3ECDB2538BB1870754BD91CA2B04754FA194BA4F5EBCE3FD170FA38E2A35",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00136C38.s",
+        "sha256": "627D4FE0F951219885C5FBB5EAC80A1EDE3201BA2C5EC465F5A904AB6D388EDD"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-11-25-func_00136C38-023f3ecdb2.c",
+        "sha256": "DB9B22BEEB34C49F958C2E3DE11BBAD3CAC3BF03B3BAED3349F725B04FBA4EFA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The preceding atlas packet and the two coordinate-base adds before this region still differ. The complete function has 1,756 of 2,350 matching placed words.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the same geometry. Declare the loaded maximum as u16 and pass it directly to the existing word parameter, removing the intermediate signed word and explicit mask."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 75181,
+      "sha256": "3DA904F49057A31FA8D0A3105751A84985B568E48D06B26FE6425FAADB6EA76A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CAD722B2576D7D6625FF89FB185675D48A97F9FD17495040D6F55B3DB22B9DA4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00136C38-98a3f171e6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
