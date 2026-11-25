@@ -10,7 +10,7 @@ s32 memcmp_0002cc90(void *a, void *b, s32 n);
 void func_0001aaa0(void);
 void func_0001aac0(void);
 void func_0001b0a0(void *, u8 *, u8 *, u32, s32);
-void func_0001b240(void *a, void *b);
+void * func_001CED40(s32, s32);
 typedef struct {
     s16 h[13];
 } Rec712;
