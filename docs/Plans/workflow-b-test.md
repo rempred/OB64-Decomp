@@ -1,6 +1,17 @@
 # Testing Workflow B
 
-Run this recipe from the Decomp checkout in PowerShell 7. The first exercise uses a solved function to check parallel execution and how results are judged. The second tests whether evidence travels between workers. The third measures the effect on new work. [Workflow B](workflow-b.md)
+The live Selection assignment uses the actual upstream permuter on an unfinished function. The historical exercises below cover concurrent workbench checks and transfer of a compiler observation. The prospective timing comparison is optional and has been deferred for Selection. [Production workflow](workflow-b.md#run-with-one-source-worker)
+
+## Selection run on an unfinished function
+
+On November 25 the worker ran upstream revision `059609d4` on `func_00150550` with the selected bundle B compiler. Both cases reproduced the starting object, decoded all 707 words, and included the 92-byte executable return tail. Each ran `permuter.py <case> -j 1 --stack-diffs --no-ignore-branch-targets --show-errors --abort-exceptions --show-timings`. The saved invocations identify the interpreter, case and working directory on Joe’s checkout.
+
+| Search | Trials | Result |
+| --- | ---: | --- |
+| Loop setup and item pointer | 24 | The best heuristic score fell from 955 to 461. Its candidate had 68 differing words across the full function, compared with 36 for the starting source. [Invocation](../../build/matching/wb-army-a/perm-150550-preheader-r4/invocation.json) · [Generated C change](../../build/matching/wb-army-a/perm-150550-preheader-r4/output-461-1/diff.txt) |
+| Display-list packet construction | 8 | The best score tied the starting 955. All iterations compiled. [Invocation](../../build/matching/wb-army-b/perm-150550-packet-r4/invocation.json) · [Search output](../../build/matching/wb-army-b/perm-150550-packet-r4/upstream.stdout.txt) |
+
+The worker took a generated source from each search back through bundle B. Both compiled as `PURE_C`. The 36-difference parent remains the best source from this round. [Guarded 461 candidate](../../build/matching/wb-army-a/150550-p01-preheader-461.json) · [Guarded 955 candidate](../../build/matching/wb-army-b/150550-p02-packet-955.json)
 
 ## 1. Replay two candidates concurrently
 
@@ -104,7 +115,7 @@ The recipient compares its current best with one candidate that applies the idea
 
 **Three-worker startup check.** At enrollment the Director names all six exclusive slots and the host budget. Each worker takes a different assigned target and two candidates prepared from the same parent. Use the `Invoke-ReplayPair` pattern with that worker's selected launcher, manifest and two assigned slots. For warm ordinary comparisons, record the actual cache flag in place of the cold-replay assertion. Retain per-round sources and use distinct report names when reusing a slot. Start one pair per worker together if the budget is six. Verify six distinct roots, overlap within each worker’s pair and overlap between workers’ command intervals. If the host can spare four slots, exercise 2/1/1 and record that configuration separately. A private root reporting busy, a guard rejection or a case with zero valid variants is recorded explicitly; it earns no timing win.
 
-Use the next comparable, assigned near-matches. Choose the unit before seeing results: one worker, one function, one starting candidate and one investigation window. As a pilot default give each worker two cases, one with each workflow. Alternate order across workers (A→B, B→A, A→B), then reverse on a second round if available. Use new cases each time; solving the same function twice leaks the answer. Balance size, starting mismatches, family and evidence mode where possible. Mark cases that had prior exposure to a donor. Use identical pinned inputs within each comparison and the same three workers, active-work window and host-wide native-job ceiling. Record actual occupancy because B can consume spare slots. A uses the existing guided iteration, scripts and ordinary intake; B uses the bounded batches and explicit cross-worker retrieval in the runbook.
+Use the next comparable, assigned near-matches. Choose the unit before seeing results: one worker, one function, one starting candidate and one investigation window. As a pilot default give each worker two cases, one with each workflow. Alternate order across workers (A→B, B→A, A→B), then reverse on a second round if available. Use new cases each time; solving the same function twice leaks the answer. Balance size, starting mismatches, family and evidence mode where possible. Mark cases that had prior exposure to a donor. Use identical pinned inputs within each comparison and the same three workers, active-work window and host-wide native-job ceiling. Record actual occupancy because B can consume spare slots. A uses ordinary matching. B adds repeated upstream permuter searches on the current near-match and carries supported findings to other targets. Count the permuter’s native compiles in the job budget.
 
 | Capture one row per case | What to enter |
 | --- | --- |

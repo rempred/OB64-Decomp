@@ -1082,9 +1082,7 @@ into prose documents.
 
 ## Private candidate workers
 
-For the opt-in three-worker trial, see [Workflow B](Plans/workflow-b.md) and its
-[parallel replay and transfer tests](Plans/workflow-b-test.md). In that trial each worker's
-brief names its primary root and a second exclusive root for same-target comparisons.
+[Workflow B](Plans/workflow-b.md) alternates source reconstruction, local decomp-permuter searches and guarded checks of generated changes. The Director names the worker’s exclusive scratch roots and native job budget. [Run evidence and optional exercises](Plans/workflow-b-test.md)
 
 The Director assigns each candidate worker a separate complete wave and one short ignored directory
 under `build/matching/`, preferably using less-related families. Each worker owns one target at a time.
