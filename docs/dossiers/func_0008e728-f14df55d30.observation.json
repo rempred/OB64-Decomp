@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F14DF55D3068D8033C3252383A85D2C232DA8E77DF5E86F3E3BC4BB2D00112D5",
+  "observationId": "26B5AEB69A9BC97120E363F0FF9F031EFE2515E131539F675D8B7441B1452E5B",
+  "symbol": "func_0008e728",
+  "authored": {
+    "context": "The stat panel retains the original byte index, recognizes 255 and applies a signed-word validity mask.",
+    "effects": [
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        }
+      ],
+      "expandedSha256": "10963D744189AF3AB9B36D41C71DA6C371C9BF9FDE7C269AC29A9BDE5E933611",
+      "sourceSha256": "81DD654B66E57FC26CBD0619BF70E56F3DE594891FF5A0959901B66015213359"
+    },
+    "label": "equipment-index-mask-operands",
+    "observedEffect": "The control emits 1448 text bytes. Against retail, 1 instruction words differ after resolving the native relocations; the first is at ROM 0x0008E8A4.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/ui/func_0008e728.c",
+        "sha256": "28A0D2013597F71CF44B14421C4FC2CF87E9DE0BFB0EC079EFA3DDF87A0D84AC"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Only the two input registers of the AND at ROM 0x8E8A4 differ in the control.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control assigns the masked value to the selected byte. The integrated source updates the incoming word before assigning the selected byte."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      }
+    ],
+    "expanded": {
+      "bytes": 8730,
+      "sha256": "10963D744189AF3AB9B36D41C71DA6C371C9BF9FDE7C269AC29A9BDE5E933611"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "81DD654B66E57FC26CBD0619BF70E56F3DE594891FF5A0959901B66015213359"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_0008e728-f14df55d30.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

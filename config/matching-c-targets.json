@@ -11975,6 +11975,38 @@
     {
       "symbol": "func_0021C140",
       "source": "src/battle/func_0021C140.c"
+    },
+    {
+      "symbol": "func_00189778",
+      "source": "src/ui/func_00189778.c"
+    },
+    {
+      "symbol": "func_00188CDC",
+      "source": "src/ui/func_00188CDC.c"
+    },
+    {
+      "symbol": "func_00083970",
+      "source": "src/ui/func_00083970.c"
+    },
+    {
+      "symbol": "func_00083c5c",
+      "source": "src/ui/func_00083c5c.c"
+    },
+    {
+      "symbol": "func_001ADD4C",
+      "source": "src/ui/func_001ADD4C.c"
+    },
+    {
+      "symbol": "func_001AE25C",
+      "source": "src/ui/func_001AE25C.c"
+    },
+    {
+      "symbol": "func_00055b28",
+      "source": "src/ui/func_00055b28.c"
+    },
+    {
+      "symbol": "func_0008e728",
+      "source": "src/ui/func_0008e728.c"
     }
   ]
 }

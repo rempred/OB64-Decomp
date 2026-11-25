@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "26339A365DBD7903BC1DF95736E0B55C5AAEAD3AC4E8D5F669E38D4073B653DE",
+  "observationId": "F78E6348EEF2680AF47F041A37461D700D97A6273DBB98F52CB7E28E8D016C89",
+  "symbol": "func_001AE25C",
+  "authored": {
+    "context": "The group renderer computes marker and member-sprite vertical origins separately.",
+    "effects": [
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        },
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 3321,
+          "path": "include/game/cutscene_panels.h",
+          "sha256": "0DE3106ACC1E7DDFEB22D8BA2B1F63E612EFC39D4F40C8162D5094BB63A42C98"
+        },
+        {
+          "bytes": 706,
+          "path": "include/game/panel_constructor.h",
+          "sha256": "F2DE0161B31ADE9066F32D417A5DEFE2F6C8A94503A7B1ECC7BE28FD02250803"
+        },
+        {
+          "bytes": 386,
+          "path": "include/game/unit_record_lookup.h",
+          "sha256": "A7DF18B9D5B398B05438659543AB093B38A0D58A6BD4F95C008D95A692585B77"
+        }
+      ],
+      "expandedSha256": "882F24339BED15CDD1821DE7F0ECD6C22FA92CEE5603967F474F619845EC60C7",
+      "sourceSha256": "2D7C2705C14A0045D83CEE073FFD9CA76C7B000728AB4FE50AB39F588813C8CB"
+    },
+    "label": "display-sprite-y-origin",
+    "observedEffect": "The control emits 3884 text bytes. Against retail, 33 instruction words differ after resolving the native relocations; the first is at ROM 0x001AE478.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/ui/func_001AE25C.c",
+        "sha256": "100CA05D32A07D71AB467BC5589F37B77FAA6C750F96B40456FFECC598382152"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The marker setup agrees; the sprite-layer allocation diverges first at ROM 0x1AE478.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control uses the matching marker expression while keeping the earlier sprite Y calculation. The integrated source also groups the sprite origin with its column contribution before adding the row and layer."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      },
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 3321,
+        "path": "include/game/cutscene_panels.h",
+        "sha256": "0DE3106ACC1E7DDFEB22D8BA2B1F63E612EFC39D4F40C8162D5094BB63A42C98"
+      },
+      {
+        "bytes": 706,
+        "path": "include/game/panel_constructor.h",
+        "sha256": "F2DE0161B31ADE9066F32D417A5DEFE2F6C8A94503A7B1ECC7BE28FD02250803"
+      },
+      {
+        "bytes": 386,
+        "path": "include/game/unit_record_lookup.h",
+        "sha256": "A7DF18B9D5B398B05438659543AB093B38A0D58A6BD4F95C008D95A692585B77"
+      }
+    ],
+    "expanded": {
+      "bytes": 22436,
+      "sha256": "882F24339BED15CDD1821DE7F0ECD6C22FA92CEE5603967F474F619845EC60C7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2D7C2705C14A0045D83CEE073FFD9CA76C7B000728AB4FE50AB39F588813C8CB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_001AE25C-26339a365d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

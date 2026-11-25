@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0755D280DC63707B7638071EE1211CE916BD6134941E7BFCD2F7C5313D8F87DC",
+  "observationId": "33950C7E57CB4AAE7EF9F4F432231A82D567C6126000B00B7CA1D272F7B8C90D",
+  "symbol": "func_00189778",
+  "authored": {
+    "context": "The callback tests a signed member word against 100 before choosing army or scenario record addressing.",
+    "effects": [
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 3321,
+          "path": "include/game/cutscene_panels.h",
+          "sha256": "0DE3106ACC1E7DDFEB22D8BA2B1F63E612EFC39D4F40C8162D5094BB63A42C98"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "1BFF05F6A5B151B2D1D11C748F2566781A85E968D16A560B23605E3448BCCFE4",
+      "sourceSha256": "A8D328C8ECF64D646BC72AE39EC5C8926D05BE1DE2D62D23DACF12E390C46758"
+    },
+    "label": "fallback-index-address-width",
+    "observedEffect": "The control emits 8792 bytes for the 8788-byte body. The first differing placed word is at ROM 0x001897C8.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/ui/func_00189778.c",
+        "sha256": "5938B6CF9E864EDFAD095C7352D55B531053FA999BF10FE9DB07B6E1A2055DFE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The broader index view introduces an extra instruction. The signed cutoff and the two register uses remain distinguishable.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control keeps 31 bits of the scenario index for the 52-byte stride. The integrated source keeps 30 bits; the discarded upper two bits cannot affect the 32-bit address after multiplication by 52."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 3321,
+        "path": "include/game/cutscene_panels.h",
+        "sha256": "0DE3106ACC1E7DDFEB22D8BA2B1F63E612EFC39D4F40C8162D5094BB63A42C98"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 60528,
+      "sha256": "1BFF05F6A5B151B2D1D11C748F2566781A85E968D16A560B23605E3448BCCFE4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A8D328C8ECF64D646BC72AE39EC5C8926D05BE1DE2D62D23DACF12E390C46758"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00189778-0755d280dc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

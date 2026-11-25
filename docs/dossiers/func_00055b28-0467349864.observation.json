@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0467349864BF3455B0746B41CB24A56A82E218E290B084F16B474EAFB7DE2D6E",
+  "observationId": "F1E37469A197C2433FEB8E91FF14D47069BA1A70DA2718D6EE6D8A68A8DB3323",
+  "symbol": "func_00055b28",
+  "authored": {
+    "context": "The text substitution handler tests the last divisor and first nonzero decimal digit.",
+    "effects": [
+      "register-allocation",
+      "delay-slot"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        },
+        {
+          "bytes": 241,
+          "path": "include/game/indexed_record_lookup.h",
+          "sha256": "E42A601D1243E969AAAFF6FF967279BB49AC3627EF124D7BDBAFA1B587FB3AC5"
+        }
+      ],
+      "expandedSha256": "3586BC1A4E6C9EF71AE8518A72553422BF293884A78163C94F686BE1497016B0",
+      "sourceSha256": "D571534F821148E8DF560BCE24C8DB3A8A6F8EF6200EC27127BC3D08A88DC38B"
+    },
+    "label": "decimal-leading-digit-flag",
+    "observedEffect": "The control emits 2444 text bytes. Against retail, 10 instruction words differ after resolving the native relocations; the first is at ROM 0x00055C3C.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/ui/func_00055b28.c",
+        "sha256": "F340CF02AFEB952BA36D300DFAC031581382847A0AA803BC1536DD9585A7366E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The separate assignments exchange the flag and reciprocal registers. The shared assignment restores allocation and both delay-slot positions.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control assigns the started flag in separate conditional arms. The integrated source shares one assignment after the short-circuit condition."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      },
+      {
+        "bytes": 241,
+        "path": "include/game/indexed_record_lookup.h",
+        "sha256": "E42A601D1243E969AAAFF6FF967279BB49AC3627EF124D7BDBAFA1B587FB3AC5"
+      }
+    ],
+    "expanded": {
+      "bytes": 13913,
+      "sha256": "3586BC1A4E6C9EF71AE8518A72553422BF293884A78163C94F686BE1497016B0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D571534F821148E8DF560BCE24C8DB3A8A6F8EF6200EC27127BC3D08A88DC38B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00055b28-0467349864.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

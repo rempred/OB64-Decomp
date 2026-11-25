@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7FA348ABA92B847186879DCEE3495343B657C7B978A9953B0B731F903FCF40C4",
+  "observationId": "172BDA7181437AF1D858D0A918DDEFF9AA88DB81A607C03CE78D62690271BC82",
+  "symbol": "func_00083970",
+  "authored": {
+    "context": "The initializer reads member IDs and positions from the same 25-byte scenario record.",
+    "effects": [
+      "register-allocation",
+      "instruction-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "0A3074B05417FEFF00A8CA1F484CF57F80AE8D07DC7E89B86B21E068164752A8",
+      "sourceSha256": "D3904D8430709C61F8EAF56CB045341E0206A7F95F33CE017AC7E3D0C43BF8DC"
+    },
+    "label": "scenario-member-field-cursor",
+    "observedEffect": "The control emits 748 text bytes. Against retail, 4 instruction words differ after resolving the native relocations; the first is at ROM 0x000839EC.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/ui/func_00083970.c",
+        "sha256": "B0E7552F9B2D2C90E67D392D5C952A0029B9B1D25CA93DE1B3D1626D6F7479C1"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Four instructions retain different cursor setup or update operands in the separate-pointer form.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control advances separate byte pointers. The integrated source indexes the two fields with the common slot, keeping the orientation branches."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 6319,
+      "sha256": "0A3074B05417FEFF00A8CA1F484CF57F80AE8D07DC7E89B86B21E068164752A8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D3904D8430709C61F8EAF56CB045341E0206A7F95F33CE017AC7E3D0C43BF8DC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00083970-7fa348aba9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
