@@ -4,7 +4,7 @@
 
 **Selection wave.** Joe assigned the [Astra Medium advisor](codex://threads/01a21300-91c6-7122-ad96-31a6dc9db52f) through wave acceptance. The advisor compares `00136C38` candidates. Selection owns experiments on [immutable B](../../../build/integration/army-records/selection-b-release.json). Monitor is `army-records-261124-selection-advisor`. Preserve both `00150550` rows. [Baseline test follow-ups](../../NEXT_STEPS.md#tooling-and-research-follow-ups)
 
-**Display integration.** All [eight private matches](../../../build/matching/army-display/cursor.md) are queued after formation. The [native table](../../../build/matching/army-display/func_00083c5c-native-table.json) for `00083C5C` fills row 1502, including four alignment bytes. The formation reviewer checks this table before the integrator binds it on the accepted base.
+**Display integration.** All [eight private matches](../../../build/matching/army-display/cursor.md) are queued after formation. The [native table](../../../build/matching/army-display/func_00083c5c-native-table.json) for `00083C5C` fills row 1502, including four alignment bytes. [Independent review](../../../build/integration/army-records/display-structural-review/design.json) confirmed whole-section placement. Bind all 64 bytes at integration.
 
 **Formation integration.** All [three candidates](../../../build/matching/army-formation/formation-complete-wave-handoff.md) passed private comparison. The [structural reviewer](codex://threads/01a21345-247e-79d1-8f67-21a6925eaa69) checks the text suffix and shared switch-table ownership in rows 3858 and 3985. Monitor `army-records-261124-formation-review`.
 
