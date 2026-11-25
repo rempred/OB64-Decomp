@@ -10,7 +10,8 @@ typedef struct {
 extern Gfx *gTitleCardDisplayListCursor;
 extern u8 D_801B8388[];
 u32 func_001CE114(s32, u32, s32);
-void func_001CF3AC(u8 *img, s16 x, s16 y);
+struct SizeCE;
+void func_001CF3AC(struct SizeCE *s, s32 a, s32 b);
 typedef struct {
     u8 b[4];
     u16 w;
@@ -49,5 +50,5 @@ void func_001D7650(Spr1D47 *s) {
         g->w1 = 1;
         gTitleCardDisplayListCursor = g + 1;
     }
-    func_001CF3AC(s->img, s->x, s->y);
+    func_001CF3AC((struct SizeCE *)s->img, s->x, s->y);
 }
