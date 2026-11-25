@@ -4,7 +4,7 @@
 
 **Selection wave.** The former recruitment worker started `00135EE4` in `build/matching/army-selection` with [immutable B and its v2 manifest](../../../build/integration/army-records/selection-b-release.json). All seven prepared. The complete `00150550` spans rows 2704 and 2705. The routine suite passed 63/68, with all five failures reproduced on the baseline. [Follow-ups](../../NEXT_STEPS.md#tooling-and-research-follow-ups)
 
-**Display integration.** The integrator assesses the [row 1502 switch table](../../../asm/original/rev0/lib/table_000871c0.s) for `00083C5C`. Fifteen retail entries point inside row 1475. Reconcile the final zero word against the native object. The Director routes structural review when the binding is ready.
+**Display integration.** The [existing placement rule](army-records-integration.md#display-auxiliary-binding) supports the 15 entries in row 1502 for `00083C5C`. At handoff, the integrator checks native relocations and whether the final four bytes are compiler alignment or retained ASM. The Director routes structural review of the actual binding.
 
 **Formation integration.** Reconcile `00209F74`’s 15-entry table with `00208900`’s 64-byte retained tail.
 
