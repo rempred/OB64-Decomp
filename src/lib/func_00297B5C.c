@@ -1,0 +1,32 @@
+typedef unsigned char u8;
+typedef signed short s16;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef float f32;
+extern u8 *D_8022A974;
+void func_00297B5C(u8 k) {
+    u8 *o = (*(u8 * *)((u8 *)((*(u8 * *)((u8 *)(D_8022A974 + k * 4) + (0x19B8)))) + (0xC)));
+    f32 d0;
+    f32 d1;
+    f32 d2;
+    f32 d3;
+    (*(volatile s32 *)((u8 *)(o) + (0x2C))) = (*(volatile s32 *)((u8 *)(o) + (0x3C)));
+    d0 = (f32)((*(volatile s32 *)((u8 *)(o) + (0x3C))) - (*(volatile s32 *)((u8 *)(o) + (0x2C)))) / 8.0f;
+    (*(volatile s32 *)((u8 *)(o) + (0x30))) = (*(volatile s32 *)((u8 *)(o) + (0x40)));
+    d1 = (f32)((*(volatile s32 *)((u8 *)(o) + (0x40))) - (*(volatile s32 *)((u8 *)(o) + (0x30)))) / 8.0f;
+    (*(volatile s32 *)((u8 *)(o) + (0x34))) = (*(volatile s32 *)((u8 *)(o) + (0x44)));
+    d2 = (f32)((*(volatile s32 *)((u8 *)(o) + (0x44))) - (*(volatile s32 *)((u8 *)(o) + (0x34)))) / 8.0f;
+    (*(volatile s32 *)((u8 *)(o) + (0x38))) = (*(volatile s32 *)((u8 *)(o) + (0x48)));
+    d3 = (f32)((*(volatile s32 *)((u8 *)(o) + (0x48))) - (*(volatile s32 *)((u8 *)(o) + (0x38)))) / 8.0f;
+    (*(s16 *)((u8 *)(o) + (0x28))) = 0;
+    (*(f32 *)((u8 *)(o) + (0x5C))) = (*(s32 *)((u8 *)(o) + (0x2C)));
+    (*(f32 *)((u8 *)(o) + (0x60))) = (*(s32 *)((u8 *)(o) + (0x30)));
+    (*(f32 *)((u8 *)(o) + (0x64))) = (*(s32 *)((u8 *)(o) + (0x34)));
+    (*(f32 *)((u8 *)(o) + (0x68))) = (*(s32 *)((u8 *)(o) + (0x38)));
+    (*(s16 *)((u8 *)(o) + (0x18))) = 0xFF;
+    (*(u16 *)((u8 *)(o) + (0x26))) |= 1;
+    (*(f32 *)((u8 *)(o) + (0x6C))) = d0;
+    (*(f32 *)((u8 *)(o) + (0x70))) = d1;
+    (*(f32 *)((u8 *)(o) + (0x74))) = d2;
+    (*(f32 *)((u8 *)(o) + (0x78))) = d3;
+}

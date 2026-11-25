@@ -1,0 +1,51 @@
+typedef unsigned char u8;
+typedef signed short s16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef float f32;
+void *func_000016C4(void *ptr);
+void *D_8009DBB8(void *dst, u32 handle);
+typedef struct {
+    s32 arg;
+    u8 unk004[4];
+    void *data;
+    u8 unk00C[2];
+    s16 xE;
+    s16 x10;
+    u8 unk012[2];
+    f32 px;
+    f32 py;
+    u8 unk01C[0x8CC];
+    void *path;
+    s16 step;
+    u8 unk8EE[6];
+} Work244;
+extern u8 D_8018FAE0;
+extern u8 D_801D7D60[];
+extern Work244 D_801D7EE0;
+void bzero(void *p, s32 n);
+void D_801C1D90(void);
+void D_801C1A94(void);
+void D_801C2310(void);
+void func_0024AE88(void);
+extern inline void func_0024782C(s32 arg) {
+    u32 *idx;
+    D_801C1D90();
+    D_801C1A94();
+    D_801C2310();
+    bzero(D_801D7D60, 0x180);
+    bzero(&D_801D7EE0, 0x8F4);
+    D_801D7EE0.xE = 0;
+    D_801D7EE0.x10 = 0xF0;
+    D_801D7EE0.arg = arg;
+    idx = D_8009DBB8(((void *)0), 0x377870);
+    D_801D7EE0.data = D_8009DBB8(((void *)0), idx[0]);
+    func_000016C4(idx);
+}
+void func_00247F4C(s32 arg) {
+    if (D_8018FAE0 == 3) {
+        func_0024AE88();
+    } else {
+        func_0024782C(arg);
+    }
+}

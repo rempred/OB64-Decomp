@@ -1,0 +1,20 @@
+typedef unsigned char u8;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef struct {
+    u32 w0;
+    u32 w1;
+} Gfx;
+extern Gfx *gTitleCardDisplayListCursor;
+void func_00226D18(u8 *p, s32 a, s32 b);
+void func_002272F8(u8 *p, s32 a, s32 b);
+void func_00228CBC(u8 *p, s32 a, s32 b) {
+    Gfx *g = gTitleCardDisplayListCursor++;
+    g->w0 = 0xFA000000;
+    g->w1 = p[0x7F] | 0xFFFFFF00;
+    func_002272F8(p + 0x24, a, b);
+    g = gTitleCardDisplayListCursor++;
+    g->w0 = 0xFA000000;
+    g->w1 = p[0x7F] | 0xF8F0A800;
+    func_00226D18(p + 0x54, a, b);
+}

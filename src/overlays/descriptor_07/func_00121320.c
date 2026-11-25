@@ -1,0 +1,49 @@
+typedef unsigned char u8;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef float f32;
+void D_801B2B78(u8 *u);
+extern volatile f32 D_801F0D98;
+extern volatile f32 D_801F0D9C;
+extern volatile f32 D_801F0DA0;
+extern volatile f32 D_801F0DA4;
+extern inline s32 CellV120(f32 x, f32 z) {
+    f32 z0 = D_801F0D9C;
+    f32 x0;
+    z -= z0;
+    z *= 64.0f;
+    z /= D_801F0DA4 - z0;
+    x0 = D_801F0D98;
+    x -= x0;
+    x *= 64.0f;
+    x /= D_801F0DA0 - x0;
+    return ((s32)z << 6) + (s32)x;
+}
+void func_00121320(u8 *o, f32 x, f32 y, f32 z, f32 x2, f32 y2, f32 z2) {
+    s32 c;
+    D_801B2B78(o);
+    o[0x91] = 0;
+    (*(s32 *)((u8 *)(o) + (0x84))) = -1;
+    (*(s32 *)((u8 *)(o) + (0x80))) = -1;
+    (*(s32 *)((u8 *)(o) + (0x88))) = 0;
+    o[0x92] = 0;
+    (*(f32 *)((u8 *)(o) + (0x28))) = x;
+    (*(f32 *)((u8 *)(o) + (0x2C))) = y;
+    (*(f32 *)((u8 *)(o) + (0x30))) = z;
+    (*(u32 *)((u8 *)(o) + (0))) &= ~2;
+    c = CellV120(x, z);
+    (*(f32 *)((u8 *)(o) + (0x34))) = x2;
+    (*(f32 *)((u8 *)(o) + (0x38))) = y2;
+    (*(f32 *)((u8 *)(o) + (0x3C))) = z2;
+    (*(s32 *)((u8 *)(o) + (0x58))) = c;
+    c = CellV120(x2, z2);
+    o[0x20] = 2;
+    (*(s32 *)((u8 *)(o) + (0x24))) = 1;
+    (*(u32 *)((u8 *)(o) + (0))) &= ~4;
+    (*(u32 *)((u8 *)(o) + (0))) &= ~0x200;
+    (*(u32 *)((u8 *)(o) + (0))) |= 2;
+    (*(u32 *)((u8 *)(o) + (0))) &= ~0x800000;
+    o[0x91] = 1;
+    (*(s32 *)((u8 *)(o) + (0x84))) = -1;
+    (*(s32 *)((u8 *)(o) + (0x5C))) = c;
+}

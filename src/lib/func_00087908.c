@@ -1,0 +1,13 @@
+typedef signed short s16;
+typedef signed int s32;
+typedef unsigned int u32;
+typedef struct {
+    u32 w0;
+    u32 w1;
+} Gfx;
+extern Gfx *gTitleCardDisplayListCursor;
+void func_00087908(s32 x0, s32 y0, s32 x1, s32 y1) {
+    { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = ((unsigned int)(((unsigned int)(0xE7) & ((0x01 << (8)) - 1)) << (24))); _g->w1 = 0; };
+    { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = ((unsigned int)(((unsigned int)(0xE4) & ((0x01 << (8)) - 1)) << (24))) | ((unsigned int)(((unsigned int)((((s16)(x1 << 2)) > (0) ? ((s16)(x1 << 2)) : (0))) & ((0x01 << (12)) - 1)) << (12))) | ((unsigned int)(((unsigned int)((((s16)(y1 << 2)) > (0) ? ((s16)(y1 << 2)) : (0))) & ((0x01 << (12)) - 1)) << (0))); _g->w1 = ((unsigned int)(((unsigned int)((0)) & ((0x01 << (3)) - 1)) << (24))) | ((unsigned int)(((unsigned int)((((s16)(x0 << 2)) > (0) ? ((s16)(x0 << 2)) : (0))) & ((0x01 << (12)) - 1)) << (12))) | ((unsigned int)(((unsigned int)((((s16)(y0 << 2)) > (0) ? ((s16)(y0 << 2)) : (0))) & ((0x01 << (12)) - 1)) << (0))); { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = ((unsigned int)(((unsigned int)((0xE1)) & ((0x01 << (8)) - 1)) << (24))); _g->w1 = (unsigned int)((((unsigned int)(((unsigned int)(((0) - (((s16)(x0 << 2) < 0) ? (((s16)(0x400 / ((x1 - x0) / 16)) < 0) ? ((((((s16)(x0 << 2) * (s16)(0x400 / ((x1 - x0) / 16))) >> 7)) > (0) ? ((((s16)(x0 << 2) * (s16)(0x400 / ((x1 - x0) / 16))) >> 7)) : (0))) : ((((((s16)(x0 << 2) * (s16)(0x400 / ((x1 - x0) / 16))) >> 7)) < (0) ? ((((s16)(x0 << 2) * (s16)(0x400 / ((x1 - x0) / 16))) >> 7)) : (0)))) : 0))) & ((0x01 << (16)) - 1)) << (16))) | ((unsigned int)(((unsigned int)(((1 << 5) - (((y0 << 2) < 0) ? (((s16)(0x400) < 0) ? ((((((s16)(y0 << 2) * (s16)(0x400)) >> 7)) > (0) ? ((((s16)(y0 << 2) * (s16)(0x400)) >> 7)) : (0))) : ((((((s16)(y0 << 2) * (s16)(0x400)) >> 7)) < (0) ? ((((s16)(y0 << 2) * (s16)(0x400)) >> 7)) : (0)))) : 0))) & ((0x01 << (16)) - 1)) << (0))))); }; { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = ((unsigned int)(((unsigned int)((0xF1)) & ((0x01 << (8)) - 1)) << (24))); _g->w1 = (unsigned int)((((unsigned int)(((unsigned int)((0x400 / ((x1 - x0) / 16))) & ((0x01 << (16)) - 1)) << (16))) | ((unsigned int)(((unsigned int)((0x400)) & ((0x01 << (16)) - 1)) << (0))))); }; };
+    { Gfx *_g = (Gfx *)(gTitleCardDisplayListCursor++); _g->w0 = ((unsigned int)(((unsigned int)(0xE7) & ((0x01 << (8)) - 1)) << (24))); _g->w1 = 0; };
+}
