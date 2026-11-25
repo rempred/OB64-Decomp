@@ -154,14 +154,15 @@
         "register-allocation",
         "scheduling-or-block-order"
       ],
-      "applicability": "E09/P07 real constants/addresses/results and the E03 callback-result control remain in details. E05 675B4 captures the actual embedded-record pointer before command construction, moving addiu before conversion and restoring the call-delay store; the source form also transfers to67668. Keep each source-bound control. Terminal suffix proof is separate, and no universal named-pointer rule follows.",
+      "applicability": "E09/P07 real constants/addresses/results and the E03 callback-result control remain in details. E05 675B4 captures the actual embedded-record pointer before command construction, moving addiu before conversion and restoring the call-delay store; the source form also transfers to67668. Keep each source-bound control. Terminal suffix proof is separate, and no universal named-pointer rule follows. In 136C38, forwarding the halfword maximum restores the call delay slot.",
       "note": "docs/matching-c/e08-e09-p07-reuse.md#lesson-early-normalized-word-call-lifetime",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
         "docs/dossiers/func_0025C6A4-9d09feb15e.md",
         "docs/dossiers/func_002728C0-d072d1846a.md",
         "docs/dossiers/func_00272A2C-6a1d4a0d73.md",
-        "docs/matching-c/e05-geometry-reuse.md"
+        "docs/matching-c/e05-geometry-reuse.md",
+        "docs/dossiers/func_00136C38-98a3f171e6.md"
       ],
       "observations": [
         {
@@ -238,12 +239,13 @@
         "load-store-width-or-signedness",
         "opcode-or-expression"
       ],
-      "applicability": "E08 C57C keeps its word interface and consumes a byte view. E09 D8D4 separately needs a byte result, word guard and index store before the duration reload; intermediate split-result forms remain nonmatching. Preserve public widths, signed guards, actual reads and complete paths. These are distinct source contexts, not an instruction to narrow every parameter or a universal allocation rule. Earlier examples remain linked.",
+      "applicability": "E08 C57C keeps its word interface and consumes a byte view. E09 D8D4 separately needs a byte result, word guard and index store before the duration reload; intermediate split-result forms remain nonmatching. Preserve public widths, signed guards, actual reads and complete paths. These are distinct source contexts, not an instruction to narrow every parameter or a universal allocation rule. Earlier examples remain linked. In 136C38, the selected alpha word has byte-sized consumers.",
       "note": "docs/matching-c/e08-e09-p07-reuse.md#byte-consumers-and-separate-word-guards",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
         "docs/dossiers/func_0024C57C-34000563ad.md",
-        "docs/dossiers/func_0025D8D4-4838f108ec.md"
+        "docs/dossiers/func_0025D8D4-4838f108ec.md",
+        "docs/dossiers/func_00136C38-7547c0f66b.md"
       ],
       "observations": [
         {
@@ -253,6 +255,10 @@
         {
           "symbol": "func_0025D8D4",
           "path": "docs/dossiers/func_0025D8D4-4838f108ec.observation.json"
+        },
+        {
+          "symbol": "func_00136C38",
+          "path": "docs/dossiers/func_00136C38-7547c0f66b.observation.json"
         }
       ]
     },
@@ -787,16 +793,26 @@
         "scheduling-or-block-order",
         "branch-polarity"
       ],
-      "applicability": "E08 C3DC uses the actual signed initial guard, do-loop and function-scope locals for separate entry/iteration loads. The frame shrinks while the whole body remains covered, but shared cursor allocation still differs. Later cursor and setup changes are separate observations. Preserve the nonmatching intermediate and earlier CFG examples; frame improvement neither proves exactness nor disproves useful structure.",
+      "applicability": "E08 C3DC uses the actual signed initial guard, do-loop and function-scope locals for separate entry/iteration loads. The frame shrinks while the whole body remains covered, but shared cursor allocation still differs. Later cursor and setup changes are separate observations. Preserve the nonmatching intermediate and earlier CFG examples; frame improvement neither proves exactness nor disproves useful structure. In 136C38, compare signed quotient order in the leader and terminal packets.",
       "note": "docs/matching-c/e08-e09-p07-reuse.md#guarded-loops-and-complete-body-coverage",
       "references": [
         "docs/matching-c/e08-e09-p07-reuse.md",
-        "docs/dossiers/func_0025C3DC-bcc1533d2e.md"
+        "docs/dossiers/func_0025C3DC-bcc1533d2e.md",
+        "docs/dossiers/func_00136C38-4f42c27dd3.md",
+        "docs/dossiers/func_00136C38-805bb963b7.md"
       ],
       "observations": [
         {
           "symbol": "func_0025C3DC",
           "path": "docs/dossiers/func_0025C3DC-bcc1533d2e.observation.json"
+        },
+        {
+          "symbol": "func_00136C38",
+          "path": "docs/dossiers/func_00136C38-4f42c27dd3.observation.json"
+        },
+        {
+          "symbol": "func_00136C38",
+          "path": "docs/dossiers/func_00136C38-805bb963b7.observation.json"
         }
       ]
     },
