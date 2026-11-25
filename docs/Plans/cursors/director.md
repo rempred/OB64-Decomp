@@ -1,6 +1,12 @@
-# Director handoff — November 23, 2026
+# Director handoff — November 24, 2026
 
-**Accepted.** The [C interface census](../c-interface-cleanup.md#four-remaining-compiler-inputs) closed at `662d6b24`. All 2,519 compiler inputs parsed, the exception list is empty and the single audit reproduced US Rev 0 byte for byte. The three source workers, integrator and independent reviewer have released their assignments. Their local records remain under `build/parse21` and `build/matching/parse21-*`. [Canonical audit](../../../build/parse21/checked/canonical-acceptance.json) · [Current queue](../../NEXT_STEPS.md)
+**Army record ownership.** The [helper wave](../../../build/integration/army-records/helpers-acceptance.json) passed the [installed audit](../../../build/integration/army-records/helpers-installed-audit.json) at `68cd4a98`. The reviewer is released. The three persistent Sol 6.2 XHigh workers own [formation](codex://threads/01a20ffa-ecfa-7093-a6c8-14647e5d6038), [recruitment](codex://threads/01a20ffa-f76c-7052-923e-636c295880bd) and [display](codex://threads/01a20ffa-f224-7a32-8d14-fda4ed64655d). The former helpers worker started `002142C4` in `build/matching/army-recruitment` using the [v1 inputs](army-records-integration.md). The [integrator](codex://threads/01a20fed-25a2-7272-9eea-c241bebda0ed) owns the next complete wave in production. All four native message and stop routes reach [this Director](codex://threads/01a20fce-044b-7530-a3e1-53ce76a22be3). The recruitment monitor retains its original `army-records-261124-helpers` directory and thread ID. [Claimed roster](../army-record-ownership-program.md#wave-membership)
+
+**Selection wave.** The Director released [bundle B with its v2 manifest](../../../build/integration/army-records/selection-b-release.json) for the next available worker after wave acceptance. Its launcher prepared all seven and rejected an eight-byte control for the 2,828-byte `00150550`. The routine suite passed 63/68. All five failures reproduce on the baseline and have [follow-ups](../../NEXT_STEPS.md#tooling-and-research-follow-ups). Live v1 remains pinned. The selection tooling assignments are closed.
+
+**Formation integration.** Reconcile `00209F74`’s 15-entry table with `00208900`’s 64-byte retained tail.
+
+**Accepted.** The [C interface census](../c-interface-cleanup.md#four-remaining-compiler-inputs) closed at `662d6b24` with an empty exception list and a byte-identical Rev 0 ROM. [Canonical audit](../../../build/parse21/checked/canonical-acceptance.json) · [Current queue](../../NEXT_STEPS.md)
 
 The Editor Director integrated the preceding revision `87530794` locally as `5b46b47` and verified the retail export. The [L4 capture notes](../c-interface-cleanup.md#retail-l4-dma-capture) identify the two execution breakpoints. Existing traces and static references do not identify a retail scene that reaches them.
 
@@ -16,7 +22,7 @@ The [Editor handoff](../cutscene-preview-services-draft.md#editor-handoff-after-
 
 ## Accepted cutscene baseline
 
-The [final acceptance roster](../../../build/integration/cutscene-preview/program-acceptance-evidence.json) binds all assigned owners and sources to CURRENT `8412D50E1A2CDD150C75409B585A92DBF5748C5F5FE16C9530EDCEFB15B7ECF3`. The rebuilt ROM SHA-256 is `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`. The two retained four-byte ASM suffixes and three linked C switch tables are itemized in the roster. The [integration closeout](cutscene-preview-integration.md) links each wave and the [T2 replay](../../../build/integration/cutscene-preview/t2-accepted-traces.json) covers chapter reveal completion with controlled assets and randomness.
+The [final cutscene roster](../../../build/integration/cutscene-preview/program-acceptance-evidence.json) records every owner, the retained ASM suffixes and the linked switch tables. See the [integration closeout](cutscene-preview-integration.md) and the [chapter-reveal replay](../../../build/integration/cutscene-preview/t2-accepted-traces.json).
 
 ## Released assignments
 
