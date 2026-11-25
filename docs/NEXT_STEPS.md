@@ -33,6 +33,8 @@ Updated November 24, 2026.
 
 ## Tooling and research follow-ups
 
+The Director owns a follow-up for four existing callers of the equipment selector table. `000BC684` and `000BEC90` use byte parameters, and `000BF458` and `000BF9C8` use word parameters. All four declare signed results. Reconcile their calls with the four `u32(s32, s32)` providers and verify the affected owners. [Selector declarations](../include/game/class_field_lookups.h)
+
 Two routine test fixtures also fail on the November 24 baseline. The Director owns a test-only follow-up to align the [caller expectation](../tests/c_interface_prospective.js) with the permanent empty exception list and check the two accepted four-byte terminal cuts (rows 2786 and 4320) in the [padding census](../tests/boot_initialized_data.js). [Accepted cut definitions](../config/phase7/conventional-build.json)
 
 The Director also owns two baseline fixture repairs. Reconcile the conflicting checksum declarations in the `owner-function-groups` fixture, and verify the historical source revision used by `late-jump-trace` before updating its expected hash.
