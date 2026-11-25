@@ -33,6 +33,8 @@ Updated November 25, 2026.
 
 ## Tooling and research follow-ups
 
+The Director owns reconciliation of the four names for the assembly copy routine at ROM `0x23460`, `func_00023460`, `func_80093060`, `bcopy` and `memcpy`. The Display caller at `0x1AF0A4` passes the source, destination and 52 bytes, then discards the result. Both assembly exits return the original destination. Nine earlier declarations under the same name and 47 under the aliases differ from the Display prototype. Trace uses of the result and reconcile argument order, qualifiers and length types before choosing a shared declaration. [Assembly entry](../asm/original/rev0/lib/memcpy.s) · [Display wave](Plans/army-record-ownership-program.md#wave-membership)
+
 The Director owns a follow-up for four existing callers of the equipment selector table. `000BC684` and `000BEC90` use byte parameters, and `000BF458` and `000BF9C8` use word parameters. All four declare signed results. Reconcile their calls with the four `u32(s32, s32)` providers and verify the affected owners. [Selector declarations](../include/game/class_field_lookups.h)
 
 Two routine test fixtures also fail on the November 24 baseline. The Director owns a test-only follow-up to align the [caller expectation](../tests/c_interface_prospective.js) with the permanent empty exception list and check the two accepted four-byte terminal cuts (rows 2786 and 4320) in the [padding census](../tests/boot_initialized_data.js). [Accepted cut definitions](../config/phase7/conventional-build.json)
