@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7E59F005C5C27DB5EBE4833007C71CEBAA8598C958C7944176FDA5E667CDCE2A",
+  "observationId": "68777D25BE99542F4269D8DE270C1425AD37B759A1339AB859377ADFC80714A7",
+  "symbol": "func_00249D98",
+  "authored": {
+    "context": "The squad transfer copies a 25-byte row and then publishes the destination through a working pointer.",
+    "effects": [
+      "register-allocation",
+      "opcode-or-expression"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2960,
+          "path": "include/game/character_record.h",
+          "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+        },
+        {
+          "bytes": 1574,
+          "path": "include/game/class_field_lookups.h",
+          "sha256": "23F7D914A7BDA1462D408105EF1219B0304AAA1FA3CB22C7BDA468F8FF36D8AB"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "A9029311A8E8F6957AABFBA862B7A7314B48EAF7B56F9FC6FEEFEE40858739EB",
+      "sourceSha256": "9B5D3268280067937DF9E5ACF8BE59303CBEAF19F996CF41EF451BAFFC90EA55"
+    },
+    "label": "squad-copy-destination-offset",
+    "observedEffect": "Both texts contain 1,096 bytes. Only +0x1BC and +0x1C0 differ after relocation handling. The control stores through s1 before moving s1 to s5. Retail moves s1 to s5 before storing through s5.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/lib/func_00249D98.c",
+        "sha256": "B5ED40AF8BF1869F70A80831442B18C545C02508C0C9920AA13A668E7470874C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The two publication instructions remain reversed in the control.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control builds the 25-byte destination offset through successive additions and a shift, stores the name byte through the copy destination, then assigns the shared pointer. The matching source uses a separate stride multiplication and writes through the assigned shared pointer."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2960,
+        "path": "include/game/character_record.h",
+        "sha256": "9A610D8DC6DCF34F9718D0EC806AEF3C257378339C67BB820AE6E91493AAFB37"
+      },
+      {
+        "bytes": 1574,
+        "path": "include/game/class_field_lookups.h",
+        "sha256": "23F7D914A7BDA1462D408105EF1219B0304AAA1FA3CB22C7BDA468F8FF36D8AB"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 12686,
+      "sha256": "A9029311A8E8F6957AABFBA862B7A7314B48EAF7B56F9FC6FEEFEE40858739EB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9B5D3268280067937DF9E5ACF8BE59303CBEAF19F996CF41EF451BAFFC90EA55"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00249D98-7e59f005c5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

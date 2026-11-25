@@ -11951,6 +11951,18 @@
     {
       "symbol": "func_000be494",
       "source": "src/lib/func_000be494.c"
+    },
+    {
+      "symbol": "func_002142C4",
+      "source": "src/battle/func_002142C4.c"
+    },
+    {
+      "symbol": "func_00219A14",
+      "source": "src/battle/func_00219A14.c"
+    },
+    {
+      "symbol": "func_00249D98",
+      "source": "src/lib/func_00249D98.c"
     }
   ]
 }

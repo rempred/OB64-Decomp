@@ -1,5 +1,6 @@
 #include "game/battle_record_flag.h"
 #include "game/battle_roster_record.h"
+#include "game/battle_recruitment.h"
 
 typedef signed char s8;
 typedef unsigned char u8;
@@ -35,7 +36,6 @@ void func_00217BA8(void);
 void func_0021840C(void);
 void func_00218B58(void);
 M2C_UNK func_00219470();
-M2C_UNK func_00219A14();
 M2C_UNK func_00219F0C();
 M2C_UNK func_0021A438();
 M2C_UNK func_0021A5C8();

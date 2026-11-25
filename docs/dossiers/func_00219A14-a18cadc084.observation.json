@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A18CADC084CED3522634DD82B79937C8ABA68CDA5C54F53982A18D3620DCBB15",
+  "observationId": "BD5FECE9AFA4CA83BA9A12CE86BA39430EFE4245A548004E09156E65030DE083",
+  "symbol": "func_00219A14",
+  "authored": {
+    "context": "The persuasion dispatcher reloads the global scene pointer across calls and indirect stores.",
+    "effects": [
+      "opcode-or-expression"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 2292,
+          "path": "include/game/battle_roster_record.h",
+          "sha256": "803E33A45BC33E6C5273918846185979C627C506C77C9818F22226978BFB3C09"
+        },
+        {
+          "bytes": 1693,
+          "path": "include/game/battle_roster_types.h",
+          "sha256": "FB035E8F1DB37D824FD8CB45C4408A029A063CB20C91596E89D391B8D5B64660"
+        },
+        {
+          "bytes": 1574,
+          "path": "include/game/class_field_lookups.h",
+          "sha256": "23F7D914A7BDA1462D408105EF1219B0304AAA1FA3CB22C7BDA468F8FF36D8AB"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 500,
+          "path": "include/game/combat_selector.h",
+          "sha256": "48A9F6167FBB6D23AD05A15482848CFFE8B4AC9A8D9F389F3A65FD2BFA2FDFA6"
+        },
+        {
+          "bytes": 3321,
+          "path": "include/game/cutscene_panels.h",
+          "sha256": "0DE3106ACC1E7DDFEB22D8BA2B1F63E612EFC39D4F40C8162D5094BB63A42C98"
+        }
+      ],
+      "expandedSha256": "B7D2EE1305E758A947D1D9FFAC22E7CEFC3DC2A0D2799327E1A8D0D360960A14",
+      "sourceSha256": "6250F6A4B1DCAE4D06FFFB452EE8625C577F01A694A96930A5F2869CF65FAFDC"
+    },
+    "label": "persuasion-scene-pointer-qualification",
+    "observedEffect": "The volatile version emits 1,280 native text bytes. It materializes an extra state literal on the first transition at +0x6C, and the epilogue begins eight bytes late. The ordinary pointer yields 1,272 bytes.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "src/battle/func_00219A14.c",
+        "sha256": "B009C25811DF6F2E5F2590B63C174310E29790D592210D97A105054DECBDF679"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The control has two extra instruction words and shifted destinations in its switch table.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "The control declares the scene pointer volatile. The matching source uses an ordinary pointer; the state-machine statements are the same."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 2292,
+        "path": "include/game/battle_roster_record.h",
+        "sha256": "803E33A45BC33E6C5273918846185979C627C506C77C9818F22226978BFB3C09"
+      },
+      {
+        "bytes": 1693,
+        "path": "include/game/battle_roster_types.h",
+        "sha256": "FB035E8F1DB37D824FD8CB45C4408A029A063CB20C91596E89D391B8D5B64660"
+      },
+      {
+        "bytes": 1574,
+        "path": "include/game/class_field_lookups.h",
+        "sha256": "23F7D914A7BDA1462D408105EF1219B0304AAA1FA3CB22C7BDA468F8FF36D8AB"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 500,
+        "path": "include/game/combat_selector.h",
+        "sha256": "48A9F6167FBB6D23AD05A15482848CFFE8B4AC9A8D9F389F3A65FD2BFA2FDFA6"
+      },
+      {
+        "bytes": 3321,
+        "path": "include/game/cutscene_panels.h",
+        "sha256": "0DE3106ACC1E7DDFEB22D8BA2B1F63E612EFC39D4F40C8162D5094BB63A42C98"
+      }
+    ],
+    "expanded": {
+      "bytes": 19186,
+      "sha256": "B7D2EE1305E758A947D1D9FFAC22E7CEFC3DC2A0D2799327E1A8D0D360960A14"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6250F6A4B1DCAE4D06FFFB452EE8625C577F01A694A96930A5F2869CF65FAFDC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-11-25-func_00219A14-a18cadc084.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
