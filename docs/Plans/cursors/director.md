@@ -6,7 +6,7 @@
 
 **Display integration.** All [eight private matches](../../../build/matching/army-display/cursor.md) are queued after formation. The [native table](../../../build/matching/army-display/func_00083c5c-native-table.json) for `00083C5C` fills row 1502, including four alignment bytes. [Independent review](../../../build/integration/army-records/display-structural-review/design.json) confirmed whole-section placement. Bind all 64 bytes at integration.
 
-**Formation integration.** All [three candidates](../../../build/matching/army-formation/formation-complete-wave-handoff.md) passed private comparison. The [structural reviewer](codex://threads/01a21345-247e-79d1-8f67-21a6925eaa69) [approved the ten-file proposal against the staged link](../../../build/integration/army-records/formation-structural-review/exact-review.json). Resume for interface reconciliation if needed. Monitor `army-records-261124-formation-review`.
+**Formation integration.** All [three candidates](../../../build/matching/army-formation/formation-complete-wave-handoff.md) passed private comparison. The [structural reviewer](codex://threads/01a21345-247e-79d1-8f67-21a6925eaa69) [approved the ten-file proposal against the staged link](../../../build/integration/army-records/formation-structural-review/exact-review.json). Exact [interface review](../../../build/integration/army-records/formation-proposal/interface/handoff.json) is underway. Monitor `army-records-261124-formation-review`.
 
 **Accepted.** The [C interface census](../c-interface-cleanup.md#four-remaining-compiler-inputs) closed at `662d6b24` with an empty exception list and a byte-identical Rev 0 ROM. [Canonical audit](../../../build/parse21/checked/canonical-acceptance.json) · [Current queue](../../NEXT_STEPS.md)
 
