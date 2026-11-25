@@ -199,7 +199,9 @@ The Director may run independent candidate waves concurrently across families. P
 wave's full membership, coupled producers and real dependency gates; an unfinished unrelated wave
 does not block candidate work or acceptance of a complete, dependency-ready wave.
 Each private candidate worker edits only its assigned ignored scratch root and uses the supported private workbench
-commands in `docs/WORKFLOW.md`. Different private roots run candidate checks concurrently by default,
+commands in `docs/WORKFLOW.md`. For an explicitly enrolled [Workflow B pilot](docs/Plans/workflow-b.md),
+the Director may assign two exclusive sibling scratch roots to the same worker for variants of its one current target.
+Name both in the worker brief. Each root still permits one live command. Different private roots run candidate checks concurrently by default,
 without per-check permission or routine per-function integration pauses. Keep live canonical inputs stable
 during candidate iteration; explicitly selected immutable inputs may continue through ordinary canonical
 integration. Serialize production integration at complete-wave boundaries.

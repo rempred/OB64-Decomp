@@ -16,15 +16,17 @@ All entries are normalized US Rev 0 ROM starts. Each row is a complete wave. For
 
 ## Selection source assignments
 
-The five waves above retain their original acceptance boundaries. Joe reassigned the five unstarted Selection functions on November 25 so all three source workers can continue in parallel.
+Joe paused the three previous source workers on November 25. One fresh worker owns all seven Selection functions. It uses [Workflow B](workflow-b.md#run-with-one-source-worker) on one function at a time, testing up to two variants concurrently in `build/matching/wb-army-a` and `build/matching/wb-army-b`. Both roots passed guarded preparation for the complete roster.
 
-| Source worker | Functions | Private root |
-| --- | --- | --- |
-| Selection and its Astra Medium advisor | `00135EE4` (private exact), `00136C38` (renderer) | `build/matching/army-selection` |
-| Formation | `00150550`, `001541C0`, `001587DC`, `00159474` | `build/matching/army-selection-four` |
-| Display | `00159FD4` | `build/matching/army-selection-large` |
+| Targets | Starting evidence |
+| --- | --- |
+| `00150550` | Start with the 2,828-byte candidate covering both rows and the executable 92-byte return tail. The predecessor recorded 36 differing words with seven provisional symbol bindings. |
+| `00136C38` | P2626 preserves the complete renderer. P2554 retains a complementary exact dispatch sequence. |
+| `00159FD4` | Candidate 127 preserves the retail frame and all 62 calls. Candidate 96 isolates the late texture sync. |
+| `001541C0`, `001587DC`, `00159474` | Guarded preparation is complete. Source reconstruction remains open. |
+| `00135EE4` | Preserve the private exact 792-byte candidate. Reconcile its screen-state type with the renderer at integration. |
 
-The Formation worker owns both physical rows of `00150550`, including its 92-byte return tail. Display owns the entire 13,344-byte `00159FD4`. Each worker hands its complete set to the Director. The dedicated integrator verifies all seven together.
+The previous roots retain their final source files, compiler output, reports and lessons. The new worker reads these materials in place and keeps experiments in its own roots. The integrator verifies all seven together.
 
 ## Contributor coordination
 
