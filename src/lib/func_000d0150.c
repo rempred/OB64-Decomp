@@ -1,9 +1,5 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/character_equipment.h"
+
 typedef signed long long s64;
 typedef unsigned long long u64;
 typedef float f32;
@@ -13,7 +9,6 @@ typedef s8 M2C_UNK8;
 typedef s16 M2C_UNK16;
 typedef s32 M2C_UNK32;
 typedef s64 M2C_UNK64;
-s16 func_000bb47c(M2C_UNK, s32, s32);                           
 s32 func_000bbd50(s32);                                          
 void func_000bf248(void);                                        
 void func_000bf458(void);                                        
@@ -28,7 +23,7 @@ asm(
     "# selects the matching result row, builds four entries, and records acceptance state.\n"
     "# Offset accesses remain until the surrounding structures have reviewed field definitions.\n");
 void func_000d0150(s32 arg0) {
-    s16 temp_v0_118;
+    u16 temp_v0_118;
     s32 temp_v0_130;
     s32 temp_v0_53;
     s32 temp_v1_122;
@@ -175,7 +170,7 @@ scan_done:
         temp_a0_121 = D_80196AF8;
         temp_v1_122 = var_s1 * 2;
         var_s1 = ui_next;
-        (*(s16 *)((s8 *)((temp_a0_121 + temp_v1_122)) + (0x1BFE))) = temp_v0_118;
+        (*(u16 *)((s8 *)((temp_a0_121 + temp_v1_122)) + (0x1BFE))) = temp_v0_118;
         asm volatile(
             "# Hybrid scope: these three instructions are the retail four-entry loop test and back edge.\n"
             "# slti tests whether the updated $s1 index is still below four.\n"
