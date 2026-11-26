@@ -1,4 +1,4 @@
-# Director handoff — November 25, 2026
+# Director handoff — November 26, 2026
 
 **Army record ownership.** Helpers, recruitment, Formation and Display passed. Joe paused the three previous source workers. The [Workflow B worker](codex://threads/01a2146e-f578-7761-8133-fed9cb546849) owns the [seven remaining functions](../army-record-ownership-program.md#selection-source-assignments). The [integrator](codex://threads/01a20fed-25a2-7272-9eea-c241bebda0ed) verifies them together.
 
@@ -8,7 +8,7 @@
 
 **Formation accepted.** The [canonical report](../../../build/integration/army-records/formation-acceptance.json) binds 8,912 matching C bytes and the shared switch table to [9b2d76dd](https://github.com/rempred/OB64-Decomp/commit/9b2d76dd30f475a7393fc2960b4f319f9fbf2909).
 
-**PR #8.** The verified PR receiver wakes [this Director](codex://threads/01a20fce-044b-7530-a3e1-53ce76a22be3). The integrator has begun isolated local review of `9a2afc44` alongside Selection. Reconcile the `00135EE4` overlap as one owner and bring findings to Joe before adoption or any GitHub response. [Initial checks](../../../build/pr8-review-9a2afc44/director-initial-triage.json) · [Contributor PR](https://github.com/rempred/OB64-Decomp/pull/8)
+**PR #8.** The [independent reviewer](codex://threads/01a21938-703d-7171-9a37-1e4c0ca23a5a) owns the exact interface review for the corrected R7 copy of `9a2afc44` and reports here via `army-records-261126-pr8-interface-review`. The Director resolves its findings before the integrator installs the reviewed files in the isolated intake tree and runs the audit. Count `00135EE4` once across the PR and Selection. Bring the results to Joe before adoption or any GitHub response. [Coverage proposal](../../../build/pr8-review-9a2afc44/integrator/interface-proposal/proposal-verdict.json) · [Contributor PR](https://github.com/rempred/OB64-Decomp/pull/8)
 
 **Accepted.** The [C interface census](../c-interface-cleanup.md#four-remaining-compiler-inputs) closed at `662d6b24` with an empty exception list and a byte-identical Rev 0 ROM. [Canonical audit](../../../build/parse21/checked/canonical-acceptance.json) · [Current queue](../../NEXT_STEPS.md)
 
