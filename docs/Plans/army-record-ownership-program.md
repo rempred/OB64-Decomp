@@ -16,7 +16,7 @@ All entries are normalized US Rev 0 ROM starts. Each row is a complete wave. For
 
 ## Selection source assignments
 
-Joe paused the three previous source workers on November 25. One fresh worker owns all seven Selection functions. It uses [Workflow B](workflow-b.md#run-with-one-source-worker) on one function at a time, alternating source reconstruction with local upstream `decomp-permuter` searches and guarded checks of the generated changes. It has two native job slots across `build/matching/wb-army-a` and `build/matching/wb-army-b`. Both roots passed guarded preparation for the complete roster.
+Joe paused the three previous source workers on November 25. One fresh worker owns all seven Selection functions. It uses [Workflow B](workflow-b.md#run-with-one-source-worker) on one function at a time, alternating source reconstruction with local upstream `decomp-permuter` searches and guarded checks of the generated changes. It uses two private roots, `build/matching/wb-army-a` and `build/matching/wb-army-b`, with a combined budget of four to eight concurrent compiler jobs. The same worker owns both searches. Both roots passed guarded preparation for the complete roster.
 
 | Targets | Starting evidence |
 | --- | --- |
