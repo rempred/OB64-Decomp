@@ -8,7 +8,7 @@
 
 **Formation accepted.** The [canonical report](../../../build/integration/army-records/formation-acceptance.json) binds 8,912 matching C bytes and the shared switch table to [9b2d76dd](https://github.com/rempred/OB64-Decomp/commit/9b2d76dd30f475a7393fc2960b4f319f9fbf2909).
 
-**PR #8.** The verified PR receiver now wakes [this Director](codex://threads/01a20fce-044b-7530-a3e1-53ce76a22be3). [Initial checks](../../../build/pr8-review-9a2afc44/director-initial-triage.json) record the private `00135EE4` overlap. Recheck the head, reconcile ownership and run intake after Selection. [Contributor PR](https://github.com/rempred/OB64-Decomp/pull/8)
+**PR #8.** The verified PR receiver wakes [this Director](codex://threads/01a20fce-044b-7530-a3e1-53ce76a22be3). The integrator has begun isolated local review of `9a2afc44` alongside Selection. Reconcile the `00135EE4` overlap as one owner and bring findings to Joe before adoption or any GitHub response. [Initial checks](../../../build/pr8-review-9a2afc44/director-initial-triage.json) · [Contributor PR](https://github.com/rempred/OB64-Decomp/pull/8)
 
 **Accepted.** The [C interface census](../c-interface-cleanup.md#four-remaining-compiler-inputs) closed at `662d6b24` with an empty exception list and a byte-identical Rev 0 ROM. [Canonical audit](../../../build/parse21/checked/canonical-acceptance.json) · [Current queue](../../NEXT_STEPS.md)
 
