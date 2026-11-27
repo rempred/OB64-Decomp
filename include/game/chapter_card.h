@@ -5,13 +5,7 @@
 #include "game/combat_draw_commands.h"
 
 /* Shared chapter-card state used by setup, fade and reveal. */
-typedef struct TitleImageHeader {
-    u8 pad00[3];
-    u8 field03;
-    u16 width;
-    u16 height;
-    u8 pixels[0];
-} TitleImageHeader;
+#include "game/title_image_header.h"
 
 typedef struct ChapterCard {
     TitleImageHeader *secondary[5];

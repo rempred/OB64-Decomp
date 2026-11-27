@@ -1,0 +1,20 @@
+void bzero(void *memory, unsigned int bytes);
+typedef unsigned char u8;
+extern u8 *D_8019780C;
+void func_000744c0(void) {
+    bzero(D_8019780C + 0x43C, 0x11);
+    D_8019780C[0x43C] = 0x28;
+    D_8019780C[0x43D] = 0x20;
+    D_8019780C[0x43E] = 0x2B;
+    D_8019780C[0x43F] = 0x1E;
+    D_8019780C[0x440] = 0x1B;
+    D_8019780C[0x441] = 0x1A;
+    D_8019780C[0x442] = 0x2D;
+    D_8019780C[0x443] = 0x2D;
+    D_8019780C[0x444] = 0x25;
+    D_8019780C[0x445] = 0x1E;
+    D_8019780C[0x446] = 0x16;
+    D_8019780C[0x447] = 0x14;
+    D_8019780C[0x448] = 0xF;
+    D_8019780C[0x449] = 0x11;
+}

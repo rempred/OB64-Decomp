@@ -1,6 +1,5 @@
-typedef unsigned char u8;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/route_record.h"
+
 typedef float f32;
 typedef double f64;
 typedef struct RuntimeUnit RuntimeUnit;
@@ -18,15 +17,12 @@ extern FormationEntry D_801EACE0[][5], D_801EAEFC[][5];
 extern u8 D_801F0D9C[], D_801F0EBF[], D_801F0ECF[], D_800E7AB9[], D_800E7A90[];
 extern f64 D_801EE858, D_801EE860;
 extern s32 func_0012E950(s32 value);
-extern f32 func_0011AE34(void *record);
 extern void func_00126D24(RuntimeUnit *unit);
 extern void func_00129948(const void *unit);
 extern void func_0012D6FC(RuntimeUnit *unit, u8 selector, s32 *state);
 extern void func_0012B1C4(RuntimeUnit *owner, void *unused, RuntimeUnit *unit, f32 *point);
 extern s32 func_0012B440(RuntimeUnit *first, RuntimeUnit *second, s32 selector,
                       f32 *current, f32 *requested, s32 bypass);
-extern void func_0011A9B8(f32 value, f32 *firstOut, f32 *secondOut, f32 *third,
-    f32 *first, f32 *second, f32 *fourth, f32 *fifth, s32 count);
 extern f32 func_0002CB80(f32 dx, f32 dz);
 extern f32 func_800907F0(f32 angle);
 extern f32 func_80092DB0(f32 angle);
@@ -210,9 +206,9 @@ void func_0012BC64(f32 *initialPoint, u8 *group, s32 *state, s32 initialized)
             /* Keep the actual coordinate loads in one multi-set local so
              * KMC does not delay the first load with its single-set boost. */
             f32 coordinate = initialPoint[0];
-            void *record;
+            RouteRecord *record;
             leader = unit;
-            record = FIELD(leader, void *, 0xA4);
+            record = FIELD(leader, RouteRecord *, 0xA4);
             FIELD(leader, f32, 0x08) = coordinate;
             coordinate = initialPoint[1];
             FIELD(leader, f32, 0x0C) = coordinate;
@@ -239,22 +235,22 @@ void func_0012BC64(f32 *initialPoint, u8 *group, s32 *state, s32 initialized)
         flags = FIELD(unit, u32, 0);
         if (flags & 2)
             goto deferred_movement;
-        if (special != 0 && FIELD(leader, void *, 0xA4) != 0) {
-            void *record;
+        if (special != 0 && FIELD(leader, RouteRecord *, 0xA4) != 0) {
+            RouteRecord *record;
             switch (position) {
-            case 1: progress = FIELD(FIELD(leader, void *, 0xA4), f32, 0x1C) + (step + step); break;
-            case 2: progress = FIELD(FIELD(leader, void *, 0xA4), f32, 0x1C) + step; break;
-            case 3: progress = FIELD(FIELD(leader, void *, 0xA4), f32, 0x1C) - step; break;
-            case 4: progress = FIELD(FIELD(leader, void *, 0xA4), f32, 0x1C) - (step + step); break;
+            case 1: progress = FIELD(leader, RouteRecord *, 0xA4)->field1C + (step + step); break;
+            case 2: progress = FIELD(leader, RouteRecord *, 0xA4)->field1C + step; break;
+            case 3: progress = FIELD(leader, RouteRecord *, 0xA4)->field1C - step; break;
+            case 4: progress = FIELD(leader, RouteRecord *, 0xA4)->field1C - (step + step); break;
             }
             if ((rangeZero <= progress) & (progress < 1.0f)) {
-                record = FIELD(leader, void *, 0xA4);
-                func_0011A9B8(progress, &point[0], &point[2], FIELD(record, f32 *, 8),
-                    FIELD(record, f32 *, 0),
-                    FIELD(FIELD(leader, void *, 0xA4), f32 *, 4),
-                    FIELD(FIELD(leader, void *, 0xA4), f32 *, 12),
-                    FIELD(FIELD(leader, void *, 0xA4), f32 *, 16),
-                    FIELD(FIELD(leader, void *, 0xA4), s32, 20));
+                record = FIELD(leader, RouteRecord *, 0xA4);
+                func_0011A9B8(progress, &point[0], &point[2], record->field08,
+                    record->field00,
+                    FIELD(leader, RouteRecord *, 0xA4)->field04,
+                    FIELD(leader, RouteRecord *, 0xA4)->field0C,
+                    FIELD(leader, RouteRecord *, 0xA4)->field10,
+                    FIELD(leader, RouteRecord *, 0xA4)->field14);
                 point[1] = func_801A63FC(D_800E7AB9[0], point[0], point[2]);
                 if ((FIELD(leader, u32, 0) & 0xC000) == 0xC000) {
                     if (FIELD(unit, f32, 0x28) != FIELD(unit, f32, 0x08) ||

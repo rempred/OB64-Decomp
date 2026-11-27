@@ -6,7 +6,7 @@ s32 func_000bd26c(s32 row);
 void func_000bafa0(void);
 void func_000bb0cc(void);
 void func_000badd4(void);
-void func_000bacec(void);
+u16 func_000bacec(void);
 void func_000b7360(void) {
     s32 i;
     s32 k;

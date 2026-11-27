@@ -1,5 +1,4 @@
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/movement_queue_entry.h"
 extern char D_801EE0A0[];
 extern void func_00023940(const char *format, ...);
 extern void *resource_alloc(u32 bytes);
@@ -40,9 +39,6 @@ s32 *func_00107D60(s32 first, s32 last, s32 *predecessors)
     return list;
 }
 
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
 typedef struct MovementAux MovementAux;
 typedef struct MovementMetadata MovementMetadata;
 
@@ -50,20 +46,12 @@ typedef struct MovementMetadata MovementMetadata;
 
 /* Only the observed twelve-byte queue layout is described here. The fixed
  * initialization loop does not establish every allocator's capacity. */
-typedef struct MovementQueueEntry {
-    s16 field00;
-    s16 field02;
-    s16 field04;
-    u16 field06;
-    u32 field08;
-} MovementQueueEntry;
+
 
 extern u8 D_801EB520[];
 extern s32 D_801E8670;
 extern s32 func_001079EC(MovementQueueEntry *queue, s32 *field34,
                         s32 index, u32 oldCost);
-extern s32 func_00107850(MovementQueueEntry *queue, s32 *field34,
-                        s32 *field38, s32 index, u32 cost);
 extern s32 func_00107C58(MovementQueueEntry *queue, s32 *field34);
 
 /* The accepted physical owner also contains eight zero tail bytes. This C

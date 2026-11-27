@@ -6,7 +6,7 @@ extern u16 D_80190EBC[];
 extern u8 D_80191010[];
 extern u8 D_80190F81;
 u16 func_000b86f8(u8 i);
-void func_000baad4(void);
+u16 func_000baad4(void);
 void func_000b77f0(u16 id);
 void func_000b77f0(u16 id) {
     if (id != 0xFF) {

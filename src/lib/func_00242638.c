@@ -1,0 +1,35 @@
+typedef unsigned char u8;
+typedef signed int s32;
+typedef float f32;
+void * func_00001330(unsigned int);
+void bzero(void *p, s32 n);
+extern u8 *D_801CE8BC;
+extern s32 D_801CEAB0;
+extern f32 D_801CE8EC;
+extern f32 D_801CE8F0;
+extern f32 D_801CE8F4;
+extern s32 D_801F0400;
+extern f32 D_801F0540;
+extern f32 D_801F0544;
+extern f32 D_801F0548;
+void D_801BE71C(void);
+void func_002410A0(void);
+void func_0023B3E0(void);
+void D_801AEA90(void);
+void D_8020B030(void);
+void func_00242638(s32 k) {
+    D_801BE71C();
+    D_801CE8BC = func_00001330(0x6094);
+    bzero(D_801CE8BC, 0x6094);
+    D_801CE8BC[0x6073] = k;
+    func_002410A0();
+    func_0023B3E0();
+    D_801AEA90();
+    D_8020B030();
+    D_801CEAB0 = 0x3F;
+    D_801F0400 = 0;
+    D_801F0540 = D_801CE8EC;
+    D_801F0544 = D_801CE8F0;
+    D_801F0548 = D_801CE8F4;
+    D_801CE8BC[0x6044] = 0;
+}

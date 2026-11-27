@@ -1,11 +1,7 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef signed short s16;
-typedef unsigned short u16;
-typedef signed int s32;
-typedef unsigned int u32;
+#include "game/class_field_lookups.h"
+struct RuntimeUnit;
+void func_000c4e5c(unsigned char *o, short *list, short x, short y);
 
-typedef s32 (*ClassCallback)(u8, u8);
 
 typedef struct Func000C4A40Entry {
     void *field_00;
@@ -22,12 +18,12 @@ typedef struct Func000C4A40ClassRecord {
 } Func000C4A40ClassRecord;
 
 void func_000c54c0(s32);
-void func_000c4e5c(void *, void *, s16, s16);
+void func_0012A958(struct RuntimeUnit *);
 u8 func_000bbad0(void);
 u8 func_0016dec4(s32, s32);
 extern u8 * volatile D_80196AF8;
 extern void *g_func_000c4a40_dispatch_table[];
-extern ClassCallback g_func_000c4a40_callbacks[];
+extern EquipmentSelector g_func_000c4a40_callbacks[];
 extern Func000C4A40ClassRecord g_func_000c4a40_class_records[];
 
 void func_000c4a40(void *arg0, s32 arg1)
@@ -36,8 +32,8 @@ void func_000c4a40(void *arg0, s32 arg1)
     u8 *data;
     u8 *state_entry;
     Func000C4A40Entry *entry;
-    ClassCallback *callbacks;
-    ClassCallback callback;
+    EquipmentSelector *callbacks;
+    EquipmentSelector callback;
     s32 index;
     s32 count;
     s32 accepted;
@@ -175,7 +171,7 @@ mode_7:
                 index = callback_data[0x5E9];
             }
             callback = *callbacks;
-            accepted += ((callback(index, index) & 0xFFFF) != 0);
+            accepted += ((callback((u8)index, (u8)index) & 0xFFFF) != 0);
         }
         for (; accepted < 4; accepted++) {
             (output + accepted)[0x0D]++;
@@ -198,7 +194,7 @@ mode_8:
             if (callback_data[0x60C] != 0) {
                 callback = *callbacks;
                 index = callback_data[0x5E9];
-                if ((callback(index, index) & 0xFFFF) != 0) {
+                if ((callback((u8)index, (u8)index) & 0xFFFF) != 0) {
                     continue;
                 }
             }

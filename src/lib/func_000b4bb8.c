@@ -1,3 +1,4 @@
+struct ListMenu;
 typedef unsigned char u8;
 typedef signed char s8;
 typedef signed short s16;
@@ -15,7 +16,7 @@ extern WinIdList D_801EFB20;
 void D_801CC4A0(u8 *w);
 void func_000ae384(void);
 void func_000b876c(s16 a, s16 b, s8 f);
-void func_000ba790(s32 *p);
+void func_000ba790(struct ListMenu *);
 void func_000bc7e4(s32 clear, s32 set);
 void func_000bc828(s32 clear, s32 set);
 void func_000bc86c(s32 clear, s32 set);
@@ -78,7 +79,7 @@ void func_000b4bb8(void) {
     for (i = 0; i < 5; i++) {
         (D_80196AF8 + i)[0x92] = i;
     }
-    func_000ba790((s32 *)(D_80196AF8 + 0x134));
+    func_000ba790((struct ListMenu *)(D_80196AF8 + 0x134));
     func_000bc7e4(0x83, 0);
     func_000bc828(0x80, 0);
     func_000bc86c(0x80, 0);
