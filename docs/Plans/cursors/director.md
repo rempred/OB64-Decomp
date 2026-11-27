@@ -8,7 +8,7 @@
 
 **Formation accepted.** The [canonical report](../../../build/integration/army-records/formation-acceptance.json) binds 8,912 matching C bytes and the shared switch table to [9b2d76dd](https://github.com/rempred/OB64-Decomp/commit/9b2d76dd30f475a7393fc2960b4f319f9fbf2909).
 
-**PR #8.** Independent review cleared the R8 corrections over contributor commit `9a2afc44`, including the two task-pointer returns. The Director authorized the integrator to install the approved files in the isolated intake tree and run its fresh structural audit. Count `00135EE4` once across the PR and Selection. Bring the audit results and proposed integration to Joe before adoption or any GitHub response. [Independent decision](../../../build/pr8-review-9a2afc44/independent-interface-review/r8-decision.json) · [Reviewed files](../../../build/pr8-review-9a2afc44/integrator/return-proposal/handoff.json) · [Contributor PR](https://github.com/rempred/OB64-Decomp/pull/8)
+**PR #8.** Joe approved the corrected intake. Merge `7efecc2b` preserves Connor's four commits and the exact audited tree. The full Rev 0 ROM and interface checks passed. The integrator will retain the accepted `00135EE4` owner when verifying Selection. [Merge](https://github.com/rempred/OB64-Decomp/commit/7efecc2bf10647015da9e626df56e590882b50c5) | [Audit handoff](../../../build/pr8-review-9a2afc44/integrator/final-r8/handoff.json) | [PR #8](https://github.com/rempred/OB64-Decomp/pull/8)
 
 **Accepted.** The [C interface census](../c-interface-cleanup.md#four-remaining-compiler-inputs) closed at `662d6b24` with an empty exception list and a byte-identical Rev 0 ROM. [Canonical audit](../../../build/parse21/checked/canonical-acceptance.json) · [Current queue](../../NEXT_STEPS.md)
 
